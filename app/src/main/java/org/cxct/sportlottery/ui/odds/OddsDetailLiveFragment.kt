@@ -424,7 +424,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                 isGamePause = (matchClockEvent.matchClockCO?.stopped == 1)
 
                 updateTime?.let {
-                    startTime = updateTime.toLong()
+                    startTime = updateTime
                 }
             }
         }

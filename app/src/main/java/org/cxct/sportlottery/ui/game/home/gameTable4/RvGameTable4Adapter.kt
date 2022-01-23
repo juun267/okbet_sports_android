@@ -14,10 +14,14 @@ import kotlinx.android.synthetic.main.home_game_table_4.view.*
 import kotlinx.android.synthetic.main.home_sport_table_4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.match.Data
 import org.cxct.sportlottery.network.match.MatchPreloadData
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.service.match_clock.MatchClockCO
+import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.home.OnClickFavoriteListener
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
@@ -25,8 +29,10 @@ import org.cxct.sportlottery.ui.game.home.OnClickStatisticsListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.GameConfigManager.getGameIcon
 import org.cxct.sportlottery.util.GameConfigManager.getTitleBarBackground
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
 import org.cxct.sportlottery.util.RecyclerViewGridDecoration
+import timber.log.Timber
 
 class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -40,29 +46,10 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         ODD_DATA, SPORT_GRID_REPAY
     }
 
-    fun setData(matchPreloadData: MatchPreloadData?, matchType: MatchType, selectedOdds: MutableList<String>) {
+    fun setData(dataList: MutableList<GameEntity>, matchType: MatchType, selectedOdds: MutableList<String>) {
+        this.mMatchType = matchType
         this.selectedOdds = selectedOdds
-        var otherMatchList: MutableList<OtherMatch> = mutableListOf()
-        var otherMatch: OtherMatch
-        val dataList: MutableList<GameEntity> = mutableListOf()
-        matchPreloadData?.datas?.forEach { data ->
-            if (data.matchOdds.isNotEmpty()) {
-                data.matchOdds.forEach {
-                    it.matchInfo?.gameType = data.code
-                }
-                var gameEntity = GameEntity(data.code, data.name, data.num, data.matchOdds, data.playCateNameMap)
-                dataList.add(gameEntity)
-            } else {
-                otherMatch = OtherMatch(data.code, data.name, data.num)
-                otherMatchList.add(otherMatch)
-            }
-        }
-        if(!otherMatchList.isNullOrEmpty()){
-            var otherGameEntity = GameEntity(null, null, 0, emptyList(), mutableMapOf(), otherMatchList)
-            dataList.add(otherGameEntity)
-        }
-        mDataList = dataList
-        mMatchType = matchType
+        this.mDataList = dataList
         notifyDataSetChanged()
     }
 
@@ -82,7 +69,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var onClickOddListener: OnClickOddListener? = null
 
-    var onClickMatchListener: OnSelectItemListener<MatchOdd>? = null
+    var onClickMatchListener: OnSelectItemListener<MatchInfo>? = null
 
     var onClickTotalMatchListener: OnSelectItemListener<GameEntity>? = null
 
@@ -109,6 +96,12 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         this.oddsType = oddsType
         mDataList.forEach{
             it.vpTableAdapter?.notifyOddsTypeChanged(oddsType)
+        }
+    }
+
+    fun notifyMatchStatusChanged(matchStatusCO: MatchStatusCO, statusValue: String?) {
+        mDataList.forEach {
+            it.vpTableAdapter?.notifyMatchStatusChanged(matchStatusCO, statusValue)
         }
     }
 
@@ -192,7 +185,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     data.vpTableAdapter?.onClickOddListener = onClickOddListener
                     data.vpTableAdapter?.onClickFavoriteListener = onClickFavoriteListener
                     data.vpTableAdapter?.onClickStatisticsListener = onClickStatisticsListener
-                    data.vpTableAdapter?.setData(it, isLogin ?: false, oddsType, data.playCateNameMap ?: mapOf(), selectedOdds)
+                    data.vpTableAdapter?.setData(data.code ?: "", it, isLogin ?: false, oddsType, data.playCateNameMap ?: mapOf(), selectedOdds)
                     view_pager.adapter = data.vpTableAdapter
 
                     indicator_view.setupWithViewPager2(view_pager)

@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_login.view.*
@@ -26,6 +27,7 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.match_clock.MatchClockCO
+import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.game.home.OnClickFavoriteListener
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
@@ -45,7 +47,7 @@ class Vp2GameTable4Adapter (
 
     var onClickOddListener: OnClickOddListener? = null
 
-    var onClickMatchListener: OnSelectItemListener<MatchOdd>? = null //賽事畫面跳轉
+    var onClickMatchListener: OnSelectItemListener<MatchInfo>? = null //賽事畫面跳轉
 
     var onClickFavoriteListener: OnClickFavoriteListener? = null
 
@@ -53,10 +55,12 @@ class Vp2GameTable4Adapter (
 
     private var isLogin: Boolean = false
     private var oddsType: OddsType = OddsType.EU
+    private var gameType: String = GameType.FT.key
     private var selectedOdds = mutableListOf<String>()
     private var dataList: List<MatchOdd> = listOf()
     //主頁的翻譯要取外層的playCateNameMap，odds為{}時內層的playCateNameMap會是空的
     private var playCateNameMap: Map<String?, Map<String?, String?>?>? = mapOf()
+    private var timeMap = mutableMapOf<String, Long>()
     private var discount: Float = 1.0F
 
     private val mOddStateRefreshListener by lazy {
@@ -70,15 +74,15 @@ class Vp2GameTable4Adapter (
         }
     }
 
-    fun setData(dataList: List<MatchOdd>, isLogin: Boolean, oddsType: OddsType,
+    fun setData(gameType: String, dataList: List<MatchOdd>, isLogin: Boolean, oddsType: OddsType,
                 playCateNameMap: Map<String?, Map<String?, String?>?>, selectedOdds: MutableList<String>) {
         this.dataList = dataList
-
+        this.gameType = gameType
         when (matchType) {
             MatchType.AT_START -> {
                 dataList?.forEach { it ->
                     it.matchInfo?.id?.let { id ->
-                        it.leagueTime = (it.matchInfo?.remainTime?.toInt() ?: -1)
+                        timeMap[id] = (it.matchInfo?.remainTime ?: -1)
                     }
                 }
             }
@@ -100,7 +104,8 @@ class Vp2GameTable4Adapter (
     override fun onBindViewHolder(holder: ViewHolderHdpOu, position: Int) {
         try {
             val data = dataList[position]
-            holder.bind(data)
+            val time = timeMap[data.matchInfo?.id] ?: -1
+            holder.bind(data, time)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -119,43 +124,68 @@ class Vp2GameTable4Adapter (
     }
 
     fun notifyOddsDiscountChanged(discount: Float) {
-        dataList.forEach { matchOdd ->
+        dataList.forEachIndexed { index, matchOdd ->
             matchOdd.oddsMap.forEach { (key, value) ->
                 value?.forEach { odd ->
                     odd?.updateDiscount(this.discount, discount)
                 }
             }
+            Handler(Looper.getMainLooper()).post {
+                notifyItemChanged(index)
+            }
         }
-
-        this.notifyDataSetChanged()
         this.discount = discount
     }
 
-    fun notifyUpdateTime(matchClockCO: MatchClockCO) {
-        var needUpdate = false
-        dataList.forEach { matchOdd ->
-            matchOdd.matchInfo?.id?.let { id ->
-                if (id == matchClockCO.matchId) {
-                    when (matchClockCO.gameType) {
-                        GameType.FT.key -> {
-                            matchClockCO.matchTime?.let {
-                                matchOdd.leagueTime = it
-                                needUpdate = true
-                            }
-                        }
-                        GameType.BK.key -> {
-                            matchClockCO.remainingTimeInPeriod?.let {
-                                matchOdd.leagueTime = it
-                                needUpdate = true
-                            }
+    fun notifyMatchStatusChanged(matchStatusCO: MatchStatusCO, statusValue: String?) {
+        if (matchStatusCO.status == 100) {
+
+        }
+        else {
+            dataList.forEachIndexed { index, matchOdd ->
+                if (matchOdd.matchInfo?.id == matchStatusCO.matchId) {
+                    matchOdd.matchInfo?.homeTotalScore = matchStatusCO.homeTotalScore
+                    matchOdd.matchInfo?.awayTotalScore = matchStatusCO.awayTotalScore
+                    matchOdd.matchInfo?.homeScore = matchStatusCO.homeScore
+                    matchOdd.matchInfo?.awayScore = matchStatusCO.awayScore
+                    matchOdd.matchInfo?.homePoints = matchStatusCO.homePoints
+                    matchOdd.matchInfo?.awayPoints = matchStatusCO.awayPoints
+                    matchOdd.matchInfo?.statusName18n = statusValue
+                    if (gameType != GameType.FT.key && gameType != GameType.BK.key) {
+                        Handler(Looper.getMainLooper()).post {
+                            notifyItemChanged(index)
                         }
                     }
                 }
             }
         }
-        if (needUpdate) {
-            Handler(Looper.getMainLooper()).post {
-                notifyDataSetChanged()
+    }
+
+    fun notifyUpdateTime(matchClockCO: MatchClockCO) {
+        dataList.forEachIndexed { index, matchOdd ->
+            matchOdd.matchInfo?.id?.let { id ->
+                if (id == matchClockCO.matchId) {
+                    when (matchClockCO.gameType) {
+                        GameType.FT.key -> {
+                            if (matchClockCO.matchTime == null) return
+                            matchClockCO.matchTime?.let {
+                                if (it == 0L) return
+                                timeMap[id] = it
+                                Handler(Looper.getMainLooper()).post {
+                                    notifyItemChanged(index)
+                                }
+                            }
+                        }
+                        GameType.BK.key -> {
+                            matchClockCO.remainingTimeInPeriod?.let {
+                                timeMap[id] = it
+                                Handler(Looper.getMainLooper()).post {
+                                    notifyItemChanged(index)
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -163,64 +193,63 @@ class Vp2GameTable4Adapter (
     fun notifyTimeChanged(diff: Int) {
         when (matchType) {
             MatchType.IN_PLAY -> {
-                var needUpdate = false
-                dataList.forEach { matchOdd ->
-                    var time = matchOdd.leagueTime
-                    when (matchOdd.matchInfo?.gameType) {
-                        GameType.FT.key -> { //足球
-                            matchOdd.matchInfo.id?.let { id ->
-                                time?.apply {
-                                    time += diff
+                dataList.forEachIndexed { index, matchOdd ->
+                    var needUpdate = false
+                    matchOdd.matchInfo?.id?.let { id ->
+                        timeMap[id]?.let { time ->
+                            var newTime = time
+                            when (gameType) {
+                                GameType.FT.key -> { //足球
+                                    newTime = time + diff
+                                }
+                                GameType.BK.key -> { //籃球
+                                    newTime = time - diff
                                 }
                             }
-                        }
-                        GameType.BK.key -> { //籃球
-                            matchOdd.matchInfo.id?.let { id ->
-                                time?.apply {
-                                    time -= diff
-                                }
+                            if (newTime != time) {
+                                needUpdate = true
+                                timeMap[id] = newTime
                             }
                         }
                     }
-                    if (time != null) {
-                        matchOdd.leagueTime = time
-                        needUpdate = true
-                    }
-                }
-                if (needUpdate) {
-                    Handler(Looper.getMainLooper()).post {
-                        notifyDataSetChanged()
+                    if (needUpdate) {
+                        Handler(Looper.getMainLooper()).post {
+                            notifyItemChanged(index)
+                        }
                     }
                 }
             }
             MatchType.AT_START -> {
-                dataList.forEach { matchOdd ->
+                dataList.forEachIndexed { index, matchOdd ->
+                    var needUpdate = false
                     matchOdd.matchInfo?.id?.let { id ->
-                        var time = matchOdd.leagueTime
-                        time?.apply {
-                            time -= diff
+                        timeMap[id]?.let { time ->
+                            var newTime = time - diff
+                            if (newTime != time) {
+                                needUpdate = true
+                                timeMap[id] = newTime
+                            }
                         }
-                        if (time != null) matchOdd.leagueTime = time
                     }
-                }
-                Handler(Looper.getMainLooper()).post {
-                    notifyDataSetChanged()
+                    if (needUpdate) {
+                        Handler(Looper.getMainLooper()).post {
+                            notifyItemChanged(index)
+                        }
+                    }
                 }
             }
         }
-
     }
 
     inner class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
 
-        private var gameType: String? = null
         private var oddList: MutableList<Odd?>? = null
 
-        fun bind(data: MatchOdd) {
+        fun bind(data: MatchOdd, time: Long) {
             setupOddList(data)
-            setupMatchInfo(data)
+            setupMatchInfo(data.matchInfo)
             setupOddButton(data)
-            setupTime(data.matchInfo, data.leagueTime ?: -1)
+            setupTime(data.matchInfo, time)
             setupCardText(data.matchInfo)
 
             //TODO simon test review 賠率 icon 顯示邏輯
@@ -235,11 +264,19 @@ class Vp2GameTable4Adapter (
             itemView.iv_play.isVisible = (data.matchInfo?.liveVideo == 1)
 
             itemView.table_match_info_border.setOnClickListener {
-                onClickMatchListener?.onClick(data)
+                data.matchInfo?.let {
+                    var matchInfo = it
+                    matchInfo.gameType = gameType
+                    onClickMatchListener?.onClick(matchInfo)
+                }
             }
 
             itemView.tv_match_play_type_count.setOnClickListener {
-                onClickMatchListener?.onClick(data)
+                data.matchInfo?.let {
+                    var matchInfo = it
+                    matchInfo.gameType = gameType
+                    onClickMatchListener?.onClick(matchInfo)
+                }
             }
 
             itemView.btn_chart.setOnClickListener {
@@ -270,8 +307,6 @@ class Vp2GameTable4Adapter (
                 */
         private fun setupOddList(data: MatchOdd) {
             itemView.apply {
-                gameType = data.matchInfo?.gameType
-
                 oddList = if (data.oddsMap.isNotEmpty()) {
                     data.oddsMap.iterator().next().value
                 } else {
@@ -280,18 +315,18 @@ class Vp2GameTable4Adapter (
             }
         }
 
-        private fun setupMatchInfo(data: MatchOdd) {
+        private fun setupMatchInfo(data: MatchInfo?) {
             itemView.apply {
-                tv_game_name_home.text = data.matchInfo?.homeName
-                tv_game_name_away.text = data.matchInfo?.awayName
+                tv_game_name_home.text = data?.homeName
+                tv_game_name_away.text = data?.awayName
                 showStrongTeam()
-                tv_match_play_type_count.text = data.matchInfo?.playCateNum?.toString()
+                tv_match_play_type_count.text = data?.playCateNum?.toString() ?: ""
 
                 btn_star.apply {
-                    isSelected = data.matchInfo?.isFavorite ?: false
+                    isSelected = data?.isFavorite ?: false
 
                     setOnClickListener {
-                        onClickFavoriteListener?.onClickFavorite(data.matchInfo?.id)
+                        onClickFavoriteListener?.onClickFavorite(data?.id)
                         if (isLogin) btn_star.isSelected = !isSelected
                     }
                 }
@@ -300,28 +335,28 @@ class Vp2GameTable4Adapter (
                     MatchType.IN_PLAY -> {
                         tv_game_type.text = context.getString(R.string.home_tab_in_play)
 
-                        when (data.matchInfo?.gameType) {
+                        when (gameType) {
                             GameType.TN.key -> {
                                 tv_match_status.visibility = View.GONE
 
                                 //盤比分
                                 tv_game_score_home.visibility = View.VISIBLE
                                 tv_game_score_away.visibility = View.VISIBLE
-                                val homeTotalScore = data.matchInfo.homeTotalScore ?: 0
-                                val awayTotalScore = data.matchInfo.awayTotalScore ?: 0
+                                val homeTotalScore = data?.homeTotalScore ?: 0
+                                val awayTotalScore = data?.awayTotalScore ?: 0
                                 tv_game_score_home.text = "$homeTotalScore"
                                 tv_game_score_away.text = "$awayTotalScore"
 
                                 //局比分
                                 tv_score.visibility = View.VISIBLE
-                                val homeScore = data.matchInfo.homeScore ?: 0
-                                val awayScore = data.matchInfo.awayScore ?: 0
+                                val homeScore = data?.homeScore ?: 0
+                                val awayScore = data?.awayScore ?: 0
                                 tv_score.text = "$homeScore–$awayScore"
 
                                 //點比分
                                 tv_point.visibility = View.VISIBLE
-                                val homePoint = data.matchInfo.homePoints ?: 0
-                                val awayPoint = data.matchInfo.awayPoints ?: 0
+                                val homePoint = data?.homePoints ?: 0
+                                val awayPoint = data?.awayPoints ?: 0
                                 tv_point.text = "$homePoint–$awayPoint"
                             }
                             GameType.VB.key, GameType.TT.key -> {
@@ -332,35 +367,45 @@ class Vp2GameTable4Adapter (
 
                                 tv_match_status.visibility = View.VISIBLE
 
-                                tv_match_status.text =
-                                    "${data.matchInfo.statusName18n} / ${data.matchInfo.spt}" ?: ""
+                                tv_match_status.text = "${data?.statusName18n ?: ""} / ${data?.spt ?: ""}" ?: ""
 
                                 tv_game_score_home.visibility = View.GONE
                                 tv_game_score_away.visibility = View.GONE
 
                                 //盤比分
-                                val homeTotalScore = data.matchInfo.homeTotalScore ?: 0
-                                val awayTotalScore = data.matchInfo.awayTotalScore ?: 0
+                                val homeTotalScore = data?.homeTotalScore ?: 0
+                                val awayTotalScore = data?.awayTotalScore ?: 0
                                 tv_game_total_score_home_center.text = "$homeTotalScore"
                                 tv_game_total_score_away_center.text = "$awayTotalScore"
 
                                 //點比分
-                                val homeScore = data.matchInfo.homeScore ?: 0
-                                val awayScore = data.matchInfo.awayScore ?: 0
+                                val homeScore = data?.homeScore ?: 0
+                                val awayScore = data?.awayScore ?: 0
                                 tv_game_score_home_center.text = "$homeScore"
                                 tv_game_score_away_center.text = "$awayScore"
 
                                 tv_score.visibility = View.GONE
                                 tv_point.visibility = View.GONE
                             }
-                            else -> {
+                            GameType.CK.key -> {
                                 tv_match_status.visibility = View.VISIBLE
-                                tv_match_status.text = data.matchInfo?.statusName18n ?: ""
+                                tv_match_status.text = data?.statusName18n ?: ""
 
                                 tv_game_score_home.visibility = View.VISIBLE
                                 tv_game_score_away.visibility = View.VISIBLE
-                                val homeScore = data.matchInfo?.homeScore ?: 0
-                                val awayScore = data.matchInfo?.awayScore ?: 0
+                                val homeScore = data?.homeTotalScore ?: 0
+                                val awayScore = data?.awayTotalScore ?: 0
+                                tv_game_score_home.text = "$homeScore"
+                                tv_game_score_away.text = "$awayScore"
+                            }
+                            else -> {
+                                tv_match_status.visibility = View.VISIBLE
+                                tv_match_status.text = data?.statusName18n ?: ""
+
+                                tv_game_score_home.visibility = View.VISIBLE
+                                tv_game_score_away.visibility = View.VISIBLE
+                                val homeScore = data?.homeScore ?: 0
+                                val awayScore = data?.awayScore ?: 0
                                 tv_game_score_home.text = "$homeScore"
                                 tv_game_score_away.text = "$awayScore"
                             }
@@ -368,7 +413,7 @@ class Vp2GameTable4Adapter (
                     }
                     MatchType.AT_START -> {
                         tv_game_type.text = context.getString(R.string.home_tab_today)
-                        data.matchInfo?.startTime?.let {
+                        data?.startTime?.let {
                             val date = Date(it)
                             tv_game_type.text = context.getString(R.string.home_tab_today) + " " + TimeUtil.dateToDateFormat(date,TimeUtil.HM_FORMAT)
                         }
@@ -376,13 +421,11 @@ class Vp2GameTable4Adapter (
                         tv_game_score_home.visibility = View.GONE
                         tv_game_score_away.visibility = View.GONE
 
-                        tv_game_name_home.setTextTypeFace(Typeface.NORMAL)
-                        tv_game_name_away.setTextTypeFace(Typeface.NORMAL)
+//                        tv_game_name_home.setTextTypeFace(Typeface.NORMAL)
+//                        tv_game_name_away.setTextTypeFace(Typeface.NORMAL)
 
                         tv_score.visibility = View.GONE
                         tv_point.visibility = View.GONE
-                    }
-                    else -> {
                     }
                 }
             }
@@ -401,25 +444,25 @@ class Vp2GameTable4Adapter (
                 else
                     Typeface.NORMAL
 
-                tv_game_score_home.setTextTypeFace(homeStrongType)
+//                tv_game_score_home.setTextTypeFace(homeStrongType)
                 tv_game_name_home.setTextTypeFace(homeStrongType)
 
-                tv_game_score_away.setTextTypeFace(awayStrongType)
+//                tv_game_score_away.setTextTypeFace(awayStrongType)
                 tv_game_name_away.setTextTypeFace(awayStrongType)
             }
         }
 
         @SuppressLint("SetTextI18n")
-        private fun setupTime(data: MatchInfo?, time: Int = -1) {
+        private fun setupTime(data: MatchInfo?, time: Long) {
             itemView.apply {
                 when (matchType) {
                     MatchType.IN_PLAY -> {
-                        if (time == -1) tv_match_time.text = null
+                        if (time == -1L) tv_match_time.text = null
                         else {
-                            when (data?.gameType) {
-                                GameType.FT.key, GameType.BK.key -> { //足球, //籃球
+                            when (gameType) {
+                                GameType.FT.key, GameType.BK.key -> { //足球
                                     val timeMillisAbs = if (time > 0) time else 0
-                                    val timeStr = TimeUtil.longToMmSs(timeMillisAbs.toLong()*1000)
+                                    val timeStr = TimeUtil.longToMmSs(timeMillisAbs * 1000)
                                     tv_match_time.text = timeStr
                                 }
                                 else -> tv_match_time.text = null
@@ -427,13 +470,14 @@ class Vp2GameTable4Adapter (
                         }
                     }
                     MatchType.AT_START -> {
-                        if (time == -1) tv_match_time.text = null
+                        if (time == -1L) tv_match_time.text = null
                         else {
                             val statusName =
                                 if (data?.startDateDisplay.isNullOrEmpty()) "" else data?.startDateDisplay + " "
                             val timeMillisAbs = if (time > 0) time else 0
-                            val timeStr = statusName + String.format(itemView.context.resources.getString(R.string.at_start_remain_minute), TimeUtil.longToMinute(timeMillisAbs.toLong()))
+                            val timeStr = statusName + String.format(itemView.context.resources.getString(R.string.at_start_remain_minute), TimeUtil.longToMinute(timeMillisAbs))
                             tv_match_time.text = timeStr
+                            tv_match_time.setTextColor(ContextCompat.getColor(context, R.color.colorGray))
                         }
                     }
                     else -> {
@@ -445,8 +489,6 @@ class Vp2GameTable4Adapter (
 
         private fun setupOddButton(data: MatchOdd) {
             itemView.apply { this
-                gameType = data.matchInfo?.gameType
-
                 //要取 datas 的matchOdds 下面的 oddsSort 去抓排序裡第一個的翻譯顯示 2022/01/11 與後端Ｍax確認 by Bill
                 val playCateName =
                     if (data.oddsSort?.split(",")?.size ?: 0 > 0) data.oddsSort?.split(",")
@@ -480,7 +522,8 @@ class Vp2GameTable4Adapter (
 
                         setOnClickListener {
                             oddFirst?.let { odd ->
-                                onClickOddListener?.onClickBet( data, odd, playCateName.toString(), itemView.tv_play_type.text.toString(), data.betPlayCateNameMap )
+                                data.matchInfo?.gameType = gameType
+                                onClickOddListener?.onClickBet(data, odd, playCateName.toString(), itemView.tv_play_type.text.toString(), data.betPlayCateNameMap)
                             }
                         }
                     }
@@ -505,13 +548,14 @@ class Vp2GameTable4Adapter (
 
                         setupOdd(oddSecond, oddsType)
 
-                        if(data.matchInfo?.gameType == GameType.CK.key)
+                        if(gameType == GameType.CK.key)
                             setupOddName4Home("X" , playCateName)
                         else
                             setupOddName4Home("2" , playCateName)
 
                         setOnClickListener {
                             oddSecond?.let { odd ->
+                                data.matchInfo?.gameType = gameType
                                 onClickOddListener?.onClickBet( data, odd, playCateName.toString(), itemView.tv_play_type.text.toString(), data.betPlayCateNameMap )
                             }
                         }
@@ -541,6 +585,7 @@ class Vp2GameTable4Adapter (
 
                         setOnClickListener {
                             oddThird?.let { odd ->
+                                data.matchInfo?.gameType = gameType
                                 onClickOddListener?.onClickBet( data, odd, playCateName.toString(), itemView.tv_play_type.text.toString(), data.betPlayCateNameMap )
                             }
                         }

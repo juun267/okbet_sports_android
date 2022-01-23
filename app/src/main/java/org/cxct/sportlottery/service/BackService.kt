@@ -113,7 +113,10 @@ class BackService : Service() {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe { lifecycleEvent: LifecycleEvent ->
                             when (lifecycleEvent.type) {
-                                LifecycleEvent.Type.OPENED -> Timber.d("Stomp connection opened")
+                                LifecycleEvent.Type.OPENED -> {
+                                    Timber.d("Stomp connection opened")
+                                    sendConnectStatusToActivity(ServiceConnectStatus.CONNECTED)
+                                }
                                 LifecycleEvent.Type.CLOSED -> {
                                     Timber.d("Stomp connection closed")
                                     reconnectionNum++

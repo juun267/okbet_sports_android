@@ -17,6 +17,10 @@ import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.itemview_match_category_v4.*
 import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentHomeBinding
 import org.cxct.sportlottery.enum.BetStatus
@@ -30,8 +34,10 @@ import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
 import org.cxct.sportlottery.network.matchCategory.result.RECOMMEND_OUTRIGHT
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenu
@@ -121,6 +127,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         super.onViewCreated(view, savedInstanceState)
 
         try {
+            selectedSportType = null
+            queryData()
             initDiscount()
             initTable()
             initRecommend()
@@ -147,8 +155,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     override fun onStart() {
         super.onStart()
-
-        queryData()
     }
 
     override fun onStop() {
@@ -180,11 +186,11 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 addOddsDialog(matchOdd, odd, playCateCode, playCateName, betPlayCateNameMap)
             }
         }
-        mRvGameTable4Adapter.onClickMatchListener = object : OnSelectItemListener<MatchOdd> {
-            override fun onClick(select: MatchOdd) {
+        mRvGameTable4Adapter.onClickMatchListener = object : OnSelectItemListener<MatchInfo> {
+            override fun onClick(select: MatchInfo) {
                 scroll_view.smoothScrollTo(0, 0)
-                val code = select.matchInfo?.gameType
-                val matchId = select.matchInfo?.id
+                val code = select.gameType
+                val matchId = select.id
                 navOddsDetailFragment(code, matchId, mSelectMatchType)
             }
         }
@@ -224,11 +230,13 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         rb_in_play.setOnClickListener {
             mSelectMatchType = MatchType.IN_PLAY
+            viewModel.getMatchPreloadInPlay()
             refreshTable(mInPlayResult)
         }
 
         rb_as_start.setOnClickListener {
             mSelectMatchType = MatchType.AT_START
+            viewModel.getMatchPreloadAtStart()
             refreshTable(mAtStartResult)
         }
     }
@@ -354,9 +362,25 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private fun refreshTable(result: MatchPreloadResult?) {
         //先清除之前訂閱項目
         unsubscribeTableHallChannel()
-        subscribeTableHallChannel(mSelectMatchType)
 
-        mRvGameTable4Adapter.setData(result?.matchPreloadData, mSelectMatchType, viewModel.betIDList.value?.peekContent() ?: mutableListOf())
+        val gameDataList: MutableList<GameEntity> = mutableListOf()
+        var otherMatchList: MutableList<OtherMatch> = mutableListOf()
+        result?.matchPreloadData?.datas?.forEach { data ->
+            if (data.matchOdds.isNotEmpty()) {
+                var gameEntity = GameEntity(data.code, data.name, data.num, data.matchOdds.toMutableList(), data.playCateNameMap)
+                gameDataList.add(gameEntity)
+            } else {
+                var otherMatch = OtherMatch(data.code, data.name, data.num)
+                otherMatchList.add(otherMatch)
+            }
+        }
+        if(!otherMatchList.isNullOrEmpty()){
+            var otherGameEntity = GameEntity(null, null, 0, mutableListOf(), mapOf(), otherMatchList)
+            gameDataList.add(otherGameEntity)
+        }
+
+        subscribeTableHallChannel(mSelectMatchType)
+        mRvGameTable4Adapter.setData(gameDataList, mSelectMatchType, viewModel.betIDList.value?.peekContent() ?: mutableListOf())
     }
 
     //TableBar 判斷是否隱藏
@@ -455,11 +479,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             MatchType.IN_PLAY -> {
                 mInPlayResult?.matchPreloadData?.datas?.forEach { data ->
                     data.matchOdds.forEach { match ->
-                        subscribeChannelHall(
-                            data.code,
-                            MenuCode.HOME_INPLAY_MOBILE.code,
-                            match.matchInfo?.id
-                        )
+                        subscribeChannelHall(data.code, MenuCode.HOME_INPLAY_MOBILE.code, match.matchInfo?.id)
                     }
                 }
             }
@@ -474,11 +494,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     }
                 }
             }
-            else -> {
-
-            }
         }
-
     }
 
     private fun unsubscribeTableHallChannel() {
@@ -776,64 +792,36 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun initSocketObserver() {
+        receiver.serviceConnectStatus.observe(this.viewLifecycleOwner) {
+            it?.let {
+                if (it == ServiceConnectStatus.CONNECTED) {
+                    queryData()
+                }
+            }
+        }
+
         receiver.matchStatusChange.observe(this.viewLifecycleOwner) {
-            it?.let { matchStatusChangeEvent ->
-                //滾球盤、即將開賽盤
-                val dataList = mRvGameTable4Adapter.getData()
-                val hideGameList = mutableListOf<GameEntity>()
-                var hideFirstPosition: Int? = null
-
-                val statusValue =
-                    matchStatusChangeEvent.matchStatusCO?.statusNameI18n?.get(
-                        LanguageManager.getSelectLanguage(
-                            context
-                        ).key
-                    )
-                        ?: matchStatusChangeEvent.matchStatusCO?.statusName
-                dataList.forEachIndexed { index, gameEntity ->
-                    gameEntity.matchOdds.forEachIndexed { indexMatchOdd, updateMatchOdd ->
-                        if (updateMatchOdd.matchInfo?.id == matchStatusChangeEvent.matchStatusCO?.matchId) {
-                            updateMatchOdd.matchInfo?.homeTotalScore =
-                                matchStatusChangeEvent.matchStatusCO?.homeTotalScore
-                            updateMatchOdd.matchInfo?.awayTotalScore =
-                                matchStatusChangeEvent.matchStatusCO?.awayTotalScore
-                            updateMatchOdd.matchInfo?.homeScore =
-                                matchStatusChangeEvent.matchStatusCO?.homeScore
-                            updateMatchOdd.matchInfo?.awayScore =
-                                matchStatusChangeEvent.matchStatusCO?.awayScore
-                            updateMatchOdd.matchInfo?.homePoints =
-                                matchStatusChangeEvent.matchStatusCO?.homePoints
-                            updateMatchOdd.matchInfo?.awayPoints =
-                                matchStatusChangeEvent.matchStatusCO?.awayPoints
-                            updateMatchOdd.matchInfo?.statusName18n = statusValue
-
-                            //賽事status為100, 隱藏該賽事
-                            if (matchStatusChangeEvent.matchStatusCO?.status == 100) {
-                                hideGameList.add(gameEntity)
-                                if (hideFirstPosition == null) {
-                                    hideFirstPosition = index
-                                }
-                            }
-
-                            mRvGameTable4Adapter.notifySubItemChanged(index, indexMatchOdd)
+            GlobalScope.launch(Dispatchers.Main) {
+                withContext(Dispatchers.IO) {
+                    it?.let { matchStatusChangeEvent ->
+                        matchStatusChangeEvent.matchStatusCO?.let { matchStatus ->
+                            val statusValue = matchStatus.statusNameI18n?.get(LanguageManager.getSelectLanguage(context).key) ?: matchStatus.statusName
+                            //滾球盤、即將開賽盤
+                            mRvGameTable4Adapter.notifyMatchStatusChanged(matchStatus, statusValue)
                         }
                     }
-                }
-
-                //當前資料迴圈結束後才做移除
-                hideGameList.forEach { removeGameEntity ->
-                    dataList.remove(removeGameEntity)
-                }
-                hideFirstPosition?.let { startPosition ->
-                    mRvGameTable4Adapter.apply { notifyItemRangeChanged(startPosition, itemCount) }
                 }
             }
         }
 
         receiver.matchClock.observe(this.viewLifecycleOwner) {
             it?.let { matchClockEvent ->
-                //滾球盤、即將開賽盤
-                mRvGameTable4Adapter.notifyUpdateTime(matchClockEvent.matchClockCO)
+                GlobalScope.launch(Dispatchers.Main) {
+                    withContext(Dispatchers.IO) {
+                        //滾球盤、即將開賽盤
+                        mRvGameTable4Adapter.notifyUpdateTime(matchClockEvent.matchClockCO)
+                    }
+                }
             }
         }
 
@@ -898,20 +886,13 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
 
         receiver.leagueChange.observe(this.viewLifecycleOwner) {
-            viewModel.getMatchPreload()
-            
             it?.getContentIfNotHandled()?.let { leagueChangeEvent ->
                 leagueChangeEvent.leagueIdList?.let { leagueIdList ->
-
-                    viewModel.getLeagueOddsList( //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
-                        mSelectMatchType,
-                        leagueIdList,
-                        listOf(),
-                        isIncrement = true
-                    )
+                    //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
+                    viewModel.getLeagueOddsList(mSelectMatchType, leagueIdList, listOf(), isIncrement = true)
                 }
+                queryData()
             }
-
         }
 
         receiver.matchOddsLock.observe(this.viewLifecycleOwner) {
@@ -1036,8 +1017,15 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun queryData() {
+        viewModel.getSportMenu()
+
         //滾球盤、即將開賽盤
-        viewModel.getMatchPreload()
+        if (mSelectMatchType == MatchType.IN_PLAY) {
+            viewModel.getMatchPreloadInPlay()
+        }
+        else {
+            viewModel.getMatchPreloadAtStart()
+        }
 
         //推薦賽事
         viewModel.getRecommendMatch()
