@@ -944,6 +944,10 @@
     <string name="selfLimit_per_bet_limit_user">‧已设置投注上限：%d</string>
     <string name="selfLimit_per_bet_limit_user_limit"> (最高可设定:%s-%s)</string>
     <!--自我禁制-->
+    <string name="e_address">地址</string>
+    <string name="hint_e_address">(请输入联系地址)</string>
+    <string name="initial_withdrawal_needs_credited">初次提款需入帐：%1$s元。</string>
+    <string name="make_sure_valid_account">初次提款会暂时扣留%1$s元，以确保您是有效账户。此款项于 30 天后会返还。</string>
 
     <!--登入手機驗證-->
     <string name="login_phone_verify">输入验证码</string>

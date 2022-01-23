@@ -341,6 +341,28 @@
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
 
             <org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
+                android:id="@+id/et_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:hintText="@string/hint_e_address"
+                app:iconSignifier="@drawable/icon_address"
+                app:labelText="@string/e_address"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_mail">
+
+                <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
+                    android:id="@+id/eet_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textSize="@dimen/textSize14sp" />
+
+            </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
+
+            <org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
                 android:id="@+id/et_we_chat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -349,7 +371,7 @@
                 app:iconSignifier="@drawable/ic_login_wechat"
                 app:labelText="@string/we_chat"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_mail">
+                app:layout_constraintTop_toBottomOf="@+id/et_address">
 
                 <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
                     android:id="@+id/eet_we_chat"
