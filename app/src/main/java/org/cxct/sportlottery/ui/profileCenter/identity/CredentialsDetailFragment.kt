@@ -2,13 +2,16 @@ package org.cxct.sportlottery.ui.profileCenter.identity
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Base64
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
@@ -19,6 +22,7 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_credentials_detail_new.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.util.TimeUtil
@@ -28,16 +32,26 @@ import java.util.*
 class CredentialsDetailFragment :
     BaseSocketFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
 
-    private val args: CredentialsDetailFragmentArgs by navArgs()
+    private val args: CredentialsDetailFragmentArgs? by navArgs()
 
     private lateinit var dateTimePicker: TimePickerView
 
-    private val faceImgByteArray: ByteArray =
-        Base64.decode(args.data?.extFaceInfo?.faceImg, Base64.DEFAULT)
-    private val frontImageByteArray: ByteArray =
-        Base64.decode(args.data?.extIdInfo?.frontPageImg, Base64.DEFAULT)
-    private val backImageByteArray: ByteArray? = if (args.data?.extIdInfo?.backPageImg == null) null else
-        Base64.decode(args.data?.extIdInfo?.backPageImg, Base64.DEFAULT)
+    private val faceImgByteArray: ByteArray by lazy {
+        Base64.decode(
+            args?.data?.extFaceInfo?.faceImg,
+            Base64.DEFAULT
+        )
+    }
+    private val frontImageByteArray: ByteArray by lazy {
+        Base64.decode(
+            args?.data?.extIdInfo?.frontPageImg,
+            Base64.DEFAULT
+        )
+    }
+    private val backImageByteArray: ByteArray? by lazy {
+        if (args?.data?.extIdInfo?.backPageImg == null) null else
+            Base64.decode(args?.data?.extIdInfo?.backPageImg, Base64.DEFAULT)
+    }
 
     private val smallPicRequestOptions = RequestOptions()
         .override(300)
@@ -63,7 +77,7 @@ class CredentialsDetailFragment :
     }
 
     private fun setInfoInText() {
-        args.data?.extIdInfo?.ocrResult?.apply {
+        args?.data?.extIdInfo?.ocrResult?.apply {
             et_identity_id.setText(idNumber)
             et_identity_first_name.setText(firstName)
             et_identity_last_name.setText(lastName)
@@ -100,9 +114,50 @@ class CredentialsDetailFragment :
         }
 
         btn_submit.setOnClickListener {
-            viewModel.getUserInfo()
-            startActivity(Intent(context, ProfileActivity::class.java))
+            if (noEmptyField(
+                    et_identity_id,
+                    et_identity_last_name,
+                    et_identity_first_name,
+                    et_identity_other_name,
+                    et_identity_country,
+                    tv_birth,
+                    et_identity_marital_status,
+                    et_identity_sex,
+                    et_identity_work
+                )
+            ) {
+                viewModel.getUserInfo()
+                activity?.finish()
+                startActivity(Intent(context, ProfileActivity::class.java))
+
+            } else {
+                showPromptDialog(getString(R.string.prompt), getString(R.string.error_input_empty)) {}
+            }
         }
+
+    }
+
+    private fun noEmptyField(
+        etIdentityId: LoginEditText?,
+        etIdentityLastName: LoginEditText?,
+        etIdentityFirstName: LoginEditText?,
+        etIdentityOtherName: LoginEditText?,
+        etIdentityCountry: LoginEditText?,
+        tvBirth: TextView?,
+        etIdentityMaritalStatus: LoginEditText?,
+        etIdentitySex: LoginEditText?,
+        etIdentityWork: LoginEditText?
+    ): Boolean {
+
+        return etIdentityId?.getText()?.isNotEmpty() == true &&
+                etIdentityLastName?.getText()?.isNotEmpty() == true &&
+                etIdentityFirstName?.getText()?.isNotEmpty() == true &&
+                etIdentityOtherName?.getText()?.isNotEmpty() == true &&
+                etIdentityCountry?.getText()?.isNotEmpty() == true &&
+                tvBirth?.text?.isNotEmpty() == true &&
+                etIdentityMaritalStatus?.getText()?.isNotEmpty() == true &&
+                etIdentitySex?.getText()?.isNotEmpty() == true &&
+                etIdentityWork?.getText()?.isNotEmpty() == true
 
     }
 
@@ -120,7 +175,7 @@ class CredentialsDetailFragment :
             .apply(smallPicRequestOptions)
             .into(img_id_card)
 
-        if (backImageByteArray == null) {
+        if (args?.data?.extIdInfo?.backPageImg.isNullOrEmpty()) {
             img_id_card_back.isVisible = false
         } else {
             img_id_card_back.isVisible = true
@@ -140,7 +195,7 @@ class CredentialsDetailFragment :
         setBigPic()
     }
 
-    private fun setBigPic(byteArray : ByteArray ?= frontImageByteArray) {
+    private fun setBigPic(byteArray: ByteArray? = frontImageByteArray) {
         Glide.with(img_big.context)
             .asBitmap()
             .load(byteArray)

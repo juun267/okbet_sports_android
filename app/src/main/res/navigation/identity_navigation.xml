@@ -11,26 +11,23 @@
         android:label="fragment_credentials_new"
         tools:layout="@layout/fragment_credentials_new">
         <action
-            android:id="@+id/action_credentialsFragment_to_CredentialsDetailFragment"
-            app:destination="@id/CredentialsDetailFragment"
-            app:enterAnim="@anim/enter_from_right"
-            app:popExitAnim="@anim/exit_to_right">
+            android:id="@+id/action_credentialsFragment_to_credentialsDetailFragment"
+            app:destination="@id/credentialsDetailFragment">
             <argument
                 android:name="data"
-                android:defaultValue="@null"
                 app:argType="org.cxct.sportlottery.network.credential.CredentialCompleteData"
-                app:nullable="true" />
+                app:nullable="false" />
         </action>
     </fragment>
     <fragment
-        android:id="@+id/CredentialsDetailFragment"
+        android:id="@+id/credentialsDetailFragment"
         android:name="org.cxct.sportlottery.ui.profileCenter.identity.CredentialsDetailFragment"
-        android:label="fragment_credentials_detail"
-        tools:layout="@layout/fragment_credentials_detail">
+        android:label="CredentialsDetailFragment"
+        tools:layout="@layout/fragment_credentials_detail_new">
+
         <argument
             android:name="data"
-            android:defaultValue="@null"
             app:argType="org.cxct.sportlottery.network.credential.CredentialCompleteData"
-            app:nullable="true" />
+            app:nullable="false" />
     </fragment>
 </navigation>

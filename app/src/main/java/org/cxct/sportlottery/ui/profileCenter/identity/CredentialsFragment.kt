@@ -17,6 +17,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.credential.CredentialCompleteData
 import org.cxct.sportlottery.network.credential.DocType
 import org.cxct.sportlottery.network.credential.EkycResultType
+import org.cxct.sportlottery.network.credential.ResultStatus
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
@@ -39,10 +40,6 @@ class CredentialsFragment :
     private var nowSelectCode: String? = null
 
     private val request by lazy { ZLZRequest() }
-
-    private val mNavController by lazy {
-        findNavController()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -80,8 +77,14 @@ class CredentialsFragment :
                 })
         }
         btn_take_photo.setOnClickListener {
-            nowSelectCode?.let {
-                if (metaInfo.isNotEmpty()) viewModel.getCredentialInitial(
+            if (metaInfo.isEmpty()) {
+                showPromptDialog(
+                    getString(R.string.prompt),
+                    getString(R.string.error)
+                ) {}
+            } else {
+                loading()
+                viewModel.getCredentialInitial(
                     metaInfo,
                     nowSelectCode ?: DocType.Passport.value
                 )
@@ -91,16 +94,19 @@ class CredentialsFragment :
     }
 
     private fun changePage(data: CredentialCompleteData) {
-        val action =
-            CredentialsFragmentDirections.actionCredentialsFragmentToCredentialsDetailFragment(
-                data
-            )
-        mNavController.navigate(action)
+        kotlin.run {
+            val action =
+                CredentialsFragmentDirections.actionCredentialsFragmentToCredentialsDetailFragment(
+                    data
+                )
+            findNavController().navigate(action)
+        }
     }
 
     private fun initObserve() {
 
         viewModel.credentialInitialResult.observe(viewLifecycleOwner) { event ->
+            hideLoading()
             event?.getContentIfNotHandled()?.let {
                 request.apply {
                     zlzConfig = it.data.clientCfg
@@ -119,7 +125,7 @@ class CredentialsFragment :
                         override fun onInterrupted(response: ZLZResponse) {
                             showPromptDialog(
                                 getString(R.string.prompt),
-                                getString(R.string.verify_failed_please_retry)
+                                getString(R.string.error)
                             ) {}
                         }
                     })
@@ -130,10 +136,7 @@ class CredentialsFragment :
         viewModel.credentialCompleteResult.observe(viewLifecycleOwner) { event ->
             hideLoading()
             event.getContentIfNotHandled()?.data?.let { data ->
-//                val isComplete = data.ekycResult == EkycResultType.SUCCESS.value
-//                        && data.extFaceInfo?.ekycResultFace == EkycResultType.SUCCESS.value
-//                        && data.extIdInfo?.ekycResultDoc == EkycResultType.SUCCESS.value
-                val isComplete = true
+                val isComplete = data.result?.resultStatus == ResultStatus.SUCCESS.value
 
                 if (isComplete) changePage(data)
                 else showPromptDialog(

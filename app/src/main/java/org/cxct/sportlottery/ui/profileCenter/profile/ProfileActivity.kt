@@ -134,7 +134,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         //微信
         ll_wechat.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.WeChat) }
         //實名制
-        ll_verified.setOnClickListener { startActivity(Intent(this, IdentityActivity::class.java)) }
+        ll_verified.setOnClickListener { startActivity(Intent(this@ProfileActivity, IdentityActivity::class.java))}
     }
 
     private fun putExtraForProfileInfoActivity(modifyType: ModifyType) {
