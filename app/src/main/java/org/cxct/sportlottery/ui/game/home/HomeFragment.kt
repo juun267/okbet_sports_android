@@ -794,7 +794,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         receiver.serviceConnectStatus.observe(this.viewLifecycleOwner) {
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
-                    queryData()
+//                    queryData()
                 }
             }
         }
