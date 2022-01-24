@@ -42,7 +42,8 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
     protected fun hideKeyboard() {
         try {
             //*隱藏軟鍵盤
-            val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val inputMethodManager =
+                activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             val focusedView = activity?.currentFocus
             if (inputMethodManager.isActive && focusedView != null) {
                 inputMethodManager.hideSoftInputFromWindow(focusedView.windowToken, 0)
@@ -70,16 +71,33 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
 
     fun showErrorPromptDialog(title: String, message: String, positiveClickListener: () -> Unit) {
         if (activity is BaseActivity<*>) {
-            (activity as BaseActivity<*>).showErrorPromptDialog(title, message, positiveClickListener)
+            (activity as BaseActivity<*>).showErrorPromptDialog(
+                title,
+                message,
+                positiveClickListener
+            )
         }
     }
 
-    fun showPromptDialog(title: String, message: String, success: Boolean, positiveClickListener: () -> Unit) {
+    fun showPromptDialog(
+        title: String,
+        message: String,
+        success: Boolean,
+        positiveClickListener: () -> Unit
+    ) {
         if (activity is BaseActivity<*>) {
             if (success) {
-                (activity as BaseActivity<*>).showPromptDialog(title, message, positiveClickListener)
+                (activity as BaseActivity<*>).showPromptDialog(
+                    title,
+                    message,
+                    positiveClickListener
+                )
             } else {
-                (activity as BaseActivity<*>).showErrorPromptDialog(title, message, positiveClickListener)
+                (activity as BaseActivity<*>).showErrorPromptDialog(
+                    title,
+                    message,
+                    positiveClickListener
+                )
             }
         }
     }
@@ -91,7 +109,14 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
         isShowDivider: Boolean,
         positiveClickListener: () -> Unit?
     ) {
-        (activity as BaseActivity<*>).showPromptDialog(title, message, buttonText, positiveClickListener, false, isShowDivider)
+        (activity as BaseActivity<*>).showPromptDialog(
+            title,
+            message,
+            buttonText,
+            positiveClickListener,
+            false,
+            isShowDivider
+        )
     }
 
     fun showBottomSheetDialog(
@@ -99,15 +124,13 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
         dataList: List<StatusSheetData>,
         defaultData: StatusSheetData,
         itemClickListener: StatusSheetAdapter.ItemCheckedListener,
-        isShowSelectAll: Boolean = false,
     ) {
         if (activity is BaseActivity<*>) {
             (activity as BaseActivity<*>).showBottomSheetDialog(
                 title,
                 dataList,
                 defaultData,
-                itemClickListener,
-                isShowSelectAll
+                itemClickListener
             )
         }
     }

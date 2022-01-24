@@ -20,7 +20,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/transparent"
+            app:cardBackgroundColor="@color/transparent_black_0"
             app:cardCornerRadius="4dp"
             app:cardElevation="0dp">
 
@@ -160,9 +160,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            tools:text="PHP"
             android:textColor="@color/colorBlackLight"
-            android:textSize="@dimen/textSize14sp" />
+            android:textSize="@dimen/textSize14sp"
+            tools:text="PHP" />
 
     </LinearLayout>
 
@@ -261,7 +261,6 @@
             android:textSize="@dimen/textSize12sp" />
         <!-- 扣除金额 -->
         <LinearLayout
-            android:visibility="visible"
             android:id="@+id/ll_commission"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -271,7 +270,8 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:paddingStart="10dp"
-            android:paddingEnd="12dp">
+            android:paddingEnd="12dp"
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/tv_title"
@@ -293,18 +293,18 @@
                 android:id="@+id/tv_commission"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:gravity="center_vertical"
                 android:layout_weight="1"
+                android:gravity="center_vertical"
                 android:textColor="@color/colorRedDark"
                 android:textSize="@dimen/textSize12sp" />
 
             <TextView
-                android:enabled="false"
                 android:id="@+id/tv_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="22dp"
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/selector_commission_detail_button"
+                android:enabled="false"
                 android:gravity="center"
                 android:paddingStart="18dp"
                 android:paddingEnd="18dp"
@@ -345,5 +345,69 @@
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/textSize16sp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.04" />
+
+            <TextView
+                android:id="@+id/tv_dot_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:paddingBottom="5dp"
+                android:text="·"
+                android:textColor="@color/colorRed"
+                android:textSize="12dp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_notification_1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:paddingBottom="5dp"
+                android:text="@string/initial_withdrawal_needs_credited"
+                android:textColor="@color/colorRed"
+                android:textSize="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/guideline"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_dot_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:text="·"
+                android:textColor="@color/colorRed"
+                android:textSize="12dp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toBottomOf="@+id/tv_dot_1" />
+
+            <TextView
+                android:id="@+id/tv_notification_2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:text="@string/make_sure_valid_account"
+                android:textColor="@color/colorRed"
+                android:textSize="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/guideline"
+                app:layout_constraintTop_toBottomOf="@+id/tv_notification_1" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </LinearLayout>

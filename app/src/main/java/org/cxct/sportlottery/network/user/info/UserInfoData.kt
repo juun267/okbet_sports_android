@@ -86,5 +86,9 @@ data class UserInfoData(
     @Json(name = "maxParlayBetMoney")
     val maxParlayBetMoney: Int?,
     @Json(name = "discount")
-    val discount: Float?
+    val discount: Float?,
+    @Json(name = "verified")
+    val verified: Int?, // 是否通过实名验证,0:未通过 1:已通过 2:验证中 3:验证失败
+    @Json(name = "perBetLimit")
+    val perBetLimit: Int?
 )

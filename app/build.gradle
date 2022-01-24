@@ -22,7 +22,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0.60"
+        versionName "1.0.61"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -125,6 +125,9 @@ android {
         forqa.res.srcDirs = ['src/okbet_ph/res']
         OkbetPH.res.srcDirs = ['src/okbet_ph/res']
         WinbetCN.res.srcDirs = ['src/winbet_cn/res']
+        main {
+            jniLibs.srcDirs = ['src/main/libs']
+        }
     }
 
     compileOptions {
@@ -190,7 +193,7 @@ ext {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     testImplementation 'junit:junit:4.13.1'
@@ -307,6 +310,15 @@ dependencies {
     //LoopingSnapHelper
     implementation 'com.github.beksomega:loopinglayout:0.4.1'
 
+    //實名認證影像辨識套件
+    implementation 'com.zoloz.android.build:zolozkit:1.0.3'
+    implementation "com.squareup.okio:okio:1.7.0@jar"
+    implementation "com.alibaba:fastjson:1.1.68.android"
+    
+}
+
+repositories {
+    mavenCentral()
 }
 
 multiLanguages {

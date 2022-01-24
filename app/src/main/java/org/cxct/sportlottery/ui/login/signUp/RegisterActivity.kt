@@ -81,6 +81,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         setupQQ()
         setupPhone()
         setupMail()
+        setupAddress()
         setupWeChat()
         setupZalo()
         setupFacebook()
@@ -251,6 +252,10 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
     }
 
+    private fun setupAddress() {
+        binding.etAddress.visibility = if (sConfigData?.enableAddress == FLAG_OPEN) View.VISIBLE else View.GONE
+    }
+
     private fun setupWeChat() {
 //        et_we_chat.visibility = if (sConfigData?.enableWechat == FLAG_OPEN) {
 //            setupEditTextFocusListener(et_we_chat) { viewModel.checkWeChat(it) }
@@ -357,6 +362,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             val qq = binding.eetQq.text.toString()
             val phone = binding.eetPhone.text.toString()
             val email = binding.eetMail.text.toString()
+            val address = binding.eetAddress.text.toString()
             val weChat = binding.eetWeChat.text.toString()
             val zalo = binding.eetZalo.text.toString()
             val facebook = binding.eetFacebook.text.toString()
@@ -379,6 +385,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 qq,
                 phone,
                 email,
+                address,
                 weChat,
                 zalo,
                 facebook,
@@ -463,6 +470,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             qqMsg.observe(this@RegisterActivity, { binding.etQq.setError(it,false) })
             phoneMsg.observe(this@RegisterActivity, { binding.etPhone.setError(it,false) })
             emailMsg.observe(this@RegisterActivity, { binding.etMail.setError(it,false) })
+            addressMsg.observe(this@RegisterActivity, { binding.etAddress.setError(it,false) })
             weChatMsg.observe(this@RegisterActivity, { binding.etWeChat.setError(it,false) })
             zaloMsg.observe(this@RegisterActivity, {binding.etZalo.setError(it,false) })
             facebookMsg.observe(this@RegisterActivity, { binding.etFacebook.setError(it,false) })

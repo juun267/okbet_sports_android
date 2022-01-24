@@ -13,13 +13,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/transparent"
+        android:background="@color/transparent_black_0"
         android:orientation="vertical">
 
         <include
             android:id="@+id/tool_bar"
             layout="@layout/view_toolbar_main"
-            android:background="@color/transparent"
+            android:background="@color/transparent_black_0"
             android:visibility="invisible" />
 
         <RelativeLayout

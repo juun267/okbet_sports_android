@@ -7,6 +7,7 @@ data class RegisterRequest(
     val deviceSn: String, //设备号（手机app登录必传）
     var fullName: String? = null,
     var email: String? = null,
+    var address: String? = null,
     var phone: String? = null,
     var qq: String? = null,
     var fundPwd: String? = null,

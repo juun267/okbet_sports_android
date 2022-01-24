@@ -70,6 +70,9 @@ interface UserInfoDao {
     @Query("UPDATE user_info_table SET discount=:discount WHERE user_id=:userId")
     suspend fun updateDiscount(userId: Long, discount: Float)
 
+    @Query("UPDATE user_info_table SET verified=:verified WHERE user_id=:userId")
+    suspend fun updateVerified(userId: Long, verified: Int)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(userInfo: UserInfo)
 

@@ -1,8 +1,10 @@
 package org.cxct.sportlottery.network.user
 
+import org.cxct.sportlottery.network.Constants.USER_BET_LIMIT
 import org.cxct.sportlottery.network.Constants.USER_CREDIT_CIRCLE_HISTORY
 import org.cxct.sportlottery.network.Constants.USER_EDIT_ICON_URL
 import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
+import org.cxct.sportlottery.network.Constants.USER_FROZE
 import org.cxct.sportlottery.network.Constants.USER_INFO
 import org.cxct.sportlottery.network.Constants.USER_MONEY
 import org.cxct.sportlottery.network.user.info.UserInfoResult
@@ -16,6 +18,10 @@ import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.network.user.nickname.NicknameRequest
 import org.cxct.sportlottery.network.user.nickname.NicknameResult
+import org.cxct.sportlottery.network.user.selflimit.FrozeRequest
+import org.cxct.sportlottery.network.user.selflimit.FrozeResult
+import org.cxct.sportlottery.network.user.selflimit.PerBetLimitRequest
+import org.cxct.sportlottery.network.user.selflimit.PerBetLimitResult
 import org.cxct.sportlottery.network.user.setWithdrawInfo.WithdrawInfoRequest
 import org.cxct.sportlottery.network.user.setWithdrawInfo.WithdrawInfoResult
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdRequest
@@ -56,4 +62,10 @@ interface UserService {
 
     @POST(USER_CREDIT_CIRCLE_HISTORY)
     suspend fun getUserCreditCircleHistory(@Body creditCircleHistoryRequest: CreditCircleHistoryRequest): Response<CreditCircleHistoryResult>
+
+    @POST(USER_BET_LIMIT)
+    suspend fun setPerBetLimit(@Body perBetLimitRequest: PerBetLimitRequest): Response<PerBetLimitResult>
+
+    @POST(USER_FROZE)
+    suspend fun froze(@Body frozeRequest: FrozeRequest): Response<FrozeResult>
 }

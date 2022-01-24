@@ -21,7 +21,6 @@ import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.ui.bet.list.OddSpannableString
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
@@ -106,7 +105,7 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
 
     private fun setupSpreadSpannableString(context: Context, matchType: MatchType?, matchOdd: MatchOdd, isChanged: Boolean) {
         val textColor = ContextCompat.getColor(context, if (isChanged) R.color.colorWhite else R.color.colorRedDark)
-        val backgroundColor = ContextCompat.getColor(context, if (isChanged) R.color.colorBronze else R.color.transparent)
+        val backgroundColor = ContextCompat.getColor(context, if (isChanged) R.color.colorBronze else R.color.transparent_black_0)
 
         if (matchOdd.spread.isEmpty() || !needShowSpread(matchOdd.playCode) || matchType == MatchType.OUTRIGHT
         ) {
@@ -123,7 +122,7 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
 
     private fun setupOddsSpannableString(context: Context, matchOdd: MatchOdd, isChanged: Boolean, oddsType: OddsType) {
         val textColor = ContextCompat.getColor(context, if (isChanged) R.color.colorWhite else R.color.colorBlackLight)
-        val backgroundColor = ContextCompat.getColor(context, if (isChanged) R.color.colorBronze else R.color.transparent)
+        val backgroundColor = ContextCompat.getColor(context, if (isChanged) R.color.colorBronze else R.color.transparent_black_0)
 
         val odds =
             if (matchOdd.status == BetStatus.ACTIVATED.code) TextUtil.formatForOdd(getOdds(matchOdd, oddsType)) else "–"
@@ -136,7 +135,7 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
 
     private fun setupOddsTypeSpannableString(context: Context, oddsType: OddsType) {
         val textColor = ContextCompat.getColor(context,  R.color.colorGray)
-        val backgroundColor = ContextCompat.getColor(context,  R.color.transparent)
+        val backgroundColor = ContextCompat.getColor(context,  R.color.transparent_black_0)
 
         val oddsType = " ("+context.getString(oddsType.res)+")"
         val oddsEnd = oddsType.length

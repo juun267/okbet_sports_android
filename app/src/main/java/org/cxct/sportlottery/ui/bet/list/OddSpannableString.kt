@@ -122,7 +122,7 @@ object OddSpannableString {
     private fun setupSpreadSpannableString(context: Context, matchType: MatchType?, matchOdd: MatchOdd, isChanged: Boolean) {
         val textColor = ContextCompat.getColor(context, if (isChanged) R.color.colorWhite else R.color.colorRedDark)
         val backgroundColor =
-            ContextCompat.getColor(context, if (isChanged) R.color.colorBronze else R.color.transparent)
+            ContextCompat.getColor(context, if (isChanged) R.color.colorBronze else R.color.transparent_black_0)
 
         if (matchOdd.spread.isEmpty() || !needShowSpread(matchOdd.playCode) || matchType == MatchType.OUTRIGHT
         ) {
@@ -139,7 +139,7 @@ object OddSpannableString {
 
     private fun setupOddsSpannableString(context: Context, matchOdd: MatchOdd, isChanged: Boolean, oddsType: OddsType) {
         val textColor = ContextCompat.getColor(context, if (isChanged) R.color.colorWhite else R.color.colorBlackLight)
-        val backgroundColor = ContextCompat.getColor(context, if (isChanged) R.color.colorBronze else R.color.transparent)
+        val backgroundColor = ContextCompat.getColor(context, if (isChanged) R.color.colorBronze else R.color.transparent_black_0)
 
         val odds =
             if (matchOdd.status == BetStatus.ACTIVATED.code) TextUtil.formatForOdd(getOdds(matchOdd, oddsType)) else "–"
@@ -152,7 +152,7 @@ object OddSpannableString {
 
     private fun setupOddsTypeSpannableString(context: Context, oddsType: OddsType) {
         val textColor = ContextCompat.getColor(context,  R.color.colorGray)
-        val backgroundColor = ContextCompat.getColor(context,  R.color.transparent)
+        val backgroundColor = ContextCompat.getColor(context,  R.color.transparent_black_0)
 
         val oddsType = " ("+context.getString(oddsType.res)+")"
         val oddsEnd = oddsType.length
