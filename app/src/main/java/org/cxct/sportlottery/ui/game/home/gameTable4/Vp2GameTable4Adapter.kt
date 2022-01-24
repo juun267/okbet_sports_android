@@ -2,13 +2,11 @@ package org.cxct.sportlottery.ui.game.home.gameTable4
 
 import android.annotation.SuppressLint
 import android.graphics.Typeface
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -37,7 +35,6 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setTextTypeFace
-import timber.log.Timber
 import java.util.*
 
 class Vp2GameTable4Adapter (
@@ -130,9 +127,9 @@ class Vp2GameTable4Adapter (
                     odd?.updateDiscount(this.discount, discount)
                 }
             }
-        }
-        Handler(Looper.getMainLooper()).post {
-            notifyDataSetChanged()
+            Handler(Looper.getMainLooper()).post {
+                notifyItemChanged(index, null)
+            }
         }
         this.discount = discount
     }
@@ -142,7 +139,6 @@ class Vp2GameTable4Adapter (
 
         }
         else {
-            var needUpdate = false
             dataList.forEachIndexed { index, matchOdd ->
                 if (matchOdd.matchInfo?.id == matchStatusCO.matchId) {
                     matchOdd.matchInfo?.homeTotalScore = matchStatusCO.homeTotalScore
@@ -155,20 +151,17 @@ class Vp2GameTable4Adapter (
                     matchOdd.matchInfo?.homeCards = matchStatusCO.homeCards
                     matchOdd.matchInfo?.awayCards = matchStatusCO.awayCards
                     if (gameType != GameType.FT.key && gameType != GameType.BK.key) {
-                        needUpdate = true
+                        Handler(Looper.getMainLooper()).post {
+                            notifyItemChanged(index, null)
+                        }
                     }
-                }
-            }
-            if (needUpdate) {
-                Handler(Looper.getMainLooper()).post {
-                    notifyDataSetChanged()
                 }
             }
         }
     }
 
     fun notifyUpdateTime(matchClockCO: MatchClockCO) {
-        dataList.forEachIndexed { index, matchOdd ->
+        dataList.forEach { matchOdd ->
             matchOdd.matchInfo?.id?.let { id ->
                 if (id == matchClockCO.matchId) {
                     when (matchClockCO.gameType) {
@@ -194,7 +187,7 @@ class Vp2GameTable4Adapter (
         when (matchType) {
             MatchType.IN_PLAY -> {
                 var needUpdate = false
-                dataList.forEachIndexed { index, matchOdd ->
+                dataList.forEach { matchOdd ->
                     matchOdd.matchInfo?.id?.let { id ->
                         timeMap[id]?.let { time ->
                             var newTime = time

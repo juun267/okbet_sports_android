@@ -20,21 +20,20 @@ abstract class OddStateViewHolder(itemView: View) : RecyclerView.ViewHolder(item
     private val mHandler: Handler by lazy { Handler() }
 
     protected fun setupOddState(oddsButton: OddsButton, itemOdd: Odd?) {
-        when (itemOdd?.oddState) {
-            OddState.SAME.state -> {
-                itemOdd.runnable?.let {
-                    return
-                } ?: run {
+        itemOdd?.let { odd ->
+            if (oddsButton.oddStatus == odd.oddState) return
+            when (odd.oddState) {
+                OddState.SAME.state -> {
                     oddsButton.oddStatus = OddState.SAME.state
                 }
-            }
-            OddState.LARGER.state -> {
-                oddsButton.oddStatus = OddState.LARGER.state
-                resetRunnable(itemOdd)
-            }
-            OddState.SMALLER.state -> {
-                oddsButton.oddStatus = OddState.SMALLER.state
-                resetRunnable(itemOdd)
+                OddState.LARGER.state -> {
+                    oddsButton.oddStatus = OddState.LARGER.state
+                    resetRunnable(itemOdd)
+                }
+                OddState.SMALLER.state -> {
+                    oddsButton.oddStatus = OddState.SMALLER.state
+                    resetRunnable(itemOdd)
+                }
             }
         }
     }
@@ -51,6 +50,7 @@ abstract class OddStateViewHolder(itemView: View) : RecyclerView.ViewHolder(item
         itemOdd.runnable?.let {
             mHandler.removeCallbacks(it)
         }
+        if (itemOdd.oddState == OddState.SAME.state) return
         val runnable = highLightRunnable(itemOdd)
         itemOdd.runnable = runnable
         mHandler.postDelayed(runnable, HIGH_LIGHT_TIME)
