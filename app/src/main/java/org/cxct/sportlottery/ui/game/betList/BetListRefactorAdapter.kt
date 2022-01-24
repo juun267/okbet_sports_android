@@ -608,7 +608,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         isFocusableInTouchMode = false
                     }
                     et_clickable.isEnabled = false //EditText的click事件
-                    cl_quota_detail.visibility = View.GONE
+                    cl_quota_detail.visibility = View.VISIBLE
                 }
             }
         }
@@ -766,7 +766,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
 
                 if (et_bet.text.isNullOrEmpty())
-                    ll_winnable.visibility = View.INVISIBLE
+                    ll_winnable.visibility = View.VISIBLE
                 else
                     ll_winnable.visibility = View.VISIBLE
 
@@ -824,7 +824,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                                 }
                                 else -> {
-                                    itemView.ll_winnable.visibility = View.INVISIBLE
+                                    itemView.ll_winnable.visibility = View.VISIBLE
                                 }
                             }
 
@@ -1038,7 +1038,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             position: Int
         ) {
             itemView.apply {
-                ll_winnable.visibility = View.GONE
+                ll_winnable.visibility = View.VISIBLE
                 ll_max_bet_amount.visibility = View.GONE
 
                 setupItemEnable(hasBetClosed)

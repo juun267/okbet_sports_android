@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.game.league
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +22,7 @@ import org.cxct.sportlottery.network.odds.list.OddsListData
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
@@ -41,7 +40,7 @@ import org.cxct.sportlottery.util.SpaceItemDecoration
 import java.util.*
 
 
-class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
+class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class) {
 
     private val args: GameLeagueFragmentArgs by navArgs()
 
@@ -186,6 +185,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         try {
             initObserve()
             initSocketObserver()
+            initBottomNavigation()
 
         } catch (e: Exception) {
             e.printStackTrace()

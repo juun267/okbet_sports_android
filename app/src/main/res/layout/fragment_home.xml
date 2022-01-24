@@ -480,6 +480,10 @@
                     tools:itemCount="1"
                     tools:listitem="@layout/home_highlight_item" />
 
+                <include
+                    android:id="@+id/view_btm_navigation"
+                    layout="@layout/view_bottom_navigation" />
+
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

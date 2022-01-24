@@ -643,7 +643,6 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     fun addToBetInfoList() {
         viewModel.addInBetInfo()
-//        dismiss()
     }
 
     fun showSettingDialog() {
