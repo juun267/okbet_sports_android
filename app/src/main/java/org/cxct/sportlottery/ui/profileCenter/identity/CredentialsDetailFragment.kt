@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter.identity
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Base64
 import android.view.Gravity
@@ -7,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
@@ -17,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_credentials_detail_new.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
+import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
 import java.util.*
@@ -28,47 +32,12 @@ class CredentialsDetailFragment :
 
     private lateinit var dateTimePicker: TimePickerView
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_credentials_detail_new, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setupView()
-    }
-
-    private fun setInfoInText() {
-        args.data?.extIdInfo?.ocrResult?.apply {
-            et_identity_id.setText(idNumber)
-            et_identity_first_name.setText(firstName)
-            et_identity_last_name.setText(lastName)
-            et_identity_other_name.setText(middleName)
-            tv_birth.text = dateOfBirth
-            et_identity_sex.setText(sex)
-        }
-
-    }
-
-
-    private fun setupView() {
-
-        setInfoInText()
-        setCredentialImg()
-        setFaceImg()
-
-        cv_recharge_time.setOnClickListener {
-            dateTimePicker.show()
-        }
-
-        btn_submit.setOnClickListener {
-            viewModel.uploadIdentityDoc()
-        }
-
-        initTimePicker()
-    }
+    private val faceImgByteArray: ByteArray =
+        Base64.decode(args.data?.extFaceInfo?.faceImg, Base64.DEFAULT)
+    private val frontImageByteArray: ByteArray =
+        Base64.decode(args.data?.extIdInfo?.frontPageImg, Base64.DEFAULT)
+    private val backImageByteArray: ByteArray? = if (args.data?.extIdInfo?.backPageImg == null) null else
+        Base64.decode(args.data?.extIdInfo?.backPageImg, Base64.DEFAULT)
 
     private val smallPicRequestOptions = RequestOptions()
         .override(300)
@@ -80,41 +49,103 @@ class CredentialsDetailFragment :
         .centerCrop()
         .sizeMultiplier(0.5f)
 
-    private fun setCredentialImg() {
-        args.data?.extIdInfo?.apply {
-            val imageByteArray: ByteArray = Base64.decode(frontPageImg, Base64.DEFAULT)
-            val backImageByteArray: ByteArray = Base64.decode(backPageImg, Base64.DEFAULT)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_credentials_detail_new, container, false)
+    }
 
-            Glide.with(img_id_card.context)
-                .asBitmap()
-                .load(imageByteArray)
-                .apply(smallPicRequestOptions)
-                .into(img_id_card)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+        initOnclick()
+    }
 
+    private fun setInfoInText() {
+        args.data?.extIdInfo?.ocrResult?.apply {
+            et_identity_id.setText(idNumber)
+            et_identity_first_name.setText(firstName)
+            et_identity_last_name.setText(lastName)
+            et_identity_other_name.setText(middleName)
+            tv_birth.text = dateOfBirth
+            et_identity_sex.setText(sex)
+        }
+    }
+
+    private fun initView() {
+        initTimePicker()
+        setInfoInText()
+        setFaceImg()
+    }
+
+    private fun initOnclick() {
+        img_id_card.setOnClickListener {
+            setBigPic(frontImageByteArray)
+            setMask(img_id_card_mask)
+        }
+
+        img_id_card_back.setOnClickListener {
+            setBigPic(backImageByteArray)
+            setMask(img_id_card_back_mask)
+        }
+
+        img_face_small.setOnClickListener {
+            setBigPic(faceImgByteArray)
+            setMask(img_face_small_mask)
+        }
+
+        cv_recharge_time.setOnClickListener {
+            dateTimePicker.show()
+        }
+
+        btn_submit.setOnClickListener {
+            viewModel.getUserInfo()
+            startActivity(Intent(context, ProfileActivity::class.java))
+        }
+
+    }
+
+    private fun setMask(hideMaskImg: ImageView) {
+        img_id_card_mask.isVisible = hideMaskImg != img_id_card_mask
+        img_id_card_back_mask.isVisible = hideMaskImg != img_id_card_back_mask
+        img_face_small_mask.isVisible = hideMaskImg != img_face_small_mask
+    }
+
+    private fun setFaceImg() {
+
+        Glide.with(img_id_card.context)
+            .asBitmap()
+            .load(frontImageByteArray)
+            .apply(smallPicRequestOptions)
+            .into(img_id_card)
+
+        if (backImageByteArray == null) {
+            img_id_card_back.isVisible = false
+        } else {
+            img_id_card_back.isVisible = true
             Glide.with(img_id_card_back.context)
                 .asBitmap()
                 .load(backImageByteArray)
                 .apply(smallPicRequestOptions)
                 .into(img_id_card_back)
         }
+
+        Glide.with(img_face_small.context)
+            .asBitmap()
+            .load(faceImgByteArray)
+            .apply(smallPicRequestOptions)
+            .into(img_face_small)
+
+        setBigPic()
     }
 
-    private fun setFaceImg() {
-        args.data?.extFaceInfo?.apply {
-            val imageByteArray: ByteArray = Base64.decode(faceImg, Base64.DEFAULT)
-
-            Glide.with(img_face_small.context)
-                .asBitmap()
-                .load(imageByteArray)
-                .apply(smallPicRequestOptions)
-                .into(img_face_small)
-
-            Glide.with(img_face_scan.context)
-                .asBitmap()
-                .load(imageByteArray)
-                .apply(bigPicRequestOptions)
-                .into(img_face_scan)
-        }
+    private fun setBigPic(byteArray : ByteArray ?= frontImageByteArray) {
+        Glide.with(img_big.context)
+            .asBitmap()
+            .load(byteArray)
+            .apply(bigPicRequestOptions)
+            .into(img_big)
     }
 
     private fun initTimePicker() {

@@ -18,18 +18,25 @@ import org.cxct.sportlottery.network.credential.CredentialCompleteData
 import org.cxct.sportlottery.network.credential.DocType
 import org.cxct.sportlottery.network.credential.EkycResultType
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.common.StatusSheetAdapter
+import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 
 
-open class CredentialsFragment :
+class CredentialsFragment :
     BaseSocketFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
-
-//    private var isComplete = false
 
     private var transactionId: String? = ""
 
     private var metaInfo: String = ""
+
+    private val idTypeList = listOf(
+        StatusSheetData(DocType.Passport.value, DocType.Passport.showName),
+        StatusSheetData(DocType.UM_ID.value, DocType.UM_ID.showName)
+    )
+
+    private var nowSelectCode: String? = null
 
     private val request by lazy { ZLZRequest() }
 
@@ -47,20 +54,38 @@ open class CredentialsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initBtn()
-        initObserve()
-    }
-
-    private fun initBtn() {
         kotlin.run {
             metaInfo = ZLZFacade.getMetaInfo(activity)
         }
 
+        initView()
+        initOnClick()
+        initObserve()
+    }
+
+    private fun initView() {
+        tv_select_bank_card.text = idTypeList[0].showName
+    }
+
+    private fun initOnClick() {
+
+        tv_select_bank_card.setOnClickListener {
+            showBottomSheetDialog(
+                null,
+                idTypeList,
+                idTypeList[0],
+                StatusSheetAdapter.ItemCheckedListener { _, data ->
+                    tv_select_bank_card.text = data.showName
+                    nowSelectCode = data.code
+                })
+        }
         btn_take_photo.setOnClickListener {
-            if (metaInfo.isNotEmpty()) viewModel.getCredentialInitial(
-                metaInfo,
-                DocType.Passport.value
-            )
+            nowSelectCode?.let {
+                if (metaInfo.isNotEmpty()) viewModel.getCredentialInitial(
+                    metaInfo,
+                    nowSelectCode ?: DocType.Passport.value
+                )
+            }
         }
 
     }
@@ -92,7 +117,10 @@ open class CredentialsFragment :
                         }
 
                         override fun onInterrupted(response: ZLZResponse) {
-                            showPromptDialog(getString(R.string.prompt), getString(R.string.verify_failed_please_retry)){}
+                            showPromptDialog(
+                                getString(R.string.prompt),
+                                getString(R.string.verify_failed_please_retry)
+                            ) {}
                         }
                     })
                 }
@@ -102,15 +130,18 @@ open class CredentialsFragment :
         viewModel.credentialCompleteResult.observe(viewLifecycleOwner) { event ->
             hideLoading()
             event.getContentIfNotHandled()?.data?.let { data ->
-                val isComplete = data.ekycResult == EkycResultType.SUCCESS.value
-                        && data.extFaceInfo?.ekycResultFace == EkycResultType.SUCCESS.value
-                        && data.extIdInfo?.ekycResultDoc == EkycResultType.SUCCESS.value
+//                val isComplete = data.ekycResult == EkycResultType.SUCCESS.value
+//                        && data.extFaceInfo?.ekycResultFace == EkycResultType.SUCCESS.value
+//                        && data.extIdInfo?.ekycResultDoc == EkycResultType.SUCCESS.value
+                val isComplete = true
 
                 if (isComplete) changePage(data)
-                else showPromptDialog(getString(R.string.prompt), getString(R.string.verify_failed_please_retry)) {}
+                else showPromptDialog(
+                    getString(R.string.prompt),
+                    getString(R.string.verify_failed_please_retry)
+                ) {}
             }
         }
-
 
 
     }

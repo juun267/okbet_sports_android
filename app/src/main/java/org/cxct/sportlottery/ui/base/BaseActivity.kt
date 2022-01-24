@@ -252,7 +252,6 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         dataList: List<StatusSheetData>,
         defaultData: StatusSheetData,
         itemClickListener: StatusSheetAdapter.ItemCheckedListener,
-        isShowSelectAll: Boolean = false,
     ) {
         val strList: ArrayList<String?> = arrayListOf()
         dataList.forEach { strList.add(it.showName) }
