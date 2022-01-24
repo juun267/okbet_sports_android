@@ -88,5 +88,15 @@ data class ConfigData(
     val minRemainingBalance: String?,//账户首次提现最小剩余额度
     val presetBetAmount: List<Int>?, //前台预设下注金额配置
     val systemCurrencySign: String?,
-    val systemCurrency: String? = "PHP"
+    val systemCurrency: String? = "PHP",
+    val realNameWithdrawVerified: String? = null ,//提现实名制验证开关 (1：开启，0：关闭， 默认是null:关闭)
+    val perBetMaxAmount: String?,
+    val perBetMinAmount: String?,
+    val selfRestraintVerified: String?
 )
+
+enum class VerifySwitchType(val value: String) {
+    OPEN("1"), CLOSE("0")
+}
+
+

@@ -17,7 +17,7 @@
         app:layout_constraintTop_toBottomOf="@+id/app_bar_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:navGraph="@navigation/identity_navigation"
-        tools:layout="@layout/fragment_credentials"
+        tools:layout="@layout/fragment_credentials_new"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

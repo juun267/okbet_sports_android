@@ -22,7 +22,7 @@
         app:tabPaddingEnd="0dp"
         app:tabPaddingStart="0dp"
         app:tabPaddingTop="2dp"
-        app:tabRippleColor="@color/transparent"
+        app:tabRippleColor="@color/transparent_black_0"
         tools:visibility="visible">
 
     <!-- 此處僅為預覽示意，實際上 tab 要動態添加 -->

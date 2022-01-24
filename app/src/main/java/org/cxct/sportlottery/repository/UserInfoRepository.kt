@@ -147,6 +147,12 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao,private val androi
         }
     }
 
+    suspend fun updateVerified(userId: Long, verified: Int) {
+        withContext(Dispatchers.IO) {
+            userInfoDao.updateVerified(userId, verified)
+        }
+    }
+
     private fun transform(userInfoData: UserInfoData) =
         UserInfo(
             userInfoData.userId,
@@ -171,7 +177,9 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao,private val androi
             maxBetMoney = userInfoData.maxBetMoney,
             maxCpBetMoney = userInfoData.maxCpBetMoney,
             maxParlayBetMoney = userInfoData.maxParlayBetMoney,
-            discount = userInfoData.discount
+            discount = userInfoData.discount,
+            verified = userInfoData.verified,
+            perBetLimit = userInfoData.perBetLimit
         )
 
 }

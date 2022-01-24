@@ -555,6 +555,41 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/btn_self_limit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:minHeight="40dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="30dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_self_limit" />
+                    <!--缺翻譯-->
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:text="@string/selfLimit"
+                        android:textColor="@color/colorBlackLight"
+                        android:textSize="@dimen/textSize13sp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_arrow_right_gray" />
+
+                </LinearLayout>
+
                 <!--7610 確認移除代理加盟-->
                 <!--<LinearLayout
                     android:id="@+id/btn_agent"

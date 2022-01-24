@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.game
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -353,7 +354,6 @@ class GameViewModel(
         _curChildMatchType.value = null
         _oddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
-
         getSportMenu(matchType)
         getAllPlayCategory(matchType)
         filterLeague(listOf())

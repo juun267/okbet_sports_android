@@ -73,7 +73,7 @@
                     app:tabMode="scrollable"
                     app:tabPaddingEnd="6dp"
                     app:tabPaddingStart="6dp"
-                    app:tabRippleColor="@color/transparent" />
+                    app:tabRippleColor="@color/transparent_black_0" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_detail"

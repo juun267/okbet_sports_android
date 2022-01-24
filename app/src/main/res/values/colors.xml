@@ -57,8 +57,9 @@
 
     <color name="colorBronze">#CB7C2E</color>
 
-    <color name="transparent">#00000000</color>
+    <color name="transparent_black_0">#00000000</color>
     <color name="transparent_black_50">#80000000</color>
+    <color name="transparent_black_60">#99000000</color>
 
     <color name="color_fff3f3f3">#fff3f3f3</color>
     <color name="color_ffededed">#ffededed</color>
