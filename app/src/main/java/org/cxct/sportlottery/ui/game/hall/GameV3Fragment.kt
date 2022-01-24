@@ -37,6 +37,7 @@ import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
@@ -56,7 +57,7 @@ import org.cxct.sportlottery.util.SpaceItemDecoration
 import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.M)
-class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
+class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class) {
 
     private val args: GameV3FragmentArgs by navArgs()
 
@@ -517,6 +518,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         try {
             initObserve()
             initSocketObserver()
+            initBottomNavigation()
 
         } catch (e: Exception) {
             e.printStackTrace()

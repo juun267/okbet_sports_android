@@ -93,8 +93,8 @@
         android:layout_height="48dp"
         android:layout_marginEnd="5dp"
         app:layout_constraintStart_toEndOf="@+id/guideline"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/highlight_match_info"
+        app:layout_constraintBottom_toBottomOf="@+id/highlight_match_info"
         app:layout_constraintEnd_toStartOf="@+id/btn_match_odd2"/>
 
     <org.cxct.sportlottery.ui.game.widget.OddsButton
@@ -103,9 +103,9 @@
         android:layout_height="48dp"
         android:layout_marginEnd="5dp"
         app:layout_constraintStart_toEndOf="@+id/btn_match_odd1"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/highlight_match_info"
         app:layout_constraintEnd_toStartOf="@+id/btn_match_odd3"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/highlight_match_info" />
 
     <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/btn_match_odd3"
@@ -114,8 +114,8 @@
         android:layout_marginEnd="12dp"
         android:visibility="gone"
         app:layout_constraintStart_toEndOf="@+id/btn_match_odd2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/highlight_match_info"
+        app:layout_constraintBottom_toBottomOf="@+id/highlight_match_info"
         app:layout_constraintEnd_toEndOf="parent"
         tools:visibility="visible"/>
 

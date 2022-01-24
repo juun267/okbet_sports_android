@@ -35,6 +35,7 @@ import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.repository.FLAG_LIVE
+import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
@@ -50,8 +51,7 @@ import java.util.*
 
 
 @Suppress("DEPRECATION", "SetTextI18n")
-class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
-    TimerManager, Animation.AnimationListener {
+class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class), TimerManager, Animation.AnimationListener {
 
     private val args: OddsDetailLiveFragmentArgs by navArgs()
 
@@ -135,6 +135,11 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         lifecycleOwner = this@OddsDetailLiveFragment.viewLifecycleOwner
         executePendingBindings()
     }.root
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initBottomNavigation()
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -429,7 +434,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                 isGamePause = (matchClockEvent.matchClockCO?.stopped == 1)
 
                 updateTime?.let {
-                    startTime = updateTime.toLong()
+                    startTime = updateTime
                 }
             }
         }

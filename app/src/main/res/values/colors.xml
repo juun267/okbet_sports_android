@@ -37,6 +37,7 @@
     <color name="colorSilverLight">#CCCCCC</color>
     <color name="colorSilver">#BCBCBC</color>
     <color name="colorSilver2">#DCDCDC</color>
+    <color name="colorSilver3">#efeff4</color>
     <color name="colorSilverDirk">#B4B4B4</color>
 
     <color name="colorGrayLight">#999999</color>
@@ -60,6 +61,12 @@
     <color name="transparent_black_50">#80000000</color>
 
     <color name="color_fff3f3f3">#fff3f3f3</color>
+    <color name="color_ffededed">#ffededed</color>
+    <color name="color_333333">#333333</color>
+    <color name="color_888888">#888888</color>
+    <color name="color_999999">#999999</color>
+    <color name="color_AAAAAA">#AAAAAA</color>
+
 
     <!-- ======================================= -->
 
