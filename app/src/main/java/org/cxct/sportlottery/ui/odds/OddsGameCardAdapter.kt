@@ -105,7 +105,7 @@ class OddsGameCardAdapter(
             if (matchClockCO?.stopped == 0) {//是否计时停止 1:是 ，0：否
                 when (matchClockCO.gameType) {
                     GameType.BK.key -> {
-                        if (matchClockCO.remainingTimeInPeriod != null || matchClockCO.remainingTimeInPeriod != -1) {
+                        if (matchClockCO.remainingTimeInPeriod != null || matchClockCO.remainingTimeInPeriod != -1L) {
                             itemView.txv_time.text = TimeUtil.timeFormat(
                                 matchClockCO.remainingTimeInPeriod?.times(1000L),
                                 "mm:ss"
