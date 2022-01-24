@@ -34,6 +34,7 @@ import java.util.*
 class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdpOu>() {
 
     private var dataList = listOf<MatchOdd>()
+    private var selectedOdds: MutableList<String> = mutableListOf()
 
     var discount: Float = 1.0F
         set(newDiscount) {
@@ -45,7 +46,8 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             field = newDiscount
         }
 
-    fun setData(sportCode: String?, newList: List<OddData>?) {
+    fun setData(sportCode: String?, newList: List<OddData>?, selectedOdds: MutableList<String>) {
+        this.selectedOdds = selectedOdds
         dataList = newList?.map {
             val matchInfo = MatchInfo(
                 gameType = null,
@@ -145,6 +147,11 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
     override fun onViewRecycled(holder: ViewHolderHdpOu) {
         super.onViewRecycled(holder)
         holder.stopTimer()
+    }
+
+    fun notifySelectedOddsChanged(selectedOdds: MutableList<String>) {
+        this.selectedOdds = selectedOdds
+        this.notifyDataSetChanged()
     }
 
     inner class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
@@ -319,19 +326,18 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                 itemView.apply {
                     gameType = data.matchInfo?.gameType
 
+                    val oddsSort = data.oddsSort
                     val playCateName =
-                        if (data.oddsSort?.split(",")?.size ?: 0 > 0) data.oddsSort?.split(",")
-                            ?.getOrNull(0) else data.oddsSort
+                        if (oddsSort?.split(",")?.size ?: 0 > 0)
+                            oddsSort?.split(",")?.getOrNull(0) else oddsSort
 
                     val playCateStr = data.playCateNameMap?.get(playCateName)
                         ?.get(LanguageManager.getSelectLanguage(context).key)
 
                     btn_match_odd1.apply {
-                        isSelected = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
-                            false
-                        } else {
-                            oddList?.getOrNull(0)?.isSelected ?: false
-                        }
+                        val oddFirst = oddList?.getOrNull(0)
+                        this.isSelected = selectedOdds.contains(oddFirst?.id ?: "")
+                        oddFirst?.isSelected = selectedOdds.contains(oddFirst?.id ?: "")
 
                         betStatus = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
                             BetStatus.DEACTIVATED.code
@@ -368,11 +374,9 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                     }
 
                     btn_match_odd2.apply {
-                        isSelected = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
-                            false
-                        } else {
-                            oddList?.getOrNull(1)?.isSelected ?: false
-                        }
+                        val oddSecond = oddList?.getOrNull(1)
+                        this.isSelected = selectedOdds.contains(oddSecond?.id ?: "")
+                        oddSecond?.isSelected = selectedOdds.contains(oddSecond?.id ?: "")
 
                         betStatus = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
                             BetStatus.DEACTIVATED.code
@@ -414,11 +418,9 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                     btn_match_odd3.apply {
                         isVisible =  data.matchInfo?.gameType == GameType.CK.key && oddList?.size ?: 0 > 2
 
-                        isSelected = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
-                            false
-                        } else {
-                            oddList?.getOrNull(2)?.isSelected ?: false
-                        }
+                        val oddThird = oddList?.getOrNull(2)
+                        this.isSelected = selectedOdds.contains(oddThird?.id ?: "")
+                        oddThird?.isSelected = selectedOdds.contains(oddThird?.id ?: "")
 
                         betStatus = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
                             BetStatus.DEACTIVATED.code

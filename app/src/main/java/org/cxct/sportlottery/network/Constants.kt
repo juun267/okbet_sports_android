@@ -67,15 +67,16 @@ object Constants {
         }
     }
 
-    fun getDutyRuleUrl(context: Context): String? {
+    //關於我們
+    fun getAboutUsUrl(context: Context): String? {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/responsibility"+context.getString(
+                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/about-us?"+context.getString(
                     R.string.app_name)
-                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/responsibility"+context.getString(
+                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/about-us?"+context.getString(
                     R.string.app_name)
-                else -> getBaseUrl()+"sports-rule/#/us/responsibility"+context.getString(
+                else -> getBaseUrl()+"sports-rule/#/us/about-us?"+context.getString(
                     R.string.app_name)
             }
 
@@ -85,6 +86,26 @@ object Constants {
         }
     }
 
+    //博彩责任
+    fun getDutyRuleUrl(context: Context): String? {
+
+        return try {
+            when (getSelectLanguage(context)) {
+                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/responsibility?"+context.getString(
+                    R.string.app_name)
+                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/responsibility?"+context.getString(
+                    R.string.app_name)
+                else -> getBaseUrl()+"sports-rule/#/us/responsibility?"+context.getString(
+                    R.string.app_name)
+            }
+
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    //隐私权政策
     fun getPrivacyRuleUrl(context: Context): String? {
 
         return try {
@@ -103,6 +124,7 @@ object Constants {
         }
     }
 
+    //规则与条款
     fun getAgreementRuleUrl(context: Context): String? {
 
         return try {
@@ -120,6 +142,45 @@ object Constants {
             null
         }
     }
+
+    //常见问题
+    fun getFAQsUrl(context: Context): String? {
+
+        return try {
+            when (getSelectLanguage(context)) {
+                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/faq?platform="+context.getString(
+                    R.string.app_name)
+                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/faq?platform="+context.getString(
+                    R.string.app_name)
+                else -> getBaseUrl()+"sports-rule/#/us/faq?platform"+context.getString(
+                    R.string.app_name)
+            }
+
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    //联系我们
+    fun getContactUrl(context: Context): String? {
+
+        return try {
+            when (getSelectLanguage(context)) {
+                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/contact-us?platform="+context.getString(
+                    R.string.app_name)
+                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/contact-us?platform="+context.getString(
+                    R.string.app_name)
+                else -> getBaseUrl()+"sports-rule/#/us/contact-us?platform"+context.getString(
+                    R.string.app_name)
+            }
+
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
 
     //獲取檢查APP是否有更新版本的URL //輪詢 SERVER_URL_LIST 成功的那組 serverUrl 用來 download .apk
     fun getCheckAppUpdateUrl(serverUrl: String?): String {

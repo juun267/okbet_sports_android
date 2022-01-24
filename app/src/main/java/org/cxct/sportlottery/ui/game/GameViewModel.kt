@@ -620,8 +620,8 @@ class GameViewModel(
         return this
     }
 
-    //遊戲大廳首頁: 滾球盤、即將開賽盤
-    fun getMatchPreload() {
+    //遊戲大廳首頁: 滾球盤
+    fun getMatchPreloadInPlay() {
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.matchService.getMatchPreload(
@@ -652,6 +652,10 @@ class GameViewModel(
                 _matchPreloadInPlay.postValue(Event(result))
             }
         }
+    }
+
+    //遊戲大廳首頁: 即將開賽盤
+    fun getMatchPreloadAtStart() {
         viewModelScope.launch {
             doNetwork(androidContext) {
                 //即將開賽 query 參數：
