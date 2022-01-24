@@ -232,12 +232,12 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
         rb_in_play.setOnClickListener {
             mSelectMatchType = MatchType.IN_PLAY
-            viewModel.getMatchPreloadInPlay()
+            refreshTable(mInPlayResult)
         }
 
         rb_as_start.setOnClickListener {
             mSelectMatchType = MatchType.AT_START
-            viewModel.getMatchPreloadAtStart()
+            refreshTable(mAtStartResult)
         }
     }
 
@@ -392,12 +392,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             if (inPlayCount == 0 && atStartCount == 0) View.GONE else View.VISIBLE
         rb_in_play.visibility = if (inPlayCount == 0) View.GONE else View.VISIBLE
         rb_as_start.visibility = if (atStartCount == 0) View.GONE else View.VISIBLE
-        if (mSelectMatchType == MatchType.IN_PLAY) {
-            refreshTable(mInPlayResult)
-        }
-        else {
-            refreshTable(mAtStartResult)
-        }
     }
 
     private fun setDefaultRb() {
