@@ -49,6 +49,8 @@ class RegisterViewModel(
         get() = _phoneMsg
     val emailMsg: LiveData<String?>
         get() = _emailMsg
+    val addressMsg: LiveData<String?>
+        get() = _addressMsg
     val weChatMsg: LiveData<String?>
         get() = _weChatMsg
     val zaloMsg: LiveData<String?>
@@ -85,6 +87,7 @@ class RegisterViewModel(
     private val _qqMsg = MutableLiveData<String?>()
     private val _phoneMsg = MutableLiveData<String?>()
     private val _emailMsg = MutableLiveData<String?>()
+    private val _addressMsg = MutableLiveData<String?>()
     private val _weChatMsg = MutableLiveData<String?>()
     private val _zaloMsg = MutableLiveData<String?>()
     private val _facebookMsg = MutableLiveData<String?>()
@@ -208,6 +211,14 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
+    fun checkAddress(address: String?) {
+        _addressMsg.value = when {
+            address.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
+            else -> null
+        }
+        focusChangeCheckAllInputComplete()
+    }
+
     fun checkWeChat(weChat: String?) {
         _weChatMsg.value = when {
             weChat.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
@@ -310,6 +321,7 @@ class RegisterViewModel(
         qq: String,
         phone: String,
         email: String,
+        address: String,
         weChat: String,
         zalo: String,
         facebook: String,
@@ -336,6 +348,8 @@ class RegisterViewModel(
             checkPhone(phone)
         if (sConfigData?.enableEmail == FLAG_OPEN)
             checkEmail(email)
+        if (sConfigData?.enableAddress == FLAG_OPEN)
+            checkAddress(address)
         if (sConfigData?.enableWechat == FLAG_OPEN)
             checkWeChat(weChat)
         if (sConfigData?.enableZalo == FLAG_OPEN)
@@ -377,6 +391,8 @@ class RegisterViewModel(
         if (sConfigData?.enablePhone == FLAG_OPEN && phoneMsg.value != null)
             return false
         if (sConfigData?.enableEmail == FLAG_OPEN && emailMsg.value != null)
+            return false
+        if (sConfigData?.enableAddress == FLAG_OPEN && addressMsg.value != null)
             return false
         if (sConfigData?.enableWechat == FLAG_OPEN && weChatMsg.value != null)
             return false
@@ -428,6 +444,7 @@ class RegisterViewModel(
         qq: String,
         phone: String,
         email: String,
+        address: String,
         weChat: String,
         zalo: String,
         facebook: String,
@@ -448,6 +465,7 @@ class RegisterViewModel(
             qq,
             phone,
             email,
+            address,
             weChat,
             zalo,
             facebook,
@@ -458,7 +476,7 @@ class RegisterViewModel(
             agreementChecked
         )
         if (checkAllInputComplete()) {
-            register(createRegisterRequest(inviteCode, userName, loginPassword, fullName, fundPwd, qq, phone, email, weChat, zalo, facebook, whatsApp, telegram, smsCode, validCode, deviceSn))
+            register(createRegisterRequest(inviteCode, userName, loginPassword, fullName, fundPwd, qq, phone, email, address, weChat, zalo, facebook, whatsApp, telegram, smsCode, validCode, deviceSn))
         }
     }
 
@@ -471,6 +489,7 @@ class RegisterViewModel(
         qq: String,
         phone: String,
         email: String,
+        address: String,
         weChat: String,
         zalo: String,
         facebook: String,
@@ -497,6 +516,8 @@ class RegisterViewModel(
                 this.phone = phone
             if (sConfigData?.enableEmail == FLAG_OPEN)
                 this.email = email
+            if (sConfigData?.enableAddress == FLAG_OPEN)
+                this.address = address
             if (sConfigData?.enableWechat == FLAG_OPEN)
                 this.wechat = weChat
             if (sConfigData?.enableZalo == FLAG_OPEN)

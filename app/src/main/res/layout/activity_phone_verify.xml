@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_login"
+    tools:context=".ui.login.signIn.LoginActivity">
+
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/ic_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btn_back"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_margin="16dp"
+        android:background="@null"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_arrow_login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="14dp"
+        android:background="@drawable/bg_login_card"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivLogo">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="24dp">
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="6dp"
+                android:layout_height="26dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_login_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <!-- 翻譯 -->
+            <TextView
+                android:id="@+id/tvVerifyTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:text="@string/login_phone_verify"
+                android:textColor="@color/colorBlackLight"
+                android:textSize="@dimen/textSize30sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/view"
+                app:layout_constraintStart_toEndOf="@+id/view"
+                app:layout_constraintTop_toTopOf="@+id/view" />
+
+            <!-- 翻譯 -->
+            <TextView
+                android:id="@+id/tvVerifySubTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login_phone_verify_content"
+                android:textColor="@color/colorGrayText"
+                android:textSize="@dimen/textSize12sp"
+                android:layout_marginTop="@dimen/margin_12"
+                app:layout_constraintTop_toBottomOf="@+id/tvVerifyTitle"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/block_valid_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvVerifySubTitle">
+
+                <org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
+                    android:id="@+id/et_verification_code"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:iconSignifier="@drawable/ic_login_verify"
+                    app:singleText="@string/verification_code">
+
+                    <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
+                        android:id="@+id/eet_verification_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:textSize="@dimen/textSize14sp" />
+
+                </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="56dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@color/transparent"
+                    android:gravity="center"
+                    android:minWidth="80dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_send_sms"
+                        android:layout_width="100dp"
+                        android:layout_height="46dp"
+                        android:background="@drawable/btn_send_sms_rd8"
+                        android:minHeight="46dp"
+                        android:textAllCaps="false"
+                        android:text="@string/login_phone_verify_get_code"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/textSize14sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+
+            <Button
+                android:id="@+id/btn_submit"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="6dp"
+                android:background="@drawable/bg_radius_8_button_dusk"
+                android:text="@string/btn_submit"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/textSize16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/block_valid_code" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </ScrollView>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

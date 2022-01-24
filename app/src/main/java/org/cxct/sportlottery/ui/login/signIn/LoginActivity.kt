@@ -2,10 +2,14 @@ package org.cxct.sportlottery.ui.login.signIn
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
 import android.view.View
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import cn.jpush.android.api.JPushInterface
@@ -27,6 +31,7 @@ import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.ui.statistics.StatisticsActivity
 import org.cxct.sportlottery.util.BitmapUtil
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.ToastUtil
@@ -181,7 +186,9 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 //        val deviceSn =
 //            getSharedPreferences(UUID_DEVICE_CODE, Context.MODE_PRIVATE).getString(UUID, "") ?: ""
 //        Timber.d("UUID = $deviceSn")
-
+        val deviceId = Settings.Secure.getString(
+            applicationContext.contentResolver, Settings.Secure.ANDROID_ID
+        )
         val loginRequest = LoginRequest(
             account = account,
             password = MD5Util.MD5Encode(password),
@@ -189,7 +196,8 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             deviceSn = deviceSn,
             validCodeIdentity = validCodeIdentity,
             validCode = validCode,
-            appVersion = BuildConfig.VERSION_NAME
+            appVersion = BuildConfig.VERSION_NAME,
+            loginEnvInfo = deviceId
         )
         viewModel.login(loginRequest, password)
 
@@ -238,11 +246,15 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     private fun updateUiWithResult(loginResult: LoginResult) {
         hideLoading()
         if (loginResult.success) {
-            this.run {
-                if (sConfigData?.thirdOpen == FLAG_OPEN)
-                    MainActivity.reStart(this)
-                else
-                    GameActivity.reStart(this)
+            if(loginResult.loginData?.deviceValidateStatus == 0){
+                startActivity(Intent(this@LoginActivity, PhoneVerifyActivity::class.java))
+            }else{
+                this.run {
+                    if (sConfigData?.thirdOpen == FLAG_OPEN)
+                        MainActivity.reStart(this)
+                    else
+                        GameActivity.reStart(this)
+                }
             }
         } else {
             updateValidCode()

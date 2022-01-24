@@ -8,5 +8,6 @@ data class LoginRequest(
     val deviceSn: String, //设备号（手机app登录必传）
     var validCodeIdentity: String? = null,
     var validCode: String? = null,
-    var appVersion: String? = null
+    var appVersion: String? = null,
+    var loginEnvInfo:String? = null //登入环境信息
 )

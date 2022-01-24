@@ -37,6 +37,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
         .dontTransform()
 
     private var mDataList = listOf<RecommendGameEntity>()
+    private var selectedOdds: MutableList<String> = mutableListOf()
 
     var discount: Float = 1.0F
         set(newDiscount) {
@@ -55,7 +56,8 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
             notifyDataSetChanged()
         }
 
-    fun setData(result: MatchRecommendResult) {
+    fun setData(result: MatchRecommendResult, selectedOdds: MutableList<String>) {
+        this.selectedOdds = selectedOdds
         val dataList = mutableListOf<RecommendGameEntity>()
         result.rows?.forEach { row ->
             row.leagueOdds?.matchOdds?.forEach { oddData ->
@@ -92,6 +94,12 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
     fun notifySubItemChanged(index: Int, indexVpAdapter: Int) {
         if (index >= 0 && indexVpAdapter >= 0)
             mDataList[index].vpRecommendAdapter?.notifyItemChanged(indexVpAdapter)
+    }
+
+    fun notifySelectedOddsChanged(selectedOdds: MutableList<String>) {
+        mDataList.forEach {
+            it.vpRecommendAdapter?.notifySelectedOddsChanged(selectedOdds)
+        }
     }
 
     var oddsType: OddsType = OddsType.EU
@@ -198,6 +206,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                     )
 
                 data.vpRecommendAdapter?.oddsType = oddsType
+                data.vpRecommendAdapter?.selectedOdds = selectedOdds
                 data.vpRecommendAdapter?.onClickOddListener = onClickOddListener
                 data.vpRecommendAdapter?.onClickOutrightOddListener = onClickOutrightOddListener
                 data.vpRecommendAdapter?.onClickMoreListener = onClickMoreListener

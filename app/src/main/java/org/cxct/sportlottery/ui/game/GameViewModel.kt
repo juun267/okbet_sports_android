@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.game
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -353,7 +354,6 @@ class GameViewModel(
         _curChildMatchType.value = null
         _oddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
-
         getSportMenu(matchType)
         getAllPlayCategory(matchType)
         filterLeague(listOf())
@@ -611,8 +611,8 @@ class GameViewModel(
         return this
     }
 
-    //遊戲大廳首頁: 滾球盤、即將開賽盤
-    fun getMatchPreload() {
+    //遊戲大廳首頁: 滾球盤
+    fun getMatchPreloadInPlay() {
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.matchService.getMatchPreload(
@@ -643,6 +643,10 @@ class GameViewModel(
                 _matchPreloadInPlay.postValue(Event(result))
             }
         }
+    }
+
+    //遊戲大廳首頁: 即將開賽盤
+    fun getMatchPreloadAtStart() {
         viewModelScope.launch {
             doNetwork(androidContext) {
                 //即將開賽 query 參數：

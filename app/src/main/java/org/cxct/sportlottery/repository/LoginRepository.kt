@@ -17,6 +17,7 @@ import org.cxct.sportlottery.network.index.checktoken.CheckTokenResult
 import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
+import org.cxct.sportlottery.network.index.login.ValidateLoginDeviceSmsRequest
 import org.cxct.sportlottery.network.index.login_for_guest.LoginForGuestRequest
 import org.cxct.sportlottery.network.index.logout.LogoutRequest
 import org.cxct.sportlottery.network.index.logout.LogoutResult
@@ -175,6 +176,14 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
         return loginResponse
     }
 
+    suspend fun sendLoginDeviceSms(): Response<LogoutResult> {
+        return OneBoSportApi.indexService.sendLoginDeviceSms()
+    }
+    suspend fun validateLoginDeviceSms(validateLoginDeviceSmsRequest: ValidateLoginDeviceSmsRequest): Response<LogoutResult> {
+        return OneBoSportApi.indexService.validateLoginDeviceSms(validateLoginDeviceSmsRequest)
+    }
+
+
     suspend fun loginForGuest(): Response<LoginResult> {
 
         val loginForGuestResponse = OneBoSportApi.indexService.loginForGuest(LoginForGuestRequest(deviceSn = getDeviceName()))
@@ -328,6 +337,6 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
             creditAccount = loginData.creditAccount,
             creditStatus = loginData.creditStatus,
             discount = loginData.discount,
-            verified = loginData.verified
+            verified = loginData.verified,
         )
 }
