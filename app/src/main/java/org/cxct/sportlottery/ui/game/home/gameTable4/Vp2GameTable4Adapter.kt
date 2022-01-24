@@ -173,17 +173,11 @@ class Vp2GameTable4Adapter (
                             matchClockCO.matchTime?.let {
                                 if (it == 0L) return
                                 timeMap[id] = it
-                                Handler(Looper.getMainLooper()).post {
-                                    notifyItemChanged(index)
-                                }
                             }
                         }
                         GameType.BK.key -> {
                             matchClockCO.remainingTimeInPeriod?.let {
                                 timeMap[id] = it
-                                Handler(Looper.getMainLooper()).post {
-                                    notifyItemChanged(index)
-                                }
                             }
                         }
                     }
@@ -195,8 +189,8 @@ class Vp2GameTable4Adapter (
     fun notifyTimeChanged(diff: Int) {
         when (matchType) {
             MatchType.IN_PLAY -> {
+                var needUpdate = false
                 dataList.forEachIndexed { index, matchOdd ->
-                    var needUpdate = false
                     matchOdd.matchInfo?.id?.let { id ->
                         timeMap[id]?.let { time ->
                             var newTime = time
@@ -214,16 +208,16 @@ class Vp2GameTable4Adapter (
                             }
                         }
                     }
-                    if (needUpdate) {
-                        Handler(Looper.getMainLooper()).post {
-                            notifyItemChanged(index)
-                        }
+                }
+                if (needUpdate) {
+                    Handler(Looper.getMainLooper()).post {
+                        notifyDataSetChanged()
                     }
                 }
             }
             MatchType.AT_START -> {
+                var needUpdate = false
                 dataList.forEachIndexed { index, matchOdd ->
-                    var needUpdate = false
                     matchOdd.matchInfo?.id?.let { id ->
                         timeMap[id]?.let { time ->
                             var newTime = time - diff
@@ -233,10 +227,10 @@ class Vp2GameTable4Adapter (
                             }
                         }
                     }
-                    if (needUpdate) {
-                        Handler(Looper.getMainLooper()).post {
-                            notifyItemChanged(index)
-                        }
+                }
+                if (needUpdate) {
+                    Handler(Looper.getMainLooper()).post {
+                        notifyDataSetChanged()
                     }
                 }
             }
