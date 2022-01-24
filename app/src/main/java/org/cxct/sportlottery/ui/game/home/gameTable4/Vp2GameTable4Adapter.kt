@@ -130,9 +130,9 @@ class Vp2GameTable4Adapter (
                     odd?.updateDiscount(this.discount, discount)
                 }
             }
-            Handler(Looper.getMainLooper()).post {
-                notifyItemChanged(index)
-            }
+        }
+        Handler(Looper.getMainLooper()).post {
+            notifyDataSetChanged()
         }
         this.discount = discount
     }
@@ -142,6 +142,7 @@ class Vp2GameTable4Adapter (
 
         }
         else {
+            var needUpdate = false
             dataList.forEachIndexed { index, matchOdd ->
                 if (matchOdd.matchInfo?.id == matchStatusCO.matchId) {
                     matchOdd.matchInfo?.homeTotalScore = matchStatusCO.homeTotalScore
@@ -154,10 +155,13 @@ class Vp2GameTable4Adapter (
                     matchOdd.matchInfo?.homeCards = matchStatusCO.homeCards
                     matchOdd.matchInfo?.awayCards = matchStatusCO.awayCards
                     if (gameType != GameType.FT.key && gameType != GameType.BK.key) {
-                        Handler(Looper.getMainLooper()).post {
-                            notifyItemChanged(index)
-                        }
+                        needUpdate = true
                     }
+                }
+            }
+            if (needUpdate) {
+                Handler(Looper.getMainLooper()).post {
+                    notifyDataSetChanged()
                 }
             }
         }
