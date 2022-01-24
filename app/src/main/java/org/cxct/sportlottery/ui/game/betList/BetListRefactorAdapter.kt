@@ -49,7 +49,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 value?.find { it.matchOdd.status != BetStatus.ACTIVATED.code || it.pointMarked } != null
 
             hasBetClosedForSingle =
-                value?.find { it.matchOdd.status != BetStatus.ACTIVATED.code} != null
+                value?.find { it.matchOdd.status != BetStatus.ACTIVATED.code } != null
 
             notifyDataSetChanged()
         }
@@ -768,7 +768,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         ) {
             itemView.item_first_single.apply {
 
-                et_bet.apply {
+                et_bet_single.apply {
                     if (tag is TextWatcher) {
                         removeTextChangedListener(tag as TextWatcher)
                     }
@@ -776,7 +776,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     filters = arrayOf(MoneyInputFilter())
                 }
 
-                if (et_bet.text.isNullOrEmpty())
+                if (et_bet_single.text.isNullOrEmpty())
                     ll_winnable.visibility = View.VISIBLE
                 else
                     ll_winnable.visibility = View.VISIBLE
@@ -793,14 +793,14 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         betList
                     )
                 )
-                et_bet.apply {
+                et_bet_single.apply {
                     //init bet amount value
                     val maxAmount = getMaxOrMinAmount(isGetMax = true, betList)
                     val minAmount = getMaxOrMinAmount(isGetMax = false, betList)
                     hint = getAllSingleMinMaxHint(context, maxAmount, minAmount)
 
                     setText(initValue)
-                    et_bet.setSelection(et_bet.text.length)
+                    et_bet_single.setSelection(et_bet_single.text.length)
 
                     /* set listener */
                     val tw: TextWatcher?
@@ -817,7 +817,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                             maxAmount.let { max ->
                                 if (inputValue > max) {
-                                    et_bet.apply {
+                                    et_bet_single.apply {
                                         setText(TextUtil.formatInputMoney(max))
                                         setSelection(text.length)
                                     }
@@ -878,13 +878,13 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     addTextChangedListener(tw)
                     tag = tw
                 }
-                et_bet.isSelected =
+                et_bet_single.isSelected =
                     mSelectedPosition == bindingAdapterPosition && mBetView == BetViewType.SINGLE
 
                 et_container.setOnClickListener {
-                    et_bet.isFocusable = true
-                    et_bet.setSelection(et_bet.text.length)
-                    onItemClickListener.onShowParlayKeyboard(et_bet, itemData, position)
+                    et_bet_single.isFocusable = true
+                    et_bet_single.setSelection(et_bet_single.text.length)
+                    onItemClickListener.onShowParlayKeyboard(et_bet_single, itemData, position)
                     onSelectedPositionListener.onSelectChange(
                         bindingAdapterPosition,
                         BetViewType.SINGLE
@@ -905,7 +905,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 ll_winnable.visibility = if (hasBetClosed) View.GONE else View.VISIBLE
 
-                et_bet.apply {
+                et_bet_single.apply {
                     isEnabled = !hasBetClosed
                     isFocusable = !hasBetClosed
                     isFocusableInTouchMode = !hasBetClosed

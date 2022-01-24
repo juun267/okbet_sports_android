@@ -4,6 +4,5 @@
     <item android:state_selected="true" android:drawable="@drawable/bg_radius_2_edittext_focus_fill_color_white"/>
     <item android:state_checked="true" android:drawable="@drawable/bg_radius_2_edittext_focus_fill_color_white"/>
     <item android:state_enabled="true" android:drawable="@drawable/bg_radius_2_edittext_unfocus_fill_color_white"/>
-    <item android:state_enabled="false" android:drawable="@drawable/bg_radius_2_edittext_unfocus_fill_color_gray"/>
     <item android:drawable="@drawable/bg_radius_2_edittext_unfocus_fill_color_gray" />
 </selector>
