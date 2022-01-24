@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.withdraw
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -101,14 +102,14 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
     private fun checkNotificationVisiable(
         textView: TextView,
-        dotView1: TextView,
+        dotView: TextView,
         value: String?,
         string: String
     ) {
-        val needHide = value.isNullOrBlank() && value.equals("0")
+        val needHide = value.isNullOrBlank() || value == "0"
 
-        textView.visibility == if (needHide) View.GONE else View.VISIBLE
-        dotView1.visibility == if (needHide) View.GONE else View.VISIBLE
+        textView.visibility = if (needHide) View.GONE else View.VISIBLE
+        dotView.visibility = if (needHide) View.GONE else View.VISIBLE
 
         textView.text = string
     }

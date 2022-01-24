@@ -368,8 +368,10 @@
                 android:text="·"
                 android:textColor="@color/colorRed"
                 android:textSize="12dp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@+id/guideline"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/tv_notification_1"
@@ -380,9 +382,11 @@
                 android:text="@string/initial_withdrawal_needs_credited"
                 android:textColor="@color/colorRed"
                 android:textSize="12dp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/guideline"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible"/>
 
             <TextView
                 android:id="@+id/tv_dot_2"
