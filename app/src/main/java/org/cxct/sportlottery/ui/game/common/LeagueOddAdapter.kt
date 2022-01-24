@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -246,7 +245,9 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
             setupOddsButton(item, oddsType, leagueOddListener)
             if(!itemView.hasTransientState()){
                 setupQuickCategory(item, oddsType, leagueOddListener)
-                itemView.setHasTransientState(true)
+                if(item.matchInfo?.gameType != "FT"){
+                    itemView.setHasTransientState(true)
+                }
             }
         }
 
@@ -844,6 +845,9 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
                 if (item.quickPlayCateList.isNullOrEmpty()) {
                     View.INVISIBLE
                 } else {
+                    if(item.matchInfo?.gameType == "FT"){
+                        itemView.setHasTransientState(true)
+                    }
                     View.VISIBLE
                 }
 

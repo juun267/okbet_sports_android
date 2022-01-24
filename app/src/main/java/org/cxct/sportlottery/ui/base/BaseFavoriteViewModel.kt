@@ -11,7 +11,6 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchRequest
 import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchResult
-import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.repository.*
@@ -109,7 +108,7 @@ abstract class BaseFavoriteViewModel(
                             matchOdd.matchInfo?.isFavorite = true
                             playCateCode?.let {
                                 val oddsMap = matchOdd.oddsMap
-                                    .filter { odds -> odds.key == playCateCode }
+                                    .filter { odds -> odds.key == it }
                                     .toMutableFormat()
 
                                 matchOdd.oddsMap.clear()

@@ -9,25 +9,30 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.EditText
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.*
 import kotlinx.android.synthetic.main.button_bet.view.*
 import kotlinx.android.synthetic.main.button_fast_bet_setting.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item.view.*
 import kotlinx.android.synthetic.main.fragment_bet_list.*
-import kotlinx.android.synthetic.main.view_bet_info_keyboard.*
+import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
+import kotlinx.android.synthetic.main.snackbar_my_favorite_notify.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetListBinding
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
@@ -68,13 +73,26 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private var showReceipt: Boolean = false
 
+    private var singleParlayList = mutableListOf(
+        ParlayOdd(
+            max = -1,
+            min = -1,
+            num = -1,
+            odds = 0.0,
+            hkOdds = 0.0,
+            parlayType = "",
+            //Martin
+            malayOdds = 0.0,
+            indoOdds = 0.0
+        )
+    )
+
     private val deleteAllLayoutAnimationListener by lazy {
         object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {
             }
 
             override fun onAnimationEnd(animation: Animation?) {
-//                binding.llDeleteAll.visibility = View.GONE
                 binding.apply {
                     llDeleteAll.visibility = View.GONE
                 }
@@ -85,6 +103,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         }
     }
+
+    //提示
+    private var snackBarNotify: Snackbar? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -131,7 +152,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         initRecyclerView()
         initToolBar()
 
-        initKeyBoard()
+        initKeyBoard(viewModel.getLoginBoolean())
     }
 
     private fun initBtnView() {
@@ -203,12 +224,20 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     viewModel.removeBetInfoItem(oddsId)
                 }
 
-                override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd) {
-                    keyboard?.showKeyboard(editText)
+                override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd, position: Int) {
+                    keyboard?.showKeyboard(editText, position)
                 }
 
-                override fun onShowParlayKeyboard(editText: EditText, parlayOdd: ParlayOdd?) {
-                    keyboard?.showKeyboard(editText)
+//                override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd) {
+//                    keyboard?.showKeyboard(editText)
+//                }
+
+                override fun onShowParlayKeyboard(
+                    editText: EditText,
+                    parlayOdd: ParlayOdd?,
+                    position: Int
+                ) {
+                    keyboard?.showKeyboard(editText, position)
                 }
 
                 override fun onHideKeyBoard() {
@@ -265,9 +294,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 .sumBy { it.num }
         val winnableAmount = list.sumByDouble {
             var currentOddsType = oddsType
-            if(it.matchOdd.odds == it.matchOdd.malayOdds
+            if (it.matchOdd.odds == it.matchOdd.malayOdds
                 || it.matchType == MatchType.OUTRIGHT
-                || it.matchType == MatchType.OTHER_OUTRIGHT){
+                || it.matchType == MatchType.OTHER_OUTRIGHT
+            ) {
                 currentOddsType = OddsType.EU
             }
             getWinnable(it.betAmount, getOddsNew(it.matchOdd, currentOddsType), currentOddsType)
@@ -354,13 +384,31 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             btnDeleteAllConfirm.setOnClickListener {
                 btnDeleteAllConfirm.startAnimation(exitAnimation)
                 viewModel.removeBetInfoAll()
+                activity?.onBackPressed()
             }
         }
     }
 
-    private fun initKeyBoard() {
+    private fun initKeyBoard(loginBoolean: Boolean) {
         keyboard =
-            KeyBoardUtil(binding.kvKeyboard, null, sConfigData?.presetBetAmount ?: mutableListOf())
+            KeyBoardUtil(
+                binding.kvKeyboard,
+                null,
+                sConfigData?.presetBetAmount ?: mutableListOf(),
+                loginBoolean,
+                GameConfigManager.maxBetMoney?.toLong(),
+                object : KeyBoardUtil.KeyBoardViewListener {
+                    override fun showLoginNotice() {
+                        setSnackBarNotify(isLogin = false)
+                    }
+
+                    override fun showOrHideKeyBoardBackground(isShow: Boolean, position: Int?) {
+                        ll_keyboard_bg.visibility = if (isShow) View.VISIBLE else View.GONE
+                        if (position != null) {
+                            rv_bet_list.scrollToPosition(position)
+                        }
+                    }
+                })
     }
 
     private fun initObserver() {
@@ -368,6 +416,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         viewModel.isLogin.observe(this.viewLifecycleOwner) {
             setupUserBalanceView(it)
             setupBetButtonType(it)
+            initKeyBoard(it)
         }
 
         viewModel.userMoney.observe(viewLifecycleOwner) {
@@ -393,6 +442,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 //注單列表沒東西時關閉fragment
                 cl_no_data.visibility = if (list.size == 0) View.VISIBLE else View.GONE
                 gray_view.visibility = if (list.size == 0) View.GONE else View.VISIBLE
+                btn_delete_all.visibility = if (list.size == 0) View.GONE else View.VISIBLE
 
                 tv_bet_list_count.text = list.size.toString()
                 betListRefactorAdapter?.betList = list
@@ -413,7 +463,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         //串關列表
         viewModel.parlayList.observe(this.viewLifecycleOwner) {
-            betListRefactorAdapter?.parlayList = it
+            if(it.size == 0){
+                betListRefactorAdapter?.hasParlayList = false
+                betListRefactorAdapter?.parlayList = singleParlayList
+            }else{
+                betListRefactorAdapter?.hasParlayList = true
+                betListRefactorAdapter?.parlayList = it
+            }
         }
 
         viewModel.betParlaySuccess.observe(viewLifecycleOwner) {
@@ -541,6 +597,61 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         } else {
             false
         }
+    }
+
+    private fun setSnackBarNotify(
+        myFavoriteNotifyType: Int? = null,
+        isGameClose: Boolean? = false,
+        gameType: GameType? = null,
+        isLogin: Boolean? = true
+    ) {
+        val title = when {
+            isLogin == false -> getString(R.string.login_notify)
+            isGameClose == true -> String.format(
+                getString(R.string.message_no_sport_game),
+                getString(gameType?.string ?: 0)
+            )
+            else -> {
+                when (myFavoriteNotifyType) {
+
+                    MyFavoriteNotifyType.SPORT_ADD.code -> getString(R.string.myfavorite_notify_league_add)
+
+                    MyFavoriteNotifyType.SPORT_REMOVE.code -> getString(R.string.myfavorite_notify_league_remove)
+
+                    else -> ""
+                }
+            }
+        }
+
+        val layout =
+            if (isLogin == true) R.layout.snackbar_my_favorite_notify else R.layout.snackbar_login_notify
+
+        snackBarNotify = activity?.let {
+            Snackbar.make(
+                this@BetListFragment.requireView(),
+                title,
+                Snackbar.LENGTH_LONG
+            ).apply {
+                val snackView: View = layoutInflater.inflate(
+                    layout,
+                    activity?.findViewById(android.R.id.content),
+                    false
+                )
+                if (isLogin == true)
+                    snackView.txv_title.text = title
+                else snackView.tv_notify.text = title
+
+                (this.view as Snackbar.SnackbarLayout).apply {
+                    findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
+                        visibility = View.INVISIBLE
+                    }
+                    background.alpha = 0
+                    addView(snackView, 0)
+                    setPadding(0, 0, 0, 0)
+                }
+            }
+        }
+        snackBarNotify?.show()
     }
 
     /**

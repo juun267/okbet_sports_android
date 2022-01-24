@@ -748,7 +748,7 @@
     <string name="total">总共</string>
     <string name="verse">v</string>
     <string name="sum_pass">综合过关</string>
-    <string name="keyboard_done">已完成</string>
+    <string name="keyboard_done">收起</string>
     <string name="no_game_description">选择上面的图标，会将其添加到”我的赛事”中。 您可以对其进行分组并轻松访问你感兴趣的所有赛事。</string>
     <string name="odds_button_name_first">第一</string>
     <string name="odds_button_name_ant">任何</string>
@@ -917,5 +917,15 @@
     <string name="hint_e_address">(请输入联系地址)</string>
     <string name="initial_withdrawal_needs_credited">初次提款需入帐：%1$s元。</string>
     <string name="make_sure_valid_account">初次提款会暂时扣留%1$s元，以确保您是有效账户。此款项于 30 天后会返还。</string>
-
+    <string name="other_link">其它相关链接</string>
+    <string name="about_us">关于我们</string>
+    <string name="responsible">博彩责任</string>
+    <string name="terms_conditions">规则与条款</string>
+    <string name="privacy_policy">隐私权条款</string>
+    <string name="help">是否需要帮助？</string>
+    <string name="faqs">常见问题</string>
+    <string name="live_chat">在线客服</string>
+    <string name="contact">联系我们</string>
+    <string name="btm_navigation_hint">%1$s is a Registered Trade Mark, brand and\nregistered business name.</string>
+    <string name="btm_navigation_copyright">COPYRIGHT © 2022 %1$s ALL RIGHTS RESERVED</string>
 </resources>

@@ -2,6 +2,7 @@ package org.cxct.sportlottery.repository
 
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.enum.BetStatus
@@ -43,6 +44,12 @@ class BetInfoRepository(val androidContext: Context) {
     }
     val betInfoList: LiveData<Event<MutableList<BetInfoListData>>>
         get() = _betInfoList
+
+    private val _betIDList = MutableLiveData<Event<MutableList<String>>>().apply {
+        value = Event(mutableListOf())
+    }
+    val betIDList: LiveData<Event<MutableList<String>>>
+        get() = _betIDList
 
     private val _showBetUpperLimit = MutableLiveData<Event<Boolean>>()
     val showBetUpperLimit: LiveData<Event<Boolean>>
@@ -206,6 +213,12 @@ class BetInfoRepository(val androidContext: Context) {
 
         val item = betList.find { it.matchOdd.oddsId == oddId }
         betList.remove(item)
+
+        val oddIDStr = oddId ?: ""
+        val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
+        oddIDArray.remove(oddIDStr)
+        _betIDList.postValue(Event(oddIDArray))
+
         _removeItem.postValue(Event(item?.matchOdd?.matchId))
         updateBetOrderParlay(betList)
         checkBetInfoContent(betList)
@@ -214,27 +227,34 @@ class BetInfoRepository(val androidContext: Context) {
 
     fun removeClosedPlatItem() {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
+
+        val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
+
         val needRemoveList =
             betList.filter { it.matchOdd.status == BetStatus.LOCKED.code || it.matchOdd.status == BetStatus.DEACTIVATED.code }
         needRemoveList.forEach {
             betList.remove(it)
+            oddIDArray.remove(it.matchOdd.oddsId)
             _removeItem.value = Event(it.matchOdd.matchId)
         }
 
         updateBetOrderParlay(betList)
         checkBetInfoContent(betList)
+        _betIDList.postValue(Event(oddIDArray))
         _betInfoList.postValue(Event(betList))
     }
 
 
     fun clear() {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
-
+        val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
         betList.clear()
+        oddIDArray.clear()
         _matchOddList.value?.clear()
         _parlayList.value?.clear()
 
         checkBetInfoContent(betList)
+        _betIDList.postValue(Event(oddIDArray))
         _betInfoList.postValue(Event(betList))
     }
 
@@ -294,14 +314,16 @@ class BetInfoRepository(val androidContext: Context) {
                 this.outrightMatchInfo = matchInfo
             }
 
-
+            val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
+            oddIDArray.add(it.oddsId)
+            _betIDList.postValue(Event(oddIDArray))
 
             betList.add(data)
             //產生串關注單
             updateBetOrderParlay(betList)
             checkBetInfoContent(betList)
             _betInfoList.postValue(Event(betList))
-            if (betList.size == 1) {
+            if (betList.size == 1 && matchType != MatchType.PARLAY) {
                 _showBetInfoSingle.postValue(Event(true))
             }
         }

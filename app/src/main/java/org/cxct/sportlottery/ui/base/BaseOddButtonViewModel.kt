@@ -67,6 +67,8 @@ abstract class BaseOddButtonViewModel(
 
     val betInfoList = betInfoRepository.betInfoList
 
+    val betIDList = betInfoRepository.betIDList
+
     val showOddsChangeWarn get() = betInfoRepository.showOddsChangeWarn
 
     val showOddsCloseWarn get() = betInfoRepository.showOddsCloseWarn
@@ -148,7 +150,7 @@ abstract class BaseOddButtonViewModel(
                     playCateName = playCateName,
                     playName = odd.nameMap?.get(LanguageManager.getSelectLanguage(androidContext).key)
                         ?: odd.name ?: "",
-                    matchInfo = matchInfo,
+                    matchInfo = it,
                     odd = odd,
                     subscribeChannelType = subscribeChannelType,
                     playCateMenuCode = playCateMenuCode,
@@ -197,7 +199,7 @@ abstract class BaseOddButtonViewModel(
                         ?: "",
                     playName = odd.nameMap?.get(LanguageManager.getSelectLanguage(androidContext).key)
                         ?: odd.name ?: "",
-                    matchInfo = matchOdd.matchInfo,
+                    matchInfo = it,
                     odd = odd,
                     subscribeChannelType = ChannelType.HALL,
                     oddsType = loginRepository.mOddsType.value,

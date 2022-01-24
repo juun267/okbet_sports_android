@@ -36,6 +36,7 @@
     <string name="keyboard_code_plus_50">-50</string>
     <string name="keyboard_code_plus_100">-100</string>
     <string name="keyboard_code_done">-4</string>
+    <string name="keyboard_code_max">-6</string>
 
     <!--Time-->
     <string name="time_null">--:--</string>

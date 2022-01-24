@@ -52,13 +52,15 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                updateValidCode()
             }
             binding.tvDuty -> {
-                JumpUtil.toExternalWeb(this, Constants.getDutyRuleUrl(this))
+                JumpUtil.toInternalWeb(this,Constants.getDutyRuleUrl(this), resources.getString(R.string.responsible))
+
             }
             binding.tvPrivacy -> {
-                JumpUtil.toExternalWeb(this, Constants.getPrivacyRuleUrl(this))
+                JumpUtil.toInternalWeb(this,Constants.getPrivacyRuleUrl(this), resources.getString(R.string.privacy_policy))
+
             }
             binding.tvAgreement -> {
-                JumpUtil.toExternalWeb(this, Constants.getAgreementRuleUrl(this))
+                JumpUtil.toInternalWeb(this,Constants.getAgreementRuleUrl(this), resources.getString(R.string.terms_conditions))
             }
 
         }
@@ -133,12 +135,12 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         binding.tvPrivacy.text = getString(R.string.register_privacy)+getString(R.string.register_privacy_policy)+getString(R.string.register_privacy_policy_promotions)
         binding.tvPrivacy.makeLinks(
             Pair(applicationContext.getString(R.string.register_privacy_policy), View.OnClickListener {
-                JumpUtil.toExternalWeb(this, Constants.getPrivacyRuleUrl(this))
+                JumpUtil.toInternalWeb(this,Constants.getPrivacyRuleUrl(this), resources.getString(R.string.privacy_policy))
             }))
         binding.tvAgreement.text = getString(R.string.register_over_21)+getString(R.string.app_name)+getString(R.string.register_rules)
         binding.tvAgreement.makeLinks(
             Pair(applicationContext.getString(R.string.register_rules), View.OnClickListener {
-                JumpUtil.toExternalWeb(this, Constants.getAgreementRuleUrl(this))
+                JumpUtil.toInternalWeb(this,Constants.getAgreementRuleUrl(this), resources.getString(R.string.terms_conditions))
             }))
     }
 

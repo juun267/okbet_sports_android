@@ -735,7 +735,7 @@
     <string name="total">Tổng cộng</string>
     <string name="verse">v</string>
     <string name="sum_pass">Cược xiên tổng hợp</string>
-    <string name="keyboard_done">hoàn thành</string>
+    <string name="keyboard_done">Tổng nhận</string>
     <string name="no_game_description">Chọn biểu tượng ở trên để thêm nó vào "Sự kiện của tôi". Bạn có thể chia nhóm chúng và dễ dàng truy cập vào tất cả các sự kiện mà bạn quan tâm.</string>
     <string name="odds_button_name_first">Thứ nhất</string>
     <string name="odds_button_name_ant">Bất kỳ</string>
@@ -931,4 +931,14 @@
     <string name="hint_e_address">Vui lòng nhập địa chỉ liên hệ</string>
     <string name="initial_withdrawal_needs_credited">Số tiền rút ban đầu cần được ghi có: %1$s nhân dân tệ.</string>
     <string name="make_sure_valid_account">Lần rút tiền ban đầu sẽ tạm thời giữ lại %1$s nhân dân tệ để đảm bảo rằng bạn là tài khoản hợp lệ. Số tiền này sẽ được hoàn trả sau 30 ngày.</string>
+    <string name="other_link">LIÊN KẾT HỮU DỤNG KH</string>
+    <string name="about_us">Về Chúng Tôi</string>
+    <string name="responsible">Chơi Có\nTrách Nhi</string>
+    <string name="terms_conditions">Điều Khoản\nVà Điều Kiện</string>
+    <string name="privacy_policy">Chính Sách\nBảo Mật</string>
+    <string name="help">CẦN TRỢ GIÚP?</string>
+    <string name="faqs">Câu Hỏi\nThường Gặp</string>
+    <string name="live_chat">Trò Chuyện\nTrực Tuyế</string>
+    <string name="contact">Liên Hệ</string>
+    <string name="btm_navigation_hint">%1$s is a Registered Trade Mark, brand and\nregistered business name.</string>
 </resources>
