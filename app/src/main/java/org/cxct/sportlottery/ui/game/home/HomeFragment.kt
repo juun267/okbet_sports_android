@@ -782,10 +782,11 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         receiver.serviceConnectStatus.observe(this.viewLifecycleOwner) {
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
+
 //                    queryData()
-//                    subscribeTableHallChannel(mSelectMatchType)
-//                    subscribeRecommendHallChannel()
-//                    subscribeHighlightHallChannel()
+                    subscribeTableHallChannel(mSelectMatchType)
+                    subscribeRecommendHallChannel()
+                    subscribeHighlightHallChannel()
                 }
             }
         }
@@ -973,11 +974,8 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         receiver.producerUp.observe(this.viewLifecycleOwner) {
             it?.let {
                 unSubscribeChannelHallAll()
-
                 subscribeTableHallChannel(mSelectMatchType)
-
                 subscribeRecommendHallChannel()
-
                 subscribeHighlightHallChannel()
             }
         }
