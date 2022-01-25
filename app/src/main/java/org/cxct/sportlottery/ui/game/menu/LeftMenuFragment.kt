@@ -137,6 +137,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog?.window?.setWindowAnimations(R.style.LeftMenu)
+        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent);
         initObserve()
         initRecyclerView()
         initButton()
@@ -154,147 +155,229 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
 
     private fun initData(list: List<SportMenu>) {
         unselectedList.clear()
+        var game = ""
+        val selectGame = viewModel.curMatchType.value
+        selectGame.let {
+            if(it != null){
+                game = viewModel.getSportSelectedCode(it) ?: ""
+            }
+        }
+
         list.forEach {
+            val matchType = viewModel.sportMenuList.value?.peekContent()
+                ?.find { matchType -> matchType.gameType.key == it.gameType.key }?.entranceType
+
             when (it.gameType) {
                 GameType.VB -> {
-                    unselectedList.add(
-                        MenuItemData(
-                            R.drawable.selector_left_menu_ball_vb,
-                            getString(R.string.volleyball),
-                            GameType.VB.key,
-                            0
+                    if(it.gameCount > 0 && matchType != null){
+                        unselectedList.add(
+                            MenuItemData(
+                                R.drawable.img_volleyball,
+                                getString(R.string.volleyball),
+                                GameType.VB.key,
+                                0,
+                                it.gameCount,
+                                game == GameType.VB.key
+                            )
                         )
-                    )
+                    }
                 }
                 GameType.TN -> {
-                    unselectedList.add(
-                        MenuItemData(
-                            R.drawable.selector_left_menu_ball_tn,
-                            getString(R.string.tennis),
-                            GameType.TN.key,
-                            0
+                    if(it.gameCount > 0 && matchType != null){
+                        unselectedList.add(
+                            MenuItemData(
+                                R.drawable.img_tennis,
+                                getString(R.string.tennis),
+                                GameType.TN.key,
+                                0,
+                                it.gameCount,
+                                game == GameType.TN.key
+                            )
                         )
-                    )
+                    }
                 }
                 GameType.BK -> {
-                    unselectedList.add(
-                        MenuItemData(
-                            R.drawable.selector_left_menu_ball_bk,
-                            getString(R.string.basketball),
-                            GameType.BK.key,
-                            0
+                    if(it.gameCount > 0 && matchType != null){
+                        unselectedList.add(
+                            MenuItemData(
+                                R.drawable.img_basketball,
+                                getString(R.string.basketball),
+                                GameType.BK.key,
+                                0,
+                                it.gameCount,
+                                game == GameType.BK.key
+                            )
                         )
-                    )
+                    }
                 }
                 GameType.FT -> {
-                    unselectedList.add(
-                        MenuItemData(
-                            R.drawable.selector_left_menu_ball_ft,
-                            getString(R.string.soccer),
-                            GameType.FT.key,
-                            0
+                    if(it.gameCount > 0 && matchType != null){
+                        unselectedList.add(
+                            MenuItemData(
+                                R.drawable.img_soccer,
+                                getString(R.string.soccer),
+                                GameType.FT.key,
+                                0,
+                                it.gameCount,
+                                game == GameType.FT.key
+                            )
                         )
-                    )
+                    }
                 }
 
                 GameType.BM -> {
-                    unselectedList.add(
-                        MenuItemData(
-                            R.drawable.selector_left_menu_ball_bm,
-                            getString(R.string.badminton),
-                            GameType.BM.key, 0
+                    if(it.gameCount > 0 && matchType != null){
+                        unselectedList.add(
+                            MenuItemData(
+                                R.drawable.img_badminton,
+                                getString(R.string.badminton),
+                                GameType.BM.key,
+                                0,
+                                it.gameCount,
+                                game == GameType.BM.key
+                            )
                         )
-                    )
+                    }
                 }
                 GameType.TT -> {
-                    unselectedList.add(
-                        MenuItemData(
-                            R.drawable.selector_left_menu_ball_pp,
-                            getString(R.string.ping_pong),
-                            GameType.TT.key, 0
+                    if(it.gameCount > 0 && matchType != null){
+                        unselectedList.add(
+                            MenuItemData(
+                                R.drawable.img_pingpong,
+                                getString(R.string.ping_pong),
+                                GameType.TT.key,
+                                0,
+                                it.gameCount,
+                                game == GameType.TT.key
+                            )
                         )
-                    )
+                    }
                 }
                 GameType.IH -> {
-                    unselectedList.add(
-                        MenuItemData(
-                            R.drawable.selector_left_menu_ball_ih,
-                            getString(R.string.ice_hockey),
-                            GameType.IH.key, 0
+                    if(it.gameCount > 0 && matchType != null){
+                        unselectedList.add(
+                            MenuItemData(
+                                R.drawable.img_icehockey,
+                                getString(R.string.ice_hockey),
+                                GameType.IH.key,
+                                0,
+                                it.gameCount,
+                                game == GameType.IH.key
+                            )
                         )
-                    )
+                    }
                 }
                 GameType.BX -> {
-                    unselectedList.add(
-                        MenuItemData(
-                            R.drawable.selector_left_menu_ball_bx,
-                            getString(R.string.boxing),
-                            GameType.BX.key, 0
+                    if(it.gameCount > 0 && matchType != null){
+                        unselectedList.add(
+                            MenuItemData(
+                                R.drawable.img_boxing,
+                                getString(R.string.boxing),
+                                GameType.BX.key,
+                                0,
+                                it.gameCount,
+                                game == GameType.BX.key
+                            )
                         )
-                    )
+                    }
                 }
                 GameType.CB -> {
-                    unselectedList.add(
-                        MenuItemData(
-                            R.drawable.selector_left_menu_ball_cb,
-                            getString(R.string.cue_ball),
-                            GameType.CB.key, 0
+                    if(it.gameCount > 0 && matchType != null){
+                        unselectedList.add(
+                            MenuItemData(
+                                R.drawable.img_snooker,
+                                getString(R.string.cue_ball),
+                                GameType.CB.key,
+                                0,
+                                it.gameCount,
+                                game == GameType.CB.key
+                            )
                         )
-                    )
+                    }
                 }
                 GameType.CK -> {
-                    unselectedList.add(
-                        MenuItemData(
-                            R.drawable.selector_left_menu_ball_ck,
-                            getString(R.string.cricket),
-                            GameType.CK.key, 0
+                    if(it.gameCount > 0 && matchType != null){
+                        unselectedList.add(
+                            MenuItemData(
+                                R.drawable.img_cricket,
+                                getString(R.string.cricket),
+                                GameType.CK.key,
+                                0,
+                                it.gameCount,
+                                game == GameType.CK.key
+                            )
                         )
-                    )
+                    }
                 }
                 GameType.BB -> {
-                    unselectedList.add(
-                        MenuItemData(
-                            R.drawable.selector_left_menu_ball_bb,
-                            getString(R.string.baseball),
-                            GameType.BB.key, 0
+                    if(it.gameCount > 0 && matchType != null){
+                        unselectedList.add(
+                            MenuItemData(
+                                R.drawable.img_baseball,
+                                getString(R.string.baseball),
+                                GameType.BB.key,
+                                0,
+                                it.gameCount,
+                                game == GameType.BB.key
+                            )
                         )
-                    )
+                    }
                 }
                 GameType.RB -> {
-                    unselectedList.add(
-                        MenuItemData(
-                            R.drawable.selector_left_menu_ball_rb,
-                            getString(R.string.rugby_football),
-                            GameType.RB.key, 0
+                    if(it.gameCount > 0 && matchType != null){
+                        unselectedList.add(
+                            MenuItemData(
+                                R.drawable.img_rugby,
+                                getString(R.string.rugby_football),
+                                GameType.RB.key,
+                                0,
+                                it.gameCount,
+                                game == GameType.RB.key
+                            )
                         )
-                    )
+                    }
                 }
                 GameType.AFT -> {
-                    unselectedList.add(
-                        MenuItemData(
-                            R.drawable.selector_left_menu_ball_aft,
-                            getString(R.string.america_football),
-                            GameType.AFT.key, 0
+                    if(it.gameCount > 0 && matchType != null){
+                        unselectedList.add(
+                            MenuItemData(
+                                R.drawable.img_amfootball,
+                                getString(R.string.america_football),
+                                GameType.AFT.key,
+                                0,
+                                it.gameCount,
+                                game == GameType.AFT.key
+                            )
                         )
-                    )
+                    }
                 }
                 GameType.MR -> {
-                    unselectedList.add(
-                        MenuItemData(
-                            R.drawable.selector_left_menu_ball_mr,
-                            getString(R.string.motor_racing),
-                            GameType.MR.key, 0
+                    if(it.gameCount > 0 && matchType != null){
+                        unselectedList.add(
+                            MenuItemData(
+                                R.drawable.img_racing,
+                                getString(R.string.motor_racing),
+                                GameType.MR.key,
+                                0,
+                                it.gameCount,
+                                game == GameType.MR.key
+                            )
                         )
-                    )
+                    }
                 }
                 GameType.GF -> {
-                    unselectedList.add(
-                        MenuItemData(
-                            R.drawable.selector_left_menu_ball_gf,
-                            getString(R.string.golf),
-                            GameType.GF.key, 0
+                    if(it.gameCount > 0 && matchType != null){
+                        unselectedList.add(
+                            MenuItemData(
+                                R.drawable.img_golf,
+                                getString(R.string.golf),
+                                GameType.GF.key,
+                                0,
+                                it.gameCount,
+                                game == GameType.GF.key
+                            )
                         )
-                    )
+                    }
                 }
             }
         }
@@ -310,7 +393,9 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                         0,
                         sportCouponMenuData.couponName,
                         sportCouponMenuData.couponCode,
-                        0
+                        0,
+                        0,
+                        false
                     )
                     specialList.add(list)
                 }
@@ -469,7 +554,6 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
     }
 
     private fun initRecyclerView() {
-
         rv_menu.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = newAdapter
