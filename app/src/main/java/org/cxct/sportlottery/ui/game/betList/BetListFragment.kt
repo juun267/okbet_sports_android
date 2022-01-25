@@ -468,10 +468,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         //串關列表
         viewModel.parlayList.observe(this.viewLifecycleOwner) {
-            if(it.size == 0){
+            if (it.size == 0) {
                 betListRefactorAdapter?.hasParlayList = false
                 betListRefactorAdapter?.parlayList = singleParlayList
-            }else{
+            } else {
                 betListRefactorAdapter?.hasParlayList = true
                 betListRefactorAdapter?.parlayList = it
             }

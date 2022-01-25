@@ -78,7 +78,15 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
                     matchOdd?.playName,
                     matchOdd?.spread,
                     TextUtil.formatForOdd(getOdds(matchOdd, oddsType ?: OddsType.EU)),
-                    tv_play_content.context.getString(currentOddsTypes?.res ?: OddsType.EU.res)
+                    tv_play_content.context.getString(matchOdd?.let { matchOdd ->
+                        currentOddsTypes?.let { currentOddsTypes ->
+                            getOddTypeRes(
+                                matchOdd,
+                                currentOddsTypes
+                            )
+                        }
+                    }
+                        ?: OddsType.EU.res)
                 )
             }
         }

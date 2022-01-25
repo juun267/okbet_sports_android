@@ -44,8 +44,13 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         set(value) {
             field = value
             //判斷是否有注單封盤
+
             hasBetClosed =
                 value?.find { it.matchOdd.status != BetStatus.ACTIVATED.code || it.pointMarked } != null
+
+            hasBetClosedForSingle =
+                value?.find { it.matchOdd.status != BetStatus.ACTIVATED.code } != null
+
             notifyDataSetChanged()
         }
     var oddsType: OddsType = OddsType.EU
@@ -77,6 +82,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         }
 
     var hasBetClosed: Boolean = false
+    var hasBetClosedForSingle: Boolean = false
 
     var hasParlayList: Boolean = false
 
@@ -161,7 +167,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     mSelectedPosition,
                     mBetView,
                     onSelectedPositionListener,
-                    position
+                    position,
+                    hasBetClosedForSingle
                 )
             }
             is BatchParlayConnectViewHolder -> {
@@ -397,6 +404,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         BetViewType.SINGLE
                     )
                 }
+
+                cl_item_background.setOnClickListener {
+                    onItemClickListener.onHideKeyBoard()
+                }
             }
         }
 
@@ -433,10 +444,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 val nameOneLine = { inputStr: String ->
                     inputStr.replace("\n", "-")
                 }
+
+                val inPlay = System.currentTimeMillis() > itemData.matchOdd.startTime ?: 0
                 when {
                     itemData.betPlayCateNameMap.isNullOrEmpty() -> {
-                        tv_name.text = when (itemData.matchOdd.inplay) {
-                            INPLAY -> {
+                        tv_name.text = when (inPlay) {
+                            true -> {
                                 context.getString(
                                     R.string.bet_info_in_play_score,
                                     itemData.matchOdd.playCateName,
@@ -449,12 +462,15 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     }
 
                     else -> {
-                        tv_name.text = when (itemData.matchOdd.inplay) {
-                            INPLAY -> {
-                                "${
+                        tv_name.text = when (inPlay) {
+                            true -> {
+                                context.getString(
+                                    R.string.bet_info_in_play_score,
                                     itemData.betPlayCateNameMap?.get(itemData.matchOdd.playCode)
-                                        ?.get(LanguageManager.getSelectLanguage(context).key) ?: ""
-                                }  (${itemData.matchOdd.homeScore} - ${itemData.matchOdd.awayScore})"
+                                        ?.get(LanguageManager.getSelectLanguage(context).key) ?: "",
+                                    itemData.matchOdd.homeScore.toString(),
+                                    itemData.matchOdd.awayScore.toString()
+                                )
                             }
                             else -> nameOneLine(
                                 itemData.betPlayCateNameMap?.get(itemData.matchOdd.playCode)
@@ -666,7 +682,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             mSelectedPosition: Int,
             mBetView: BetViewType,
             onSelectedPositionListener: OnSelectedPositionListener,
-            position: Int
+            position: Int,
+            hasBetClosedForSingle: Boolean
         ) {
             itemView.apply {
                 when (parlayListSize) {
@@ -699,7 +716,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             mSelectedPosition,
                             mBetView,
                             onSelectedPositionListener,
-                            position
+                            position,
+                            hasBetClosedForSingle
                         )
                     }
                     else -> {
@@ -726,7 +744,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             mSelectedPosition,
                             mBetView,
                             onSelectedPositionListener,
-                            position
+                            position,
+                            hasBetClosedForSingle
                         )
 
                         setupClickMoreItem(
@@ -749,10 +768,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             mSelectedPosition: Int,
             mBetView: BetViewType,
             onSelectedPositionListener: OnSelectedPositionListener,
-            position: Int
+            position: Int,
+            hasBetClosed: Boolean,
         ) {
             itemView.item_first_single.apply {
-                et_bet.apply {
+
+                et_bet_single.apply {
                     if (tag is TextWatcher) {
                         removeTextChangedListener(tag as TextWatcher)
                     }
@@ -760,7 +781,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     filters = arrayOf(MoneyInputFilter())
                 }
 
-                if (et_bet.text.isNullOrEmpty())
+                if (et_bet_single.text.isNullOrEmpty())
                     ll_winnable.visibility = View.VISIBLE
                 else
                     ll_winnable.visibility = View.VISIBLE
@@ -777,14 +798,14 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         betList
                     )
                 )
-                et_bet.apply {
+                et_bet_single.apply {
                     //init bet amount value
                     val maxAmount = getMaxOrMinAmount(isGetMax = true, betList)
                     val minAmount = getMaxOrMinAmount(isGetMax = false, betList)
                     hint = getAllSingleMinMaxHint(context, maxAmount, minAmount)
 
                     setText(initValue)
-                    et_bet.setSelection(et_bet.text.length)
+                    et_bet_single.setSelection(et_bet_single.text.length)
 
                     /* set listener */
                     val tw: TextWatcher?
@@ -794,13 +815,14 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                 if (it.isNullOrEmpty()) 0.0 else it.toString().toDouble()
                             itemData?.allSingleInput =
                                 if (it.isNullOrEmpty()) null else it.toString()
-                            val allWinnableAmount = getAllSingleWinnableAmount(inputValue, currentOddsType, betList)
+                            val allWinnableAmount =
+                                getAllSingleWinnableAmount(inputValue, currentOddsType, betList)
 
                             val maxAmount = getMaxOrMinAmount(isGetMax = true, betList)
 
                             maxAmount.let { max ->
                                 if (inputValue > max) {
-                                    et_bet.apply {
+                                    et_bet_single.apply {
                                         setText(TextUtil.formatInputMoney(max))
                                         setSelection(text.length)
                                     }
@@ -861,18 +883,41 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     addTextChangedListener(tw)
                     tag = tw
                 }
-                et_bet.isSelected =
+                et_bet_single.isSelected =
                     mSelectedPosition == bindingAdapterPosition && mBetView == BetViewType.SINGLE
 
                 et_container.setOnClickListener {
-                    et_bet.isFocusable = true
-                    et_bet.setSelection(et_bet.text.length)
-                    onItemClickListener.onShowParlayKeyboard(et_bet, itemData, position)
+                    et_bet_single.isFocusable = true
+                    et_bet_single.setSelection(et_bet_single.text.length)
+                    onItemClickListener.onShowParlayKeyboard(et_bet_single, itemData, position)
                     onSelectedPositionListener.onSelectChange(
                         bindingAdapterPosition,
                         BetViewType.SINGLE
                     )
                 }
+
+                item_first_single.setOnClickListener {
+                    onItemClickListener.onHideKeyBoard()
+                }
+
+                setupItemEnable(hasBetClosed)
+            }
+        }
+
+        private fun setupItemEnable(hasBetClosed: Boolean) {
+            itemView.apply {
+                iv_bet_lock_single.visibility = if (hasBetClosed) View.VISIBLE else View.GONE
+
+                ll_winnable.visibility = if (hasBetClosed) View.GONE else View.VISIBLE
+
+                et_bet_single.apply {
+                    isEnabled = !hasBetClosed
+                    isFocusable = !hasBetClosed
+                    isFocusableInTouchMode = !hasBetClosed
+                    filters = arrayOf(MoneyInputFilter())
+                }
+
+                et_container.isEnabled = !hasBetClosed //EditText的click事件
             }
         }
 
@@ -903,19 +948,22 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             )
         }
 
-        private fun getMaxOrMinAmount(isGetMax: Boolean, betList: MutableList<BetInfoListData>): Long{
+        private fun getMaxOrMinAmount(
+            isGetMax: Boolean,
+            betList: MutableList<BetInfoListData>
+        ): Long {
             var min = betList.first().parlayOdds?.min ?: 0
             var max = betList.first().parlayOdds?.max ?: 99999999
-            betList.forEach{
-                if(it.parlayOdds?.min ?: 0 > min){
+            betList.forEach {
+                if (it.parlayOdds?.min ?: 0 > min) {
                     min = it.parlayOdds?.min ?: 0
                 }
-                if(it.parlayOdds?.max ?: 0 < max){
+                if (it.parlayOdds?.max ?: 0 < max) {
                     max = it.parlayOdds?.max ?: 99999999
                 }
             }
 
-            return when(isGetMax){
+            return when (isGetMax) {
                 true -> max.toLong()
                 else -> min.toLong()
             }
