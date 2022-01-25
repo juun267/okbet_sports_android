@@ -537,6 +537,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             )
 
             viewModel.getMatchCategoryQuery(args.matchType)
+            subscribeSportChannelHall()
         }
         loading()
     }
@@ -1350,7 +1351,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 game_toolbar_sport_type.text = item?.name ?: resources.getString(GameType.FT.string)
                     .toUpperCase(Locale.getDefault())
                 updateSportBackground(item)
-                subscribeSportChannelHall(item?.code)
+//                subscribeSportChannelHall(item?.code)//12/30 移除平台id与gameType後，切換SportType就不用重新訂閱了，不然會造成畫面一直閃爍 by Bill
             }
         }
 
