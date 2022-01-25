@@ -335,6 +335,7 @@
         android:drawablePadding="6dp"
         android:textColor="@color/colorGray"
         android:textSize="@dimen/textSize12sp"
+        android:textStyle="bold"
         app:drawableRightCompat="@drawable/ic_iconarrow"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/iv_play"
