@@ -801,6 +801,57 @@ class GameViewModel(
         filterLeague(listOf())
     }
 
+    //自動選取第一個有賽事的球種
+    private fun switchFirstSportType(matchType: MatchType) {
+        when (matchType) {
+            MatchType.IN_PLAY -> {
+                switchSportType(
+                    matchType,
+                    sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.first()?.code.toString()
+                )
+            }
+            MatchType.TODAY -> {
+                switchSportType(
+                    matchType,
+                    sportMenuResult.value?.sportMenuData?.menu?.today?.items?.first()?.code.toString()
+                )
+            }
+            MatchType.EARLY -> {
+                switchSportType(
+                    matchType,
+                    sportMenuResult.value?.sportMenuData?.menu?.early?.items?.first()?.code.toString()
+                )
+            }
+            MatchType.PARLAY -> {
+                switchSportType(
+                    matchType,
+                    sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.first()?.code.toString()
+                )
+            }
+            MatchType.OUTRIGHT -> {
+                switchSportType(
+                    matchType,
+                    sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.first()?.code.toString()
+                )
+            }
+            MatchType.AT_START -> {
+                switchSportType(
+                    matchType,
+                    sportMenuResult.value?.sportMenuData?.atStart?.items?.first()?.code.toString()
+                )
+            }
+            MatchType.EPS -> {
+                switchSportType(
+                    matchType,
+                    sportMenuResult.value?.sportMenuData?.menu?.eps?.items?.first()?.code.toString()
+                )
+            }
+            else -> {
+
+            }
+        }
+    }
+
     fun switchSportType(matchType: MatchType, gameType: String) {
         if (matchType == MatchType.OTHER) {
             specialMenuData?.updateSportSelectState(gameType)
