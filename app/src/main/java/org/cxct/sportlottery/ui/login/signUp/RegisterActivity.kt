@@ -25,13 +25,15 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.util.BitmapUtil
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.ToastUtil
 import java.util.*
 
-class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::class) ,View.OnClickListener{
+class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::class),
+    View.OnClickListener {
 
     private var mSmsTimer: Timer? = null
     private lateinit var binding: ActivityRegisterBinding
@@ -39,18 +41,30 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     override fun onClick(v: View?) {
         when (v) {
             binding.ivReturn -> {
-               updateValidCode()
+                updateValidCode()
             }
             binding.tvDuty -> {
-                JumpUtil.toInternalWeb(this,Constants.getDutyRuleUrl(this), resources.getString(R.string.responsible))
+                JumpUtil.toInternalWeb(
+                    this,
+                    Constants.getDutyRuleUrl(this),
+                    resources.getString(R.string.responsible)
+                )
 
             }
             binding.tvPrivacy -> {
-                JumpUtil.toInternalWeb(this,Constants.getPrivacyRuleUrl(this), resources.getString(R.string.privacy_policy))
+                JumpUtil.toInternalWeb(
+                    this,
+                    Constants.getPrivacyRuleUrl(this),
+                    resources.getString(R.string.privacy_policy)
+                )
 
             }
             binding.tvAgreement -> {
-                JumpUtil.toInternalWeb(this,Constants.getAgreementRuleUrl(this), resources.getString(R.string.terms_conditions))
+                JumpUtil.toInternalWeb(
+                    this,
+                    Constants.getAgreementRuleUrl(this),
+                    resources.getString(R.string.terms_conditions)
+                )
             }
 
         }
@@ -82,31 +96,37 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         binding.apply {
             etLoginPassword.endIconImageButton.setOnClickListener {
                 if (etLoginPassword.endIconResourceId == R.drawable.ic_eye_open) {
-                    eetLoginPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                    eetLoginPassword.transformationMethod =
+                        PasswordTransformationMethod.getInstance()
                     etLoginPassword.setEndIcon(R.drawable.ic_eye_close)
                 } else {
                     etLoginPassword.setEndIcon(R.drawable.ic_eye_open)
-                    eetLoginPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                    eetLoginPassword.transformationMethod =
+                        HideReturnsTransformationMethod.getInstance()
                 }
                 eetLoginPassword.setSelection(eetLoginPassword.text.toString().length)
             }
             etConfirmPassword.endIconImageButton.setOnClickListener {
                 if (etConfirmPassword.endIconResourceId == R.drawable.ic_eye_open) {
-                    eetConfirmPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                    eetConfirmPassword.transformationMethod =
+                        PasswordTransformationMethod.getInstance()
                     etConfirmPassword.setEndIcon(R.drawable.ic_eye_close)
                 } else {
                     etConfirmPassword.setEndIcon(R.drawable.ic_eye_open)
-                    eetConfirmPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                    eetConfirmPassword.transformationMethod =
+                        HideReturnsTransformationMethod.getInstance()
                 }
                 eetConfirmPassword.setSelection(eetConfirmPassword.text.toString().length)
             }
             etWithdrawalPwd.endIconImageButton.setOnClickListener {
                 if (etWithdrawalPwd.endIconResourceId == R.drawable.ic_eye_open) {
-                    eetWithdrawalPwd.transformationMethod = PasswordTransformationMethod.getInstance()
+                    eetWithdrawalPwd.transformationMethod =
+                        PasswordTransformationMethod.getInstance()
                     etWithdrawalPwd.setEndIcon(R.drawable.ic_eye_close)
                 } else {
                     etWithdrawalPwd.setEndIcon(R.drawable.ic_eye_open)
-                    eetWithdrawalPwd.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                    eetWithdrawalPwd.transformationMethod =
+                        HideReturnsTransformationMethod.getInstance()
                 }
                 eetWithdrawalPwd.setSelection(eetWithdrawalPwd.text.toString().length)
             }
@@ -114,18 +134,33 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
         binding.ivReturn.setOnClickListener(this)
         binding.tvDuty.setOnClickListener(this)
-        binding.tvPrivacy.text = getString(R.string.register_privacy)+getString(R.string.register_privacy_policy)+getString(R.string.register_privacy_policy_promotions)
+        binding.tvPrivacy.text =
+            getString(R.string.register_privacy) + getString(R.string.register_privacy_policy) + getString(
+                R.string.register_privacy_policy_promotions
+            )
         binding.tvPrivacy.makeLinks(
-            Pair(applicationContext.getString(R.string.register_privacy_policy), View.OnClickListener {
-                JumpUtil.toInternalWeb(this,Constants.getPrivacyRuleUrl(this), resources.getString(R.string.privacy_policy))
-            }))
-        binding.tvAgreement.text = getString(R.string.register_over_21)+getString(R.string.app_name)+getString(R.string.register_rules)
+            Pair(
+                applicationContext.getString(R.string.register_privacy_policy),
+                View.OnClickListener {
+                    JumpUtil.toInternalWeb(
+                        this,
+                        Constants.getPrivacyRuleUrl(this),
+                        resources.getString(R.string.privacy_policy)
+                    )
+                })
+        )
+        binding.tvAgreement.text =
+            getString(R.string.register_over_21) + getString(R.string.app_name) + getString(R.string.register_rules)
         binding.tvAgreement.makeLinks(
             Pair(applicationContext.getString(R.string.register_rules), View.OnClickListener {
-                JumpUtil.toInternalWeb(this,Constants.getAgreementRuleUrl(this), resources.getString(R.string.terms_conditions))
-            }))
+                JumpUtil.toInternalWeb(
+                    this,
+                    Constants.getAgreementRuleUrl(this),
+                    resources.getString(R.string.terms_conditions)
+                )
+            })
+        )
     }
-
 
     override fun onDestroy() {
         super.onDestroy()
@@ -137,50 +172,60 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun setupFullName() {
-        binding.etFullName.visibility = if (sConfigData?.enableFullName == FLAG_OPEN) View.VISIBLE else View.GONE
+        binding.etFullName.visibility =
+            if (sConfigData?.enableFullName == FLAG_OPEN) View.VISIBLE else View.GONE
     }
 
     private fun setupWithdrawalPassword() {
-        binding.etWithdrawalPwd.visibility = if (sConfigData?.enableFundPwd == FLAG_OPEN) View.VISIBLE else View.GONE
+        binding.etWithdrawalPwd.visibility =
+            if (sConfigData?.enableFundPwd == FLAG_OPEN) View.VISIBLE else View.GONE
 
     }
 
     private fun setupQQ() {
-        binding.etQq.visibility = if (sConfigData?.enableQQ == FLAG_OPEN) View.VISIBLE else View.GONE
+        binding.etQq.visibility =
+            if (sConfigData?.enableQQ == FLAG_OPEN) View.VISIBLE else View.GONE
 
     }
 
     private fun setupPhone() {
-        binding.etPhone.visibility = if (sConfigData?.enablePhone == FLAG_OPEN) View.VISIBLE else View.GONE
+        binding.etPhone.visibility =
+            if (sConfigData?.enablePhone == FLAG_OPEN) View.VISIBLE else View.GONE
 
     }
 
     private fun setupMail() {
-        binding.etMail.visibility = if (sConfigData?.enableEmail == FLAG_OPEN) View.VISIBLE else View.GONE
+        binding.etMail.visibility =
+            if (sConfigData?.enableEmail == FLAG_OPEN) View.VISIBLE else View.GONE
 
     }
 
     private fun setupWeChat() {
-        binding.etWeChat.visibility = if (sConfigData?.enableWechat == FLAG_OPEN) View.VISIBLE else View.GONE
+        binding.etWeChat.visibility =
+            if (sConfigData?.enableWechat == FLAG_OPEN) View.VISIBLE else View.GONE
 
     }
 
     private fun setupZalo() {
-        binding.etZalo.visibility = if (sConfigData?.enableZalo == FLAG_OPEN) View.VISIBLE else View.GONE
+        binding.etZalo.visibility =
+            if (sConfigData?.enableZalo == FLAG_OPEN) View.VISIBLE else View.GONE
 
     }
 
     private fun setupFacebook() {
-        binding.etFacebook.visibility = if (sConfigData?.enableFacebook == FLAG_OPEN) View.VISIBLE else View.GONE
+        binding.etFacebook.visibility =
+            if (sConfigData?.enableFacebook == FLAG_OPEN) View.VISIBLE else View.GONE
     }
 
     private fun setupWhatsApp() {
-        binding.etWhatsApp.visibility = if (sConfigData?.enableWhatsApp == FLAG_OPEN) View.VISIBLE else View.GONE
+        binding.etWhatsApp.visibility =
+            if (sConfigData?.enableWhatsApp == FLAG_OPEN) View.VISIBLE else View.GONE
 
     }
 
     private fun setupTelegram() {
-        binding.etTelegram.visibility = if (sConfigData?.enableTelegram == FLAG_OPEN) View.VISIBLE else View.GONE
+        binding.etTelegram.visibility =
+            if (sConfigData?.enableTelegram == FLAG_OPEN) View.VISIBLE else View.GONE
 
     }
 
@@ -214,48 +259,128 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             viewModel.checkAgreement(binding.cbAgreement.isChecked)
         }
     }
+/*
+
+    private val inviteCode by lazy { binding.eetRecommendCode.text.toString()}
+    private val userName by lazy { binding.eetMemberAccount.text.toString()}
+    private val loginPassword by lazy { binding.eetLoginPassword.text.toString()}
+    private val confirmPassword by lazy { binding.eetConfirmPassword.text.toString()}
+    private val fullName by lazy { binding.eetFullName.text.toString()}
+    private val fundPwd by lazy { binding.eetWithdrawalPwd.text.toString()}
+    private val qq by lazy { binding.eetQq.text.toString()}
+    private val phone by lazy { binding.eetPhone.text.toString()}
+    private val email by lazy { binding.eetMail.text.toString()}
+    private val weChat by lazy { binding.eetWeChat.text.toString()}
+    private val zalo by lazy { binding.eetZalo.text.toString()}
+    private val facebook by lazy { binding.eetFacebook.text.toString()}
+    private val whatsApp by lazy { binding.eetWhatsApp.text.toString()}
+    private val telegram by lazy { binding.eetTelegram.text.toString()}
+    private val smsCode by lazy { binding.eetSmsValidCode.text.toString()}
+    private val validCode by lazy { binding.eetVerificationCode.text.toString()}
+    private val agreementChecked by lazy { binding.cbAgreement.isChecked }
+*/
+
+    private fun btnRegisterEnable() {
+        binding.apply {
+            btnRegister.isEnabled = viewModel.checkAllInput(
+                eetRecommendCode.text.toString(),
+                eetMemberAccount.text.toString(),
+                eetLoginPassword.text.toString(),
+                eetConfirmPassword.text.toString(),
+                eetFullName.text.toString(),
+                eetWithdrawalPwd.text.toString(),
+                eetQq.text.toString(),
+                eetPhone.text.toString(),
+                eetMail.text.toString(),
+                eetWeChat.text.toString(),
+                eetZalo.text.toString(),
+                eetFacebook.text.toString(),
+                eetWhatsApp.text.toString(),
+                eetTelegram.text.toString(),
+                eetSmsValidCode.text.toString(),
+                eetVerificationCode.text.toString(),
+                cbAgreement.isChecked
+            )
+        }
+    }
 
     private fun setupRegisterButton() {
-        binding.btnRegister.setOnClickListener {
-            val inviteCode = binding.eetRecommendCode.text.toString()
-            val userName = binding.eetMemberAccount.text.toString()
-            val loginPassword = binding.eetLoginPassword.text.toString()
-            val confirmPassword = binding.eetConfirmPassword.text.toString()
-            val fullName = binding.eetFullName.text.toString()
-            val fundPwd = binding.eetWithdrawalPwd.text.toString()
-            val qq = binding.eetQq.text.toString()
-            val phone = binding.eetPhone.text.toString()
-            val email = binding.eetMail.text.toString()
-            val weChat = binding.eetWeChat.text.toString()
-            val zalo = binding.eetZalo.text.toString()
-            val facebook = binding.eetFacebook.text.toString()
-            val whatsApp = binding.eetWhatsApp.text.toString()
-            val telegram = binding.eetTelegram.text.toString()
-            val smsCode = binding.eetSmsValidCode.text.toString()
-            val validCode = binding.eetVerificationCode.text.toString()
-            val agreementChecked = binding.cbAgreement.isChecked
-            val deviceSn = JPushInterface.getRegistrationID(applicationContext)
 
-            viewModel.registerSubmit(
-                inviteCode,
-                userName,
-                loginPassword,
-                confirmPassword,
-                fullName,
-                fundPwd,
-                qq,
-                phone,
-                email,
-                weChat,
-                zalo,
-                facebook,
-                whatsApp,
-                telegram,
-                smsCode,
-                validCode,
-                agreementChecked,
-                deviceSn
-            )
+        binding.apply {
+            eetRecommendCode.afterTextChanged {
+                btnRegisterEnable()
+            }
+            eetMemberAccount.afterTextChanged {
+                btnRegisterEnable()
+            }
+            eetConfirmPassword.afterTextChanged {
+                btnRegisterEnable()
+            }
+            eetFullName.afterTextChanged {
+                btnRegisterEnable()
+            }
+            eetWithdrawalPwd.afterTextChanged {
+                btnRegisterEnable()
+            }
+            eetQq.afterTextChanged {
+                btnRegisterEnable()
+            }
+            eetPhone.afterTextChanged {
+                btnRegisterEnable()
+            }
+            eetMail.afterTextChanged {
+                btnRegisterEnable()
+            }
+            eetWeChat.afterTextChanged {
+                btnRegisterEnable()
+            }
+            eetZalo.afterTextChanged {
+                btnRegisterEnable()
+            }
+            eetFacebook.afterTextChanged {
+                btnRegisterEnable()
+            }
+            eetWhatsApp.afterTextChanged {
+                btnRegisterEnable()
+            }
+            eetTelegram.afterTextChanged {
+                btnRegisterEnable()
+            }
+            eetSmsValidCode.afterTextChanged {
+                btnRegisterEnable()
+            }
+            eetVerificationCode.afterTextChanged {
+                btnRegisterEnable()
+            }
+            cbAgreement.setOnCheckedChangeListener { _, _ ->
+                btnRegisterEnable()
+            }
+        }
+
+        binding.btnRegister.setOnClickListener {
+            val deviceSn = JPushInterface.getRegistrationID(applicationContext)
+            binding.apply {
+                viewModel.registerSubmit(
+                    eetRecommendCode.text.toString(),
+                    eetMemberAccount.text.toString(),
+                    eetLoginPassword.text.toString(),
+                    eetConfirmPassword.text.toString(),
+                    eetFullName.text.toString(),
+                    eetWithdrawalPwd.text.toString(),
+                    eetQq.text.toString(),
+                    eetPhone.text.toString(),
+                    eetMail.text.toString(),
+                    eetWeChat.text.toString(),
+                    eetZalo.text.toString(),
+                    eetFacebook.text.toString(),
+                    eetWhatsApp.text.toString(),
+                    eetTelegram.text.toString(),
+                    eetSmsValidCode.text.toString(),
+                    eetVerificationCode.text.toString(),
+                    cbAgreement.isChecked,
+                    deviceSn
+                )
+            }
         }
     }
 
@@ -473,7 +598,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 }
             }
             startIndexOfLink = this.text.toString().indexOf(link.first, startIndexOfLink + 1)
-            if(startIndexOfLink == -1) continue // todo if you want to verify your texts contains links text
+            if (startIndexOfLink == -1) continue // todo if you want to verify your texts contains links text
             spannableString.setSpan(
                 clickableSpan, startIndexOfLink, startIndexOfLink + link.first.length,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
