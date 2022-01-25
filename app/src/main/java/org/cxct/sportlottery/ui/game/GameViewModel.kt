@@ -1075,7 +1075,7 @@ class GameViewModel(
                 timeRangeParams,
                 leagueIdList,
                 matchIdList,
-                true
+                false
             )
         }
     }
