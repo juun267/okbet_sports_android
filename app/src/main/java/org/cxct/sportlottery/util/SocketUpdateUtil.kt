@@ -90,15 +90,10 @@ object SocketUpdateUtil {
             }
             //matchStatusChange status = 100時，賽事結束
             if (matchStatusCO.status == GameMatchStatus.FINISH.value) {
-                matchOddList.forEachIndexed lit@{ index, matchOdd ->
-                    if(matchOdd.matchInfo?.id == matchStatusCO.matchId){
-                        removeIndex = index
-                        return@lit
-                    }
-                    isNeedRefresh = true
-                }
+                val endGameList = matchOddList.find { it.matchInfo?.id == matchStatusCO.matchId }
+                isNeedRefresh = endGameList != null
                 if(removeIndex != -1){
-                    matchOddList.removeAt(removeIndex)
+                    matchOddList.remove(endGameList)
                 }
             }
         }
