@@ -208,12 +208,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 { matchId ->
                     navStatistics(matchId)
                 },
-                { matchId ->
+                { leagueId ->
                     loading()
                     viewModel.refreshGame(
                         args.matchType,
-                        listOf(),
-                        listOf(matchId)
+                        listOf(leagueId),
+                        listOf()
                     )
                 }
             )
