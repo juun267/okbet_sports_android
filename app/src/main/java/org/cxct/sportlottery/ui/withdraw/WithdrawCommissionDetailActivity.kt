@@ -56,7 +56,7 @@ class WithdrawCommissionDetailActivity :
     private fun initObserve() {
         viewModel.deductMoney.observe(this) {
             tv_total.apply {
-                text = TextUtil.formatCommissionMoney(zero.minus(it ?: 0.0))
+                text = TextUtil.formatMoney(zero.minus(it ?: 0.0))
                 setTextColor(
                     ContextCompat.getColor(
                         context,
