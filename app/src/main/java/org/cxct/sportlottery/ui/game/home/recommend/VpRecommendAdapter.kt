@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.ui.game.home.recommend
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,12 +50,7 @@ class VpRecommendAdapter(
 
     private val mOddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
-            override fun refreshOddButton(odd: Odd) {
-                dataList.forEachIndexed { index, oddBean ->
-                    if (oddBean.oddList.find { it?.id == odd.id } != null)
-                        notifyItemChanged(index)
-                }
-            }
+            override fun refreshOddButton(odd: Odd) { }
         }
     }
 
@@ -130,7 +127,9 @@ class VpRecommendAdapter(
 
     fun notifySelectedOddsChanged(selectedOdds: MutableList<String>) {
         this.selectedOdds = selectedOdds
-        this.notifyDataSetChanged()
+        Handler(Looper.getMainLooper()).post {
+            notifyDataSetChanged()
+        }
     }
 
     inner class ViewHolderHdpOu(

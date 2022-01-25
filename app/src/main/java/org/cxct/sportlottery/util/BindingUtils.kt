@@ -86,7 +86,7 @@ fun TextView.setPlayCateName(parlayType: String?) {
 
 @BindingAdapter("dayOfWeek")
 fun TextView.setWeekDay(timeStamp: Long?) {
-    text = context.getString(TimeUtil.setupDayOfWeek(timeStamp))
+    text = TimeUtil.setupDayOfWeek(context, timeStamp)
 }
 
 @BindingAdapter("dayOfWeek")

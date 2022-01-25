@@ -24,6 +24,7 @@ import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
+import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
@@ -157,7 +158,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     private fun setupPlayCategory(view: View) {
         view.game_league_play_category.apply {
             this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-
+            edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
             this.adapter = playCategoryAdapter
 
             addItemDecoration(
