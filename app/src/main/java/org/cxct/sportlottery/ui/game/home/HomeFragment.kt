@@ -136,11 +136,9 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             mTimer = Timer()
             mTimer?.schedule(object : TimerTask() {
                 override fun run() {
-                    GlobalScope.launch(Dispatchers.Main) {
-                        withContext(Dispatchers.IO) {
-                            mRvGameTable4Adapter.notifyTimeChanged(1)
-                            mRvHighlightAdapter.notifyTimeChanged(1)
-                        }
+                    GlobalScope.launch(Dispatchers.IO) {
+                        mRvGameTable4Adapter.notifyTimeChanged(1)
+                        mRvHighlightAdapter.notifyTimeChanged(1)
                     }
                 }
             }, 1000L, 1000L)
@@ -308,7 +306,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 highlight_titleBar.setBackgroundResource(it)
             }
 
-            unsubscribeHighlightHallChannel() //先取消訂閱當前的精選賽事
+//            unsubscribeHighlightHallChannel() //先取消訂閱當前的精選賽事
 
             mHighlightGameTypeAdapter.dataSport.forEach { item ->
                 item.isSelected = item.code == selectItem.code
@@ -348,7 +346,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         //先清除之前訂閱項目
         unsubscribeTableHallChannel()
         subscribeTableHallChannel(mSelectMatchType)
-
         val gameDataList: MutableList<GameEntity> = mutableListOf()
         var otherMatchList: MutableList<OtherMatch> = mutableListOf()
         result?.matchPreloadData?.datas?.forEach { data ->
@@ -459,25 +456,23 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
     //訂閱 滾球盤 or 即將開賽 賠率
     private fun subscribeTableHallChannel(selectMatchType: MatchType) {
-        GlobalScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.IO) {
-                when (selectMatchType) {
-                    MatchType.IN_PLAY -> {
-                        mInPlayResult?.matchPreloadData?.datas?.forEach { data ->
-                            data.matchOdds.forEach { match ->
-                                subscribeChannelHall(data.code,
-                                    MenuCode.HOME_INPLAY_MOBILE.code,
-                                    match.matchInfo?.id)
-                            }
+        GlobalScope.launch(Dispatchers.IO) {
+            when (selectMatchType) {
+                MatchType.IN_PLAY -> {
+                    mInPlayResult?.matchPreloadData?.datas?.forEach { data ->
+                        data.matchOdds.forEach { match ->
+                            subscribeChannelHall(data.code,
+                                MenuCode.HOME_INPLAY_MOBILE.code,
+                                match.matchInfo?.id)
                         }
                     }
-                    MatchType.AT_START -> {
-                        mAtStartResult?.matchPreloadData?.datas?.forEach { data ->
-                            data.matchOdds.forEach { match ->
-                                subscribeChannelHall(data.code,
-                                    MenuCode.HOME_ATSTART_MOBILE.code,
-                                    match.matchInfo?.id)
-                            }
+                }
+                MatchType.AT_START -> {
+                    mAtStartResult?.matchPreloadData?.datas?.forEach { data ->
+                        data.matchOdds.forEach { match ->
+                            subscribeChannelHall(data.code,
+                                MenuCode.HOME_ATSTART_MOBILE.code,
+                                match.matchInfo?.id)
                         }
                     }
                 }
@@ -486,26 +481,23 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     }
 
     private fun unsubscribeTableHallChannel() {
-        GlobalScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.IO) {
-                mInPlayResult?.matchPreloadData?.datas?.forEach { data ->
-                    data.matchs?.forEach { match ->
-                        unSubscribeChannelHall(
-                            data.code,
-                            MenuCode.HOME_INPLAY_MOBILE.code,
-                            match.id
-                        )
-                    }
+        GlobalScope.launch(Dispatchers.IO) {
+            mInPlayResult?.matchPreloadData?.datas?.forEach { data ->
+                data.matchs?.forEach { match ->
+                    unSubscribeChannelHall(
+                        data.code,
+                        MenuCode.HOME_INPLAY_MOBILE.code,
+                        match.id
+                    )
                 }
-
-                mAtStartResult?.matchPreloadData?.datas?.forEach { data ->
-                    data.matchs?.forEach { match ->
-                        unSubscribeChannelHall(
-                            data.code,
-                            MenuCode.HOME_ATSTART_MOBILE.code,
-                            match.id
-                        )
-                    }
+            }
+            mAtStartResult?.matchPreloadData?.datas?.forEach { data ->
+                data.matchs?.forEach { match ->
+                    unSubscribeChannelHall(
+                        data.code,
+                        MenuCode.HOME_ATSTART_MOBILE.code,
+                        match.id
+                    )
                 }
             }
         }
@@ -513,47 +505,57 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
     //訂閱 推薦賽事 賠率
     private fun subscribeRecommendHallChannel() {
-        mRecommendAdapter.getData().forEach { entity ->
-            subscribeChannelHall(
-                entity.code,
-                MenuCode.RECOMMEND.code,
-                entity.matchInfo?.id
-            )
+        GlobalScope.launch(Dispatchers.IO) {
+            mRecommendAdapter.getData().forEach { entity ->
+                subscribeChannelHall(
+                    entity.code,
+                    MenuCode.RECOMMEND.code,
+                    entity.matchInfo?.id
+                )
+            }
         }
     }
 
     private fun unsubscribeRecommendHallChannel() {
-        mRecommendAdapter.getData().forEach { entity ->
-            unSubscribeChannelHall(
-                entity.code,
-                MenuCode.RECOMMEND.code,
-                entity.matchInfo?.id
-            )
+        GlobalScope.launch(Dispatchers.IO) {
+            mRecommendAdapter.getData().forEach { entity ->
+                unSubscribeChannelHall(
+                    entity.code,
+                    MenuCode.RECOMMEND.code,
+                    entity.matchInfo?.id
+                )
+            }
         }
     }
 
     //訂閱 精選賽事 賠率
     private fun subscribeHighlightHallChannel() {
-        val code = mHighlightGameTypeAdapter.dataSport.find { it.isSelected }?.code ?: ""
-        mRvHighlightAdapter.getData().forEach { matchOdd ->
-            subscribeChannelHall(
-                code,
-                MenuCode.SPECIAL_MATCH_MOBILE.code,
-                matchOdd.matchInfo?.id
-            )
-        }.apply {
-            setDefaultRb()
+        GlobalScope.launch(Dispatchers.IO) {
+            val code = mHighlightGameTypeAdapter.dataSport.find { it.isSelected }?.code ?: ""
+            mRvHighlightAdapter.getData().forEach { matchOdd ->
+                subscribeChannelHall(
+                    code,
+                    MenuCode.SPECIAL_MATCH_MOBILE.code,
+                    matchOdd.matchInfo?.id
+                )
+            }.apply {
+                withContext(Dispatchers.Main) {
+                    setDefaultRb()
+                }
+            }
         }
     }
 
     private fun unsubscribeHighlightHallChannel() {
-        val code = mHighlightGameTypeAdapter.dataSport.find { it.isSelected }?.code ?: ""
-        mRvHighlightAdapter.getData().forEach { matchOdd ->
-            unSubscribeChannelHall(
-                code,
-                MenuCode.SPECIAL_MATCH_MOBILE.code,
-                matchOdd.matchInfo?.id
-            )
+        GlobalScope.launch(Dispatchers.IO) {
+            val code = mHighlightGameTypeAdapter.dataSport.find { it.isSelected }?.code ?: ""
+            mRvHighlightAdapter.getData().forEach { matchOdd ->
+                unSubscribeChannelHall(
+                    code,
+                    MenuCode.SPECIAL_MATCH_MOBILE.code,
+                    matchOdd.matchInfo?.id
+                )
+            }
         }
     }
 
@@ -642,6 +644,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
             matchPreloadInPlay.observe(viewLifecycleOwner) {
                 it.getContentIfNotHandled()?.let { result ->
+                    unsubscribeTableHallChannel()
                     mInPlayResult = result
                     judgeTableBar()
                 }
@@ -649,6 +652,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
             matchPreloadAtStart.observe(viewLifecycleOwner) {
                 it.getContentIfNotHandled()?.let { result ->
+                    unsubscribeTableHallChannel()
                     mAtStartResult = result
                     judgeTableBar()
                 }
@@ -656,16 +660,20 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         }
 
         viewModel.betIDList.observe(this.viewLifecycleOwner) {
-            mRvGameTable4Adapter.notifySelectedOddsChanged(it.peekContent())
-            mRecommendAdapter.notifySelectedOddsChanged(it.peekContent())
-            mRvHighlightAdapter.notifySelectedOddsChanged(it.peekContent())
+            GlobalScope.launch(Dispatchers.IO) {
+                mRvGameTable4Adapter.notifySelectedOddsChanged(it.peekContent())
+                mRecommendAdapter.notifySelectedOddsChanged(it.peekContent())
+                mRvHighlightAdapter.notifySelectedOddsChanged(it.peekContent())
+            }
         }
 
         viewModel.oddsType.observe(this.viewLifecycleOwner) {
             it?.let { oddsType ->
-                mRvGameTable4Adapter.notifyOddsTypeChanged(oddsType)
-                mRecommendAdapter.oddsType = oddsType
-                mRvHighlightAdapter.notifyOddsTypeChanged(oddsType)
+                GlobalScope.launch(Dispatchers.IO) {
+                    mRvGameTable4Adapter.notifyOddsTypeChanged(oddsType)
+                    mRecommendAdapter.oddsType = oddsType
+                    mRvHighlightAdapter.notifyOddsTypeChanged(oddsType)
+                }
             }
         }
 
@@ -775,37 +783,30 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
 //                    queryData()
-                    unsubscribeTableHallChannel()
-                    unsubscribeRecommendHallChannel()
-                    unsubscribeHighlightHallChannel()
-                    subscribeTableHallChannel(mSelectMatchType)
-                    subscribeRecommendHallChannel()
-                    subscribeHighlightHallChannel()
+//                    subscribeTableHallChannel(mSelectMatchType)
+//                    subscribeRecommendHallChannel()
+//                    subscribeHighlightHallChannel()
                 }
             }
         }
 
         receiver.matchStatusChange.observe(this.viewLifecycleOwner) {
-            GlobalScope.launch(Dispatchers.Main) {
-                withContext(Dispatchers.IO) {
-                    it?.let { matchStatusChangeEvent ->
-                        matchStatusChangeEvent.matchStatusCO?.let { matchStatus ->
-                            val statusValue = matchStatus.statusNameI18n?.get(LanguageManager.getSelectLanguage(context).key) ?: matchStatus.statusName
-                            //滾球盤、即將開賽盤
-                            mRvGameTable4Adapter.notifyMatchStatusChanged(matchStatus, statusValue)
-                        }
+            GlobalScope.launch(Dispatchers.IO) {
+                it?.let { matchStatusChangeEvent ->
+                    matchStatusChangeEvent.matchStatusCO?.let { matchStatus ->
+                        val statusValue = matchStatus.statusNameI18n?.get(LanguageManager.getSelectLanguage(context).key) ?: matchStatus.statusName
+                        //滾球盤、即將開賽盤
+                        mRvGameTable4Adapter.notifyMatchStatusChanged(matchStatus, statusValue)
                     }
                 }
             }
         }
 
         receiver.matchClock.observe(this.viewLifecycleOwner) {
-            it?.let { matchClockEvent ->
-                GlobalScope.launch(Dispatchers.Main) {
-                    withContext(Dispatchers.IO) {
-                        //滾球盤、即將開賽盤
-                        mRvGameTable4Adapter.notifyUpdateTime(matchClockEvent.matchClockCO)
-                    }
+            it?.matchClockCO?.let { matchClockCO ->
+                GlobalScope.launch(Dispatchers.IO) {
+                    //滾球盤、即將開賽盤
+                    mRvGameTable4Adapter.notifyUpdateTime(matchClockCO)
                 }
             }
         }

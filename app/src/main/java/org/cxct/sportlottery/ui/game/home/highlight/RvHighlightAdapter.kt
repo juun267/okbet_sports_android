@@ -93,12 +93,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
     private val mOddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
-            override fun refreshOddButton(odd: Odd) {
-                notifyItemChanged(dataList.indexOf(dataList.find { matchOdd ->
-                    matchOdd.oddsMap.toList()
-                        .find { map -> map.second?.find { it == odd } != null } != null
-                }))
-            }
+            override fun refreshOddButton(odd: Odd) { }
         }
     }
 
@@ -147,7 +142,9 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
     fun notifySelectedOddsChanged(selectedOdds: MutableList<String>) {
         this.selectedOdds = selectedOdds
-        this.notifyDataSetChanged()
+        Handler(Looper.getMainLooper()).post {
+            notifyDataSetChanged()
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderHdpOu {
