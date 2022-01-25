@@ -1,8 +1,13 @@
 package org.cxct.sportlottery.ui.game.common
 
 import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.game.widget.OddsButton
@@ -40,9 +45,10 @@ abstract class OddStateViewHolder(itemView: View) : RecyclerView.ViewHolder(item
 
     private fun highLightRunnable(itemOdd: Odd): Runnable {
         return Runnable {
-            oddStateChangeListener.refreshOddButton(itemOdd)
             itemOdd.oddState = OddState.SAME.state
+            oddStateChangeListener.refreshOddButton(itemOdd)
             itemOdd.runnable = null
+            mHandler.removeCallbacks(itemOdd.runnable)
         }
     }
 

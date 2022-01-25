@@ -63,10 +63,15 @@ class Vp2GameTable4Adapter (
     private val mOddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
             override fun refreshOddButton(odd: Odd) {
-                notifyItemChanged(dataList.indexOf(dataList.find { matchOdd ->
-                    matchOdd.oddsMap.toList()
-                        .find { map -> map.second?.find { it == odd } != null } != null
-                }))
+                if (gameType != GameType.FT.key && gameType != GameType.BK.key) {
+                    notifyDataSetChanged()
+                }
+                else {
+                    notifyItemChanged(dataList.indexOf(dataList.find { matchOdd ->
+                        matchOdd.oddsMap.toList()
+                            .find { map -> map.second?.find { it == odd } != null } != null
+                    }))
+                }
             }
         }
     }
@@ -127,8 +132,10 @@ class Vp2GameTable4Adapter (
                     odd?.updateDiscount(this.discount, discount)
                 }
             }
+        }
+        if (gameType != GameType.FT.key && gameType != GameType.BK.key) {
             Handler(Looper.getMainLooper()).post {
-                notifyItemChanged(index, null)
+                notifyDataSetChanged()
             }
         }
         this.discount = discount
