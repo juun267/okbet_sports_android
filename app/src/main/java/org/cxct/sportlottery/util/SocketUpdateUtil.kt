@@ -27,8 +27,7 @@ object SocketUpdateUtil {
         var isNeedRefresh = false
 
         matchStatusChangeEvent.matchStatusCO?.let { matchStatusCO ->
-            var removeIndex :Int = -1
-
+            val removeIndex :Int = -1
 
             matchOddList.forEach { matchOdd ->
 
