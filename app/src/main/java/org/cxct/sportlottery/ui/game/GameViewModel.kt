@@ -434,7 +434,7 @@ class GameViewModel(
         getSportMenu(null)
     }
 
-    fun getSportMenu(matchType: MatchType?) {
+    fun getSportMenu(matchType: MatchType?, switchFirstTag: Boolean = false , onlyRefreshSportMenu: Boolean = false) {
         _isLoading.value = true
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -452,18 +452,24 @@ class GameViewModel(
                     lastSportTypeHashMap[matchType?.postValue]
                 )
             }
-            _curMatchType.value = matchType
-        }
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
+            //單純更新gameTypeAdapter就不需要更新當前MatchType，不然畫面會一直閃 by Bill
+            if (!onlyRefreshSportMenu)
+                _curMatchType.value = matchType
+
+            val couponResult = doNetwork(androidContext) {
                 sportMenuRepository.getSportCouponMenu()
             }
-            //postHomeCardCount(result)
 
-            result?.let {
+            couponResult?.let {
                 _sportCouponMenuResult.postValue(Event(it))
             }
+
+            //Socket更新自動選取第一個有賽事的球種
+            if(switchFirstTag){
+                matchType?.let { switchFirstSportType(it) }
+            }
         }
+
         _isLoading.value = false
     }
 
