@@ -528,7 +528,7 @@
     <string name="withdraw_crypto_exchange_rate_hint">・Exchange rate：%1$s</string>
     <string name="withdraw_crypto_amount_hint">・Withdraw：%1$s %s</string>
     <string name="withdraw_crypto_fee_hint">・Withdraw service fee：%1$s %s</string>
-    <string name="hint_please_enter_withdraw_amount">Limit%1$s~%2$s %s</string>
+    <string name="hint_please_enter_withdraw_amount">Limit%1$s~%2$s</string>
     <string name="hint_four_number_password">Withdrawal password</string>
     <string name="hint_please_enter_withdraw_password">withdrawal password</string>
     <string name="add_new">Add</string>
