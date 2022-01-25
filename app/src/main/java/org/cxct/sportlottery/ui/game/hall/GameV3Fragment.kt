@@ -667,6 +667,16 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             leagueOdd.gameType = gameType
                         }.toMutableList()
                     }
+
+                    //如果data資料為空時，又有其他球種的情況下，自動選取第一個
+                    if(leagueAdapter.data.isNullOrEmpty() && gameTypeAdapter.dataSport.size > 1){
+                        viewModel.getSportMenu(
+                            args.matchType,
+                            switchFirstTag = true,
+                            onlyRefreshSportMenu = true
+                        )
+                    }
+
                     game_list.itemAnimator = null
                     setNoDataView(leagueAdapter.data)
                     leagueOdds.forEach { leagueOdd ->
