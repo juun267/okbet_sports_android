@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:nestedScrollingEnabled="false"
-                android:overScrollMode="never"
+                android:orientation="horizontal"
                 android:paddingStart="16dp"
                 android:paddingTop="10dp"
                 android:paddingEnd="16dp"
@@ -52,7 +52,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/game_league_toolbar_v4"
                 tools:itemCount="1"
-                android:orientation="horizontal"
                 tools:listitem="@layout/itemview_play_category_v4" />
 
             <androidx.recyclerview.widget.RecyclerView

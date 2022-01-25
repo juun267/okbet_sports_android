@@ -192,6 +192,7 @@ ext {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.dynamicanimation:dynamicanimation-ktx:1.0.0-alpha03'
 
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
@@ -290,7 +291,7 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer-hls:2.15.1'
     implementation 'com.google.android.exoplayer:extension-okhttp:2.15.1'
 
-    //下拉刷新，上拉加載 元件 https://github.com/scwang90/SmartRefreshLayout
+    //下拉刷新，上拉加載 元件 (豎屏、橫屏) https://github.com/scwang90/SmartRefreshLayout
     implementation 'com.scwang.smart:refresh-layout-kernel:2.0.3'
 
     //DateTimePicker
