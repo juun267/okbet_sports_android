@@ -2079,6 +2079,15 @@ class GameViewModel(
      */
     private suspend fun getStreamUrl(response: Response): String? {
         return when (response.videoProvider) {
+            VideoProvider.Own.code -> {
+                // Todo: 需改成用 StreamURLs，格式依序採用 RTMP, FLV, M3U8，依次使用。
+                if (response.StreamURLs?.isNotEmpty() == true) {
+                    response.StreamURLs?.first { it.format == "rtmp" }.url ?: response.streamURL
+                }
+                else {
+                    response.streamURL
+                }
+            }
             VideoProvider.P2.code -> {
                 val liveUrlResponse = OneBoSportApi.matchService.getLiveP2Url(
                     response.accessToken,

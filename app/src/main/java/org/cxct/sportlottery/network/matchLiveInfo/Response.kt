@@ -26,6 +26,8 @@ data class Response(
     val streamId: String?,
     @Json(name = "StreamURL")
     val streamURL: String?,
+    @Json(name = "StreamURLs")
+    val StreamURLs: List<StreamURL>?,
     @Json(name = "VideoProvider")
     val videoProvider: String?,
     @Json(name = "ViewData")
