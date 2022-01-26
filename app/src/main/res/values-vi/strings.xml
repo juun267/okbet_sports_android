@@ -505,7 +505,7 @@
     <string name="withdraw_crypto_exchange_rate_hint">・Tỷ giá：%1$s</string>
     <string name="withdraw_crypto_amount_hint">・Số tiền rút：%1$s %s</string>
     <string name="withdraw_crypto_fee_hint">・Phí rút tiền：%1$s %s</string>
-    <string name="hint_please_enter_withdraw_amount">số tiền giới hạn %1$s~%2$s %s</string>
+    <string name="hint_please_enter_withdraw_amount">số tiền giới hạn %1$s~%2$s</string>
     <string name="hint_four_number_password">Vui lòng nhập mật khẩu rút tiền</string>
     <string name="hint_please_enter_withdraw_password">Mật khẩu rút tiền</string>
     <string name="add_new">Thêm mới</string>
