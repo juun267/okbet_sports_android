@@ -6,22 +6,18 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
-import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.upstream.HttpDataSource
-import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_webview.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_webview.view.*
 import kotlinx.android.synthetic.main.view_toolbar_live.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
@@ -275,10 +271,8 @@ class LiveViewToolbar @JvmOverloads constructor(
                 exoPlayer = SimpleExoPlayer.Builder(context).build().also { exoPlayer ->
                     player_view.player = exoPlayer
                     val mediaItem =
-                        MediaItem.Builder().setUri(streamUrl)
-                            .setMimeType(MimeTypes.APPLICATION_M3U8).build()
+                        MediaItem.Builder().setUri(streamUrl).build()
                     exoPlayer.setMediaItem(mediaItem)
-
                     exoPlayer.playWhenReady = playWhenReady
                     exoPlayer.seekTo(currentWindow, playbackPosition)
                     exoPlayer.addListener(playbackStateListener)
@@ -287,8 +281,7 @@ class LiveViewToolbar @JvmOverloads constructor(
             } else {
                 exoPlayer?.let { player ->
                     val mediaItem =
-                        MediaItem.Builder().setUri(streamUrl)
-                            .setMimeType(MimeTypes.APPLICATION_M3U8).build()
+                        MediaItem.Builder().setUri(streamUrl).build()
                     player.setMediaItem(mediaItem)
                     player.playWhenReady = playWhenReady
                     player.seekTo(currentWindow, playbackPosition)
