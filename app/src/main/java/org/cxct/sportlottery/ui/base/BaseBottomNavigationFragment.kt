@@ -7,6 +7,7 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.game.ServiceDialog
+import org.cxct.sportlottery.ui.menu.ChangeLanguageDialog
 import org.cxct.sportlottery.util.JumpUtil
 import kotlin.reflect.KClass
 
@@ -63,6 +64,15 @@ abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KCla
                 Constants.getAgreementRuleUrl(requireContext()),
                 getString(R.string.terms_conditions)
             )
+        }
+
+        //語言切換
+        img_flag.setOnClickListener {
+            ChangeLanguageDialog().show(parentFragmentManager, null)
+        }
+
+        txv_language.setOnClickListener {
+            ChangeLanguageDialog().show(parentFragmentManager, null)
         }
 
         //隱私權條款
