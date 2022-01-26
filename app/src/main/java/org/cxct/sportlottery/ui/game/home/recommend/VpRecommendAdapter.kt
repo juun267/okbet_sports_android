@@ -43,7 +43,6 @@ class VpRecommendAdapter(
     }
 
     var oddsType: OddsType = OddsType.EU
-    var selectedOdds: MutableList<String> = mutableListOf()
     var onClickOddListener: OnClickOddListener? = null
     var onClickOutrightOddListener: OnClickOddListener? = null
     var onClickMoreListener: OnClickMoreListener? = null
@@ -126,7 +125,13 @@ class VpRecommendAdapter(
     }
 
     fun notifySelectedOddsChanged(selectedOdds: MutableList<String>) {
-        this.selectedOdds = selectedOdds
+        dataList.forEach {
+            it.oddList.forEach{ odd ->
+                odd?.id?.let { id ->
+                    odd.isSelected = selectedOdds.contains(id)
+                }
+            }
+        }
         Handler(Looper.getMainLooper()).post {
             notifyDataSetChanged()
         }
@@ -184,8 +189,7 @@ class VpRecommendAdapter(
                 setupOdd(odd, oddsType)
                 this@ViewHolderHdpOu.setupOddState(oddsButton, odd)
                 odd?.let {
-                    this.isSelected = selectedOdds.contains(odd.id ?: "")
-                    it.isSelected = selectedOdds.contains(odd.id ?: "")
+                    this.isSelected = it.isSelected ?: false
 
                     setOnClickListener {
                         val playCateName = itemView.tv_play_type.text.toString()
@@ -246,8 +250,7 @@ class VpRecommendAdapter(
                     this@ViewHolderRecOutright.setupOddState(this, odd)
 
                     odd.id?.let { id ->
-                        this.isSelected = selectedOdds.contains(id)
-                        odd.isSelected = selectedOdds.contains(id)
+                        this.isSelected = odd.isSelected ?: false
                     }
 
                     setOnClickListener {
@@ -308,8 +311,7 @@ class VpRecommendAdapter(
 
                 odd?.let {
                     odd.id?.let { id ->
-                        this.isSelected = selectedOdds.contains(id)
-                        it.isSelected = selectedOdds.contains(id)
+                        this.isSelected = it.isSelected ?: false
                     }
 
                     setOnClickListener {
