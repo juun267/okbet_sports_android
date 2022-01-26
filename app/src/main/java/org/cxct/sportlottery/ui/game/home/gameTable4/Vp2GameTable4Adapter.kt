@@ -24,6 +24,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.network.service.match_clock.MatchClockCO
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
@@ -163,6 +164,7 @@ class Vp2GameTable4Adapter (
 
     fun notifyUpdateTime(matchClockCO: MatchClockCO) {
         dataList.forEach { matchOdd ->
+            matchOdd.matchInfo?.stopped = matchClockCO.stopped
             matchOdd.matchInfo?.id?.let { id ->
                 if (id == matchClockCO.matchId) {
                     when (matchClockCO.gameType) {
@@ -189,6 +191,7 @@ class Vp2GameTable4Adapter (
             MatchType.IN_PLAY -> {
                 var needUpdate = false
                 dataList.forEach { matchOdd ->
+                    if (matchOdd.matchInfo?.stopped == TimeCounting.STOP.value) return
                     matchOdd.matchInfo?.id?.let { id ->
                         timeMap[id]?.let { time ->
                             var newTime = time
@@ -216,6 +219,7 @@ class Vp2GameTable4Adapter (
             MatchType.AT_START -> {
                 var needUpdate = false
                 dataList.forEachIndexed { index, matchOdd ->
+                    if (matchOdd.matchInfo?.stopped == TimeCounting.STOP.value) return
                     matchOdd.matchInfo?.id?.let { id ->
                         timeMap[id]?.let { time ->
                             var newTime = time - diff
