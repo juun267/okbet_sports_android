@@ -3,13 +3,11 @@ package org.cxct.sportlottery.ui.profileCenter.identity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Base64
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -164,8 +162,6 @@ class VerifyIdentityDetailFragment :
     }
 
     private fun setMask(hideMaskImgId: Int) {
-        Log.e(">>>", "hideMaskImgId = $hideMaskImgId")
-        Log.e(">>>", "img_id_card_mask = ${img_id_card_mask.id}, img_id_card_back_mask = ${img_id_card_back_mask.id}, img_face_small_mask = ${img_face_small_mask.id}")
         img_id_card_mask.isVisible = hideMaskImgId != img_id_card_mask.id
         img_id_card_back_mask.isVisible = hideMaskImgId != img_id_card_back_mask.id
         img_face_small_mask.isVisible = hideMaskImgId != img_face_small_mask.id
