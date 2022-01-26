@@ -864,7 +864,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                             setVisibility(true)
                             break
                         } else {
-                            setVisibility(true)
+                            setVisibility(false)
                         }
                     } catch (e: Exception) {
                         setVisibility(true)

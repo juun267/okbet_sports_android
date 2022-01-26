@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.util
 
 import android.annotation.SuppressLint
+import android.content.Context
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import timber.log.Timber
@@ -14,7 +15,7 @@ object TimeUtil {
     const val YMD_FORMAT = "yyyy-MM-dd"
     const val DMY_FORMAT = "dd / MM / yyyy"
     const val MD_FORMAT = "MM-dd"
-    const val MD_FORMAT_2 = "M-dd"
+    const val DAY_FORMAT = "d"
     const val VI_MD_FORMAT = "dd 'TH.'M"
     const val DM_FORMAT = "dd / MM"
     const val HM_FORMAT = "HH:mm"
@@ -175,11 +176,11 @@ object TimeUtil {
     /**
      * return : 星期幾
      */
-    fun setupDayOfWeek(todayMillis: Long?): Int {
+    fun setupDayOfWeek(context: Context, todayMillis: Long?): String {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = todayMillis ?: 0
 
-        return when (calendar.get(Calendar.DAY_OF_WEEK)) {
+        val id = when (calendar.get(Calendar.DAY_OF_WEEK)) {
             Calendar.SUNDAY -> R.string.sunday
             Calendar.MONDAY -> R.string.monday
             Calendar.TUESDAY -> R.string.tuesday
@@ -189,13 +190,15 @@ object TimeUtil {
             Calendar.SATURDAY -> R.string.saturday
             else -> R.string.sunday
         }
+
+        return context.getString(id)
     }
 
-    fun setupDayOfWeekVi(todayMillis: Long?): Int {
+    fun setupDayOfWeekVi(context: Context, todayMillis: Long?): String {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = todayMillis ?: 0
 
-        return when (calendar.get(Calendar.DAY_OF_WEEK)) {
+        val id = when (calendar.get(Calendar.DAY_OF_WEEK)) {
             Calendar.SUNDAY -> R.string.sunday2
             Calendar.MONDAY -> R.string.monday2
             Calendar.TUESDAY -> R.string.tuesday2
@@ -205,6 +208,31 @@ object TimeUtil {
             Calendar.SATURDAY -> R.string.saturday2
             else -> R.string.sunday2
         }
+
+        return context.getString(id)
+    }
+
+    fun monthFormat(context: Context, todayMillis: Long?): String {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = todayMillis ?: 0
+
+        val id = when (calendar.get(Calendar.DAY_OF_MONTH)) {
+            Calendar.JANUARY -> R.string.january
+            Calendar.FEBRUARY -> R.string.february
+            Calendar.MARCH -> R.string.march
+            Calendar.APRIL -> R.string.april
+            Calendar.MAY -> R.string.may
+            Calendar.JUNE -> R.string.june
+            Calendar.JULY -> R.string.july
+            Calendar.AUGUST -> R.string.august
+            Calendar.SEPTEMBER -> R.string.september
+            Calendar.OCTOBER -> R.string.october
+            Calendar.NOVEMBER -> R.string.november
+            Calendar.DECEMBER -> R.string.december
+            else -> R.string.january
+        }
+
+        return context.getString(id)
     }
 
     /**
@@ -511,10 +539,6 @@ object TimeUtil {
 
     fun stampToDateHM(time: Long): String {
         return timeFormat(time, DMY_HM_FORMAT)
-    }
-
-    fun stampToMD(time: Long): String {
-        return timeFormat(time, MD_FORMAT_2)
     }
 
     fun stampToViMD(time: Long): String {

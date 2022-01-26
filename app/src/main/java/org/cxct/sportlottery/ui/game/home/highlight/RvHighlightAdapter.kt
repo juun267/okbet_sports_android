@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.core.view.marginEnd
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.home_highlight_item.view.*
 import org.cxct.sportlottery.R
@@ -26,6 +27,7 @@ import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.game.home.OnClickStatisticsListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setTextTypeFace
@@ -35,22 +37,14 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
     private var dataList = listOf<MatchOdd>()
     private var selectedOdds: MutableList<String> = mutableListOf()
-
-    var discount: Float = 1.0F
-        set(newDiscount) {
-            dataList.forEach { matchOdd ->
-                matchOdd.oddsMap.updateOddsDiscount(field, newDiscount)
-            }
-
-            notifyDataSetChanged()
-            field = newDiscount
-        }
+    private var discount: Float = 1.0F
+    private var oddsType: OddsType = OddsType.EU
 
     fun setData(sportCode: String?, newList: List<OddData>?, selectedOdds: MutableList<String>) {
         this.selectedOdds = selectedOdds
         dataList = newList?.map {
             val matchInfo = MatchInfo(
-                gameType = null,
+                gameType = sportCode,
                 awayName = it.matchInfo?.awayName ?: "",
                 endTime = it.matchInfo?.endTime,
                 homeName = it.matchInfo?.homeName ?: "",
@@ -61,11 +55,12 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                 spt = it.matchInfo?.spt,
                 liveVideo = it.matchInfo?.liveVideo,
                 status = it.matchInfo?.status ?: -1).apply {
-                gameType = sportCode
-                startDateDisplay = TimeUtil.timeFormat(it.matchInfo?.startTime, "MM/dd")
-                startTimeDisplay = TimeUtil.timeFormat(it.matchInfo?.startTime, "HH:mm")
-                isAtStart = TimeUtil.isTimeAtStart(it.matchInfo?.startTime)
+                startDateDisplay = TimeUtil.timeFormat(this.startTime, "MM/dd")
+                startTimeDisplay = TimeUtil.timeFormat(this.startTime, "HH:mm")
+                isAtStart = TimeUtil.isTimeAtStart(this.startTime)
             }
+
+
             val odds: MutableMap<String, MutableList<Odd?>?> = mutableMapOf()
             it.oddsMap.forEach { odd ->
                 odds[odd.key] = odd.value?.toMutableList()
@@ -85,14 +80,6 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
     fun getData() = dataList
 
-    var oddsType: OddsType = OddsType.EU
-        set(value) {
-            if (value != field) {
-                field = value
-                notifyDataSetChanged()
-            }
-        }
-
     //TODO simon test review 精選賽事是不是一定是 MatchType.TODAY，是的話可以再簡化判斷邏輯
     private var matchType: MatchType = MatchType.TODAY
 
@@ -106,23 +93,60 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
     private val mOddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
-            override fun refreshOddButton(odd: Odd) {
-                notifyItemChanged(dataList.indexOf(dataList.find { matchOdd ->
-                    matchOdd.oddsMap.toList()
-                        .find { map -> map.second?.find { it == odd } != null } != null
-                }))
+            override fun refreshOddButton(odd: Odd) { }
+        }
+    }
+
+    fun notifyTimeChanged(diff: Int) {
+        var isUpdate = false
+        dataList.forEach { odd ->
+            odd.matchInfo?.let {
+                it.isAtStart = TimeUtil.isTimeAtStart(it.startTime)
+                if (it.isAtStart == true) {
+                    it.remainTime = it.startTime?.minus(System.currentTimeMillis())
+                    it.remainTime?.let { remainTime ->
+                        val newTimeDisplay = TimeUtil.longToMinute(remainTime * 1000)
+                        if (it.timeDisplay != newTimeDisplay) {
+                            it.timeDisplay = newTimeDisplay
+                            isUpdate = true
+                        }
+                    }
+                }
+            }
+        }
+        if (isUpdate) {
+            Handler(Looper.getMainLooper()).post {
+                notifyDataSetChanged()
             }
         }
     }
 
-    private val mTimerMap = mutableMapOf<Int, Timer?>()
-
-    fun stopAllTimer() {
-        mTimerMap.forEach {
-            val timer = it.value
-            timer?.cancel()
+    fun notifyOddsDiscountChanged(discount: Float) {
+        dataList.forEachIndexed { index, matchOdd ->
+            matchOdd.oddsMap.forEach { (key, value) ->
+                value?.forEach { odd ->
+                    odd?.updateDiscount(this.discount, discount)
+                }
+            }
         }
-        mTimerMap.clear()
+        Handler(Looper.getMainLooper()).post {
+            notifyDataSetChanged()
+        }
+        this.discount = discount
+    }
+
+    fun notifyOddsTypeChanged(oddsType: OddsType) {
+        this.oddsType = oddsType
+        Handler(Looper.getMainLooper()).post {
+            notifyDataSetChanged()
+        }
+    }
+
+    fun notifySelectedOddsChanged(selectedOdds: MutableList<String>) {
+        this.selectedOdds = selectedOdds
+        Handler(Looper.getMainLooper()).post {
+            notifyDataSetChanged()
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderHdpOu {
@@ -144,29 +168,12 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
     override fun getItemCount(): Int = dataList.size
 
-    override fun onViewRecycled(holder: ViewHolderHdpOu) {
-        super.onViewRecycled(holder)
-        holder.stopTimer()
-    }
-
-    fun notifySelectedOddsChanged(selectedOdds: MutableList<String>) {
-        this.selectedOdds = selectedOdds
-        this.notifyDataSetChanged()
-    }
-
     inner class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
-
-
         private var gameType: String? = null
-
         private var oddList: MutableList<Odd?>? = null
-
-
-        private var timer: Timer? = null
 
         fun bind(data: MatchOdd, lastData: MatchOdd) {
             setTitle(data,lastData)
-            setMatchType(data)
             setupOddList(data)
             setupMatchInfo(data)
             setupTime(data)
@@ -239,17 +246,13 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             }
         }
 
-        private fun setMatchType(data: MatchOdd) {
-            matchType = if(data.matchInfo?.isAtStart == true) MatchType.AT_START else  MatchType.TODAY
-        }
-
         private fun setupOddList(data: MatchOdd) {
             itemView.apply {
                 gameType = data.matchInfo?.gameType
 
                 oddList = if(data.oddsMap.isNotEmpty()) {
                     data.oddsMap.iterator().next().value
-                }else{
+                } else {
                     mutableListOf()
                 }
             }
@@ -275,18 +278,10 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
         private fun showStrongTeam() {
             itemView.apply {
                 tv_game_name_home.apply {
-                    setTextTypeFace(if (oddList?.getOrNull(0)?.spread?.contains("-") == true)
-                            Typeface.BOLD
-                        else
-                            Typeface.NORMAL
-                    )
+                    setTextTypeFace(if (oddList?.getOrNull(0)?.spread?.contains("-") == true) Typeface.BOLD else Typeface.NORMAL)
                 }
                 tv_game_name_away.apply {
-                    setTextTypeFace(if (oddList?.getOrNull(1)?.spread?.contains("-") == true)
-                            Typeface.BOLD
-                        else
-                            Typeface.NORMAL
-                    )
+                    setTextTypeFace(if (oddList?.getOrNull(1)?.spread?.contains("-") == true) Typeface.BOLD else Typeface.NORMAL)
                 }
             }
         }
@@ -294,29 +289,12 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
         @SuppressLint("SetTextI18n")
         private fun setupTime(data: MatchOdd) {
             itemView.apply {
-                when (matchType) {
-                    MatchType.AT_START -> {
-                        if (data.matchInfo?.remainTime == null)
-                            data.matchInfo?.remainTime = data.matchInfo?.startTime?.minus(
-                                System.currentTimeMillis()
-                            )
-                        data.matchInfo?.remainTime?.let { remainTime ->
-                            startTimer((remainTime / 1000).toInt(), true) { timeMillis ->
-                                val timeStr = String.format(
-                                    itemView.context.resources.getString(R.string.at_start_remain_minute),
-                                    TimeUtil.longToMinute(timeMillis)
-                                )
-                                tv_match_time.text = timeStr
-
-                                data.matchInfo.remainTime = timeMillis
-                            }
-                        }
+                if (matchType == MatchType.AT_START) {
+                    data.matchInfo?.timeDisplay?.let { timeDisplay ->
+                        tv_match_time.text = String.format(itemView.context.resources.getString(R.string.at_start_remain_minute), timeDisplay)
                     }
-
-                    else -> {
-                        stopTimer()
-                        tv_match_time.text = data.matchInfo?.startTimeDisplay ?: ""
-                    }
+                } else {
+                    tv_match_time.text = data.matchInfo?.startTimeDisplay ?: ""
                 }
             }
         }
@@ -417,7 +395,6 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
                     btn_match_odd3.apply {
                         isVisible =  data.matchInfo?.gameType == GameType.CK.key && oddList?.size ?: 0 > 2
-
                         val oddThird = oddList?.getOrNull(2)
                         this.isSelected = selectedOdds.contains(oddThird?.id ?: "")
                         oddThird?.isSelected = selectedOdds.contains(oddThird?.id ?: "")
@@ -454,48 +431,11 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                             }
                         }
                     }
-
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
-
-        private fun startTimer(
-            startTime: Int,
-            isDecrease: Boolean,
-            timerListener: (timeMillis: Long) -> Unit
-        ) {
-            var timeMillis = startTime * 1000L
-
-            mTimerMap[bindingAdapterPosition]?.cancel()
-            stopTimer()
-
-            timer = Timer()
-            timer?.schedule(object : TimerTask() {
-                override fun run() {
-                    when {
-                        timeMillis < 0 -> {
-                            timeMillis = 0
-                            mTimerMap[bindingAdapterPosition]?.cancel()
-                        }
-                        isDecrease -> timeMillis -= 1000
-                        !isDecrease -> timeMillis += 1000
-                    }
-                    Handler(Looper.getMainLooper()).post {
-                        timerListener(timeMillis)
-                    }
-                }
-            }, 1000L, 1000L)
-
-            mTimerMap[bindingAdapterPosition] = timer
-        }
-
-        fun stopTimer() {
-            timer?.cancel()
-            timer = null
-        }
-
         override val oddStateChangeListener: OddStateChangeListener
             get() = mOddStateRefreshListener
 

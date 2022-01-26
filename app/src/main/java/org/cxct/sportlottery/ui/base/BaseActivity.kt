@@ -265,6 +265,8 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
             .setItemVisibleCount(4)
             .setBgColor(resources.getColor(R.color.colorSilver3))
             .setCancelColor(resources.getColor(R.color.colorBlackLight))//取消按钮文字颜色
+            .setSubmitText(resources.getString(R.string.complete))
+            .setCancelText(resources.getString(R.string.btn_cancel))
             .build()
         mPickerView?.setPicker(strList)
         mPickerView?.setSelectOptions(defaultPosition)

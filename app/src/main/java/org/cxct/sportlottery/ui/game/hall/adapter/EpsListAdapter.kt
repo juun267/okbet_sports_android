@@ -19,6 +19,8 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MatchOddUtil.updateEpsDiscount
 import org.cxct.sportlottery.util.SvgUtil
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.TimeUtil.DAY_FORMAT
+import org.cxct.sportlottery.util.TimeUtil.VI_MD_FORMAT
 
 class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -68,8 +70,9 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
                 itemView.ll_content.layoutParams = params
             }
             itemView.tv_date.text = when (LanguageManager.getSelectLanguage(itemView.context)) {
-                LanguageManager.Language.VI -> "${itemView.context.getString(TimeUtil.setupDayOfWeekVi(item.date))} ${TimeUtil.stampToViMD(item.date)}"
-                else -> "${TimeUtil.stampToMD(item.date)}  ${itemView.context.getString(TimeUtil.setupDayOfWeek(item.date))}"
+                LanguageManager.Language.VI -> "${TimeUtil.setupDayOfWeekVi(itemView.context, item.date)} ${TimeUtil.timeFormat(item.date, VI_MD_FORMAT)}"
+                LanguageManager.Language.EN -> "${TimeUtil.setupDayOfWeek(itemView.context, item.date)} ${TimeUtil.timeFormat(item.date, DAY_FORMAT)} ${TimeUtil.monthFormat(itemView.context, item.date)}"
+                else -> "${TimeUtil.setupDayOfWeekVi(itemView.context, item.date)} ${TimeUtil.timeFormat(item.date, DAY_FORMAT)} ${TimeUtil.monthFormat(itemView.context, item.date)}"
             }
         }
     }
@@ -92,7 +95,7 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
         fun bind(item: EpsLeagueOddsItem, mOddsType: OddsType, epsOddListener: EpsOddListener) {
             itemView.apply {
                 ll_league_title.setOnClickListener {
-                    rv_league_odd_list.visibility = if(rv_league_odd_list.visibility == View.VISIBLE){View.GONE} else{View.VISIBLE}
+                    rv_league_odd_list.visibility = if(rv_league_odd_list.visibility == View.VISIBLE){View.GONE} else {View.VISIBLE}
                     item.isClose = !item.isClose
                     epsOddListener.clickListenerLeague(item)
                 }
