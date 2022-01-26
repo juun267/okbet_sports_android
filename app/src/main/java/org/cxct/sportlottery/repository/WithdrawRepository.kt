@@ -4,9 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.map
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.db.dao.UserInfoDao
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bank.my.BankCardList
@@ -17,17 +16,11 @@ import org.cxct.sportlottery.util.Event
 import retrofit2.Response
 
 class WithdrawRepository(
-    private val userInfoDao: UserInfoDao,
     private val userInfoRepository: UserInfoRepository
 ) {
 
-    private val userInfoFlow: Flow<UserInfo?>
-        get() = userInfoDao.getUserInfo().map {
-            if (it.isNotEmpty()) {
-                return@map it[0]
-            }
-            return@map null
-        }
+    private val userInfoFlow: Flow<UserInfo?>?
+        get() = MultiLanguagesApplication.getInstance()?.userInfo
 
     private var _withdrawSystemOperation = MutableLiveData<Event<Boolean>>()
     val withdrawSystemOperation: LiveData<Event<Boolean>>
@@ -107,9 +100,9 @@ class WithdrawRepository(
     }
 
     private suspend fun checkNeedUpdatePassWord(): Boolean {
-        if (userInfoFlow.firstOrNull() == null)
+        if (userInfoFlow == null)
             userInfoRepository.getUserInfo()
-        return userInfoFlow.firstOrNull()?.updatePayPw == 1
+        return userInfoFlow?.firstOrNull()?.updatePayPw == 1
     }
 
     //提款判斷權限
@@ -149,7 +142,7 @@ class WithdrawRepository(
     }
 
     private suspend fun verifyProfileInfoComplete(): Boolean {
-        val userInfo = userInfoFlow.firstOrNull()
+        val userInfo = userInfoFlow?.firstOrNull()
         var complete = false
         sConfigData?.apply {
             if (enableWithdrawFullName == FLAG_OPEN && userInfo?.fullName.isNullOrBlank() ||
