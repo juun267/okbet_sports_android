@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.core.view.marginEnd
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.home_highlight_item.view.*
+import kotlinx.coroutines.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
@@ -32,50 +33,63 @@ import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setTextTypeFace
 import java.util.*
+import kotlin.collections.forEach as forEach
 
 class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdpOu>() {
 
     private var dataList = listOf<MatchOdd>()
-    private var selectedOdds: MutableList<String> = mutableListOf()
     private var discount: Float = 1.0F
     private var oddsType: OddsType = OddsType.EU
 
     fun setData(sportCode: String?, newList: List<OddData>?, selectedOdds: MutableList<String>) {
-        this.selectedOdds = selectedOdds
-        dataList = newList?.map {
-            val matchInfo = MatchInfo(
-                gameType = sportCode,
-                awayName = it.matchInfo?.awayName ?: "",
-                endTime = it.matchInfo?.endTime,
-                homeName = it.matchInfo?.homeName ?: "",
-                id = it.matchInfo?.id ?: "",
-                playCateNum = it.matchInfo?.playCateNum ?: 0,
-                startTime = it.matchInfo?.startTime,
-                eps = it.matchInfo?.eps,
-                spt = it.matchInfo?.spt,
-                liveVideo = it.matchInfo?.liveVideo,
-                status = it.matchInfo?.status ?: -1).apply {
-                startDateDisplay = TimeUtil.timeFormat(this.startTime, "MM/dd")
-                startTimeDisplay = TimeUtil.timeFormat(this.startTime, "HH:mm")
-                isAtStart = TimeUtil.isTimeAtStart(this.startTime)
-            }
+        processData(sportCode, newList, selectedOdds)
+    }
+
+    private fun processData(sportCode: String?, newList: List<OddData>?, selectedOdds: MutableList<String>) {
+        GlobalScope.launch(Dispatchers.IO) {
+            dataList = newList?.map { it ->
+                val matchInfo = MatchInfo(
+                    gameType = sportCode,
+                    awayName = it.matchInfo?.awayName ?: "",
+                    endTime = it.matchInfo?.endTime,
+                    homeName = it.matchInfo?.homeName ?: "",
+                    id = it.matchInfo?.id ?: "",
+                    playCateNum = it.matchInfo?.playCateNum ?: 0,
+                    startTime = it.matchInfo?.startTime,
+                    eps = it.matchInfo?.eps,
+                    spt = it.matchInfo?.spt,
+                    liveVideo = it.matchInfo?.liveVideo,
+                    status = it.matchInfo?.status ?: -1).apply {
+                    startDateDisplay = TimeUtil.timeFormat(this.startTime, "MM/dd")
+                    startTimeDisplay = TimeUtil.timeFormat(this.startTime, "HH:mm")
+                    isAtStart = TimeUtil.isTimeAtStart(this.startTime)
+                }
 
 
-            val odds: MutableMap<String, MutableList<Odd?>?> = mutableMapOf()
-            it.oddsMap.forEach { odd ->
-                odds[odd.key] = odd.value?.toMutableList()
+                val odds: MutableMap<String, MutableList<Odd?>?> = mutableMapOf()
+                it.oddsMap.forEach { (key, value) ->
+                    value?.forEach { odd ->
+                        odd?.id?.let {
+                            odd?.isSelected = selectedOdds.contains(it)
+                        }
+                    }
+                    odds[key] = value?.toMutableList()
+                }
+
+                MatchOdd(
+                    it.betPlayCateNameMap,
+                    it.playCateNameMap,
+                    matchInfo,
+                    odds,
+                    it.dynamicMarkets,
+                    it.quickPlayCateList,
+                    it.oddsSort
+                )
+            } ?: listOf()
+            withContext(Dispatchers.Main) {
+                notifyDataSetChanged()
             }
-            MatchOdd(
-                it.betPlayCateNameMap,
-                it.playCateNameMap,
-                matchInfo,
-                odds,
-                it.dynamicMarkets,
-                it.quickPlayCateList,
-                it.oddsSort
-            )
-        } ?: listOf()
-        notifyDataSetChanged()
+        }
     }
 
     fun getData() = dataList
@@ -122,7 +136,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
     }
 
     fun notifyOddsDiscountChanged(discount: Float) {
-        dataList.forEachIndexed { index, matchOdd ->
+        dataList.forEach { matchOdd ->
             matchOdd.oddsMap.forEach { (key, value) ->
                 value?.forEach { odd ->
                     odd?.updateDiscount(this.discount, discount)
@@ -143,7 +157,15 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
     }
 
     fun notifySelectedOddsChanged(selectedOdds: MutableList<String>) {
-        this.selectedOdds = selectedOdds
+        dataList.forEach { matchOdd ->
+            matchOdd.oddsMap.forEach { (key, value) ->
+                value?.forEach { odd ->
+                    odd?.id?.let {
+                        odd?.isSelected = selectedOdds.contains(it)
+                    }
+                }
+            }
+        }
         Handler(Looper.getMainLooper()).post {
             notifyDataSetChanged()
         }
@@ -169,7 +191,6 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
     override fun getItemCount(): Int = dataList.size
 
     inner class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
-        private var gameType: String? = null
         private var oddList: MutableList<Odd?>? = null
 
         fun bind(data: MatchOdd, lastData: MatchOdd) {
@@ -248,7 +269,6 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
         private fun setupOddList(data: MatchOdd) {
             itemView.apply {
-                gameType = data.matchInfo?.gameType
 
                 oddList = if(data.oddsMap.isNotEmpty()) {
                     data.oddsMap.iterator().next().value
@@ -302,7 +322,6 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
         private fun setupOddButton(data: MatchOdd) {
             try {
                 itemView.apply {
-                    gameType = data.matchInfo?.gameType
 
                     val oddsSort = data.oddsSort
                     val playCateName =
@@ -314,29 +333,22 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
                     btn_match_odd1.apply {
                         val oddFirst = oddList?.getOrNull(0)
-                        this.isSelected = selectedOdds.contains(oddFirst?.id ?: "")
-                        oddFirst?.isSelected = selectedOdds.contains(oddFirst?.id ?: "")
+                        this.isSelected = oddFirst?.isSelected ?: false
 
                         betStatus = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
                             BetStatus.DEACTIVATED.code
                         } else {
-                            oddList?.getOrNull(0)?.status ?: BetStatus.LOCKED.code
+                            oddFirst?.status ?: BetStatus.LOCKED.code
                         }
 
                         if (!oddList.isNullOrEmpty() && oddList?.size ?: 0 >= 2) {
-                            this@ViewHolderHdpOu.setupOddState(this, oddList?.getOrNull(0))
+                            this@ViewHolderHdpOu.setupOddState(this, oddFirst)
 
-                            setupOdd(
-                                oddList?.getOrNull(0),
-                                oddsType,
-                                "disable"
-                            ) //TODO Bill 這裡要看球種顯示 1/2 不能用disable
-
+                            setupOdd(oddFirst, oddsType,"disable") //TODO Bill 這裡要看球種顯示 1/2 不能用disable
                             setupOddName4Home("1" , playCateName)
-
                             setOnClickListener {
                                 if (oddList != null && oddList?.size ?: 0 >= 2) {
-                                    oddList?.getOrNull(0)?.let { odd ->
+                                    oddFirst?.let { odd ->
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
@@ -348,38 +360,28 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                                 }
                             }
                         }
-
                     }
 
                     btn_match_odd2.apply {
                         val oddSecond = oddList?.getOrNull(1)
-                        this.isSelected = selectedOdds.contains(oddSecond?.id ?: "")
-                        oddSecond?.isSelected = selectedOdds.contains(oddSecond?.id ?: "")
+                        this.isSelected = oddSecond?.isSelected ?: false
 
                         betStatus = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
                             BetStatus.DEACTIVATED.code
                         } else {
-                            oddList?.getOrNull(1)?.status ?: BetStatus.LOCKED.code
+                            oddSecond?.status ?: BetStatus.LOCKED.code
                         }
 
                         if (!oddList.isNullOrEmpty() && oddList?.size ?: 0 >= 2) {
-                            this@ViewHolderHdpOu.setupOddState(this, oddList?.getOrNull(1))
+                            this@ViewHolderHdpOu.setupOddState(this, oddSecond)
 
-                            setupOdd(
-                                oddList?.getOrNull(1),
-                                oddsType,
-                                "disable"
-                            )
-
+                            setupOdd(oddSecond, oddsType, "disable")
                             //板球才會有三個賠率
-                            if(data.matchInfo?.gameType == GameType.CK.key && oddList?.size ?: 0 > 2)
-                                setupOddName4Home("X" , playCateName)
-                            else
-                                setupOddName4Home("2" , playCateName)
-
+                            if(data.matchInfo?.gameType == GameType.CK.key && oddList?.size ?: 0 > 2) setupOddName4Home("X" , playCateName)
+                            else setupOddName4Home("2" , playCateName)
                             setOnClickListener {
                                 if (oddList != null && oddList?.size ?: 0 >= 2) {
-                                    oddList?.getOrNull(1)?.let { odd ->
+                                    oddSecond?.let { odd ->
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
@@ -396,29 +398,22 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                     btn_match_odd3.apply {
                         isVisible =  data.matchInfo?.gameType == GameType.CK.key && oddList?.size ?: 0 > 2
                         val oddThird = oddList?.getOrNull(2)
-                        this.isSelected = selectedOdds.contains(oddThird?.id ?: "")
-                        oddThird?.isSelected = selectedOdds.contains(oddThird?.id ?: "")
+                        this.isSelected = oddThird?.isSelected ?: false
 
                         betStatus = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
                             BetStatus.DEACTIVATED.code
                         } else {
-                            oddList?.getOrNull(2)?.status ?: BetStatus.LOCKED.code
+                            oddThird?.status ?: BetStatus.LOCKED.code
                         }
 
                         if (!oddList.isNullOrEmpty() && oddList?.size ?: 0 >= 2) {
-                            this@ViewHolderHdpOu.setupOddState(this, oddList?.getOrNull(2))
+                            this@ViewHolderHdpOu.setupOddState(this, oddThird)
 
-                            setupOdd(
-                                oddList?.getOrNull(2),
-                                oddsType,
-                                "disable"
-                            )
-
+                            setupOdd(oddThird, oddsType, "disable")
                             setupOddName4Home("2" , playCateName)
-
                             setOnClickListener {
                                 if (oddList != null && oddList?.size ?: 0 >= 2) {
-                                    oddList?.getOrNull(2)?.let { odd ->
+                                    oddThird?.let { odd ->
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,

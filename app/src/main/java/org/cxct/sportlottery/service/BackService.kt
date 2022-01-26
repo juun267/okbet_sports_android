@@ -323,8 +323,6 @@ class BackService : Service() {
     }
 
     fun subscribeSportChannelHall(gameType: String?){
-        if (gameType == null) return
-
         val url = "$URL_HALL" //推送频道从原本的/notify/hall/{platformId}/{gameType}调整为/notify/hall,移除平台id与gameType,
         subscribeChannel(url)
     }

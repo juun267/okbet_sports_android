@@ -206,12 +206,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 { matchId ->
                     navStatistics(matchId)
                 },
-                { matchId ->
+                { leagueId ->
                     loading()
                     viewModel.refreshGame(
                         args.matchType,
-                        listOf(),
-                        listOf(matchId)
+                        listOf(leagueId),
+                        listOf()
                     )
                 }
             )
@@ -538,6 +538,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             )
 
             viewModel.getMatchCategoryQuery(args.matchType)
+            subscribeSportChannelHall()
         }
         loading()
     }
@@ -574,9 +575,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     updateSportType(it?.sportMenuData?.menu?.eps?.items ?: listOf())
                 }
 
-
                 else -> {
                 }
+
             }
         }
 
@@ -667,6 +668,16 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             leagueOdd.gameType = gameType
                         }.toMutableList()
                     }
+
+                    //如果data資料為空時，又有其他球種的情況下，自動選取第一個
+                    if(leagueAdapter.data.isNullOrEmpty() && gameTypeAdapter.dataSport.size > 1){
+                        viewModel.getSportMenu(
+                            args.matchType,
+                            switchFirstTag = true,
+                            onlyRefreshSportMenu = true
+                        )
+                    }
+
                     game_list.itemAnimator = null
                     setNoDataView(leagueAdapter.data)
                     leagueOdds.forEach { leagueOdd ->
@@ -1084,6 +1095,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 leagueAdapter.updateBySocket(index, PAYLOAD_SCORE_CHANGE)
                             }
                         }
+                        //如果當前球類沒有任何賽事，改為選取第一個有賽事的球種
+                        if(leagueAdapter.data.size == 0){
+                            viewModel.getSportMenu(args.matchType, switchFirstTag = true)
+                        }
                     }
                 }
             }
@@ -1245,47 +1260,53 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
             }
         }
-        //TODo Bill 禮拜一詳細測試
-        /**
-         *  比對 GameType 相同 和 leagueIdList 是當前頁面有的 -> viewModel.refreshGame(args.matchType,listOf(it.league.id),listOf())
-         *  如果是 GameType不同 但是 leagueIdList是目前沒有的(代表可能有新的聯賽進來) -> getSportMenu(args.matchType)更新 sport Menu + switchSportType(args.matchType, it)
-         *  如果 GameType 是非當前頁面的 就取 -> getSportMenu(args.matchType)更新sport Menu
-         * */
-//        receiver.leagueChange.observe(this.viewLifecycleOwner) {
-//            it?.getContentIfNotHandled()?.let { leagueChangeEvent ->
-//                //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
-//                viewModel.getAllPlayCategory(args.matchType)
-//                //收到的gameType与用户当前页面所选球种相同, 则需额外调用/match/odds/simple/list & /match/odds/eps/list
-//                val nowGameType =
-//                    GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
-//                //判斷當前的 leagueIdList 是不是在 當前頁面
-//                val hasLeagueIdList =
-//                    leagueAdapter.data.filter { leagueOdd -> leagueOdd.league.id == leagueChangeEvent.leagueIdList?.firstOrNull() }
-//
-//                when {
-//                    //GameType 相同 和 leagueIdList 是當前頁面有的
-//                    nowGameType == leagueChangeEvent.gameType && hasLeagueIdList.isNotEmpty() -> {
-//                        viewModel.refreshGame(
-//                            args.matchType,
-//                            leagueChangeEvent.leagueIdList,
-//                            listOf()
-//                        )
-//                    }
-//                    nowGameType == leagueChangeEvent.gameType && hasLeagueIdList.isNullOrEmpty() -> {
-//                        unSubscribeChannelHallAll()
-//                        viewModel.getSportMenu(args.matchType)
-//                        viewModel.switchSportType(args.matchType, nowGameType ?: "FT")
-//                    }
-//                    nowGameType != leagueChangeEvent.gameType -> {
-//                        viewModel.getSportMenu(args.matchType)
-//                    }
-//                    else -> {
-//                        viewModel.getSportMenu(args.matchType)
-//                    }
-//                }
-//
-//            }
-//        }
+
+        receiver.leagueChange.observe(this.viewLifecycleOwner) {
+            it?.getContentIfNotHandled()?.let { leagueChangeEvent ->
+                //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
+                viewModel.getAllPlayCategory(args.matchType)
+                //收到的gameType与用户当前页面所选球种相同, 则需额外调用/match/odds/simple/list & /match/odds/eps/list
+                val nowGameType =
+                    GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
+                //判斷socket回傳的 leagueIdList 是不是在 當前頁面
+                val hasLeagueIdList =
+                    leagueAdapter.data.filter { leagueOdd -> leagueOdd.league.id == leagueChangeEvent.leagueIdList?.firstOrNull() }
+                        .isNotEmpty()
+
+                when {
+                    //GameType相同 & leagueIdList 是當前頁面有的 -> 更新聯賽
+                    nowGameType == leagueChangeEvent.gameType && hasLeagueIdList -> {
+                        viewModel.getSportMenu(args.matchType, onlyRefreshSportMenu = true)
+                        viewModel.refreshGame(
+                            args.matchType,
+                            leagueChangeEvent.leagueIdList,
+                            listOf()
+                        )
+                    }
+                    //GameType相同 & leagueIdList 是當前頁面沒有的(代表可能有新的聯賽加進來)->更新gameTypeAdapter、dateAdapter
+                    nowGameType == leagueChangeEvent.gameType && !hasLeagueIdList -> {
+                        if (leagueAdapter.data.size != 0) {
+                            viewModel.getSportMenu(args.matchType, onlyRefreshSportMenu = true)
+                            viewModel.switchSportType(
+                                args.matchType,
+                                nowGameType ?: GameType.FT.key
+                            )
+                        } else {//如果當前球種己經沒有賽事了，就自動選取第一個有賽事的球種玩法
+                            viewModel.getSportMenu(
+                                args.matchType,
+                                switchFirstTag = true,
+                                onlyRefreshSportMenu = true
+                            )
+                        }
+                    }
+                    //GameType不同 只更新更新gameTypeAdapter
+                    else -> {
+                        viewModel.getSportMenu(args.matchType, onlyRefreshSportMenu = true)
+                    }
+                }
+
+            }
+        }
     }
 
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
@@ -1351,7 +1372,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 game_toolbar_sport_type.text = item?.name ?: resources.getString(GameType.FT.string)
                     .toUpperCase(Locale.getDefault())
                 updateSportBackground(item)
-                subscribeSportChannelHall(item?.code)
+//                subscribeSportChannelHall(item?.code)//12/30 移除平台id与gameType後，切換SportType就不用重新訂閱了，不然會造成畫面一直閃爍 by Bill
             }
         }
 
