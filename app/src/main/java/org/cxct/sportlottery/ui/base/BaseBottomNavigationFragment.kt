@@ -28,8 +28,8 @@ abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KCla
         )
 
         //WinBet平台顯示邏輯
-        when (BuildConfig.APPLICATION_ID) {
-            "com.wbettyap.cnapp" -> {
+        when (BuildConfig.CHANNEL_NAME) {
+            "spwb" -> {
                 img_pagcor_mark.isVisible = false
                 txv_btm_hint.isVisible = false
             }

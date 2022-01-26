@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.game
 
 import android.app.Application
 import android.content.Context
+import android.service.autofill.FieldClassification
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -349,6 +350,14 @@ class GameViewModel(
         )
     }
 
+    fun switchMainMatchType() {
+        _curChildMatchType.value = null
+        _oddsListGameHallResult.value = Event(null)
+        _oddsListResult.value = Event(null)
+        _curMatchType.value = MatchType.MAIN
+        filterLeague(listOf())
+    }
+
     fun switchMatchType(matchType: MatchType) {
         _curChildMatchType.value = null
         _oddsListGameHallResult.value = Event(null)
@@ -611,8 +620,8 @@ class GameViewModel(
         return this
     }
 
-    //遊戲大廳首頁: 滾球盤、即將開賽盤
-    fun getMatchPreload() {
+    //遊戲大廳首頁: 滾球盤
+    fun getMatchPreloadInPlay() {
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.matchService.getMatchPreload(
@@ -643,6 +652,10 @@ class GameViewModel(
                 _matchPreloadInPlay.postValue(Event(result))
             }
         }
+    }
+
+    //遊戲大廳首頁: 即將開賽盤
+    fun getMatchPreloadAtStart() {
         viewModelScope.launch {
             doNetwork(androidContext) {
                 //即將開賽 query 參數：
@@ -1696,7 +1709,7 @@ class GameViewModel(
         else -> null
     }
 
-    private fun getSportSelectedCode(matchType: MatchType): String? = when (matchType) {
+    fun getSportSelectedCode(matchType: MatchType): String? = when (matchType) {
         MatchType.IN_PLAY -> {
             sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.find { it.isSelected }?.code
         }

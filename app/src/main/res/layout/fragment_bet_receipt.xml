@@ -4,22 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite8"
+    android:background="@color/transparent"
     tools:context=".ui.game.betList.receipt.BetReceiptFragment">
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/view_toolbar_main"
+        android:background="@color/transparent"
+        android:visibility="invisible" />
 
     <!-- TODO: Update blank fragment layout -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorSilverLight"
+        android:background="@color/colorWhite"
         android:paddingStart="5dp"
         android:paddingTop="5dp"
         android:paddingEnd="5dp"
         android:paddingBottom="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/tool_bar">
 
         <ImageView
             android:id="@+id/iv_receipt"
@@ -70,13 +76,20 @@
             app:layout_constraintTop_toTopOf="@+id/tv_balance" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <View
+        android:id="@+id/gray_view"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/cl_title"
+        android:background="@color/colorGrayGallery" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_bet_receipt"
         android:overScrollMode="never"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/cl_total_info"
-        app:layout_constraintTop_toBottomOf="@+id/cl_title"
+        app:layout_constraintTop_toBottomOf="@+id/gray_view"
         tools:listitem="@layout/item_match_receipt" />
 
     <androidx.constraintlayout.widget.ConstraintLayout

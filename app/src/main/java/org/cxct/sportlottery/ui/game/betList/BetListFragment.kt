@@ -53,6 +53,8 @@ import org.cxct.sportlottery.util.*
 class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private lateinit var binding: FragmentBetListBinding
 
+    private var isAutoCloseWhenNoData = false
+
     private var oddsType: OddsType = OddsType.EU
 
     private var discount = 1.0F
@@ -221,6 +223,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         betListRefactorAdapter =
             BetListRefactorAdapter(object : BetListRefactorAdapter.OnItemClickListener {
                 override fun onDeleteClick(oddsId: String, currentItemCount: Int) {
+                    isAutoCloseWhenNoData = true
                     viewModel.removeBetInfoItem(oddsId)
                 }
 
@@ -383,8 +386,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
             btnDeleteAllConfirm.setOnClickListener {
                 btnDeleteAllConfirm.startAnimation(exitAnimation)
+                isAutoCloseWhenNoData = true
                 viewModel.removeBetInfoAll()
-                activity?.onBackPressed()
             }
         }
     }
@@ -450,6 +453,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 subscribeChannel(list)
                 refreshAllAmount(list)
                 checkAllAmountCanBet()
+
+                if(list.size == 0 && isAutoCloseWhenNoData) activity?.onBackPressed()
             }
         }
 
@@ -463,10 +468,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         //串關列表
         viewModel.parlayList.observe(this.viewLifecycleOwner) {
-            if(it.size == 0){
+            if (it.size == 0) {
                 betListRefactorAdapter?.hasParlayList = false
                 betListRefactorAdapter?.parlayList = singleParlayList
-            }else{
+            } else {
                 betListRefactorAdapter?.hasParlayList = true
                 betListRefactorAdapter?.parlayList = it
             }

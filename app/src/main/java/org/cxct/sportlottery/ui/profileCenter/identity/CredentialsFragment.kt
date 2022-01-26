@@ -127,26 +127,27 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
     }
 
     private fun initObserve() {
-        viewModel.docUrlResult.observe(viewLifecycleOwner, {
+        viewModel.docUrlResult.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { result ->
                 if (!result.success) {
                     hideLoading()
                     showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
                 }
             }
-        })
+        }
 
-        viewModel.photoUrlResult.observe(viewLifecycleOwner, {
+        viewModel.photoUrlResult.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { result ->
                 hideLoading()
                 if (!result.success)
                     showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
                 else {
-                    val action = CredentialsFragmentDirections.actionCredentialsFragmentToCredentialsDetailFragment()
+                    val action =
+                        CredentialsFragmentDirections.actionCredentialsFragmentToCredentialsDetailFragment()
                     findNavController().navigate(action)
                 }
             }
-        })
+        }
     }
 
     private fun setupButton() {

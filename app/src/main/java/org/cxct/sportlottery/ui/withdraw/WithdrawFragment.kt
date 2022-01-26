@@ -169,12 +169,12 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     }
 
     private fun initObserve(view: View) {
-        viewModel.commissionCheckList.observe(this.viewLifecycleOwner, {
+        viewModel.commissionCheckList.observe(this.viewLifecycleOwner) {
             tv_detail.apply {
                 isEnabled = it.isNotEmpty()
                 isSelected = it.isNotEmpty()
             }
-        })
+        }
 
         viewModel.needCheck.observe(this.viewLifecycleOwner, Observer {
             ll_commission.visibility = if(it) View.VISIBLE else View.GONE
@@ -182,7 +182,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
         viewModel.deductMoney.observe(this.viewLifecycleOwner, Observer {
             tv_commission.apply {
-                text = if(it.isNaN()) "0" else TextUtil.formatCommissionMoney(zero.minus(it ?: 0.0))
+                text = if(it.isNaN()) "0" else TextUtil.formatMoney(zero.minus(it ?: 0.0))
 
                 setTextColor(
                     ContextCompat.getColor(

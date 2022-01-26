@@ -133,8 +133,8 @@ object SocketUpdateUtil {
                 }
 
 
-                if (leagueTime != null && leagueTime != matchOdd.matchInfo?.leagueTime) {
-                    matchOdd.matchInfo?.leagueTime = leagueTime
+                if (leagueTime != null && leagueTime.toInt() != matchOdd.matchInfo?.leagueTime) {
+                    matchOdd.matchInfo?.leagueTime = leagueTime.toInt()
                     isNeedRefresh = true
                 }
 

@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.game.hall
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -21,7 +20,6 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_eps.*
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
-import kotlinx.android.synthetic.main.itemview_league_v4.view.*
 import kotlinx.android.synthetic.main.view_game_tab_odd_v4.*
 import kotlinx.android.synthetic.main.view_game_tab_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
@@ -34,7 +32,6 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsLeagueOddsItem
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
-import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.outright.season.Season
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
@@ -43,6 +40,7 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
+import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
@@ -304,10 +302,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     private fun setupSportTypeList(view: View) {
         view.sport_type_list.apply {
+            this.adapter = gameTypeAdapter
+
             this.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-            this.adapter = gameTypeAdapter
+            edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
 
             addItemDecoration(
                 SpaceItemDecoration(
@@ -425,6 +425,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private fun setupPlayCategory(view: View) {
         view.game_play_category.apply {
             this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
 
             this.adapter = playCategoryAdapter
 

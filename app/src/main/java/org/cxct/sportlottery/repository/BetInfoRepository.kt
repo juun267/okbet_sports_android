@@ -22,6 +22,8 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.MatchOddUtil
+import org.cxct.sportlottery.util.parlaylimit.ParlayBetLimit
+import org.cxct.sportlottery.util.parlaylimit.ParlayCom
 import org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil
 import kotlin.math.abs
 
@@ -44,6 +46,12 @@ class BetInfoRepository(val androidContext: Context) {
     }
     val betInfoList: LiveData<Event<MutableList<BetInfoListData>>>
         get() = _betInfoList
+
+    private val _betIDList = MutableLiveData<Event<MutableList<String>>>().apply {
+        value = Event(mutableListOf())
+    }
+    val betIDList: LiveData<Event<MutableList<String>>>
+        get() = _betIDList
 
     private val _showBetUpperLimit = MutableLiveData<Event<Boolean>>()
     val showBetUpperLimit: LiveData<Event<Boolean>>
@@ -207,6 +215,12 @@ class BetInfoRepository(val androidContext: Context) {
 
         val item = betList.find { it.matchOdd.oddsId == oddId }
         betList.remove(item)
+
+        val oddIDStr = oddId ?: ""
+        val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
+        oddIDArray.remove(oddIDStr)
+        _betIDList.postValue(Event(oddIDArray))
+
         _removeItem.postValue(Event(item?.matchOdd?.matchId))
         updateBetOrderParlay(betList)
         checkBetInfoContent(betList)
@@ -215,27 +229,34 @@ class BetInfoRepository(val androidContext: Context) {
 
     fun removeClosedPlatItem() {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
+
+        val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
+
         val needRemoveList =
             betList.filter { it.matchOdd.status == BetStatus.LOCKED.code || it.matchOdd.status == BetStatus.DEACTIVATED.code }
         needRemoveList.forEach {
             betList.remove(it)
+            oddIDArray.remove(it.matchOdd.oddsId)
             _removeItem.value = Event(it.matchOdd.matchId)
         }
 
         updateBetOrderParlay(betList)
         checkBetInfoContent(betList)
+        _betIDList.postValue(Event(oddIDArray))
         _betInfoList.postValue(Event(betList))
     }
 
 
     fun clear() {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
-
+        val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
         betList.clear()
+        oddIDArray.clear()
         _matchOddList.value?.clear()
         _parlayList.value?.clear()
 
         checkBetInfoContent(betList)
+        _betIDList.postValue(Event(oddIDArray))
         _betInfoList.postValue(Event(betList))
     }
 
@@ -295,7 +316,9 @@ class BetInfoRepository(val androidContext: Context) {
                 this.outrightMatchInfo = matchInfo
             }
 
-
+            val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
+            oddIDArray.add(it.oddsId)
+            _betIDList.postValue(Event(oddIDArray))
 
             betList.add(data)
             //產生串關注單
@@ -406,45 +429,50 @@ class BetInfoRepository(val androidContext: Context) {
             val maxBetMoney = GameConfigManager.maxBetMoney ?: 9999999
             val maxCpBetMoney = GameConfigManager.maxCpBetMoney
             val maxParlayBetMoney = GameConfigManager.maxParlayBetMoney ?: 9999999
+            if(it.value.num > 1){
+                //大於1 即為組合型串關 最大下注金額有特殊規則
+                maxBet = calculateComboMaxBet(it.value,playQuota?.max)
+            }else{
+                when (matchType) {
+                    MatchType.PARLAY -> {
+                        if (isParlayBet) {
+                            maxBet =
+                                if (maxParlayBetMoney < parlayBetLimit) maxBetMoney else parlayBetLimit
+                        } else {
+                            maxBet = if (maxBetMoney < parlayBetLimit) maxBetMoney else parlayBetLimit
+                        }
+                    }
+                    MatchType.OUTRIGHT -> maxBet =
+                        maxCpBetMoney?.let { if (maxCpBetMoney < parlayBetLimit) maxCpBetMoney else parlayBetLimit }
+                            ?: parlayBetLimit
 
-            when (matchType) {
-                MatchType.PARLAY -> {
-                    if (isParlayBet) {
-                        maxBet =
-                            if (maxParlayBetMoney < parlayBetLimit) maxBetMoney else parlayBetLimit
-                    } else {
-                        maxBet = if (maxBetMoney < parlayBetLimit) maxBetMoney else parlayBetLimit
+                    else -> maxBet =
+                        maxBetMoney.let { if (maxBetMoney < parlayBetLimit) maxBetMoney else parlayBetLimit }
+                            ?: parlayBetLimit
+                }
+
+                //[Martin]為馬來盤＆印度計算投注上限
+                if (oddsType == OddsType.MYS) {
+                    if ((matchOddList.getOrNull(0)?.malayOdds ?: 0.0) < 0.0 && oddsList.size <= 1) {
+                        val myMax = (maxBetMoney.div(abs(matchOddList.getOrNull(0)?.malayOdds ?: 0.0))).toInt()
+                        maxBet = if (myMax < (playQuota?.max ?: 0)) myMax else (playQuota?.max ?: 0)
+                    }
+                } else if (oddsType == OddsType.IDN) {
+                    if (matchOddList.getOrNull(0)?.indoOdds ?: 0.0 < 0.0 && oddsList.size <= 1) {
+                        //印度賠付額上限
+                        val indoMax = ((playQuota?.max?.toDouble()?.plus(abs(matchOddList.getOrNull(0)?.indoOdds ?: 0.0)))?.toInt())?.minus(1)?: 0
+                        //印度使用者投注上限
+                        val indoUserMax = maxBetMoney.div(abs(matchOddList.getOrNull(0)?.indoOdds ?: 0.0)).toInt()
+                        maxBet = if (indoUserMax < indoMax) indoUserMax else indoMax
+                    }
+                }else if(oddsType == OddsType.IDN) {
+                    if (matchOddList[0].indoOdds < 0 && oddsList.size <= 1) {
+                        val indoMax = (((playQuota?.max?.toDouble()?.plus(abs(matchOddList[0].indoOdds))) ?: 0).toInt()) - 1
+                        maxBet = if (maxBetMoney < indoMax) maxBetMoney else indoMax
                     }
                 }
-                MatchType.OUTRIGHT -> maxBet =
-                    maxCpBetMoney?.let { if (maxCpBetMoney < parlayBetLimit) maxCpBetMoney else parlayBetLimit }
-                        ?: parlayBetLimit
-
-                else -> maxBet =
-                    maxBetMoney.let { if (maxBetMoney < parlayBetLimit) maxBetMoney else parlayBetLimit }
-                        ?: parlayBetLimit
             }
 
-        //[Martin]為馬來盤＆印度計算投注上限
-        if (oddsType == OddsType.MYS) {
-            if ((matchOddList.getOrNull(0)?.malayOdds ?: 0.0) < 0.0 && oddsList.size <= 1) {
-                val myMax = (maxBetMoney.div(abs(matchOddList.getOrNull(0)?.malayOdds ?: 0.0))).toInt()
-                maxBet = if (myMax < (playQuota?.max ?: 0)) myMax else (playQuota?.max ?: 0)
-            }
-        } else if (oddsType == OddsType.IDN) {
-            if (matchOddList.getOrNull(0)?.indoOdds ?: 0.0 < 0.0 && oddsList.size <= 1) {
-                //印度賠付額上限
-                val indoMax = ((playQuota?.max?.toDouble()?.plus(abs(matchOddList.getOrNull(0)?.indoOdds ?: 0.0)))?.toInt())?.minus(1)?: 0
-                //印度使用者投注上限
-                val indoUserMax = maxBetMoney.div(abs(matchOddList.getOrNull(0)?.indoOdds ?: 0.0)).toInt()
-                maxBet = if (indoUserMax < indoMax) indoUserMax else indoMax
-            }
-        }else if(oddsType == OddsType.IDN) {
-            if (matchOddList[0].indoOdds < 0 && oddsList.size <= 1) {
-                val indoMax = (((playQuota?.max?.toDouble()?.plus(abs(matchOddList[0].indoOdds))) ?: 0).toInt()) - 1
-                maxBet = if (maxBetMoney < indoMax) maxBetMoney else indoMax
-            }
-        }
 
             ParlayOdd(
                 parlayType = it.key,
@@ -458,6 +486,14 @@ class BetInfoRepository(val androidContext: Context) {
                 indoOdds = if (oddsList.size > 1) it.value.odds.toDouble() else matchOddList.getOrNull(0)?.indoOdds?:0.0
             )
         }
+    }
+
+    private fun calculateComboMaxBet(
+        parlayBetLimit: ParlayBetLimit,
+        max: Int?,
+    ): Int {
+        var tempMax = max?.times(parlayBetLimit.num)
+        return tempMax?.div(parlayBetLimit.hdOdds.toDouble())!!.toInt()
     }
 
 
