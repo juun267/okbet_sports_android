@@ -1,22 +1,23 @@
 package org.cxct.sportlottery.ui.transactionStatus
 
-import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_last_total_record.view.*
 import kotlinx.android.synthetic.main.content_match_record.view.*
+import kotlinx.android.synthetic.main.content_match_record.view.play_content
+import kotlinx.android.synthetic.main.content_outright_record.view.*
 import kotlinx.android.synthetic.main.content_outright_record.view.content_bet_amount
 import kotlinx.android.synthetic.main.content_outright_record.view.content_order_no
 import kotlinx.android.synthetic.main.content_outright_record.view.content_play
 import kotlinx.android.synthetic.main.content_outright_record.view.content_time_type
 import kotlinx.android.synthetic.main.content_outright_record.view.content_winnable_amount
 import kotlinx.android.synthetic.main.content_outright_record.view.title_league_name
+import kotlinx.android.synthetic.main.content_parlay_match.view.*
 import kotlinx.android.synthetic.main.content_parlay_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.list.Row
@@ -24,7 +25,9 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.TextUtil.getParlayShowName
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.setDateTime
 import org.cxct.sportlottery.util.setPlayContent
 
 //TODO 20210719當前api缺少總金額,待後端修正後進行確認
@@ -65,13 +68,13 @@ class TransactionRecordDiffAdapter :
         val rvData = getItem(holder.adapterPosition)
         when (holder) {
             is MatchRecordViewHolder -> {
-                holder.bind((rvData as DataItem.Item).row, oddsType)
+                holder.bind((rvData as DataItem.Item).row)
             }
             is ParlayRecordViewHolder -> {
                 holder.bind((rvData as DataItem.Item).row, oddsType)
             }
             is OutrightRecordViewHolder -> {
-                holder.bind((rvData as DataItem.Item).row, oddsType)
+                holder.bind((rvData as DataItem.Item).row)
             }
             is LastTotalViewHolder -> {
                 holder.bind((rvData as DataItem.Total).totalAmount)
@@ -100,12 +103,11 @@ class TransactionRecordDiffAdapter :
             }
         }
 
-        fun bind(data: Row, oddsType: OddsType) {
+        fun bind(data: Row) {
             val matchOdds = data.matchOdds[0]
             itemView.apply {
                 title_league_name.text = matchOdds.leagueName
                 title_home_name.text = matchOdds.homeName
-//                title_spread.text = matchOdds.spread
                 title_away_name.text = matchOdds.awayName
 
                 val oddsTypeStr = when (matchOdds.oddsType) {
@@ -122,15 +124,8 @@ class TransactionRecordDiffAdapter :
                     oddsTypeStr
                 )
 
+                match_play_time.text = TimeUtil.timeFormat(matchOdds.startTime, TimeUtil.YMD_HM_FORMAT)
                 content_play.text = "${getGameTypeName(data.gameType)} ${matchOdds.playCateName}"
-//                spread_name.text = matchOdds.playName
-//                content_odds.text  = TextUtil.formatForOdd(matchOdds.odds)
-//                content_odds_type.text = when (matchOdds.oddsType) {
-//                    OddsType.HK.code -> "("+context.getString(OddsType.HK.res)+")"
-//                    OddsType.MYS.code -> "("+context.getString(OddsType.MYS.res)+")"
-//                    OddsType.IDN.code -> "("+context.getString(OddsType.IDN.res)+")"
-//                    else -> "("+context.getString(OddsType.EU.res)+")"
-//                }
                 content_bet_amount.text = TextUtil.format(data.totalAmount)
                 content_winnable_amount.text = TextUtil.format(data.winnable)
                 content_order_no.text = data.orderNo
@@ -163,21 +158,11 @@ class TransactionRecordDiffAdapter :
             }
         }
 
-        fun bind(data: Row, oddsType: OddsType) {
+        fun bind(data: Row) {
             val matchOdds = data.matchOdds[0]
             itemView.apply {
                 title_league_name.text = "${matchOdds.leagueName} - ${matchOdds.playCateName}"
-
                 content_play.text = "${getGameTypeName(data.gameType)} ${matchOdds.playCateName}"
-//                spread_name.text = matchOdds.spread
-//                content_odds.text = TextUtil.formatForOdd(matchOdds.odds)
-//                content_odds_type.text = when (matchOdds.oddsType) {
-//                    OddsType.HK.code -> "(" + context.getString(OddsType.HK.res) + ")"
-//                    OddsType.MYS.code -> "(" + context.getString(OddsType.MYS.res) + ")"
-//                    OddsType.IDN.code -> "(" + context.getString(OddsType.IDN.res) + ")"
-//                    else -> "(" + context.getString(OddsType.EU.res) + ")"
-//                }
-
                 val oddsTypeStr = when (matchOdds.oddsType) {
                     OddsType.HK.code -> "(" + context.getString(OddsType.HK.res) + ")"
                     OddsType.MYS.code -> "(" + context.getString(OddsType.MYS.res) + ")"
@@ -192,6 +177,7 @@ class TransactionRecordDiffAdapter :
                     oddsTypeStr
                 )
 
+                play_time.text = TimeUtil.timeFormat(matchOdds.startTime, TimeUtil.YMD_HM_FORMAT)
                 content_bet_amount.text = TextUtil.format(data.totalAmount)
                 content_winnable_amount.text = TextUtil.format(data.winnable)
                 content_order_no.text = data.orderNo
@@ -236,7 +222,7 @@ class TransactionRecordDiffAdapter :
             val contentParlayMatchAdapter by lazy { ContentParlayMatchAdapter() }
 
             itemView.apply {
-                title_parlay_type.text = getParlayShowName(data.parlayType)
+                title_parlay_type.text = getParlayShowName(context, data.parlayType)
                 rv_parlay_match.apply {
                     adapter = contentParlayMatchAdapter
                     layoutManager =
@@ -254,10 +240,6 @@ class TransactionRecordDiffAdapter :
                 content_parlay_order_no.text = data.orderNo
                 content_parlay_time_type.text = getTimeFormatFromDouble(data.addTime)
             }
-        }
-
-        private fun getParlayShowName(parlayType: String): String {
-            return parlayType.replace("C", " ${itemView.context.getString(R.string.conspire)} ")
         }
 
         private fun getGameTypeName(gameType: String): String {

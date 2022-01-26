@@ -132,17 +132,34 @@
             <!--playName spread @ odd (oddsType)-->
             <TextView
                 android:id="@+id/tv_content"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:maxWidth="200dp"
                 android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginEnd="4dp"
                 app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintEnd_toStartOf="@+id/list_score"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_play_name"
                 tools:text="密尔沃基雄鹿 6.5 \@ 1.860 (印尼盘)" />
+
+
+            <TextView
+                android:id="@+id/tv_start_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:maxWidth="200dp"
+                android:textColor="@color/colorGray"
+                android:textSize="@dimen/textSize12sp"
+                android:layout_marginEnd="4dp"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintEnd_toStartOf="@+id/list_score"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_content"
+                tools:text="2022-02-25 10:42" />
 
 
             <androidx.recyclerview.widget.RecyclerView

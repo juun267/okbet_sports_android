@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.util
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Typeface
 import android.text.Editable
 import android.text.Spanned
@@ -78,8 +79,8 @@ fun TextView.setPlayCateName(parlayType: String?) {
 
     parlayType?.let {
         text = when (LanguageManager.getSelectLanguage(MultiLanguagesApplication.appContext)) {
-            LanguageManager.Language.ZH -> TextUtil.replaceParlayByC(it)
-            else -> it
+            LanguageManager.Language.ZH -> TextUtil.getParlayShowName(this.context, it)
+            else -> TextUtil.getParlayShowName(this.context, it)
         }
     }
 }

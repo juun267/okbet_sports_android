@@ -368,7 +368,7 @@ abstract class BaseOddButtonViewModel(
         val parlayList: MutableList<Stake> = mutableListOf()
         parlayBetList.forEach {
             if (it.betAmount > 0) {
-                parlayList.add(Stake(TextUtil.replaceCByParlay(it.parlayType), it.betAmount))
+                parlayList.add(Stake(TextUtil.replaceCByParlay(androidContext, it.parlayType), it.betAmount))
             }
         }
 

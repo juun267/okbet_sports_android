@@ -25,7 +25,9 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.transactionStatus.ParlayType
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.TextUtil.getParlayShowName
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
 
 class AccountHistoryNextAdapter(
@@ -138,8 +140,8 @@ class AccountHistoryNextAdapter(
             is DataItem.TitleBar -> ItemType.TITLE_BAR.ordinal
             is DataItem.Item -> {
                 when (getItem(position).parlayType) {
-                    "1C1" -> ItemType.ITEM.ordinal
-                    "OUTRIGHT" -> ItemType.OUTRIGHT.ordinal
+                    ParlayType.SINGLE.key -> ItemType.ITEM.ordinal
+                    ParlayType.OUTRIGHT.key -> ItemType.OUTRIGHT.ordinal
                     else -> ItemType.PARLAY.ordinal
                 }
             }
@@ -160,7 +162,7 @@ class AccountHistoryNextAdapter(
 
             binding.apply {
                 matchOdd = row.matchOdds?.firstOrNull()
-                tvParlayType.text = row.parlayType?.replace("C", "串")
+                tvParlayType.text = getParlayShowName(itemView.context, row.parlayType)
 
                 rvParlay.apply {
                     adapter = parlayAdapter
@@ -205,6 +207,8 @@ class AccountHistoryNextAdapter(
                     oddsType.code
                 )
                 binding.tvTeamNames.text = "$homeName v $awayName"
+
+                binding.tvStartTime.text = TimeUtil.timeFormat(startTime, TimeUtil.YMD_HM_FORMAT)
             }
             binding.executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
         }
@@ -222,7 +226,6 @@ class AccountHistoryNextAdapter(
         }
 
     }
-
 
     class ItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -243,6 +246,8 @@ class AccountHistoryNextAdapter(
                     it.odds?.let { odd -> TextUtil.formatForOdd(odd) },
                     binding.tvContent.context.getString(oddsType.res)
                 )
+
+                binding.tvStartTime.text = TimeUtil.timeFormat(it.startTime, TimeUtil.YMD_HM_FORMAT)
 
                 val scoreList = mutableListOf<String>()
                 it.playCateMatchResultList?.map { scoreData ->
@@ -403,7 +408,6 @@ class AccountHistoryNextAdapter(
         }
     }
 
-
     class BackToTopViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(scrollToTopListener: ScrollToTopListener) {
             itemView.btn_back_to_top.setOnClickListener {
@@ -419,7 +423,6 @@ class AccountHistoryNextAdapter(
                 )
         }
     }
-
 
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         companion object {

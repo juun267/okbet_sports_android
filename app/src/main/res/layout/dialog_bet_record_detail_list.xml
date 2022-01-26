@@ -292,7 +292,6 @@
                                 android:id="@+id/tv_bet_title"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@{row.matchOdds.size() > 1 ? TextUtil.replaceParlayByC(row.parlayType) : row.matchOdds.size() == 1 ? row.matchOdds[0].playCateName:null}"
                                 android:textColor="@color/colorBlack"
                                 android:textSize="@dimen/textSize14sp"
                                 android:textStyle="bold"

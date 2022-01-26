@@ -85,6 +85,8 @@ class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(D
             binding.gameType = gameType
             binding.matchOdd = matchOdd
 
+            binding.tvTime.text = TimeUtil.timeFormat(matchOdd.startTime, TimeUtil.YMD_HM_FORMAT)
+
             matchOdd.apply {
                 val odds = getOdds(matchOdd, matchOdd.oddsType.toString())
                 binding.playContent.setPlayContent(

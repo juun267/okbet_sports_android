@@ -54,6 +54,14 @@
             android:textSize="@dimen/textSize13sp"
             tools:text="密尔沃基雄鹿 6.5 \@ 1.860 (印尼盘)" />
 
+        <TextView
+            android:id="@+id/play_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorGray"
+            android:textSize="@dimen/textSize12sp"
+            tools:text="2022-02-25 10:42" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
