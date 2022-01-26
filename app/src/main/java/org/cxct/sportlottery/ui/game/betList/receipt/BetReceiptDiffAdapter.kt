@@ -132,7 +132,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                             playName,
                             spread,
                             TextUtil.formatForOdd(getOdds(this, oddsType)),
-                            context.getString(oddsType.res)
+                            context.getString(getOddTypeRes(this, oddsType))
                         )
 
                         tv_league.text = leagueName

@@ -137,7 +137,9 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
     fun notifyOddsTypeChanged(oddsType: OddsType) {
         this.oddsType = oddsType
-        this.notifyDataSetChanged()
+        Handler(Looper.getMainLooper()).post {
+            notifyDataSetChanged()
+        }
     }
 
     fun notifySelectedOddsChanged(selectedOdds: MutableList<String>) {

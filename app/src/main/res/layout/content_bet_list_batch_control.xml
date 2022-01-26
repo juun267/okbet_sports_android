@@ -16,48 +16,54 @@
 
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@drawable/divider_color_white8"
-        android:orientation="vertical"
-        android:showDividers="middle|end">
-
-        <include
-            android:id="@+id/item_first_connect"
-            layout="@layout/item_bet_list_batch_control_connect" />
-
-        <include
-            android:id="@+id/item_first_single"
-            layout="@layout/item_bet_list_batch_control" />
-
+        android:background="@color/colorWhite">
         <LinearLayout
-            android:id="@+id/ll_more_option"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorWhite"
-            android:gravity="center_vertical"
-            android:paddingStart="6dp"
-            android:paddingTop="14dp"
-            android:paddingEnd="6dp"
-            android:paddingBottom="14dp">
+            android:divider="@drawable/divider_color_white8"
+            android:orientation="vertical"
+            android:showDividers="middle|end"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/iv_arrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_arrow_gray_top"
-                tools:src="@drawable/ic_arrow_gray_down" />
+            <include
+                android:id="@+id/item_first_connect"
+                layout="@layout/item_bet_list_batch_control_connect" />
 
-            <TextView
-                android:layout_width="wrap_content"
+            <include
+                android:id="@+id/item_first_single"
+                layout="@layout/item_bet_list_batch_control" />
+
+            <LinearLayout
+                android:id="@+id/ll_more_option"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/bet_list_view_more_options"
-                android:textColor="@color/colorBlackLight"
-                android:textSize="@dimen/textSize14sp" />
+                android:background="@color/colorWhite"
+                android:gravity="center_vertical"
+                android:paddingStart="6dp"
+                android:paddingTop="14dp"
+                android:paddingEnd="6dp"
+                android:paddingBottom="14dp">
+
+                <ImageView
+                    android:id="@+id/iv_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/ic_arrow_gray_top"
+                    tools:src="@drawable/ic_arrow_gray_down" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bet_list_view_more_options"
+                    android:textColor="@color/colorBlackLight"
+                    android:textSize="@dimen/textSize14sp" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
