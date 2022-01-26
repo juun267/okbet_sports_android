@@ -1274,8 +1274,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         .isNotEmpty()
 
                 when {
-                    //GameType相同 & leagueIdList 是當前頁面有的->更新聯賽
+                    //GameType相同 & leagueIdList 是當前頁面有的 -> 更新聯賽
                     nowGameType == leagueChangeEvent.gameType && hasLeagueIdList -> {
+                        viewModel.getSportMenu(args.matchType, onlyRefreshSportMenu = true)
                         viewModel.refreshGame(
                             args.matchType,
                             leagueChangeEvent.leagueIdList,
@@ -1299,9 +1300,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         }
                     }
                     //GameType不同 只更新更新gameTypeAdapter
-                    nowGameType != leagueChangeEvent.gameType -> {
-                        viewModel.getSportMenu(args.matchType, onlyRefreshSportMenu = true)
-                    }
                     else -> {
                         viewModel.getSportMenu(args.matchType, onlyRefreshSportMenu = true)
                     }
