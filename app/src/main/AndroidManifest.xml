@@ -19,7 +19,7 @@
         android:networkSecurityConfig="${NETWORK_SECURITY_CONFIG}"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.profileCenter.identity.IdentityActivity"></activity>
+        <activity android:name=".ui.profileCenter.identity.VerifyIdentityActivity"></activity>
         <activity
             android:name=".ui.statistics.StatisticsActivity"
             android:screenOrientation="portrait" />

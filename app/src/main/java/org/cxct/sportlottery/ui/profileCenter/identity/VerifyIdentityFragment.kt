@@ -2,30 +2,23 @@ package org.cxct.sportlottery.ui.profileCenter.identity
 
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.ap.zoloz.hummer.api.*
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import kotlinx.android.synthetic.main.fragment_credentials_detail.*
-import kotlinx.android.synthetic.main.fragment_credentials_new.*
+import kotlinx.android.synthetic.main.fragment_verify_identity_new.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.credential.CredentialCompleteData
 import org.cxct.sportlottery.network.credential.DocType
-import org.cxct.sportlottery.network.credential.EkycResultType
 import org.cxct.sportlottery.network.credential.ResultStatus
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
-import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 
 
-class CredentialsFragment :
+class VerifyIdentityFragment :
     BaseSocketFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
 
     private var transactionId: String? = ""
@@ -33,8 +26,17 @@ class CredentialsFragment :
     private var metaInfo: String = ""
 
     private val idTypeList = listOf(
-        StatusSheetData(DocType.Passport.value, DocType.Passport.showName),
-        StatusSheetData(DocType.UM_ID.value, DocType.UM_ID.showName)
+        StatusSheetData(DocType.UM_ID.value, DocType.UM_ID.showName),
+        StatusSheetData(DocType.TIN_ID.value, DocType.TIN_ID.showName),
+        StatusSheetData(DocType.PASSPORT.value, DocType.PASSPORT.showName),
+        StatusSheetData(DocType.PHIL_HEALTH_CARD.value, DocType.PHIL_HEALTH_CARD.showName),
+        StatusSheetData(DocType.DRIVE_LICENSE.value, DocType.DRIVE_LICENSE.showName),
+        StatusSheetData(DocType.SSS_ID.value, DocType.SSS_ID.showName),
+        StatusSheetData(DocType.VOTER_ID.value, DocType.VOTER_ID.showName),
+        StatusSheetData(DocType.HKID_1.value, DocType.HKID_1.showName),
+        StatusSheetData(DocType.HKID_2.value, DocType.HKID_2.showName),
+        StatusSheetData(DocType.MY_KAD.value, DocType.MY_KAD.showName),
+        StatusSheetData(DocType.CHINA_ID.value, DocType.CHINA_ID.showName)
     )
 
     private var nowSelectCode: String? = null
@@ -45,7 +47,7 @@ class CredentialsFragment :
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_credentials_new, container, false)
+        return inflater.inflate(R.layout.fragment_verify_identity_new, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -86,7 +88,7 @@ class CredentialsFragment :
                 loading()
                 viewModel.getCredentialInitial(
                     metaInfo,
-                    nowSelectCode ?: DocType.Passport.value
+                    nowSelectCode ?: DocType.PASSPORT.value
                 )
             }
         }
@@ -96,7 +98,7 @@ class CredentialsFragment :
     private fun changePage(data: CredentialCompleteData) {
         kotlin.run {
             val action =
-                CredentialsFragmentDirections.actionCredentialsFragmentToCredentialsDetailFragment(
+                VerifyIdentityFragmentDirections.actionVerifyIdentityFragmentToVerifyDetailFragment(
                     data
                 )
             findNavController().navigate(action)
