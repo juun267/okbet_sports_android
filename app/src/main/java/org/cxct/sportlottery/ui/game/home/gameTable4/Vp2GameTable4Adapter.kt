@@ -128,10 +128,8 @@ class Vp2GameTable4Adapter (
                 }
             }
         }
-        if (gameType != GameType.FT.key && gameType != GameType.BK.key) {
-            Handler(Looper.getMainLooper()).post {
-                notifyDataSetChanged()
-            }
+        Handler(Looper.getMainLooper()).post {
+            notifyDataSetChanged()
         }
         this.discount = discount
     }
@@ -152,10 +150,8 @@ class Vp2GameTable4Adapter (
                     matchOdd.matchInfo?.statusName18n = statusValue
                     matchOdd.matchInfo?.homeCards = matchStatusCO.homeCards
                     matchOdd.matchInfo?.awayCards = matchStatusCO.awayCards
-                    if (gameType != GameType.FT.key && gameType != GameType.BK.key) {
-                        Handler(Looper.getMainLooper()).post {
-                            notifyItemChanged(index, null)
-                        }
+                    Handler(Looper.getMainLooper()).post {
+                        notifyItemChanged(index, null)
                     }
                 }
             }
