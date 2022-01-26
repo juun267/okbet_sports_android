@@ -1094,6 +1094,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 leagueAdapter.updateBySocket(index, PAYLOAD_SCORE_CHANGE)
                             }
                         }
+                        //如果當前球類沒有任何賽事，改為選取第一個有賽事的球種
+                        if(leagueAdapter.data.size == 0){
+                            viewModel.getSportMenu(args.matchType, switchFirstTag = true)
+                        }
                     }
                 }
             }
