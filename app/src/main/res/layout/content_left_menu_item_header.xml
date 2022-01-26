@@ -16,7 +16,7 @@
         android:paddingHorizontal="20dp"
         android:text="@string/recharge"
         android:textColor="@color/colorBlackLight"
-        app:drawableStartCompat="@drawable/ic_recharge" />
+        app:drawableStartCompat="@drawable/icon_wallet" />
 
     <TextView
         android:id="@+id/tv_withdraw"
@@ -28,7 +28,7 @@
         android:paddingHorizontal="20dp"
         android:text="@string/withdraw"
         android:textColor="@color/colorBlackLight"
-        app:drawableStartCompat="@drawable/ic_withdraw" />
+        app:drawableStartCompat="@drawable/icon_withdraw" />
 
     <TextView
         android:id="@+id/tv_member_level"
@@ -52,7 +52,7 @@
         android:paddingHorizontal="20dp"
         android:text="@string/promotion"
         android:textColor="@color/colorBlackLight"
-        app:drawableStartCompat="@drawable/ic_promotion" />
+        app:drawableStartCompat="@drawable/icon_gift" />
 
     <View
         android:id="@+id/divider_login"
@@ -72,7 +72,7 @@
         android:paddingHorizontal="20dp"
         android:text="@string/match_type_row_in_play"
         android:textColor="@color/colorBlackLight"
-        app:drawableStartCompat="@drawable/ic_inplay_v4" />
+        app:drawableStartCompat="@drawable/icon_finance" />
 
     <TextView
         android:id="@+id/ct_premium_odds"
@@ -84,7 +84,7 @@
         android:paddingHorizontal="20dp"
         android:text="@string/premium_odds"
         android:textColor="@color/colorBlackLight"
-        app:drawableStartCompat="@drawable/ic_price_v4" />
+        app:drawableStartCompat="@drawable/img_special" />
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
