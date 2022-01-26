@@ -6,356 +6,198 @@
     android:layout_height="wrap_content"
     android:background="@color/color_ffededed">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="14dp"
-        android:minHeight="78dp"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-
-        app:cardCornerRadius="6dp"
+    <View
+        android:id="@+id/bg_top"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="#FAFAFA"
+        app:layout_constraintBottom_toTopOf="@+id/bg_bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="top"
-            android:paddingBottom="15dp">
+    <TextView
+        android:id="@+id/txv_other"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/other_link"
+        android:textColor="@color/color_333333"
+        android:textSize="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/gl_top"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintGuide_percent="0.2"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/txv_about"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/about_us"
+        android:textColor="@color/color_999999"
+        android:textSize="12dp"
+        app:layout_constraintStart_toStartOf="@+id/txv_other"
+        app:layout_constraintTop_toBottomOf="@+id/txv_other" />
 
-            <LinearLayout
-                android:id="@+id/btn_about"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="6dp"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toStartOf="@+id/btn_responsible"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/gl_top">
+    <TextView
+        android:id="@+id/txv_gaming"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="@string/responsible"
+        android:textColor="@color/color_999999"
+        android:textSize="12dp"
+        app:layout_constraintStart_toStartOf="@+id/txv_about"
+        app:layout_constraintTop_toBottomOf="@+id/txv_about" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:src="@drawable/ic_icon_about" />
+    <TextView
+        android:id="@+id/txv_terms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="@string/terms_conditions"
+        android:textColor="@color/color_999999"
+        android:textSize="12dp"
+        app:layout_constraintStart_toStartOf="@+id/txv_gaming"
+        app:layout_constraintTop_toBottomOf="@+id/txv_gaming" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/about_us"
-                    android:textColor="@color/color_999999"
-                    android:textSize="12dp" />
+    <TextView
+        android:id="@+id/txv_policy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/privacy_policy"
+        android:textColor="@color/color_999999"
+        android:textSize="12dp"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vrt"
+        app:layout_constraintTop_toTopOf="@+id/txv_about" />
 
-            </LinearLayout>
+    <TextView
+        android:id="@+id/txv_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="@string/btm_navigation_language"
+        android:textColor="@color/color_999999"
+        android:textSize="12dp"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vrt"
+        app:layout_constraintTop_toBottomOf="@+id/txv_policy" />
 
-
-            <LinearLayout
-                android:id="@+id/btn_responsible"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toStartOf="@+id/btn_terms"
-                app:layout_constraintStart_toEndOf="@+id/btn_about"
-                app:layout_constraintTop_toTopOf="@+id/gl_top">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:src="@drawable/ic_icon_responsible" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/responsible"
-                    android:textColor="@color/color_999999"
-                    android:textSize="12dp" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:id="@+id/btn_terms"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toStartOf="@+id/btn_policy"
-                app:layout_constraintStart_toEndOf="@+id/btn_responsible"
-                app:layout_constraintTop_toTopOf="@+id/gl_top">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:src="@drawable/ic_icon_terms" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/terms_conditions"
-                    android:textColor="@color/color_999999"
-                    android:textSize="12dp" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:id="@+id/btn_policy"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/btn_terms"
-                app:layout_constraintTop_toTopOf="@+id/gl_top">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:src="@drawable/ic_icon_privacy" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/privacy_policy"
-                    android:textColor="@color/color_999999"
-                    android:textSize="12dp" />
-
-            </LinearLayout>
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
+    <ImageView
+        android:id="@+id/img_flag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:src="@drawable/img_flag"
+        app:layout_constraintBottom_toBottomOf="@+id/txv_language"
+        app:layout_constraintStart_toEndOf="@+id/txv_language"
+        app:layout_constraintTop_toTopOf="@+id/txv_language" />
 
     <TextView
         android:id="@+id/txv_help"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_28"
+        android:layout_marginTop="22dp"
         android:text="@string/help"
         android:textColor="@color/color_333333"
-        android:textSize="14dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cv" />
+        android:textSize="12dp"
+        app:layout_constraintStart_toStartOf="@+id/txv_other"
+        app:layout_constraintTop_toBottomOf="@+id/txv_terms" />
 
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_faq"
-        android:layout_width="0dp"
-        android:layout_height="36dp"
-        android:layout_gravity="center"
-        app:cardCornerRadius="6dp"
-        app:layout_constraintEnd_toStartOf="@+id/cv_chat"
-        app:layout_constraintStart_toStartOf="@id/cv"
-        app:layout_constraintTop_toTopOf="@+id/cv_chat">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/img_faq"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="6dp"
-                android:src="@drawable/ic_icon_faqs"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/txv_faq"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:gravity="center"
-                android:text="@string/faqs"
-                android:textColor="@color/color_999999"
-                android:textSize="12dp"
-                app:autoSizeMaxTextSize="@dimen/textSize12sp"
-                app:autoSizeMinTextSize="8dp"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintBottom_toBottomOf="@+id/img_faq"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/img_faq"
-                app:layout_constraintTop_toTopOf="@+id/img_faq" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_chat"
-        android:layout_width="0dp"
-        android:layout_height="36dp"
-        android:layout_gravity="center"
-        android:layout_marginStart="6dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="6dp"
-        app:cardCornerRadius="6dp"
-        app:layout_constraintEnd_toStartOf="@+id/cv_contact"
-        app:layout_constraintStart_toEndOf="@+id/cv_faq"
-        app:layout_constraintTop_toBottomOf="@+id/txv_help">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/img_chat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="6dp"
-                android:src="@drawable/ic_icon_chat"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/txv_chat"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:gravity="center"
-                android:text="@string/live_chat"
-                android:textColor="@color/color_999999"
-                android:textSize="12dp"
-                app:autoSizeMaxTextSize="@dimen/textSize12sp"
-                app:autoSizeMinTextSize="8dp"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintBottom_toBottomOf="@+id/img_chat"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/img_chat"
-                app:layout_constraintTop_toTopOf="@+id/img_chat" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
-
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_contact"
-        android:layout_width="0dp"
-        android:layout_height="36dp"
-        android:layout_gravity="center"
-        app:cardCornerRadius="6dp"
-        app:layout_constraintEnd_toEndOf="@+id/cv"
-        app:layout_constraintStart_toEndOf="@+id/cv_chat"
-        app:layout_constraintTop_toBottomOf="@+id/txv_help"
-        app:layout_constraintTop_toTopOf="@+id/cv_chat">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/img_contact"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="6dp"
-                android:src="@drawable/ic_icon_contact"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/txv_contact"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:gravity="center"
-                android:text="@string/contact"
-                android:textColor="@color/color_999999"
-                android:textSize="12dp"
-                app:autoSizeMaxTextSize="@dimen/textSize12sp"
-                app:autoSizeMinTextSize="8dp"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintBottom_toBottomOf="@+id/img_contact"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/img_contact"
-                app:layout_constraintTop_toTopOf="@+id/img_contact" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <ImageView
-        android:id="@+id/img_pagcor_mark"
+    <TextView
+        android:id="@+id/txv_faq"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:layout_marginBottom="14dp"
-        android:src="@drawable/ic_pagcor_mark"
-        app:layout_constraintBottom_toTopOf="@+id/txv_btm_hint"
+        android:layout_marginTop="12dp"
+        android:text="@string/faqs"
+        android:textColor="@color/color_999999"
+        android:textSize="12dp"
+        app:layout_constraintStart_toStartOf="@+id/txv_help"
+        app:layout_constraintTop_toBottomOf="@+id/txv_help" />
+
+    <TextView
+        android:id="@+id/txv_chat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="@string/live_chat"
+        android:textColor="@color/color_999999"
+        android:textSize="12dp"
+        app:layout_constraintStart_toStartOf="@+id/txv_faq"
+        app:layout_constraintTop_toBottomOf="@+id/txv_faq" />
+
+    <TextView
+        android:id="@+id/txv_contact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:paddingBottom="12dp"
+        android:text="@string/contact"
+        android:textColor="@color/color_999999"
+        android:textSize="12dp"
+        app:layout_constraintStart_toStartOf="@+id/txv_chat"
+        app:layout_constraintTop_toBottomOf="@+id/txv_chat" />
+
+    <!--    android:background="#fff3f4f5"-->
+
+
+    <View
+        android:id="@+id/bg_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="#fff3f4f5"
+        app:layout_constraintBottom_toBottomOf="@+id/txv_copyright"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cv_chat"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toTopOf="@+id/txv_btm_hint" />
 
     <TextView
         android:id="@+id/txv_btm_hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="17dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="17dp"
         android:gravity="center_horizontal"
+        android:paddingTop="16dp"
         android:text="@string/btm_navigation_hint"
         android:textColor="@color/color_999999"
         android:textSize="12dp"
-        app:layout_constraintBottom_toTopOf="@+id/txv_copyright"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_pagcor_mark"
+        app:layout_constraintTop_toBottomOf="@+id/txv_contact"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/img_pagcor_mark"
+        android:layout_width="149dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_pagcor_mark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txv_btm_hint"
         tools:visibility="visible" />
 
     <TextView
         android:id="@+id/txv_copyright"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:layout_marginBottom="14dp"
+        android:layout_marginTop="18dp"
         android:gravity="center"
+        android:paddingBottom="12dp"
         android:text="@string/btm_navigation_copyright"
         android:textColor="@color/color_AAAAAA"
-        android:textSize="@dimen/textSize12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txv_btm_hint" />
+        app:layout_constraintTop_toBottomOf="@+id/img_pagcor_mark" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_vrt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.55" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,6 +7,7 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.game.ServiceDialog
+import org.cxct.sportlottery.ui.menu.ChangeLanguageDialog
 import org.cxct.sportlottery.util.JumpUtil
 import kotlin.reflect.KClass
 
@@ -39,7 +40,7 @@ abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KCla
         }
 
         //關於我們
-        btn_about.setOnClickListener {
+        txv_about.setOnClickListener {
             JumpUtil.toInternalWeb(
                 requireContext(),
                 Constants.getAboutUsUrl(requireContext()),
@@ -48,7 +49,7 @@ abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KCla
         }
 
         //博彩責任
-        btn_responsible.setOnClickListener {
+        txv_gaming.setOnClickListener {
             JumpUtil.toInternalWeb(
                 requireContext(),
                 Constants.getDutyRuleUrl(requireContext()),
@@ -57,7 +58,7 @@ abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KCla
         }
 
         //規則與條款
-        btn_terms.setOnClickListener {
+        txv_terms.setOnClickListener {
             JumpUtil.toInternalWeb(
                 requireContext(),
                 Constants.getAgreementRuleUrl(requireContext()),
@@ -65,8 +66,17 @@ abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KCla
             )
         }
 
+        //語言切換
+        img_flag.setOnClickListener {
+            ChangeLanguageDialog().show(parentFragmentManager, null)
+        }
+
+        txv_language.setOnClickListener {
+            ChangeLanguageDialog().show(parentFragmentManager, null)
+        }
+
         //隱私權條款
-        btn_policy.setOnClickListener {
+        txv_policy.setOnClickListener {
             JumpUtil.toInternalWeb(
                 requireContext(),
                 Constants.getPrivacyRuleUrl(requireContext()),
@@ -75,7 +85,7 @@ abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KCla
         }
 
         //常見問題
-        cv_faq.setOnClickListener {
+        txv_faq.setOnClickListener {
             JumpUtil.toInternalWeb(
                 requireContext(),
                 Constants.getFAQsUrl(requireContext()),
@@ -84,26 +94,31 @@ abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KCla
         }
 
         //在線客服 (取代原有的客服懸浮按鈕)
-        cv_chat.setOnClickListener {
-            val serviceUrl = sConfigData?.customerServiceUrl
-            val serviceUrl2 = sConfigData?.customerServiceUrl2
-            when {
-                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    activity?.supportFragmentManager?.let { it1 ->
-                        ServiceDialog().show(it1,null)
+        if (sConfigData?.customerServiceUrl.isNullOrBlank() && sConfigData?.customerServiceUrl2.isNullOrBlank()) {
+            txv_chat.setOnClickListener {
+                val serviceUrl = sConfigData?.customerServiceUrl
+                val serviceUrl2 = sConfigData?.customerServiceUrl2
+                when {
+                    !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                        activity?.supportFragmentManager?.let { it1 ->
+                            ServiceDialog().show(
+                                it1,
+                                null
+                            )
+                        }
                     }
-                }
-                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl2) }
-                }
-                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                    activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
+                    serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                        activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl2) }
+                    }
+                    !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
+                        activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
+                    }
                 }
             }
         }
 
         //聯繫我們
-        cv_contact.setOnClickListener {
+        txv_contact.setOnClickListener {
             JumpUtil.toInternalWeb(
                 requireContext(),
                 Constants.getContactUrl(requireContext()),
