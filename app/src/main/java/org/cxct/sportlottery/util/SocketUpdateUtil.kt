@@ -27,21 +27,11 @@ object SocketUpdateUtil {
         var isNeedRefresh = false
 
         matchStatusChangeEvent.matchStatusCO?.let { matchStatusCO ->
-            var removeIndex :Int = -1
+            val removeIndex :Int = -1
 
-            matchOddList.forEach lit@{ matchOdd ->
+            matchOddList.forEach { matchOdd ->
 
                 if (matchStatusCO.matchId != null && matchStatusCO.matchId == matchOdd.matchInfo?.id) {
-
-                    if (matchStatusCO.status == GameMatchStatus.FINISH.value) {
-                        val matchOddIterator = matchOddList.iterator()
-                        while (matchOddIterator.hasNext()) {
-                            val item = matchOddIterator.next()
-                            if (item == matchOdd)
-                                matchOddIterator.remove()
-                        }
-                        isNeedRefresh = true
-                    }
 
                     if (matchStatusCO.status != matchOdd.matchInfo?.socketMatchStatus) {
                         matchOdd.matchInfo?.socketMatchStatus = matchStatusCO.status
@@ -95,20 +85,14 @@ object SocketUpdateUtil {
                         matchOdd.matchInfo?.awayCards = matchStatusCO.awayCards
                         isNeedRefresh = true
                     }
-                    if (matchStatusCO.status == 100) {
-                        //跑完forEach再去刪除 不然會Crash
-                        matchOddList.forEachIndexed { index, item ->
-                            if (item == matchOdd){
-                                removeIndex = index
-                                return@forEachIndexed
-                            }
-                        }
-                        isNeedRefresh = true
-                        return@lit
-                    }
                 }
+            }
+            //matchStatusChange status = 100時，賽事結束
+            if (matchStatusCO.status == GameMatchStatus.FINISH.value) {
+                val endGameList = matchOddList.find { it.matchInfo?.id == matchStatusCO.matchId }
+                isNeedRefresh = endGameList != null
                 if(removeIndex != -1){
-                    matchOddList.removeAt(removeIndex)
+                    matchOddList.remove(endGameList)
                 }
             }
         }
