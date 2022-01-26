@@ -6,7 +6,7 @@ import android.content.res.Configuration
 import cn.jiguang.analytics.android.api.JAnalyticsInterface
 import cn.jpush.android.api.JPushInterface
 import com.github.jokar.multilanguages.library.MultiLanguage
-import org.cxct.sportlottery.db.SportRoomDatabase
+import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.manager.NetworkStatusManager
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.repository.*
@@ -47,20 +47,20 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import timber.log.Timber
 import timber.log.Timber.DebugTree
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 
 /**
  * App 內部切換語系
  */
 class MultiLanguagesApplication : Application() {
-    companion object {
-        lateinit var appContext: Context
-        const val UUID_DEVICE_CODE = "uuidDeviceCode"
-        const val UUID = "uuid"
-    }
+    //private var userInfoData : UserInfo?= null
+    private var _userInfo = MutableStateFlow<UserInfo?>(null)
+    val userInfo = _userInfo.asStateFlow()
+
 
     private val viewModelModule = module {
-
         viewModel { SplashViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { MoneyRechViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
         viewModel { MainViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
@@ -91,26 +91,22 @@ class MultiLanguagesApplication : Application() {
     }
 
     private val repoModule = module {
-        single { UserInfoRepository(get(), get()) }
-        single { LoginRepository(get(), get()) }
+        single { UserInfoRepository(get()) }
+        single { LoginRepository(get()) }
         single { SportMenuRepository() }
         single { SettlementRepository() }
         single { InfoCenterRepository() }
-        single { MoneyRepository(get()) }
+        single { MoneyRepository() }
         single { BetInfoRepository(get()) }
-        single { AvatarRepository(get(), get()) }
+        single { AvatarRepository(get()) }
         single { FeedbackRepository() }
         single { HostRepository(get()) }
         single { ThirdGameRepository() }
-        single { WithdrawRepository(get(), get()) }
+        single { WithdrawRepository(get()) }
         single { PlayQuotaComRepository() }
         single { MyFavoriteRepository() }
     }
 
-    private val dbModule = module {
-        single { SportRoomDatabase.getDatabase(get()) }
-        single { get<SportRoomDatabase>().userInfoDao() }
-    }
 
     private val serviceModule = module {
         factory { ServiceBroadcastReceiver(get()) }
@@ -132,6 +128,7 @@ class MultiLanguagesApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         appContext = applicationContext
+        instance = this
         AppManager.init(this)
         MultiLanguage.init { context ->
             //返回自己本地保存选择的语言设置
@@ -145,7 +142,6 @@ class MultiLanguagesApplication : Application() {
                 listOf(
                     viewModelModule,
                     repoModule,
-                    dbModule,
                     serviceModule
                 )
             )
@@ -185,5 +181,25 @@ class MultiLanguagesApplication : Application() {
                 .edit()
                 .putString(UUID, java.util.UUID.randomUUID().toString())
                 .apply()
+    }
+
+    fun saveUserInfo(userInfoData: UserInfo?){
+        _userInfo.value = userInfoData
+    }
+    fun userInfo():UserInfo?{
+        return _userInfo.value
+    }
+    companion object {
+        lateinit var appContext: Context
+        const val UUID_DEVICE_CODE = "uuidDeviceCode"
+        const val UUID = "uuid"
+        private var instance: MultiLanguagesApplication? = null
+
+
+        fun getInstance(): MultiLanguagesApplication? {
+            if (instance == null) throw IllegalStateException("Application not be created yet.")
+            return instance
+        }
+
     }
 }

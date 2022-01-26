@@ -3,8 +3,8 @@ package org.cxct.sportlottery.repository
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.db.dao.UserInfoDao
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.uploadImg.UploadImgResult
@@ -13,7 +13,7 @@ import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.util.Event
 import retrofit2.Response
 
-class AvatarRepository(private val androidContext: Context, private val userInfoDao: UserInfoDao) {
+class AvatarRepository(private val androidContext: Context) {
     private val _editIconUrlResult = MutableLiveData<Event<IconUrlResult?>>()
     val editIconUrlResult: LiveData<Event<IconUrlResult?>>
         get() = _editIconUrlResult
@@ -42,7 +42,10 @@ class AvatarRepository(private val androidContext: Context, private val userInfo
                     val userId = uploadImgRequest.userId.toLong()
                     val path = result.imgData?.path ?: ""
                     val iconUrl = sConfigData?.resServerHost + path
-                    userInfoDao.updateIconUrl(userId, iconUrl) //更新 DB iconUrl 資料
+                    var userInfo = MultiLanguagesApplication.getInstance()?.userInfo()
+                    userInfo?.iconUrl = iconUrl
+                    MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
+                    //userInfoDao.updateIconUrl(userId, iconUrl) //更新 DB iconUrl 資料
                     editIconUrl(IconUrlRequest(path))
                 }
                 else -> {
