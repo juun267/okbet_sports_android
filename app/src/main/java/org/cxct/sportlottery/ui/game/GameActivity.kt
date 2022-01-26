@@ -377,6 +377,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     private fun selectTab(position: Int?) {
         when (position) {
             0 -> {
+                viewModel.switchMainMatchType()
                 mNavController.popBackStack(R.id.homeFragment, false)
             }
             1 -> {

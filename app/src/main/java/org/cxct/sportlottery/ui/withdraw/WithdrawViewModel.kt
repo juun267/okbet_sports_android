@@ -493,9 +493,7 @@ class WithdrawViewModel(
         val limit = getWithdrawAmountLimit()
         _withdrawAmountHint.value = String.format(
             androidContext.getString(R.string.hint_please_enter_withdraw_amount),
-            limit.min.toLong(), limit.max.toLong(),
-            sConfigData?.systemCurrency
-        )
+            limit.min.toLong(), limit.max.toLong()) + sConfigData?.systemCurrency
     }
 
     fun getWithdrawAmountLimit(): WithdrawAmountLimit {

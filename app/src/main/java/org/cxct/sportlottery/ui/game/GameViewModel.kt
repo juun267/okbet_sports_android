@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.game
 
 import android.app.Application
 import android.content.Context
+import android.service.autofill.FieldClassification
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -349,6 +350,14 @@ class GameViewModel(
         )
     }
 
+    fun switchMainMatchType() {
+        _curChildMatchType.value = null
+        _oddsListGameHallResult.value = Event(null)
+        _oddsListResult.value = Event(null)
+        _curMatchType.value = MatchType.MAIN
+        filterLeague(listOf())
+    }
+
     fun switchMatchType(matchType: MatchType) {
         _curChildMatchType.value = null
         _oddsListGameHallResult.value = Event(null)
@@ -434,7 +443,7 @@ class GameViewModel(
         getSportMenu(null)
     }
 
-    fun getSportMenu(matchType: MatchType?) {
+    fun getSportMenu(matchType: MatchType?, switchFirstTag: Boolean = false , onlyRefreshSportMenu: Boolean = false) {
         _isLoading.value = true
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -452,18 +461,24 @@ class GameViewModel(
                     lastSportTypeHashMap[matchType?.postValue]
                 )
             }
-            _curMatchType.value = matchType
-        }
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
+            //單純更新gameTypeAdapter就不需要更新當前MatchType，不然畫面會一直閃 by Bill
+            if (!onlyRefreshSportMenu)
+                _curMatchType.value = matchType
+
+            val couponResult = doNetwork(androidContext) {
                 sportMenuRepository.getSportCouponMenu()
             }
-            //postHomeCardCount(result)
 
-            result?.let {
+            couponResult?.let {
                 _sportCouponMenuResult.postValue(Event(it))
             }
+
+            //Socket更新自動選取第一個有賽事的球種
+            if(switchFirstTag){
+                matchType?.let { switchFirstSportType(it) }
+            }
         }
+
         _isLoading.value = false
     }
 
@@ -801,6 +816,57 @@ class GameViewModel(
         filterLeague(listOf())
     }
 
+    //自動選取第一個有賽事的球種
+    private fun switchFirstSportType(matchType: MatchType) {
+        when (matchType) {
+            MatchType.IN_PLAY -> {
+                switchSportType(
+                    matchType,
+                    sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.first()?.code.toString()
+                )
+            }
+            MatchType.TODAY -> {
+                switchSportType(
+                    matchType,
+                    sportMenuResult.value?.sportMenuData?.menu?.today?.items?.first()?.code.toString()
+                )
+            }
+            MatchType.EARLY -> {
+                switchSportType(
+                    matchType,
+                    sportMenuResult.value?.sportMenuData?.menu?.early?.items?.first()?.code.toString()
+                )
+            }
+            MatchType.PARLAY -> {
+                switchSportType(
+                    matchType,
+                    sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.first()?.code.toString()
+                )
+            }
+            MatchType.OUTRIGHT -> {
+                switchSportType(
+                    matchType,
+                    sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.first()?.code.toString()
+                )
+            }
+            MatchType.AT_START -> {
+                switchSportType(
+                    matchType,
+                    sportMenuResult.value?.sportMenuData?.atStart?.items?.first()?.code.toString()
+                )
+            }
+            MatchType.EPS -> {
+                switchSportType(
+                    matchType,
+                    sportMenuResult.value?.sportMenuData?.menu?.eps?.items?.first()?.code.toString()
+                )
+            }
+            else -> {
+
+            }
+        }
+    }
+
     fun switchSportType(matchType: MatchType, gameType: String) {
         if (matchType == MatchType.OTHER) {
             specialMenuData?.updateSportSelectState(gameType)
@@ -1024,7 +1090,7 @@ class GameViewModel(
                 timeRangeParams,
                 leagueIdList,
                 matchIdList,
-                true
+                false
             )
         }
     }
@@ -1700,7 +1766,7 @@ class GameViewModel(
         else -> null
     }
 
-    private fun getSportSelectedCode(matchType: MatchType): String? = when (matchType) {
+    fun getSportSelectedCode(matchType: MatchType): String? = when (matchType) {
         MatchType.IN_PLAY -> {
             sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.find { it.isSelected }?.code
         }
