@@ -909,5 +909,6 @@
     <string name="live_chat">Live Chat</string>
     <string name="contact">Contact Us</string>
     <string name="btm_navigation_hint">%1$s is a Registered Trade Mark, brand and\nregistered business name.</string>
+    <string name="btm_navigation_language">English</string>
 
 </resources>

@@ -938,5 +938,7 @@
     <string name="live_chat">Trò Chuyện Trực Tuyế</string>
     <string name="contact">Liên Hệ</string>
     <string name="btm_navigation_hint">%1$s is a Registered Trade Mark, brand and\nregistered business name.</string>
+    <string name="btm_navigation_language">Việt Nam</string>
+
 
 </resources>
