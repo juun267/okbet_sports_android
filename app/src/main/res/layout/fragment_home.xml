@@ -482,7 +482,9 @@
 
                 <include
                     android:id="@+id/view_btm_navigation"
-                    layout="@layout/view_bottom_navigation" />
+                    layout="@layout/view_bottom_navigation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
