@@ -28,13 +28,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/content_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize13sp"
                 tools:text="06-22" />
@@ -47,17 +47,27 @@
                 android:id="@+id/content_league"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize13sp"
                 tools:text="NBA季后赛" />
 
         </LinearLayout>
 
+
+        <TextView
+            android:id="@+id/parlay_play_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorGray"
+            android:layout_marginTop="4dp"
+            android:textSize="@dimen/textSize13sp"
+            tools:text="2022-02-25 10:42" />
+        
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
@@ -65,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorGray"
-                android:textSize="@dimen/textSize14sp"
+                android:textSize="@dimen/textSize12sp"
                 tools:text="密尔沃基雄鹿" />
 
             <TextView
@@ -82,18 +92,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorGray"
-                android:textSize="@dimen/textSize14sp"
+                android:textSize="@dimen/textSize12sp"
                 tools:text="亚特兰大老鹰" />
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/parlay_play_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorGray"
-            android:layout_marginTop="4dp"
-            android:textSize="@dimen/textSize13sp"
-            tools:text="2022-02-25 10:42" />
 
         <TextView
             android:id="@+id/parlay_play_content"
