@@ -548,31 +548,31 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         viewModel.sportMenuResult.observe(this.viewLifecycleOwner) {
             when (args.matchType) {
                 MatchType.IN_PLAY -> {
-                    updateSportType(it?.sportMenuData?.menu?.inPlay?.items ?: listOf())
+                    updateSportType(it?.sportMenuData?.menu?.inPlay?.items ?: listOf(), it?.sportMenuData?.menu?.inPlay?.num)
                 }
 
                 MatchType.TODAY -> {
-                    updateSportType(it?.sportMenuData?.menu?.today?.items ?: listOf())
+                    updateSportType(it?.sportMenuData?.menu?.today?.items ?: listOf(), it?.sportMenuData?.menu?.today?.num)
                 }
 
                 MatchType.EARLY -> {
-                    updateSportType(it?.sportMenuData?.menu?.early?.items ?: listOf())
+                    updateSportType(it?.sportMenuData?.menu?.early?.items ?: listOf(), it?.sportMenuData?.menu?.early?.num)
                 }
 
                 MatchType.PARLAY -> {
-                    updateSportType(it?.sportMenuData?.menu?.parlay?.items ?: listOf())
+                    updateSportType(it?.sportMenuData?.menu?.parlay?.items ?: listOf(), it?.sportMenuData?.menu?.parlay?.num)
                 }
 
                 MatchType.OUTRIGHT -> {
-                    updateSportType(it?.sportMenuData?.menu?.outright?.items ?: listOf())
+                    updateSportType(it?.sportMenuData?.menu?.outright?.items ?: listOf(), it?.sportMenuData?.menu?.outright?.num)
                 }
 
                 MatchType.AT_START -> {
-                    updateSportType(it?.sportMenuData?.atStart?.items ?: listOf())
+                    updateSportType(it?.sportMenuData?.atStart?.items ?: listOf(), it?.sportMenuData?.atStart?.num)
                 }
 
                 MatchType.EPS -> {
-                    updateSportType(it?.sportMenuData?.menu?.eps?.items ?: listOf())
+                    updateSportType(it?.sportMenuData?.menu?.eps?.items ?: listOf(), it?.sportMenuData?.menu?.eps?.num)
                 }
 
                 else -> {
@@ -1365,7 +1365,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
     }
 
-    private fun updateSportType(gameTypeList: List<Item>) {
+    private fun updateSportType(gameTypeList: List<Item>, num: Int? = -1) {
         gameTypeAdapter.dataSport = gameTypeList
         if (args.matchType != MatchType.OTHER) {
             gameTypeList.find { it.isSelected }.let { item ->
@@ -1374,8 +1374,15 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 updateSportBackground(item)
 //                subscribeSportChannelHall(item?.code)//12/30 移除平台id与gameType後，切換SportType就不用重新訂閱了，不然會造成畫面一直閃爍 by Bill
             }
-        }
 
+            //即將開賽畫面修正
+            if(args.matchType == MatchType.AT_START){
+                sport_type_list.isVisible == (num != 0)
+                game_toolbar_sport_type.isVisible == (num != 0)
+                game_toolbar_champion.isVisible == (num != 0)
+                game_play_category.isVisible == (num != 0)
+            }
+        }
     }
 
     private fun updateSportBackground(sport: Item?) {
