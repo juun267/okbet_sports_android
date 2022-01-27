@@ -599,13 +599,14 @@ public class TextFieldBoxes extends FrameLayout {
                         .scaleX(1)
                         .scaleY(1)
                         .setDuration(ANIMATION_DURATION);
-                ViewCompat.animate(floatingHintLabel)
-                        .alpha(1)
-                        .scaleX(1)
-                        .scaleY(1)
-                        .translationX(0)
-                        .translationY(0)
-                        .setDuration(ANIMATION_DURATION);
+//                ViewCompat.animate(floatingHintLabel)
+//                        .alpha(1)
+//                        .scaleX(1)
+//                        .scaleY(1)
+//                        .translationX(0)
+//                        .translationY(0)
+//                        .setDuration(ANIMATION_DURATION);
+                floatingHintLabel.setVisibility(View.VISIBLE);
                 ViewCompat.animate(floatingSingle)
                         .alpha(1)
                         .scaleX(1)
@@ -649,14 +650,15 @@ public class TextFieldBoxes extends FrameLayout {
                     .scaleX(0.85f)
                     .scaleY(0.85f)
                     .setDuration(ANIMATION_DURATION);
-            ViewCompat.animate(this.floatingHintLabel)
-                    .scaleX(0.92f)
-                    .scaleY(0.92f)
-                    .translationX(floatingLabel.getWidth()+getContext().getResources().getDimensionPixelOffset(R.dimen.label_active_margin_left))
-                    .translationY(-labelTopMargin +
-                            getContext().getResources().getDimensionPixelOffset(R.dimen.label_active_margin_top)-floatingLabel.getHeight()+2-
-                            getContext().getResources().getDimensionPixelOffset(R.dimen.label2_active_margin_top))
-                    .setDuration(ANIMATION_DURATION);
+//            ViewCompat.animate(this.floatingHintLabel)
+//                    .scaleX(0.92f)
+//                    .scaleY(0.92f)
+//                    .translationX(floatingLabel.getWidth()+getContext().getResources().getDimensionPixelOffset(R.dimen.label_active_margin_left))
+//                    .translationY(-labelTopMargin +
+//                            getContext().getResources().getDimensionPixelOffset(R.dimen.label_active_margin_top)-floatingLabel.getHeight()+2-
+//                            getContext().getResources().getDimensionPixelOffset(R.dimen.label2_active_margin_top))
+//                    .setDuration(ANIMATION_DURATION);
+            floatingHintLabel.setVisibility(View.GONE);
 
             ViewCompat.animate(this.floatingSingle)
                     .scaleX(0.85f)
@@ -669,12 +671,14 @@ public class TextFieldBoxes extends FrameLayout {
             this.editTextLayout.setAlpha(1f);
             this.floatingLabel.setScaleX(0.85f);
             this.floatingLabel.setScaleY(0.85f);
-            this.floatingHintLabel.setScaleX(0.92f);
-            this.floatingHintLabel.setScaleY(0.92f);
-            this.floatingHintLabel.setTranslationX(floatingLabel.getWidth()+getContext().getResources().getDimensionPixelOffset(R.dimen.label_active_margin_left));
-            this.floatingHintLabel.setTranslationY(-labelTopMargin +
-                    getContext().getResources().getDimensionPixelOffset(R.dimen.label_active_margin_top)-floatingLabel.getHeight()+2-
-                    getContext().getResources().getDimensionPixelOffset(R.dimen.label2_active_margin_top));
+//            this.floatingHintLabel.setScaleX(0.92f);
+//            this.floatingHintLabel.setScaleY(0.92f);
+//            this.floatingHintLabel.setTranslationX(floatingLabel.getWidth()+getContext().getResources().getDimensionPixelOffset(R.dimen.label_active_margin_left));
+//            this.floatingHintLabel.setTranslationY(-labelTopMargin +
+//                    getContext().getResources().getDimensionPixelOffset(R.dimen.label_active_margin_top)-floatingLabel.getHeight()+2-
+//                    getContext().getResources().getDimensionPixelOffset(R.dimen.label2_active_margin_top));
+            floatingHintLabel.setVisibility(View.GONE);
+
             this.floatingSingle.setScaleX(0.85f);
             this.floatingSingle.setScaleY(0.85f);
             this.floatingSingle.setTranslationX(-labelTopMargin -
