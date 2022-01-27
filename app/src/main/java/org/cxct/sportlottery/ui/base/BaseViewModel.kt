@@ -18,6 +18,7 @@ import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.util.NetworkUtil
 import retrofit2.Response
+import timber.log.Timber
 import java.net.SocketTimeoutException
 
 
@@ -59,6 +60,7 @@ abstract class BaseViewModel(
                 throw DoNoConnectException()
             doApiFun(apiFun)
         } catch (e: Exception) {
+            Timber.e("doNetwork: $e")
             e.printStackTrace()
             if (exceptionHandle)
                 doOnException(context, e)

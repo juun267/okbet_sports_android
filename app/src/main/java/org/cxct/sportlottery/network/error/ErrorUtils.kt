@@ -131,6 +131,7 @@ import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListResult
 import retrofit2.Converter
 import retrofit2.Response
+import timber.log.Timber
 import java.io.IOException
 
 
@@ -147,6 +148,7 @@ object ErrorUtils {
             try {
                 error = converter.convert(it)
             } catch (e: IOException) {
+                Timber.e("parseError: $e")
                 throw e
             }
         }
