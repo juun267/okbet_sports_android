@@ -43,7 +43,7 @@ class TransactionStatusActivity :
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transaction_status)
 
-        setupNoticeButton(btn_notice)
+        setupNoticeButton(iv_notice)
         initToolBar()
         initMenu()
         initBottomNavigation()
@@ -79,7 +79,7 @@ class TransactionStatusActivity :
         iv_language.setImageResource(LanguageManager.getLanguageFlag(this))
 
         //頭像 當 側邊欄 開/關
-        iv_head.setOnClickListener {
+        iv_menu.setOnClickListener {
             if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
             else {
                 drawer_layout.openDrawer(nav_right)
@@ -268,16 +268,20 @@ class TransactionStatusActivity :
     override fun updateUiWithLogin(isLogin: Boolean) {
         if (isLogin) {
             btn_login.visibility = View.GONE
+            iv_menu.visibility =View.VISIBLE
+            iv_notice.visibility =View.VISIBLE
             btn_register.visibility = View.GONE
             toolbar_divider.visibility = View.GONE
-            iv_head.visibility = View.VISIBLE
-            tv_odds_type.visibility = View.VISIBLE
+            iv_head.visibility = View.GONE
+            tv_odds_type.visibility = View.GONE
         } else {
             btn_login.visibility = View.VISIBLE
             btn_register.visibility = View.VISIBLE
             toolbar_divider.visibility = View.VISIBLE
             iv_head.visibility = View.GONE
             tv_odds_type.visibility = View.GONE
+            iv_menu.visibility =View.GONE
+            iv_notice.visibility =View.GONE
         }
     }
 

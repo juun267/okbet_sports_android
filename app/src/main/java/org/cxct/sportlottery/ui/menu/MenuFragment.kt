@@ -10,14 +10,16 @@ import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_menu.*
+import kotlinx.android.synthetic.main.fragment_menu.iv_head
+import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
-import org.cxct.sportlottery.repository.FLAG_OPEN
-import org.cxct.sportlottery.repository.StaticData
-import org.cxct.sportlottery.repository.TestFlag
-import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.common.StatusSheetAdapter
+import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
@@ -63,6 +65,12 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         initEvent()
         setupVersion()
         getOddsType()
+        updateLanguageItem()
+    }
+
+    private fun updateLanguageItem() {
+        menu_language.text = LanguageManager.getLanguageStringResource(context)
+        menu_language.updateLanguageImage()
     }
 
     private fun initSocketObserver() {
@@ -82,6 +90,14 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun initObserve() {
+        viewModel.oddsType.observe(viewLifecycleOwner) {
+            updateOddsType(it)
+        }
+
+        viewModel.infoCenterRepository.unreadNoticeList.observe(viewLifecycleOwner) {
+            menu_profile_center.updateNoticeCount(it.size)
+        }
+
         viewModel.isLogin.observe(viewLifecycleOwner) {
             if (it)
                 getMoney()
@@ -92,7 +108,8 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         }
 
         viewModel.userMoney.observe(viewLifecycleOwner) { money ->
-            tv_money.text = sConfigData?.systemCurrencySign + money?.let { it -> TextUtil.formatMoney(it) }
+            tv_money.text =
+                sConfigData?.systemCurrencySign + money?.let { it -> TextUtil.formatMoney(it) }
         }
 
         viewModel.userInfo.observe(viewLifecycleOwner) {
@@ -103,7 +120,10 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                 it?.fullName,
                 StaticData.getTestFlag(it?.testFlag)
             )
+
+            menu_profile_center.updateUserIdentity(it?.testFlag)
         }
+
         viewModel.rechargeSystemOperation.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
@@ -116,7 +136,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                 }
             }
         }
-        
+
         viewModel.withdrawSystemOperation.observe(viewLifecycleOwner) {
             val operation = it.getContentIfNotHandled()
             if (operation == false) {
@@ -290,7 +310,11 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
         //遊戲規則
         menu_game_rule.setOnClickListener {
-            JumpUtil.toInternalWeb(requireContext(), Constants.getGameRuleUrl(requireContext()), getString(R.string.game_rule))
+            JumpUtil.toInternalWeb(
+                requireContext(),
+                Constants.getGameRuleUrl(requireContext()),
+                getString(R.string.game_rule)
+            )
             mDownMenuListener?.onClick(menu_game_rule)
         }
 
@@ -312,6 +336,52 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             }
             mDownMenuListener?.onClick(btn_sign_out)
         }
+
+        //語系選擇
+        menu_language.setOnClickListener {
+            context?.let {
+                showBottomSheetDialog("",
+                    viewModel.getLanguageStatusSheetList(it),
+                    viewModel.getLanguageStatusSheetList(it)
+                        .find { it.showName == LanguageManager.getLanguageStringResource(context) }
+                        ?: StatusSheetData(
+                            "0",
+                            context?.resources?.getString(R.string.language_cn)
+                        ),
+                    StatusSheetAdapter.ItemCheckedListener { _, data ->
+                        activity?.run {
+                            val select = when (data.showName) {
+                                context?.resources?.getString(R.string.language_cn) -> LanguageManager.Language.ZH
+                                context?.resources?.getString(R.string.language_vi) -> LanguageManager.Language.VI
+                                else -> LanguageManager.Language.EN
+                            }
+                            LanguageManager.saveSelectLanguage(this, select)
+                            if (sConfigData?.thirdOpen == FLAG_OPEN)
+                                MainActivity.reStart(this)
+                            else
+                                GameActivity.reStart(this)
+                        }
+                    })
+            }
+
+        }
+
+        menu_odds_type.setOnClickListener {
+            context?.let {
+                showBottomSheetDialog("",
+                    viewModel.getOddTypeStatusSheetList(it),
+                    viewModel.getDeafaultOddTypeStatusSheetData(it),
+                    StatusSheetAdapter.ItemCheckedListener { _, data ->
+                        when (data.code) {
+                            OddsType.EU.code -> viewModel.saveOddsType(OddsType.EU)
+                            OddsType.HK.code -> viewModel.saveOddsType(OddsType.HK)
+                            OddsType.MYS.code -> viewModel.saveOddsType(OddsType.MYS)
+                            OddsType.IDN.code -> viewModel.saveOddsType(OddsType.IDN)
+                            else -> viewModel.saveOddsType(OddsType.EU)
+                        }
+                    })
+            }
+        }
     }
 
     private fun setupVersion() {
@@ -322,13 +392,14 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         viewModel.getOddsType()
     }
 
-    private fun updateUIVisibility(isCreditAccount: Boolean){
+    private fun updateUIVisibility(isCreditAccount: Boolean) {
         //其他投注記錄 信用盤 或 第三方關閉 隱藏
-        menu_other_bet_record.visibility = if (isCreditAccount || sConfigData?.thirdOpen != FLAG_OPEN) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
+        menu_other_bet_record.visibility =
+            if (isCreditAccount || sConfigData?.thirdOpen != FLAG_OPEN) {
+                View.GONE
+            } else {
+                View.VISIBLE
+            }
 
         menu_member_level.visibility = if (sConfigData?.thirdOpen != FLAG_OPEN) {
             View.GONE
@@ -337,7 +408,13 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         }
     }
 
-    private fun updateUI(iconUrl: String?, userName: String?, nickName: String?, fullName: String?, testFlag: TestFlag?) {
+    private fun updateUI(
+        iconUrl: String?,
+        userName: String?,
+        nickName: String?,
+        fullName: String?,
+        testFlag: TestFlag?
+    ) {
         Glide.with(this)
             .load(iconUrl)
             .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
@@ -366,5 +443,9 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
      */
     fun setDownMenuListener(listener: View.OnClickListener?) {
         mDownMenuListener = listener
+    }
+
+    private fun updateOddsType(oddsType: OddsType) {
+        menu_odds_type.text = getString(oddsType.res)
     }
 }

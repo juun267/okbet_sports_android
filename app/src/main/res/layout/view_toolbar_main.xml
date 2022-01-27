@@ -26,11 +26,11 @@
         android:id="@+id/iv_language"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_marginEnd="4dp"
         android:paddingStart="4dp"
         android:paddingEnd="4dp"
-        android:layout_marginEnd="4dp"
         android:src="@drawable/ic_flag_en"
-        />
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/btn_login"
@@ -61,6 +61,13 @@
         android:text="@string/btn_register"
         android:textColor="@color/colorBlackLight" />
 
+    <ImageView
+        android:id="@+id/iv_notice"
+        android:layout_width="20dp"
+        android:layout_height="22dp"
+        android:src="@drawable/icon_bell"
+        android:visibility="gone" />
+
     <TextView
         android:id="@+id/btn_notice"
         android:layout_width="22dp"
@@ -72,9 +79,8 @@
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/textSize14sp"
         android:visibility="gone"
-        tools:text="N"
-        tools:visibility="visible" />
-    
+        tools:text="N" />
+
 
     <TextView
         android:id="@+id/tv_odds_type"
@@ -104,6 +110,16 @@
         android:layout_marginEnd="10dp"
         android:scaleType="centerCrop"
         android:src="@drawable/img_avatar_default"
+        android:visibility="gone"
         app:riv_oval="true" />
+
+    <ImageView
+        android:id="@+id/iv_menu"
+        android:layout_width="23dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="15dp"
+        android:src="@drawable/ic_menu"
+        android:visibility="gone" />
 
 </LinearLayout>

@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.main
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -15,10 +16,13 @@ import org.cxct.sportlottery.network.third_game.third_games.GameFirmValues
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameItemData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.LanguageManager
 
 
 class MainViewModel(
@@ -79,6 +83,7 @@ class MainViewModel(
     val needToBindBankCard =
         withdrawRepository.needToBindBankCard //提款頁面是否需要新增銀行卡 -1 : 不需要新增, else : 以value作為string id 顯示彈窗提示
 
+
     //獲取系統公告及跑馬燈
     fun getAnnouncement() {
         viewModelScope.launch {
@@ -116,7 +121,8 @@ class MainViewModel(
     }
 
     fun goToLottery() {
-        val lotteryData = gameCateDataList.value?.find { it.categoryThird == ThirdGameCategory.CGCP }?.tabDataList?.first()?.gameList?.first()?.thirdGameData
+        val lotteryData =
+            gameCateDataList.value?.find { it.categoryThird == ThirdGameCategory.CGCP }?.tabDataList?.first()?.gameList?.first()?.thirdGameData
         requestEnterThirdGame(lotteryData)
     }
 
@@ -247,4 +253,45 @@ class MainViewModel(
         }
     }
 
+    fun getLanguageStatusSheetList(context: Context): ArrayList<StatusSheetData> {
+        val languageList: ArrayList<StatusSheetData> = arrayListOf()
+        LanguageManager.getLanguageStringList(context).forEachIndexed { index, string ->
+            languageList.add(StatusSheetData(index.toString(), string))
+        }
+        return languageList
+    }
+
+    fun getOddTypeStatusSheetList(context: Context): List<StatusSheetData> {
+        return listOf(
+            StatusSheetData(OddsType.EU.code, context.resources?.getString(R.string.odd_type_eu)),
+            StatusSheetData(OddsType.HK.code, context.resources?.getString(R.string.odd_type_hk)),
+            StatusSheetData(OddsType.MYS.code, context.resources?.getString(R.string.odd_type_mys)),
+            StatusSheetData(OddsType.IDN.code, context.resources?.getString(R.string.odd_type_idn))
+        )
+    }
+
+    fun getDeafaultOddTypeStatusSheetData(context: Context): StatusSheetData {
+        return when (loginRepository.sOddsType) {
+            OddsType.EU.code -> StatusSheetData(
+                OddsType.EU.code,
+                context.resources?.getString(R.string.odd_type_eu)
+            )
+            OddsType.HK.code -> StatusSheetData(
+                OddsType.HK.code,
+                context.resources?.getString(R.string.odd_type_hk)
+            )
+            OddsType.MYS.code -> StatusSheetData(
+                OddsType.MYS.code,
+                context.resources?.getString(R.string.odd_type_mys)
+            )
+            OddsType.IDN.code -> StatusSheetData(
+                OddsType.IDN.code,
+                context.resources?.getString(R.string.odd_type_idn)
+            )
+            else -> StatusSheetData(
+                OddsType.EU.code,
+                context.resources?.getString(R.string.odd_type_eu)
+            )
+        }
+    }
 }
