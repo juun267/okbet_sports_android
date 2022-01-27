@@ -126,7 +126,8 @@ class KeyBoardUtil(
                     insert(
                         start,
                         if (isNotEmpty()) {
-                            if (!toString().contains(KeyBoardCode.DOT.value)) KeyBoardCode.DOT.value else return
+                            Log.e(">>>", "contain = ${this.toString().contains(KeyBoardCode.DOT.value)}")
+                            if (!this.toString().contains(KeyBoardCode.DOT.value)) KeyBoardCode.DOT.value else return
                         } else {
                             "0."
                         }
