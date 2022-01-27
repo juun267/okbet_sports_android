@@ -87,7 +87,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             tv_notification_1,
             tv_dot_1,
             sConfigData?.minRechMoney,
-            getString(R.string.initial_withdrawal_needs_credited, sConfigData?.minRechMoney)
+            getString(R.string.initial_withdrawal_needs_credited, sConfigData?.minRechMoney, sConfigData?.systemCurrency)
         )
 
         if (sConfigData?.enableMinRemainingBalance == FLAG_OPEN) {
@@ -95,7 +95,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 tv_notification_2,
                 tv_dot_2,
                 sConfigData?.minRemainingBalance,
-                getString(R.string.make_sure_valid_account, sConfigData?.minRemainingBalance)
+                getString(R.string.make_sure_valid_account, sConfigData?.minRemainingBalance, sConfigData?.systemCurrency)
             )
         }
     }

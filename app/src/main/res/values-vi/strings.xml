@@ -929,8 +929,8 @@
     <string name="bank_list_crypto">tiền ảo mới</string>
     <string name="e_address">Địa chỉ</string>
     <string name="hint_e_address">Vui lòng nhập địa chỉ liên hệ</string>
-    <string name="initial_withdrawal_needs_credited">Số tiền rút ban đầu cần được ghi có: %1$s nhân dân tệ.</string>
-    <string name="make_sure_valid_account">Lần rút tiền ban đầu sẽ tạm thời giữ lại %1$s nhân dân tệ để đảm bảo rằng bạn là tài khoản hợp lệ. Số tiền này sẽ được hoàn trả sau 30 ngày.</string>
+    <string name="initial_withdrawal_needs_credited">Rút tiền lần đầu tiên cần nạp: %1$s %2$s.</string>
+    <string name="make_sure_valid_account">Lần rút tiền ban đầu sẽ tạm thời giữ lại %1$s %2$s để đảm bảo rằng bạn là tài khoản hợp lệ. Số tiền này sẽ được hoàn trả sau 30 ngày.</string>
     <string name="type_of_certificate">loại chứng chỉ</string>
     <string name="take_id_photo">Chụp ảnh giấy tờ tùy thân</string>
     <string name="prepare_your_id_photo">Chuẩn bị ảnh ID của bạn</string>
