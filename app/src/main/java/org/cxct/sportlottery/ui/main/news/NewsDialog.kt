@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_SETTLING
 import com.bekawestberg.loopinglayout.library.LoopingLayoutManager
 import kotlinx.android.synthetic.main.dialog_event_msg_v5.*
 import org.cxct.sportlottery.R
