@@ -435,6 +435,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
                 updateTime?.let {
                     startTime = updateTime
+                    setupStartTime()
                 }
             }
         }
