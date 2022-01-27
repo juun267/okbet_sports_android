@@ -564,7 +564,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
                                 )
                             } else {
                                 if (item.matchInfo.hasRefreshed != true) { //避免持續重複刷新
-                                    leagueOddListener?.onRefresh(item.matchInfo.id)
+                                    leagueOddListener?.onRefresh(item.matchInfo.leagueId ?: "")
                                     item.matchInfo.hasRefreshed = true
                                 }
                             }
@@ -626,7 +626,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
                                     } else {
                                         item.matchInfo?.id?.let {
                                             if (item.matchInfo.hasRefreshed != true) { //避免持續重複刷新
-                                                leagueOddListener?.onRefresh(item.matchInfo.id)
+                                                leagueOddListener?.onRefresh(item.matchInfo.leagueId ?: "")
                                                 item.matchInfo.hasRefreshed = true
                                             }
                                         }
@@ -1213,7 +1213,7 @@ class LeagueOddListener(
     val clickListenerQuickCateClose: () -> Unit,
     val clickListenerFavorite: (matchId: String?) -> Unit,
     val clickListenerStatistics: (matchId: String?) -> Unit,
-    val refreshListener: (matchId: String) -> Unit,
+    val refreshListener: (leagueId: String) -> Unit,
 ) {
     fun onClickPlayType(matchId: String?, matchInfoList: List<MatchInfo>) =
         clickListenerPlayType(matchId, matchInfoList)
@@ -1234,7 +1234,7 @@ class LeagueOddListener(
 
     fun onClickStatistics(matchId: String?) = clickListenerStatistics(matchId)
 
-    fun onRefresh(matchId: String) = refreshListener(matchId)
+    fun onRefresh(leagueId: String) = refreshListener(leagueId)
 }
 
 class ItemDiffCallback : DiffUtil.ItemCallback<MatchOdd>() {

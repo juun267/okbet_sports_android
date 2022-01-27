@@ -170,6 +170,13 @@
                 app:cvTitle="@string/profile_center" />
 
             <org.cxct.sportlottery.ui.menu.MenuItem
+                android:id="@+id/menu_odds_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cvIcon="@drawable/ic_odds_type_light"
+                app:arrowSymbolVisibility="visible"/>
+
+            <org.cxct.sportlottery.ui.menu.MenuItem
                 android:id="@+id/menu_my_favorite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -203,6 +210,15 @@
                 android:layout_height="wrap_content"
                 app:cvIcon="@drawable/ic_menu_game_rule"
                 app:cvTitle="@string/game_rule" />
+
+            <org.cxct.sportlottery.ui.menu.MenuItem
+                android:id="@+id/menu_language"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cvIcon="@drawable/ic_language_select"
+                app:cvTitle="@string/language_cn"
+                app:showLanguageImage="visible"
+                app:arrowSymbolVisibility="visible"/>
 
             <org.cxct.sportlottery.ui.menu.MenuItem
                 android:id="@+id/menu_version_update"

@@ -529,7 +529,7 @@
     <string name="withdraw_crypto_exchange_rate_hint">・汇率：%1$s</string>
     <string name="withdraw_crypto_amount_hint">・提款金额：%1$s %s</string>
     <string name="withdraw_crypto_fee_hint">・提款手续费：%1$s %s</string>
-    <string name="hint_please_enter_withdraw_amount">限额%1$s~%2$s %s</string>
+    <string name="hint_please_enter_withdraw_amount">限额%1$s~%2$s</string>
     <string name="hint_four_number_password">请输入提款密码</string>
     <string name="hint_please_enter_withdraw_password">请输入提款密码</string>
     <string name="add_new">新增</string>
@@ -978,4 +978,5 @@
     <string name="btm_navigation_copyright">COPYRIGHT © 2022 %1$s ALL RIGHTS RESERVED</string>
     <string name="front_side_result">证件正面扫描结果</string>
     <string name="reverse_side_result">证件反面扫描结果</string>
+    <string name="btm_navigation_language">简体中文</string>
 </resources>

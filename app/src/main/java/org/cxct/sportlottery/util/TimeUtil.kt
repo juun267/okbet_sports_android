@@ -12,6 +12,7 @@ import java.util.*
 @SuppressLint("SimpleDateFormat")
 object TimeUtil {
     const val YMD_HMS_FORMAT = "yyyy-MM-dd HH:mm:ss"
+    const val YMD_HM_FORMAT = "yyyy-MM-dd HH:mm"
     const val YMD_FORMAT = "yyyy-MM-dd"
     const val DMY_FORMAT = "dd / MM / yyyy"
     const val MD_FORMAT = "MM-dd"

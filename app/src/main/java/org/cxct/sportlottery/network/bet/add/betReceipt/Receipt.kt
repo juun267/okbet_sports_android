@@ -17,5 +17,5 @@ data class Receipt(
     @Json(name = "totalNum")
     val totalNum: Int?,
     @Json(name = "userPlayAmount")
-    val userPlayAmount: Int?
+    val userPlayAmount: Double?
 )

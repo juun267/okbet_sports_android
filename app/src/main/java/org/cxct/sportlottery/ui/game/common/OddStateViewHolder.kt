@@ -47,7 +47,7 @@ abstract class OddStateViewHolder(itemView: View) : RecyclerView.ViewHolder(item
         return Runnable {
             itemOdd.oddState = OddState.SAME.state
             setupOddState(oddsButton, itemOdd)
-            oddStateChangeListener.refreshOddButton(itemOdd)
+//            oddStateChangeListener.refreshOddButton(itemOdd)
             itemOdd.runnable = null
             mHandler.removeCallbacks(itemOdd.runnable)
         }

@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.cxct.sportlottery.db.dao.UserInfoDao
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
@@ -41,7 +41,7 @@ const val KEY_USER_ID = "user_id"
 const val KEY_USER_LEVEL_ID = "user_Level_Id"
 
 
-class LoginRepository(private val androidContext: Context, private val userInfoDao: UserInfoDao) {
+class LoginRepository(private val androidContext: Context) {
     private val sharedPref: SharedPreferences by lazy {
         androidContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
@@ -304,17 +304,18 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
     private suspend fun updateUserInfo(loginData: LoginData?) {
         loginData?.let {
             val userInfo = transform(it)
+            MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
+//            withContext(Dispatchers.IO) {
+//                userInfoDao.upsert(userInfo)
+//            }
 
-            withContext(Dispatchers.IO) {
-                userInfoDao.upsert(userInfo)
-            }
         }
     }
 
     @WorkerThread
     private suspend fun clearUserInfo() {
         withContext(Dispatchers.IO) {
-            userInfoDao.deleteAll()
+            MultiLanguagesApplication.getInstance()?.saveUserInfo(null)
             GameConfigManager.maxBetMoney = 9999999
             GameConfigManager.maxCpBetMoney = 9999
             GameConfigManager.maxParlayBetMoney = 9999

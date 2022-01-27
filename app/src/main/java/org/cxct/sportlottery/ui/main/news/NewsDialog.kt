@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_SETTLING
 import com.bekawestberg.loopinglayout.library.LoopingLayoutManager
 import kotlinx.android.synthetic.main.dialog_event_msg_v5.*
 import org.cxct.sportlottery.R
@@ -45,9 +46,22 @@ class NewsDialog(private val mMessageList: List<Row>?) : BaseDialog<MainViewMode
                 val currentPosition =
                     (rv_tab.getChildAt(0).layoutParams as RecyclerView.LayoutParams).bindingAdapterPosition
 
+                //TODO Bill 如果使用smoothScrollToPosition的方式 會滑動兩次導致公告內容跟標題對不上
                 when(currentPosition){
                     0 -> rv_tab.smoothScrollToPosition(mNewsTabAdapter.itemCount - 1 )
                     else -> rv_tab.smoothScrollToPosition(currentPosition - 1)
+                }
+
+                val nextPosition = when(currentPosition){
+                    0  -> mNewsTabAdapter.itemCount - 1
+                    else -> currentPosition - 1
+                }
+                if (tabPosition != nextPosition) {
+                    tabPosition = nextPosition
+                    val selectMsgType = mNewsTabAdapter.mDataList[nextPosition].msgType
+                    val dataList = mMessageList?.filter { it.msgType == selectMsgType }
+                    resetRvContentManager(dataList)
+                    mNewsContentAdapter.setData(dataList)
                 }
             }
 
@@ -56,8 +70,24 @@ class NewsDialog(private val mMessageList: List<Row>?) : BaseDialog<MainViewMode
                     (rv_tab.getChildAt(1).layoutParams as RecyclerView.LayoutParams).bindingAdapterPosition
 
                 when(currentPosition){
-                    mNewsTabAdapter.itemCount - 1  -> rv_tab.smoothScrollToPosition(0 )
-                    else -> rv_tab.smoothScrollToPosition(currentPosition + 1)
+                    mNewsTabAdapter.itemCount - 1  -> {
+                        rv_tab.smoothScrollToPosition(0 )
+                    }
+                    else -> {
+                        rv_tab.smoothScrollToPosition(currentPosition + 1)
+                    }
+                }
+
+                val nextPosition = when(currentPosition){
+                    mNewsTabAdapter.itemCount - 1  -> 0
+                    else -> currentPosition + 1
+                }
+                if (tabPosition != nextPosition) {
+                    tabPosition = nextPosition
+                    val selectMsgType = mNewsTabAdapter.mDataList[nextPosition].msgType
+                    val dataList = mMessageList?.filter { it.msgType == selectMsgType }
+                    resetRvContentManager(dataList)
+                    mNewsContentAdapter.setData(dataList)
                 }
             }
         }
@@ -78,22 +108,32 @@ class NewsDialog(private val mMessageList: List<Row>?) : BaseDialog<MainViewMode
         if (mNewsTabAdapter.mDataList.size > 1) {
             rv_tab.layoutManager = mRvTabManager
             rv_tab.adapter = mNewsTabAdapter
-
+            PagerSnapHelper().attachToRecyclerView(rv_tab)
             rv_tab.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    val currentPosition =
-                        (recyclerView.getChildAt(0).layoutParams as RecyclerView.LayoutParams).bindingAdapterPosition
+                var scrollRight = true //<0 往左  //>0 往右
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    scrollRight = dx > 0
+                }
 
-                    if (tabPosition != currentPosition) {
-                        tabPosition = currentPosition
-                        val selectMsgType = mNewsTabAdapter.mDataList[currentPosition].msgType
-                        val dataList = mMessageList?.filter { it.msgType == selectMsgType }
-                        resetRvContentManager(dataList)
-                        mNewsContentAdapter.setData(dataList)
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    if (newState == SCROLL_STATE_SETTLING) {
+                        val childIndex = if (scrollRight) 1 else 0
+
+                        val currentPosition =
+                            (recyclerView.getChildAt(childIndex).layoutParams as RecyclerView.LayoutParams).bindingAdapterPosition
+
+                        if (tabPosition != currentPosition) {
+                            tabPosition = currentPosition
+                            val selectMsgType = mNewsTabAdapter.mDataList[currentPosition].msgType
+                            val dataList = mMessageList?.filter { it.msgType == selectMsgType }
+                            resetRvContentManager(dataList)
+                            mNewsContentAdapter.setData(dataList)
+                        }
                     }
                 }
             })
-            PagerSnapHelper().attachToRecyclerView(rv_tab)
+
         } else {
             rv_tab.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)

@@ -92,6 +92,14 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/match_play_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorGray"
+            android:textSize="@dimen/textSize12sp"
+            tools:text="2022-02-25 10:42" />
+
         <!--playName spread @ odd (oddsType)-->
         <TextView
             android:id="@+id/play_content"

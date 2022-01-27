@@ -435,6 +435,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
                 updateTime?.let {
                     startTime = updateTime
+                    setupStartTime()
                 }
             }
         }
@@ -514,11 +515,18 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
             tv_away_name.text = this.awayName ?: ""
 
-            tv_time_bottom.text = getString(R.string.time_null)
-
             if (args.matchType != MatchType.IN_PLAY) {
-                tv_time_bottom.text = TimeUtil.timeFormat(startTime, HM_FORMAT)
+                val timeStr = TimeUtil.timeFormat(startTime, HM_FORMAT)
+                if (!timeStr.isEmpty()) {
+                    tv_time_bottom.text = timeStr
+                }
+                else {
+                    tv_time_bottom.text = getString(R.string.time_null)
+                }
                 tv_time_top.text = TimeUtil.timeFormat(startTime, DM_FORMAT)
+            }
+            else {
+                tv_time_bottom.text = getString(R.string.time_null)
             }
         }
     }

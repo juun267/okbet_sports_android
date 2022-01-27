@@ -570,11 +570,12 @@
                     android:layout_marginTop="12dp"
                     android:button="@drawable/effect_login_select_checkbox"
                     android:checked="true"
-                    android:paddingLeft="4dp"
+                    android:paddingStart="4dp"
                     android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize13sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvDutyTitle" />
+
                 <TextView
                     android:id="@+id/tvPrivacy"
                     android:layout_width="0dp"
@@ -596,7 +597,7 @@
                     android:layout_marginTop="12dp"
                     android:button="@drawable/effect_login_select_checkbox"
                     android:checked="true"
-                    android:paddingLeft="4dp"
+                    android:paddingStart="4dp"
                     android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize13sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -654,6 +655,7 @@
 
             <Button
                 android:id="@+id/btn_register"
+                android:enabled="false"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"

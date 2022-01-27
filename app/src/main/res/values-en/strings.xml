@@ -528,7 +528,7 @@
     <string name="withdraw_crypto_exchange_rate_hint">・Exchange rate：%1$s</string>
     <string name="withdraw_crypto_amount_hint">・Withdraw：%1$s %s</string>
     <string name="withdraw_crypto_fee_hint">・Withdraw service fee：%1$s %s</string>
-    <string name="hint_please_enter_withdraw_amount">Limit%1$s~%2$s %s</string>
+    <string name="hint_please_enter_withdraw_amount">Limit%1$s~%2$s</string>
     <string name="hint_four_number_password">Withdrawal password</string>
     <string name="hint_please_enter_withdraw_password">withdrawal password</string>
     <string name="add_new">Add</string>
@@ -950,8 +950,8 @@
     <!--登入手機驗證-->
     <string name="other_link">OTHER USEFUL LINKS</string>
     <string name="about_us">About Us</string>
-    <string name="responsible">Responsible\nGaming</string>
-    <string name="terms_conditions">Terms &amp;\nConditions</string>
+    <string name="responsible">Responsible Gaming</string>
+    <string name="terms_conditions">Terms &amp; Conditions</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="help">NEED HELP NOW?</string>
     <string name="faqs">FAQs</string>
@@ -964,4 +964,5 @@
     <string name="make_sure_valid_account">We will withhold %1$s temporarily when you withdraw money the first time to make sure you are a valid user. This money will return to you in 30 days later.</string>
     <string name="front_side_result">Front side result</string>
     <string name="reverse_side_result">Reverse side result</string>
+    <string name="btm_navigation_language">English</string>
 </resources>

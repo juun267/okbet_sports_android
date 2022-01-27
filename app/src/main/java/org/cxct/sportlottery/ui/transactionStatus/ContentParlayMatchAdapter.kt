@@ -6,18 +6,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.content_outright_record.view.*
 import kotlinx.android.synthetic.main.content_parlay_match.view.*
-import kotlinx.android.synthetic.main.content_parlay_match.view.content_odds
-import kotlinx.android.synthetic.main.content_parlay_match.view.content_odds_type
-import kotlinx.android.synthetic.main.content_parlay_match.view.content_play
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.MatchOdd
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.setDateNoYear
+import org.cxct.sportlottery.util.*
 
-class ContentParlayMatchAdapter : ListAdapter<MatchOdd, RecyclerView.ViewHolder>(ContentDiffCallBack()) {
+class ContentParlayMatchAdapter :
+    ListAdapter<MatchOdd, RecyclerView.ViewHolder>(ContentDiffCallBack()) {
     var gameType: String = ""
     var oddsType: OddsType = OddsType.EU
     fun setupMatchData(gameType: String, oddsType: OddsType, dataList: List<MatchOdd>) {
@@ -61,28 +57,32 @@ class ContentParlayMatchAdapter : ListAdapter<MatchOdd, RecyclerView.ViewHolder>
         fun bind(gameTypeName: String, data: MatchOdd, oddsType: OddsType) {
             itemView.apply {
                 content_play.text = "$gameTypeName ${data.playCateName}"
+
+                val odd = when (oddsType) {
+                    OddsType.HK -> data.hkOdds
+                    else -> data.odds
+                }
+
+                val oddsTypeStr = when (data.oddsType) {
+                    OddsType.HK.code -> "(" + context.getString(OddsType.HK.res) + ")"
+                    OddsType.MYS.code -> "(" + context.getString(OddsType.MYS.res) + ")"
+                    OddsType.IDN.code -> "(" + context.getString(OddsType.IDN.res) + ")"
+                    else -> "(" + context.getString(OddsType.EU.res) + ")"
+                }
+
+                parlay_play_content.setPlayContent(
+                    data.playName,
+                    data.spread,
+                    TextUtil.formatForOdd(odd),
+                    oddsTypeStr
+                )
+
+                parlay_play_time.text = TimeUtil.timeFormat(data.startTime, TimeUtil.YMD_HM_FORMAT)
                 content_league.text = data.leagueName
                 content_home_name.text = data.homeName
                 content_away_name.text = data.awayName
                 content_date.setDateNoYear(data.startTime)
-                content_spread.text = data.spread
-                content_spread_team.text = data.playName
-                content_odds.text = when (oddsType) {
-                    OddsType.HK -> data.hkOdds
-                    else -> data.odds
-                }.let {
-                    TextUtil.formatForOdd(
-                        it
-                    )
-                }
 
-                content_odds.text  = TextUtil.formatForOdd(data.odds)
-                content_odds_type.text = when (data.oddsType) {
-                    OddsType.HK.code -> "("+context.getString(OddsType.HK.res)+")"
-                    OddsType.MYS.code -> "("+context.getString(OddsType.MYS.res)+")"
-                    OddsType.IDN.code -> "("+context.getString(OddsType.IDN.res)+")"
-                    else -> "("+context.getString(OddsType.EU.res)+")"
-                }?.let { it }
             }
         }
     }

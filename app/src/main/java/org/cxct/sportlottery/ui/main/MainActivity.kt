@@ -57,7 +57,7 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setupNoticeButton(btn_notice)
+        setupNoticeButton(iv_notice)
         initToolBar()
         initMenu()
         initBottomNav()
@@ -125,7 +125,7 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
         }
 
         //頭像 當 側邊欄 開/關
-        iv_head.setOnClickListener {
+        iv_menu.setOnClickListener {
             if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
             else {
                 drawer_layout.openDrawer(nav_right)
@@ -243,14 +243,18 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
     private fun updateUiWithLogin(isLogin: Boolean) {
         if (isLogin) {
             btn_login.visibility = View.GONE
+            iv_menu.visibility =View.VISIBLE
+            iv_notice.visibility =View.VISIBLE
             btn_register.visibility = View.GONE
             toolbar_divider.visibility = View.GONE
-            iv_head.visibility = View.VISIBLE
+            iv_head.visibility = View.GONE
         } else {
             btn_login.visibility = View.VISIBLE
             btn_register.visibility = View.VISIBLE
             toolbar_divider.visibility = View.VISIBLE
             iv_head.visibility = View.GONE
+            iv_menu.visibility =View.GONE
+            iv_notice.visibility =View.GONE
         }
     }
 

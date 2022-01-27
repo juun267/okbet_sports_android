@@ -279,7 +279,7 @@ class WithdrawViewModel(
             viewModelScope.launch {
                 loading()
                 doNetwork(androidContext) {
-                    val userId = userInfoRepository.userInfo.firstOrNull()?.userId.toString()
+                    val userId = userInfoRepository.userInfo!!.firstOrNull()?.userId.toString()
                     OneBoSportApi.bankService.bankAdd(createBankAddRequest(bankName, subAddress, cardNo, fundPwd, userInfo.value?.fullName, id, userId, uwType, bankCode))
                 }?.let { result ->
                     _bankAddResult.value = result
@@ -493,9 +493,7 @@ class WithdrawViewModel(
         val limit = getWithdrawAmountLimit()
         _withdrawAmountHint.value = String.format(
             androidContext.getString(R.string.hint_please_enter_withdraw_amount),
-            limit.min.toLong(), limit.max.toLong(),
-            sConfigData?.systemCurrency
-        )
+            limit.min.toLong(), limit.max.toLong()) + sConfigData?.systemCurrency
     }
 
     fun getWithdrawAmountLimit(): WithdrawAmountLimit {

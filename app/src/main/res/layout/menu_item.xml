@@ -31,12 +31,39 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/profile_center" />
 
+    <TextView
+        android:id="@+id/btn_notice"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="5dp"
+        android:background="@drawable/bg_circle_white"
+        android:backgroundTint="@color/colorOrange2"
+        android:gravity="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/textSize14sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_title"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="N" />
+
+    <ImageView
+        android:id="@+id/iv_language"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:src="@drawable/ic_flag_cn"
+        android:layout_marginStart="5dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_title"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/iv_arrow"
-        android:layout_width="12dp"
-        android:layout_height="12dp"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
         android:layout_marginEnd="10dp"
-        android:src="@drawable/ic_arrow_gray"
+        android:src="@drawable/arrow_gray"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

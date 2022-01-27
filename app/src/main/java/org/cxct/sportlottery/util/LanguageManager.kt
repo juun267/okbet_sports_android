@@ -36,7 +36,8 @@ object LanguageManager {
                     local.language == Locale("vi").language -> Language.VI
                     (local.language == Locale.SIMPLIFIED_CHINESE.language && local.country == Locale.SIMPLIFIED_CHINESE.country)
                             || local.language == Locale.TRADITIONAL_CHINESE.language -> Language.ZH
-                    else -> Language.values().find { it.key == BuildConfig.DEFAULT_LANGUAGE } ?: Language.EN
+                    else -> Language.values().find { it.key == BuildConfig.DEFAULT_LANGUAGE }
+                        ?: Language.EN
                 }
 //                Language.EN //2021/10/04 與PM確認過，不管手機是什麼語系，都預先使用英文版本
             }
@@ -57,6 +58,22 @@ object LanguageManager {
             Language.VI -> "vi"
             else -> "en"
         }
+    }
+
+    fun getLanguageStringResource(context: Context?): String {
+        return when (getSelectLanguage(context)) {
+            Language.ZH -> context?.resources?.getString(R.string.language_cn) ?: ""
+            Language.VI -> context?.resources?.getString(R.string.language_vi) ?: ""
+            else -> context?.resources?.getString(R.string.language_en) ?: ""
+        }
+    }
+
+    fun getLanguageStringList(context: Context?): List<String> {
+        return listOf(
+            context?.resources?.getString(R.string.language_cn) ?: "",
+            context?.resources?.getString(R.string.language_en) ?: "",
+            context?.resources?.getString(R.string.language_vi) ?: ""
+        )
     }
 
     /**

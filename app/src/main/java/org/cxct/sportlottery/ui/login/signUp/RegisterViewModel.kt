@@ -121,7 +121,7 @@ class RegisterViewModel(
      * 檢查輸入欄位
      */
 
-    fun checkInviteCode(inviteCode: String?) {
+    private fun checkInviteCode(inviteCode: String?) {
         _inviteCodeMsg.value = when {
             inviteCode.isNullOrEmpty() -> {
                 if (sConfigData?.enableInviteCode != FLAG_OPEN)
@@ -148,7 +148,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkLoginPassword(password: String?) {
+    private fun checkLoginPassword(password: String?) {
         _loginPasswordMsg.value = when {
             password.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyPwdFormat(password) -> androidContext.getString(R.string.error_register_password)
@@ -159,7 +159,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkConfirmPassword(password: String?, confirmPassword: String?) {
+    private fun checkConfirmPassword(password: String?, confirmPassword: String?) {
         _confirmPasswordMsg.value = when {
             password.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             password != confirmPassword -> androidContext.getString(R.string.error_confirm_password)
@@ -168,7 +168,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkFullName(fullName: String?) {
+    private fun checkFullName(fullName: String?) {
         _fullNameMsg.value = when {
             fullName.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             else -> null
@@ -176,7 +176,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkFundPwd(fundPwd: String?) {
+    private fun checkFundPwd(fundPwd: String?) {
         _fundPwdMsg.value = when {
             fundPwd.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyPayPwd(fundPwd) -> androidContext.getString(R.string.error_withdrawal_pwd)
@@ -185,7 +185,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkQQ(qq: String?) {
+    private fun checkQQ(qq: String?) {
         _qqMsg.value = when {
             qq.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyQQ(qq) -> androidContext.getString(R.string.error_qq_number)
@@ -194,7 +194,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkPhone(phone: String?) {
+    private fun checkPhone(phone: String?) {
         _phoneMsg.value = when {
             phone.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             else -> null
@@ -202,7 +202,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkEmail(email: String?) {
+    private fun checkEmail(email: String?) {
         _emailMsg.value = when {
             email.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyMail(email) -> androidContext.getString(R.string.error_e_mail)
@@ -211,7 +211,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkAddress(address: String?) {
+    private fun checkAddress(address: String?) {
         _addressMsg.value = when {
             address.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             else -> null
@@ -219,7 +219,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkWeChat(weChat: String?) {
+    private fun checkWeChat(weChat: String?) {
         _weChatMsg.value = when {
             weChat.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             else -> null
@@ -227,7 +227,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkZalo(zalo: String?) {
+    private fun checkZalo(zalo: String?) {
         _zaloMsg.value = when {
             zalo.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyZalo(zalo) -> androidContext.getString(R.string.error_zalo)
@@ -236,7 +236,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkFacebook(facebook: String?) {
+    private fun checkFacebook(facebook: String?) {
         _facebookMsg.value = when {
             facebook.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyFacebook(facebook) -> androidContext.getString(R.string.error_facebook)
@@ -245,7 +245,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkWhatsApp(whatsApp: String?) {
+    private fun checkWhatsApp(whatsApp: String?) {
         _whatsAppMsg.value = when {
             whatsApp.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyWhatsApp(whatsApp) -> androidContext.getString(R.string.error_whats_app)
@@ -254,7 +254,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkTelegram(telegram: String?) {
+    private fun checkTelegram(telegram: String?) {
         _telegramMsg.value = when {
             telegram.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyTelegram(telegram) -> androidContext.getString(R.string.error_telegram)
@@ -263,7 +263,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkSecurityCode(securityCode: String?) {
+    private fun checkSecurityCode(securityCode: String?) {
         _securityCodeMsg.value = when {
             securityCode.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifySecurityCode(securityCode) -> androidContext.getString(R.string.error_verification_code_by_sms)
@@ -272,7 +272,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkValidCode(validCode: String?) {
+    private fun checkValidCode(validCode: String?) {
         _validCodeMsg.value = when {
             validCode.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyValidCode(validCode) -> androidContext.getString(R.string.error_verification_code)
@@ -311,7 +311,7 @@ class RegisterViewModel(
     }
 
     //檢查是否所有欄位都填寫完畢
-    private fun checkAllInput(
+    fun checkAllInput(
         inviteCode: String,
         userName: String,
         loginPassword: String,
@@ -330,7 +330,7 @@ class RegisterViewModel(
         smsCode: String,
         validCode: String,
         agreementChecked: Boolean,
-    ) {
+    ): Boolean {
         if (sConfigData?.enableInviteCode == FLAG_OPEN)
             checkInviteCode(inviteCode)
 
@@ -366,6 +366,8 @@ class RegisterViewModel(
             checkValidCode(validCode)
 
         checkAgreement(agreementChecked)
+
+        return checkAllInputComplete()
     }
 
     private fun focusChangeCheckAllInputComplete() {
@@ -373,7 +375,7 @@ class RegisterViewModel(
     }
 
 
-    private fun checkAllInputComplete(): Boolean {
+    fun checkAllInputComplete(): Boolean {
         if (sConfigData?.enableInviteCode == FLAG_OPEN && inviteCodeMsg.value != null)
             return false
         if (memberAccountMsg.value != null)
@@ -455,27 +457,26 @@ class RegisterViewModel(
         agreementChecked: Boolean,
         deviceSn: String
     ) {
-        checkAllInput(
-            inviteCode,
-            userName,
-            loginPassword,
-            confirmPassword,
-            fullName,
-            fundPwd,
-            qq,
-            phone,
-            email,
-            address,
-            weChat,
-            zalo,
-            facebook,
-            whatsApp,
-            telegram,
-            smsCode,
-            validCode,
-            agreementChecked
-        )
-        if (checkAllInputComplete()) {
+        if (checkAllInput(
+                inviteCode,
+                userName,
+                loginPassword,
+                confirmPassword,
+                fullName,
+                fundPwd,
+                qq,
+                phone,
+                email,
+                address,
+                weChat,
+                zalo,
+                facebook,
+                whatsApp,
+                telegram,
+                smsCode,
+                validCode,
+                agreementChecked
+            )) {
             register(createRegisterRequest(inviteCode, userName, loginPassword, fullName, fundPwd, qq, phone, email, address, weChat, zalo, facebook, whatsApp, telegram, smsCode, validCode, deviceSn))
         }
     }
