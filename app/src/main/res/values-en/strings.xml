@@ -919,6 +919,7 @@
     <string name="face_scan_result">face scan result</string>
     <string name="not_verify">(Not yet verified)</string>
     <string name="verified">(Verified)</string>
+    <string name="select_id_type">Select ID Type</string>
     <string name="verify_failed_please_retry">Verification failed, please try again</string>
     <!--自我禁制-->
     <string name="selfLimit">Self-exclusion</string>

@@ -935,6 +935,7 @@
     <string name="verified">(已验证)</string>
     <string name="verify_failed_please_retry">验证失败 请重新再试</string>
     <string name="not_verify">(未验证)</string>
+    <string name="select_id_type">选择身份证件类型</string>
     <!--自我禁制-->
     <string name="selfLimit">自我禁制</string>
     <string name="selfLimit_impotent">重要事项</string>

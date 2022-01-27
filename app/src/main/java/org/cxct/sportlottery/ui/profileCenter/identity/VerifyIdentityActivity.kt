@@ -19,7 +19,7 @@ class VerifyIdentityActivity : BaseSocketActivity<ProfileCenterViewModel>(Profil
     }
 
     private fun initToolbar() {
-        tv_toolbar_title.text = getString(R.string.identity)
+        tv_toolbar_title.text = getString(R.string.select_id_type)
             btn_toolbar_back.setOnClickListener{
                 if (mNavController.previousBackStackEntry == null)
                     finish()
