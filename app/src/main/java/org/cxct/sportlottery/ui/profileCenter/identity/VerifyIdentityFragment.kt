@@ -68,7 +68,7 @@ class VerifyIdentityFragment :
 
     private fun initOnClick() {
 
-        tv_select_bank_card.setOnClickListener {
+        ll_select_credential.setOnClickListener {
             showBottomSheetDialog(
                 null,
                 idTypeList,
