@@ -934,7 +934,7 @@
     <string name="face_scan_result">脸部扫描结果</string>
     <string name="verified">(已验证)</string>
     <string name="verify_failed_please_retry">验证失败 请重新再试</string>
-    <string name="not_verify">(未驗證)</string>
+    <string name="not_verify">(未验证)</string>
     <!--自我禁制-->
     <string name="selfLimit">自我禁制</string>
     <string name="selfLimit_impotent">重要事项</string>
