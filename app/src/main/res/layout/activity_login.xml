@@ -22,14 +22,12 @@
         android:layout_width="26dp"
         android:layout_height="26dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="20dp"
         android:background="@null"
         android:contentDescription="@null"
         android:src="@drawable/ic_arrow_login"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+        app:layout_constraintBottom_toBottomOf="@+id/ivLogo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/ivLogo" />
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -72,7 +70,7 @@
             <org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
                 android:id="@+id/et_account"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 app:iconSignifier="@drawable/ic_login_account"
                 app:layout_constraintStart_toStartOf="parent"
@@ -96,7 +94,7 @@
             <org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
                 android:id="@+id/et_password"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 app:endIcon="@drawable/ic_eye_open"
                 app:iconSignifier="@drawable/ic_login_password"
@@ -130,7 +128,7 @@
                 <org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
                     android:id="@+id/et_verification_code"
                     android:layout_width="0dp"
-                    android:layout_height="52dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:iconSignifier="@drawable/ic_login_verify"
                     app:singleText="@string/verification_code">
