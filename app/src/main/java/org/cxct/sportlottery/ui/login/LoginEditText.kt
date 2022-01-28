@@ -53,6 +53,11 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         }
 
     private var inputType: Int = 0
+    private val typedArray by lazy {
+        context.theme.obtainStyledAttributes(attrs, R.styleable.CustomView, 0, 0)
+    }
+
+    private val editable by lazy { typedArray.getBoolean(R.styleable.CustomView_cvEditable, true) }
 
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.edittext_login, this, false)
@@ -64,7 +69,6 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             view.tv_title.setTypeface(null, typedArray.getInt(R.styleable.CustomView_cvTitleTextStyle, 1))
             view.et_input.setText(typedArray.getText(R.styleable.CustomView_cvText))
             view.et_input.hint = typedArray.getText(R.styleable.CustomView_cvHint)
-            val editable: Boolean = typedArray.getBoolean(R.styleable.CustomView_cvEditable, true)
             if (!editable) {
                 view.et_input.isEnabled = false
                 view.et_input.inputType = InputType.TYPE_NULL
@@ -226,11 +230,13 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
     }
 
     fun afterTextChanged(afterTextChanged: (String) -> Unit) {
-        et_input.afterTextChanged {
-            if (inputType != 0x00000081 && inputType != 0x00000012 && et_input.isEnabled) {
-                clearIsShow = it.isNotEmpty()
+        if (editable) {
+            et_input.afterTextChanged {
+                if (inputType != 0x00000081 && inputType != 0x00000012 && et_input.isEnabled) {
+                    clearIsShow = it.isNotEmpty()
+                }
+                afterTextChanged.invoke(it)
             }
-            afterTextChanged.invoke(it)
         }
     }
 
