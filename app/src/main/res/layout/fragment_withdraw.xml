@@ -386,7 +386,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/guideline"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:visibility="visible"/>
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/tv_dot_2"
@@ -396,8 +396,10 @@
                 android:text="·"
                 android:textColor="@color/colorRed"
                 android:textSize="12dp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@+id/guideline"
-                app:layout_constraintTop_toBottomOf="@+id/tv_dot_1" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_dot_1"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/tv_notification_2"
@@ -407,10 +409,12 @@
                 android:text="@string/make_sure_valid_account"
                 android:textColor="@color/colorRed"
                 android:textSize="12dp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/guideline"
-                app:layout_constraintTop_toBottomOf="@+id/tv_notification_1" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_notification_1"
+                tools:visibility="visible" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
