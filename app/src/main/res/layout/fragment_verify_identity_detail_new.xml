@@ -129,7 +129,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cvEditable="false"
-            app:cvHint="@string/identity_id"
             app:cvTitle="@string/identity_id" />
 
         <org.cxct.sportlottery.ui.login.LoginEditText
@@ -137,7 +136,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cvEditable="false"
-            app:cvHint="@string/identity_last_name"
             app:cvTitle="@string/identity_last_name" />
 
         <org.cxct.sportlottery.ui.login.LoginEditText
@@ -145,7 +143,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cvEditable="false"
-            app:cvHint="@string/identity_first_name"
             app:cvInputType="text"
             app:cvTitle="@string/identity_first_name" />
 
@@ -154,7 +151,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cvEditable="false"
-            app:cvHint="@string/identity_other_name"
             app:cvTitle="@string/identity_other_name" />
 
         <org.cxct.sportlottery.ui.login.LoginEditText
@@ -162,7 +158,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cvEditable="false"
-            app:cvHint="@string/identity_sex"
             app:cvTitle="@string/identity_sex" />
 
         <org.cxct.sportlottery.ui.login.LoginEditText
@@ -170,7 +165,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cvEditable="false"
-            app:cvHint="@string/identity_birth"
             app:cvTitle="@string/identity_birth" />
 
         <org.cxct.sportlottery.ui.login.LoginEditText
@@ -178,7 +172,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cvEditable="false"
-            app:cvHint="@string/expire_date"
             app:cvTitle="@string/expire_date" />
 
         <org.cxct.sportlottery.ui.login.LoginEditText
