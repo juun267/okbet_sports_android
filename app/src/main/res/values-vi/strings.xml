@@ -993,5 +993,6 @@
     <string name="front_side_result">Kết quả phía trước</string>
     <string name="reverse_side_result">Kết quả ngược lại</string>
     <string name="btm_navigation_language">Việt Nam</string>
+    <string name="expire_date">Thời gian hết hạn chứng chỉ</string>
 
 </resources>

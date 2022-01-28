@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.text.Editable
 import android.text.InputFilter
+import android.text.InputType
 import android.text.TextWatcher
 import android.text.method.DigitsKeyListener
 import android.text.method.HideReturnsTransformationMethod
@@ -17,6 +18,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.annotation.IntDef
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import org.cxct.sportlottery.R
@@ -62,6 +64,13 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             view.tv_title.setTypeface(null, typedArray.getInt(R.styleable.CustomView_cvTitleTextStyle, 1))
             view.et_input.setText(typedArray.getText(R.styleable.CustomView_cvText))
             view.et_input.hint = typedArray.getText(R.styleable.CustomView_cvHint)
+            val editable: Boolean = typedArray.getBoolean(R.styleable.CustomView_cvEditable, true)
+            if (!editable) {
+                view.et_input.isEnabled = false
+                view.et_input.inputType = InputType.TYPE_NULL
+                view.et_input.isFocusable = false
+                view.btn_clear.visibility = View.GONE
+            }
             typedArray.getInt(R.styleable.CustomView_cvEms, -1).let {
                 if (it > 0) {
                     view.et_input.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(it))

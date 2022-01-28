@@ -966,4 +966,5 @@
     <string name="front_side_result">Front side result</string>
     <string name="reverse_side_result">Reverse side result</string>
     <string name="btm_navigation_language">English</string>
+    <string name="expire_date">ID expiration date</string>
 </resources>
