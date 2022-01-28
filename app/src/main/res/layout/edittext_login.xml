@@ -89,6 +89,8 @@
             android:contentDescription="@null"
             android:gravity="center"
             android:padding="6dp"
+            android:visibility="gone"
+            tools:visibility="visible"
             android:src="@drawable/ic_close_edittext" />
 
         <LinearLayout
