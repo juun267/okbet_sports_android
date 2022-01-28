@@ -19,16 +19,20 @@
 
     <ImageButton
         android:id="@+id/btn_back"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_margin="16dp"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="20dp"
         android:background="@null"
         android:contentDescription="@null"
         android:src="@drawable/ic_arrow_login"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="14dp"
@@ -56,7 +60,7 @@
                 android:id="@+id/label_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="14dp"
                 android:text="@string/btn_login"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize30sp"
@@ -68,12 +72,12 @@
             <org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
                 android:id="@+id/et_account"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
                 android:layout_marginTop="12dp"
                 app:iconSignifier="@drawable/ic_login_account"
-                app:singleText="@string/member_account"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/label_register">
+                app:layout_constraintTop_toBottomOf="@+id/label_register"
+                app:singleText="@string/member_account">
 
                 <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
                     android:id="@+id/eet_account"
@@ -92,13 +96,14 @@
             <org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
                 android:id="@+id/et_password"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
                 android:layout_marginTop="8dp"
-                app:singleText="@string/login_password"
-                app:iconSignifier="@drawable/ic_login_password"
-                app:layout_constraintStart_toStartOf="parent"
                 app:endIcon="@drawable/ic_eye_open"
-                app:layout_constraintTop_toBottomOf="@+id/et_account">
+                app:iconSignifier="@drawable/ic_login_password"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_account"
+                app:singleText="@string/login_password">
 
                 <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
                     android:id="@+id/eet_password"
@@ -108,7 +113,7 @@
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:textSize="@dimen/textSize14sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
 
@@ -125,7 +130,7 @@
                 <org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
                     android:id="@+id/et_verification_code"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="52dp"
                     android:layout_weight="1"
                     app:iconSignifier="@drawable/ic_login_verify"
                     app:singleText="@string/verification_code">
@@ -145,7 +150,8 @@
                     android:id="@+id/llCheck"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_marginStart="5dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="10dp"
                     android:background="@color/transparent"
                     android:gravity="center"
                     android:minWidth="80dp"
@@ -162,9 +168,9 @@
 
                     <ImageView
                         android:id="@+id/ivReturn"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginLeft="10dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="10dp"
                         android:src="@drawable/ic_return" />
 
                 </LinearLayout>
@@ -181,8 +187,8 @@
                 android:text="@string/remember_password"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize13sp"
-                app:layout_constraintTop_toBottomOf="@+id/block_valid_code"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/block_valid_code" />
 
 
             <TextView
@@ -196,21 +202,21 @@
                 android:padding="4dp"
                 android:text="@string/forget_password_question"
                 android:textColor="@color/colorRedDark"
-                android:textSize="@dimen/textSize12sp"
-                app:layout_constraintTop_toBottomOf="@+id/block_valid_code"
-                app:layout_constraintEnd_toEndOf="parent" />
+                android:textSize="@dimen/textSize13sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/block_valid_code" />
 
             <Button
                 android:id="@+id/btn_login"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="46dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="6dp"
                 android:background="@drawable/bg_radius_8_button_dusk"
                 android:text="@string/btn_login"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/textSize16sp"
+                android:textSize="@dimen/textSize17sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cb_remember_password" />
 
@@ -218,27 +224,27 @@
                 android:id="@+id/block_sign_up"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_marginTop="12dp"
+                android:gravity="center"
                 android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@+id/btn_login">
 
                 <TextView
-                    android:visibility="gone"
                     android:id="@+id/btn_visit_first"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="4dp"
                     android:text="@string/visit_first"
                     android:textColor="@color/colorGray"
-                    android:textSize="@dimen/textSize12sp" />
+                    android:textSize="@dimen/textSize12sp"
+                    android:visibility="gone" />
 
                 <View
-                    android:visibility="gone"
                     android:layout_width="1dp"
                     android:layout_height="12dp"
                     android:layout_marginHorizontal="4dp"
-                    android:background="@color/colorGray" />
+                    android:background="@color/colorGray"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/btn_sign_up"
@@ -252,22 +258,10 @@
             </LinearLayout>
 
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </ScrollView>
-
-
-
-
-
-
-
-
-
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
