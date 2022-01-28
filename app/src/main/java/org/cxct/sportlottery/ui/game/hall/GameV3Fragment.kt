@@ -615,6 +615,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                     val gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
                     if (game_list.adapter == null) {
+                        view_space_first_123.visibility = View.GONE
                         game_list.apply {
                             adapter = leagueAdapter.apply {
                                 updateType = null
@@ -751,6 +752,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             )
                         }
                         else -> {
+                            view_space_first_123.visibility = View.VISIBLE
                             game_list.apply {
                                 adapter = countryAdapter.apply {
                                     data = rows
@@ -767,6 +769,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                 if (outrightSeasonListResult.success) {
                     val rows = outrightSeasonListResult.rows ?: listOf()
+                    view_space_first_123.visibility = View.VISIBLE
                     game_list.apply {
                         adapter = outrightCountryAdapter.apply {
                             data = rows
@@ -807,6 +810,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         }
                     }
 
+                    view_space_first_123.visibility = View.GONE
                     game_list.apply {
                         adapter = epsListAdapter.apply {
                             dataList = epsLeagueOddsItemList
