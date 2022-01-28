@@ -114,13 +114,21 @@
                 tools:listitem="@layout/itemview_date_v4"
                 tools:visibility="visible" />
 
+            <View
+                android:id="@+id/view_space_first_123"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/colorWhite"
+                app:layout_constraintBottom_toTopOf="@id/game_list"
+                app:layout_constraintTop_toBottomOf="@id/game_filter_type_list"/>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/game_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 android:overScrollMode="never"
-                app:layout_constraintTop_toBottomOf="@id/game_filter_type_list"
+                app:layout_constraintTop_toBottomOf="@id/view_space_first_123"
                 tools:itemCount="1"
                 tools:listitem="@layout/itemview_league_v4" />
 

@@ -3,13 +3,11 @@ package org.cxct.sportlottery.ui.game.hall.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_country.view.*
 import kotlinx.android.synthetic.main.itemview_country.view.country_border
 import kotlinx.android.synthetic.main.itemview_country.view.iv_country
-import kotlinx.android.synthetic.main.itemview_country.view.view_space_top
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.outright.season.Row
 import org.cxct.sportlottery.network.outright.season.Season
