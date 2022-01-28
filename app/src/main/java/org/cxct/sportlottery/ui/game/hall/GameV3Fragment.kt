@@ -415,7 +415,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         view.match_category_indicator.setupWithViewPager2(view.match_category_pager)
         val isCateShow = (args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY)
         view.game_match_category_pager.isVisible = isCateShow
-        view.view_space_first_123.visibility = if (isCateShow) View.GONE else View.VISIBLE
+        view.view_space_first.isVisible = !isCateShow
     }
 
     private fun setupPlayCategory(view: View) {
@@ -547,9 +547,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         viewModel.matchCategoryQueryResult.observe(this.viewLifecycleOwner) {
 
             it.getContentIfNotHandled()?.rows?.let { resultList ->
-                val isCateShow = (args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) && resultList.isNotEmpty()
+                val isCateShow = ((args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) && resultList.isNotEmpty())
                 game_match_category_pager.isVisible = isCateShow
-                view_space_first_123.visibility = if (isCateShow) View.GONE else View.VISIBLE
+                view_space_first.isVisible = !isCateShow
 
                 matchCategoryPagerAdapter.data = resultList
             }
@@ -615,7 +615,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                     val gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
                     if (game_list.adapter == null) {
-                        view_space_first_123.visibility = View.GONE
+                        view_space_first.isVisible = false
                         game_list.apply {
                             adapter = leagueAdapter.apply {
                                 updateType = null
@@ -752,7 +752,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             )
                         }
                         else -> {
-                            view_space_first_123.visibility = View.VISIBLE
+                            view_space_first.isVisible = true
                             game_list.apply {
                                 adapter = countryAdapter.apply {
                                     data = rows
@@ -769,7 +769,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                 if (outrightSeasonListResult.success) {
                     val rows = outrightSeasonListResult.rows ?: listOf()
-                    view_space_first_123.visibility = View.VISIBLE
+                    view_space_first.isVisible = true
                     game_list.apply {
                         adapter = outrightCountryAdapter.apply {
                             data = rows
@@ -810,7 +810,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         }
                     }
 
-                    view_space_first_123.visibility = View.GONE
+                    view_space_first.isVisible = false
                     game_list.apply {
                         adapter = epsListAdapter.apply {
                             dataList = epsLeagueOddsItemList
