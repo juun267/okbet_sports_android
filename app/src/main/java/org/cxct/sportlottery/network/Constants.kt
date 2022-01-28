@@ -72,11 +72,11 @@ object Constants {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/about-us?"+context.getString(
+                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/about-us?platform="+context.getString(
                     R.string.app_name)
-                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/about-us?"+context.getString(
+                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/about-us?platform="+context.getString(
                     R.string.app_name)
-                else -> getBaseUrl()+"sports-rule/#/us/about-us?"+context.getString(
+                else -> getBaseUrl()+"sports-rule/#/us/about-us?platform="+context.getString(
                     R.string.app_name)
             }
 
@@ -91,11 +91,11 @@ object Constants {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/responsibility?"+context.getString(
+                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/responsibility?platform="+context.getString(
                     R.string.app_name)
-                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/responsibility?"+context.getString(
+                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/responsibility?platform="+context.getString(
                     R.string.app_name)
-                else -> getBaseUrl()+"sports-rule/#/us/responsibility?"+context.getString(
+                else -> getBaseUrl()+"sports-rule/#/us/responsibility?platform="+context.getString(
                     R.string.app_name)
             }
 
