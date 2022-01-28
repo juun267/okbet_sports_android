@@ -113,9 +113,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_league_name"
+                app:layout_constraintTop_toBottomOf="@+id/tv_time"
                 tools:text="菲尼克斯太阳 v 菲尼克斯太阳" />
-
 
             <TextView
                 android:id="@+id/tv_time"
@@ -128,7 +127,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_team_names"
+                app:layout_constraintTop_toBottomOf="@+id/tv_league_name"
                 tools:text="2022-02-25 10:42" />
 
             <!--playName spread @ odd (oddsType)-->
@@ -144,7 +143,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_time"
+                app:layout_constraintTop_toBottomOf="@+id/tv_team_names"
                 tools:text="密尔沃基雄鹿 6.5 \@ 1.860 (印尼盘)" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

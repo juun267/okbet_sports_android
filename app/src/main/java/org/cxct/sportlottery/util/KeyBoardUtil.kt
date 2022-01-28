@@ -126,7 +126,7 @@ class KeyBoardUtil(
                     insert(
                         start,
                         if (isNotEmpty()) {
-                            if (!toString().contains(KeyBoardCode.DOT.value)) KeyBoardCode.DOT.value else return
+                            if (!this.toString().contains(".")) "." else return
                         } else {
                             "0."
                         }
@@ -144,7 +144,7 @@ class KeyBoardUtil(
         val input = if (mEditText.text.toString() == "") "0" else mEditText.text.toString()
         val tran = if (input.contains(".")) {
             input.toDouble() + count
-        } else input.toLong() + count
+        } else input.toDouble() + count
         mEditText.setText(tran.toString())
         mEditText.setSelection(mEditText.text.length)
     }

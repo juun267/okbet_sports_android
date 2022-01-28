@@ -11,8 +11,6 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.*
@@ -32,30 +30,19 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.needCountStatus
 import java.util.*
-import kotlin.collections.ArrayList
 
 val PAYLOAD_SCORE_CHANGE = "payload_score_change"
 val PAYLOAD_CLOCK_CHANGE = "payload_clock_change"
 val PAYLOAD_ODDS_CHANGE = "payload_odds_change"
 
+class LeagueOddAdapter(private val matchType: MatchType) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-class LeagueOddAdapter(private val matchType: MatchType, private var itemData: List<MatchOdd>) :
-    ListAdapter<MatchOdd, RecyclerView.ViewHolder>(ItemDiffCallback()) {
-    //private val itemDataList = mutableListOf<MatchOdd>()
-
-//    var data = listOf<MatchOdd>()
-//        set(value) {
-//            field = value
-//            notifyDataSetChanged()
-//        }
-
-//    fun updateList(newList: List<MatchOdd>) {
-//        val diffCallback = ItemDiffCallback(oldItem = itemData, newItem= newList)
-//        val diffResult = DiffUtil.calculateDiff(diffCallback)
-//        itemData.clear()
-//        itemData.addAll(newList)
-//        diffResult.dispatchUpdatesTo(this)
-//    }
+    var data = listOf<MatchOdd>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     var oddsType: OddsType = OddsType.EU
         set(value) {
@@ -80,7 +67,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
     private val oddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
             override fun refreshOddButton(odd: Odd) {
-                notifyItemChanged(currentList.indexOf(currentList.find { matchOdd ->
+                notifyItemChanged(data.indexOf(data.find { matchOdd ->
                     matchOdd.oddsMap.toList()
                         .find { map -> map.second?.find { it == odd } != null } != null
                 }))
@@ -93,130 +80,32 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
         return ViewHolderHdpOu.from(parent, oddStateRefreshListener)
     }
 
-
-    override fun onBindViewHolder(
-        holder: RecyclerView.ViewHolder,
-        position: Int,
-        payloads: List<Any>
-    ) {
-        if (payloads.isEmpty()) {
-            super.onBindViewHolder(holder, position, payloads)
-        } else {
-            for (payload in payloads) {
-                val item = getItem(position)
-                val matchInfoList = currentList.mapNotNull {
-                    it.matchInfo
-                }
-                val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
-                when (payload) {
-                    PAYLOAD_SCORE_CHANGE -> {
-                        (holder as ViewHolderHdpOu).setupMatchInfo(
-                            item,
-                            matchType,
-                            matchInfoList,
-                            leagueOddListener
-                        )
-                        (holder as ViewHolderHdpOu).setupMatchTime(
-                            item,
-                            matchType,
-                            isTimerEnable,
-                            isTimerPause,
-                            leagueOddListener
-                        )
-                    }
-                    PAYLOAD_CLOCK_CHANGE -> {
-                        (holder as ViewHolderHdpOu).setupMatchTime(
-                            item,
-                            matchType,
-                            isTimerEnable,
-                            isTimerPause,
-                            leagueOddListener
-                        )
-                    }
-//                    PAYLOAD_ODDS_CHANGE -> {
-//                        (holder as ViewHolderHdpOu).setupOddsButton(item, oddsType, leagueOddListener)
-//                    }
-                }
-            }
-        }
-    }
-
-    //[Martin] 我知道寫得很醜 但是socket更新太頻繁 只能用判斷式來判斷部分刷新
-    //不要每次一有socket來 就重建整個View
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = currentList[position]
-        val matchInfoList = currentList.mapNotNull {
+        val item = data[position]
+        val matchInfoList = data.mapNotNull {
             it.matchInfo
         }
-        val viewHolder = holder as ViewHolderHdpOu
-        val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
 
-        if (!viewHolder.itemView.hasTransientState()) {
-            when (holder) {
-                is ViewHolderHdpOu -> {
-                    holder.stopTimer()
-                    holder.bind(
-                        matchType,
-                        item,
-                        leagueOddListener,
-                        isTimerEnable,
-                        oddsType,
-                        matchInfoList
-                    )
-                }
-            }
-        } else if (updateType == PAYLOAD_SCORE_CHANGE) {
-            viewHolder.setupMatchInfo(
-                item,
-                matchType,
-                matchInfoList,
-                leagueOddListener
-            )
-
-            viewHolder.setupMatchTime(item, matchType, isTimerEnable, isTimerPause, leagueOddListener)
-        } else if (updateType == PAYLOAD_CLOCK_CHANGE) {
-            viewHolder.setupMatchInfo(
-                item,
-                matchType,
-                matchInfoList,
-                leagueOddListener
-            )
-            viewHolder.setupMatchTime(item, matchType, isTimerEnable, isTimerPause, leagueOddListener)
-        } else if (updateType == PAYLOAD_ODDS_CHANGE) {
-            viewHolder.setupOddsButton(item, oddsType, leagueOddListener)
-            viewHolder.setupMatchTime(item, matchType, isTimerEnable, isTimerPause, leagueOddListener)
-        } else {
-            when (holder) {
-                is ViewHolderHdpOu -> {
-                    holder.stopTimer()
-                    holder.bind(
-                        matchType,
-                        item,
-                        leagueOddListener,
-                        isTimerEnable,
-                        oddsType,
-                        matchInfoList
-                    )
-                }
+        when (holder) {
+            is ViewHolderHdpOu -> {
+                holder.stopTimer()
+                holder.bind(
+                    matchType,
+                    item,
+                    leagueOddListener,
+                    isTimerEnable,
+                    oddsType,
+                    matchInfoList
+                )
             }
         }
     }
 
-    var updateType: String? = null
-    fun submitList(list: List<MatchOdd>?, updateType: String?) {
-        submitList(list)
-        this.updateType = updateType
-    }
-
-    override fun submitList(list: List<MatchOdd>?) {
-        super.submitList(if (list != null) ArrayList(list) else null)
-
-    }
-
+    override fun getItemCount(): Int = data.size
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
         super.onViewRecycled(holder)
-        updateType = null
+
         when (holder) {
             is ViewHolderTimer -> holder.stopTimer()
         }
@@ -243,12 +132,8 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
             setupMatchTime(item, matchType, isTimerEnable, isTimerPause, leagueOddListener)
 
             setupOddsButton(item, oddsType, leagueOddListener)
-            if(!itemView.hasTransientState()){
-                setupQuickCategory(item, oddsType, leagueOddListener)
-                if(item.matchInfo?.gameType != "FT"){
-                    itemView.setHasTransientState(true)
-                }
-            }
+
+            setupQuickCategory(item, oddsType, leagueOddListener)
         }
 
         private fun setUpVisibility(item: MatchOdd, matchType: MatchType) {
@@ -261,7 +146,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
 
         }
 
-        fun setupMatchInfo(
+        private fun setupMatchInfo(
             item: MatchOdd,
             matchType: MatchType,
             matchInfoList: List<MatchInfo>,
@@ -512,7 +397,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
             }
         }
 
-        fun setupMatchTime(
+        private fun setupMatchTime(
             item: MatchOdd,
             matchType: MatchType,
             isTimerEnable: Boolean,
@@ -524,8 +409,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
                     val socketValue = item.matchInfo.socketMatchStatus
 
                     if (needCountStatus(socketValue)) {
-                        //會閃
-                        //itemView.league_odd_match_time.visibility = View.VISIBLE
+                        itemView.league_odd_match_time.visibility = View.VISIBLE
                         listener = object : TimerListener {
                             override fun onTimerUpdate(timeMillis: Long) {
                                 if (timeMillis > 1000) {
@@ -539,7 +423,6 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
                             }
                         }
 
-
                         updateTimer(
                             isTimerEnable,
                             isTimerPause,
@@ -548,8 +431,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
                         )
 
                     } else {
-                        //會閃
-                        //itemView.league_odd_match_time.visibility = View.GONE
+                        itemView.league_odd_match_time.visibility = View.GONE
                     }
                 }
 
@@ -564,7 +446,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
                                 )
                             } else {
                                 if (item.matchInfo.hasRefreshed != true) { //避免持續重複刷新
-                                    leagueOddListener?.onRefresh(item.matchInfo.leagueId ?: "")
+                                    leagueOddListener?.onRefresh(item.matchInfo.id)
                                     item.matchInfo.hasRefreshed = true
                                 }
                             }
@@ -626,7 +508,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
                                     } else {
                                         item.matchInfo?.id?.let {
                                             if (item.matchInfo.hasRefreshed != true) { //避免持續重複刷新
-                                                leagueOddListener?.onRefresh(item.matchInfo.leagueId ?: "")
+                                                leagueOddListener?.onRefresh(item.matchInfo.id)
                                                 item.matchInfo.hasRefreshed = true
                                             }
                                         }
@@ -719,25 +601,11 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
                 matchType == MatchType.IN_PLAY || System.currentTimeMillis() > item.matchInfo?.startTime ?: 0 -> {
                     if (item.matchInfo?.statusName18n != null) {
                         itemView.league_odd_match_status.visibility = View.VISIBLE
-                        val params: LinearLayout.LayoutParams =
-                            LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.WRAP_CONTENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT
-                            )
-                        params.setMargins(0, 0, 6, 0)
-                        itemView.league_odd_match_status.layoutParams = params
-//                        (itemView.league_odd_match_status.layoutParams as LinearLayout.LayoutParams).marginEnd =
-//                            6
+                        (itemView.league_odd_match_status.layoutParams as LinearLayout.LayoutParams).marginEnd =
+                            6
                     } else {
-                        val params: LinearLayout.LayoutParams =
-                            LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.WRAP_CONTENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT
-                            )
-                        params.setMargins(0, 0, 0, 0)
-                        itemView.league_odd_match_status.layoutParams = params
-//                        (itemView.league_odd_match_status.layoutParams as LinearLayout.LayoutParams).marginEnd =
-//                            0
+                        (itemView.league_odd_match_status.layoutParams as LinearLayout.LayoutParams).marginEnd =
+                            0
                     }
                 }
 
@@ -762,7 +630,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
             }
         }
 
-        fun setupOddsButton(
+        private fun setupOddsButton(
             item: MatchOdd,
             oddsType: OddsType,
             leagueOddListener: LeagueOddListener?
@@ -819,7 +687,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
                 visibility = if (item.oddsMap.size > 2) {
                     View.VISIBLE
                 } else {
-                    View.VISIBLE
+                    View.GONE
                 }
 
                 setupWithViewPager2(itemView.league_odd_btn_pager_main)
@@ -832,6 +700,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
             oddsType: OddsType,
             leagueOddListener: LeagueOddListener?
         ) {
+
             itemView.league_odd_quick_cate_border.visibility =
                 if (item.quickPlayCateList.isNullOrEmpty()) {
                     View.GONE
@@ -839,15 +708,10 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
                     View.VISIBLE
                 }
 
-            itemView.scroll_view_rg.isVisible = !item.quickPlayCateList.isNullOrEmpty()
-
             itemView.league_odd_quick_cate_divider.visibility =
                 if (item.quickPlayCateList.isNullOrEmpty()) {
-                    View.INVISIBLE
+                    View.GONE
                 } else {
-                    if(item.matchInfo?.gameType == "FT"){
-                        itemView.setHasTransientState(true)
-                    }
                     View.VISIBLE
                 }
 
@@ -862,6 +726,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
                     leagueOddListener?.onClickQuickCateClose()
                 }
             }
+
             itemView.league_odd_quick_cate_tabs.apply {
                 visibility = if (item.quickPlayCateList.isNullOrEmpty()) {
                     View.GONE
@@ -873,6 +738,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
                     val inflater =
                         context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
                     val rb = inflater.inflate(R.layout.custom_radio_button, null) as RadioButton
+
                     addView(rb.apply {
                         text = it.nameMap?.get(LanguageManager.getSelectLanguage(context).key)
                             ?: it.name
@@ -1196,14 +1062,11 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
             }, 1000L, 1000L)
         }
 
-
         fun stopTimer() {
             timer?.cancel()
             timer = null
         }
     }
-
-    //override fun getItemCount() = itemData.size
 }
 
 class LeagueOddListener(
@@ -1235,26 +1098,4 @@ class LeagueOddListener(
     fun onClickStatistics(matchId: String?) = clickListenerStatistics(matchId)
 
     fun onRefresh(leagueId: String) = refreshListener(leagueId)
-}
-
-class ItemDiffCallback : DiffUtil.ItemCallback<MatchOdd>() {
-
-    override fun getChangePayload(oldItem: MatchOdd, newItem: MatchOdd): Any? {
-        return if (oldItem.matchInfo?.homeTotalScore != newItem.matchInfo?.homeTotalScore) PAYLOAD_SCORE_CHANGE
-        else if (oldItem.matchInfo?.awayTotalScore != newItem.matchInfo?.awayTotalScore) PAYLOAD_SCORE_CHANGE
-        else if (oldItem.matchInfo?.awayPoints != newItem.matchInfo?.awayPoints) PAYLOAD_SCORE_CHANGE
-        else if (oldItem.matchInfo?.homePoints != newItem.matchInfo?.homePoints) PAYLOAD_SCORE_CHANGE
-        else if (oldItem.matchInfo?.awayScore != newItem.matchInfo?.awayScore) PAYLOAD_SCORE_CHANGE
-        else if (oldItem.matchInfo?.homeScore != newItem.matchInfo?.homeScore) PAYLOAD_SCORE_CHANGE
-        else if (oldItem.leagueTime != newItem.leagueTime) PAYLOAD_CLOCK_CHANGE
-        else null
-    }
-
-    override fun areItemsTheSame(oldItem: MatchOdd, newItem: MatchOdd): Boolean {
-        return oldItem.matchInfo?.id == newItem.matchInfo?.id
-    }
-
-    override fun areContentsTheSame(oldItem: MatchOdd, newItem: MatchOdd): Boolean {
-        return false
-    }
 }
