@@ -65,7 +65,7 @@
                         android:gravity="center"
                         android:includeFontPadding="false"
                         android:textColor="@color/colorGrayText"
-                        android:textSize="@dimen/textSize14sp"
+                        android:textSize="@dimen/textSize15sp"
                         android:textStyle="bold"
                         tools:text="Label" />
 
