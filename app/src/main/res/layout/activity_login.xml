@@ -131,6 +131,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:iconSignifier="@drawable/ic_login_verify"
+                    app:hideSelectedTitle="true"
                     app:singleText="@string/verification_code">
 
                     <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
