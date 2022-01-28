@@ -1,7 +1,13 @@
 package org.cxct.sportlottery.ui.selflimit
 
+import android.graphics.Typeface
+import android.graphics.fonts.Font
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -9,6 +15,7 @@ import androidx.navigation.findNavController
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_feedback_main.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
+import org.cxct.sportlottery.MultiLanguagesApplication.Companion.getInstance
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivitySelfLimitBinding
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
@@ -47,6 +54,7 @@ class SelfLimitActivity : BaseSocketActivity<SelfLimitViewModel>(SelfLimitViewMo
             indicatorParams.width = indicatorWidth
             binding.indicator.layoutParams = indicatorParams
         }
+
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 val params =
@@ -58,9 +66,27 @@ class SelfLimitActivity : BaseSocketActivity<SelfLimitViewModel>(SelfLimitViewMo
                     params.leftMargin = binding.tabLayout.width / 2
                     binding.indicator.layoutParams = params
                 }
+
+                var textView:TextView? = null
+
+                textView = tab.customView as TextView?
+
+                textView?.setTypeface(
+                    null,
+                    Typeface.BOLD
+                )
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+                var textView:TextView? = null
+
+                textView = tab.customView as TextView?
+
+                textView?.setTypeface(
+                    null,
+                    Typeface.NORMAL
+                )
+            }
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
         if (!::adapter.isInitialized){

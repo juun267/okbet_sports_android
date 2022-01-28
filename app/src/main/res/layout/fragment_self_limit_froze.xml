@@ -126,12 +126,13 @@
                 android:layout_marginTop="@dimen/margin_6"
                 android:layout_marginBottom="@dimen/margin_6"
                 android:layout_marginRight="@dimen/margin_14"
-                android:background="@drawable/bg_rectangle_blue_4dp"
+                android:enabled="false"
+                android:background="@drawable/enable_blue_gray_radius_4_button"
                 android:text="@string/btn_confirm"
                 android:gravity="center"
                 android:textStyle="bold"
                 android:textSize="@dimen/textSize12sp"
-                android:textColor="@color/colorBlue"
+                android:textColor="@color/enable_blue_light_gray"
                 />
 
 

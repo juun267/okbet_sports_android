@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.ui.selflimit
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +20,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.countTextAmount
@@ -61,7 +64,14 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        initEditText()
         initDataLive()
+    }
+
+    private fun initEditText() {
+        binding.etFrozeDay.afterTextChanged {
+            binding.btnConfirm.isEnabled = it.isNotBlank() && it.toInt() != 0
+        }
     }
 
     private fun initView() {

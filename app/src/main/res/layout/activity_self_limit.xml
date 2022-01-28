@@ -22,17 +22,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/app_bar_layout">
 
-        <FrameLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/layoutTab"
-            android:clipToPadding="false">
+            android:clipToPadding="false"
+            app:cardCornerRadius="@dimen/margin_4"
+            app:cardElevation="0dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_32"
+                android:background="@color/colorBlueLight"/>
 
             <View
                 android:id="@+id/indicator"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/margin_32"
-                android:background="@drawable/frame_white_4dp"/>
+                android:background="@color/colorWhite"/>
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabLayout"
@@ -45,7 +52,7 @@
                 app:tabTextColor="@color/colorWhite"
                 app:tabIndicatorColor="@null"
                 app:tabRippleColor="@null"/>
-        </FrameLayout>
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 
