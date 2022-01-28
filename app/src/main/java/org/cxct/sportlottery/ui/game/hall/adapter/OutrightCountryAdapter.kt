@@ -3,14 +3,16 @@ package org.cxct.sportlottery.ui.game.hall.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_country.view.*
+import kotlinx.android.synthetic.main.itemview_country.view.country_border
+import kotlinx.android.synthetic.main.itemview_country.view.iv_country
+import kotlinx.android.synthetic.main.itemview_country.view.view_space_top
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.outright.season.Row
 import org.cxct.sportlottery.network.outright.season.Season
-import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.util.SvgUtil
 
@@ -22,14 +24,12 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var data = listOf<Row>()
         set(value) {
             field = value
-
             notifyDataSetChanged()
         }
 
     var datePin = listOf<Season>()
         set(value) {
             field = value
-
             notifyDataSetChanged()
         }
 
@@ -50,15 +50,6 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     this.itemView.league_list.apply {
                         this.layoutManager =
                             SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-
-//                        this.addItemDecoration(
-//                            DividerItemDecorator(
-//                                ContextCompat.getDrawable(
-//                                    context,
-//                                    R.drawable.divider_color_silverlight_1dp
-//                                )
-//                            )
-//                        )
                     }
                 }
             }
@@ -68,15 +59,6 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     this.itemView.league_list.apply {
                         this.layoutManager =
                             SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-
-//                        this.addItemDecoration(
-//                            DividerItemDecorator(
-//                                ContextCompat.getDrawable(
-//                                    context,
-//                                    R.drawable.divider_color_white8
-//                                )
-//                            )
-//                        )
                     }
                 }
             }
@@ -91,6 +73,7 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         when (holder) {
             is ItemViewHolderPin -> {
                 holder.bind(datePin, outrightCountryLeagueListener)
+//                holder.itemView.view_space_top.isVisible = position == 0
             }
             is ItemViewHolder -> {
                 val item = data[position - 1]
@@ -105,8 +88,7 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         data.size + 1
     }
 
-    class ItemViewHolderPin private constructor(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
+    class ItemViewHolderPin private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val countryLeagueAdapter by lazy {
             OutrightCountryLeagueAdapter()

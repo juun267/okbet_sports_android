@@ -871,11 +871,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             outrightCountryAdapter.data = it
         }
 
-        viewModel.outrightCountryListSearchResult.observe(this.viewLifecycleOwner) {
-            outrightCountryAdapter.data = it
-        }
-
-
         //KK要求，當球類沒有資料時，自動選取第一個有賽事的球種
         viewModel.isNoHistory.observe(this.viewLifecycleOwner) {
 
