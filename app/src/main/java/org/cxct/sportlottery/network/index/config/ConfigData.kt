@@ -85,5 +85,6 @@ data class ConfigData(
     val referUrl: String?,
     val presetBetAmount: List<Int>?, //前台预设下注金额配置
     val systemCurrencySign: String?,
-    val systemCurrency: String? = "PHP"
+    val systemCurrency: String? = "PHP",
+    val twoFactorVerified: String? = "0" // (新增银行卡/虚拟币), 更新银行卡密码, 更新用户密码 手机验证开关 (1: 开启, 0:关闭， 默认是null:关闭)
 )
