@@ -44,6 +44,7 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_LEAGUE_LIST
 import org.cxct.sportlottery.network.Constants.QUERY_FIRST_ORDERS
 import org.cxct.sportlottery.network.Constants.QUERY_SECOND_ORDERS
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
+import org.cxct.sportlottery.network.Constants.SEND_TWO_FACTOR
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.network.Constants.SPORT_QUERY
 import org.cxct.sportlottery.network.Constants.THIRD_ALL_TRANSFER_OUT
@@ -78,6 +79,7 @@ import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.network.bet.settledDetailList.BetSettledDetailListResult
 import org.cxct.sportlottery.network.bet.settledList.BetSettledListResult
+import org.cxct.sportlottery.network.common.SendSecurityCodeResult
 import org.cxct.sportlottery.network.feedback.FeedBackBaseResult
 import org.cxct.sportlottery.network.feedback.FeedbackListResult
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
@@ -337,6 +339,10 @@ object ErrorUtils {
                     (url.contains(BANK_ADD)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return BankAddResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(SEND_TWO_FACTOR)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return SendSecurityCodeResult(it.code, it.msg, it.success) as T
                     }
                     (url.contains(BANK_DELETE)) -> {
                         @Suppress("UNCHECKED_CAST")
