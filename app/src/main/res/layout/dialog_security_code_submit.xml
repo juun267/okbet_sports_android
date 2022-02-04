@@ -21,7 +21,7 @@
             android:background="@color/colorWhite"
             android:gravity="center"
             android:minHeight="44dp"
-            android:text="@string/title_pay_msg"
+            android:text="@string/dialog_security_title"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/textSize16sp"
             android:textStyle="bold" />
@@ -34,72 +34,82 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="14dp"
+            android:layout_marginEnd="20dp"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/title_pay_way"
+                android:text="@string/dialog_security_hint"
                 android:textColor="@color/colorGrayDark"
                 android:textSize="@dimen/textSize14sp" />
 
-            <TextView
-                android:id="@+id/txv_pay_way"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="5dp"
-                android:textColor="@color/colorBlackLight"
-                android:textSize="@dimen/textSize14sp"
-                tools:text="在线支付" />
-
         </LinearLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/block_security_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="8dp"
-            android:orientation="horizontal">
+            android:layout_marginEnd="20dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_phone">
 
-            <TextView
+            <org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
+                android:id="@+id/et_security_code"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                app:iconSignifier="@drawable/ic_login_verify"
+                app:singleText="@string/verification_code"
+                app:hideSelectedTitle="true"
+                app:layout_constraintEnd_toStartOf="@+id/ll_get_security"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
+                    android:id="@+id/edt_security_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textSize="@dimen/textSize14sp" />
+
+            </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
+
+            <LinearLayout
+                android:id="@+id/ll_get_security"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/title_pay_money"
-                android:textColor="@color/colorGrayDark"
-                android:textSize="@dimen/textSize14sp" />
+                android:layout_height="40dp"
+                android:background="@color/transparent"
+                android:gravity="center_vertical"
+                android:minWidth="80dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="@+id/et_security_code"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/et_security_code">
 
-            <TextView
-                android:id="@+id/txv_pay_money"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="5dp"
-                android:textColor="@color/colorBlackLight"
-                android:textSize="@dimen/textSize14sp"
-                tools:text="100 RMB" />
+                <Button
+                    android:id="@+id/btn_get_security"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/btn_send_sms"
+                    android:minHeight="32dp"
+                    android:text="@string/get_security_code"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/textSize14sp" />
 
-        </LinearLayout>
+            </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="5dp"
-            android:text="@string/hint_pay1"
-            android:textColor="@color/colorGray"
-            android:textSize="@dimen/textSize12sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginEnd="5dp"
-            android:text="@string/hint_pay2"
-            android:textColor="@color/colorGray"
-            android:textSize="@dimen/textSize12sp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
             android:layout_width="match_parent"
@@ -120,7 +130,7 @@
                 android:layout_height="44dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/btn_look_for"
+                android:text="@string/btn_cancel"
                 android:textColor="@color/colorBlue"
                 android:textSize="@dimen/textSize14sp"
                 android:textStyle="bold" />
@@ -136,7 +146,7 @@
                 android:layout_height="44dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/btn_service"
+                android:text="@string/submit"
                 android:textColor="@color/colorBlue"
                 android:textSize="@dimen/textSize14sp"
                 android:textStyle="bold" />
