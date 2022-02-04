@@ -626,6 +626,10 @@ public class TextFieldBoxes extends FrameLayout {
                 inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                 this.editText.clearFocus();
             }
+
+            if(hideSelectedTitle){
+                floatingSingle.setVisibility(VISIBLE);
+            }
         }
         this.activated = false;
     }
