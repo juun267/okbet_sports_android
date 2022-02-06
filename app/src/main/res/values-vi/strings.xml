@@ -938,17 +938,18 @@
     <string name="identity_card">Identity Card</string>
     <string name="passport">Passport</string>
     <string name="face_scan_result">kết quả quét khuôn mặt</string>
-    <string name="identity_id">ID hàomǎ</string>
+    <string name="identity_id">số ID</string>
     <string name="identity_last_name">Họ</string>
     <string name="identity_first_name">Tên</string>
     <string name="identity_other_name">Bí danh</string>
-    <string name="identity_country">Dân tộc</string>
-    <string name="identity_birth">Ngày sinh nhật</string>
+    <string name="identity_country">quốc gia / khu vực</string>
+    <string name="identity_birth">Ngày sinh</string>
     <string name="identity_marital_status">Tình trạng hôn nhân</string>
     <string name="identity_sex">Giới tính</string>
     <string name="identity_work">Công việc</string>
     <string name="not_verify">(Chưa được xác minh)</string>
     <string name="verified">(Xác minh)</string>
+    <string name="select_id_type">Chọn loại ID</string>
     <string name="verify_failed_please_retry">Lỗi xảy ra trong quá trình xác thực. Xin thử lại lần nữa</string>
     <!--自我禁制-->
     <string name="selfLimit">Tự loại trừ</string>
@@ -992,5 +993,6 @@
     <string name="front_side_result">Kết quả phía trước</string>
     <string name="reverse_side_result">Kết quả ngược lại</string>
     <string name="btm_navigation_language">Việt Nam</string>
+    <string name="expire_date">Thời gian hết hạn chứng chỉ</string>
 
 </resources>
