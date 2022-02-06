@@ -115,8 +115,8 @@
                 android:layout_marginLeft="@dimen/margin_8"
                 android:layout_weight="1"
                 android:backgroundTint="@android:color/white"
-                android:inputType="number"
                 android:hint="@string/selfLimit_per_bet_limit_input_highest"
+                android:inputType="number"
                 android:textSize="@dimen/textSize12sp" />
 
             <TextView
@@ -126,10 +126,11 @@
                 android:layout_marginTop="@dimen/margin_6"
                 android:layout_marginRight="@dimen/margin_14"
                 android:layout_marginBottom="@dimen/margin_6"
-                android:background="@drawable/bg_rectangle_blue_4dp"
+                android:background="@drawable/enable_blue_gray_radius_4_button"
+                android:enabled="false"
                 android:gravity="center"
                 android:text="@string/btn_confirm"
-                android:textColor="@color/colorBlue"
+                android:textColor="@color/enable_blue_light_gray"
                 android:textSize="@dimen/textSize12sp"
                 android:textStyle="bold" />
 

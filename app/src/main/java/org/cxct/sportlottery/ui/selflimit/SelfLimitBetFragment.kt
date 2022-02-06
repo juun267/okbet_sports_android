@@ -19,6 +19,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.util.countTextAmount
 
@@ -61,7 +62,14 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        initEditText()
         initDataLive()
+    }
+
+    private fun initEditText() {
+        binding.etMount.afterTextChanged {
+            binding.btnConfirm.isEnabled = it.isNotBlank() && it.toInt() != 0
+        }
     }
 
     private fun initView() {
@@ -76,7 +84,7 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
     }
 
     private fun submit() {
-        val dialog = CustomAlertDialog(requireContext()).apply {
+        CustomAlertDialog(requireContext()).apply {
             setTitle(getString(R.string.selfLimit_confirm))
             setMessage(getString(R.string.selfLimit_confirm_content))
             setPositiveButtonText(getString(R.string.btn_confirm))
@@ -85,9 +93,9 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
                 viewModel.setPerBetLimit(binding.etMount.text.toString().toInt())
                 dismiss()
             })
-            setNegativeClickListener({
+            setNegativeClickListener {
                 dismiss()
-            })
+            }
             setCanceledOnTouchOutside(false)
             setCancelable(false) //不能用系統 BACK 按鈕關閉 dialog
             show()

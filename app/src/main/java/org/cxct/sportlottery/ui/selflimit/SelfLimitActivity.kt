@@ -1,21 +1,15 @@
 package org.cxct.sportlottery.ui.selflimit
 
 import android.graphics.Typeface
-import android.graphics.fonts.Font
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.navigation.findNavController
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_feedback_main.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
-import org.cxct.sportlottery.MultiLanguagesApplication.Companion.getInstance
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivitySelfLimitBinding
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
@@ -45,8 +39,14 @@ class SelfLimitActivity : BaseSocketActivity<SelfLimitViewModel>(SelfLimitViewMo
     }
 
     private fun initView(){
-        binding.tabLayout.addTab(binding.tabLayout.newTab().setText(R.string.selfLimit_froze))
-        binding.tabLayout.addTab(binding.tabLayout.newTab().setText(R.string.selfLimit_per_bet_limit))
+        val viewFirst = this.layoutInflater.inflate(R.layout.tab_layout_text_view, null)
+        val textView = viewFirst.findViewById<TextView>(R.id.tv_tab_item)
+        textView.text = getString(R.string.selfLimit_froze)
+
+        val viewSecond = this.layoutInflater.inflate(R.layout.tab_layout_text_view, null)
+        val textViewSecond = viewSecond.findViewById<TextView>(R.id.tv_tab_item)
+        textViewSecond.text = getString(R.string.selfLimit_per_bet_limit)
+
         binding.tabLayout.post {
             indicatorWidth = binding.tabLayout.width / 2
             val indicatorParams =
@@ -67,26 +67,17 @@ class SelfLimitActivity : BaseSocketActivity<SelfLimitViewModel>(SelfLimitViewMo
                     binding.indicator.layoutParams = params
                 }
 
-                var textView:TextView? = null
-
-                textView = tab.customView as TextView?
-
-                textView?.setTypeface(
-                    null,
-                    Typeface.BOLD
-                )
+                val tabTextView: TextView? = tab.customView?.findViewById(R.id.tv_tab_item)
+                tabTextView?.setTextColor(resources.getColor(R.color.colorBlue))
+                tabTextView?.setTypeface(null, Typeface.BOLD)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {
-                var textView:TextView? = null
-
-                textView = tab.customView as TextView?
-
-                textView?.setTypeface(
-                    null,
-                    Typeface.NORMAL
-                )
+                val tabTextView: TextView? = tab.customView?.findViewById(R.id.tv_tab_item)
+                tabTextView?.setTextColor(resources.getColor(R.color.colorWhite))
+                tabTextView?.setTypeface(null, Typeface.NORMAL)
             }
+
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
         if (!::adapter.isInitialized){
@@ -96,21 +87,28 @@ class SelfLimitActivity : BaseSocketActivity<SelfLimitViewModel>(SelfLimitViewMo
         }
         binding.tabLayout.setupWithViewPager(binding.vpSelfLimit)
         binding.vpSelfLimit.adapter = adapter
+
+        binding.tabLayout.getTabAt(0)?.customView = viewFirst
+        binding.tabLayout.getTabAt(1)?.customView = viewSecond
+
+        //todo 暫時用點擊事件解決tab初始化問題 from Jeff
+        binding.tabLayout.getTabAt(1)?.select()
+        binding.tabLayout.getTabAt(0)?.select()
     }
 
     private fun initLiveData() {
-        viewModel.isLoading.observe(this,  {
+        viewModel.isLoading.observe(this) {
             if (it) loading()
             else hideLoading()
-        })
+        }
 
-        viewModel.isShowToolbar.observe(this, {
+        viewModel.isShowToolbar.observe(this) {
             ll_tab.visibility = it
-        })
+        }
 
-        viewModel.toolbarName.observe(this, {
+        viewModel.toolbarName.observe(this) {
             tv_toolbar_title.text = it
-        })
+        }
     }
 
 

@@ -205,7 +205,7 @@ android {
 
 ext {
     version_retrofit = "2.9.0"
-    version_room = "2.2.6"
+    version_room = "2.4.0-alpha03"
 }
 
 dependencies {
