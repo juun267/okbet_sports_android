@@ -86,14 +86,17 @@
         app:cardElevation="0dp">
 
         <LinearLayout
+            android:id="@+id/llSelfLimit"
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_40"
             android:layout_gravity="center_vertical"
+            android:background="@drawable/selector_selflimit_radius_4"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/margin_10"
                 android:text="@string/selfLimit_per_bet_limit_highest"
                 android:textColor="@color/colorBlackLight"
@@ -103,6 +106,7 @@
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/margin_36"
                 android:layout_marginTop="@dimen/margin_10"
                 android:layout_marginBottom="@dimen/margin_10"
@@ -112,24 +116,27 @@
                 android:id="@+id/etMount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/margin_8"
                 android:layout_weight="1"
                 android:backgroundTint="@android:color/white"
-                android:inputType="number"
                 android:hint="@string/selfLimit_per_bet_limit_input_highest"
+                android:inputType="number"
                 android:textSize="@dimen/textSize12sp" />
 
             <TextView
                 android:id="@+id/btnConfirm"
                 android:layout_width="76dp"
                 android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
                 android:layout_marginTop="@dimen/margin_6"
                 android:layout_marginRight="@dimen/margin_14"
                 android:layout_marginBottom="@dimen/margin_6"
-                android:background="@drawable/bg_rectangle_blue_4dp"
+                android:background="@drawable/enable_blue_gray_radius_4_button"
+                android:enabled="false"
                 android:gravity="center"
                 android:text="@string/btn_confirm"
-                android:textColor="@color/colorBlue"
+                android:textColor="@color/enable_blue_light_gray"
                 android:textSize="@dimen/textSize12sp"
                 android:textStyle="bold" />
 
@@ -137,6 +144,17 @@
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tvError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:text="@string/selfLimit_error"
+        android:textColor="@color/colorRed"
+        android:textSize="@dimen/textSize12sp"/>
+
 
     <TextView
         android:id="@+id/tvPerBetLimit"

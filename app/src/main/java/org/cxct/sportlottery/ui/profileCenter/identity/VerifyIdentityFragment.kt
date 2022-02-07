@@ -60,6 +60,7 @@ class VerifyIdentityFragment :
         initView()
         initOnClick()
         initObserve()
+        (activity as VerifyIdentityActivity).setToolBarTitle()
     }
 
     private fun initView() {

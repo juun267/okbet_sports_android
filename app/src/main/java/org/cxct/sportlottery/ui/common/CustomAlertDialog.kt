@@ -65,6 +65,10 @@ class CustomAlertDialog(context: Context) : AlertDialog(context) {
         } else
             btn_negative.text = mNegativeText
 
+        if(mPositiveText == null || mNegativeText == null){
+            view_line.visibility = View.GONE
+        }
+
         if(mPositiveText == null && mNegativeText == null){
             block_bottom_bar.visibility = View.GONE
         }

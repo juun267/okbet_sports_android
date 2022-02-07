@@ -40,39 +40,39 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_14"
-                android:layout_marginRight="@dimen/margin_14"
                 android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginRight="@dimen/margin_14"
                 android:layout_marginBottom="@dimen/margin_10"
                 android:text="@string/selfLimit_froze_content"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp" />
-            
+
             <LinearLayout
+                android:id="@+id/llImportant"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_40"
-                android:id="@+id/llImportant"
                 android:layout_marginLeft="@dimen/margin_14"
-                android:layout_marginRight="@dimen/margin_14"
                 android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginRight="@dimen/margin_14"
                 android:layout_marginBottom="@dimen/margin_15"
-                android:gravity="center_vertical"
-                android:background="@drawable/bg_rectangle_white_4dp">
+                android:background="@drawable/bg_rectangle_white_4dp"
+                android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_14"
+                    android:layout_weight="1"
                     android:text="@string/selfLimit_impotent"
                     android:textColor="@color/colorBlackLight"
-                    android:layout_weight="1"
                     android:textSize="@dimen/textSize13sp"
-                    android:layout_marginLeft="@dimen/margin_14"
                     android:textStyle="bold" />
 
                 <ImageView
                     android:layout_width="@dimen/margin_16"
                     android:layout_height="@dimen/margin_16"
-                    android:src="@drawable/ic_blue_info"
-                    android:layout_marginRight="@dimen/margin_14" />
+                    android:layout_marginRight="@dimen/margin_14"
+                    android:src="@drawable/ic_blue_info" />
             </LinearLayout>
         </LinearLayout>
 
@@ -86,14 +86,17 @@
         app:cardElevation="0dp">
 
         <LinearLayout
+            android:id="@+id/llSelfLimit"
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_40"
             android:layout_gravity="center_vertical"
+            android:background="@drawable/selector_selflimit_radius_4"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/margin_10"
                 android:text="@string/selfLimit_froze_days"
                 android:textColor="@color/colorBlackLight"
@@ -103,40 +106,54 @@
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/margin_36"
-                android:background="@color/colorWhite6"
                 android:layout_marginTop="@dimen/margin_10"
-                android:layout_marginBottom="@dimen/margin_10"/>
+                android:layout_marginBottom="@dimen/margin_10"
+                android:background="@color/colorWhite6" />
 
             <EditText
+                android:id="@+id/etFrozeDay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:id="@+id/etFrozeDay"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin_8"
                 android:layout_weight="1"
                 android:backgroundTint="@android:color/white"
                 android:hint="@string/selfLimit_froze_input_days"
-                android:textSize="@dimen/textSize12sp"
-                android:layout_marginLeft="@dimen/margin_8" />
+                android:inputType="number"
+                android:maxLength="8"
+                android:textSize="@dimen/textSize12sp" />
 
             <TextView
-                android:layout_width="76dp"
                 android:id="@+id/btnConfirm"
+                android:layout_width="76dp"
                 android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
                 android:layout_marginTop="@dimen/margin_6"
-                android:layout_marginBottom="@dimen/margin_6"
                 android:layout_marginRight="@dimen/margin_14"
-                android:background="@drawable/bg_rectangle_blue_4dp"
-                android:text="@string/btn_confirm"
+                android:layout_marginBottom="@dimen/margin_6"
+                android:background="@drawable/enable_blue_gray_radius_4_button"
+                android:enabled="false"
                 android:gravity="center"
-                android:textStyle="bold"
+                android:text="@string/btn_confirm"
+                android:textColor="@color/enable_blue_light_gray"
                 android:textSize="@dimen/textSize12sp"
-                android:textColor="@color/colorBlue"
-                />
+                android:textStyle="bold" />
 
 
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tvError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:text="@string/selfLimit_error"
+        android:textColor="@color/colorRed"
+        android:textSize="@dimen/textSize12sp"
+        android:visibility="gone" />
 
 </LinearLayout>
