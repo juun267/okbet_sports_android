@@ -96,10 +96,10 @@
     <string name="send_timer">Sent</string>
     <string name="get_valid_code_fail_point">Verification failed， please try again！</string>
     <string name="desc_agreement">I\'m of legal age and totally agree</string>
-    <string name="get_security_code">获取验证码</string><!--TODO Bill 補翻譯-->
-    <string name="dialog_security_hint">欢迎再次回到游戏，为确保账号使用的安全性，请完成手机验证</string><!--TODO Bill 補翻譯-->
+    <string name="get_security_code">Send code</string>
+    <string name="dialog_security_hint">Welcome back to game. Please complete verification for account security.</string>
     <string name="dialog_security_title">输入验证码</string><!--TODO Bill 補翻譯-->
-    <string name="dialog_security_error">验证码输入错误</string><!--TODO Bill 補翻譯-->
+    <string name="dialog_security_error">You have entered a wrong verification code.</string>
     <string name="hint_security_code">Verify Code</string>
     <string name="btn_agreement">Account Opening Agreement</string>
     <string name="have_account">Already have an account？</string>
