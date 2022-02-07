@@ -35,10 +35,12 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
     override fun onClick(v: View?) {
         when (v) {
             binding.btnSubmit -> {
-                val deviceId = Settings.Secure.getString(
-                    applicationContext.contentResolver, Settings.Secure.ANDROID_ID
-                )
-                viewModel.validateLoginDeviceSms(binding.eetVerificationCode.text.toString(),deviceId)
+                if(!checkInputData()){
+                    val deviceId = Settings.Secure.getString(
+                        applicationContext.contentResolver, Settings.Secure.ANDROID_ID
+                    )
+                    viewModel.validateLoginDeviceSms(binding.eetVerificationCode.text.toString(),deviceId)
+                }
             }
             binding.btnBack -> {
                 this@PhoneVerifyActivity.onBackPressed()
@@ -180,6 +182,10 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
             return !(event.x > left && event.x < right && event.y > top && event.y < bottom)
         }
         return true
+    }
+
+    private fun checkInputData(): Boolean {
+        return  binding.eetVerificationCode.text.isBlank()
     }
 
 
