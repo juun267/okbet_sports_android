@@ -20,6 +20,7 @@ import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.countTextAmount
 
 class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel::class) ,
@@ -72,7 +73,8 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
         }else{
             binding.tvPerBetLimit.text =  String.format(getString(R.string.selfLimit_per_bet_limit_user), viewModel.userInfo.value?.perBetLimit)+ sConfigData?.systemCurrency
         }
-        binding.tvLimit.text =  String.format(getString(R.string.selfLimit_per_bet_limit_user_limit), sConfigData?.perBetMinAmount,sConfigData?.perBetMaxAmount)
+        binding.tvLimit.text =  String.format(getString(R.string.selfLimit_per_bet_limit_user_limit),
+            TextUtil.formatMoney(sConfigData?.perBetMinAmount!!.toInt()) ,TextUtil.formatMoney(sConfigData?.perBetMaxAmount!!.toInt()))
     }
 
     private fun submit() {
