@@ -143,8 +143,8 @@ class Vp2GameTable4Adapter (
                 if (matchOdd.matchInfo?.id == matchStatusCO.matchId) {
                     matchOdd.matchInfo?.homeTotalScore = matchStatusCO.homeTotalScore
                     matchOdd.matchInfo?.awayTotalScore = matchStatusCO.awayTotalScore
-                    matchOdd.matchInfo?.homeScore = matchStatusCO.homeScore
-                    matchOdd.matchInfo?.awayScore = matchStatusCO.awayScore
+                    matchOdd.matchInfo?.homeScore = "${matchStatusCO.homeScore}"
+                    matchOdd.matchInfo?.awayScore = "${matchStatusCO.awayScore}"
                     matchOdd.matchInfo?.homePoints = matchStatusCO.homePoints
                     matchOdd.matchInfo?.awayPoints = matchStatusCO.awayPoints
                     matchOdd.matchInfo?.statusName18n = statusValue

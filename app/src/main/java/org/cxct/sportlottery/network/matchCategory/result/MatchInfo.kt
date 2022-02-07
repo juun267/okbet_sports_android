@@ -43,9 +43,9 @@ data class MatchInfo(
 
     override val gameType: String? = null
 
-    override var awayScore: Int? = null
+    override var awayScore: String? = null
 
-    override var homeScore: Int? = null
+    override var homeScore: String? = null
 
     override var statusName18n: String? = null
 
