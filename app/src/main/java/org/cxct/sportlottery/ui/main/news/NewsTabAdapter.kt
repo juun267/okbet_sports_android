@@ -32,6 +32,7 @@ class NewsTabAdapter(val context: Context?, private val mMessageList: List<Row>?
                 showTabEntity.add(tabEntity)
         }
 
+        showTabEntity.firstOrNull()?.isSelect = true
         showTabEntity
     }
 
@@ -66,6 +67,12 @@ class NewsTabAdapter(val context: Context?, private val mMessageList: List<Row>?
         }
     }
 
+    fun setSelect(position: Int){
+        mDataList.forEachIndexed{ index , data ->
+            data.isSelect = position == index
+        }
+    }
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(data: TabEntity) {
             itemView.apply {
@@ -74,6 +81,6 @@ class NewsTabAdapter(val context: Context?, private val mMessageList: List<Row>?
         }
     }
 
-    class TabEntity(val msgType: Long, val title: String?)
+    class TabEntity(val msgType: Long, val title: String?, var isSelect:Boolean = false)
 
 }

@@ -41,19 +41,25 @@ class NewsDialog(private val mMessageList: List<Row>?) : BaseDialog<MainViewMode
     }
 
     private fun setArrowBtn() {
-        if(mNewsTabAdapter.mDataList.size > 1){
+        if (mNewsTabAdapter.mDataList.size > 1) {
             btn_arrow_left.setOnClickListener {
-                val currentPosition =
-                    (rv_tab.getChildAt(0).layoutParams as RecyclerView.LayoutParams).bindingAdapterPosition
 
-                //TODO Bill 如果使用smoothScrollToPosition的方式 會滑動兩次導致公告內容跟標題對不上
-                when(currentPosition){
-                    0 -> rv_tab.smoothScrollToPosition(mNewsTabAdapter.itemCount - 1 )
-                    else -> rv_tab.smoothScrollToPosition(currentPosition - 1)
+                val currentPosition =
+                    mNewsTabAdapter.mDataList.indexOf(mNewsTabAdapter.mDataList.find { it.isSelect })
+
+                when (currentPosition) {
+                    0 -> {
+                        rv_tab.scrollToPosition(mNewsTabAdapter.itemCount - 1)
+                        mNewsTabAdapter.setSelect(mNewsTabAdapter.itemCount - 1)
+                    }
+                    else -> {
+                        rv_tab.scrollToPosition(currentPosition - 1)
+                        mNewsTabAdapter.setSelect(currentPosition - 1)
+                    }
                 }
 
-                val nextPosition = when(currentPosition){
-                    0  -> mNewsTabAdapter.itemCount - 1
+                val nextPosition = when (currentPosition) {
+                    0 -> mNewsTabAdapter.itemCount - 1
                     else -> currentPosition - 1
                 }
                 if (tabPosition != nextPosition) {
@@ -67,19 +73,21 @@ class NewsDialog(private val mMessageList: List<Row>?) : BaseDialog<MainViewMode
 
             btn_arrow_right.setOnClickListener {
                 val currentPosition =
-                    (rv_tab.getChildAt(1).layoutParams as RecyclerView.LayoutParams).bindingAdapterPosition
+                    mNewsTabAdapter.mDataList.indexOf(mNewsTabAdapter.mDataList.find { it.isSelect })
 
-                when(currentPosition){
-                    mNewsTabAdapter.itemCount - 1  -> {
-                        rv_tab.smoothScrollToPosition(0 )
+                when (currentPosition) {
+                    mNewsTabAdapter.itemCount - 1 -> {
+                        rv_tab.scrollToPosition(0)
+                        mNewsTabAdapter.setSelect(0)
                     }
                     else -> {
-                        rv_tab.smoothScrollToPosition(currentPosition + 1)
+                        rv_tab.scrollToPosition(currentPosition + 1)
+                        mNewsTabAdapter.setSelect(currentPosition + 1)
                     }
                 }
 
-                val nextPosition = when(currentPosition){
-                    mNewsTabAdapter.itemCount - 1  -> 0
+                val nextPosition = when (currentPosition) {
+                    mNewsTabAdapter.itemCount - 1 -> 0
                     else -> currentPosition + 1
                 }
                 if (tabPosition != nextPosition) {

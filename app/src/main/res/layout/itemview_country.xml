@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@color/colorWhite4"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/country_name"
@@ -57,11 +57,5 @@
             tools:listitem="@layout/itemview_country_league_v4" />
 
     </net.cachapa.expandablelayout.ExpandableLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorWhite6"
-        app:layout_constraintTop_toBottomOf="@id/country_border" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

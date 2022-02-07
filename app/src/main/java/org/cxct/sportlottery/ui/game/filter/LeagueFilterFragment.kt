@@ -71,9 +71,11 @@ class LeagueFilterFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     }
 
     private fun setupToolbar() {
-        game_toolbar_match_type.text = if (args.matchType == MatchType.AT_START) getString(R.string.home_tab_at_start_2) else getString(args.matchType.resId)
 
-        game_toolbar_sport_type.text = getString(args.gameType.string).toUpperCase(Locale.getDefault())
+//        根據2022/1/25需求先拔除，確定不要可刪
+//        game_toolbar_match_type.text = if (args.matchType == MatchType.AT_START) getString(R.string.home_tab_at_start_2) else getString(args.matchType.resId)
+
+        game_toolbar_sport_type.text = getString(args.gameType.string)
 
         game_toolbar_back.setOnClickListener {
             findNavController().navigateUp()
@@ -81,7 +83,7 @@ class LeagueFilterFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     }
 
     private fun initObserver() {
-        viewModel.leagueListResult.observe(this.viewLifecycleOwner, {
+        viewModel.leagueListResult.observe(this.viewLifecycleOwner) {
             hideLoading()
 
             it?.getContentIfNotHandled()?.let { leagueListResult ->
@@ -89,9 +91,9 @@ class LeagueFilterFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                     countryAdapter.data = leagueListResult.rows ?: listOf()
                 }
             }
-        })
+        }
 
-        viewModel.favorLeagueList.observe(this.viewLifecycleOwner, {
+        viewModel.favorLeagueList.observe(this.viewLifecycleOwner) {
             val leaguePinList = mutableListOf<League>()
 
             countryAdapter.data.forEach { row ->
@@ -109,9 +111,9 @@ class LeagueFilterFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
             countryAdapter.datePin = leaguePinList.sortedBy { league ->
                 it.indexOf(league.id)
             }
-        })
+        }
 
-        viewModel.leagueSelectedList.observe(this.viewLifecycleOwner, {
+        viewModel.leagueSelectedList.observe(this.viewLifecycleOwner) {
             countryAdapter.apply {
                 data.forEach { row ->
                     row.list.forEach { league ->
@@ -121,14 +123,14 @@ class LeagueFilterFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
 
                 notifyDataSetChanged()
             }
-        })
+        }
 
-        viewModel.leagueSubmitList.observe(this.viewLifecycleOwner, {
+        viewModel.leagueSubmitList.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { leagueList ->
                 viewModel.filterLeague(leagueList)
                 findNavController().navigateUp()
             }
-        })
+        }
     }
 
     override fun onDestroyView() {
