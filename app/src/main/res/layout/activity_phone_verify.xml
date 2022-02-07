@@ -47,23 +47,23 @@
                 android:id="@+id/view"
                 android:layout_width="6dp"
                 android:layout_height="26dp"
-                android:layout_marginTop="12dp"
                 android:background="@drawable/bg_login_title"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/tvVerifyTitle"
+                app:layout_constraintBottom_toBottomOf="@+id/tvVerifyTitle"/>
             <!-- 翻譯 -->
             <TextView
                 android:id="@+id/tvVerifyTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
+                android:layout_marginTop="@dimen/margin_12"
                 android:text="@string/login_phone_verify"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize30sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/view"
                 app:layout_constraintStart_toEndOf="@+id/view"
-                app:layout_constraintTop_toTopOf="@+id/view" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <!-- 翻譯 -->
             <TextView
@@ -117,8 +117,9 @@
 
                     <Button
                         android:id="@+id/btn_send_sms"
-                        android:layout_width="100dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="46dp"
+                        android:minWidth="100dp"
                         android:background="@drawable/btn_send_sms_rd8"
                         android:minHeight="46dp"
                         android:textAllCaps="false"
@@ -134,6 +135,7 @@
             <Button
                 android:id="@+id/btn_submit"
                 style="?android:attr/borderlessButtonStyle"
+                android:textAllCaps="false"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:layout_marginTop="32dp"

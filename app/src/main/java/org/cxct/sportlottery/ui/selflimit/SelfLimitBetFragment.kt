@@ -148,9 +148,9 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
                     setNegativeButtonText(null)
                     setPositiveButtonText(getString(R.string.btn_confirm))
                     setCancelable(false)
-                    setPositiveClickListener(View.OnClickListener {
-                        updateBetLimit(binding.etMount.text.toString())
+                    setPositiveClickListener(View.OnClickListener { updateBetLimit(binding.etMount.text.toString())
                         resetView()
+                        viewModel.getUserInfo()
                         dismiss()
                     })
                 }
@@ -158,6 +158,11 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
             }
 
         })
+
+        viewModel.userInfoResult.observe(viewLifecycleOwner, {
+            binding.tvPerBetLimit.text =  String.format(getString(R.string.selfLimit_per_bet_limit_user), TextUtil.formatMoney(viewModel.userInfo.value?.perBetLimit!!)+ sConfigData?.systemCurrency)
+        })
+
     }
 
     private fun updateBetLimit(text: String) {

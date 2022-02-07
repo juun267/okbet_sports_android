@@ -980,7 +980,7 @@
     <!--自我禁制-->
 
     <!--登入手機驗證-->
-    <string name="login_phone_verify">Vui lòng nhập mã xác nhận.</string>
+    <string name="login_phone_verify">Nhập mã xác nhận.</string>
     <string name="login_phone_verify_content">Chào mừng bạn trở lại trò chơi. Vui lòng hoàn tất xác minh để bảo mật tài khoản.</string>
     <string name="login_phone_verify_get_code">Gửi mã</string>
     <string name="login_phone_verify_error">Bạn đã nhập một mã xác minh sai.</string>
