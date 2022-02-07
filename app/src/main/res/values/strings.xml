@@ -947,7 +947,7 @@
     <string name="selfLimit_froze_content">为了保护您的权益，您可以随时申请“自我禁制”，当您申请自我禁制后，在自我禁制时间内您将无法登入游戏享受我们提供的服务，提供的选项如下：</string>
     <string name="selfLimit_froze_days">天数</string>
     <string name="selfLimit_froze_input_days">请输入天数</string>
-    <string name="selfLimit_froze_impotent">·自我禁制设定后立即生效。\n·在自我禁制设定期间内，我们将保管您的余额。\n·若您在其他的博弈游戏中申请自我禁制，并不 会自动适用于本游戏中。\n·在自我禁制期间内，若您尝试开设新账号，在 系统检测后属实，该账号可能被冻结。\n·在自我禁制期间内，您可以联系客服解除自我 禁制功能。\n·在自我禁制到期后，您的账号将自动恢复激活。</string>
+    <string name="selfLimit_froze_impotent">·自我禁制设定后立即生效。\n·在自我禁制设定期间内，我们将保管您的余额。\n·若您在其他的博弈游戏中申请自我禁制，并不 会自动适用于本游戏中。\n·在自我禁制期间内，若您尝试开设新账号，在 系统检测后属实，该账号可能被冻结。\n·在自我禁制期间内，您可以联系客服解除自我禁制功能。\n·在自我禁制到期后，您的账号将自动恢复激活。</string>
     <string name="selfLimit_per_bet_limit">每次投注上限</string>
     <string name="selfLimit_per_bet_limit_content">您可以申请“每次投注上限”来限制您每次的投注额。申 请每日投注上限后，您每日的投注总额将不得超过您的 设定值：</string>
     <string name="selfLimit_per_bet_limit_highest">上限</string>
