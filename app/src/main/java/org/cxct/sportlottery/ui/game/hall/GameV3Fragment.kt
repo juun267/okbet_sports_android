@@ -126,7 +126,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         CountryAdapter().apply {
             countryLeagueListener = CountryLeagueListener(
                 { league ->
-                    navGameLeague(leagueIdList = listOf(league.id))
+                    navGameLeague(leagueIdList = listOf(league.id), matchCategoryName = league.name)
                 },
                 { league ->
                     viewModel.pinFavorite(FavoriteType.LEAGUE, league.id)
@@ -318,7 +318,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     private fun setupToolbar(view: View) {
-        view.game_toolbar_match_type.text = gameToolbarMatchTypeText(args.matchType)
+//        根據2022/1/25需求先拔除，確定不要可刪
+//        view.game_toolbar_match_type.text = gameToolbarMatchTypeText(args.matchType)
 
         view.game_toolbar_champion.apply {
             visibility = when (args.matchType) {
@@ -1329,17 +1330,16 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         if (args.matchType != MatchType.OTHER) {
             gameTypeList.find { it.isSelected }.let { item ->
                 game_toolbar_sport_type.text = item?.name ?: resources.getString(GameType.FT.string)
-                    .toUpperCase(Locale.getDefault())
                 updateSportBackground(item)
 //                subscribeSportChannelHall(item?.code)//12/30 移除平台id与gameType後，切換SportType就不用重新訂閱了，不然會造成畫面一直閃爍 by Bill
             }
 
             //即將開賽畫面修正
             if(args.matchType == MatchType.AT_START){
-                sport_type_list.isVisible == (num != 0)
-                game_toolbar_sport_type.isVisible == (num != 0)
-                game_toolbar_champion.isVisible == (num != 0)
-                game_play_category.isVisible == (num != 0)
+                sport_type_list.visibility = if (num != 0) View.VISIBLE else View.GONE
+                game_toolbar_sport_type.visibility = if (num != 0) View.VISIBLE else View.GONE
+                game_toolbar_champion.visibility = if (num != 0) View.VISIBLE else View.GONE
+                game_play_category.visibility = if (num != 0) View.VISIBLE else View.GONE
             }
         }
     }
