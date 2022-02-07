@@ -6,15 +6,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.network.feedback.*
 import org.cxct.sportlottery.network.user.selflimit.FrozeRequest
 import org.cxct.sportlottery.network.user.selflimit.FrozeResult
 import org.cxct.sportlottery.network.user.selflimit.PerBetLimitRequest
 import org.cxct.sportlottery.network.user.selflimit.PerBetLimitResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.TimeUtil
 
 class SelfLimitViewModel(
     androidContext: Application,
@@ -52,6 +49,14 @@ class SelfLimitViewModel(
     private val _frozeResult = MutableLiveData<FrozeResult>()
     private val _perBetLimitResult = MutableLiveData<PerBetLimitResult>()
 
+    val isBetEditTextError: LiveData<Boolean>
+        get() = _isBetEditTextError
+    private val _isBetEditTextError = MutableLiveData<Boolean>()
+
+    val isFrozeEditTextError: LiveData<Boolean>
+        get() = _isFrozeEditTextError
+    private val _isFrozeEditTextError = MutableLiveData<Boolean>()
+
 
     //使用者ID
     var userID: Long? = null
@@ -69,7 +74,7 @@ class SelfLimitViewModel(
             doNetwork(androidContext) {
                 repository.setPerBetLimit(request)
             }.let { result ->
-                _perBetLimitResult.postValue(result)
+                _perBetLimitResult.value = result
             }
         }
     }
@@ -84,7 +89,7 @@ class SelfLimitViewModel(
             doNetwork(androidContext) {
                 repository.froze(frozeRequest)
             }.let { result ->
-                _frozeResult.postValue(result)
+                _frozeResult.value = result
             }
         }
     }
@@ -101,6 +106,14 @@ class SelfLimitViewModel(
     fun showToolbar(isShow: Boolean) {
         if (isShow) _isShowToolbar.value = View.VISIBLE
         else _isShowToolbar.value = View.GONE
+    }
+
+    fun setBetEditTextError(boolean: Boolean){
+        _isBetEditTextError.postValue(boolean)
+    }
+
+    fun setFrozeEditTextError(boolean: Boolean){
+        _isFrozeEditTextError.postValue(boolean)
     }
 
 }

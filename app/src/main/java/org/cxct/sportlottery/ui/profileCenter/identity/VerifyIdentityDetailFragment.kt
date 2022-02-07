@@ -63,6 +63,7 @@ class VerifyIdentityDetailFragment :
         super.onViewCreated(view, savedInstanceState)
         initView()
         initOnclick()
+        (activity as VerifyIdentityActivity).setToolBarTitleForDetail()
     }
 
     private fun setInfoInText() {

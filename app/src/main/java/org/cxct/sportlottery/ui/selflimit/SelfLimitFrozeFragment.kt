@@ -1,29 +1,18 @@
 package org.cxct.sportlottery.ui.selflimit
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.navigation.findNavController
-import kotlinx.android.synthetic.main.fragment_feedback_submit.*
-import kotlinx.android.synthetic.main.view_submit_with_text_count.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentSelfLimitFrozeBinding
-import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
-import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.main.MainActivity
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.countTextAmount
 
 class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel::class),
     View.OnClickListener {
@@ -33,15 +22,9 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
     override fun onClick(v: View?) {
         when (v) {
             binding.llImportant -> {
-                val dialog = CustomAlertDialog(requireContext())
-                dialog.setTitle(getString(R.string.selfLimit_impotent))
-                dialog.setMessage(getString(R.string.selfLimit_froze_impotent))
+                val dialog = SelfLimitFrozeImportantDialog(requireContext(), false)
                 dialog.setCanceledOnTouchOutside(true)
                 dialog.setCancelable(true)
-                dialog.setNegativeButtonText(null)
-                dialog.setPositiveButtonText(null)
-                dialog.setShowDivider(true)
-                dialog.setGravity(Gravity.LEFT)
                 dialog.show()
             }
             binding.btnConfirm -> {
@@ -64,19 +47,45 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        initObserve()
         initEditText()
         initDataLive()
+        resetView()
+    }
+
+    private fun resetView() {
+        binding.llSelfLimit.isSelected = false
+        binding.tvError.visibility = View.GONE
+        binding.btnConfirm.isEnabled = false
     }
 
     private fun initEditText() {
         binding.etFrozeDay.afterTextChanged {
-            binding.btnConfirm.isEnabled = it.isNotBlank() && it.toInt() != 0
+            when {
+                it.isNullOrBlank() -> viewModel.setFrozeEditTextError(true)
+                it.toLong() in 1..999 -> viewModel.setFrozeEditTextError(false)
+                else -> viewModel.setFrozeEditTextError(true)
+            }
         }
     }
 
     private fun initView() {
         binding.llImportant.setOnClickListener(this)
         binding.btnConfirm.setOnClickListener(this)
+    }
+
+    private fun initObserve() {
+        viewModel.isFrozeEditTextError.observe(this.viewLifecycleOwner) { showError ->
+            if (showError) {
+                binding.llSelfLimit.isSelected = true
+                binding.tvError.visibility = View.VISIBLE
+            } else {
+                binding.llSelfLimit.isSelected = false
+                binding.tvError.visibility = View.GONE
+            }
+
+            binding.btnConfirm.isEnabled = !showError
+        }
     }
 
     private fun submit() {
@@ -89,9 +98,9 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
                 viewModel.setFroze(binding.etFrozeDay.text.toString().toInt())
                 dismiss()
             })
-            setNegativeClickListener({
+            setNegativeClickListener {
                 dismiss()
-            })
+            }
             setCanceledOnTouchOutside(false)
             setCancelable(false) //不能用系統 BACK 按鈕關閉 dialog
             show()
@@ -100,11 +109,13 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
 
     private fun initDataLive() {
         viewModel.frozeResult.observe(viewLifecycleOwner, {
-            if(it.success){
+
+            if (it.success) {
                 val dialog = CustomAlertDialog(requireActivity()).apply {
                     setTitle(getString(R.string.selfLimit_confirm))
                     setMessage(getString(R.string.selfLimit_confirm_done))
                     setNegativeButtonText(null)
+                    setCancelable(false)
                     setPositiveButtonText(getString(R.string.btn_confirm))
                     setPositiveClickListener(View.OnClickListener {
                         dismiss()

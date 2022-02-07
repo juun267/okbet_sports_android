@@ -20,7 +20,7 @@
 
         <TextView
             android:id="@+id/tv_title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="12dp"
             android:gravity="center"
@@ -47,7 +47,6 @@
             android:id="@+id/sv_block_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:overScrollMode="never"
             app:layout_constraintBottom_toTopOf="@id/block_bottom_bar"
@@ -100,6 +99,7 @@
                 android:minHeight="36dp"
                 android:text="@string/btn_determine"
                 android:textColor="@color/colorBlueDark"
+                android:textAllCaps="false"
                 android:textSize="@dimen/textSize14sp"
                 android:textStyle="bold" />
 

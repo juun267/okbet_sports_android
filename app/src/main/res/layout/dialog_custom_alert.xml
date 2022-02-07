@@ -101,9 +101,17 @@
                 android:text="@string/btn_cancel"
                 android:textColor="@color/colorBlueDark"
                 android:textSize="@dimen/textSize14sp"
+                android:textAllCaps="false"
                 android:textStyle="bold" />
 
+            <View
+                android:id="@+id/view_line"
+                android:layout_width="1dp"
+                android:layout_height="44dp"
+                android:background="@color/colorWhite6"/>
+
             <Button
+                android:textAllCaps="false"
                 android:id="@+id/btn_positive"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
