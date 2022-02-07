@@ -969,7 +969,7 @@
     <string name="selfLimit_per_bet_limit_highest">Giới hạn trên</string>
     <string name="selfLimit_per_bet_limit_input_highest">Vui lòng nhập cược giới hạn。</string>
     <string name="selfLimit_per_bet_limit_impotent">· Bạn có thể sửa đổi giới hạn đặt cược của mình bất cứ lúc nào. Sửa đổi sẽ có hiệu lực sau khi gửi yêu cầu.</string>
-    <string name="selfLimit_per_bet_limit_user">‧Cược giới hạn hiện tại: %d</string>
+    <string name="selfLimit_per_bet_limit_user">‧Cược giới hạn hiện tại: %s</string>
     <string name="selfLimit_per_bet_limit_user_limit"> (Cược giới hạn tối:%s-%s)</string>
     <!--自我禁制-->
 
