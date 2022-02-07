@@ -160,6 +160,7 @@ class WithdrawRepository(
 
     //提款設置用
     private suspend fun checkSettingProfileInfoComplete() {
+        sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.SETTING_PROFILE_INFO.ordinal
         verifyProfileInfoComplete().let { verify ->
             /*if (verify) {
                 _settingNeedToCompleteProfileInfo.value = Event(verify)
@@ -282,12 +283,21 @@ class WithdrawRepository(
                             }
                         }
                     }
-                    _needToBindBankCard.value = Event(promptMessageId)
+
+                    if (promptMessageId != -1 && sConfigData?.twoFactorVerified == "1" && sConfigData?.hasCertified == false) {
+                        sConfigData?.enterCertified =
+                            ProfileCenterViewModel.SecurityEnter.BIND_BANK_CARD.ordinal
+                        _needToSendTwoFactor.value = Event(true)
+                    } else
+                        _needToBindBankCard.value = Event(promptMessageId)
+
                 }
             }
         }
         return response
     }
+
+
 
     private fun checkBankSystem(bankCardList: List<BankCardList>): Boolean {
         var hasBinding = false
