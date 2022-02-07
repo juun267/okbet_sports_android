@@ -67,24 +67,24 @@ class VerifyIdentityDetailFragment :
 
     private fun setInfoInText() {
         args?.data?.extIdInfo?.ocrResult?.apply {
+            et_identity_id?.isVisible = idNumber != null
+            et_identity_last_name?.isVisible = lastName != null
+            et_identity_first_name?.isVisible = firstName != null
+            et_identity_other_name?.isVisible = middleName != null
+            et_identity_sex?.isVisible = sex != null
+            et_birth?.isVisible = dateOfBirth != null
+            et_expire_date?.isVisible = expireDate != null
+            et_address?.isVisible = address != null
+
             et_identity_id.setText(idNumber)
-            et_identity_first_name.setText(firstName)
             et_identity_last_name.setText(lastName)
+            et_identity_first_name.setText(firstName)
             et_identity_other_name.setText(middleName)
             et_identity_sex.setText(sex)
             et_birth.setText(dateOfBirth)
             et_expire_date.setText(expireDate)
             et_address.setText(address)
         }
-
-        et_identity_id?.isVisible = et_identity_id?.getText()?.isNotEmpty() == true
-        et_identity_last_name?.isVisible = et_identity_last_name?.getText()?.isNotEmpty() == true
-        et_identity_first_name?.isVisible = et_identity_first_name?.getText()?.isNotEmpty() == true
-        et_identity_other_name?.isVisible = et_identity_other_name?.getText()?.isNotEmpty() == true
-        et_identity_sex?.isVisible = et_identity_sex?.getText()?.isNotEmpty() == true
-        et_birth?.isVisible = et_birth?.getText()?.isNotEmpty() == true
-        et_expire_date?.isVisible = et_expire_date?.getText()?.isNotEmpty() == true
-        et_address?.isVisible = et_address?.getText()?.isNotEmpty() == true
 
     }
 
