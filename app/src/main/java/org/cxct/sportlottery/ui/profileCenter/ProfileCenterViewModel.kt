@@ -32,6 +32,14 @@ class ProfileCenterViewModel(
     favoriteRepository
 ) {
 
+    enum class SecurityEnter(val code: Int){
+        UPDATE_PW(0),//更新提款卡密碼
+        SETTING_PW(1),//設定提現密碼
+        COMPLETET_PROFILE_INFO(2),//完善個人資料
+        SETTING_PROFILE_INFO(3),//設定個人資料
+        BIND_BANK_CARD(4)//綁定銀行卡
+    }
+
     val token = loginRepository.token
 
     val withdrawSystemOperation =
