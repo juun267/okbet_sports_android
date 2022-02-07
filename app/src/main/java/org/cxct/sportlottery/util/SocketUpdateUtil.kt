@@ -47,23 +47,18 @@ object SocketUpdateUtil {
                     }
                     if (matchStatusCO.gameType == GameType.CK.key) {
 
-                        val homeScoreStr = when {
-                            matchStatusCO.homeTotalScore == null -> "${matchStatusCO.homeOut}"
-                            matchStatusCO.homeOut.isNullOrEmpty() -> "${matchStatusCO.homeTotalScore}"
-                            else -> "${matchStatusCO.homeTotalScore}/${matchStatusCO.homeOut}"
-                        }
-                        if (matchStatusCO.homeScore != null && matchStatusCO.homeScore.toString() != homeScoreStr) {
-                            matchOdd.matchInfo?.homeScore = homeScoreStr
+                        val homeTotal = matchStatusCO.homeTotalScore ?: 0
+                        val homeOut = matchStatusCO.homeOut ?: 0
+                        if (matchStatusCO.homeScore != null && matchStatusCO.homeScore.toString() != "${homeTotal}/${homeOut}") {
+                            matchOdd.matchInfo?.homeScore = "${homeTotal}/${homeOut}"
                             isNeedRefresh = true
                         }
 
-                        val awayScoreStr = when {
-                            matchStatusCO.awayTotalScore == null -> "${matchStatusCO.awayOut}"
-                            matchStatusCO.awayOut.isNullOrEmpty() -> "${matchStatusCO.awayTotalScore}"
-                            else -> "${matchStatusCO.awayTotalScore}/${matchStatusCO.awayOut}"
-                        }
-                        if (matchStatusCO.awayScore != null && matchStatusCO.awayScore.toString() != awayScoreStr) {
-                            matchOdd.matchInfo?.awayScore = awayScoreStr
+
+                        val awayTotal = matchStatusCO.awayTotalScore ?: 0
+                        val awayOut = matchStatusCO.awayOut ?: 0
+                        if (matchStatusCO.awayScore != null && matchStatusCO.awayScore.toString() != "${awayTotal}/${awayOut}") {
+                            matchOdd.matchInfo?.awayScore = "${awayTotal}/${awayOut}"
                             isNeedRefresh = true
                         }
                     } else {
