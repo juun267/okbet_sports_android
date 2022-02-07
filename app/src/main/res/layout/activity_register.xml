@@ -655,7 +655,7 @@
                 android:layout_height="46dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="6dp"
-                android:background="@drawable/bg_radius_8_button_dusk"
+                android:background="@drawable/bg_radius_20_button_dusk"
                 android:enabled="false"
                 android:text="@string/btn_register"
                 android:textColor="@android:color/white"
