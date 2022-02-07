@@ -97,7 +97,7 @@
     <string name="desc_agreement">Tôi đã đủ tuổi hợp pháp và hoàn toàn đồng ý</string>
     <string name="get_security_code">Gửi mã</string>
     <string name="dialog_security_hint">Chào mừng bạn trở lại trò chơi. Vui lòng hoàn tất xác minh để bảo mật tài khoản.</string>
-    <string name="dialog_security_title">输入验证码</string><!--TODO Bill 補翻譯-->
+    <string name="dialog_security_title">Nhập mã xác nhận.</string>
     <string name="dialog_security_error">Bạn đã nhập một mã xác minh sai.</string>
     <string name="hint_security_code">Vui lòng nhập Đăng ký mã xác nhận</string>
     <string name="btn_agreement">Thỏa thuận mở tài khoản</string>

@@ -98,7 +98,7 @@
     <string name="desc_agreement">I\'m of legal age and totally agree</string>
     <string name="get_security_code">Send code</string>
     <string name="dialog_security_hint">Welcome back to game. Please complete verification for account security.</string>
-    <string name="dialog_security_title">输入验证码</string><!--TODO Bill 補翻譯-->
+    <string name="dialog_security_title">Enter the verification code.</string>
     <string name="dialog_security_error">You have entered a wrong verification code.</string>
     <string name="hint_security_code">Verify Code</string>
     <string name="btn_agreement">Account Opening Agreement</string>
