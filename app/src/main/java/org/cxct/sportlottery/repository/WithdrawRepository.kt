@@ -151,7 +151,11 @@ class WithdrawRepository(
      * complete true: 個人資訊有缺漏, false: 個人資訊完整
      */
     suspend fun checkProfileInfoComplete() {
-        _needToCompleteProfileInfo.value = Event(verifyProfileInfoComplete())
+        if(sConfigData?.twoFactorVerified == "1" && sConfigData?.hasCertified == false){
+            sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.COMPLETET_PROFILE_INFO.ordinal
+            _needToSendTwoFactor.value = Event(true)
+        }else
+            _needToCompleteProfileInfo.value = Event(verifyProfileInfoComplete())
     }
 
     //提款設置用
