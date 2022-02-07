@@ -133,7 +133,8 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         //微信
         ll_wechat.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.WeChat) }
         //實名制
-        ll_verified.setOnClickListener { startActivity(Intent(this@ProfileActivity, VerifyIdentityActivity::class.java))}
+        ll_verified.setOnClickListener {
+            if (ll_verified.isEnabled) startActivity(Intent(this@ProfileActivity, VerifyIdentityActivity::class.java))}
     }
 
     private fun putExtraForProfileInfoActivity(modifyType: ModifyType) {
@@ -180,6 +181,8 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             ll_verified.isVisible = sConfigData?.realNameWithdrawVerified == VerifySwitchType.OPEN.value
             when (it?.verified) {
                 VerifiedType.PASSED.value -> {
+                    ll_verified.isEnabled = false
+                    ll_verified.isClickable = false
                     tv_verified.text = getString(R.string.verified)
                     tv_verified.setTextColor(
                         ContextCompat.getColor(
@@ -190,6 +193,8 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                     icon_identity.visibility = View.GONE
                 }
                 else -> {
+                    ll_verified.isEnabled = true
+                    ll_verified.isClickable = true
                     tv_verified.text = getString(R.string.not_verify)
                     tv_verified.setTextColor(
                         ContextCompat.getColor(
