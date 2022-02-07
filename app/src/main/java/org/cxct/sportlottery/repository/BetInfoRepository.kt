@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.bet.info.MatchOdd
@@ -82,7 +83,6 @@ class BetInfoRepository(val androidContext: Context) {
                 updatePlayQuota()
             }
         }
-
     var oddsType: OddsType = OddsType.EU
         set(value) {
             if (value != field) {
@@ -422,6 +422,7 @@ class BetInfoRepository(val androidContext: Context) {
             playQuota?.min?.toBigDecimal()
         )
         var parlayBetLimit = 9999
+        var userSelfLimit = MultiLanguagesApplication.getInstance()?.userInfo?.value?.perBetLimit
 
         return parlayBetLimitMap.map {
             parlayBetLimit = it.value.max.toInt()
@@ -473,6 +474,9 @@ class BetInfoRepository(val androidContext: Context) {
                 }
             }
 
+            userSelfLimit?.let { t ->
+                maxBet = if (maxBet < t) maxBetMoney else t
+            }
 
             ParlayOdd(
                 parlayType = it.key,

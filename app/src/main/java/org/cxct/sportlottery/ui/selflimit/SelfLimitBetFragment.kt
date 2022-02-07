@@ -105,6 +105,7 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
                     setNegativeButtonText(null)
                     setPositiveButtonText(getString(R.string.btn_confirm))
                     setPositiveClickListener(View.OnClickListener {
+                        viewModel.getUserInfo()
                         dismiss()
                     })
                 }
@@ -112,6 +113,11 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
             }
 
         })
+
+        viewModel.userInfoResult.observe(viewLifecycleOwner, {
+            binding.tvPerBetLimit.text =  String.format(getString(R.string.selfLimit_per_bet_limit_user), TextUtil.formatMoney(viewModel.userInfo.value?.perBetLimit!!)+ sConfigData?.systemCurrency)
+        })
+
     }
 
 }

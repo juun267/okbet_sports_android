@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.feedback.*
+import org.cxct.sportlottery.network.user.info.UserInfoResult
 import org.cxct.sportlottery.network.user.selflimit.FrozeRequest
 import org.cxct.sportlottery.network.user.selflimit.FrozeResult
 import org.cxct.sportlottery.network.user.selflimit.PerBetLimitRequest
@@ -48,9 +49,13 @@ class SelfLimitViewModel(
         get() = _frozeResult
     val perBetLimitResult:LiveData<PerBetLimitResult>
         get() = _perBetLimitResult
+    val userInfoResult:LiveData<UserInfoResult>
+        get() = _userInfoResult
     private val _toolbarName = MutableLiveData<String>()
     private val _frozeResult = MutableLiveData<FrozeResult>()
     private val _perBetLimitResult = MutableLiveData<PerBetLimitResult>()
+    private val _userInfoResult = MutableLiveData<UserInfoResult>()
+
 
 
     //使用者ID
@@ -95,6 +100,9 @@ class SelfLimitViewModel(
                 userInfoRepository.getUserInfo()
             }
             userID = result?.userInfoData?.userId
+            result?.let {
+                _userInfoResult.postValue(it)
+            }
         }
     }
 
