@@ -130,10 +130,18 @@ class WithdrawRepository(
     //提款設置判斷權限, 判斷需不需要更新提現密碼 -> 個人資料是否完善
     suspend fun settingCheckPermissions() {
         this.checkNeedUpdatePassWord().let {
-            if (it) {
-                _settingNeedToUpdateWithdrawPassword.value = Event(it)
+            //顯示簡訊認證彈窗
+            if ((sConfigData?.twoFactorVerified == "1" && sConfigData?.hasCertified == false) && (it || !verifyProfileInfoComplete())) {
+                sConfigData?.enterCertified =
+                    ProfileCenterViewModel.SecurityEnter.SETTING_PW.ordinal
+                _needToSendTwoFactor.value = Event(true)
+
             } else {
-                checkSettingProfileInfoComplete()
+                if (it) {
+                    _settingNeedToUpdateWithdrawPassword.value = Event(it)
+                } else {
+                    checkSettingProfileInfoComplete()
+                }
             }
         }
     }
