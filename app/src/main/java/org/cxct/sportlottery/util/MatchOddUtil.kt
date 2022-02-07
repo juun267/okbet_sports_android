@@ -49,8 +49,8 @@ object MatchOddUtil {
                             startTime = matchInfo.startTime,
                             status = odd.status,
                             gameType = gameType,
-                            homeScore = matchInfo.homeScore ?: 0,
-                            awayScore = matchInfo.awayScore ?: 0,
+                            homeScore = matchInfo.homeScore?.toIntOrNull() ?: 0,
+                            awayScore = matchInfo.awayScore?.toIntOrNull() ?: 0,
                         ).apply {
                             extInfo = odd.extInfo
                         }

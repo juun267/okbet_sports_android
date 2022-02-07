@@ -96,6 +96,7 @@ class LeagueAdapter(private val matchType: MatchType) :
                             )
                         )
                     }
+                    this.itemView.league_odd_list.itemAnimator = null
                 }
             }
             else -> {
@@ -108,30 +109,6 @@ class LeagueAdapter(private val matchType: MatchType) :
         this.updateType = type
         notifyItemChanged(position)
     }
-
-    override fun onBindViewHolder(
-        holder: RecyclerView.ViewHolder,
-        position: Int,
-        payloads: List<Any>
-    ) {
-        if (payloads.isEmpty()) {
-            super.onBindViewHolder(holder, position, payloads)
-        } else {
-            for (payload in payloads) {
-                if (payload == PAYLOAD_MATCH_STATUS) {
-                    //(holder as ItemViewHolder).leagueOddAdapter.data[]
-                    val leagueOdds = (holder as ItemViewHolder).leagueOddAdapter.data
-
-                    leagueOdds.forEachIndexed { index, leagueOdd ->
-                        leagueOdd.matchInfo?.awayScore = 1000
-                        //leagueAdapter.notifyItemChanged(index)
-                    }
-                    (holder as ItemViewHolder).leagueOddAdapter.notifyDataSetChanged()
-                }
-            }
-        }
-    }
-
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
@@ -167,7 +144,7 @@ class LeagueAdapter(private val matchType: MatchType) :
     class ItemViewHolder private constructor(matchType: MatchType, itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
-        val leagueOddAdapter by lazy {
+        private val leagueOddAdapter by lazy {
             LeagueOddAdapter(matchType)
         }
 
