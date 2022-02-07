@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.index.sendSms.SmsRequest
+import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.network.uploadImg.*
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.*
@@ -75,6 +77,10 @@ class ProfileCenterViewModel(
         get() = _uploadVerifyPhotoResult
     private val _uploadVerifyPhotoResult = MutableLiveData<Event<UploadVerifyPhotoResult?>>()
 
+    val smsResult: LiveData<SmsResult?>
+        get() = _smsResult
+    private val _smsResult = MutableLiveData<SmsResult?>()
+
 
     fun getUserInfo() {
         viewModelScope.launch {
@@ -125,6 +131,17 @@ class ProfileCenterViewModel(
         }
     }
 
+
+    fun sendSms(phone: String) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.indexService.sendSms(
+                    SmsRequest(phone)
+                )
+            }
+            _smsResult.postValue(result)
+        }
+    }
     fun uploadImage(uploadImgRequest: UploadImgRequest) {
         viewModelScope.launch {
             doNetwork(androidContext) {

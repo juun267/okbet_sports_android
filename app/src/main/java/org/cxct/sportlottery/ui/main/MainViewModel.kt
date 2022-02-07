@@ -9,6 +9,8 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.config.ImageData
+import org.cxct.sportlottery.network.index.sendSms.SmsRequest
+import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.third_game.ThirdLoginResult
 import org.cxct.sportlottery.network.third_game.third_games.GameCategory
@@ -83,6 +85,9 @@ class MainViewModel(
     val needToBindBankCard =
         withdrawRepository.needToBindBankCard //提款頁面是否需要新增銀行卡 -1 : 不需要新增, else : 以value作為string id 顯示彈窗提示
 
+    val smsResult: LiveData<SmsResult?>
+        get() = _smsResult
+    private val _smsResult = MutableLiveData<SmsResult?>()
 
     //獲取系統公告及跑馬燈
     fun getAnnouncement() {
@@ -292,6 +297,18 @@ class MainViewModel(
                 OddsType.EU.code,
                 context.resources?.getString(R.string.odd_type_eu)
             )
+        }
+    }
+
+    //發送簡訊驗證碼
+    fun sendSms(phone: String) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.indexService.sendSms(
+                    SmsRequest(phone)
+                )
+            }
+            _smsResult.postValue(result)
         }
     }
 }

@@ -14,6 +14,8 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeEnName
 import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeMenuIcon
+import org.cxct.sportlottery.network.index.sendSms.SmsRequest
+import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
@@ -287,6 +289,10 @@ class GameViewModel(
     private val _sportSortList = MutableLiveData<Event<List<SportMenu>>>()
     val sportSortList: LiveData<Event<List<SportMenu>>>
         get() = _sportSortList
+
+    val smsResult: LiveData<SmsResult?>
+        get() = _smsResult
+    private val _smsResult = MutableLiveData<SmsResult?>()
 
     var sportQueryData: SportQueryData? = null
     var specialMenuData: SportQueryData? = null
@@ -2226,4 +2232,15 @@ class GameViewModel(
         return loginRepository.isLogin.value ?: false
     }
 
+    //發送簡訊驗證碼
+    fun sendSms(phone: String) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.indexService.sendSms(
+                    SmsRequest(phone)
+                )
+            }
+            _smsResult.postValue(result)
+        }
+    }
 }
