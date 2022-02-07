@@ -6,6 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -22,6 +23,7 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
 import java.util.*
 
 
@@ -155,5 +157,30 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
         dialog.setCancelable(false)
         dialog.show()
     }
+
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        if (ev.getAction() === MotionEvent.ACTION_DOWN) {
+            val v = currentFocus
+            if (isShouldHideInput(v, ev)) {
+                binding.eetVerificationCode.clearFocus()
+                binding.etVerificationCode.clearFocus()
+            }
+        }
+        return super.dispatchTouchEvent(ev)
+    }
+    private fun isShouldHideInput(v: View?, event: MotionEvent): Boolean {
+        if (v != null && v is TextFieldBoxes) {
+            val l = intArrayOf(0, 0)
+            v.getLocationInWindow(l)
+            val left = l[0]
+            val top = l[1]
+            val bottom = top + v.height
+            val right = (left
+                    + v.width)
+            return !(event.x > left && event.x < right && event.y > top && event.y < bottom)
+        }
+        return true
+    }
+
 
 }
