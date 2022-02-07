@@ -71,7 +71,7 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
         if(viewModel.userInfo.value?.perBetLimit == null){
             binding.tvPerBetLimit.visibility = View.GONE
         }else{
-            binding.tvPerBetLimit.text =  String.format(getString(R.string.selfLimit_per_bet_limit_user), viewModel.userInfo.value?.perBetLimit)+ sConfigData?.systemCurrency
+            binding.tvPerBetLimit.text =  String.format(getString(R.string.selfLimit_per_bet_limit_user), TextUtil.formatMoney(viewModel.userInfo.value?.perBetLimit!!.toDouble()))+ sConfigData?.systemCurrency
         }
         binding.tvLimit.text =  String.format(getString(R.string.selfLimit_per_bet_limit_user_limit),
             TextUtil.formatMoney(sConfigData?.perBetMinAmount!!.toInt()) ,TextUtil.formatMoney(sConfigData?.perBetMaxAmount!!.toInt()))
