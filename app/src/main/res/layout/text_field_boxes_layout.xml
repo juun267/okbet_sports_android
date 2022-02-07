@@ -32,7 +32,7 @@
             <org.cxct.sportlottery.widget.boundsEditText.ClipToBoundsView
                 android:id="@+id/text_field_boxes_panel"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="52dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
@@ -65,7 +65,7 @@
                         android:gravity="center"
                         android:includeFontPadding="false"
                         android:textColor="@color/colorGrayText"
-                        android:textSize="@dimen/textSize14sp"
+                        android:textSize="@dimen/textSize15sp"
                         android:textStyle="bold"
                         tools:text="Label" />
 

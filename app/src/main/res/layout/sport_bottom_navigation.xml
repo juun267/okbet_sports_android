@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:layout_height="wrap_content"
+    tools:layout_gravity="bottom"
     android:background="@drawable/bg_bottom_nav_bar"
     android:orientation="horizontal">
 
@@ -25,9 +27,8 @@
 
     <LinearLayout
         android:id="@+id/item_bet_list"
-        android:layout_width="0dp"
+        android:layout_width="67dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         android:background="@color/colorBlue"
         android:gravity="center"
         android:orientation="vertical">

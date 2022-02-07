@@ -694,7 +694,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                             setupParlayItem(
                                 itemData,
-                                currentOddsType,
+                                OddsType.EU,
                                 hasBetClosed,
                                 true,
                                 onItemClickListener,
@@ -726,7 +726,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                         setupParlayItem(
                             itemData,
-                            currentOddsType,
+                            OddsType.EU,
                             hasBetClosed,
                             true,
                             onItemClickListener,
@@ -931,7 +931,31 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         ): Double {
             var allWinnableAmount = 0.0
             betList.forEach {
-                allWinnableAmount += getOdds(it.matchOdd, currentOddsType) * betAmount
+                var win = 0.0
+                when (currentOddsType) {
+                    OddsType.MYS -> {
+                        if (getOdds(it.matchOdd, currentOddsType) < 0) {
+                            win = betAmount
+                        } else {
+                            win = betAmount * getOdds(it.matchOdd, currentOddsType)
+                        }
+
+                    }
+                    OddsType.IDN -> {
+                        if (getOdds(it.matchOdd, currentOddsType) < 0) {
+                            win = betAmount
+                        } else {
+                            win = betAmount * getOdds(it.matchOdd, currentOddsType)
+                        }
+                    }
+                    OddsType.EU -> {
+                        win = betAmount * (getOdds(it.matchOdd, currentOddsType) - 1)
+                    }
+                    else  -> {
+                        win = betAmount * getOdds(it.matchOdd, currentOddsType)
+                    }
+                }
+                allWinnableAmount += win
             }
             return allWinnableAmount
         }
