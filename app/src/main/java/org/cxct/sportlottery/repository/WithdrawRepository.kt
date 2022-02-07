@@ -58,6 +58,17 @@ class WithdrawRepository(
         val eWalletSystem: Boolean
     )
 
+    //顯示驗證過了之後要繼續驗證前的邏輯
+    suspend fun sendTwoFactor() {
+        when (sConfigData?.enterCertified) {
+            ProfileCenterViewModel.SecurityEnter.SETTING_PW.ordinal -> settingCheckPermissions()
+            ProfileCenterViewModel.SecurityEnter.UPDATE_PW.ordinal -> withdrawCheckPermissions()
+            ProfileCenterViewModel.SecurityEnter.COMPLETET_PROFILE_INFO.ordinal -> checkProfileInfoComplete()
+            ProfileCenterViewModel.SecurityEnter.SETTING_PROFILE_INFO.ordinal -> checkSettingProfileInfoComplete()
+            ProfileCenterViewModel.SecurityEnter.BIND_BANK_CARD.ordinal -> checkBankCardPermissions()
+        }
+    }
+
     suspend fun checkWithdrawSystem(): Response<MoneyRechCfgResult> {
         val response = OneBoSportApi.moneyService.getRechCfg()
         if (response.isSuccessful) {
