@@ -118,7 +118,13 @@ class WithdrawRepository(
 
     //提款判斷權限
     private suspend fun withdrawCheckPermissions() {
-        this.checkNeedUpdatePassWord().let { _needToUpdateWithdrawPassword.value = Event(it) }
+        this.checkNeedUpdatePassWord().let {
+            if((sConfigData?.twoFactorVerified == "1" && sConfigData?.hasCertified == false) && (it || !verifyProfileInfoComplete())){
+                sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.UPDATE_PW.ordinal
+                _needToSendTwoFactor.value = Event(true)
+            }else
+            _needToUpdateWithdrawPassword.value = Event(it)
+        }
     }
 
     //提款設置判斷權限, 判斷需不需要更新提現密碼 -> 個人資料是否完善
