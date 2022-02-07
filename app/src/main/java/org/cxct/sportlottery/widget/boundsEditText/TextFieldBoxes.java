@@ -156,6 +156,11 @@ public class TextFieldBoxes extends FrameLayout {
     protected boolean useDenseSpacing;
 
     /**
+     * 被點擊後要不要顯示Title
+     */
+    protected boolean hideSelectedTitle = false;
+
+    /**
      * whether the field uses a rtl direction for 'Persian (Farsi)' and 'Arabic' languages
      * False by default.
      */
@@ -564,6 +569,7 @@ public class TextFieldBoxes extends FrameLayout {
             this.alwaysShowHint = styledAttrs.getBoolean(R.styleable.TextFieldBoxes_alwaysShowHint, false);
             this.useDenseSpacing = styledAttrs.getBoolean(R.styleable.TextFieldBoxes_useDenseSpacing, false);
             this.rtl = styledAttrs.getBoolean(R.styleable.TextFieldBoxes_rtl, false);
+            this.hideSelectedTitle = styledAttrs.getBoolean(R.styleable.TextFieldBoxes_hideSelectedTitle, false);
 
             styledAttrs.recycle();
 
@@ -659,6 +665,13 @@ public class TextFieldBoxes extends FrameLayout {
 //                            getContext().getResources().getDimensionPixelOffset(R.dimen.label2_active_margin_top))
 //                    .setDuration(ANIMATION_DURATION);
             floatingHintLabel.setVisibility(View.GONE);
+
+            //驗證碼要特殊處理 by bill
+            if(hideSelectedTitle){
+                floatingSingle.setVisibility(GONE);
+                labelSpace.setVisibility(GONE);
+                labelTopMargin = 0;
+            }
 
             ViewCompat.animate(this.floatingSingle)
                     .scaleX(0.85f)

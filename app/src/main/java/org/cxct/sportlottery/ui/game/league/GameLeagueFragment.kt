@@ -338,20 +338,19 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         when {
             (oddsListData?.leagueOdds?.size ?: 0 == 1) -> {
                 game_toolbar_match_type.text =
-                    if (args.matchType == MatchType.AT_START) getString(R.string.home_tab_at_start_2) else oddsListData?.sport?.name
-                        ?: ""
+                    if (args.matchType == MatchType.AT_START) "" else oddsListData?.sport?.name ?: ""
                 game_toolbar_sport_type.text = args.matchCategoryName
                     ?: (oddsListData?.leagueOdds?.firstOrNull()?.league?.name?.split(" ")
-                        ?.getOrNull(1) ?: "").toUpperCase(Locale.getDefault())
+                        ?.getOrNull(1) ?: "")
             }
 
             (oddsListData?.leagueOdds?.size ?: 0 > 1) -> {
                 game_toolbar_match_type.text = oddsListData?.sport?.name ?: ""
                 game_toolbar_sport_type.text = args.matchCategoryName ?: when (args.matchType) {
-                    MatchType.TODAY -> getString(R.string.home_tab_today).toUpperCase(Locale.getDefault())
-                    MatchType.EARLY -> getString(R.string.home_tab_early).toUpperCase(Locale.getDefault())
-                    MatchType.PARLAY -> getString(R.string.home_tab_parlay).toUpperCase(Locale.getDefault())
-                    MatchType.AT_START -> getString(R.string.home_tab_at_start_2).toUpperCase(Locale.getDefault())
+                    MatchType.TODAY -> getString(R.string.home_tab_today)
+                    MatchType.EARLY -> getString(R.string.home_tab_early)
+                    MatchType.PARLAY -> getString(R.string.home_tab_parlay)
+                    MatchType.AT_START -> getString(R.string.home_tab_at_start_2)
                     else -> ""
                 }
             }

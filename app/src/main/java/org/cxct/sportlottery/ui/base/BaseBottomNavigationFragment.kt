@@ -94,25 +94,23 @@ abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KCla
         }
 
         //在線客服 (取代原有的客服懸浮按鈕)
-        if (sConfigData?.customerServiceUrl.isNullOrBlank() && sConfigData?.customerServiceUrl2.isNullOrBlank()) {
-            txv_chat.setOnClickListener {
-                val serviceUrl = sConfigData?.customerServiceUrl
-                val serviceUrl2 = sConfigData?.customerServiceUrl2
-                when {
-                    !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                        activity?.supportFragmentManager?.let { it1 ->
-                            ServiceDialog().show(
-                                it1,
-                                null
-                            )
-                        }
+        txv_chat.setOnClickListener {
+            val serviceUrl = sConfigData?.customerServiceUrl
+            val serviceUrl2 = sConfigData?.customerServiceUrl2
+            when {
+                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    activity?.supportFragmentManager?.let { it1 ->
+                        ServiceDialog().show(
+                            it1,
+                            null
+                        )
                     }
-                    serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                        activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl2) }
-                    }
-                    !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                        activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
-                    }
+                }
+                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl2) }
+                }
+                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
+                    activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
                 }
             }
         }

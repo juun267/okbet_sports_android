@@ -21,14 +21,12 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var data = listOf<Row>()
         set(value) {
             field = value
-
             notifyDataSetChanged()
         }
 
     var datePin = listOf<League>()
         set(value) {
             field = value
-
             notifyDataSetChanged()
         }
 
@@ -79,7 +77,6 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             is ItemViewHolder -> {
                 val item = data[position - 1]
-
                 holder.bind(item, countryLeagueListener)
             }
         }
@@ -114,7 +111,6 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.country_league_list.apply {
                 adapter = countryLeagueAdapter.apply {
                     this.countryLeagueListener = countryLeagueListener
-
                     data = leagueList
                 }
             }

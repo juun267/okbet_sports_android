@@ -38,7 +38,6 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
-import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
 import org.cxct.sportlottery.ui.common.SocketLinearManager
@@ -127,7 +126,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         CountryAdapter().apply {
             countryLeagueListener = CountryLeagueListener(
                 { league ->
-                    navGameLeague(leagueIdList = listOf(league.id))
+                    navGameLeague(leagueIdList = listOf(league.id), matchCategoryName = league.name)
                 },
                 { league ->
                     viewModel.pinFavorite(FavoriteType.LEAGUE, league.id)
@@ -319,7 +318,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     private fun setupToolbar(view: View) {
-        view.game_toolbar_match_type.text = gameToolbarMatchTypeText(args.matchType)
+//        根據2022/1/25需求先拔除，確定不要可刪
+//        view.game_toolbar_match_type.text = gameToolbarMatchTypeText(args.matchType)
 
         view.game_toolbar_champion.apply {
             visibility = when (args.matchType) {
@@ -414,12 +414,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL
         )
         view.match_category_indicator.setupWithViewPager2(view.match_category_pager)
-        view.game_match_category_pager.visibility =
-            if (args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
+        val isCateShow = (args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY)
+        view.game_match_category_pager.isVisible = isCateShow
+        view.view_space_first.isVisible = !isCateShow
     }
 
     private fun setupPlayCategory(view: View) {
@@ -476,41 +473,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 SpaceItemDecoration(context, R.dimen.item_spacing_league)
             )
             setHasFixedSize(true)
-            //setItemViewCacheSize(10)
         }
 
-//        view.sv_game.setOnScrollChangeListener { _, _, _, _, _ ->
-//            Rect().apply {
-//                view.sv_game.getHitRect(this)
-//                view.game_list.adapter?.let {
-//                    if (leagueAdapter.data.isNotEmpty()) {
-//                        for (i in 0 until leagueAdapter.data.size) {
-//                            val vLeagueItem = view.game_list.findViewHolderForAdapterPosition(i)
-//                            val leagueOddAdapter =
-//                                (vLeagueItem as LeagueAdapter.ItemViewHolder).leagueOddAdapter
-//                            val rvLeague = vLeagueItem.itemView.league_odd_list
-//
-//                            if (leagueOddAdapter.data.isNotEmpty()) {
-//                                for (j in leagueOddAdapter.data.indices) {
-//                                    val vMatchOddItem = rvLeague.getChildAt(j)
-//                                    if (vMatchOddItem.getLocalVisibleRect(this)) {
-//                                        subscribeChannelHallSingleMatchOdds(
-//                                            leagueAdapter.data[i],
-//                                            leagueOddAdapter.data[j]
-//                                        )
-//                                    } else {
-//                                        unSubscribeChannelHallSingleMatchOdds(
-//                                            leagueAdapter.data[i],
-//                                            leagueOddAdapter.data[j]
-//                                        )
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -584,12 +548,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         viewModel.matchCategoryQueryResult.observe(this.viewLifecycleOwner) {
 
             it.getContentIfNotHandled()?.rows?.let { resultList ->
-                game_match_category_pager.visibility =
-                    if ((args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) && resultList.isNotEmpty()) {
-                        View.VISIBLE
-                    } else {
-                        View.GONE
-                    }
+                val isCateShow = ((args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) && resultList.isNotEmpty())
+                game_match_category_pager.isVisible = isCateShow
+                view_space_first.isVisible = !isCateShow
+
                 matchCategoryPagerAdapter.data = resultList
             }
         }
@@ -654,6 +616,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                     val gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
                     if (game_list.adapter == null) {
+                        view_space_first.isVisible = false
                         game_list.apply {
                             adapter = leagueAdapter.apply {
                                 updateType = null
@@ -790,6 +753,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             )
                         }
                         else -> {
+                            view_space_first.isVisible = true
                             game_list.apply {
                                 adapter = countryAdapter.apply {
                                     data = rows
@@ -806,7 +770,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                 if (outrightSeasonListResult.success) {
                     val rows = outrightSeasonListResult.rows ?: listOf()
-
+                    view_space_first.isVisible = true
                     game_list.apply {
                         adapter = outrightCountryAdapter.apply {
                             data = rows
@@ -847,6 +811,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         }
                     }
 
+                    view_space_first.isVisible = false
                     game_list.apply {
                         adapter = epsListAdapter.apply {
                             dataList = epsLeagueOddsItemList
@@ -870,11 +835,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             hideLoading()
             outrightCountryAdapter.data = it
         }
-
-        viewModel.outrightCountryListSearchResult.observe(this.viewLifecycleOwner) {
-            outrightCountryAdapter.data = it
-        }
-
 
         //KK要求，當球類沒有資料時，自動選取第一個有賽事的球種
         viewModel.isNoHistory.observe(this.viewLifecycleOwner) {
@@ -1370,17 +1330,16 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         if (args.matchType != MatchType.OTHER) {
             gameTypeList.find { it.isSelected }.let { item ->
                 game_toolbar_sport_type.text = item?.name ?: resources.getString(GameType.FT.string)
-                    .toUpperCase(Locale.getDefault())
                 updateSportBackground(item)
 //                subscribeSportChannelHall(item?.code)//12/30 移除平台id与gameType後，切換SportType就不用重新訂閱了，不然會造成畫面一直閃爍 by Bill
             }
 
             //即將開賽畫面修正
             if(args.matchType == MatchType.AT_START){
-                sport_type_list.isVisible == (num != 0)
-                game_toolbar_sport_type.isVisible == (num != 0)
-                game_toolbar_champion.isVisible == (num != 0)
-                game_play_category.isVisible == (num != 0)
+                sport_type_list.visibility = if (num != 0) View.VISIBLE else View.GONE
+                game_toolbar_sport_type.visibility = if (num != 0) View.VISIBLE else View.GONE
+                game_toolbar_champion.visibility = if (num != 0) View.VISIBLE else View.GONE
+                game_play_category.visibility = if (num != 0) View.VISIBLE else View.GONE
             }
         }
     }

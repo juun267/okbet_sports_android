@@ -158,6 +158,7 @@
         <attr name="singleText" format="string" />
         <attr name="helperText" format="string" />
 
+
         <!--Colors-->
         <attr name="helperTextColor" format="color" />
         <attr name="mCounterTextColor" format="color" />
@@ -180,6 +181,7 @@
         <attr name="alwaysShowHint" format="boolean" />
         <attr name="useDenseSpacing" format="boolean" />
         <attr name="rtl" format="boolean" />
+        <attr name="hideSelectedTitle" format="boolean" />
 
         <!-- Set whether to automaticavalidateErrordate, or only on demand
                @see {@link TextFieldBoxes#setManualValidateError(boolean) } -->
