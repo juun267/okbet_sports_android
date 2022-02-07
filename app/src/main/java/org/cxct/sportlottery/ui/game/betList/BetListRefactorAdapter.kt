@@ -153,7 +153,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     parlayList?.getOrNull(position - (betList?.size ?: 0)),
                     parlayList?.size ?: 0,
                     betList ?: mutableListOf(),
-                    currentOddsType,
+                    OddsType.EU,
                     hasBetClosed,
                     hasParlayList,
                     moreOptionCollapse,
