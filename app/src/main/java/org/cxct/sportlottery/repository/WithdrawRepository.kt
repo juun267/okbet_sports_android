@@ -50,6 +50,10 @@ class WithdrawRepository(
     val needToBindBankCard: LiveData<Event<Int?>>
         get() = _needToBindBankCard //提款頁面是否需要新增銀行卡 -1 : 不需要新增, else : 以value作為string id 顯示彈窗提示
 
+    private var _needToSendTwoFactor = MutableLiveData<Event<Boolean>>()
+    val needToSendTwoFactor: LiveData<Event<Boolean>> //判斷是否需要簡訊驗證
+        get() = _needToSendTwoFactor
+
     private var mWithdrawOperation: SystemOperation? = null
 
     data class SystemOperation(
