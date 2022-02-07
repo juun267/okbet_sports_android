@@ -125,7 +125,7 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
                         } else {
                             stopSmeTimer()
                             binding.btnSendSms.isEnabled = true
-                            binding.btnSendSms.text = getString(R.string.get_verification_code)
+                            binding.btnSendSms.text = getString(R.string.login_phone_verify_get_code)
                             binding.btnSendSms.setTextColor(Color.WHITE)
                         }
                     }
