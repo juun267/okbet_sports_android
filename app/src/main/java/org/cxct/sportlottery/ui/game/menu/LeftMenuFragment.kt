@@ -141,7 +141,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog?.window?.setWindowAnimations(R.style.LeftMenu)
-        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent);
+        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
         initObserve()
         initRecyclerView()
         initButton()
