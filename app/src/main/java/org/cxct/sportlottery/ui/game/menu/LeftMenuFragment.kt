@@ -475,6 +475,16 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
             }
         }
 
+        viewModel.errorMessageDialog.observe(viewLifecycleOwner){
+            val errorMsg = it ?: getString(R.string.unknown_error)
+            this.context?.let { context -> CustomAlertDialog(context) }?.apply {
+                setMessage(errorMsg)
+                setNegativeButtonText(null)
+                setCanceledOnTouchOutside(false)
+                setCancelable(false)
+            }?.show()
+        }
+
         viewModel.twoFactorSuccess.observe(viewLifecycleOwner) {
             if (it == true)
                 customSecurityDialog?.dismiss()
