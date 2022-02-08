@@ -422,6 +422,16 @@ class ProfileCenterActivity :
                 }
             }
         }
+
+        viewModel.errorMessageDialog.observe(this){
+            val errorMsg = it ?: getString(R.string.unknown_error)
+            CustomAlertDialog(this).apply {
+                setMessage(errorMsg)
+                setNegativeButtonText(null)
+                setCanceledOnTouchOutside(false)
+                setCancelable(false)
+            }.show()
+        }
         viewModel.settingNeedToUpdateWithdrawPassword.observe(this) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
