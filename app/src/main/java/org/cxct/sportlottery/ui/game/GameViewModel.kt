@@ -2244,6 +2244,18 @@ class GameViewModel(
         return loginRepository.isLogin.value ?: false
     }
 
+    //取得使用者是否需要手機驗證
+    fun getTwoFactorValidateStatus() {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.withdrawService.getTwoFactorStatus()
+            }
+            result?.let {
+                sConfigData?.hasCertified = it.success
+            }
+        }
+    }
+
     //發送簡訊驗證碼
     fun sendTwoFactor() {
         viewModelScope.launch {
