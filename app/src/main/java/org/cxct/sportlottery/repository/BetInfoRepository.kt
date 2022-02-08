@@ -180,6 +180,7 @@ class BetInfoRepository(val androidContext: Context) {
                     _parlayList.value?.forEachIndexed { index, parlayOdd ->
                         newParlayList[index].apply {
                             betAmount = parlayOdd.betAmount
+                            inputBetAmountStr = parlayOdd.betAmount.toString()
                             allSingleInput = parlayOdd.allSingleInput
                             amountError = parlayOdd.amountError
                         }
