@@ -124,7 +124,7 @@ class WithdrawRepository(
     //提款判斷權限
     private suspend fun withdrawCheckPermissions() {
         this.checkNeedUpdatePassWord().let {
-            if ((sConfigData?.twoFactorVerified == "1" && sConfigData?.hasCertified == false) && (it || !verifyProfileInfoComplete())) {
+            if (sConfigData?.hasCertified == false && (it || !verifyProfileInfoComplete())) {
                 sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.UPDATE_PW.ordinal
                 _needToSendTwoFactor.value = Event(true)
             } else
@@ -136,7 +136,7 @@ class WithdrawRepository(
     suspend fun settingCheckPermissions() {
         this.checkNeedUpdatePassWord().let {
             //顯示簡訊認證彈窗
-            if ((sConfigData?.twoFactorVerified == "1" && sConfigData?.hasCertified == false) && (it || !verifyProfileInfoComplete())) {
+            if (sConfigData?.hasCertified == false && (it || !verifyProfileInfoComplete())) {
                 sConfigData?.enterCertified =
                     ProfileCenterViewModel.SecurityEnter.SETTING_PW.ordinal
                 _needToSendTwoFactor.value = Event(true)
@@ -155,7 +155,7 @@ class WithdrawRepository(
      * complete true: 個人資訊有缺漏, false: 個人資訊完整
      */
     suspend fun checkProfileInfoComplete() {
-        if (sConfigData?.twoFactorVerified == "1" && sConfigData?.hasCertified == false) {
+        if (sConfigData?.hasCertified == false) {
             sConfigData?.enterCertified =
                 ProfileCenterViewModel.SecurityEnter.COMPLETET_PROFILE_INFO.ordinal
             _needToSendTwoFactor.value = Event(true)
@@ -289,7 +289,7 @@ class WithdrawRepository(
                         }
                     }
 
-                    if (promptMessageId != -1 && sConfigData?.twoFactorVerified == "1" && sConfigData?.hasCertified == false) {
+                    if (promptMessageId != -1 && sConfigData?.hasCertified == false) {
                         sConfigData?.enterCertified =
                             ProfileCenterViewModel.SecurityEnter.BIND_BANK_CARD.ordinal
                         _needToSendTwoFactor.value = Event(true)

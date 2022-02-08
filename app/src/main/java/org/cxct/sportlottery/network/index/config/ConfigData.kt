@@ -86,9 +86,8 @@ data class ConfigData(
     val presetBetAmount: List<Int>?, //前台预设下注金额配置
     val systemCurrencySign: String?,
     val systemCurrency: String? = "PHP",
-    val twoFactorVerified: String? = "0", // (新增银行卡/虚拟币), 更新银行卡密码, 更新用户密码 手机验证开关 (1: 开启, 0:关闭， 默认是null:关闭)
     val customerFloating: String? = "0" //在线客服悬浮按钮开关 (1：开启，0：关闭 默认是null:关闭)
 ){
-    var hasCertified: Boolean? = false //2022/2/7 蜜蜂&阿喵討論後，如果登入狀況下已經驗證過手機簡訊，在登出之前都不用再認證 by Bill
+    var hasCertified: Boolean? = false // 取得双重验证状态 (success: true 验证成功, false 需重新验证手机)
     var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter
 }
