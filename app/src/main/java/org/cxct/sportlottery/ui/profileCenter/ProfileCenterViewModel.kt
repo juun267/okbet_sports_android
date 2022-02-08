@@ -142,17 +142,6 @@ class ProfileCenterViewModel(
         }
     }
 
-
-    fun sendSms(phone: String) {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.indexService.sendSms(
-                    SmsRequest(phone)
-                )
-            }
-            _smsResult.postValue(result)
-        }
-    }
     fun uploadImage(uploadImgRequest: UploadImgRequest) {
         viewModelScope.launch {
             doNetwork(androidContext) {
