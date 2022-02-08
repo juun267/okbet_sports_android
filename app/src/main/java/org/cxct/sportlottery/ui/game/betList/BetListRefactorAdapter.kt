@@ -691,7 +691,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         ll_more_option.visibility = View.GONE
                         if (hasParlayList) {
                             item_first_connect.visibility = View.VISIBLE
-
+                            itemData.let {
+                                it?.max = if(GameConfigManager.maxParlayBetMoney?.toLong() ?: 0 > itemData?.max?.toLong() ?: 0) itemData?.max ?: 0  else GameConfigManager.maxParlayBetMoney ?: 0
+                            }
                             setupParlayItem(
                                 itemData,
                                 OddsType.EU,
@@ -723,7 +725,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     else -> {
                         item_first_connect.visibility = View.VISIBLE
                         ll_more_option.visibility = View.VISIBLE
-
+                        itemData.let {
+                            it?.max = if(GameConfigManager.maxParlayBetMoney?.toLong() ?: 0 > itemData?.max?.toLong() ?: 0) itemData?.max ?: 0  else GameConfigManager.maxParlayBetMoney ?: 0
+                        }
                         setupParlayItem(
                             itemData,
                             OddsType.EU,
@@ -1078,6 +1082,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             onSelectedPositionListener: OnSelectedPositionListener,
             position: Int
         ) {
+            itemData.let {
+                it?.max = if(GameConfigManager.maxParlayBetMoney?.toLong() ?: 0 > itemData?.max?.toLong() ?: 0) itemData?.max ?: 0  else GameConfigManager.maxParlayBetMoney ?: 0
+            }
             setupParlayItem(
                 itemData,
                 currentOddsType,

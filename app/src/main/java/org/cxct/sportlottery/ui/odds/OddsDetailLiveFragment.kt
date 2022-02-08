@@ -192,8 +192,8 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         oddsDetailListAdapter = OddsDetailListAdapter(
             OnOddClickListener { odd, oddsDetail ->
                 matchOdd?.let { matchOdd ->
-                    matchOdd.matchInfo.homeScore = curHomeScore
-                    matchOdd.matchInfo.awayScore = curAwayScore
+                    matchOdd.matchInfo.homeScore = "$curHomeScore"
+                    matchOdd.matchInfo.awayScore = "$curAwayScore"
 
                     viewModel.updateMatchBetList(
                         matchType = MatchType.IN_PLAY,
