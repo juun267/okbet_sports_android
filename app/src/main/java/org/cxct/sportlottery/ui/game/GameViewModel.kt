@@ -290,9 +290,20 @@ class GameViewModel(
     val sportSortList: LiveData<Event<List<SportMenu>>>
         get() = _sportSortList
 
-    val smsResult: LiveData<SmsResult?>
-        get() = _smsResult
-    private val _smsResult = MutableLiveData<SmsResult?>()
+    //發送簡訊碼之後60s無法再發送
+    val twoFactorResult: LiveData<BaseSecurityCodeResult?>
+        get() = _twoFactorResult
+    private val _twoFactorResult = MutableLiveData<BaseSecurityCodeResult?>()
+
+    //錯誤提示
+    val errorMessageDialog: LiveData<String?>
+        get() = _errorMessageDialog
+    private val _errorMessageDialog = MutableLiveData<String?>()
+
+    //認證成功
+    val twoFactorSuccess: LiveData<Boolean?>
+        get() = _twoFactorSuccess
+    private val _twoFactorSuccess = MutableLiveData<Boolean?>()
 
     var sportQueryData: SportQueryData? = null
     var specialMenuData: SportQueryData? = null
