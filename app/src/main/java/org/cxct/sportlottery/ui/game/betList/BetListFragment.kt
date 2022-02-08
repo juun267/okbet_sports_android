@@ -227,8 +227,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     viewModel.removeBetInfoItem(oddsId)
                 }
 
-                override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd, position: Int) {
-                    keyboard?.showKeyboard(editText, position)
+                override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd, position: Int, max: Long) {
+                    keyboard?.showKeyboard(editText, position, max)
                 }
 
 //                override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd) {
@@ -238,9 +238,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 override fun onShowParlayKeyboard(
                     editText: EditText,
                     parlayOdd: ParlayOdd?,
-                    position: Int
+                    position: Int,
+                    max: Long
                 ) {
-                    keyboard?.showKeyboard(editText, position)
+                    keyboard?.showKeyboard(editText, position, max)
                 }
 
                 override fun onHideKeyBoard() {
