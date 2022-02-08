@@ -474,6 +474,12 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                 }
             }
         }
+
+        viewModel.twoFactorSuccess.observe(viewLifecycleOwner) {
+            if (it == true)
+                customSecurityDialog?.dismiss()
+        }
+
         viewModel.needToUpdateWithdrawPassword.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
