@@ -505,6 +505,9 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         viewModel.isLogin.observe(this) {
             getAnnouncement()
+            //登入後要請求使用者是否需要認證手機驗證碼
+            if (it)
+                viewModel.getTwoFactorValidateStatus()
         }
 
         viewModel.showBetUpperLimit.observe(this) {
