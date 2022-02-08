@@ -181,6 +181,12 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                 setCancelable(false)
             }?.show()
         }
+
+        viewModel.twoFactorSuccess.observe(viewLifecycleOwner) {
+            if (it == true)
+                customSecurityDialog?.dismiss()
+        }
+
         viewModel.needToUpdateWithdrawPassword.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
