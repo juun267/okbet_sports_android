@@ -490,9 +490,11 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     private var mNewsDialog: NewsDialog? = null
     private fun setNewsDialog(messageListResult: MessageListResult) {
         //未登入、遊客登入都要顯示彈窗
-        if (!messageListResult.rows.isNullOrEmpty()) {
+        val type = if(viewModel.isLogin.value == true) 2 else 3
+        val list = messageListResult.rows?.filter { it.type.toInt() == type}
+        if (!list.isNullOrEmpty()) {
             mNewsDialog?.dismiss()
-            mNewsDialog = NewsDialog(messageListResult.rows)
+            mNewsDialog = NewsDialog(list)
             mNewsDialog?.show(supportFragmentManager, null)
         }
     }
@@ -667,7 +669,10 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     private fun updateUiWithResult(messageListResult: MessageListResult?) {
         val titleList: MutableList<String> = mutableListOf()
         messageListResult?.let {
-            it.rows?.forEach { data -> titleList.add(data.title + " - " + data.message) }
+            it.rows?.forEach { data ->
+                if(data.type.toInt() == 1) titleList.add(data.title + " - " + data.message)
+//                titleList.add(data.title + " - " + data.message)
+            }
 
             mMarqueeAdapter.setData(titleList)
 
