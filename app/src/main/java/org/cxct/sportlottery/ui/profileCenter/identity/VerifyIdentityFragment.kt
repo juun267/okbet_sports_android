@@ -132,10 +132,6 @@ class VerifyIdentityFragment :
                         }
 
                         override fun onInterrupted(response: ZLZResponse) {
-                            showPromptDialog(
-                                getString(R.string.prompt),
-                                getString(R.string.error)
-                            ) {}
                         }
                     })
                 }
