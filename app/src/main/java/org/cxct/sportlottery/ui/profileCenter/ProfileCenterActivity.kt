@@ -13,11 +13,14 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
+import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.ui.game.GameActivity
@@ -44,6 +47,7 @@ import org.cxct.sportlottery.util.ToastUtil
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
+import java.util.*
 
 class ProfileCenterActivity :
     BaseSocketActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
