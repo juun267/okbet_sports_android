@@ -398,7 +398,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 et_clickable.setOnClickListener {
                     et_bet.isFocusable = true
-                    onItemClickListener.onShowKeyboard(et_bet, itemData.matchOdd, position)
+                    onItemClickListener.onShowKeyboard(et_bet, itemData.matchOdd, position, itemData.parlayOdds?.max?.toLong() ?: 0)
                     onSelectedPositionListener.onSelectChange(
                         bindingAdapterPosition,
                         BetViewType.SINGLE
@@ -652,7 +652,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         isFocusable = true
                         setSelection(text.length)
                     }
-                    onItemClickListener.onShowKeyboard(et_bet, itemData.matchOdd, position)
+                    onItemClickListener.onShowKeyboard(et_bet, itemData.matchOdd, position, itemData.parlayOdds?.max?.toLong() ?: 0)
                 }
             }
         }
@@ -893,7 +893,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 et_container.setOnClickListener {
                     et_bet_single.isFocusable = true
                     et_bet_single.setSelection(et_bet_single.text.length)
-                    onItemClickListener.onShowParlayKeyboard(et_bet_single, itemData, position)
+                    onItemClickListener.onShowParlayKeyboard(et_bet_single, itemData, position, getMaxOrMinAmount(isGetMax = true, betList))
                     onSelectedPositionListener.onSelectChange(
                         bindingAdapterPosition,
                         BetViewType.SINGLE
@@ -1320,7 +1320,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 et_clickable.setOnClickListener {
                     et_bet.isFocusable = true
-                    onItemClickListener.onShowParlayKeyboard(et_bet, data, position)
+                    onItemClickListener.onShowParlayKeyboard(et_bet, data, position, data.max.toLong())
                     onSelectedPositionListener.onSelectChange(
                         bindingAdapterPosition,
                         BetViewType.PARLAY
@@ -1384,7 +1384,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         isFocusable = true
                         setSelection(text.length)
                     }
-                    onItemClickListener.onShowParlayKeyboard(et_bet, itemData, position)
+                    onItemClickListener.onShowParlayKeyboard(et_bet, itemData, position, itemData.max.toLong())
                     onSelectedPositionListener.onSelectChange(
                         bindingAdapterPosition,
                         BetViewType.PARLAY
@@ -1420,8 +1420,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
     interface OnItemClickListener {
         fun onDeleteClick(oddsId: String, currentItemCount: Int)
-        fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd, position: Int)
-        fun onShowParlayKeyboard(editText: EditText, parlayOdd: ParlayOdd?, position: Int)
+        fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd, position: Int, max: Long)
+        fun onShowParlayKeyboard(editText: EditText, parlayOdd: ParlayOdd?, position: Int, max: Long)
         fun onHideKeyBoard()
         fun saveOddsHasChanged(matchOdd: MatchOdd)
         fun refreshBetInfoTotal()
