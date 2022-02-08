@@ -47,6 +47,8 @@ import java.io.FileNotFoundException
 
 class ProfileCenterActivity :
     BaseSocketActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
+    //簡訊驗證彈窗
+    private var customSecurityDialog: CustomSecurityDialog? = null
 
     private val mSelectMediaListener = object : OnResultCallbackListener<LocalMedia> {
         override fun onResult(result: MutableList<LocalMedia>?) {
@@ -401,6 +403,25 @@ class ProfileCenterActivity :
             }
         }
 
+        viewModel.needToSendTwoFactor.observe(this) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    customSecurityDialog =  CustomSecurityDialog(this).apply {
+                        getSecurityCodeClickListener {
+                            this.showSmeTimer300()
+                            viewModel.sendTwoFactor()
+                        }
+                        setNegativeClickListener {
+                            dismiss()
+                        }
+                        positiveClickListener = CustomSecurityDialog.PositiveClickListener{ number ->
+                            viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
+                        }
+                    }
+                    customSecurityDialog?.show(supportFragmentManager,null)
+                }
+            }
+        }
         viewModel.settingNeedToUpdateWithdrawPassword.observe(this) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
