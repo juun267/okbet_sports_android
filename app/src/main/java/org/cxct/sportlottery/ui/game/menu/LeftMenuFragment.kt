@@ -116,6 +116,9 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
     private var snackBarMyFavoriteNotify: Snackbar? = null
     var specialList: MutableList<MenuItemData> = mutableListOf()
 
+    //簡訊驗證彈窗
+    private var customSecurityDialog: CustomSecurityDialog? = null
+
     override fun onItemClick(position: Int) {
         super.onItemClick(position)
         viewModel.navSpecialEntrance(
@@ -450,6 +453,27 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
             }
         }
 
+        viewModel.needToSendTwoFactor.observe(this) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    context?.let { it ->
+                        customSecurityDialog = CustomSecurityDialog(it).apply {
+                            getSecurityCodeClickListener {
+                                this.showSmeTimer300()
+                                viewModel.sendTwoFactor()
+                            }
+                            setNegativeClickListener {
+                                dismiss()
+                            }
+                            positiveClickListener = CustomSecurityDialog.PositiveClickListener{ number ->
+                                viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
+                            }
+                        }
+                        customSecurityDialog?.show(parentFragmentManager,null)
+                    }
+                }
+            }
+        }
         viewModel.needToUpdateWithdrawPassword.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
