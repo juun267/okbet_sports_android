@@ -10,7 +10,6 @@ import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.bank.my.BankMyResult
-import org.cxct.sportlottery.network.common.SendSecurityCodeResult
 import org.cxct.sportlottery.network.money.config.MoneyRechCfgResult
 import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
@@ -125,11 +124,11 @@ class WithdrawRepository(
     //提款判斷權限
     private suspend fun withdrawCheckPermissions() {
         this.checkNeedUpdatePassWord().let {
-            if((sConfigData?.twoFactorVerified == "1" && sConfigData?.hasCertified == false) && (it || !verifyProfileInfoComplete())){
+            if ((sConfigData?.twoFactorVerified == "1" && sConfigData?.hasCertified == false) && (it || !verifyProfileInfoComplete())) {
                 sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.UPDATE_PW.ordinal
                 _needToSendTwoFactor.value = Event(true)
-            }else
-            _needToUpdateWithdrawPassword.value = Event(it)
+            } else
+                _needToUpdateWithdrawPassword.value = Event(it)
         }
     }
 
@@ -141,7 +140,6 @@ class WithdrawRepository(
                 sConfigData?.enterCertified =
                     ProfileCenterViewModel.SecurityEnter.SETTING_PW.ordinal
                 _needToSendTwoFactor.value = Event(true)
-
             } else {
                 if (it) {
                     _settingNeedToUpdateWithdrawPassword.value = Event(it)
@@ -157,10 +155,11 @@ class WithdrawRepository(
      * complete true: 個人資訊有缺漏, false: 個人資訊完整
      */
     suspend fun checkProfileInfoComplete() {
-        if(sConfigData?.twoFactorVerified == "1" && sConfigData?.hasCertified == false){
-            sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.COMPLETET_PROFILE_INFO.ordinal
+        if (sConfigData?.twoFactorVerified == "1" && sConfigData?.hasCertified == false) {
+            sConfigData?.enterCertified =
+                ProfileCenterViewModel.SecurityEnter.COMPLETET_PROFILE_INFO.ordinal
             _needToSendTwoFactor.value = Event(true)
-        }else
+        } else
             _needToCompleteProfileInfo.value = Event(verifyProfileInfoComplete())
     }
 
