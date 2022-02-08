@@ -322,8 +322,21 @@ class MainViewModel(
             _twoFactorResult.postValue(result)
         }
     }
+
+    //双重验证校验
+    fun validateTwoFactor(validateTwoFactorRequest: ValidateTwoFactorRequest) {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.withdrawService.validateTwoFactor(validateTwoFactorRequest)
+            }?.let { result ->
+                if(result.success){
+                    sConfigData?.hasCertified = true
+                    _twoFactorSuccess.value = true
+                    withdrawRepository.sendTwoFactor()
+                }
+                else
+                    _errorMessageDialog.value = result.msg
             }
-            _smsResult.postValue(result)
         }
     }
 }
