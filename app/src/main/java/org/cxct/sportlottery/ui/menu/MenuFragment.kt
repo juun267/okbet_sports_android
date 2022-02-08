@@ -6,18 +6,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_menu.*
 import kotlinx.android.synthetic.main.fragment_menu.iv_head
-import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
@@ -30,7 +30,6 @@ import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
-import org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.vip.VipActivity
@@ -39,7 +38,6 @@ import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.ToastUtil
 
 /**
  * 遊戲右側功能選單
