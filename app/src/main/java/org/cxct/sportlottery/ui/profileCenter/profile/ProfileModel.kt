@@ -17,7 +17,8 @@ class ProfileModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     favoriteRepository: MyFavoriteRepository,
-    private val avatarRepository: AvatarRepository
+    private val avatarRepository: AvatarRepository,
+    private val withdrawRepository: WithdrawRepository
 ) : BaseSocketViewModel(
     androidContext,
     userInfoRepository,
