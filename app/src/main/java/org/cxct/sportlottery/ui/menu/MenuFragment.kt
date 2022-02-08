@@ -47,6 +47,8 @@ import org.cxct.sportlottery.util.ToastUtil
 @SuppressLint("SetTextI18n")
 class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     private var mDownMenuListener: View.OnClickListener? = null
+    //簡訊驗證彈窗
+    private var customSecurityDialog: CustomSecurityDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
