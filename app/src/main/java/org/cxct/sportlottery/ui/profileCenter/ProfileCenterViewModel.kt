@@ -253,4 +253,13 @@ class ProfileCenterViewModel(
         }
     }
 
+    //發送簡訊驗證碼
+    fun sendTwoFactor() {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.withdrawService.sendTwoFactor()
+            }
+            _twoFactorResult.postValue(result)
+        }
+    }
 }

@@ -2244,12 +2244,14 @@ class GameViewModel(
     }
 
     //發送簡訊驗證碼
-    fun sendSms(phone: String) {
+    fun sendTwoFactor() {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                OneBoSportApi.indexService.sendSms(
-                    SmsRequest(phone)
-                )
+                OneBoSportApi.withdrawService.sendTwoFactor()
+            }
+            _twoFactorResult.postValue(result)
+        }
+    }
             }
             _smsResult.postValue(result)
         }
