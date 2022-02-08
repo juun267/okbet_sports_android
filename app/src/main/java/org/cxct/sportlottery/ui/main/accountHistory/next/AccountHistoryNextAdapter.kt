@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -208,7 +209,10 @@ class AccountHistoryNextAdapter(
                 )
                 binding.tvTeamNames.text = "$homeName v $awayName"
 
-                binding.tvStartTime.text = TimeUtil.timeFormat(startTime, TimeUtil.YMD_HM_FORMAT)
+                startTime?.let {
+                    binding.tvStartTime.text = TimeUtil.timeFormat(it, TimeUtil.YMD_HM_FORMAT)
+                }
+                binding.tvStartTime.isVisible = row.parlayType != ParlayType.OUTRIGHT.key
             }
             binding.executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
         }
