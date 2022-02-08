@@ -84,10 +84,23 @@ class MainViewModel(
         withdrawRepository.needToCompleteProfileInfo //提款頁面是否需要完善個人資料 true: 需要, false: 不需要
     val needToBindBankCard =
         withdrawRepository.needToBindBankCard //提款頁面是否需要新增銀行卡 -1 : 不需要新增, else : 以value作為string id 顯示彈窗提示
+    val needToSendTwoFactor =
+        withdrawRepository.needToSendTwoFactor //判斷是不是要進行手機驗證 (登入後只需一次) true: 需要, false: 不需要
 
-    val smsResult: LiveData<SmsResult?>
-        get() = _smsResult
-    private val _smsResult = MutableLiveData<SmsResult?>()
+    //發送簡訊碼之後60s無法再發送
+    val twoFactorResult: LiveData<BaseSecurityCodeResult?>
+        get() = _twoFactorResult
+    private val _twoFactorResult = MutableLiveData<BaseSecurityCodeResult?>()
+
+    //錯誤提示
+    val errorMessageDialog: LiveData<String?>
+        get() = _errorMessageDialog
+    private val _errorMessageDialog = MutableLiveData<String?>()
+
+    //認證成功
+    val twoFactorSuccess: LiveData<Boolean?>
+        get() = _twoFactorSuccess
+    private val _twoFactorSuccess = MutableLiveData<Boolean?>()
 
     //獲取系統公告及跑馬燈
     fun getAnnouncement() {
