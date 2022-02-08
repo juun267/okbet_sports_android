@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -483,7 +482,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
 
                 if (itemData.betAmount > 0) {
-                    Log.e(">>>", "setupOddInfo1 data.inputBetAmountStr = ${itemData.inputBetAmountStr}")
                     et_bet.setText(itemData.inputBetAmountStr)
                     et_bet.setSelection(et_bet.text.length)
                     tv_check_maximum_limit.visibility = View.GONE
@@ -1191,7 +1189,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         private fun setupOddInfo(data: ParlayOdd, currentOddsType: OddsType) {
             itemView.apply {
                 if (data.betAmount > 0) {
-                    Log.e(">>>", "setupOddInfo2 data.inputBetAmountStr = ${data.inputBetAmountStr}")
                     itemView.apply {
                         tv_check_maximum_limit.visibility = View.GONE
                         ll_bet_quota_detail.visibility = View.GONE
