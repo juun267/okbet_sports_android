@@ -81,6 +81,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         setupQQ()
         setupPhone()
         setupMail()
+        setupAddress()
         setupWeChat()
         setupZalo()
         setupFacebook()
@@ -200,6 +201,10 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
     }
 
+    private fun setupAddress() {
+        binding.etAddress.visibility = if (sConfigData?.enableAddress == FLAG_OPEN) View.VISIBLE else View.GONE
+    }
+
     private fun setupWeChat() {
         binding.etWeChat.visibility =
             if (sConfigData?.enableWechat == FLAG_OPEN) View.VISIBLE else View.GONE
@@ -292,6 +297,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 eetQq.text.toString(),
                 eetPhone.text.toString(),
                 eetMail.text.toString(),
+                eetAddress.text.toString(),
                 eetWeChat.text.toString(),
                 eetZalo.text.toString(),
                 eetFacebook.text.toString(),
@@ -370,6 +376,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     eetQq.text.toString(),
                     eetPhone.text.toString(),
                     eetMail.text.toString(),
+                    eetAddress.text.toString(),
                     eetWeChat.text.toString(),
                     eetZalo.text.toString(),
                     eetFacebook.text.toString(),

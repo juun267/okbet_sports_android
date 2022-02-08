@@ -483,6 +483,10 @@ object ErrorUtils {
                             null
                         ) as T
                     }
+                    (url.contains(Constants.INDEX_VALIDATE_LOGIN_DEVICE_SMS)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return LogoutResult(it.code, it.msg, it.success) as T
+                    }
                     (url.contains(USER_CREDIT_CIRCLE_HISTORY)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return CreditCircleHistoryResult(

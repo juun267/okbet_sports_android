@@ -1,19 +1,16 @@
 package org.cxct.sportlottery.ui.login.signIn
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import cn.jpush.android.api.JPushInterface
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_login.*
 import org.cxct.sportlottery.BuildConfig
-import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID
-import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID_DEVICE_CODE
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityLoginBinding
 import org.cxct.sportlottery.network.index.login.LoginRequest
@@ -24,13 +21,13 @@ import org.cxct.sportlottery.repository.LOGIN_SRC
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.common.SelfLimitFrozeErrorDialog
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.util.BitmapUtil
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.ToastUtil
-import timber.log.Timber
 import java.util.*
 import org.cxct.sportlottery.widget.boundsEditText.SimpleTextChangedWatcher
 
@@ -41,6 +38,7 @@ import org.cxct.sportlottery.widget.boundsEditText.SimpleTextChangedWatcher
 class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private lateinit var binding: ActivityLoginBinding
+    private val SELFLIMIT = 1130
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -181,7 +179,9 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 //        val deviceSn =
 //            getSharedPreferences(UUID_DEVICE_CODE, Context.MODE_PRIVATE).getString(UUID, "") ?: ""
 //        Timber.d("UUID = $deviceSn")
-
+        val deviceId = Settings.Secure.getString(
+            applicationContext.contentResolver, Settings.Secure.ANDROID_ID
+        )
         val loginRequest = LoginRequest(
             account = account,
             password = MD5Util.MD5Encode(password),
@@ -189,7 +189,8 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             deviceSn = deviceSn,
             validCodeIdentity = validCodeIdentity,
             validCode = validCode,
-            appVersion = BuildConfig.VERSION_NAME
+            appVersion = BuildConfig.VERSION_NAME,
+            loginEnvInfo = deviceId
         )
         viewModel.login(loginRequest, password)
 
@@ -238,15 +239,23 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     private fun updateUiWithResult(loginResult: LoginResult) {
         hideLoading()
         if (loginResult.success) {
-            this.run {
-                if (sConfigData?.thirdOpen == FLAG_OPEN)
-                    MainActivity.reStart(this)
-                else
-                    GameActivity.reStart(this)
+            if(loginResult.loginData?.deviceValidateStatus == 0){
+                startActivity(Intent(this@LoginActivity, PhoneVerifyActivity::class.java))
+            }else{
+                this.run {
+                    if (sConfigData?.thirdOpen == FLAG_OPEN)
+                        MainActivity.reStart(this)
+                    else
+                        GameActivity.reStart(this)
+                }
             }
         } else {
             updateValidCode()
-            showErrorDialog(loginResult.msg)
+            if(loginResult.code == SELFLIMIT){
+                showSelfLimitFrozeErrorDialog(loginResult.msg)
+            }else{
+                showErrorDialog(loginResult.msg)
+            }
         }
     }
 
@@ -272,6 +281,12 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         dialog.setNegativeButtonText(null)
         dialog.setCanceledOnTouchOutside(false)
         dialog.setCancelable(false)
+        dialog.show()
+    }
+
+    private fun showSelfLimitFrozeErrorDialog(errorMsg: String?) {
+        val dialog = SelfLimitFrozeErrorDialog(this)
+        dialog.setMessage(errorMsg)
         dialog.show()
     }
 }

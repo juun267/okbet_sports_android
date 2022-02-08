@@ -10,6 +10,6 @@
         android:color="#1053AF"/>
 
     <stroke android:width="2dp"
-        android:color="@color/transparent"/>
+        android:color="@color/transparent_black_0"/>
 
 </shape>

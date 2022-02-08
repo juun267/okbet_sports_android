@@ -38,6 +38,7 @@ import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
+import org.cxct.sportlottery.ui.selflimit.SelfLimitActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.JumpUtil
@@ -232,6 +233,16 @@ class ProfileCenterActivity :
                 else -> { // TODO 20220108 沒有遊客的話，要確認一下文案是否正確 by Hewie
                     ToastUtil.showToastInCenter(this, getString(R.string.message_guest_no_permission))
                 }
+            }
+        }
+
+        //自我約束
+        if(sConfigData?.selfRestraintVerified == "0" ||sConfigData?.selfRestraintVerified == null){
+            btn_self_limit.visibility = View.GONE
+        }else{
+            btn_self_limit.visibility = View.VISIBLE
+            btn_self_limit.setOnClickListener {
+                startActivity(Intent(this, SelfLimitActivity::class.java))
             }
         }
 

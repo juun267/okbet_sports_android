@@ -3,22 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/identity_navigation"
-    app:startDestination="@id/credentialsFragment">
+    app:startDestination="@id/verifyIdentityFragment">
 
     <fragment
-        android:id="@+id/credentialsFragment"
-        android:name="org.cxct.sportlottery.ui.profileCenter.identity.CredentialsFragment"
-        android:label="fragment_credentials"
-        tools:layout="@layout/fragment_credentials">
-        <action android:id="@+id/action_credentialsFragment_to_credentialsDetailFragment"
-            app:destination="@id/credentialsDetailFragment"
-            app:enterAnim="@anim/enter_from_right"
-            app:popExitAnim="@anim/exit_to_right"
-            />
+        android:id="@+id/verifyIdentityFragment"
+        android:name="org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityFragment"
+        android:label="fragment_verifyIdentity_new"
+        tools:layout="@layout/fragment_verify_identity_new">
+        <action
+            android:id="@+id/action_verifyIdentityFragment_to_verifyDetailFragment"
+            app:destination="@id/verifyIdentityDetailFragment">
+            <argument
+                android:name="data"
+                app:argType="org.cxct.sportlottery.network.credential.CredentialCompleteData"
+                app:nullable="false" />
+        </action>
     </fragment>
     <fragment
-        android:id="@+id/credentialsDetailFragment"
-        android:name="org.cxct.sportlottery.CredentialsDetailFragment"
-        android:label="fragment_credentials_detail"
-        tools:layout="@layout/fragment_credentials_detail" />
+        android:id="@+id/verifyIdentityDetailFragment"
+        android:name="org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDetailFragment"
+        android:label="VerifyIdentityDetailFragment"
+        tools:layout="@layout/fragment_verify_identity_detail_new">
+
+        <argument
+            android:name="data"
+            app:argType="org.cxct.sportlottery.network.credential.CredentialCompleteData"
+            app:nullable="false" />
+    </fragment>
 </navigation>

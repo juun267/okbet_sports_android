@@ -34,6 +34,7 @@ import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.favorite.MyFavoriteViewModel
 import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.profileCenter.creditrecord.CreditRecordViewModel
+import org.cxct.sportlottery.ui.selflimit.SelfLimitViewModel
 import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.ui.statistics.StatisticsViewModel
 import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusViewModel
@@ -75,6 +76,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { ModifyProfileInfoViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { SettingPasswordViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { FeedbackViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { SelfLimitViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { FinanceViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { ProfileCenterViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
         viewModel { VersionUpdateViewModel(get(), get(), get(), get()) }
@@ -105,6 +107,7 @@ class MultiLanguagesApplication : Application() {
         single { WithdrawRepository(get()) }
         single { PlayQuotaComRepository() }
         single { MyFavoriteRepository() }
+        single { SelfLimitRepository() }
     }
 
 

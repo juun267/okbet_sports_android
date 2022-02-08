@@ -1,0 +1,138 @@
+package org.cxct.sportlottery.ui.selflimit
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.FragmentSelfLimitFrozeBinding
+import org.cxct.sportlottery.repository.FLAG_OPEN
+import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.login.afterTextChanged
+import org.cxct.sportlottery.ui.main.MainActivity
+
+class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel::class),
+    View.OnClickListener {
+
+    private lateinit var binding: FragmentSelfLimitFrozeBinding
+
+    override fun onClick(v: View?) {
+        when (v) {
+            binding.llImportant -> {
+                val dialog = SelfLimitFrozeImportantDialog(requireContext(), false)
+                dialog.setCanceledOnTouchOutside(true)
+                dialog.setCancelable(true)
+                dialog.show()
+            }
+            binding.btnConfirm -> {
+                submit()
+            }
+        }
+    }
+
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        viewModel.showToolbar(true)
+        viewModel.setToolbarName(getString(R.string.selfLimit))
+        binding = FragmentSelfLimitFrozeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+        initObserve()
+        initEditText()
+        initDataLive()
+        resetView()
+    }
+
+    private fun resetView() {
+        binding.llSelfLimit.isSelected = false
+        binding.tvError.visibility = View.GONE
+        binding.btnConfirm.isEnabled = false
+    }
+
+    private fun initEditText() {
+        binding.etFrozeDay.afterTextChanged {
+            when {
+                it.isNullOrBlank() -> viewModel.setFrozeEditTextError(true)
+                it.toLong() in 1..999 -> viewModel.setFrozeEditTextError(false)
+                else -> viewModel.setFrozeEditTextError(true)
+            }
+        }
+    }
+
+    private fun initView() {
+        binding.llImportant.setOnClickListener(this)
+        binding.btnConfirm.setOnClickListener(this)
+    }
+
+    private fun initObserve() {
+        viewModel.isFrozeEditTextError.observe(this.viewLifecycleOwner) { showError ->
+            if (showError) {
+                binding.llSelfLimit.isSelected = true
+                binding.tvError.visibility = View.VISIBLE
+            } else {
+                binding.llSelfLimit.isSelected = false
+                binding.tvError.visibility = View.GONE
+            }
+
+            binding.btnConfirm.isEnabled = !showError
+        }
+    }
+
+    private fun submit() {
+        val dialog = CustomAlertDialog(requireContext()).apply {
+            setTitle(getString(R.string.selfLimit_confirm))
+            setMessage(getString(R.string.selfLimit_confirm_content))
+            setPositiveButtonText(getString(R.string.btn_confirm))
+            setNegativeButtonText(getString(R.string.btn_cancel))
+            setPositiveClickListener(View.OnClickListener {
+                viewModel.setFroze(binding.etFrozeDay.text.toString().toInt())
+                dismiss()
+            })
+            setNegativeClickListener {
+                dismiss()
+            }
+            setCanceledOnTouchOutside(false)
+            setCancelable(false) //不能用系統 BACK 按鈕關閉 dialog
+            show()
+        }
+    }
+
+    private fun initDataLive() {
+        viewModel.frozeResult.observe(viewLifecycleOwner, {
+
+            if (it.success) {
+                val dialog = CustomAlertDialog(requireActivity()).apply {
+                    setTitle(getString(R.string.selfLimit_confirm))
+                    setMessage(getString(R.string.selfLimit_confirm_done))
+                    setNegativeButtonText(null)
+                    setCancelable(false)
+                    setPositiveButtonText(getString(R.string.btn_confirm))
+                    setPositiveClickListener(View.OnClickListener {
+                        dismiss()
+                        viewModel.doLogoutCleanUser {
+                            run {
+                                if (sConfigData?.thirdOpen == FLAG_OPEN)
+                                    MainActivity.reStart(requireContext())
+                                else
+                                    GameActivity.reStart(requireContext())
+                            }
+                        }
+                    })
+                }
+                dialog.show()
+            }
+
+        })
+    }
+
+}

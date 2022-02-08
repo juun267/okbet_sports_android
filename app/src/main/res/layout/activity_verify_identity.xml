@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.profileCenter.identity.IdentityActivity">
+    tools:context=".ui.profileCenter.identity.VerifyIdentityActivity">
 
     <include
         layout="@layout/view_base_tool_bar_no_drawer"/>
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toBottomOf="@+id/app_bar_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:navGraph="@navigation/identity_navigation"
-        tools:layout="@layout/fragment_credentials"
+        tools:layout="@layout/fragment_verify_identity_new"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

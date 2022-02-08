@@ -10,6 +10,10 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.BaseSecurityCodeResult
 import org.cxct.sportlottery.network.index.sendSms.SmsRequest
 import org.cxct.sportlottery.network.index.sendSms.SmsResult
+import org.cxct.sportlottery.network.credential.CredentialCompleteRequest
+import org.cxct.sportlottery.network.credential.CredentialCompleteResult
+import org.cxct.sportlottery.network.credential.CredentialInitialRequest
+import org.cxct.sportlottery.network.credential.CredentialResult
 import org.cxct.sportlottery.network.uploadImg.*
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
@@ -94,10 +98,44 @@ class ProfileCenterViewModel(
         get() = _twoFactorSuccess
     private val _twoFactorSuccess = MutableLiveData<Boolean?>()
 
+    val credentialInitialResult: LiveData<Event<CredentialResult?>>
+        get() = _credentialInitialResult
+    private val _credentialInitialResult = MutableLiveData<Event<CredentialResult?>>()
+
+    val credentialCompleteResult: LiveData<Event<CredentialCompleteResult?>>
+        get() = _credentialCompleteResult
+    private val _credentialCompleteResult = MutableLiveData<Event<CredentialCompleteResult?>>()
 
     fun getUserInfo() {
         viewModelScope.launch {
             userInfoRepository.getUserInfo()
+        }
+    }
+
+    fun getCredentialInitial(metaInfo: String, docType: String) {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.credentialService.getCredentialInitial(
+                    CredentialInitialRequest(
+                        metaInfo,
+                        docType
+                    )
+                )
+            }?.let { result ->
+                _credentialInitialResult.postValue(Event(result))
+            }
+        }
+    }
+
+    fun getCredentialCompleteResult(transactionId: String?) {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.credentialService.getCredentialComplete(
+                    CredentialCompleteRequest(transactionId)
+                )
+            }?.let { result ->
+                _credentialCompleteResult.postValue(Event(result))
+            }
         }
     }
 

@@ -6,14 +6,17 @@ import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_LOGOUT
 import org.cxct.sportlottery.network.Constants.INDEX_REGISTER
+import org.cxct.sportlottery.network.Constants.INDEX_SEND_LOGIN_DEVICE_SMS
 import org.cxct.sportlottery.network.Constants.INDEX_SEND_SMS
 import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_CODE
+import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_LOGIN_DEVICE_SMS
 import org.cxct.sportlottery.network.Constants.LOGIN_FOR_GUEST
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.checktoken.CheckTokenResult
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
+import org.cxct.sportlottery.network.index.login.ValidateLoginDeviceSmsRequest
 import org.cxct.sportlottery.network.index.login_for_guest.LoginForGuestRequest
 import org.cxct.sportlottery.network.index.logout.LogoutRequest
 import org.cxct.sportlottery.network.index.logout.LogoutResult
@@ -33,6 +36,12 @@ interface IndexService {
 
     @POST(INDEX_LOGIN)
     suspend fun login(@Body loginRequest: LoginRequest): Response<LoginResult>
+
+    @POST(INDEX_SEND_LOGIN_DEVICE_SMS)
+    suspend fun sendLoginDeviceSms(): Response<LogoutResult>
+
+    @POST(INDEX_VALIDATE_LOGIN_DEVICE_SMS)
+    suspend fun validateLoginDeviceSms(@Body validateLoginDeviceSmsRequest: ValidateLoginDeviceSmsRequest): Response<LogoutResult>
 
     @POST(INDEX_LOGOUT)
     suspend fun logout(@Body logoutRequest: LogoutRequest): Response<LogoutResult>

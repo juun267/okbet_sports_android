@@ -112,11 +112,11 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
     }
 
     private fun initObserve() {
-        viewModel.userInfo.observe(this.viewLifecycleOwner, {
+        viewModel.userInfo.observe(this.viewLifecycleOwner) {
             outrightLeagueOddAdapter.discount = it?.discount ?: 1.0F
-        })
+        }
 
-        viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner, {
+        viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner) {
             hideLoading()
 
             it.getContentIfNotHandled()?.let { outrightOddsListResult ->
@@ -155,9 +155,9 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                     }
                 }
             }
-        })
+        }
 
-        viewModel.betInfoList.observe(this.viewLifecycleOwner, {
+        viewModel.betInfoList.observe(this.viewLifecycleOwner) {
             it.peekContent().let {
                 val odds = mutableListOf<Odd>()
 
@@ -175,18 +175,18 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
 
                 outrightLeagueOddAdapter.notifyDataSetChanged()
             }
-        })
+        }
 
-        viewModel.oddsType.observe(this.viewLifecycleOwner, {
+        viewModel.oddsType.observe(this.viewLifecycleOwner) {
             it?.let { oddsType ->
                 outrightLeagueOddAdapter.oddsType = oddsType
             }
-        })
+        }
     }
 
     private fun initSocketObserver() {
 
-        receiver.oddsChange.observe(this.viewLifecycleOwner, {
+        receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.updateOddsSelectedState()
 
@@ -198,9 +198,9 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                     }
                 }
             }
-        })
+        }
 
-        receiver.matchOddsLock.observe(this.viewLifecycleOwner, {
+        receiver.matchOddsLock.observe(this.viewLifecycleOwner) {
             it?.let { matchOddsLockEvent ->
                 outrightLeagueOddAdapter.data.forEachIndexed { index, matchOdd ->
                     if (matchOdd?.matchInfo?.id == matchOddsLockEvent.matchId) {
@@ -213,9 +213,9 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                     }
                 }
             }
-        })
+        }
 
-        receiver.globalStop.observe(this.viewLifecycleOwner, {
+        receiver.globalStop.observe(this.viewLifecycleOwner) {
             it?.let { globalStopEvent ->
 
                 outrightLeagueOddAdapter.data.forEachIndexed { index, matchOdd ->
@@ -226,15 +226,15 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                     }
                 }
             }
-        })
+        }
 
-        receiver.producerUp.observe(this.viewLifecycleOwner, {
+        receiver.producerUp.observe(this.viewLifecycleOwner) {
             unSubscribeChannelHallAll()
 
             outrightLeagueOddAdapter.data.forEach { matchOdd ->
                 subscribeChannelHall(matchOdd)
             }
-        })
+        }
     }
 
     private fun initView() {

@@ -27,6 +27,7 @@ data class ConfigData(
     val enableTelegram: String?, //是否开启Telegram(1：开启，0：关闭)
     val enableValidCode: String?, //是否开启登录验证码(1：开启，0：关闭)
     val enableWechat: String?, //是否开启微信检测(1：开启，0：关闭)
+    val enableAddress: String?, //是否开启address(1：开启，0：关闭)
     val enableWhatsApp: String?, //是否开启WhatsApp(1：开启，0：关闭)
     val enableWithdrawEmail: String?, //提现时Email不能为空
     val enableWithdrawFullName: String?, //提现时真实姓名不能为空
@@ -83,11 +84,22 @@ data class ConfigData(
     val liveUrl: String?,
     val analysisUrl: String?,
     val referUrl: String?,
+    val enableMinRemainingBalance: String?,//是否启用账户首次提现最小剩余额度(1：开启，0：关闭)
+    val minRemainingBalance: String?,//账户首次提现最小剩余额度
     val presetBetAmount: List<Int>?, //前台预设下注金额配置
     val systemCurrencySign: String?,
     val systemCurrency: String? = "PHP",
+
+    val realNameWithdrawVerified: String? = null ,//提现实名制验证开关 (1：开启，0：关闭， 默认是null:关闭)
+    val perBetMaxAmount: String?,
+    val perBetMinAmount: String?,
+    val selfRestraintVerified: String?,
     val customerFloating: String? = "0" //在线客服悬浮按钮开关 (1：开启，0：关闭 默认是null:关闭)
 ){
     var hasCertified: Boolean? = false // 取得双重验证状态 (success: true 验证成功, false 需重新验证手机)
     var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter
+}
+
+enum class VerifySwitchType(val value: String) {
+    OPEN("1"), CLOSE("0")
 }

@@ -691,10 +691,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         ll_more_option.visibility = View.GONE
                         if (hasParlayList) {
                             item_first_connect.visibility = View.VISIBLE
-
+                            itemData.let {
+                                it?.max = if(GameConfigManager.maxParlayBetMoney?.toLong() ?: 0 > itemData?.max?.toLong() ?: 0) itemData?.max ?: 0  else GameConfigManager.maxParlayBetMoney ?: 0
+                            }
                             setupParlayItem(
                                 itemData,
-                                currentOddsType,
+                                OddsType.EU,
                                 hasBetClosed,
                                 true,
                                 onItemClickListener,
@@ -723,10 +725,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     else -> {
                         item_first_connect.visibility = View.VISIBLE
                         ll_more_option.visibility = View.VISIBLE
-
+                        itemData.let {
+                            it?.max = if(GameConfigManager.maxParlayBetMoney?.toLong() ?: 0 > itemData?.max?.toLong() ?: 0) itemData?.max ?: 0  else GameConfigManager.maxParlayBetMoney ?: 0
+                        }
                         setupParlayItem(
                             itemData,
-                            currentOddsType,
+                            OddsType.EU,
                             hasBetClosed,
                             true,
                             onItemClickListener,
@@ -931,7 +935,31 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         ): Double {
             var allWinnableAmount = 0.0
             betList.forEach {
-                allWinnableAmount += getOdds(it.matchOdd, currentOddsType) * betAmount
+                var win = 0.0
+                when (currentOddsType) {
+                    OddsType.MYS -> {
+                        if (getOdds(it.matchOdd, currentOddsType) < 0) {
+                            win = betAmount
+                        } else {
+                            win = betAmount * getOdds(it.matchOdd, currentOddsType)
+                        }
+
+                    }
+                    OddsType.IDN -> {
+                        if (getOdds(it.matchOdd, currentOddsType) < 0) {
+                            win = betAmount
+                        } else {
+                            win = betAmount * getOdds(it.matchOdd, currentOddsType)
+                        }
+                    }
+                    OddsType.EU -> {
+                        win = betAmount * (getOdds(it.matchOdd, currentOddsType) - 1)
+                    }
+                    else  -> {
+                        win = betAmount * getOdds(it.matchOdd, currentOddsType)
+                    }
+                }
+                allWinnableAmount += win
             }
             return allWinnableAmount
         }
@@ -1054,6 +1082,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             onSelectedPositionListener: OnSelectedPositionListener,
             position: Int
         ) {
+            itemData.let {
+                it?.max = if(GameConfigManager.maxParlayBetMoney?.toLong() ?: 0 > itemData?.max?.toLong() ?: 0) itemData?.max ?: 0  else GameConfigManager.maxParlayBetMoney ?: 0
+            }
             setupParlayItem(
                 itemData,
                 currentOddsType,

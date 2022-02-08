@@ -22,8 +22,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0.62"
-
+        versionName "1.0.66"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -140,6 +139,10 @@ android {
         OkbetPH.res.srcDirs = ['src/okbet_ph/res']
         WinbetCN.res.srcDirs = ['src/winbet_cn/res']
         spnew1.res.srcDirs = ['src/okbet_ph/res']
+        
+        main {
+            jniLibs.srcDirs = ['src/main/libs']
+        }
     }
 
     compileOptions {
@@ -201,11 +204,11 @@ android {
 
 ext {
     version_retrofit = "2.9.0"
-    version_room = "2.2.6"
+    version_room = "2.4.0-alpha03"
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.dynamicanimation:dynamicanimation-ktx:1.0.0-alpha03'
 
@@ -324,6 +327,15 @@ dependencies {
     //LoopingSnapHelper
     implementation 'com.github.beksomega:loopinglayout:0.4.1'
 
+    //實名認證影像辨識套件
+    implementation 'com.zoloz.android.build:zolozkit:1.0.3'
+    implementation "com.squareup.okio:okio:1.7.0@jar"
+    implementation "com.alibaba:fastjson:1.1.68.android"
+    
+}
+
+repositories {
+    mavenCentral()
 }
 
 multiLanguages {

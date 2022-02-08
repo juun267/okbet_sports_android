@@ -305,8 +305,8 @@ class OddsGameCardAdapter(
         data.forEachIndexed { index, matchInfo ->
             if (matchInfo?.id == matchStatusCO?.matchId) {
                 matchStatusCO?.let {
-                    data[index]?.homeScore = it.homeScore
-                    data[index]?.awayScore = it.awayScore
+                    data[index]?.homeScore = "${it.homeScore}"
+                    data[index]?.awayScore = "${it.awayScore}"
                     matchStatusCOList[index] = matchStatusCO
 
                 }

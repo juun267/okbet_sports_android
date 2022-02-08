@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.transactionStatus
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -176,8 +177,10 @@ class TransactionRecordDiffAdapter :
                     TextUtil.formatForOdd(matchOdds.odds),
                     oddsTypeStr
                 )
-
-                play_time.text = TimeUtil.timeFormat(matchOdds.startTime, TimeUtil.YMD_HM_FORMAT)
+                matchOdds.startTime?.let {
+                    play_time.text = TimeUtil.timeFormat(it, TimeUtil.YMD_HM_FORMAT)
+                }
+                play_time.isVisible = data.parlayType != ParlayType.OUTRIGHT.key
                 content_bet_amount.text = TextUtil.format(data.totalAmount)
                 content_winnable_amount.text = TextUtil.format(data.winnable)
                 content_order_no.text = data.orderNo

@@ -169,6 +169,15 @@ class UserInfoRepository(private val androidContext: Context) {
         MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
     }
 
+    suspend fun updateVerified(userId: Long, verified: Int) {
+//        withContext(Dispatchers.IO) {
+//            userInfoDao.updateVerified(userId, verified)
+//        }
+        val userInfo = MultiLanguagesApplication.getInstance()?.userInfo()
+        userInfo?.verified = verified
+        MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
+    }
+
     private fun transform(userInfoData: UserInfoData) =
         UserInfo(
             userInfoData.userId,
@@ -193,7 +202,9 @@ class UserInfoRepository(private val androidContext: Context) {
             maxBetMoney = userInfoData.maxBetMoney,
             maxCpBetMoney = userInfoData.maxCpBetMoney,
             maxParlayBetMoney = userInfoData.maxParlayBetMoney,
-            discount = userInfoData.discount
+            discount = userInfoData.discount,
+            verified = userInfoData.verified,
+            perBetLimit = userInfoData.perBetLimit
         )
 
 }

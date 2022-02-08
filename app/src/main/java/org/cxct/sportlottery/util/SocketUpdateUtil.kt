@@ -45,16 +45,33 @@ object SocketUpdateUtil {
                         matchOdd.matchInfo?.statusName18n = statusValue
                         isNeedRefresh = true
                     }
+                    if (matchStatusCO.gameType == GameType.CK.key) {
 
-                    if (matchStatusCO.homeScore != null && matchStatusCO.homeScore != matchOdd.matchInfo?.homeScore) {
-                        matchOdd.matchInfo?.homeScore = matchStatusCO.homeScore
-                        isNeedRefresh = true
+                        val homeTotal = matchStatusCO.homeTotalScore ?: 0
+                        val homeOut = matchStatusCO.homeOut ?: 0
+                        if (matchStatusCO.homeScore != null && matchStatusCO.homeScore.toString() != "${homeTotal}/${homeOut}") {
+                            matchOdd.matchInfo?.homeScore = "${homeTotal}/${homeOut}"
+                            isNeedRefresh = true
+                        }
+
+
+                        val awayTotal = matchStatusCO.awayTotalScore ?: 0
+                        val awayOut = matchStatusCO.awayOut ?: 0
+                        if (matchStatusCO.awayScore != null && matchStatusCO.awayScore.toString() != "${awayTotal}/${awayOut}") {
+                            matchOdd.matchInfo?.awayScore = "${awayTotal}/${awayOut}"
+                            isNeedRefresh = true
+                        }
+                    } else {
+                        if (matchStatusCO.homeScore != null && matchStatusCO.homeScore.toString() != matchOdd.matchInfo?.homeScore) {
+                            matchOdd.matchInfo?.homeScore = "${matchStatusCO.homeScore}"
+                            isNeedRefresh = true
+                        }
+                        if (matchStatusCO.awayScore != null && matchStatusCO.awayScore.toString() != matchOdd.matchInfo?.awayScore) {
+                            matchOdd.matchInfo?.awayScore = "${matchStatusCO.awayScore}"
+                            isNeedRefresh = true
+                        }
                     }
 
-                    if (matchStatusCO.awayScore != null && matchStatusCO.awayScore != matchOdd.matchInfo?.awayScore) {
-                        matchOdd.matchInfo?.awayScore = matchStatusCO.awayScore
-                        isNeedRefresh = true
-                    }
 
                     if ((gameType == GameType.TN.key || gameType == GameType.VB.key || gameType == GameType.TT.key) && matchStatusCO.homeTotalScore != null && matchStatusCO.homeTotalScore != matchOdd.matchInfo?.homeTotalScore) {
                         matchOdd.matchInfo?.homeTotalScore = matchStatusCO.homeTotalScore
