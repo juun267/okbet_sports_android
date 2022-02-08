@@ -132,6 +132,13 @@ class WithdrawRepository(
         }
     }
 
+    fun checkNeedToSendTwoFactor() {
+        if (sConfigData?.hasCertified == false)
+            _needToSendTwoFactor.value = Event(true)
+        else
+            _needToSendTwoFactor.value = Event(false)
+    }
+
     //提款設置判斷權限, 判斷需不需要更新提現密碼 -> 個人資料是否完善
     suspend fun settingCheckPermissions() {
         this.checkNeedUpdatePassWord().let {
