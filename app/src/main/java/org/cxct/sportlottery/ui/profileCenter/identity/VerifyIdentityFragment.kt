@@ -122,6 +122,7 @@ class VerifyIdentityFragment :
                         LanguageManager.Language.VI -> "vi-VN"
                         else -> "en-US"
                     }
+                    bizConfig[ZLZConstants.CHAMELEON_CONFIG_PATH] = "config_realId.zip"
                 }
                 transactionId = it.data.transactionId
 
