@@ -5,13 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.Spanned
-import android.text.TextUtils
 import android.view.*
-import android.view.inputmethod.InputMethodManager
-import androidx.annotation.ColorRes
-import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_security_code_submit.*
 import org.cxct.sportlottery.R
