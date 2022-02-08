@@ -147,6 +147,28 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             }
         }
 
+        viewModel.needToSendTwoFactor.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    context?.let { it ->
+                        customSecurityDialog =  CustomSecurityDialog(it).apply {
+                            getSecurityCodeClickListener {
+                                this.showSmeTimer300()
+                                viewModel.sendTwoFactor()
+                            }
+                            setNegativeClickListener {
+                                dismiss()
+                            }
+                            positiveClickListener = CustomSecurityDialog.PositiveClickListener{ number ->
+                                viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
+                            }
+                        }
+
+                        customSecurityDialog?.show(parentFragmentManager,null)
+                    }
+                }
+            }
+        }
         viewModel.needToUpdateWithdrawPassword.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
