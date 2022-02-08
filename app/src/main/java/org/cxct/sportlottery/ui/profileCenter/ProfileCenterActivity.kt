@@ -432,6 +432,12 @@ class ProfileCenterActivity :
                 setCancelable(false)
             }.show()
         }
+
+        viewModel.twoFactorSuccess.observe(this) {
+            if (it == true)
+                customSecurityDialog?.dismiss()
+        }
+
         viewModel.settingNeedToUpdateWithdrawPassword.observe(this) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
