@@ -16,10 +16,13 @@ import kotlinx.android.synthetic.main.activity_profile.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
+import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.IdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
@@ -31,6 +34,9 @@ import java.io.File
 import java.io.FileNotFoundException
 
 class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
+
+    //簡訊驗證彈窗
+    private var customSecurityDialog: CustomSecurityDialog? = null
 
     private val mSelectMediaListener = object : OnResultCallbackListener<LocalMedia> {
         override fun onResult(result: MutableList<LocalMedia>?) {
@@ -105,7 +111,12 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         //暱稱
         btn_nickname.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.NickName) }
         //密碼設置
-        btn_pwd_setting.setOnClickListener { startActivity(Intent(this@ProfileActivity, SettingPasswordActivity::class.java)) }
+        btn_pwd_setting.setOnClickListener {
+            viewModel.checkNeedToSendTwoFactor()//檢查有需不需要簡訊認證
+            //TODO Bill 邏輯要再調整
+            if (sConfigData?.hasCertified == true)
+                startActivity(Intent(this@ProfileActivity, SettingPasswordActivity::class.java))
+        }
         //QQ號碼
         ll_qq_number.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.QQNumber) }
         //郵箱
@@ -162,6 +173,41 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
             it?.let { setWithdrawInfo(it) }
         })
+
+        viewModel.needToSendTwoFactor.observe(this) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    customSecurityDialog =  CustomSecurityDialog(this).apply {
+                        getSecurityCodeClickListener {
+                            this.showSmeTimer300()
+                            viewModel.sendTwoFactor()
+                        }
+                        setNegativeClickListener {
+                            dismiss()
+                        }
+                        positiveClickListener = CustomSecurityDialog.PositiveClickListener{ number ->
+                            viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
+                        }
+                    }
+                    customSecurityDialog?.show(supportFragmentManager,null)
+                }
+            }
+        }
+
+        viewModel.errorMessageDialog.observe(this){
+            val errorMsg = it ?: getString(R.string.unknown_error)
+            CustomAlertDialog(this).apply {
+                setMessage(errorMsg)
+                setNegativeButtonText(null)
+                setCanceledOnTouchOutside(false)
+                setCancelable(false)
+            }.show()
+        }
+
+        viewModel.twoFactorSuccess.observe(this) {
+            if (it == true)
+                customSecurityDialog?.dismiss()
+        }
     }
 
     private fun setWithdrawInfo(userInfo: UserInfo) {
