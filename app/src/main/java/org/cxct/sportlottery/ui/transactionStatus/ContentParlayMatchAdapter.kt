@@ -81,7 +81,8 @@ class ContentParlayMatchAdapter :
                 content_league.text = data.leagueName
                 content_home_name.text = data.homeName
                 content_away_name.text = data.awayName
-                content_date.setDateNoYear(data.startTime)
+//                content_date.setDateNoYear(data.startTime)
+                content_date.visibility = View.GONE
 
             }
         }

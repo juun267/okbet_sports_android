@@ -182,7 +182,8 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             if (event.action == MotionEvent.ACTION_UP) {
                 if (matchOdd?.status == BetStatus.ACTIVATED.code) keyboard.showKeyboard(
                     view as EditText,
-                    null
+                    null,
+                    betInfoListData?.parlayOdds?.max?.toLong() ?: GameConfigManager.maxBetMoney?.toLong() ?: 0
                 )
             }
             false
@@ -234,7 +235,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 isFocusable = true
                 setSelection(text.length)
             }
-            keyboard.showKeyboard(et_bet, null)
+            keyboard.showKeyboard(et_bet, null, betInfoListData?.parlayOdds?.max?.toLong() ?: GameConfigManager.maxBetMoney?.toLong() ?: 0)
         }
     }
 

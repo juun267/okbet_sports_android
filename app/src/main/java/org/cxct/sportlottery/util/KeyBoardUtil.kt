@@ -18,7 +18,7 @@ class KeyBoardUtil(
     private val parent: View?,
     private val presetBetAmount: List<Int>,
     private val isLogin: Boolean,
-    private val maxBetMoney: Long?,
+    private var maxBetMoney: Long?,
     private val keyBoardViewListener: KeyBoardViewListener
 ) : OnKeyboardActionListener {
 
@@ -49,9 +49,9 @@ class KeyBoardUtil(
     private var isShow = false
 
 
-    fun showKeyboard(editText: EditText, position: Int?) {
+    fun showKeyboard(editText: EditText, position: Int?, maxBetMoney: Long) {
         this.mEditText = editText
-
+        this.maxBetMoney = maxBetMoney
         //InputType.TYPE_NULL 禁止彈出系統鍵盤
         mEditText.apply {
             inputType = InputType.TYPE_NULL
@@ -110,7 +110,7 @@ class KeyBoardUtil(
 
             KeyBoardCode.MAX.code -> {
                 if(isLogin){
-                    plus(maxBetMoney ?: 0)
+                    plusAll(maxBetMoney ?: 0)
                 }else{
                     keyBoardViewListener.showLoginNotice()
                 }
@@ -146,6 +146,11 @@ class KeyBoardUtil(
             input.toDouble() + count
         } else input.toDouble() + count
         mEditText.setText(tran.toString())
+        mEditText.setSelection(mEditText.text.length)
+    }
+
+    private fun plusAll(all: Long) {
+        mEditText.setText(all.toString())
         mEditText.setSelection(mEditText.text.length)
     }
 
