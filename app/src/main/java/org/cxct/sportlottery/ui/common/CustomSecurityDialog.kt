@@ -25,7 +25,7 @@ import java.util.*
  * this.setCanceledOnTouchOutside(false) //disable 點擊外部關閉 dialog
  * this.setCancelable(false) //disable 按實體鍵 BACK 關閉 dialog
  */
-class CustomAlertSecurityDialog(context: Context) : DialogFragment() {
+class CustomSecurityDialog(context: Context) : DialogFragment() {
 
     private var mSmsTimer: Timer? = null
     private var mGetSecurityCodeClickListener: View.OnClickListener = View.OnClickListener { showSmeTimer300() }
