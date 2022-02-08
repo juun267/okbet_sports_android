@@ -171,6 +171,16 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                 }
             }
         }
+
+        viewModel.errorMessageDialog.observe(viewLifecycleOwner){
+            val errorMsg = it ?: getString(R.string.unknown_error)
+            this.context?.let { context -> CustomAlertDialog(context) }?.apply {
+                setMessage(errorMsg)
+                setNegativeButtonText(null)
+                setCanceledOnTouchOutside(false)
+                setCancelable(false)
+            }?.show()
+        }
         viewModel.needToUpdateWithdrawPassword.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
