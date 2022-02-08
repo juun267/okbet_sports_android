@@ -319,8 +319,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     private fun setupToolbar(view: View) {
 //        根據2022/1/25需求先拔除，確定不要可刪
-//        view.game_toolbar_match_type.text = gameToolbarMatchTypeText(args.matchType)
-
+        if(args.matchType == MatchType.OTHER){
+            view.game_toolbar_match_type.text = gameToolbarMatchTypeText(args.matchType)
+        }
         view.game_toolbar_champion.apply {
             visibility = when (args.matchType) {
                 MatchType.IN_PLAY, MatchType.AT_START -> View.VISIBLE
