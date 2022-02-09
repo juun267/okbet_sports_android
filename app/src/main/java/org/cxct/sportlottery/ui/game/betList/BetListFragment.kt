@@ -83,7 +83,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             odds = 0.0,
             hkOdds = 0.0,
             parlayType = "",
-            //Martin
             malayOdds = 0.0,
             indoOdds = 0.0
         )
@@ -172,6 +171,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 }
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.e("Martin","onPause")
     }
 
     private fun initBtnEvent() {
@@ -427,6 +431,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
 
         viewModel.oddsType.observe(viewLifecycleOwner) {
+            keyboard?.hideKeyboard()
             betListRefactorAdapter?.oddsType = it
             oddsType = it
         }
