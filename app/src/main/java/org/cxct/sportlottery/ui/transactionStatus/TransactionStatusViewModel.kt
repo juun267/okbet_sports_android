@@ -85,19 +85,20 @@ class TransactionStatusViewModel(
             }?.let { result ->
                 betListRequesting = false
                 hideLoading()
-                val rowList =
-                    if (page == 1) mutableListOf<Row>()
-                    else betListData.value?.row?.toMutableList() ?: mutableListOf<Row>()
-                result.rows?.let { rowList.addAll(it.apply { }) }
-                _betListData.value =
-                    BetListData(
-                        rowList,
-                        loginRepository.mOddsType.value ?: OddsType.HK,
-                        result.other?.totalAmount ?: 0.0,
-                        page,
-                        (rowList.size >= (result.total ?: 0))
-                    )
-                loginRepository.updateTransNum(result.total ?: 0)
+                    val rowList =
+                        if (page == 1) mutableListOf<Row>()
+                        else betListData.value?.row?.toMutableList() ?: mutableListOf<Row>()
+                    result.rows?.let { rowList.addAll(it.apply { }) }
+
+                    _betListData.value =
+                        BetListData(
+                            rowList,
+                            loginRepository.mOddsType.value ?: OddsType.HK,
+                            result.other?.totalAmount ?: 0.0,
+                            page,
+                            (rowList.size >= (result.total ?: 0))
+                        )
+                    loginRepository.updateTransNum(result.total ?: 0)
             }
         }
     }
