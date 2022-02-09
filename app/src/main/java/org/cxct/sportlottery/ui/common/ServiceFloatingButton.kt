@@ -35,17 +35,13 @@ class ServiceFloatingButton @JvmOverloads constructor(
     }
 
     fun setView(activity: AppCompatActivity) {
-        //根據需求先隱藏，確定不用可拔除ServiceFloatingButton元件
-        visibility = View.GONE
-
-        // TODO 20220108 恢復判斷 by Hewie
-        // Bill 20200120 隱藏 改為從底部導覽進去 by Bill
-//        if (sConfigData?.customerServiceUrl.isNullOrBlank() && sConfigData?.customerServiceUrl2.isNullOrBlank()) {
-//            visibility = View.GONE
-//        } else {
-//            visibility = View.VISIBLE
-//            setupClickEvent(activity)
-//        }
+        //2022-01-29 改為 config 控制開關 by Bill
+        if (sConfigData?.customerFloating != "1") {
+            visibility = View.GONE
+        } else {
+            visibility = View.VISIBLE
+            setupClickEvent(activity)
+        }
     }
 
     private fun setupClickEvent(activity: AppCompatActivity) {
