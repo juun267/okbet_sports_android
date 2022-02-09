@@ -342,7 +342,7 @@
     <string name="lose_half">Lose a half</string>
     <string name="draw">Draw</string>
     <string name="canceled">Canceled</string>
-    <string name="bet_canceled">Cancel betting</string>
+    <string name="bet_canceled">Bet failed</string>
     <string name="confirmed">Confirmed</string>
     <string name="bet_detail">Bets details</string>
     <string name="bet_time">Betting time</string>
