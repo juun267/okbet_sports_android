@@ -928,14 +928,14 @@
     <string name="bank_list_bank">thẻ ngân hàng</string>
     <string name="bank_list_crypto">tiền ảo mới</string>
 
-    <string name="other_link">LIÊN KẾT HỮU DỤNG KH</string>
+    <string name="other_link">LIÊN KẾT HỮU DỤNG KHÁC</string>
     <string name="about_us">Về Chúng Tôi</string>
-    <string name="responsible">Chơi Có Trách Nhi</string>
+    <string name="responsible">Chơi Có Trách Nhiệm</string>
     <string name="terms_conditions">Điều Khoản Và Điều Kiện</string>
     <string name="privacy_policy">Chính Sách Bảo Mật</string>
     <string name="help">CẦN TRỢ GIÚP?</string>
     <string name="faqs">Câu Hỏi Thường Gặp</string>
-    <string name="live_chat">Trò Chuyện Trực Tuyế</string>
+    <string name="live_chat">Trò Chuyện Trực Tuyến</string>
     <string name="contact">Liên Hệ</string>
     <string name="btm_navigation_hint">%1$s is a Registered Trade Mark, brand and\nregistered business name.</string>
     <string name="btm_navigation_language">Việt Nam</string>
