@@ -27,8 +27,6 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        initObserve()
-        getBetListData()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,13 +34,16 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
         initButton()
         initRecyclerView()
         initFilter()
+        viewModel.getBetList(true)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_transaction_status, container, false)
+        return inflater.inflate(R.layout.fragment_transaction_status, container, false).apply {
+            initObserve()
+        }
     }
 
     private fun initRecyclerView() {
@@ -71,15 +72,11 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
     }
 
     private fun initObserve() {
-        viewModel.betListData.observe(this, {
+        viewModel.betListData.observe(viewLifecycleOwner) {
             recordDiffAdapter.setupBetList(it)
             btn_back_to_top.visibility = if (it.row.isEmpty()) View.GONE else View.VISIBLE
             divider.visibility = if (it.row.isEmpty()) View.GONE else View.VISIBLE
-        })
-
-        viewModel.oddsType.observe(this, {
-            recordDiffAdapter.oddsType = it
-        })
+        }
 
     }
 
@@ -91,9 +88,5 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
         btn_back_to_top.setOnClickListener {
             scroll_view.smoothScrollTo(0, 0)
         }
-    }
-
-    private fun getBetListData() {
-        viewModel.getBetList(true)
     }
 }

@@ -36,17 +36,11 @@ class TransactionRecordDiffAdapter :
     ListAdapter<DataItem, RecyclerView.ViewHolder>(TransactionRecordDiffCallBack()) {
     var isLastPage: Boolean = false
     var totalAmount: Double = 0.0
-    var oddsType: OddsType = OddsType.EU
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
 
     private enum class ViewType { Match, Parlay, Outright, LastTotal, NoData }
 
     fun setupBetList(betListData: BetListData) {
         isLastPage = betListData.isLastPage
-        oddsType = betListData.oddsType
         totalAmount = betListData.totalMoney
         val itemList = when {
             betListData.row.isEmpty() -> listOf(DataItem.NoData)
@@ -72,7 +66,7 @@ class TransactionRecordDiffAdapter :
                 holder.bind((rvData as DataItem.Item).row)
             }
             is ParlayRecordViewHolder -> {
-                holder.bind((rvData as DataItem.Item).row, oddsType)
+                holder.bind((rvData as DataItem.Item).row)
             }
             is OutrightRecordViewHolder -> {
                 holder.bind((rvData as DataItem.Item).row)
@@ -221,7 +215,7 @@ class TransactionRecordDiffAdapter :
             }
         }
 
-        fun bind(data: Row, oddsType: OddsType) {
+        fun bind(data: Row) {
             val contentParlayMatchAdapter by lazy { ContentParlayMatchAdapter() }
 
             itemView.apply {
@@ -232,7 +226,6 @@ class TransactionRecordDiffAdapter :
                         LinearLayoutManager(itemView.context, RecyclerView.VERTICAL, false)
                     contentParlayMatchAdapter.setupMatchData(
                         getGameTypeName(data.gameType),
-                        oddsType,
                         data.matchOdds
                     )
 
