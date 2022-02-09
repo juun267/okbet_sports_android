@@ -319,7 +319,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     private fun setupToolbar(view: View) {
 //        根據2022/1/25需求先拔除，確定不要可刪
-        if(args.matchType == MatchType.OTHER){
+        if (args.matchType == MatchType.OTHER) {
             view.game_toolbar_match_type.text = gameToolbarMatchTypeText(args.matchType)
         }
         view.game_toolbar_champion.apply {
@@ -513,31 +513,52 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         viewModel.sportMenuResult.observe(this.viewLifecycleOwner) {
             when (args.matchType) {
                 MatchType.IN_PLAY -> {
-                    updateSportType(it?.sportMenuData?.menu?.inPlay?.items ?: listOf(), it?.sportMenuData?.menu?.inPlay?.num)
+                    updateSportType(
+                        it?.sportMenuData?.menu?.inPlay?.items ?: listOf(),
+                        it?.sportMenuData?.menu?.inPlay?.num
+                    )
                 }
 
                 MatchType.TODAY -> {
-                    updateSportType(it?.sportMenuData?.menu?.today?.items ?: listOf(), it?.sportMenuData?.menu?.today?.num)
+                    updateSportType(
+                        it?.sportMenuData?.menu?.today?.items ?: listOf(),
+                        it?.sportMenuData?.menu?.today?.num
+                    )
                 }
 
                 MatchType.EARLY -> {
-                    updateSportType(it?.sportMenuData?.menu?.early?.items ?: listOf(), it?.sportMenuData?.menu?.early?.num)
+                    updateSportType(
+                        it?.sportMenuData?.menu?.early?.items ?: listOf(),
+                        it?.sportMenuData?.menu?.early?.num
+                    )
                 }
 
                 MatchType.PARLAY -> {
-                    updateSportType(it?.sportMenuData?.menu?.parlay?.items ?: listOf(), it?.sportMenuData?.menu?.parlay?.num)
+                    updateSportType(
+                        it?.sportMenuData?.menu?.parlay?.items ?: listOf(),
+                        it?.sportMenuData?.menu?.parlay?.num
+                    )
                 }
 
                 MatchType.OUTRIGHT -> {
-                    updateSportType(it?.sportMenuData?.menu?.outright?.items ?: listOf(), it?.sportMenuData?.menu?.outright?.num)
+                    updateSportType(
+                        it?.sportMenuData?.menu?.outright?.items ?: listOf(),
+                        it?.sportMenuData?.menu?.outright?.num
+                    )
                 }
 
                 MatchType.AT_START -> {
-                    updateSportType(it?.sportMenuData?.atStart?.items ?: listOf(), it?.sportMenuData?.atStart?.num)
+                    updateSportType(
+                        it?.sportMenuData?.atStart?.items ?: listOf(),
+                        it?.sportMenuData?.atStart?.num
+                    )
                 }
 
                 MatchType.EPS -> {
-                    updateSportType(it?.sportMenuData?.menu?.eps?.items ?: listOf(), it?.sportMenuData?.menu?.eps?.num)
+                    updateSportType(
+                        it?.sportMenuData?.menu?.eps?.items ?: listOf(),
+                        it?.sportMenuData?.menu?.eps?.num
+                    )
                 }
 
                 else -> {
@@ -549,7 +570,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         viewModel.matchCategoryQueryResult.observe(this.viewLifecycleOwner) {
 
             it.getContentIfNotHandled()?.rows?.let { resultList ->
-                val isCateShow = ((args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) && resultList.isNotEmpty())
+                val isCateShow =
+                    ((args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) && resultList.isNotEmpty())
                 game_match_category_pager.isVisible = isCateShow
                 view_space_first.isVisible = !isCateShow
 
@@ -616,25 +638,17 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         ?: oddsListResult.oddsListData?.leagueOdds ?: listOf()
 
                     val gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
-                    if (game_list.adapter == null) {
-                        view_space_first.isVisible = false
-                        game_list.apply {
-                            adapter = leagueAdapter.apply {
-                                updateType = null
-                                data = leagueOdds.onEach { leagueOdd ->
-                                    leagueOdd.gameType = gameType
-                                }.toMutableList()
+                    game_list.apply {
+                        adapter = leagueAdapter.apply {
+                            updateType = null
+                            data = leagueOdds.onEach { leagueOdd ->
+                                leagueOdd.gameType = gameType
+                            }.toMutableList()
 
-                            }
                         }
-                    }else{
-                        (game_list.adapter as LeagueAdapter).data = leagueOdds.onEach { leagueOdd ->
-                            leagueOdd.gameType = gameType
-                        }.toMutableList()
                     }
-
                     //如果data資料為空時，又有其他球種的情況下，自動選取第一個
-                    if(leagueAdapter.data.isNullOrEmpty() && gameTypeAdapter.dataSport.size > 1){
+                    if (leagueAdapter.data.isNullOrEmpty() && gameTypeAdapter.dataSport.size > 1) {
                         viewModel.getSportMenu(
                             args.matchType,
                             switchFirstTag = true,
@@ -1057,7 +1071,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             }
                         }
                         //如果當前球類沒有任何賽事，改為選取第一個有賽事的球種
-                        if(leagueAdapter.data.size == 0){
+                        if (leagueAdapter.data.size == 0) {
                             viewModel.getSportMenu(args.matchType, switchFirstTag = true)
                         }
                     }
@@ -1336,7 +1350,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             }
 
             //即將開賽畫面修正
-            if(args.matchType == MatchType.AT_START){
+            if (args.matchType == MatchType.AT_START) {
                 sport_type_list.visibility = if (num != 0) View.VISIBLE else View.GONE
                 game_toolbar_sport_type.visibility = if (num != 0) View.VISIBLE else View.GONE
                 game_toolbar_champion.visibility = if (num != 0) View.VISIBLE else View.GONE
