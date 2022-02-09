@@ -175,11 +175,18 @@
             app:cvTitle="@string/expire_date" />
 
         <org.cxct.sportlottery.ui.login.LoginEditText
+            android:id="@+id/et_country"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cvEditable="false"
+            app:cvTitle="@string/identity_country" />
+
+
+        <org.cxct.sportlottery.ui.login.LoginEditText
             android:id="@+id/et_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cvEditable="false"
-            app:cvHint="@string/e_address"
             app:cvTitle="@string/e_address" />
 
         <Button

@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.transactionStatus
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -50,7 +51,7 @@ class TransactionStatusActivity :
         initRvMarquee()
         initObserver()
         initServiceButton()
-        getAnnouncement()
+//        getAnnouncement()
     }
 
     override fun onResume() {
@@ -256,11 +257,10 @@ class TransactionStatusActivity :
             it.rows?.forEach { data -> titleList.add(data.title + " - " + data.message) }
 
             mMarqueeAdapter.setData(titleList)
-
             if (messageListResult.success && titleList.size > 0) {
-                rv_marquee.startAuto() //啟動跑馬燈
+                rv_marquee.startAuto(false) //啟動跑馬燈
             } else {
-                rv_marquee.stopAuto() //停止跑馬燈
+                rv_marquee.stopAuto(true) //停止跑馬燈
             }
         }
     }

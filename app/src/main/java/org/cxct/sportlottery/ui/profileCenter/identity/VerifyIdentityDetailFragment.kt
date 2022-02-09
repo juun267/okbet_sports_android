@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_verify_identity_detail_new.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.credential.EkycResultType
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
@@ -22,8 +23,6 @@ class VerifyIdentityDetailFragment :
     BaseSocketFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
 
     private val args: VerifyIdentityDetailFragmentArgs? by navArgs()
-
-    private lateinit var dateTimePicker: TimePickerView
 
     private val faceImgByteArray: ByteArray by lazy {
         Base64.decode(
@@ -75,6 +74,7 @@ class VerifyIdentityDetailFragment :
             et_identity_sex?.isVisible = sex != null
             et_birth?.isVisible = dateOfBirth != null
             et_expire_date?.isVisible = expireDate != null
+            et_country?.isVisible = country != null
             et_address?.isVisible = address != null
 
             et_identity_id.setText(idNumber)

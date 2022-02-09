@@ -29,6 +29,9 @@ data class OcrResult (
     @Json(name = "EXPIRY_DATE")
     val expireDate: String?,
 
+    @Json(name = "COUNTRY")
+    val country: String?,
+
     @Json(name = "ADDRESS")
     val address: String?,
 ): Parcelable

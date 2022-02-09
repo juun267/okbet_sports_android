@@ -394,21 +394,23 @@ class GameViewModel(
 
     //獲取系統公告
     fun getAnnouncement() {
-        if (isLogin.value == true) {
-            viewModelScope.launch {
-                doNetwork(androidContext) {
-                    val typeList = arrayOf(1)
-                    OneBoSportApi.messageService.getPromoteNotice(typeList)
-                }?.let { result -> _messageListResult.postValue(Event(result)) }
-            }
-        } else {
-//            _messageListResult.value = Event(null)
-            viewModelScope.launch {
-                doNetwork(androidContext) {
-                    val typeList = arrayOf(2, 3)
-                    OneBoSportApi.messageService.getPromoteNotice(typeList)
-                }?.let { result -> _messageListResult.postValue(Event(result)) }
-            }
+//        if (isLogin.value == true) {
+//
+//        } else {
+////            _messageListResult.value = Event(null)
+//            viewModelScope.launch {
+//                doNetwork(androidContext) {
+//                    val typeList = arrayOf(2, 3)
+//                    OneBoSportApi.messageService.getPromoteNotice(typeList)
+//                }?.let { result -> _messageListResult.postValue(Event(result)) }
+//            }
+//        }
+
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                val typeList = arrayOf(1, 2, 3)
+                OneBoSportApi.messageService.getPromoteNotice(typeList)
+            }?.let { result -> _messageListResult.postValue(Event(result)) }
         }
     }
 

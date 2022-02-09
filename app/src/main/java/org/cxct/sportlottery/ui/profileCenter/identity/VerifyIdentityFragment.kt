@@ -11,11 +11,13 @@ import kotlinx.android.synthetic.main.fragment_verify_identity_new.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.credential.CredentialCompleteData
 import org.cxct.sportlottery.network.credential.DocType
+import org.cxct.sportlottery.network.credential.EkycResultType
 import org.cxct.sportlottery.network.credential.ResultStatus
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
+import org.cxct.sportlottery.util.LanguageManager
 
 
 class VerifyIdentityFragment :
@@ -115,7 +117,11 @@ class VerifyIdentityFragment :
                     zlzConfig = it.data.clientCfg
                     bizConfig[ZLZConstants.CONTEXT] = context
                     bizConfig[ZLZConstants.PUBLIC_KEY] = it.data.rsaPubKey
-                    bizConfig[ZLZConstants.LOCALE] = "en-US"
+                    bizConfig[ZLZConstants.LOCALE] = when(LanguageManager.getSelectLanguage(context)){
+                        LanguageManager.Language.ZH -> "zh-CN"
+                        LanguageManager.Language.VI -> "vi-VN"
+                        else -> "en-US"
+                    }
                 }
                 transactionId = it.data.transactionId
 
@@ -126,10 +132,6 @@ class VerifyIdentityFragment :
                         }
 
                         override fun onInterrupted(response: ZLZResponse) {
-                            showPromptDialog(
-                                getString(R.string.prompt),
-                                getString(R.string.error)
-                            ) {}
                         }
                     })
                 }
@@ -139,7 +141,8 @@ class VerifyIdentityFragment :
         viewModel.credentialCompleteResult.observe(viewLifecycleOwner) { event ->
             hideLoading()
             event.getContentIfNotHandled()?.data?.let { data ->
-                val isComplete = data.result?.resultStatus == ResultStatus.SUCCESS.value
+                val isComplete = (data.result?.resultStatus == ResultStatus.SUCCESS.value)
+                        && (data.ekycResult == EkycResultType.SUCCESS.value)
 
                 if (isComplete) changePage(data)
                 else showPromptDialog(

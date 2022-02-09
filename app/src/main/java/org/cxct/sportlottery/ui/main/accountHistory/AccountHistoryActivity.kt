@@ -211,9 +211,9 @@ class AccountHistoryActivity :
             mMarqueeAdapter.setData(titleList)
 
             if (messageListResult.success && titleList.size > 0) {
-                rv_marquee.startAuto() //啟動跑馬燈
+                rv_marquee.startAuto(false) //啟動跑馬燈
             } else {
-                rv_marquee.stopAuto() //停止跑馬燈
+                rv_marquee.stopAuto(true) //停止跑馬燈
             }
         }
     }

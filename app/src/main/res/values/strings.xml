@@ -869,11 +869,11 @@
     <string name="identity_id">ID 号码</string>
     <string name="identity_last_name">姓</string>
     <string name="identity_first_name">名</string>
-    <string name="identity_other_name">別名</string>
-    <string name="identity_country">國家地區</string>
+    <string name="identity_other_name">别名</string>
+    <string name="identity_country">国家地区</string>
     <string name="identity_birth">生日</string>
-    <string name="identity_marital_status">婚姻狀態</string>
-    <string name="identity_sex">性別</string>
+    <string name="identity_marital_status">婚姻状态</string>
+    <string name="identity_sex">性别</string>
     <string name="identity_work">工作</string>
     <string name="message_source_change">系统收到最新赛事数据,将立即自动回到首页</string>
     <string name="appearance">外观</string>
