@@ -85,5 +85,6 @@ data class ConfigData(
     val referUrl: String?,
     val presetBetAmount: List<Int>?, //前台预设下注金额配置
     val systemCurrencySign: String?,
-    val systemCurrency: String? = "PHP"
+    val systemCurrency: String? = "PHP",
+    val customerFloating: String? = "0" //在线客服悬浮按钮开关 (1：开启，0：关闭 默认是null:关闭)
 )
