@@ -31,14 +31,14 @@ class VerifyIdentityFragment :
         StatusSheetData(DocType.UM_ID.value, DocType.UM_ID.showName),
         StatusSheetData(DocType.TIN_ID.value, DocType.TIN_ID.showName),
         StatusSheetData(DocType.PASSPORT.value, DocType.PASSPORT.showName),
-        StatusSheetData(DocType.PHIL_HEALTH_CARD.value, DocType.PHIL_HEALTH_CARD.showName),
+        StatusSheetData(DocType.PHIL_HEALTH_ID.value, DocType.PHIL_HEALTH_ID.showName),
         StatusSheetData(DocType.DRIVE_LICENSE.value, DocType.DRIVE_LICENSE.showName),
         StatusSheetData(DocType.SSS_ID.value, DocType.SSS_ID.showName),
+        StatusSheetData(DocType.POSTAL_ID.value, DocType.POSTAL_ID.showName),
+        StatusSheetData(DocType.PRC_ID.value, DocType.PRC_ID.showName),
         StatusSheetData(DocType.VOTER_ID.value, DocType.VOTER_ID.showName),
-        StatusSheetData(DocType.HKID_1.value, DocType.HKID_1.showName),
-        StatusSheetData(DocType.HKID_2.value, DocType.HKID_2.showName),
-        StatusSheetData(DocType.MY_KAD.value, DocType.MY_KAD.showName),
-        StatusSheetData(DocType.CHINA_ID.value, DocType.CHINA_ID.showName)
+        StatusSheetData(DocType.PASSPORT_OLD.value, DocType.PASSPORT_OLD.showName),
+        StatusSheetData(DocType.PASSPORT_NEW.value, DocType.PASSPORT_NEW.showName)
     )
 
     private var nowSelectCode: String? = null
