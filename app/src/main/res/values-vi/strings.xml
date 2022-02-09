@@ -320,7 +320,7 @@
     <string name="lose_half">Thua nửa</string>
     <string name="draw">hòa</string>
     <string name="canceled">đã hủy</string>
-    <string name="bet_canceled">Hủy đơn cược</string>
+    <string name="bet_canceled">Cá cược thất bại</string>
     <string name="confirmed">đã xác nhận</string>
     <string name="bet_detail">Chi tiết đơn cược</string>
     <string name="bet_time">Thời gian đặt cược</string>
