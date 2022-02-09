@@ -120,6 +120,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_weight="6"
+                tools:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_parlay_type"
                 app:layout_constraintWidth_percent="0.442" />

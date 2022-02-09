@@ -1,14 +1,13 @@
 package org.cxct.sportlottery.network.odds.list
 
 
-import android.util.Log
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.network.odds.eps.Odds
+import org.cxct.sportlottery.network.odds.eps.EpsOdd
 import org.cxct.sportlottery.network.outright.odds.DynamicMarket
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
 
@@ -34,7 +33,7 @@ data class MatchOdd(
     override val oddsSort: String? = null
 ) : MatchOdd {
 
-    override val oddsEps: Odds? = null
+    override val oddsEps: EpsOdd? = null
 
     @Deprecated("之後翻譯都要改用playCateNameMap，下注顯示用betPlayCateNameMap")
     override var playCateMappingList: List<PlayCateMapItem>? = null

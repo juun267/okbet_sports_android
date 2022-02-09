@@ -4,9 +4,8 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.odds.eps.Odds
+import org.cxct.sportlottery.network.odds.eps.EpsOdd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
-import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.network.outright.odds.DynamicMarket
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
 
@@ -29,7 +28,7 @@ data class OddData(
     @Json(name = "playCateNameMap")
     override val playCateNameMap: Map<String?, Map<String?, String?>?>?,
 ) : MatchOdd {
-    override val oddsEps: Odds? = null
+    override val oddsEps: EpsOdd? = null
     override var playCateMappingList: List<PlayCateMapItem>? = null
 
     fun sortOddsMap() {

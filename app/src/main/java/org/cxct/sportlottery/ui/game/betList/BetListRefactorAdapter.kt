@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -273,6 +272,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     override fun afterTextChanged(it: Editable?) {
                         if (it.isNullOrEmpty()) {
                             itemData.betAmount = 0.000
+                            itemData.inputBetAmountStr = ""
                             itemData.input = ""
 
                             tv_check_maximum_limit.visibility = View.GONE
@@ -289,6 +289,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                             val quota = it.toString().toDouble()
                             itemData.betAmount = quota
+                            itemData.inputBetAmountStr = it.toString()
                             itemData.input = TextUtil.formatInputMoney(quota)
                             itemData.parlayOdds?.max?.let { max ->
                                 if (quota > max) {
@@ -481,7 +482,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
 
                 if (itemData.betAmount > 0) {
-                    et_bet.setText(TextUtil.formatInputMoney(itemData.betAmount))
+                    et_bet.setText(itemData.inputBetAmountStr)
                     et_bet.setSelection(et_bet.text.length)
                     tv_check_maximum_limit.visibility = View.GONE
                     ll_bet_quota_detail.visibility = View.GONE
@@ -494,7 +495,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     ll_win_quota_detail.visibility = View.VISIBLE
                     checkMinimumLimit(itemData)
                 }
-                et_bet.setText(if (itemData.betAmount > 0) TextUtil.formatInputMoney(itemData.betAmount) else "")
                 et_bet.setSelection(et_bet.text.length)
 
                 val quota = itemData.betAmount
@@ -857,8 +857,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                         ?: 0)
                                 ) {
                                     data.betAmount = inputValue
+                                    data.inputBetAmountStr = it.toString()
                                 } else {
                                     data.betAmount = (data.parlayOdds?.max ?: 0).toDouble()
+                                    data.inputBetAmountStr = (data.parlayOdds?.max ?: 0).toString()
                                 }
                             }
                             notifyAllBet()
@@ -1187,7 +1189,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         private fun setupOddInfo(data: ParlayOdd, currentOddsType: OddsType) {
             itemView.apply {
                 if (data.betAmount > 0) {
-                    et_bet.setText(TextUtil.formatInputMoney(data.betAmount))
                     itemView.apply {
                         tv_check_maximum_limit.visibility = View.GONE
                         ll_bet_quota_detail.visibility = View.GONE
@@ -1270,8 +1271,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                                 val quota = it.toString().toDouble()
                                 data.betAmount = inputValue
+                                data.inputBetAmountStr = it.toString()
                                 data.max.let { max ->
-                                    if (quota > max) {
+                                    if (inputValue > max) {
                                         et_bet.apply {
                                             setText(TextUtil.formatInputMoney(max))
                                             setSelection(text.length)
@@ -1291,6 +1293,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
 
                             data.betAmount = TextUtil.formatInputMoney(inputValue).toDouble()
+                            data.inputBetAmountStr = it.toString()
                             onItemClickListener.refreshBetInfoTotal()
                         }
 
