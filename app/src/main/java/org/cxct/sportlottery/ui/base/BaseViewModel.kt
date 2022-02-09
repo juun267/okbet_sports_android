@@ -48,6 +48,10 @@ abstract class BaseViewModel(
     private val _networkExceptionTimeout = MutableLiveData<String>()
     private val _networkExceptionUnknown = MutableLiveData<String>()
 
+    enum class NetWorkResponseType(val code: Int) {
+        REQUEST_TOO_FAST(400)
+    }
+
     //20210526 新增 exceptionHandle 參數，還判斷要不要在 BaseActivity 顯示，exception 錯誤訊息
     @Nullable
     suspend fun <T : BaseResult> doNetwork(

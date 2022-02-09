@@ -8,5 +8,5 @@ data class BetListData(
     val oddsType: OddsType,
     val totalMoney: Double,
     val page: Int,
-    val isLastPage: Boolean
+    val isLastPage: Boolean,
 )

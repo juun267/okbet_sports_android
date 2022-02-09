@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
-import org.cxct.sportlottery.network.bet.list.Row
+import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
@@ -51,6 +51,9 @@ class TransactionStatusViewModel(
         get() = _betListData
     private val _betListData = MutableLiveData<BetListData>()
 
+    val responseFailed: LiveData<Boolean>
+        get() = _responseFailed
+    private val _responseFailed = MutableLiveData<Boolean>()
 
     //獲取系統公告
     fun getAnnouncement() {
@@ -68,6 +71,8 @@ class TransactionStatusViewModel(
 
     private val pageSize = 20
     private var betListRequesting = false
+    private var requestCount = 0
+    private val requestMaxCount = 2
 
     //獲取交易狀況資料(未結算)
     fun getBetList(firstPage: Boolean = false) {
@@ -85,9 +90,11 @@ class TransactionStatusViewModel(
             }?.let { result ->
                 betListRequesting = false
                 hideLoading()
+                if (result.success) {
+                    requestCount = 0
                     val rowList =
-                        if (page == 1) mutableListOf<Row>()
-                        else betListData.value?.row?.toMutableList() ?: mutableListOf<Row>()
+                        if (page == 1) mutableListOf()
+                        else betListData.value?.row?.toMutableList() ?: mutableListOf()
                     result.rows?.let { rowList.addAll(it.apply { }) }
 
                     _betListData.value =
@@ -99,6 +106,12 @@ class TransactionStatusViewModel(
                             (rowList.size >= (result.total ?: 0))
                         )
                     loginRepository.updateTransNum(result.total ?: 0)
+                } else {
+                    if (result.code == NetWorkResponseType.REQUEST_TOO_FAST.code && requestCount < requestMaxCount) {
+                        requestCount += 1
+                        _responseFailed.postValue(true)
+                    }
+                }
             }
         }
     }
