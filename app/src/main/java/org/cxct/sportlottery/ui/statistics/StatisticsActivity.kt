@@ -48,13 +48,15 @@ class StatisticsActivity : BaseActivity<StatisticsViewModel>(StatisticsViewModel
                 }
             }
 
-            loadUrl(
-                sConfigData?.analysisUrl?.replace(
-                    "{lang}",
-                    LanguageManager.getSelectLanguage(context).key
-                )?.replace("{eventId}", matchId ?: "")
-            ).run {
-                loading()
+            sConfigData?.analysisUrl?.replace(
+                "{lang}",
+                LanguageManager.getSelectLanguage(context).key
+            )?.replace("{eventId}", matchId ?: "")?.let {
+                loadUrl(
+                    it
+                ).run {
+                    loading()
+                }
             }
         }
     }

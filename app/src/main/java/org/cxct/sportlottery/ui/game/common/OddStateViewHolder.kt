@@ -49,7 +49,7 @@ abstract class OddStateViewHolder(itemView: View) : RecyclerView.ViewHolder(item
             setupOddState(oddsButton, itemOdd)
 //            oddStateChangeListener.refreshOddButton(itemOdd)
             itemOdd.runnable = null
-            mHandler.removeCallbacks(itemOdd.runnable)
+            itemOdd.runnable?.let { mHandler.removeCallbacks(it) }
         }
     }
 
