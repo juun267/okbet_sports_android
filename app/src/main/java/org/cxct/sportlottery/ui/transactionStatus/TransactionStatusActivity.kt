@@ -225,21 +225,21 @@ class TransactionStatusActivity :
     }
 
     private fun initObserver() {
-        viewModel.messageListResult.observe(this, {
+        viewModel.messageListResult.observe(this) {
             updateUiWithResult(it)
-        })
+        }
 
-        viewModel.isLogin.observe(this, {
+        viewModel.isLogin.observe(this) {
             getAnnouncement()
-        })
+        }
 
-        viewModel.userInfo.observe(this, {
+        viewModel.userInfo.observe(this) {
             updateAvatar(it?.iconUrl)
-        })
+        }
 
-        viewModel.nowTransNum.observe(this, {
+        viewModel.nowTransNum.observe(this) {
             navigation_transaction_status.trans_number.text = it.toString()
-        })
+        }
 
     }
 
