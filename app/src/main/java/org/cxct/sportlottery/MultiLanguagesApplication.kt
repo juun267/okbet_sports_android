@@ -3,7 +3,6 @@ package org.cxct.sportlottery
 import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
-import cn.jiguang.analytics.android.api.JAnalyticsInterface
 import cn.jpush.android.api.JPushInterface
 import com.github.jokar.multilanguages.library.MultiLanguage
 import org.cxct.sportlottery.db.entity.UserInfo
@@ -172,9 +171,10 @@ class MultiLanguagesApplication : Application() {
         JPushInterface.init(this)
 
         //参数为 true 表示打开调试模式，可看到 sdk 的日志。
-        JAnalyticsInterface.init(this);
-        JAnalyticsInterface.initCrashHandler(this);
-        JAnalyticsInterface.setDebugMode(false);
+        //[Martin] 拔掉JAnalytics功能是因為上架被阻擋
+//        JAnalyticsInterface.init(this);
+//        JAnalyticsInterface.initCrashHandler(this);
+//        JAnalyticsInterface.setDebugMode(false);
     }
 
     private fun setupDeviceCode() {
