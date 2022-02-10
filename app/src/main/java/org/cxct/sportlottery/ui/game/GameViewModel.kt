@@ -277,6 +277,11 @@ class GameViewModel(
         get() = _isLoading
     private var _isLoading = MutableLiveData<Boolean>()
 
+    //ErrorDialog
+    val showErrorDialogMsg: LiveData<String>
+        get() = _showErrorDialogMsg
+    private var _showErrorDialogMsg = MutableLiveData<String>()
+
     private val _sportMenuList = MutableLiveData<Event<List<SportMenu>>>()
     val sportMenuList: LiveData<Event<List<SportMenu>>>
         get() = _sportMenuList
@@ -383,9 +388,13 @@ class GameViewModel(
         if (curMatchType.value == null) {
             _curMatchType.value = MatchType.OTHER
         }
-        if(childMatchType == MatchType.OTHER_OUTRIGHT){
-            getGameHallList(matchType = childMatchType, isReloadDate = true, isReloadPlayCate = true)
-        }else{
+        if (childMatchType == MatchType.OTHER_OUTRIGHT) {
+            getGameHallList(
+                matchType = childMatchType,
+                isReloadDate = true,
+                isReloadPlayCate = true
+            )
+        } else {
             curMatchType.value?.let {
                 getGameHallList(matchType = it, isReloadDate = true, isReloadPlayCate = true)
             }
@@ -443,7 +452,11 @@ class GameViewModel(
         getSportMenu(null)
     }
 
-    fun getSportMenu(matchType: MatchType?, switchFirstTag: Boolean = false , onlyRefreshSportMenu: Boolean = false) {
+    fun getSportMenu(
+        matchType: MatchType?,
+        switchFirstTag: Boolean = false,
+        onlyRefreshSportMenu: Boolean = false
+    ) {
         _isLoading.value = true
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -474,7 +487,7 @@ class GameViewModel(
             }
 
             //Socket更新自動選取第一個有賽事的球種
-            if(switchFirstTag){
+            if (switchFirstTag) {
                 matchType?.let { switchFirstSportType(it) }
             }
         }
@@ -484,7 +497,7 @@ class GameViewModel(
 
     fun getAllPlayCategory(matchType: MatchType) {
         viewModelScope.launch {
-            val result = doNetwork(androidContext) {
+            doNetwork(androidContext) {
                 OneBoSportApi.sportService.getQuery(
                     SportQueryRequest(
                         TimeUtil.getNowTimeStamp().toString(),
@@ -492,9 +505,14 @@ class GameViewModel(
                         matchType.postValue
                     )
                 )
+            }.let { result ->
+                if (result?.success == true) {
+                    sportQueryData = result.sportQueryData
+                    checkLastSportType(matchType, sportQueryData)
+                } else {
+                    _showErrorDialogMsg.value = result?.msg
+                }
             }
-            sportQueryData = result?.sportQueryData
-            checkLastSportType(matchType, sportQueryData)
         }
     }
 
@@ -511,23 +529,27 @@ class GameViewModel(
                     )
                 )
             }?.let { result ->
-                specialMenuData = result.sportQueryData
-                if (specialMenuData?.items?.isNotEmpty() == true) {
-                    getLeagueList(
-                        specialMenuData?.items?.getOrNull(0)?.code ?: "",
-                        code,
-                        null,
-                        isIncrement = false
-                    )
+                if (result.success) {
+                    specialMenuData = result.sportQueryData
+                    if (specialMenuData?.items?.isNotEmpty() == true) {
+                        getLeagueList(
+                            specialMenuData?.items?.getOrNull(0)?.code ?: "",
+                            code,
+                            null,
+                            isIncrement = false
+                        )
+                    }
+                    specialMenuData?.updateSportSelectState(specialMenuData?.items?.getOrNull(0)?.code)
+                } else {
+                    _showErrorDialogMsg.value = result?.msg
                 }
             }
-            specialMenuData?.updateSportSelectState(specialMenuData?.items?.getOrNull(0)?.code)
         }
     }
 
     private fun getLeaguePlayCategory(matchType: MatchType, leagueIdList: List<String>) {
         viewModelScope.launch {
-            val result = doNetwork(androidContext) {
+            doNetwork(androidContext) {
                 OneBoSportApi.sportService.getQuery(
                     SportQueryRequest(
                         TimeUtil.getNowTimeStamp().toString(),
@@ -536,10 +558,14 @@ class GameViewModel(
                         leagueIdList = leagueIdList
                     )
                 )
+            }.let { result ->
+                if (result?.success == true) {
+                    sportQueryData = result.sportQueryData
+                    getPlayCategory(matchType)
+                } else {
+                    _showErrorDialogMsg.value = result?.msg
+                }
             }
-
-            sportQueryData = result?.sportQueryData
-            getPlayCategory(matchType)
         }
     }
 
@@ -1162,9 +1188,9 @@ class GameViewModel(
         matchIdList: List<String>? = null,
         isIncrement: Boolean = false
     ) {
-        var currentTimeRangeParams:TimeRangeParams? = null
+        var currentTimeRangeParams: TimeRangeParams? = null
         when (matchType) {
-            MatchType.IN_PLAY.postValue, MatchType.AT_START.postValue,MatchType.OTHER.postValue -> {
+            MatchType.IN_PLAY.postValue, MatchType.AT_START.postValue, MatchType.OTHER.postValue -> {
                 _oddsListResult.value = Event(null)
                 currentTimeRangeParams = timeRangeParams
             }
@@ -1257,7 +1283,7 @@ class GameViewModel(
                         _oddsListGameHallResult.postValue(Event(result))
                 }
 
-                MatchType.TODAY.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue,MatchType.OTHER.postValue -> {
+                MatchType.TODAY.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue, MatchType.OTHER.postValue -> {
                     if (isIncrement)
                         _oddsListGameHallIncrementResult.postValue(
                             Event(
@@ -1270,7 +1296,7 @@ class GameViewModel(
                     else
                         _oddsListResult.postValue(Event(result))
                 }
-                else ->{
+                else -> {
                     _oddsListGameHallResult.postValue(Event(result))
                 }
             }
@@ -1320,14 +1346,14 @@ class GameViewModel(
                 _oddsListGameHallResult.postValue(
                     Event(
                         _oddsListGameHallResult.value?.peekContent()
-                            ?.updateQuickPlayCate(matchId, it ,it.playCateNameMap)
+                            ?.updateQuickPlayCate(matchId, it, it.playCateNameMap)
                     )
                 )
 
                 _oddsListResult.postValue(
                     Event(
                         _oddsListResult.value?.peekContent()
-                            ?.updateQuickPlayCate(matchId, it,it.playCateNameMap)
+                            ?.updateQuickPlayCate(matchId, it, it.playCateNameMap)
                     )
                 )
             }
@@ -1966,7 +1992,7 @@ class GameViewModel(
             val oddsMap: MutableMap<String, MutableList<Odd?>?>
 
             val rgzMap = this.oddsMap.filter { (key, value) -> key.contains(":") }
-            if(rgzMap.isNotEmpty()){
+            if (rgzMap.isNotEmpty()) {
                 oddsMap = this.oddsMap.filter { !it.key.contains(":") }.toMutableMap()
                 oddsMap[rgzMap.iterator().next().key] = rgzMap.iterator().next().value
 
@@ -2140,8 +2166,7 @@ class GameViewModel(
                 // Todo: 需改成用 StreamURLs，格式依序採用 RTMP, FLV, M3U8，依次使用。
                 if (response.StreamURLs?.isNotEmpty() == true) {
                     response.StreamURLs?.first { it.format == "rtmp" }.url ?: response.streamURL
-                }
-                else {
+                } else {
                     response.streamURL
                 }
             }
@@ -2212,16 +2237,20 @@ class GameViewModel(
         }
     }
 
-    fun setFastBetOpened(isOpen: Boolean){
+    fun setFastBetOpened(isOpen: Boolean) {
         betInfoRepository.setFastBetOpened(isOpen)
     }
 
-    fun getIsFastBetOpened(): Boolean{
+    fun getIsFastBetOpened(): Boolean {
         return betInfoRepository.getIsFastBetOpened()
     }
 
-    fun getLoginBoolean(): Boolean{
+    fun getLoginBoolean(): Boolean {
         return loginRepository.isLogin.value ?: false
+    }
+
+    fun resetErrorDialogMsg() {
+        _showErrorDialogMsg.value = ""
     }
 
 }

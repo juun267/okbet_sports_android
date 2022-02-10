@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +40,7 @@ import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
@@ -506,6 +508,26 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initObserve() {
+        viewModel.showErrorDialogMsg.observe(this.viewLifecycleOwner){
+            if(it.isNotBlank()){
+                context?.let{ context ->
+                    val dialog = CustomAlertDialog(context)
+                    dialog.setTitle(resources.getString(R.string.prompt))
+                    dialog.setMessage(it)
+                    dialog.setTextColor(R.color.colorRed)
+                    dialog.setNegativeButtonText(null)
+                    dialog.setPositiveClickListener {
+                        viewModel.resetErrorDialogMsg()
+                        dialog.dismiss()
+                        back()
+                    }
+                    dialog.setCanceledOnTouchOutside(false)
+                    dialog.setCancelable(false)
+                    dialog.show()
+                }
+            }
+        }
+
         viewModel.sportMenuResult.observe(this.viewLifecycleOwner) {
             when (args.matchType) {
                 MatchType.IN_PLAY -> {
