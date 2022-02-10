@@ -83,7 +83,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             odds = 0.0,
             hkOdds = 0.0,
             parlayType = "",
-            //Martin
             malayOdds = 0.0,
             indoOdds = 0.0
         )
@@ -174,6 +173,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        Log.e("Martin","onPause")
+    }
+
     private fun initBtnEvent() {
         binding.btnBet.apply {
             tv_login.setOnClickListener {
@@ -227,8 +231,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     viewModel.removeBetInfoItem(oddsId)
                 }
 
-                override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd, position: Int) {
-                    keyboard?.showKeyboard(editText, position)
+                override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd, position: Int, max: Long) {
+                    keyboard?.showKeyboard(editText, position, max)
                 }
 
 //                override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd) {
@@ -238,9 +242,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 override fun onShowParlayKeyboard(
                     editText: EditText,
                     parlayOdd: ParlayOdd?,
-                    position: Int
+                    position: Int,
+                    max: Long
                 ) {
-                    keyboard?.showKeyboard(editText, position)
+                    keyboard?.showKeyboard(editText, position, max)
                 }
 
                 override fun onHideKeyBoard() {
@@ -427,6 +432,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
 
         viewModel.oddsType.observe(viewLifecycleOwner) {
+            keyboard?.hideKeyboard()
             betListRefactorAdapter?.oddsType = it
             oddsType = it
         }

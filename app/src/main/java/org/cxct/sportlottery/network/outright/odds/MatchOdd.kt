@@ -9,7 +9,7 @@ import kotlinx.android.parcel.RawValue
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.odds.eps.Odds
+import org.cxct.sportlottery.network.odds.eps.EpsOdd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
 
@@ -36,7 +36,7 @@ data class MatchOdd(
 
     Parcelable {
     @IgnoredOnParcel
-    override val oddsEps: Odds? = null
+    override val oddsEps: EpsOdd? = null
 
     @IgnoredOnParcel
     override var playCateMappingList: List<PlayCateMapItem>? = null

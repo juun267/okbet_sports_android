@@ -228,15 +228,17 @@ class LiveViewToolbar @JvmOverloads constructor(
     }
 
     private fun loadBottomSheetUrl() {
-        bottomSheetView.bottom_sheet_web_view.loadUrl(
-            mMatchId?.let {
-                sConfigData?.analysisUrl?.replace(
-                    "{lang}",
-                    LanguageManager.getSelectLanguage(context).key
-                )
-                    ?.replace("{eventId}", it)
-            }
-        )
+        mMatchId?.let {
+            sConfigData?.analysisUrl?.replace(
+                "{lang}",
+                LanguageManager.getSelectLanguage(context).key
+            )
+                ?.replace("{eventId}", it)
+        }?.let {
+            bottomSheetView.bottom_sheet_web_view.loadUrl(
+                it
+            )
+        }
         webBottomSheet.show()
     }
 

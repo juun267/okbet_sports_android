@@ -237,7 +237,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_bet"
                 app:statusVisibility="@{row.status}"
-                tools:text="取消注單"
+                tools:text="下注失败"
                 tools:visibility="gone" />
 
             <TextView

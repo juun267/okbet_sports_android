@@ -37,9 +37,8 @@ import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
-import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
@@ -56,7 +55,7 @@ import org.cxct.sportlottery.util.SpaceItemDecoration
 import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.M)
-class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class) {
+class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private val args: GameV3FragmentArgs by navArgs()
 
@@ -126,7 +125,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         CountryAdapter().apply {
             countryLeagueListener = CountryLeagueListener(
                 { league ->
-                    navGameLeague(leagueIdList = listOf(league.id), matchCategoryName = league.name)
+                    navGameLeague(leagueIdList = listOf(league.id))
                 },
                 { league ->
                     viewModel.pinFavorite(FavoriteType.LEAGUE, league.id)
@@ -205,12 +204,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 { matchId ->
                     navStatistics(matchId)
                 },
-                { leagueId ->
+                { matchId ->
                     loading()
                     viewModel.refreshGame(
                         args.matchType,
-                        listOf(leagueId),
-                        listOf()
+                        listOf(),
+                        listOf(matchId)
                     )
                 }
             )
@@ -301,12 +300,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     private fun setupSportTypeList(view: View) {
         view.sport_type_list.apply {
-            this.adapter = gameTypeAdapter
-
             this.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-            edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
+            this.adapter = gameTypeAdapter
 
             addItemDecoration(
                 SpaceItemDecoration(
@@ -319,8 +316,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     private fun setupToolbar(view: View) {
 //        根據2022/1/25需求先拔除，確定不要可刪
-//        view.game_toolbar_match_type.text = gameToolbarMatchTypeText(args.matchType)
-
+        if (args.matchType == MatchType.OTHER) {
+            view.game_toolbar_match_type.text = gameToolbarMatchTypeText(args.matchType)
+        }
         view.game_toolbar_champion.apply {
             visibility = when (args.matchType) {
                 MatchType.IN_PLAY, MatchType.AT_START -> View.VISIBLE
@@ -414,15 +412,17 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL
         )
         view.match_category_indicator.setupWithViewPager2(view.match_category_pager)
-        val isCateShow = (args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY)
-        view.game_match_category_pager.isVisible = isCateShow
-        view.view_space_first.isVisible = !isCateShow
+        view.game_match_category_pager.visibility =
+            if (args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
     }
 
     private fun setupPlayCategory(view: View) {
         view.game_play_category.apply {
             this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
 
             this.adapter = playCategoryAdapter
 
@@ -474,7 +474,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             )
             setHasFixedSize(true)
         }
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -482,7 +481,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         try {
             initObserve()
             initSocketObserver()
-            initBottomNavigation()
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -502,7 +500,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             )
 
             viewModel.getMatchCategoryQuery(args.matchType)
-            subscribeSportChannelHall()
         }
         loading()
     }
@@ -512,46 +509,67 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         viewModel.sportMenuResult.observe(this.viewLifecycleOwner) {
             when (args.matchType) {
                 MatchType.IN_PLAY -> {
-                    updateSportType(it?.sportMenuData?.menu?.inPlay?.items ?: listOf(), it?.sportMenuData?.menu?.inPlay?.num)
+                    updateSportType(
+                        it?.sportMenuData?.menu?.inPlay?.items ?: listOf(),
+                        it?.sportMenuData?.menu?.inPlay?.num
+                    )
                 }
 
                 MatchType.TODAY -> {
-                    updateSportType(it?.sportMenuData?.menu?.today?.items ?: listOf(), it?.sportMenuData?.menu?.today?.num)
+                    updateSportType(
+                        it?.sportMenuData?.menu?.today?.items ?: listOf(),
+                        it?.sportMenuData?.menu?.today?.num
+                    )
                 }
 
                 MatchType.EARLY -> {
-                    updateSportType(it?.sportMenuData?.menu?.early?.items ?: listOf(), it?.sportMenuData?.menu?.early?.num)
+                    updateSportType(
+                        it?.sportMenuData?.menu?.early?.items ?: listOf(),
+                        it?.sportMenuData?.menu?.early?.num
+                    )
                 }
 
                 MatchType.PARLAY -> {
-                    updateSportType(it?.sportMenuData?.menu?.parlay?.items ?: listOf(), it?.sportMenuData?.menu?.parlay?.num)
+                    updateSportType(
+                        it?.sportMenuData?.menu?.parlay?.items ?: listOf(),
+                        it?.sportMenuData?.menu?.parlay?.num
+                    )
                 }
 
                 MatchType.OUTRIGHT -> {
-                    updateSportType(it?.sportMenuData?.menu?.outright?.items ?: listOf(), it?.sportMenuData?.menu?.outright?.num)
+                    updateSportType(
+                        it?.sportMenuData?.menu?.outright?.items ?: listOf(),
+                        it?.sportMenuData?.menu?.outright?.num
+                    )
                 }
 
                 MatchType.AT_START -> {
-                    updateSportType(it?.sportMenuData?.atStart?.items ?: listOf(), it?.sportMenuData?.atStart?.num)
+                    updateSportType(
+                        it?.sportMenuData?.atStart?.items ?: listOf(),
+                        it?.sportMenuData?.atStart?.num
+                    )
                 }
 
                 MatchType.EPS -> {
-                    updateSportType(it?.sportMenuData?.menu?.eps?.items ?: listOf(), it?.sportMenuData?.menu?.eps?.num)
+                    updateSportType(
+                        it?.sportMenuData?.menu?.eps?.items ?: listOf(),
+                        it?.sportMenuData?.menu?.eps?.num
+                    )
                 }
+
 
                 else -> {
                 }
-
             }
         }
 
         viewModel.matchCategoryQueryResult.observe(this.viewLifecycleOwner) {
 
             it.getContentIfNotHandled()?.rows?.let { resultList ->
-                val isCateShow = ((args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) && resultList.isNotEmpty())
+                val isCateShow =
+                    ((args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) && resultList.isNotEmpty())
                 game_match_category_pager.isVisible = isCateShow
                 view_space_first.isVisible = !isCateShow
-
                 matchCategoryPagerAdapter.data = resultList
             }
         }
@@ -615,32 +633,22 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         ?: oddsListResult.oddsListData?.leagueOdds ?: listOf()
 
                     val gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
-                    if (game_list.adapter == null) {
-                        view_space_first.isVisible = false
-                        game_list.apply {
-                            adapter = leagueAdapter.apply {
-                                updateType = null
-                                data = leagueOdds.onEach { leagueOdd ->
-                                    leagueOdd.gameType = gameType
-                                }.toMutableList()
-
-                            }
+                    game_list.apply {
+                        adapter = leagueAdapter.apply {
+                            updateType = null
+                            data = leagueOdds.onEach { leagueOdd ->
+                                leagueOdd.gameType = gameType
+                            }.toMutableList()
                         }
-                    }else{
-                        (game_list.adapter as LeagueAdapter).data = leagueOdds.onEach { leagueOdd ->
-                            leagueOdd.gameType = gameType
-                        }.toMutableList()
                     }
-
                     //如果data資料為空時，又有其他球種的情況下，自動選取第一個
-                    if(leagueAdapter.data.isNullOrEmpty() && gameTypeAdapter.dataSport.size > 1){
+                    if (leagueAdapter.data.isNullOrEmpty() && gameTypeAdapter.dataSport.size > 1) {
                         viewModel.getSportMenu(
                             args.matchType,
                             switchFirstTag = true,
                             onlyRefreshSportMenu = true
                         )
                     }
-
                     game_list.itemAnimator = null
                     setNoDataView(leagueAdapter.data)
                     leagueOdds.forEach { leagueOdd ->
@@ -753,7 +761,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             )
                         }
                         else -> {
-                            view_space_first.isVisible = true
                             game_list.apply {
                                 adapter = countryAdapter.apply {
                                     data = rows
@@ -770,7 +777,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                 if (outrightSeasonListResult.success) {
                     val rows = outrightSeasonListResult.rows ?: listOf()
-                    view_space_first.isVisible = true
+
                     game_list.apply {
                         adapter = outrightCountryAdapter.apply {
                             data = rows
@@ -793,8 +800,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         val newLeagueOddsItem =
                             EpsLeagueOddsItem(
                                 date = oddsEpsListData.date,
-                                league = null,
-                                matchOdds = null
+                                leagueOdds = null,
                             )
                         epsLeagueOddsItemList.add(newLeagueOddsItem)
 
@@ -802,8 +808,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             epsLeagueOddsItemList.add(
                                 EpsLeagueOddsItem(
                                     date = 0,
-                                    league = leagueOdds?.league,
-                                    matchOdds = leagueOdds?.matchOdds
+                                    leagueOdds = leagueOdds
                                 ).apply {
                                     isClose = !(indexDate == 0 && indexLeague == 0)
                                 }
@@ -811,7 +816,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         }
                     }
 
-                    view_space_first.isVisible = false
                     game_list.apply {
                         adapter = epsListAdapter.apply {
                             dataList = epsLeagueOddsItemList
@@ -836,13 +840,17 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             outrightCountryAdapter.data = it
         }
 
+        viewModel.outrightCountryListSearchResult.observe(this.viewLifecycleOwner) {
+            outrightCountryAdapter.data = it
+        }
+
+
         //KK要求，當球類沒有資料時，自動選取第一個有賽事的球種
         viewModel.isNoHistory.observe(this.viewLifecycleOwner) {
 
             //判斷當前MatchType是否有玩法數量
             val hasGame = when (args.matchType) {
                 MatchType.IN_PLAY -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.inPlay?.num ?: 0 > 0
-                MatchType.AT_START -> viewModel.sportMenuResult.value?.sportMenuData?.atStart?.num ?: 0 > 0
                 MatchType.TODAY -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.today?.num ?: 0 > 0
                 MatchType.EARLY -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.early?.num ?: 0 > 0
                 MatchType.PARLAY -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.parlay?.num ?: 0 > 0
@@ -905,7 +913,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 val epsOdds = epsListAdapter.dataList
 
                 epsOdds.forEach { epsLeagueOddsItem ->
-                    epsLeagueOddsItem.matchOdds?.forEach { matchOddsItem ->
+                    epsLeagueOddsItem.leagueOdds?.matchOdds?.forEach { matchOddsItem ->
                         matchOddsItem.oddsEps?.eps?.forEach { odd ->
                             odd?.isSelected = it.any { betInfoListData ->
                                 betInfoListData.matchOdd.oddsId == odd?.id
@@ -1056,7 +1064,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             }
                         }
                         //如果當前球類沒有任何賽事，改為選取第一個有賽事的球種
-                        if(leagueAdapter.data.size == 0){
+                        if (leagueAdapter.data.size == 0) {
                             viewModel.getSportMenu(args.matchType, switchFirstTag = true)
                         }
                     }
@@ -1114,7 +1122,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         val epsOdds = epsListAdapter.dataList
 
                         epsOdds.forEachIndexed { index, leagueOdd ->
-                            if (leagueOdd.matchOdds?.any { matchOdd ->
+                            if (leagueOdd.leagueOdds?.matchOdds?.any { matchOdd ->
                                     SocketUpdateUtil.updateMatchOdds(
                                         context, matchOdd, oddsChangeEvent
                                     )
@@ -1149,7 +1157,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         val epsOdds = epsListAdapter.dataList
 
                         epsOdds.forEachIndexed { index, leagueOdd ->
-                            if (leagueOdd.matchOdds?.any { matchOdd ->
+                            if (leagueOdd.leagueOdds?.matchOdds?.any { matchOdd ->
                                     SocketUpdateUtil.updateOddStatus(matchOdd, matchOddsLockEvent)
                                 } == true && !leagueOdd.isClose) {
                                 epsListAdapter.notifyItemChanged(index)
@@ -1186,7 +1194,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         val epsOdds = epsListAdapter.dataList
 
                         epsOdds.forEachIndexed { index, epsLeagueOddsItem ->
-                            if (epsLeagueOddsItem.matchOdds?.any { matchOdd ->
+                            if (epsLeagueOddsItem.leagueOdds?.matchOdds?.any { matchOdd ->
                                     SocketUpdateUtil.updateOddStatus(
                                         matchOdd,
                                         globalStopEvent
@@ -1220,7 +1228,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
             }
         }
-
+        //TODo Bill 禮拜一詳細測試
+        /**
+         *  比對 GameType 相同 和 leagueIdList 是當前頁面有的 -> viewModel.refreshGame(args.matchType,listOf(it.league.id),listOf())
+         *  如果是 GameType不同 但是 leagueIdList是目前沒有的(代表可能有新的聯賽進來) -> getSportMenu(args.matchType)更新 sport Menu + switchSportType(args.matchType, it)
+         *  如果 GameType 是非當前頁面的 就取 -> getSportMenu(args.matchType)更新sport Menu
+         * */
         receiver.leagueChange.observe(this.viewLifecycleOwner) {
             it?.getContentIfNotHandled()?.let { leagueChangeEvent ->
                 //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
@@ -1228,42 +1241,49 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 //收到的gameType与用户当前页面所选球种相同, 则需额外调用/match/odds/simple/list & /match/odds/eps/list
                 val nowGameType =
                     GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
-                //判斷socket回傳的 leagueIdList 是不是在 當前頁面
+                //判斷當前的 leagueIdList 是不是在 當前頁面
                 val hasLeagueIdList =
                     leagueAdapter.data.filter { leagueOdd -> leagueOdd.league.id == leagueChangeEvent.leagueIdList?.firstOrNull() }
-                        .isNotEmpty()
 
                 when {
-                    //GameType相同 & leagueIdList 是當前頁面有的 -> 更新聯賽
-                    nowGameType == leagueChangeEvent.gameType && hasLeagueIdList -> {
-                        viewModel.getSportMenu(args.matchType, onlyRefreshSportMenu = true)
+                    //GameType 相同 和 leagueIdList 是當前頁面有的
+                    nowGameType == leagueChangeEvent.gameType && hasLeagueIdList.isNotEmpty() -> {
                         viewModel.refreshGame(
                             args.matchType,
                             leagueChangeEvent.leagueIdList,
                             listOf()
                         )
                     }
-                    //GameType相同 & leagueIdList 是當前頁面沒有的(代表可能有新的聯賽加進來)->更新gameTypeAdapter、dateAdapter
-                    nowGameType == leagueChangeEvent.gameType && !hasLeagueIdList -> {
-                        if (leagueAdapter.data.size != 0) {
-                            viewModel.getSportMenu(args.matchType, onlyRefreshSportMenu = true)
-                            viewModel.switchSportType(
-                                args.matchType,
-                                nowGameType ?: GameType.FT.key
-                            )
-                        } else {//如果當前球種己經沒有賽事了，就自動選取第一個有賽事的球種玩法
-                            viewModel.getSportMenu(
-                                args.matchType,
-                                switchFirstTag = true,
-                                onlyRefreshSportMenu = true
-                            )
-                        }
+                    nowGameType == leagueChangeEvent.gameType && hasLeagueIdList.isNullOrEmpty() -> {
+                        unSubscribeChannelHallAll()
+                        viewModel.getSportMenu(args.matchType)
+                        viewModel.switchSportType(args.matchType, nowGameType ?: "FT")
                     }
-                    //GameType不同 只更新更新gameTypeAdapter
+                    nowGameType != leagueChangeEvent.gameType -> {
+                        viewModel.getSportMenu(args.matchType)
+                    }
                     else -> {
-                        viewModel.getSportMenu(args.matchType, onlyRefreshSportMenu = true)
+                        viewModel.getSportMenu(args.matchType)
                     }
                 }
+
+
+                if (nowGameType == leagueChangeEvent.gameType) {
+//                    viewModel.refreshGame(args.matchType)
+                    when (game_list.adapter) {
+                        is LeagueAdapter, is CountryAdapter, is OutrightCountryAdapter -> {
+                            leagueChangeEvent.leagueIdList?.let { leagueIdList ->
+                                viewModel.getGameHallList(
+                                    args.matchType,
+                                    isReloadDate = false,
+                                    leagueIdList = leagueIdList,
+                                    isIncrement = true
+                                )
+                            }
+                        }
+                    }
+                }
+
 
             }
         }
@@ -1330,18 +1350,20 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         if (args.matchType != MatchType.OTHER) {
             gameTypeList.find { it.isSelected }.let { item ->
                 game_toolbar_sport_type.text = item?.name ?: resources.getString(GameType.FT.string)
+                    .toUpperCase(Locale.getDefault())
                 updateSportBackground(item)
 //                subscribeSportChannelHall(item?.code)//12/30 移除平台id与gameType後，切換SportType就不用重新訂閱了，不然會造成畫面一直閃爍 by Bill
             }
 
             //即將開賽畫面修正
-            if(args.matchType == MatchType.AT_START){
+            if (args.matchType == MatchType.AT_START) {
                 sport_type_list.visibility = if (num != 0) View.VISIBLE else View.GONE
                 game_toolbar_sport_type.visibility = if (num != 0) View.VISIBLE else View.GONE
                 game_toolbar_champion.visibility = if (num != 0) View.VISIBLE else View.GONE
                 game_play_category.visibility = if (num != 0) View.VISIBLE else View.GONE
             }
         }
+
     }
 
     private fun updateSportBackground(sport: Item?) {
@@ -1834,7 +1856,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
 
-        epsLeagueOddsItem.matchOdds?.forEach { matchOddsItem ->
+        epsLeagueOddsItem.leagueOdds?.matchOdds?.forEach { matchOddsItem ->
             when (epsLeagueOddsItem.isClose) {
                 true -> {
                     unSubscribeChannelHall(

@@ -10,18 +10,17 @@ apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     buildToolsVersion "29.0.3"
 
     defaultConfig {
         ndk {
-            abiFilters 'arm64-v8a', 'armeabi-v7a', 'armeabi', 'x86'
+            abiFilters 'arm64-v8a', 'armeabi-v7a', 'armeabi', 'x86','x86_64'
         }
-
         applicationId "org.cxct.sportlottery"
         minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 1
+        targetSdkVersion 30
+        versionCode 2
         versionName "1.0.67"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -98,7 +97,7 @@ android {
             buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
             manifestPlaceholders = [
                     JPUSH_PKGNAME          : applicationId,
-                    JPUSH_APPKEY           : "774e6735e1eae46b4b10260f", //JPush上注册的包名对应的appkey.
+                    JPUSH_APPKEY           : "6ce6dade62a7563b526bf021", //JPush上注册的包名对应的appkey.
                     JPUSH_CHANNEL          : "developer-default", //暂时填写默认值即可.
                     NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
             ]

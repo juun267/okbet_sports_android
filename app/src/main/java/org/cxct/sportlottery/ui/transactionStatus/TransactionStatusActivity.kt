@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.transactionStatus
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -50,7 +51,7 @@ class TransactionStatusActivity :
         initRvMarquee()
         initObserver()
         initServiceButton()
-        getAnnouncement()
+//        getAnnouncement()
     }
 
     override fun onResume() {
@@ -224,21 +225,21 @@ class TransactionStatusActivity :
     }
 
     private fun initObserver() {
-        viewModel.messageListResult.observe(this, {
+        viewModel.messageListResult.observe(this) {
             updateUiWithResult(it)
-        })
+        }
 
-        viewModel.isLogin.observe(this, {
+        viewModel.isLogin.observe(this) {
             getAnnouncement()
-        })
+        }
 
-        viewModel.userInfo.observe(this, {
+        viewModel.userInfo.observe(this) {
             updateAvatar(it?.iconUrl)
-        })
+        }
 
-        viewModel.nowTransNum.observe(this, {
+        viewModel.nowTransNum.observe(this) {
             navigation_transaction_status.trans_number.text = it.toString()
-        })
+        }
 
     }
 
@@ -256,11 +257,10 @@ class TransactionStatusActivity :
             it.rows?.forEach { data -> titleList.add(data.title + " - " + data.message) }
 
             mMarqueeAdapter.setData(titleList)
-
             if (messageListResult.success && titleList.size > 0) {
-                rv_marquee.startAuto() //啟動跑馬燈
+                rv_marquee.startAuto(false) //啟動跑馬燈
             } else {
-                rv_marquee.stopAuto() //停止跑馬燈
+                rv_marquee.stopAuto(true) //停止跑馬燈
             }
         }
     }

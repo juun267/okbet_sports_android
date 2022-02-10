@@ -15,10 +15,8 @@ import org.cxct.sportlottery.util.*
 class ContentParlayMatchAdapter :
     ListAdapter<MatchOdd, RecyclerView.ViewHolder>(ContentDiffCallBack()) {
     var gameType: String = ""
-    var oddsType: OddsType = OddsType.EU
-    fun setupMatchData(gameType: String, oddsType: OddsType, dataList: List<MatchOdd>) {
+    fun setupMatchData(gameType: String, dataList: List<MatchOdd>) {
         this.gameType = gameType
-        this.oddsType = oddsType
         submitList(dataList)
     }
 
@@ -40,7 +38,7 @@ class ContentParlayMatchAdapter :
         val data = getItem(holder.adapterPosition)
         when (holder) {
             is ParlayMatchViewHolder -> {
-                holder.bind(gameType, data, oddsType)
+                holder.bind(gameType, data)
             }
         }
     }
@@ -54,14 +52,9 @@ class ContentParlayMatchAdapter :
             }
         }
 
-        fun bind(gameTypeName: String, data: MatchOdd, oddsType: OddsType) {
+        fun bind(gameTypeName: String, data: MatchOdd) {
             itemView.apply {
                 content_play.text = "$gameTypeName ${data.playCateName}"
-
-                val odd = when (oddsType) {
-                    OddsType.HK -> data.hkOdds
-                    else -> data.odds
-                }
 
                 val oddsTypeStr = when (data.oddsType) {
                     OddsType.HK.code -> "(" + context.getString(OddsType.HK.res) + ")"
@@ -73,7 +66,7 @@ class ContentParlayMatchAdapter :
                 parlay_play_content.setPlayContent(
                     data.playName,
                     data.spread,
-                    TextUtil.formatForOdd(odd),
+                    TextUtil.formatForOdd(data.odds),
                     oddsTypeStr
                 )
 
@@ -81,7 +74,8 @@ class ContentParlayMatchAdapter :
                 content_league.text = data.leagueName
                 content_home_name.text = data.homeName
                 content_away_name.text = data.awayName
-                content_date.setDateNoYear(data.startTime)
+//                content_date.setDateNoYear(data.startTime)
+                content_date.visibility = View.GONE
 
             }
         }

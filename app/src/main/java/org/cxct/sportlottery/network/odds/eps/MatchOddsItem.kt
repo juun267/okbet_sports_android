@@ -13,7 +13,7 @@ data class MatchOddsItem(
     @Json(name = "matchInfo")
     override val matchInfo: MatchInfo? = null,
     @Json(name = "odds")
-    override val oddsEps: Odds?,
+    override val oddsEps: EpsOdd?,
     @Json(name = "betPlayCateNameMap")
     override val betPlayCateNameMap: Map<String?, Map<String?, String?>?>?,
     @Json(name = "playCateNameMap")
