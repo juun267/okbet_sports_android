@@ -370,6 +370,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 if (args.matchType == MatchType.AT_START)
                     game_toolbar_champion.isVisible = true
             }
+
+            if(args.matchType == MatchType.OTHER) game_toolbar_champion.isVisible = false
         }
     }
 
