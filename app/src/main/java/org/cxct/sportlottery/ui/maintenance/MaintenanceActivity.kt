@@ -1,7 +1,9 @@
 package org.cxct.sportlottery.ui.maintenance
 
 import android.os.Bundle
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_maintenance.*
+import kotlinx.android.synthetic.main.activity_maintenance.btn_floating_service
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
@@ -22,7 +24,7 @@ class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(Maintenance
 
         initObserver()
         initSocketObserver()
-
+        initServiceButton()
     }
 
     private fun initObserver() {
@@ -30,11 +32,16 @@ class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(Maintenance
 
         viewModel.configResult.observe(this) {
             tv_maintenance_time.text = it?.configData?.maintainInfo
-            tv_customer_service.text = String.format(
-                getString(R.string.if_there_is_any_question_please_consult),
-                ""
-            )
+            //改為右下角客服按鈕
+//            tv_customer_service.text = String.format(
+//                getString(R.string.if_there_is_any_question_please_consult),
+//                ""
+//            )
         }
+    }
+
+    private fun initServiceButton() {
+        btn_floating_service.setView4Maintenance(this)
     }
 
     private fun initSocketObserver() {

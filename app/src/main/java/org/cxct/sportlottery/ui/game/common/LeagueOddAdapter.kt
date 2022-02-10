@@ -242,7 +242,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
         private fun setStatusTextColor(item: MatchOdd) {
             val color =
-                if (item.matchInfo?.isInPlay == true) R.color.colorRedDark else R.color.colorGray
+                if (item.matchInfo?.isInPlay == true) R.color.colorBlack else R.color.colorGray
             itemView.apply {
                 league_odd_match_status.setTextColor(ContextCompat.getColor(this.context, color))
                 league_odd_spt.setTextColor(ContextCompat.getColor(this.context, color))
