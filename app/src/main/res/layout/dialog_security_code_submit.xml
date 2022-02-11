@@ -6,12 +6,13 @@
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     app:cardCornerRadius="8dp"
-    tools:context="ui.money.recharge.MoneySubmitDialog">
+    android:background="@color/color_FDFDFD"
+    tools:context="ui.common.CustomSecurityDialog">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorWhite"
+        android:background="@color/color_FDFDFD"
         android:orientation="vertical">
 
         <TextView
@@ -48,68 +49,17 @@
 
         </LinearLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/block_security_code"
+        <org.cxct.sportlottery.ui.common.SecurityCodeStyleEditText
+            android:id="@+id/securityCodeStyleEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="20dp"
             android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_phone">
-
-            <org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
-                android:id="@+id/et_security_code"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_weight="1"
-                app:iconSignifier="@drawable/ic_login_verify"
-                app:singleText="@string/verification_code"
-                app:hideSelectedTitle="true"
-                app:layout_constraintEnd_toStartOf="@+id/ll_get_security"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
-                    android:id="@+id/edt_security_code"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionNext"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:textSize="@dimen/textSize14sp" />
-
-            </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
-
-            <LinearLayout
-                android:id="@+id/ll_get_security"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:background="@color/transparent"
-                android:gravity="center_vertical"
-                android:minWidth="80dp"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="@+id/et_security_code"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/et_security_code">
-
-                <Button
-                    android:id="@+id/btn_get_security"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/btn_send_sms"
-                    android:minHeight="32dp"
-                    android:text="@string/get_security_code"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/textSize14sp" />
-
-            </LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:scErrorText="@string/dialog_security_error"
+            app:scHintText="@string/hint_security_code"
+            app:scLabelText="@string/verification_code"/>
 
         <View
             android:layout_width="match_parent"
@@ -130,7 +80,7 @@
                 android:layout_height="44dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/btn_cancel"
+                android:text="@string/bottom_sheet_close"
                 android:textColor="@color/colorBlue"
                 android:textSize="@dimen/textSize14sp"
                 android:textStyle="bold" />
