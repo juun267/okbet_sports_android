@@ -420,7 +420,7 @@
         app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row3"
         tools:ignore="ContentDescription" />
 
-    <androidx.viewpager2.widget.ViewPager2
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/league_odd_btn_pager_main"
         android:layout_width="0dp"
         android:layout_height="224dp"
@@ -430,6 +430,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/league_odd_match_border"
         app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/itemview_odd_btn_2x2_v5"
         tools:layout="@layout/itemview_odd_btn_2x2_v5" />
 
     <org.cxct.sportlottery.ui.common.IndicatorView

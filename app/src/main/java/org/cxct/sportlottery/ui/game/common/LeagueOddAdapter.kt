@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.*
@@ -637,6 +638,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         ) {
 
             itemView.league_odd_btn_pager_main.apply {
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 this.adapter =
                     OddButtonPagerAdapter(
                         item.matchInfo,
@@ -660,27 +662,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                 )
                             }
                     }
-
-                registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                    override fun onPageScrolled(
-                        position: Int,
-                        positionOffset: Float,
-                        positionOffsetPixels: Int
-                    ) {
-                        super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-
-                        item.positionButtonPage = position
-                    }
-                })
-
-                setCurrentItem(item.positionButtonPage, false)
-                getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
-                OverScrollDecoratorHelper.setUpOverScroll(
-                    getChildAt(0) as RecyclerView,
-                    OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL
-                )
             }
-            OverScrollDecoratorHelper.setUpOverScroll(itemView.league_odd_btn_pager_main)
 
             itemView.league_odd_btn_indicator_main.apply {
 
@@ -690,7 +672,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     View.GONE
                 }
 
-                setupWithViewPager2(itemView.league_odd_btn_pager_main)
             }
         }
 
