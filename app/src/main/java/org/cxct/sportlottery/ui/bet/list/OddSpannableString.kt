@@ -98,7 +98,7 @@ object OddSpannableString {
 
         setupOddsSpannableString(textView.context, matchOdd, isOddsChanged, oddsType)
 
-        setupOddsTypeSpannableString(textView.context, oddsType)
+        //setupOddsTypeSpannableString(textView.context, oddsType)
 
 
         mergeString(textView)
@@ -172,7 +172,7 @@ object OddSpannableString {
         oddContentBuilder.append(spreadSpan)
         oddContentBuilder.append(" ＠ ")
         oddContentBuilder.append(oddsSpan)
-        oddContentBuilder.append(oddsTypeSpan)
+        //oddContentBuilder.append(oddsTypeSpan)
 
         textView.text = oddContentBuilder
 

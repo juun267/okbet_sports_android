@@ -52,7 +52,6 @@
                         android:layout_height="@dimen/margin_28"
                         android:src="@drawable/icon_arrow_gray"
                         android:padding="@dimen/margin_8"
-                        android:background="@drawable/bg_radius_4_button_ededed"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -142,18 +141,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:animateLayoutChanges="true"
+                    android:layout_marginLeft="44dp"
                     android:background="@color/colorWhite"
                     android:clickable="true"
                     android:focusable="true"
-                    android:visibility="gone"
-                    tools:visibility="gone">
+                    tools:visibility="gone"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/btn_delete_all_confirm"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@color/colorRed"
+                        android:layout_marginTop="@dimen/margin_8"
+                        android:layout_marginBottom="@dimen/margin_8"
+                        android:background="@drawable/bg_radius_4_button_e44438"
                         android:gravity="center"
                         android:text="@string/bet_list_delete_all"
                         android:textColor="@android:color/white" />
@@ -192,6 +194,14 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toTopOf="@+id/ll_keyboard_bg"/>
 
+                <View
+                    android:id="@+id/shadow"
+                    android:layout_width="match_parent"
+                    android:layout_height="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/ll_keyboard_bg"
+                    android:background="@drawable/bg_gradient_bottom_sheet_shadow" />
+
                 <LinearLayout
                     android:id="@+id/ll_keyboard_bg"
                     android:layout_width="match_parent"
@@ -202,7 +212,7 @@
                     android:background="@color/colorWhite"
                     android:orientation="horizontal"
                     android:padding="6dp"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <org.cxct.sportlottery.ui.common.CustomKeyBoardView
                         android:id="@+id/kv_keyboard"
