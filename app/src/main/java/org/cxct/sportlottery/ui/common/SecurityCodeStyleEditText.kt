@@ -36,25 +36,28 @@ class SecurityCodeStyleEditText @JvmOverloads constructor(context: Context, attr
 
                 setHint(labelText,hintText)
                 setView(errorText)
+                setEdittext()
 
-
-                edt_security_code.addTextChangedListener(object : TextWatcher {
-                    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    }
-
-                    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    }
-
-                    override fun afterTextChanged(p0: Editable?) {
-                        mClearEdittextListener?.onClick(null)
-                    }
-                })
             }
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
             typedArray.recycle()
         }
+    }
+
+    private fun setEdittext() {
+        edt_security_code.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                mClearEdittextListener?.onClick(null)
+            }
+        })
     }
 
     fun showErrorStatus(b: Boolean) {
