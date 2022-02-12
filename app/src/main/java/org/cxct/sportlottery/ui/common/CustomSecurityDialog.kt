@@ -2,13 +2,23 @@ package org.cxct.sportlottery.ui.common
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.AbsoluteSizeSpan
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.view.*
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
+import kotlinx.android.synthetic.main.content_security_code_style_edittext.view.*
 import kotlinx.android.synthetic.main.dialog_security_code_submit.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.repository.sConfigData
 import java.util.*
 
 /**
@@ -22,13 +32,15 @@ import java.util.*
 class CustomSecurityDialog(context: Context) : DialogFragment() {
 
     private var mSmsTimer: Timer? = null
-    private var mGetSecurityCodeClickListener: View.OnClickListener = View.OnClickListener { showSmeTimer300() }
+    private var mGetSecurityCodeClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
     private var mPositiveClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
     private var mNegativeClickListener: View.OnClickListener = View.OnClickListener {
         dismiss()
         sConfigData?.hasGetTwoFactorResult = false
     }
     var positiveClickListener: PositiveClickListener? = null
+    var mContext = context
+    var isPstBtnClickable = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,18 +59,21 @@ class CustomSecurityDialog(context: Context) : DialogFragment() {
     protected fun setCustomDialogStyle() {
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
         dialog?.window?.setGravity(Gravity.CENTER)
-         dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)//隱藏rootLayout
-         //處理 一開始先隱藏鍵盤
+        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
-        dialog?.setCanceledOnTouchOutside(false)// 點擊外面不會消失
+        dialog?.setCanceledOnTouchOutside(false)
     }
 
     private fun initView() {
-        btn_get_security.setOnClickListener(mGetSecurityCodeClickListener)
-        btn_positive.setOnClickListener{
-            positiveClickListener?.onClick(edt_security_code.text.toString().trim())
+        securityCodeStyleEditText.btn_get_security.setOnClickListener(mGetSecurityCodeClickListener)
+
+        btn_positive.setOnClickListener {
+            if (isPstBtnClickable)
+                positiveClickListener?.onClick(securityCodeStyleEditText.edt_security_code.text.toString().trim())
         }
         btn_negative.setOnClickListener(mNegativeClickListener)
+
+        securityCodeStyleEditText.mClearEdittextListener = View.OnClickListener { setPositiveBtnClickable(sConfigData?.hasGetTwoFactorResult == true) }
     }
 
     //发送双重验证讯息
@@ -74,6 +89,20 @@ class CustomSecurityDialog(context: Context) : DialogFragment() {
         mNegativeClickListener = negativeClickListener
     }
 
+    //TODO Bill 還要判斷輸入恇有沒有東西
+    fun setPositiveBtnClickable(isClickable:Boolean){
+        val hasInput = securityCodeStyleEditText.edt_security_code.text.toString().isNotEmpty()
+        isPstBtnClickable = isClickable && hasInput
+        if(isPstBtnClickable)
+            btn_positive.setTextColor(ContextCompat.getColor(mContext,R.color.colorBlue))
+        else
+            btn_positive.setTextColor(ContextCompat.getColor(mContext,R.color.color_E2E2E2))
+    }
+
+    fun showErrorStatus(b:Boolean){
+        securityCodeStyleEditText.showErrorStatus(b)
+    }
+
     class PositiveClickListener(private val clickListener: (string:String) -> Unit) {
         fun onClick(string:String) = clickListener(string)
     }
@@ -82,36 +111,37 @@ class CustomSecurityDialog(context: Context) : DialogFragment() {
     fun showSmeTimer300() {
         try {
             stopSmeTimer()
-
-            var sec = 60
-            mSmsTimer = Timer()
-            mSmsTimer?.schedule(object : TimerTask() {
-                override fun run() {
-                    Handler(Looper.getMainLooper()).post {
-                        if (sec-- > 0) {
-                            btn_get_security.isEnabled = false
-                            btn_get_security.text = "${sec}s"
+            securityCodeStyleEditText.let {
+                var sec = 60
+                mSmsTimer = Timer()
+                mSmsTimer?.schedule(object : TimerTask() {
+                    override fun run() {
+                        Handler(Looper.getMainLooper()).post {
+                            if (sec-- > 0) {
+                                it.btn_get_security.isEnabled = false
+                                it.btn_get_security.text = "${sec}s"
 //                            btn_get_security.setTextColor(
 //                                ContextCompat.getColor(
 //                                    context,
 //                                    R.color.colorGrayDark
 //                                )
 //                            )
-                        } else {
-                            stopSmeTimer()
-                            btn_get_security.isEnabled = true
-                            btn_get_security.text = getString(R.string.get_verification_code)
-                            btn_get_security.setTextColor(Color.WHITE)
+                            } else {
+                                stopSmeTimer()
+                                it.btn_get_security.isEnabled = true
+                                it.btn_get_security.text = getString(R.string.get_verification_code)
+                                it.btn_get_security.setTextColor(Color.WHITE)
+                            }
                         }
                     }
-                }
-            }, 0, 1000) //在 0 秒後，每隔 1000L 毫秒執行一次
+                }, 0, 1000) //在 0 秒後，每隔 1000L 毫秒執行一次
+            }
         } catch (e: Exception) {
             e.printStackTrace()
 
             stopSmeTimer()
-            btn_get_security.isEnabled = true
-            btn_get_security.text = getString(R.string.get_verification_code)
+            securityCodeStyleEditText.btn_get_security.isEnabled = true
+            securityCodeStyleEditText.btn_get_security.text = getString(R.string.get_verification_code)
         }
     }
 
