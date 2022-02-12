@@ -245,6 +245,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 setCanceledOnTouchOutside(false)
                 setCancelable(false)
             }.show()
+            customSecurityDialog?.showErrorStatus(true)
         }
 
         viewModel.twoFactorSuccess.observe(this) {

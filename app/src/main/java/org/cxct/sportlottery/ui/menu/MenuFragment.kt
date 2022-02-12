@@ -174,6 +174,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                 setCanceledOnTouchOutside(false)
                 setCancelable(false)
             }?.show()
+            customSecurityDialog?.showErrorStatus(true)
         }
 
         viewModel.twoFactorSuccess.observe(viewLifecycleOwner) {

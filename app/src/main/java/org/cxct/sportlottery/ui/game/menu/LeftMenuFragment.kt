@@ -482,6 +482,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                 setCanceledOnTouchOutside(false)
                 setCancelable(false)
             }?.show()
+            customSecurityDialog?.showErrorStatus(true)
         }
 
         viewModel.twoFactorSuccess.observe(viewLifecycleOwner) {
