@@ -57,10 +57,6 @@ class SecurityCodeStyleEditText @JvmOverloads constructor(context: Context, attr
         }
     }
 
-    fun setBtnClick(mGetSecurityCodeClickListener: OnClickListener) {
-        btn_get_security.setOnClickListener { mGetSecurityCodeClickListener }
-    }
-
     fun showErrorStatus(b: Boolean) {
         ic_error.isVisible = b
         txv_error_code.isVisible = b
