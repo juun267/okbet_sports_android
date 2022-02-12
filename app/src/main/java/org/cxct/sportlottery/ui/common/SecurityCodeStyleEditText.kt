@@ -33,10 +33,12 @@ class SecurityCodeStyleEditText @JvmOverloads constructor(context: Context, attr
                 val labelText = typedArray.getText(R.styleable.SecurityCodeStyleEditText_scLabelText) ?: ""
                 val hintText = typedArray.getText(R.styleable.SecurityCodeStyleEditText_scHintText) ?: ""
                 val errorText = typedArray.getText(R.styleable.SecurityCodeStyleEditText_scErrorText) ?: ""
+                val icon = typedArray.getResourceId(R.styleable.SecurityCodeStyleEditText_scIcon, -1)
 
                 setHint(labelText,hintText)
                 setView(errorText)
                 setEdittext()
+                setImg(icon)
 
             }
         } catch (e: Exception) {
@@ -44,6 +46,10 @@ class SecurityCodeStyleEditText @JvmOverloads constructor(context: Context, attr
         } finally {
             typedArray.recycle()
         }
+    }
+
+    private fun setImg(icon: Int) {
+        img_ic.setImageResource(icon)
     }
 
     private fun setEdittext() {
