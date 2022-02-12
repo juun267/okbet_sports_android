@@ -86,7 +86,7 @@
     <string name="error_telegram">Telegram account formatted incorrectly</string>
     <string name="real_name">Full name</string>
     <string name="hint_real_name">match the bank account name</string>
-    <string name="verification_code">Verify Code</string>
+    <string name="verification_code">Verification code</string>
     <string name="verification_code_by_sms">SMS verify code</string>
     <string name="hint_verification_code">Verify Code</string>
     <string name="error_verification_code">Verify code incorrectly</string>
@@ -100,7 +100,7 @@
     <string name="dialog_security_hint">Welcome back to game. Please complete verification for account security.</string>
     <string name="dialog_security_title">Enter the verification code.</string>
     <string name="dialog_security_error">You have entered a wrong verification code.</string>
-    <string name="hint_security_code">Verify Code</string>
+    <string name="hint_security_code">Please enter the verification code.</string>
     <string name="btn_agreement">Account Opening Agreement</string>
     <string name="have_account">Already have an account？</string>
     <string name="btn_login">Login</string>
@@ -503,7 +503,7 @@
     <string name="withdraw_number">Withdraw</string>
     <string name="now_balance">Current balance</string>
     <string name="withdraw">Withdraw</string>
-    <string name="submit">SUBMIT</string>
+    <string name="submit">Submit</string>
     <string name="select_crypto_card">Select address</string>
     <string name="selected_bank_card">%1$s (end no.%2$s)</string>
     <string name="error_withdraw_amount_bank">Incorrect withdrawal amount format or value</string>
