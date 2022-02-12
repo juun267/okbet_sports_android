@@ -5,9 +5,6 @@
     android:id="@+id/block_security_code"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="20dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginEnd="20dp"
     android:gravity="center"
     android:orientation="horizontal">
 
@@ -15,7 +12,6 @@
         android:id="@+id/cv_content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="horizontal"
@@ -28,7 +24,6 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="0dp"
             android:background="@drawable/bg_radius_4dp_solid_fdfdfd_bg_e2e2e2"
             android:orientation="horizontal"
             android:padding="4dp">
@@ -53,8 +48,10 @@
                 android:autofillHints="no"
                 android:background="@null"
                 android:ellipsize="end"
-                android:hint="123213213"
-                android:inputType="text"
+                android:hint=""
+                android:inputType="number"
+                android:digits="0123456789"
+                android:maxLength="8"
                 android:scrollHorizontally="true"
                 android:singleLine="true"
                 android:textColor="@color/colorBlackLight"
@@ -101,9 +98,9 @@
         android:id="@+id/ic_error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="12dp"
         android:src="@drawable/ic_error_tip"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cv_content"
         tools:visibility="visible" />
@@ -118,10 +115,10 @@
         android:layout_marginTop="10dp"
         android:textColor="@color/colorRedDark"
         android:textSize="12dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintStart_toEndOf="@+id/ic_error"
         app:layout_constraintTop_toBottomOf="@+id/cv_content"
-        tools:text="验证码输入错误"
+        tools:text="@string/dialog_security_error"
         tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
