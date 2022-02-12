@@ -197,7 +197,7 @@
         <attr name="scErrorText" format="string" />
 
         <!--Icon-->
-        <attr name="scIcon" format="integer" />
+        <attr name="scIcon" format="reference" />
 
 
     </declare-styleable>
