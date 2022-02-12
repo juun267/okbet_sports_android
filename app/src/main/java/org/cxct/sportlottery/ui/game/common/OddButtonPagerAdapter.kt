@@ -757,7 +757,7 @@ class OddButtonPagerViewHolder private constructor(
         ): OddButtonPagerViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val view = layoutInflater
-                .inflate(R.layout.itemview_odd_btn_2x2_v5, parent, false)
+                .inflate(R.layout.itemview_odd_btn_2x2_v6, parent, false)
 
             return OddButtonPagerViewHolder(view, oddStateRefreshListener)
         }

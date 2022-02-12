@@ -663,7 +663,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             }
                     }
             }
-
+/*          //根據需求隱藏，確定不要可刪
             itemView.league_odd_btn_indicator_main.apply {
 
                 visibility = if (item.oddsMap.size > 2) {
@@ -673,6 +673,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 }
 
             }
+            */
         }
 
         @SuppressLint("InflateParams")
