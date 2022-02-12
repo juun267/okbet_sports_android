@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.common
 
+import android.os.Parcelable
 import android.text.Html
 import android.text.Spanned
 import android.view.LayoutInflater
@@ -25,13 +26,19 @@ import org.cxct.sportlottery.util.getOdds
 import java.lang.Exception
 
 
-class OddButtonPagerAdapter(
-    private val matchInfo: MatchInfo?,
-    private val oddsSort: String?,
-    private val playCateNameMap: Map<String?, Map<String?, String?>?>?,
-    private val betPlayCateNameMap: Map<String?, Map<String?, String?>?>? //遊戲名稱顯示用playCateNameMap，下注顯示用betPlayCateNameMap
-) :
-    RecyclerView.Adapter<OddButtonPagerViewHolder>() {
+class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
+    private var matchInfo: MatchInfo?= null
+    private var oddsSort: String?= null
+    private var playCateNameMap: Map<String?, Map<String?, String?>?>?= null
+    private var betPlayCateNameMap: Map<String?, Map<String?, String?>?>?= null //遊戲名稱顯示用playCateNameMap，下注顯示用betPlayCateNameMap
+
+    fun setData(matchInfo: MatchInfo?, oddsSort: String?, playCateNameMap: Map<String?, Map<String?, String?>?>?, betPlayCateNameMap: Map<String?, Map<String?, String?>?>?) {
+        this.matchInfo = matchInfo
+        this.oddsSort = oddsSort
+        this.playCateNameMap = playCateNameMap
+        this.betPlayCateNameMap = betPlayCateNameMap
+    }
+
     var odds: Map<String, List<Odd?>?> = mapOf()
         set(value) {
             field = value.refactorPlayCode().sortOdds()/*.splitPlayCate()*/.reorganizePlay()
@@ -52,7 +59,6 @@ class OddButtonPagerAdapter(
                         }
                         gameListFilter
                     }
-
             data = gameList.withIndex().groupBy {
                 it.index / 1
             }.map {
@@ -85,18 +91,25 @@ class OddButtonPagerAdapter(
         }
     }
 
+    var nowRv: RecyclerView? = null
+    private var recyclerViewState: Parcelable? = null
+
     var oddsType: OddsType = OddsType.EU
         set(value) {
             if (value != field) {
                 field = value
+                recyclerViewState = nowRv?.layoutManager?.onSaveInstanceState()
                 notifyDataSetChanged()
+                nowRv?.layoutManager?.onRestoreInstanceState(recyclerViewState)
             }
         }
 
     private var data: List<List<Pair<String, List<Odd?>?>>> = listOf()
         set(value) {
             field = value
+            recyclerViewState = nowRv?.layoutManager?.onSaveInstanceState()
             notifyDataSetChanged()
+            nowRv?.layoutManager?.onRestoreInstanceState(recyclerViewState)
         }
 
     var listener: OddButtonListener? = null
@@ -113,6 +126,11 @@ class OddButtonPagerAdapter(
                 }))
             }
         }
+    }
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        nowRv = recyclerView
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OddButtonPagerViewHolder {

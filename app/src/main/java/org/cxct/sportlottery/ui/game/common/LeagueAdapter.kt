@@ -1,13 +1,13 @@
 package org.cxct.sportlottery.ui.game.common
 
-import android.util.Log
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import kotlinx.android.synthetic.main.itemview_league_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.FoldState
@@ -17,14 +17,10 @@ import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
-import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SvgUtil
 
 class LeagueAdapter(private val matchType: MatchType) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    private val PAYLOAD_MATCH_STATUS = "payload_match_status"
-
 
     enum class ItemType {
         ITEM, NO_DATA
@@ -172,17 +168,16 @@ class LeagueAdapter(private val matchType: MatchType) :
             oddsType: OddsType
         ) {
             itemView.league_odd_list.apply {
+                league_odd_list.itemAnimator = null
+//                (league_odd_list.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
                 adapter = leagueOddAdapter.apply {
-                    data = if (item.searchMatchOdds.isNotEmpty()) {
-                        item.searchMatchOdds
-                    } else {
+                    setData(item.searchMatchOdds.ifEmpty {
                         item.matchOdds
                     }.onEach {
                         it.matchInfo?.gameType = item.gameType?.key
-                    }
+                    }, oddsType)
 
                     this.leagueOddListener = leagueOddListener
-                    this.oddsType = oddsType
                 }
             }
         }

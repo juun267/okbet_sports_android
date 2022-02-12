@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
+import androidx.recyclerview.widget.SimpleItemAnimator
 import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_eps.view.*
@@ -32,32 +35,36 @@ import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.needCountStatus
 import java.util.*
 
-val PAYLOAD_SCORE_CHANGE = "payload_score_change"
-val PAYLOAD_CLOCK_CHANGE = "payload_clock_change"
-val PAYLOAD_ODDS_CHANGE = "payload_odds_change"
+const val PAYLOAD_SCORE_CHANGE = "payload_score_change"
+const val PAYLOAD_CLOCK_CHANGE = "payload_clock_change"
+const val PAYLOAD_ODDS_CHANGE = "payload_odds_change"
 
 class LeagueOddAdapter(private val matchType: MatchType) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var data = listOf<MatchOdd>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
+//    var rvScrollPosition: Int? = null
+//    var arr: List<Int> = Arrays.asList(arrayOfNulls<Int>(10))
     var oddsType: OddsType = OddsType.EU
-        set(value) {
-            if (value != field) {
-                field = value
-                notifyDataSetChanged()
-            }
-        }
+
+    var nowRv: RecyclerView? = null
+    private var recyclerViewState: Parcelable? = null
+
+    fun setData (data: List<MatchOdd> = listOf(), oddsType: OddsType = OddsType.EU) {
+        this.data = data
+        this.oddsType = oddsType
+        recyclerViewState = nowRv?.layoutManager?.onSaveInstanceState()
+        notifyDataSetChanged()
+        nowRv?.layoutManager?.onRestoreInstanceState(recyclerViewState)
+    }
 
     var isTimerEnable = false
         set(value) {
             if (value != field) {
                 field = value
+                recyclerViewState = nowRv?.layoutManager?.onSaveInstanceState()
                 notifyDataSetChanged()
+                nowRv?.layoutManager?.onRestoreInstanceState(recyclerViewState)
             }
         }
 
@@ -75,6 +82,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
+    }
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        nowRv = recyclerView
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -631,22 +643,32 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
+        val linearLayoutManager by lazy { LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false) }
+
+        private var rvScrollPosition: Int? = null
+        private val oddButtonPagerAdapter by lazy {
+            OddButtonPagerAdapter()
+        }
+
         private fun setupOddsButton(
             item: MatchOdd,
             oddsType: OddsType,
             leagueOddListener: LeagueOddListener?
         ) {
+            itemView.rv_league_odd_btn_pager_main.apply {
+                isNestedScrollingEnabled = false
+                linearLayoutManager.isAutoMeasureEnabled = false
+                layoutManager = linearLayoutManager
+                setHasFixedSize(true)
+                (rv_league_odd_btn_pager_main.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+                oddButtonPagerAdapter.setData(
+                    item.matchInfo,
+                    item.oddsSort,
+                    item.playCateNameMap,
+                    item.betPlayCateNameMap)
 
-            itemView.league_odd_btn_pager_main.apply {
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                this.adapter =
-                    OddButtonPagerAdapter(
-                        item.matchInfo,
-                        item.oddsSort,
-                        item.playCateNameMap,
-                        item.betPlayCateNameMap
-                    ).apply {
-
+                this.adapter = oddButtonPagerAdapter.apply {
+                        stateRestorationPolicy = StateRestorationPolicy.PREVENT
                         this.odds = item.oddsMap
 
                         this.oddsType = oddsType
@@ -878,14 +900,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             itemView.quick_odd_away.text = item.matchInfo?.awayName ?: ""
 
             itemView.quick_odd_btn_pager_other.apply {
-                this.adapter =
-                    OddButtonPagerAdapter(
-                        item.matchInfo,
-                        item.oddsSort,
-                        item.quickPlayCateNameMap,
-                        item.betPlayCateNameMap
-                    ).apply {
-
+                oddButtonPagerAdapter.setData(
+                    item.matchInfo,
+                    item.oddsSort,
+                    item.quickPlayCateNameMap,
+                    item.betPlayCateNameMap
+                )
+                this.adapter = oddButtonPagerAdapter.apply {
+                        stateRestorationPolicy = StateRestorationPolicy.PREVENT
                         this.odds = item.quickPlayCateList?.find { it.isSelected }?.quickOdds
                             ?: mutableMapOf()
 
