@@ -89,7 +89,7 @@ class CustomSecurityDialog(context: Context) : DialogFragment() {
         mNegativeClickListener = negativeClickListener
     }
 
-    //TODO Bill 還要判斷輸入恇有沒有東西
+    //還要判斷輸入恇有沒有東西
     fun setPositiveBtnClickable(isClickable:Boolean){
         val hasInput = securityCodeStyleEditText.edt_security_code.text.toString().isNotEmpty()
         isPstBtnClickable = isClickable && hasInput
