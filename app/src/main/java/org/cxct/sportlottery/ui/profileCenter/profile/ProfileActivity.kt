@@ -251,6 +251,12 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             if (it == true)
                 customSecurityDialog?.dismiss()
         }
+
+        viewModel.twoFactorResult.observe(this){
+            //傳送驗證碼成功後才能解鎖提交按鈕
+            customSecurityDialog?.setPositiveBtnClickable(it?.success ?: false)
+            sConfigData?.hasGetTwoFactorResult = true
+        }
     }
 
     private fun setWithdrawInfo(userInfo: UserInfo) {

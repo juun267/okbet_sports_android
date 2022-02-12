@@ -450,6 +450,12 @@ class ProfileCenterActivity :
                 customSecurityDialog?.dismiss()
         }
 
+        viewModel.twoFactorResult.observe(this) {
+            //傳送驗證碼成功後才能解鎖提交按鈕
+            customSecurityDialog?.setPositiveBtnClickable(it?.success ?: false)
+            sConfigData?.hasGetTwoFactorResult = true
+        }
+
         viewModel.settingNeedToUpdateWithdrawPassword.observe(this) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {

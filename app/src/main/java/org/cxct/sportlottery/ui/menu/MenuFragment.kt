@@ -181,6 +181,12 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                 customSecurityDialog?.dismiss()
         }
 
+        viewModel.twoFactorResult.observe(viewLifecycleOwner) {
+            //傳送驗證碼成功後才能解鎖提交按鈕
+            customSecurityDialog?.setPositiveBtnClickable(it?.success ?: false)
+            sConfigData?.hasGetTwoFactorResult = true
+        }
+
         viewModel.needToUpdateWithdrawPassword.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
