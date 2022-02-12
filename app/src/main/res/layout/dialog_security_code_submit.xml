@@ -97,7 +97,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/submit"
-                android:textColor="@color/colorBlue"
+                android:textColor="@color/color_E2E2E2"
                 android:textSize="@dimen/textSize14sp"
                 android:textStyle="bold" />
 
