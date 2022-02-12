@@ -85,7 +85,7 @@
     <string name="error_telegram">lỗi định dạng tài khoản Telegram không hợp lệ</string>
     <string name="real_name">Họ tên thật</string>
     <string name="hint_real_name">Họ tên phải đồng nhất với tài khoản ngân hàng</string>
-    <string name="verification_code">Đăng ký mã xác nhận</string>
+    <string name="verification_code">Mã xác nhận</string>
     <string name="verification_code_by_sms">Mã xác nhận SMS</string>
     <string name="hint_verification_code">Vui lòng nhập Đăng ký mã xác nhận</string>
     <string name="error_verification_code">Mã xác nhận đăng ký không đúng</string>
@@ -99,7 +99,7 @@
     <string name="dialog_security_hint">Chào mừng bạn trở lại trò chơi. Vui lòng hoàn tất xác minh để bảo mật tài khoản.</string>
     <string name="dialog_security_title">Nhập mã xác nhận.</string>
     <string name="dialog_security_error">Bạn đã nhập một mã xác minh sai.</string>
-    <string name="hint_security_code">Vui lòng nhập Đăng ký mã xác nhận</string>
+    <string name="hint_security_code">Vui lòng nhập mã xác nhận.</string>
     <string name="btn_agreement">Thỏa thuận mở tài khoản</string>
     <string name="have_account">bạn đã có tài khoản?</string>
     <string name="btn_login">Đăng nhập</string>
@@ -377,7 +377,7 @@
     <string name="odds_detail_play_type_dc_12">44198</string>
     <string name="odds_detail_play_type_ou_o">tài</string>
     <string name="odds_detail_play_type_ou_u">xỉu</string>
-    <string name="bottom_sheet_close">Tắt</string>
+    <string name="bottom_sheet_close">Đóng</string>
     <string name="bottom_sheet_title_play_type">Thay đổi lối chơi</string>
     <string name="message_recharge_maintain">Hệ thống nạp tiền đang được nâng cấp, vui lòng chờ đợi</string>
     <string name="title_bank">Chọn ngân hàng</string>
@@ -480,7 +480,7 @@
     <string name="withdraw_number">Số tiền rút</string>
     <string name="now_balance">Số dư hiện tại</string>
     <string name="withdraw">Rút tiền</string>
-    <string name="submit">Gửi</string>
+    <string name="submit">Gửi đi</string>
     <string name="select_crypto_card">Chọn địa chỉ</string>
     <string name="selected_bank_card">%1$s (Số đuôi%2$s)</string>
     <string name="error_withdraw_amount_bank">Định dạng hoặc giá trị của số tiền rút không đúng</string>
