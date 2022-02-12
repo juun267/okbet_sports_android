@@ -156,14 +156,10 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                                 this.showSmeTimer300()
                                 viewModel.sendTwoFactor()
                             }
-                            setNegativeClickListener {
-                                dismiss()
-                            }
                             positiveClickListener = CustomSecurityDialog.PositiveClickListener{ number ->
                                 viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
                             }
                         }
-
                         customSecurityDialog?.show(parentFragmentManager,null)
                     }
                 }

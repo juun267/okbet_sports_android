@@ -464,9 +464,6 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                                 this.showSmeTimer300()
                                 viewModel.sendTwoFactor()
                             }
-                            setNegativeClickListener {
-                                dismiss()
-                            }
                             positiveClickListener = CustomSecurityDialog.PositiveClickListener{ number ->
                                 viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
                             }
