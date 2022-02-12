@@ -430,10 +430,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/league_odd_match_border"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/itemview_odd_btn_2x2_v5"
-        tools:layout="@layout/itemview_odd_btn_2x2_v5" />
+        tools:itemCount="4"
+        tools:listitem="@layout/itemview_odd_btn_2x2_v6"
+        tools:layout="@layout/itemview_odd_btn_2x2_v6" />
 
+<!--    根據需求隱藏，確定不要可刪-->
     <org.cxct.sportlottery.ui.common.IndicatorView
+        android:visibility="gone"
         android:id="@+id/league_odd_btn_indicator_main"
         android:layout_width="wrap_content"
         android:layout_height="16dp"
@@ -441,7 +444,6 @@
         app:layout_constraintEnd_toEndOf="@id/league_odd_btn_pager_main"
         app:layout_constraintStart_toStartOf="@id/league_odd_btn_pager_main"
         />
-    <!--    app:layout_constraintBottom_toBottomOf="@id/league_odd_button_border"-->
 
     <View
         android:id="@+id/league_odd_quick_cate_divider"
