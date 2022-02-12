@@ -128,7 +128,7 @@ class OddButtonPagerAdapter(
                 Pair(
                     data[position].getOrNull(0)?.first,
                     data[position].getOrNull(0)?.second
-            )
+            )),
             oddsType,
             listener
         )
