@@ -24,7 +24,10 @@ class CustomSecurityDialog(context: Context) : DialogFragment() {
     private var mSmsTimer: Timer? = null
     private var mGetSecurityCodeClickListener: View.OnClickListener = View.OnClickListener { showSmeTimer300() }
     private var mPositiveClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
-    private var mNegativeClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
+    private var mNegativeClickListener: View.OnClickListener = View.OnClickListener {
+        dismiss()
+        sConfigData?.hasGetTwoFactorResult = false
+    }
     var positiveClickListener: PositiveClickListener? = null
 
     override fun onCreateView(
@@ -122,5 +125,6 @@ class CustomSecurityDialog(context: Context) : DialogFragment() {
     override fun onPause() {
         super.onPause()
         stopSmeTimer()
+        sConfigData?.hasGetTwoFactorResult = false
     }
 }
