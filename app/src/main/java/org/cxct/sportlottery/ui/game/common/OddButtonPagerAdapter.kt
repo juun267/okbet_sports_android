@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
-import kotlinx.android.synthetic.main.itemview_odd_btn_2x2_v4.view.*
+import kotlinx.android.synthetic.main.itemview_odd_btn_2x2_v6.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.common.GameType
@@ -34,7 +34,7 @@ class OddButtonPagerAdapter(
     RecyclerView.Adapter<OddButtonPagerViewHolder>() {
     var odds: Map<String, List<Odd?>?> = mapOf()
         set(value) {
-            field = value.refactorPlayCode().sortOdds().splitPlayCate().reorganizePlay()
+            field = value.refactorPlayCode().sortOdds()/*.splitPlayCate()*/.reorganizePlay()
                 .filterPlayCateSpanned().sortPlayCate()
             val gameList =
                 field.filterValues { !it.isNullOrEmpty() }.filter { it.value?.getOrNull(0) != null }
@@ -54,7 +54,7 @@ class OddButtonPagerAdapter(
                     }
 
             data = gameList.withIndex().groupBy {
-                it.index / 2
+                it.index / 1
             }.map {
                 it.value.map { it.value }
             }.map {
@@ -128,12 +128,7 @@ class OddButtonPagerAdapter(
                 Pair(
                     data[position].getOrNull(0)?.first,
                     data[position].getOrNull(0)?.second
-                ),
-                Pair(
-                    data[position].getOrNull(1)?.first,
-                    data[position].getOrNull(1)?.second
-                )
-            ),
+            )
             oddsType,
             listener
         )
@@ -346,17 +341,6 @@ class OddButtonPagerViewHolder private constructor(
             playCateNameMap,
             betPlayCateNameMap,
             odds?.getOrNull(0), oddsType, oddButtonListener
-        )
-
-        setupOddsButton(
-            itemView.odd_btn_row2_type,
-            itemView.odd_btn_row2_home,
-            itemView.odd_btn_row2_away,
-            itemView.odd_btn_row2_draw,
-            matchInfo,
-            playCateNameMap,
-            betPlayCateNameMap,
-            odds?.getOrNull(1), oddsType, oddButtonListener
         )
     }
 
