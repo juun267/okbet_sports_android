@@ -162,11 +162,11 @@ class WithdrawRepository(
         return showCustomSecurityDialog
     }
 
-//    //單純顯示TwoFactorStatus 邏輯不同所以拆開判斷
-//    private suspend fun getTwoFactorStatus4Profile(): Boolean {
-//        val response = OneBoSportApi.withdrawService.getTwoFactorStatus() //(success: true 验证成功, false 需重新验证手机), 在进行新增银行卡、更新银行卡密码、更新用户密码、设定真实姓名之前先判断此状态, 如果为false, 就显示验证手机简讯的画面
-//        return response.body()?.success ?: true
-//    }
+    //單純顯示TwoFactorStatus 邏輯不同所以拆開判斷
+    private suspend fun getTwoFactorStatus(): Boolean {
+        val response = OneBoSportApi.withdrawService.getTwoFactorStatus() //(success: true 验证成功, false 需重新验证手机), 在进行新增银行卡、更新银行卡密码、更新用户密码、设定真实姓名之前先判断此状态, 如果为false, 就显示验证手机简讯的画面
+        return response.body()?.success ?: true
+    }
 
     suspend fun checkNeedToShowSecurityDialog() {
         _showSecurityDialog.value = Event(showSecurityDialog())
