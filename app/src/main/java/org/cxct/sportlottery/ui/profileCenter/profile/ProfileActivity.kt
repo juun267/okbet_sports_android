@@ -123,10 +123,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         btn_nickname.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.NickName) }
         //密碼設置
         btn_pwd_setting.setOnClickListener {
-            viewModel.checkNeedToSendTwoFactor()//檢查有需不需要簡訊認證
-            //TODO Bill 邏輯要再調整
-            if (sConfigData?.hasCertified == true)
-                startActivity(Intent(this@ProfileActivity, SettingPasswordActivity::class.java))
+            viewModel.checkNeedToShowSecurityDialog()//檢查有需不需要簡訊認證
         }
         //QQ號碼
         ll_qq_number.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.QQNumber) }
