@@ -400,7 +400,7 @@
     <string name="edt_hint_bank_account">Vui lòng nhập số thẻ ngân hàng</string>
     <string name="title_recharge_time">Thời gian nạp tiền</string>
     <string name="title_current_money">Số dư hiện tại</string>
-    <string name="btn_submit">Gửi đi</string>
+    <string name="btn_submit">Nộp</string>
     <string name="btn_copy">sao chép</string>
     <string name="title_qr_pay">Quét mã QR để thanh toán：</string>
     <string name="title_hint_qr_pay">Quét mã thanh toán KuaiJie, nếu bạn có bất kỳ vấn đề gì vui lòng liên hệ với bộ phận chăm sóc khách hàng!</string>
@@ -481,7 +481,7 @@
     <string name="withdraw_number">Số tiền rút</string>
     <string name="now_balance">Số dư hiện tại</string>
     <string name="withdraw">Rút tiền</string>
-    <string name="submit">Gửi đi</string>
+    <string name="submit">Nộp</string>
     <string name="select_crypto_card">Chọn địa chỉ</string>
     <string name="selected_bank_card">%1$s (Số đuôi%2$s)</string>
     <string name="error_withdraw_amount_bank">Định dạng hoặc giá trị của số tiền rút không đúng</string>
