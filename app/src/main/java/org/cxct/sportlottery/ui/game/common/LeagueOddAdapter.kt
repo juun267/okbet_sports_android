@@ -39,12 +39,11 @@ const val PAYLOAD_SCORE_CHANGE = "payload_score_change"
 const val PAYLOAD_CLOCK_CHANGE = "payload_clock_change"
 const val PAYLOAD_ODDS_CHANGE = "payload_odds_change"
 
+var isRefresh = false
 class LeagueOddAdapter(private val matchType: MatchType) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var data = listOf<MatchOdd>()
-//    var rvScrollPosition: Int? = null
-//    var arr: List<Int> = Arrays.asList(arrayOfNulls<Int>(10))
     var oddsType: OddsType = OddsType.EU
 
     var nowRv: RecyclerView? = null
@@ -67,6 +66,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 nowRv?.layoutManager?.onRestoreInstanceState(recyclerViewState)
             }
         }
+
 
     var leagueOddListener: LeagueOddListener? = null
 
@@ -684,16 +684,32 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                 )
                             }
                     }
-            }
-/*          //根據需求隱藏，確定不要可刪
-            itemView.league_odd_btn_indicator_main.apply {
 
+                addOnScrollListener (object : RecyclerView.OnScrollListener() {
+                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                        super.onScrollStateChanged(recyclerView, newState)
+                        if (scrollState == SCROLL_STATE_IDLE) {
+                            item.rvScrollPos = recyclerView.getChildLayoutPosition(recyclerView.getChildAt(0))
+                        }
+                    }
+
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        super.onScrolled(recyclerView, dx, dy)
+                    }
+                })
+
+                item.rvScrollPos?.let {
+                    scrollToPosition(it)
+                }
+
+            }
+/*          //根據需求拔除indicator, 確定不會用到時可刪
+            itemView.league_odd_btn_indicator_main.apply {
                 visibility = if (item.oddsMap.size > 2) {
                     View.VISIBLE
                 } else {
                     View.GONE
                 }
-
             }
             */
         }

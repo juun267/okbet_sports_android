@@ -169,7 +169,6 @@ class LeagueAdapter(private val matchType: MatchType) :
         ) {
             itemView.league_odd_list.apply {
                 league_odd_list.itemAnimator = null
-//                (league_odd_list.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
                 adapter = leagueOddAdapter.apply {
                     setData(item.searchMatchOdds.ifEmpty {
                         item.matchOdds
