@@ -128,13 +128,6 @@ class WithdrawRepository(
     //提款判斷權限
     private suspend fun withdrawCheckPermissions() {
         this.checkNeedUpdatePassWord().let {
-//            val response = OneBoSportApi.withdrawService.getTwoFactorStatus()
-//            if(!response.isSuccessful && (it || !verifyProfileInfoComplete())){
-//                sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.UPDATE_PW.ordinal
-//                _needToSendTwoFactor.value  = Event(response.isSuccessful)
-//            } else
-//                _needToUpdateWithdrawPassword.value = Event(it)
-
             when{
                 !checkUserPhoneNumber() -> { }
                 showSecurityDialog() && (it || !verifyProfileInfoComplete()) -> {
@@ -143,12 +136,6 @@ class WithdrawRepository(
                 }
                 else ->  _needToUpdateWithdrawPassword.value = Event(it)
             }
-//
-//            if(showSecurityDialog() && (it || !verifyProfileInfoComplete())){
-//                sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.UPDATE_PW.ordinal
-//                _showSecurityDialog.value  = Event(true)
-//            } else
-//                _needToUpdateWithdrawPassword.value = Event(it)
         }
     }
 
@@ -198,19 +185,6 @@ class WithdrawRepository(
                     }
                 }
             }
-
-
-
-//            if(showSecurityDialog() && (it || !verifyProfileInfoComplete())){
-//                sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.SETTING_PW.ordinal
-//                _showSecurityDialog.value = Event(true)
-//            } else{
-//                if (it) {
-//                    _settingNeedToUpdateWithdrawPassword.value = Event(it)
-//                } else {
-//                    checkSettingProfileInfoComplete()
-//                }
-//            }
         }
     }
 
@@ -363,12 +337,6 @@ class WithdrawRepository(
                         }
                         else -> _needToBindBankCard.value = Event(promptMessageId)
                     }
-
-//                    if(showSecurityDialog() && promptMessageId != -1){
-//                        sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.BIND_BANK_CARD.ordinal
-//                        _showSecurityDialog.value  = Event(true)
-//                    } else
-//                        _needToBindBankCard.value = Event(promptMessageId)
 
                 }
             }
