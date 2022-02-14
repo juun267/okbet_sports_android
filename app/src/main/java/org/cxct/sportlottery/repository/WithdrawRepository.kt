@@ -174,7 +174,9 @@ class WithdrawRepository(
 
     //確認使用者有無手機碼 true：有手機碼 false：無手機碼
     private suspend fun checkUserPhoneNumber(): Boolean {
-        _hasPhoneNumber.value = Event(userInfoRepository.userInfo?.firstOrNull()?.phone.toString().isNotEmpty())
+        if(!getTwoFactorStatus())
+            _hasPhoneNumber.value = Event(userInfoRepository.userInfo?.firstOrNull()?.phone.toString().isNotEmpty())
+        
         return userInfoRepository.userInfo?.firstOrNull()?.phone.toString().isNotEmpty()
     }
 
