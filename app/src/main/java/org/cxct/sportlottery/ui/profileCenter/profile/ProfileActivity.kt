@@ -13,6 +13,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.index.config.VerifySwitchType
@@ -42,6 +43,11 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     enum class VerifiedType(val value: Int) {
         NOT_YET(0), PASSED(1), VERIFYING(2), VERIFIED_FAILED(3)
     }
+
+    enum class SecurityCodeEnterType(val value: Int) {
+        REALNAME(0), PW(1)
+    }
+    var securityCodeEnter = SecurityCodeEnterType.REALNAME
 
     private val mSelectMediaListener = object : OnResultCallbackListener<LocalMedia> {
         override fun onResult(result: MutableList<LocalMedia>?) {
@@ -118,11 +124,15 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
     private fun setupToInfoSettingPage() {
         //真實姓名
-        ll_real_name.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.RealName) }
+        ll_real_name.setOnClickListener {
+            securityCodeEnter = SecurityCodeEnterType.REALNAME
+            putExtraForProfileInfoActivity(ModifyType.RealName)
+        }
         //暱稱
         btn_nickname.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.NickName) }
         //密碼設置
         btn_pwd_setting.setOnClickListener {
+            securityCodeEnter = SecurityCodeEnterType.PW
             viewModel.checkNeedToShowSecurityDialog()//檢查有需不需要簡訊認證
         }
         //QQ號碼
@@ -217,20 +227,36 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             it?.let { setWithdrawInfo(it) }
         }
 
-        viewModel.needToSendTwoFactor.observe(this) {
         //是否顯示簡訊驗證彈窗
+        viewModel.showSecurityDialog.observe(this) {
+            val hasPhoneNumber = MultiLanguagesApplication.getInstance()?.userInfo()?.phone?.isNotEmpty()
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    customSecurityDialog =  CustomSecurityDialog(this).apply {
+                    customSecurityDialog = CustomSecurityDialog(this).apply {
                         getSecurityCodeClickListener {
                             this.showSmeTimer300()
                             viewModel.sendTwoFactor()
                         }
-                        positiveClickListener = CustomSecurityDialog.PositiveClickListener{ number ->
-                            viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
+                        positiveClickListener =
+                            CustomSecurityDialog.PositiveClickListener { number ->
+                                viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
+                            }
+                    }
+                    customSecurityDialog?.show(supportFragmentManager, null)
+                } else if (hasPhoneNumber == true && !b) { //有手機號碼又不用驗證的狀態下
+                    when (securityCodeEnter) {
+                        SecurityCodeEnterType.REALNAME -> {
+                            putExtraForProfileInfoActivity(ModifyType.RealName)
+                        }
+                        SecurityCodeEnterType.PW -> {
+                            startActivity(
+                                Intent(
+                                    this@ProfileActivity,
+                                    SettingPasswordActivity::class.java
+                                )
+                            )
                         }
                     }
-                    customSecurityDialog?.show(supportFragmentManager,null)
                 }
             }
         }
@@ -249,8 +275,23 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
         //簡訊驗證成功
         viewModel.twoFactorSuccess.observe(this) {
-            if (it == true)
+            if (it == true) {
                 customSecurityDialog?.dismiss()
+
+                when (securityCodeEnter) {
+                    SecurityCodeEnterType.REALNAME -> {
+                        putExtraForProfileInfoActivity(ModifyType.RealName)
+                    }
+                    SecurityCodeEnterType.PW -> {
+                        startActivity(
+                            Intent(
+                                this@ProfileActivity,
+                                SettingPasswordActivity::class.java
+                            )
+                        )
+                    }
+                }
+            }
         }
 
         //確認收到簡訊驗證碼
