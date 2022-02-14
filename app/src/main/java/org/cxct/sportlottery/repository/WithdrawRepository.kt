@@ -51,9 +51,17 @@ class WithdrawRepository(
     val needToBindBankCard: LiveData<Event<Int?>>
         get() = _needToBindBankCard //提款頁面是否需要新增銀行卡 -1 : 不需要新增, else : 以value作為string id 顯示彈窗提示
 
-    private var _needToSendTwoFactor = MutableLiveData<Event<Boolean>>()
-    val needToSendTwoFactor: LiveData<Event<Boolean>> //判斷是否需要簡訊驗證
-        get() = _needToSendTwoFactor
+    private var _showSecurityDialog = MutableLiveData<Event<Boolean>>()
+    val showSecurityDialog: LiveData<Event<Boolean>> //判斷是否需要簡訊驗證 true：顯示簡訊驗證彈窗 false：不顯示
+        get() = _showSecurityDialog
+
+    private var _hasPhoneNumber = MutableLiveData<Event<Boolean>>()
+    val hasPhoneNumber: LiveData<Event<Boolean>> //是否有手機號碼
+        get() = _hasPhoneNumber
+
+    private var _enterSettingPasswordActivity = MutableLiveData<Event<Boolean>>()
+    val enterSettingPasswordActivity: LiveData<Event<Boolean>> //ProfileActivity 要切換至 SettingPasswordActivity 使用者資料有手機碼、
+        get() = _enterSettingPasswordActivity
 
     private var mWithdrawOperation: SystemOperation? = null
 
@@ -124,36 +132,87 @@ class WithdrawRepository(
     //提款判斷權限
     private suspend fun withdrawCheckPermissions() {
         this.checkNeedUpdatePassWord().let {
-            if (sConfigData?.hasCertified == false && (it || !verifyProfileInfoComplete())) {
-                sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.UPDATE_PW.ordinal
-                _needToSendTwoFactor.value = Event(true)
-            } else
-                _needToUpdateWithdrawPassword.value = Event(it)
+//            val response = OneBoSportApi.withdrawService.getTwoFactorStatus()
+//            if(!response.isSuccessful && (it || !verifyProfileInfoComplete())){
+//                sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.UPDATE_PW.ordinal
+//                _needToSendTwoFactor.value  = Event(response.isSuccessful)
+//            } else
+//                _needToUpdateWithdrawPassword.value = Event(it)
+
+            when{
+                !checkUserPhoneNumber() -> { }
+                showSecurityDialog() && (it || !verifyProfileInfoComplete()) -> {
+                    sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.UPDATE_PW.ordinal
+                    _showSecurityDialog.value = Event(true)
+                }
+                else ->  _needToUpdateWithdrawPassword.value = Event(it)
+            }
+//
+//            if(showSecurityDialog() && (it || !verifyProfileInfoComplete())){
+//                sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.UPDATE_PW.ordinal
+//                _showSecurityDialog.value  = Event(true)
+//            } else
+//                _needToUpdateWithdrawPassword.value = Event(it)
         }
     }
 
-    fun checkNeedToSendTwoFactor() {
-        if (sConfigData?.hasCertified == false)
-            _needToSendTwoFactor.value = Event(true)
-        else
-            _needToSendTwoFactor.value = Event(false)
+    //判斷要不要顯示簡訊驗證 true: 顯示 false:不顯示
+    private suspend fun showSecurityDialog():Boolean {
+        var showCustomSecurityDialog = false
+        if(checkUserPhoneNumber()){
+            val response = OneBoSportApi.withdrawService.getTwoFactorStatus() //(success: true 验证成功, false 需重新验证手机), 在进行新增银行卡、更新银行卡密码、更新用户密码、设定真实姓名之前先判断此状态, 如果为false, 就显示验证手机简讯的画面
+            showCustomSecurityDialog = response.body()?.success == false //後台有開啟驗證簡訊，同時使用者資料有phone的狀況下才要顯示簡訊驗證碼彈窗。後台如果是關閉 getTwoFactorStatus會一直回傳true(已經認證過) by Bill
+        }
+        return showCustomSecurityDialog
+    }
+
+//    //單純顯示TwoFactorStatus 邏輯不同所以拆開判斷
+//    private suspend fun getTwoFactorStatus4Profile(): Boolean {
+//        val response = OneBoSportApi.withdrawService.getTwoFactorStatus() //(success: true 验证成功, false 需重新验证手机), 在进行新增银行卡、更新银行卡密码、更新用户密码、设定真实姓名之前先判断此状态, 如果为false, 就显示验证手机简讯的画面
+//        return response.body()?.success ?: true
+//    }
+
+    suspend fun checkNeedToShowSecurityDialog() {
+        _showSecurityDialog.value = Event(showSecurityDialog())
+    }
+
+    //確認使用者有無手機碼 true：有手機碼 false：無手機碼
+    private suspend fun checkUserPhoneNumber(): Boolean {
+        _hasPhoneNumber.value = Event(userInfoRepository.userInfo?.firstOrNull()?.phone.toString().isNotEmpty())
+        return userInfoRepository.userInfo?.firstOrNull()?.phone.toString().isNotEmpty()
     }
 
     //提款設置判斷權限, 判斷需不需要更新提現密碼 -> 個人資料是否完善
     suspend fun settingCheckPermissions() {
         this.checkNeedUpdatePassWord().let {
             //顯示簡訊認證彈窗
-            if (sConfigData?.hasCertified == false && (it || !verifyProfileInfoComplete())) {
-                sConfigData?.enterCertified =
-                    ProfileCenterViewModel.SecurityEnter.SETTING_PW.ordinal
-                _needToSendTwoFactor.value = Event(true)
-            } else {
-                if (it) {
-                    _settingNeedToUpdateWithdrawPassword.value = Event(it)
-                } else {
-                    checkSettingProfileInfoComplete()
+            when{
+                !checkUserPhoneNumber() -> { }
+                showSecurityDialog() && (it || !verifyProfileInfoComplete()) ->{
+                    sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.SETTING_PW.ordinal
+                    _showSecurityDialog.value = Event(true)
+                }
+                else -> {
+                    if (it) {
+                        _settingNeedToUpdateWithdrawPassword.value = Event(it)
+                    } else {
+                        checkSettingProfileInfoComplete()
+                    }
                 }
             }
+
+
+
+//            if(showSecurityDialog() && (it || !verifyProfileInfoComplete())){
+//                sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.SETTING_PW.ordinal
+//                _showSecurityDialog.value = Event(true)
+//            } else{
+//                if (it) {
+//                    _settingNeedToUpdateWithdrawPassword.value = Event(it)
+//                } else {
+//                    checkSettingProfileInfoComplete()
+//                }
+//            }
         }
     }
 
@@ -162,12 +221,14 @@ class WithdrawRepository(
      * complete true: 個人資訊有缺漏, false: 個人資訊完整
      */
     suspend fun checkProfileInfoComplete() {
-        if (sConfigData?.hasCertified == false) {
-            sConfigData?.enterCertified =
-                ProfileCenterViewModel.SecurityEnter.COMPLETET_PROFILE_INFO.ordinal
-            _needToSendTwoFactor.value = Event(true)
-        } else
-            _needToCompleteProfileInfo.value = Event(verifyProfileInfoComplete())
+        when{
+            !checkUserPhoneNumber() -> { }
+            showSecurityDialog() ->{
+                sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.COMPLETET_PROFILE_INFO.ordinal
+                _showSecurityDialog.value  = Event(true)
+            }
+            else -> _needToCompleteProfileInfo.value = Event(verifyProfileInfoComplete())
+        }
     }
 
     //提款設置用
@@ -296,12 +357,20 @@ class WithdrawRepository(
                         }
                     }
 
-                    if (promptMessageId != -1 && sConfigData?.hasCertified == false) {
-                        sConfigData?.enterCertified =
-                            ProfileCenterViewModel.SecurityEnter.BIND_BANK_CARD.ordinal
-                        _needToSendTwoFactor.value = Event(true)
-                    } else
-                        _needToBindBankCard.value = Event(promptMessageId)
+                    when{
+                        !checkUserPhoneNumber() -> { }
+                        showSecurityDialog() && promptMessageId != -1 ->{
+                            sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.BIND_BANK_CARD.ordinal
+                            _showSecurityDialog.value  = Event(true)
+                        }
+                        else -> _needToBindBankCard.value = Event(promptMessageId)
+                    }
+
+//                    if(showSecurityDialog() && promptMessageId != -1){
+//                        sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.BIND_BANK_CARD.ordinal
+//                        _showSecurityDialog.value  = Event(true)
+//                    } else
+//                        _needToBindBankCard.value = Event(promptMessageId)
 
                 }
             }
