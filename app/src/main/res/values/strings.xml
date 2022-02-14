@@ -101,6 +101,7 @@
     <string name="dialog_security_title">输入验证码</string>
     <string name="dialog_security_error">验证码输入错误</string>
     <string name="hint_security_code">请输入验证码</string>
+    <string name="dialog_security_need_phone">个人资料不完整，请联系客服</string>
     <string name="btn_agreement">开户协议</string>
     <string name="have_account">已有账号?</string>
     <string name="btn_login">登录</string>
