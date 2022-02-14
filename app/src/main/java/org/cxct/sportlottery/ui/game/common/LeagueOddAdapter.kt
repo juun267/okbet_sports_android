@@ -42,32 +42,23 @@ const val PAYLOAD_SCORE_CHANGE = "payload_score_change"
 const val PAYLOAD_CLOCK_CHANGE = "payload_clock_change"
 const val PAYLOAD_ODDS_CHANGE = "payload_odds_change"
 
-var isRefresh = false
-
 class LeagueOddAdapter(private val matchType: MatchType) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var data = listOf<MatchOdd>()
     var oddsType: OddsType = OddsType.EU
 
-    var nowRv: RecyclerView? = null
-    private var recyclerViewState: Parcelable? = null
-
     fun setData(data: List<MatchOdd> = listOf(), oddsType: OddsType = OddsType.EU) {
         this.data = data
         this.oddsType = oddsType
-        recyclerViewState = nowRv?.layoutManager?.onSaveInstanceState()
         notifyDataSetChanged()
-        nowRv?.layoutManager?.onRestoreInstanceState(recyclerViewState)
     }
 
     var isTimerEnable = false
         set(value) {
             if (value != field) {
                 field = value
-                recyclerViewState = nowRv?.layoutManager?.onSaveInstanceState()
                 notifyDataSetChanged()
-                nowRv?.layoutManager?.onRestoreInstanceState(recyclerViewState)
             }
         }
 
@@ -86,11 +77,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
-    }
-
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        super.onAttachedToRecyclerView(recyclerView)
-        nowRv = recyclerView
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -667,10 +653,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             leagueOddListener: LeagueOddListener?
         ) {
             itemView.rv_league_odd_btn_pager_main.apply {
-//                isNestedScrollingEnabled = false
-//                linearLayoutManager.isAutoMeasureEnabled = false
+                linearLayoutManager.isAutoMeasureEnabled = false
                 layoutManager = linearLayoutManager
-//                setHasFixedSize(true)
+                setHasFixedSize(true)
                 (rv_league_odd_btn_pager_main.itemAnimator as SimpleItemAnimator).supportsChangeAnimations =
                     false
                 oddButtonPagerAdapter.setData(
@@ -697,37 +682,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             )
                         }
                 }
-/*
-                addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                        super.onScrollStateChanged(recyclerView, newState)
-                        if (scrollState == SCROLL_STATE_IDLE) {
-                            item.rvScrollPos = recyclerView.computeHorizontalScrollOffset()
-//                            item.rvScrollPos = recyclerView.getChildLayoutPosition(recyclerView.getChildAt(0))
-                        }
-                    }
-
-                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                        super.onScrolled(recyclerView, dx, dy)
-                    }
-                })
-
-                item.rvScrollPos?.let {
-//                    scrollToPosition(it)
-                    linearLayoutManager.scrollToPositionWithOffset(position, it)
-                }
-                */
-/*
-                itemView.nested_scroll_view_league_odd.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
-                    Log.e(">>>", "${scrollX}, ${scrollY}, ${oldScrollX}, $oldScrollY")
-                    if (v.getChildAt(v.childCount - 1) != null) {
-                        if (scrollX >= v.getChildAt(v.childCount - 1)
-                                .measuredHeight - v.measuredHeight
-                        ) {
-                        }
-                    }
-                })
-                */
 
                 itemView.nested_scroll_view_league_odd.viewTreeObserver.addOnScrollChangedListener {
                     val scrollX = itemView.nested_scroll_view_league_odd.scrollX

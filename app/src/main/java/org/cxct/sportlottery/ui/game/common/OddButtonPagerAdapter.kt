@@ -98,18 +98,14 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
         set(value) {
             if (value != field) {
                 field = value
-                recyclerViewState = nowRv?.layoutManager?.onSaveInstanceState()
                 notifyDataSetChanged()
-                nowRv?.layoutManager?.onRestoreInstanceState(recyclerViewState)
             }
         }
 
     private var data: List<List<Pair<String, List<Odd?>?>>> = listOf()
         set(value) {
             field = value
-            recyclerViewState = nowRv?.layoutManager?.onSaveInstanceState()
             notifyDataSetChanged()
-            nowRv?.layoutManager?.onRestoreInstanceState(recyclerViewState)
         }
 
     var listener: OddButtonListener? = null
