@@ -2285,14 +2285,5 @@ class GameViewModel(
             }
         }
     }
-
-    //確認使用者有無手機碼 true：有手機碼 false：無手機碼
-    suspend fun checkUserPhoneNumber():Boolean{
-        val hasPhone = userInfoRepository.userInfo?.firstOrNull()?.phone.toString().isNotEmpty()
-        if(!hasPhone){
-            _errorMessageDialog.value = androidContext.getString(R.string.dialog_security_need_phone)
-        }
-
-        return userInfoRepository.userInfo?.firstOrNull()?.phone.toString().isNullOrEmpty()
-    }
+    
 }
