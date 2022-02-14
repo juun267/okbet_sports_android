@@ -8,8 +8,6 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.BaseSecurityCodeResult
-import org.cxct.sportlottery.network.index.sendSms.SmsRequest
-import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.network.credential.CredentialCompleteRequest
 import org.cxct.sportlottery.network.credential.CredentialCompleteResult
 import org.cxct.sportlottery.network.credential.CredentialInitialRequest

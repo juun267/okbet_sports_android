@@ -10,8 +10,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.BaseSecurityCodeResult
 import org.cxct.sportlottery.network.index.config.ImageData
-import org.cxct.sportlottery.network.index.sendSms.SmsRequest
-import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.third_game.ThirdLoginResult
 import org.cxct.sportlottery.network.third_game.third_games.GameCategory

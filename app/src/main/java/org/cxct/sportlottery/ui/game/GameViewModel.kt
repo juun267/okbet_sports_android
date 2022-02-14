@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -13,8 +14,6 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeEnName
 import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeMenuIcon
-import org.cxct.sportlottery.network.index.sendSms.SmsRequest
-import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
