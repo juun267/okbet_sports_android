@@ -305,6 +305,9 @@ class GameViewModel(
         get() = _twoFactorSuccess
     private val _twoFactorSuccess = MutableLiveData<Boolean?>()
 
+    //需要完善個人資訊(缺電話號碼) needPhoneNumber
+    val showPhoneNumberMessageDialog = withdrawRepository.hasPhoneNumber
+
     var sportQueryData: SportQueryData? = null
     var specialMenuData: SportQueryData? = null
 
@@ -2281,5 +2284,15 @@ class GameViewModel(
                     _errorMessageDialog.value = result.msg
             }
         }
+    }
+
+    //確認使用者有無手機碼 true：有手機碼 false：無手機碼
+    suspend fun checkUserPhoneNumber():Boolean{
+        val hasPhone = userInfoRepository.userInfo?.firstOrNull()?.phone.toString().isNotEmpty()
+        if(!hasPhone){
+            _errorMessageDialog.value = androidContext.getString(R.string.dialog_security_need_phone)
+        }
+
+        return userInfoRepository.userInfo?.firstOrNull()?.phone.toString().isNullOrEmpty()
     }
 }

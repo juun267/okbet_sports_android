@@ -50,6 +50,9 @@ class ProfileModel(
         get() = _twoFactorSuccess
     private val _twoFactorSuccess = MutableLiveData<Boolean?>()
 
+    //需要完善個人資訊(缺電話號碼) needPhoneNumber
+    val showPhoneNumberMessageDialog = withdrawRepository.hasPhoneNumber
+
     val editIconUrlResult: LiveData<Event<IconUrlResult?>> = avatarRepository.editIconUrlResult
 
     fun uploadImage(uploadImgRequest: UploadImgRequest) {

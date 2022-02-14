@@ -104,6 +104,9 @@ class MainViewModel(
         get() = _twoFactorSuccess
     private val _twoFactorSuccess = MutableLiveData<Boolean?>()
 
+    //需要完善個人資訊(缺電話號碼) needPhoneNumber
+    val showPhoneNumberMessageDialog = withdrawRepository.hasPhoneNumber
+
     //獲取系統公告及跑馬燈
     fun getAnnouncement() {
         viewModelScope.launch {

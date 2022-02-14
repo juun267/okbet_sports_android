@@ -98,6 +98,9 @@ class ProfileCenterViewModel(
         get() = _twoFactorSuccess
     private val _twoFactorSuccess = MutableLiveData<Boolean?>()
 
+    //需要完善個人資訊(缺電話號碼) needPhoneNumber
+    val showPhoneNumberMessageDialog = withdrawRepository.hasPhoneNumber
+
     val credentialInitialResult: LiveData<Event<CredentialResult?>>
         get() = _credentialInitialResult
     private val _credentialInitialResult = MutableLiveData<Event<CredentialResult?>>()
