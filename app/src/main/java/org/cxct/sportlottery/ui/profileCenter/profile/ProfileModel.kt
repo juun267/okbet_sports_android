@@ -32,8 +32,9 @@ class ProfileModel(
     favoriteRepository
 ) {
 
-    val needToSendTwoFactor =
-        withdrawRepository.needToSendTwoFactor //判斷是不是要進行手機驗證 (登入後只需一次) true: 需要, false: 不需要
+    //改成每次打API 確認認證是否過期
+    val showSecurityDialog =
+        withdrawRepository.showSecurityDialog //判斷是不是要進行手機驗證 true: 需要, false: 不需要
 
     //發送簡訊碼之後60s無法再發送
     val twoFactorResult: LiveData<BaseSecurityCodeResult?>
@@ -91,8 +92,10 @@ class ProfileModel(
     }
 
     //確認是否需要驗證手機
-    fun checkNeedToSendTwoFactor() {
-        withdrawRepository.checkNeedToSendTwoFactor()
+    fun checkNeedToShowSecurityDialog() {
+        viewModelScope.launch {
+            withdrawRepository.checkNeedToShowSecurityDialog()
+        }
     }
 
 }
