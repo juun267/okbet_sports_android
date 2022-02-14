@@ -218,6 +218,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         }
 
         viewModel.needToSendTwoFactor.observe(this) {
+        //是否顯示簡訊驗證彈窗
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
                     customSecurityDialog =  CustomSecurityDialog(this).apply {
@@ -234,6 +235,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             }
         }
 
+        //簡訊驗證失敗
         viewModel.errorMessageDialog.observe(this){
             val errorMsg = it ?: getString(R.string.unknown_error)
             CustomAlertDialog(this).apply {
@@ -245,11 +247,13 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             customSecurityDialog?.showErrorStatus(true)
         }
 
+        //簡訊驗證成功
         viewModel.twoFactorSuccess.observe(this) {
             if (it == true)
                 customSecurityDialog?.dismiss()
         }
 
+        //確認收到簡訊驗證碼
         viewModel.twoFactorResult.observe(this){
             //傳送驗證碼成功後才能解鎖提交按鈕
             customSecurityDialog?.setPositiveBtnClickable(it?.success ?: false)
