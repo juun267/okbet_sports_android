@@ -188,6 +188,21 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             sConfigData?.hasGetTwoFactorResult = true
         }
 
+        //使用者沒有電話號碼
+        viewModel.showPhoneNumberMessageDialog.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if(!b){
+                    val errorMsg = getString(R.string.dialog_security_need_phone)
+                    this.context?.let { context -> CustomAlertDialog(context) }?.apply {
+                        setMessage(errorMsg)
+                        setNegativeButtonText(null)
+                        setCanceledOnTouchOutside(false)
+                        setCancelable(false)
+                    }?.show()
+                }
+            }
+        }
+
         viewModel.needToUpdateWithdrawPassword.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {

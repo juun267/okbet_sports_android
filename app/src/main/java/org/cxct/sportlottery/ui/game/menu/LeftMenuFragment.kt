@@ -455,6 +455,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
             }
         }
 
+        //TODO Bill 判斷使用者有沒有手機號碼
         viewModel.needToSendTwoFactor.observe(this) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
@@ -494,6 +495,21 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
             //傳送驗證碼成功後才能解鎖提交按鈕
             customSecurityDialog?.setPositiveBtnClickable(it?.success ?: false)
             sConfigData?.hasGetTwoFactorResult = true
+        }
+
+        //使用者沒有電話號碼
+        viewModel.showPhoneNumberMessageDialog.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if(!b){
+                    val errorMsg = getString(R.string.dialog_security_need_phone)
+                    this.context?.let { context -> CustomAlertDialog(context) }?.apply {
+                        setMessage(errorMsg)
+                        setNegativeButtonText(null)
+                        setCanceledOnTouchOutside(false)
+                        setCancelable(false)
+                    }?.show()
+                }
+            }
         }
 
         viewModel.needToUpdateWithdrawPassword.observe(viewLifecycleOwner) {

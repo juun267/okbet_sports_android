@@ -258,6 +258,21 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             customSecurityDialog?.setPositiveBtnClickable(it?.success ?: false)
             sConfigData?.hasGetTwoFactorResult = true
         }
+
+        //使用者沒有電話號碼
+        viewModel.showPhoneNumberMessageDialog.observe(this) {
+            it.getContentIfNotHandled()?.let { b ->
+                if(!b){
+                    val errorMsg = getString(R.string.dialog_security_need_phone)
+                    CustomAlertDialog(this).apply {
+                        setMessage(errorMsg)
+                        setNegativeButtonText(null)
+                        setCanceledOnTouchOutside(false)
+                        setCancelable(false)
+                    }.show()
+                }
+            }
+        }
     }
 
     private fun setWithdrawInfo(userInfo: UserInfo) {
