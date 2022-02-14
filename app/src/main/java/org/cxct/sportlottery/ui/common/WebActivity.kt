@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.ui.common
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.net.http.SslError
@@ -135,7 +137,16 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
             override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
                 //此方法是为了处理在5.0以上Https的问题，必须加上
-                handler.proceed()
+                //handler.proceed()
+                val builder: AlertDialog.Builder = AlertDialog.Builder(applicationContext)
+                builder.setMessage(android.R.string.httpErrorUnsupportedScheme)
+                builder.setPositiveButton("continue"
+                ) { dialog, which -> handler.proceed() }
+                builder.setNegativeButton("cancel"
+                ) { dialog, which -> handler.cancel() }
+                val dialog: AlertDialog = builder.create()
+                dialog.show()
+
             }
         }
 
