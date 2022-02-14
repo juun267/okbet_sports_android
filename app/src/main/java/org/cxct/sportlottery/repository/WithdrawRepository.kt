@@ -59,10 +59,6 @@ class WithdrawRepository(
     val hasPhoneNumber: LiveData<Event<Boolean>> //是否有手機號碼
         get() = _hasPhoneNumber
 
-    private var _enterSettingPasswordActivity = MutableLiveData<Event<Boolean>>()
-    val enterSettingPasswordActivity: LiveData<Event<Boolean>> //ProfileActivity 要切換至 SettingPasswordActivity 使用者資料有手機碼、
-        get() = _enterSettingPasswordActivity
-
     private var mWithdrawOperation: SystemOperation? = null
 
     data class SystemOperation(
