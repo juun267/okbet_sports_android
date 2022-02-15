@@ -20,7 +20,7 @@ android {
         applicationId "org.cxct.sportlottery"
         minSdkVersion 21
         versionCode 4
-        versionName "1.0.68"
+        versionName "1.0.69"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
