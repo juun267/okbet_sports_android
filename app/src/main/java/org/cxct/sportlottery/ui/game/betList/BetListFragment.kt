@@ -411,6 +411,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     }
 
                     override fun showOrHideKeyBoardBackground(isShow: Boolean, position: Int?) {
+                        shadow.visibility = if (isShow) View.VISIBLE else View.GONE
                         ll_keyboard_bg.visibility = if (isShow) View.VISIBLE else View.GONE
                         if (position != null) {
                             rv_bet_list.scrollToPosition(position)

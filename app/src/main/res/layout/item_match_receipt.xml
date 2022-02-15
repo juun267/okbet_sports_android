@@ -9,7 +9,7 @@
     android:paddingStart="16dp"
     android:paddingTop="8dp"
     android:paddingEnd="16dp"
-    android:paddingBottom="20dp"
+    android:paddingBottom="8dp"
     tools:ignore="SpUsage">
 
     <!--playName + spread + @ + odds + (oddsType)-->

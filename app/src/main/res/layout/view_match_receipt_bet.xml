@@ -34,7 +34,7 @@
         android:layout_marginTop="4dp"
         android:textColor="@color/colorGrayLight"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_bet_amount_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_winnable_amount_title"
         tools:text="b000003612091822030128" />
 
     <TextView
@@ -43,19 +43,18 @@
         android:layout_height="wrap_content"
         android:text="@string/winnable_amount_colon"
         android:textColor="@color/colorBlackLight"
+        android:layout_marginTop="@dimen/margin_2"
         android:textSize="@dimen/textSize13sp"
-        app:layout_constraintEnd_toStartOf="@+id/tv_winnable_amount"
-        app:layout_constraintStart_toEndOf="@+id/tv_bet_amount"
-        app:layout_constraintTop_toTopOf="@id/tv_bet_amount_title" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_bet_amount_title" />
 
     <TextView
         android:id="@+id/tv_winnable_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorBlue"
+        android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize13sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_winnable_amount_title"
         app:layout_constraintTop_toTopOf="@+id/tv_winnable_amount_title"
         tools:text="43.000" />

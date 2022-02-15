@@ -2,6 +2,8 @@ package org.cxct.sportlottery.ui.game.betList
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -149,6 +151,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        view.background = ColorDrawable(Color.TRANSPARENT);
         initDiscount()
         initClose()
         initKeyBoard()
@@ -535,6 +538,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
 
     private fun setupCurrentMoneyView(isLogin: Boolean) {
+        ivBetMoney.visibility = if (isLogin) View.VISIBLE else View.GONE
         tv_current_money.visibility = if (isLogin) View.VISIBLE else View.GONE
     }
 

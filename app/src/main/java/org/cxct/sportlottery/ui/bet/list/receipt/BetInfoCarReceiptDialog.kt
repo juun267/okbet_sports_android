@@ -153,8 +153,7 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
         return HtmlCompat.fromHtml(
             playNameStr +
                     spreadStr +
-                    "<font color=#333333>@ $formatForOdd</font> " +
-                    "<font color=#666666>(${oddsType})</font>", HtmlCompat.FROM_HTML_MODE_LEGACY
+                    "<font color=#333333>@ $formatForOdd</font> " , HtmlCompat.FROM_HTML_MODE_LEGACY
         )
     }
 
