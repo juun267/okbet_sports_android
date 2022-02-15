@@ -180,7 +180,8 @@ android {
             variant.outputs.all { output ->
                 def name = fastlane_app_code == "" ? variant.flavorName : fastlane_app_code
                 def date = new SimpleDateFormat("yyyyMMdd").format(new Date())
-                outputFileName = name + '_' + getVersionCode() + '_' + getVersionName() + '_' + date + '.apk'
+                //outputFileName = name + '_' + getVersionCode() + '_' + getVersionName() + '_' + date + '.apk'
+                outputFileName = name + '_' + getVersionName() + '_' + date + '.apk'
             }
 
             //強制改寫 apk 輸出路徑, ex: ..\app\build/outputs/releaseAPK
