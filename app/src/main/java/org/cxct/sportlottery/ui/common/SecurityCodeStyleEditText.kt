@@ -33,7 +33,8 @@ class SecurityCodeStyleEditText @JvmOverloads constructor(context: Context, attr
                 val errorText = typedArray.getText(R.styleable.SecurityCodeStyleEditText_scErrorText) ?: ""
                 val icon = typedArray.getResourceId(R.styleable.SecurityCodeStyleEditText_scIcon, -1)
 
-                setHint(labelText,hintText)
+                setTitle(labelText)
+                setHint(hintText)
                 setView(errorText)
                 setEdittext()
                 setImg(icon)
@@ -73,20 +74,25 @@ class SecurityCodeStyleEditText @JvmOverloads constructor(context: Context, attr
         txv_error_code.text = errorText
     }
 
-    private fun setHint(labelText: CharSequence, hintText: CharSequence) {
-
-        val hintContentBuilder = SpannableStringBuilder()
-        val titleSpan = SpannableString("$labelText   ").apply {
+    fun setTitle(labelText: CharSequence){
+        val titleContentBuilder = SpannableStringBuilder()
+        val titleSpan = SpannableString(labelText).apply {
             setSpan(StyleSpan(Typeface.BOLD), 0, this.length , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             setSpan(AbsoluteSizeSpan(13,true), 0, this.length , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.colorBlackLight)), 0, this.length , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)  // 修改字體
         }
+        txv_title.text = titleContentBuilder.append(titleSpan)
+    }
+
+    private fun setHint( hintText: CharSequence) {
+
+        val hintContentBuilder = SpannableStringBuilder()
         val detailSpan = SpannableString(hintText).apply {
             setSpan(StyleSpan(Typeface.NORMAL), 0, this.length , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.colorBlackLight)), 0, this.length , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)  // 修改字體
         }
 
-        edt_security_code.hint =  hintContentBuilder.append(titleSpan).append(detailSpan)
+        edt_security_code.hint =  hintContentBuilder.append(detailSpan)
     }
 
 }
