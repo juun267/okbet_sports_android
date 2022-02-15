@@ -82,7 +82,7 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
 
         setupOddsSpannableString(textView.context, matchOdd, isOddsChanged, oddsType)
 
-        setupOddsTypeSpannableString(textView.context, oddsType)
+        //setupOddsTypeSpannableString(textView.context, oddsType)
 
 
         mergeString(textView)
@@ -155,7 +155,7 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
         oddContentBuilder.append(spreadSpan)
         oddContentBuilder.append(" ＠ ")
         oddContentBuilder.append(oddsSpan)
-        oddContentBuilder.append(oddsTypeSpan)
+        //oddContentBuilder.append(oddsTypeSpan)
 
         textView.text = oddContentBuilder
     }

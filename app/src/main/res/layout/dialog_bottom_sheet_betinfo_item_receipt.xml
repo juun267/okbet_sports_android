@@ -13,17 +13,57 @@
         android:layout_width="match_parent"
         android:layout_height="16dp"
         android:background="@drawable/bg_gradient_bottom_sheet_shadow" />
-
-    <TextView
-        android:id="@+id/tv_current_money"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="24dp"
-        android:background="@color/colorSilverLight"
+        android:layout_height="37dp"
+        android:paddingTop="5dp"
+        android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingHorizontal="@dimen/activity_horizontal_margin"
-        android:textColor="@color/colorBlackLight"
-        android:textSize="@dimen/textSize12sp"
-        tools:text="9,875,241.000 RMB" />
+        android:background="@drawable/bg_radius_8_white_top_only">
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_12"
+            android:layout_marginBottom="@dimen/margin_12"
+            android:layout_marginLeft="@dimen/margin_16"
+            android:background="@drawable/bg_login_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bet_list_title"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:textColor="@color/colorBlue"
+            android:textSize="@dimen/textSize14sp"
+            android:layout_marginLeft="@dimen/margin_8"/>
+        <ImageView
+            android:layout_width="@dimen/margin_12"
+            android:layout_height="@dimen/margin_12"
+            android:id="@+id/ivBetMoney"
+            android:layout_marginRight="@dimen/margin_8"
+            android:src="@drawable/ic_bet_list_money"/>
+
+        <TextView
+            android:id="@+id/tv_current_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/textSize14sp"
+            android:layout_marginRight="@dimen/margin_14"
+            android:textColor="@color/colorBlackLight"
+            tools:text="9,875,241.000 RMB" />
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_1"
+        android:background="@color/colorWhite4" />
 
     <include
         android:id="@+id/view_match_receipt"
@@ -35,21 +75,33 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:background="@color/colorWhite"
-        android:paddingVertical="12dp"
+        android:paddingVertical="4dp"
         android:text="@string/bet_succeeded"
         android:textSize="@dimen/textSize13sp"
         android:textColor="@color/colorBlue" />
 
-    <TextView
-        android:id="@+id/btn_done"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_1"
+        android:background="@color/colorWhite4" />
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorBlue"
-        android:gravity="center"
-        android:paddingVertical="14dp"
-        android:textSize="@dimen/textSize13sp"
-        android:text="@string/complete"
-        android:textAllCaps="true"
-        android:textColor="@color/colorWhite" />
+        android:background="@color/colorWhite">
+        <TextView
+            android:id="@+id/btn_done"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_radius_4_button_1053af"
+            android:gravity="center"
+            android:layout_margin="@dimen/margin_8"
+            android:paddingVertical="14dp"
+            android:textSize="@dimen/textSize13sp"
+            android:text="@string/complete"
+            android:textAllCaps="true"
+            android:textColor="@color/colorWhite" />
+
+    </FrameLayout>
 
 </LinearLayout>

@@ -39,22 +39,19 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_title"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/margin_48"
                     android:background="@color/colorWhite"
-                    android:paddingStart="5dp"
+                    android:paddingStart="8dp"
                     android:paddingTop="5dp"
                     android:paddingEnd="5dp"
                     android:paddingBottom="5dp">
 
                     <ImageView
                         android:id="@+id/iv_arrow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:paddingStart="10dp"
-                        android:paddingTop="14dp"
-                        android:paddingEnd="10dp"
-                        android:paddingBottom="14dp"
+                        android:layout_width="@dimen/margin_28"
+                        android:layout_height="@dimen/margin_28"
                         android:src="@drawable/icon_arrow_gray"
+                        android:padding="@dimen/margin_8"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -62,19 +59,22 @@
                     <TextView
                         android:id="@+id/tv_bet_list"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:text="@string/bet_list_title"
+                        android:layout_marginLeft="@dimen/margin_8"
                         android:textColor="@color/colorBlackLight"
-                        app:layout_constraintBottom_toTopOf="@+id/tv_balance"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/iv_arrow"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <View
                         android:id="@+id/divider"
                         android:layout_width="1dp"
-                        android:layout_height="20dp"
+                        android:layout_height="0dp"
                         android:layout_marginStart="6dp"
                         android:layout_marginEnd="6dp"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:layout_marginBottom="@dimen/margin_4"
                         android:background="@color/colorBlackLight"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_bet_list"
                         app:layout_constraintStart_toEndOf="@+id/tv_bet_list"
@@ -87,28 +87,41 @@
                         android:layout_marginStart="6dp"
                         android:textColor="@color/colorBlackLight"
                         app:layout_constraintStart_toEndOf="@+id/divider"
-                        app:layout_constraintTop_toTopOf="@id/tv_bet_list"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         tools:text="1" />
+
+                    <ImageView
+                        android:layout_width="@dimen/margin_12"
+                        android:layout_height="@dimen/margin_12"
+                        android:id="@+id/ivBetMoney"
+                        android:layout_marginRight="@dimen/margin_8"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/tv_balance"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:src="@drawable/ic_bet_list_money"/>
 
                     <TextView
                         android:id="@+id/tv_balance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0.000"
+                        android:layout_marginRight="@dimen/margin_4"
                         android:textColor="@color/colorBlackLight"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/tv_bet_list"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_bet_list"
+                        app:layout_constraintRight_toLeftOf="@+id/tv_balance_currency"
                         tools:text="9,875,241.000" />
 
                     <TextView
                         android:id="@+id/tv_balance_currency"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="@dimen/margin_4"
                         android:textColor="@color/colorBlackLight"
-                        app:layout_constraintStart_toEndOf="@+id/tv_balance"
-                        app:layout_constraintTop_toTopOf="@+id/tv_balance"
+                        app:layout_constraintRight_toLeftOf="@+id/btn_delete_all"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         tools:text="PHP" />
 
                     <ImageView
@@ -128,18 +141,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:animateLayoutChanges="true"
+                    android:layout_marginLeft="44dp"
                     android:background="@color/colorWhite"
                     android:clickable="true"
                     android:focusable="true"
-                    android:visibility="gone"
-                    tools:visibility="gone">
+                    tools:visibility="gone"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/btn_delete_all_confirm"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@color/colorRed"
+                        android:layout_marginTop="@dimen/margin_8"
+                        android:layout_marginBottom="@dimen/margin_8"
+                        android:background="@drawable/bg_radius_4_button_e44438"
                         android:gravity="center"
                         android:text="@string/bet_list_delete_all"
                         android:textColor="@android:color/white" />
@@ -178,6 +194,14 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toTopOf="@+id/ll_keyboard_bg"/>
 
+                <View
+                    android:id="@+id/shadow"
+                    android:layout_width="match_parent"
+                    android:layout_height="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/ll_keyboard_bg"
+                    android:background="@drawable/bg_gradient_bottom_sheet_shadow" />
+
                 <LinearLayout
                     android:id="@+id/ll_keyboard_bg"
                     android:layout_width="match_parent"
@@ -188,7 +212,7 @@
                     android:background="@color/colorWhite"
                     android:orientation="horizontal"
                     android:padding="6dp"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <org.cxct.sportlottery.ui.common.CustomKeyBoardView
                         android:id="@+id/kv_keyboard"
@@ -397,21 +421,24 @@
             <LinearLayout
                 android:id="@+id/ll_bet"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="58dp"
                 android:layout_alignParentBottom="true"
                 android:background="#FFF"
+                android:paddingLeft="@dimen/margin_8"
+                android:paddingRight="@dimen/margin_8"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <org.cxct.sportlottery.ui.bet.list.FastBetSettingButton
                     android:id="@+id/button_fast_bet_setting"
-                    android:layout_width="49dp"
-                    android:layout_height="48dp"
-                    android:layout_marginEnd="1dp" />
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_marginEnd="8dp" />
 
                 <org.cxct.sportlottery.ui.bet.list.BetButton
                     android:id="@+id/btn_bet"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
                     android:layout_weight="1" />
             </LinearLayout>
 
