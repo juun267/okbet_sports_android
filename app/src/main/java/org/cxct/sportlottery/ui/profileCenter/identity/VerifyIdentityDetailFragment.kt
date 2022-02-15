@@ -84,6 +84,7 @@ class VerifyIdentityDetailFragment :
             et_identity_sex.setText(sex)
             et_birth.setText(dateOfBirth)
             et_expire_date.setText(expireDate)
+            et_country.setText(country)
             et_address.setText(address)
         }
 
