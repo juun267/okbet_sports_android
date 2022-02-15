@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorWhite"
-    android:layout_height="wrap_content"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
     android:orientation="vertical"
     tools:context="org.cxct.sportlottery.ui.main.accountHistory.next.AccountHistoryNextFragment"
     tools:ignore="SpUsage">
@@ -33,9 +32,9 @@
         android:layout_height="0dp"
         android:gravity="center"
         android:text="@string/account_history_overview"
-        android:textStyle="bold"
         android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize14sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/iv_bg"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -59,17 +58,33 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tvUsTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:layout_marginRight="@dimen/margin_10"
+        android:drawableLeft="@drawable/ic_info_white"
+        android:drawablePadding="@dimen/margin_6"
+        android:drawableTint="@color/colorGray"
+        android:text="@string/text_us_east_time"
+        android:textColor="@color/colorGray"
+        android:textSize="@dimen/textSize14sp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linear_layout" />
+
     <LinearLayout
         android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:layout_marginTop="10dp"
         android:background="@color/colorBlue"
-        android:layout_marginTop="8dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linear_layout">
+        app:layout_constraintTop_toBottomOf="@id/tvUsTime">
 
         <TextView
             android:layout_width="0dp"
