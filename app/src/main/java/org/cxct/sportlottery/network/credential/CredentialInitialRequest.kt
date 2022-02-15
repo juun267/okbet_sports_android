@@ -13,8 +13,8 @@ enum class DocType(val showName: String, val value: String){
     PHIL_HEALTH_ID("PhilHealth ID","00630000024"),
     SSS_ID("SSS ID","00630000020"), //Social Security System
     POSTAL_ID("Postal ID", "00630000016"),
-    PRC_ID("Postal ID", "00630000017"),
+    PRC_ID("PRC ID", "00630000017"),
     VOTER_ID("Voter's ID","00630000022"),
-    PASSPORT_OLD("Passport-old version", "00630000031"),
-    PASSPORT_NEW("Passport-new version", "00630000032")
+    PASSPORT_OLD("Passport-old version(PH)", "00630000031"),
+    PASSPORT_NEW("Passport-new version(PH)", "00630000032")
 }

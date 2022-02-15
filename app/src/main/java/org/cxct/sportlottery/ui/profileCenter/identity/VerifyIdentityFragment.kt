@@ -11,7 +11,6 @@ import kotlinx.android.synthetic.main.fragment_verify_identity_new.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.credential.CredentialCompleteData
 import org.cxct.sportlottery.network.credential.DocType
-import org.cxct.sportlottery.network.credential.EkycResultType
 import org.cxct.sportlottery.network.credential.ResultStatus
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
@@ -28,9 +27,9 @@ class VerifyIdentityFragment :
     private var metaInfo: String = ""
 
     private val idTypeList = listOf(
+        StatusSheetData(DocType.PASSPORT.value, DocType.PASSPORT.showName),
         StatusSheetData(DocType.UM_ID.value, DocType.UM_ID.showName),
         StatusSheetData(DocType.TIN_ID.value, DocType.TIN_ID.showName),
-        StatusSheetData(DocType.PASSPORT.value, DocType.PASSPORT.showName),
         StatusSheetData(DocType.PHIL_HEALTH_ID.value, DocType.PHIL_HEALTH_ID.showName),
         StatusSheetData(DocType.DRIVE_LICENSE.value, DocType.DRIVE_LICENSE.showName),
         StatusSheetData(DocType.SSS_ID.value, DocType.SSS_ID.showName),
