@@ -49,14 +49,14 @@ class SettingPasswordActivity :
     private fun setupTab() {
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                when (tab) {
-                    tab_login_password -> {
+                when (tab?.position) {
+                    0 -> {
                         mPwdPage = PwdPage.LOGIN_PWD
                         updateCurrentPwdEditTextHint(mPwdPage, mUserInfo?.updatePayPw)
                         cleanField()
                     }
 
-                    tab_withdrawal_password -> {
+                    1 -> {
                         mPwdPage = PwdPage.BANK_PWD
                         updateCurrentPwdEditTextHint(mPwdPage, mUserInfo?.updatePayPw)
                         cleanField()
