@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.profileCenter.identity
 
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,13 +73,15 @@ class VerifyIdentityFragment :
     private fun initOnClick() {
 
         ll_select_credential.setOnClickListener {
+            Log.e(">>>", "idTypeList.find { it.isChecked } = ${idTypeList.find { it.isChecked }}")
             showBottomSheetDialog(
                 null,
                 idTypeList,
-                idTypeList[0],
+                idTypeList.find { it.code == nowSelectCode } ?: idTypeList[0],
                 StatusSheetAdapter.ItemCheckedListener { _, data ->
                     tv_select_bank_card.text = data.showName
                     nowSelectCode = data.code
+                    data.isChecked = true
                 })
         }
         btn_take_photo.setOnClickListener {
