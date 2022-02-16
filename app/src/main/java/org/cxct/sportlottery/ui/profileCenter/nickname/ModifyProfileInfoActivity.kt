@@ -7,6 +7,7 @@ import androidx.core.view.children
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_modify_profile_info.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
+import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
@@ -43,27 +44,27 @@ class ModifyProfileInfoActivity :
         //根據傳入的ModifyType當前編輯的欄位做顯示
         when (modifyType) {
             ModifyType.RealName -> {
-                tv_title.text = getString(R.string.real_name)
+                tv_toolbar_title.text = getString(R.string.real_name)
                 ll_real_name.visibility = View.VISIBLE
             }
             ModifyType.NickName -> {
-                tv_title.text = getString(R.string.change_nickname)
+                tv_toolbar_title.text = getString(R.string.change_nickname)
                 ll_nickname.visibility = View.VISIBLE
             }
             ModifyType.QQNumber -> {
-                tv_title.text = getString(R.string.qq_number)
+                tv_toolbar_title.text = getString(R.string.qq_number)
                 ll_qq_number.visibility = View.VISIBLE
             }
             ModifyType.Email -> {
-                tv_title.text = getString(R.string.e_mail)
+                tv_toolbar_title.text = getString(R.string.e_mail)
                 ll_e_mail.visibility = View.VISIBLE
             }
             ModifyType.PhoneNumber -> {
-                tv_title.text = getString(R.string.phone_number)
+                tv_toolbar_title.text = getString(R.string.phone_number)
                 ll_phone_number.visibility = View.VISIBLE
             }
             ModifyType.WeChat -> {
-                tv_title.text = getString(R.string.we_chat)
+                tv_toolbar_title.text = getString(R.string.we_chat)
                 ll_wechat.visibility = View.VISIBLE
             }
         }
@@ -95,7 +96,7 @@ class ModifyProfileInfoActivity :
     }
 
     private fun initButton() {
-        btn_back.setOnClickListener {
+        btn_toolbar_back.setOnClickListener {
             finish()
         }
 

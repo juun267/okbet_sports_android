@@ -1,42 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/colorEEEFF0"
+    android:orientation="horizontal">
 
-    <!-- toolBar -->
-    <LinearLayout
+    <TextView
+        android:id="@+id/tv_toolbar_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorBlue"
-        android:orientation="horizontal">
+        android:layout_height="@dimen/tool_bar_height"
+        android:gravity="center"
+        android:letterSpacing="0.2"
+        android:textColor="@color/colorBlue"
+        android:textSize="@dimen/textSize16sp"
+        tools:text="@string/title" />
 
-        <ImageView
-            android:id="@+id/btn_toolbar_back"
-            android:layout_width="@dimen/tool_bar_height"
-            android:layout_height="@dimen/tool_bar_height"
-            android:contentDescription="@null"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_back"
-            app:tint="@color/colorWhite" />
+    <ImageView
+        android:id="@+id/btn_toolbar_back"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/tool_bar_height"
+        android:layout_gravity="start|center_vertical"
+        android:contentDescription="@null"
+        android:paddingHorizontal="20dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_icon_arrow_blue" />
 
-        <TextView
-            android:id="@+id/tv_toolbar_title"
-            android:layout_width="0dp"
-            android:letterSpacing="0.2"
-            android:layout_height="@dimen/tool_bar_height"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/textSize16sp"
-            tools:text="@string/title" />
+</FrameLayout>
 
-        <androidx.legacy.widget.Space
-            android:layout_width="@dimen/tool_bar_height"
-            android:layout_height="@dimen/tool_bar_height" />
-
-    </LinearLayout>
-
-</com.google.android.material.appbar.AppBarLayout>

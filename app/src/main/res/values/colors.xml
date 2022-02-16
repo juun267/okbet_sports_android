@@ -48,9 +48,10 @@
     <color name="colorGrayDark2">#444444</color>
     <color name="colorGrayGallery">#EEEEEE</color>
     <color name="colorGrayText">#888888</color>
-
     <color name="colorBlackLight">#333333</color>
     <color name="colorBlack">#000000</color>
+    <color name="colorEEEFF0">#EEEFF0</color>
+
 
     <!-- //== 以下不在 v3 color guideline 定義內，但有使用==//-->
     <color name="blueLight">#a9bedf</color>
