@@ -1223,7 +1223,7 @@ class GameViewModel(
                     }
 
 //                    matchOdd.setupPlayCate()
-                    matchOdd.refactorPlayCode()
+//                    matchOdd.refactorPlayCode() //改成在OddButtonPagerAdapter處理
                     matchOdd.sortOdds()
 
                     if (!getPlayCateCodeList().isNullOrEmpty())
