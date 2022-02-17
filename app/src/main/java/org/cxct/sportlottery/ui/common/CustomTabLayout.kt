@@ -4,8 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.TableLayout
+import android.widget.LinearLayout
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.custom_tab_layout.view.*
 import org.cxct.sportlottery.R
@@ -17,7 +16,13 @@ class CustomTabLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0
-) : FrameLayout(context, attrs, defStyle) {
+) : LinearLayout(context, attrs, defStyle) {
+
+    init {
+        val view = LayoutInflater.from(context).inflate(R.layout.custom_tab_layout, this, false)
+        initView(view)
+        addView(view)
+    }
 
     private val typedArray by lazy {
         context.theme.obtainStyledAttributes(
@@ -28,7 +33,7 @@ class CustomTabLayout @JvmOverloads constructor(
         )
     }
 
-    var tabSelectedListener: ((position: Int?) -> Unit)? = null
+    private var tabSelectedListener: ((position: Int?) -> Unit)? = null
 
     var firstTabText: String? = null
         set(value) {
@@ -64,18 +69,12 @@ class CustomTabLayout @JvmOverloads constructor(
         tabSelectedListener = listener
     }
 
-    init {
-        val view = LayoutInflater.from(context).inflate(R.layout.custom_tab_layout, this, false)
-        addView(view)
-        initView(view)
-    }
-
     private fun initView(view: View) {
         view.apply {
             tab_layout_custom.getTabAt(0)?.text =
-                typedArray.getString(R.styleable.CustomTabLayout_firstTabText)
+                typedArray.getString(R.styleable.CustomTabLayout_firstTabText) ?:""
             tab_layout_custom.getTabAt(1)?.text =
-                typedArray.getString(R.styleable.CustomTabLayout_secondTabText)
+                typedArray.getString(R.styleable.CustomTabLayout_secondTabText) ?:""
 
             tab_layout_custom.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
