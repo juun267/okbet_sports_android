@@ -57,7 +57,7 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
         savedInstanceState: Bundle?
     ): View? {
         viewModel.showToolbar(true)
-        viewModel.setToolbarName(getString(R.string.selfLimit))
+        viewModel.setToolbarName(getString(R.string.self_limit))
         binding = FragmentSelfLimitBetBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -89,17 +89,17 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
         binding.btnConfirm.setOnClickListener(this)
         if (viewModel.userInfo.value?.perBetLimit == null) {
             binding.tvPerBetLimit.text = String.format(
-                getString(R.string.selfLimit_per_bet_limit_user),
-                getString(R.string.selfLimit_per_bet_limit_user_none)
+                getString(R.string.self_limit_per_bet_limit_user),
+                getString(R.string.self_limit_per_bet_limit_user_none)
             )
         } else {
             binding.tvPerBetLimit.text = String.format(
-                getString(R.string.selfLimit_per_bet_limit_user),
+                getString(R.string.self_limit_per_bet_limit_user),
                 TextUtil.formatMoney(viewModel.userInfo.value?.perBetLimit?.toDouble() ?: 0.0)
             ) + " " + sConfigData?.systemCurrency
         }
         binding.tvLimit.text = String.format(
-            getString(R.string.selfLimit_per_bet_limit_user_limit),
+            getString(R.string.self_limit_per_bet_limit_user_limit),
             TextUtil.formatMoney(sConfigData?.perBetMinAmount?.toDouble() ?: 0.0),
             TextUtil.formatMoney(sConfigData?.perBetMaxAmount?.toDouble() ?: 0.0),
             sConfigData?.systemCurrency
@@ -122,8 +122,8 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
 
     private fun submit() {
         CustomAlertDialog(requireContext()).apply {
-            setTitle(getString(R.string.selfLimit_fix_confirm))
-            setMessage(getString(R.string.selfLimit_fix_confirm_content))
+            setTitle(getString(R.string.self_limit_fix_confirm))
+            setMessage(getString(R.string.self_limit_fix_confirm_content))
             setPositiveButtonText(getString(R.string.btn_confirm))
             setNegativeButtonText(getString(R.string.btn_cancel))
             setPositiveClickListener(View.OnClickListener {
@@ -143,8 +143,8 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
         viewModel.perBetLimitResult.observe(this.viewLifecycleOwner, {
             if (it.success) {
                 val dialog = CustomAlertDialog(requireActivity()).apply {
-                    setTitle(getString(R.string.selfLimit_fix_confirm))
-                    setMessage(getString(R.string.selfLimit_fix_confirm_done))
+                    setTitle(getString(R.string.self_limit_fix_confirm))
+                    setMessage(getString(R.string.self_limit_fix_confirm_done))
                     setNegativeButtonText(null)
                     setPositiveButtonText(getString(R.string.btn_confirm))
                     setCancelable(false)
@@ -160,14 +160,14 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
         })
 
         viewModel.userInfoResult.observe(viewLifecycleOwner, {
-            binding.tvPerBetLimit.text =  String.format(getString(R.string.selfLimit_per_bet_limit_user), TextUtil.formatMoney(viewModel.userInfo.value?.perBetLimit!!)+ sConfigData?.systemCurrency)
+            binding.tvPerBetLimit.text =  String.format(getString(R.string.self_limit_per_bet_limit_user), TextUtil.formatMoney(viewModel.userInfo.value?.perBetLimit!!)+ sConfigData?.systemCurrency)
         })
 
     }
 
     private fun updateBetLimit(text: String) {
         binding.tvPerBetLimit.text = String.format(
-            getString(R.string.selfLimit_per_bet_limit_user),
+            getString(R.string.self_limit_per_bet_limit_user),
             TextUtil.formatMoney(text.toDouble())
         ) + " " + sConfigData?.systemCurrency
     }

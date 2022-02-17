@@ -22,33 +22,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/app_bar_layout">
 
-        <androidx.cardview.widget.CardView
+        <org.cxct.sportlottery.ui.common.CustomTabLayout
+            android:id="@+id/custom_tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/layoutTab"
-            android:clipToPadding="false"
-            app:cardCornerRadius="@dimen/margin_4"
-            app:cardBackgroundColor="@color/colorBlueLight"
-            app:cardElevation="0dp">
-
-            <View
-                android:id="@+id/indicator"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/margin_32"
-                android:background="@color/colorWhite"/>
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabLayout"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/margin_32"
-                android:background="@drawable/bg_tablayout_selflimit"
-                app:tabGravity="fill"
-                app:tabMode="fixed"
-                app:tabSelectedTextColor="@color/colorBlueLight"
-                app:tabTextColor="@color/colorWhite"
-                app:tabIndicatorColor="@null"
-                app:tabRippleColor="@null"/>
-        </androidx.cardview.widget.CardView>
+            app:firstTabText="@string/self_limit_account_login_limit"
+            app:secondTabText="@string/self_limit_per_bet_limit"/>
 
     </LinearLayout>
 

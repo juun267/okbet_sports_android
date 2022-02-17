@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.custom_tab_layout.view.*
@@ -16,7 +17,7 @@ class CustomTabLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0
-) : LinearLayout(context, attrs, defStyle) {
+) : FrameLayout(context, attrs, defStyle) {
 
     private val typedArray by lazy {
         context.theme.obtainStyledAttributes(
