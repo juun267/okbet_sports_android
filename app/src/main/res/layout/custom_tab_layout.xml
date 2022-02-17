@@ -5,13 +5,13 @@
     tools:context="org.cxct.sportlottery.ui.common.CustomTabLayout"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorEEEFF0"
     android:layout_height="wrap_content">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout_custom"
         android:layout_width="match_parent"
         android:layout_height="37dp"
-        app:tabGravity="fill"
         app:tabIndicator="@drawable/custom_tab_indicator"
         app:tabIndicatorFullWidth="false"
         app:tabMode="fixed"

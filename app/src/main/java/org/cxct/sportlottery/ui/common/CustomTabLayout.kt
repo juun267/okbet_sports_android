@@ -18,12 +18,6 @@ class CustomTabLayout @JvmOverloads constructor(
     defStyle: Int = 0
 ) : LinearLayout(context, attrs, defStyle) {
 
-    init {
-        val view = LayoutInflater.from(context).inflate(R.layout.custom_tab_layout, this, false)
-        initView(view)
-        addView(view)
-    }
-
     private val typedArray by lazy {
         context.theme.obtainStyledAttributes(
             attrs,
@@ -33,7 +27,13 @@ class CustomTabLayout @JvmOverloads constructor(
         )
     }
 
-    private var tabSelectedListener: ((position: Int?) -> Unit)? = null
+    init {
+        val view = LayoutInflater.from(context).inflate(R.layout.custom_tab_layout, this, false)
+        addView(view)
+        initView(view)
+    }
+
+    var tabSelectedListener: ((position: Int?) -> Unit)? = null
 
     var firstTabText: String? = null
         set(value) {
