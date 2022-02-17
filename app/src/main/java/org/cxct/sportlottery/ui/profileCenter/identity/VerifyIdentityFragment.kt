@@ -75,10 +75,11 @@ class VerifyIdentityFragment :
             showBottomSheetDialog(
                 null,
                 idTypeList,
-                idTypeList[0],
+                idTypeList.find { it.code == nowSelectCode } ?: idTypeList[0],
                 StatusSheetAdapter.ItemCheckedListener { _, data ->
                     tv_select_bank_card.text = data.showName
                     nowSelectCode = data.code
+                    data.isChecked = true
                 })
         }
         btn_take_photo.setOnClickListener {

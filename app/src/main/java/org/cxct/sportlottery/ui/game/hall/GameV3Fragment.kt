@@ -482,7 +482,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         try {
             initObserve()
             initSocketObserver()
-
+            initBottomNavigation()
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -1229,7 +1229,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
             }
         }
-        //TODo Bill 禮拜一詳細測試
         /**
          *  比對 GameType 相同 和 leagueIdList 是當前頁面有的 -> viewModel.refreshGame(args.matchType,listOf(it.league.id),listOf())
          *  如果是 GameType不同 但是 leagueIdList是目前沒有的(代表可能有新的聯賽進來) -> getSportMenu(args.matchType)更新 sport Menu + switchSportType(args.matchType, it)
