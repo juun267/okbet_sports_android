@@ -27,8 +27,6 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
 
     enum class RechargeType(val tabPosition: Int) { TRANSFER_PAY(0), ONLINE_PAY(1) }
 
-//    var currentTab = RechargeType.TRANSFER_PAY.tabPosition
-
     private var bankTypeAdapter: MoneyBankTypeAdapter? = null
     private var transferPayList = mutableListOf<MoneyPayWayData>()
     private var onlinePayList = mutableListOf<MoneyPayWayData>()
