@@ -13,9 +13,20 @@ import org.cxct.sportlottery.R
 /**
  * 客製化 TabLayout
  */
-class CustomTabLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : FrameLayout(context, attrs, defStyle) {
+class CustomTabLayout @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) : FrameLayout(context, attrs, defStyle) {
 
-    private val typedArray by lazy { context.theme.obtainStyledAttributes(attrs, R.styleable.CustomTabLayout, 0, 0) }
+    private val typedArray by lazy {
+        context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.CustomTabLayout,
+            0,
+            0
+        )
+    }
 
     var tabSelectedListener: ((position: Int?) -> Unit)? = null
 
@@ -28,14 +39,28 @@ class CustomTabLayout @JvmOverloads constructor(context: Context, attrs: Attribu
     var secondTabText: String? = null
         set(value) {
             field = value
-            tab_layout_custom.getTabAt(0)?.text = secondTabText
+            tab_layout_custom.getTabAt(1)?.text = secondTabText
         }
 
+    var firstTabVisibility: Int = View.VISIBLE
+        set(value) {
+            field = value
+            tab_layout_custom.getChildAt(0)?.visibility = value
+        }
+
+    var secondTabVisibility: Int = View.VISIBLE
+        set(value) {
+            field = value
+            tab_layout_custom.getChildAt(1)?.visibility = value
+        }
+
+    val selectedTabPosition by lazy { tab_layout_custom.selectedTabPosition }
+
     fun selectTab(position: Int?) {
-        tab_layout_custom.getTabAt(position?:0)?.select()
+        tab_layout_custom.getTabAt(position ?: 0)?.select()
     }
 
-    fun setCustomTabSelectedListener (listener: (position: Int?) -> Unit) {
+    fun setCustomTabSelectedListener(listener: (position: Int?) -> Unit) {
         tabSelectedListener = listener
     }
 
@@ -47,8 +72,10 @@ class CustomTabLayout @JvmOverloads constructor(context: Context, attrs: Attribu
 
     private fun initView(view: View) {
         view.apply {
-            tab_layout_custom.getTabAt(0)?.text = typedArray.getString(R.styleable.CustomTabLayout_firstTabText)
-            tab_layout_custom.getTabAt(1)?.text = typedArray.getString(R.styleable.CustomTabLayout_secondTabText)
+            tab_layout_custom.getTabAt(0)?.text =
+                typedArray.getString(R.styleable.CustomTabLayout_firstTabText)
+            tab_layout_custom.getTabAt(1)?.text =
+                typedArray.getString(R.styleable.CustomTabLayout_secondTabText)
 
             tab_layout_custom.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {

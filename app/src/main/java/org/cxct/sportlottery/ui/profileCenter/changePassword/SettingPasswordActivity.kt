@@ -2,9 +2,7 @@ package org.cxct.sportlottery.ui.profileCenter.changePassword
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
-import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_setting_password.*
-import kotlinx.android.synthetic.main.custom_tab_layout.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo

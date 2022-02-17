@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_money_recharge.*
+import kotlinx.android.synthetic.main.activity_money_recharge.custom_tab_layout
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyAddResult
@@ -21,11 +22,12 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
 
     companion object {
         const val RechargeViewLog = "rechargeViewLog"
+        const val CRYPTO_PAY_INDEX = 11 //11-虚拟币支付
     }
 
-    enum class RechargeType { TRANSFER_PAY, ONLINE_PAY }
+    enum class RechargeType(val tabPosition: Int) { TRANSFER_PAY(0), ONLINE_PAY(1) }
 
-    var currentTab = RechargeType.TRANSFER_PAY
+//    var currentTab = RechargeType.TRANSFER_PAY.tabPosition
 
     private var bankTypeAdapter: MoneyBankTypeAdapter? = null
     private var transferPayList = mutableListOf<MoneyPayWayData>()
@@ -33,11 +35,8 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
 
     private var mCurrentFragment: Fragment? = null
 
-    var apiResult: MoneyAddResult = MoneyAddResult(0, "", false, "")
-
-    var cryptoResult: MoneyAddResult = MoneyAddResult(0, "", false, "")
-
-    private val CYRPTOPAY_INDEX = 11 //11-虚拟币支付
+    private var apiResult: MoneyAddResult = MoneyAddResult(0, "", false, "")
+    private var cryptoResult: MoneyAddResult = MoneyAddResult(0, "", false, "")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +49,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
         initLiveData()
         initData()
         initView()
-        initButton()
+        initTabLayout()
     }
 
     private fun initToolbar() {
@@ -66,7 +65,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
 
     private fun getMoneyConfig() {
         loading()
-        block_tab.visibility = View.GONE
+        custom_tab_layout.visibility = View.GONE
         viewModel.getRechCfg()
     }
 
@@ -74,27 +73,27 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
 
         viewModel.transferPayList.observe(this@MoneyRechargeActivity, Observer {
             hideLoading()
-            block_tab.visibility = View.VISIBLE //獲取資金資料完畢, 顯示充值分類
+            custom_tab_layout.visibility = View.VISIBLE //獲取資金資料完畢, 顯示充值分類
             transferPayList = it ?: return@Observer
-            btn_transfer_pay.visibility = if (transferPayList.size > 0) {
+            custom_tab_layout.firstTabVisibility = if (transferPayList.size > 0) {
                 View.VISIBLE
             } else {
-                setTab(RechargeType.ONLINE_PAY)
+                custom_tab_layout.selectTab(RechargeType.ONLINE_PAY.tabPosition)
                 View.GONE
             }
-            changePage()
+            transferPageChange()
         })
 
         viewModel.onlinePayList.observe(this@MoneyRechargeActivity, Observer {
             onlinePayList = it ?: return@Observer
-            btn_online_pay.visibility = if (onlinePayList.size > 0) {
+            custom_tab_layout.secondTabVisibility = if (onlinePayList.size > 0) {
                 View.VISIBLE
             } else {
                 View.GONE
             }
 
-            if (currentTab == RechargeType.ONLINE_PAY) {
-                bankTypeAdapter?.data = onlinePayList
+            if (custom_tab_layout.selectedTabPosition == RechargeType.ONLINE_PAY.tabPosition) {
+                onlinePageChange()
             }
         })
 
@@ -224,26 +223,42 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
     }
 
 
-    private fun initButton() {
-        btn_transfer_pay.setOnClickListener {
-            setTab(RechargeType.TRANSFER_PAY)
-            initRecyclerView()
-            changePage()
-            viewModel.clearnRechargeStatus()
+    private fun initTabLayout() {
+        custom_tab_layout.setCustomTabSelectedListener { position ->
+            when (position) {
+                RechargeType.TRANSFER_PAY.tabPosition -> {
+                    transferPageChange()
+                }
+                RechargeType.ONLINE_PAY.tabPosition -> {
+                    onlinePageChange()
+                }
+            }
         }
-        btn_online_pay.setOnClickListener {
-            setTab(RechargeType.ONLINE_PAY)
-            initRecyclerView()
-            changePage()
-            viewModel.clearnRechargeStatus()
-        }
-
         btn_floating_service.setView(this)
     }
 
-    private fun initView() {
+    private fun onlinePageChange() {
+        viewModel.clearnRechargeStatus()
+        bankTypeAdapter?.data = onlinePayList
+        switchFragment(
+            onlinePayList.getOrNull(0)?.let { getPayFragment(it) },
+            "OnlinePayFragment"
+        )
+    }
 
-        if ((!transferPayList.isNullOrEmpty() && currentTab == RechargeType.TRANSFER_PAY) || (!onlinePayList.isNullOrEmpty() && currentTab == RechargeType.ONLINE_PAY)) {
+    private fun transferPageChange() {
+        viewModel.clearnRechargeStatus()
+        bankTypeAdapter?.data = transferPayList
+        switchFragment(
+            transferPayList.getOrNull(0)?.let { getPayFragment(it) },
+            "TransferPayFragment"
+        )
+    }
+
+    private fun initView() {
+        if ((!transferPayList.isNullOrEmpty() && custom_tab_layout.selectedTabPosition == RechargeType.TRANSFER_PAY.tabPosition)
+            || (!onlinePayList.isNullOrEmpty() && custom_tab_layout.selectedTabPosition == RechargeType.ONLINE_PAY.tabPosition)
+        ) {
             block_no_type.visibility = View.VISIBLE
             rv_pay_type.visibility = View.GONE
             fl_pay_type_container.visibility = View.GONE
@@ -256,10 +271,10 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
 
     private fun getPayFragment(moneyPayWay: MoneyPayWayData): Fragment {
         return when {
-            moneyPayWay.rechType == "onlinePayment" && moneyPayWay.onlineType == CYRPTOPAY_INDEX -> {
+            moneyPayWay.rechType == "onlinePayment" && moneyPayWay.onlineType == CRYPTO_PAY_INDEX -> {
                 OnlineCryptoPayFragment().setArguments(moneyPayWay)
             }
-            moneyPayWay.rechType == "onlinePayment" && moneyPayWay.onlineType != CYRPTOPAY_INDEX -> {
+            moneyPayWay.rechType == "onlinePayment" && moneyPayWay.onlineType != CRYPTO_PAY_INDEX -> {
                 OnlinePayFragment().setArguments(moneyPayWay)
             }
             moneyPayWay.rechType == "cryptoPay" -> CryptoPayFragment().setArguments(moneyPayWay)
@@ -268,38 +283,6 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
         }
     }
 
-    /**
-     * 切換Tab 連同 rv_pay_type 一起切換
-     * */
-    private fun changePage() {
-        when (currentTab) {
-            RechargeType.TRANSFER_PAY -> {
-                btn_transfer_pay.isChecked = true
-                bankTypeAdapter?.data = transferPayList
-                switchFragment(
-                    getPayFragment(transferPayList[0]),
-                    "TransferPayFragment"
-                )
-            }
-            RechargeType.ONLINE_PAY -> {
-                btn_online_pay.isChecked =true
-                bankTypeAdapter?.data = onlinePayList
-                switchFragment(
-                    getPayFragment(onlinePayList[0]),
-                    "OnlinePayFragment"
-                )
-            }
-        }
-    }
-
-    private fun setTab(selectTab: RechargeType) {
-        currentTab = selectTab
-    }
-
-    /**
-     * 導覽列 頁面切換
-     * @param changeToFragment: 要跳轉的 fragment
-     */
     private fun switchFragment(changeToFragment: Fragment?, tag: String) {
 
         if (changeToFragment == null) return
