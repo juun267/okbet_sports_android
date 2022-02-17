@@ -3,8 +3,11 @@ package org.cxct.sportlottery.ui.game
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
@@ -25,6 +28,7 @@ import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_left.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -39,13 +43,13 @@ import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.game.filter.LeagueFilterFragmentDirections
 import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
+import org.cxct.sportlottery.ui.game.language.SwitchLanguageFragment
 import org.cxct.sportlottery.ui.game.league.GameLeagueFragmentDirections
 import org.cxct.sportlottery.ui.game.menu.LeftMenuFragment
 import org.cxct.sportlottery.ui.game.outright.GameOutrightFragmentDirections
 import org.cxct.sportlottery.ui.game.outright.GameOutrightMoreFragmentDirections
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
-import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.MainActivity.Companion.ARGS_THIRD_GAME_CATE
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.main.news.NewsDialog
@@ -57,6 +61,7 @@ import org.cxct.sportlottery.ui.odds.OddsDetailFragmentDirections
 import org.cxct.sportlottery.ui.odds.OddsDetailLiveFragmentDirections
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
+import org.cxct.sportlottery.ui.main.MainActivity
 
 
 class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) {
@@ -68,6 +73,16 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
         }
+
+        fun reStartWithSwitchLanguage(context: Context) {
+            val intent = Intent(context, GameActivity::class.java)
+                .putExtra(ARGS_SWITCH_LANGUAGE, "true")
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            context.startActivity(intent)
+        }
+
+        const val ARGS_SWITCH_LANGUAGE = "switch_language"
+
     }
 
     private var betListFragment = BetListFragment()
@@ -118,7 +133,14 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         initObserve()
         initServiceButton()
         setFontTheme()
-
+        try {
+            val flag = intent.getStringExtra(ARGS_SWITCH_LANGUAGE)
+            if (flag == "true") {
+                showSwitchLanguageFragment()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         queryData()
     }
 
@@ -307,6 +329,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     private fun initTabLayout() {
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
+                dismissSwitchLanguageFragment()
                 selectTab(tab?.position)
             }
 
@@ -339,7 +362,9 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             val tabAll = tabLayout.getTabAt(0)?.customView
             tabAll?.tv_title?.setText(R.string.home_tan_main)
             //2022/01/05 主頁數量規則從使用"串關數量"修改為"其他玩法的加總"
-            tabAll?.tv_number?.text = countParlay.plus(countInPlay).plus(countAtStart).plus(countToday).plus(countEarly).plus(countOutright).plus(countEps).toString()
+            tabAll?.tv_number?.text =
+                countParlay.plus(countInPlay).plus(countAtStart).plus(countToday).plus(countEarly)
+                    .plus(countOutright).plus(countEps).toString()
 
             val tabInPlay = tabLayout.getTabAt(1)?.customView
             tabInPlay?.tv_title?.setText(R.string.home_tab_in_play)
@@ -490,12 +515,15 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     private var mNewsDialog: NewsDialog? = null
     private fun setNewsDialog(messageListResult: MessageListResult) {
         //未登入、遊客登入都要顯示彈窗
-        val type = if(viewModel.isLogin.value == true) 2 else 3
-        val list = messageListResult.rows?.filter { it.type.toInt() == type}
+        val type = if (viewModel.isLogin.value == true) 2 else 3
+        val list = messageListResult.rows?.filter { it.type.toInt() == type }
         if (!list.isNullOrEmpty()) {
-            mNewsDialog?.dismiss()
-            mNewsDialog = NewsDialog(list)
-            mNewsDialog?.show(supportFragmentManager, null)
+            if (!MultiLanguagesApplication.getInstance()?.isNewsShow()!!) {
+                mNewsDialog?.dismiss()
+                mNewsDialog = NewsDialog(list)
+                mNewsDialog?.show(supportFragmentManager, null)
+                MultiLanguagesApplication.getInstance()?.setIsNewsShow(true)
+            }
         }
     }
 
@@ -600,16 +628,16 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         viewModel.showBetInfoSingle.observe(this) {
             it?.getContentIfNotHandled()?.let {
                 //[Martin]
-                if(viewModel.getIsFastBetOpened()){
+                if (viewModel.getIsFastBetOpened()) {
                     showFastBetFragment()
-                }else{
+                } else {
                     showBetListPage()
                 }
             }
         }
     }
 
-    private fun showFastBetFragment(){
+    private fun showFastBetFragment() {
         val transaction = supportFragmentManager.beginTransaction()
             .setCustomAnimations(
                 R.anim.push_bottom_to_top_enter,
@@ -626,6 +654,34 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             .commit()
     }
 
+    fun showSwitchLanguageFragment() {
+        val transaction = supportFragmentManager.beginTransaction()
+        val switchLanguageFragment = SwitchLanguageFragment()
+
+        transaction
+            .add(R.id.fl_bet_list, switchLanguageFragment)
+            .addToBackStack(switchLanguageFragment::class.java.simpleName)
+            .commit()
+    }
+
+    fun dismissSwitchLanguageFragment() {
+        if (isSwitchLanguageFragmentVisible()) {
+            supportFragmentManager.popBackStack()
+        }
+    }
+
+    private fun isSwitchLanguageFragmentVisible(): Boolean {
+        val fragments: List<Fragment> = supportFragmentManager.fragments
+        for (fragment in fragments) {
+            if (fragment is SwitchLanguageFragment) {
+                if (fragment.isVisible) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
     private fun initServiceButton() {
         btn_floating_service.setView(this)
     }
@@ -633,8 +689,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     override fun updateUiWithLogin(isLogin: Boolean) {
         if (isLogin) {
             btn_login.visibility = View.GONE
-            iv_menu.visibility =View.VISIBLE
-            iv_notice.visibility =View.VISIBLE
+            iv_menu.visibility = View.VISIBLE
+            iv_notice.visibility = View.VISIBLE
             btn_register.visibility = View.GONE
             toolbar_divider.visibility = View.GONE
             iv_head.visibility = View.GONE
@@ -645,8 +701,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             toolbar_divider.visibility = View.VISIBLE
             iv_head.visibility = View.GONE
             tv_odds_type.visibility = View.GONE
-            iv_menu.visibility =View.GONE
-            iv_notice.visibility =View.GONE
+            iv_menu.visibility = View.GONE
+            iv_notice.visibility = View.GONE
         }
     }
 
@@ -670,7 +726,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         val titleList: MutableList<String> = mutableListOf()
         messageListResult?.let {
             it.rows?.forEach { data ->
-                if(data.type.toInt() == 1) titleList.add(data.title + " - " + data.message)
+                if (data.type.toInt() == 1) titleList.add(data.title + " - " + data.message)
 //                titleList.add(data.title + " - " + data.message)
             }
 
@@ -742,7 +798,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         }
     }
 
-    private fun removeBetListFragment(){
+    private fun removeBetListFragment() {
         supportFragmentManager.beginTransaction().remove(betListFragment).commit()
     }
 }

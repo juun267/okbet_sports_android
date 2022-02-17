@@ -217,8 +217,7 @@
                 android:layout_height="wrap_content"
                 app:cvIcon="@drawable/ic_language_select"
                 app:cvTitle="@string/language_cn"
-                app:showLanguageImage="visible"
-                app:arrowSymbolVisibility="visible"/>
+                app:showLanguageImage="visible" />
 
             <org.cxct.sportlottery.ui.menu.MenuItem
                 android:id="@+id/menu_version_update"

@@ -339,30 +339,31 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
         //語系選擇
         menu_language.setOnClickListener {
-            context?.let {
-                showBottomSheetDialog("",
-                    viewModel.getLanguageStatusSheetList(it),
-                    viewModel.getLanguageStatusSheetList(it)
-                        .find { it.showName == LanguageManager.getLanguageStringResource(context) }
-                        ?: StatusSheetData(
-                            "0",
-                            context?.resources?.getString(R.string.language_cn)
-                        ),
-                    StatusSheetAdapter.ItemCheckedListener { _, data ->
-                        activity?.run {
-                            val select = when (data.showName) {
-                                context?.resources?.getString(R.string.language_cn) -> LanguageManager.Language.ZH
-                                context?.resources?.getString(R.string.language_vi) -> LanguageManager.Language.VI
-                                else -> LanguageManager.Language.EN
-                            }
-                            LanguageManager.saveSelectLanguage(this, select)
-                            if (sConfigData?.thirdOpen == FLAG_OPEN)
-                                MainActivity.reStart(this)
-                            else
-                                GameActivity.reStart(this)
-                        }
-                    })
-            }
+            GameActivity.reStartWithSwitchLanguage(requireContext())
+//            context?.let {
+//                showBottomSheetDialog("",
+//                    viewModel.getLanguageStatusSheetList(it),
+//                    viewModel.getLanguageStatusSheetList(it)
+//                        .find { it.showName == LanguageManager.getLanguageStringResource(context) }
+//                        ?: StatusSheetData(
+//                            "0",
+//                            context?.resources?.getString(R.string.language_cn)
+//                        ),
+//                    StatusSheetAdapter.ItemCheckedListener { _, data ->
+//                        activity?.run {
+//                            val select = when (data.showName) {
+//                                context?.resources?.getString(R.string.language_cn) -> LanguageManager.Language.ZH
+//                                context?.resources?.getString(R.string.language_vi) -> LanguageManager.Language.VI
+//                                else -> LanguageManager.Language.EN
+//                            }
+//                            LanguageManager.saveSelectLanguage(this, select)
+//                            if (sConfigData?.thirdOpen == FLAG_OPEN)
+//                                MainActivity.reStart(this)
+//                            else
+//                                GameActivity.reStart(this)
+//                        }
+//                    })
+//            }
 
         }
 

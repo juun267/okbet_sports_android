@@ -981,4 +981,6 @@
     <string name="selfLimit_froze_impotent_5">During the self-exclusion period, you can contact customer service to cancel the self-exclusion function.</string>
     <string name="selfLimit_froze_impotent_6">After the self-exclusion expires, your account will be automatically reactivated.</string>
     <string name="selfLimit_bet_impotent">You can modify your limit bet at any time. The modification will be active, after that sending the request.</string>
+    <string name="text_chose_language">Select your language</string>
+
 </resources>
