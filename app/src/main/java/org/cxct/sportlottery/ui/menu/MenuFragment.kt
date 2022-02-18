@@ -349,6 +349,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                             context?.resources?.getString(R.string.language_cn)
                         ),
                     StatusSheetAdapter.ItemCheckedListener { _, data ->
+                        viewModel.betInfoRepository.clear()
                         activity?.run {
                             val select = when (data.showName) {
                                 context?.resources?.getString(R.string.language_cn) -> LanguageManager.Language.ZH
