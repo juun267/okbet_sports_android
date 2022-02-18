@@ -673,9 +673,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             tv_balance.visibility = View.VISIBLE
             tv_balance_currency.visibility = View.VISIBLE
             tv_balance_currency.text = sConfigData?.systemCurrency
+            ivBetMoney.visibility = View.VISIBLE
         } else {
             tv_balance.visibility = View.GONE
             tv_balance_currency.visibility = View.GONE
+            ivBetMoney.visibility = View.GONE
         }
     }
 

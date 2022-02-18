@@ -217,7 +217,7 @@ object TimeUtil {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = todayMillis ?: 0
 
-        val id = when (calendar.get(Calendar.DAY_OF_MONTH)) {
+        val id = when (calendar.get(Calendar.MONTH)) {
             Calendar.JANUARY -> R.string.january
             Calendar.FEBRUARY -> R.string.february
             Calendar.MARCH -> R.string.march
