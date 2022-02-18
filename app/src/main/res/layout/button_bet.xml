@@ -76,7 +76,7 @@
         android:id="@+id/tv_login"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorBlue"
+        android:background="@drawable/button_radius_4_login"
         android:gravity="center"
         android:text="@string/btn_login"
         android:textAllCaps="true"
