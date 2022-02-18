@@ -84,6 +84,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 AFT -> R.drawable.ic_game_amfootball
                 MR -> R.drawable.ic_game_rancing
                 GF -> R.drawable.ic_game_golf
+                FB -> R.drawable.ic_game_finance
                 OTHER -> R.drawable.ic_game_champ
             }
         }
