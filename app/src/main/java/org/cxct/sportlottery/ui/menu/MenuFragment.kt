@@ -3,23 +3,23 @@ package org.cxct.sportlottery.ui.menu
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_menu.*
 import kotlinx.android.synthetic.main.fragment_menu.iv_head
+import kotlinx.android.synthetic.main.fragment_withdraw.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
-import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
@@ -31,7 +31,6 @@ import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
-import org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.vip.VipActivity
@@ -40,7 +39,6 @@ import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.ToastUtil
 
 /**
  * 遊戲右側功能選單
@@ -372,20 +370,41 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         }
 
         menu_odds_type.setOnClickListener {
-            context?.let {
-                showBottomSheetDialog("",
-                    viewModel.getOddTypeStatusSheetList(it),
-                    viewModel.getDeafaultOddTypeStatusSheetData(it),
-                    StatusSheetAdapter.ItemCheckedListener { _, data ->
-                        when (data.code) {
-                            OddsType.EU.code -> viewModel.saveOddsType(OddsType.EU)
-                            OddsType.HK.code -> viewModel.saveOddsType(OddsType.HK)
-                            OddsType.MYS.code -> viewModel.saveOddsType(OddsType.MYS)
-                            OddsType.IDN.code -> viewModel.saveOddsType(OddsType.IDN)
-                            else -> viewModel.saveOddsType(OddsType.EU)
-                        }
-                    })
+            menu_odds_type.showOddsTypeChose()
+            menu_odds_type.setOddsEU{
+                viewModel.saveOddsType(OddsType.EU)
+                menu_odds_type.showOddsTypeChose()
+                mDownMenuListener?.onClick(menu_odds_type)
             }
+            menu_odds_type.setOddsHK{
+                viewModel.saveOddsType(OddsType.HK)
+                menu_odds_type.showOddsTypeChose()
+                mDownMenuListener?.onClick(menu_odds_type)
+            }
+            menu_odds_type.setOddsMY{
+                viewModel.saveOddsType(OddsType.MYS)
+                menu_odds_type.showOddsTypeChose()
+                mDownMenuListener?.onClick(menu_odds_type)
+            }
+            menu_odds_type.setOddsIDN{
+                viewModel.saveOddsType(OddsType.IDN)
+                menu_odds_type.showOddsTypeChose()
+                mDownMenuListener?.onClick(menu_odds_type)
+            }
+//            context?.let {
+//                showBottomSheetDialog("",
+//                    viewModel.getOddTypeStatusSheetList(it),
+//                    viewModel.getDeafaultOddTypeStatusSheetData(it),
+//                    StatusSheetAdapter.ItemCheckedListener { _, data ->
+//                        when (data.code) {
+//                            OddsType.EU.code -> viewModel.saveOddsType(OddsType.EU)
+//                            OddsType.HK.code -> viewModel.saveOddsType(OddsType.HK)
+//                            OddsType.MYS.code -> viewModel.saveOddsType(OddsType.MYS)
+//                            OddsType.IDN.code -> viewModel.saveOddsType(OddsType.IDN)
+//                            else -> viewModel.saveOddsType(OddsType.EU)
+//                        }
+//                    })
+//            }
         }
     }
 

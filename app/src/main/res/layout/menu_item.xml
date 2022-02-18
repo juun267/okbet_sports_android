@@ -13,9 +13,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="@dimen/margin_15"
         android:contentDescription="@null"
         android:src="@drawable/ic_menu_profile_center"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,9 +26,9 @@
         android:layout_marginStart="11dp"
         android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_icon"
         app:layout_constraintStart_toEndOf="@id/iv_icon"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_icon"
         tools:text="@string/profile_center" />
 
     <TextView
@@ -42,32 +42,102 @@
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/textSize14sp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_icon"
         app:layout_constraintStart_toEndOf="@+id/tv_title"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_icon"
         tools:text="N" />
+
+    <LinearLayout
+        android:id="@+id/llOddsType"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_15"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title">
+
+        <TextView
+            android:id="@+id/tvOddsTypeEU"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_36"
+            android:gravity="center_vertical"
+            android:text="@string/odd_type_eu"
+            android:textColor="@color/colorGray"
+            android:textSize="@dimen/textSize14sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorWhite4" />
+
+        <TextView
+            android:id="@+id/tvOddsTypeHK"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_36"
+            android:gravity="center_vertical"
+            android:text="@string/odd_type_hk"
+            android:textColor="@color/colorGray"
+            android:textSize="@dimen/textSize14sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorWhite4" />
+
+        <TextView
+            android:id="@+id/tvOddsTypeMY"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_36"
+            android:gravity="center_vertical"
+            android:text="@string/odd_type_mys"
+            android:textColor="@color/colorGray"
+            android:textSize="@dimen/textSize14sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorWhite4" />
+
+        <TextView
+            android:id="@+id/tvOddsTypeIDN"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_36"
+            android:gravity="center_vertical"
+            android:text="@string/odd_type_idn"
+            android:textColor="@color/colorGray"
+            android:textSize="@dimen/textSize14sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorWhite4" />
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/iv_language"
         android:layout_width="22dp"
         android:layout_height="22dp"
-        android:src="@drawable/ic_flag_cn"
         android:layout_marginStart="5dp"
+        android:src="@drawable/ic_flag_cn"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_icon"
         app:layout_constraintStart_toEndOf="@+id/tv_title"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/iv_icon" />
 
     <ImageView
         android:id="@+id/iv_arrow"
         android:layout_width="18dp"
         android:layout_height="18dp"
         android:layout_marginEnd="10dp"
-        android:src="@drawable/arrow_gray"
+        android:padding="@dimen/margin_2"
+        android:src="@drawable/ic_arrow_gray"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_icon"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_icon"
         app:tint="@color/colorSilver"
         tools:visibility="visible" />
 

@@ -1,12 +1,16 @@
 package org.cxct.sportlottery.ui.menu
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.EditText
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.menu_item.view.*
+import kotlinx.android.synthetic.main.menu_item.view.tv_title
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.LanguageManager
@@ -62,5 +66,35 @@ class MenuItem @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     private fun updateNoticeButton() {
         btn_notice?.visibility = if (noticeCount ?: 0 > 0 && isGuest == false) View.VISIBLE else View.GONE
         btn_notice?.text = if (noticeCount ?: 0 < 10) noticeCount.toString() else "N"
+    }
+
+    fun showOddsTypeChose(){
+        if(llOddsType.visibility == VISIBLE){
+            llOddsType.visibility = View.GONE
+            ObjectAnimator.ofFloat(iv_arrow, View.ROTATION, 180f, 360f).setDuration(300).start();
+        }else{
+            llOddsType.visibility = View.VISIBLE
+            ObjectAnimator.ofFloat(iv_arrow, View.ROTATION, 0f, 180f).setDuration(300).start();
+        }
+    }
+    fun setOddsEU(clickOddsTypeEU: () -> Unit) {
+        tvOddsTypeEU.setOnClickListener {
+            clickOddsTypeEU()
+        }
+    }
+    fun setOddsHK(clickOddsTypeHK: () -> Unit) {
+        tvOddsTypeHK.setOnClickListener {
+            clickOddsTypeHK()
+        }
+    }
+    fun setOddsMY(clickOddsTypeMY: () -> Unit) {
+        tvOddsTypeMY.setOnClickListener {
+            clickOddsTypeMY()
+        }
+    }
+    fun setOddsIDN(clickOddsTypeIDN: () -> Unit) {
+        tvOddsTypeIDN.setOnClickListener {
+            clickOddsTypeIDN()
+        }
     }
 }
