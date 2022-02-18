@@ -21,7 +21,6 @@ android {
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 4
-        versionName "1.0.2"// 簡訊驗證碼
         versionName "1.0.69"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
