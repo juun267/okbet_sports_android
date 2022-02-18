@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.selflimit
 
 import android.os.Bundle
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -27,7 +26,6 @@ class SelfLimitActivity : BaseSocketActivity<SelfLimitViewModel>(SelfLimitViewMo
         initLiveData()
     }
 
-
     private fun initToolbar() {
         tv_toolbar_title.text = getString(R.string.self_limit)
         btn_toolbar_back.setOnClickListener {
@@ -35,29 +33,12 @@ class SelfLimitActivity : BaseSocketActivity<SelfLimitViewModel>(SelfLimitViewMo
         }
     }
 
-    private fun initView(){
-        val viewFirst = this.layoutInflater.inflate(R.layout.tab_layout_text_view, null)
-        val textView = viewFirst.findViewById<TextView>(R.id.tv_tab_item)
-        textView.text = getString(R.string.self_limit_account_login_limit)
-
-        val viewSecond = this.layoutInflater.inflate(R.layout.tab_layout_text_view, null)
-        val textViewSecond = viewSecond.findViewById<TextView>(R.id.tv_tab_item)
-        textViewSecond.text = getString(R.string.self_limit_per_bet_limit)
-
-        if (!::adapter.isInitialized){
-            adapter = ViewPagerAdapter(supportFragmentManager)
-            adapter.addFragment(SelfLimitFrozeFragment())
-            adapter.addFragment(SelfLimitBetFragment())
-        }
-        binding.customTabLayout.tab_layout_custom.setupWithViewPager(binding.vpSelfLimit)
+    private fun initView() {
+        adapter = ViewPagerAdapter(supportFragmentManager)
+        adapter.addFragment(SelfLimitFrozeFragment())
+        adapter.addFragment(SelfLimitBetFragment())
         binding.vpSelfLimit.adapter = adapter
-
-        binding.customTabLayout.tab_layout_custom.getTabAt(0)?.customView = viewFirst
-        binding.customTabLayout.tab_layout_custom.getTabAt(1)?.customView = viewSecond
-
-//        //todo 暫時用點擊事件解決tab初始化問題 from Jeff
-//        binding.tabLayout.getTabAt(1)?.select()
-//        binding.tabLayout.getTabAt(0)?.select()
+        binding.customTabLayout.tab_layout_custom.setupWithViewPager(binding.vpSelfLimit)
     }
 
     private fun initLiveData() {
@@ -79,7 +60,6 @@ class SelfLimitActivity : BaseSocketActivity<SelfLimitViewModel>(SelfLimitViewMo
     internal inner class ViewPagerAdapter(manager: FragmentManager) :
         FragmentPagerAdapter(manager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         private val mFragmentList = ArrayList<Fragment>()
-//        private val mFragmentTitleList = ArrayList<String>()
 
         override fun getItem(position: Int): Fragment {
             return mFragmentList[position]

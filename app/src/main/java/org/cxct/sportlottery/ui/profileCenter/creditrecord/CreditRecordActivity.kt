@@ -51,7 +51,6 @@ class CreditRecordActivity :
     }
 
     private fun setupToolbar() {
-        setSupportActionBar(credit_record_toolbar)
 
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -78,15 +77,15 @@ class CreditRecordActivity :
     }
 
     private fun initObserver() {
-        viewModel.loading.observe(this, {
+        viewModel.loading.observe(this) {
             if (it) {
                 loading()
             } else {
                 hideLoading()
             }
-        })
+        }
 
-        viewModel.userInfo.observe(this, {
+        viewModel.userInfo.observe(this) {
             credit_record_remain.visibility = when (it?.creditStatus) {
                 1 -> View.VISIBLE
                 else -> View.GONE
@@ -101,17 +100,17 @@ class CreditRecordActivity :
                 1 -> View.GONE
                 else -> View.VISIBLE
             }
-        })
+        }
 
-        viewModel.remainDay.observe(this, {
+        viewModel.remainDay.observe(this) {
             credit_record_remain_day.text = String.format(getString(R.string.credit_record_day), it)
-        })
+        }
 
-        viewModel.userCreditCircleHistory.observe(this, {
+        viewModel.userCreditCircleHistory.observe(this) {
             creditRecordAdapter.data = it
-        })
+        }
 
-        viewModel.quotaAmount.observe(this, {
+        viewModel.quotaAmount.observe(this) {
             credit_record_quota_amount.apply {
                 text = it.formatReward
 
@@ -125,7 +124,7 @@ class CreditRecordActivity :
                     )
                 )
             }
-        })
+        }
     }
 
     override fun onStart() {
