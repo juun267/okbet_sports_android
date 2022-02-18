@@ -374,22 +374,22 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             menu_odds_type.setOddsEU{
                 viewModel.saveOddsType(OddsType.EU)
                 menu_odds_type.showOddsTypeChose()
-                mDownMenuListener?.onClick(menu_odds_type)
+                //mDownMenuListener?.onClick(menu_odds_type)
             }
             menu_odds_type.setOddsHK{
                 viewModel.saveOddsType(OddsType.HK)
                 menu_odds_type.showOddsTypeChose()
-                mDownMenuListener?.onClick(menu_odds_type)
+                //mDownMenuListener?.onClick(menu_odds_type)
             }
             menu_odds_type.setOddsMY{
                 viewModel.saveOddsType(OddsType.MYS)
                 menu_odds_type.showOddsTypeChose()
-                mDownMenuListener?.onClick(menu_odds_type)
+                //mDownMenuListener?.onClick(menu_odds_type)
             }
             menu_odds_type.setOddsIDN{
                 viewModel.saveOddsType(OddsType.IDN)
                 menu_odds_type.showOddsTypeChose()
-                mDownMenuListener?.onClick(menu_odds_type)
+                //mDownMenuListener?.onClick(menu_odds_type)
             }
 //            context?.let {
 //                showBottomSheetDialog("",
