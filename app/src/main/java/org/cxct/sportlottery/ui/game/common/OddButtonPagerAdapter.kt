@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.itemview_odd_btn_2x2_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
@@ -221,14 +222,30 @@ class OddButtonPagerAdapter(
      * */
     private fun Map<String, List<Odd?>?>.refactorPlayCode(): Map<String, List<Odd?>?> {
         return try {
-            var oddsMap = mutableMapOf<String, List<Odd?>?>()
+            val oddsMap: MutableMap<String, List<Odd?>?>
             val rgzMap = this.filter { (key, value) -> key.contains(":") }
-            if (rgzMap.isNotEmpty()) {
-                oddsMap = this.filter { !it.key.contains(":") }.toMutableMap()
-                oddsMap[rgzMap.iterator().next().key] = rgzMap.iterator().next().value
-                oddsMap
-            } else this
 
+            //網球玩法特殊處理:网球的特定第几局的玩法(1X2_SEG3_GAMES:1~6) 之前应该是当有两个数字的时候 取大的显示 目前看小金改为取小的显示了 这边再跟著调整一下取小的显示在大厅上
+            when {
+                rgzMap.size > 1 && matchInfo?.gameType == GameType.TN.key -> {
+                    oddsMap = this.filter { !it.key.contains(":") }.toMutableMap()
+                    val mutableListIterator = rgzMap.iterator()
+                    var iteratorMap: Map.Entry<String, List<Odd?>?>? = null
+                    while (mutableListIterator.hasNext()) {
+                        iteratorMap = mutableListIterator.next()
+                    }
+                    if (iteratorMap != null) {
+                        oddsMap[iteratorMap.key] = iteratorMap.value
+                    }
+                    oddsMap
+                }
+                rgzMap.isNotEmpty() -> {
+                    oddsMap = this.filter { !it.key.contains(":") }.toMutableMap()
+                    oddsMap[rgzMap.iterator().next().key] = rgzMap.iterator().next().value
+                    oddsMap
+                }
+                else -> this
+            }
         } catch (e: Exception) {
             e.printStackTrace()
             this

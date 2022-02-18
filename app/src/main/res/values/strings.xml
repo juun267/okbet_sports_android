@@ -865,6 +865,7 @@
     <string name="america_football">美式足球</string>
     <string name="motor_racing">赛车</string>
     <string name="golf">高尔夫球</string>
+    <string name="financial_bets">金融投注</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="upload_title">身份证明文件</string>
     <string name="upload_tips">・请上传能够证明您身份的文件</string>

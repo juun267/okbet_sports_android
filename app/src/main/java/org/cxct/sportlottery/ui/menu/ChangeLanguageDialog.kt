@@ -13,7 +13,7 @@ import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.util.LanguageManager
 
-class ChangeLanguageDialog : BottomSheetDialogFragment() {
+class ChangeLanguageDialog(private val clearBetListListener: ClearBetListListener) : BottomSheetDialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.dialog_change_language, container, false)
@@ -31,14 +31,17 @@ class ChangeLanguageDialog : BottomSheetDialogFragment() {
             }
 
             btn_chinese?.setOnClickListener {
+                clearBetListListener.onClick()
                 selectLanguage(LanguageManager.Language.ZH)
             }
 
             btn_english?.setOnClickListener {
+                clearBetListListener.onClick()
                 selectLanguage(LanguageManager.Language.EN)
             }
 
             btn_vietnamese?.setOnClickListener {
+                clearBetListListener.onClick()
                 selectLanguage(LanguageManager.Language.VI)
             }
         }
@@ -52,6 +55,10 @@ class ChangeLanguageDialog : BottomSheetDialogFragment() {
             else
                 GameActivity.reStart(this)
         }
+    }
+
+    class ClearBetListListener(private val clearBetListListener: () -> Unit) {
+        fun onClick() = clearBetListListener()
     }
 
 }

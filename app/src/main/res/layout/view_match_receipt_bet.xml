@@ -33,6 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:textColor="@color/colorGrayLight"
+        android:textSize="@dimen/textSize12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_winnable_amount_title"
         tools:text="b000003612091822030128" />

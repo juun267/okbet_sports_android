@@ -68,11 +68,15 @@ abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KCla
 
         //語言切換
         img_flag.setOnClickListener {
-            ChangeLanguageDialog().show(parentFragmentManager, null)
+            ChangeLanguageDialog(ChangeLanguageDialog.ClearBetListListener{
+                viewModel.betInfoRepository.clear()
+            }).show(parentFragmentManager, null)
         }
 
         txv_language.setOnClickListener {
-            ChangeLanguageDialog().show(parentFragmentManager, null)
+            ChangeLanguageDialog(ChangeLanguageDialog.ClearBetListListener{
+                viewModel.betInfoRepository.clear()
+            }).show(parentFragmentManager, null)
         }
 
         //隱私權條款

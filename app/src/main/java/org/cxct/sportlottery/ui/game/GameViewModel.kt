@@ -842,45 +842,59 @@ class GameViewModel(
     private fun switchFirstSportType(matchType: MatchType) {
         when (matchType) {
             MatchType.IN_PLAY -> {
+                val gameTypeCode =
+                    if (sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items.isNullOrEmpty()) GameType.FT.key else sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.first()?.code.toString()
                 switchSportType(
                     matchType,
-                    sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.first()?.code.toString()
+                    gameTypeCode
                 )
             }
             MatchType.TODAY -> {
+                val gameTypeCode =
+                    if (sportMenuResult.value?.sportMenuData?.menu?.today?.items.isNullOrEmpty()) GameType.FT.key else sportMenuResult.value?.sportMenuData?.menu?.today?.items?.first()?.code.toString()
                 switchSportType(
                     matchType,
-                    sportMenuResult.value?.sportMenuData?.menu?.today?.items?.first()?.code.toString()
+                    gameTypeCode
                 )
             }
             MatchType.EARLY -> {
+                val gameTypeCode =
+                    if (sportMenuResult.value?.sportMenuData?.menu?.early?.items.isNullOrEmpty()) GameType.FT.key else sportMenuResult.value?.sportMenuData?.menu?.early?.items?.first()?.code.toString()
                 switchSportType(
                     matchType,
-                    sportMenuResult.value?.sportMenuData?.menu?.early?.items?.first()?.code.toString()
+                    gameTypeCode
                 )
             }
             MatchType.PARLAY -> {
+                val gameTypeCode =
+                    if (sportMenuResult.value?.sportMenuData?.menu?.parlay?.items.isNullOrEmpty()) GameType.FT.key else sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.first()?.code.toString()
                 switchSportType(
                     matchType,
-                    sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.first()?.code.toString()
+                    gameTypeCode
                 )
             }
             MatchType.OUTRIGHT -> {
+                val gameTypeCode =
+                    if (sportMenuResult.value?.sportMenuData?.menu?.outright?.items.isNullOrEmpty()) GameType.FT.key else sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.first()?.code.toString()
                 switchSportType(
                     matchType,
-                    sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.first()?.code.toString()
+                    gameTypeCode
                 )
             }
             MatchType.AT_START -> {
+                val gameTypeCode =
+                    if (sportMenuResult.value?.sportMenuData?.atStart?.items.isNullOrEmpty()) GameType.FT.key else sportMenuResult.value?.sportMenuData?.atStart?.items?.first()?.code.toString()
                 switchSportType(
                     matchType,
-                    sportMenuResult.value?.sportMenuData?.atStart?.items?.first()?.code.toString()
+                    gameTypeCode
                 )
             }
             MatchType.EPS -> {
+                val gameTypeCode =
+                    if (sportMenuResult.value?.sportMenuData?.menu?.eps?.items.isNullOrEmpty()) GameType.FT.key else sportMenuResult.value?.sportMenuData?.menu?.eps?.items?.first()?.code.toString()
                 switchSportType(
                     matchType,
-                    sportMenuResult.value?.sportMenuData?.menu?.eps?.items?.first()?.code.toString()
+                    gameTypeCode
                 )
             }
             else -> {
@@ -1245,7 +1259,7 @@ class GameViewModel(
                     }
 
 //                    matchOdd.setupPlayCate()
-                    matchOdd.refactorPlayCode()
+//                    matchOdd.refactorPlayCode() //改成在OddButtonPagerAdapter處理
                     matchOdd.sortOdds()
 
                     if (!getPlayCateCodeList().isNullOrEmpty())

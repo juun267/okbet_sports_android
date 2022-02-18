@@ -19,6 +19,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
     AFT("AFT",R.string.AFT),
     MR("MR", R.string.motor_racing),
     GF("GF", R.string.golf),
+    FB("FB",R.string.financial_bets),
     OTHER("OTHER",R.string.other);
 
     companion object {
@@ -39,6 +40,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 AFT.key -> AFT
                 MR.key -> MR
                 GF.key -> GF
+                FB.key -> FB
                 else -> null
             }
         }
@@ -60,6 +62,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 MR -> "MOTOR RACING"
                 GF -> "GOLF"
                 AFT -> "AMERICA FOOT BALL"
+                FB -> "Financial Bets"
                 OTHER -> ""
             }
         }
@@ -81,6 +84,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 AFT -> R.drawable.ic_game_amfootball
                 MR -> R.drawable.ic_game_rancing
                 GF -> R.drawable.ic_game_golf
+                FB -> R.drawable.ic_game_finance
                 OTHER -> R.drawable.ic_game_champ
             }
         }
