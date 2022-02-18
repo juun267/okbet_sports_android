@@ -167,7 +167,7 @@ class OddsButton @JvmOverloads constructor(
             tv_odds.setTextColor(
                 ContextCompat.getColorStateList(
                     context,
-                    R.color.selector_button_odd_bottom_text
+                    R.color.selector_button_odd_bottom_text_eps
                 )
             )
         }
