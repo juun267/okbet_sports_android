@@ -101,7 +101,9 @@ class TransactionStatusActivity :
         }
 
         iv_language.setOnClickListener {
-            ChangeLanguageDialog().show(supportFragmentManager, null)
+            ChangeLanguageDialog(ChangeLanguageDialog.ClearBetListListener{
+                viewModel.betInfoRepository.clear()
+            }).show(supportFragmentManager, null)
         }
     }
 

@@ -147,6 +147,9 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 GameType.GF.key -> {
                     itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_gf_v5)
                 }
+                GameType.FB.key -> {
+                    itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_fb_v5)
+                }
             }
         }
 
@@ -227,6 +230,9 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 }
                 GameType.GF.key -> {
                     itemView.sport_type_home_img.setImageResource(R.drawable.selector_left_menu_ball_gf)
+                }
+                GameType.FB.key -> {
+                    itemView.sport_type_home_img.setImageResource(R.drawable.selector_left_menu_ball_fb)
                 }
             }
         }
