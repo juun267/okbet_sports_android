@@ -3,11 +3,13 @@ package org.cxct.sportlottery.ui.menu
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_menu.*
 import kotlinx.android.synthetic.main.fragment_menu.iv_head
 import org.cxct.sportlottery.BuildConfig
@@ -19,9 +21,9 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
-import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
@@ -395,49 +397,47 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
         //語系選擇
         menu_language.setOnClickListener {
-            context?.let {
-                showBottomSheetDialog("",
-                    viewModel.getLanguageStatusSheetList(it),
-                    viewModel.getLanguageStatusSheetList(it)
-                        .find { it.showName == LanguageManager.getLanguageStringResource(context) }
-                        ?: StatusSheetData(
-                            "0",
-                            context?.resources?.getString(R.string.language_cn)
-                        ),
-                    StatusSheetAdapter.ItemCheckedListener { _, data ->
-                        viewModel.betInfoRepository.clear()
-                        activity?.run {
-                            val select = when (data.showName) {
-                                context?.resources?.getString(R.string.language_cn) -> LanguageManager.Language.ZH
-                                context?.resources?.getString(R.string.language_vi) -> LanguageManager.Language.VI
-                                else -> LanguageManager.Language.EN
-                            }
-                            LanguageManager.saveSelectLanguage(this, select)
-                            if (sConfigData?.thirdOpen == FLAG_OPEN)
-                                MainActivity.reStart(this)
-                            else
-                                GameActivity.reStart(this)
-                        }
-                    })
-            }
-
+            val intent = Intent(context, SwitchLanguageActivity::class.java)
+            context?.startActivity(intent)
+            mDownMenuListener?.onClick(menu_language)
         }
 
         menu_odds_type.setOnClickListener {
-            context?.let {
-                showBottomSheetDialog("",
-                    viewModel.getOddTypeStatusSheetList(it),
-                    viewModel.getDeafaultOddTypeStatusSheetData(it),
-                    StatusSheetAdapter.ItemCheckedListener { _, data ->
-                        when (data.code) {
-                            OddsType.EU.code -> viewModel.saveOddsType(OddsType.EU)
-                            OddsType.HK.code -> viewModel.saveOddsType(OddsType.HK)
-                            OddsType.MYS.code -> viewModel.saveOddsType(OddsType.MYS)
-                            OddsType.IDN.code -> viewModel.saveOddsType(OddsType.IDN)
-                            else -> viewModel.saveOddsType(OddsType.EU)
-                        }
-                    })
+            menu_odds_type.showOddsTypeChose()
+            menu_odds_type.setOddsEU{
+                viewModel.saveOddsType(OddsType.EU)
+                menu_odds_type.showOddsTypeChose()
+                //mDownMenuListener?.onClick(menu_odds_type)
             }
+            menu_odds_type.setOddsHK{
+                viewModel.saveOddsType(OddsType.HK)
+                menu_odds_type.showOddsTypeChose()
+                //mDownMenuListener?.onClick(menu_odds_type)
+            }
+            menu_odds_type.setOddsMY{
+                viewModel.saveOddsType(OddsType.MYS)
+                menu_odds_type.showOddsTypeChose()
+                //mDownMenuListener?.onClick(menu_odds_type)
+            }
+            menu_odds_type.setOddsIDN{
+                viewModel.saveOddsType(OddsType.IDN)
+                menu_odds_type.showOddsTypeChose()
+                //mDownMenuListener?.onClick(menu_odds_type)
+            }
+//            context?.let {
+//                showBottomSheetDialog("",
+//                    viewModel.getOddTypeStatusSheetList(it),
+//                    viewModel.getDeafaultOddTypeStatusSheetData(it),
+//                    StatusSheetAdapter.ItemCheckedListener { _, data ->
+//                        when (data.code) {
+//                            OddsType.EU.code -> viewModel.saveOddsType(OddsType.EU)
+//                            OddsType.HK.code -> viewModel.saveOddsType(OddsType.HK)
+//                            OddsType.MYS.code -> viewModel.saveOddsType(OddsType.MYS)
+//                            OddsType.IDN.code -> viewModel.saveOddsType(OddsType.IDN)
+//                            else -> viewModel.saveOddsType(OddsType.EU)
+//                        }
+//                    })
+//            }
         }
     }
 

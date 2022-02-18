@@ -1015,5 +1015,5 @@
     <string name="selfLimit_froze_impotent_5">Trong thời gian tự loại trừ, bạn có thể liên hệ với bộ phận dịch vụ khách hàng để hủy chức năng tự loại trừ.</string>
     <string name="selfLimit_froze_impotent_6">Sau khi quá trình tự loại trừ hết hạn, tài khoản của bạn sẽ tự động được kích hoạt lại.</string>
     <string name="selfLimit_bet_impotent">Bạn có thể sửa đổi giới hạn đặt cược của mình bất cứ lúc nào. Sửa đổi sẽ có hiệu lực sau khi gửi yêu cầu.</string>
-
+    <string name="text_chose_language">Chọn ngôn ngữ của bạn</string>
 </resources>

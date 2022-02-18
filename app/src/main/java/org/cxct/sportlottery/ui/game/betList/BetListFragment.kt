@@ -175,7 +175,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     override fun onPause() {
         super.onPause()
-        Log.e("Martin","onPause")
     }
 
     private fun initBtnEvent() {

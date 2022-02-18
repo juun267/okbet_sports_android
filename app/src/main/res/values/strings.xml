@@ -1002,4 +1002,7 @@
     <string name="selfLimit_froze_impotent_5">在自我禁制期间内，您可以联系客服解除自我禁制功能。</string>
     <string name="selfLimit_froze_impotent_6">在自我禁制到期后，您的账号将自动恢复激活。</string>
     <string name="selfLimit_bet_impotent">您随时可以修改您的每次投注上限。修改将于申请送出后生效。</string>
+    <string name="text_chose_language">请选择您的语言</string>
+
+
 </resources>

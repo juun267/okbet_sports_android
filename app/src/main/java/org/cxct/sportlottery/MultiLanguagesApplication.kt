@@ -58,6 +58,7 @@ class MultiLanguagesApplication : Application() {
     //private var userInfoData : UserInfo?= null
     private var _userInfo = MutableStateFlow<UserInfo?>(null)
     val userInfo = _userInfo.asStateFlow()
+    private var isNewsShowed = false
 
 
     private val viewModelModule = module {
@@ -191,6 +192,14 @@ class MultiLanguagesApplication : Application() {
     }
     fun userInfo():UserInfo?{
         return _userInfo.value
+    }
+
+    fun isNewsShow():Boolean{
+        return isNewsShowed
+    }
+
+    fun setIsNewsShow(show:Boolean){
+        this.isNewsShowed = show
     }
     companion object {
         lateinit var appContext: Context
