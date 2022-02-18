@@ -43,6 +43,7 @@ import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.game.filter.LeagueFilterFragmentDirections
 import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
+import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageFragment
 import org.cxct.sportlottery.ui.game.league.GameLeagueFragmentDirections
 import org.cxct.sportlottery.ui.game.menu.LeftMenuFragment
@@ -62,6 +63,7 @@ import org.cxct.sportlottery.ui.odds.OddsDetailLiveFragmentDirections
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
 import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 
 
 class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) {
@@ -75,14 +77,12 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         }
 
         fun reStartWithSwitchLanguage(context: Context) {
-            val intent = Intent(context, GameActivity::class.java)
-                .putExtra(ARGS_SWITCH_LANGUAGE, "true")
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            context.startActivity(intent)
+            //val intent = Intent(context, GameActivity::class.java)
+            //    .putExtra(ARGS_SWITCH_LANGUAGE, "true")
+            //intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            //context.startActivity(intent)
         }
-
         const val ARGS_SWITCH_LANGUAGE = "switch_language"
-
     }
 
     private var betListFragment = BetListFragment()
@@ -655,13 +655,15 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     }
 
     fun showSwitchLanguageFragment() {
-        val transaction = supportFragmentManager.beginTransaction()
-        val switchLanguageFragment = SwitchLanguageFragment()
+//        val transaction = supportFragmentManager.beginTransaction()
+//        val switchLanguageFragment = SwitchLanguageFragment()
+//
+//        transaction
+//            .add(R.id.fl_bet_list, switchLanguageFragment)
+//            .addToBackStack(switchLanguageFragment::class.java.simpleName)
+//            .commit()
 
-        transaction
-            .add(R.id.fl_bet_list, switchLanguageFragment)
-            .addToBackStack(switchLanguageFragment::class.java.simpleName)
-            .commit()
+        startActivity(Intent(this@GameActivity, SwitchLanguageActivity::class.java))
     }
 
     fun dismissSwitchLanguageFragment() {

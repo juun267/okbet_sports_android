@@ -22,6 +22,7 @@ import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
@@ -339,7 +340,10 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
         //語系選擇
         menu_language.setOnClickListener {
-            GameActivity.reStartWithSwitchLanguage(requireContext())
+            val intent = Intent(context, SwitchLanguageActivity::class.java)
+            context?.startActivity(intent)
+            mDownMenuListener?.onClick(menu_language)
+            //GameActivity.reStartWithSwitchLanguage(requireContext())
 //            context?.let {
 //                showBottomSheetDialog("",
 //                    viewModel.getLanguageStatusSheetList(it),
