@@ -307,8 +307,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             ) {
                 currentOddsType = OddsType.EU
             }
-            getWinnable(it.betAmount, getOddsNew(it.matchOdd, currentOddsType), currentOddsType)
-        } + parlayList.sumByDouble { getWinnable(it.betAmount, getOdds(it, oddsType), OddsType.EU) }
+            getWinnable(it.betAmount, getOddsNew(it.matchOdd, currentOddsType), currentOddsType) }
+        //[Martin]串關全部用EU盤口去算 因此指定EU
+        + parlayList.sumByDouble { getWinnable(it.betAmount, getOdds(it, OddsType.EU), OddsType.EU) }
 
         binding.apply {
             tvAllBetCount.text = betCount.toString()
