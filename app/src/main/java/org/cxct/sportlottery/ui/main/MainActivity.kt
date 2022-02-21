@@ -17,6 +17,7 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
@@ -241,6 +242,21 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
         viewModel.promoteNoticeResult.observe(this) {
             it.getContentIfNotHandled()?.let { result ->
                 setNewsDialog(result)
+            }
+        }
+
+        //使用者沒有電話號碼
+        viewModel.showPhoneNumberMessageDialog.observe(this) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (!b) {
+                    val errorMsg = getString(R.string.dialog_security_need_phone)
+                    CustomAlertDialog(this).apply {
+                        setMessage(errorMsg)
+                        setNegativeButtonText(null)
+                        setCanceledOnTouchOutside(false)
+                        setCancelable(false)
+                    }.show()
+                }
             }
         }
     }

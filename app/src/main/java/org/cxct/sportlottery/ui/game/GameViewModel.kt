@@ -2266,8 +2266,8 @@ class GameViewModel(
             val result = doNetwork(androidContext) {
                 OneBoSportApi.withdrawService.getTwoFactorStatus()
             }
-            result?.let {
-                sConfigData?.hasCertified = it.success
+            if (result?.success == false) { //代表需要驗證
+                withdrawRepository.checkUserPhoneNumber()//檢查有沒有手機號碼
             }
         }
     }
