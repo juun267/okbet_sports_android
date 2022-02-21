@@ -66,12 +66,12 @@ class BankActivity : BaseSocketActivity<WithdrawViewModel>(WithdrawViewModel::cl
     }
 
     private fun setupBackButton() {
-        btn_back.setOnClickListener {
+        custom_tool_bar.setOnBackPressListener {
             onBackPressed()
         }
     }
 
     fun changeTitle(title: String) {
-        tv_title.text = title
+        custom_tool_bar.titleText = title
     }
 }

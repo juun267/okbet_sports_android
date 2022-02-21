@@ -108,7 +108,7 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
     }
 
     private fun initObserve() {
-        viewModel.feedbackList.observe(this.viewLifecycleOwner, {
+        viewModel.feedbackList.observe(this.viewLifecycleOwner) {
             val listData = it ?: return@observe
             adapter?.data = listData
 
@@ -119,10 +119,10 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
                 view_no_record.visibility = View.GONE
                 rv_pay_type.visibility = View.VISIBLE
             }
-        })
-        viewModel.isFinalPage.observe(this.viewLifecycleOwner,  {
+        }
+        viewModel.isFinalPage.observe(this.viewLifecycleOwner) {
             adapter?.isFinalPage = true
-        })
+        }
     }
 
 

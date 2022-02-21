@@ -13,6 +13,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
@@ -96,6 +97,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     }
 
     private fun initView() {
+        tv_toolbar_title.text = getString(R.string.profile_info)
         sConfigData?.apply {
             ll_qq_number.visibility = if (enableWithdrawQQ == FLAG_OPEN) View.VISIBLE else View.GONE
             ll_e_mail.visibility = if (enableWithdrawEmail == FLAG_OPEN) View.VISIBLE else View.GONE
@@ -110,7 +112,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     }
 
     private fun initButton() {
-        btn_back.setOnClickListener {
+        btn_toolbar_back.setOnClickListener {
             finish()
         }
 
@@ -171,13 +173,15 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     }
 
     private fun initObserve() {
+
         viewModel.editIconUrlResult.observe(this) {
             val iconUrlResult = it?.getContentIfNotHandled()
-            if (iconUrlResult?.success == true)
+            if (iconUrlResult?.success == true) {
                 showPromptDialog(
                     getString(R.string.prompt),
                     getString(R.string.save_avatar_success)
                 ) {}
+            }
             else
                 iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(msg) {} }
         }

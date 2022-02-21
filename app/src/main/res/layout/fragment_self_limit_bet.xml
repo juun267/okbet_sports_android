@@ -26,7 +26,7 @@
                 android:layout_marginLeft="@dimen/margin_14"
                 android:layout_marginTop="@dimen/margin_10"
                 android:layout_marginBottom="@dimen/margin_10"
-                android:text="@string/selfLimit_per_bet_limit"
+                android:text="@string/self_limit_per_bet_limit"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize13sp"
                 android:textStyle="bold" />
@@ -43,7 +43,7 @@
                 android:layout_marginTop="@dimen/margin_8"
                 android:layout_marginRight="@dimen/margin_14"
                 android:layout_marginBottom="@dimen/margin_10"
-                android:text="@string/selfLimit_per_bet_limit_content"
+                android:text="@string/self_limit_per_bet_limit_content"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp" />
 
@@ -63,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_14"
                     android:layout_weight="1"
-                    android:text="@string/selfLimit_impotent"
+                    android:text="@string/self_limit_impotent"
                     android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize13sp"
                     android:textStyle="bold" />
@@ -98,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/margin_10"
-                android:text="@string/selfLimit_per_bet_limit_highest"
+                android:text="@string/self_limit_per_bet_limit_highest"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize13sp"
                 android:textStyle="bold" />
@@ -120,7 +120,7 @@
                 android:layout_marginLeft="@dimen/margin_8"
                 android:layout_weight="1"
                 android:backgroundTint="@android:color/white"
-                android:hint="@string/selfLimit_per_bet_limit_input_highest"
+                android:hint="@string/self_limit_per_bet_limit_input_highest"
                 android:inputType="number"
                 android:textSize="@dimen/textSize12sp" />
 
@@ -151,7 +151,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8"
-        android:text="@string/selfLimit_error"
+        android:text="@string/self_limit_error"
         android:textColor="@color/colorRed"
         android:textSize="@dimen/textSize12sp"/>
 
@@ -161,7 +161,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8"
-        android:text="@string/selfLimit_per_bet_limit_user"
+        android:text="@string/self_limit_per_bet_limit_user"
         android:textColor="@color/colorRed"
         android:textSize="@dimen/textSize12sp" />
 
@@ -170,7 +170,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8"
-        android:text="@string/selfLimit_per_bet_limit_user_limit"
+        android:text="@string/self_limit_per_bet_limit_user_limit"
         android:textColor="@color/colorRed"
         android:textSize="@dimen/textSize12sp" />
 

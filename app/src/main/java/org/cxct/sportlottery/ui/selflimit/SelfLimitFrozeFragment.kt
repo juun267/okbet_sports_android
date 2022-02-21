@@ -39,7 +39,7 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
         savedInstanceState: Bundle?
     ): View? {
         viewModel.showToolbar(true)
-        viewModel.setToolbarName(getString(R.string.selfLimit))
+        viewModel.setToolbarName(getString(R.string.self_limit))
         binding = FragmentSelfLimitFrozeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -91,8 +91,8 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
 
     private fun submit() {
         val dialog = CustomAlertDialog(requireContext()).apply {
-            setTitle(getString(R.string.selfLimit_confirm))
-            setMessage(getString(R.string.selfLimit_confirm_content))
+            setTitle(getString(R.string.self_limit_confirm))
+            setMessage(getString(R.string.self_limit_confirm_content))
             setPositiveButtonText(getString(R.string.btn_confirm))
             setNegativeButtonText(getString(R.string.btn_cancel))
             setPositiveClickListener(View.OnClickListener {
@@ -113,8 +113,8 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
 
             if (it.success) {
                 val dialog = CustomAlertDialog(requireActivity()).apply {
-                    setTitle(getString(R.string.selfLimit_confirm))
-                    setMessage(getString(R.string.selfLimit_confirm_done))
+                    setTitle(getString(R.string.self_limit_confirm))
+                    setMessage(getString(R.string.self_limit_confirm_done))
                     setNegativeButtonText(null)
                     setCancelable(false)
                     setPositiveButtonText(getString(R.string.btn_confirm))

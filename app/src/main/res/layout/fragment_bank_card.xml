@@ -9,83 +9,47 @@
     tools:context="org.cxct.sportlottery.ui.withdraw.BankCardFragment">
 
     <LinearLayout
-        android:id="@+id/block_transfer_type"
+        android:id="@+id/ll_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorBlueLight"
-        android:orientation="horizontal"
-        android:paddingStart="12dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="12dp"
-        android:paddingBottom="8dp">
+        android:orientation="vertical"
+        tools:context="org.cxct.sportlottery.ui.common.CustomTabLayout">
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/transparent_black_0"
-            app:cardCornerRadius="4dp"
-            app:cardElevation="0dp">
+            android:layout_height="37dp"
+            app:tabIndicator="@drawable/custom_tab_indicator"
+            app:tabIndicatorFullWidth="false"
+            app:tabMode="fixed"
+            app:tabPaddingEnd="25dp"
+            app:tabPaddingStart="25dp"
+            app:tabRippleColor="@null"
+            app:tabSelectedTextColor="@color/colorBlackLight"
+            app:tabTextColor="@color/colorGray">
 
-            <RadioGroup
-                android:id="@+id/rg_category"
-                android:layout_width="match_parent"
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/frame_4dp_white"
-                android:orientation="horizontal">
+                android:text="@string/bank_card" />
 
-                <RadioButton
-                    android:id="@+id/tab_bank_card"
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="@drawable/effect_select_bg_white_transparent"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="@string/bank_card"
-                    android:textColor="@color/color_select_primary_white"
-                    android:textSize="@dimen/textSize14sp" />
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/crypto" />
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorWhite" />
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ewallet" />
 
-                <RadioButton
-                    android:id="@+id/tab_crypto"
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="@drawable/effect_select_bg_white_transparent"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="@string/crypto"
-                    android:textColor="@color/color_select_primary_white"
-                    android:textSize="@dimen/textSize14sp" />
+        </com.google.android.material.tabs.TabLayout>
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorWhite" />
-
-                <RadioButton
-                    android:id="@+id/tab_e_wallet"
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="@drawable/effect_select_bg_white_transparent"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="@string/ewallet"
-                    android:textColor="@color/color_select_primary_white"
-                    android:textSize="@dimen/textSize14sp" />
-
-            </RadioGroup>
-
-        </androidx.cardview.widget.CardView>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="7dp"
+            android:background="@color/colorWhite6" />
 
     </LinearLayout>
 
@@ -111,7 +75,7 @@
                 <LinearLayout
                     android:id="@+id/item_bank_selector"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="44dp"
                     android:layout_marginBottom="16dp"
                     android:background="@drawable/bg_square_shape_4dp_white"
                     android:gravity="center"
@@ -268,12 +232,12 @@
         <!--  按鈕  -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="44dp">
 
             <TextView
                 android:id="@+id/btn_submit"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/bg_radius_20_button_dusk"
                 android:gravity="center"
@@ -289,7 +253,7 @@
             <TextView
                 android:id="@+id/btn_delete_bank"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="11dp"
                 android:layout_weight="1"
                 android:background="@drawable/bg_radius_20_button_hollow"

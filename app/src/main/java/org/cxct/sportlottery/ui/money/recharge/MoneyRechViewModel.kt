@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.money.recharge
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -132,6 +133,7 @@ class MoneyRechViewModel(
 
     //獲取充值的基礎配置
     fun getRechCfg() {
+        Log.e(">>>", "getRechCfg")
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 moneyRepository.getRechCfg()
@@ -175,6 +177,8 @@ class MoneyRechViewModel(
                     else -> transferData.add(it)
                 }
             }
+
+            Log.e(">>>", "onlineData = ${onlineData.size}, transferData = ${transferData.size}")
 
             _onlinePayList.value = onlineData
             _transferPayList.value = transferData

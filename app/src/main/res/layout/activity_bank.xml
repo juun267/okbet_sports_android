@@ -7,32 +7,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/toolBar"
+    <org.cxct.sportlottery.ui.common.CustomTopToolbar
+        android:id="@+id/custom_tool_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/tool_bar_height"
-        android:background="@color/colorBlue">
-
-        <ImageButton
-            android:id="@+id/btn_back"
-            android:layout_width="42dp"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:background="@android:color/transparent"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_back" />
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/withdraw_setting"
-            android:letterSpacing="0.1"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/textSize16sp" />
-
-    </RelativeLayout>
+        android:layout_height="wrap_content"
+        app:topTitleText="@string/withdraw_setting"/>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/bank_container"

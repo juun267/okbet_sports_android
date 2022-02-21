@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite1"
+    android:background="@color/colorEEEFF0"
     android:paddingHorizontal="14dp"
     android:paddingVertical="15dp"
     tools:context=".ui.profileCenter.identity.VerifyIdentityFragment">
@@ -14,7 +14,7 @@
     <LinearLayout
         android:id="@+id/ll_select_credential"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="44dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/bg_square_shape_4dp_white"
         android:gravity="center"
@@ -145,7 +145,7 @@
     <Button
         android:id="@+id/btn_take_photo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="44dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/bg_radius_20_button_dusk"
         android:letterSpacing="0.2"

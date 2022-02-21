@@ -7,8 +7,11 @@
     android:orientation="vertical"
     tools:context=".ui.profileCenter.sportRecord.BetRecordActivity">
 
-    <include
-        layout="@layout/view_base_tool_bar_no_drawer"/>
+    <org.cxct.sportlottery.ui.common.CustomTopToolbar
+        android:id="@+id/custom_tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:topTitleText="@string/sport_bet_record"/>
 
     <fragment
         android:id="@+id/my_nav_host_fragment"

@@ -577,7 +577,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:layout_weight="1"
-                        android:text="@string/selfLimit"
+                        android:text="@string/self_limit"
                         android:textColor="@color/colorBlackLight"
                         android:textSize="@dimen/textSize13sp" />
 
