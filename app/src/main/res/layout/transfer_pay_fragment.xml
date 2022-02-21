@@ -120,15 +120,15 @@
                     <Button
                         android:id="@+id/btn_name_copy"
                         style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="26dp"
+                        android:layout_width="48dp"
+                        android:layout_height="22dp"
                         android:layout_marginEnd="12dp"
-                        android:background="@drawable/bg_3dp_radius_button"
+                        android:background="@drawable/bg_radius_20_button_dusk_stroke"
                         android:gravity="center"
                         android:minWidth="0dp"
                         android:paddingHorizontal="4dp"
                         android:text="@string/btn_copy"
-                        android:textColor="@color/colorGray"
+                        android:textColor="@color/colorBlue"
                         android:textSize="@dimen/textSize12sp" />
 
                 </LinearLayout>
@@ -160,15 +160,15 @@
                     <Button
                         android:id="@+id/btn_account_copy"
                         style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="26dp"
+                        android:layout_width="48dp"
+                        android:layout_height="22dp"
                         android:layout_marginEnd="12dp"
-                        android:background="@drawable/bg_3dp_radius_button"
+                        android:background="@drawable/bg_radius_20_button_dusk_stroke"
                         android:gravity="center"
                         android:minWidth="0dp"
                         android:paddingHorizontal="4dp"
                         android:text="@string/btn_copy"
-                        android:textColor="@color/colorGray"
+                        android:textColor="@color/colorBlue"
                         android:textSize="@dimen/textSize12sp" />
 
                 </LinearLayout>
