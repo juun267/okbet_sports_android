@@ -928,8 +928,8 @@
     <string name="not_verify">(Not yet verified)</string>
     <string name="verified">(Verified)</string>
     <string name="select_id_type">Select ID Type</string>
-    <string name="scan_tool_bar">The time is reported in UTC-4 time zone.</string>
-    <string name="text_us_east_time">以美东时间计算</string>
+    <string name="scan_tool_bar">Scan results</string>
+    <string name="text_us_east_time">The time is reported in UTC-4 time zone.</string>
     <string name="verify_failed_please_retry">Verification failed, please try again</string>
     <!--自我禁制-->
     <string name="self_limit">Self-exclusion</string>
