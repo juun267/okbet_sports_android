@@ -8,6 +8,12 @@
     tools:context=".ui.game.hall.adapter.EpsListV2Adapter">
 
     <View
+        android:id="@+id/blank"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:visibility="gone"/>
+
+    <View
         android:id="@+id/line"
         android:layout_width="match_parent"
         android:layout_height="1dp"

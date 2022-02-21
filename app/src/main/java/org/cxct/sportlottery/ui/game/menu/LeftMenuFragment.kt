@@ -19,10 +19,13 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
 import org.cxct.sportlottery.network.sport.SportMenu
+import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.menu.ChangeAppearanceDialog
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeFullScreenDialog
@@ -115,6 +118,9 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
     private var snackBarMyFavoriteNotify: Snackbar? = null
     var specialList: MutableList<MenuItemData> = mutableListOf()
 
+    //簡訊驗證彈窗
+    private var customSecurityDialog: CustomSecurityDialog? = null
+
     override fun onItemClick(position: Int) {
         super.onItemClick(position)
         viewModel.navSpecialEntrance(
@@ -137,7 +143,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog?.window?.setWindowAnimations(R.style.LeftMenu)
-        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent);
+        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
         initObserve()
         initRecyclerView()
         initButton()
@@ -446,6 +452,63 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                     getString(R.string.prompt),
                     getString(R.string.message_withdraw_maintain)
                 ) {}
+            }
+        }
+
+        //TODO Bill 判斷使用者有沒有手機號碼
+        viewModel.needToSendTwoFactor.observe(this) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    context?.let { it ->
+                        customSecurityDialog = CustomSecurityDialog(it).apply {
+                            getSecurityCodeClickListener {
+                                this.showSmeTimer300()
+                                viewModel.sendTwoFactor()
+                            }
+                            positiveClickListener = CustomSecurityDialog.PositiveClickListener{ number ->
+                                viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
+                            }
+                        }
+                        customSecurityDialog?.show(parentFragmentManager,null)
+                    }
+                }
+            }
+        }
+
+        viewModel.errorMessageDialog.observe(viewLifecycleOwner){
+            val errorMsg = it ?: getString(R.string.unknown_error)
+            this.context?.let { context -> CustomAlertDialog(context) }?.apply {
+                setMessage(errorMsg)
+                setNegativeButtonText(null)
+                setCanceledOnTouchOutside(false)
+                setCancelable(false)
+            }?.show()
+            customSecurityDialog?.showErrorStatus(true)
+        }
+
+        viewModel.twoFactorSuccess.observe(viewLifecycleOwner) {
+            if (it == true)
+                customSecurityDialog?.dismiss()
+        }
+
+        viewModel.twoFactorResult.observe(viewLifecycleOwner) {
+            //傳送驗證碼成功後才能解鎖提交按鈕
+            customSecurityDialog?.setPositiveBtnClickable(it?.success ?: false)
+            sConfigData?.hasGetTwoFactorResult = true
+        }
+
+        //使用者沒有電話號碼
+        viewModel.showPhoneNumberMessageDialog.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if(!b){
+                    val errorMsg = getString(R.string.dialog_security_need_phone)
+                    this.context?.let { context -> CustomAlertDialog(context) }?.apply {
+                        setMessage(errorMsg)
+                        setNegativeButtonText(null)
+                        setCanceledOnTouchOutside(false)
+                        setCancelable(false)
+                    }?.show()
+                }
             }
         }
 

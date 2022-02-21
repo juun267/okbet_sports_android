@@ -58,6 +58,7 @@ class MultiLanguagesApplication : Application() {
     //private var userInfoData : UserInfo?= null
     private var _userInfo = MutableStateFlow<UserInfo?>(null)
     val userInfo = _userInfo.asStateFlow()
+    private var isNewsShowed = false
 
 
     private val viewModelModule = module {
@@ -71,7 +72,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { InfoCenterViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { HelpCenterViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { WithdrawViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { ProfileModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { ProfileModel(get(), get(), get(), get(), get(), get(), get(), get()) }
         viewModel { ModifyProfileInfoViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { SettingPasswordViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { FeedbackViewModel(get(), get(), get(), get(), get(), get(), get()) }
@@ -191,6 +192,14 @@ class MultiLanguagesApplication : Application() {
     }
     fun userInfo():UserInfo?{
         return _userInfo.value
+    }
+
+    fun isNewsShow():Boolean{
+        return isNewsShowed
+    }
+
+    fun setIsNewsShow(show:Boolean){
+        this.isNewsShowed = show
     }
     companion object {
         lateinit var appContext: Context

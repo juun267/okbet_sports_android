@@ -17,6 +17,7 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
@@ -142,7 +143,9 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
         }
 
         iv_language.setOnClickListener {
-            ChangeLanguageDialog().show(supportFragmentManager, null)
+            ChangeLanguageDialog(ChangeLanguageDialog.ClearBetListListener{
+                viewModel.betInfoRepository.clear()
+            }).show(supportFragmentManager, null)
         }
     }
 
@@ -219,6 +222,9 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
         viewModel.isLogin.observe(this) {
             getMsgDialog() //登入/登出刷新彈窗公告
             updateUiWithLogin(it)
+            //登入登出後要請求使用者是否需要認證手機驗證碼
+            if(it)
+                viewModel.getTwoFactorValidateStatus()
         }
 
         viewModel.isCreditAccount.observe(this) {
@@ -236,6 +242,21 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
         viewModel.promoteNoticeResult.observe(this) {
             it.getContentIfNotHandled()?.let { result ->
                 setNewsDialog(result)
+            }
+        }
+
+        //使用者沒有電話號碼
+        viewModel.showPhoneNumberMessageDialog.observe(this) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (!b) {
+                    val errorMsg = getString(R.string.dialog_security_need_phone)
+                    CustomAlertDialog(this).apply {
+                        setMessage(errorMsg)
+                        setNegativeButtonText(null)
+                        setCanceledOnTouchOutside(false)
+                        setCancelable(false)
+                    }.show()
+                }
             }
         }
     }

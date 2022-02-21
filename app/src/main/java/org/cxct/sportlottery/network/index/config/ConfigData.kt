@@ -89,15 +89,16 @@ data class ConfigData(
     val presetBetAmount: List<Int>?, //前台预设下注金额配置
     val systemCurrencySign: String?,
     val systemCurrency: String? = "PHP",
-    val customerFloating: String? = "0", //在线客服悬浮按钮开关 (1：开启，0：关闭 默认是null:关闭)
     val realNameWithdrawVerified: String? = null ,//提现实名制验证开关 (1：开启，0：关闭， 默认是null:关闭)
     val perBetMaxAmount: String?,
     val perBetMinAmount: String?,
-    val selfRestraintVerified: String?
-)
+    val selfRestraintVerified: String?,
+    val customerFloating: String? = "0" //在线客服悬浮按钮开关 (1：开启，0：关闭 默认是null:关闭)
+){
+    var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter
+    var hasGetTwoFactorResult: Boolean? = false //判斷是不是已經成功發送過簡訊認證碼 (關掉彈窗要重新設置為false)
+}
 
 enum class VerifySwitchType(val value: String) {
     OPEN("1"), CLOSE("0")
 }
-
-

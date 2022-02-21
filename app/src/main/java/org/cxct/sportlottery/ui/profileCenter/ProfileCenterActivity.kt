@@ -13,11 +13,14 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
+import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.ui.game.GameActivity
@@ -45,9 +48,12 @@ import org.cxct.sportlottery.util.ToastUtil
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
+import java.util.*
 
 class ProfileCenterActivity :
     BaseSocketActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
+    //簡訊驗證彈窗
+    private var customSecurityDialog: CustomSecurityDialog? = null
 
     private val mSelectMediaListener = object : OnResultCallbackListener<LocalMedia> {
         override fun onResult(result: MutableList<LocalMedia>?) {
@@ -408,6 +414,60 @@ class ProfileCenterActivity :
                     }
                 } else {
                     startActivity(Intent(this, WithdrawActivity::class.java))
+                }
+            }
+        }
+
+        viewModel.needToSendTwoFactor.observe(this) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    customSecurityDialog =  CustomSecurityDialog(this).apply {
+                        getSecurityCodeClickListener {
+                            this.showSmeTimer300()
+                            viewModel.sendTwoFactor()
+                        }
+                        positiveClickListener = CustomSecurityDialog.PositiveClickListener{ number ->
+                            viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
+                        }
+                    }
+                    customSecurityDialog?.show(supportFragmentManager,null)
+                }
+            }
+        }
+
+        viewModel.errorMessageDialog.observe(this){
+            val errorMsg = it ?: getString(R.string.unknown_error)
+            CustomAlertDialog(this).apply {
+                setMessage(errorMsg)
+                setNegativeButtonText(null)
+                setCanceledOnTouchOutside(false)
+                setCancelable(false)
+            }.show()
+            customSecurityDialog?.showErrorStatus(true)
+        }
+
+        viewModel.twoFactorSuccess.observe(this) {
+            if (it == true)
+                customSecurityDialog?.dismiss()
+        }
+
+        viewModel.twoFactorResult.observe(this) {
+            //傳送驗證碼成功後才能解鎖提交按鈕
+            customSecurityDialog?.setPositiveBtnClickable(it?.success ?: false)
+            sConfigData?.hasGetTwoFactorResult = true
+        }
+
+        //使用者沒有電話號碼
+        viewModel.showPhoneNumberMessageDialog.observe(this) {
+            it.getContentIfNotHandled()?.let { b ->
+                if(!b){
+                    val errorMsg = getString(R.string.dialog_security_need_phone)
+                    CustomAlertDialog(this).apply {
+                        setMessage(errorMsg)
+                        setNegativeButtonText(null)
+                        setCanceledOnTouchOutside(false)
+                        setCancelable(false)
+                    }.show()
                 }
             }
         }

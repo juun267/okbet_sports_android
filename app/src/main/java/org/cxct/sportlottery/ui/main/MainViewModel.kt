@@ -8,12 +8,14 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.common.BaseSecurityCodeResult
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.third_game.ThirdLoginResult
 import org.cxct.sportlottery.network.third_game.third_games.GameCategory
 import org.cxct.sportlottery.network.third_game.third_games.GameFirmValues
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
+import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.StatusSheetData
@@ -82,7 +84,26 @@ class MainViewModel(
         withdrawRepository.needToCompleteProfileInfo //提款頁面是否需要完善個人資料 true: 需要, false: 不需要
     val needToBindBankCard =
         withdrawRepository.needToBindBankCard //提款頁面是否需要新增銀行卡 -1 : 不需要新增, else : 以value作為string id 顯示彈窗提示
+    val needToSendTwoFactor =
+        withdrawRepository.showSecurityDialog //判斷是不是要進行手機驗證 true: 需要, false: 不需要
 
+    //發送簡訊碼之後60s無法再發送
+    val twoFactorResult: LiveData<BaseSecurityCodeResult?>
+        get() = _twoFactorResult
+    private val _twoFactorResult = MutableLiveData<BaseSecurityCodeResult?>()
+
+    //錯誤提示
+    val errorMessageDialog: LiveData<String?>
+        get() = _errorMessageDialog
+    private val _errorMessageDialog = MutableLiveData<String?>()
+
+    //認證成功
+    val twoFactorSuccess: LiveData<Boolean?>
+        get() = _twoFactorSuccess
+    private val _twoFactorSuccess = MutableLiveData<Boolean?>()
+
+    //需要完善個人資訊(缺電話號碼) needPhoneNumber
+    val showPhoneNumberMessageDialog = withdrawRepository.hasPhoneNumber
 
     //獲取系統公告及跑馬燈
     fun getAnnouncement() {
@@ -292,6 +313,44 @@ class MainViewModel(
                 OddsType.EU.code,
                 context.resources?.getString(R.string.odd_type_eu)
             )
+        }
+    }
+
+    //取得使用者是否需要手機驗證
+    fun getTwoFactorValidateStatus() {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.withdrawService.getTwoFactorStatus()
+            }
+            if (result?.success == false) { //代表需要驗證
+                withdrawRepository.checkUserPhoneNumber()//檢查有沒有手機號碼
+            }
+        }
+    }
+
+    //發送簡訊驗證碼
+    fun sendTwoFactor() {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.withdrawService.sendTwoFactor()
+            }
+            _twoFactorResult.postValue(result)
+        }
+    }
+
+    //双重验证校验
+    fun validateTwoFactor(validateTwoFactorRequest: ValidateTwoFactorRequest) {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.withdrawService.validateTwoFactor(validateTwoFactorRequest)
+            }?.let { result ->
+                if(result.success){
+                    _twoFactorSuccess.value = true
+                    withdrawRepository.sendTwoFactor()
+                }
+                else
+                    _errorMessageDialog.value = result.msg
+            }
         }
     }
 }

@@ -3,25 +3,27 @@ package org.cxct.sportlottery.ui.menu
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_menu.*
 import kotlinx.android.synthetic.main.fragment_menu.iv_head
-import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
-import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
@@ -45,6 +47,8 @@ import org.cxct.sportlottery.util.TextUtil
 @SuppressLint("SetTextI18n")
 class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     private var mDownMenuListener: View.OnClickListener? = null
+    //簡訊驗證彈窗
+    private var customSecurityDialog: CustomSecurityDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -142,6 +146,62 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                     getString(R.string.prompt),
                     getString(R.string.message_withdraw_maintain)
                 ) {}
+            }
+        }
+
+        viewModel.needToSendTwoFactor.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    context?.let { it ->
+                        customSecurityDialog =  CustomSecurityDialog(it).apply {
+                            getSecurityCodeClickListener {
+                                this.showSmeTimer300()
+                                viewModel.sendTwoFactor()
+                            }
+                            positiveClickListener = CustomSecurityDialog.PositiveClickListener{ number ->
+                                viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
+                            }
+                        }
+                        customSecurityDialog?.show(parentFragmentManager,null)
+                    }
+                }
+            }
+        }
+
+        viewModel.errorMessageDialog.observe(viewLifecycleOwner){
+            val errorMsg = it ?: getString(R.string.unknown_error)
+            this.context?.let { context -> CustomAlertDialog(context) }?.apply {
+                setMessage(errorMsg)
+                setNegativeButtonText(null)
+                setCanceledOnTouchOutside(false)
+                setCancelable(false)
+            }?.show()
+            customSecurityDialog?.showErrorStatus(true)
+        }
+
+        viewModel.twoFactorSuccess.observe(viewLifecycleOwner) {
+            if (it == true)
+                customSecurityDialog?.dismiss()
+        }
+
+        viewModel.twoFactorResult.observe(viewLifecycleOwner) {
+            //傳送驗證碼成功後才能解鎖提交按鈕
+            customSecurityDialog?.setPositiveBtnClickable(it?.success ?: false)
+            sConfigData?.hasGetTwoFactorResult = true
+        }
+
+        //使用者沒有電話號碼
+        viewModel.showPhoneNumberMessageDialog.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if(!b){
+                    val errorMsg = getString(R.string.dialog_security_need_phone)
+                    this.context?.let { context -> CustomAlertDialog(context) }?.apply {
+                        setMessage(errorMsg)
+                        setNegativeButtonText(null)
+                        setCanceledOnTouchOutside(false)
+                        setCancelable(false)
+                    }?.show()
+                }
             }
         }
 
@@ -337,48 +397,47 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
         //語系選擇
         menu_language.setOnClickListener {
-            context?.let {
-                showBottomSheetDialog("",
-                    viewModel.getLanguageStatusSheetList(it),
-                    viewModel.getLanguageStatusSheetList(it)
-                        .find { it.showName == LanguageManager.getLanguageStringResource(context) }
-                        ?: StatusSheetData(
-                            "0",
-                            context?.resources?.getString(R.string.language_cn)
-                        ),
-                    StatusSheetAdapter.ItemCheckedListener { _, data ->
-                        activity?.run {
-                            val select = when (data.showName) {
-                                context?.resources?.getString(R.string.language_cn) -> LanguageManager.Language.ZH
-                                context?.resources?.getString(R.string.language_vi) -> LanguageManager.Language.VI
-                                else -> LanguageManager.Language.EN
-                            }
-                            LanguageManager.saveSelectLanguage(this, select)
-                            if (sConfigData?.thirdOpen == FLAG_OPEN)
-                                MainActivity.reStart(this)
-                            else
-                                GameActivity.reStart(this)
-                        }
-                    })
-            }
-
+            val intent = Intent(context, SwitchLanguageActivity::class.java)
+            context?.startActivity(intent)
+            mDownMenuListener?.onClick(menu_language)
         }
 
         menu_odds_type.setOnClickListener {
-            context?.let {
-                showBottomSheetDialog("",
-                    viewModel.getOddTypeStatusSheetList(it),
-                    viewModel.getDeafaultOddTypeStatusSheetData(it),
-                    StatusSheetAdapter.ItemCheckedListener { _, data ->
-                        when (data.code) {
-                            OddsType.EU.code -> viewModel.saveOddsType(OddsType.EU)
-                            OddsType.HK.code -> viewModel.saveOddsType(OddsType.HK)
-                            OddsType.MYS.code -> viewModel.saveOddsType(OddsType.MYS)
-                            OddsType.IDN.code -> viewModel.saveOddsType(OddsType.IDN)
-                            else -> viewModel.saveOddsType(OddsType.EU)
-                        }
-                    })
+            menu_odds_type.showOddsTypeChose()
+            menu_odds_type.setOddsEU{
+                viewModel.saveOddsType(OddsType.EU)
+                menu_odds_type.showOddsTypeChose()
+                //mDownMenuListener?.onClick(menu_odds_type)
             }
+            menu_odds_type.setOddsHK{
+                viewModel.saveOddsType(OddsType.HK)
+                menu_odds_type.showOddsTypeChose()
+                //mDownMenuListener?.onClick(menu_odds_type)
+            }
+            menu_odds_type.setOddsMY{
+                viewModel.saveOddsType(OddsType.MYS)
+                menu_odds_type.showOddsTypeChose()
+                //mDownMenuListener?.onClick(menu_odds_type)
+            }
+            menu_odds_type.setOddsIDN{
+                viewModel.saveOddsType(OddsType.IDN)
+                menu_odds_type.showOddsTypeChose()
+                //mDownMenuListener?.onClick(menu_odds_type)
+            }
+//            context?.let {
+//                showBottomSheetDialog("",
+//                    viewModel.getOddTypeStatusSheetList(it),
+//                    viewModel.getDeafaultOddTypeStatusSheetData(it),
+//                    StatusSheetAdapter.ItemCheckedListener { _, data ->
+//                        when (data.code) {
+//                            OddsType.EU.code -> viewModel.saveOddsType(OddsType.EU)
+//                            OddsType.HK.code -> viewModel.saveOddsType(OddsType.HK)
+//                            OddsType.MYS.code -> viewModel.saveOddsType(OddsType.MYS)
+//                            OddsType.IDN.code -> viewModel.saveOddsType(OddsType.IDN)
+//                            else -> viewModel.saveOddsType(OddsType.EU)
+//                        }
+//                    })
+//            }
         }
     }
 

@@ -305,6 +305,11 @@ object Constants {
     const val UPLOAD_IMG = "/api/upload/image" //上传图片
     const val UPLOAD_VERIFY_PHOTO = "/api/front/user/uploadVerifyPhoto" //上傳實名制文件
 
+    //簡訊碼驗證
+    const val GET_TWO_FACTOR_STATUS = "/api/front/user/getTwoFactorValidateStatus" //取得双重验证状态(success: true 验证成功, false 需重新验证手机)
+    const val SEND_TWO_FACTOR = "/api/front/index/sendTwoFactor" //发送双重验证讯息
+    const val VALIDATE_TWO_FACTOR = "/api/front/index/validateTwoFactor" //双重验证校验
+
     //bank
     const val BANK_MY = "/api/front/user/bank/my"
     const val BANK_ADD = "/api/front/user/bank/add"

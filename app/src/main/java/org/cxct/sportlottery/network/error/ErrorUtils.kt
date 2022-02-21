@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.Constants.FEEDBACK_QUERYDETAIL
 import org.cxct.sportlottery.network.Constants.FEEDBACK_QUERYLIST
 import org.cxct.sportlottery.network.Constants.FEEDBACK_REPLY
 import org.cxct.sportlottery.network.Constants.FEEDBACK_SAVE
+import org.cxct.sportlottery.network.Constants.GET_TWO_FACTOR_STATUS
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_EXIST
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
@@ -44,6 +45,7 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_LEAGUE_LIST
 import org.cxct.sportlottery.network.Constants.QUERY_FIRST_ORDERS
 import org.cxct.sportlottery.network.Constants.QUERY_SECOND_ORDERS
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
+import org.cxct.sportlottery.network.Constants.SEND_TWO_FACTOR
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.network.Constants.SPORT_QUERY
 import org.cxct.sportlottery.network.Constants.THIRD_ALL_TRANSFER_OUT
@@ -68,6 +70,7 @@ import org.cxct.sportlottery.network.Constants.USER_RECHARGE_ONLINE_PAY
 import org.cxct.sportlottery.network.Constants.USER_UPDATE_FUND_PWD
 import org.cxct.sportlottery.network.Constants.USER_UPDATE_PWD
 import org.cxct.sportlottery.network.Constants.USER_WITHDRAW_INFO
+import org.cxct.sportlottery.network.Constants.VALIDATE_TWO_FACTOR
 import org.cxct.sportlottery.network.Constants.WITHDRAW_ADD
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bank.add.BankAddResult
@@ -78,6 +81,7 @@ import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.network.bet.settledDetailList.BetSettledDetailListResult
 import org.cxct.sportlottery.network.bet.settledList.BetSettledListResult
+import org.cxct.sportlottery.network.common.BaseSecurityCodeResult
 import org.cxct.sportlottery.network.feedback.FeedBackBaseResult
 import org.cxct.sportlottery.network.feedback.FeedbackListResult
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
@@ -337,6 +341,18 @@ object ErrorUtils {
                     (url.contains(BANK_ADD)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return BankAddResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(GET_TWO_FACTOR_STATUS)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return BaseSecurityCodeResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(SEND_TWO_FACTOR)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return BaseSecurityCodeResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(VALIDATE_TWO_FACTOR)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return BaseSecurityCodeResult(it.code, it.msg, it.success) as T
                     }
                     (url.contains(BANK_DELETE)) -> {
                         @Suppress("UNCHECKED_CAST")

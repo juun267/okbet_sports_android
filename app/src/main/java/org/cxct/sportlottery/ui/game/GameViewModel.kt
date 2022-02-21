@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -51,6 +52,7 @@ import org.cxct.sportlottery.network.sport.query.SportQueryData
 import org.cxct.sportlottery.network.sport.query.SportQueryRequest
 import org.cxct.sportlottery.network.today.MatchCategoryQueryRequest
 import org.cxct.sportlottery.network.today.MatchCategoryQueryResult
+import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.game.data.Date
@@ -201,6 +203,8 @@ class GameViewModel(
         withdrawRepository.needToCompleteProfileInfo //提款頁面是否需要完善個人資料 true: 需要, false: 不需要
     val needToBindBankCard =
         withdrawRepository.needToBindBankCard //提款頁面是否需要新增銀行卡 -1 : 不需要新增, else : 以value作為string id 顯示彈窗提示
+    val needToSendTwoFactor =
+        withdrawRepository.showSecurityDialog //判斷是不是要進行手機驗證 true: 需要, false: 不需要
 
     val showBetUpperLimit = betInfoRepository.showBetUpperLimit
 
@@ -284,6 +288,24 @@ class GameViewModel(
     private val _sportSortList = MutableLiveData<Event<List<SportMenu>>>()
     val sportSortList: LiveData<Event<List<SportMenu>>>
         get() = _sportSortList
+
+    //發送簡訊碼之後60s無法再發送
+    val twoFactorResult: LiveData<BaseSecurityCodeResult?>
+        get() = _twoFactorResult
+    private val _twoFactorResult = MutableLiveData<BaseSecurityCodeResult?>()
+
+    //錯誤提示
+    val errorMessageDialog: LiveData<String?>
+        get() = _errorMessageDialog
+    private val _errorMessageDialog = MutableLiveData<String?>()
+
+    //認證成功
+    val twoFactorSuccess: LiveData<Boolean?>
+        get() = _twoFactorSuccess
+    private val _twoFactorSuccess = MutableLiveData<Boolean?>()
+
+    //需要完善個人資訊(缺電話號碼) needPhoneNumber
+    val showPhoneNumberMessageDialog = withdrawRepository.hasPhoneNumber
 
     var sportQueryData: SportQueryData? = null
     var specialMenuData: SportQueryData? = null
@@ -820,45 +842,59 @@ class GameViewModel(
     private fun switchFirstSportType(matchType: MatchType) {
         when (matchType) {
             MatchType.IN_PLAY -> {
+                val gameTypeCode =
+                    if (sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items.isNullOrEmpty()) GameType.FT.key else sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.first()?.code.toString()
                 switchSportType(
                     matchType,
-                    sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.first()?.code.toString()
+                    gameTypeCode
                 )
             }
             MatchType.TODAY -> {
+                val gameTypeCode =
+                    if (sportMenuResult.value?.sportMenuData?.menu?.today?.items.isNullOrEmpty()) GameType.FT.key else sportMenuResult.value?.sportMenuData?.menu?.today?.items?.first()?.code.toString()
                 switchSportType(
                     matchType,
-                    sportMenuResult.value?.sportMenuData?.menu?.today?.items?.first()?.code.toString()
+                    gameTypeCode
                 )
             }
             MatchType.EARLY -> {
+                val gameTypeCode =
+                    if (sportMenuResult.value?.sportMenuData?.menu?.early?.items.isNullOrEmpty()) GameType.FT.key else sportMenuResult.value?.sportMenuData?.menu?.early?.items?.first()?.code.toString()
                 switchSportType(
                     matchType,
-                    sportMenuResult.value?.sportMenuData?.menu?.early?.items?.first()?.code.toString()
+                    gameTypeCode
                 )
             }
             MatchType.PARLAY -> {
+                val gameTypeCode =
+                    if (sportMenuResult.value?.sportMenuData?.menu?.parlay?.items.isNullOrEmpty()) GameType.FT.key else sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.first()?.code.toString()
                 switchSportType(
                     matchType,
-                    sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.first()?.code.toString()
+                    gameTypeCode
                 )
             }
             MatchType.OUTRIGHT -> {
+                val gameTypeCode =
+                    if (sportMenuResult.value?.sportMenuData?.menu?.outright?.items.isNullOrEmpty()) GameType.FT.key else sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.first()?.code.toString()
                 switchSportType(
                     matchType,
-                    sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.first()?.code.toString()
+                    gameTypeCode
                 )
             }
             MatchType.AT_START -> {
+                val gameTypeCode =
+                    if (sportMenuResult.value?.sportMenuData?.atStart?.items.isNullOrEmpty()) GameType.FT.key else sportMenuResult.value?.sportMenuData?.atStart?.items?.first()?.code.toString()
                 switchSportType(
                     matchType,
-                    sportMenuResult.value?.sportMenuData?.atStart?.items?.first()?.code.toString()
+                    gameTypeCode
                 )
             }
             MatchType.EPS -> {
+                val gameTypeCode =
+                    if (sportMenuResult.value?.sportMenuData?.menu?.eps?.items.isNullOrEmpty()) GameType.FT.key else sportMenuResult.value?.sportMenuData?.menu?.eps?.items?.first()?.code.toString()
                 switchSportType(
                     matchType,
-                    sportMenuResult.value?.sportMenuData?.menu?.eps?.items?.first()?.code.toString()
+                    gameTypeCode
                 )
             }
             else -> {
@@ -2224,4 +2260,42 @@ class GameViewModel(
         return loginRepository.isLogin.value ?: false
     }
 
+    //取得使用者是否需要手機驗證
+    fun getTwoFactorValidateStatus() {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.withdrawService.getTwoFactorStatus()
+            }
+            if (result?.success == false) { //代表需要驗證
+                withdrawRepository.checkUserPhoneNumber()//檢查有沒有手機號碼
+            }
+        }
+    }
+
+    //發送簡訊驗證碼
+    fun sendTwoFactor() {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.withdrawService.sendTwoFactor()
+            }
+            _twoFactorResult.postValue(result)
+        }
+    }
+
+    //双重验证校验
+    fun validateTwoFactor(validateTwoFactorRequest: ValidateTwoFactorRequest) {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.withdrawService.validateTwoFactor(validateTwoFactorRequest)
+            }?.let { result ->
+                if(result.success){
+                    _twoFactorSuccess.value = true
+                    withdrawRepository.sendTwoFactor()
+                }
+                else
+                    _errorMessageDialog.value = result.msg
+            }
+        }
+    }
+    
 }

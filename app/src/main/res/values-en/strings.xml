@@ -86,7 +86,7 @@
     <string name="error_telegram">Telegram account formatted incorrectly</string>
     <string name="real_name">Full name</string>
     <string name="hint_real_name">match the bank account name</string>
-    <string name="verification_code">Verify Code</string>
+    <string name="verification_code">Verification code</string>
     <string name="verification_code_by_sms">SMS verify code</string>
     <string name="hint_verification_code">Verify Code</string>
     <string name="error_verification_code">Verify code incorrectly</string>
@@ -96,6 +96,12 @@
     <string name="send_timer">Sent</string>
     <string name="get_valid_code_fail_point">Verification failed， please try again！</string>
     <string name="desc_agreement">I\'m of legal age and totally agree</string>
+    <string name="get_security_code">Send code</string>
+    <string name="dialog_security_hint">Welcome back to game. Please complete verification for account security.</string>
+    <string name="dialog_security_title">Enter the verification code.</string>
+    <string name="dialog_security_error">You have entered a wrong verification code.</string>
+    <string name="hint_security_code">Please enter the verification code.</string>
+    <string name="dialog_security_need_phone">Your personal information is not complete, please contact customer service.</string>
     <string name="btn_agreement">Account Opening Agreement</string>
     <string name="have_account">Already have an account？</string>
     <string name="btn_login">Login</string>
@@ -233,6 +239,7 @@
     <string name="america_football">American football</string>
     <string name="motor_racing">Auto racing</string>
     <string name="golf">Golf</string>
+    <string name="financial_bets">Financial Bets</string>
     <string name="section">Period</string>
     <string name="total_score_over_time">Total score \n includes overtime</string>
     <string name="plat">Set</string>
@@ -498,7 +505,7 @@
     <string name="withdraw_number">Withdraw</string>
     <string name="now_balance">Current balance</string>
     <string name="withdraw">Withdraw</string>
-    <string name="submit">SUBMIT</string>
+    <string name="submit">Submit</string>
     <string name="select_crypto_card">Select address</string>
     <string name="selected_bank_card">%1$s (end no.%2$s)</string>
     <string name="error_withdraw_amount_bank">Incorrect withdrawal amount format or value</string>
@@ -981,4 +988,5 @@
     <string name="self_limit_froze_impotent_5">During the self-exclusion period, you can contact customer service to cancel the self-exclusion function.</string>
     <string name="self_limit_froze_impotent_6">After the self-exclusion expires, your account will be automatically reactivated.</string>
     <string name="self_limit_bet_impotent">You can modify your limit bet at any time. The modification will be active, after that sending the request.</string>
+    <string name="text_chose_language">Select your language</string>
 </resources>

@@ -14,14 +14,18 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.index.config.VerifySwitchType
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
+import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
@@ -34,9 +38,17 @@ import java.io.FileNotFoundException
 
 class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
+    //簡訊驗證彈窗
+    private var customSecurityDialog: CustomSecurityDialog? = null
+
     enum class VerifiedType(val value: Int) {
         NOT_YET(0), PASSED(1), VERIFYING(2), VERIFIED_FAILED(3)
     }
+
+    enum class SecurityCodeEnterType(val value: Int) {
+        REALNAME(0), PW(1)
+    }
+    var securityCodeEnter = SecurityCodeEnterType.REALNAME
 
     private val mSelectMediaListener = object : OnResultCallbackListener<LocalMedia> {
         override fun onResult(result: MutableList<LocalMedia>?) {
@@ -114,17 +126,16 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
     private fun setupToInfoSettingPage() {
         //真實姓名
-        ll_real_name.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.RealName) }
+        ll_real_name.setOnClickListener {
+            securityCodeEnter = SecurityCodeEnterType.REALNAME
+            putExtraForProfileInfoActivity(ModifyType.RealName)
+        }
         //暱稱
         btn_nickname.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.NickName) }
         //密碼設置
         btn_pwd_setting.setOnClickListener {
-            startActivity(
-                Intent(
-                    this@ProfileActivity,
-                    SettingPasswordActivity::class.java
-                )
-            )
+            securityCodeEnter = SecurityCodeEnterType.PW
+            viewModel.checkNeedToShowSecurityDialog()//檢查有需不需要簡訊認證
         }
         //QQ號碼
         ll_qq_number.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.QQNumber) }
@@ -218,6 +229,95 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             }
 
             it?.let { setWithdrawInfo(it) }
+        }
+
+        //是否顯示簡訊驗證彈窗
+        viewModel.showSecurityDialog.observe(this) {
+            val hasPhoneNumber = MultiLanguagesApplication.getInstance()?.userInfo()?.phone?.isNotEmpty()
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    customSecurityDialog = CustomSecurityDialog(this).apply {
+                        getSecurityCodeClickListener {
+                            this.showSmeTimer300()
+                            viewModel.sendTwoFactor()
+                        }
+                        positiveClickListener =
+                            CustomSecurityDialog.PositiveClickListener { number ->
+                                viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
+                            }
+                    }
+                    customSecurityDialog?.show(supportFragmentManager, null)
+                } else if (hasPhoneNumber == true && !b) { //有手機號碼又不用驗證的狀態下
+                    when (securityCodeEnter) {
+                        SecurityCodeEnterType.REALNAME -> {
+                            putExtraForProfileInfoActivity(ModifyType.RealName)
+                        }
+                        SecurityCodeEnterType.PW -> {
+                            startActivity(
+                                Intent(
+                                    this@ProfileActivity,
+                                    SettingPasswordActivity::class.java
+                                )
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        //簡訊驗證失敗
+        viewModel.errorMessageDialog.observe(this){
+            val errorMsg = it ?: getString(R.string.unknown_error)
+            CustomAlertDialog(this).apply {
+                setMessage(errorMsg)
+                setNegativeButtonText(null)
+                setCanceledOnTouchOutside(false)
+                setCancelable(false)
+            }.show()
+            customSecurityDialog?.showErrorStatus(true)
+        }
+
+        //簡訊驗證成功
+        viewModel.twoFactorSuccess.observe(this) {
+            if (it == true) {
+                customSecurityDialog?.dismiss()
+
+                when (securityCodeEnter) {
+                    SecurityCodeEnterType.REALNAME -> {
+                        putExtraForProfileInfoActivity(ModifyType.RealName)
+                    }
+                    SecurityCodeEnterType.PW -> {
+                        startActivity(
+                            Intent(
+                                this@ProfileActivity,
+                                SettingPasswordActivity::class.java
+                            )
+                        )
+                    }
+                }
+            }
+        }
+
+        //確認收到簡訊驗證碼
+        viewModel.twoFactorResult.observe(this){
+            //傳送驗證碼成功後才能解鎖提交按鈕
+            customSecurityDialog?.setPositiveBtnClickable(it?.success ?: false)
+            sConfigData?.hasGetTwoFactorResult = true
+        }
+
+        //使用者沒有電話號碼
+        viewModel.showPhoneNumberMessageDialog.observe(this) {
+            it.getContentIfNotHandled()?.let { b ->
+                if(!b){
+                    val errorMsg = getString(R.string.dialog_security_need_phone)
+                    CustomAlertDialog(this).apply {
+                        setMessage(errorMsg)
+                        setNegativeButtonText(null)
+                        setCanceledOnTouchOutside(false)
+                        setCancelable(false)
+                    }.show()
+                }
+            }
         }
     }
 
