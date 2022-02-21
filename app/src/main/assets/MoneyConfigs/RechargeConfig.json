@@ -211,6 +211,17 @@
   },
   {
     "titleNameMap": {
+      "zh": "Paypal",
+      "en": "Paypal",
+      "vi": "Paypal"
+    },
+    "subtitle": "Paypal",
+    "image": "ic_paypal",
+    "rechType": "onlinePayment",
+    "onlineType": "210"
+  },
+  {
+    "titleNameMap": {
       "zh": "Gcash",
       "en": "Gcash",
       "vi": "Gcash"
