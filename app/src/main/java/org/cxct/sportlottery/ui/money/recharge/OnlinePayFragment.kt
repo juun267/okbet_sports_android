@@ -125,12 +125,13 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             OnlineType.WY.type  -> R.drawable.ic_online_pay_type
             OnlineType.ZFB.type  -> R.drawable.ic_alipay_type
             OnlineType.WX.type -> R.drawable.ic_wechat_pay_type
-            OnlineType.JUAN.type -> R.drawable.ic_juancash
-            OnlineType.DISPENSHIN.type -> R.drawable.ic_juancash
-            OnlineType.ONLINEBANK.type -> R.drawable.ic_juancash
-            OnlineType.GCASH.type -> R.drawable.ic_grab_pay_type
+            OnlineType.JUAN.type -> R.drawable.ic_juancash_type
+            OnlineType.DISPENSHIN.type -> R.drawable.ic_juancash_type
+            OnlineType.ONLINEBANK.type -> R.drawable.ic_juancash_type
+            OnlineType.GCASH.type -> R.drawable.ic_g_cash_type
             OnlineType.GRABPAY.type -> R.drawable.ic_grab_pay_type
             OnlineType.PAYMAYA.type -> R.drawable.ic_pay_maya_type
+            OnlineType.PAYPAL.type -> R.drawable.ic_paypal_type
             else -> R.drawable.ic_online_pay_type
         }
         return this

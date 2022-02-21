@@ -561,6 +561,7 @@ class MoneyRechViewModel(
             OnlineType.GCASH.type -> androidContext.resources.getString(R.string.online_gcash)
             OnlineType.GRABPAY.type -> androidContext.resources.getString(R.string.online_grab)
             OnlineType.PAYMAYA.type -> androidContext.resources.getString(R.string.online_maya)
+            OnlineType.PAYPAL.type -> androidContext.resources.getString(R.string.online_paypal)
             else -> ""
         }
     }
@@ -585,6 +586,9 @@ class MoneyRechViewModel(
             )
             org.cxct.sportlottery.network.common.RechType.PAYMAYA.code -> androidContext.resources.getString(
                 R.string.online_maya
+            )
+            org.cxct.sportlottery.network.common.RechType.PAYPAL.code -> androidContext.resources.getString(//TODO Bill 等後端補上Paypal
+                R.string.online_paypal
             )
             else -> ""
         }
