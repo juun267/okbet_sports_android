@@ -23,17 +23,13 @@ class WithdrawCommissionDetailActivity :
         setContentView(R.layout.activity_withdraw_commission_detail)
 
         initView()
-        initObserve()
         setupBackButton()
+        initObserve()
         setupData()
     }
 
     private fun initView() {
         tv_time.text = TimeUtil.dateToFormat(Date())
-
-        btn_back.setOnClickListener {
-            finish()
-        }
 
         rv_detail.apply {
             adapter = commissionDetailAdapter
@@ -48,7 +44,7 @@ class WithdrawCommissionDetailActivity :
     }
 
     private fun setupBackButton() {
-        btn_back.setOnClickListener {
+        custom_tool_bar.setOnBackPressListener {
             finish()
         }
     }

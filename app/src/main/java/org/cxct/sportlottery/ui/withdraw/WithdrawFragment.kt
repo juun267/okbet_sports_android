@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.withdraw
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,14 +11,15 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.content_common_bottom_sheet_item.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_bank_card.*
 import kotlinx.android.synthetic.main.fragment_withdraw.*
 import kotlinx.android.synthetic.main.fragment_withdraw.et_withdrawal_password
-import kotlinx.android.synthetic.main.fragment_withdraw.tab_bank_card
-import kotlinx.android.synthetic.main.fragment_withdraw.tab_crypto
+import kotlinx.android.synthetic.main.fragment_withdraw.ll_tab_layout
+import kotlinx.android.synthetic.main.fragment_withdraw.tab_layout
 import kotlinx.android.synthetic.main.fragment_withdraw.view.*
 import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
 import org.cxct.sportlottery.R
@@ -71,7 +71,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             clearIsShow = false
             getAllIsShow = true
         }
-        block_tab.visibility = View.GONE // 預設先隱藏 等待卡片資料讀取完畢後再顯示
+        ll_tab_layout.visibility = View.GONE // 預設先隱藏 等待卡片資料讀取完畢後再顯示
 
         btn_info.setOnClickListener {
             context?.let { context -> CommissionInfoDialog(context).show() }
@@ -137,26 +137,52 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     }
 
     private fun setupClickEvent() {
-        tab_bank_card.setOnClickListener {
-            if (!it.isSelected) {
-                selectDealType(TransferType.BANK)
-                clearEvent()
-            }
-        }
 
-        tab_crypto.setOnClickListener {
-            if (!it.isSelected) {
-                selectDealType(TransferType.CRYPTO)
-                clearEvent()
+        tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when (tab?.position) {
+                    0 -> {
+                        selectDealType(TransferType.BANK)
+                        clearEvent()
+                    }
+                    1 -> {
+                        selectDealType(TransferType.CRYPTO)
+                        clearEvent()
+                    }
+                    2 -> {
+                        selectDealType(TransferType.E_WALLET)
+                        clearEvent()
+                    }
+                }
             }
-        }
 
-        tab_wallet.setOnClickListener {
-            if (!it.isSelected) {
-                selectDealType(TransferType.E_WALLET)
-                clearEvent()
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
             }
-        }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+        })
+
+//            tab_bank_card.setOnClickListener {
+//            if (!it.isSelected) {
+//                selectDealType(TransferType.BANK)
+//                clearEvent()
+//            }
+//        }
+//
+//        tab_crypto.setOnClickListener {
+//            if (!it.isSelected) {
+//                selectDealType(TransferType.CRYPTO)
+//                clearEvent()
+//            }
+//        }
+//
+//        tab_wallet.setOnClickListener {
+//            if (!it.isSelected) {
+//                selectDealType(TransferType.E_WALLET)
+//                clearEvent()
+//            }
+//        }
 
         ll_select_bank.setOnClickListener {
             bankCardBottomSheet.show()
@@ -269,15 +295,18 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
             when {
                 bankCardExist == true -> {
-                    tab_bank_card.isChecked = true
+//                    tab_bank_card.isChecked = true
+                    tab_layout.getTabAt(0)?.select()
                     viewModel.setDealType(TransferType.BANK)
                 }
                 cryptoCardExist == true -> {
-                    tab_crypto.isChecked = true
+//                    tab_crypto.isChecked = true
+                    tab_layout.getTabAt(1)?.select()
                     viewModel.setDealType(TransferType.CRYPTO)
                 }
                 eWalletCardExist == true -> {
-                    tab_e_wallet.isChecked = true
+//                    tab_e_wallet.isChecked = true
+                    tab_layout.getTabAt(2)?.select()
                     viewModel.setDealType(TransferType.E_WALLET)
                 }
                 else -> {
@@ -289,19 +318,19 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         viewModel.withdrawSystemOperation.observe(this.viewLifecycleOwner, Observer { list ->
 
             if (list.isNullOrEmpty() || list.size == 1) {
-                block_tab.visibility = View.GONE
+                tab_layout.visibility = View.GONE
             } else {
-                block_tab.visibility = View.VISIBLE
+                tab_layout.visibility = View.VISIBLE
 
-                tab_bank_card.visibility =
-                    if (list.contains(TransferType.BANK.type)) View.VISIBLE else View.GONE
-                tab_crypto.visibility =
-                    if (list.contains(TransferType.CRYPTO.type)) View.VISIBLE else View.GONE
-                tab_wallet.visibility =
-                    if (list.contains(TransferType.E_WALLET.type)) View.VISIBLE else View.GONE
-
-                view_crypto.visibility = tab_crypto.visibility
-                view_wallet.visibility = tab_wallet.visibility
+                tab_layout.getChildAt(0)?.visibility =  if (list.contains(TransferType.BANK.type)) View.VISIBLE else View.GONE
+                tab_layout.getChildAt(1)?.visibility =  if (list.contains(TransferType.CRYPTO.type)) View.VISIBLE else View.GONE
+                tab_layout.getChildAt(2)?.visibility = if (list.contains(TransferType.E_WALLET.type)) View.VISIBLE else View.GONE
+//                tab_bank_card.visibility =
+//                    if (list.contains(TransferType.BANK.type)) View.VISIBLE else View.GONE
+//                tab_crypto.visibility =
+//                    if (list.contains(TransferType.CRYPTO.type)) View.VISIBLE else View.GONE
+//                tab_wallet.visibility =
+//                    if (list.contains(TransferType.E_WALLET.type)) View.VISIBLE else View.GONE
 
 //                when(list.first()){
 //                    TransferType.CRYPTO.type -> tab_crypto.performClick()

@@ -101,6 +101,10 @@
         <attr name="secondTabText" format="string" />
     </declare-styleable>
 
+    <declare-styleable name="CustomTopToolbar">
+        <attr name="topTitleText" format="string" />
+    </declare-styleable>
+
     <declare-styleable name="OddsBetButton">
         <attr name="status" format="enum">
             <enum name="visible" value="0" />

@@ -21,46 +21,48 @@ class FeedbackMainActivity : BaseSocketActivity<FeedbackViewModel>(FeedbackViewM
 
     private fun initButton() {
         val navController = findNavController(R.id.myNavHostFragment)
-        btn_sugession.setOnClickListener {
-            when (navController.currentDestination?.id) {
-                R.id.feedbackRecordListFragment -> {
-                    navController.navigate(R.id.action_feedbackRecordListFragment_to_feedbackSuggestFragment)
+        custom_tab_layout.setCustomTabSelectedListener { position ->
+            when(position) {
+                0 -> {
+                    when (navController.currentDestination?.id) {
+                        R.id.feedbackRecordListFragment -> {
+                            navController.navigate(R.id.action_feedbackRecordListFragment_to_feedbackSuggestFragment)
+                        }
+                    }
+                }
+                1 -> {
+                    when (navController.currentDestination?.id) {
+                        R.id.feedbackSuggestFragment -> {
+                            navController.navigate(R.id.action_feedbackSuggestFragment_to_feedbackRecordListFragment)
+                        }
+                        R.id.feedbackSubmitFragment -> {
+                            navController.navigate(R.id.action_feedbackSubmitFragment_to_feedbackRecordListFragment)
+                        }
+                    }
                 }
             }
-        }
-        btn_record.setOnClickListener {
-            when (navController.currentDestination?.id) {
-                R.id.feedbackSuggestFragment -> {
-                    navController.navigate(R.id.action_feedbackSuggestFragment_to_feedbackRecordListFragment)
-                }
-                R.id.feedbackSubmitFragment -> {
-                    navController.navigate(R.id.action_feedbackSubmitFragment_to_feedbackRecordListFragment)
-                }
-            }
-
         }
     }
 
     private fun initToolbar() {
-        tv_toolbar_title.text = getString(R.string.feedback)
-        btn_toolbar_back.setOnClickListener {
+        custom_tool_bar.setOnBackPressListener {
             onBackPressed()
         }
     }
 
     private fun initLiveData() {
-        viewModel.isLoading.observe(this,  {
+        viewModel.isLoading.observe(this) {
             if (it) loading()
             else hideLoading()
-        })
+        }
 
-        viewModel.isShowToolbar.observe(this, {
-            ll_tab.visibility = it
-        })
+        viewModel.isShowToolbar.observe(this) {
+            custom_tab_layout.visibility = it
+        }
 
-        viewModel.toolbarName.observe(this, {
+        viewModel.toolbarName.observe(this) {
             tv_toolbar_title.text = it
-        })
+        }
     }
 
 }

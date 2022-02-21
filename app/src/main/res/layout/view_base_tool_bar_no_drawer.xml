@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorEEEFF0"
+    tools:context="org.cxct.sportlottery.ui.common.CustomTopToolbar"
     android:orientation="horizontal">
 
     <TextView
