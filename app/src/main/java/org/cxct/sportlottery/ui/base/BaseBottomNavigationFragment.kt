@@ -6,6 +6,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.menu.ChangeLanguageDialog
 import org.cxct.sportlottery.util.JumpUtil
@@ -68,15 +69,13 @@ abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KCla
 
         //語言切換
         img_flag.setOnClickListener {
-            ChangeLanguageDialog(ChangeLanguageDialog.ClearBetListListener{
-                viewModel.betInfoRepository.clear()
-            }).show(parentFragmentManager, null)
+            (activity as GameActivity).showSwitchLanguageFragment()
+            //ChangeLanguageDialog().show(parentFragmentManager, null)
         }
 
         txv_language.setOnClickListener {
-            ChangeLanguageDialog(ChangeLanguageDialog.ClearBetListListener{
-                viewModel.betInfoRepository.clear()
-            }).show(parentFragmentManager, null)
+            (activity as GameActivity).showSwitchLanguageFragment()
+            //ChangeLanguageDialog().show(parentFragmentManager, null)
         }
 
         //隱私權條款
