@@ -439,6 +439,7 @@
     <string name="gcash_recharge_hint">请每次入款前登录会员核对Gcash账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
     <string name="grabpay_recharge_hint">请每次入款前登录会员核对GrabPay账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
     <string name="paymaya_recharge_hint">请每次入款前登录会员核对PayMaya账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
+    <string name="paypal_recharge_hint">请每次入款前登录会员核对Paypal账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
     <string name="title_pay_channel">支付渠道</string>
     <string name="title_choose_pay_channel">选择支付渠道</string>
     <string name="title_pay_gap">支付账户</string>
