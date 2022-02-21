@@ -307,9 +307,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             ) {
                 currentOddsType = OddsType.EU
             }
-            getWinnable(it.betAmount, getOddsNew(it.matchOdd, currentOddsType), currentOddsType) }
-        //[Martin]串關全部用EU盤口去算 因此指定EU
-        + parlayList.sumByDouble { getWinnable(it.betAmount, getOdds(it, OddsType.EU), OddsType.EU) }
+            getWinnable(it.betAmount, getOddsNew(it.matchOdd, currentOddsType), currentOddsType)
+        } + parlayList.sumByDouble { getComboWinnable(it.betAmount, getOdds(it, OddsType.EU), it.num) }
 
         binding.apply {
             tvAllBetCount.text = betCount.toString()
@@ -323,11 +322,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun getWinnable(betAmount: Double, odds: Double, oddsType: OddsType): Double {
-//        var winnable = betAmount * odds
-//        if (oddsType == OddsType.EU) {
-//            winnable -= betAmount
-//        }
-
         var winnable = 0.0
         when (oddsType) {
             OddsType.MYS -> {
@@ -354,6 +348,15 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         return winnable
     }
+
+    private fun getComboWinnable(betAmount: Double, odds: Double, num: Int): Double {
+        var winnable = 0.0
+        winnable = betAmount * odds
+        winnable -= (betAmount * num)
+
+        return winnable
+    }
+
 
     private fun setupBtnBetAmount(totalBetAmount: Double?) {
         try {
