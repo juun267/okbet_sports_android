@@ -345,7 +345,6 @@ class MainViewModel(
                 OneBoSportApi.withdrawService.validateTwoFactor(validateTwoFactorRequest)
             }?.let { result ->
                 if(result.success){
-                    sConfigData?.hasCertified = true
                     _twoFactorSuccess.value = true
                     withdrawRepository.sendTwoFactor()
                 }
