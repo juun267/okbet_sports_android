@@ -95,7 +95,6 @@ data class ConfigData(
     val selfRestraintVerified: String?,
     val customerFloating: String? = "0" //在线客服悬浮按钮开关 (1：开启，0：关闭 默认是null:关闭)
 ){
-    var hasCertified: Boolean? = false // 取得双重验证状态 (success: true 验证成功, false 需重新验证手机)
     var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter
     var hasGetTwoFactorResult: Boolean? = false //判斷是不是已經成功發送過簡訊認證碼 (關掉彈窗要重新設置為false)
 }
