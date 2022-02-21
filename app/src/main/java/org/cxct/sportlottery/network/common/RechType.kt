@@ -10,4 +10,5 @@ enum class RechType(val code: String) {
     GCASH("gcash"),
     GRABPAY("grabPay"),
     PAYMAYA("payMaya"),
+    PAYPAL("paypal")
 }

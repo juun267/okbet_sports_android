@@ -14,6 +14,7 @@ enum class MoneyType(val code: String) {
     GCASH_TYPE("gcash"),
     GRABPAY_TYPE("grabPay"),
     PAYMAYA_TYPE("payMaya"),
+    PAYPAL_TYPE("paypal"),
     ONLINE_TYPE("ic_online_pay"),
     CRYPTO_TYPE("cryptoPay"),
     JUAN_ONLINE_TYPE("ic_juancash"), // 菲律賓在線網銀 JuanCash
@@ -22,4 +23,5 @@ enum class MoneyType(val code: String) {
     GCASH("ic_g_cash"),//204:Gcash
     GRABPAY("ic_grab_pay"),//205:GrabPay
     PAYMAYA("ic_pay_maya"),//206:PayMaya
+    PAYPAL("ic_paypal"),//210 Paypal okBet要用
 }
