@@ -2,18 +2,19 @@ package org.cxct.sportlottery.ui.game.language
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivitySwitchLanguageBinding
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.util.*
 
 
-class SwitchLanguageActivity : AppCompatActivity(),View.OnClickListener{
+class SwitchLanguageActivity : BaseActivity<LoginViewModel>(LoginViewModel::class), View.OnClickListener {
 
     private lateinit var binding: ActivitySwitchLanguageBinding
 
@@ -23,12 +24,15 @@ class SwitchLanguageActivity : AppCompatActivity(),View.OnClickListener{
                 onBackPressed()
             }
             binding.llChina -> {
+                viewModel.betInfoRepository.clear()
                 selectLanguage(LanguageManager.Language.ZH)
             }
             binding.llEnglish -> {
+                viewModel.betInfoRepository.clear()
                 selectLanguage(LanguageManager.Language.EN)
             }
             binding.llVietnam -> {
+                viewModel.betInfoRepository.clear()
                 selectLanguage(LanguageManager.Language.VI)
             }
             binding.ivLogo ->{
