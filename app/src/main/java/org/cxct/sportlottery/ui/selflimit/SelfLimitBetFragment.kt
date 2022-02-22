@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.selflimit
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,6 +14,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.util.TextUtil
 
+@SuppressLint("SetTextI18n")
 class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel::class),
     View.OnClickListener {
 
@@ -55,7 +57,7 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         viewModel.showToolbar(true)
         viewModel.setToolbarName(getString(R.string.self_limit))
         binding = FragmentSelfLimitBetBinding.inflate(inflater, container, false)
@@ -81,7 +83,12 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
     }
 
     private fun initEditText() {
-        binding.etMount.addTextChangedListener(textWatch)
+        binding.etMount.apply {
+            addTextChangedListener(textWatch)
+            onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+                binding.llSelfLimit.isSelected = hasFocus
+            }
+        }
     }
 
     private fun initView() {
@@ -109,10 +116,10 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
     private fun initObserve() {
         viewModel.isBetEditTextError.observe(this.viewLifecycleOwner) { showError ->
             if (showError) {
-                binding.llSelfLimit.isSelected = true
+                binding.llSelfLimit.isActivated = true
                 binding.tvError.visibility = View.VISIBLE
             } else {
-                binding.llSelfLimit.isSelected = false
+                binding.llSelfLimit.isActivated = false
                 binding.tvError.visibility = View.GONE
             }
 
@@ -126,10 +133,10 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
             setMessage(getString(R.string.self_limit_fix_confirm_content))
             setPositiveButtonText(getString(R.string.btn_confirm))
             setNegativeButtonText(getString(R.string.btn_cancel))
-            setPositiveClickListener(View.OnClickListener {
+            setPositiveClickListener {
                 viewModel.setPerBetLimit(binding.etMount.text.toString().toInt())
                 dismiss()
-            })
+            }
             setNegativeClickListener {
                 dismiss()
             }
@@ -148,11 +155,12 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
                     setNegativeButtonText(null)
                     setPositiveButtonText(getString(R.string.btn_confirm))
                     setCancelable(false)
-                    setPositiveClickListener(View.OnClickListener { updateBetLimit(binding.etMount.text.toString())
+                    setPositiveClickListener {
+                        updateBetLimit(binding.etMount.text.toString())
                         resetView()
                         viewModel.getUserInfo()
                         dismiss()
-                    })
+                    }
                 }
                 dialog.show()
             }
@@ -160,7 +168,8 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
         })
 
         viewModel.userInfoResult.observe(viewLifecycleOwner, {
-            binding.tvPerBetLimit.text =  String.format(getString(R.string.self_limit_per_bet_limit_user), TextUtil.formatMoney(viewModel.userInfo.value?.perBetLimit!!)+ sConfigData?.systemCurrency)
+            binding.tvPerBetLimit.text =
+                String.format(getString(R.string.self_limit_per_bet_limit_user), TextUtil.formatMoney(viewModel.userInfo.value?.perBetLimit!!) + sConfigData?.systemCurrency)
         })
 
     }

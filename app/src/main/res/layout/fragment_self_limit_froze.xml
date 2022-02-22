@@ -86,11 +86,11 @@
         app:cardElevation="0dp">
 
         <LinearLayout
-            android:id="@+id/llSelfLimit"
+            android:id="@+id/llSelfFrozeLimit"
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_40"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/selector_selflimit_radius_4"
+            android:background="@drawable/effect_edittext_bg"
             android:orientation="horizontal">
 
             <TextView

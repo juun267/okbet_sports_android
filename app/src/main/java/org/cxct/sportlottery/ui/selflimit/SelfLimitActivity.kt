@@ -14,7 +14,6 @@ import org.cxct.sportlottery.ui.base.BaseSocketActivity
 class SelfLimitActivity : BaseSocketActivity<SelfLimitViewModel>(SelfLimitViewModel::class) {
 
     private lateinit var binding: ActivitySelfLimitBinding
-    private lateinit var adapter: ViewPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,10 +33,12 @@ class SelfLimitActivity : BaseSocketActivity<SelfLimitViewModel>(SelfLimitViewMo
     }
 
     private fun initView() {
-        adapter = ViewPagerAdapter(supportFragmentManager)
-        adapter.addFragment(SelfLimitFrozeFragment())
-        adapter.addFragment(SelfLimitBetFragment())
-        binding.vpSelfLimit.adapter = adapter
+        binding.vpSelfLimit.apply {
+            adapter = ViewPagerAdapter(supportFragmentManager).apply {
+                addFragment(SelfLimitFrozeFragment())
+                addFragment(SelfLimitBetFragment())
+            }
+        }
         binding.customTabLayout.tab_layout_custom.setupWithViewPager(binding.vpSelfLimit)
     }
 
