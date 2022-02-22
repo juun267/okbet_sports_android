@@ -49,5 +49,8 @@ data class Row (
     @Json(name = "winnable")
     val winnable: Double?,
     @Json(name = "rtScore")
-    val rtScore: String?
-)
+    val rtScore: String?,
+    @Json(name = "parlayComsDetailVOs")
+    val parlayComsDetailVOs: List<ParlayComsDetailVO>? = emptyList()
+
+    )

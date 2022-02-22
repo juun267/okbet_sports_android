@@ -993,4 +993,7 @@
     <string name="password_hint"><font size="12">(your login password)</font></string>
     <string name="account_hint"><font size="12">(your member account)</font></string>
     <string name="submit_success">submitted successfully</string>
+    <!-- 複式串關詳情 -->
+    <string name="text_combo_title">Parlay</string>
+    <string name="text_combo_item">item</string>
 </resources>
