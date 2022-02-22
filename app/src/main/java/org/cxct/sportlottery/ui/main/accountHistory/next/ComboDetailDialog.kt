@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.dialog_combo_detail.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.settledDetailList.MatchOddsVO
 import org.cxct.sportlottery.network.bet.settledDetailList.ParlayComsDetailVO
+import org.cxct.sportlottery.util.ArithUtil
 
 class ComboDetailDialog internal constructor(
     private val mContext: Context,
@@ -61,10 +62,10 @@ class ComboDetailDialog internal constructor(
 
                 if(t.status == 0){
                     tvResult.setTextColor(ContextCompat.getColor(mContext,R.color.colorRed))
-                    tvResult.text = mContext.getString(R.string.lose_all)+t.winMoney
+                    tvResult.text = mContext.getString(R.string.lose_all)+ ArithUtil.toMoneyFormat(t.winMoney)
                 }else if(t.status == 1){
                     tvResult.setTextColor(ContextCompat.getColor(mContext,R.color.colorGreenSea))
-                    tvResult.text = mContext.getString(R.string.win_all)+t.winMoney
+                    tvResult.text = mContext.getString(R.string.win_all)+ArithUtil.toMoneyFormat(t.winMoney)
                 }else{
                     tvResult.setTextColor(ContextCompat.getColor(mContext,R.color.colorGreenSea))
                     tvResult.text = mContext.getString(R.string.draw)
