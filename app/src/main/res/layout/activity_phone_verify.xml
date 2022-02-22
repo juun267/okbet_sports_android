@@ -101,6 +101,7 @@
                         android:layout_height="wrap_content"
                         android:imeOptions="actionNext"
                         android:inputType="number"
+                        android:hint="@string/hint_security_code"
                         android:maxLines="1"
                         android:textSize="@dimen/textSize14sp" />
 
