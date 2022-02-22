@@ -8,14 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
-import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_verify_identity_detail_new.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.credential.EkycResultType
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 
@@ -116,8 +113,14 @@ class VerifyIdentityDetailFragment :
 
         btn_submit.setOnClickListener {
             viewModel.getUserInfo()
-            activity?.finish()
-            startActivity(Intent(context, ProfileActivity::class.java))
+
+            showPromptDialog(
+                getString(R.string.prompt),
+                getString(R.string.submit_success)
+            ) {
+                activity?.finish()
+                startActivity(Intent(context, ProfileActivity::class.java))
+            }
         }
 
     }

@@ -1018,4 +1018,5 @@
     <string name="text_chose_language">Chọn ngôn ngữ của bạn</string>
     <string name="password_hint"><font size="12">(Vui lòng nhập tài khoản hội viên của bạn)</font></string>
     <string name="account_hint"><font size="12">(Vui lòng nhập mật khẩu đăng nhập của bạn)</font></string>
+    <string name="submit_success">gửi thành công</string>
 </resources>

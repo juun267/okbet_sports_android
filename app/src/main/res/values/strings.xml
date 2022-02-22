@@ -1007,4 +1007,5 @@
     <string name="text_chose_language">请选择您的语言</string>
     <string name="password_hint"><font size="12">(请输入您的登录密码)</font></string>
     <string name="account_hint"><font size="12">(请输入您的会员帐号)</font></string>
+    <string name="submit_success">提交成功</string>
 </resources>

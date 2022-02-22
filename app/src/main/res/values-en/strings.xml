@@ -992,4 +992,5 @@
     <string name="text_chose_language">Select your language</string>
     <string name="password_hint"><font size="12">(your login password)</font></string>
     <string name="account_hint"><font size="12">(your member account)</font></string>
+    <string name="submit_success">submitted successfully</string>
 </resources>
