@@ -161,7 +161,6 @@
                     android:layout_marginLeft="@dimen/margin_4"
                     android:layout_marginRight="@dimen/margin_4"
                     android:text="@string/bet_info_add_to_bet_info"
-                    android:textAllCaps="true"
                     android:textColor="@color/colorGray"
                     android:textSize="@dimen/textSize12sp" />
 
