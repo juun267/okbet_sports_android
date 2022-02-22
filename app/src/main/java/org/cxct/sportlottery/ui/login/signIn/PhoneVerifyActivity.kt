@@ -8,23 +8,21 @@ import android.provider.Settings
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.EditText
+import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityPhoneVerifyBinding
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.main.MainActivity
-import org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
 import java.util.*
 
 
@@ -53,6 +51,10 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
             binding.btnSendSms -> {
                 viewModel.sendLoginDeviceSms()
             }
+
+            binding.constraintLayout -> {
+                hideSoftKeyboard(this)
+            }
         }
     }
 
@@ -69,8 +71,15 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
         binding.btnSendSms.setOnClickListener(this)
         binding.btnBack.setOnClickListener(this)
         binding.btnSubmit.setOnClickListener(this)
+        binding.constraintLayout.setOnClickListener(this)
         binding.eetVerificationCode.addTextChangedListener {
             binding.btnSubmit.isEnabled = it?.length ?: 0 > 0
+        }
+        binding.constraintLayout.setOnClickListener {
+            binding.eetVerificationCode.clearFocus()
+            binding.etVerificationCode.clearFocus()
+
+            hideSoftKeyboard(this@PhoneVerifyActivity)
         }
     }
 
@@ -147,31 +156,6 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
             mSmsTimer?.cancel()
             mSmsTimer = null
         }
-    }
-
-    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
-        if (ev.action == MotionEvent.ACTION_DOWN) {
-            val v = currentFocus
-            if (isShouldHideInput(v, ev)) {
-                binding.eetVerificationCode.clearFocus()
-                binding.etVerificationCode.clearFocus()
-            }
-        }
-        return super.dispatchTouchEvent(ev)
-    }
-
-    private fun isShouldHideInput(v: View?, event: MotionEvent): Boolean {
-        if (v != null && v is TextFieldBoxes) {
-            val l = intArrayOf(0, 0)
-            v.getLocationInWindow(l)
-            val left = l[0]
-            val top = l[1]
-            val bottom = top + v.height
-            val right = (left
-                    + v.width)
-            return !(event.x > left && event.x < right && event.y > top && event.y < bottom)
-        }
-        return true
     }
 
     private fun checkInputData(): Boolean {
