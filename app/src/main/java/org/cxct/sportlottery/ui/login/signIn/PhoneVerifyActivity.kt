@@ -61,13 +61,8 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
         binding = ActivityPhoneVerifyBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initData()
         initView()
         initObserve()
-    }
-
-    private fun initData() {
-        viewModel.sendLoginDeviceSms()
     }
 
     fun initView() {
