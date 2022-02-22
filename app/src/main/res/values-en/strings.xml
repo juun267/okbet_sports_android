@@ -605,7 +605,7 @@
     <string name="bet_info_bet_quota">bet amount</string>
     <string name="bet_info_win_quota">Winning amount:</string>
     <string name="bet_info_accept_odds_change">Accept changes and place bets</string>
-    <string name="bet_info_add_to_bet_info">Add to betslip</string>
+    <string name="bet_info_add_to_bet_info">Add to bet slip</string>
     <string name="bet_info_odd_content_changed">One or more options for odds，concede points or score has changed</string>
     <string name="bet_info_all_bet">Total Bets</string>
     <string name="bet_list_delete_all">Delete all</string>
