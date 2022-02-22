@@ -813,7 +813,7 @@
     <string name="odds_button_name_cdc">客队或和局-客队</string>
     <string name="odds_button_name_hch">主队或客队-主队</string>
     <string name="odds_button_name_hcc">主队或客队-客队</string>
-    <string name="bet_fail">投注失敗</string>
+    <string name="bet_fail">下注失敗</string>
     <string name="credit_record_deactivate">信用功能停用中</string>
     <string name="game_postponed">比赛延期</string>
     <string name="money_recharge_hint1"><font color="#ff4b2c">请先转账成功后再提交充值信息。</font></string>
