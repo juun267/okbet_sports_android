@@ -259,7 +259,8 @@ class OddButtonPagerAdapter(
         var oddsMap = mutableMapOf<String, List<Odd?>?>()
 
         val sortOrder = oddsSort?.split(",")
-        oddsMap = this.toSortedMap(compareBy<String> {
+        val filterOdds = this.filter { sortOrder?.contains(it.key.split(":")[0]) == true }
+        oddsMap = filterOdds.toSortedMap(compareBy<String> {
             val oddsIndex = sortOrder?.indexOf(it.split(":")[0])
             oddsIndex
         }.thenBy { it })
