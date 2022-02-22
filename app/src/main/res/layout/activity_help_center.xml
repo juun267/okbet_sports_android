@@ -8,31 +8,11 @@
     android:orientation="vertical"
     tools:context=".ui.helpCenter.HelpCenterActivity">
 
-    <RelativeLayout
-        android:id="@+id/toolBar"
+    <org.cxct.sportlottery.ui.common.CustomTopToolbar
+        android:id="@+id/custom_tool_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/tool_bar_height"
-        android:background="@color/colorBlue">
-
-        <ImageButton
-            android:id="@+id/btn_back"
-            android:layout_width="@dimen/tool_bar_height"
-            android:layout_height="@dimen/tool_bar_height"
-            android:layout_centerVertical="true"
-            android:background="@null"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_back" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/help_center"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/textSize16sp" />
-
-    </RelativeLayout>
-
+        android:layout_height="wrap_content"
+        app:topTitleText="@string/help_center"/>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/help_center_container"

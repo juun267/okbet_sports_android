@@ -23,7 +23,7 @@ class HelpCenterActivity : BaseSocketActivity<HelpCenterViewModel>(HelpCenterVie
     }
 
     private fun setupEvent() {
-        btn_back.setOnClickListener {
+        custom_tool_bar.setOnBackPressListener {
             finish()
         }
     }
