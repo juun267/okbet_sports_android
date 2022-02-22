@@ -63,30 +63,17 @@
                 tools:text="让球" />
 
             <TextView
-                android:id="@+id/tv_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textColor="@color/colorBlackLight"
-                android:textSize="@dimen/textSize13sp"
-                app:dateNoYear="@{matchOdd.startTime}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_play_cate_name"
-                tools:text="08-26" />
-
-            <TextView
                 android:id="@+id/tv_league_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
                 android:text="@{matchOdd.leagueName}"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize13sp"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toStartOf="@+id/list_score"
                 app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toEndOf="@+id/tv_date"
-                app:layout_constraintTop_toTopOf="@+id/tv_date"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_play_cate_name"
                 tools:text="NBA季后赛" />
 
             <androidx.recyclerview.widget.RecyclerView

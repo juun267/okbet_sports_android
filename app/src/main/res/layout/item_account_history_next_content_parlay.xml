@@ -51,12 +51,26 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/textSize12sp"
+                android:textSize="@dimen/textSize14sp"
                 app:parlayType="@{row.parlayType}"
+                android:layout_marginStart="@dimen/margin_10"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tv_title"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="2 串 1" />
+
+            <TextView
+                android:id="@+id/tvDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/textSize14sp"
+                android:text="@string/commission_detail"
+                android:layout_marginStart="@dimen/margin_10"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView

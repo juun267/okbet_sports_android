@@ -46,8 +46,10 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     private fun initToolBar() {
-        btn_back.setOnClickListener { onBackPressed() }
-        tool_bar_title.text = mTitle
+        custom_tool_bar.setOnBackPressListener {
+            onBackPressed()
+        }
+        custom_tool_bar.titleText = mTitle
     }
 
     fun setCookie() {

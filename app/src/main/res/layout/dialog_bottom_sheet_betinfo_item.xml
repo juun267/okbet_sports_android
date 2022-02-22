@@ -58,7 +58,8 @@
             android:focusableInTouchMode="true"
             android:keyBackground="@drawable/bg_frame_6dp_white"
             android:padding="6dp"
-            android:visibility="gone" />
+            android:paddingTop="100dp"
+            android:visibility="visible" />
 
 
         <TextView

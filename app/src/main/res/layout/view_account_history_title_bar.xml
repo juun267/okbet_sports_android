@@ -63,16 +63,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8"
-        android:layout_marginRight="@dimen/margin_10"
-        android:drawableLeft="@drawable/ic_info_white"
+        android:layout_marginEnd="@dimen/margin_10"
+        app:drawableStartCompat="@drawable/ic_info_white"
         android:drawablePadding="@dimen/margin_6"
-        android:drawableTint="@color/colorGray"
+        app:drawableTint="@color/colorGray"
         android:text="@string/text_us_east_time"
         android:textColor="@color/colorGray"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linear_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/linear_layout"
+        app:drawableLeftCompat="@drawable/ic_info_white" />
 
     <LinearLayout
         android:id="@+id/linearLayout5"

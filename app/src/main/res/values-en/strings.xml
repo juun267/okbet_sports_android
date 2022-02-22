@@ -100,7 +100,7 @@
     <string name="dialog_security_hint">Welcome back to game. Please complete verification for account security.</string>
     <string name="dialog_security_title">Enter the verification code.</string>
     <string name="dialog_security_error">You have entered a wrong verification code.</string>
-    <string name="hint_security_code">Please enter the verification code.</string>
+    <string name="hint_security_code"><font size="12">Please enter the verification code.</font></string>
     <string name="dialog_security_need_phone">Your personal information is not complete, please contact customer service.</string>
     <string name="btn_agreement">Account Opening Agreement</string>
     <string name="have_account">Already have an account？</string>
@@ -605,7 +605,7 @@
     <string name="bet_info_bet_quota">bet amount</string>
     <string name="bet_info_win_quota">Winning amount:</string>
     <string name="bet_info_accept_odds_change">Accept changes and place bets</string>
-    <string name="bet_info_add_to_bet_info">Add to betslip</string>
+    <string name="bet_info_add_to_bet_info">Add to bet slip</string>
     <string name="bet_info_odd_content_changed">One or more options for odds，concede points or score has changed</string>
     <string name="bet_info_all_bet">Total Bets</string>
     <string name="bet_list_delete_all">Delete all</string>
@@ -928,8 +928,8 @@
     <string name="not_verify">(Not yet verified)</string>
     <string name="verified">(Verified)</string>
     <string name="select_id_type">Select ID Type</string>
-    <string name="scan_tool_bar">The time is reported in UTC-4 time zone.</string>
-    <string name="text_us_east_time">以美东时间计算</string>
+    <string name="scan_tool_bar">Scan results</string>
+    <string name="text_us_east_time">The time is reported in UTC-4 time zone.</string>
     <string name="verify_failed_please_retry">Verification failed, please try again</string>
     <!--自我禁制-->
     <string name="self_limit">Self-exclusion</string>
@@ -990,6 +990,11 @@
     <string name="self_limit_froze_impotent_6">After the self-exclusion expires, your account will be automatically reactivated.</string>
     <string name="self_limit_bet_impotent">You can modify your limit bet at any time. The modification will be active, after that sending the request.</string>
     <string name="text_chose_language">Select your language</string>
+    <!-- 複式串關詳情 -->
+    <string name="text_combo_title">Parlay</string>
+    <string name="text_combo_item">item</string>
+    <!-- 複式串關詳情 -->
     <string name="password_hint"><font size="12">(your login password)</font></string>
     <string name="account_hint"><font size="12">(your member account)</font></string>
+    <string name="submit_success">submitted successfully</string>
 </resources>

@@ -89,12 +89,11 @@
 
 
             <TextView
-                android:id="@+id/text_view"
+                android:id="@+id/tv_game_type_play_cate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{matchOdd.leagueName}"
                 android:textColor="@color/colorBlackLight"
-                android:textSize="@dimen/textSize12sp"
+                android:textSize="@dimen/textSize14sp"
                 android:textStyle="bold"
                 app:autoSizeMaxTextSize="@dimen/textSize12sp"
                 app:autoSizeMinTextSize="@dimen/textSize8sp"
@@ -115,7 +114,7 @@
                 android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/text_view"
+                app:layout_constraintTop_toTopOf="@+id/tv_game_type_play_cate"
                 tools:text="113 - 116" />
 
             <TextView
@@ -128,7 +127,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_view"
+                app:layout_constraintTop_toBottomOf="@+id/tv_game_type_play_cate"
                 tools:text="菲尼克斯太阳 v 菲尼克斯太阳" />
 
             <!--playName spread @ odd (oddsType)-->
