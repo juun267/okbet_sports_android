@@ -115,7 +115,7 @@
                 android:background="@drawable/bg_radius_10_button_bottom_corner"
                 android:gravity="center"
                 android:padding="2dp"
-                android:text="@string/face_scan_result"
+                android:text="@string/front_side_result"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/img_big"

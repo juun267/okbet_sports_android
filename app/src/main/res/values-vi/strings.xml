@@ -99,7 +99,7 @@
     <string name="dialog_security_hint">Chào mừng bạn trở lại trò chơi. Vui lòng hoàn tất xác minh để bảo mật tài khoản.</string>
     <string name="dialog_security_title">Nhập mã xác nhận.</string>
     <string name="dialog_security_error">Bạn đã nhập một mã xác minh sai.</string>
-    <string name="hint_security_code">Vui lòng nhập mã xác nhận.</string>
+    <string name="hint_security_code"><font size="12">Vui lòng nhập mã xác nhận.</font></string>
     <string name="dialog_security_need_phone">Thông tin cá nhân của bạn chưa hoàn chỉnh, vui lòng liên hệ với bộ phận chăm sóc khách hàng.</string>
     <string name="btn_agreement">Thỏa thuận mở tài khoản</string>
     <string name="have_account">bạn đã có tài khoản?</string>
@@ -583,7 +583,7 @@
     <string name="bet_info_bet_quota">Số tiền đặt cược</string>
     <string name="bet_info_win_quota">Số tiền có thể thắng</string>
     <string name="bet_info_accept_odds_change">Chấp nhận các thay đổi và đặt cược</string>
-    <string name="bet_info_add_to_bet_info">Thêm vào đơn cá cược</string>
+    <string name="bet_info_add_to_bet_info">Thêm vào đơn ca cược</string>
     <string name="bet_info_odd_content_changed">Tỷ lệ cược của một hoặc nhiều lựa chọn, điểm chấp hoặc điểm số đã được thay đổi</string>
     <string name="bet_info_all_bet">Tất cả các cược</string>
     <string name="bet_list_delete_all">XÓA TẤT CẢ</string>
@@ -977,7 +977,6 @@
     <string name="self_limit_froze_days">ngày</string>
     <string name="self_limit_froze_input_days">Vui lòng nhập số ngày</string>
     <string name="self_limit_froze_impotent">"· Tự loại trừ có hiệu lực ngay sau khi thiết lập\n· Chúng tôi sẽ giữ số dư của bạn trong khoảng thời gian tự loại trừ đã định.\n· Nếu bạn đăng ký tự loại trừ trong các trò chơi trò chơi khác, nó sẽ không tự động áp dụng cho trò chơi này.\n· Trong thời gian tự loại trừ, nếu bạn cố gắng mở một tài khoản mới, tài khoản có thể bị đóng băng sau khi hệ thống phát hiện ra.\n· Trong thời gian tự loại trừ, bạn có thể liên hệ với bộ phận dịch vụ khách hàng để hủy chức năng tự loại trừ.\n· Sau khi quá trình tự loại trừ hết hạn, tài khoản của bạn sẽ tự động được kích hoạt lại."</string>
-    <string name="per_bet_limit">Giới hạn</string>
     <string name="self_limit_per_bet_limit_content">Bạn có thể đăng ký \"cược giới hạn\" để giới hạn số tiền đặt cược mỗi lần. Sau khi đăng ký đặt cược giới hạn, tổng số tiền đặt cược của bạn sẽ không vượt quá giá trị đã đặt của bạn:</string>
     <string name="self_limit_per_bet_limit_highest">Giới hạn trên</string>
     <string name="self_limit_per_bet_limit_input_highest">Vui lòng nhập số</string>
@@ -989,7 +988,7 @@
     <!--自我禁制-->
 
     <!--登入手機驗證-->
-    <string name="login_phone_verify">Nhập mã xác nhận.</string>
+    <string name="login_phone_verify">Đăng nhập</string>
     <string name="login_phone_verify_content">Chào mừng bạn trở lại trò chơi. Vui lòng hoàn tất xác minh để bảo mật tài khoản.</string>
     <string name="login_phone_verify_get_code">Gửi mã</string>
     <string name="login_phone_verify_error">Bạn đã nhập một mã xác minh sai.</string>
@@ -1021,4 +1020,7 @@
     <string name="text_combo_title">Cược xâu</string>
     <string name="text_combo_item">Mục</string>
     <!-- 複式串關詳情 -->
+    <string name="password_hint"><font size="12">(Vui lòng nhập tài khoản hội viên của bạn)</font></string>
+    <string name="account_hint"><font size="12">(Vui lòng nhập mật khẩu đăng nhập của bạn)</font></string>
+    <string name="submit_success">gửi thành công</string>
 </resources>

@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.network.common
 
+import android.content.Context
 import androidx.annotation.StringRes
 import org.cxct.sportlottery.R
 
@@ -64,6 +65,27 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 AFT -> "AMERICA FOOT BALL"
                 FB -> "Financial Bets"
                 OTHER -> ""
+            }
+        }
+
+        fun getGameTypeString(context: Context, gameType: String?): String{
+            return when (gameType) {
+                FT.key -> context.getString(FT.string)
+                BK.key -> context.getString(BK.string)
+                TN.key -> context.getString(TN.string)
+                VB.key -> context.getString(VB.string)
+                BM.key -> context.getString(BM.string)
+                TT.key -> context.getString(TT.string)
+                BX.key -> context.getString(BX.string)
+                CB.key -> context.getString(CB.string)
+                CK.key -> context.getString(CK.string)
+                BB.key -> context.getString(BB.string)
+                RB.key -> context.getString(RB.string)
+                AFT.key -> context.getString(AFT.string)
+                IH.key -> context.getString(IH.string)
+                MR.key -> context.getString(MR.string)
+                GF.key -> context.getString(GF.string)
+                else -> ""
             }
         }
 

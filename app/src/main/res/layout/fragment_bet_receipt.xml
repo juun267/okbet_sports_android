@@ -222,20 +222,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_already_bet_complete"/>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/colorWhite6"
+            app:layout_constraintTop_toBottomOf="@id/view"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
         <TextView
             android:id="@+id/btn_complete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_radius_4_button_1053af"
+            android:background="@drawable/button_radius_4_117ecd_1053af"
             android:gravity="center"
             android:paddingTop="14dp"
             android:layout_margin="@dimen/margin_8"
             android:paddingBottom="14dp"
             android:text="@string/complete"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/textSize13sp"
+            android:textSize="@dimen/textSize14sp"
             app:layout_constraintTop_toBottomOf="@+id/view"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,50 +29,21 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener,
         TITLE_BAR, ITEM, FOOTER, NO_DATA
     }
 
-    private var allDateList = mutableListOf<Row>().apply {
-        for (i in 0 until 8) {
-            add(Row(statDate = TimeUtil.getMinusDate(i, TimeUtil.YMD_FORMAT)))
-        }
-    }
-
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
     fun addFooterAndSubmitList(list: MutableList<Row?>, isLastPage: Boolean) {
         adapterScope.launch {
 
-            val newList = mappingDateList(list)
-
             val items = listOf(DataItem.TitleBar) + when {
-                newList.isNullOrEmpty() -> listOf(DataItem.NoData)
-                isLastPage -> newList.map { DataItem.Item(it) } + listOf(DataItem.Footer)
-                else -> newList.map { DataItem.Item(it) }
+                list.isNullOrEmpty() -> listOf(DataItem.NoData)
+                isLastPage -> list.map { DataItem.Item(it) } + listOf(DataItem.Footer)
+                else -> list.map { DataItem.Item(it) }
             }
 
             withContext(Dispatchers.Main) { //update in main ui thread
                 submitList(items)
             }
         }
-    }
-
-    private fun mappingDateList(dataList: MutableList<Row?>): List<Row> {
-
-        allDateList.apply {
-            for (i in 0 until 8) {
-                allDateList[i] = (Row(statDate = TimeUtil.getMinusDate(i, TimeUtil.YMD_FORMAT)))
-            }
-        }
-
-        allDateList.forEachIndexed { index, allDate ->
-            dataList.forEach { data ->
-                if (allDate.statDate == data?.statDate) {
-                    if (data != null) {
-                        allDateList[index] = data
-                    }
-                }
-            }
-        }
-
-        return allDateList
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -113,12 +84,14 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener,
     }
 
     class ItemViewHolder private constructor(val binding: ItemAccountHistoryBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: Row, clickListener: ItemClickListener) {
+        fun bind(data: Row?, clickListener: ItemClickListener) {
             binding.row = data
             binding.textUtil = TextUtil
 
             itemView.setOnClickListener {
-                clickListener.onClick(data)
+                if (data != null) {
+                    clickListener.onClick(data)
+                }
             }
             binding.executePendingBindings()
         }
@@ -217,7 +190,7 @@ sealed class DataItem {
 
     abstract val rowItem: Row?
 
-    data class Item(val row: Row) : DataItem() {
+    data class Item(val row: Row?) : DataItem() {
         override val rowItem = row
     }
 

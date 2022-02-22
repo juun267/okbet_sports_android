@@ -209,6 +209,8 @@ class AccountHistoryNextAdapter(
                     odds?.let { TextUtil.formatForOdd(it) },
                     oddsType.code
                 )
+                binding.tvGameTypePlayCate.text = "${GameType.getGameTypeString(binding.tvGameTypePlayCate.context, row.gameType)} $playCateName"
+
                 binding.tvTeamNames.text = "$homeName v $awayName"
 
                 startTime?.let {
