@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.main.accountHistory.next
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -207,6 +206,8 @@ class AccountHistoryNextAdapter(
                     odds?.let { TextUtil.formatForOdd(it) },
                     oddsType.code
                 )
+                binding.tvGameTypePlayCate.text = "${GameType.getGameTypeString(binding.tvGameTypePlayCate.context, row.gameType)} $playCateName"
+
                 binding.tvTeamNames.text = "$homeName v $awayName"
 
                 startTime?.let {
