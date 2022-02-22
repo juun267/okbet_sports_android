@@ -3,9 +3,7 @@ package org.cxct.sportlottery.ui.common
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 import android.inputmethodservice.Keyboard
 import android.inputmethodservice.Keyboard.KEYCODE_DELETE
 import android.inputmethodservice.Keyboard.KEYCODE_DONE
@@ -34,11 +32,15 @@ class CustomKeyBoardView(context: Context?, attrs: AttributeSet?) : KeyboardView
                     key.codes[0] == KEYCODE_DONE
                 ) {
                     setDrawable(canvas, key, R.drawable.bg_keyboard_count)
+                    paint.typeface = Typeface.DEFAULT
                 } else if (key.codes[0] == KEYCODE_DELETE) {
                     setDrawable(canvas, key, R.drawable.bg_keyboard_delete)
+                    paint.typeface = Typeface.DEFAULT
                 } else {
                     setDrawable(canvas, key, R.drawable.bg_keyboard_number)
+                    paint.typeface = Typeface.DEFAULT_BOLD
                 }
+
                 paint.textAlign = Paint.Align.CENTER
                 paint.textSize = 36f
                 paint.color = context.getColor(R.color.colorBlackLight)
