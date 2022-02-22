@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_login"
-    tools:context=".ui.login.signIn.LoginActivity">
+    tools:context=".ui.login.signIn.PhoneVerifyActivity">
 
     <ImageView
         android:id="@+id/ivLogo"
@@ -40,7 +40,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:padding="24dp">
 
             <View
@@ -56,7 +56,7 @@
                 android:id="@+id/tvVerifyTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="@dimen/margin_12"
                 android:text="@string/login_phone_verify"
                 android:textColor="@color/colorBlackLight"
@@ -102,6 +102,7 @@
                         android:imeOptions="actionNext"
                         android:inputType="number"
                         android:hint="@string/hint_security_code"
+                        android:maxLength="15"
                         android:maxLines="1"
                         android:textSize="@dimen/textSize14sp" />
 
@@ -143,6 +144,7 @@
                 android:layout_marginBottom="6dp"
                 android:background="@drawable/bg_radius_20_button_dusk"
                 android:text="@string/btn_submit"
+                android:enabled="false"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/textSize16sp"
                 app:layout_constraintStart_toStartOf="parent"

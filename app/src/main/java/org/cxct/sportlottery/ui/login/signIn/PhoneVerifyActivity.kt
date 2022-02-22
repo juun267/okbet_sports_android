@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.Dispatchers
@@ -27,7 +28,8 @@ import org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
 import java.util.*
 
 
-class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),View.OnClickListener {
+class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
+    View.OnClickListener {
 
     private lateinit var binding: ActivityPhoneVerifyBinding
     private var mSmsTimer: Timer? = null
@@ -35,11 +37,14 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
     override fun onClick(v: View?) {
         when (v) {
             binding.btnSubmit -> {
-                if(!checkInputData()){
+                if (!checkInputData()) {
                     val deviceId = Settings.Secure.getString(
-                        applicationContext.contentResolver, Settings.Secure.ANDROID_ID
+                        this.contentResolver, Settings.Secure.ANDROID_ID
                     )
-                    viewModel.validateLoginDeviceSms(binding.eetVerificationCode.text.toString(),deviceId)
+                    viewModel.validateLoginDeviceSms(
+                        binding.eetVerificationCode.text.toString(),
+                        deviceId
+                    )
                 }
             }
             binding.btnBack -> {
@@ -61,22 +66,17 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
         initObserve()
     }
 
-    private fun initData(){
+    private fun initData() {
         viewModel.sendLoginDeviceSms()
     }
 
-    fun initView(){
+    fun initView() {
         binding.btnSendSms.setOnClickListener(this)
         binding.btnBack.setOnClickListener(this)
         binding.btnSubmit.setOnClickListener(this)
-//        GlobalScope.launch(Dispatchers.Main) {
-//            withContext(Dispatchers.IO) {
-//                var phone = viewModel.getUserPhone()
-//                binding.tvPhoneNumber.text = viewModel.getUserPhone()
-//                Log.e("Martin","213="+phone)
-//
-//            }
-//        }
+        binding.eetVerificationCode.addTextChangedListener {
+            binding.btnSubmit.isEnabled = it?.length ?: 0 > 0
+        }
     }
 
     private fun initObserve() {
@@ -89,8 +89,11 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
                     MainActivity.reStart(this)
                 else
                     GameActivity.reStart(this)
-            }else{
-                binding.etVerificationCode.setError(getString(R.string.login_phone_verify_error),false)
+            } else {
+                binding.etVerificationCode.setError(
+                    getString(R.string.login_phone_verify_error),
+                    false
+                )
             }
         })
 
@@ -118,7 +121,6 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
                     Handler(Looper.getMainLooper()).post {
                         if (sec-- > 0) {
                             binding.btnSendSms.isEnabled = false
-                            //btn_send_sms.text = getString(R.string.send_timer, sec)
                             binding.btnSendSms.text = "${sec}s"
                             binding.btnSendSms.setTextColor(
                                 ContextCompat.getColor(
@@ -129,7 +131,8 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
                         } else {
                             stopSmeTimer()
                             binding.btnSendSms.isEnabled = true
-                            binding.btnSendSms.text = getString(R.string.login_phone_verify_get_code)
+                            binding.btnSendSms.text =
+                                getString(R.string.login_phone_verify_get_code)
                             binding.btnSendSms.setTextColor(Color.WHITE)
                         }
                     }
@@ -151,17 +154,8 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
         }
     }
 
-    private fun showErrorDialog(errorMsg: String?) {
-        val dialog = CustomAlertDialog(this)
-        dialog.setMessage(errorMsg)
-        dialog.setNegativeButtonText(null)
-        dialog.setCanceledOnTouchOutside(false)
-        dialog.setCancelable(false)
-        dialog.show()
-    }
-
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
-        if (ev.getAction() === MotionEvent.ACTION_DOWN) {
+        if (ev.action == MotionEvent.ACTION_DOWN) {
             val v = currentFocus
             if (isShouldHideInput(v, ev)) {
                 binding.eetVerificationCode.clearFocus()
@@ -170,6 +164,7 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
         }
         return super.dispatchTouchEvent(ev)
     }
+
     private fun isShouldHideInput(v: View?, event: MotionEvent): Boolean {
         if (v != null && v is TextFieldBoxes) {
             val l = intArrayOf(0, 0)
@@ -185,7 +180,7 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
     }
 
     private fun checkInputData(): Boolean {
-        return  binding.eetVerificationCode.text.isBlank()
+        return binding.eetVerificationCode.text.isBlank()
     }
 
 
