@@ -1017,4 +1017,8 @@
     <string name="self_limit_froze_impotent_6">Sau khi quá trình tự loại trừ hết hạn, tài khoản của bạn sẽ tự động được kích hoạt lại.</string>
     <string name="self_limit_bet_impotent">Bạn có thể sửa đổi giới hạn đặt cược của mình bất cứ lúc nào. Sửa đổi sẽ có hiệu lực sau khi gửi yêu cầu.</string>
     <string name="text_chose_language">Chọn ngôn ngữ của bạn</string>
+    <!-- 複式串關詳情 -->
+    <string name="text_combo_title">Cược xâu</string>
+    <string name="text_combo_item">Mục</string>
+    <!-- 複式串關詳情 -->
 </resources>

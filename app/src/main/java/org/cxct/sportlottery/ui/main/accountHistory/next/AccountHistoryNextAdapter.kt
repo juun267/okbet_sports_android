@@ -1,16 +1,14 @@
 package org.cxct.sportlottery.ui.main.accountHistory.next
 
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.content_match_record.view.*
-import kotlinx.android.synthetic.main.content_outright_record.view.*
 import kotlinx.android.synthetic.main.view_account_history_next_title_bar.view.*
 import kotlinx.android.synthetic.main.view_back_to_top.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -164,7 +162,11 @@ class AccountHistoryNextAdapter(
             binding.apply {
                 matchOdd = row.matchOdds?.firstOrNull()
                 tvParlayType.text = getParlayShowName(itemView.context, row.parlayType)
-
+                tvDetail.paint.flags = Paint.UNDERLINE_TEXT_FLAG
+                tvDetail.setOnClickListener {
+                    val dialog = ComboDetailDialog(it.context,row.parlayComsDetailVOs!!)
+                    dialog.show()
+                }
                 rvParlay.apply {
                     adapter = parlayAdapter
                     layoutManager =

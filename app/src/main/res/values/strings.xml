@@ -1005,5 +1005,9 @@
     <string name="self_limit_froze_impotent_6">在自我禁制到期后，您的账号将自动恢复激活。</string>
     <string name="self_limit_bet_impotent">您随时可以修改您的每次投注上限。修改将于申请送出后生效。</string>
     <string name="text_chose_language">请选择您的语言</string>
+    <!-- 複式串關詳情 -->
+    <string name="text_combo_title">复式串关</string>
+    <string name="text_combo_item">项次</string>
+    <!-- 複式串關詳情 -->
 
 </resources>
