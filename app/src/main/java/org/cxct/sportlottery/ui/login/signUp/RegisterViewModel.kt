@@ -74,7 +74,7 @@ class RegisterViewModel(
     val loginForGuestResult: LiveData<LoginResult>
         get() = _loginForGuestResult
 
-    val agreementChecked: LiveData<Boolean?>
+    private val agreementChecked: LiveData<Boolean?>
         get() = _agreementChecked
 
     private val _registerResult = MutableLiveData<LoginResult>()
