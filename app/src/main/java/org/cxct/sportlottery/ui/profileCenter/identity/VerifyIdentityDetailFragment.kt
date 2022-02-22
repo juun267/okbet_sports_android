@@ -119,7 +119,6 @@ class VerifyIdentityDetailFragment :
                 getString(R.string.submit_success)
             ) {
                 activity?.finish()
-                startActivity(Intent(context, ProfileActivity::class.java))
             }
         }
 
