@@ -226,7 +226,7 @@
             android:id="@+id/btn_complete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_radius_4_button_1053af"
+            android:background="@drawable/button_radius_4_117ecd_1053af"
             android:gravity="center"
             android:paddingTop="14dp"
             android:layout_margin="@dimen/margin_8"
