@@ -234,11 +234,11 @@ class VpRecommendAdapter(
         private fun setupOddsButton(oddsButton: OddsButton, playCateCode:String, oddList: List<Odd?>, index: Int) {
             oddsButton.apply {
                 val odds = oddList.getOrNull(index)
-                if (oddList.size < 5 || odds == null) {
+                if (oddList.size <= index || odds == null) {
                     visibility = View.GONE
                     return
                 }
-                odds?.let { odd ->
+                odds.let { odd ->
                     setupOdd(odd, oddsType)
 
                     tv_name.apply {
