@@ -330,6 +330,8 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
                 button_bet.isOddsChanged = false //輸入金額行為, 視為接受當前賠率
 
+                viewModel.updateBetAmount(it)
+
             }
 
             checkMinQuota(if (it.isEmpty()) 0.0 else it.toDouble())

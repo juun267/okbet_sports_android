@@ -2297,5 +2297,9 @@ class GameViewModel(
             }
         }
     }
+
+    fun updateBetAmount(input: String){
+        betInfoRepository.updateBetAmount(input)
+    }
     
 }
