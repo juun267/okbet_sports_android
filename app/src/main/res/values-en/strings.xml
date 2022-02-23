@@ -358,7 +358,7 @@
     <string name="game_match">Match：</string>
     <string name="play_type">Betting method</string>
     <string name="game_odds">Odds</string>
-    <string name="match_names">(Home) % S vs % S (guest)</string>
+    <string name="match_names">(Home) %s vs %s (Away)</string>
     <string name="bet_item">Betting items -</string>
     <string name="match_type_row_in_play">IN-PLAY</string>
     <string name="match_type_row_at_start">SOON</string>
@@ -489,7 +489,7 @@
     <string name="title_weixin">Wechat</string>
     <string name="online_bank">Banking</string>
     <string name="online_juan">JuanCash</string>
-    <string name="online_dispenshing">出款</string>
+    <string name="online_dispenshing">Withdraw</string>
     <string name="online_online_bank">網銀</string>
     <string name="online_gcash">Gcash</string>
     <string name="online_grab">GrabPay</string>

@@ -336,7 +336,7 @@
     <string name="game_match">Trận đấu</string>
     <string name="play_type">Cách đặt cược</string>
     <string name="game_odds">tỷ lệ kèo</string>
-    <string name="match_names">(đội nhà) %s vs %s (đội khách)</string>
+    <string name="match_names">(Đội chủ nhà) %s vs %s (Đội khách)</string>
     <string name="bet_item">Mục đặt cược</string>
     <string name="match_type_row_in_play">TRONG TRẬN</string>
     <string name="match_type_row_at_start">trận đấu sắp bắt đầu</string>
@@ -466,7 +466,7 @@
     <string name="title_weixin">Wechat</string>
     <string name="online_bank">Ngân hàng trực tuyến</string>
     <string name="online_juan">JuanCash</string>
-    <string name="online_dispenshing">出款</string>
+    <string name="online_dispenshing">Rút tiền</string>
     <string name="online_online_bank">網銀</string>
     <string name="online_gcash">Gcash</string>
     <string name="online_grab">GrabPay</string>
