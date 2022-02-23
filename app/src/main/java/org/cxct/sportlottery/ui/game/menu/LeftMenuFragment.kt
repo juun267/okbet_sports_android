@@ -7,11 +7,19 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.zhy.adapter.recyclerview.CommonAdapter
+import com.zhy.adapter.recyclerview.base.ViewHolder
+import kotlinx.android.synthetic.main.dialog_combo_detail.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_left_menu.*
+import kotlinx.android.synthetic.main.fragment_left_menu.btn_close
+import kotlinx.android.synthetic.main.home_sport_table_4.view.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import kotlinx.android.synthetic.main.snackbar_my_favorite_notify.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
@@ -30,6 +38,7 @@ import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.game.home.gameTable4.OtherMatch
 import org.cxct.sportlottery.ui.menu.ChangeAppearanceDialog
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeFullScreenDialog
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
@@ -38,6 +47,7 @@ import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.vip.VipActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
+import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.listener.OnClickListener
@@ -158,18 +168,18 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                 layoutSearch.visibility = View.VISIBLE
                 rv_menu.visibility = View.GONE
                 initSearch()
-            }else{
-                layoutSearch.visibility = View.GONE
-                rv_menu.visibility = View.VISIBLE
             }
         }
         etSearch.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-            if (event.action === KeyEvent.KEYCODE_SEARCH || keyCode == KeyEvent.KEYCODE_ENTER) {
+            if (event.action === KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                 startSearch()
                 return@OnKeyListener true
             }
             false
         })
+        tvClear.setOnClickListener {
+
+        }
         layoutSearch.setOnClickListener {
             etSearch.clearFocus()
         }
@@ -644,17 +654,28 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
         }
         searchHistoryList?.let {
             if(it.size!! > 0){
-                Log.e("Martin","1232="+searchHistoryList?.first())
-            }else{
-
+                rvHostory.layoutManager =
+                    LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+                rvHostory.isNestedScrollingEnabled = false
+                layoutHistory.visibility = View.VISIBLE
+                var adapter = object : CommonAdapter<String>( context, R.layout.item_search_history, it ) {
+                    override fun convert(holder: ViewHolder, t: String, position: Int ) {
+                        holder.setText(R.id.tvHistory, t)
+                    }
+                }
+                rvHostory.adapter = adapter
             }
         }
 
     }
 
     private fun startSearch(){
+        if (searchHistoryList!!.size == 10) {
+            searchHistoryList!!.removeAt(9)
+        }
         searchHistoryList!!.add(0,etSearch.text.toString())
         MultiLanguagesApplication.saveSearchHistory(searchHistoryList)
+        //rvHostory.adapter?.notifyDataSetChanged()
     }
 
     private fun initRecyclerView() {
