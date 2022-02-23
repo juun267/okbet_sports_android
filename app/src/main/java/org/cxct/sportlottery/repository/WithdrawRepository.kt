@@ -206,6 +206,7 @@ class WithdrawRepository(
         }
     }
 
+    //true:資料不完整 false：完整
     private suspend fun verifyProfileInfoComplete(): Boolean {
         val userInfo = userInfoFlow?.firstOrNull()
         var complete = false
