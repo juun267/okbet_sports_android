@@ -130,7 +130,7 @@ class WithdrawRepository(
         this.checkNeedUpdatePassWord().let {
             when{
                 !checkUserPhoneNumber() -> { }
-                showSecurityDialog() && (it || !verifyProfileInfoComplete()) -> {
+                !getTwoFactorStatus() && (it || verifyProfileInfoComplete()) -> {
                     sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.UPDATE_PW.ordinal
                     _showSecurityDialog.value = Event(true)
                 }
@@ -146,7 +146,7 @@ class WithdrawRepository(
     }
 
     suspend fun checkNeedToShowSecurityDialog() {
-        _showSecurityDialog.value = Event(showSecurityDialog())
+        _showSecurityDialog.value = Event(!getTwoFactorStatus())
     }
 
     //確認使用者有無手機碼 true：有手機碼 false：無手機碼
@@ -163,7 +163,7 @@ class WithdrawRepository(
             //顯示簡訊認證彈窗
             when{
                 !checkUserPhoneNumber() -> { }
-                showSecurityDialog() && (it || !verifyProfileInfoComplete()) ->{
+                !getTwoFactorStatus() && (it || verifyProfileInfoComplete()) ->{
                     sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.SETTING_PW.ordinal
                     _showSecurityDialog.value = Event(true)
                 }
@@ -185,7 +185,7 @@ class WithdrawRepository(
     suspend fun checkProfileInfoComplete() {
         when{
             !checkUserPhoneNumber() -> { }
-            showSecurityDialog() ->{
+            !getTwoFactorStatus() && verifyProfileInfoComplete() ->{
                 sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.COMPLETET_PROFILE_INFO.ordinal
                 _showSecurityDialog.value  = Event(true)
             }
@@ -322,7 +322,7 @@ class WithdrawRepository(
 
                     when{
                         !checkUserPhoneNumber() -> { }
-                        showSecurityDialog() && promptMessageId != -1 ->{
+                        !getTwoFactorStatus() && promptMessageId != -1 ->{
                             sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.BIND_BANK_CARD.ordinal
                             _showSecurityDialog.value  = Event(true)
                         }
