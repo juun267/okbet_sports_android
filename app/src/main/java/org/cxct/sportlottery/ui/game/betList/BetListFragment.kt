@@ -234,10 +234,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     keyboard?.showKeyboard(editText, position, max)
                 }
 
-//                override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd) {
-//                    keyboard?.showKeyboard(editText)
-//                }
-
                 override fun onShowParlayKeyboard(
                     editText: EditText,
                     parlayOdd: ParlayOdd?,
