@@ -226,7 +226,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         betListRefactorAdapter =
             BetListRefactorAdapter(object : BetListRefactorAdapter.OnItemClickListener {
                 override fun onDeleteClick(oddsId: String, currentItemCount: Int) {
-                    isAutoCloseWhenNoData = true
+                    isAutoCloseWhenNoData = betListRefactorAdapter?.betList?.size?:0 <= 1
                     viewModel.removeBetInfoItem(oddsId)
                 }
 
