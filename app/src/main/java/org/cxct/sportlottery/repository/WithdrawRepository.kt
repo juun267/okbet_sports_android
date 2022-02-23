@@ -140,16 +140,6 @@ class WithdrawRepository(
     }
 
     //判斷要不要顯示簡訊驗證 true: 顯示 false:不顯示
-    private suspend fun showSecurityDialog():Boolean {
-        var showCustomSecurityDialog = false
-        if(checkUserPhoneNumber()){
-            val response = OneBoSportApi.withdrawService.getTwoFactorStatus() //(success: true 验证成功, false 需重新验证手机), 在进行新增银行卡、更新银行卡密码、更新用户密码、设定真实姓名之前先判断此状态, 如果为false, 就显示验证手机简讯的画面
-            showCustomSecurityDialog = response.body()?.success == false //後台有開啟驗證簡訊，同時使用者資料有phone的狀況下才要顯示簡訊驗證碼彈窗。後台如果是關閉 getTwoFactorStatus會一直回傳true(已經認證過) by Bill
-        }
-        return showCustomSecurityDialog
-    }
-
-    //單純顯示TwoFactorStatus 邏輯不同所以拆開判斷
     private suspend fun getTwoFactorStatus(): Boolean {
         val response = OneBoSportApi.withdrawService.getTwoFactorStatus() //(success: true 验证成功, false 需重新验证手机), 在进行新增银行卡、更新银行卡密码、更新用户密码、设定真实姓名之前先判断此状态, 如果为false, 就显示验证手机简讯的画面
         return response.body()?.success ?: true
