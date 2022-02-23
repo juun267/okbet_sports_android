@@ -17,12 +17,14 @@
 
     <TextView
         android:id="@+id/tv_bet_amount"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorBlackLight"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="0"
         android:textSize="@dimen/textSize13sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/tv_winnable_amount_title"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_bet_amount_title"
         app:layout_constraintTop_toTopOf="@id/tv_bet_amount_title"
         tools:text="50" />
