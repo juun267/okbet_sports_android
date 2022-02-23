@@ -1006,13 +1006,9 @@
     <string name="self_limit_bet_impotent">您随时可以修改您的每次投注上限。修改将于申请送出后生效。</string>
     <string name="text_chose_language">请选择您的语言</string>
     <!-- 複式串關詳情 -->
-    <string name="text_combo_title">复式串关</string>
-    <string name="text_combo_item">项次</string>
-    <!-- 複式串關詳情 -->
     <string name="password_hint"><font size="12">(请输入您的登录密码)</font></string>
     <string name="account_hint"><font size="12">(请输入您的会员帐号)</font></string>
     <string name="submit_success">提交成功</string>
-    <!-- 複式串關詳情 -->
     <string name="text_combo_title">复式串关</string>
     <string name="text_combo_item">项次</string>
 
