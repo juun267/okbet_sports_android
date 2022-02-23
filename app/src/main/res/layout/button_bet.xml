@@ -22,7 +22,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/bet_info_list_bet"
-            android:textAllCaps="true"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/textSize12sp"
             app:layout_constraintBottom_toTopOf="@+id/tv_quota"
