@@ -1012,4 +1012,9 @@
     <string name="password_hint"><font size="12">(请输入您的登录密码)</font></string>
     <string name="account_hint"><font size="12">(请输入您的会员帐号)</font></string>
     <string name="submit_success">提交成功</string>
+
+    <!-- 注單內球員玩法 -->
+    <string name="sco_name_first">最先进球球员</string>
+    <string name="sco_name_any">任何时间进球球员</string>
+    <string name="sco_name_last">最后进球球员</string>
 </resources>

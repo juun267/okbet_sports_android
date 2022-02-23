@@ -997,4 +997,9 @@
     <string name="password_hint"><font size="12">(your login password)</font></string>
     <string name="account_hint"><font size="12">(your member account)</font></string>
     <string name="submit_success">submitted successfully</string>
+
+    <!-- 注單內球員玩法 -->
+    <string name="sco_name_first">First Goalscorer</string>
+    <string name="sco_name_any">Anytime Goalscorer</string>
+    <string name="sco_name_last">Last Goalscorer</string>
 </resources>

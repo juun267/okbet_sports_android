@@ -82,30 +82,29 @@
 
 
             <TextView
-                android:id="@+id/tv_match"
+                android:id="@+id/tv_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="4dp"
-                android:textColor="@color/colorGray"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize13sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_odds_content"
-                tools:text="纽卡斯尔 v 切尔西" />
-
+                tools:text="让球" />
 
             <!--玩法名稱:讓球,獨贏..-->
             <TextView
-                android:id="@+id/tv_name"
+                android:id="@+id/tv_match"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:textColor="@color/colorBlackLight"
+                android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize13sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_match"
-                tools:text="让球" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_name"
+                tools:text="纽卡斯尔 v 切尔西" />
 
 
             <EditText
@@ -125,7 +124,7 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/tv_error_message"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_name"
+                app:layout_constraintTop_toBottomOf="@+id/tv_match"
                 app:layout_constraintWidth_percent="0.442" />
 
             <View

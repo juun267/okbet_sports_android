@@ -131,8 +131,8 @@ abstract class BaseOddButtonViewModel(
         odd: org.cxct.sportlottery.network.odds.Odd,
         subscribeChannelType: ChannelType,
         betPlayCateNameMap: Map<String?, Map<String?, String?>?>?,
-        playCateMenuCode: String? = null
-
+        playCateMenuCode: String? = null,
+        otherPlayCateName: String? = null
     ) {
         val betItem = betInfoRepository.betInfoList.value?.peekContent()
             ?.find { it.matchOdd.oddsId == odd.id }
@@ -148,7 +148,7 @@ abstract class BaseOddButtonViewModel(
                     matchType = matchType,
                     gameType = gameType,
                     playCateCode = playCateCode,
-                    playCateName = playCateName,
+                    playCateName = otherPlayCateName ?: playCateName,
                     playName = odd.nameMap?.get(LanguageManager.getSelectLanguage(androidContext).key)
                         ?: odd.name ?: "",
                     matchInfo = it,

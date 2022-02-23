@@ -96,7 +96,7 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
     private fun initUI() {
         oddsDetailListAdapter = OddsDetailListAdapter(
-            OnOddClickListener { odd, oddsDetail ->
+            OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
                 matchOdd?.let { matchOdd ->
                     viewModel.updateMatchBetList(
                         matchType = MatchType.IN_PLAY,
@@ -106,7 +106,8 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         matchInfo = matchOdd.matchInfo,
                         odd = odd,
                         subscribeChannelType = ChannelType.EVENT,
-                        betPlayCateNameMap = matchOdd.betPlayCateNameMap
+                        betPlayCateNameMap = matchOdd.betPlayCateNameMap,
+                        otherPlayCateName = scoPlayCateNameForBetInfo
                     )
                 }
             }

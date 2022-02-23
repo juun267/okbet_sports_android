@@ -1023,4 +1023,9 @@
     <string name="password_hint"><font size="12">(Vui lòng nhập tài khoản hội viên của bạn)</font></string>
     <string name="account_hint"><font size="12">(Vui lòng nhập mật khẩu đăng nhập của bạn)</font></string>
     <string name="submit_success">gửi thành công</string>
+
+    <!-- 注單內球員玩法 -->
+    <string name="sco_name_first">Cầu Thủ Ghi Bàn Đầu Tiên</string>
+    <string name="sco_name_any">Cầu Thủ Ghi Bàn</string>
+    <string name="sco_name_last">Cầu Thủ Ghi Bàn Cuối Cùng</string>
 </resources>

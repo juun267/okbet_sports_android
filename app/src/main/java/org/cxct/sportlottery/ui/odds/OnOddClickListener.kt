@@ -4,13 +4,13 @@ package org.cxct.sportlottery.ui.odds
 import org.cxct.sportlottery.network.odds.Odd
 
 
-class OnOddClickListener(val _getBetInfoList: (odd: Odd, oddsDetail: OddsDetailListData?) -> Unit) {
+class OnOddClickListener(val _getBetInfoList: (odd: Odd, oddsDetail: OddsDetailListData?, scoPlayCateNameForBetInfo: String?) -> Unit) {
 
     var clickOdd: Odd? = null
 
-    fun getBetInfoList(odd: Odd, oddsDetail: OddsDetailListData?) {
+    fun getBetInfoList(odd: Odd, oddsDetail: OddsDetailListData?, scoPlayCateNameForBetInfo: String? = null) {
         clickOdd = odd
-        _getBetInfoList(odd, oddsDetail)
+        _getBetInfoList(odd, oddsDetail, scoPlayCateNameForBetInfo)
     }
 
 }

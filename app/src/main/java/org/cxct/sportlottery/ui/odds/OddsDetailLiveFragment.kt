@@ -190,7 +190,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     private fun initUI() {
 //        live_view_tool_bar.gameType = args.gameType //賽事動畫icon用，之後用不到可刪
         oddsDetailListAdapter = OddsDetailListAdapter(
-            OnOddClickListener { odd, oddsDetail ->
+            OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
                 matchOdd?.let { matchOdd ->
                     matchOdd.matchInfo.homeScore = "$curHomeScore"
                     matchOdd.matchInfo.awayScore = "$curAwayScore"
@@ -203,7 +203,8 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                         matchInfo = matchOdd.matchInfo,
                         odd = odd,
                         subscribeChannelType = ChannelType.EVENT,
-                        betPlayCateNameMap = matchOdd.betPlayCateNameMap
+                        betPlayCateNameMap = matchOdd.betPlayCateNameMap,
+                        otherPlayCateName = scoPlayCateNameForBetInfo
                     )
                 }
             }
