@@ -34,6 +34,7 @@ import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.message.Row
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
@@ -517,9 +518,15 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     //用戶登入公告訊息彈窗
     private var mNewsDialog: NewsDialog? = null
     private fun setNewsDialog(messageListResult: MessageListResult) {
+
         //未登入、遊客登入都要顯示彈窗
-        val type = if (viewModel.isLogin.value == true) 2 else 3
-        val list = messageListResult.rows?.filter { it.type.toInt() == type }
+        //顯示規則：帳號登入前= 公告含登入前、帳號登入後= 公告含登入前+登入後
+        var list = listOf<Row>()
+        list = if (viewModel.isLogin.value == true)
+            messageListResult.rows?.filter { it.type.toInt() != 1 } ?: listOf()
+        else
+            messageListResult.rows?.filter { it.type.toInt() == 3 } ?: listOf()
+
         if (!list.isNullOrEmpty()) {
             if (!MultiLanguagesApplication.getInstance()?.isNewsShow()!!) {
                 mNewsDialog?.dismiss()
