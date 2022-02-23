@@ -640,6 +640,9 @@ class GameViewModel(
                         getSportCount(MatchType.PARLAY, gameType, sportMenuResult) != 0 -> {
                             MatchType.PARLAY
                         }
+                        getSportCount(MatchType.OUTRIGHT, gameType, sportMenuResult) != 0 -> {
+                            MatchType.OUTRIGHT
+                        }
                         else -> null
                     }
                 }
