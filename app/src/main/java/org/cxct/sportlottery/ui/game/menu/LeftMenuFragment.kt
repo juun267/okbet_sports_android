@@ -49,6 +49,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                     dismiss()
                 },
                 { //withdraw
+                    avoidFastDoubleClick()
                     viewModel.checkWithdrawSystem()
                     dismiss()
                 },
