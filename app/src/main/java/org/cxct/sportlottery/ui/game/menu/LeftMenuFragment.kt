@@ -2,6 +2,8 @@ package org.cxct.sportlottery.ui.game.menu
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +14,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_left_menu.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import kotlinx.android.synthetic.main.snackbar_my_favorite_notify.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.common.FavoriteType
@@ -117,8 +120,8 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
     //提示
     private var snackBarMyFavoriteNotify: Snackbar? = null
     var specialList: MutableList<MenuItemData> = mutableListOf()
-
-    //簡訊驗證彈窗
+    var searchHistoryList = mutableListOf<String>()
+        //簡訊驗證彈窗
     private var customSecurityDialog: CustomSecurityDialog? = null
 
     override fun onItemClick(position: Int) {
@@ -144,14 +147,32 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
         super.onViewCreated(view, savedInstanceState)
         dialog?.window?.setWindowAnimations(R.style.LeftMenu)
         dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        initView()
         initObserve()
         initRecyclerView()
-        initButton()
     }
 
-
-    private fun initButton() {
-        // 返回
+    fun initView(){
+        etSearch.setOnFocusChangeListener { v, hasFocus ->
+            if(hasFocus){
+                layoutSearch.visibility = View.VISIBLE
+                rv_menu.visibility = View.GONE
+                initSearch()
+            }else{
+                layoutSearch.visibility = View.GONE
+                rv_menu.visibility = View.VISIBLE
+            }
+        }
+        etSearch.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (event.action === KeyEvent.KEYCODE_SEARCH || keyCode == KeyEvent.KEYCODE_ENTER) {
+                startSearch()
+                return@OnKeyListener true
+            }
+            false
+        })
+        layoutSearch.setOnClickListener {
+            etSearch.clearFocus()
+        }
         btn_close.setOnClickListener {
             dismiss()
         }
@@ -614,6 +635,26 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                 }
             }
         }
+    }
+
+
+    private fun initSearch(){
+        MultiLanguagesApplication.searchHistory?.let {
+            searchHistoryList = it
+        }
+        searchHistoryList?.let {
+            if(it.size!! > 0){
+                Log.e("Martin","1232="+searchHistoryList?.first())
+            }else{
+
+            }
+        }
+
+    }
+
+    private fun startSearch(){
+        searchHistoryList!!.add(0,etSearch.text.toString())
+        MultiLanguagesApplication.saveSearchHistory(searchHistoryList)
     }
 
     private fun initRecyclerView() {

@@ -47,6 +47,7 @@ object ParlayLimitUtil {
             val hkOdds = getTotalHkOdds(oddsList, parlayCom.getComList())
             // 投注限額 設定值/odds
             //val maxPayLimit = max!!.divide(hkOdds, 0, RoundingMode.DOWN)
+
             val maxPayLimit = (max!!/hkOdds).toInt().toBigDecimal()
 
             parlayBetLimit.odds = odds
