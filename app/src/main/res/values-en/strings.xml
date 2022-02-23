@@ -913,7 +913,7 @@
     <string name="commission_example">i.g.</string>
     <string name="bet_slip">Bet slip</string>
     <string name="fast_bet_open_desc">Enable Quick Bet</string>
-    <string name="bet_list_empty">Your Bet Slip is currently empty.</string>
+    <string name="bet_list_empty">Your bet slip is currently empty</string>
     <string name="bank_list_not_bink">You do not have a %1$s bound</string>
     <string name="bank_list_add">Add %1$s</string>
     <string name="bank_list_bank">bank card</string>
