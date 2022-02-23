@@ -996,4 +996,9 @@
     <string name="submit_success">submitted successfully</string>
     <string name="text_combo_title">Parlay</string>
     <string name="text_combo_item">item</string>
+
+    <!-- 注單內球員玩法 -->
+    <string name="sco_name_first">First Goalscorer</string>
+    <string name="sco_name_any">Anytime Goalscorer</string>
+    <string name="sco_name_last">Last Goalscorer</string>
 </resources>

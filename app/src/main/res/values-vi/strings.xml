@@ -1022,4 +1022,9 @@
     <string name="submit_success">gửi thành công</string>
     <string name="text_combo_title">Cược xâu</string>
     <string name="text_combo_item">Mục</string>
+
+    <!-- 注單內球員玩法 -->
+    <string name="sco_name_first">Cầu Thủ Ghi Bàn Đầu Tiên</string>
+    <string name="sco_name_any">Cầu Thủ Ghi Bàn</string>
+    <string name="sco_name_last">Cầu Thủ Ghi Bàn Cuối Cùng</string>
 </resources>
