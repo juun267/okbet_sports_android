@@ -38,6 +38,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     private var mTokenPromptDialog: CustomAlertDialog? = null
     private var mOnNetworkExceptionListener: View.OnClickListener? = null
     private var mPickerView: OptionsPickerView<String>? = null
+    private var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一個
 
     val viewModel: T by viewModel(clazz = clazz)
 
@@ -291,5 +292,10 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    fun avoidFastDoubleClick(){
+        mIsEnabled = false
+        Handler().postDelayed({ mIsEnabled = true }, 500)
     }
 }
