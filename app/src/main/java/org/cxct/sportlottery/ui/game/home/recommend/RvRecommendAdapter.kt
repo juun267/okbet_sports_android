@@ -82,8 +82,8 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                     val entity = RecommendGameEntity(
                         code = row.sport?.code,
                         name = row.sport?.name,
-                        leagueId = row.leagueOdds.league?.id,
-                        leagueName = if (row.isOutright == RECOMMEND_OUTRIGHT) row.leagueOdds.matchOdds.firstOrNull()?.matchInfo?.name else row.leagueOdds.league?.name,
+                        leagueId = row.leagueOdds?.league?.id,
+                        leagueName = if (row.isOutright == RECOMMEND_OUTRIGHT) row.leagueOdds?.matchOdds?.firstOrNull()?.matchInfo?.name else row.leagueOdds?.league?.name,
                         matchInfo = oddData.matchInfo,
                         isOutright = row.isOutright,
                         oddBeans = beans,

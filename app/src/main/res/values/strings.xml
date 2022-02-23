@@ -100,7 +100,7 @@
     <string name="dialog_security_hint">欢迎再次回到游戏，为确保账号使用的安全性，请完成手机验证</string>
     <string name="dialog_security_title">输入验证码</string>
     <string name="dialog_security_error">验证码输入错误</string>
-    <string name="hint_security_code"><font size="12">请输入验证码</font></string>
+    <string name="hint_security_code"><font size="12">(请输入验证码)</font></string>
     <string name="dialog_security_need_phone">个人资料不完整，请联系客服</string>
     <string name="btn_agreement">开户协议</string>
     <string name="have_account">已有账号?</string>
@@ -1006,12 +1006,12 @@
     <string name="self_limit_bet_impotent">您随时可以修改您的每次投注上限。修改将于申请送出后生效。</string>
     <string name="text_chose_language">请选择您的语言</string>
     <!-- 複式串關詳情 -->
-    <string name="text_combo_title">复式串关</string>
-    <string name="text_combo_item">项次</string>
-    <!-- 複式串關詳情 -->
     <string name="password_hint"><font size="12">(请输入您的登录密码)</font></string>
     <string name="account_hint"><font size="12">(请输入您的会员帐号)</font></string>
     <string name="submit_success">提交成功</string>
+    <string name="text_combo_title">复式串关</string>
+    <string name="text_combo_item">项次</string>
+
 
     <!-- 注單內球員玩法 -->
     <string name="sco_name_first">最先进球球员</string>

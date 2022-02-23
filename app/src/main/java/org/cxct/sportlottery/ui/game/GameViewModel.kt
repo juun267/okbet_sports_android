@@ -640,6 +640,9 @@ class GameViewModel(
                         getSportCount(MatchType.PARLAY, gameType, sportMenuResult) != 0 -> {
                             MatchType.PARLAY
                         }
+                        getSportCount(MatchType.OUTRIGHT, gameType, sportMenuResult) != 0 -> {
+                            MatchType.OUTRIGHT
+                        }
                         else -> null
                     }
                 }
@@ -783,7 +786,7 @@ class GameViewModel(
                 //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
                 result.rows?.forEach { row ->
                     row.leagueOdds?.matchOdds?.forEach { oddData ->
-                        oddData.sortOddsMap()
+                        //oddData.sortOddsMap() //按照188排序 不使用markSort by Bill
                         oddData.oddsMap.forEach { map ->
                             map.value?.forEach { odd ->
                                 odd?.isSelected =
@@ -2330,5 +2333,4 @@ class GameViewModel(
     fun updateBetAmount(input: String){
         betInfoRepository.updateBetAmount(input)
     }
-
 }

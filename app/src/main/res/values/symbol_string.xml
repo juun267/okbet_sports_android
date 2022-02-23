@@ -40,6 +40,7 @@
 
     <!--Time-->
     <string name="time_null">--:--</string>
+    <string name="time_up">00:00</string>
 
     <!--date time concat-->
     <string name="concat_date_time">%s %s</string>

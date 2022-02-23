@@ -130,7 +130,7 @@ class WithdrawRepository(
         this.checkNeedUpdatePassWord().let {
             when{
                 !checkUserPhoneNumber() -> { }
-                showSecurityDialog() && (it || !verifyProfileInfoComplete()) -> {
+                !getTwoFactorStatus() && (it || verifyProfileInfoComplete()) -> {
                     sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.UPDATE_PW.ordinal
                     _showSecurityDialog.value = Event(true)
                 }
@@ -140,23 +140,13 @@ class WithdrawRepository(
     }
 
     //判斷要不要顯示簡訊驗證 true: 顯示 false:不顯示
-    private suspend fun showSecurityDialog():Boolean {
-        var showCustomSecurityDialog = false
-        if(checkUserPhoneNumber()){
-            val response = OneBoSportApi.withdrawService.getTwoFactorStatus() //(success: true 验证成功, false 需重新验证手机), 在进行新增银行卡、更新银行卡密码、更新用户密码、设定真实姓名之前先判断此状态, 如果为false, 就显示验证手机简讯的画面
-            showCustomSecurityDialog = response.body()?.success == false //後台有開啟驗證簡訊，同時使用者資料有phone的狀況下才要顯示簡訊驗證碼彈窗。後台如果是關閉 getTwoFactorStatus會一直回傳true(已經認證過) by Bill
-        }
-        return showCustomSecurityDialog
-    }
-
-    //單純顯示TwoFactorStatus 邏輯不同所以拆開判斷
     private suspend fun getTwoFactorStatus(): Boolean {
         val response = OneBoSportApi.withdrawService.getTwoFactorStatus() //(success: true 验证成功, false 需重新验证手机), 在进行新增银行卡、更新银行卡密码、更新用户密码、设定真实姓名之前先判断此状态, 如果为false, 就显示验证手机简讯的画面
         return response.body()?.success ?: true
     }
 
     suspend fun checkNeedToShowSecurityDialog() {
-        _showSecurityDialog.value = Event(showSecurityDialog())
+        _showSecurityDialog.value = Event(!getTwoFactorStatus())
     }
 
     //確認使用者有無手機碼 true：有手機碼 false：無手機碼
@@ -173,7 +163,7 @@ class WithdrawRepository(
             //顯示簡訊認證彈窗
             when{
                 !checkUserPhoneNumber() -> { }
-                showSecurityDialog() && (it || !verifyProfileInfoComplete()) ->{
+                !getTwoFactorStatus() && (it || verifyProfileInfoComplete()) ->{
                     sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.SETTING_PW.ordinal
                     _showSecurityDialog.value = Event(true)
                 }
@@ -195,7 +185,7 @@ class WithdrawRepository(
     suspend fun checkProfileInfoComplete() {
         when{
             !checkUserPhoneNumber() -> { }
-            showSecurityDialog() ->{
+            !getTwoFactorStatus() && verifyProfileInfoComplete() ->{
                 sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.COMPLETET_PROFILE_INFO.ordinal
                 _showSecurityDialog.value  = Event(true)
             }
@@ -216,6 +206,7 @@ class WithdrawRepository(
         }
     }
 
+    //true:資料不完整 false：完整
     private suspend fun verifyProfileInfoComplete(): Boolean {
         val userInfo = userInfoFlow?.firstOrNull()
         var complete = false
@@ -331,7 +322,7 @@ class WithdrawRepository(
 
                     when{
                         !checkUserPhoneNumber() -> { }
-                        showSecurityDialog() && promptMessageId != -1 ->{
+                        !getTwoFactorStatus() && promptMessageId != -1 ->{
                             sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.BIND_BANK_CARD.ordinal
                             _showSecurityDialog.value  = Event(true)
                         }
