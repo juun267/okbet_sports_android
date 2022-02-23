@@ -479,7 +479,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                             item.matchInfo.leagueTime = (timeMillis / 1000).toInt()
                                         } else {
                                             itemView.league_odd_match_time.text =
-                                                itemView.context.getString(R.string.time_null)
+                                                itemView.context.getString(R.string.time_up)
                                         }
                                     }
                                 }
