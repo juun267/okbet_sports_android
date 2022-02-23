@@ -9,7 +9,6 @@ import android.view.View
 import androidx.lifecycle.Observer
 import cn.jpush.android.api.JPushInterface
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.activity_login.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityLoginBinding
@@ -28,7 +27,6 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.util.BitmapUtil
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.ToastUtil
-import java.util.*
 import org.cxct.sportlottery.widget.boundsEditText.SimpleTextChangedWatcher
 
 
@@ -38,8 +36,9 @@ import org.cxct.sportlottery.widget.boundsEditText.SimpleTextChangedWatcher
 class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private lateinit var binding: ActivityLoginBinding
-    private val SELFLIMIT = 1130
-
+    companion object {
+        private const val SELF_LIMIT = 1130
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -251,7 +250,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             }
         } else {
             updateValidCode()
-            if(loginResult.code == SELFLIMIT){
+            if(loginResult.code == SELF_LIMIT){
                 showSelfLimitFrozeErrorDialog(loginResult.msg)
             }else{
                 showErrorDialog(loginResult.msg)
