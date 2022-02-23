@@ -772,7 +772,7 @@
     <string name="odds_button_name_first">Fist</string>
     <string name="odds_button_name_ant">Any</string>
     <string name="odds_button_name_last">Last</string>
-    <string name="bet_succeeded">Your bet to be placed successfully</string>
+    <string name="bet_succeeded">You have been successful bets</string>
     <string name="mix_bet_list">Comprehensive bets</string>
     <string name="credit_bet_record_time">Period</string>
     <string name="credit_bet_amount_all">Total line of credit</string>
