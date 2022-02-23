@@ -2284,7 +2284,7 @@ class GameViewModel(
     fun getLoginBoolean(): Boolean {
         return loginRepository.isLogin.value ?: false
     }
-    
+
     fun resetErrorDialogMsg() {
         _showErrorDialogMsg.value = ""
     }
@@ -2325,6 +2325,10 @@ class GameViewModel(
                     _errorMessageDialog.value = result.msg
             }
         }
+    }
+
+    fun updateBetAmount(input: String){
+        betInfoRepository.updateBetAmount(input)
     }
 
 }

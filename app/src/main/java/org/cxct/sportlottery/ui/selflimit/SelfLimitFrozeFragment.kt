@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.selflimit
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.main.MainActivity
 
+@SuppressLint("SetTextI18n")
 class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel::class),
     View.OnClickListener {
 
@@ -37,7 +39,7 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         viewModel.showToolbar(true)
         viewModel.setToolbarName(getString(R.string.self_limit))
         binding = FragmentSelfLimitFrozeBinding.inflate(inflater, container, false)
@@ -54,17 +56,22 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
     }
 
     private fun resetView() {
-        binding.llSelfLimit.isSelected = false
+        binding.llSelfFrozeLimit.isSelected = false
         binding.tvError.visibility = View.GONE
         binding.btnConfirm.isEnabled = false
     }
 
     private fun initEditText() {
-        binding.etFrozeDay.afterTextChanged {
-            when {
-                it.isNullOrBlank() -> viewModel.setFrozeEditTextError(true)
-                it.toLong() in 1..999 -> viewModel.setFrozeEditTextError(false)
-                else -> viewModel.setFrozeEditTextError(true)
+        binding.etFrozeDay.apply {
+            afterTextChanged {
+                when {
+                    it.isBlank() -> viewModel.setFrozeEditTextError(true)
+                    it.toLong() in 1..999 -> viewModel.setFrozeEditTextError(false)
+                    else -> viewModel.setFrozeEditTextError(true)
+                }
+            }
+            onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+                binding.llSelfFrozeLimit.isSelected = hasFocus
             }
         }
     }
@@ -72,16 +79,16 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
     private fun initView() {
         binding.llImportant.setOnClickListener(this)
         binding.btnConfirm.setOnClickListener(this)
-        binding.tvUsTime.text = "‧"+getString(R.string.text_us_east_time)
+        binding.tvUsTime.text = "‧" + getString(R.string.text_us_east_time)
     }
 
     private fun initObserve() {
         viewModel.isFrozeEditTextError.observe(this.viewLifecycleOwner) { showError ->
             if (showError) {
-                binding.llSelfLimit.isSelected = true
+                binding.llSelfFrozeLimit.isActivated = true
                 binding.tvError.visibility = View.VISIBLE
             } else {
-                binding.llSelfLimit.isSelected = false
+                binding.llSelfFrozeLimit.isActivated = false
                 binding.tvError.visibility = View.GONE
             }
 
@@ -90,15 +97,15 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
     }
 
     private fun submit() {
-        val dialog = CustomAlertDialog(requireContext()).apply {
+        CustomAlertDialog(requireContext()).apply {
             setTitle(getString(R.string.self_limit_confirm))
             setMessage(getString(R.string.self_limit_confirm_content))
             setPositiveButtonText(getString(R.string.btn_confirm))
             setNegativeButtonText(getString(R.string.btn_cancel))
-            setPositiveClickListener(View.OnClickListener {
+            setPositiveClickListener {
                 viewModel.setFroze(binding.etFrozeDay.text.toString().toInt())
                 dismiss()
-            })
+            }
             setNegativeClickListener {
                 dismiss()
             }
@@ -118,7 +125,7 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
                     setNegativeButtonText(null)
                     setCancelable(false)
                     setPositiveButtonText(getString(R.string.btn_confirm))
-                    setPositiveClickListener(View.OnClickListener {
+                    setPositiveClickListener {
                         dismiss()
                         viewModel.doLogoutCleanUser {
                             run {
@@ -128,7 +135,7 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
                                     GameActivity.reStart(requireContext())
                             }
                         }
-                    })
+                    }
                 }
                 dialog.show()
             }
