@@ -339,6 +339,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
         //提款
         tv_withdraw.setOnClickListener {
+            avoidFastDoubleClick()
             viewModel.checkWithdrawSystem()
         }
 

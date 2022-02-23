@@ -41,6 +41,7 @@ open class ThirdGameActivity : WebActivity() {
 
             override fun onCashGet() {
                 if (checkLogin()) {
+                    avoidFastDoubleClick()
                     viewModel.checkWithdrawSystem()
                 }
             }
