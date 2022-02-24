@@ -41,10 +41,7 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
-import org.cxct.sportlottery.ui.common.CustomAlertDialog
-import org.cxct.sportlottery.ui.common.SocketLinearManager
-import org.cxct.sportlottery.ui.common.StatusSheetAdapter
-import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.common.*
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
@@ -309,6 +306,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         view.sport_type_list.apply {
             this.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
 
             this.adapter = gameTypeAdapter
 
@@ -432,6 +430,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private fun setupPlayCategory(view: View) {
         view.game_play_category.apply {
             this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
 
             this.adapter = playCategoryAdapter
 
@@ -454,6 +453,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private fun setupGameRow(view: View) {
         view.game_filter_type_list.apply {
             this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
 
             this.adapter = dateAdapter
 
