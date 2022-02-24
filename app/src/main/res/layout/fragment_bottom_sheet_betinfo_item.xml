@@ -99,8 +99,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:background="@color/colorWhite"
-                android:paddingStart="6dp"
-                android:paddingEnd="6dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="6dp"
                 android:paddingBottom="6dp"
                 android:visibility="gone" >
 
