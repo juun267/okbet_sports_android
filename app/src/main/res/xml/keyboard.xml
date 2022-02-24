@@ -51,7 +51,7 @@
         <Key
             android:codes="@string/keyboard_code_max"
             android:keyEdgeFlags="right"
-            android:keyLabel="MAX" />
+            android:keyLabel="@string/keyboard_max" />
 
         <Key
             android:codes="55"
