@@ -93,11 +93,6 @@
                 layout="@layout/content_bet_info_item"
                 app:parlayOdd="@{parlayOdd}" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/margin_1"
-                android:background="@color/colorWhite4" />
-
             <LinearLayout
                 android:id="@+id/ll_keyboard_bg"
                 android:layout_width="match_parent"
