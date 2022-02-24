@@ -1088,7 +1088,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 if (leagueOdd.matchOdds.isNullOrEmpty()) {
                                     leagueAdapter.data.remove(leagueOdd)
                                 }
-                                //leagueAdapter.notifyItemChanged(index)
                                 leagueAdapter.updateBySocket(index, PAYLOAD_SCORE_CHANGE)
                             }
                         }
@@ -1115,7 +1114,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                     )
                                 } &&
                                 leagueOdd.unfold == FoldState.UNFOLD.code) {
-                                //leagueAdapter.notifyItemChanged(index)
                                 leagueAdapter.updateBySocket(index, PAYLOAD_CLOCK_CHANGE)
                             }
                         }
@@ -1141,7 +1139,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 } &&
                                 leagueOdd.unfold == FoldState.UNFOLD.code
                             ) {
-                                //leagueAdapter.notifyItemChanged(index)
                                 leagueAdapter.updateBySocket(index, PAYLOAD_ODDS_CHANGE)
                             }
                         }
@@ -1176,7 +1173,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             if (leagueOdd.matchOdds.any { matchOdd ->
                                     SocketUpdateUtil.updateOddStatus(matchOdd, matchOddsLockEvent)
                                 } && leagueOdd.unfold == FoldState.UNFOLD.code) {
-                                //leagueAdapter.notifyItemChanged(index)
                                 leagueAdapter.updateBySocket(index, PAYLOAD_ODDS_CHANGE)
 
                             }
@@ -1213,7 +1209,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 } &&
                                 leagueOdd.unfold == FoldState.UNFOLD.code
                             ) {
-                                //leagueAdapter.notifyItemChanged(index)
                                 leagueAdapter.updateBySocket(index, null)
                             }
                         }
@@ -1652,10 +1647,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         playCateName: String,
         betPlayCateNameMap: Map<String?, Map<String?, String?>?>?,
     ) {
-        //[Martin]把Dialog畫面提前開啟 體感上會比較順暢
-//        if(viewModel.betInfoList.value?.peekContent()?.size == 0){
-//            BetInfoCarDialog.launch()
-//        }
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
 
@@ -1693,88 +1684,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             else -> null
         }
     }
-
-
-//    private fun subscribeChannelHallSingleMatchOdds(leagueOdd: LeagueOdd, matchOdd: MatchOdd) {
-//        when (leagueOdd.unfold == FoldState.UNFOLD.code) {
-//            true -> {
-//                subscribeChannelHall(
-//                    leagueOdd.gameType?.key,
-//                    getPlaySelectedCode(),
-//                    matchOdd.matchInfo?.id
-//                )
-//
-//                if (matchOdd.matchInfo?.eps == 1) {
-//                    subscribeChannelHall(
-//                        leagueOdd.gameType?.key,
-//                        PlayCate.EPS.value,
-//                        matchOdd.matchInfo.id
-//                    )
-//                }
-//
-//                matchOdd.quickPlayCateList?.forEach {
-//                    when (it.isSelected) {
-//                        true -> {
-//                            subscribeChannelHall(
-//                                leagueOdd.gameType?.key,
-//                                it.code,
-//                                matchOdd.matchInfo?.id
-//                            )
-//                        }
-//                        false -> {
-//                            unSubscribeChannelHall(
-//                                leagueOdd.gameType?.key,
-//                                it.code,
-//                                matchOdd.matchInfo?.id
-//                            )
-//                        }
-//                    }
-//                }
-//            }
-//
-//            false -> {
-//                unSubscribeChannelHall(
-//                    leagueOdd.gameType?.key,
-//                    getPlayCateMenuCode(),
-//                    matchOdd.matchInfo?.id
-//                )
-//
-//                if (matchOdd.matchInfo?.eps == 1) {
-//                    unSubscribeChannelHall(
-//                        leagueOdd.gameType?.key,
-//                        PlayCate.EPS.value,
-//                        matchOdd.matchInfo.id
-//                    )
-//                }
-//
-//                matchOdd.quickPlayCateList?.forEach {
-//                    unSubscribeChannelHall(
-//                        leagueOdd.gameType?.key,
-//                        it.code,
-//                        matchOdd.matchInfo?.id
-//                    )
-//                }
-//            }
-//        }
-//    }
-//
-//
-//    private fun unSubscribeChannelHallSingleMatchOdds(leagueOdd: LeagueOdd, matchOdd: MatchOdd) {
-//        unSubscribeChannelHall(
-//            leagueOdd.gameType?.key,
-//            getPlaySelectedCode(),
-//            matchOdd.matchInfo?.id
-//        )
-//
-//        if (matchOdd.matchInfo?.eps == 1) {
-//            unSubscribeChannelHall(
-//                leagueOdd.gameType?.key,
-//                PlayCate.EPS.value,
-//                matchOdd.matchInfo.id
-//            )
-//        }
-//    }
-
 
     private fun subscribeChannelHall(leagueOdd: LeagueOdd) {
         leagueOdd.matchOdds.forEach { matchOdd ->

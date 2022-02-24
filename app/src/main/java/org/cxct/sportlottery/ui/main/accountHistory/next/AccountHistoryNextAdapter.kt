@@ -211,7 +211,7 @@ class AccountHistoryNextAdapter(
                 )
                 binding.tvGameTypePlayCate.text = "${GameType.getGameTypeString(binding.tvGameTypePlayCate.context, row.gameType)} $playCateName"
 
-                binding.tvTeamNames.text = "$homeName v $awayName"
+                binding.tvTeamNames.text = String.format(binding.tvTeamNames.context.getString(R.string.match_names_2), homeName, awayName)
 
                 startTime?.let {
                     binding.tvStartTime.text = TimeUtil.timeFormat(it, TimeUtil.YMD_HM_FORMAT)

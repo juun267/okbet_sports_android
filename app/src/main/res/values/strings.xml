@@ -358,6 +358,7 @@
     <string name="play_type">投注玩法：</string>
     <string name="game_odds">盘口赔率：</string>
     <string name="match_names">(主) %s vs %s (客)</string>
+    <string name="match_names_2">主 %s vs %s 客</string>
     <string name="brackets">(%s)</string>
     <string name="bet_item">投注项目 -</string>
     <string name="match_type_row_in_play">滚球</string>
