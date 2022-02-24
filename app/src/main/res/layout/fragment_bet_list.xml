@@ -232,12 +232,13 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_no_data"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:layout_above="@+id/ll_cant_parlay_warn"
                 android:layout_below="@+id/gray_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@color/colorWhite"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <ImageView
                     android:id="@+id/iv_no_data"
