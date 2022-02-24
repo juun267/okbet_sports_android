@@ -320,10 +320,11 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     private fun setupToolbar(view: View) {
-//        根據2022/1/25需求先拔除，確定不要可刪
-        if (args.matchType == MatchType.OTHER) {
-            view.game_toolbar_match_type.text = gameToolbarMatchTypeText(args.matchType)
+        when (args.matchType) {
+            MatchType.OTHER -> view.game_toolbar_match_type.text = gameToolbarMatchTypeText(args.matchType)
+            else -> {}
         }
+
         view.game_toolbar_champion.apply {
             visibility = when (args.matchType) {
                 MatchType.IN_PLAY, MatchType.AT_START -> View.VISIBLE
@@ -793,6 +794,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             game_list.apply {
                                 adapter = countryAdapter.apply {
                                     data = rows
+                                    if (args.matchType == MatchType.PARLAY)
+                                        view?.game_toolbar_match_type?.text = data.firstOrNull()?.name
                                 }
                             }
                         }
@@ -862,6 +865,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         viewModel.countryListSearchResult.observe(this.viewLifecycleOwner) {
             hideLoading()
             countryAdapter.data = it
+            if (args.matchType == MatchType.PARLAY)
+                view?.game_toolbar_match_type?.text = it.firstOrNull()?.name
         }
 
         viewModel.outrightCountryListSearchResult.observe(this.viewLifecycleOwner) {

@@ -16,8 +16,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.settledDetailList.MatchOddsVO
 import org.cxct.sportlottery.network.bet.settledDetailList.ParlayComsDetailVO
 import org.cxct.sportlottery.util.ArithUtil
-import org.cxct.sportlottery.util.setGameStatusColor
-import kotlin.coroutines.EmptyCoroutineContext.plus
 
 class ComboDetailDialog internal constructor(
     private val mContext: Context,
@@ -45,14 +43,13 @@ class ComboDetailDialog internal constructor(
         }
         mDialog.rvComboDetail.layoutManager =
             LinearLayoutManager(mContext, RecyclerView.VERTICAL, false)
-        mDialog.rvComboDetail.isNestedScrollingEnabled = false
         adapter = object : CommonAdapter<ParlayComsDetailVO>(
             mContext,
             R.layout.item_parlay_combo, parlayComsDetailVOs
         ) {
             override fun convert(
                 holder: ViewHolder,
-                t: ParlayComsDetailVO,
+                item: ParlayComsDetailVO,
                 position: Int
             ) {
                 holder.setText(
@@ -61,39 +58,35 @@ class ComboDetailDialog internal constructor(
                 )
                 val tvResult = holder.getView<TextView>(R.id.tvResult)
 
-                when (t.status) {
-                    0 -> {
+                when {
+                    item.winMoney == null -> {
+                        tvResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorGray))
+                        tvResult.text = mContext.getString(R.string.nothing)
+                    }
+
+                    item.winMoney > 0.0 -> {
+                        tvResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreenSea))
+                        tvResult.text = "${mContext.getString(R.string.win)} ${mContext.getString(R.string.plus)}${ArithUtil.toMoneyFormat(item.winMoney)}"
+                    }
+
+                    item.winMoney < 0.0 -> {
                         tvResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorRed))
-                        tvResult.text =
-                            "${mContext.getString(R.string.lose)} ${mContext.getString(R.string.minus)}${ArithUtil.toMoneyFormat(t.winMoney)}"
+                        tvResult.text = "${mContext.getString(R.string.lose)} ${ArithUtil.toMoneyFormat(item.winMoney)}"
                     }
-                    1 -> {
-                        tvResult.setTextColor(
-                            ContextCompat.getColor(
-                                mContext,
-                                R.color.colorGreenSea
-                            )
-                        )
-                        tvResult.text =
-                            "${mContext.getString(R.string.win)} ${mContext.getString(R.string.plus)}${ArithUtil.toMoneyFormat(t.winMoney)}"
-                    }
-                    else -> {
-                        tvResult.setTextColor(
-                            ContextCompat.getColor(
-                                mContext,
-                                R.color.colorGreenSea
-                            )
-                        )
-                        tvResult.text = mContext.getString(R.string.draw)
+
+                    item.winMoney == 0.0 -> {
+                        tvResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorGray))
+                        tvResult.text = mContext.getString(R.string.nothing)
                     }
                 }
+
                 val rvComboDetailItem = holder.getView<RecyclerView>(R.id.rvComboDetailItem)
                 rvComboDetailItem.layoutManager =
                     LinearLayoutManager(mContext, RecyclerView.VERTICAL, false)
                 rvComboDetailItem.isNestedScrollingEnabled = false
                 detailAdapter = object : CommonAdapter<MatchOddsVO>(
                     mContext,
-                    R.layout.item_parlay_combo_detail, t.matchOddsVOList
+                    R.layout.item_parlay_combo_detail, item.matchOddsVOList
                 ) {
                     override fun convert(
                         holder: ViewHolder,
@@ -111,7 +104,7 @@ class ComboDetailDialog internal constructor(
                             R.id.tvContent,
                             matchOdds.playName + " " + matchOdds.spread + " @ " + matchOdds.odds
                         )
-                        if (position + 1 == t.matchOddsVOList.size) {
+                        if (position + 1 == item.matchOddsVOList.size) {
                             holder.getView<View>(R.id.divider2).visibility = View.GONE
                         }
                     }
