@@ -321,9 +321,9 @@
     <string name="suspend">delay</string>
     <string name="uncheck">Chưa xác nhận</string>
     <string name="undone">Chưa thanh toán</string>
-    <string name="win_all">Thắng</string>
+    <string name="win">Thắng</string>
     <string name="win_half">Thắng nửa</string>
-    <string name="lose_all">Thắng</string>
+    <string name="lose">Thắng</string>
     <string name="lose_half">Thua nửa</string>
     <string name="draw">hòa</string>
     <string name="canceled">đã hủy</string>
@@ -1027,4 +1027,6 @@
     <string name="sco_name_first">Cầu Thủ Ghi Bàn Đầu Tiên</string>
     <string name="sco_name_any">Cầu Thủ Ghi Bàn</string>
     <string name="sco_name_last">Cầu Thủ Ghi Bàn Cuối Cùng</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
 </resources>

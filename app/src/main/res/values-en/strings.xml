@@ -343,9 +343,9 @@
     <string name="suspend">Delay</string>
     <string name="uncheck">Unconfirmed</string>
     <string name="undone">Unsettlement</string>
-    <string name="win_all">Win</string>
+    <string name="win">Win</string>
     <string name="win_half">Win a half</string>
-    <string name="lose_all">Lose</string>
+    <string name="lose">Lose</string>
     <string name="lose_half">Lose a half</string>
     <string name="draw">Draw</string>
     <string name="canceled">Canceled</string>
@@ -1001,4 +1001,6 @@
     <string name="sco_name_first">First Goalscorer</string>
     <string name="sco_name_any">Anytime Goalscorer</string>
     <string name="sco_name_last">Last Goalscorer</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
 </resources>
