@@ -243,6 +243,9 @@ class TransactionStatusActivity :
             navigation_transaction_status.trans_number.text = it.toString()
         }
 
+        viewModel.loading.observe(this) {
+            if (it) loading() else hideLoading()
+        }
     }
 
     private fun initServiceButton() {

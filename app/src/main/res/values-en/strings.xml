@@ -343,9 +343,9 @@
     <string name="suspend">Delay</string>
     <string name="uncheck">Unconfirmed</string>
     <string name="undone">Unsettlement</string>
-    <string name="win_all">Win</string>
+    <string name="win">Win</string>
     <string name="win_half">Win a half</string>
-    <string name="lose_all">Lose</string>
+    <string name="lose">Lose</string>
     <string name="lose_half">Lose a half</string>
     <string name="draw">Draw</string>
     <string name="canceled">Canceled</string>
@@ -358,7 +358,7 @@
     <string name="game_match">Match：</string>
     <string name="play_type">Betting method</string>
     <string name="game_odds">Odds</string>
-    <string name="match_names">(Home) % S vs % S (guest)</string>
+    <string name="match_names">(Home) %s vs %s (Away)</string>
     <string name="bet_item">Betting items -</string>
     <string name="match_type_row_in_play">IN-PLAY</string>
     <string name="match_type_row_at_start">SOON</string>
@@ -489,7 +489,7 @@
     <string name="title_weixin">Wechat</string>
     <string name="online_bank">Banking</string>
     <string name="online_juan">JuanCash</string>
-    <string name="online_dispenshing">出款</string>
+    <string name="online_dispenshing">Withdraw</string>
     <string name="online_online_bank">網銀</string>
     <string name="online_gcash">Gcash</string>
     <string name="online_grab">GrabPay</string>
@@ -610,7 +610,7 @@
     <string name="bet_info_all_bet">Total Bets</string>
     <string name="bet_list_delete_all">Delete all</string>
     <string name="bet_list_single_warn">(Fill all individual options with the same amount of bet)</string>
-    <string name="bet_list_single">Single bet</string>
+    <string name="bet_list_single">Singles</string>
     <string name="bet_list_view_more_options">Show all the multiple options</string>
     <string name="bet_list_cant_parlay_warn">Remind if the same match betting items can not be linked for parlay</string>
     <string name="bet_info_odd_content_close">One or more options for the selected bet have been closed</string>
@@ -1002,4 +1002,6 @@
     <string name="sco_name_first">First Goalscorer</string>
     <string name="sco_name_any">Anytime Goalscorer</string>
     <string name="sco_name_last">Last Goalscorer</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
 </resources>

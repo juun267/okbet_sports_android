@@ -1,10 +1,8 @@
 package org.cxct.sportlottery.util
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.Typeface
 import android.text.Editable
-import android.text.Spanned
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
@@ -208,9 +206,9 @@ fun TextView.setStatus(status: Int?) {
         text = when (it) {
             0 -> context.getString(R.string.uncheck) //未确认
             1 -> context.getString(R.string.undone) //未结算
-            2 -> context.getString(R.string.win_all) //全赢
+            2 -> context.getString(R.string.win) //全赢
             3 -> context.getString(R.string.win_half) //赢半
-            4 -> context.getString(R.string.lose_all) //全输
+            4 -> context.getString(R.string.lose) //全输
             5 -> context.getString(R.string.lose_half) //输半
             6 -> context.getString(R.string.draw) //和
             7 -> context.getString(R.string.canceled) //已取消
