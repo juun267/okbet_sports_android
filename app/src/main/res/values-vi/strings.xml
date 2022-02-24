@@ -744,6 +744,7 @@
     <string name="verse">v</string>
     <string name="sum_pass">Cược xiên tổng hợp</string>
     <string name="keyboard_done">Tổng nhận</string>
+    <string name="keyboard_max">Tối đa</string>
     <string name="no_game_description">Chọn biểu tượng ở trên để thêm nó vào "Sự kiện của tôi". Bạn có thể chia nhóm chúng và dễ dàng truy cập vào tất cả các sự kiện mà bạn quan tâm.</string>
     <string name="odds_button_name_first">Thứ nhất</string>
     <string name="odds_button_name_ant">Bất kỳ</string>
