@@ -769,6 +769,7 @@
     <string name="verse">v</string>
     <string name="sum_pass">综合过关</string>
     <string name="keyboard_done">收起</string>
+    <string name="keyboard_max">最大</string>
     <string name="no_game_description">选择上面的图标，会将其添加到”我的赛事”中。 您可以对其进行分组并轻松访问你感兴趣的所有赛事。</string>
     <string name="odds_button_name_first">第一</string>
     <string name="odds_button_name_ant">任何</string>
