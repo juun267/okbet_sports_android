@@ -33,11 +33,11 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener,
 
     fun addFooterAndSubmitList(list: MutableList<Row?>, isLastPage: Boolean) {
         adapterScope.launch {
-
+            val reverseList = list.reversed()
             val items = listOf(DataItem.TitleBar) + when {
-                list.isNullOrEmpty() -> listOf(DataItem.NoData)
-                isLastPage -> list.map { DataItem.Item(it) } + listOf(DataItem.Footer)
-                else -> list.map { DataItem.Item(it) }
+                reverseList.isNullOrEmpty() -> listOf(DataItem.NoData)
+                isLastPage -> reverseList.map { DataItem.Item(it) } + listOf(DataItem.Footer)
+                else -> reverseList.map { DataItem.Item(it) }
             }
 
             withContext(Dispatchers.Main) { //update in main ui thread
