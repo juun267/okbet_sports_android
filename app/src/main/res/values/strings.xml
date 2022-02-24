@@ -1012,4 +1012,9 @@
     <string name="text_combo_title">复式串关</string>
     <string name="text_combo_item">项次</string>
 
+
+    <!-- 注單內球員玩法 -->
+    <string name="sco_name_first">最先进球球员</string>
+    <string name="sco_name_any">任何时间进球球员</string>
+    <string name="sco_name_last">最后进球球员</string>
 </resources>

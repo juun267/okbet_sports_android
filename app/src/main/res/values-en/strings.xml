@@ -575,17 +575,17 @@
     <string name="text_bank_card_modify_success">Edit bank card successfully</string>
     <string name="text_crypto_modify_success">Edit virtual coin successfully</string>
     <string name="text_e_wallet_modify_success">Edit eWallet successfully</string>
-    <string name="bet_info_list_title">Bet</string>
-    <string name="bet_list_title">BET SLIP</string>
+    <string name="bet_info_list_title">Bet Slip</string>
+    <string name="bet_list_title">Bet Slip</string>
     <string name="bet_info_list_game_closed">Trading be closed</string>
     <string name="bet_info_list_game_odds_changed">The odds have changed</string>
     <string name="bet_info_list_bet_quota">Betting amount: </string>
     <string name="bet_receipt_bet_quota">Stake：</string>
-    <string name="bet_info_list_win_quota">Winning amount: </string>
-    <string name="bet_list_win_quota">Est. Winnings：</string>
+    <string name="bet_info_list_win_quota">To win: </string>
+    <string name="bet_list_win_quota">EST winning：</string>
     <string name="bet_info_list_add_more">More selection</string>
-    <string name="bet_info_list_bet">Bet</string>
-    <string name="bet_info_list_odds_change">Accept changes and place bets</string>
+    <string name="bet_info_list_bet">Place bet</string>
+    <string name="bet_info_list_odds_change">Accept changes &#038; bets</string>
     <string name="bet_info_list_hint">Limit：%s</string>
     <string name="bet_info_list_bigger_than_zero">The bet amount must be greater than zero</string>
     <string name="bet_info_list_bigger_than_max_limit">The amount of betting exceeds the betting limit</string>
@@ -604,15 +604,15 @@
     <string name="bet_info_check_maximum_limit">MAX BET</string>
     <string name="bet_info_bet_quota">bet amount</string>
     <string name="bet_info_win_quota">Winning amount:</string>
-    <string name="bet_info_accept_odds_change">Accept changes and place bets</string>
+    <string name="bet_info_accept_odds_change">Accept changes &#038; bets</string>
     <string name="bet_info_add_to_bet_info">Add to bet slip</string>
-    <string name="bet_info_odd_content_changed">One or more options for odds，concede points or score has changed</string>
+    <string name="bet_info_odd_content_changed">One or more options for odds, concede. Points or score has changed</string>
     <string name="bet_info_all_bet">Total Bets</string>
     <string name="bet_list_delete_all">Delete all</string>
     <string name="bet_list_single_warn">(Fill all individual options with the same amount of bet)</string>
     <string name="bet_list_single">Single bet</string>
     <string name="bet_list_view_more_options">Show all the multiple options</string>
-    <string name="bet_list_cant_parlay_warn">Remind if same match, different sports, champions and other betting items can not be linked for parlay</string>
+    <string name="bet_list_cant_parlay_warn">Remind if the same match betting items can not be linked for parlay</string>
     <string name="bet_info_odd_content_close">One or more options for the selected bet have been closed</string>
     <string name="bet_info_remove_closed">Remove disabled options</string>
     <string name="parlay_rule_nc1">%1$s string 1 is a single bet of %1$s options \n must win all options to be returned \n</string>
@@ -772,7 +772,7 @@
     <string name="odds_button_name_first">Fist</string>
     <string name="odds_button_name_ant">Any</string>
     <string name="odds_button_name_last">Last</string>
-    <string name="bet_succeeded">Your bet to be placed successfully</string>
+    <string name="bet_succeeded">You have been successful bets</string>
     <string name="mix_bet_list">Comprehensive bets</string>
     <string name="credit_bet_record_time">Period</string>
     <string name="credit_bet_amount_all">Total line of credit</string>
@@ -913,7 +913,7 @@
     <string name="commission_example">i.g.</string>
     <string name="bet_slip">Bet slip</string>
     <string name="fast_bet_open_desc">Enable Quick Bet</string>
-    <string name="bet_list_empty">Your Bet Slip is currently empty.</string>
+    <string name="bet_list_empty">Your bet slip is currently empty</string>
     <string name="bank_list_not_bink">You do not have a %1$s bound</string>
     <string name="bank_list_add">Add %1$s</string>
     <string name="bank_list_bank">bank card</string>
@@ -996,4 +996,9 @@
     <string name="submit_success">submitted successfully</string>
     <string name="text_combo_title">Parlay</string>
     <string name="text_combo_item">item</string>
+
+    <!-- 注單內球員玩法 -->
+    <string name="sco_name_first">First Goalscorer</string>
+    <string name="sco_name_any">Anytime Goalscorer</string>
+    <string name="sco_name_last">Last Goalscorer</string>
 </resources>
