@@ -104,7 +104,7 @@ class ComboDetailDialog internal constructor(
                             R.id.tvContent,
                             matchOdds.playName + " " + matchOdds.spread + " @ " + matchOdds.odds
                         )
-                        if (position + 1 == item.matchOddsVOList.size) {
+                        if (position + 1 == item.matchOddsVOList?.size ?: 0) {
                             holder.getView<View>(R.id.divider2).visibility = View.GONE
                         }
                     }
