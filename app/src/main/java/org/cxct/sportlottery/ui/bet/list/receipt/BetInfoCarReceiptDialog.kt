@@ -101,7 +101,7 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
     }
 
     private fun initOnclick() {
-        btn_done.text = resources.getString(R.string.complete).toUpperCase()//設計圖是大寫
+        btn_done.text = resources.getString(R.string.complete)
         btn_done.setOnClickListener {
             this@BetInfoCarReceiptDialog.dismiss()
         }

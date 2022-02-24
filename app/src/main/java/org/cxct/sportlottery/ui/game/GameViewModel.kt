@@ -209,7 +209,7 @@ class GameViewModel(
     val showBetUpperLimit = betInfoRepository.showBetUpperLimit
 
     private val _messageListResult = MutableLiveData<Event<MessageListResult?>>()
-    private val _curMatchType = MutableLiveData<MatchType?>()
+    val _curMatchType = MutableLiveData<MatchType?>()
     private val _curChildMatchType = MutableLiveData<MatchType?>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _sportCouponMenuResult = MutableLiveData<Event<SportCouponMenuResult>>()
@@ -406,11 +406,7 @@ class GameViewModel(
         _curChildMatchType.value = childMatchType
         _oddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
-
-        if (curMatchType.value == null) {
-            _curMatchType.value = MatchType.OTHER
-        }
-        if (childMatchType == MatchType.OTHER_OUTRIGHT) {
+        if (childMatchType == MatchType.OTHER_OUTRIGHT || childMatchType == MatchType.OTHER) {
             getGameHallList(
                 matchType = childMatchType,
                 isReloadDate = true,
@@ -553,6 +549,7 @@ class GameViewModel(
             }?.let { result ->
                 if (result.success) {
                     specialMenuData = result.sportQueryData
+                    sportQueryData = result.sportQueryData
                     if (specialMenuData?.items?.isNotEmpty() == true) {
                         getLeagueList(
                             specialMenuData?.items?.getOrNull(0)?.code ?: "",
@@ -859,7 +856,6 @@ class GameViewModel(
                 isIncrement = false
             )
             //getGameHallList(matchType, true, isReloadPlayCate = true)
-
         } else {
             getGameHallList(matchType, true, isReloadPlayCate = true)
         }
@@ -1502,18 +1498,35 @@ class GameViewModel(
     }
 
     private fun getPlayCategory(matchType: MatchType) {
-        sportQueryData?.let { sportQueryData ->
-            sportQueryData.items?.find { item ->
-                item.code == getSportSelected(matchType)?.code
-            }?.play?.filter { play ->
-                play.num != 0
-            }?.let { playList ->
-                playList.forEach {
-                    it.isSelected = (it == playList.firstOrNull())
-                }
+        if(matchType == MatchType.OTHER){
+            sportQueryData?.let { sportQueryData ->
+                sportQueryData.items?.find { item ->
+                    item.code == getSportSelectedCode(matchType)
+                }?.play?.filter { play ->
+                    play.num != 0
+                }?.let { playList ->
+                    playList.forEach {
+                        it.isSelected = (it == playList.firstOrNull())
+                    }
 
-                _playList.value = playList
-                _playCate.value = null
+                    _playList.value = playList
+                    _playCate.value = null
+                }
+            }
+        }else{
+            sportQueryData?.let { sportQueryData ->
+                sportQueryData.items?.find { item ->
+                    item.code == getSportSelected(matchType)?.code
+                }?.play?.filter { play ->
+                    play.num != 0
+                }?.let { playList ->
+                    playList.forEach {
+                        it.isSelected = (it == playList.firstOrNull())
+                    }
+
+                    _playList.value = playList
+                    _playCate.value = null
+                }
             }
         }
     }

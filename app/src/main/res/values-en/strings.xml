@@ -584,7 +584,7 @@
     <string name="bet_info_list_win_quota">To win: </string>
     <string name="bet_list_win_quota">EST winning：</string>
     <string name="bet_info_list_add_more">More selection</string>
-    <string name="bet_info_list_bet">Bet</string>
+    <string name="bet_info_list_bet">Place bet</string>
     <string name="bet_info_list_odds_change">Accept changes &#038; bets</string>
     <string name="bet_info_list_hint">Limit：%s</string>
     <string name="bet_info_list_bigger_than_zero">The bet amount must be greater than zero</string>
