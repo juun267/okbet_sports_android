@@ -99,7 +99,7 @@
     <string name="dialog_security_hint">Chào mừng bạn trở lại trò chơi. Vui lòng hoàn tất xác minh để bảo mật tài khoản.</string>
     <string name="dialog_security_title">Nhập mã xác nhận.</string>
     <string name="dialog_security_error">Bạn đã nhập một mã xác minh sai.</string>
-    <string name="hint_security_code"><font size="12">Vui lòng nhập mã xác nhận.</font></string>
+    <string name="hint_security_code"><font size="12">(Vui lòng nhập mã xác nhận.)</font></string>
     <string name="dialog_security_need_phone">Thông tin cá nhân của bạn chưa hoàn chỉnh, vui lòng liên hệ với bộ phận chăm sóc khách hàng.</string>
     <string name="btn_agreement">Thỏa thuận mở tài khoản</string>
     <string name="have_account">bạn đã có tài khoản?</string>
@@ -586,11 +586,11 @@
     <string name="bet_info_add_to_bet_info">Thêm vào đơn ca cược</string>
     <string name="bet_info_odd_content_changed">Tỷ lệ cược của một hoặc nhiều lựa chọn, điểm chấp hoặc điểm số đã được thay đổi</string>
     <string name="bet_info_all_bet">Tất cả các cược</string>
-    <string name="bet_list_delete_all">XÓA TẤT CẢ</string>
+    <string name="bet_list_delete_all">Xóa tất cả</string>
     <string name="bet_list_single_warn">(Có thể sử dụng cùng số tiền đặt cược để thực hiện tất cả các lựa chọn riêng lẻ)</string>
     <string name="bet_list_single">Đơn cược</string>
     <string name="bet_list_view_more_options">Xem tất cả các tùy chọn</string>
-    <string name="bet_info_odd_content_close">một hoặc nhiều tùy chọn của cá cược đã bị đóng</string>
+    <string name="bet_info_odd_content_close">Một hoặc nhiều tùy chọn của cá cược đã bị đóng</string>
     <string name="bet_info_remove_closed">Xóa các tùy chọn đã đóng</string>
     <string name="parlay_rule_nc1">%1$s chuỗi 1 là một cược đơn bao gồm%1$s tùy chọn \ nTất cả các tùy chọn phải thắng để được hoàn lại tiền \ nKhi có nhiều tùy chọn sự kiện hơn,%1$s chuỗi 1 có thể được kết hợp thành nhiều chuỗi kết nối, ví dụ:%2$s đối sánh có thể được hoán vị và kết hợp để tạo thành%2$s%1$s chuỗi 1</string>
     <string name="parlay_rule_at_least">Ít nhất 2 lựa chọn giành chiến thắng để đảm bảo thanh toán</string>
@@ -1017,9 +1017,6 @@
     <string name="self_limit_bet_impotent">Bạn có thể sửa đổi giới hạn đặt cược của mình bất cứ lúc nào. Sửa đổi sẽ có hiệu lực sau khi gửi yêu cầu.</string>
     <string name="text_chose_language">Chọn ngôn ngữ của bạn</string>
     <!-- 複式串關詳情 -->
-    <string name="text_combo_title">Cược xâu</string>
-    <string name="text_combo_item">Mục</string>
-    <!-- 複式串關詳情 -->
     <string name="password_hint"><font size="12">(Vui lòng nhập tài khoản hội viên của bạn)</font></string>
     <string name="account_hint"><font size="12">(Vui lòng nhập mật khẩu đăng nhập của bạn)</font></string>
     <string name="submit_success">gửi thành công</string>
@@ -1030,4 +1027,11 @@
     <string name="text_search_no_result">Không có kết quả nào</string>
     <string name="text_search_try_another">Vui lòng thử một từ khóa khác.</string>
     <!-- 搜尋 -->
+    <string name="text_combo_title">Cược xâu</string>
+    <string name="text_combo_item">Mục</string>
+
+    <!-- 注單內球員玩法 -->
+    <string name="sco_name_first">Cầu Thủ Ghi Bàn Đầu Tiên</string>
+    <string name="sco_name_any">Cầu Thủ Ghi Bàn</string>
+    <string name="sco_name_last">Cầu Thủ Ghi Bàn Cuối Cùng</string>
 </resources>

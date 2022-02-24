@@ -82,7 +82,7 @@ object ParlayLimitUtil {
     }
 
     private fun getTotalHkOdds(oddsList: List<BigDecimal?>, comList: List<IntArray>): BigDecimal {
-        var totalOdds = BigDecimal.ZERO
+        var totalOdds = BigDecimal.ONE
         for (oddsIndexArray in comList) {
             var odd = BigDecimal.ONE
             for (index in oddsIndexArray) {

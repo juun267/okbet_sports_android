@@ -258,10 +258,14 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         override fun onTabSelected(tab: TabLayout.Tab?) {
             when (tab?.text.toString()) { //固定寫死
                 getString(R.string.game_tab_league_odd) -> { //賽事
+                    if (args.matchType == MatchType.OTHER) {
+                        game_play_category.visibility = View.VISIBLE
+                    }
                     viewModel.switchChildMatchType(childMatchType = args.matchType)
                 }
                 getString(R.string.game_tab_outright_odd) -> { //冠軍
                     if (args.matchType == MatchType.OTHER) {
+                        game_play_category.visibility = View.GONE
                         viewModel.switchChildMatchType(childMatchType = MatchType.OTHER_OUTRIGHT)
                     } else {
                         viewModel.switchChildMatchType(childMatchType = MatchType.OUTRIGHT)
@@ -439,7 +443,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             )
 
             visibility =
-                if (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START) {
+                if (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START || args.matchType == MatchType.OTHER) {
                     View.VISIBLE
                 } else {
                     View.GONE
@@ -1386,6 +1390,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 game_toolbar_champion.visibility = if (num != 0) View.VISIBLE else View.GONE
                 game_play_category.visibility = if (num != 0) View.VISIBLE else View.GONE
             }
+        }else{
+            updateSportBackground(gameTypeList.find { it.isSelected })
         }
 
     }

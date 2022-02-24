@@ -118,7 +118,7 @@ class TypeSCOAdapter(
                 setupOdd(fOdd, oddsType)
                 setupOddState(this, fOdd)
                 setOnClickListener {
-                    fOdd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
+                    fOdd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail, context.getString(R.string.sco_name_first)) }
                 }
                 tv_name.text = context.getString(R.string.odds_button_name_first)
                 tv_spread.text = ""
@@ -128,7 +128,7 @@ class TypeSCOAdapter(
                 setupOdd(aOdd, oddsType)
                 setupOddState(this, aOdd)
                 setOnClickListener {
-                    aOdd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
+                    aOdd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail, context.getString(R.string.sco_name_any)) }
                 }
                 tv_name.text = context.getString(R.string.odds_button_name_ant)
                 tv_spread.text = ""
@@ -138,7 +138,7 @@ class TypeSCOAdapter(
                 setupOdd(lOdd, oddsType)
                 setupOddState(this, lOdd)
                 setOnClickListener {
-                    lOdd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
+                    lOdd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail, context.getString(R.string.sco_name_last)) }
                 }
                 tv_name.text = context.getString(R.string.odds_button_name_last)
                 tv_spread.text = ""

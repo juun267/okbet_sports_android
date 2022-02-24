@@ -957,6 +957,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     getChildAt(0) as RecyclerView,
                     OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL
                 )
+                setCurrentItem(oddsDetail.oddArrayList.indexOf(onOddClickListener.clickOdd), false)
             }
 
             itemView.findViewById<IndicatorView>(R.id.idv_eps).setupWithViewPager2(vpEps)

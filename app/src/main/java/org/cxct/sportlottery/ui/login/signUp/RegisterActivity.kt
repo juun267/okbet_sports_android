@@ -10,7 +10,10 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.LinkMovementMethod
 import android.text.method.PasswordTransformationMethod
 import android.text.style.ClickableSpan
+import android.util.Log
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import cn.jpush.android.api.JPushInterface
@@ -202,7 +205,8 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun setupAddress() {
-        binding.etAddress.visibility = if (sConfigData?.enableAddress == FLAG_OPEN) View.VISIBLE else View.GONE
+        binding.etAddress.visibility =
+            if (sConfigData?.enableAddress == FLAG_OPEN) View.VISIBLE else View.GONE
     }
 
     private fun setupWeChat() {
@@ -264,26 +268,6 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             viewModel.checkAgreement(binding.cbAgreement.isChecked)
         }
     }
-/*
-
-    private val inviteCode by lazy { binding.eetRecommendCode.text.toString()}
-    private val userName by lazy { binding.eetMemberAccount.text.toString()}
-    private val loginPassword by lazy { binding.eetLoginPassword.text.toString()}
-    private val confirmPassword by lazy { binding.eetConfirmPassword.text.toString()}
-    private val fullName by lazy { binding.eetFullName.text.toString()}
-    private val fundPwd by lazy { binding.eetWithdrawalPwd.text.toString()}
-    private val qq by lazy { binding.eetQq.text.toString()}
-    private val phone by lazy { binding.eetPhone.text.toString()}
-    private val email by lazy { binding.eetMail.text.toString()}
-    private val weChat by lazy { binding.eetWeChat.text.toString()}
-    private val zalo by lazy { binding.eetZalo.text.toString()}
-    private val facebook by lazy { binding.eetFacebook.text.toString()}
-    private val whatsApp by lazy { binding.eetWhatsApp.text.toString()}
-    private val telegram by lazy { binding.eetTelegram.text.toString()}
-    private val smsCode by lazy { binding.eetSmsValidCode.text.toString()}
-    private val validCode by lazy { binding.eetVerificationCode.text.toString()}
-    private val agreementChecked by lazy { binding.cbAgreement.isChecked }
-*/
 
     private fun btnRegisterEnable() {
         binding.apply {
@@ -310,53 +294,93 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         }
     }
 
-    private fun setupRegisterButton() {
+    private fun EditText.setActionListener(isRegisterEnable: Boolean) {
+        this.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId and EditorInfo.IME_MASK_ACTION != 0 && isRegisterEnable) {
+                binding.btnRegister.performClick()
+                true
+            } else {
+                false
+            }
+        }
+    }
 
+    private fun setupRegisterButton() {
         binding.apply {
-            eetRecommendCode.afterTextChanged {
-                btnRegisterEnable()
+            eetRecommendCode.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
             }
-            eetMemberAccount.afterTextChanged {
-                btnRegisterEnable()
+            eetMemberAccount.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
             }
-            eetConfirmPassword.afterTextChanged {
-                btnRegisterEnable()
+            eetConfirmPassword.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
             }
-            eetFullName.afterTextChanged {
-                btnRegisterEnable()
+            eetFullName.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
             }
-            eetWithdrawalPwd.afterTextChanged {
-                btnRegisterEnable()
+            eetWithdrawalPwd.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
             }
-            eetQq.afterTextChanged {
-                btnRegisterEnable()
+            eetQq.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
             }
-            eetPhone.afterTextChanged {
-                btnRegisterEnable()
+            eetPhone.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
             }
-            eetMail.afterTextChanged {
-                btnRegisterEnable()
+            eetMail.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
             }
-            eetWeChat.afterTextChanged {
-                btnRegisterEnable()
+            eetWeChat.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
             }
-            eetZalo.afterTextChanged {
-                btnRegisterEnable()
+            eetZalo.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
             }
-            eetFacebook.afterTextChanged {
-                btnRegisterEnable()
+            eetFacebook.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
             }
-            eetWhatsApp.afterTextChanged {
-                btnRegisterEnable()
+            eetWhatsApp.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
             }
-            eetTelegram.afterTextChanged {
-                btnRegisterEnable()
+            eetTelegram.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
             }
-            eetSmsValidCode.afterTextChanged {
-                btnRegisterEnable()
+            eetSmsValidCode.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
             }
-            eetVerificationCode.afterTextChanged {
-                btnRegisterEnable()
+            eetVerificationCode.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
             }
             cbAgreement.setOnCheckedChangeListener { _, _ ->
                 btnRegisterEnable()
@@ -364,6 +388,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         }
 
         binding.btnRegister.setOnClickListener {
+            Log.e(">>>", "btnRegister onclicked")
             val deviceSn = JPushInterface.getRegistrationID(applicationContext)
             binding.apply {
                 viewModel.registerSubmit(
@@ -421,6 +446,12 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun initObserve() {
+
+        setEditTextIme(binding.btnRegister.isEnabled)
+        viewModel.registerEnable.observe(this) {
+            Log.e(">>>", "registerEnable = $it")
+            setEditTextIme(it)
+        }
 
         viewModel.registerResult.observe(this) {
             updateUiWithResult(it)
@@ -495,6 +526,28 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             }
         }
 
+    }
+
+    //當所有值都有填，按下enter時，自動點擊註冊鈕
+    private fun setEditTextIme(registerEnable: Boolean) {
+        binding.apply {
+            eetRecommendCode.setActionListener(registerEnable)
+            eetMemberAccount.setActionListener(registerEnable)
+            eetLoginPassword.setActionListener(registerEnable)
+            eetConfirmPassword.setActionListener(registerEnable)
+            eetFullName.setActionListener(registerEnable)
+            eetWithdrawalPwd.setActionListener(registerEnable)
+            eetQq.setActionListener(registerEnable)
+            eetPhone.setActionListener(registerEnable)
+            eetMail.setActionListener(registerEnable)
+            eetWeChat.setActionListener(registerEnable)
+            eetZalo.setActionListener(registerEnable)
+            eetFacebook.setActionListener(registerEnable)
+            eetWhatsApp.setActionListener(registerEnable)
+            eetTelegram.setActionListener(registerEnable)
+            eetSmsValidCode.setActionListener(registerEnable)
+            eetVerificationCode.setActionListener(registerEnable)
+        }
     }
 
     private fun updateUiWithResult(loginResult: LoginResult) {
