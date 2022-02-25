@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.text.*
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.LinkMovementMethod
@@ -388,7 +389,10 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         }
 
         binding.btnRegister.setOnClickListener {
-            Log.e(">>>", "btnRegister onclicked")
+            Log.i(">>>", "btnRegister onclicked")
+            val deviceId = Settings.Secure.getString(
+                applicationContext.contentResolver, Settings.Secure.ANDROID_ID
+            )
             val deviceSn = JPushInterface.getRegistrationID(applicationContext)
             binding.apply {
                 viewModel.registerSubmit(
@@ -410,7 +414,8 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     eetSmsValidCode.text.toString(),
                     eetVerificationCode.text.toString(),
                     cbAgreement.isChecked,
-                    deviceSn
+                    deviceSn,
+                    deviceId
                 )
             }
         }
