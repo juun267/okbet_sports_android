@@ -115,8 +115,8 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
             }
         }
 //        //default show page
-//        if (mDefaultShowPage == BEEN_READ) btn_read_letters.performClick()
-//        else btn_unread_letters.performClick()
+        if (mDefaultShowPage == BEEN_READ) custom_tab_layout.selectTab(0)
+        else custom_tab_layout.selectTab(1)
     }
 
     private fun initLiveData() {
