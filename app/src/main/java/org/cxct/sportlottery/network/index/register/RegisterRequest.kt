@@ -19,5 +19,6 @@ data class RegisterRequest(
     var zalo: String? = null,
     var facebook: String? = null,
     var whatsapp: String? = null,
-    var telegram: String? = null
+    var telegram: String? = null,
+    var loginEnvInfo:String? = null
 )
