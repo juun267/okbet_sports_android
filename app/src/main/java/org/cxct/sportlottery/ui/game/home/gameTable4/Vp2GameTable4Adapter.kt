@@ -150,6 +150,7 @@ class Vp2GameTable4Adapter (
                     matchOdd.matchInfo?.statusName18n = statusValue
                     matchOdd.matchInfo?.homeCards = matchStatusCO.homeCards
                     matchOdd.matchInfo?.awayCards = matchStatusCO.awayCards
+                    matchOdd.matchInfo?.scoreStatus = matchStatusCO.status
                     Handler(Looper.getMainLooper()).post {
                         notifyItemChanged(index, null)
                     }
@@ -403,6 +404,14 @@ class Vp2GameTable4Adapter (
                                 tv_game_score_home.text = "$homeScore"
                                 tv_game_score_away.text = "$awayScore"
                             }
+                        }
+                        if(data?.scoreStatus == 999){
+                            tv_game_score_home.visibility = View.INVISIBLE
+                            tv_game_score_away.visibility = View.INVISIBLE
+                            tv_game_total_score_home_center.visibility = View.INVISIBLE
+                            tv_game_score_home_center.visibility = View.INVISIBLE
+                            tv_game_total_score_away_center.visibility = View.INVISIBLE
+                            tv_game_score_away_center.visibility = View.INVISIBLE
                         }
                     }
                     MatchType.AT_START -> {

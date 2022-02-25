@@ -605,6 +605,14 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
             else -> {
             }
         }
+        if(event.matchStatusCO?.status == 999){
+            tv_home_score.visibility = View.VISIBLE
+            tv_away_score.visibility = View.VISIBLE
+            tv_home_score_total.visibility = View.VISIBLE
+            tv_away_score_total.visibility = View.VISIBLE
+            tv_home_score_live.visibility = View.VISIBLE
+            tv_away_score_live.visibility = View.VISIBLE
+        }
     }
 
     private fun setCardText(event: MatchStatusChangeEvent) {
