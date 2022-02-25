@@ -34,10 +34,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="14dp"
+        android:padding="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ivLogo"
-        app:layout_constraintVertical_bias="0"
-        android:padding="24dp">
+        app:layout_constraintVertical_bias="0">
 
         <View
             android:id="@+id/view"
@@ -73,60 +73,73 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvVerifyTitle" />
 
-        <LinearLayout
-            android:id="@+id/block_valid_code"
+        <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            android:scrollbars="none"
             android:layout_marginTop="24dp"
-            android:gravity="center"
-            android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvVerifySubTitle">
 
-            <org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
-                android:id="@+id/et_verification_code"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:iconSignifier="@drawable/ic_login_verify"
-                app:singleText="@string/verification_code">
-
-                <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
-                    android:id="@+id/eet_verification_code"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/hint_security_code"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:maxLength="15"
-                    android:maxLines="1"
-                    android:textSize="@dimen/textSize14sp" />
-
-            </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
-
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="56dp"
-                android:layout_marginStart="10dp"
-                android:background="@color/transparent"
+                android:id="@+id/block_valid_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:minWidth="80dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvVerifySubTitle">
 
-                <Button
-                    android:id="@+id/btn_send_sms"
+                <org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
+                    android:id="@+id/et_verification_code"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:iconSignifier="@drawable/ic_login_verify"
+                    app:singleText="@string/verification_code">
+
+                    <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
+                        android:id="@+id/eet_verification_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/hint_security_code"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:maxLength="15"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:textSize="@dimen/textSize14sp" />
+
+                </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="46dp"
-                    android:background="@drawable/btn_send_sms_rd8"
-                    android:minWidth="100dp"
-                    android:minHeight="46dp"
-                    android:text="@string/login_phone_verify_get_code"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/textSize14sp" />
+                    android:layout_height="56dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/transparent"
+                    android:gravity="top"
+                    android:minWidth="80dp"
+                    android:orientation="horizontal">
 
+                    <Button
+                        android:id="@+id/btn_send_sms"
+                        android:layout_width="wrap_content"
+                        android:layout_height="46dp"
+                        android:background="@drawable/btn_send_sms_rd8"
+                        android:minWidth="100dp"
+                        android:minHeight="46dp"
+                        android:text="@string/login_phone_verify_get_code"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/textSize14sp" />
+
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
+
+        </ScrollView>
 
         <Button
             android:id="@+id/btn_submit"
@@ -142,7 +155,7 @@
             android:textColor="@android:color/white"
             android:textSize="@dimen/textSize16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/block_valid_code" />
+            app:layout_constraintTop_toBottomOf="@+id/scrollView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -226,17 +226,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         betListRefactorAdapter =
             BetListRefactorAdapter(object : BetListRefactorAdapter.OnItemClickListener {
                 override fun onDeleteClick(oddsId: String, currentItemCount: Int) {
-                    isAutoCloseWhenNoData = true
+                    isAutoCloseWhenNoData = betListRefactorAdapter?.betList?.size?:0 <= 1
                     viewModel.removeBetInfoItem(oddsId)
                 }
 
                 override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd, position: Int, max: Long) {
                     keyboard?.showKeyboard(editText, position, max)
                 }
-
-//                override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd) {
-//                    keyboard?.showKeyboard(editText)
-//                }
 
                 override fun onShowParlayKeyboard(
                     editText: EditText,

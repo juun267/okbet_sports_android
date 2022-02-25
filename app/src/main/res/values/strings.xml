@@ -342,9 +342,9 @@
     <string name="suspend">延期</string>
     <string name="uncheck">未确认</string>
     <string name="undone">未结算</string>
-    <string name="win_all">赢</string>
+    <string name="win">赢</string>
     <string name="win_half">赢半</string>
-    <string name="lose_all">输</string>
+    <string name="lose">输</string>
     <string name="lose_half">输半</string>
     <string name="draw">和</string>
     <string name="canceled">已取消</string>
@@ -358,6 +358,7 @@
     <string name="play_type">投注玩法：</string>
     <string name="game_odds">盘口赔率：</string>
     <string name="match_names">(主) %s vs %s (客)</string>
+    <string name="match_names_2">主 %s vs %s 客</string>
     <string name="brackets">(%s)</string>
     <string name="bet_item">投注项目 -</string>
     <string name="match_type_row_in_play">滚球</string>
@@ -769,6 +770,7 @@
     <string name="verse">v</string>
     <string name="sum_pass">综合过关</string>
     <string name="keyboard_done">收起</string>
+    <string name="keyboard_max">最大</string>
     <string name="no_game_description">选择上面的图标，会将其添加到”我的赛事”中。 您可以对其进行分组并轻松访问你感兴趣的所有赛事。</string>
     <string name="odds_button_name_first">第一</string>
     <string name="odds_button_name_ant">任何</string>
@@ -1022,4 +1024,6 @@
     <string name="sco_name_first">最先进球球员</string>
     <string name="sco_name_any">任何时间进球球员</string>
     <string name="sco_name_last">最后进球球员</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
 </resources>

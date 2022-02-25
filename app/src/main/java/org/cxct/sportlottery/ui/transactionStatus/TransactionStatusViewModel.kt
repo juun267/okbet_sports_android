@@ -58,11 +58,15 @@ class TransactionStatusViewModel(
     //獲取系統公告
     fun getAnnouncement() {
         if (isLogin.value == true) {
+            loading()
             viewModelScope.launch {
                 doNetwork(androidContext) {
                     val typeList = arrayOf(1)
                     OneBoSportApi.messageService.getPromoteNotice(typeList)
-                }?.let { result -> _messageListResult.postValue(result) }
+                }?.let { result ->
+                    _messageListResult.postValue(result)
+                    hideLoading()
+                }
             }
         } else {
             _messageListResult.value = null
@@ -89,7 +93,6 @@ class TransactionStatusViewModel(
                 OneBoSportApi.betService.getBetList(betListRequest)
             }?.let { result ->
                 betListRequesting = false
-                hideLoading()
                 if (result.success) {
                     requestCount = 0
                     val rowList =
@@ -112,6 +115,8 @@ class TransactionStatusViewModel(
                         _responseFailed.postValue(true)
                     }
                 }
+
+                hideLoading()
             }
         }
     }

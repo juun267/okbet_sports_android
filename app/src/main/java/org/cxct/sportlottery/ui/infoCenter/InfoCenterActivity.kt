@@ -39,7 +39,7 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
                     true -> {
                         visibility = View.VISIBLE
                         animate().alpha(1f).setDuration(1000).setListener(null)
-                            when (btn_read_letters.isChecked) {
+                            when (custom_tab_layout.selectedTabPosition == 0) {
                                 true -> viewModel.getUserMsgList(false, adapter.data.size, InfoCenterViewModel.DataType.READ)
                                 false -> viewModel.getUserMsgList(false, adapter.data.size, InfoCenterViewModel.DataType.UNREAD)
                             }
@@ -96,25 +96,27 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
             rv_data.smoothScrollToPosition(0)
         }
 
-        btn_read_letters.setOnClickListener {
-            adapter.data = mutableListOf()//清空資料
-            viewModel.getMsgCount(MsgType.NOTICE_UNREAD)//未讀資料比數
-            viewModel.getUserMsgList(dataType = InfoCenterViewModel.DataType.READ)//已讀
-            currentPage = BEEN_READ
-            iv_scroll_to_top.visibility = View.INVISIBLE
-
+        custom_tab_layout.setCustomTabSelectedListener { position ->
+            when(position) {
+                0 -> {
+                    adapter.data = mutableListOf()//清空資料
+                    viewModel.getMsgCount(MsgType.NOTICE_UNREAD)//未讀資料比數
+                    viewModel.getUserMsgList(dataType = InfoCenterViewModel.DataType.READ)//已讀
+                    currentPage = BEEN_READ
+                    iv_scroll_to_top.visibility = View.INVISIBLE
+                }
+                1 -> {
+                    adapter.data = mutableListOf()//清空資料
+                    viewModel.getMsgCount(MsgType.NOTICE_READED)//已讀資料筆數
+                    viewModel.getUserMsgList(dataType = InfoCenterViewModel.DataType.UNREAD)//未讀
+                    currentPage = YET_READ
+                    iv_scroll_to_top.visibility = View.INVISIBLE
+                }
+            }
         }
-        btn_unread_letters.setOnClickListener {
-            adapter.data = mutableListOf()//清空資料
-            viewModel.getMsgCount(MsgType.NOTICE_READED)//已讀資料筆數
-            viewModel.getUserMsgList(dataType = InfoCenterViewModel.DataType.UNREAD)//未讀
-            currentPage = YET_READ
-            iv_scroll_to_top.visibility = View.INVISIBLE
-        }
-
-        //default show page
-        if (mDefaultShowPage == BEEN_READ) btn_read_letters.performClick()
-        else btn_unread_letters.performClick()
+//        //default show page
+        if (mDefaultShowPage == BEEN_READ) custom_tab_layout.selectTab(0)
+        else custom_tab_layout.selectTab(1)
     }
 
     private fun initLiveData() {
@@ -137,7 +139,7 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
         })
         //已讀總筆數
         viewModel.totalReadMsgCount.observe(this@InfoCenterActivity, Observer {
-            btn_read_letters.text = String.format(resources.getString(R.string.inbox), it)
+            custom_tab_layout.firstTabText = String.format(resources.getString(R.string.inbox), it)
         })
         //未讀訊息清單
         viewModel.userUnreadMsgList.observe(this@InfoCenterActivity, Observer {
@@ -157,11 +159,12 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
             viewModel.getResult()
         })
         //未讀總筆數
-        viewModel.totalUnreadMsgCount.observe(this@InfoCenterActivity, {
-            btn_unread_letters.text = String.format(resources.getString(R.string.unread_letters), it)
-        })
+        viewModel.totalUnreadMsgCount.observe(this@InfoCenterActivity) {
+            custom_tab_layout.secondTabText =
+                String.format(resources.getString(R.string.unread_letters), it)
+        }
         //Loading
-        viewModel.isLoading.observe(this, {
+        viewModel.isLoading.observe(this) {
             if (it) {
                 mNowLoading = it
                 loading()
@@ -169,7 +172,7 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
                 mNowLoading = it
                 hideLoading()
             }
-        })
+        }
     }
 
     private fun initRecyclerView() {

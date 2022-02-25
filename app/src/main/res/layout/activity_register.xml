@@ -116,7 +116,6 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:text="cheryl04"
                     android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
@@ -139,7 +138,6 @@
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
                     android:inputType="textPassword"
-                    android:text="test123"
                     android:maxLines="1"
                     android:textSize="@dimen/textSize14sp" />
 

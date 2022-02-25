@@ -9,6 +9,9 @@ import android.view.View
 import androidx.lifecycle.Observer
 import cn.jpush.android.api.JPushInterface
 import com.bumptech.glide.Glide
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityLoginBinding
@@ -34,6 +37,8 @@ import org.cxct.sportlottery.widget.boundsEditText.SimpleTextChangedWatcher
 
 
 class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
+
+    private val loginScope = CoroutineScope(Dispatchers.Main)
 
     private lateinit var binding: ActivityLoginBinding
     companion object {
@@ -227,7 +232,9 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         })
 
         viewModel.loginResult.observe(this, Observer {
-            updateUiWithResult(it)
+            loginScope.launch {
+                updateUiWithResult(it)
+            }
         })
 
         viewModel.validCodeResult.observe(this, Observer {
@@ -235,11 +242,26 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         })
     }
 
-    private fun updateUiWithResult(loginResult: LoginResult) {
+    private suspend fun updateUiWithResult(loginResult: LoginResult) {
         hideLoading()
         if (loginResult.success) {
             if(loginResult.loginData?.deviceValidateStatus == 0){
-                startActivity(Intent(this@LoginActivity, PhoneVerifyActivity::class.java))
+                if (viewModel.getUserPhone().isNullOrEmpty()) {
+                    val errorMsg = getString(R.string.dialog_security_need_phone)
+                    CustomAlertDialog(this).apply {
+                        setMessage(errorMsg)
+                        setNegativeButtonText(null)
+                        setCanceledOnTouchOutside(false)
+                        setCancelable(false)
+                    }.show()
+                    this.run {
+                        if (sConfigData?.thirdOpen == FLAG_OPEN)
+                            MainActivity.reStart(this)
+                        else
+                            GameActivity.reStart(this)
+                    }
+                } else
+                    startActivity(Intent(this@LoginActivity, PhoneVerifyActivity::class.java))
             }else{
                 this.run {
                     if (sConfigData?.thirdOpen == FLAG_OPEN)

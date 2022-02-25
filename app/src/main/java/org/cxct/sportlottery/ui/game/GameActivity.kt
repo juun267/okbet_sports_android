@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
@@ -18,14 +17,10 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
-import kotlinx.android.synthetic.main.motion_view_service_floating.*
-import kotlinx.android.synthetic.main.motion_view_service_floating.view.*
 import kotlinx.android.synthetic.main.sport_bottom_navigation.*
-import kotlinx.android.synthetic.main.sport_bottom_navigation.view.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
 import kotlinx.android.synthetic.main.view_message.*
-import kotlinx.android.synthetic.main.view_nav_left.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.MultiLanguagesApplication
@@ -300,10 +295,11 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             })
 
         transaction
-            .add(R.id.fl_bet_list, betListFragment)
+            .add(R.id.fl_bet_list, betListFragment, BetListFragment::class.java.simpleName)
             .addToBackStack(BetListFragment::class.java.simpleName)
             .commit()
-    }
+
+}
 
     override fun updateBetListCount(num: Int) {
         sport_bottom_navigation.setBetCount(num)
@@ -655,7 +651,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         viewModel.showBetInfoSingle.observe(this) {
             it?.getContentIfNotHandled()?.let {
-                //[Martin]
                 if (viewModel.getIsFastBetOpened()) {
                     showFastBetFragment()
                 } else {
@@ -683,14 +678,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     }
 
     fun showSwitchLanguageFragment() {
-//        val transaction = supportFragmentManager.beginTransaction()
-//        val switchLanguageFragment = SwitchLanguageFragment()
-//
-//        transaction
-//            .add(R.id.fl_bet_list, switchLanguageFragment)
-//            .addToBackStack(switchLanguageFragment::class.java.simpleName)
-//            .commit()
-
         startActivity(Intent(this@GameActivity, SwitchLanguageActivity::class.java))
     }
 
