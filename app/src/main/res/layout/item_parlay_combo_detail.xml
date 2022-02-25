@@ -31,7 +31,7 @@
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="篮球" />
+                tools:text="篮球" />
 
             <TextView
                 android:id="@+id/tvScore"
@@ -43,7 +43,7 @@
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="999-999" />
+                tools:text="999-999" />
 
 
             <TextView
@@ -58,7 +58,7 @@
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvTime"
-                android:text="菲尼克斯太阳 v 菲尼克斯太阳" />
+                tools:text="菲尼克斯太阳 v 菲尼克斯太阳" />
 
             <TextView
                 android:id="@+id/tvTime"
@@ -72,7 +72,7 @@
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvLeagueName"
-                android:text="2022-02-25 10:42" />
+                tools:text="2022-02-25 10:42" />
 
             <!--playName spread @ odd (oddsType)-->
             <TextView
@@ -88,7 +88,7 @@
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvTeamNames"
-                android:text="密尔沃基雄鹿 6.5 \@ 1.860 (印尼盘)" />
+                tools:text="密尔沃基雄鹿 6.5 \@ 1.860 (印尼盘)" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,12 +5,8 @@ import android.app.Dialog
 import android.content.Context
 import android.view.View
 import android.view.WindowManager
-import android.widget.CheckBox
 import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zhy.adapter.recyclerview.CommonAdapter
@@ -24,7 +20,7 @@ import org.cxct.sportlottery.util.ArithUtil
 class ComboDetailDialog internal constructor(
     private val mContext: Context,
     private val parlayComsDetailVOs: List<ParlayComsDetailVO>
-){
+) {
 
     private lateinit var mDialog: Dialog
     lateinit var adapter: CommonAdapter<ParlayComsDetailVO>
@@ -47,48 +43,68 @@ class ComboDetailDialog internal constructor(
         }
         mDialog.rvComboDetail.layoutManager =
             LinearLayoutManager(mContext, RecyclerView.VERTICAL, false)
-        mDialog.rvComboDetail.isNestedScrollingEnabled = false
         adapter = object : CommonAdapter<ParlayComsDetailVO>(
             mContext,
             R.layout.item_parlay_combo, parlayComsDetailVOs
         ) {
             override fun convert(
                 holder: ViewHolder,
-                t: ParlayComsDetailVO,
+                item: ParlayComsDetailVO,
                 position: Int
             ) {
-                holder.setText(R.id.tvItem,mContext.getString(R.string.text_combo_item)+" "+(position+1))
-                var tvResult = holder.getView<TextView>(R.id.tvResult)
+                holder.setText(
+                    R.id.tvItem,
+                    mContext.getString(R.string.text_combo_item) + " " + (position + 1)
+                )
+                val tvResult = holder.getView<TextView>(R.id.tvResult)
 
-                if(t.status == 0){
-                    tvResult.setTextColor(ContextCompat.getColor(mContext,R.color.colorRed))
-                    tvResult.text = mContext.getString(R.string.lose_all)+ ArithUtil.toMoneyFormat(t.winMoney)
-                }else if(t.status == 1){
-                    tvResult.setTextColor(ContextCompat.getColor(mContext,R.color.colorGreenSea))
-                    tvResult.text = mContext.getString(R.string.win_all)+ArithUtil.toMoneyFormat(t.winMoney)
-                }else{
-                    tvResult.setTextColor(ContextCompat.getColor(mContext,R.color.colorGreenSea))
-                    tvResult.text = mContext.getString(R.string.draw)
+                when {
+                    item.winMoney == null -> {
+                        tvResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorGray))
+                        tvResult.text = mContext.getString(R.string.nothing)
+                    }
+
+                    item.winMoney > 0.0 -> {
+                        tvResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreenSea))
+                        tvResult.text = "${mContext.getString(R.string.win)} ${mContext.getString(R.string.plus)}${ArithUtil.toMoneyFormat(item.winMoney)}"
+                    }
+
+                    item.winMoney < 0.0 -> {
+                        tvResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorRed))
+                        tvResult.text = "${mContext.getString(R.string.lose)} ${ArithUtil.toMoneyFormat(item.winMoney)}"
+                    }
+
+                    item.winMoney == 0.0 -> {
+                        tvResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorGray))
+                        tvResult.text = mContext.getString(R.string.nothing)
+                    }
                 }
-                var rvComboDetailItem =holder.getView<RecyclerView>(R.id.rvComboDetailItem)
+
+                val rvComboDetailItem = holder.getView<RecyclerView>(R.id.rvComboDetailItem)
                 rvComboDetailItem.layoutManager =
                     LinearLayoutManager(mContext, RecyclerView.VERTICAL, false)
                 rvComboDetailItem.isNestedScrollingEnabled = false
                 detailAdapter = object : CommonAdapter<MatchOddsVO>(
                     mContext,
-                    R.layout.item_parlay_combo_detail, t.matchOddsVOList
+                    R.layout.item_parlay_combo_detail, item.matchOddsVOList
                 ) {
                     override fun convert(
                         holder: ViewHolder,
                         matchOdds: MatchOddsVO,
                         position: Int
                     ) {
-                        holder.setText(R.id.tvLeagueName,matchOdds.leagueName)
-                        holder.setText(R.id.tvTime,matchOdds.startTimeDesc)
-                        holder.setText(R.id.tvScore,matchOdds.rtScore)
-                        holder.setText(R.id.tvTeamNames,matchOdds.homeName+" V.S "+matchOdds.awayName)
-                        holder.setText(R.id.tvContent,matchOdds.playName+" "+matchOdds.spread+" @ " + matchOdds.odds)
-                        if (position+1 == t.matchOddsVOList.size){
+                        holder.setText(R.id.tvLeagueName, matchOdds.leagueName)
+                        holder.setText(R.id.tvTime, matchOdds.startTimeDesc)
+                        holder.setText(R.id.tvScore, matchOdds.rtScore)
+                        holder.setText(
+                            R.id.tvTeamNames,
+                            matchOdds.homeName + " V.S " + matchOdds.awayName
+                        )
+                        holder.setText(
+                            R.id.tvContent,
+                            matchOdds.playName + " " + matchOdds.spread + " @ " + matchOdds.odds
+                        )
+                        if (position + 1 == item.matchOddsVOList?.size) {
                             holder.getView<View>(R.id.divider2).visibility = View.GONE
                         }
                     }

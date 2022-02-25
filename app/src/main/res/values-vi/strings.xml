@@ -321,9 +321,9 @@
     <string name="suspend">delay</string>
     <string name="uncheck">Chưa xác nhận</string>
     <string name="undone">Chưa thanh toán</string>
-    <string name="win_all">Thắng</string>
+    <string name="win">Thắng</string>
     <string name="win_half">Thắng nửa</string>
-    <string name="lose_all">Thắng</string>
+    <string name="lose">Thắng</string>
     <string name="lose_half">Thua nửa</string>
     <string name="draw">hòa</string>
     <string name="canceled">đã hủy</string>
@@ -336,7 +336,8 @@
     <string name="game_match">Trận đấu</string>
     <string name="play_type">Cách đặt cược</string>
     <string name="game_odds">tỷ lệ kèo</string>
-    <string name="match_names">(đội nhà) %s vs %s (đội khách)</string>
+    <string name="match_names">(Đội chủ nhà) %s vs %s (Đội khách)</string>
+    <string name="match_names_2">Đội chủ nhà %s vs %s Đội khách</string>
     <string name="bet_item">Mục đặt cược</string>
     <string name="match_type_row_in_play">TRONG TRẬN</string>
     <string name="match_type_row_at_start">trận đấu sắp bắt đầu</string>
@@ -466,7 +467,7 @@
     <string name="title_weixin">Wechat</string>
     <string name="online_bank">Ngân hàng trực tuyến</string>
     <string name="online_juan">JuanCash</string>
-    <string name="online_dispenshing">出款</string>
+    <string name="online_dispenshing">Rút tiền</string>
     <string name="online_online_bank">網銀</string>
     <string name="online_gcash">Gcash</string>
     <string name="online_grab">GrabPay</string>
@@ -788,7 +789,7 @@
     <string name="odds_button_name_cdc">Đội khách hoặc đội hòa</string>
     <string name="odds_button_name_hch">Đội chủ nhà hoặc đội khách - đội nhà</string>
     <string name="odds_button_name_hcc">Đội chủ nhà hoặc đội khách - đội khách</string>
-    <string name="bet_fail">Đặt cược thất bại</string>
+    <string name="bet_fail">Cá cược thất bại</string>
     <string name="credit_record_deactivate">Chức năng thẻ tín dụng bị vô hiệu hóa</string>
     <string name="game_postponed">Trận đấu bị hoãn</string>
     <string name="money_recharge_hint1">Vui lòng gửi thông tin nạp tiền sau khi chuyển khoản thành công.</string>
@@ -1028,4 +1029,6 @@
     <string name="sco_name_first">Cầu Thủ Ghi Bàn Đầu Tiên</string>
     <string name="sco_name_any">Cầu Thủ Ghi Bàn</string>
     <string name="sco_name_last">Cầu Thủ Ghi Bàn Cuối Cùng</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
 </resources>

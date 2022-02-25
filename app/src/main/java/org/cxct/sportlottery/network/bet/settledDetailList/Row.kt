@@ -51,6 +51,6 @@ data class Row (
     @Json(name = "rtScore")
     val rtScore: String?,
     @Json(name = "parlayComsDetailVOs")
-    val parlayComsDetailVOs: List<ParlayComsDetailVO>? = emptyList()
+    val parlayComsDetailVOs: List<ParlayComsDetailVO>?
 
     )

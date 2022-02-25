@@ -163,9 +163,12 @@ class AccountHistoryNextAdapter(
                 matchOdd = row.matchOdds?.firstOrNull()
                 tvParlayType.text = getParlayShowName(itemView.context, row.parlayType)
                 tvDetail.paint.flags = Paint.UNDERLINE_TEXT_FLAG
+                tvDetail.isVisible = (row.parlayComsDetailVOs ?: emptyList()).isNotEmpty()
                 tvDetail.setOnClickListener {
-                    val dialog = ComboDetailDialog(it.context,row.parlayComsDetailVOs!!)
-                    dialog.show()
+                    val dialog = row.parlayComsDetailVOs?.let { list ->
+                        ComboDetailDialog(it.context, list)
+                    }
+                    dialog?.show()
                 }
                 rvParlay.apply {
                     adapter = parlayAdapter
@@ -211,7 +214,7 @@ class AccountHistoryNextAdapter(
                 )
                 binding.tvGameTypePlayCate.text = "${GameType.getGameTypeString(binding.tvGameTypePlayCate.context, row.gameType)} $playCateName"
 
-                binding.tvTeamNames.text = "$homeName v $awayName"
+                binding.tvTeamNames.text = String.format(binding.tvTeamNames.context.getString(R.string.match_names_2), homeName, awayName)
 
                 startTime?.let {
                     binding.tvStartTime.text = TimeUtil.timeFormat(it, TimeUtil.YMD_HM_FORMAT)
