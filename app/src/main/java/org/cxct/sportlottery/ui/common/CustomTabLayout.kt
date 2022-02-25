@@ -51,13 +51,13 @@ class CustomTabLayout @JvmOverloads constructor(
     var firstTabVisibility: Int = View.VISIBLE
         set(value) {
             field = value
-            tab_layout_custom.getChildAt(0)?.visibility = value
+            tab_layout_custom.getTabAt(0)?.view?.visibility = value
         }
 
     var secondTabVisibility: Int = View.VISIBLE
         set(value) {
             field = value
-            tab_layout_custom.getChildAt(1)?.visibility = value
+            tab_layout_custom.getTabAt(1)?.view?.visibility = value
         }
 
     val selectedTabPosition by lazy { tab_layout_custom.selectedTabPosition }
