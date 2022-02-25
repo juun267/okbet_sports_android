@@ -245,7 +245,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     private suspend fun updateUiWithResult(loginResult: LoginResult) {
         hideLoading()
         if (loginResult.success) {
-            if(loginResult.loginData?.deviceValidateStatus != 0){
+            if(loginResult.loginData?.deviceValidateStatus == 0){
                 if (viewModel.getUserPhone().isNullOrEmpty()) {
                     val errorMsg = getString(R.string.dialog_security_need_phone)
                     CustomAlertDialog(this).apply {
