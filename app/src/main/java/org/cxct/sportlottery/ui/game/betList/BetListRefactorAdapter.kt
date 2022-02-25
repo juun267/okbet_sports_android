@@ -1138,7 +1138,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                     setupBetAmountInput(
                         data,
-                        currentOddsType,
+                        OddsType.EU,
                         onItemClickListener,
                         mSelectedPosition,
                         mBetView,
