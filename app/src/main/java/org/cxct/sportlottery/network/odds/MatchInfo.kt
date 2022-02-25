@@ -80,5 +80,8 @@ data class MatchInfo(
     override var homeCards: Int? = null
     override var awayCards: Int? = null
 
+    //999
+    var scoreStatus:Int? = 0
+
 
 }
