@@ -455,7 +455,8 @@ class RegisterViewModel(
         smsCode: String,
         validCode: String,
         agreementChecked: Boolean,
-        deviceSn: String
+        deviceSn: String,
+        deviceId: String
     ) {
         if (checkAllInput(
                 inviteCode,
@@ -477,7 +478,7 @@ class RegisterViewModel(
                 validCode,
                 agreementChecked
             )) {
-            register(createRegisterRequest(inviteCode, userName, loginPassword, fullName, fundPwd, qq, phone, email, address, weChat, zalo, facebook, whatsApp, telegram, smsCode, validCode, deviceSn))
+            register(createRegisterRequest(inviteCode, userName, loginPassword, fullName, fundPwd, qq, phone, email, address, weChat, zalo, facebook, whatsApp, telegram, smsCode, validCode, deviceSn,deviceId))
         }
     }
 
@@ -498,14 +499,16 @@ class RegisterViewModel(
         telegram: String,
         smsCode: String,
         validCode: String,
-        deviceSn: String
+        deviceSn: String,
+        deviceId: String
     ): RegisterRequest {
         return RegisterRequest(
             userName = userName,
             password = MD5Util.MD5Encode(loginPassword),
             loginSrc = LOGIN_SRC,
             deviceSn = deviceSn,
-            inviteCode = inviteCode
+            inviteCode = inviteCode,
+            loginEnvInfo = deviceId
         ).apply {
             if (sConfigData?.enableFullName == FLAG_OPEN)
                 this.fullName = fullName
