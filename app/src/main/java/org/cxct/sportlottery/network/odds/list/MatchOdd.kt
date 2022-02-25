@@ -34,6 +34,7 @@ data class MatchOdd(
 ) : MatchOdd {
 
     override val oddsEps: EpsOdd? = null
+    var rvScrollPos: Int? = null
 
     @Deprecated("之後翻譯都要改用playCateNameMap，下注顯示用betPlayCateNameMap")
     override var playCateMappingList: List<PlayCateMapItem>? = null

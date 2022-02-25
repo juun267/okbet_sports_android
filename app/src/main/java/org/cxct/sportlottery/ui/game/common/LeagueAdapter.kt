@@ -109,6 +109,7 @@ class LeagueAdapter(private val matchType: MatchType) :
         else {
             // Update with payload
             val leagueOdd = payloads.first() as LeagueOdd
+            Log.d("Hewie", "更新：聯賽：($position) => ${leagueOdd.league.name}")
             (holder as ItemViewHolder).update(leagueOdd, matchType, oddsType)
         }
     }
@@ -118,6 +119,7 @@ class LeagueAdapter(private val matchType: MatchType) :
         when (holder) {
             is ItemViewHolder -> {
                 val item = data[position]
+                Log.d("Hewie", "綁定：聯賽：($position) => ${item.league.name}")
                 holder.bind(
                     item,
                     matchType,
@@ -172,7 +174,6 @@ class LeagueAdapter(private val matchType: MatchType) :
 
         // region update functions
         fun update(item: LeagueOdd, matchType: MatchType, oddsType: OddsType) {
-            Log.d("Hewie", "update => ${item.league.name}")
             itemView.league_text.text = item.league.name
             if (item.league.categoryIcon.isNotEmpty()) {
                 val countryIcon = SvgUtil.getSvgDrawable(itemView.context, item.league.categoryIcon)
@@ -180,6 +181,7 @@ class LeagueAdapter(private val matchType: MatchType) :
             }
             updateLeagueOddList(item, oddsType)
             updateLeagueExpand(item, matchType)
+
         }
         fun updateLeagueOddList(item: LeagueOdd, oddsType: OddsType) {
             leagueOddAdapter.data = if (item.searchMatchOdds.isNotEmpty()) {
@@ -188,6 +190,7 @@ class LeagueAdapter(private val matchType: MatchType) :
                 it.matchInfo?.gameType = item.gameType?.key
             }
             leagueOddAdapter.oddsType = oddsType
+            leagueOddAdapter.update()
         }
         fun updateLeagueExpand(item: LeagueOdd, matchType: MatchType) {
             itemView.league_expand.setExpanded(item.unfold == FoldState.UNFOLD.code, false)
@@ -201,17 +204,15 @@ class LeagueAdapter(private val matchType: MatchType) :
             oddsType: OddsType
         ) {
             itemView.league_odd_list.apply {
+                league_odd_list.itemAnimator = null
                 adapter = leagueOddAdapter.apply {
-                    data = if (item.searchMatchOdds.isNotEmpty()) {
-                        item.searchMatchOdds
-                    } else {
+                    setData(item.searchMatchOdds.ifEmpty {
                         item.matchOdds
                     }.onEach {
                         it.matchInfo?.gameType = item.gameType?.key
-                    }
+                    }, oddsType)
 
                     this.leagueOddListener = leagueOddListener
-                    this.oddsType = oddsType
                 }
             }
         }

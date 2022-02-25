@@ -738,6 +738,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             } ?: run {
                                 leagueAdapter.data.removeAt(targetIndex)
                                 leagueAdapter.notifyItemRemoved(targetIndex)
+                                Log.d("Hewie", "移除聯賽：${leagueAdapter.data[targetIndex].league.name}")
                             }
                         } ?: run {
                         //不在畫面上的League
@@ -752,6 +753,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             leagueAdapter.data.add(insertLeagueOdd)
                             leagueAdapter.notifyItemInserted(leagueAdapter.data.size - 1)
                             subscribeChannelHall(insertLeagueOdd)
+                            Log.d("Hewie", "增加聯賽：${insertLeagueOdd.league.name}")
                         }
                     }
                 }
@@ -1093,7 +1095,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                     leagueAdapter.data.remove(leagueOdd)
                                 }
                                 //leagueAdapter.updateBySocket(index)
-                                leagueAdapter.notifyItemRemoved(index)
                             }
                         }
                         //如果當前球類沒有任何賽事，改為選取第一個有賽事的球種
@@ -1120,7 +1121,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 } &&
                                 leagueOdd.unfold == FoldState.UNFOLD.code) {
                                 //leagueAdapter.updateBySocket(index)
-                                leagueAdapter.updateLeague(index, leagueOdd)
+                                //leagueAdapter.updateLeague(index, leagueOdd)
                             }
                         }
                     }
@@ -1146,6 +1147,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 leagueOdd.unfold == FoldState.UNFOLD.code
                             ) {
                                 //leagueAdapter.updateBySocket(index)
+                                Log.d("Hewie2", "(${leagueOdds.size}):$index => ${leagueOdd.league.name}")
                                 leagueAdapter.updateLeague(index, leagueOdd)
                             }
                         }
@@ -1181,7 +1183,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                     SocketUpdateUtil.updateOddStatus(matchOdd, matchOddsLockEvent)
                                 } && leagueOdd.unfold == FoldState.UNFOLD.code) {
                                 //leagueAdapter.updateBySocket(index)
-                                leagueAdapter.updateLeague(index, leagueOdd)
+                                //leagueAdapter.updateLeague(index, leagueOdd)
                             }
                         }
                     }
@@ -1217,7 +1219,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 leagueOdd.unfold == FoldState.UNFOLD.code
                             ) {
                                 //leagueAdapter.updateBySocket(index)
-                                leagueAdapter.updateLeague(index, leagueOdd)
+                                //leagueAdapter.updateLeague(index, leagueOdd)
                             }
                         }
                     }
