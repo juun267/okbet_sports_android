@@ -2,6 +2,8 @@ package org.cxct.sportlottery.ui.game.menu
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -10,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -29,6 +32,7 @@ import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
+import org.cxct.sportlottery.network.sport.SearchResponse
 import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.FLAG_OPEN
@@ -134,6 +138,8 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
     var searchHistoryList = mutableListOf<String>()
         //簡訊驗證彈窗
     private var customSecurityDialog: CustomSecurityDialog? = null
+    lateinit var searchResultAdapter: CommonAdapter<SearchResponse.Row>
+
 
     override fun onItemClick(position: Int) {
         super.onItemClick(position)
@@ -171,12 +177,16 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                 initSearch()
             }
         }
-        etSearch.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-            if (event.action === KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                startSearch()
-                return@OnKeyListener true
+        etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
-            false
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                startSearch()
+            }
         })
         tvClear.setOnClickListener {
 
@@ -200,7 +210,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                 game = viewModel.getSportSelectedCode(it) ?: ""
             }
         }
-
+        viewModel.getSearchResult()
         list.forEach {
             val matchType = viewModel.sportMenuList.value?.peekContent()
                 ?.find { matchType -> matchType.gameType.key == it.gameType.key }?.entranceType
@@ -646,28 +656,41 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                 }
             }
         }
+        viewModel.searchResult.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let {  list->
+                if(!layoutSearchResult.isVisible){
+                    layoutSearchResult.visibility = View.VISIBLE
+                    layoutSearch.visibility = View.GONE
+                }
+                searchResult.clear()
+                searchResult.addAll(list)
+                searchResultAdapter.notifyDataSetChanged()
+            }
+
+        }
+
     }
 
-
+    var searchResult:MutableList<SearchResponse.Row> = ArrayList()
     private fun initSearch(){
+        layoutSearch.visibility = View.VISIBLE
         MultiLanguagesApplication.searchHistory?.let {
             searchHistoryList = it
         }
         searchHistoryList?.let {
             if(it.size!! > 0){
-                rvHostory.layoutManager =
+                rvHistory.layoutManager =
                     LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-                rvHostory.isNestedScrollingEnabled = false
+                rvHistory.isNestedScrollingEnabled = false
                 layoutHistory.visibility = View.VISIBLE
                 var adapter = object : CommonAdapter<String>( context, R.layout.item_search_history, it ) {
                     override fun convert(holder: ViewHolder, t: String, position: Int ) {
                         holder.setText(R.id.tvHistory, t)
                     }
                 }
-                rvHostory.adapter = adapter
+                rvHistory.adapter = adapter
             }
         }
-
     }
 
     private fun startSearch(){
@@ -676,6 +699,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
         }
         searchHistoryList!!.add(0,etSearch.text.toString())
         MultiLanguagesApplication.saveSearchHistory(searchHistoryList)
+        viewModel.getSportSearch(etSearch.text.toString())
         //rvHostory.adapter?.notifyDataSetChanged()
     }
 
@@ -684,6 +708,25 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = newAdapter
         }
+        rvSearchResult.layoutManager =
+            LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        rvSearchResult.isNestedScrollingEnabled = false
+        searchResultAdapter = object : CommonAdapter<SearchResponse.Row>( context, R.layout.item_search_result_sport, searchResult ) {
+            override fun convert(holder: ViewHolder, t: SearchResponse.Row, position: Int ) {
+                holder.setText(R.id.tvResultTittle,t.gameName)
+                var rvResultLeague = holder.getView<RecyclerView>(R.id.rvResultLeague)
+                rvResultLeague.layoutManager =
+                    LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+                rvResultLeague.isNestedScrollingEnabled = false
+                var adapter = object : CommonAdapter<SearchResponse.Row.LeagueMatch>( context, R.layout.item_search_history, t.leagueMatchList ) {
+                    override fun convert(holder: ViewHolder, it: SearchResponse.Row.LeagueMatch, position: Int ) {
+                        //holder.setText(R.id.tvHistory, t)
+                    }
+                }
+                rvHistory.adapter = adapter
+            }
+        }
+        rvSearchResult.adapter = searchResultAdapter
     }
 
     private fun updateMenuSport(favorSportTypeList: List<String>) {

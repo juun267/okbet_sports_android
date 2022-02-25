@@ -18,7 +18,7 @@ android {
             abiFilters 'arm64-v8a', 'armeabi-v7a', 'armeabi', 'x86','x86_64'
         }
         applicationId "org.cxct.sportlottery"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 30
         versionCode 4
         versionName "1.0.71"
@@ -333,7 +333,11 @@ dependencies {
     implementation 'com.zoloz.android.build:zolozkit:1.2.1'
     implementation "com.squareup.okio:okio:1.7.0@jar"
     implementation "com.alibaba:fastjson:1.1.68.android"
-    
+
+    //HighlightTextView
+    implementation 'com.github.minseok-kr:HighlightTextView:1.2.0'
+
+
 }
 
 repositories {

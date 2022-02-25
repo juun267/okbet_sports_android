@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.game
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -42,12 +43,10 @@ import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightLeagueListRequest
 import org.cxct.sportlottery.network.outright.season.OutrightLeagueListResult
-import org.cxct.sportlottery.network.sport.Item
-import org.cxct.sportlottery.network.sport.SportMenu
-import org.cxct.sportlottery.network.sport.SportMenuData
-import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.network.sport.*
 import org.cxct.sportlottery.network.sport.coupon.SportCouponMenuResult
 import org.cxct.sportlottery.network.sport.query.Play
+import org.cxct.sportlottery.network.sport.query.SearchRequest
 import org.cxct.sportlottery.network.sport.query.SportQueryData
 import org.cxct.sportlottery.network.sport.query.SportQueryRequest
 import org.cxct.sportlottery.network.today.MatchCategoryQueryRequest
@@ -188,6 +187,9 @@ class GameViewModel(
 
     val playCate: LiveData<String?>
         get() = _playCate
+    val searchResult: LiveData<Event<List<SearchResponse.Row>?>>
+        get() = _searchResult
+
 
     val withdrawSystemOperation =
         withdrawRepository.withdrawSystemOperation
@@ -238,6 +240,8 @@ class GameViewModel(
     private val _leagueFilterList = MutableLiveData<List<League>>()
     private val _playList = MutableLiveData<List<Play>>()
     private val _playCate = MutableLiveData<String?>()
+    private val _searchResult = MutableLiveData<Event<List<SearchResponse.Row>?>>()
+
 
     private val _matchPreloadInPlay = MutableLiveData<Event<MatchPreloadResult>>()
     val matchPreloadInPlay: LiveData<Event<MatchPreloadResult>>
@@ -314,6 +318,7 @@ class GameViewModel(
 
     var sportQueryData: SportQueryData? = null
     var specialMenuData: SportQueryData? = null
+    var allSearchData: List<SearchResponse.Row>? = null
 
 
     private var lastSportTypeHashMap: HashMap<String, String?> = hashMapOf(
@@ -439,6 +444,34 @@ class GameViewModel(
                 OneBoSportApi.messageService.getPromoteNotice(typeList)
             }?.let { result -> _messageListResult.postValue(Event(result)) }
         }
+    }
+
+    fun getSearchResult(){
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.sportService.getSearchResult(
+                    SearchRequest(
+                        TimeUtil.getNowTimeStamp().toString(),
+                        TimeUtil.getTodayStartTimeStamp().toString()
+                    )
+                )
+            }
+            result?.let { it ->
+                allSearchData = it.rows
+            }
+        }
+    }
+
+    fun getSportSearch(key: String) {
+        var searchResult = allSearchData?.filter { row ->
+            row.gameName.contains(key,true) || row.leagueMatchList.any { leagueMatch ->
+                leagueMatch.leagueName.contains(key, true) ||
+                        leagueMatch.matchInfoList.any { matchInfo ->
+                            matchInfo.homeName.contains(key, true) ||
+                                    matchInfo.awayName.contains(key, true)}
+            }
+        }
+        _searchResult.postValue(Event(searchResult))
     }
 
     fun getSportList() {
