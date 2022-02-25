@@ -31,10 +31,6 @@ import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.needCountStatus
 import java.util.*
 
-val PAYLOAD_SCORE_CHANGE = "payload_score_change"
-val PAYLOAD_CLOCK_CHANGE = "payload_clock_change"
-val PAYLOAD_ODDS_CHANGE = "payload_odds_change"
-
 class LeagueOddAdapter(private val matchType: MatchType) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -76,6 +72,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
     }
 
+    // region Update functions
+    fun update() {
+        // TODO Update MatchOdd list
+    }
+    // endregion
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ViewHolderHdpOu.from(parent, oddStateRefreshListener)
     }
@@ -98,6 +100,17 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     matchInfoList
                 )
             }
+        }
+    }
+
+    // region update by payload functions
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+        super.onBindViewHolder(holder, position, payloads)
+        if(payloads.isNullOrEmpty()) {
+            onBindViewHolder(holder, position)
+        } else {
+            val matchOdd = payloads.first() as MatchOdd
+            (holder as ViewHolderHdpOu).update()
         }
     }
 
@@ -135,6 +148,40 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
             setupQuickCategory(item, oddsType, leagueOddListener)
         }
+
+        // region update functions
+        fun update(matchType: MatchType, item: MatchOdd, leagueOddListener: LeagueOddListener?, isTimerEnable: Boolean, oddsType: OddsType) {
+            setUpVisibility(item, matchType)
+            updateMatchInfo(item, matchType)
+            val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
+            setupMatchTime(item, matchType, isTimerEnable, isTimerPause, leagueOddListener)
+
+            setupOddsButton(item, oddsType, leagueOddListener)
+
+            setupQuickCategory(item, oddsType, leagueOddListener)
+        }
+
+        private fun updateMatchInfo(item: MatchOdd, matchType: MatchType) {
+            itemView.league_odd_match_name_home.text = item.matchInfo?.homeName
+            itemView.league_odd_match_name_away.text = item.matchInfo?.awayName
+            showStrongTeam(item)
+            when (item.matchInfo?.gameType) {
+                GameType.VB.key -> setVbScoreText(matchType, item)
+                GameType.TN.key -> setTnScoreText(matchType, item)
+                GameType.FT.key -> setFtScoreText(matchType, item)
+                GameType.BK.key -> setBkScoreText(matchType, item)
+                GameType.TT.key -> setVbScoreText(matchType, item)
+                else -> setBkScoreText(matchType, item)//TODO Bill 這裡要等PM確認版型 SocketUpdateUtil
+            }
+            setStatusTextColor(item)
+            itemView.league_odd_match_play_count.text = item.matchInfo?.playCateNum.toString()
+            itemView.league_odd_match_favorite.isSelected = item.matchInfo?.isFavorite ?: false
+            itemView.league_odd_match_price_boost.isVisible = item.matchInfo?.eps == 1
+            itemView.space2.isVisible = (item.matchInfo?.eps == 1 || item.matchInfo?.liveVideo == 1)
+            itemView.iv_play.isVisible = item.matchInfo?.liveVideo == 1 && (matchType == MatchType.IN_PLAY || matchType == MatchType.MY_EVENT && item.matchInfo.isInPlay == true)
+        }
+
+        // endregion
 
         private fun setUpVisibility(item: MatchOdd, matchType: MatchType) {
 

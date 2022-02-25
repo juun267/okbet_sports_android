@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_league_v4.view.*
@@ -17,26 +16,19 @@ import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
-import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SvgUtil
 
 class LeagueAdapter(private val matchType: MatchType) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val PAYLOAD_MATCH_STATUS = "payload_match_status"
-
-
     enum class ItemType {
         ITEM, NO_DATA
     }
 
-    var updateType: String? = null
-
-
     var data = mutableListOf<LeagueOdd>()
         set(value) {
             field = value
-            notifyDataSetChanged()
+            //notifyDataSetChanged()
         }
 
     var discount: Float = 1.0F
@@ -50,20 +42,20 @@ class LeagueAdapter(private val matchType: MatchType) :
             }
 
             field = value
-            notifyDataSetChanged()
+            //notifyDataSetChanged()
         }
 
     var searchText = ""
         set(value) {
             field = value
-            notifyDataSetChanged()
+            //notifyDataSetChanged()
         }
 
     var oddsType: OddsType = OddsType.EU
         set(value) {
             if (value != field) {
                 field = value
-                notifyDataSetChanged()
+                //notifyDataSetChanged()
             }
         }
 
@@ -105,10 +97,22 @@ class LeagueAdapter(private val matchType: MatchType) :
         }
     }
 
-    fun updateBySocket(position: Int, type: String?) {
-        this.updateType = type
-        notifyItemChanged(position)
+    // region update by payload functions
+    fun updateLeague(position: Int, payload: LeagueOdd) {
+        notifyItemChanged(position, payload)
     }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+        if(payloads.isNullOrEmpty()) {
+            onBindViewHolder(holder, position)
+        }
+        else {
+            // Update with payload
+            val leagueOdd = payloads.first() as LeagueOdd
+            (holder as ItemViewHolder).update(leagueOdd, matchType, oddsType)
+        }
+    }
+    // endregion
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
@@ -165,6 +169,31 @@ class LeagueAdapter(private val matchType: MatchType) :
             setupLeagueOddList(item, leagueOddListener, oddsType)
             setupLeagueOddExpand(item, matchType, leagueListener)
         }
+
+        // region update functions
+        fun update(item: LeagueOdd, matchType: MatchType, oddsType: OddsType) {
+            Log.d("Hewie", "update => ${item.league.name}")
+            itemView.league_text.text = item.league.name
+            if (item.league.categoryIcon.isNotEmpty()) {
+                val countryIcon = SvgUtil.getSvgDrawable(itemView.context, item.league.categoryIcon)
+                itemView.iv_country.setImageDrawable(countryIcon)
+            }
+            updateLeagueOddList(item, oddsType)
+            updateLeagueExpand(item, matchType)
+        }
+        fun updateLeagueOddList(item: LeagueOdd, oddsType: OddsType) {
+            leagueOddAdapter.data = if (item.searchMatchOdds.isNotEmpty()) {
+                item.searchMatchOdds
+            } else { item.matchOdds }.onEach {
+                it.matchInfo?.gameType = item.gameType?.key
+            }
+            leagueOddAdapter.oddsType = oddsType
+        }
+        fun updateLeagueExpand(item: LeagueOdd, matchType: MatchType) {
+            itemView.league_expand.setExpanded(item.unfold == FoldState.UNFOLD.code, false)
+            updateTimer(matchType, item.gameType)
+        }
+        // endregion
 
         private fun setupLeagueOddList(
             item: LeagueOdd,

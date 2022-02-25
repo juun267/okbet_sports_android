@@ -599,7 +599,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 val isCateShow =
                     ((args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) && resultList.isNotEmpty())
                 game_match_category_pager.isVisible = isCateShow
-                view_space_first.isVisible = !isCateShow
+                // TODO view_space_first.isVisible = !isCateShow
                 matchCategoryPagerAdapter.data = resultList
             }
         }
@@ -665,7 +665,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     val gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
                     game_list.apply {
                         adapter = leagueAdapter.apply {
-                            updateType = null
                             data = leagueOdds.onEach { leagueOdd ->
                                 leagueOdd.gameType = gameType
                             }.toMutableList()
@@ -941,7 +940,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                 }
 
-                leagueAdapter.notifyDataSetChanged()
+                //leagueAdapter.notifyDataSetChanged()
 
 
                 val epsOdds = epsListAdapter.dataList
@@ -1011,7 +1010,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
             }
 
-            leagueAdapter.notifyDataSetChanged()
+            //leagueAdapter.notifyDataSetChanged()
         }
 
         viewModel.leagueFilterList.observe(this.viewLifecycleOwner) { leagueList ->
@@ -1093,7 +1092,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 if (leagueOdd.matchOdds.isNullOrEmpty()) {
                                     leagueAdapter.data.remove(leagueOdd)
                                 }
-                                leagueAdapter.updateBySocket(index, PAYLOAD_SCORE_CHANGE)
+                                //leagueAdapter.updateBySocket(index)
+                                leagueAdapter.notifyItemRemoved(index)
                             }
                         }
                         //如果當前球類沒有任何賽事，改為選取第一個有賽事的球種
@@ -1119,7 +1119,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                     )
                                 } &&
                                 leagueOdd.unfold == FoldState.UNFOLD.code) {
-                                leagueAdapter.updateBySocket(index, PAYLOAD_CLOCK_CHANGE)
+                                //leagueAdapter.updateBySocket(index)
+                                leagueAdapter.updateLeague(index, leagueOdd)
                             }
                         }
                     }
@@ -1144,7 +1145,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 } &&
                                 leagueOdd.unfold == FoldState.UNFOLD.code
                             ) {
-                                leagueAdapter.updateBySocket(index, PAYLOAD_ODDS_CHANGE)
+                                //leagueAdapter.updateBySocket(index)
+                                leagueAdapter.updateLeague(index, leagueOdd)
                             }
                         }
                     }
@@ -1178,8 +1180,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             if (leagueOdd.matchOdds.any { matchOdd ->
                                     SocketUpdateUtil.updateOddStatus(matchOdd, matchOddsLockEvent)
                                 } && leagueOdd.unfold == FoldState.UNFOLD.code) {
-                                leagueAdapter.updateBySocket(index, PAYLOAD_ODDS_CHANGE)
-
+                                //leagueAdapter.updateBySocket(index)
+                                leagueAdapter.updateLeague(index, leagueOdd)
                             }
                         }
                     }
@@ -1214,7 +1216,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 } &&
                                 leagueOdd.unfold == FoldState.UNFOLD.code
                             ) {
-                                leagueAdapter.updateBySocket(index, null)
+                                //leagueAdapter.updateBySocket(index)
+                                leagueAdapter.updateLeague(index, leagueOdd)
                             }
                         }
                     }
