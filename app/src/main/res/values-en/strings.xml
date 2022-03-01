@@ -1005,4 +1005,9 @@
     <string name="sco_name_last">Last Goalscorer</string>
     <string name="minus">-</string>
     <string name="plus">+</string>
+
+    <!--google位置存取-->
+    <string name="search_game_nearby">Find sports matches near you!</string>
+    <string name="allow_location_permission">Allow location access</string>
+    <string name="google_location_permission_description">You can search for sports matches near you and receive more information about sports matches by allowing location access.</string>
 </resources>

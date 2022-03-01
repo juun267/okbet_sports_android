@@ -1031,4 +1031,9 @@
     <string name="sco_name_last">Cầu Thủ Ghi Bàn Cuối Cùng</string>
     <string name="minus">-</string>
     <string name="plus">+</string>
+
+    <!--google位置存取-->
+    <string name="search_game_nearby">Tìm các trận đấu thể thao gần bạn!</string>
+    <string name="allow_location_permission">Cho phép truy cập vị trí</string>
+    <string name="google_location_permission_description">Bạn có thể tìm kiếm các trận đấu thể thao gần bạn và nhận thêm thông tin về các trận đấu thể thao bằng cách cho phép truy cập vị trí.</string>
 </resources>
