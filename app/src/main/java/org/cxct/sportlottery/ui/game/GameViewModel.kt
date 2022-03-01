@@ -1151,8 +1151,8 @@ class GameViewModel(
                 item.code,
                 matchType.postValue,
                 timeRangeParams,
-                leagueIdList,
-                matchIdList,
+                null,
+                null,
                 false
             )
         }
