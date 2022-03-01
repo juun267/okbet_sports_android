@@ -599,7 +599,7 @@
     <string name="parlay_rule_ncm">%1$s %2$s chuỗi 1</string>
     <string name="parlay_rule_list_nc1">%1$s %2$s chuỗi 1</string>
     <string name="parlay_rule_and">cũng như</string>
-    <string name="bet_list_receipt">Biên lai đơn cược</string>
+    <string name="bet_list_receipt">Biên lai đặt cược</string>
     <string name="already_bet_complete">Bạn đã đặt cược thành công</string>
     <string name="complete">Hoàn thành</string>
     <string name="winnable_amount_colon">Số tiền có thể thắng : </string>
