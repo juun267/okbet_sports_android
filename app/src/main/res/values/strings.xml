@@ -1026,4 +1026,5 @@
     <string name="search_game_nearby">寻找您附近的赛事</string>
     <string name="allow_location_permission">允许位置使用权</string>
     <string name="google_location_permission_description">允许位置授权请求，您可以寻找您所在位置附近的赛事，并且可以跟踪这些赛事的情报。</string>
+    <string name="grant_location_permission_on_setting">去设定开啟位置权限</string>
 </resources>
