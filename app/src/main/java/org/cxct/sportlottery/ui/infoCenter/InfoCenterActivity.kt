@@ -9,8 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_info_center.*
 import kotlinx.android.synthetic.main.activity_info_center.iv_scroll_to_top
-import kotlinx.android.synthetic.main.fragment_feedback_record_list.*
-import kotlinx.android.synthetic.main.fragment_sport_bet_record.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.infoCenter.InfoCenterData
@@ -76,6 +74,8 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        viewModel.getMsgCount(MsgType.NOTICE_UNREAD)//未讀資料比數
+        viewModel.getMsgCount(MsgType.NOTICE_READED)//已讀資料筆數
         setContentView(R.layout.activity_info_center)
         initToolbar()
         initLiveData()
@@ -114,9 +114,6 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
                 }
             }
         }
-//        //default show page
-        if (mDefaultShowPage == BEEN_READ) custom_tab_layout.selectTab(0)
-        else custom_tab_layout.selectTab(1)
     }
 
     private fun initLiveData() {
@@ -138,9 +135,9 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
             viewModel.getResult()
         })
         //已讀總筆數
-        viewModel.totalReadMsgCount.observe(this@InfoCenterActivity, Observer {
+        viewModel.totalReadMsgCount.observe(this@InfoCenterActivity) {
             custom_tab_layout.firstTabText = String.format(resources.getString(R.string.inbox), it)
-        })
+        }
         //未讀訊息清單
         viewModel.userUnreadMsgList.observe(this@InfoCenterActivity, Observer {
             val userMsgList = it ?: return@Observer

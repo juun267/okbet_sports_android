@@ -1,8 +1,11 @@
 package org.cxct.sportlottery.ui.splash
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -12,6 +15,7 @@ import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
+import org.cxct.sportlottery.ui.permission.GooglePermissionActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -24,10 +28,19 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         setContentView(R.layout.activity_splash)
 
         setupVersion()
+        checkPermissionGranted()
         initObserve()
 
         //流程: 檢查/獲取 host -> 獲取 config -> 檢查維護狀態 -> 檢查版本更新 -> 跳轉畫面
         checkLocalHost()
+    }
+
+    private fun checkPermissionGranted() {
+        if(getString(R.string.app_name) == "OKBET"){
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                startActivity(Intent(this@SplashActivity, GooglePermissionActivity::class.java))
+            }
+        }
     }
 
     private fun setupVersion() {
@@ -76,7 +89,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
     }
 
     private fun initObserve() {
-        viewModel.configResult.observe(this, {
+        viewModel.configResult.observe(this) {
             when {
                 it?.configData?.maintainStatus == FLAG_OPEN -> {
                     goMaintenancePage()
@@ -84,16 +97,16 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                 it?.success == true -> checkAppMinVersion()
                 else -> showErrorRetryDialog(getString(R.string.error_config_title), getString(R.string.error_config))
             }
-        })
+        }
 
-        mVersionUpdateViewModel.appMinVersionState.observe(this, {
+        mVersionUpdateViewModel.appMinVersionState.observe(this) {
             if (it.isForceUpdate || it.isShowUpdateDialog)
                 showAppDownloadDialog(it.isForceUpdate, it.version)
             else
                 viewModel.goNextPage()
-        })
+        }
 
-        viewModel.skipHomePage.observe(this, {
+        viewModel.skipHomePage.observe(this) {
             when (it) {
                 true -> {
                     goGamePage()
@@ -102,7 +115,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                     goHomePage()
                 }
             }
-        })
+        }
     }
 
     //提示APP更新對話框
