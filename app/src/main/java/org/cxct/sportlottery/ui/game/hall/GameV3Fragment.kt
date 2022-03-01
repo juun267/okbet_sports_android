@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -1834,6 +1836,39 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
             }
         }
+    }
+
+    private var timer: Timer? = null
+
+    private fun startTimer() {
+        var timeMillis = 60 * 3 * 1000L
+        stopTimer()
+
+        timer = Timer()
+        timer?.schedule(object : TimerTask() {
+            override fun run() {
+                Handler(Looper.getMainLooper()).post {
+                    timeMillis -= 1000
+                    if (timeMillis < 0) {
+                        timeMillis = 60 * 3 * 1000L
+                        viewModel.getAllPlayCategory(args.matchType)
+                        viewModel.getSportMenu(args.matchType, onlyRefreshSportMenu = true)
+                        if (!isUpdatingLeague) {
+                            viewModel.switchSportType(
+                                args.matchType,
+                                GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
+                                    ?: GameType.FT.key
+                            )
+                        }
+                    }
+                }
+            }
+        }, 1000L, 1000L)
+    }
+
+    private fun stopTimer() {
+        timer?.cancel()
+        timer = null
     }
 
     override fun onStop() {
