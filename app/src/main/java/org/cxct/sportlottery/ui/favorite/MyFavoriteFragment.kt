@@ -317,7 +317,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         }
 
         receiver.leagueChange.observe(this.viewLifecycleOwner) { event ->
-            event?.getContentIfNotHandled()?.let {
+            event?.let {
                 viewModel.getSportQuery(getLastPick = true) //而收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
 
                 val nowGameType = gameTypeAdapter.dataSport.find { gameType -> gameType.isSelected }?.code
