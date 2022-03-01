@@ -671,14 +671,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         )
                     }
                     setNoDataView(leagueAdapter.data)
-                    leagueOdds.forEach { leagueOdd ->
+                    leagueOdds.forEachIndexed { index, leagueOdd ->
                         subscribeChannelHall(leagueOdd)
+                        if(leagueOdd.unfold == FoldState.FOLD.code) leagueAdapter.updateLeague(index, leagueOdd)
                     }
 
                     // TODO 這裡有一個嚴重的流程問題
-                    Log.d("Hewie", "${leagueAdapter.data}")
-
-
 
                     //賽事訂閱規則 因頁面初次展示不超過兩項 故保持兩項賽事訂閱避免過多socket response導致頁面卡頓
 //                    if (leagueOdds.isNotEmpty()) {
@@ -938,7 +936,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
 
                 //leagueAdapter.notifyDataSetChanged()
-
+                leagueAdapter.data.forEachIndexed { index, leagueOdd -> leagueAdapter.updateLeague(index, leagueOdd) }
 
                 val epsOdds = epsListAdapter.dataList
 
@@ -1142,7 +1140,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 leagueOdd.unfold == FoldState.UNFOLD.code
                             ) {
                                 //leagueAdapter.updateBySocket(index)
-                                Log.d("Hewie2", "(${leagueOdds.size}):$index => ${leagueOdd.league.name}")
                                 leagueAdapter.updateLeague(index, leagueOdd)
                             }
                         }

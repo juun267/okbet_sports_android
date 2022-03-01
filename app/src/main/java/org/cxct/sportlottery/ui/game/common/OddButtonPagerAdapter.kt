@@ -157,11 +157,11 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
     override fun onBindViewHolder(holder: OddButtonPagerViewHolder, position: Int, payloads: MutableList<Any>) {
         if(payloads.isNullOrEmpty()) { onBindViewHolder(holder, position) }
         else {
-//            Log.d("Hewie", "更新：賠率表($position)")
-//            val list = payloads.first() as ArrayList<Pair<String, List<Odd?>?>>
-//            holder.update(matchInfo, playCateNameMap, betPlayCateNameMap,
-//                listOf(Pair(list.first().first, list.first().second)),
-//                oddsType)
+            Log.d("Hewie", "更新：賠率表($position)")
+            val list = payloads.first() as ArrayList<Pair<String, List<Odd?>?>>
+            holder.update(matchInfo, playCateNameMap, betPlayCateNameMap,
+                listOf(Pair(list.first().first, list.first().second)),
+                oddsType)
         }
     }
 

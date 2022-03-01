@@ -104,13 +104,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
     // region update by payload functions
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
-        super.onBindViewHolder(holder, position, payloads)
         if(payloads.isNullOrEmpty()) {
             onBindViewHolder(holder, position)
         } else {
-//            Log.d("Hewie", "更新：賽事($position)")
-//            val matchOdd = payloads.first() as MatchOdd
-//            (holder as ViewHolderHdpOu).update(matchType, matchOdd, leagueOddListener, isTimerEnable, oddsType)
+            Log.d("Hewie", "更新：賽事($position)")
+            val matchOdd = payloads.first() as MatchOdd
+            (holder as ViewHolderHdpOu).update(matchType, matchOdd, leagueOddListener, isTimerEnable, oddsType)
         }
     }
 
@@ -158,6 +157,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             updateOddsButton(item, oddsType)
 
             //setupQuickCategory(item, oddsType, leagueOddListener)
+            updateQuickCategory(item, oddsType, leagueOddListener)
         }
 
         private fun updateMatchInfo(item: MatchOdd, matchType: MatchType) {
