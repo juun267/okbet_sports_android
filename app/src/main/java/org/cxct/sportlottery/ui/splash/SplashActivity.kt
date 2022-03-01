@@ -36,8 +36,10 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
     }
 
     private fun checkPermissionGranted() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            startActivity(Intent(this@SplashActivity, GooglePermissionActivity::class.java))
+        if(getString(R.string.app_name) == "OKBET"){
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                startActivity(Intent(this@SplashActivity, GooglePermissionActivity::class.java))
+            }
         }
     }
 
