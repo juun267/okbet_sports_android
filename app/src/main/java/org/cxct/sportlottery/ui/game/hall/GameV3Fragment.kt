@@ -508,6 +508,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     override fun onStart() {
         super.onStart()
+        startTimer()
         if (args.matchType == MatchType.OTHER) {
             viewModel.switchSpecialMatchType(viewModel.specialEntrance.value?.couponCode!!)
         } else {
@@ -1873,7 +1874,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     override fun onStop() {
         super.onStop()
-
+        stopTimer()
         unSubscribeChannelHallAll()
         unSubscribeChannelHallSport()
     }
