@@ -622,7 +622,7 @@
     <string name="parlay_rule_ncm">The %1$S string %2$s is a %2$s bet made up of %1$S different races</string>
     <string name="parlay_rule_list_nc1">%1$S a %2$s string</string>
     <string name="parlay_rule_and">And</string>
-    <string name="bet_list_receipt">RECEIPT OF BET SLIP</string>
+    <string name="bet_list_receipt">Bet receipts</string>
     <string name="already_bet_complete">You have been successful bets</string>
     <string name="complete">Completed</string>
     <string name="winnable_amount_colon">To Win：</string>
@@ -1005,4 +1005,9 @@
     <string name="sco_name_last">Last Goalscorer</string>
     <string name="minus">-</string>
     <string name="plus">+</string>
+
+    <!--google位置存取-->
+    <string name="search_game_nearby">Find sports matches near you!</string>
+    <string name="allow_location_permission">Allow location access</string>
+    <string name="google_location_permission_description">You can search for sports matches near you and receive more information about sports matches by allowing location access.</string>
 </resources>

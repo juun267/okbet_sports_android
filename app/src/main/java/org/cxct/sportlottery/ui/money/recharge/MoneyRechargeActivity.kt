@@ -74,24 +74,23 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
             custom_tab_layout.visibility = View.VISIBLE //獲取資金資料完畢, 顯示充值分類
             transferPayList = it ?: return@Observer
             custom_tab_layout.firstTabVisibility = if (transferPayList.size > 0) {
+                transferPageChange()
                 View.VISIBLE
             } else {
                 custom_tab_layout.selectTab(RechargeType.ONLINE_PAY.tabPosition)
                 View.GONE
             }
-            transferPageChange()
         })
 
         viewModel.onlinePayList.observe(this@MoneyRechargeActivity, Observer {
             onlinePayList = it ?: return@Observer
             custom_tab_layout.secondTabVisibility = if (onlinePayList.size > 0) {
+                if (custom_tab_layout.selectedTabPosition == RechargeType.ONLINE_PAY.tabPosition) {
+                    onlinePageChange()
+                }
                 View.VISIBLE
             } else {
                 View.GONE
-            }
-
-            if (custom_tab_layout.selectedTabPosition == RechargeType.ONLINE_PAY.tabPosition) {
-                onlinePageChange()
             }
         })
 
