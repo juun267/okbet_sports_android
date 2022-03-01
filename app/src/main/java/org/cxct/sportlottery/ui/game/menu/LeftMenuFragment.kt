@@ -54,7 +54,9 @@ import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.listener.OnClickListener
+import org.cxct.sportlottery.widget.highLightTextView.HighlightTextView
 
 class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClickListener {
     private var newAdapter =
@@ -718,12 +720,28 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                 rvResultLeague.layoutManager =
                     LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
                 rvResultLeague.isNestedScrollingEnabled = false
-                var adapter = object : CommonAdapter<SearchResponse.Row.LeagueMatch>( context, R.layout.item_search_history, t.leagueMatchList ) {
+                var adapter = object : CommonAdapter<SearchResponse.Row.LeagueMatch>( context, R.layout.item_search_result_league, t.leagueMatchList ) {
                     override fun convert(holder: ViewHolder, it: SearchResponse.Row.LeagueMatch, position: Int ) {
-                        //holder.setText(R.id.tvHistory, t)
+                        var tvLeagueTittle = holder.getView<HighlightTextView>(R.id.tvLeagueTittle)
+                        tvLeagueTittle.setCustomText(it.leagueName)
+                        tvLeagueTittle.highlight(etSearch.text.toString())
+                        var rvResultMatch = holder.getView<RecyclerView>(R.id.rvResultMatch)
+                        rvResultMatch.layoutManager =
+                            LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+                        rvResultMatch.isNestedScrollingEnabled = false
+                        var adapter = object : CommonAdapter<SearchResponse.Row.LeagueMatch.MatchInfo>( context, R.layout.item_search_result_match, t.leagueMatchList[position].matchInfoList ) {
+                            override fun convert(holder: ViewHolder, itt: SearchResponse.Row.LeagueMatch.MatchInfo, position: Int ) {
+                                holder.setText(R.id.tvTime,
+                                    TimeUtil.timeFormat(itt.startTime.toLong(), TimeUtil.MD_HM_FORMAT)+" ｜ ")
+                                var tvMatch = holder.getView<HighlightTextView>(R.id.tvMatch)
+                                tvMatch.setCustomText(itt.homeName+" v " + itt.awayName)
+                                tvMatch.highlight(etSearch.text.toString())
+                            }
+                        }
+                        rvResultMatch.adapter = adapter
                     }
                 }
-                rvHistory.adapter = adapter
+                rvResultLeague.adapter = adapter
             }
         }
         rvSearchResult.adapter = searchResultAdapter

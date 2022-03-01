@@ -211,4 +211,13 @@
 
     </declare-styleable>
 
+    <declare-styleable name="HighlightTextView">
+        <attr name="highlightColor" format="color|reference"/>
+        <attr name="highlightText" format="string"/>
+        <attr name="highlightWidth" format="dimension"/>
+        <attr name="highlightRadius" format="dimension"/>
+        <attr name="highlightBold" format="boolean"/>
+        <attr name="highlightTextColor" format="color|reference"/>
+    </declare-styleable>
+
 </resources>

@@ -463,15 +463,58 @@ class GameViewModel(
     }
 
     fun getSportSearch(key: String) {
-        var searchResult = allSearchData?.filter { row ->
-            row.gameName.contains(key,true) || row.leagueMatchList.any { leagueMatch ->
-                leagueMatch.leagueName.contains(key, true) ||
-                        leagueMatch.matchInfoList.any { matchInfo ->
-                            matchInfo.homeName.contains(key, true) ||
-                                    matchInfo.awayName.contains(key, true)}
+        if(key.isNotEmpty()){
+            var finalResult : MutableList<SearchResponse.Row>? = arrayListOf()
+//            var searchResult = allSearchData?.filter { row ->
+//                row.gameName.contains(key,true) || row.leagueMatchList.any { leagueMatch ->
+//                    leagueMatch.matchInfoList.any { matchInfo ->
+//                        matchInfo.homeName.contains(key, true) ||
+//                                matchInfo.awayName.contains(key, true)}
+//                }
+//            }
+//            _searchResult.postValue(Event(searchResult))
+            var searchResult = allSearchData?.filter { row ->
+                row.leagueMatchList.any { leagueMatch ->
+                    leagueMatch.matchInfoList.any { matchInfo ->
+                        matchInfo.homeName.contains(key, true) ||
+                                matchInfo.awayName.contains(key, true)
+                    }
+                }
             }
+//            searchResult.
+//            allSearchData?.forEachIndexed { index,row ->
+//                searchResult[0] = row.leagueMatchList.filter { leagueMatch ->
+//                    leagueMatch.matchInfoList.any { matchInfo ->
+//                        matchInfo.homeName.contains(key, true) ||
+//                                matchInfo.awayName.contains(key, true)
+//                    }
+//                }
+//            }
+//            var searchResult2 = searchResult?.forEach { row ->
+//                row.leagueMatchList.filter { leagueMatch ->
+//                    leagueMatch.matchInfoList.any { matchInfo ->
+//                        matchInfo.homeName.contains(key, true) ||
+//                                matchInfo.awayName.contains(key, true)}
+//                }
+//            }
+            var searchResult2 = searchResult?.map { row ->
+                row.leagueMatchList.map { leagueMatch ->
+                    leagueMatch.matchInfoList.filter { matchInfo ->
+                        matchInfo.homeName.contains(key, true) ||
+                                matchInfo.awayName.contains(key, true)
+                    }
+                }
+            }
+            var searchResult3 = searchResult?.map { row ->
+                row.leagueMatchList.filter { leagueMatch ->
+                    leagueMatch.matchInfoList.any { matchInfo ->
+                        matchInfo.homeName.contains(key, true) ||
+                                matchInfo.awayName.contains(key, true)
+                    }
+                }
+            }
+            _searchResult.postValue(Event(searchResult))
         }
-        _searchResult.postValue(Event(searchResult))
     }
 
     fun getSportList() {
