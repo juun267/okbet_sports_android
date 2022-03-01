@@ -1009,5 +1009,5 @@
     <!--google位置存取-->
     <string name="search_game_nearby">Find sports matches near you!</string>
     <string name="allow_location_permission">Allow location access</string>
-    <string name="google_location_permission_description">You can search for sports matches near you and receive more information about sports matches by allowing location access.</string>
+    <string name="google_location_permission_description">You can search for sports matches near you and receive more information about sports matches by allowing background location access.</string>
 </resources>
