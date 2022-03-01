@@ -476,12 +476,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     private fun setupGameListView(view: View) {
         view.game_list.apply {
-            this.layoutManager =
-                SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-
-            addItemDecoration(
-                SpaceItemDecoration(context, R.dimen.item_spacing_league)
-            )
+            this.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+            this.adapter = leagueAdapter
+            this.itemAnimator = null
+            addItemDecoration(SpaceItemDecoration(context, R.dimen.item_spacing_league))
             setHasFixedSize(true)
         }
     }
@@ -663,13 +661,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         ?: oddsListResult.oddsListData?.leagueOdds ?: listOf()
 
                     val gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
-                    game_list.apply {
-                        adapter = leagueAdapter.apply {
-                            data = leagueOdds.onEach { leagueOdd ->
-                                leagueOdd.gameType = gameType
-                            }.toMutableList()
-                        }
-                    }
+                    leagueAdapter.data = leagueOdds.onEach { leagueOdd -> leagueOdd.gameType = gameType }.toMutableList()
                     //如果data資料為空時，又有其他球種的情況下，自動選取第一個
                     if (leagueAdapter.data.isNullOrEmpty() && gameTypeAdapter.dataSport.size > 1) {
                         viewModel.getSportMenu(
@@ -678,11 +670,14 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             onlyRefreshSportMenu = true
                         )
                     }
-                    game_list.itemAnimator = null
                     setNoDataView(leagueAdapter.data)
                     leagueOdds.forEach { leagueOdd ->
                         subscribeChannelHall(leagueOdd)
                     }
+
+                    // TODO 這裡有一個嚴重的流程問題
+                    Log.d("Hewie", "${leagueAdapter.data}")
+
 
 
                     //賽事訂閱規則 因頁面初次展示不超過兩項 故保持兩項賽事訂閱避免過多socket response導致頁面卡頓

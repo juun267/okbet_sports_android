@@ -15,7 +15,6 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
-import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_eps.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_pager.view.*
@@ -27,7 +26,6 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.TimeCounting
-import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TimeUtil
@@ -839,6 +837,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     }
                 }
 
+                itemView.scroll_view_rg.visibility = if(item.quickPlayCateList.isNullOrEmpty()) View.GONE else View.VISIBLE
+
                 setOnCheckedChangeListener { group, checkedId ->
                     item.quickPlayCateList?.forEach {
                         it.isSelected = (it.hashCode() == checkedId)
@@ -1070,38 +1070,38 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         }
                 }
 
-                registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                    override fun onPageScrolled(
-                        position: Int,
-                        positionOffset: Float,
-                        positionOffsetPixels: Int
-                    ) {
-                        super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+//                registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+//                    override fun onPageScrolled(
+//                        position: Int,
+//                        positionOffset: Float,
+//                        positionOffsetPixels: Int
+//                    ) {
+//                        super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+//
+//                        item.quickPlayCateList?.find { it.isSelected }?.positionButtonPage =
+//                            position
+//                    }
+//                })
 
-                        item.quickPlayCateList?.find { it.isSelected }?.positionButtonPage =
-                            position
-                    }
-                })
-
-                setCurrentItem(
-                    item.quickPlayCateList?.find { it.isSelected }?.positionButtonPage ?: 0, false
-                )
-                getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
-                OverScrollDecoratorHelper.setUpOverScroll(
-                    getChildAt(0) as RecyclerView,
-                    OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL
-                )
+//                setCurrentItem(
+//                    item.quickPlayCateList?.find { it.isSelected }?.positionButtonPage ?: 0, false
+//                )
+//                getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
+//                OverScrollDecoratorHelper.setUpOverScroll(
+//                    getChildAt(0) as RecyclerView,
+//                    OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL
+//                )
             }
 
-            itemView.quick_odd_btn_indicator_other.apply {
-                visibility =
-                    if (item.quickPlayCateList?.find { it.isSelected }?.quickOdds?.size ?: 0 > 2) {
-                        View.VISIBLE
-                    } else {
-                        View.GONE
-                    }
-                setupWithViewPager2(itemView.quick_odd_btn_pager_other)
-            }
+//            itemView.quick_odd_btn_indicator_other.apply {
+//                visibility =
+//                    if (item.quickPlayCateList?.find { it.isSelected }?.quickOdds?.size ?: 0 > 2) {
+//                        View.VISIBLE
+//                    } else {
+//                        View.GONE
+//                    }
+//                setupWithViewPager2(itemView.quick_odd_btn_pager_other)
+//            }
         }
 
         private fun setupQuickOddButtonEps(

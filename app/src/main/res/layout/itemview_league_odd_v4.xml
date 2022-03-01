@@ -435,9 +435,10 @@
             android:layout_width="match_parent"
             android:layout_height="224dp"
             android:layout_marginTop="6dp"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never"
             android:orientation="horizontal"
             tools:itemCount="5"
-            android:nestedScrollingEnabled="false"
             tools:layout="@layout/itemview_odd_btn_2x2_v6"
             tools:listitem="@layout/itemview_odd_btn_2x2_v6" />
 

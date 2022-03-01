@@ -70,13 +70,14 @@
         app:layout_constraintTop_toBottomOf="@id/quick_odd_home"
         tools:text="芬兰" />
 
-    <androidx.viewpager2.widget.ViewPager2
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/quick_odd_btn_pager_other"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="15dp"
         android:orientation="horizontal"
+        android:overScrollMode="never"
         app:layout_constraintBottom_toTopOf="@id/quick_odd_btn_indicator_other"
         app:layout_constraintEnd_toEndOf="@id/quick_odd_button_border"
         app:layout_constraintStart_toStartOf="@id/quick_odd_button_border"
@@ -89,6 +90,7 @@
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="@id/quick_odd_btn_pager_other"
         app:layout_constraintStart_toStartOf="@id/quick_odd_btn_pager_other"
-        app:layout_constraintTop_toBottomOf="@id/quick_odd_match_border" />
+        app:layout_constraintTop_toBottomOf="@id/quick_odd_match_border"
+        android:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

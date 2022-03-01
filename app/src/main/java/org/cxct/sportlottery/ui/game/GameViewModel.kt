@@ -388,7 +388,7 @@ class GameViewModel(
         _curChildMatchType.value = null
         _oddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
-        getSportMenu(matchType)
+        getSportMenu(matchType, onlyRefreshSportMenu = false)
         getAllPlayCategory(matchType)
         filterLeague(listOf())
     }
@@ -473,7 +473,7 @@ class GameViewModel(
     fun getSportMenu(
         matchType: MatchType?,
         switchFirstTag: Boolean = false,
-        onlyRefreshSportMenu: Boolean = false
+        onlyRefreshSportMenu: Boolean = true
     ) {
         _isLoading.value = true
         viewModelScope.launch {

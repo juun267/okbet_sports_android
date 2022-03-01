@@ -25,7 +25,7 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var dataSport = listOf<Item>()
         set(value) {
             field = value
-            notifyDataSetChanged()
+            //notifyDataSetChanged() // TODO 這裡需要另外處理GameType列表更新問題 By Hewie
         }
 
     private var dataThirdGame = listOf<GameCateData>()
