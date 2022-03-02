@@ -36,11 +36,15 @@ class GooglePermissionActivity : BaseActivity<GooglePermissionViewModel>(GoogleP
             }
         }
 
+    override fun onResume() {
+        super.onResume()
+        checkPermissionGiven()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_google_permission)
 
-        checkPermissionGiven()
         initBtn()
     }
 

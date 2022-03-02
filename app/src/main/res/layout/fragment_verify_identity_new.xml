@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorEEEFF0"
+    android:background="@color/colorWhite1"
     android:paddingHorizontal="14dp"
     android:paddingVertical="15dp"
     tools:context=".ui.profileCenter.identity.VerifyIdentityFragment">

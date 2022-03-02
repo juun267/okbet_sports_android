@@ -76,7 +76,7 @@ class ComboDetailDialog internal constructor(
 
                     item.winMoney == 0.0 -> {
                         tvResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorGray))
-                        tvResult.text = mContext.getString(R.string.nothing)
+                        tvResult.text = "${mContext.getString(R.string.draw)} ${ArithUtil.toMoneyFormat(item.winMoney)}"
                     }
                 }
 
