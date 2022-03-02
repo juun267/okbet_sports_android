@@ -67,7 +67,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
 
                 val odds: MutableMap<String, MutableList<Odd?>?> = mutableMapOf()
-                it.oddsMap.forEach { (key, value) ->
+                it.oddsMap?.forEach { (key, value) ->
                     value?.forEach { odd ->
                         odd?.id?.let {
                             odd?.isSelected = selectedOdds.contains(it)

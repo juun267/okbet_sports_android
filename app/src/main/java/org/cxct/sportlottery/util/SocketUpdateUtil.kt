@@ -245,6 +245,9 @@ object SocketUpdateUtil {
                     }
 
                     else -> {
+                        if(matchOdd.oddsMap == null){
+                            matchOdd.oddsMap = mutableMapOf()
+                        }
                         updateMatchOdds(
                             matchOdd.oddsMap ?: mutableMapOf(),
                             oddsChangeEvent.odds,

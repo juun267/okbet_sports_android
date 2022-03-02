@@ -204,7 +204,7 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
             it?.let { matchOddsLockEvent ->
                 outrightLeagueOddAdapter.data.forEachIndexed { index, matchOdd ->
                     if (matchOdd?.matchInfo?.id == matchOddsLockEvent.matchId) {
-                        matchOdd.oddsMap.forEach { oddsMap ->
+                        matchOdd.oddsMap?.forEach { oddsMap ->
                             oddsMap.value?.forEach { odd ->
                                 odd?.status = BetStatus.LOCKED.code
                             }
