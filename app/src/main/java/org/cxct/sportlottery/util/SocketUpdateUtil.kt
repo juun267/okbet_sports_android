@@ -327,6 +327,24 @@ object SocketUpdateUtil {
         }
     }
 
+    private fun updateBetPlayCateNameMap(
+        betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
+        betPlayCateNameMapSocket: Map<String?, Map<String?, String?>?>?,
+    ) {
+        betPlayCateNameMapSocket?.forEach {
+            betPlayCateNameMap?.set(it.key, it.value)
+        }
+    }
+
+    private fun updatePlayCateNameMap(
+        playCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
+        playCateNameMapSocket: Map<String?, Map<String?, String?>?>?
+    ) {
+        playCateNameMapSocket?.forEach {
+            playCateNameMap?.set(it.key, it.value)
+        }
+    }
+
     /**
      * 加入新增的玩法並同時更新已有玩法的資料再以rowSort排序
      */
