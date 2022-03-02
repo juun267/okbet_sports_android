@@ -255,6 +255,22 @@ object SocketUpdateUtil {
                     }
                 }
 
+                //更新翻譯
+                if(matchOdd.betPlayCateNameMap == null){
+                    matchOdd.betPlayCateNameMap = mutableMapOf()
+                }
+                updateBetPlayCateNameMap(
+                    matchOdd.betPlayCateNameMap,
+                    oddsChangeEvent.betPlayCateNameMap
+                )
+                if(matchOdd.playCateNameMap == null){
+                    matchOdd.playCateNameMap = mutableMapOf()
+                }
+                updatePlayCateNameMap(
+                    matchOdd.playCateNameMap,
+                    oddsChangeEvent.playCateNameMap
+                )
+
                 isNeedRefreshPlayCate = when (matchOdd.quickPlayCateList.isNullOrEmpty()) {
                     true -> {
                         insertPlayCate(matchOdd, oddsChangeEvent)
