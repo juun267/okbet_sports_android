@@ -692,7 +692,7 @@ class GameViewModel(
                 result.matchPreloadData?.datas?.forEach { data ->
                     data.matchOdds.forEach { matchOdd ->
                         matchOdd.sortOddsMap()
-                        matchOdd.oddsMap.forEach { map ->
+                        matchOdd.oddsMap?.forEach { map ->
                             map.value?.forEach { odd ->
                                 odd?.isSelected =
                                     betInfoRepository.betInfoList.value?.peekContent()?.any {
@@ -738,7 +738,7 @@ class GameViewModel(
                         }
 
                         //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
-                        matchOdd.oddsMap.forEach { map ->
+                        matchOdd.oddsMap?.forEach { map ->
                             map.value?.forEach { odd ->
                                 odd?.isSelected =
                                     betInfoRepository.betInfoList.value?.peekContent()?.any {
@@ -1281,7 +1281,7 @@ class GameViewModel(
 
                     matchOdd.playCateMappingList = playCateMappingList
 
-                    matchOdd.oddsMap.forEach { map ->
+                    matchOdd.oddsMap?.forEach { map ->
                         map.value?.updateOddSelectState()
                     }
 
@@ -1290,7 +1290,7 @@ class GameViewModel(
                     matchOdd.sortOdds()
 
                     if (!getPlayCateCodeList().isNullOrEmpty())
-                        matchOdd.oddsMap.entries.retainAll { getPlayCateCodeList()?.contains(it.key) == true }
+                        matchOdd.oddsMap?.entries?.retainAll { getPlayCateCodeList()?.contains(it.key) == true }
 
                     matchOdd.setupOddDiscount()
                     matchOdd.updateOddStatus()
@@ -2032,9 +2032,11 @@ class GameViewModel(
      */
     private fun MatchOdd.setupPlayCate() {
         val sortOrder = this.oddsSort?.split(",")
-        sortOrder?.forEach {
-            if (!this.oddsMap.keys.contains(it))
-                this.oddsMap[it] = mutableListOf(null, null, null)
+        this.oddsMap?.let { oddMap ->
+            sortOrder?.forEach {
+                if (!oddMap.keys.contains(it))
+                    oddMap[it] = mutableListOf(null, null, null)
+            }
         }
     }
 
@@ -2045,15 +2047,16 @@ class GameViewModel(
         try {
             val oddsMap: MutableMap<String, MutableList<Odd?>?>
 
-            val rgzMap = this.oddsMap.filter { (key, value) -> key.contains(":") }
-            if (rgzMap.isNotEmpty()) {
-                oddsMap = this.oddsMap.filter { !it.key.contains(":") }.toMutableMap()
-                oddsMap[rgzMap.iterator().next().key] = rgzMap.iterator().next().value
+            val rgzMap = this.oddsMap?.filter { (key, value) -> key.contains(":") }
+            rgzMap?.let {
+                if (rgzMap.isNotEmpty()) {
+                    oddsMap = this.oddsMap?.filter { !it.key.contains(":") }?.toMutableMap() ?: mutableMapOf()
+                    oddsMap[rgzMap.iterator().next().key] = rgzMap.iterator().next().value
 
-                this.oddsMap.clear()
-                this.oddsMap.putAll(oddsMap)
+                    this.oddsMap?.clear()
+                    this.oddsMap?.putAll(oddsMap)
+                }
             }
-
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -2064,13 +2067,13 @@ class GameViewModel(
      */
     private fun MatchOdd.sortOdds() {
         val sortOrder = this.oddsSort?.split(",")
-        val oddsMap = this.oddsMap.toSortedMap(compareBy<String> {
+        val oddsMap = this.oddsMap?.toSortedMap(compareBy<String> {
             val oddsIndex = sortOrder?.indexOf(it.split(":")[0])
             oddsIndex
         }.thenBy { it })
 
-        this.oddsMap.clear()
-        this.oddsMap.putAll(oddsMap)
+        this.oddsMap?.clear()
+        oddsMap?.let { this.oddsMap?.putAll(it) }
     }
 
     private fun List<Odd?>.updateOddSelectState() {

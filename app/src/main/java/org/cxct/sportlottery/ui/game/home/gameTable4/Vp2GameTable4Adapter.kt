@@ -122,7 +122,7 @@ class Vp2GameTable4Adapter (
 
     fun notifyOddsDiscountChanged(discount: Float) {
         dataList.forEachIndexed { index, matchOdd ->
-            matchOdd.oddsMap.forEach { (key, value) ->
+            matchOdd.oddsMap?.forEach { (key, value) ->
                 value?.forEach { odd ->
                     odd?.updateDiscount(this.discount, discount)
                 }
@@ -302,10 +302,12 @@ class Vp2GameTable4Adapter (
                 */
         private fun setupOddList(data: MatchOdd) {
             itemView.apply {
-                oddList = if (data.oddsMap.isNotEmpty()) {
-                    data.oddsMap.iterator().next().value
-                } else {
-                    mutableListOf()
+                data.oddsMap?.let {
+                    oddList = if (it.isNotEmpty()) {
+                        it.iterator().next().value
+                    } else {
+                        mutableListOf()
+                    }
                 }
             }
         }

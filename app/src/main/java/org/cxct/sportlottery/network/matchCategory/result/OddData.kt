@@ -32,7 +32,7 @@ data class OddData(
     override var playCateMappingList: List<PlayCateMapItem>? = null
 
     fun sortOddsMap() {
-        this.oddsMap.forEach { (_, value) ->
+        this.oddsMap?.forEach { (_, value) ->
             if (value?.size!! > 2 && value.first()?.marketSort != 0) {
                 value?.sortBy { it?.marketSort }
             }

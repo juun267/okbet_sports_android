@@ -156,13 +156,15 @@ object SocketUpdateUtil {
      */
     private fun sortOdds(matchOdd: MatchOdd) {
         val sortOrder = matchOdd.oddsSort?.split(",")
-        val oddsMap = matchOdd.oddsMap.toSortedMap(compareBy<String> {
-            val oddsIndex = sortOrder?.indexOf(it)
-            oddsIndex
-        }.thenBy { it })
+        matchOdd.oddsMap?.let { oddMap ->
+            val oddsMap = oddMap.toSortedMap(compareBy<String> {
+                val oddsIndex = sortOrder?.indexOf(it)
+                oddsIndex
+            }.thenBy { it })
 
-        matchOdd.oddsMap.clear()
-        matchOdd.oddsMap.putAll(oddsMap)
+            oddMap.clear()
+            oddMap.putAll(oddsMap)
+        }
     }
 
     fun updateMatchOdds(oddBean: OddBean, oddsChangeEvent: OddsChangeEvent): Boolean {
@@ -215,18 +217,20 @@ object SocketUpdateUtil {
                     (cateMenuCode == PlayCate.OUTRIGHT.value) -> {
                         var updated = false
                         oddsChangeEvent.odds?.forEach { (key, value) ->
-                            if (matchOdd.oddsMap.containsKey(key)) {
-                                if (updateMatchOdds(
-                                        mutableMapOf(
-                                            Pair(
-                                                key, matchOdd.oddsMap[key]
-                                            )
-                                        ), mutableMapOf(Pair(key, value))
-                                    )
-                                ) updated = true
-                            } else {
-                                matchOdd.oddsMap[key] = value.toMutableList()
-                                updated = true
+                            matchOdd.oddsMap?.let { oddsMap ->
+                                if (oddsMap.containsKey(key)) {
+                                    if (updateMatchOdds(
+                                            mutableMapOf(
+                                                Pair(
+                                                    key, oddsMap[key]
+                                                )
+                                            ), mutableMapOf(Pair(key, value))
+                                        )
+                                    ) updated = true
+                                } else {
+                                    oddsMap[key] = value.toMutableList()
+                                    updated = true
+                                }
                             }
                         }
                         updated
@@ -242,7 +246,7 @@ object SocketUpdateUtil {
 
                     else -> {
                         updateMatchOdds(
-                            matchOdd.oddsMap,
+                            matchOdd.oddsMap ?: mutableMapOf(),
                             oddsChangeEvent.odds,
                         )
                     }
@@ -440,7 +444,7 @@ object SocketUpdateUtil {
     fun updateOddStatus(matchOdd: MatchOdd, globalStopEvent: GlobalStopEvent): Boolean {
         var isNeedRefresh = false
 
-        matchOdd.oddsMap.values.forEach { odds ->
+        matchOdd.oddsMap?.values?.forEach { odds ->
             odds?.filter { odd ->
                 globalStopEvent.producerId == null || globalStopEvent.producerId == odd?.producerId
             }?.forEach { odd ->
@@ -492,7 +496,7 @@ object SocketUpdateUtil {
         var isNeedRefresh = false
 
         if (matchOdd.matchInfo?.id == matchOddsLockEvent.matchId) {
-            matchOdd.oddsMap.values.forEach { odd ->
+            matchOdd.oddsMap?.values?.forEach { odd ->
                 odd?.forEach {
                     it?.status = BetStatus.LOCKED.code
                     isNeedRefresh = true
@@ -737,7 +741,7 @@ object SocketUpdateUtil {
     }
 
     private fun MatchOdd.updateOddStatus() {
-        this.oddsMap.forEach {
+        this.oddsMap?.forEach {
             it.value?.filterNotNull()?.forEach { odd ->
 
                 odd.status = when {

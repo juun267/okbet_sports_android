@@ -243,7 +243,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                         playCateCode = playCateCode,
                         matchOdd = org.cxct.sportlottery.network.outright.odds.MatchOdd(
                             matchInfo = matchOdd.matchInfo,
-                            oddsMap = matchOdd.oddsMap,
+                            oddsMap = matchOdd.oddsMap ?: mutableMapOf(),
                             dynamicMarkets = matchOdd.dynamicMarkets ?: mapOf(),
                             oddsList = null,
                             quickPlayCateList = matchOdd.quickPlayCateList,
@@ -263,7 +263,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 val action = HomeFragmentDirections.actionHomeFragmentToGameOutrightMoreFragment(oddsKey,
                         org.cxct.sportlottery.network.outright.odds.MatchOdd(
                             matchInfo = matchOdd.matchInfo,
-                            oddsMap = matchOdd.oddsMap,
+                            oddsMap = matchOdd.oddsMap ?: mutableMapOf(),
                             dynamicMarkets = matchOdd.dynamicMarkets ?: mapOf(),
                             oddsList = listOf(),
                             quickPlayCateList = matchOdd.quickPlayCateList,
@@ -928,7 +928,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 val highlightDataList = mRvHighlightAdapter.getData()
                 highlightDataList.forEachIndexed { index, updateMatchOdd ->
                     if (!updateMatchOdd.oddsMap.isNullOrEmpty()) {
-                        updateMatchOdd.oddsMap.forEach { oldOddMap ->
+                        updateMatchOdd.oddsMap?.forEach { oldOddMap ->
                             oldOddMap.value?.forEach oldOddList@{ oldOdd ->
                                 if (oldOdd == null) return@oldOddList
 

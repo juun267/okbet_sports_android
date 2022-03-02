@@ -530,7 +530,7 @@ abstract class BaseOddButtonViewModel(
 
     protected fun MatchOdd.setupOddDiscount() {
         val discount = userInfo.value?.discount ?: 1F
-        this.oddsMap.forEach {
+        this.oddsMap?.forEach {
             it.value?.filterNotNull()?.forEach { odd ->
                 if (it.key == PlayCate.EPS.value)
                     odd.setupEPSDiscount(discount)
@@ -566,7 +566,7 @@ abstract class BaseOddButtonViewModel(
     }
 
     protected fun MatchOdd.updateOddStatus() {
-        this.oddsMap.forEach {
+        this.oddsMap?.forEach {
             it.value?.filterNotNull()?.forEach { odd ->
 
                 odd.status = when {
