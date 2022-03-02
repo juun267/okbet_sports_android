@@ -468,7 +468,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         }
 
         receiver.leagueChange.observe(this.viewLifecycleOwner) {
-            it?.getContentIfNotHandled()?.let { leagueChangeEvent ->
+            it?.let { leagueChangeEvent ->
 
                 leagueChangeEvent.leagueIdList?.let { leagueIdList ->
                     leagueIdList.filter { changedLeagueId ->

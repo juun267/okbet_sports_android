@@ -475,7 +475,9 @@ class GameViewModel(
         switchFirstTag: Boolean = false,
         onlyRefreshSportMenu: Boolean = false
     ) {
-        _isLoading.value = true
+        if (!onlyRefreshSportMenu)
+            _isLoading.value = true
+
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 sportMenuRepository.getSportMenu(
@@ -1149,8 +1151,8 @@ class GameViewModel(
                 item.code,
                 matchType.postValue,
                 timeRangeParams,
-                leagueIdList,
-                matchIdList,
+                null,
+                null,
                 false
             )
         }
