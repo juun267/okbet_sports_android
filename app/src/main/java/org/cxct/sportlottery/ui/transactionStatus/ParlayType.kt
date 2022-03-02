@@ -8,7 +8,7 @@ enum class ParlayType(
     @StringRes val stringRes: Int? = null,
     @StringRes val ruleStringRes: Int? = null
 ) {
-    SINGLE("1C1"),
+    SINGLE("1C1", R.string.bet_list_single, R.string.bet_list_single_warn),
     FOLD_2("2C1", R.string.parlay_2_fold, R.string.parlay_2_fold_rule),
     FOLD_3("3C1", R.string.parlay_3_fold, R.string.parlay_3_fold_rule),
     FOLD_4("4C1", R.string.parlay_4_fold, R.string.parlay_4_fold_rule),
