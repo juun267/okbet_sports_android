@@ -676,7 +676,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                     val gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
 
-                    if(oddsListResult.oddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()?.oddsMap?.isNotEmpty() == true){
                         game_list.apply {
                             adapter = leagueAdapter.apply {
                                 updateType = null
@@ -694,7 +693,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             )
                         }
                         game_list.itemAnimator = null
-                    }
+                    
 
                     setNoDataView(leagueAdapter.data)
                     leagueOdds.forEach { leagueOdd ->
