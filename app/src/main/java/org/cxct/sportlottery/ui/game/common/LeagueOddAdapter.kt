@@ -26,6 +26,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.TimeCounting
+import org.cxct.sportlottery.ui.common.CustomLinearLayoutManager
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TimeUtil
@@ -678,7 +679,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         }
 
         val linearLayoutManager by lazy {
-            LinearLayoutManager(
+            CustomLinearLayoutManager(
                 itemView.context,
                 LinearLayoutManager.HORIZONTAL,
                 false
