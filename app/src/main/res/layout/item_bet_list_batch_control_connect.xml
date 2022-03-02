@@ -105,9 +105,10 @@
                 android:maxLength="7"
                 android:textStyle="bold"
                 android:paddingStart="10dp"
-                android:textColor="@color/colorBlackLight"
+                android:textColor="@color/colorBlue"
                 android:textColorHint="@color/colorSilverLight"
                 android:textSize="@dimen/textSize16sp"
+                android:letterSpacing="0.05"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_parlay_type"
                 app:layout_constraintWidth_percent="0.442" />
