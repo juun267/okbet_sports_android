@@ -2,7 +2,8 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="SpUsage,ContentDescription,Autofill,DisableBaselineAlignment,RtlSymmetry,HardcodedText">
 
     <data>
 
@@ -17,9 +18,9 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@color/colorWhite2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite2">
 
         <ImageView
             android:id="@+id/iv_bet_lock_single"
@@ -29,6 +30,19 @@
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageView
+            android:id="@+id/btn_rule_single"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="10dp"
+            android:layout_marginTop="6dp"
+            android:src="@drawable/ic_question_mark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,31 +55,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/bet_list_single"
-                    android:textColor="@color/colorBlackLight"
-                    android:textSize="@dimen/textSize15sp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:layout_weight="1"
-                    android:gravity="start"
-                    android:text="@string/bet_list_single_warn"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/textSize12sp" />
-
-
-            </LinearLayout>
+                android:text="@string/bet_list_single"
+                android:textColor="@color/colorBlackLight"
+                android:textSize="@dimen/textSize15sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -96,8 +91,8 @@
                         android:id="@+id/et_container"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
-                </FrameLayout>
 
+                </FrameLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -120,18 +115,16 @@
                         android:textColor="@color/colorBlackLight"
                         android:textSize="@dimen/textSize13sp"
                         tools:text="3" />
-                </LinearLayout>
 
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/ll_winnable"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="5"
-                    android:gravity="end"
-                    android:orientation="vertical"
-                    android:paddingTop="3dp"
-                    android:paddingBottom="3dp">
+                    android:gravity="end|center_vertical"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -149,8 +142,11 @@
                         tools:text="9.720" />
 
                 </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

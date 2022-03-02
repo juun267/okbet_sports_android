@@ -76,7 +76,7 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
                 tv_play_content.text = setPlayContent(
                     needShowSpread(matchOdd?.playCateCode) && (matchType != MatchType.OUTRIGHT),
                     matchOdd?.playName,
-                    matchOdd?.spread,
+                    if (matchType != MatchType.OUTRIGHT) matchOdd?.spread else "",
                     TextUtil.formatForOdd(getOdds(matchOdd, oddsType ?: OddsType.EU)),
                     tv_play_content.context.getString(matchOdd?.let { matchOdd ->
                         currentOddsTypes?.let { currentOddsTypes ->
@@ -128,7 +128,7 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
                     tv_play_content.text = setPlayContent(
                         needShowSpread(matchOdd.playCateCode) && (betResult.matchType != MatchType.OUTRIGHT),
                         matchOdd.playName,
-                        matchOdd.spread,
+                        if (betResult.matchType != MatchType.OUTRIGHT) matchOdd.spread else "",
                         TextUtil.formatForOdd(getOdds(matchOdd, currentOddsTypes)),
                         getString(currentOddsTypes.res)
                     )
