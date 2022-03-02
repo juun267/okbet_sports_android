@@ -85,7 +85,7 @@
                     android:layout_marginStart="@dimen/margin_12"
                     android:layout_marginEnd="@dimen/margin_8"
                     android:background="@android:color/transparent"
-                    android:hint="搜索赛事"
+                    android:hint="@string/text_search"
                     android:singleLine="true"
                     android:imeOptions="actionDone"
                     android:textSize="@dimen/textSize12sp" />
@@ -160,7 +160,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/tvClear"
-                    android:text="清除"
+                    android:text="@string/text_clear"
                     android:textColor="@color/color_999999"
                     android:textSize="@dimen/margin_12"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -181,6 +181,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/layoutTop"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layoutHistory">
 
@@ -225,6 +226,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -244,6 +246,49 @@
                 android:layout_marginBottom="@dimen/margin_8"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/layoutNoData"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/list_no_record_img"
+                    android:layout_width="130dp"
+                    android:layout_height="84dp"
+                    android:layout_marginTop="60dp"
+                    android:src="@drawable/ic_img_no_record"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/list_no_record_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:text="@string/text_search_no_result"
+                    android:textColor="@color/colorBlackLight"
+                    android:textSize="@dimen/textSize14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@id/list_no_record_img"
+                    app:layout_constraintStart_toStartOf="@id/list_no_record_img"
+                    app:layout_constraintTop_toBottomOf="@id/list_no_record_img" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/text_search_try_another"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/textSize14sp"
+                    app:layout_constraintEnd_toEndOf="@id/list_no_record_img"
+                    app:layout_constraintStart_toStartOf="@id/list_no_record_img"
+                    app:layout_constraintTop_toBottomOf="@id/list_no_record_text" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

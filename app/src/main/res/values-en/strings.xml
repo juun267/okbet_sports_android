@@ -997,6 +997,8 @@
     <string name="account_hint"><font size="12">(your member account)</font></string>
     <string name="submit_success">submitted successfully</string>
     <!-- 搜尋 -->
+    <string name="text_search">Search</string>
+    <string name="text_clear">Clear</string>
     <string name="text_search_history">Search history</string>
     <string name="text_top_search">Top Searches</string>
     <string name="text_search_refresh">Refresh</string>

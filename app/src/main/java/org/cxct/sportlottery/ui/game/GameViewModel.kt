@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavDirections
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
@@ -187,7 +188,7 @@ class GameViewModel(
 
     val playCate: LiveData<String?>
         get() = _playCate
-    val searchResult: LiveData<Event<List<SearchResponse.Row>?>>
+    val searchResult: LiveData<Event<List<SearchResult>?>>
         get() = _searchResult
 
 
@@ -240,7 +241,8 @@ class GameViewModel(
     private val _leagueFilterList = MutableLiveData<List<League>>()
     private val _playList = MutableLiveData<List<Play>>()
     private val _playCate = MutableLiveData<String?>()
-    private val _searchResult = MutableLiveData<Event<List<SearchResponse.Row>?>>()
+    private val _searchResult = MutableLiveData<Event<List<SearchResult>?>>()
+    private val _navDetail = MutableLiveData<Event<NavDirections>>()
 
 
     private val _matchPreloadInPlay = MutableLiveData<Event<MatchPreloadResult>>()
@@ -350,6 +352,14 @@ class GameViewModel(
         gameType?.let { recordSportType(matchType, it.key) }
     }
 
+    fun navSpecialEntrance(
+        matchType: MatchType,
+        gameType: GameType?,
+        matchId: String
+    ) {
+        _specialEntrance.postValue(SpecialEntrance(matchType, gameType, matchID = matchId))
+    }
+
     private fun getSpecEntranceFromHome(
         matchType: MatchType,
         gameType: GameType?
@@ -446,7 +456,7 @@ class GameViewModel(
         }
     }
 
-    fun getSearchResult(){
+    fun getSearchResult() {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.sportService.getSearchResult(
@@ -463,16 +473,12 @@ class GameViewModel(
     }
 
     fun getSportSearch(key: String) {
-        if(key.isNotEmpty()){
-            var finalResult : MutableList<SearchResponse.Row>? = arrayListOf()
-//            var searchResult = allSearchData?.filter { row ->
-//                row.gameName.contains(key,true) || row.leagueMatchList.any { leagueMatch ->
-//                    leagueMatch.matchInfoList.any { matchInfo ->
-//                        matchInfo.homeName.contains(key, true) ||
-//                                matchInfo.awayName.contains(key, true)}
-//                }
-//            }
-//            _searchResult.postValue(Event(searchResult))
+        if (key.isNotEmpty()) {
+        //[Martin] 小弟愚鈍 搜尋無法一次Filter所有資料(待強人捕)
+        // 所以下面的做法總共分三次去Filter資料 然後再合併
+        // 1.篩選球種 2.篩選聯賽 3.篩選比賽
+            var finalResult: MutableList<SearchResult> = arrayListOf()
+            //1.篩選球種
             var searchResult = allSearchData?.filter { row ->
                 row.leagueMatchList.any { leagueMatch ->
                     leagueMatch.matchInfoList.any { matchInfo ->
@@ -481,31 +487,14 @@ class GameViewModel(
                     }
                 }
             }
-//            searchResult.
-//            allSearchData?.forEachIndexed { index,row ->
-//                searchResult[0] = row.leagueMatchList.filter { leagueMatch ->
-//                    leagueMatch.matchInfoList.any { matchInfo ->
-//                        matchInfo.homeName.contains(key, true) ||
-//                                matchInfo.awayName.contains(key, true)
-//                    }
-//                }
-//            }
-//            var searchResult2 = searchResult?.forEach { row ->
-//                row.leagueMatchList.filter { leagueMatch ->
-//                    leagueMatch.matchInfoList.any { matchInfo ->
-//                        matchInfo.homeName.contains(key, true) ||
-//                                matchInfo.awayName.contains(key, true)}
-//                }
-//            }
-            var searchResult2 = searchResult?.map { row ->
-                row.leagueMatchList.map { leagueMatch ->
-                    leagueMatch.matchInfoList.filter { matchInfo ->
-                        matchInfo.homeName.contains(key, true) ||
-                                matchInfo.awayName.contains(key, true)
-                    }
-                }
+            searchResult?.forEach {
+                var searchResult: SearchResult = SearchResult(it.gameName)
+                searchResult.sportTitle = it.gameName
+                searchResult.gameType = it.gameType
+                finalResult?.add(searchResult)
             }
-            var searchResult3 = searchResult?.map { row ->
+            //2.篩選聯賽
+            var leagueMatchSearchResult = searchResult?.map { row ->
                 row.leagueMatchList.filter { leagueMatch ->
                     leagueMatch.matchInfoList.any { matchInfo ->
                         matchInfo.homeName.contains(key, true) ||
@@ -513,7 +502,36 @@ class GameViewModel(
                     }
                 }
             }
-            _searchResult.postValue(Event(searchResult))
+            leagueMatchSearchResult?.forEachIndexed { index, league ->
+                var searchResultLeagueList: MutableList<SearchResult.SearchResultLeague> =
+                    arrayListOf()
+                league.forEach {leagueMatch ->
+                    var searchResultLeague = SearchResult.SearchResultLeague(leagueMatch.leagueName)
+                    searchResultLeagueList.add(searchResultLeague)
+                }
+                finalResult?.get(index).searchResultLeague = searchResultLeagueList
+            }
+            //3.篩選比賽
+            var matchSearchResult = leagueMatchSearchResult?.map { row ->
+                row.map { leagueMatch ->
+                    leagueMatch.matchInfoList.filter { matchInfo ->
+                        matchInfo.homeName.contains(key, true) ||
+                                matchInfo.awayName.contains(key, true)
+                    }
+                }
+            }
+            matchSearchResult?.forEachIndexed { index0, row ->
+                row.forEachIndexed { index1, league ->
+                    var matchList: MutableList<SearchResponse.Row.LeagueMatch.MatchInfo> =
+                        arrayListOf()
+
+                    league.forEachIndexed { index, matchInfo ->
+                        matchList.add(matchInfo)
+                    }
+                    finalResult?.get(index0).searchResultLeague.get(index1).leagueMatchList = matchList
+                }
+            }
+            _searchResult.postValue(Event(finalResult))
         }
     }
 
@@ -1574,7 +1592,7 @@ class GameViewModel(
     }
 
     private fun getPlayCategory(matchType: MatchType) {
-        if(matchType == MatchType.OTHER){
+        if (matchType == MatchType.OTHER) {
             sportQueryData?.let { sportQueryData ->
                 sportQueryData.items?.find { item ->
                     item.code == getSportSelectedCode(matchType)
@@ -1589,7 +1607,7 @@ class GameViewModel(
                     _playCate.value = null
                 }
             }
-        }else{
+        } else {
             sportQueryData?.let { sportQueryData ->
                 sportQueryData.items?.find { item ->
                     item.code == getSportSelected(matchType)?.code
@@ -2409,17 +2427,16 @@ class GameViewModel(
             doNetwork(androidContext) {
                 OneBoSportApi.withdrawService.validateTwoFactor(validateTwoFactorRequest)
             }?.let { result ->
-                if(result.success){
+                if (result.success) {
                     _twoFactorSuccess.value = true
                     withdrawRepository.sendTwoFactor()
-                }
-                else
+                } else
                     _errorMessageDialog.value = result.msg
             }
         }
     }
 
-    fun updateBetAmount(input: String){
+    fun updateBetAmount(input: String) {
         betInfoRepository.updateBetAmount(input)
     }
 }

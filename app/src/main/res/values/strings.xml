@@ -1012,6 +1012,8 @@
     <string name="account_hint"><font size="12">(请输入您的会员帐号)</font></string>
     <string name="submit_success">提交成功</string>
     <!-- 搜尋 -->
+    <string name="text_search">搜索</string>
+    <string name="text_clear">清除</string>
     <string name="text_search_history">搜索历史</string>
     <string name="text_top_search">热门搜索</string>
     <string name="text_search_refresh">换一换</string>

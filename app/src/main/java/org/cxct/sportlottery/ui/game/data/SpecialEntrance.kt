@@ -8,5 +8,6 @@ data class SpecialEntrance(
     val matchType: MatchType,
     val gameType: GameType? = null,
     val couponCode:String? = null,
-    val couponName:String? = null
+    val couponName:String? = null,
+    val matchID:String? = null
 )

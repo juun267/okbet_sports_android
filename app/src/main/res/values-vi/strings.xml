@@ -1023,6 +1023,8 @@
     <string name="account_hint"><font size="12">(Vui lòng nhập mật khẩu đăng nhập của bạn)</font></string>
     <string name="submit_success">gửi thành công</string>
     <!-- 搜尋 -->
+    <string name="text_search">Tìm kiếm</string>
+    <string name="text_clear">Xóa</string>
     <string name="text_search_history">Lịch sử tìm kiếm</string>
     <string name="text_top_search">Tìm kiếm hàng đầu</string>
     <string name="text_search_refresh">Làm cho khỏe lại</string>
