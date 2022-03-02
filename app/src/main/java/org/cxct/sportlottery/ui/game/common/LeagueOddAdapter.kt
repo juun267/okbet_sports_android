@@ -915,6 +915,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     }
                 }
 
+                itemView.scroll_view_rg.visibility = if(item.quickPlayCateList.isNullOrEmpty()) View.GONE else View.VISIBLE
+
                 setOnCheckedChangeListener { group, checkedId ->
                     item.quickPlayCateList?.forEach {
                         it.isSelected = (it.hashCode() == checkedId)
