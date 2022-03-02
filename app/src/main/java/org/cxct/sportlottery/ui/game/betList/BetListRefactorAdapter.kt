@@ -29,6 +29,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.transactionStatus.ParlayType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayRuleStringRes
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.*
@@ -449,7 +450,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 val inPlay = System.currentTimeMillis() > itemData.matchOdd.startTime ?: 0
                 when {
                     itemData.betPlayCateNameMap.isNullOrEmpty() -> {
-                        tv_name.text = when (inPlay) {
+                        tv_name.text = when (inPlay && itemData.matchType != MatchType.OUTRIGHT) {
                             true -> {
                                 context.getString(
                                     R.string.bet_info_in_play_score,
@@ -463,7 +464,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     }
 
                     else -> {
-                        tv_name.text = when (inPlay) {
+                        tv_name.text = when (inPlay && itemData.matchType != MatchType.OUTRIGHT) {
                             true -> {
                                 context.getString(
                                     R.string.bet_info_in_play_score,
@@ -692,7 +693,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         if (hasParlayList) {
                             item_first_connect.visibility = View.VISIBLE
                             itemData.let {
-                                it?.max = if(GameConfigManager.maxParlayBetMoney?.toLong() ?: 0 > itemData?.max?.toLong() ?: 0) itemData?.max ?: 0  else GameConfigManager.maxParlayBetMoney ?: 0
+                                it?.max = if (GameConfigManager.maxParlayBetMoney?.toLong() ?: 0 > itemData?.max?.toLong() ?: 0) itemData?.max
+                                    ?: 0 else GameConfigManager.maxParlayBetMoney ?: 0
                             }
                             setupParlayItem(
                                 itemData,
@@ -726,7 +728,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         item_first_connect.visibility = View.VISIBLE
                         ll_more_option.visibility = View.VISIBLE
                         itemData.let {
-                            it?.max = if(GameConfigManager.maxParlayBetMoney?.toLong() ?: 0 > itemData?.max?.toLong() ?: 0) itemData?.max ?: 0  else GameConfigManager.maxParlayBetMoney ?: 0
+                            it?.max =
+                                if (GameConfigManager.maxParlayBetMoney?.toLong() ?: 0 > itemData?.max?.toLong() ?: 0) itemData?.max ?: 0 else GameConfigManager.maxParlayBetMoney
+                                    ?: 0
                         }
                         setupParlayItem(
                             itemData,
@@ -907,6 +911,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
 
                 setupItemEnable(hasBetClosed)
+
+                btn_rule_single.setOnClickListener {
+                    onItemClickListener.showParlayRule(ParlayType.SINGLE.key, context.getString(ParlayType.SINGLE.ruleStringRes ?: 0))
+                }
             }
         }
 
@@ -957,7 +965,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     OddsType.EU -> {
                         win = betAmount * (getOdds(it.matchOdd, currentOddsType) - 1)
                     }
-                    else  -> {
+                    else -> {
                         win = betAmount * getOdds(it.matchOdd, currentOddsType)
                     }
                 }
@@ -1085,7 +1093,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             position: Int
         ) {
             itemData.let {
-                it?.max = if(GameConfigManager.maxParlayBetMoney?.toLong() ?: 0 > itemData?.max?.toLong() ?: 0) itemData?.max ?: 0  else GameConfigManager.maxParlayBetMoney ?: 0
+                it?.max = if (GameConfigManager.maxParlayBetMoney?.toLong() ?: 0 > itemData?.max?.toLong() ?: 0) itemData?.max ?: 0 else GameConfigManager.maxParlayBetMoney ?: 0
             }
             setupParlayItem(
                 itemData,

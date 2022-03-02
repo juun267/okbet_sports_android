@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorEEEFF0"
+    android:background="@color/colorWhite1"
     tools:context=".ui.feedback.FeedbackMainActivity">
 
     <org.cxct.sportlottery.ui.common.CustomTopToolbar
