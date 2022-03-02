@@ -2088,7 +2088,7 @@ class GameViewModel(
     private fun OddsListResult.updateQuickPlayCate(
         matchId: String,
         quickListData: QuickListData,
-        quickPlayCateNameMap: Map<String?, Map<String?, String?>?>?
+        quickPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
     ): OddsListResult {
         this.oddsListData?.leagueOdds?.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach { matchOdd ->

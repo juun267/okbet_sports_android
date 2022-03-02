@@ -44,7 +44,7 @@ data class MatchOdd(
 
     var positionButtonPage = 0
 
-    var quickPlayCateNameMap: Map<String?, Map<String?, String?>?>? = null //足球快捷玩法的翻譯
+    var quickPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null //足球快捷玩法的翻譯
 
     fun sortOddsMap() {
         this.oddsMap?.forEach { (_, value) ->
