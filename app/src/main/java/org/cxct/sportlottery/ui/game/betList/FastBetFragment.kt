@@ -567,7 +567,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         val inPlay = System.currentTimeMillis() > matchOdd.startTime ?: 0
         when {
             betPlayCateNameMap.isNullOrEmpty() -> {
-                tv_name.text = if (inPlay) {
+                tv_name.text = if (inPlay && betInfoListData?.matchType != MatchType.OUTRIGHT) {
                     getString(
                         R.string.bet_info_in_play_score,
                         nameOneLine(matchOdd.playCateName),
@@ -577,7 +577,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 } else nameOneLine(matchOdd.playCateName)
             }
             else -> {
-                tv_name.text = if (inPlay) {
+                tv_name.text = if (inPlay && betInfoListData?.matchType != MatchType.OUTRIGHT) {
                     getString(
                         R.string.bet_info_in_play_score,
                         betPlayCateNameMap?.get(matchOdd.playCode)
