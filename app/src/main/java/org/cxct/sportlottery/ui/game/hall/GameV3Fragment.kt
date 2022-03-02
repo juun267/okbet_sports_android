@@ -675,23 +675,27 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         ?: oddsListResult.oddsListData?.leagueOdds ?: listOf()
 
                     val gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
-                    game_list.apply {
-                        adapter = leagueAdapter.apply {
-                            updateType = null
-                            data = leagueOdds.onEach { leagueOdd ->
-                                leagueOdd.gameType = gameType
-                            }.toMutableList()
+
+                    if(oddsListResult.oddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()?.oddsMap?.isNotEmpty() == true){
+                        game_list.apply {
+                            adapter = leagueAdapter.apply {
+                                updateType = null
+                                data = leagueOdds.onEach { leagueOdd ->
+                                    leagueOdd.gameType = gameType
+                                }.toMutableList()
+                            }
                         }
+                        //如果data資料為空時，又有其他球種的情況下，自動選取第一個
+                        if (leagueAdapter.data.isNullOrEmpty() && gameTypeAdapter.dataSport.size > 1) {
+                            viewModel.getSportMenu(
+                                args.matchType,
+                                switchFirstTag = true,
+                                onlyRefreshSportMenu = true
+                            )
+                        }
+                        game_list.itemAnimator = null
                     }
-                    //如果data資料為空時，又有其他球種的情況下，自動選取第一個
-                    if (leagueAdapter.data.isNullOrEmpty() && gameTypeAdapter.dataSport.size > 1) {
-                        viewModel.getSportMenu(
-                            args.matchType,
-                            switchFirstTag = true,
-                            onlyRefreshSportMenu = true
-                        )
-                    }
-                    game_list.itemAnimator = null
+
                     setNoDataView(leagueAdapter.data)
                     leagueOdds.forEach { leagueOdd ->
                         subscribeChannelHall(leagueOdd)
