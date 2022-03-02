@@ -130,7 +130,7 @@ abstract class BaseOddButtonViewModel(
         matchInfo: MatchInfo,
         odd: org.cxct.sportlottery.network.odds.Odd,
         subscribeChannelType: ChannelType,
-        betPlayCateNameMap: Map<String?, Map<String?, String?>?>?,
+        betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
         playCateMenuCode: String? = null,
         otherPlayCateName: String? = null
     ) {

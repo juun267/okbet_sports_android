@@ -280,7 +280,7 @@ class BetInfoRepository(val androidContext: Context) {
         subscribeChannelType: ChannelType,
         playCateMenuCode: String? = null,
         oddsType: OddsType?,
-        betPlayCateNameMap: Map<String?, Map<String?, String?>?>?
+        betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
     ) {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
         oddsType?.let {

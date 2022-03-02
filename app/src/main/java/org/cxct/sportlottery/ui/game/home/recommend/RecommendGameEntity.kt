@@ -15,8 +15,8 @@ class RecommendGameEntity(
     var oddBeans: List<OddBean>,
     val dynamicMarkets: Map<String, DynamicMarket>?,
     val playCateMappingList: List<PlayCateMapItem>?,
-    val betPlayCateNameMap: Map<String?, Map<String?, String?>?>?,
-    val playCateNameMap: Map<String?, Map<String?, String?>?>?
+    var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
+    var playCateNameMap: MutableMap<String?, Map<String?, String?>?>?
 ) {
     var vpRecommendAdapter: VpRecommendAdapter? = null
 }

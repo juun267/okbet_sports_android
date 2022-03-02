@@ -266,7 +266,13 @@ fun RecommendGameEntity.toMatchOdd(): MatchOdd {
     this.oddBeans.forEach {
         odds[it.playTypeCode] = it.oddList.toMutableList()
     }
-    return MatchOdd(this.betPlayCateNameMap,this.playCateNameMap , matchInfo, odds, dynamicMarkets = this.dynamicMarkets).apply {
+    return MatchOdd(
+        this.betPlayCateNameMap,
+        this.playCateNameMap,
+        matchInfo,
+        odds,
+        dynamicMarkets = this.dynamicMarkets
+    ).apply {
         playCateMappingList = this@toMatchOdd.playCateMappingList
     }
 }

@@ -532,7 +532,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         odd: Odd,
         playCateCode: String,
         playCateName: String,
-        betPlayCateNameMap: Map<String?, Map<String?, String?>?>?
+        betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
     ) {
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)

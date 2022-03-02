@@ -18,5 +18,5 @@ data class Data(
     @Json(name = "num")
     val num: Int,
     @Json(name = "playCateNameMap")
-    val playCateNameMap: Map<String?, Map<String?, String?>?>?//翻譯
+    var playCateNameMap: MutableMap<String?, Map<String?, String?>?>?//翻譯
 )

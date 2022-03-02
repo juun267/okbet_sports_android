@@ -29,9 +29,9 @@ data class MatchOdd(
     @Json(name = "oddsSort")
     override val oddsSort: String? = null,
     @Json(name = "betPlayCateNameMap")
-    override val betPlayCateNameMap: Map<String?, Map<String?, String?>?>? = mapOf(),
+    override var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? = mutableMapOf(),
     @Json(name = "playCateNameMap")
-    override val playCateNameMap: Map<String?, Map<String?, String?>?>? = mapOf(),
+    override var playCateNameMap: MutableMap<String?, Map<String?, String?>?>? = mutableMapOf(),
     ) : MatchOdd,
 
     Parcelable {

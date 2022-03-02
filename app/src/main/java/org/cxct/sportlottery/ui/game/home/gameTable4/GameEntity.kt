@@ -7,7 +7,7 @@ class GameEntity(
     val name: String?, //球種名稱
     var num: Int = 0, //該球種的比賽場次數量
     var matchOdds: MutableList<MatchOdd> = mutableListOf(),
-    val playCateNameMap: Map<String?, Map<String?, String?>?>? = mapOf(),
+    var playCateNameMap: MutableMap<String?, Map<String?, String?>?>? = mutableMapOf(),
     val otherMatch: List<OtherMatch>? = listOf()
 ) {
     var vpTableAdapter: Vp2GameTable4Adapter? = null

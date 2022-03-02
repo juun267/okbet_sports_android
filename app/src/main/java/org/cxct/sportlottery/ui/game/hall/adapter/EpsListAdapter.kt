@@ -207,11 +207,11 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
 
     class EpsOddListener(
         val clickListenerLeague: (item: EpsLeagueOddsItem) -> Unit,
-        val clickListenerBet: (odd: Odd, matchInfo: MatchInfo, betPlayCateNameMap: Map<String?, Map<String?, String?>?>?) -> Unit,
+        val clickListenerBet: (odd: Odd, matchInfo: MatchInfo, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?) -> Unit,
         val clickBetListenerInfo: (matchInfo: MatchInfo) -> Unit
     ) {
         fun onClickLeague(item: EpsLeagueOddsItem) = clickListenerLeague(item)
-        fun onClickBet(odd: Odd, matchInfo: MatchInfo, betPlayCateNameMap: Map<String?, Map<String?, String?>?>?) = clickListenerBet(odd, matchInfo, betPlayCateNameMap)
+        fun onClickBet(odd: Odd, matchInfo: MatchInfo, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?) = clickListenerBet(odd, matchInfo, betPlayCateNameMap)
         fun onClickInfo(matchInfo: MatchInfo) = clickBetListenerInfo(matchInfo)
     }
 }

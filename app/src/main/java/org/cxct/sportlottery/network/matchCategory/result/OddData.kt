@@ -24,9 +24,9 @@ data class OddData(
     @Json(name = "oddsSort")
     override val oddsSort: String? = null,
     @Json(name = "betPlayCateNameMap")
-    override val betPlayCateNameMap: Map<String?, Map<String?, String?>?>?,
+    override var betPlayCateNameMap:  MutableMap<String?, Map<String?, String?>?>?,
     @Json(name = "playCateNameMap")
-    override val playCateNameMap: Map<String?, Map<String?, String?>?>?,
+    override var playCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
 ) : MatchOdd {
     override val oddsEps: EpsOdd? = null
     override var playCateMappingList: List<PlayCateMapItem>? = null

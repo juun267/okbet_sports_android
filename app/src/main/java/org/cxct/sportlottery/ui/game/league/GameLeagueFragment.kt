@@ -605,7 +605,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         odd: Odd,
         playCateCode: String,
         playCateName: String,
-        betPlayCateNameMap: Map<String?, Map<String?, String?>?>?,
+        betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
     ) {
         matchInfo?.let {
             viewModel.updateMatchBetList(
