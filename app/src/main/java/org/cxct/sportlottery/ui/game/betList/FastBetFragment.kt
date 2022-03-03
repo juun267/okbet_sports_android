@@ -89,7 +89,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
         }
 
-    private var betPlayCateNameMap: Map<String?, Map<String?, String?>?>? = null
+    private var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null
 
     private var parlayOdd: ParlayOdd? = null
         set(value) {
@@ -552,7 +552,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun setupData(
         matchOdd: MatchOdd,
-        betPlayCateNameMap: Map<String?, Map<String?, String?>?>?
+        betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
     ) {
         //隊伍名稱
         tv_match.text =

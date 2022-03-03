@@ -37,7 +37,7 @@ class LeagueAdapter(private val matchType: MatchType) :
 
             data.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
-                    matchOdd.oddsMap.updateOddsDiscount(field, value)
+                    matchOdd.oddsMap?.updateOddsDiscount(field, value)
                 }
             }
 

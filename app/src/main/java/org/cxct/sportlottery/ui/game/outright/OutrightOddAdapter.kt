@@ -28,7 +28,7 @@ class OutrightOddAdapter :
             field = value
             field?.let { matchOdd ->
                 val list = mutableListOf<Any>()
-                matchOdd.oddsMap.forEach {
+                matchOdd.oddsMap?.forEach {
                     if (it.value?.get(0) != null) {
                         list.add(it.key)
 

@@ -10,7 +10,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 class BetInfoListData(
     var matchOdd: MatchOdd,
     var parlayOdds: ParlayOdd?,
-    var betPlayCateNameMap: Map<String?, Map<String?, String?>?>?
+    var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
 ) {
     var matchType: MatchType? = null
     var input: String? = null

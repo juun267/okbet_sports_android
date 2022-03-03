@@ -674,6 +674,14 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         ?: oddsListResult.oddsListData?.leagueOdds ?: listOf()
 
                     val gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
+//                        game_list.apply {
+//                            adapter = leagueAdapter.apply {
+//                                updateType = null
+//                                data = leagueOdds.onEach { leagueOdd ->
+//                                    leagueOdd.gameType = gameType
+//                                }.toMutableList()
+//                            }
+//                        }
                     leagueAdapter.data = leagueOdds.onEach { leagueOdd -> leagueOdd.gameType = gameType }.toMutableList()
                     //如果data資料為空時，又有其他球種的情況下，自動選取第一個
                     if (leagueAdapter.data.isNullOrEmpty() && gameTypeAdapter.dataSport.size > 1) {
@@ -683,6 +691,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             onlyRefreshSportMenu = true
                         )
                     }
+                    game_list.itemAnimator = null
+                    
+
                     setNoDataView(leagueAdapter.data)
                     leagueOdds.forEachIndexed { index, leagueOdd ->
                         subscribeChannelHall(leagueOdd)
@@ -929,7 +940,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 val leagueOdds = leagueAdapter.data
                 leagueOdds.forEach { leagueOdd ->
                     leagueOdd.matchOdds.forEach { matchOdd ->
-                        matchOdd.oddsMap.values.forEach { oddList ->
+                        matchOdd.oddsMap?.values?.forEach { oddList ->
                             oddList?.forEach { odd ->
                                 odd?.isSelected = it.any { betInfoListData ->
                                     betInfoListData.matchOdd.oddsId == odd?.id
@@ -1666,7 +1677,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         odd: Odd,
         playCateCode: String,
         playCateName: String,
-        betPlayCateNameMap: Map<String?, Map<String?, String?>?>?,
+        betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
     ) {
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)

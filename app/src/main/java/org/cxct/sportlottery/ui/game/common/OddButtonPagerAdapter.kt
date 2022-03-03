@@ -29,10 +29,10 @@ import java.lang.Exception
 class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
     private var matchInfo: MatchInfo?= null
     private var oddsSort: String?= null
-    private var playCateNameMap: Map<String?, Map<String?, String?>?>?= null
-    private var betPlayCateNameMap: Map<String?, Map<String?, String?>?>?= null //遊戲名稱顯示用playCateNameMap，下注顯示用betPlayCateNameMap
+    private var playCateNameMap: MutableMap<String?, Map<String?, String?>?>?= null
+    private var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?= null //遊戲名稱顯示用playCateNameMap，下注顯示用betPlayCateNameMap
 
-    fun setData(matchInfo: MatchInfo?, oddsSort: String?, playCateNameMap: Map<String?, Map<String?, String?>?>?, betPlayCateNameMap: Map<String?, Map<String?, String?>?>?) {
+    fun setData(matchInfo: MatchInfo?, oddsSort: String?, playCateNameMap: MutableMap<String?, Map<String?, String?>?>?, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?) {
         this.matchInfo = matchInfo
         this.oddsSort = oddsSort
         this.playCateNameMap = playCateNameMap
@@ -295,7 +295,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
     }
 
     //SINGLE_OU、SINGLE_BTS兩種玩法要特殊處理，後端API沒給翻譯
-    private fun Map<String?, Map<String?, String?>?>?.addSplitPlayCateTranslation(): Map<String?, Map<String?, String?>?>? {
+    private fun MutableMap<String?, Map<String?, String?>?>?.addSplitPlayCateTranslation(): MutableMap<String?, Map<String?, String?>?>? {
         val translationMap = mutableMapOf<String?, Map<String?, String?>?>()
 
         this?.let { translationMap.putAll(it) }
@@ -406,8 +406,8 @@ class OddButtonPagerViewHolder private constructor(
 
     fun bind(
         matchInfo: MatchInfo?,
-        playCateNameMap: Map<String?, Map<String?, String?>?>?,
-        betPlayCateNameMap: Map<String?, Map<String?, String?>?>?,
+        playCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
+        betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
         odds: List<Pair<String?, List<Odd?>?>>?,
         oddsType: OddsType,
         oddButtonListener: OddButtonListener?,
@@ -463,8 +463,8 @@ class OddButtonPagerViewHolder private constructor(
         oddBtnAway: OddsButton,
         oddBtnDraw: OddsButton,
         matchInfo: MatchInfo?,
-        playCateNameMap: Map<String?, Map<String?, String?>?>?,
-        betPlayCateNameMap: Map<String?, Map<String?, String?>?>?,
+        playCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
+        betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
         odds: Pair<String?, List<Odd?>?>?,
         oddsType: OddsType,
         oddButtonListener: OddButtonListener?

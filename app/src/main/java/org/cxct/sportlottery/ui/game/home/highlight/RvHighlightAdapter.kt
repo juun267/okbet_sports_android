@@ -67,7 +67,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
 
                 val odds: MutableMap<String, MutableList<Odd?>?> = mutableMapOf()
-                it.oddsMap.forEach { (key, value) ->
+                it.oddsMap?.forEach { (key, value) ->
                     value?.forEach { odd ->
                         odd?.id?.let {
                             odd?.isSelected = selectedOdds.contains(it)
@@ -137,7 +137,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
     fun notifyOddsDiscountChanged(discount: Float) {
         dataList.forEach { matchOdd ->
-            matchOdd.oddsMap.forEach { (key, value) ->
+            matchOdd.oddsMap?.forEach { (key, value) ->
                 value?.forEach { odd ->
                     odd?.updateDiscount(this.discount, discount)
                 }
@@ -158,7 +158,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
     fun notifySelectedOddsChanged(selectedOdds: MutableList<String>) {
         dataList.forEach { matchOdd ->
-            matchOdd.oddsMap.forEach { (key, value) ->
+            matchOdd.oddsMap?.forEach { (key, value) ->
                 value?.forEach { odd ->
                     odd?.id?.let {
                         odd?.isSelected = selectedOdds.contains(it)
@@ -269,11 +269,12 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
         private fun setupOddList(data: MatchOdd) {
             itemView.apply {
-
-                oddList = if(data.oddsMap.isNotEmpty()) {
-                    data.oddsMap.iterator().next().value
-                } else {
-                    mutableListOf()
+                data.oddsMap?.let {
+                    oddList = if(it.isNotEmpty()) {
+                        it.iterator().next().value
+                    } else {
+                        mutableListOf()
+                    }
                 }
             }
         }

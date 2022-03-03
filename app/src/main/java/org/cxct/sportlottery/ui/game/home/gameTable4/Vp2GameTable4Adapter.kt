@@ -57,7 +57,7 @@ class Vp2GameTable4Adapter (
     private var selectedOdds = mutableListOf<String>()
     private var dataList: List<MatchOdd> = listOf()
     //主頁的翻譯要取外層的playCateNameMap，odds為{}時內層的playCateNameMap會是空的
-    private var playCateNameMap: Map<String?, Map<String?, String?>?>? = mapOf()
+    private var playCateNameMap: MutableMap<String?, Map<String?, String?>?>? = mutableMapOf()
     private var timeMap = mutableMapOf<String, Long>()
     private var discount: Float = 1.0F
 
@@ -68,7 +68,7 @@ class Vp2GameTable4Adapter (
     }
 
     fun setData(gameType: String, dataList: List<MatchOdd>, isLogin: Boolean, oddsType: OddsType,
-                playCateNameMap: Map<String?, Map<String?, String?>?>, selectedOdds: MutableList<String>) {
+                playCateNameMap: MutableMap<String?, Map<String?, String?>?>?, selectedOdds: MutableList<String>) {
         this.dataList = dataList
         this.gameType = gameType
         when (matchType) {
@@ -122,7 +122,7 @@ class Vp2GameTable4Adapter (
 
     fun notifyOddsDiscountChanged(discount: Float) {
         dataList.forEachIndexed { index, matchOdd ->
-            matchOdd.oddsMap.forEach { (key, value) ->
+            matchOdd.oddsMap?.forEach { (key, value) ->
                 value?.forEach { odd ->
                     odd?.updateDiscount(this.discount, discount)
                 }
@@ -302,10 +302,12 @@ class Vp2GameTable4Adapter (
                 */
         private fun setupOddList(data: MatchOdd) {
             itemView.apply {
-                oddList = if (data.oddsMap.isNotEmpty()) {
-                    data.oddsMap.iterator().next().value
-                } else {
-                    mutableListOf()
+                data.oddsMap?.let {
+                    oddList = if (it.isNotEmpty()) {
+                        it.iterator().next().value
+                    } else {
+                        mutableListOf()
+                    }
                 }
             }
         }

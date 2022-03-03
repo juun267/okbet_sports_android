@@ -26,6 +26,10 @@ data class OddsChangeEvent(
     val gameType: String? = null,
     @Json(name = "playCateNum")
     val playCateNum: Int? = null,
+    @Json(name = "betPlayCateNameMap")
+    var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
+    @Json(name = "playCateNameMap")
+    var playCateNameMap: MutableMap<String?, Map<String?, String?>?>?
 ) : ServiceEventType, ServiceChannel {
 
     override var channel: String? = null

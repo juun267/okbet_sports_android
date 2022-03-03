@@ -178,7 +178,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     data.vpTableAdapter?.onClickOddListener = onClickOddListener
                     data.vpTableAdapter?.onClickFavoriteListener = onClickFavoriteListener
                     data.vpTableAdapter?.onClickStatisticsListener = onClickStatisticsListener
-                    data.vpTableAdapter?.setData(data.code ?: "", it, isLogin ?: false, oddsType, data.playCateNameMap ?: mapOf(), selectedOdds)
+                    data.vpTableAdapter?.setData(data.code ?: "", it, isLogin ?: false, oddsType, data.playCateNameMap ?: mutableMapOf(), selectedOdds)
                     view_pager.adapter = data.vpTableAdapter
 
                     indicator_view.setupWithViewPager2(view_pager)

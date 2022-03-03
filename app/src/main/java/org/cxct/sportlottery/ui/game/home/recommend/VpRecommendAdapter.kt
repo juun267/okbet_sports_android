@@ -34,8 +34,8 @@ class VpRecommendAdapter(
     private val isOutright: Int?,
     val matchOdd: MatchOdd,
     val dynamicMarkets: Map<String, DynamicMarket>?,
-    val playCateNameMap: Map<String?, Map<String?, String?>?>?,
-    val betPlayCateNameMap: Map<String?, Map<String?, String?>?>?
+    var playCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
+    var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class ItemType {
@@ -142,7 +142,7 @@ class VpRecommendAdapter(
         override val oddStateChangeListener: OddStateChangeListener = mOddStateRefreshListener
     ) : OddStateViewHolder(itemView) {
 
-        fun bind(data: OddBean, playCateNameMap: Map<String?, Map<String?, String?>?>?) {
+        fun bind(data: OddBean, playCateNameMap: MutableMap<String?, Map<String?, String?>?>?) {
             when (data.playTypeCode) {
                 PlayCate.EPS.value -> {
                     itemView.apply {
@@ -294,7 +294,7 @@ class VpRecommendAdapter(
         override val oddStateChangeListener: OddStateChangeListener = mOddStateRefreshListener
     ) : OddStateViewHolder(itemView) {
 
-        fun bind(data: OddBean, playCateNameMap: Map<String?, Map<String?, String?>?>?) {
+        fun bind(data: OddBean, playCateNameMap: MutableMap<String?, Map<String?, String?>?>?) {
             itemView.apply {
                 tv_play_type_eps.text = playCateNameMap?.get(data.playTypeCode)?.get(LanguageManager.getSelectLanguage(context).key)
 
