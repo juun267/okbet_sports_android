@@ -604,7 +604,7 @@
     <string name="bet_info_input_quota">Enter the amount</string>
     <string name="bet_info_check_maximum_limit">MAX BET</string>
     <string name="bet_info_bet_quota">bet amount</string>
-    <string name="bet_info_win_quota">Winning amount:</string>
+    <string name="bet_info_win_quota">To win</string>
     <string name="bet_info_accept_odds_change">Accept changes &#038; bets</string>
     <string name="bet_info_add_to_bet_info">Add to bet slip</string>
     <string name="bet_info_odd_content_changed">One or more options for odds, concede. Points or score has changed</string>
@@ -996,6 +996,15 @@
     <string name="password_hint"><font size="12">(your login password)</font></string>
     <string name="account_hint"><font size="12">(your member account)</font></string>
     <string name="submit_success">submitted successfully</string>
+    <!-- 搜尋 -->
+    <string name="text_search">Search</string>
+    <string name="text_clear">Clear</string>
+    <string name="text_search_history">Search history</string>
+    <string name="text_top_search">Top Searches</string>
+    <string name="text_search_refresh">Refresh</string>
+    <string name="text_search_no_result">No result found</string>
+    <string name="text_search_try_another">Please try another keyword.</string>
+    <!-- 搜尋 -->
     <string name="text_combo_title">Parlay</string>
     <string name="text_combo_item">item</string>
 
@@ -1010,4 +1019,5 @@
     <string name="search_game_nearby">Find sports matches near you!</string>
     <string name="allow_location_permission">Allow location access</string>
     <string name="google_location_permission_description">You can search for sports matches near you and receive more information about sports matches by allowing location access.</string>
+    <string name="grant_location_permission_on_setting">Enable location permission on the settings page.</string>
 </resources>

@@ -41,7 +41,8 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
 
     var odds: Map<String, List<Odd?>?> = mapOf()
         set(value) {
-            field = value.refactorPlayCode().sortOdds()/*.splitPlayCate()*/.reorganizePlay()
+            this.playCateNameMap = playCateNameMap.addSplitPlayCateTranslation()
+            field = value.refactorPlayCode().sortOdds().splitPlayCate().reorganizePlay()
                 .filterPlayCateSpanned().sortPlayCate()
             val gameList =
                 field.filterValues { !it.isNullOrEmpty() }.filter { it.value?.getOrNull(0) != null }
@@ -293,6 +294,37 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
         return oddsMap
     }
 
+    //SINGLE_OU、SINGLE_BTS兩種玩法要特殊處理，後端API沒給翻譯
+    private fun Map<String?, Map<String?, String?>?>?.addSplitPlayCateTranslation(): Map<String?, Map<String?, String?>?>? {
+        val translationMap = mutableMapOf<String?, Map<String?, String?>?>()
+
+        this?.let { translationMap.putAll(it) }
+
+        val ou_o_Map: Map<String?, String?>? =
+            mapOf("zh" to "独赢&大", "en" to "1 X 2 & Goals Over", "vi" to "1 X 2 & Trên")
+
+        val ou_u_Map: Map<String?, String?>? =
+            mapOf("zh" to "独赢&小", "en" to "1 X 2 & Goals Under", "vi" to "1 X 2 & Dưới")
+
+        val bts_y_Map: Map<String?, String?>? = mapOf(
+            "zh" to "独赢&双方球队进球-是",
+            "en" to "1 X 2 & Both to Score Y",
+            "vi" to "1 X 2 & Hai Đội Ghi Bàn - Có"
+        )
+
+        val bts_n_Map: Map<String?, String?>? = mapOf(
+            "zh" to "独赢&双方球队进球-否",
+            "en" to "1 X 2 & Both to Score N",
+            "vi" to "1 X 2 & Hai Đội Ghi Bàn - Không"
+        )
+
+        translationMap[PlayCate.SINGLE_OU_O.value] = ou_o_Map
+        translationMap[PlayCate.SINGLE_OU_U.value] = ou_u_Map
+        translationMap[PlayCate.SINGLE_BTS_Y.value] = bts_y_Map
+        translationMap[PlayCate.SINGLE_BTS_N.value] = bts_n_Map
+
+        return translationMap
+    }
 
     private fun Map<String, List<Odd?>?>.filterPlayCateSpanned(): Map<String, List<Odd?>?> {
         return this.mapValues { map ->

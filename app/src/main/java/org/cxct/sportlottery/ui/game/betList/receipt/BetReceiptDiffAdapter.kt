@@ -92,7 +92,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
         var currentOddsType = oddsType
 
-        if(betParlayList?.getOrNull(position)?.odds == betParlayList?.getOrNull(position)?.malayOdds){
+        if (betParlayList?.getOrNull(position)?.odds == betParlayList?.getOrNull(position)?.malayOdds) {
             currentOddsType = OddsType.EU
         }
 
@@ -130,13 +130,13 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                         tv_play_content.text = setSpannedString(
                             needShowSpread(playCateCode) && (matchType != MatchType.OUTRIGHT),
                             playName,
-                            spread,
+                            if (matchType != MatchType.OUTRIGHT) spread else "",
                             TextUtil.formatForOdd(getOdds(this, oddsType)),
                             context.getString(getOddTypeRes(this, oddsType))
                         )
 
                         tv_league.text = leagueName
-                        val teamNamesStr = if (homeName?.length ?:0 > 15) "$homeName v\n$awayName" else "$homeName v $awayName"
+                        val teamNamesStr = if (homeName?.length ?: 0 > 15) "$homeName v\n$awayName" else "$homeName v $awayName"
                         tv_team_names.text = teamNamesStr
                         tv_match_type.text = playCateName
                     }
@@ -166,7 +166,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
             val spreadStr = if (!spread.isNullOrEmpty() || isShowSpread) "<font color=#B73A20>$spread</font> " else ""
 
             return HtmlCompat.fromHtml(
-                 playNameStr +
+                playNameStr +
                         spreadStr +
                         "<font color=#333333>@ $formatForOdd</font> ", HtmlCompat.FROM_HTML_MODE_LEGACY
             )

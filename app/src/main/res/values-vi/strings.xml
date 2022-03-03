@@ -1022,6 +1022,15 @@
     <string name="password_hint"><font size="12">(Vui lòng nhập tài khoản hội viên của bạn)</font></string>
     <string name="account_hint"><font size="12">(Vui lòng nhập mật khẩu đăng nhập của bạn)</font></string>
     <string name="submit_success">gửi thành công</string>
+    <!-- 搜尋 -->
+    <string name="text_search">Tìm kiếm</string>
+    <string name="text_clear">Xóa</string>
+    <string name="text_search_history">Lịch sử tìm kiếm</string>
+    <string name="text_top_search">Tìm kiếm hàng đầu</string>
+    <string name="text_search_refresh">Làm cho khỏe lại</string>
+    <string name="text_search_no_result">Không có kết quả nào</string>
+    <string name="text_search_try_another">Vui lòng thử một từ khóa khác.</string>
+    <!-- 搜尋 -->
     <string name="text_combo_title">Cược xâu</string>
     <string name="text_combo_item">Mục</string>
 
@@ -1036,4 +1045,5 @@
     <string name="search_game_nearby">Tìm các trận đấu thể thao gần bạn!</string>
     <string name="allow_location_permission">Cho phép truy cập vị trí</string>
     <string name="google_location_permission_description">Bạn có thể tìm kiếm các trận đấu thể thao gần bạn và nhận thêm thông tin về các trận đấu thể thao bằng cách cho phép truy cập vị trí.</string>
+    <string name="grant_location_permission_on_setting">Bật quyền vị trí trên trang cài đặt</string>
 </resources>

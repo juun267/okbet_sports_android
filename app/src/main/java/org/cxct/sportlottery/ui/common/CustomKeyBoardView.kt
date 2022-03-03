@@ -32,18 +32,36 @@ class CustomKeyBoardView(context: Context?, attrs: AttributeSet?) : KeyboardView
                     key.codes[0] == KEYCODE_DONE
                 ) {
                     setDrawable(canvas, key, R.drawable.bg_keyboard_count)
-                    paint.typeface = Typeface.DEFAULT
+
+                    if(key.codes[0] == KeyBoardCode.PLUS_10.code ||
+                        key.codes[0] == KeyBoardCode.PLUS_50.code ||
+                        key.codes[0] == KeyBoardCode.PLUS_100.code ||
+                        key.codes[0] == KeyBoardCode.MAX.code){
+                        paint.typeface = Typeface.DEFAULT_BOLD
+                    }else{
+                        paint.typeface = Typeface.DEFAULT
+                    }
+
+                    if( key.codes[0] == KeyBoardCode.PLUS_10.code ||
+                        key.codes[0] == KeyBoardCode.PLUS_50.code ||
+                        key.codes[0] == KeyBoardCode.PLUS_100.code){
+                        paint.color = context.getColor(R.color.colorGray)
+                    }else{
+                        paint.color = context.getColor(R.color.colorBlackLight)
+                    }
+                    
                 } else if (key.codes[0] == KEYCODE_DELETE) {
                     setDrawable(canvas, key, R.drawable.bg_keyboard_delete)
                     paint.typeface = Typeface.DEFAULT
+                    paint.color = context.getColor(R.color.colorBlackLight)
                 } else {
                     setDrawable(canvas, key, R.drawable.bg_keyboard_number)
                     paint.typeface = Typeface.DEFAULT_BOLD
+                    paint.color = context.getColor(R.color.colorBlackLight)
                 }
 
                 paint.textAlign = Paint.Align.CENTER
                 paint.textSize = 36f
-                paint.color = context.getColor(R.color.colorBlackLight)
                 if (key.label != null) {
                     canvas.drawText(
                         key.label.toString(), (key.x + key.width / 2).toFloat(), (
