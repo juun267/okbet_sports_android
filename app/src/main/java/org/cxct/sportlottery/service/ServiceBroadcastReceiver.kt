@@ -87,7 +87,7 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
     val playQuotaChange: LiveData<PlayQuotaChangeEvent?>
         get() = _playQuotaChange
 
-    val leagueChange: LiveData<Event<LeagueChangeEvent?>>
+    val leagueChange: LiveData<LeagueChangeEvent?>
         get() = _leagueChange
 
     val matchOddsLock: LiveData<MatchOddsLockEvent?>
@@ -120,7 +120,7 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
     private val _sysMaintenance = MutableLiveData<SysMaintenanceEvent?>()
     private val _serviceConnectStatus = MutableLiveData<ServiceConnectStatus>()
     private val _playQuotaChange = MutableLiveData<PlayQuotaChangeEvent?>()
-    private val _leagueChange = MutableLiveData<Event<LeagueChangeEvent?>>()
+    private val _leagueChange = MutableLiveData<LeagueChangeEvent?>()
     private val _matchOddsLock = MutableLiveData<MatchOddsLockEvent?>()
     private val _userDiscountChange = MutableLiveData<UserDiscountChangeEvent?>()
     private val _userMaxBetMoneyChange = MutableLiveData<UserLevelConfigListEvent?>()
@@ -234,7 +234,7 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
                     }
                     EventType.LEAGUE_CHANGE -> {
                         val data = ServiceMessage.getLeagueChange(jObjStr)
-                        _leagueChange.value = Event(data)
+                        _leagueChange.value = data
                     }
                     EventType.MATCH_ODDS_LOCK -> {
                         val data = ServiceMessage.getMatchOddsLock(jObjStr)

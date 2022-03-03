@@ -489,7 +489,7 @@ public class TextFieldBoxes extends FrameLayout {
 
                 // Only trigger simple watcher when the String actually changed
 
-                if (!lastValue.equals(editable.toString())){
+                if (!lastValue.equals(editable.toString())) {
                     lastValue = editable.toString();
                     if (textChangeListener != null) {
                         textChangeListener.onTextChanged(editable.toString(), onError);
@@ -509,12 +509,11 @@ public class TextFieldBoxes extends FrameLayout {
         this.editText.setDefaultOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                if (b){
+                if (b) {
                     setHasFocus(true);
                     inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
                     mainBody.performClick();
-                }
-                else setHasFocus(false);
+                } else setHasFocus(false);
             }
         });
     }
@@ -627,7 +626,7 @@ public class TextFieldBoxes extends FrameLayout {
                 this.editText.clearFocus();
             }
 
-            if(hideSelectedTitle){
+            if (hideSelectedTitle) {
                 floatingSingle.setVisibility(VISIBLE);
             }
         }
@@ -671,7 +670,7 @@ public class TextFieldBoxes extends FrameLayout {
             floatingHintLabel.setVisibility(View.GONE);
 
             //驗證碼要特殊處理 by bill
-            if(hideSelectedTitle){
+            if (hideSelectedTitle) {
                 floatingSingle.setVisibility(GONE);
                 labelSpace.setVisibility(GONE);
                 labelTopMargin = 0;
@@ -681,7 +680,7 @@ public class TextFieldBoxes extends FrameLayout {
                     .scaleX(0.85f)
                     .scaleY(0.85f)
                     .translationY(-labelTopMargin -
-                            getContext().getResources().getDimensionPixelOffset(R.dimen.label2_active_margin_top)+6)
+                            getContext().getResources().getDimensionPixelOffset(R.dimen.label2_active_margin_top) + 6)
                     .setDuration(ANIMATION_DURATION);
 
         } else {
@@ -971,6 +970,10 @@ public class TextFieldBoxes extends FrameLayout {
             }
             if (giveFocus) setHasFocus(true);
             makeCursorBlink();
+        }
+
+        if (errorText == null && hasFocus) {
+            activate(true);
         }
     }
 

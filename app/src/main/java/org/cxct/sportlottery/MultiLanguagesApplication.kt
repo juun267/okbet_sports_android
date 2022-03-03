@@ -53,6 +53,7 @@ import timber.log.Timber
 import timber.log.Timber.DebugTree
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import org.cxct.sportlottery.ui.permission.GooglePermissionViewModel
 
 
 
@@ -96,6 +97,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { MyFavoriteViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { CreditRecordViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { StatisticsViewModel(get(), get(), get(), get()) }
+        viewModel { GooglePermissionViewModel(get(), get(), get()) }
     }
 
     private val repoModule = module {

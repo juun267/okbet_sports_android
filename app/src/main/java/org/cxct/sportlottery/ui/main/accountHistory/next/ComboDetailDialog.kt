@@ -76,7 +76,7 @@ class ComboDetailDialog internal constructor(
 
                     item.winMoney == 0.0 -> {
                         tvResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorGray))
-                        tvResult.text = mContext.getString(R.string.nothing)
+                        tvResult.text = "${mContext.getString(R.string.draw)} ${ArithUtil.toMoneyFormat(item.winMoney)}"
                     }
                 }
 
@@ -104,7 +104,7 @@ class ComboDetailDialog internal constructor(
                             R.id.tvContent,
                             matchOdds.playName + " " + matchOdds.spread + " @ " + matchOdds.odds
                         )
-                        if (position + 1 == item.matchOddsVOList?.size) {
+                        if (position + 1 == item.matchOddsVOList?.size ?: 0) {
                             holder.getView<View>(R.id.divider2).visibility = View.GONE
                         }
                     }
