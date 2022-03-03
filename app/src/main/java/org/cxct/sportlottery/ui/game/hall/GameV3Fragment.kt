@@ -67,6 +67,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 viewModel.switchSportType(args.matchType, it)
                 loading()
                 notifyDataSetChanged()
+                leagueAdapter?.notifyDataSetChanged() // TODO 確認影響
             }
 
             thirdGameListener = ThirdGameListener {
