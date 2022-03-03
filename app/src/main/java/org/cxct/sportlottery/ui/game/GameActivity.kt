@@ -447,8 +447,19 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     emptyArray())
                 mNavController.navigate(action)
             }
-            R.id.gameV3Fragment ->{
-
+            R.id.oddsDetailFragment ->{
+                val action = OddsDetailFragmentDirections.actionOddsDetailFragmentSelf(gameType!!,matchID!!)
+                mNavController.navigate(action)
+            }
+            R.id.oddsDetailLiveFragment ->{
+                val action = OddsDetailLiveFragmentDirections.actionOddsDetailLiveFragmentToOddsDetailFragment(MatchType.DETAIL,gameType!!,matchID!!,
+                    emptyArray())
+                mNavController.navigate(action)
+            }
+            R.id.gameLeagueFragment ->{
+                val action = GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(MatchType.DETAIL,gameType!!,matchID!!,
+                    emptyArray())
+                mNavController.navigate(action)
             }
         }
     }

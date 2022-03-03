@@ -7,6 +7,7 @@ import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.util.AttributeSet
+import android.util.Log
 import androidx.annotation.ColorRes
 import org.cxct.sportlottery.R
 
@@ -155,11 +156,11 @@ class HighlightTextView @JvmOverloads constructor(context: Context, attributeSet
 
     private fun measureTargetTextRect(target: String): RectF? {
         val bounds = Rect()
-        val startIndex = text.indexOf(target)
+        val startIndex = text.indexOf(target,0,true)
         if (startIndex == -1) {
             return null
         }
-
+        val targetText = text.subSequence(startIndex,startIndex+target.length)
         paint.getTextBounds(text.toString(), startIndex, startIndex + target.length, bounds)
 
         if (highlightWidth == NO_STROKE_WIDTH) {
@@ -168,7 +169,7 @@ class HighlightTextView @JvmOverloads constructor(context: Context, attributeSet
 
         val preWord = text.substring(0, startIndex)
         val preWidth = measureTextWidth(preWord).toInt()
-        val targetWidth = measureTextWidth(target, highlightBoldFlag)
+        val targetWidth = measureTextWidth(targetText.toString(), highlightBoldFlag)
 
         // TODO: support multiline.
         //  val positionOfLine = measureLineOfText(startIndex)
@@ -211,10 +212,11 @@ class HighlightTextView @JvmOverloads constructor(context: Context, attributeSet
     }
 
     private fun getSortedTargetTexts(targets: List<String>) = targets
-            .filter { text.indexOf(it) != -1 }
+            .filter {
+                text.indexOf(it,0,true) != -1 }
             .map {
                 val length = it.length
-                val position = text.indexOf(it)
+                val position = text.indexOf(it,0,true)
 
                 position to length
             }

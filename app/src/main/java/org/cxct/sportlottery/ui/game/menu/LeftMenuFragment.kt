@@ -209,8 +209,10 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
         }
         layoutSearch.setOnClickListener {
             etSearch.clearFocus()
-            //layoutSearch.visibility = View.GONE
-            //layoutSearchResult.visibility = View.GONE
+            layoutSearch.visibility = View.GONE
+            layoutSearchResult.visibility = View.GONE
+            rv_menu.visibility = View.VISIBLE
+
 
         }
         btn_close.setOnClickListener {
