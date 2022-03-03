@@ -15,6 +15,7 @@ import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.*
 import org.cxct.sportlottery.network.bet.settledDetailList.MatchOdd
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 
@@ -95,6 +96,16 @@ class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(D
                     TextUtil.formatForOdd(odds),
                     oddsType.code
                 )
+
+                when (gameType) {
+                    GameType.FT.key, GameType.BK.key -> {
+                        if (rtScore?.isNotEmpty() == true)
+                            binding.tvScore.text = String.format(
+                                binding.tvScore.context.getString(R.string.brackets),
+                                rtScore
+                            )
+                    }
+                }
                 binding.tvTeamNames.text = "$homeName v $awayName"
                 val scoreList = mutableListOf<String>()
                 playCateMatchResultList?.map { scoreData ->

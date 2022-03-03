@@ -88,6 +88,18 @@
                 tools:itemCount="3"
                 tools:listitem="@layout/item_account_history_next_context_listview_score" />
 
+            <TextView
+                android:id="@+id/tv_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorGray"
+                android:textSize="@dimen/textSize12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/list_score"
+                app:layout_constraintTop_toBottomOf="@id/list_score"
+                app:layout_constraintVertical_bias="0"
+                tools:text="(5-26)" />
+
 
             <TextView
                 android:id="@+id/tv_team_names"
