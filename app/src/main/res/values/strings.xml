@@ -1011,10 +1011,17 @@
     <string name="password_hint"><font size="12">(请输入您的登录密码)</font></string>
     <string name="account_hint"><font size="12">(请输入您的会员帐号)</font></string>
     <string name="submit_success">提交成功</string>
+    <!-- 搜尋 -->
+    <string name="text_search">搜索</string>
+    <string name="text_clear">清除</string>
+    <string name="text_search_history">搜索历史</string>
+    <string name="text_top_search">热门搜索</string>
+    <string name="text_search_refresh">换一换</string>
+    <string name="text_search_no_result">搜寻结果为空</string>
+    <string name="text_search_try_another">换个词搜索试试看吧</string>
+    <!-- 搜尋 -->
     <string name="text_combo_title">复式串关</string>
     <string name="text_combo_item">项次</string>
-
-
     <!-- 注單內球員玩法 -->
     <string name="sco_name_first">最先进球球员</string>
     <string name="sco_name_any">任何时间进球球员</string>

@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.game
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -27,6 +26,7 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.message.Row
@@ -60,7 +60,6 @@ import org.cxct.sportlottery.ui.odds.OddsDetailLiveFragmentDirections
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
 import org.cxct.sportlottery.ui.main.MainActivity
-import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 
 
 class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) {
@@ -436,6 +435,35 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         }
     }
 
+    private fun navDeatilFragment(matchID: String?, gameType: GameType?) {
+        when (mNavController.currentDestination?.id) {
+            R.id.homeFragment -> {
+                val action = HomeFragmentDirections.actionHomeFragmentToOddsDetailFragment(MatchType.DETAIL,gameType!!,matchID!!,
+                    emptyArray())
+                mNavController.navigate(action)
+            }
+            R.id.gameV3Fragment -> {
+                val action = GameV3FragmentDirections.actionGameV3FragmentToOddsDetailFragment(MatchType.DETAIL,gameType!!,matchID!!,
+                    emptyArray())
+                mNavController.navigate(action)
+            }
+            R.id.oddsDetailFragment ->{
+                val action = OddsDetailFragmentDirections.actionOddsDetailFragmentSelf(gameType!!,matchID!!)
+                mNavController.navigate(action)
+            }
+            R.id.oddsDetailLiveFragment ->{
+                val action = OddsDetailLiveFragmentDirections.actionOddsDetailLiveFragmentToOddsDetailFragment(MatchType.DETAIL,gameType!!,matchID!!,
+                    emptyArray())
+                mNavController.navigate(action)
+            }
+            R.id.gameLeagueFragment ->{
+                val action = GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(MatchType.DETAIL,gameType!!,matchID!!,
+                    emptyArray())
+                mNavController.navigate(action)
+            }
+        }
+    }
+
     private fun navGameFragment(matchType: MatchType) {
         when (mNavController.currentDestination?.id) {
             R.id.homeFragment -> {
@@ -608,7 +636,12 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     MatchType.OTHER -> {
                         tabLayout.getTabAt(3)?.select()
                     }
+                    MatchType.DETAIL->{
+                        navDeatilFragment(it?.matchID,it.gameType)
+                    }
                 }
+            }else if(it?.matchType == MatchType.DETAIL){
+
             } else {
                 //viewModel.switchSpecialMatchType(it!!.couponCode!!)
                 navGameFragment(it!!.matchType)
