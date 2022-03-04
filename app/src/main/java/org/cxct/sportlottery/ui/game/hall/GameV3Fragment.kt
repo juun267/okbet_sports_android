@@ -692,7 +692,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         )
                     }
                     game_list.itemAnimator = null
-                    setNoDataView(leagueAdapter.data)
                     leagueOdds.forEach { leagueOdd ->
                         subscribeChannelHall(leagueOdd)
                     }
@@ -1037,21 +1036,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
         viewModel.leagueFilterList.observe(this.viewLifecycleOwner) { leagueList ->
             game_toolbar_champion.isSelected = leagueList.isNotEmpty()
-        }
-    }
-
-    private fun setNoDataView(data: MutableList<LeagueOdd>) {
-        when {
-            data.isNullOrEmpty() -> {
-                game_play_category.isVisible = false
-                game_toolbar_champion.isVisible = false
-                game_toolbar_sport_type.isVisible = false
-            }
-            else -> {
-                game_play_category.isVisible = true
-                game_toolbar_champion.isVisible = true
-                game_toolbar_sport_type.isVisible = true
-            }
         }
     }
 
