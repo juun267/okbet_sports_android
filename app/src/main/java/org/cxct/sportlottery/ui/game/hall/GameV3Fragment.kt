@@ -906,6 +906,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             val hasGame = when (args.matchType) {
                 MatchType.IN_PLAY -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.inPlay?.num ?: 0 > 0
                 MatchType.TODAY -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.today?.num ?: 0 > 0
+                MatchType.AT_START -> viewModel.sportMenuResult.value?.sportMenuData?.atStart?.num ?: 0 > 0
                 MatchType.EARLY -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.early?.num ?: 0 > 0
                 MatchType.PARLAY -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.parlay?.num ?: 0 > 0
                 MatchType.OUTRIGHT -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.outright?.num ?: 0 > 0
@@ -1296,9 +1297,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             nowGameType == leagueChangeEvent.gameType && hasLeagueIdList -> {
                                 withContext(Dispatchers.Main) {
                                     viewModel.refreshGame(
-                                        args.matchType,
-                                        leagueChangeEvent.leagueIdList,
-                                        listOf()
+                                        args.matchType
                                     )
 //                                    viewModel.switchSportType(
 //                                        args.matchType,

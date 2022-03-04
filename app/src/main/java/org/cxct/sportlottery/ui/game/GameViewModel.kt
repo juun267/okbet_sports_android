@@ -1365,6 +1365,10 @@ class GameViewModel(
                 )
             }?.updateMatchType()
 
+            if(result?.oddsListData?.leagueOdds.isNullOrEmpty()){
+                _isNoHistory.value = true
+            }
+
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
                     matchOdd.sortOddsMap()
