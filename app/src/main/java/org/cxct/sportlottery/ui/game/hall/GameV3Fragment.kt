@@ -1297,9 +1297,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             nowGameType == leagueChangeEvent.gameType && hasLeagueIdList -> {
                                 withContext(Dispatchers.Main) {
                                     viewModel.refreshGame(
-                                        args.matchType,
-                                        leagueChangeEvent.leagueIdList,
-                                        listOf()
+                                        args.matchType
                                     )
 //                                    viewModel.switchSportType(
 //                                        args.matchType,
