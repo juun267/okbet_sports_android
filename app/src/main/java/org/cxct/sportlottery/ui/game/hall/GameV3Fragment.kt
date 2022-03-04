@@ -774,6 +774,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         viewModel.leagueListResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { leagueListResult ->
                 hideLoading()
+                if (game_tab_odd_v4.visibility == View.VISIBLE && game_tabs.selectedTabPosition != 0)
+                    return@observe
+
                 if (leagueListResult.success) {
                     val rows = leagueListResult.rows ?: listOf()
 
@@ -815,9 +818,13 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
             }
         }
+
         viewModel.outrightLeagueListResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { outrightSeasonListResult ->
                 hideLoading()
+
+                if (game_tab_odd_v4.visibility == View.VISIBLE && game_tabs.selectedTabPosition != 1)
+                    return@observe
 
                 if (outrightSeasonListResult.success) {
                     val rows = outrightSeasonListResult.rows ?: listOf()
@@ -831,11 +838,13 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             }
         }
 
-
         viewModel.epsListResult.observe(this.viewLifecycleOwner) {
             hideLoading()
-
             it.getContentIfNotHandled()?.let { epsListResult ->
+
+                if (game_tab_odd_v4.visibility == View.VISIBLE && game_tabs.selectedTabPosition != 2)
+                    return@observe
+
                 if (epsListResult.success) {
                     val oddsEpsListDatas = epsListResult.rows
                     val epsLeagueOddsItemList = mutableListOf<EpsLeagueOddsItem>()
