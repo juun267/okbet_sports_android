@@ -105,7 +105,9 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 }
 
                 R.id.oddsDetailFragment -> {
-                    updateSelectTabState(arguments?.get("matchType") as MatchType)
+                    updateSelectTabState(arguments?.let {
+                        it.get("matchType") as MatchType
+                    })
                 }
 
                 R.id.oddsDetailLiveFragment -> {
@@ -448,13 +450,15 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 mNavController.navigate(action)
             }
             R.id.oddsDetailFragment ->{
-                val action = OddsDetailFragmentDirections.actionOddsDetailFragmentSelf(gameType!!,matchID!!)
+                val action =
+                    OddsDetailFragmentDirections.actionOddsDetailFragmentSelf(gameType!!,matchID!!,MatchType.DETAIL,emptyArray())
                 mNavController.navigate(action)
             }
             R.id.oddsDetailLiveFragment ->{
                 val action = OddsDetailLiveFragmentDirections.actionOddsDetailLiveFragmentToOddsDetailFragment(MatchType.DETAIL,gameType!!,matchID!!,
                     emptyArray())
-                mNavController.navigate(action)
+                val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
+                mNavController.navigate(action,navOptions)
             }
             R.id.gameLeagueFragment ->{
                 val action = GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(MatchType.DETAIL,gameType!!,matchID!!,

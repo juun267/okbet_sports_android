@@ -190,6 +190,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                 } else {
                     layoutSearch.visibility = View.VISIBLE
                     layoutSearchResult.visibility = View.GONE
+                    searchHistoryAdapter?.notifyDataSetChanged()
                 }
             }
         })
@@ -721,10 +722,17 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
     }
 
     private fun startSearch() {
-        if (searchHistoryList.size == 10) {
+        if(searchHistoryList.any {
+            it == etSearch.text.toString()
+        }){
+            searchHistoryList.remove(etSearch.text.toString())
+            searchHistoryList.add(0, etSearch.text.toString())
+        }else if (searchHistoryList.size == 10){
             searchHistoryList.removeAt(9)
+            searchHistoryList.add(0, etSearch.text.toString())
+        }else{
+            searchHistoryList.add(0, etSearch.text.toString())
         }
-        searchHistoryList.add(0, etSearch.text.toString())
         MultiLanguagesApplication.saveSearchHistory(searchHistoryList)
         viewModel.getSportSearch(etSearch.text.toString())
         //rvHostory.adapter?.notifyDataSetChanged()
