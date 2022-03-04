@@ -124,6 +124,9 @@ class GameViewModel(
     val oddsListGameHallResult: LiveData<Event<OddsListResult?>>
         get() = _oddsListGameHallResult
 
+    val quickOddsListGameHallResult: LiveData<Event<OddsListResult?>>
+        get() = _quickOddsListGameHallResult
+
     val oddsListGameHallIncrementResult: LiveData<Event<OddsListIncrementResult?>>
         get() = _oddsListGameHallIncrementResult
 
@@ -217,6 +220,7 @@ class GameViewModel(
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _sportCouponMenuResult = MutableLiveData<Event<SportCouponMenuResult>>()
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
+    private val _quickOddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
     private val _oddsListGameHallIncrementResult =
         MutableLiveData<Event<OddsListIncrementResult?>>()
     private val _oddsListResult = MutableLiveData<Event<OddsListResult?>>()
@@ -1484,6 +1488,40 @@ class GameViewModel(
                 _oddsListResult.postValue(
                     Event(
                         _oddsListResult.value?.peekContent()
+                            ?.updateQuickPlayCate(matchId, it, it.playCateNameMap)
+                    )
+                )
+            }
+        }
+    }
+
+    fun getQuickList2(matchId: String) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.oddsService.getQuickList(
+                    QuickListRequest(matchId)
+                )
+            }
+
+            result?.quickListData?.let {
+                val discount = userInfo.value?.discount ?: 1.0F
+                it.quickOdds?.forEach { (_, quickOddsValue) ->
+                    quickOddsValue.forEach { (key, value) ->
+                        value?.forEach { odd ->
+                            odd?.odds = odd?.odds?.applyDiscount(discount)
+                            odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
+
+                            if (key == QuickPlayCate.QUICK_EPS.value) {
+                                odd?.extInfo =
+                                    odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
+                            }
+                        }
+                    }
+                }
+
+                _quickOddsListGameHallResult.postValue(
+                    Event(
+                        _quickOddsListGameHallResult.value?.peekContent()
                             ?.updateQuickPlayCate(matchId, it, it.playCateNameMap)
                     )
                 )

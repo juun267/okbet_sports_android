@@ -157,7 +157,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             setupMatchTime(item, matchType, isTimerEnable, isTimerPause, leagueOddListener)
             updateOddsButton(item, oddsType)
 
-            setupQuickCategory(item, oddsType, leagueOddListener)
+            //setupQuickCategory(item, oddsType, leagueOddListener)
             //updateQuickCategory(item, oddsType, leagueOddListener)
         }
 
@@ -686,9 +686,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             )
         }
 
-        private val oddButtonPagerAdapter by lazy {
-            OddButtonPagerAdapter()
-        }
+        //private val oddButtonPagerAdapter by lazy { OddButtonPagerAdapter() }
+        //private val quickOddButtonPagerAdapter by lazy { OddButtonPagerAdapter() }
 
         var isFromDataChange = true
 
@@ -698,11 +697,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             leagueOddListener: LeagueOddListener?
         ) {
             itemView.rv_league_odd_btn_pager_main.apply {
+                val oddButtonPagerAdapter = OddButtonPagerAdapter()
                 linearLayoutManager.isAutoMeasureEnabled = false
                 layoutManager = linearLayoutManager
                 setHasFixedSize(true)
-                (rv_league_odd_btn_pager_main.itemAnimator as SimpleItemAnimator).supportsChangeAnimations =
-                    false
+                (rv_league_odd_btn_pager_main.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
                 oddButtonPagerAdapter.setData(
                     item.matchInfo,
                     item.oddsSort,
@@ -753,17 +752,15 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
         private fun updateOddsButton(item: MatchOdd, oddsType: OddsType) {
             itemView.rv_league_odd_btn_pager_main.apply {
-                oddButtonPagerAdapter.setData(
-                    item.matchInfo,
-                    item.oddsSort,
-                    item.playCateNameMap,
-                    item.betPlayCateNameMap
-                )
-                oddButtonPagerAdapter.apply {
-                    stateRestorationPolicy = StateRestorationPolicy.PREVENT
-                    this.odds = item.oddsMap ?: mutableMapOf()
-                    this.oddsType = oddsType
-                    update()
+                val adapter = this.adapter
+                if(adapter is OddButtonPagerAdapter ) {
+                    adapter.setData(item.matchInfo, item.oddsSort, item.playCateNameMap, item.betPlayCateNameMap)
+                    adapter.apply {
+                        stateRestorationPolicy = StateRestorationPolicy.PREVENT
+                        this.odds = item.oddsMap ?: mutableMapOf()
+                        this.oddsType = oddsType
+                        update()
+                    }
                 }
             }
         }
@@ -868,7 +865,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         }
 
                         else -> {
-                            invisibleOddButtons()
+                            //invisibleOddButtons()
                         }
                     }
                 }
@@ -975,6 +972,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
 
             val quickOdds = item.quickPlayCateList?.find { it.isSelected }?.quickOdds ?: mapOf()
+            Log.d("Hewie", "setupQuickOddButtonPair: quickOdds => ${quickOdds.size}")
+            if(quickOdds.isEmpty()) return
 
             itemView.league_odd_quick_odd_btn_pair.visibility = View.VISIBLE
 
@@ -1042,13 +1041,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             itemView.quick_odd_away.text = item.matchInfo?.awayName ?: ""
 
             itemView.quick_odd_btn_pager_other.apply {
-                oddButtonPagerAdapter.setData(
+                val quickOddButtonPagerAdapter = OddButtonPagerAdapter()
+                quickOddButtonPagerAdapter.setData(
                     item.matchInfo,
                     item.oddsSort,
                     item.quickPlayCateNameMap,
                     item.betPlayCateNameMap
                 )
-                this.adapter = oddButtonPagerAdapter.apply {
+                this.adapter = quickOddButtonPagerAdapter.apply {
                     stateRestorationPolicy = StateRestorationPolicy.PREVENT
                     this.odds = item.quickPlayCateList?.find { it.isSelected }?.quickOdds
                         ?: mutableMapOf()
@@ -1125,6 +1125,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
 
             val quickOdds = item.quickPlayCateList?.find { it.isSelected }?.quickOdds ?: mapOf()
+            Log.d("Hewie", "setupQuickOddButtonEps: quickOdds => ${quickOdds.size}")
 
             itemView.league_odd_quick_odd_btn_eps.visibility = View.VISIBLE
 

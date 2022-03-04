@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.common
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +27,7 @@ class OddButtonPairAdapter(private val matchInfo: MatchInfo?) :
         set(value) {
             if (value != field) {
                 field = value
-                notifyDataSetChanged()
+                //notifyDataSetChanged()
             }
         }
 
@@ -35,7 +36,7 @@ class OddButtonPairAdapter(private val matchInfo: MatchInfo?) :
     private var data: Map<Int, List<IndexedValue<Odd?>>> = mapOf()
         set(value) {
             field = value
-            notifyDataSetChanged()
+            //notifyDataSetChanged()
         }
 
     private val oddStateRefreshListener by lazy {
@@ -59,6 +60,7 @@ class OddButtonPairAdapter(private val matchInfo: MatchInfo?) :
     }
 
     override fun onBindViewHolder(holder: OddButtonPairViewHolder, position: Int) {
+        Log.d("Hewie", "綁定：快選列表($position)")
         data[position]?.let {
             holder.bind(matchInfo, it, oddsType, listener)
         }

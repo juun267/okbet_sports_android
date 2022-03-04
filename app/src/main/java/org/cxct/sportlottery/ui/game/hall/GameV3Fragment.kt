@@ -198,7 +198,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 },
                 { matchId ->
                     matchId?.let {
-                        viewModel.getQuickList(it)
+                        viewModel.getQuickList2(it)
                     }
                 },
                 {
@@ -674,14 +674,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         ?: oddsListResult.oddsListData?.leagueOdds ?: listOf()
 
                     val gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
-//                        game_list.apply {
-//                            adapter = leagueAdapter.apply {
-//                                updateType = null
-//                                data = leagueOdds.onEach { leagueOdd ->
-//                                    leagueOdd.gameType = gameType
-//                                }.toMutableList()
-//                            }
-//                        }
                     leagueAdapter.data = leagueOdds.onEach { leagueOdd -> leagueOdd.gameType = gameType }.toMutableList()
                     //如果data資料為空時，又有其他球種的情況下，自動選取第一個
                     if (leagueAdapter.data.isNullOrEmpty() && gameTypeAdapter.dataSport.size > 1) {
@@ -692,15 +684,16 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         )
                     }
                     game_list.itemAnimator = null
-                    
+
 
                     setNoDataView(leagueAdapter.data)
                     leagueOdds.forEachIndexed { index, leagueOdd ->
                         subscribeChannelHall(leagueOdd)
-                        if(leagueOdd.unfold == FoldState.FOLD.code) leagueAdapter.updateLeague(index, leagueOdd)
                     }
+                    // TODO 這裡要確認是否有其他地方重複呼叫
+                    Log.d("Hewie", "observe => OddsListGameHallResult")
+                    leagueAdapter.notifyDataSetChanged()
 
-                    // TODO 這裡有一個嚴重的流程問題
 
                     //賽事訂閱規則 因頁面初次展示不超過兩項 故保持兩項賽事訂閱避免過多socket response導致頁面卡頓
 //                    if (leagueOdds.isNotEmpty()) {
@@ -725,6 +718,36 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 //                    }
                 }
                 refreshToolBarUI(this.view)
+            }
+        }
+
+        // 接收快選列表資料
+        viewModel.quickOddsListGameHallResult.observe(this.viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { oddsListResult ->
+                if (oddsListResult.success) {
+                    val leagueOdds = oddsListResult.oddsListData?.leagueOddsFilter ?: oddsListResult.oddsListData?.leagueOdds ?: listOf()
+                    val gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
+
+                    leagueAdapter.data.find {
+                        it.matchOdds.find {
+                            it.quickPlayCateList?.find {
+                                if(it.isSelected) Log.d("Hewie3", "A: ${it.name}")
+                                it.isSelected
+                            } != null
+                        } != null
+                    }
+
+                    leagueAdapter.data = leagueOdds.onEach { leagueOdd -> leagueOdd.gameType = gameType }.toMutableList()
+
+                    oddsListResult.oddsListData?.leagueOdds?.find {
+                        it.matchOdds.find {
+                            it.quickPlayCateList?.find {
+                                if(it.isSelected) Log.d("Hewie3", "B: ${it.name}")
+                                it.isSelected
+                            } != null
+                        } != null
+                    }
+                }
             }
         }
 
@@ -919,18 +942,25 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     viewModel.switchMatchType(args.matchType)
                     game_no_record.apply {
                         setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
-                        View.GONE
+                        visibility = View.GONE
                     }
-                    game_no_record_bg.isVisible = false
+                    //game_no_record_bg.isVisible = false
                 }
                 it && !hasGame -> {
                     game_no_record.apply {
                         setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
                         isVisible = true
                     }
-                    game_no_record_bg.apply {
-                        isVisible = true
+//                    game_no_record_bg.apply {
+//                        isVisible = true
+//                    }
+                }
+                else -> {
+                    game_no_record.apply {
+                        setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
+                        visibility = View.GONE
                     }
+                    //game_no_record_bg.isVisible = false
                 }
             }
         }

@@ -99,7 +99,7 @@ class LeagueAdapter(private val matchType: MatchType) :
 
     // region update by payload functions
     fun updateLeague(position: Int, payload: LeagueOdd) {
-        notifyItemChanged(position, payload)
+        //notifyItemChanged(position, payload)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
@@ -110,7 +110,7 @@ class LeagueAdapter(private val matchType: MatchType) :
             // Update with payload
             val leagueOdd = payloads.first() as LeagueOdd
             Log.d("Hewie", "更新：聯賽：($position) => ${leagueOdd.league.name}")
-            (holder as ItemViewHolder).update(leagueOdd, matchType, oddsType)
+            //(holder as ItemViewHolder).update(leagueOdd, matchType, oddsType)
         }
     }
     // endregion
