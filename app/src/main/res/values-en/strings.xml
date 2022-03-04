@@ -349,7 +349,7 @@
     <string name="lose_half">Lose a half</string>
     <string name="draw">Draw</string>
     <string name="canceled">Canceled</string>
-    <string name="bet_canceled">Bet failed</string>
+    <string name="bet_canceled">Betting fails</string>
     <string name="confirmed">Confirmed</string>
     <string name="bet_detail">Bets details</string>
     <string name="bet_time">Betting time</string>
@@ -814,7 +814,7 @@
     <string name="odds_button_name_cdc">Away/Draw-Away</string>
     <string name="odds_button_name_hch">Home/Away-HOME</string>
     <string name="odds_button_name_hcc">Home/Away-Away</string>
-    <string name="bet_fail">Bet fails</string>
+    <string name="bet_fail">Betting fails</string>
     <string name="credit_record_deactivate">Credit function disabled</string>
     <string name="game_postponed">Game postponed</string>
     <string name="money_recharge_hint1">Please transfer success before you submit recharge information.</string>
@@ -996,6 +996,15 @@
     <string name="password_hint"><font size="12">(your login password)</font></string>
     <string name="account_hint"><font size="12">(your member account)</font></string>
     <string name="submit_success">submitted successfully</string>
+    <!-- 搜尋 -->
+    <string name="text_search">Search</string>
+    <string name="text_clear">Clear</string>
+    <string name="text_search_history">Search history</string>
+    <string name="text_top_search">Top Searches</string>
+    <string name="text_search_refresh">Refresh</string>
+    <string name="text_search_no_result">No result found</string>
+    <string name="text_search_try_another">Please try another keyword.</string>
+    <!-- 搜尋 -->
     <string name="text_combo_title">Parlay</string>
     <string name="text_combo_item">item</string>
 

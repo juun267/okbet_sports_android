@@ -1,23 +1,36 @@
 package org.cxct.sportlottery.ui.game.menu
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.zhy.adapter.recyclerview.CommonAdapter
+import com.zhy.adapter.recyclerview.base.ViewHolder
+import kotlinx.android.synthetic.main.dialog_combo_detail.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_left_menu.*
+import kotlinx.android.synthetic.main.fragment_left_menu.btn_close
+import kotlinx.android.synthetic.main.home_sport_table_4.view.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import kotlinx.android.synthetic.main.snackbar_my_favorite_notify.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
+import org.cxct.sportlottery.network.sport.SearchResponse
+import org.cxct.sportlottery.network.sport.SearchResult
 import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.FLAG_OPEN
@@ -37,8 +50,11 @@ import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.listener.OnClickListener
+import org.cxct.sportlottery.widget.highLightTextView.HighlightTextView
 
+@SuppressLint("NotifyDataSetChanged")
 class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClickListener {
     private var newAdapter =
         LeftMenuItemNewAdapter(
@@ -117,10 +133,13 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
 
     //提示
     private var snackBarMyFavoriteNotify: Snackbar? = null
-    var specialList: MutableList<MenuItemData> = mutableListOf()
+    private var specialList: MutableList<MenuItemData> = mutableListOf()
+    private var searchHistoryList = mutableListOf<String>()
 
     //簡訊驗證彈窗
     private var customSecurityDialog: CustomSecurityDialog? = null
+    private lateinit var searchResultAdapter: CommonAdapter<SearchResult>
+
 
     override fun onItemClick(position: Int) {
         super.onItemClick(position)
@@ -145,14 +164,51 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
         super.onViewCreated(view, savedInstanceState)
         dialog?.window?.setWindowAnimations(R.style.LeftMenu)
         dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        initView()
         initObserve()
         initRecyclerView()
-        initButton()
     }
 
+    fun initView() {
+        etSearch.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                layoutSearch.visibility = View.VISIBLE
+                rv_menu.visibility = View.GONE
+                initSearch()
+            }
+        }
+        etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
 
-    private fun initButton() {
-        // 返回
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                if (etSearch.text.isNotEmpty()) {
+                    startSearch()
+                } else {
+                    layoutSearch.visibility = View.VISIBLE
+                    layoutSearchResult.visibility = View.GONE
+                    searchHistoryAdapter?.notifyDataSetChanged()
+                }
+            }
+        })
+        tvClear.setOnClickListener {
+            if (searchHistoryList.size != 0) {
+                searchHistoryList.clear()
+            }
+            MultiLanguagesApplication.saveSearchHistory(searchHistoryList)
+            searchHistoryAdapter?.notifyDataSetChanged()
+        }
+        layoutSearch.setOnClickListener {
+            etSearch.clearFocus()
+            layoutSearch.visibility = View.GONE
+            layoutSearchResult.visibility = View.GONE
+            rv_menu.visibility = View.VISIBLE
+
+
+        }
         btn_close.setOnClickListener {
             dismiss()
         }
@@ -165,18 +221,18 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
         var game = ""
         val selectGame = viewModel.curMatchType.value
         selectGame.let {
-            if(it != null){
+            if (it != null) {
                 game = viewModel.getSportSelectedCode(it) ?: ""
             }
         }
-
+        viewModel.getSearchResult()
         list.forEach {
             val matchType = viewModel.sportMenuList.value?.peekContent()
                 ?.find { matchType -> matchType.gameType.key == it.gameType.key }?.entranceType
 
             when (it.gameType) {
                 GameType.VB -> {
-                    if(it.gameCount > 0 && matchType != null){
+                    if (it.gameCount > 0 && matchType != null) {
                         unselectedList.add(
                             MenuItemData(
                                 R.drawable.img_volleyball,
@@ -190,7 +246,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                     }
                 }
                 GameType.TN -> {
-                    if(it.gameCount > 0 && matchType != null){
+                    if (it.gameCount > 0 && matchType != null) {
                         unselectedList.add(
                             MenuItemData(
                                 R.drawable.img_tennis,
@@ -204,7 +260,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                     }
                 }
                 GameType.BK -> {
-                    if(it.gameCount > 0 && matchType != null){
+                    if (it.gameCount > 0 && matchType != null) {
                         unselectedList.add(
                             MenuItemData(
                                 R.drawable.img_basketball,
@@ -218,7 +274,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                     }
                 }
                 GameType.FT -> {
-                    if(it.gameCount > 0 && matchType != null){
+                    if (it.gameCount > 0 && matchType != null) {
                         unselectedList.add(
                             MenuItemData(
                                 R.drawable.img_soccer,
@@ -233,7 +289,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                 }
 
                 GameType.BM -> {
-                    if(it.gameCount > 0 && matchType != null){
+                    if (it.gameCount > 0 && matchType != null) {
                         unselectedList.add(
                             MenuItemData(
                                 R.drawable.img_badminton,
@@ -247,7 +303,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                     }
                 }
                 GameType.TT -> {
-                    if(it.gameCount > 0 && matchType != null){
+                    if (it.gameCount > 0 && matchType != null) {
                         unselectedList.add(
                             MenuItemData(
                                 R.drawable.img_pingpong,
@@ -261,7 +317,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                     }
                 }
                 GameType.IH -> {
-                    if(it.gameCount > 0 && matchType != null){
+                    if (it.gameCount > 0 && matchType != null) {
                         unselectedList.add(
                             MenuItemData(
                                 R.drawable.img_icehockey,
@@ -275,7 +331,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                     }
                 }
                 GameType.BX -> {
-                    if(it.gameCount > 0 && matchType != null){
+                    if (it.gameCount > 0 && matchType != null) {
                         unselectedList.add(
                             MenuItemData(
                                 R.drawable.img_boxing,
@@ -289,7 +345,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                     }
                 }
                 GameType.CB -> {
-                    if(it.gameCount > 0 && matchType != null){
+                    if (it.gameCount > 0 && matchType != null) {
                         unselectedList.add(
                             MenuItemData(
                                 R.drawable.img_snooker,
@@ -303,7 +359,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                     }
                 }
                 GameType.CK -> {
-                    if(it.gameCount > 0 && matchType != null){
+                    if (it.gameCount > 0 && matchType != null) {
                         unselectedList.add(
                             MenuItemData(
                                 R.drawable.img_cricket,
@@ -317,7 +373,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                     }
                 }
                 GameType.BB -> {
-                    if(it.gameCount > 0 && matchType != null){
+                    if (it.gameCount > 0 && matchType != null) {
                         unselectedList.add(
                             MenuItemData(
                                 R.drawable.img_baseball,
@@ -331,7 +387,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                     }
                 }
                 GameType.RB -> {
-                    if(it.gameCount > 0 && matchType != null){
+                    if (it.gameCount > 0 && matchType != null) {
                         unselectedList.add(
                             MenuItemData(
                                 R.drawable.img_rugby,
@@ -345,7 +401,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                     }
                 }
                 GameType.AFT -> {
-                    if(it.gameCount > 0 && matchType != null){
+                    if (it.gameCount > 0 && matchType != null) {
                         unselectedList.add(
                             MenuItemData(
                                 R.drawable.img_amfootball,
@@ -359,7 +415,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                     }
                 }
                 GameType.MR -> {
-                    if(it.gameCount > 0 && matchType != null){
+                    if (it.gameCount > 0 && matchType != null) {
                         unselectedList.add(
                             MenuItemData(
                                 R.drawable.img_racing,
@@ -373,7 +429,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                     }
                 }
                 GameType.GF -> {
-                    if(it.gameCount > 0 && matchType != null){
+                    if (it.gameCount > 0 && matchType != null) {
                         unselectedList.add(
                             MenuItemData(
                                 R.drawable.img_golf,
@@ -386,6 +442,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                         )
                     }
                 }
+                else -> {}
             }
         }
         viewModel.notifyFavorite(FavoriteType.SPORT)
@@ -395,8 +452,8 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
         viewModel.sportCouponMenuResult.observe(this.viewLifecycleOwner) {
             it.peekContent().let { data ->
                 specialList.clear()
-                data.sportCouponMenuData.forEachIndexed { index, sportCouponMenuData ->
-                    var list = MenuItemData(
+                data.sportCouponMenuData.forEachIndexed { _, sportCouponMenuData ->
+                    val list = MenuItemData(
                         0,
                         sportCouponMenuData.couponName,
                         sportCouponMenuData.couponCode,
@@ -428,9 +485,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
         }
 
         viewModel.sportMenuList.observe(viewLifecycleOwner) {
-            it.peekContent().let { list ->
-                initData(list)
-            }
+            initData(it.peekContent())
         }
 
         viewModel.rechargeSystemOperation.observe(viewLifecycleOwner) {
@@ -466,17 +521,17 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                                 this.showSmeTimer300()
                                 viewModel.sendTwoFactor()
                             }
-                            positiveClickListener = CustomSecurityDialog.PositiveClickListener{ number ->
+                            positiveClickListener = CustomSecurityDialog.PositiveClickListener { number ->
                                 viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
                             }
                         }
-                        customSecurityDialog?.show(parentFragmentManager,null)
+                        customSecurityDialog?.show(parentFragmentManager, null)
                     }
                 }
             }
         }
 
-        viewModel.errorMessageDialog.observe(viewLifecycleOwner){
+        viewModel.errorMessageDialog.observe(viewLifecycleOwner) {
             val errorMsg = it ?: getString(R.string.unknown_error)
             this.context?.let { context -> CustomAlertDialog(context) }?.apply {
                 setMessage(errorMsg)
@@ -501,7 +556,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
         //使用者沒有電話號碼
         viewModel.showPhoneNumberMessageDialog.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
-                if(!b){
+                if (!b) {
                     val errorMsg = getString(R.string.dialog_security_need_phone)
                     this.context?.let { context -> CustomAlertDialog(context) }?.apply {
                         setMessage(errorMsg)
@@ -615,6 +670,72 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                 }
             }
         }
+        viewModel.searchResult.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { list ->
+                if (!layoutSearchResult.isVisible) {
+                    layoutSearchResult.visibility = View.VISIBLE
+                    layoutSearch.visibility = View.GONE
+                }
+                if (list.isNotEmpty()) {
+                    rvSearchResult.visibility = View.VISIBLE
+                    layoutNoData.visibility = View.GONE
+                    searchResult.clear()
+                    searchResult.addAll(list)
+                    searchResultAdapter.notifyDataSetChanged()
+                } else {
+                    rvSearchResult.visibility = View.GONE
+                    layoutNoData.visibility = View.VISIBLE
+                }
+            }
+
+        }
+
+    }
+
+    var searchResult: MutableList<SearchResult> = ArrayList()
+    private var searchHistoryAdapter: CommonAdapter<String>? = null
+
+    private fun initSearch() {
+        layoutSearch.visibility = View.VISIBLE
+        MultiLanguagesApplication.searchHistory?.let {
+            searchHistoryList = it
+        }
+        searchHistoryList.let {
+            if (it.size > 0) {
+                rvHistory.layoutManager =
+                    LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+                rvHistory.isNestedScrollingEnabled = false
+                layoutHistory.visibility = View.VISIBLE
+                searchHistoryAdapter = object : CommonAdapter<String>(context, R.layout.item_search_history, it) {
+                    override fun convert(holder: ViewHolder, t: String, position: Int) {
+                        //holder.setText(R.id.tvHistory, t)
+                        val tvHistory = holder.getView<TextView>(R.id.tvHistory)
+                        tvHistory.text = t
+                        tvHistory.setOnClickListener {
+                            etSearch.setText(t)
+                        }
+                    }
+                }
+                rvHistory.adapter = searchHistoryAdapter
+            }
+        }
+    }
+
+    private fun startSearch() {
+        if(searchHistoryList.any {
+            it == etSearch.text.toString()
+        }){
+            searchHistoryList.remove(etSearch.text.toString())
+            searchHistoryList.add(0, etSearch.text.toString())
+        }else if (searchHistoryList.size == 10){
+            searchHistoryList.removeAt(9)
+            searchHistoryList.add(0, etSearch.text.toString())
+        }else{
+            searchHistoryList.add(0, etSearch.text.toString())
+        }
+        MultiLanguagesApplication.saveSearchHistory(searchHistoryList)
+        viewModel.getSportSearch(etSearch.text.toString())
+        //rvHostory.adapter?.notifyDataSetChanged()
     }
 
     private fun initRecyclerView() {
@@ -622,6 +743,48 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = newAdapter
         }
+        rvSearchResult.layoutManager =
+            LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        rvSearchResult.isNestedScrollingEnabled = false
+        searchResultAdapter = object : CommonAdapter<SearchResult>(context, R.layout.item_search_result_sport, searchResult) {
+            override fun convert(holder: ViewHolder, t: SearchResult, position: Int) {
+                holder.setText(R.id.tvResultTittle, t.sportTitle)
+                val rvResultLeague = holder.getView<RecyclerView>(R.id.rvResultLeague)
+                rvResultLeague.layoutManager =
+                    LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+                rvResultLeague.isNestedScrollingEnabled = false
+                val adapter = object : CommonAdapter<SearchResult.SearchResultLeague>(context, R.layout.item_search_result_league, t.searchResultLeague) {
+                    override fun convert(holder: ViewHolder, it: SearchResult.SearchResultLeague, position: Int) {
+                        val tvLeagueTittle = holder.getView<HighlightTextView>(R.id.tvLeagueTittle)
+                        tvLeagueTittle.setCustomText(it.league)
+                        tvLeagueTittle.highlight(etSearch.text.toString())
+                        val rvResultMatch = holder.getView<RecyclerView>(R.id.rvResultMatch)
+                        rvResultMatch.layoutManager =
+                            LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+                        rvResultMatch.isNestedScrollingEnabled = false
+                        val adapter = object :
+                            CommonAdapter<SearchResponse.Row.LeagueMatch.MatchInfo>(context, R.layout.item_search_result_match, t.searchResultLeague[position].leagueMatchList) {
+                            override fun convert(holder: ViewHolder, itt: SearchResponse.Row.LeagueMatch.MatchInfo, position: Int) {
+                                holder.setText(
+                                    R.id.tvTime,
+                                    TimeUtil.timeFormat(itt.startTime.toLong(), TimeUtil.MD_HM_FORMAT) + " ｜ "
+                                )
+                                val tvMatch = holder.getView<HighlightTextView>(R.id.tvMatch)
+                                tvMatch.setCustomText(itt.homeName + " v " + itt.awayName)
+                                tvMatch.highlight(etSearch.text.toString())
+                                tvMatch.setOnClickListener {
+                                    dismiss()
+                                    viewModel.navSpecialEntrance(MatchType.DETAIL, GameType.getGameType(t.gameType)!!, itt.matchId)
+                                }
+                            }
+                        }
+                        rvResultMatch.adapter = adapter
+                    }
+                }
+                rvResultLeague.adapter = adapter
+            }
+        }
+        rvSearchResult.adapter = searchResultAdapter
     }
 
     private fun updateMenuSport(favorSportTypeList: List<String>) {

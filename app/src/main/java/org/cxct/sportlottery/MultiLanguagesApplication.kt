@@ -2,9 +2,13 @@ package org.cxct.sportlottery
 
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Configuration
+import androidx.preference.PreferenceManager
 import cn.jpush.android.api.JPushInterface
 import com.github.jokar.multilanguages.library.MultiLanguage
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.manager.NetworkStatusManager
 import org.cxct.sportlottery.network.manager.RequestManager
@@ -50,6 +54,8 @@ import timber.log.Timber.DebugTree
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import org.cxct.sportlottery.ui.permission.GooglePermissionViewModel
+
+
 
 
 /**
@@ -135,6 +141,8 @@ class MultiLanguagesApplication : Application() {
         appContext = applicationContext
         instance = this
         AppManager.init(this)
+        myPref = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+
         MultiLanguage.init { context ->
             //返回自己本地保存选择的语言设置
             return@init LanguageManager.getSetLanguageLocale(context)
@@ -204,11 +212,31 @@ class MultiLanguagesApplication : Application() {
         this.isNewsShowed = show
     }
     companion object {
+        private var myPref: SharedPreferences? = null
         lateinit var appContext: Context
         const val UUID_DEVICE_CODE = "uuidDeviceCode"
         const val UUID = "uuid"
         private var instance: MultiLanguagesApplication? = null
 
+        fun saveSearchHistory(searchHistory: MutableList<String>?) {
+            this.searchHistory = searchHistory
+        }
+
+        var searchHistory: MutableList<String>?
+            get() {
+                val searchHistoryJson =  myPref!!.getString("search_history", "")
+                val gson = Gson()
+                val type = object : TypeToken<MutableList<String>?>() {}.type
+                var searchHistoryList: MutableList<String>?  = gson.fromJson(searchHistoryJson, type)
+                return searchHistoryList
+            }
+            set(searchHistoryList) {
+                val gson = Gson()
+                val searchHistoryJson = gson.toJson(searchHistoryList)
+                val editor = myPref!!.edit()
+                editor.putString("search_history", searchHistoryJson)
+                editor.apply()
+            }
 
         fun getInstance(): MultiLanguagesApplication? {
             if (instance == null) throw IllegalStateException("Application not be created yet.")

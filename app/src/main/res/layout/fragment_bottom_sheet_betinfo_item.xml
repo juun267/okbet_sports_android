@@ -93,6 +93,14 @@
                 layout="@layout/content_bet_info_item"
                 app:parlayOdd="@{parlayOdd}" />
 
+            <View
+                android:id="@+id/v_keyboard_shadow"
+                android:layout_width="match_parent"
+                android:layout_marginTop="-16dp"
+                android:layout_height="16dp"
+                android:visibility="gone"
+                android:background="@drawable/bg_gradient_bottom_sheet_shadow" />
+
             <LinearLayout
                 android:id="@+id/ll_keyboard_bg"
                 android:layout_width="match_parent"
