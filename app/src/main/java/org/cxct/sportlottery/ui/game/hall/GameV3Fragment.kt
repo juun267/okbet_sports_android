@@ -937,6 +937,17 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             }
         }
 
+        //當前玩法無賽事
+        viewModel.isNoEvents.observe(this.viewLifecycleOwner ,{
+            hideLoading()
+            sport_type_list.isVisible = !it
+            game_play_category.isVisible = !it
+            game_toolbar_sport_type.isVisible = !it
+            game_toolbar_champion.isVisible = !it
+            game_no_record.isVisible = it
+            game_no_record_bg.isVisible = it
+        })
+
         viewModel.betInfoList.observe(this.viewLifecycleOwner) {
             it.peekContent().let {
                 val leagueOdds = leagueAdapter.data
