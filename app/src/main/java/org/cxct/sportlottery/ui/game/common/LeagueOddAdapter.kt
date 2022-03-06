@@ -493,10 +493,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                     min
                                 )
                             } else {
-                                if (item.matchInfo.hasRefreshed != true) { //避免持續重複刷新
-                                    leagueOddListener?.onRefresh(item.matchInfo.id)
-                                    item.matchInfo.hasRefreshed = true
-                                }
+                                //等待Socket更新
+                                itemView.league_odd_match_time.text = String.format(
+                                    itemView.context.resources.getString(R.string.at_start_remain_minute),
+                                    0
+                                )
                             }
                             item.matchInfo.remainTime = timeMillis
 
@@ -554,12 +555,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                             min
                                         )
                                     } else {
-                                        item.matchInfo?.id?.let {
-                                            if (item.matchInfo.hasRefreshed != true) { //避免持續重複刷新
-                                                leagueOddListener?.onRefresh(item.matchInfo.id)
-                                                item.matchInfo.hasRefreshed = true
-                                            }
-                                        }
+                                        //等待Socket更新
+                                        itemView.league_odd_match_time.text = String.format(
+                                            itemView.context.resources.getString(R.string.at_start_remain_minute),
+                                            0
+                                        )
                                     }
                                     item.matchInfo?.remainTime = timeMillis
                                 }

@@ -169,6 +169,9 @@ class GameViewModel(
     val isNoHistory: LiveData<Boolean>
         get() = _isNoHistory
 
+    val isNoEvents: LiveData<Boolean>
+        get() = _isNoEvents
+
     val errorPromptMessage: LiveData<Event<String>>
         get() = _errorPromptMessage
 
@@ -236,6 +239,7 @@ class GameViewModel(
     private val _curDatePosition = MutableLiveData<Int>()
     private val _asStartCount = MutableLiveData<Int>()
     private val _isNoHistory = MutableLiveData<Boolean>()
+    private var _isNoEvents = MutableLiveData<Boolean>()
     private val _errorPromptMessage = MutableLiveData<Event<String>>()
     private val _specialEntrance = MutableLiveData<SpecialEntrance?>()
     private val _outrightCountryListSearchResult =
@@ -627,6 +631,7 @@ class GameViewModel(
                 if (result?.success == true) {
                     sportQueryData = result.sportQueryData
                     checkLastSportType(matchType, sportQueryData)
+                    _isNoEvents.value = result.sportQueryData?.num == 0
                 } else {
                     _showErrorDialogMsg.value = result?.msg
                 }
@@ -1363,6 +1368,10 @@ class GameViewModel(
                     )
                 )
             }?.updateMatchType()
+
+            if(result?.oddsListData?.leagueOdds.isNullOrEmpty()){
+                _isNoHistory.value = true
+            }
 
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->

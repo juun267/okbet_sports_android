@@ -685,9 +685,26 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                     game_list.itemAnimator = null
 
+                    game_list.apply {
+                        adapter = leagueAdapter.apply {
+                            data = leagueOdds.onEach { leagueOdd ->
+                                leagueOdd.gameType = gameType
+                            }.toMutableList()
+                        }
+                    }
 
-                    setNoDataView(leagueAdapter.data)
-                    leagueOdds.forEachIndexed { index, leagueOdd ->
+
+                    //如果data資料為空時，又有其他球種的情況下，自動選取第一個
+                    if (leagueAdapter.data.isNullOrEmpty() && gameTypeAdapter.dataSport.size > 1) {
+                        viewModel.getSportMenu(
+                            args.matchType,
+                            switchFirstTag = true,
+                            onlyRefreshSportMenu = true
+                        )
+                    }
+                    game_list.itemAnimator = null
+
+                    leagueOdds.forEach { leagueOdd ->
                         subscribeChannelHall(leagueOdd)
                     }
                     // TODO 這裡要確認是否有其他地方重複呼叫
@@ -803,6 +820,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         viewModel.leagueListResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { leagueListResult ->
                 hideLoading()
+                if (game_tab_odd_v4.visibility == View.VISIBLE && game_tabs.selectedTabPosition != 0)
+                    return@observe
+
                 if (leagueListResult.success) {
                     val rows = leagueListResult.rows ?: listOf()
 
@@ -844,9 +864,13 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
             }
         }
+
         viewModel.outrightLeagueListResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { outrightSeasonListResult ->
                 hideLoading()
+
+                if (game_tab_odd_v4.visibility == View.VISIBLE && game_tabs.selectedTabPosition != 1)
+                    return@observe
 
                 if (outrightSeasonListResult.success) {
                     val rows = outrightSeasonListResult.rows ?: listOf()
@@ -860,11 +884,13 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             }
         }
 
-
         viewModel.epsListResult.observe(this.viewLifecycleOwner) {
             hideLoading()
-
             it.getContentIfNotHandled()?.let { epsListResult ->
+
+                if (game_tab_odd_v4.visibility == View.VISIBLE && game_tabs.selectedTabPosition != 2)
+                    return@observe
+
                 if (epsListResult.success) {
                     val oddsEpsListDatas = epsListResult.rows
                     val epsLeagueOddsItemList = mutableListOf<EpsLeagueOddsItem>()
@@ -927,6 +953,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             val hasGame = when (args.matchType) {
                 MatchType.IN_PLAY -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.inPlay?.num ?: 0 > 0
                 MatchType.TODAY -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.today?.num ?: 0 > 0
+                MatchType.AT_START -> viewModel.sportMenuResult.value?.sportMenuData?.atStart?.num ?: 0 > 0
                 MatchType.EARLY -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.early?.num ?: 0 > 0
                 MatchType.PARLAY -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.parlay?.num ?: 0 > 0
                 MatchType.OUTRIGHT -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.outright?.num ?: 0 > 0
@@ -964,6 +991,17 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
             }
         }
+
+        //當前玩法無賽事
+        viewModel.isNoEvents.observe(this.viewLifecycleOwner ,{
+            hideLoading()
+            sport_type_list.isVisible = !it
+            game_play_category.isVisible = !it
+            game_toolbar_sport_type.isVisible = !it
+            game_toolbar_champion.isVisible = !it
+            game_no_record.isVisible = it
+            //game_no_record_bg.isVisible = it
+        })
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner) {
             it.peekContent().let {
@@ -1064,21 +1102,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
         viewModel.leagueFilterList.observe(this.viewLifecycleOwner) { leagueList ->
             game_toolbar_champion.isSelected = leagueList.isNotEmpty()
-        }
-    }
-
-    private fun setNoDataView(data: MutableList<LeagueOdd>) {
-        when {
-            data.isNullOrEmpty() -> {
-                game_play_category.isVisible = false
-                game_toolbar_champion.isVisible = false
-                game_toolbar_sport_type.isVisible = false
-            }
-            else -> {
-                game_play_category.isVisible = true
-                game_toolbar_champion.isVisible = true
-                game_toolbar_sport_type.isVisible = true
-            }
         }
     }
 
@@ -1331,9 +1354,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             nowGameType == leagueChangeEvent.gameType && hasLeagueIdList -> {
                                 withContext(Dispatchers.Main) {
                                     viewModel.refreshGame(
-                                        args.matchType,
-                                        leagueChangeEvent.leagueIdList,
-                                        listOf()
+                                        args.matchType
                                     )
 //                                    viewModel.switchSportType(
 //                                        args.matchType,

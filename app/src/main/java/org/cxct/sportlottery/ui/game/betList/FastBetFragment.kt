@@ -130,6 +130,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
                 override fun showOrHideKeyBoardBackground(isShow: Boolean, position: Int?) {
                     ll_keyboard_bg.visibility = if(isShow) View.VISIBLE else View.GONE
+                    v_keyboard_shadow.visibility = if(isShow) View.VISIBLE else View.GONE
                 }
             }
         )
