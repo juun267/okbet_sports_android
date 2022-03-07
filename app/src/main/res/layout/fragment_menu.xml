@@ -153,7 +153,7 @@
                 android:id="@+id/menu_game_result"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cvIcon="@drawable/ic_menu_game_settlement"
+                app:cvIcon="@drawable/img_menu_champ"
                 app:cvTitle="@string/game_settlement" />
 
             <View
