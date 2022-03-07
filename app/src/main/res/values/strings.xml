@@ -1040,7 +1040,7 @@
 
     <!--歷史紀錄start-->
     <string name="text_account_history_type">项目类型</string>
-    <string name="text_account_history_time">充值时间</string>
+    <string name="text_account_history_time">交易时间</string>
     <string name="text_account_history_number">订单号</string>
     <string name="text_account_history_amount">交易金额</string>
     <string name="text_account_history_balance">余额</string>

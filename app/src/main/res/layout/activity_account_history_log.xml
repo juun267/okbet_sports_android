@@ -75,6 +75,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:maxLines="1"
+            android:ellipsize="end"
             android:text="@string/text_account_history_amount"
             android:textColor="@color/colorBlackLight"
             app:autoSizeMaxTextSize="@dimen/textSize12sp"
