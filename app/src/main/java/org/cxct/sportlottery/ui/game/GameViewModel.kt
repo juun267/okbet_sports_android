@@ -1291,16 +1291,16 @@ class GameViewModel(
                     matchOdd?.setupOddDiscount()
                     matchOdd?.setupPlayCate()
                     matchOdd?.sortOdds()
+
+                    matchOdd?.startDate = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, DMY_FORMAT)
+                    matchOdd?.startTime = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, HM_FORMAT)
                 }
             }
 
             val matchOdd =
                 result?.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()
             matchOdd?.let {
-                matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo?.endTime, DMY_FORMAT)
-                matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo?.endTime, HM_FORMAT)
                 matchOdd.playCateMappingList = playCateMappingList
-
                 matchOdd.updateOddStatus()
             }
 
