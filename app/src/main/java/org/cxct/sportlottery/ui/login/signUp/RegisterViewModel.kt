@@ -420,7 +420,7 @@ class RegisterViewModel(
             return false
         if (sConfigData?.enableTelegram == FLAG_OPEN && telegramMsg.value != null)
             return false
-        if (sConfigData?.enableValidCode == FLAG_OPEN && securityPbMsg.value != null)
+        if (sConfigData?.enableSafeQuestion == FLAG_OPEN && securityPbMsg.value != null)
             return false
         if (sConfigData?.enableSmsValidCode == FLAG_OPEN && securityCodeMsg.value != null)
             return false
