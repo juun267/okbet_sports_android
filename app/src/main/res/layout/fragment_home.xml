@@ -52,7 +52,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="222"
-                            android:background="@drawable/fillet_4dp_home_game_item">
+                            android:background="@drawable/fillet_4dp_home_game_item_blue">
 
                             <TextView
                                 android:id="@+id/label_en_first_game"
@@ -122,7 +122,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="158"
-                            android:background="@drawable/fillet_4dp_home_game_item">
+                            android:background="@drawable/fillet_4dp_home_game_item_blue">
 
                             <TextView
                                 android:id="@+id/label_en_second_game"

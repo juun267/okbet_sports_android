@@ -408,8 +408,8 @@ class Vp2GameTable4Adapter (
                             }
                         }
                         if(data?.scoreStatus == 999){
-                            tv_game_score_home.visibility = View.INVISIBLE
-                            tv_game_score_away.visibility = View.INVISIBLE
+                            tv_game_score_home.visibility = View.GONE
+                            tv_game_score_away.visibility = View.GONE
                             tv_game_total_score_home_center.visibility = View.INVISIBLE
                             tv_game_score_home_center.visibility = View.INVISIBLE
                             tv_game_total_score_away_center.visibility = View.INVISIBLE

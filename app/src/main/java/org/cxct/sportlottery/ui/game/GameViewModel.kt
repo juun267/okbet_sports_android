@@ -371,15 +371,7 @@ class GameViewModel(
     private fun getSpecEntranceFromHome(
         matchType: MatchType,
         gameType: GameType?
-    ): SpecialEntrance? = when {
-        matchType == MatchType.IN_PLAY && getSportCount(matchType, gameType) == 0 -> {
-            _errorPromptMessage.postValue(Event(androidContext.getString(R.string.message_no_in_play)))
-            null
-        }
-        matchType == MatchType.AT_START && getMatchCount(matchType) == 0 -> {
-            _errorPromptMessage.postValue(Event(androidContext.getString(R.string.message_no_at_start)))
-            null
-        }
+    ): SpecialEntrance = when {
         matchType == MatchType.OTHER -> {
             SpecialEntrance(matchType, gameType, "_sportCouponMenuResult.value?.couponCode")
         }
@@ -1309,16 +1301,16 @@ class GameViewModel(
                     matchOdd?.setupOddDiscount()
                     matchOdd?.setupPlayCate()
                     matchOdd?.sortOdds()
+
+                    matchOdd?.startDate = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, DMY_FORMAT)
+                    matchOdd?.startTime = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, HM_FORMAT)
                 }
             }
 
             val matchOdd =
                 result?.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()
             matchOdd?.let {
-                matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo?.endTime, DMY_FORMAT)
-                matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo?.endTime, HM_FORMAT)
                 matchOdd.playCateMappingList = playCateMappingList
-
                 matchOdd.updateOddStatus()
             }
 

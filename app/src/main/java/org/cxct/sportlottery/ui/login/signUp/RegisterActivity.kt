@@ -91,6 +91,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         setupFacebook()
         setupWhatsApp()
         setupTelegram()
+        setupSecurityPb()
         setupValidCode()
         setupSmsValidCode()
         setupAgreement()
@@ -239,6 +240,11 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
     }
 
+    private fun setupSecurityPb() {
+        binding.etSecurityPb.visibility =
+            if (sConfigData?.enableSafeQuestion == FLAG_OPEN) View.VISIBLE else View.GONE
+    }
+
     private fun setupValidCode() {
         if (sConfigData?.enableRegValidCode == FLAG_OPEN) {
             binding.blockValidCode.visibility = View.VISIBLE
@@ -288,6 +294,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 eetFacebook.text.toString(),
                 eetWhatsApp.text.toString(),
                 eetTelegram.text.toString(),
+                eetSecurityPb.text.toString(),
                 eetSmsValidCode.text.toString(),
                 eetVerificationCode.text.toString(),
                 cbAgreement.isChecked
@@ -373,6 +380,11 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     btnRegisterEnable()
                 }
             }
+            eetSecurityPb.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
+            }
             eetSmsValidCode.apply {
                 this.afterTextChanged {
                     btnRegisterEnable()
@@ -411,6 +423,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     eetFacebook.text.toString(),
                     eetWhatsApp.text.toString(),
                     eetTelegram.text.toString(),
+                    eetSecurityPb.text.toString(),
                     eetSmsValidCode.text.toString(),
                     eetVerificationCode.text.toString(),
                     cbAgreement.isChecked,
@@ -517,6 +530,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             facebookMsg.observe(this@RegisterActivity) { binding.etFacebook.setError(it, false) }
             whatsAppMsg.observe(this@RegisterActivity) { binding.etWhatsApp.setError(it, false) }
             telegramMsg.observe(this@RegisterActivity) { binding.etTelegram.setError(it, false) }
+            securityPbMsg.observe(this@RegisterActivity) { binding.etSecurityPb.setError(it, false) }
             securityCodeMsg.observe(this@RegisterActivity) {
                 binding.etSmsValidCode.setError(
                     it,
@@ -550,6 +564,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             eetFacebook.setActionListener(registerEnable)
             eetWhatsApp.setActionListener(registerEnable)
             eetTelegram.setActionListener(registerEnable)
+            eetSecurityPb.setActionListener(registerEnable)
             eetSmsValidCode.setActionListener(registerEnable)
             eetVerificationCode.setActionListener(registerEnable)
         }

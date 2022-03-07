@@ -64,10 +64,10 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
             updateNoticeCount(it.size)
         })
 
-        viewModel.userInfo.observe(this, {
+        viewModel.userInfo.observe(this) {
             //是否测试用户（0-正常用户，1-游客，2-内部测试）
             updateUserIdentity(it?.testFlag)
-        })
+        }
     }
 
     private fun updateNoticeCount(noticeCount: Int) {
@@ -85,9 +85,7 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
     }
 
     private fun updateNoticeButton() {
-        mNoticeButton?.setImageResource(if (noticeCount ?: 0 > 0 && isGuest == false) R.drawable.icon_notice_with_red_dot else R.drawable.icon_bell)
-//        mNoticeButton?.visibility = if (noticeCount ?: 0 > 0 && isGuest == false) View.VISIBLE else View.GONE
-//        mNoticeButton?.text = if (noticeCount ?: 0 < 10) noticeCount.toString() else "N"
+        mNoticeButton?.setImageResource(if (noticeCount ?: 0 > 0 && isGuest == false) R.drawable.icon_bell_with_red_dot else R.drawable.icon_bell)
     }
 
 }

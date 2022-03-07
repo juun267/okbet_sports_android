@@ -84,6 +84,8 @@
     <string name="telegram">Telegram</string>
     <string name="hint_telegram">Telegram Account</string>
     <string name="error_telegram">Telegram account formatted incorrectly</string>
+    <string name="security_pb">Security question</string>
+    <string name="hint_security_pb">(Please enter the favorite country)</string>
     <string name="real_name">Full name</string>
     <string name="hint_real_name">match the bank account name</string>
     <string name="verification_code">Verification code</string>
@@ -630,6 +632,7 @@
     <string name="record_recharge">Recharge record</string>
     <string name="record_withdrawal">Withdrawal record</string>
     <string name="record_conversion">Conversion Record</string>
+    <string name="record_history">History</string>
     <string name="recharge_state_success">success</string>
     <string name="recharge_state_failed">Fail</string>
     <string name="recharge_state_processing">Being processed</string>
@@ -1020,4 +1023,18 @@
     <string name="allow_location_permission">Allow location access</string>
     <string name="google_location_permission_description">You can search for sports matches near you and receive more information about sports matches by allowing location access.</string>
     <string name="grant_location_permission_on_setting">Enable location permission on the settings page.</string>
+
+    <!--歷史紀錄start-->
+    <string name="text_account_history_type">Type</string>
+    <string name="text_account_history_time">Transaction time</string>
+    <string name="text_account_history_number">Order no.</string>
+    <string name="text_account_history_amount">Transaction amount</string>
+    <string name="text_account_history_balance">Balance</string>
+
+    <string name="text_account_history_bet">Bet</string>
+    <string name="text_account_history_recharge">Recharge</string>
+    <string name="text_account_history_withdraw">Withdraw</string>
+    <string name="text_account_history_activity">Activity</string>
+    <string name="text_account_history_credit">Credit</string>
+    <!--歷史紀錄end-->
 </resources>

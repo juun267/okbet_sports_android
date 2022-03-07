@@ -199,9 +199,9 @@ class LeftMenuItemNewAdapter(
                 ct_premium_odds.setOnClickListener {
                     headerSelectedListener.premiumOddsSelected()
                 }
-                rvLefSpecial.layoutManager =
+                rv_left_special.layoutManager =
                     LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-                rvLefSpecial.isNestedScrollingEnabled = false
+                rv_left_special.isNestedScrollingEnabled = false
                 if(specialList.isNotEmpty()){
                     adapter = object : CommonAdapter<MenuItemData>(
                         context,
@@ -218,7 +218,7 @@ class LeftMenuItemNewAdapter(
                         }
 
                     }
-                    rvLefSpecial.adapter = adapter
+                    rv_left_special.adapter = adapter
 
                     adapter.setOnItemClickListener(object : MultiItemTypeAdapter.OnItemClickListener {
                         override fun onItemClick(

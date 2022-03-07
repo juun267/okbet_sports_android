@@ -4,6 +4,7 @@
         <item>@string/record_recharge</item>
         <item>@string/record_withdrawal</item>
         <item>@string/record_conversion</item>
+        <item>@string/record_history</item>
         <!--        <item>@string/record_red_envelope</item>-->
         <!--        <item>@string/record_conversion</item>-->
         <!--        <item>@string/record_reward</item>-->
@@ -17,6 +18,7 @@
         <item>@drawable/ic_icondrawrechargerecord</item>
         <item>@drawable/ic_icondrawwithdrawrecord</item>
         <item>@drawable/ic_icondrawtransfer</item>
+        <item>@drawable/ic_icon_draw_bonus_record</item>
         <!--        <item>@drawable/ic_icondrawredenvelope</item>-->
         <!--        <item>@drawable/ic_icondrawtransfer</item>-->
         <!--        <item>@drawable/ic_icondrawbonusrecord</item>-->
@@ -34,6 +36,14 @@
         <item>@string/recharge_state_processing</item>
         <item>@string/recharge_state_success</item>
         <item>@string/recharge_state_failed</item>
+    </string-array>
+
+    <string-array name="account_history_state_array">
+        <item>@string/text_account_history_bet</item>
+        <item>@string/text_account_history_recharge</item>
+        <item>@string/text_account_history_withdraw</item>
+        <item>@string/text_account_history_activity</item>
+        <item>@string/text_account_history_credit</item>
     </string-array>
 
     <string-array name="recharge_channel_array">

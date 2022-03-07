@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:minWidth="98dp"
     android:layout_height="wrap_content"
-    android:background="@drawable/fillet_4dp_home_game_item"
+    android:background="@drawable/fillet_4dp_home_game_item_blue"
     tools:context=".ui.game.home.HomeGameCard">
 
     <ImageView
