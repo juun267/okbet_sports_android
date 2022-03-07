@@ -444,7 +444,6 @@ class ProfileCenterActivity :
                 setCanceledOnTouchOutside(false)
                 setCancelable(false)
             }.show()
-            customSecurityDialog?.showErrorStatus(true)
         }
 
         viewModel.twoFactorSuccess.observe(this) {
