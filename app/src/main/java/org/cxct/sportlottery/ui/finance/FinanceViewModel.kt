@@ -9,6 +9,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.money.list.RechargeListRequest
 import org.cxct.sportlottery.network.money.list.Row
+import org.cxct.sportlottery.network.money.list.SportBillListRequest
+import org.cxct.sportlottery.network.money.list.SportBillResult
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
@@ -48,7 +50,8 @@ class FinanceViewModel(
 
     val userWithdrawListResult: LiveData<MutableList<org.cxct.sportlottery.network.withdraw.list.Row>?>
         get() = _userWithdrawResult
-
+    val userSportBillListResult: LiveData<SportBillResult>
+        get() = _userSportBillListResult
     val recordType: LiveData<String>
         get() = _recordType
 
@@ -64,6 +67,7 @@ class FinanceViewModel(
     private val _isLoading = MutableLiveData<Boolean>()
     private val _userRechargeListResult = MutableLiveData<MutableList<Row>?>()
     private val _userWithdrawResult = MutableLiveData<MutableList<org.cxct.sportlottery.network.withdraw.list.Row>?>()
+    private val _userSportBillListResult = MutableLiveData<SportBillResult>()
 
     private val _recordType = MutableLiveData<String>()
 
@@ -160,6 +164,80 @@ class FinanceViewModel(
             if (result?.success == true) {
                 _userRechargeListResult.postValue(rechargeLogList)
             }
+
+            hideLoading()
+        }
+    }
+
+    fun getUserAccountHistoryList(
+        isFirstFetch: Boolean,
+        startTime: String? = TimeUtil.getDefaultTimeStamp().startTime,
+        endTime: String? = TimeUtil.getDefaultTimeStamp().endTime,
+        tranTypeGroup: String? = "bet",
+    ) {
+        if (!isFirstFetch && isFinalPage.value == true) return
+
+        loading()
+        when {
+            isFirstFetch -> {
+                //rechargeLogList.clear()
+                _isFinalPage.postValue(false)
+                page = 1
+            }
+            else -> {
+                if (isFinalPage.value == false) {
+                    page++
+                }
+            }
+        }
+
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.moneyService.getBillList(SportBillListRequest(tranTypeGroup = tranTypeGroup, startTime = startTime, endTime = endTime, page = page, pageSize = pageSize))
+            }
+
+            result?.rows?.map {
+//                it.rechState = when (it.status) {
+//                    Status.SUCCESS.code -> androidContext.getString(R.string.recharge_state_success)
+//                    Status.FAILED.code -> androidContext.getString(R.string.recharge_state_failed)
+//                    Status.PROCESSING.code, Status.RECHARGING.code -> androidContext.getString(R.string.recharge_state_processing)
+//                    else -> ""
+//                }
+//
+//                it.rechTypeDisplay = when (it.rechType) {
+//                    RechType.ONLINE_PAYMENT.type -> androidContext.getString(R.string.recharge_channel_online)
+//                    RechType.ADMIN_ADD_MONEY.type -> androidContext.getString(R.string.recharge_channel_admin)
+//                    RechType.CFT.type -> androidContext.getString(R.string.recharge_channel_cft)
+//                    RechType.WEIXIN.type -> androidContext.getString(R.string.recharge_channel_weixin)
+//                    RechType.ALIPAY.type -> androidContext.getString(R.string.recharge_channel_alipay)
+//                    RechType.BANK_TRANSFER.type -> androidContext.getString(R.string.recharge_channel_bank)
+//                    RechType.CRYPTO.type -> androidContext.getString(R.string.recharge_channel_crypto)
+//                    RechType.GCASH.type -> androidContext.getString(R.string.recharge_channel_gcash)
+//                    RechType.GRABPAY.type -> androidContext.getString(R.string.recharge_channel_grabpay)
+//                    RechType.PAYMAYA.type -> androidContext.getString(R.string.recharge_channel_paymaya)
+//                    else -> ""
+//                }
+
+                it.addTime = TimeUtil.timeFormat(it.addTime.toLong(), "yyyy-MM-dd HH:mm:ss")
+                val split = it.addTime.split(' ')
+
+                it.rechDateStr = split[0]
+                it.rechTimeStr = split[1]
+            }
+//
+//            result?.rows?.let {
+//                rechargeLogList.addAll(it)
+//            }
+//
+            result?.total?.let {
+                _isFinalPage.postValue(page * pageSize >= it)
+            }
+            result?.let {
+                if (it.success) {
+                    _userSportBillListResult.postValue(it)
+                }
+            }
+
 
             hideLoading()
         }

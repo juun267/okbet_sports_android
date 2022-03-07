@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_financeFragment_to_moneyTransferRecordFragment"
             app:destination="@id/moneyTransferRecordFragment" />
+        <action
+            android:id="@+id/action_financeFragment_to_accountHistoryFragment"
+            app:destination="@id/accountHistoryFragment" />
 
     </fragment>
 
@@ -41,5 +44,11 @@
         android:name="org.cxct.sportlottery.ui.profileCenter.money_transfer.record.MoneyTransferRecordFragment"
         android:label="MoneyTransferRecordFragment"
         tools:layout="@layout/fragment_money_transfer_record" />
+
+    <fragment
+        android:id="@+id/accountHistoryFragment"
+        android:name="org.cxct.sportlottery.ui.finance.AccountHistoryLogFragment"
+        android:label="fragment_account_history_log"
+        tools:layout="@layout/activity_account_history_log" />
 
 </navigation>

@@ -67,6 +67,7 @@
 
     <declare-styleable name="CalendarBottomSheetStyle">
         <attr name="calendarLayout" format="reference" />
+        <attr name="dateRange" format="integer" />
     </declare-styleable>
 
     <declare-styleable name="StatusBottomSheetStyle">
