@@ -274,7 +274,6 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 setCanceledOnTouchOutside(false)
                 setCancelable(false)
             }.show()
-            customSecurityDialog?.showErrorStatus(true)
         }
 
         //簡訊驗證成功
