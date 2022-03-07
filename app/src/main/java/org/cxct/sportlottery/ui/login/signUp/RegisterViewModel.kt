@@ -61,6 +61,8 @@ class RegisterViewModel(
         get() = _whatsAppMsg
     val telegramMsg: LiveData<String?>
         get() = _telegramMsg
+    val securityPbMsg: LiveData<String?>
+        get() = _securityPbMsg
     val securityCodeMsg: LiveData<String?>
         get() = _securityCodeMsg
     val validCodeMsg: LiveData<String?>
@@ -93,6 +95,7 @@ class RegisterViewModel(
     private val _facebookMsg = MutableLiveData<String?>()
     private val _whatsAppMsg = MutableLiveData<String?>()
     private val _telegramMsg = MutableLiveData<String?>()
+    private val _securityPbMsg = MutableLiveData<String?>()
     private val _securityCodeMsg = MutableLiveData<String?>()
     private val _validCodeMsg = MutableLiveData<String?>()
     private val _registerEnable = MutableLiveData<Boolean>()
@@ -263,6 +266,14 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
+    private fun checkSecurityPb(securityPb: String?) {
+        _securityPbMsg.value = when {
+            securityPb.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
+            else -> null
+        }
+        focusChangeCheckAllInputComplete()
+    }
+
     private fun checkSecurityCode(securityCode: String?) {
         _securityCodeMsg.value = when {
             securityCode.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
@@ -327,6 +338,7 @@ class RegisterViewModel(
         facebook: String,
         whatsApp: String,
         telegram: String,
+        securityPb: String,
         smsCode: String,
         validCode: String,
         agreementChecked: Boolean,
@@ -360,6 +372,8 @@ class RegisterViewModel(
             checkWhatsApp(whatsApp)
         if (sConfigData?.enableTelegram == FLAG_OPEN)
             checkTelegram(telegram)
+        if(sConfigData?.enableSafeQuestion == FLAG_OPEN)
+            checkSecurityPb(securityPb)
         if (sConfigData?.enableSmsValidCode == FLAG_OPEN)
             checkSecurityCode(smsCode)
         if (sConfigData?.enableRegValidCode == FLAG_OPEN)
@@ -405,6 +419,8 @@ class RegisterViewModel(
         if (sConfigData?.enableWhatsApp == FLAG_OPEN && whatsAppMsg.value != null)
             return false
         if (sConfigData?.enableTelegram == FLAG_OPEN && telegramMsg.value != null)
+            return false
+        if (sConfigData?.enableValidCode == FLAG_OPEN && securityPbMsg.value != null)
             return false
         if (sConfigData?.enableSmsValidCode == FLAG_OPEN && securityCodeMsg.value != null)
             return false
