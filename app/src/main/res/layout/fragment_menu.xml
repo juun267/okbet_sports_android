@@ -123,8 +123,7 @@
                         app:autoSizeMaxTextSize="@dimen/textSize14sp"
                         app:autoSizeMinTextSize="8dp"
                         app:autoSizeTextType="uniform"
-                        app:drawableStartCompat="@drawable/ic_profile_center_recharge"
-                        app:drawableTint="@color/colorBlue" />
+                        app:drawableStartCompat="@drawable/ic_profile_center_recharge" />
 
                 </FrameLayout>
 
@@ -157,8 +156,7 @@
                         app:autoSizeMaxTextSize="@dimen/textSize14sp"
                         app:autoSizeMinTextSize="4dp"
                         app:autoSizeTextType="uniform"
-                        app:drawableStartCompat="@drawable/ic_profile_center_withdraw"
-                        app:drawableTint="@color/colorBlue" />
+                        app:drawableStartCompat="@drawable/ic_profile_center_withdraw" />
                 </FrameLayout>
             </LinearLayout>
 
