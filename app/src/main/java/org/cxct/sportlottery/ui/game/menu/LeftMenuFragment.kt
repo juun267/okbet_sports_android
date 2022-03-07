@@ -212,6 +212,12 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
         btn_close.setOnClickListener {
             dismiss()
         }
+        img_menu.setOnClickListener {
+            etSearch.clearFocus()
+            layoutSearch.visibility = View.GONE
+            layoutSearchResult.visibility = View.GONE
+            rv_menu.visibility = View.VISIBLE
+        }
     }
 
     private val unselectedList = mutableListOf<MenuItemData>()

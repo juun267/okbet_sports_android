@@ -267,8 +267,8 @@ class LoginRepository(private val androidContext: Context) {
     suspend fun logout(): Response<LogoutResult> {
         _isLogin.value = false
         _isCreditAccount.value = false
-//        val emptyList = mutableListOf<String>()
-//        MultiLanguagesApplication.saveSearchHistory(emptyList)
+        val emptyList = mutableListOf<String>()
+        MultiLanguagesApplication.saveSearchHistory(emptyList)
         return OneBoSportApi.indexService.logout(LogoutRequest()).apply {
             clear()
         }
