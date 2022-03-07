@@ -452,6 +452,7 @@ class RegisterViewModel(
         facebook: String,
         whatsApp: String,
         telegram: String,
+        securityPb: String,
         smsCode: String,
         validCode: String,
         agreementChecked: Boolean,
@@ -474,11 +475,12 @@ class RegisterViewModel(
                 facebook,
                 whatsApp,
                 telegram,
+                securityPb,
                 smsCode,
                 validCode,
                 agreementChecked
             )) {
-            register(createRegisterRequest(inviteCode, userName, loginPassword, fullName, fundPwd, qq, phone, email, address, weChat, zalo, facebook, whatsApp, telegram, smsCode, validCode, deviceSn,deviceId))
+            register(createRegisterRequest(inviteCode, userName, loginPassword, fullName, fundPwd, qq, phone, email, address, weChat, zalo, facebook, whatsApp, telegram, securityPb, smsCode, validCode, deviceSn,deviceId))
         }
     }
 
@@ -497,6 +499,7 @@ class RegisterViewModel(
         facebook: String,
         whatsApp: String,
         telegram: String,
+        securityPb: String,
         smsCode: String,
         validCode: String,
         deviceSn: String,
@@ -532,6 +535,8 @@ class RegisterViewModel(
                 this.whatsapp = whatsApp
             if (sConfigData?.enableTelegram == FLAG_OPEN)
                 this.telegram = telegram
+            if (sConfigData?.enableSafeQuestion == FLAG_OPEN)
+                this.safeQuestion = securityPb
             if (sConfigData?.enableSmsValidCode == FLAG_OPEN)
                 this.securityCode = smsCode
             if (sConfigData?.enableRegValidCode == FLAG_OPEN) {
