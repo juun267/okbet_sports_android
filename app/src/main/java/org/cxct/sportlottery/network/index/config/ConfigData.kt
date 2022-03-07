@@ -28,6 +28,7 @@ data class ConfigData(
     val enableValidCode: String?, //是否开启登录验证码(1：开启，0：关闭)
     val enableWechat: String?, //是否开启微信检测(1：开启，0：关闭)
     val enableAddress: String?, //是否开启address(1：开启，0：关闭)
+    val enableSafeQuestion: String?, //是否开启safeQuestion(1：开启，0：关闭)
     val enableWhatsApp: String?, //是否开启WhatsApp(1：开启，0：关闭)
     val enableWithdrawEmail: String?, //提现时Email不能为空
     val enableWithdrawFullName: String?, //提现时真实姓名不能为空
