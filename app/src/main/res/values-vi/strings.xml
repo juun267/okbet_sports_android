@@ -1057,10 +1057,10 @@
     <string name="text_account_history_amount">Số tiền giao dịch</string>
     <string name="text_account_history_balance">Sự cân bằng</string>
 
-    <string name="text_account_history_bet">cá cược</string>
-    <string name="text_account_history_recharge">nạp điện</string>
-    <string name="text_account_history_withdraw">rút tiền</string>
+    <string name="text_account_history_bet">Cá cược</string>
+    <string name="text_account_history_recharge">Nạp điện</string>
+    <string name="text_account_history_withdraw">Rút tiền</string>
     <string name="text_account_history_activity">Số lượng hoạt động</string>
-    <string name="text_account_history_credit">số tiền tín dụng</string>
+    <string name="text_account_history_credit">Số tiền tín dụng</string>
     <!--歷史紀錄end-->
 </resources>

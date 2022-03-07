@@ -6,7 +6,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,18 +45,15 @@ import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.network.sport.query.SportQueryData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
-import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.*
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
-import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.common.*
 import org.cxct.sportlottery.ui.game.hall.adapter.*
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
-import org.cxct.sportlottery.ui.statistics.KEY_MATCH_ID
-import org.cxct.sportlottery.ui.statistics.StatisticsActivity
+import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import java.util.*
@@ -1656,18 +1652,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     private fun navStatistics(matchId: String?) {
-        matchId?.let {
-            activity?.apply {
-                startActivity(Intent(requireContext(), StatisticsActivity::class.java).apply {
-                    putExtra(KEY_MATCH_ID, matchId)
-                })
-
-                overridePendingTransition(
-                    R.anim.push_bottom_to_top_enter,
-                    R.anim.push_bottom_to_top_exit
-                )
-            }
-        }
+        StatisticsDialog.newInstance(matchId).show(childFragmentManager, StatisticsDialog::class.java.simpleName)
     }
 
     private fun addOddsDialog(
