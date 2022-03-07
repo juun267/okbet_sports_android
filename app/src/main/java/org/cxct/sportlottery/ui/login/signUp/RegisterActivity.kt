@@ -91,6 +91,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         setupFacebook()
         setupWhatsApp()
         setupTelegram()
+        setupSecurityPb()
         setupValidCode()
         setupSmsValidCode()
         setupAgreement()
@@ -237,6 +238,11 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         binding.etTelegram.visibility =
             if (sConfigData?.enableTelegram == FLAG_OPEN) View.VISIBLE else View.GONE
 
+    }
+
+    private fun setupSecurityPb() {
+        binding.etSecurityPb.visibility =
+            if (sConfigData?.enableSafeQuestion == FLAG_OPEN) View.VISIBLE else View.GONE
     }
 
     private fun setupValidCode() {
