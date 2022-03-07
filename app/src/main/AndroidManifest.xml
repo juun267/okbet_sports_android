@@ -25,9 +25,6 @@
             android:name=".ui.permission.GooglePermissionActivity"
             android:screenOrientation="portrait"  />
         <activity
-            android:name=".ui.statistics.StatisticsActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.profileCenter.creditrecord.CreditRecordActivity"
             android:screenOrientation="portrait" />
         <activity

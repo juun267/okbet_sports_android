@@ -56,8 +56,7 @@ import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
-import org.cxct.sportlottery.ui.statistics.KEY_MATCH_ID
-import org.cxct.sportlottery.ui.statistics.StatisticsActivity
+import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.SocketUpdateUtil
@@ -1059,16 +1058,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     }
 
     private fun navStatisticsPage(matchId: String?) {
-        activity?.apply {
-            startActivity(Intent(requireContext(), StatisticsActivity::class.java).apply {
-                putExtra(KEY_MATCH_ID, matchId)
-            })
-
-            overridePendingTransition(
-                R.anim.push_bottom_to_top_enter,
-                R.anim.push_bottom_to_top_exit
-            )
-        }
+        StatisticsDialog.newInstance(matchId).show(childFragmentManager, StatisticsDialog::class.java.simpleName)
     }
 
     private fun refreshRecommend(result: MatchRecommendResult) {
