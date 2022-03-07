@@ -84,6 +84,8 @@
     <string name="telegram">Telegram</string>
     <string name="hint_telegram">Telegram Account</string>
     <string name="error_telegram">Telegram account formatted incorrectly</string>
+    <string name="security_pb">Security question</string>
+    <string name="hint_security_pb">(Please enter the favorite country)</string>
     <string name="real_name">Full name</string>
     <string name="hint_real_name">match the bank account name</string>
     <string name="verification_code">Verification code</string>
