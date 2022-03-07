@@ -1052,7 +1052,7 @@
 
     <!--歷史紀錄start-->
     <string name="text_account_history_type">Thể loại</string>
-    <string name="text_account_history_time">Thời gian nạp tiền</string>
+    <string name="text_account_history_time">Giờ giao dịch</string>
     <string name="text_account_history_number">Số đơn hàng</string>
     <string name="text_account_history_amount">Số tiền giao dịch</string>
     <string name="text_account_history_balance">Sự cân bằng</string>
