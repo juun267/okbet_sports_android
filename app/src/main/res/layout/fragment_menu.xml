@@ -171,7 +171,7 @@
                 android:id="@+id/menu_odds_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cvIcon="@drawable/ic_odds_type_light"
+                app:cvIcon="@drawable/ic_setting"
                 app:arrowSymbolVisibility="visible"/>
 
             <org.cxct.sportlottery.ui.menu.MenuItem
@@ -185,6 +185,7 @@
                 android:id="@+id/menu_other_bet_record"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:cvIcon="@drawable/ic_menu_other_bet_record"
                 app:cvTitle="@string/other_bet_record" />
 
@@ -192,6 +193,7 @@
                 android:id="@+id/menu_member_level"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:cvIcon="@drawable/ic_menu_member_level"
                 app:cvTitle="@string/member_level" />
 
@@ -213,9 +215,8 @@
                 android:id="@+id/menu_language"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cvIcon="@drawable/ic_language_select"
-                app:cvTitle="@string/language_cn"
-                app:showLanguageImage="visible" />
+                app:cvIcon="@drawable/ic_flag_cn"
+                app:cvTitle="@string/language_cn" />
 
             <org.cxct.sportlottery.ui.menu.MenuItem
                 android:id="@+id/menu_version_update"
@@ -224,46 +225,38 @@
                 app:cvIcon="@drawable/ic_menu_version_update"
                 app:cvTitle="@string/version_update" />
 
+            <org.cxct.sportlottery.ui.menu.MenuItem
+                android:id="@+id/btn_sign_out"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cvIcon="@drawable/img_logout"
+                app:cvTitle="@string/sign_out" />
+
         </LinearLayout>
 
     </ScrollView>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingStart="15dp"
         android:paddingTop="15dp"
         android:paddingEnd="15dp"
         android:paddingBottom="10dp">
 
-        <Button
-            android:id="@+id/btn_sign_out"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="26dp"
-            android:background="@drawable/bg_radius_20_button_white6"
-            android:letterSpacing="0.117"
-            android:minHeight="38dp"
-            android:text="@string/sign_out"
-            android:textColor="@color/colorBlackLight"
-            android:textSize="@dimen/textSize14sp"
-            app:layout_constraintBottom_toTopOf="@id/tv_version" />
-
         <TextView
             android:id="@+id/tv_version"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
-            android:gravity="end"
+            android:layout_gravity="end"
             android:text="@string/label_version"
             android:textColor="@color/colorGray"
             android:textSize="@dimen/textSize12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 
 </LinearLayout>

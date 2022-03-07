@@ -31,7 +31,6 @@ class MenuItem @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             view.tv_title.letterSpacing = 0.117f
             view.iv_icon.setImageResource(typedArray.getResourceId(R.styleable.CustomView_cvIcon, 0))
             view.iv_arrow.visibility = typedArray.getInt(R.styleable.CustomView_arrowSymbolVisibility, 0x00000008)
-            view.iv_language.visibility = typedArray.getInt(R.styleable.CustomView_showLanguageImage, 0x00000008)
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
@@ -46,7 +45,7 @@ class MenuItem @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         }
 
     fun updateLanguageImage(){
-        iv_language.setImageResource(LanguageManager.getLanguageFlag(context))
+        iv_icon.setImageResource(LanguageManager.getLanguageFlag(context))
     }
 
     fun updateNoticeCount(noticeCount: Int) {
