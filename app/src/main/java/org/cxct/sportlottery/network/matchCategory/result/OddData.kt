@@ -16,7 +16,7 @@ data class OddData(
     @Json(name = "matchInfo")
     override val matchInfo: MatchInfo?,
     @Json(name = "odds")
-    override val oddsMap: MutableMap<String, MutableList<Odd?>?>,
+    override var oddsMap: MutableMap<String, MutableList<Odd?>?>?,
     @Json(name = "oddsList")
     val oddsList: List<Odd>?,
     @Json(name = "quickPlayCateList")
@@ -24,15 +24,15 @@ data class OddData(
     @Json(name = "oddsSort")
     override val oddsSort: String? = null,
     @Json(name = "betPlayCateNameMap")
-    override val betPlayCateNameMap: Map<String?, Map<String?, String?>?>?,
+    override var betPlayCateNameMap:  MutableMap<String?, Map<String?, String?>?>?,
     @Json(name = "playCateNameMap")
-    override val playCateNameMap: Map<String?, Map<String?, String?>?>?,
+    override var playCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
 ) : MatchOdd {
     override val oddsEps: EpsOdd? = null
     override var playCateMappingList: List<PlayCateMapItem>? = null
 
     fun sortOddsMap() {
-        this.oddsMap.forEach { (_, value) ->
+        this.oddsMap?.forEach { (_, value) ->
             if (value?.size!! > 2 && value.first()?.marketSort != 0) {
                 value?.sortBy { it?.marketSort }
             }

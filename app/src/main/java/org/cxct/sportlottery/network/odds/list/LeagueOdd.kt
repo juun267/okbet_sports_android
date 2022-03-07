@@ -11,7 +11,7 @@ data class LeagueOdd(
     @Json(name = "league")
     val league: League,
     @Json(name = "matchOdds")
-    val matchOdds: MutableList<MatchOdd>,
+    val matchOdds: MutableList<MatchOdd> = mutableListOf(),
     @Json(name = "sort")
     val sort: Int?,
     @Json(name = "unfold")

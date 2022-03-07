@@ -9,9 +9,9 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 @JsonClass(generateAdapter = true)
 data class MatchOdd(
     @Json(name = "betPlayCateNameMap")
-    val betPlayCateNameMap: Map<String?, Map<String?, String?>?>? = null,
+    var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null,
     @Json(name = "playCateNameMap")
-    val playCateNameMap: Map<String?, Map<String?, String?>?>? = null,
+    var playCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null,
     @Json(name = "matchInfo")
     val matchInfo: MatchInfo,
     @Json(name = "playCateTypeList")

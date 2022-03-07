@@ -14,13 +14,13 @@ import org.cxct.sportlottery.ui.common.PlayCateMapItem
 @JsonClass(generateAdapter = true)
 data class MatchOdd(
     @Json(name = "betPlayCateNameMap")
-    override val betPlayCateNameMap: Map<String?, Map<String?, String?>?>? = null,
+    override var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null,
     @Json(name = "playCateNameMap")
-    override val playCateNameMap: Map<String?, Map<String?, String?>?>? = null,
+    override var playCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null,
     @Json(name = "matchInfo")
     override val matchInfo: MatchInfo? = null,
     @Json(name = "odds")
-    override var oddsMap: MutableMap<String, MutableList<Odd?>?> = mutableMapOf(
+    override var oddsMap: MutableMap<String, MutableList<Odd?>?>? = mutableMapOf(
         PlayCate.HDP.value to mutableListOf(),
         PlayCate.OU.value to mutableListOf(),
         PlayCate.SINGLE.value to mutableListOf()
@@ -44,10 +44,10 @@ data class MatchOdd(
 
     var positionButtonPage = 0
 
-    var quickPlayCateNameMap: Map<String?, Map<String?, String?>?>? = null //足球快捷玩法的翻譯
+    var quickPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null //足球快捷玩法的翻譯
 
     fun sortOddsMap() {
-        this.oddsMap.forEach { (_, value) ->
+        this.oddsMap?.forEach { (_, value) ->
             if (value?.size!! > 3 && value.first()?.marketSort != 0 && (value.first()?.odds != value.first()?.malayOdds)) {
                 value.sortBy {
                     it?.marketSort

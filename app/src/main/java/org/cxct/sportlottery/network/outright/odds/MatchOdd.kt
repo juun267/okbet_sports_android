@@ -19,7 +19,7 @@ data class MatchOdd(
     @Json(name = "matchInfo")
     override val matchInfo: MatchInfo?,
     @Json(name = "odds")
-    override val oddsMap: MutableMap<String, MutableList<Odd?>?> = mutableMapOf(),
+    override var oddsMap: MutableMap<String, MutableList<Odd?>?>? = mutableMapOf(),
     @Json(name = "dynamicMarkets")
     val dynamicMarkets: @RawValue Map<String, DynamicMarket>,
     @Json(name = "oddsList")
@@ -29,9 +29,9 @@ data class MatchOdd(
     @Json(name = "oddsSort")
     override val oddsSort: String? = null,
     @Json(name = "betPlayCateNameMap")
-    override val betPlayCateNameMap: Map<String?, Map<String?, String?>?>? = mapOf(),
+    override var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? = mutableMapOf(),
     @Json(name = "playCateNameMap")
-    override val playCateNameMap: Map<String?, Map<String?, String?>?>? = mapOf(),
+    override var playCateNameMap: MutableMap<String?, Map<String?, String?>?>? = mutableMapOf(),
     ) : MatchOdd,
 
     Parcelable {

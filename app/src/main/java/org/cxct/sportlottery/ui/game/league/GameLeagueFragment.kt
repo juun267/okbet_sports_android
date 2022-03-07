@@ -293,7 +293,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
                 leagueOdds.forEach { leagueOdd ->
                     leagueOdd.matchOdds.forEach { matchOdd ->
-                        matchOdd.oddsMap.values.forEach { oddList ->
+                        matchOdd.oddsMap?.values?.forEach { oddList ->
                             oddList?.forEach { odd ->
                                 odd?.isSelected = it.any { betInfoListData ->
                                     betInfoListData.matchOdd.oddsId == odd?.id
@@ -605,7 +605,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         odd: Odd,
         playCateCode: String,
         playCateName: String,
-        betPlayCateNameMap: Map<String?, Map<String?, String?>?>?,
+        betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
     ) {
         matchInfo?.let {
             viewModel.updateMatchBetList(

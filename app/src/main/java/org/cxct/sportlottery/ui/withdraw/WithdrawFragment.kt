@@ -319,12 +319,14 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
             if (list.isNullOrEmpty() || list.size == 1) {
                 tab_layout.visibility = View.GONE
+                ll_tab_layout.visibility = View.GONE
             } else {
                 tab_layout.visibility = View.VISIBLE
-
-                tab_layout.getChildAt(0)?.visibility =  if (list.contains(TransferType.BANK.type)) View.VISIBLE else View.GONE
-                tab_layout.getChildAt(1)?.visibility =  if (list.contains(TransferType.CRYPTO.type)) View.VISIBLE else View.GONE
-                tab_layout.getChildAt(2)?.visibility = if (list.contains(TransferType.E_WALLET.type)) View.VISIBLE else View.GONE
+                ll_tab_layout.visibility = View.VISIBLE
+                
+                tab_layout.getTabAt(0)?.view?.visibility = if (list.contains(TransferType.BANK.type)) View.VISIBLE else View.GONE
+                tab_layout.getTabAt(1)?.view?.visibility =  if (list.contains(TransferType.CRYPTO.type)) View.VISIBLE else View.GONE
+                tab_layout.getTabAt(2)?.view?.visibility = if (list.contains(TransferType.E_WALLET.type)) View.VISIBLE else View.GONE
 //                tab_bank_card.visibility =
 //                    if (list.contains(TransferType.BANK.type)) View.VISIBLE else View.GONE
 //                tab_crypto.visibility =

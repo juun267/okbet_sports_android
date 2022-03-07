@@ -90,7 +90,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             odd: Odd,
             playCateCode: String,
             playCateName: String?,
-            betPlayCateNameMap: Map<String?, Map<String?, String?>?>?
+            betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
         ) {
             addOddsDialog(matchOdd, odd, playCateCode, playCateName, betPlayCateNameMap)
         }
@@ -172,7 +172,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
         mRvGameTable4Adapter.onClickOddListener = object : OnClickOddListener {
             override fun onClickBet(matchOdd: MatchOdd, odd: Odd, playCateCode: String, playCateName: String?,
-                                    betPlayCateNameMap: Map<String?, Map<String?, String?>?>?) {
+                                    betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?) {
                 addOddsDialog(matchOdd, odd, playCateCode, playCateName, betPlayCateNameMap)
             }
         }
@@ -235,7 +235,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         mRecommendAdapter.onClickOddListener = mOnClickOddListener
         mRecommendAdapter.onClickOutrightOddListener = object : OnClickOddListener {
             override fun onClickBet(matchOdd: MatchOdd, odd: Odd, playCateCode: String, playCateName: String?,
-                                    betPlayCateNameMap: Map<String?, Map<String?, String?>?>?) {
+                                    betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?) {
                 GameType.getGameType(matchOdd.matchInfo?.gameType)?.let { gameType ->
                     viewModel.updateMatchBetListForOutRight(
                         matchType = MatchType.OUTRIGHT,
@@ -243,7 +243,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                         playCateCode = playCateCode,
                         matchOdd = org.cxct.sportlottery.network.outright.odds.MatchOdd(
                             matchInfo = matchOdd.matchInfo,
-                            oddsMap = matchOdd.oddsMap,
+                            oddsMap = matchOdd.oddsMap ?: mutableMapOf(),
                             dynamicMarkets = matchOdd.dynamicMarkets ?: mapOf(),
                             oddsList = null,
                             quickPlayCateList = matchOdd.quickPlayCateList,
@@ -263,7 +263,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 val action = HomeFragmentDirections.actionHomeFragmentToGameOutrightMoreFragment(oddsKey,
                         org.cxct.sportlottery.network.outright.odds.MatchOdd(
                             matchInfo = matchOdd.matchInfo,
-                            oddsMap = matchOdd.oddsMap,
+                            oddsMap = matchOdd.oddsMap ?: mutableMapOf(),
                             dynamicMarkets = matchOdd.dynamicMarkets ?: mapOf(),
                             oddsList = listOf(),
                             quickPlayCateList = matchOdd.quickPlayCateList,
@@ -358,7 +358,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             }
         }
         if(!otherMatchList.isNullOrEmpty()){
-            var otherGameEntity = GameEntity(null, null, 0, mutableListOf(), mapOf(), otherMatchList)
+            var otherGameEntity = GameEntity(null, null, 0, mutableListOf(), mutableMapOf(), otherMatchList)
             gameDataList.add(otherGameEntity)
         }
 
@@ -395,7 +395,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         odd: Odd,
         playCateCode: String,
         playCateName: String?,
-        betPlayCateNameMap: Map<String?, Map<String?, String?>?>?
+        betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
     ) {
         GameType.getGameType(matchOdd.matchInfo?.gameType)?.let { gameType ->
             matchOdd.matchInfo?.let { matchInfo ->
@@ -928,7 +928,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 val highlightDataList = mRvHighlightAdapter.getData()
                 highlightDataList.forEachIndexed { index, updateMatchOdd ->
                     if (!updateMatchOdd.oddsMap.isNullOrEmpty()) {
-                        updateMatchOdd.oddsMap.forEach { oldOddMap ->
+                        updateMatchOdd.oddsMap?.forEach { oldOddMap ->
                             oldOddMap.value?.forEach oldOddList@{ oldOdd ->
                                 if (oldOdd == null) return@oldOddList
 

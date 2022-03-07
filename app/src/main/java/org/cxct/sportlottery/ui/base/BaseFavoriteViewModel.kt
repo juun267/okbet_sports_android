@@ -108,11 +108,13 @@ abstract class BaseFavoriteViewModel(
                             matchOdd.matchInfo?.isFavorite = true
                             playCateCode?.let {
                                 val oddsMap = matchOdd.oddsMap
-                                    .filter { odds -> odds.key == it }
-                                    .toMutableFormat()
+                                    ?.filter { odds -> odds.key == it }
+                                    ?.toMutableFormat()
 
-                                matchOdd.oddsMap.clear()
-                                matchOdd.oddsMap.putAll(oddsMap)
+                                matchOdd.oddsMap?.clear()
+                                if (oddsMap != null) {
+                                    matchOdd.oddsMap?.putAll(oddsMap)
+                                }
                             }
                             matchOdd.playCateMappingList = playCateMappingList
                         }
@@ -143,7 +145,7 @@ abstract class BaseFavoriteViewModel(
 
     private fun MatchOdd.setupOddDiscount() {
         val discount = userInfo.value?.discount ?: 1.0F
-        this.oddsMap.forEach { (key, value) ->
+        this.oddsMap?.forEach { (key, value) ->
             value?.forEach { odd ->
                 if (key == PlayCate.EPS.value)
                     odd?.setupEPSDiscount(discount)
@@ -158,21 +160,27 @@ abstract class BaseFavoriteViewModel(
      */
     private fun MatchOdd.setupPlayCate() {
         val sortOrder = this.oddsSort?.split(",")
-        sortOrder?.forEach {
-            if (!this.oddsMap.keys.contains(it))
-                this.oddsMap[it] = mutableListOf(null, null, null)
+        this.oddsMap?.let { oddsMap ->
+            sortOrder?.forEach {
+                if (!oddsMap.keys.contains(it))
+                    oddsMap[it] = mutableListOf(null, null, null)
+            }
         }
     }
 
     private fun MatchOdd.sortOdd() {
         val sortOrder = this.oddsSort?.split(",")
-        val oddsMap = this.oddsMap.toSortedMap(compareBy<String> {
+        val oddsMap = this.oddsMap?.toSortedMap(compareBy<String> {
             val oddsIndex = sortOrder?.indexOf(it)
             oddsIndex
         }.thenBy { it })
 
-        this.oddsMap.clear()
-        this.oddsMap.putAll(oddsMap)
+        this.oddsMap?.let { it ->
+            it.clear()
+            if (oddsMap != null) {
+                it.putAll(oddsMap)
+            }
+        }
     }
 
 
@@ -247,13 +255,15 @@ abstract class BaseFavoriteViewModel(
         this.rows?.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach { matchOdd ->
                 val sortOrder = matchOdd.oddsSort?.split(",")
-                val oddsMap = matchOdd.oddsMap.toSortedMap(compareBy<String> {
+                val oddsMap = matchOdd.oddsMap?.toSortedMap(compareBy<String> {
                     val oddsIndex = sortOrder?.indexOf(it)
                     oddsIndex
                 }.thenBy { it })
                 
-                matchOdd.oddsMap.clear()
-                matchOdd.oddsMap.putAll(oddsMap)
+                matchOdd.oddsMap?.clear()
+                if (oddsMap != null) {
+                    matchOdd.oddsMap?.putAll(oddsMap)
+                }
             }
         }
     }

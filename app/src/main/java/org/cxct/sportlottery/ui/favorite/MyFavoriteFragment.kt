@@ -259,7 +259,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                             SocketUpdateUtil.updateMatchOdds(
                                 context,
                                 matchOdd.apply {
-                                    this.oddsMap.filter { odds -> playSelected?.code == MenuCode.MAIN.code || odds.key == playSelected?.playCateList?.firstOrNull()?.code }
+                                    this.oddsMap?.filter { odds -> playSelected?.code == MenuCode.MAIN.code || odds.key == playSelected?.playCateList?.firstOrNull()?.code }
                                 },
                                 oddsChangeEvent
                             )
@@ -416,7 +416,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
                 leagueOdds.forEach { leagueOdd ->
                     leagueOdd.matchOdds.forEach { matchOdd ->
-                        matchOdd.oddsMap.values.forEach { oddList ->
+                        matchOdd.oddsMap?.values?.forEach { oddList ->
                             oddList?.forEach { odd ->
                                 odd?.isSelected = it.any { betInfoListData ->
                                     betInfoListData.matchOdd.oddsId == odd?.id
@@ -532,7 +532,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         odd: Odd,
         playCateCode: String,
         playCateName: String,
-        betPlayCateNameMap: Map<String?, Map<String?, String?>?>?
+        betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
     ) {
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
@@ -635,7 +635,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             SelectionType.SELECTABLE.code -> {
                 this.forEach { leagueOdd ->
                     leagueOdd.matchOdds.forEach { matchOdd ->
-                        matchOdd.oddsMap.entries.retainAll { oddMap -> oddMap.key == getPlayCateMenuCode() }
+                        matchOdd.oddsMap?.entries?.retainAll { oddMap -> oddMap.key == getPlayCateMenuCode() }
                     }
                 }
             }

@@ -349,7 +349,7 @@
     <string name="lose_half">Lose a half</string>
     <string name="draw">Draw</string>
     <string name="canceled">Canceled</string>
-    <string name="bet_canceled">Bet failed</string>
+    <string name="bet_canceled">Betting fails</string>
     <string name="confirmed">Confirmed</string>
     <string name="bet_detail">Bets details</string>
     <string name="bet_time">Betting time</string>
@@ -814,7 +814,7 @@
     <string name="odds_button_name_cdc">Away/Draw-Away</string>
     <string name="odds_button_name_hch">Home/Away-HOME</string>
     <string name="odds_button_name_hcc">Home/Away-Away</string>
-    <string name="bet_fail">Bet fails</string>
+    <string name="bet_fail">Betting fails</string>
     <string name="credit_record_deactivate">Credit function disabled</string>
     <string name="game_postponed">Game postponed</string>
     <string name="money_recharge_hint1">Please transfer success before you submit recharge information.</string>
