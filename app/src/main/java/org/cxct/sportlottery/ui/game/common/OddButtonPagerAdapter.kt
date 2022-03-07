@@ -105,7 +105,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
     private var data: List<List<Pair<String, List<Odd?>?>>> = listOf()
         set(value) {
             field = value
-            //notifyDataSetChanged()
+            notifyDataSetChanged()
         }
 
     var listener: OddButtonListener? = null

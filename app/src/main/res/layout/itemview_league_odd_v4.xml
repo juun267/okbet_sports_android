@@ -125,7 +125,7 @@
         android:id="@+id/league_odd_quick_cate_border"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        app:layout_constraintTop_toBottomOf="@id/league_odd_btn_indicator_main" />
+        app:layout_constraintTop_toBottomOf="@id/league_odd_match_border_row3" />
 
     <!--    <View-->
     <!--        android:id="@+id/league_odd_quick_button_border"-->
@@ -436,22 +436,13 @@
             android:layout_height="224dp"
             android:layout_marginTop="6dp"
             android:nestedScrollingEnabled="false"
-            android:overScrollMode="never"
             android:orientation="horizontal"
+            android:overScrollMode="never"
             tools:itemCount="5"
             tools:layout="@layout/itemview_odd_btn_2x2_v6"
             tools:listitem="@layout/itemview_odd_btn_2x2_v6" />
 
     </RelativeLayout>
-
-    <org.cxct.sportlottery.ui.common.IndicatorView
-        android:id="@+id/league_odd_btn_indicator_main"
-        android:layout_width="wrap_content"
-        android:layout_height="16dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@id/nested_scroll_view_league_odd"
-        app:layout_constraintStart_toStartOf="@id/nested_scroll_view_league_odd"
-        app:layout_constraintTop_toBottomOf="@id/nested_scroll_view_league_odd" />
 
     <View
         android:id="@+id/league_odd_quick_cate_divider"

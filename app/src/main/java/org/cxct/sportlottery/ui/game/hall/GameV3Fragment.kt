@@ -72,9 +72,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             gameTypeListener = GameTypeListener {
                 unSubscribeChannelHallAll()
                 viewModel.switchSportType(args.matchType, it)
+                // TODO 切換列表(重載)
                 loading()
                 notifyDataSetChanged()
-                leagueAdapter?.notifyDataSetChanged() // TODO 確認影響
             }
 
             thirdGameListener = ThirdGameListener {
@@ -528,7 +528,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     @SuppressLint("NotifyDataSetChanged")
     private fun initObserve() {
         viewModel.showErrorDialogMsg.observe(this.viewLifecycleOwner){
-            if(it.isNotBlank()){
+            if(it != null && it.isNotBlank()){
                 context?.let{ context ->
                     val dialog = CustomAlertDialog(context)
                     dialog.setTitle(resources.getString(R.string.prompt))
@@ -685,25 +685,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                     game_list.itemAnimator = null
 
-                    game_list.apply {
-                        adapter = leagueAdapter.apply {
-                            data = leagueOdds.onEach { leagueOdd ->
-                                leagueOdd.gameType = gameType
-                            }.toMutableList()
-                        }
-                    }
-
-
-                    //如果data資料為空時，又有其他球種的情況下，自動選取第一個
-                    if (leagueAdapter.data.isNullOrEmpty() && gameTypeAdapter.dataSport.size > 1) {
-                        viewModel.getSportMenu(
-                            args.matchType,
-                            switchFirstTag = true,
-                            onlyRefreshSportMenu = true
-                        )
-                    }
-                    game_list.itemAnimator = null
-
                     leagueOdds.forEach { leagueOdd ->
                         subscribeChannelHall(leagueOdd)
                     }
@@ -742,24 +723,27 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         viewModel.quickOddsListGameHallResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { oddsListResult ->
                 if (oddsListResult.success) {
-                    val leagueOdds = oddsListResult.oddsListData?.leagueOddsFilter ?: oddsListResult.oddsListData?.leagueOdds ?: listOf()
-                    val gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
+//                    val leagueOdds = oddsListResult.oddsListData?.leagueOddsFilter ?: oddsListResult.oddsListData?.leagueOdds ?: listOf()
+//                    val gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
+//
+//                    leagueAdapter.data.find { leagueOdd ->
+//                        leagueOdd.matchOdds.find {
+//                            it.quickPlayCateList?.find {
+//                                if(it.isSelected) {
+//                                    Log.d("Hewie3", "A: ${leagueOdd.league.name} => ${it.name}")
+//                                }
+//                                it.isSelected
+//                            } != null
+//                        } != null
+//                    }
 
-                    leagueAdapter.data.find {
-                        it.matchOdds.find {
+                    oddsListResult.oddsListData?.leagueOdds?.forEachIndexed { index, leagueOdd ->
+                        leagueOdd.matchOdds.find {
                             it.quickPlayCateList?.find {
-                                if(it.isSelected) Log.d("Hewie3", "A: ${it.name}")
-                                it.isSelected
-                            } != null
-                        } != null
-                    }
-
-                    leagueAdapter.data = leagueOdds.onEach { leagueOdd -> leagueOdd.gameType = gameType }.toMutableList()
-
-                    oddsListResult.oddsListData?.leagueOdds?.find {
-                        it.matchOdds.find {
-                            it.quickPlayCateList?.find {
-                                if(it.isSelected) Log.d("Hewie3", "B: ${it.name}")
+                                if(it.isSelected) {
+                                    Log.d("Hewie3", "Update: ${leagueOdd.league.name} => ${it.name}")
+                                    // TODO leagueAdapter.updateLeague(index, leagueOdd)
+                                }
                                 it.isSelected
                             } != null
                         } != null
@@ -1028,7 +1012,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
 
                 //leagueAdapter.notifyDataSetChanged()
-                leagueAdapter.data.forEachIndexed { index, leagueOdd -> leagueAdapter.updateLeague(index, leagueOdd) }
+                // TODO leagueAdapter.data.forEachIndexed { index, leagueOdd -> leagueAdapter.updateLeague(index, leagueOdd) }
 
                 val epsOdds = epsListAdapter.dataList
 
@@ -1217,7 +1201,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 leagueOdd.unfold == FoldState.UNFOLD.code
                             ) {
                                 //leagueAdapter.updateBySocket(index)
-                                leagueAdapter.updateLeague(index, leagueOdd)
+                                // TODO leagueAdapter.updateLeague(index, leagueOdd)
                             }
                         }
                     }
@@ -1365,7 +1349,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                             nowGameType == leagueChangeEvent.gameType && !hasLeagueIdList -> {
                                 if (leagueAdapter.data.size != 0) {
-                                    when (game_list.adapter) {
+                                    when (game_list?.adapter) {
                                         is LeagueAdapter, is CountryAdapter, is OutrightCountryAdapter -> {
                                             leagueChangeEvent.leagueIdList?.let { leagueIdList ->
                                                 withContext(Dispatchers.Main) {

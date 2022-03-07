@@ -73,7 +73,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
     // region Update functions
     fun update() {
         // Update MatchOdd list
-        data.forEachIndexed { index, matchOdd -> notifyItemChanged(index, matchOdd) }
+        //data.forEachIndexed { index, matchOdd -> notifyItemChanged(index, matchOdd) }
     }
     // endregion
 
@@ -110,7 +110,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         } else {
             Log.d("Hewie", "更新：賽事($position)")
             val matchOdd = payloads.first() as MatchOdd
-            (holder as ViewHolderHdpOu).update(matchType, matchOdd, leagueOddListener, isTimerEnable, oddsType)
+            //(holder as ViewHolderHdpOu).update(matchType, matchOdd, leagueOddListener, isTimerEnable, oddsType)
         }
     }
 

@@ -402,6 +402,7 @@ class GameViewModel(
     fun switchMainMatchType() {
         _curChildMatchType.value = null
         _oddsListGameHallResult.value = Event(null)
+        _quickOddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
         _curMatchType.value = MatchType.MAIN
         filterLeague(listOf())
@@ -410,6 +411,7 @@ class GameViewModel(
     fun switchMatchType(matchType: MatchType) {
         _curChildMatchType.value = null
         _oddsListGameHallResult.value = Event(null)
+        _quickOddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
         getSportMenu(matchType, onlyRefreshSportMenu = false)
         getAllPlayCategory(matchType)
@@ -419,6 +421,7 @@ class GameViewModel(
     fun switchSpecialMatchType(code: String) {
         _curChildMatchType.value = null
         _oddsListGameHallResult.value = Event(null)
+        _quickOddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
         //_curMatchType.value  = MatchType.OTHER
         getAllPlayCategoryByCode(code)
@@ -428,6 +431,7 @@ class GameViewModel(
     fun switchChildMatchType(childMatchType: MatchType? = null) {
         _curChildMatchType.value = childMatchType
         _oddsListGameHallResult.value = Event(null)
+        _quickOddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
         if (childMatchType == MatchType.OTHER_OUTRIGHT || childMatchType == MatchType.OTHER) {
             getGameHallList(
@@ -950,6 +954,7 @@ class GameViewModel(
         }
         _curChildMatchType.value = null
         _oddsListGameHallResult.value = Event(null)
+        _quickOddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
 
         recordSportType(matchType, item.code)
@@ -1041,6 +1046,7 @@ class GameViewModel(
         }
         _curChildMatchType.value = null
         _oddsListGameHallResult.value = Event(null)
+        _quickOddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
 
         recordSportType(matchType, gameType)
@@ -1336,6 +1342,7 @@ class GameViewModel(
             }
             MatchType.TODAY.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue -> {
                 _oddsListGameHallResult.value = Event(null)
+                _quickOddsListGameHallResult.value = Event(null)
                 currentTimeRangeParams = timeRangeParams
             }
         }
@@ -1423,8 +1430,10 @@ class GameViewModel(
                                 )
                             )
                         )
-                    else
+                    else {
                         _oddsListGameHallResult.postValue(Event(result))
+                        _quickOddsListGameHallResult.postValue(Event(result))
+                    }
                 }
 
                 MatchType.TODAY.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue, MatchType.OTHER.postValue -> {
@@ -1437,11 +1446,13 @@ class GameViewModel(
                                 )
                             )
                         )
-                    else
+                    else {
                         _oddsListResult.postValue(Event(result))
+                    }
                 }
                 else -> {
                     _oddsListGameHallResult.postValue(Event(result))
+                    _quickOddsListGameHallResult.postValue(Event(result))
                 }
             }
 
@@ -1531,6 +1542,13 @@ class GameViewModel(
                 _quickOddsListGameHallResult.postValue(
                     Event(
                         _quickOddsListGameHallResult.value?.peekContent()
+                            ?.updateQuickPlayCate(matchId, it, it.playCateNameMap)
+                    )
+                )
+
+                _oddsListResult.postValue(
+                    Event(
+                        _oddsListResult.value?.peekContent()
                             ?.updateQuickPlayCate(matchId, it, it.playCateNameMap)
                     )
                 )
