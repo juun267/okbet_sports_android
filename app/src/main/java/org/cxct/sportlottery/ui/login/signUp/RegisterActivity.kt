@@ -294,6 +294,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 eetFacebook.text.toString(),
                 eetWhatsApp.text.toString(),
                 eetTelegram.text.toString(),
+                eetSecurityPb.text.toString(),
                 eetSmsValidCode.text.toString(),
                 eetVerificationCode.text.toString(),
                 cbAgreement.isChecked
@@ -417,6 +418,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     eetFacebook.text.toString(),
                     eetWhatsApp.text.toString(),
                     eetTelegram.text.toString(),
+                    eetSecurityPb.text.toString(),
                     eetSmsValidCode.text.toString(),
                     eetVerificationCode.text.toString(),
                     cbAgreement.isChecked,
@@ -523,6 +525,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             facebookMsg.observe(this@RegisterActivity) { binding.etFacebook.setError(it, false) }
             whatsAppMsg.observe(this@RegisterActivity) { binding.etWhatsApp.setError(it, false) }
             telegramMsg.observe(this@RegisterActivity) { binding.etTelegram.setError(it, false) }
+            securityPbMsg.observe(this@RegisterActivity) { binding.etSecurityPb.setError(it, false) }
             securityCodeMsg.observe(this@RegisterActivity) {
                 binding.etSmsValidCode.setError(
                     it,
