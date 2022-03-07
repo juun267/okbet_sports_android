@@ -64,7 +64,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:minWidth="52dp"
-        android:textColor="@color/colorBlackLight"
+        android:textColor="@color/colorGray"
         android:textSize="@dimen/textSize12sp"
         tools:text="@string/recharge_state_processing" />
 
