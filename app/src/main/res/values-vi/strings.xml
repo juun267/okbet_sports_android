@@ -607,6 +607,7 @@
     <string name="record_recharge">Lịch sử nạp tiền</string>
     <string name="record_withdrawal">Lịch sử rút tiền</string>
     <string name="record_conversion">Lịch sử chuyển đổi</string>
+    <string name="record_history">Lịch sử</string>
     <string name="recharge_state_success">Thành công</string>
     <string name="recharge_state_failed">Thất bại</string>
     <string name="recharge_state_processing">Đang xử lý</string>
