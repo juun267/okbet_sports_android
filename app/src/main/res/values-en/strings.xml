@@ -1020,4 +1020,18 @@
     <string name="allow_location_permission">Allow location access</string>
     <string name="google_location_permission_description">You can search for sports matches near you and receive more information about sports matches by allowing location access.</string>
     <string name="grant_location_permission_on_setting">Enable location permission on the settings page.</string>
+
+    <!--歷史紀錄start-->
+    <string name="text_account_history_type">Type</string>
+    <string name="text_account_history_time">Top-up time</string>
+    <string name="text_account_history_number">Order no.</string>
+    <string name="text_account_history_amount">Transaction amount</string>
+    <string name="text_account_history_balance">Balance</string>
+
+    <string name="text_account_history_bet">bet</string>
+    <string name="text_account_history_recharge">recharge</string>
+    <string name="text_account_history_withdraw">withdraw</string>
+    <string name="text_account_history_activity">activity</string>
+    <string name="text_account_history_credit">credit</string>
+    <!--歷史紀錄end-->
 </resources>

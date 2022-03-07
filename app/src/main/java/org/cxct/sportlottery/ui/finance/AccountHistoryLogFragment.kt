@@ -11,36 +11,18 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_recharge_log.*
-import kotlinx.android.synthetic.main.activity_recharge_log.view.*
+import kotlinx.android.synthetic.main.activity_account_history_log.*
+import kotlinx.android.synthetic.main.activity_account_history_log.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.ui.finance.df.RechType
-import org.cxct.sportlottery.ui.finance.df.Status
+import org.cxct.sportlottery.ui.finance.df.AccountHistory
 
 class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
 
-        private fun scrollToTopControl(firstVisibleItemPosition: Int) {
-            iv_scroll_to_top.apply {
-                when {
-                    firstVisibleItemPosition > 0 && alpha == 0f -> {
-                        visibility = View.VISIBLE
-                        animate().alpha(1f).setDuration(300).setListener(null)
-                    }
-                    firstVisibleItemPosition <= 0 && alpha == 1f -> {
-                        animate().alpha(0f).setDuration(300).setListener(object : AnimatorListenerAdapter() {
-                            override fun onAnimationEnd(animation: Animator) {
-                                visibility = View.GONE
-                            }
-                        })
-                    }
-                }
-            }
-        }
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
@@ -48,10 +30,7 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
                 val firstVisibleItemPosition: Int = (it as LinearLayoutManager).findFirstVisibleItemPosition()
                 viewModel.getUserRechargeList(false, date_range_selector.startTime.toString(),
                                               date_range_selector.endTime.toString(),
-                                              selector_order_status.selectedTag,
-                                              selector_method_status.selectedTag)
-
-                scrollToTopControl(firstVisibleItemPosition)
+                                              selector_order_status.selectedTag,)
             }
         }
     }
@@ -60,13 +39,10 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
         RechargeLogDetailDialog()
     }
 
-    private val rechargeLogAdapter by lazy {
-        RechargeLogAdapter().apply {
-            rechargeLogListener = RechargeLogListener {
-                viewModel.setLogDetail(it)
-            }
+    private val accountHistoryAdapter by lazy {
+        AccountHistoryAdapter()
         }
-    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,45 +51,39 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_account_history_log, container, false).apply {
 
-            this.iv_scroll_to_top.setOnClickListener {
-                rvlist.smoothScrollToPosition(0)
-            }
-
-            setupListColumn(this)
+            //setupListColumn(this)
             setupRechargeLogList(this)
             setupSearch(this)
         }
     }
 
-    private fun setupListColumn(view: View) {
-        view.rech_log_recharge_amount.text = getString(R.string.recharge_log_recharge_amount)
-    }
+//    private fun setupListColumn(view: View) {
+//        view.rech_log_recharge_amount.text = getString(R.string.recharge_log_recharge_amount)
+//    }
 
     private fun setupRechargeLogList(view: View) {
         view.rvlist.apply {
             this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
             addOnScrollListener(recyclerViewOnScrollListener)
-            this.adapter = rechargeLogAdapter
+            this.adapter = accountHistoryAdapter
             addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_gray)))
         }
     }
 
     private fun setupSearch(view: View) {
         view.date_range_selector.setOnClickSearchListener {
-            viewModel.getUserRechargeList(true,
+            viewModel.getUserAccountHistoryList(true,
                                           date_range_selector.startTime.toString(),
                                           date_range_selector.endTime.toString(),
-                                          selector_order_status.selectedTag,
-                                          selector_method_status.selectedTag)
+                                          selector_order_status.selectedTag)
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        selector_method_status.dataList = rechargeChannelList
-        selector_order_status.dataList = rechargeStateList
+        selector_order_status.dataList = accountHistoryStateList
 
         viewModel.isLoading.observe(this.viewLifecycleOwner, {
             if (it) {
@@ -123,26 +93,18 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
             }
         })
 
-        viewModel.userRechargeListResult.observe(this.viewLifecycleOwner, {
-            it?.apply {
-                rechargeLogAdapter.data = it
-                setupNoRecordView(it.isEmpty())
-            }
-        })
-
-        viewModel.rechargeLogDetail.observe(this.viewLifecycleOwner, { event ->
-            event.getContentIfNotHandled()?.let {
-                if (logDetailDialog.dialog?.isShowing != true) {
-                    logDetailDialog.show(parentFragmentManager, AccountHistoryLogFragment::class.java.simpleName)
-                }
-            }
-        })
-
         viewModel.isFinalPage.observe(this.viewLifecycleOwner, {
-            rechargeLogAdapter.isFinalPage = it
+            accountHistoryAdapter.isFinalPage = it
+        })
+        viewModel.userSportBillListResult.observe(this.viewLifecycleOwner, {
+            it?.apply {
+                accountHistoryAdapter.data = it.rows
+                tv_total_number.text = it.total.toString()
+                setupNoRecordView(it.rows.isEmpty())
+            }
         })
 
-        viewModel.getUserRechargeList(true)
+        viewModel.getUserAccountHistoryList(true)
     }
 
     private fun setupNoRecordView(visible: Boolean) {
@@ -153,60 +115,26 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
         }
     }
 
-    private val rechargeChannelList by lazy { this.resources.getStringArray(R.array.recharge_channel_array).map {
-        when (it) {
-            getString(R.string.recharge_channel_online) -> {
-                StatusSheetData(RechType.ONLINE_PAYMENT.type, it)
-            }
-            getString(R.string.recharge_channel_bank) -> {
-                StatusSheetData(RechType.BANK_TRANSFER.type, it)
-            }
-            getString(R.string.recharge_channel_alipay) -> {
-                StatusSheetData(RechType.ALIPAY.type, it)
-            }
-            getString(R.string.recharge_channel_weixin) -> {
-                StatusSheetData(RechType.WEIXIN.type, it)
-            }
-            getString(R.string.recharge_channel_cft) -> {
-                StatusSheetData(RechType.CFT.type, it)
-            }
-            getString(R.string.recharge_channel_admin) -> {
-                StatusSheetData(RechType.ADMIN_ADD_MONEY.type, it)
-            }
-            getString(R.string.recharge_channel_crypto) -> {
-                StatusSheetData(RechType.CRYPTO.type, it)
-            }
-            getString(R.string.recharge_channel_gcash) -> {
-                StatusSheetData(RechType.GCASH.type, it)
-            }
-            getString(R.string.recharge_channel_grabpay) -> {
-                StatusSheetData(RechType.GRABPAY.type, it)
-            }
-            getString(R.string.recharge_channel_paymaya) -> {
-                StatusSheetData(RechType.PAYMAYA.type, it)
-            }
-            else -> {
-                StatusSheetData(viewModel.allTag, it).apply { isChecked = true }
-            }
-        }
-    }
-    }
-
-    private val rechargeStateList by lazy {
-        this.resources.getStringArray(R.array.recharge_state_array).map {
+    private val accountHistoryStateList by lazy {
+        this.resources.getStringArray(R.array.account_history_state_array).map {
             when (it) {
-                getString(R.string.recharge_state_processing) -> {
-                    StatusSheetData(Status.PROCESSING.code.toString(), it)
+                getString(R.string.text_account_history_bet) -> {
+                    StatusSheetData(AccountHistory.BET.tranTypeGroup, it)
                 }
-                getString(R.string.recharge_state_success) -> {
-                    StatusSheetData(Status.SUCCESS.code.toString(), it)
-
+                getString(R.string.text_account_history_recharge) -> {
+                    StatusSheetData(AccountHistory.RECHARGE.tranTypeGroup, it)
                 }
-                getString(R.string.recharge_state_failed) -> {
-                    StatusSheetData(Status.FAILED.code.toString(), it)
+                getString(R.string.text_account_history_withdraw) -> {
+                    StatusSheetData(AccountHistory.WITHDRAW.tranTypeGroup, it)
+                }
+                getString(R.string.text_account_history_activity) -> {
+                    StatusSheetData(AccountHistory.ACTIVITY.tranTypeGroup, it)
+                }
+                getString(R.string.text_account_history_credit) -> {
+                    StatusSheetData(AccountHistory.CREDIT.tranTypeGroup, it)
                 }
                 else -> {
-                    StatusSheetData(viewModel.allTag, it).apply { isChecked = true }
+                    StatusSheetData(AccountHistory.BET.tranTypeGroup, it)
                 }
             }
         }
