@@ -171,9 +171,12 @@ class MoneyRechViewModel(
 
             dataList.forEach {
                 when (it.rechType) {
-                    org.cxct.sportlottery.network.common.RechType.ONLINEPAYMENT.code -> onlineData.add(
-                        it
-                    )
+                    org.cxct.sportlottery.network.common.RechType.ONLINEPAYMENT.code -> {
+                        if (it.onlineType != 202) //後端說要filter掉202
+                            onlineData.add(
+                                it
+                            )
+                    }
                     else -> transferData.add(it)
                 }
             }
