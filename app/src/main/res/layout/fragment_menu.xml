@@ -14,7 +14,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorWhite1"
+        android:background="@drawable/gredient_blue"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +43,7 @@
             android:ellipsize="marquee"
             android:letterSpacing="0.1"
             android:singleLine="true"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/colorWhite"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintBottom_toTopOf="@id/tv_money"
             app:layout_constraintEnd_toStartOf="@id/btn_close"
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:letterSpacing="0.1"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/colorWhite"
             android:textSize="@dimen/textSize16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/iv_head"
@@ -92,73 +92,19 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+            <org.cxct.sportlottery.ui.menu.MenuItem
+                android:id="@+id/tv_recharge"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:minHeight="60dp"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                app:cvIcon="@drawable/ic_profile_center_recharge"
+                app:cvTitle="@string/recharge" />
 
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_rounded_rectangle_oval_gray">
-
-                    <TextView
-                        android:id="@+id/tv_recharge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:drawablePadding="10dp"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:paddingHorizontal="10dp"
-                        android:paddingVertical="9dp"
-                        android:text="@string/recharge"
-                        android:textColor="@color/colorGrayDark"
-                        android:textSize="@dimen/textSize14sp"
-                        android:textStyle="bold"
-                        app:autoSizeMaxTextSize="@dimen/textSize14sp"
-                        app:autoSizeMinTextSize="8dp"
-                        app:autoSizeTextType="uniform"
-                        app:drawableStartCompat="@drawable/ic_profile_center_recharge" />
-
-                </FrameLayout>
-
-                <androidx.legacy.widget.Space
-                    android:layout_width="10dp"
-                    android:layout_height="wrap_content" />
-
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="14dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_rounded_rectangle_oval_gray">
-
-                    <TextView
-                        android:id="@+id/tv_withdraw"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="@drawable/bg_rounded_rectangle_oval_gray"
-                        android:drawablePadding="10dp"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:paddingHorizontal="10dp"
-                        android:paddingVertical="9dp"
-                        android:text="@string/withdraw"
-                        android:textColor="@color/colorGrayDark"
-                        android:textSize="@dimen/textSize14sp"
-                        android:textStyle="bold"
-                        app:autoSizeMaxTextSize="@dimen/textSize14sp"
-                        app:autoSizeMinTextSize="4dp"
-                        app:autoSizeTextType="uniform"
-                        app:drawableStartCompat="@drawable/ic_profile_center_withdraw" />
-                </FrameLayout>
-            </LinearLayout>
+            <org.cxct.sportlottery.ui.menu.MenuItem
+                android:id="@+id/tv_withdraw"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cvIcon="@drawable/ic_profile_center_withdraw"
+                app:cvTitle="@string/withdraw" />
 
             <org.cxct.sportlottery.ui.menu.MenuItem
                 android:id="@+id/menu_profile_center"
@@ -166,6 +112,12 @@
                 android:layout_height="wrap_content"
                 app:cvIcon="@drawable/ic_menu_profile_center"
                 app:cvTitle="@string/profile_center" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorWhite6"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
             <org.cxct.sportlottery.ui.menu.MenuItem
                 android:id="@+id/menu_odds_type"
@@ -203,6 +155,12 @@
                 android:layout_height="wrap_content"
                 app:cvIcon="@drawable/ic_menu_game_settlement"
                 app:cvTitle="@string/game_settlement" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorWhite6"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
             <org.cxct.sportlottery.ui.menu.MenuItem
                 android:id="@+id/menu_game_rule"
