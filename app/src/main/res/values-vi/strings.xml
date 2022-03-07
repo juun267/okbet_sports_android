@@ -607,6 +607,7 @@
     <string name="record_recharge">Lịch sử nạp tiền</string>
     <string name="record_withdrawal">Lịch sử rút tiền</string>
     <string name="record_conversion">Lịch sử chuyển đổi</string>
+    <string name="record_history">Lịch sử</string>
     <string name="recharge_state_success">Thành công</string>
     <string name="recharge_state_failed">Thất bại</string>
     <string name="recharge_state_processing">Đang xử lý</string>
@@ -1046,4 +1047,18 @@
     <string name="allow_location_permission">Cho phép truy cập vị trí</string>
     <string name="google_location_permission_description">Bạn có thể tìm kiếm các trận đấu thể thao gần bạn và nhận thêm thông tin về các trận đấu thể thao bằng cách cho phép truy cập vị trí.</string>
     <string name="grant_location_permission_on_setting">Bật quyền vị trí trên trang cài đặt</string>
+
+    <!--歷史紀錄start-->
+    <string name="text_account_history_type">Thể loại</string>
+    <string name="text_account_history_time">Thời gian nạp tiền</string>
+    <string name="text_account_history_number">Số đơn hàng</string>
+    <string name="text_account_history_amount">Số tiền giao dịch</string>
+    <string name="text_account_history_balance">Sự cân bằng</string>
+
+    <string name="text_account_history_bet">cá cược</string>
+    <string name="text_account_history_recharge">nạp điện</string>
+    <string name="text_account_history_withdraw">rút tiền</string>
+    <string name="text_account_history_activity">Số lượng hoạt động</string>
+    <string name="text_account_history_credit">số tiền tín dụng</string>
+    <!--歷史紀錄end-->
 </resources>

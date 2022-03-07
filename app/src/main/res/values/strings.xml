@@ -631,6 +631,7 @@
     <string name="record_recharge">充值记录</string>
     <string name="record_withdrawal">提款记录</string>
     <string name="record_conversion">转换记录</string>
+    <string name="record_history">历史记录</string>
     <string name="recharge_state_success">成功</string>
     <string name="recharge_state_failed">失败</string>
     <string name="recharge_state_processing">处理中</string>
@@ -1019,7 +1020,7 @@
     <string name="text_search_refresh">换一换</string>
     <string name="text_search_no_result">搜寻结果为空</string>
     <string name="text_search_try_another">换个词搜索试试看吧</string>
-    <!-- 搜尋 -->
+    <!-- 搜尋end -->
     <string name="text_combo_title">复式串关</string>
     <string name="text_combo_item">项次</string>
     <!-- 注單內球員玩法 -->
@@ -1034,4 +1035,18 @@
     <string name="allow_location_permission">允许位置使用权</string>
     <string name="grant_location_permission_on_setting">去设定开啟位置权限</string>
     <string name="google_location_permission_description">允许背景位置授权请求，您可以寻找您所在位置附近的赛事，并且可以跟踪这些赛事的情报。</string>
+
+    <!--歷史紀錄start-->
+    <string name="text_account_history_type">项目类型</string>
+    <string name="text_account_history_time">充值时间</string>
+    <string name="text_account_history_number">订单号</string>
+    <string name="text_account_history_amount">交易金额</string>
+    <string name="text_account_history_balance">余额</string>
+
+    <string name="text_account_history_bet">注单</string>
+    <string name="text_account_history_recharge">充值</string>
+    <string name="text_account_history_withdraw">提款</string>
+    <string name="text_account_history_activity">活动金额</string>
+    <string name="text_account_history_credit">信用账户金额</string>
+    <!--歷史紀錄end-->
 </resources>

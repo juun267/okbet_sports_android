@@ -290,6 +290,8 @@ object Constants {
     const val USER_RECHARGE_ADD = "/api/front/userrech/add"
     const val USER_RECHARGE_ONLINE_PAY = "/api/front/userrech/onlinepay"
     const val USER_RECHARGE_LIST = "/api/front/userrech/list"
+    const val USER_BILL_LIST = "/api/front/sportBill/query"
+
 
     //user
     const val USER_INFO = "/api/front/user/info"
