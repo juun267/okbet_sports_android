@@ -742,7 +742,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             it.quickPlayCateList?.find {
                                 if(it.isSelected) {
                                     Log.d("Hewie3", "Update: ${leagueOdd.league.name} => ${it.name}")
-                                    // TODO leagueAdapter.updateLeague(index, leagueOdd)
+                                    leagueAdapter.updateLeague(index, leagueOdd)
                                 }
                                 it.isSelected
                             } != null
@@ -1012,7 +1012,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
 
                 //leagueAdapter.notifyDataSetChanged()
-                // TODO leagueAdapter.data.forEachIndexed { index, leagueOdd -> leagueAdapter.updateLeague(index, leagueOdd) }
+                leagueAdapter.data.forEachIndexed { index, leagueOdd -> leagueAdapter.updateLeague(index, leagueOdd) }
 
                 val epsOdds = epsListAdapter.dataList
 
@@ -1201,7 +1201,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 leagueOdd.unfold == FoldState.UNFOLD.code
                             ) {
                                 //leagueAdapter.updateBySocket(index)
-                                // TODO leagueAdapter.updateLeague(index, leagueOdd)
+                                leagueAdapter.updateLeague(index, leagueOdd)
                             }
                         }
                     }
@@ -1928,5 +1928,14 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         viewModel.clearSelectedLeague()
 
         game_list.adapter = null
+    }
+
+    private fun reloadPage() {
+        viewModel.getGameHallList(
+            args.matchType,
+            isReloadPlayCate = true,
+            isReloadDate = true,
+            isIncrement = false
+        )
     }
 }

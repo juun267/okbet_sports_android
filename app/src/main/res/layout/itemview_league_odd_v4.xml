@@ -423,7 +423,7 @@
     <RelativeLayout
         android:id="@+id/nested_scroll_view_league_odd"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border"
         app:layout_constraintEnd_toEndOf="parent"
         android:scrollbars="none"
@@ -451,29 +451,30 @@
         android:background="@color/colorWhite8"
         app:layout_constraintTop_toTopOf="@id/league_odd_quick_cate_border" />
 
-    <HorizontalScrollView
-        android:id="@+id/scroll_view_rg"
+    <RadioGroup
+        android:id="@+id/league_odd_quick_cate_tabs"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:scrollbars="none"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@id/league_odd_quick_cate_border"
         app:layout_constraintEnd_toStartOf="@id/league_odd_quick_cate_close"
         app:layout_constraintStart_toStartOf="@id/league_odd_quick_cate_border"
         app:layout_constraintTop_toTopOf="@id/league_odd_quick_cate_border">
 
-        <RadioGroup
-            android:id="@+id/league_odd_quick_cate_tabs"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="@id/league_odd_quick_cate_border"
-            app:layout_constraintEnd_toStartOf="@id/league_odd_quick_cate_close"
-            app:layout_constraintStart_toStartOf="@id/league_odd_quick_cate_border"
-            app:layout_constraintTop_toTopOf="@id/league_odd_quick_cate_border" />
-    </HorizontalScrollView>
+<!--        <RadioGroup-->
+<!--            android:id="@+id/league_odd_quick_cate_tabs"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:gravity="center_vertical"-->
+<!--            android:orientation="horizontal"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/league_odd_quick_cate_border"-->
+<!--            app:layout_constraintEnd_toStartOf="@id/league_odd_quick_cate_close"-->
+<!--            app:layout_constraintStart_toStartOf="@id/league_odd_quick_cate_border"-->
+<!--            app:layout_constraintTop_toTopOf="@id/league_odd_quick_cate_border" />-->
+    </RadioGroup>
 
     <ImageButton
         android:id="@+id/league_odd_quick_cate_close"
@@ -496,7 +497,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/scroll_view_rg"
+        app:layout_constraintTop_toBottomOf="@id/league_odd_quick_cate_tabs"
         tools:visibility="visible" />
 
     <include

@@ -73,7 +73,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
     // region Update functions
     fun update() {
         // Update MatchOdd list
-        //data.forEachIndexed { index, matchOdd -> notifyItemChanged(index, matchOdd) }
+        data.forEachIndexed { index, matchOdd -> notifyItemChanged(index, matchOdd) }
     }
     // endregion
 
@@ -110,7 +110,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         } else {
             Log.d("Hewie", "更新：賽事($position)")
             val matchOdd = payloads.first() as MatchOdd
-            //(holder as ViewHolderHdpOu).update(matchType, matchOdd, leagueOddListener, isTimerEnable, oddsType)
+            (holder as ViewHolderHdpOu).update(matchType, matchOdd, leagueOddListener, isTimerEnable, oddsType)
         }
     }
 
@@ -158,7 +158,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             updateOddsButton(item, oddsType)
 
             //setupQuickCategory(item, oddsType, leagueOddListener)
-            //updateQuickCategory(item, oddsType, leagueOddListener)
+            updateQuickCategory(item, oddsType, leagueOddListener)
         }
 
         private fun updateMatchInfo(item: MatchOdd, matchType: MatchType) {
@@ -691,29 +691,29 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
         var isFromDataChange = true
 
+        val oddButtonPagerAdapter = OddButtonPagerAdapter()
         private fun setupOddsButton(
             item: MatchOdd,
             oddsType: OddsType,
             leagueOddListener: LeagueOddListener?
         ) {
             itemView.rv_league_odd_btn_pager_main.apply {
-                val oddButtonPagerAdapter = OddButtonPagerAdapter()
                 linearLayoutManager.isAutoMeasureEnabled = false
                 layoutManager = linearLayoutManager
                 setHasFixedSize(true)
                 (rv_league_odd_btn_pager_main.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-                oddButtonPagerAdapter.setData(
-                    item.matchInfo,
-                    item.oddsSort,
-                    item.playCateNameMap,
-                    item.betPlayCateNameMap
-                )
+//                oddButtonPagerAdapter.setData(
+//                    item.matchInfo,
+//                    item.oddsSort,
+//                    item.playCateNameMap,
+//                    item.betPlayCateNameMap
+//                )
 
                 this.adapter = oddButtonPagerAdapter.apply {
                     stateRestorationPolicy = StateRestorationPolicy.PREVENT
-                    this.odds = item.oddsMap ?: mutableMapOf()
+                    //this.odds = item.oddsMap ?: mutableMapOf()
 
-                    this.oddsType = oddsType
+                    //this.oddsType = oddsType
 
                     this.listener =
                         OddButtonListener { matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
@@ -736,32 +736,33 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                 isFromDataChange = false
 
+                Log.d("Hewie4", "綁定：item.oddsMap.size => ${item.oddsMap?.size}")
+
 //                item.rvScrollPos?.let {
 //                    post(Runnable {
 //                        itemView.nested_scroll_view_league_odd.scrollTo(it, 0)
 //                    })
 
-                visibility = if (item.oddsMap?.size ?: 0 > 2) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
+//                visibility = if (item.oddsMap?.size ?: 0 > 2) {
+//                    View.VISIBLE
+//                } else {
+//                    View.GONE
+//                }
 
             }
         }
 
         private fun updateOddsButton(item: MatchOdd, oddsType: OddsType) {
             itemView.rv_league_odd_btn_pager_main.apply {
-                val adapter = this.adapter
-                if(adapter is OddButtonPagerAdapter ) {
-                    adapter.setData(item.matchInfo, item.oddsSort, item.playCateNameMap, item.betPlayCateNameMap)
-                    adapter.apply {
-                        stateRestorationPolicy = StateRestorationPolicy.PREVENT
-                        this.odds = item.oddsMap ?: mutableMapOf()
-                        this.oddsType = oddsType
-                        update()
-                    }
+                oddButtonPagerAdapter.setData(item.matchInfo, item.oddsSort, item.playCateNameMap, item.betPlayCateNameMap)
+                oddButtonPagerAdapter.apply {
+                    stateRestorationPolicy = StateRestorationPolicy.PREVENT
+                    this.odds = item.oddsMap ?: mutableMapOf()
+                    this.oddsType = oddsType
+                    update()
+                    notifyDataSetChanged() // TODO
                 }
+                Log.d("Hewie4", "更新：item.oddsMap.size => ${item.oddsMap?.size}")
             }
         }
 
@@ -830,19 +831,20 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                     })
 
-                    if (it.isSelected) {
-                        if (index > 3) {
-                            itemView.scroll_view_rg.post {
-                                itemView.scroll_view_rg.scrollTo(rb.left, 0)
-                            }
-                        }
-                        rb.isChecked = true
-                    }
+//                    if (it.isSelected) {
+//                        if (index > 3) {
+//                            itemView.scroll_view_rg.post {
+//                                itemView.scroll_view_rg.scrollTo(rb.left, 0)
+//                            }
+//                        }
+//                        //rb.isChecked = true
+//                    }
                 }
 
-                itemView.scroll_view_rg.visibility = if(item.quickPlayCateList.isNullOrEmpty()) View.GONE else View.VISIBLE
+                //itemView.scroll_view_rg.visibility = if(item.quickPlayCateList.isNullOrEmpty()) View.GONE else View.VISIBLE
 
                 setOnCheckedChangeListener { group, checkedId ->
+                    Log.d("Hewie5", "setOnCheckedChangeListener => ${item.matchInfo?.id}")
                     item.quickPlayCateList?.forEach {
                         it.isSelected = (it.hashCode() == checkedId)
                         it.positionButtonPage = 0
@@ -851,23 +853,23 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                     leagueOddListener?.onClickQuickCateTab(item.matchInfo?.id)
 
-                    when (item.quickPlayCateList?.find { it.isSelected }?.code) {
-                        QuickPlayCate.QUICK_OU.value, QuickPlayCate.QUICK_HDP.value, QuickPlayCate.QUICK_ADVANCE.value -> {
-                            setupQuickOddButtonPair(item, oddsType, leagueOddListener)
-                        }
-
-                        QuickPlayCate.QUICK_CORNERS.value, QuickPlayCate.QUICK_PENALTY.value -> {
-                            setupQuickOddButtonPager(item, oddsType, leagueOddListener)
-                        }
-
-                        QuickPlayCate.QUICK_EPS.value -> {
-                            setupQuickOddButtonEps(item, oddsType, leagueOddListener)
-                        }
-
-                        else -> {
-                            //invisibleOddButtons()
-                        }
-                    }
+//                    when (item.quickPlayCateList?.find { it.isSelected }?.code) {
+//                        QuickPlayCate.QUICK_OU.value, QuickPlayCate.QUICK_HDP.value, QuickPlayCate.QUICK_ADVANCE.value -> {
+//                            setupQuickOddButtonPair(item, oddsType, leagueOddListener)
+//                        }
+//
+//                        QuickPlayCate.QUICK_CORNERS.value, QuickPlayCate.QUICK_PENALTY.value -> {
+//                            setupQuickOddButtonPager(item, oddsType, leagueOddListener)
+//                        }
+//
+//                        QuickPlayCate.QUICK_EPS.value -> {
+//                            setupQuickOddButtonEps(item, oddsType, leagueOddListener)
+//                        }
+//
+//                        else -> {
+//                            invisibleOddButtons()
+//                        }
+//                    }
                 }
             }
         }
@@ -885,13 +887,33 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 } else {
                     View.VISIBLE
                 } }
-            itemView.scroll_view_rg.visibility = if(item.quickPlayCateList.isNullOrEmpty()) View.GONE else View.VISIBLE
+            //itemView.scroll_view_rg.visibility = if(item.quickPlayCateList.isNullOrEmpty()) View.GONE else View.VISIBLE
+
+            when (item.quickPlayCateList?.find { it.isSelected }?.code) {
+                QuickPlayCate.QUICK_OU.value, QuickPlayCate.QUICK_HDP.value, QuickPlayCate.QUICK_ADVANCE.value -> {
+                    setupQuickOddButtonPair(item, oddsType, leagueOddListener)
+                }
+
+                QuickPlayCate.QUICK_CORNERS.value, QuickPlayCate.QUICK_PENALTY.value -> {
+                    setupQuickOddButtonPager(item, oddsType, leagueOddListener)
+                }
+
+                QuickPlayCate.QUICK_EPS.value -> {
+                    setupQuickOddButtonEps(item, oddsType, leagueOddListener)
+                }
+
+                else -> {
+                    invisibleOddButtons()
+                }
+            }
 
 //            itemView.league_odd_quick_cate_tabs.apply {
 //                removeAllViews()
 //                visibility = if (item.quickPlayCateList.isNullOrEmpty()) { View.GONE } else { View.VISIBLE }
+//
 //                item.quickPlayCateList?.sortedBy { it.sort }?.forEachIndexed { index, it ->
-//                    val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+//                    val inflater =
+//                        context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 //                    val rb = inflater.inflate(R.layout.custom_radio_button, null) as RadioButton
 //
 //                    addView(rb.apply {
@@ -914,38 +936,16 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 //                    })
 //
 //                    if (it.isSelected) {
-//                        if (index > 3) { itemView.scroll_view_rg.post { itemView.scroll_view_rg.scrollTo(rb.left, 0) } }
+//                        if (index > 3) {
+//                            itemView.scroll_view_rg.post {
+//                                itemView.scroll_view_rg.scrollTo(rb.left, 0)
+//                            }
+//                        }
 //                        rb.isChecked = true
 //                    }
 //                }
 //
-//                setOnCheckedChangeListener { group, checkedId ->
-//                    item.quickPlayCateList?.forEach {
-//                        it.isSelected = (it.hashCode() == checkedId)
-//                        it.positionButtonPage = 0
-//                        it.positionButtonPairTab = 0
-//                    }
-//
-//                    leagueOddListener?.onClickQuickCateTab(item.matchInfo?.id)
-//                }
-//            }
-//
-//            when (item.quickPlayCateList?.find { it.isSelected }?.code) {
-//                QuickPlayCate.QUICK_OU.value, QuickPlayCate.QUICK_HDP.value, QuickPlayCate.QUICK_ADVANCE.value -> {
-//                    setupQuickOddButtonPair(item, oddsType, leagueOddListener)
-//                }
-//
-//                QuickPlayCate.QUICK_CORNERS.value, QuickPlayCate.QUICK_PENALTY.value -> {
-//                    setupQuickOddButtonPager(item, oddsType, leagueOddListener)
-//                }
-//
-//                QuickPlayCate.QUICK_EPS.value -> {
-//                    setupQuickOddButtonEps(item, oddsType, leagueOddListener)
-//                }
-//
-//                else -> {
-//                    invisibleOddButtons()
-//                }
+//                itemView.scroll_view_rg.visibility = if(item.quickPlayCateList.isNullOrEmpty()) View.GONE else View.VISIBLE
 //            }
         }
 
