@@ -15,11 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.zhy.adapter.recyclerview.CommonAdapter
 import com.zhy.adapter.recyclerview.base.ViewHolder
-import kotlinx.android.synthetic.main.dialog_combo_detail.*
-import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_left_menu.*
 import kotlinx.android.synthetic.main.fragment_left_menu.btn_close
-import kotlinx.android.synthetic.main.home_sport_table_4.view.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import kotlinx.android.synthetic.main.snackbar_my_favorite_notify.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
@@ -326,7 +323,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                     if (it.gameCount > 0 && matchType != null) {
                         unselectedList.add(
                             MenuItemData(
-                                R.drawable.img_icehockey,
+                                R.drawable.img_ice_hockey,
                                 getString(R.string.ice_hockey),
                                 GameType.IH.key,
                                 0,
@@ -354,7 +351,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                     if (it.gameCount > 0 && matchType != null) {
                         unselectedList.add(
                             MenuItemData(
-                                R.drawable.img_snooker,
+                                R.drawable.img_golf,
                                 getString(R.string.cue_ball),
                                 GameType.CB.key,
                                 0,
