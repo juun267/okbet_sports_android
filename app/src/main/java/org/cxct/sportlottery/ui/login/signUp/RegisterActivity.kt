@@ -380,6 +380,11 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     btnRegisterEnable()
                 }
             }
+            eetSecurityPb.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
+            }
             eetSmsValidCode.apply {
                 this.afterTextChanged {
                     btnRegisterEnable()
@@ -559,6 +564,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             eetFacebook.setActionListener(registerEnable)
             eetWhatsApp.setActionListener(registerEnable)
             eetTelegram.setActionListener(registerEnable)
+            eetSecurityPb.setActionListener(registerEnable)
             eetSmsValidCode.setActionListener(registerEnable)
             eetVerificationCode.setActionListener(registerEnable)
         }
