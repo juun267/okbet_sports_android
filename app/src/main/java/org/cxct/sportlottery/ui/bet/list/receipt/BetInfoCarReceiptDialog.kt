@@ -51,7 +51,7 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
                     val teamNamesStr =
                         if (homeName?.length ?: 0 > 15) "$homeName v\n$awayName" else "$homeName v $awayName"
                     tv_team_names.text = teamNamesStr
-                    tv_match_type.text = playCateName
+                    tv_match_type.tranByPlayCode(playCode, playCateName)
                 }
 
                 view.view_match_receipt.setBetReceiptBackground(status)
