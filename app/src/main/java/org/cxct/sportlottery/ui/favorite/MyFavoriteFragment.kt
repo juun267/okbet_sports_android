@@ -111,8 +111,8 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
                     addOddsDialog(matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap)
                 },
-                { matchId ->
-                    viewModel.getQuickList(matchId)
+                { matchOdd ->
+                    viewModel.getQuickList(matchOdd.matchInfo?.id)
                 },
                 {
                     viewModel.clearQuickPlayCateSelected()

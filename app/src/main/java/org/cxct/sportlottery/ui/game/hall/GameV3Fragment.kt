@@ -194,9 +194,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
                     addOddsDialog(matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap)
                 },
-                { matchId ->
-                    matchId?.let {
-                        viewModel.getQuickList2(it)
+                { matchOdd ->
+                    matchOdd.matchInfo?.let {
+                        viewModel.getQuickList2(it.id)
+                        openedQuickListMap[it.id] = matchOdd
                     }
                 },
                 {
@@ -242,6 +243,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     var isUpdatingLeague = false
+
+    var openedQuickListMap = HashMap<String, MatchOdd>()
 
     private lateinit var moreEpsInfoBottomSheet: BottomSheetDialog
 
@@ -698,7 +701,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                     // TODO 這裡要確認是否有其他地方重複呼叫
                     Log.d("Hewie", "observe => OddsListGameHallResult")
-                    leagueAdapter.notifyDataSetChanged()
+                    //leagueAdapter.notifyDataSetChanged()
 
 
                     //賽事訂閱規則 因頁面初次展示不超過兩項 故保持兩項賽事訂閱避免過多socket response導致頁面卡頓
@@ -745,18 +748,25 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 //                        } != null
 //                    }
 
-                    oddsListResult.oddsListData?.leagueOdds?.forEachIndexed { index, leagueOdd ->
-                        subscribeChannelHall(leagueOdd)
-                        leagueOdd.matchOdds.find {
-                            it.quickPlayCateList?.find {
-                                if(it.isSelected) {
-                                    Log.d("Hewie3", "Update: ${leagueOdd.league.name} => ${it.name}")
-                                    leagueAdapter.updateLeague(index, leagueOdd)
-                                }
-                                it.isSelected
-                            } != null
-                        } != null
-                    }
+//                    leagueAdapter.data.forEach {
+//                        it.matchOdds.forEach {  matchOdd ->
+//                            matchOdd = openedQuickListMap[matchOdd.matchInfo.id]
+//                            matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+//                                Log.d("Hewie3", "quickPlayCate => ${quickPlayCate.isSelected}")
+//                            }
+//                        }
+//                    }
+//                    oddsListResult.oddsListData?.leagueOdds?.forEachIndexed { index, leagueOdd ->
+//                        //subscribeChannelHall(leagueOdd)
+//                        leagueOdd.matchOdds.find { matchOdd ->
+//                            openedQuickListMap[matchOdd.matchInfo?.id] ?: false
+//                            //Log.d("Hewie3", "Update: ${leagueOdd.league.name} => ${it.name}")
+//                            leagueAdapter.updateLeague(index, leagueOdd)
+//                            matchOdd.quickPlayCateList?.find {
+//
+//                            } != null
+//                        } != null
+//                    }
                 }
             }
         }

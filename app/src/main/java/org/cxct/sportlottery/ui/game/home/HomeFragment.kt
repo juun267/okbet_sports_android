@@ -378,9 +378,9 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     private fun setDefaultRb() {
         val inPlayCount = mInPlayResult?.matchPreloadData?.num ?: 0
         if (inPlayCount != 0) {
-            rb_in_play.performClick()
+            rb_in_play?.performClick()
         } else {
-            rb_as_start.performClick()
+            rb_as_start?.performClick()
         }
     }
 

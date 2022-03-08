@@ -712,9 +712,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 this.adapter = oddButtonPagerAdapter.apply {
                     stateRestorationPolicy = StateRestorationPolicy.PREVENT
                     //this.odds = item.oddsMap ?: mutableMapOf()
-
                     //this.oddsType = oddsType
-
                     this.listener =
                         OddButtonListener { matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
                             leagueOddListener?.onClickBet(
@@ -727,21 +725,23 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         }
                 }
 
-                itemView.nested_scroll_view_league_odd.viewTreeObserver.addOnScrollChangedListener {
-                    val scrollX = itemView.nested_scroll_view_league_odd.scrollX
-                    if (!isFromDataChange && item.rvScrollPos != scrollX) {  //第一次listener觸發由notifyDataSetChange所造成，因此不紀錄
-                        item.rvScrollPos = scrollX
-                    }
-                }
+//                itemView.nested_scroll_view_league_odd.viewTreeObserver.addOnScrollChangedListener {
+//                    val scrollX = itemView.nested_scroll_view_league_odd.scrollX
+//                    if (!isFromDataChange && item.rvScrollPos != scrollX) {  //第一次listener觸發由notifyDataSetChange所造成，因此不紀錄
+//                        item.rvScrollPos = scrollX
+//                    }
+//                }
 
                 isFromDataChange = false
 
-                Log.d("Hewie4", "綁定：item.oddsMap.size => ${item.oddsMap?.size}")
+                Log.d("Hewie4", "綁定(${item.matchInfo?.homeName})：item.oddsMap.size => ${item.oddsMap?.size}")
+                updateOddsButton(item, oddsType)
 
 //                item.rvScrollPos?.let {
 //                    post(Runnable {
 //                        itemView.nested_scroll_view_league_odd.scrollTo(it, 0)
 //                    })
+//                }
 
 //                visibility = if (item.oddsMap?.size ?: 0 > 2) {
 //                    View.VISIBLE
@@ -759,10 +759,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     stateRestorationPolicy = StateRestorationPolicy.PREVENT
                     this.odds = item.oddsMap ?: mutableMapOf()
                     this.oddsType = oddsType
-                    update()
-                    notifyDataSetChanged() // TODO
+                    //update()
+                    //notifyDataSetChanged() // TODO
                 }
-                Log.d("Hewie4", "更新：item.oddsMap.size => ${item.oddsMap?.size}")
+                Log.d("Hewie4", "更新(${item.matchInfo?.homeName})：item.oddsMap.size => ${item.oddsMap?.size}")
             }
         }
 
@@ -851,7 +851,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         it.positionButtonPairTab = 0
                     }
 
-                    leagueOddListener?.onClickQuickCateTab(item.matchInfo?.id)
+                    leagueOddListener?.onClickQuickCateTab(item)
 
 //                    when (item.quickPlayCateList?.find { it.isSelected }?.code) {
 //                        QuickPlayCate.QUICK_OU.value, QuickPlayCate.QUICK_HDP.value, QuickPlayCate.QUICK_ADVANCE.value -> {
@@ -889,7 +889,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 } }
             //itemView.scroll_view_rg.visibility = if(item.quickPlayCateList.isNullOrEmpty()) View.GONE else View.VISIBLE
 
-            when (item.quickPlayCateList?.find { it.isSelected }?.code) {
+            // item.quickPlayCateList?.find { it.isSelected }?.code
+            when (item.quickPlayCateList?.first()?.code) {
                 QuickPlayCate.QUICK_OU.value, QuickPlayCate.QUICK_HDP.value, QuickPlayCate.QUICK_ADVANCE.value -> {
                     setupQuickOddButtonPair(item, oddsType, leagueOddListener)
                 }
@@ -1221,7 +1222,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 class LeagueOddListener(
     val clickListenerPlayType: (matchId: String?, matchInfoList: List<MatchInfo>) -> Unit,
     val clickListenerBet: (matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?) -> Unit,
-    val clickListenerQuickCateTab: (matchId: String?) -> Unit,
+    val clickListenerQuickCateTab: (matchOdd: MatchOdd) -> Unit,
     val clickListenerQuickCateClose: () -> Unit,
     val clickListenerFavorite: (matchId: String?) -> Unit,
     val clickListenerStatistics: (matchId: String?) -> Unit,
@@ -1238,7 +1239,7 @@ class LeagueOddListener(
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
     ) = clickListenerBet(matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap)
 
-    fun onClickQuickCateTab(matchId: String?) = clickListenerQuickCateTab(matchId)
+    fun onClickQuickCateTab(matchOdd: MatchOdd) = clickListenerQuickCateTab(matchOdd)
 
     fun onClickQuickCateClose() = clickListenerQuickCateClose()
 

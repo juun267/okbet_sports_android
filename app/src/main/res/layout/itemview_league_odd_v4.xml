@@ -13,7 +13,7 @@
         android:layout_width="176dp"
         android:layout_height="224dp"
         android:layout_marginStart="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/nested_scroll_view_league_odd"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_league_odd_btn_pager_main"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -420,29 +420,21 @@
         app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row3"
         tools:ignore="ContentDescription" />
 
-    <RelativeLayout
-        android:id="@+id/nested_scroll_view_league_odd"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_league_odd_btn_pager_main"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border"
         app:layout_constraintEnd_toEndOf="parent"
         android:scrollbars="none"
         app:layout_constraintStart_toEndOf="@id/league_odd_match_border"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_league_odd_btn_pager_main"
-            android:layout_width="match_parent"
-            android:layout_height="224dp"
-            android:layout_marginTop="6dp"
-            android:nestedScrollingEnabled="false"
-            android:orientation="horizontal"
-            android:overScrollMode="never"
-            tools:itemCount="5"
-            tools:layout="@layout/itemview_odd_btn_2x2_v6"
-            tools:listitem="@layout/itemview_odd_btn_2x2_v6" />
-
-    </RelativeLayout>
+        app:layout_constraintTop_toTopOf="parent"
+        android:nestedScrollingEnabled="false"
+        android:orientation="horizontal"
+        android:overScrollMode="never"
+        tools:itemCount="5"
+        tools:layout="@layout/itemview_odd_btn_2x2_v6"
+        tools:listitem="@layout/itemview_odd_btn_2x2_v6" />
 
     <View
         android:id="@+id/league_odd_quick_cate_divider"
