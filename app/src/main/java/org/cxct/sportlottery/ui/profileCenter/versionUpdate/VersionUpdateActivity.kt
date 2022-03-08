@@ -54,7 +54,7 @@ class VersionUpdateActivity : BaseActivity<VersionUpdateViewModel>(VersionUpdate
     }
 
     private fun initButton() {
-        btn_back.setOnClickListener {
+        toolBar.setOnBackPressListener {
             finish()
         }
 
