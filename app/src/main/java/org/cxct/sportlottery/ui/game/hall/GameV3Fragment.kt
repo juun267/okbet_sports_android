@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,6 +58,7 @@ import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import java.util.*
+import kotlin.collections.HashMap
 
 @RequiresApi(Build.VERSION_CODES.M)
 class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class) {
@@ -670,7 +672,17 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         ?: oddsListResult.oddsListData?.leagueOdds ?: listOf()
 
                     val gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
-                    leagueAdapter.data = leagueOdds.onEach { leagueOdd -> leagueOdd.gameType = gameType }.toMutableList()
+                    leagueAdapter.data = leagueOdds.onEach { leagueOdd ->
+                        // 將儲存的賠率表指定的賽事列表裡面
+                        val leagueOddFromMap = leagueOddMap[leagueOdd.league.id]
+                        leagueOddFromMap?.let {
+                            leagueOdd.matchOdds.forEach {
+                                it.oddsMap = leagueOddFromMap.matchOdds.find { matchOdd -> it.matchInfo?.id == matchOdd.matchInfo?.id }?.oddsMap
+                                Log.d("Hewie7", "restore ${leagueOdd.league.id} oddsmap => ${it.oddsMap?.size}")
+                            }
+                        }
+                        leagueOdd.gameType = gameType
+                    }.toMutableList()
                     //如果data資料為空時，又有其他球種的情況下，自動選取第一個
                     if (leagueAdapter.data.isNullOrEmpty() && gameTypeAdapter.dataSport.size > 1) {
                         viewModel.getSportMenu(
@@ -734,6 +746,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 //                    }
 
                     oddsListResult.oddsListData?.leagueOdds?.forEachIndexed { index, leagueOdd ->
+                        subscribeChannelHall(leagueOdd)
                         leagueOdd.matchOdds.find {
                             it.quickPlayCateList?.find {
                                 if(it.isSelected) {
@@ -907,7 +920,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
             }
         }
-
 
         viewModel.countryListSearchResult.observe(this.viewLifecycleOwner) {
             hideLoading()
@@ -1125,6 +1137,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
     }
 
+    private val leagueOddMap = HashMap<String, LeagueOdd>()
     private fun initSocketObserver() {
         receiver.matchStatusChange.observe(this.viewLifecycleOwner) {
             it?.let { matchStatusChangeEvent ->
@@ -1197,6 +1210,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 leagueOdd.unfold == FoldState.UNFOLD.code
                             ) {
                                 //leagueAdapter.updateBySocket(index)
+                                leagueOddMap[leagueOdd.league.id] = leagueOdd
+                                Log.d("Hewie7", "store ${leagueOdd.league.id} oddsmap => ${leagueOdd.league.name}")
                                 leagueAdapter.updateLeague(index, leagueOdd)
                             }
                         }
