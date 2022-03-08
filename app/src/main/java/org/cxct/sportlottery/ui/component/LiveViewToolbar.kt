@@ -116,6 +116,7 @@ class LiveViewToolbar @JvmOverloads constructor(
 
     interface LiveToolBarListener {
         fun getLiveInfo(newestUrl: Boolean = false)
+        fun showStatistics()
     }
 
     private var liveToolBarListener: LiveToolBarListener? = null
@@ -151,8 +152,7 @@ class LiveViewToolbar @JvmOverloads constructor(
         }
 
         iv_statistics.setOnClickListener {
-            setTitle(context.getString(R.string.statistics_title))
-            loadBottomSheetUrl()
+            liveToolBarListener?.showStatistics()
         }
 
         iv_arrow.setOnClickListener {

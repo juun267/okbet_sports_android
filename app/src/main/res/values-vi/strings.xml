@@ -83,6 +83,8 @@
     <string name="telegram">Telegram</string>
     <string name="hint_telegram">Vui lòng nhập tài khoản Telegram</string>
     <string name="error_telegram">lỗi định dạng tài khoản Telegram không hợp lệ</string>
+    <string name="security_pb">Câu hỏi an toàn</string>
+    <string name="hint_security_pb">(Vui lòng nhập quốc gia yêu thích)</string>
     <string name="real_name">Họ tên thật</string>
     <string name="hint_real_name">Họ tên phải đồng nhất với tài khoản ngân hàng</string>
     <string name="verification_code">Mã xác nhận</string>
@@ -1050,15 +1052,15 @@
 
     <!--歷史紀錄start-->
     <string name="text_account_history_type">Thể loại</string>
-    <string name="text_account_history_time">Thời gian nạp tiền</string>
+    <string name="text_account_history_time">Giờ giao dịch</string>
     <string name="text_account_history_number">Số đơn hàng</string>
     <string name="text_account_history_amount">Số tiền giao dịch</string>
     <string name="text_account_history_balance">Sự cân bằng</string>
 
-    <string name="text_account_history_bet">cá cược</string>
-    <string name="text_account_history_recharge">nạp điện</string>
-    <string name="text_account_history_withdraw">rút tiền</string>
+    <string name="text_account_history_bet">Cá cược</string>
+    <string name="text_account_history_recharge">Nạp điện</string>
+    <string name="text_account_history_withdraw">Rút tiền</string>
     <string name="text_account_history_activity">Số lượng hoạt động</string>
-    <string name="text_account_history_credit">số tiền tín dụng</string>
+    <string name="text_account_history_credit">Số tiền tín dụng</string>
     <!--歷史紀錄end-->
 </resources>
