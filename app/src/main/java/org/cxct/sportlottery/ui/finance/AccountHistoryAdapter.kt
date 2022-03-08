@@ -1,23 +1,19 @@
 package org.cxct.sportlottery.ui.finance
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.view_item_account_history.view.*
-import kotlinx.android.synthetic.main.view_item_recharge_log.view.*
 import kotlinx.android.synthetic.main.view_item_recharge_log.view.rech_log_date
 import kotlinx.android.synthetic.main.view_item_recharge_log.view.rech_log_time
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.money.list.Row
 import org.cxct.sportlottery.network.money.list.SportBillResult
-import org.cxct.sportlottery.ui.finance.df.RechType
-import org.cxct.sportlottery.ui.finance.df.Status
-import org.cxct.sportlottery.util.ArithUtil
-import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TextUtil
 
+@SuppressLint("NotifyDataSetChanged")
 class AccountHistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class ItemType {
@@ -33,7 +29,7 @@ class AccountHistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var isFinalPage: Boolean = false
         set(value) {
             field = value
-            notifyDataSetChanged()
+            notifyItemChanged(data.size)
         }
 
 
