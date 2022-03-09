@@ -172,6 +172,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:overScrollMode="never"
                     android:id="@+id/rvHistory"
                     android:layout_marginStart="@dimen/margin_16"
                     app:layout_constraintTop_toBottomOf="@+id/tvHistoryTittle"
@@ -245,6 +246,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/rvSearchResult"
+                android:overScrollMode="never"
                 android:layout_marginStart="@dimen/margin_12"
                 android:layout_marginTop="@dimen/margin_20"
                 android:layout_marginBottom="@dimen/margin_16"
