@@ -409,7 +409,14 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         } else {
             epsItem.visibility = View.VISIBLE
         }
+    }
+    private fun setOtherOddTab(isGameListNull:Boolean) {
+        val gameItem = (view?.game_tab_odd_v4?.game_tabs?.getChildAt(0) as ViewGroup).getChildAt(0)
+        gameItem.isVisible = !isGameListNull
 
+        if (isGameListNull) {
+            game_tabs.selectTab(game_tabs.getTabAt(1))
+        }
     }
 
     private fun setupSportBackground(view: View) {
