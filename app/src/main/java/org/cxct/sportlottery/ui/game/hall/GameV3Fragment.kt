@@ -710,6 +710,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         subscribeChannelHall(leagueOdd)
                     }
 
+                    when (args.matchType) {
+                        MatchType.OTHER -> {
+                            setOtherOddTab(leagueOdds.isNullOrEmpty())
+                        }
+                        else->{}
+                    }
 
                     //賽事訂閱規則 因頁面初次展示不超過兩項 故保持兩項賽事訂閱避免過多socket response導致頁面卡頓
 //                    if (leagueOdds.isNotEmpty()) {
