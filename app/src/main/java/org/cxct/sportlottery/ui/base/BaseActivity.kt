@@ -17,6 +17,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.*
 import kotlinx.android.synthetic.main.layout_loading.view.*
+import me.jessyan.autosize.internal.CustomAdapt
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
@@ -31,7 +32,7 @@ import kotlin.reflect.KClass
 import org.cxct.sportlottery.ui.main.MainActivity
 
 
-abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActivity() {
+abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActivity(), CustomAdapt {
 
     private var mLayoutHandler = Handler(Looper.getMainLooper())
     private var mPromptDialog: CustomAlertDialog? = null
@@ -297,5 +298,13 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     fun avoidFastDoubleClick(){
         mIsEnabled = false
         Handler().postDelayed({ mIsEnabled = true }, 500)
+    }
+
+    override fun isBaseOnWidth(): Boolean {
+        return true
+    }
+
+    override fun getSizeInDp(): Float {
+        return 375f
     }
 }

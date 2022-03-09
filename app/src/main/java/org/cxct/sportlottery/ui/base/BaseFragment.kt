@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
+import me.jessyan.autosize.internal.CustomAdapt
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
@@ -19,7 +20,7 @@ import kotlin.reflect.KClass
 
 
 @SuppressLint("InflateParams")
-open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
+open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment(), CustomAdapt {
 
     val viewModel: T by sharedViewModel(clazz = clazz)
     private var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一個
@@ -152,6 +153,14 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
     fun avoidFastDoubleClick(){
         mIsEnabled = false
         Handler().postDelayed({ mIsEnabled = true }, 500)
+    }
+
+    override fun isBaseOnWidth(): Boolean {
+        return true
+    }
+
+    override fun getSizeInDp(): Float {
+        return 375f
     }
 
 }

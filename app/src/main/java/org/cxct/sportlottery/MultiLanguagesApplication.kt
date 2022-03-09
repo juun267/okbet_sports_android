@@ -53,6 +53,8 @@ import timber.log.Timber
 import timber.log.Timber.DebugTree
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import me.jessyan.autosize.AutoSize
+import me.jessyan.autosize.AutoSizeConfig
 import org.cxct.sportlottery.ui.permission.GooglePermissionViewModel
 
 
@@ -168,6 +170,9 @@ class MultiLanguagesApplication : Application() {
 
         //生成UUID作為設備識別碼
         setupDeviceCode()
+
+        AutoSize.initCompatMultiProcess(this)
+        AutoSizeConfig.getInstance().isCustomFragment = true
     }
 
     private fun setupTimber() {
