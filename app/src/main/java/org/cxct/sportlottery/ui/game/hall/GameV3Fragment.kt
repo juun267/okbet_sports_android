@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -332,8 +333,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
         view.game_toolbar_champion.apply {
             visibility = when (args.matchType) {
-                MatchType.IN_PLAY, MatchType.AT_START -> View.VISIBLE
-                else -> View.GONE
+                MatchType.IN_PLAY, MatchType.AT_START -> {
+                    View.VISIBLE
+                }
+                else -> {
+                    View.GONE
+                }
             }
 
             setOnClickListener {
@@ -380,7 +385,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     game_toolbar_champion.isVisible = true
             }
 
-            if(args.matchType == MatchType.OTHER) game_toolbar_champion.isVisible = false
+            if(args.matchType == MatchType.OTHER) {
+                game_toolbar_champion.isVisible = false
+            }
         }
     }
 
@@ -944,7 +951,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             sport_type_list.isVisible = !it
             game_play_category.isVisible = !it
             game_toolbar_sport_type.isVisible = !it
-            game_toolbar_champion.isVisible = !it
             game_no_record.isVisible = it
             game_no_record_bg.isVisible = it
         })
