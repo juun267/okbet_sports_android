@@ -850,11 +850,12 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
             GameType.MR.name -> GameType.MR
             GameType.GF.name -> GameType.GF
             GameType.AFT.name -> GameType.AFT
+            GameType.FB.name -> GameType.FB
             else -> GameType.FT
         }
 
         when {
-            sportType == GameType.GF -> { //GF 只有冠軍
+            sportType == GameType.GF || sportType == GameType.FB-> { //GF、FB只有冠軍
                 viewModel.navSpecialEntrance(
                     MatchType.OUTRIGHT,
                     sportType
