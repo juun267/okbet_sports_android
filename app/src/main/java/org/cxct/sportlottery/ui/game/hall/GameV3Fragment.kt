@@ -39,6 +39,7 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsLeagueOddsItem
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.network.outright.season.Season
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
@@ -194,10 +195,11 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
                     addOddsDialog(matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap)
                 },
-                { matchOdd ->
+                { matchOdd, quickPlayCate ->
                     matchOdd.matchInfo?.let {
+                        mOpenedQuickListMap.clear()
                         viewModel.getQuickList2(it.id)
-                        openedQuickListMap[it.id] = matchOdd
+                        mOpenedQuickListMap[quickPlayCate.code ?: ""] = quickPlayCate
                     }
                 },
                 {
@@ -244,7 +246,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     var isUpdatingLeague = false
 
-    var openedQuickListMap = HashMap<String, MatchOdd>()
+    var mOpenedQuickListMap = HashMap<String, QuickPlayCate>()
+    var mQuickOddListMap = HashMap<String, MutableList<QuickPlayCate>>()
 
     private lateinit var moreEpsInfoBottomSheet: BottomSheetDialog
 
@@ -699,6 +702,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     leagueOdds.forEach { leagueOdd ->
                         subscribeChannelHall(leagueOdd)
                     }
+
+                    oddsListResult.oddsListData?.leagueOdds?.forEach { leagueOdd ->
+                        leagueOdd.matchOdds.forEach { matchOdd ->
+                            mQuickOddListMap[matchOdd.matchInfo?.id ?: ""] = matchOdd.quickPlayCateList ?: mutableListOf()
+                        }
+                    }
                     // TODO 這裡要確認是否有其他地方重複呼叫
                     Log.d("Hewie", "observe => OddsListGameHallResult")
                     //leagueAdapter.notifyDataSetChanged()
@@ -767,6 +776,15 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 //                            } != null
 //                        } != null
 //                    }
+                    oddsListResult.oddsListData?.leagueOdds?.forEach { leagueOdd ->
+                        leagueOdd.matchOdds.forEach { matchOdd ->
+                            matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                                mOpenedQuickListMap[quickPlayCate.code]?.let { openedQuick -> quickPlayCate.isSelected = openedQuick.isSelected }
+                            }
+
+                            mQuickOddListMap[matchOdd.matchInfo?.id ?: ""] = matchOdd.quickPlayCateList ?: mutableListOf()
+                        }
+                    }
                 }
             }
         }
@@ -1209,6 +1227,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                 when (game_list.adapter) {
                     is LeagueAdapter -> {
+                        leagueAdapter.data.forEach { leagueOdd ->
+                            leagueOdd.matchOdds.forEach { matchOdd ->
+                                matchOdd.quickPlayCateList = mQuickOddListMap[matchOdd.matchInfo?.id]
+                            }
+                        }
+
                         val leagueOdds = leagueAdapter.data
 
                         leagueOdds.forEachIndexed { index, leagueOdd ->

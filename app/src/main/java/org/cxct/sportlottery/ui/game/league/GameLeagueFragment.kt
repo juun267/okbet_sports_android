@@ -115,7 +115,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     addOddsDialog(matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap)
                     hideKeyboard()
                 },
-                { matchOdd ->
+                { matchOdd, quickPlayCate ->
                     matchOdd.matchInfo?.let {
                         viewModel.getQuickList(it.id)
                     }

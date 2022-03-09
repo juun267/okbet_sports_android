@@ -20,11 +20,15 @@ import kotlinx.android.synthetic.main.view_quick_odd_btn_eps.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_pager.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_pair.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.common.*
+import org.cxct.sportlottery.network.common.GameStatus
+import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.ui.common.CustomLinearLayoutManager
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -849,9 +853,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         it.isSelected = (it.hashCode() == checkedId)
                         it.positionButtonPage = 0
                         it.positionButtonPairTab = 0
+                        if(it.isSelected) {
+                            item.isExpand = true
+                            leagueOddListener?.onClickQuickCateTab(item, it)
+                        }
                     }
-
-                    leagueOddListener?.onClickQuickCateTab(item)
 
 //                    when (item.quickPlayCateList?.find { it.isSelected }?.code) {
 //                        QuickPlayCate.QUICK_OU.value, QuickPlayCate.QUICK_HDP.value, QuickPlayCate.QUICK_ADVANCE.value -> {
@@ -889,23 +895,30 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 } }
             //itemView.scroll_view_rg.visibility = if(item.quickPlayCateList.isNullOrEmpty()) View.GONE else View.VISIBLE
 
-            // item.quickPlayCateList?.find { it.isSelected }?.code
-            when (item.quickPlayCateList?.first()?.code) {
-                QuickPlayCate.QUICK_OU.value, QuickPlayCate.QUICK_HDP.value, QuickPlayCate.QUICK_ADVANCE.value -> {
+            invisibleOddButtons()
+            val quickPlayCate = item.quickPlayCateList?.find { it.isSelected }
+            Log.d("Hewie9", "League Name => ${item?.matchInfo?.homeName}")
+            Log.d("Hewie9", "Tab Name => ${quickPlayCate?.name}")
+            Log.d("Hewie9", "Code => ${quickPlayCate?.code}")
+            Log.d("Hewie9", "quickOdds => ${quickPlayCate?.quickOdds}")
+            Log.d("Hewie9", "isExpand => ${item?.isExpand}")
+            Log.d("Hewie9", "-----------------------------------------")
+            if(quickPlayCate?.quickOdds?.size == 0 && !item.isExpand) return
+            when (item.quickPlayCateList?.find { it.isSelected }?.code) {
+                org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_OU.value, org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_HDP.value, org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_ADVANCE.value -> {
                     setupQuickOddButtonPair(item, oddsType, leagueOddListener)
                 }
 
-                QuickPlayCate.QUICK_CORNERS.value, QuickPlayCate.QUICK_PENALTY.value -> {
+                org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_CORNERS.value, org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_PENALTY.value -> {
                     setupQuickOddButtonPager(item, oddsType, leagueOddListener)
                 }
 
-                QuickPlayCate.QUICK_EPS.value -> {
+                org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_EPS.value -> {
                     setupQuickOddButtonEps(item, oddsType, leagueOddListener)
                 }
-
-                else -> {
-                    invisibleOddButtons()
-                }
+//                else -> {
+//                    invisibleOddButtons()
+//                }
             }
 
 //            itemView.league_odd_quick_cate_tabs.apply {
@@ -972,9 +985,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 }
             }
 
+            //  item.quickPlayCateList?.find { it.isSelected }?.quickOdds ?: mapOf()
             val quickOdds = item.quickPlayCateList?.find { it.isSelected }?.quickOdds ?: mapOf()
             Log.d("Hewie", "setupQuickOddButtonPair: quickOdds => ${quickOdds.size}")
-            if(quickOdds.isEmpty()) return
 
             itemView.league_odd_quick_odd_btn_pair.visibility = View.VISIBLE
 
@@ -1003,6 +1016,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
 
             itemView.quick_odd_pair_tab.apply {
+                clearCheck()
                 setOnCheckedChangeListener { _, checkedId ->
                     when (checkedId) {
                         R.id.quick_odd_pair_tab_1 -> {
@@ -1051,8 +1065,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 )
                 this.adapter = quickOddButtonPagerAdapter.apply {
                     stateRestorationPolicy = StateRestorationPolicy.PREVENT
-                    this.odds = item.quickPlayCateList?.find { it.isSelected }?.quickOdds
-                        ?: mutableMapOf()
+                    val quickOdds = item.quickPlayCateList?.find { it.isSelected }?.quickOdds ?: mutableMapOf()
+                    this.odds = quickOdds
+                    Log.d("Hewie", "setupQuickOddButtonPager: quickOdds => ${quickOdds.size}")
 
                     this.oddsType = oddsType
 
@@ -1222,7 +1237,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 class LeagueOddListener(
     val clickListenerPlayType: (matchId: String?, matchInfoList: List<MatchInfo>) -> Unit,
     val clickListenerBet: (matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?) -> Unit,
-    val clickListenerQuickCateTab: (matchOdd: MatchOdd) -> Unit,
+    val clickListenerQuickCateTab: (matchOdd: MatchOdd, quickPlayCate: QuickPlayCate) -> Unit,
     val clickListenerQuickCateClose: () -> Unit,
     val clickListenerFavorite: (matchId: String?) -> Unit,
     val clickListenerStatistics: (matchId: String?) -> Unit,
@@ -1239,7 +1254,7 @@ class LeagueOddListener(
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
     ) = clickListenerBet(matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap)
 
-    fun onClickQuickCateTab(matchOdd: MatchOdd) = clickListenerQuickCateTab(matchOdd)
+    fun onClickQuickCateTab(matchOdd: MatchOdd, quickPlayCate: QuickPlayCate) = clickListenerQuickCateTab(matchOdd, quickPlayCate)
 
     fun onClickQuickCateClose() = clickListenerQuickCateClose()
 
