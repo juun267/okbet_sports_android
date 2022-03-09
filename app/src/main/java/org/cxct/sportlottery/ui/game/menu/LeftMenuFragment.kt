@@ -351,7 +351,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                     if (it.gameCount > 0 && matchType != null) {
                         unselectedList.add(
                             MenuItemData(
-                                R.drawable.img_golf,
+                                R.drawable.img_snooker,
                                 getString(R.string.cue_ball),
                                 GameType.CB.key,
                                 0,
