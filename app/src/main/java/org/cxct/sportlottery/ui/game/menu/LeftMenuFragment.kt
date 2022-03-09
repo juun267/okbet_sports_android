@@ -36,6 +36,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
+import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.menu.ChangeAppearanceDialog
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeFullScreenDialog
@@ -351,7 +352,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                     if (it.gameCount > 0 && matchType != null) {
                         unselectedList.add(
                             MenuItemData(
-                                R.drawable.img_golf,
+                                R.drawable.img_snooker,
                                 getString(R.string.cue_ball),
                                 GameType.CB.key,
                                 0,
@@ -445,6 +446,20 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                         )
                     }
                 }
+                GameType.FB -> {
+                    if (it.gameCount > 0 && matchType != null) {
+                        unselectedList.add(
+                            MenuItemData(
+                                R.drawable.img_finance,
+                                getString(R.string.financial_bets),
+                                GameType.FB.key,
+                                0,
+                                it.gameCount,
+                                game == GameType.FB.key
+                            )
+                        )
+                    }
+                }
                 else -> {}
             }
         }
@@ -463,7 +478,9 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                         0,
                         0,
                         false
-                    )
+                    ).apply {
+                        this.couponIcon = sportCouponMenuData.icon
+                    }
                     specialList.add(list)
                 }
                 newAdapter.addSpecialEvent(specialList, this)
@@ -542,7 +559,6 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                 setCanceledOnTouchOutside(false)
                 setCancelable(false)
             }?.show()
-            customSecurityDialog?.showErrorStatus(true)
         }
 
         viewModel.twoFactorSuccess.observe(viewLifecycleOwner) {
@@ -720,6 +736,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                     }
                 }
                 rvHistory.adapter = searchHistoryAdapter
+                OverScrollDecoratorHelper.setUpOverScroll(rvHistory, OverScrollDecoratorHelper.ORIENTATION_VERTICAL)
             }
         }
     }
@@ -745,6 +762,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
         rv_menu.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = newAdapter
+            OverScrollDecoratorHelper.setUpOverScroll(rv_menu, OverScrollDecoratorHelper.ORIENTATION_VERTICAL)
         }
         rvSearchResult.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
@@ -788,6 +806,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
             }
         }
         rvSearchResult.adapter = searchResultAdapter
+        OverScrollDecoratorHelper.setUpOverScroll(rvSearchResult, OverScrollDecoratorHelper.ORIENTATION_VERTICAL)
     }
 
     private fun updateMenuSport(favorSportTypeList: List<String>) {
@@ -831,11 +850,12 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
             GameType.MR.name -> GameType.MR
             GameType.GF.name -> GameType.GF
             GameType.AFT.name -> GameType.AFT
+            GameType.FB.name -> GameType.FB
             else -> GameType.FT
         }
 
         when {
-            sportType == GameType.GF -> { //GF 只有冠軍
+            sportType == GameType.GF || sportType == GameType.FB-> { //GF、FB只有冠軍
                 viewModel.navSpecialEntrance(
                     MatchType.OUTRIGHT,
                     sportType
