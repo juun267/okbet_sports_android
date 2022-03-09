@@ -463,7 +463,9 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                         0,
                         0,
                         false
-                    )
+                    ).apply {
+                        this.couponIcon = sportCouponMenuData.icon
+                    }
                     specialList.add(list)
                 }
                 newAdapter.addSpecialEvent(specialList, this)
