@@ -1,22 +1,19 @@
 package org.cxct.sportlottery.ui.finance
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.view_item_account_history.view.*
-import kotlinx.android.synthetic.main.view_item_recharge_log.view.*
 import kotlinx.android.synthetic.main.view_item_recharge_log.view.rech_log_date
 import kotlinx.android.synthetic.main.view_item_recharge_log.view.rech_log_time
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.money.list.Row
 import org.cxct.sportlottery.network.money.list.SportBillResult
-import org.cxct.sportlottery.ui.finance.df.RechType
-import org.cxct.sportlottery.ui.finance.df.Status
-import org.cxct.sportlottery.util.ArithUtil
-import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.TextUtil
 
+@SuppressLint("NotifyDataSetChanged")
 class AccountHistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class ItemType {
@@ -32,7 +29,7 @@ class AccountHistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var isFinalPage: Boolean = false
         set(value) {
             field = value
-            notifyDataSetChanged()
+            notifyItemChanged(data.size)
         }
 
 
@@ -72,7 +69,7 @@ class AccountHistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.rech_log_date.text = item.rechDateStr
             itemView.rech_log_time.text = item.rechTimeStr
             itemView.rech_order_num.text = item.orderNo
-            itemView.rech_balance.text = item.balance.toString()
+            itemView.rech_balance.text = TextUtil.format(item.balance)
             if(item.money<0){
                 itemView.rech_amont.setTextColor(
                     ContextCompat.getColor(
@@ -80,7 +77,7 @@ class AccountHistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         R.color.colorRed
                     )
                 )
-                itemView.rech_amont.text = ArithUtil.toMoneyFormat(item.money)
+                itemView.rech_amont.text =TextUtil.format(item.money)
             }else if(item.money>0){
                 itemView.rech_amont.setTextColor(
                     ContextCompat.getColor(
@@ -88,9 +85,9 @@ class AccountHistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         R.color.colorGreen
                     )
                 )
-                itemView.rech_amont.text = ArithUtil.toMoneyFormat(item.money)
+                itemView.rech_amont.text = "+"+TextUtil.format(item.money)
             }else{
-                itemView.rech_amont.text = ArithUtil.toMoneyFormat(item.money)
+                itemView.rech_amont.text = TextUtil.format(item.money)
             }
         }
 

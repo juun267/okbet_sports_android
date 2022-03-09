@@ -242,27 +242,12 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         })
     }
 
-    private suspend fun updateUiWithResult(loginResult: LoginResult) {
+    private fun updateUiWithResult(loginResult: LoginResult) {
         hideLoading()
         if (loginResult.success) {
-            if(loginResult.loginData?.deviceValidateStatus == 0){
-                if (viewModel.getUserPhone().isNullOrEmpty()) {
-                    val errorMsg = getString(R.string.dialog_security_need_phone)
-                    CustomAlertDialog(this).apply {
-                        setMessage(errorMsg)
-                        setNegativeButtonText(null)
-                        setCanceledOnTouchOutside(false)
-                        setCancelable(false)
-                    }.show()
-                    this.run {
-                        if (sConfigData?.thirdOpen == FLAG_OPEN)
-                            MainActivity.reStart(this)
-                        else
-                            GameActivity.reStart(this)
-                    }
-                } else
-                    startActivity(Intent(this@LoginActivity, PhoneVerifyActivity::class.java))
-            }else{
+            if (loginResult.loginData?.deviceValidateStatus == 0) {
+                startActivity(Intent(this@LoginActivity, PhoneVerifyActivity::class.java))
+            } else {
                 this.run {
                     if (sConfigData?.thirdOpen == FLAG_OPEN)
                         MainActivity.reStart(this)

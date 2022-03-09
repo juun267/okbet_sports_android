@@ -43,6 +43,7 @@ import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.TimerManager
 import org.cxct.sportlottery.ui.component.LiveViewToolbar
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
 import org.cxct.sportlottery.util.TimeUtil.DM_FORMAT
@@ -116,6 +117,10 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                 matchId?.let {
                     viewModel.getLiveInfo(it, newestUrl)
                 }
+            }
+
+            override fun showStatistics() {
+                StatisticsDialog.newInstance(matchId).show(childFragmentManager, StatisticsDialog::class.java.simpleName)
             }
         }
     }

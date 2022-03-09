@@ -43,7 +43,7 @@ class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: Att
     }
 
     private fun initDate() {
-        tv_start_date.text = TimeUtil.getDefaultDate().startTime
+        tv_start_date.text = TimeUtil.getDefaultDate(7).startTime
         tv_end_date.text = TimeUtil.getDefaultDate().endTime
     }
 
@@ -125,7 +125,7 @@ class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: Att
         val calendarPastMonth = TimeUtil.getTodayEndTimeCalendar()
         calendarPastMonth.add(Calendar.DATE, dateRange)
         bottomSheetView.calendar.setSelectableDateRange(calendarPastMonth, calendarToday)
-        bottomSheetView.calendar.setSelectedDateRange(TimeUtil.getCalendarForDates(6).first, TimeUtil.getCalendarForDates(6).second)
+        bottomSheetView.calendar.setSelectedDateRange(TimeUtil.getCalendarForDates(7).first, TimeUtil.getCalendarForDates(7).second)
     }
 
 }

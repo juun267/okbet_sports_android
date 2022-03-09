@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorBlackLight"
+        android:background="@color/colorWhite"
         android:orientation="horizontal">
 
         <TextView
@@ -21,7 +21,7 @@
             android:layout_height="48dp"
             android:gravity="start|center_vertical"
             android:paddingStart="@dimen/activity_vertical_margin"
-            android:textColor="@color/colorWhite6"
+            android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="parent"
@@ -35,8 +35,10 @@
             android:layout_height="48dp"
             android:padding="@dimen/activity_vertical_margin"
             android:src="@drawable/ic_close_menu"
+            android:tint="@color/colorBlackLight"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="UseAppTint" />
 
     </LinearLayout>
 
