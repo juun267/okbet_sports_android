@@ -446,6 +446,20 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                         )
                     }
                 }
+                GameType.FB -> {
+                    if (it.gameCount > 0 && matchType != null) {
+                        unselectedList.add(
+                            MenuItemData(
+                                R.drawable.img_finance,
+                                getString(R.string.financial_bets),
+                                GameType.FB.key,
+                                0,
+                                it.gameCount,
+                                game == GameType.FB.key
+                            )
+                        )
+                    }
+                }
                 else -> {}
             }
         }
