@@ -689,11 +689,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 hideLoading()
 
                 if (oddsListResult.success) {
-                    val leagueOdds = oddsListResult.oddsListData?.leagueOddsFilter
-                        ?: oddsListResult.oddsListData?.leagueOdds ?: listOf()
+                    mLeagueOddList.clear()
+                    mLeagueOddList.addAll(oddsListResult.oddsListData?.leagueOddsFilter
+                        ?: oddsListResult.oddsListData?.leagueOdds ?: listOf())
 
                     val gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
-                    leagueAdapter.data = leagueOdds.onEach { leagueOdd ->
+                    leagueAdapter.data = mLeagueOddList.onEach { leagueOdd ->
                         // 將儲存的賠率表指定的賽事列表裡面
                         val leagueOddFromMap = leagueOddMap[leagueOdd.league.id]
                         leagueOddFromMap?.let {
@@ -724,7 +725,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                     game_list.itemAnimator = null
 
-                    leagueOdds.forEach { leagueOdd ->
+                    mLeagueOddList.forEach { leagueOdd ->
                         unSubscribeChannelHall(leagueOdd)
                         subscribeChannelHall(leagueOdd)
                     }
@@ -740,32 +741,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                     when (args.matchType) {
                         MatchType.OTHER -> {
-                            setOtherOddTab(leagueOdds.isNullOrEmpty())
+                            setOtherOddTab(mLeagueOddList.isNullOrEmpty())
                         }
                         else->{}
                     }
-
-                    //賽事訂閱規則 因頁面初次展示不超過兩項 故保持兩項賽事訂閱避免過多socket response導致頁面卡頓
-//                    if (leagueOdds.isNotEmpty()) {
-//                        if (leagueOdds.first().matchOdds.size < 3) {
-//                            subscribeChannelHall(leagueOdds.first())
-//                            if (leagueOdds.first().matchOdds.size == 1 && leagueOdds.size > 1) {
-//                                subscribeChannelHallSingleMatchOdds(
-//                                    leagueOdds.component2(),
-//                                    leagueOdds.component2().matchOdds.component1()
-//                                )
-//                            }
-//                        } else {
-//                            subscribeChannelHallSingleMatchOdds(
-//                                leagueOdds.first(),
-//                                leagueOdds.first().matchOdds.component1()
-//                            )
-//                            subscribeChannelHallSingleMatchOdds(
-//                                leagueOdds.first(),
-//                                leagueOdds.first().matchOdds.component2()
-//                            )
-//                        }
-//                    }
                 }
                 refreshToolBarUI(this.view)
             }
@@ -775,39 +754,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         viewModel.quickOddsListGameHallResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { oddsListResult ->
                 if (oddsListResult.success) {
-//                    val leagueOdds = oddsListResult.oddsListData?.leagueOddsFilter ?: oddsListResult.oddsListData?.leagueOdds ?: listOf()
-//                    val gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
-//
-//                    leagueAdapter.data.find { leagueOdd ->
-//                        leagueOdd.matchOdds.find {
-//                            it.quickPlayCateList?.find {
-//                                if(it.isSelected) {
-//                                    Log.d("Hewie3", "A: ${leagueOdd.league.name} => ${it.name}")
-//                                }
-//                                it.isSelected
-//                            } != null
-//                        } != null
-//                    }
-
-//                    leagueAdapter.data.forEach {
-//                        it.matchOdds.forEach {  matchOdd ->
-//                            matchOdd = openedQuickListMap[matchOdd.matchInfo.id]
-//                            matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
-//                                Log.d("Hewie3", "quickPlayCate => ${quickPlayCate.isSelected}")
-//                            }
-//                        }
-//                    }
-//                    oddsListResult.oddsListData?.leagueOdds?.forEachIndexed { index, leagueOdd ->
-//                        //subscribeChannelHall(leagueOdd)
-//                        leagueOdd.matchOdds.find { matchOdd ->
-//                            openedQuickListMap[matchOdd.matchInfo?.id] ?: false
-//                            //Log.d("Hewie3", "Update: ${leagueOdd.league.name} => ${it.name}")
-//                            leagueAdapter.updateLeague(index, leagueOdd)
-//                            matchOdd.quickPlayCateList?.find {
-//
-//                            } != null
-//                        } != null
-//                    }
                     oddsListResult.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                         leagueOdd.matchOdds.forEach { matchOdd ->
                             matchOdd.isExpand = mOpenedQuickListMap[matchOdd.matchInfo?.id]?.isExpand ?: false

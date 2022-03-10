@@ -13,7 +13,7 @@
         android:layout_width="176dp"
         android:layout_height="224dp"
         android:layout_marginStart="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/rv_league_odd_btn_pager_main"
+        app:layout_constraintBottom_toBottomOf="@+id/nested_scroll_view_league_odd"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -420,21 +420,29 @@
         app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row3"
         tools:ignore="ContentDescription" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_league_odd_btn_pager_main"
+    <RelativeLayout
+        android:id="@+id/nested_scroll_view_league_odd"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border"
         app:layout_constraintEnd_toEndOf="parent"
         android:scrollbars="none"
         app:layout_constraintStart_toEndOf="@id/league_odd_match_border"
-        app:layout_constraintTop_toTopOf="parent"
-        android:nestedScrollingEnabled="false"
-        android:orientation="horizontal"
-        android:overScrollMode="never"
-        tools:itemCount="5"
-        tools:layout="@layout/itemview_odd_btn_2x2_v6"
-        tools:listitem="@layout/itemview_odd_btn_2x2_v6" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_league_odd_btn_pager_main"
+            android:layout_width="match_parent"
+            android:layout_height="224dp"
+            android:layout_marginTop="6dp"
+            android:nestedScrollingEnabled="false"
+            android:orientation="horizontal"
+            android:overScrollMode="never"
+            tools:itemCount="5"
+            tools:layout="@layout/itemview_odd_btn_2x2_v6"
+            tools:listitem="@layout/itemview_odd_btn_2x2_v6" />
+
+    </RelativeLayout>
 
     <View
         android:id="@+id/league_odd_quick_cate_divider"
@@ -443,31 +451,29 @@
         android:background="@color/colorWhite8"
         app:layout_constraintTop_toTopOf="@id/league_odd_quick_cate_border" />
 
-    <RadioGroup
-        android:id="@+id/league_odd_quick_cate_tabs"
+    <HorizontalScrollView
+        android:id="@+id/scroll_view_rg"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:scrollbars="none"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="@id/league_odd_quick_cate_border"
         app:layout_constraintEnd_toStartOf="@id/league_odd_quick_cate_close"
         app:layout_constraintStart_toStartOf="@id/league_odd_quick_cate_border"
         app:layout_constraintTop_toTopOf="@id/league_odd_quick_cate_border">
 
-<!--        <RadioGroup-->
-<!--            android:id="@+id/league_odd_quick_cate_tabs"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:gravity="center_vertical"-->
-<!--            android:orientation="horizontal"-->
-<!--            app:layout_constraintBottom_toBottomOf="@id/league_odd_quick_cate_border"-->
-<!--            app:layout_constraintEnd_toStartOf="@id/league_odd_quick_cate_close"-->
-<!--            app:layout_constraintStart_toStartOf="@id/league_odd_quick_cate_border"-->
-<!--            app:layout_constraintTop_toTopOf="@id/league_odd_quick_cate_border" />-->
-    </RadioGroup>
+        <RadioGroup
+            android:id="@+id/league_odd_quick_cate_tabs"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@id/league_odd_quick_cate_border"
+            app:layout_constraintEnd_toStartOf="@id/league_odd_quick_cate_close"
+            app:layout_constraintStart_toStartOf="@id/league_odd_quick_cate_border"
+            app:layout_constraintTop_toTopOf="@id/league_odd_quick_cate_border" />
+    </HorizontalScrollView>
 
     <ImageButton
         android:id="@+id/league_odd_quick_cate_close"
@@ -490,7 +496,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/league_odd_quick_cate_tabs"
+        app:layout_constraintTop_toBottomOf="@id/scroll_view_rg"
         tools:visibility="visible" />
 
     <include
