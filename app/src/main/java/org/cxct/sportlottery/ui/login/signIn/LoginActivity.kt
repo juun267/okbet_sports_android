@@ -287,12 +287,12 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         dialog.setNegativeButtonText(null)
         dialog.setCanceledOnTouchOutside(false)
         dialog.setCancelable(false)
-        dialog.show()
+        dialog.show(supportFragmentManager, null)
     }
 
     private fun showSelfLimitFrozeErrorDialog(errorMsg: String?) {
-        val dialog = SelfLimitFrozeErrorDialog(this)
+        val dialog = SelfLimitFrozeErrorDialog()
         dialog.setMessage(errorMsg)
-        dialog.show()
+        dialog.show(supportFragmentManager, null)
     }
 }

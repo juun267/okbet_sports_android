@@ -273,7 +273,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 setNegativeButtonText(null)
                 setCanceledOnTouchOutside(false)
                 setCancelable(false)
-            }.show()
+            }.show(supportFragmentManager, null)
         }
 
         //簡訊驗證成功
@@ -314,7 +314,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                         setNegativeButtonText(null)
                         setCanceledOnTouchOutside(false)
                         setCancelable(false)
-                    }.show()
+                    }.show(supportFragmentManager, null)
                 }
             }
         }

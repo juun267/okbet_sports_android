@@ -255,7 +255,7 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
                         setNegativeButtonText(null)
                         setCanceledOnTouchOutside(false)
                         setCancelable(false)
-                    }.show()
+                    }.show(supportFragmentManager, null)
                 }
             }
         }

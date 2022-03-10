@@ -1,24 +1,25 @@
 package org.cxct.sportlottery.ui.withdraw
 
-import android.app.AlertDialog
-import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_commission_info.*
 import org.cxct.sportlottery.R
 
-class CommissionInfoDialog(context: Context) : AlertDialog(context) {
+class CommissionInfoDialog: DialogFragment() {
 
-    private var layout = layoutInflater.inflate(R.layout.dialog_commission_info, null)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? = inflater.inflate(R.layout.dialog_commission_info, container, false)
 
-    init {
-        this.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        this.setCanceledOnTouchOutside(true)
-        setView(layout)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initButton()
+        dialog?.setCanceledOnTouchOutside(true)
     }
 
     private fun initButton() {

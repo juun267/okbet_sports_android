@@ -64,7 +64,7 @@ class FeedbackSubmitFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
                     setMessage(msgContent)
                     setNegativeButtonText(null)
                 }
-                dialog.show()
+                dialog.show(childFragmentManager, null)
                 view?.findNavController()?.navigate(R.id.action_feedbackSubmitFragment_to_feedbackSuggestFragment)
             }
         })

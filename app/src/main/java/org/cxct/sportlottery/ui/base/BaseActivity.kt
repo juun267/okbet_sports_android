@@ -30,7 +30,6 @@ import timber.log.Timber
 import kotlin.reflect.KClass
 import org.cxct.sportlottery.ui.main.MainActivity
 
-
 abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActivity() {
 
     private var mLayoutHandler = Handler(Looper.getMainLooper())
@@ -172,8 +171,8 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
                     setCanceledOnTouchOutside(false)
                     setCancelable(false) //不能用系統 BACK 按鈕關閉 dialog
-                    show()
                 }
+                mTokenPromptDialog?.show(supportFragmentManager, null)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -240,8 +239,8 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
                     setCanceledOnTouchOutside(false)
                     setCancelable(false) //不能用系統 BACK 按鈕關閉 dialog
-                    show()
                 }
+                mPromptDialog?.show(supportFragmentManager, null)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -286,7 +285,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         return defaultPosition
     }
 
-    protected fun safelyUpdateLayout(runnable: Runnable) {
+    private fun safelyUpdateLayout(runnable: Runnable) {
         try {
             mLayoutHandler.post(runnable)
         } catch (e: Exception) {

@@ -588,7 +588,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                         setNegativeButtonText(null)
                         setCanceledOnTouchOutside(false)
                         setCancelable(false)
-                    }.show()
+                    }.show(supportFragmentManager, null)
                 }
             }
         }

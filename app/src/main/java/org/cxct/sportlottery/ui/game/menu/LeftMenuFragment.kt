@@ -558,7 +558,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                 setNegativeButtonText(null)
                 setCanceledOnTouchOutside(false)
                 setCancelable(false)
-            }?.show()
+            }?.show(childFragmentManager, null)
         }
 
         viewModel.twoFactorSuccess.observe(viewLifecycleOwner) {
@@ -582,7 +582,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                         setNegativeButtonText(null)
                         setCanceledOnTouchOutside(false)
                         setCancelable(false)
-                    }?.show()
+                    }?.show(childFragmentManager, null)
                 }
             }
         }
