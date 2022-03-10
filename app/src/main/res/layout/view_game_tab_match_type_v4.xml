@@ -12,9 +12,12 @@
         android:layout_height="56dp"
         android:overScrollMode="never"
         app:layout_constraintTop_toTopOf="parent"
+        app:tabMaxWidth="150dp"
+        app:tabPaddingStart="0dp"
+        app:tabPaddingEnd="0dp"
         app:tabGravity="fill"
         app:tabIndicatorHeight="0dp"
-        app:tabMinWidth="54dp"
+        app:tabMinWidth="52dp"
         app:tabMode="scrollable"
         app:tabRippleColor="@null"
         tools:layout="@layout/home_cate_tab">

@@ -60,6 +60,7 @@ import org.cxct.sportlottery.ui.odds.OddsDetailLiveFragmentDirections
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
 import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.util.DisplayUtil.dp
 
 
 class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) {
@@ -395,6 +396,14 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             tabEps?.tv_title?.setText(R.string.home_tab_eps)
             tabEps?.tv_number?.text = countEps.toString()
 
+            //英文 越南文稍微加寬padding 不然會太擠
+            if(LanguageManager.getSelectLanguage(this) != LanguageManager.Language.ZH){
+                for (i in 0 until tabLayout.tabCount){
+                    tabLayout.getTabAt(i)?.customView.apply {
+                        this?.setPadding(8.dp,0,16.dp,0)
+                    }
+                }
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
