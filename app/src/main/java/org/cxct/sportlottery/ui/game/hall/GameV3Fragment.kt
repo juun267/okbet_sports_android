@@ -961,10 +961,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         viewModel.isNoEvents.observe(this.viewLifecycleOwner ,{
             hideLoading()
             sport_type_list.isVisible = !it
-            game_play_category.isVisible = !it
             game_toolbar_sport_type.isVisible = !it
             game_no_record.isVisible = it
             game_no_record_bg.isVisible = it
+            game_play_category.isVisible = (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START || args.matchType == MatchType.OTHER) && !it
         })
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner) {
