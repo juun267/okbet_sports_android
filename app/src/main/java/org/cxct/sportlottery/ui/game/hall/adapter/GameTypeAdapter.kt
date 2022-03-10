@@ -197,52 +197,52 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private fun setupSportTypeImage(img: ImageView, item: Item) {
             when (item.code) {
                 GameType.FT.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_ft_v5)
+                    img.setImageResource(R.drawable.selector_left_menu_ball_ft)
                 }
                 GameType.BK.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_bk_v5)
+                    img.setImageResource(R.drawable.selector_left_menu_ball_bk)
                 }
                 GameType.TN.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_tn_v5)
+                    img.setImageResource(R.drawable.selector_left_menu_ball_tn)
                 }
                 GameType.VB.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_vb_v5)
+                    img.setImageResource(R.drawable.selector_left_menu_ball_vb)
                 }
                 GameType.BM.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_bm_v5)
+                    img.setImageResource(R.drawable.selector_left_menu_ball_bm)
                 }
                 GameType.TT.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_tt_v5)
+                    img.setImageResource(R.drawable.selector_left_menu_ball_pp)
                 }
                 GameType.IH.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_ih_v5)
+                    img.setImageResource(R.drawable.selector_left_menu_ball_ih)
                 }
                 GameType.BX.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_bx_v5)
+                    img.setImageResource(R.drawable.selector_left_menu_ball_bx)
                 }
                 GameType.CB.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_cb_v5)
+                    img.setImageResource(R.drawable.selector_left_menu_ball_cb)
                 }
                 GameType.CK.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_ck_v5)
+                    img.setImageResource(R.drawable.selector_left_menu_ball_ck)
                 }
                 GameType.BB.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_bb_v5)
+                    img.setImageResource(R.drawable.selector_left_menu_ball_bb)
                 }
                 GameType.RB.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_rb_v5)
+                    img.setImageResource(R.drawable.selector_left_menu_ball_rb)
                 }
                 GameType.AFT.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_aft_v5)
+                    img.setImageResource(R.drawable.selector_left_menu_ball_aft)
                 }
                 GameType.MR.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_mr_v5)
+                    img.setImageResource(R.drawable.selector_left_menu_ball_mr)
                 }
                 GameType.GF.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_gf_v5)
+                    img.setImageResource(R.drawable.selector_left_menu_ball_gf)
                 }
                 GameType.FB.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_fb_v5)
+                    img.setImageResource(R.drawable.selector_left_menu_ball_fb)
                 }
             }
         }
