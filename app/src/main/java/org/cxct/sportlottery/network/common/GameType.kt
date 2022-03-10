@@ -85,6 +85,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 IH.key -> context.getString(IH.string)
                 MR.key -> context.getString(MR.string)
                 GF.key -> context.getString(GF.string)
+                FB.key -> context.getString(FB.string)
                 else -> ""
             }
         }
