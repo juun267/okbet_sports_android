@@ -282,6 +282,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                 }
             }
+            game_match_category_pager.isVisible =
+                tab?.text.toString() == getString(R.string.game_tab_league_odd)
         }
 
         override fun onTabReselected(tab: TabLayout.Tab?) {
