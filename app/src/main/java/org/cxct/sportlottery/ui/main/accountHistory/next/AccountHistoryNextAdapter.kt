@@ -326,26 +326,15 @@ class AccountHistoryNextAdapter(
 
     class TitleBarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        private val sportStatusList by lazy {
-            listOf(
-                StatusSheetData("", itemView.context.getString(R.string.all_sport)),
-                StatusSheetData(GameType.FT.key, itemView.context.getString(GameType.FT.string)),
-                StatusSheetData(GameType.BK.key, itemView.context.getString(GameType.BK.string)),
-                StatusSheetData(GameType.TN.key, itemView.context.getString(GameType.TN.string)),
-                StatusSheetData(GameType.VB.key, itemView.context.getString(GameType.VB.string)),
-                StatusSheetData(GameType.TT.key, itemView.context.getString(GameType.TT.string)),
-                StatusSheetData(GameType.IH.key, itemView.context.getString(GameType.IH.string)),
-                StatusSheetData(GameType.BX.key, itemView.context.getString(GameType.BX.string)),
-                StatusSheetData(GameType.CB.key, itemView.context.getString(GameType.CB.string)),
-                StatusSheetData(GameType.CK.key, itemView.context.getString(GameType.CK.string)),
-                StatusSheetData(GameType.BB.key, itemView.context.getString(GameType.BB.string)),
-                StatusSheetData(GameType.RB.key, itemView.context.getString(GameType.RB.string)),
-                StatusSheetData(GameType.MR.key, itemView.context.getString(GameType.MR.string)),
-                StatusSheetData(GameType.GF.key, itemView.context.getString(GameType.GF.string)),
-                StatusSheetData(GameType.AFT.key, itemView.context.getString(GameType.AFT.string)),
-                StatusSheetData(GameType.BM.key, itemView.context.getString(GameType.BM.string))
-            )
+        private val sportStatusList = mutableListOf<StatusSheetData>().apply {
+            this.add(StatusSheetData("", itemView.context.getString(R.string.all_sport)))
+
+            val itemList = GameType.values()
+            itemList.forEach { gameType ->
+                this.add(StatusSheetData(gameType.key, GameType.getGameTypeString(itemView.context, gameType.key)))
+            }
         }
+
         private val dateString by lazy {
             { minusDate: Int ->
                 "${TimeUtil.getMinusDate(minusDate)} ${
@@ -358,17 +347,11 @@ class AccountHistoryNextAdapter(
             }
         }
 
-        private val dateStatusList =
-            listOf(
-                StatusSheetData(TimeUtil.getMinusDate(0, YMD_FORMAT), dateString(0)),
-                StatusSheetData(TimeUtil.getMinusDate(1, YMD_FORMAT), dateString(1)),
-                StatusSheetData(TimeUtil.getMinusDate(2, YMD_FORMAT), dateString(2)),
-                StatusSheetData(TimeUtil.getMinusDate(3, YMD_FORMAT), dateString(3)),
-                StatusSheetData(TimeUtil.getMinusDate(4, YMD_FORMAT), dateString(4)),
-                StatusSheetData(TimeUtil.getMinusDate(5, YMD_FORMAT), dateString(5)),
-                StatusSheetData(TimeUtil.getMinusDate(6, YMD_FORMAT), dateString(6)),
-                StatusSheetData(TimeUtil.getMinusDate(7, YMD_FORMAT), dateString(7))
-            )
+        private val dateStatusList = mutableListOf<StatusSheetData>().apply {
+            for (i in 0..7) {
+                this.add(StatusSheetData(TimeUtil.getMinusDate(i, YMD_FORMAT), dateString(i)))
+            }
+        }
 
         fun bind(
             nowSelectedDate: String?,
