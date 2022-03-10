@@ -405,7 +405,7 @@
     <string name="title_recharge_time">Thời gian nạp tiền</string>
     <string name="title_current_money">Số dư hiện tại</string>
     <string name="btn_submit">Nộp</string>
-    <string name="btn_copy">sao chép</string>
+    <string name="btn_copy">Sao chép</string>
     <string name="title_qr_pay">Quét mã QR để thanh toán：</string>
     <string name="title_hint_qr_pay">Quét mã thanh toán KuaiJie, nếu bạn có bất kỳ vấn đề gì vui lòng liên hệ với bộ phận chăm sóc khách hàng!</string>
     <string name="title_fee_rate">・Phí xử lý：</string>
