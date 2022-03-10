@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -332,8 +333,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
         view.game_toolbar_champion.apply {
             visibility = when (args.matchType) {
-                MatchType.IN_PLAY, MatchType.AT_START -> View.VISIBLE
-                else -> View.GONE
+                MatchType.IN_PLAY, MatchType.AT_START -> {
+                    View.VISIBLE
+                }
+                else -> {
+                    View.GONE
+                }
             }
 
             setOnClickListener {
@@ -380,7 +385,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     game_toolbar_champion.isVisible = true
             }
 
-            if(args.matchType == MatchType.OTHER) game_toolbar_champion.isVisible = false
+            if(args.matchType == MatchType.OTHER) {
+                game_toolbar_champion.isVisible = false
+            }
         }
     }
 
@@ -402,7 +409,14 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         } else {
             epsItem.visibility = View.VISIBLE
         }
+    }
+    private fun setOtherOddTab(isGameListNull:Boolean) {
+        val gameItem = (view?.game_tab_odd_v4?.game_tabs?.getChildAt(0) as ViewGroup).getChildAt(0)
 
+        if (isGameListNull) {
+            game_tabs.selectTab(game_tabs.getTabAt(1))
+        }
+        gameItem.isVisible = !isGameListNull
     }
 
     private fun setupSportBackground(view: View) {
@@ -672,15 +686,14 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                     val gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
 
-                        game_list.apply {
-                            adapter = leagueAdapter.apply {
-                                updateType = null
-                                data = leagueOdds.onEach { leagueOdd ->
-                                    leagueOdd.gameType = gameType
-                                }.toMutableList()
-                            }
+                    game_list.apply {
+                        adapter = leagueAdapter.apply {
+                            updateType = null
+                            data = leagueOdds.onEach { leagueOdd ->
+                                leagueOdd.gameType = gameType
+                            }.toMutableList()
                         }
-
+                    }
 
                     //如果data資料為空時，又有其他球種的情況下，自動選取第一個
                     if (leagueAdapter.data.isNullOrEmpty() && gameTypeAdapter.dataSport.size > 1) {
@@ -696,6 +709,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         subscribeChannelHall(leagueOdd)
                     }
 
+                    when (args.matchType) {
+                        MatchType.OTHER -> {
+                            setOtherOddTab(leagueOdds.isNullOrEmpty())
+                        }
+                        else->{}
+                    }
 
                     //賽事訂閱規則 因頁面初次展示不超過兩項 故保持兩項賽事訂閱避免過多socket response導致頁面卡頓
 //                    if (leagueOdds.isNotEmpty()) {
@@ -944,7 +963,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             sport_type_list.isVisible = !it
             game_play_category.isVisible = !it
             game_toolbar_sport_type.isVisible = !it
-            game_toolbar_champion.isVisible = !it
             game_no_record.isVisible = it
             game_no_record_bg.isVisible = it
         })

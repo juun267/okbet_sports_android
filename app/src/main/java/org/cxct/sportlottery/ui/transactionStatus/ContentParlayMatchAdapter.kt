@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_parlay_match.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.MatchOdd
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 
@@ -77,6 +78,12 @@ class ContentParlayMatchAdapter :
 //                content_date.setDateNoYear(data.startTime)
                 content_date.visibility = View.GONE
 
+                if (data.rtScore?.isNotEmpty() == true)
+                    tv_score_parlay.text = String.format(
+                        context.getString(R.string.brackets),
+                        data.rtScore
+                    )
+                
             }
         }
     }

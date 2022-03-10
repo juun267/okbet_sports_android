@@ -9,4 +9,5 @@ data class MenuItemData(
     var isCurrentSportType: Boolean
 ) {
     var isHeaderOrFooter = false
+    var couponIcon: String = ""
 }
