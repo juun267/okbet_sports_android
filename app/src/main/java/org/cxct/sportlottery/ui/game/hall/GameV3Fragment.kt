@@ -725,6 +725,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     game_list.itemAnimator = null
 
                     leagueOdds.forEach { leagueOdd ->
+                        unSubscribeChannelHall(leagueOdd)
                         subscribeChannelHall(leagueOdd)
                     }
 
@@ -1874,6 +1875,40 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             it.code,
                             matchOdd.matchInfo?.id
                         )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun unSubscribeChannelHall(leagueOdd: LeagueOdd) {
+        leagueOdd.matchOdds.forEach { matchOdd ->
+            when (leagueOdd.unfold == FoldState.UNFOLD.code) {
+                true -> {
+                    unSubscribeChannelHall(
+                        leagueOdd.gameType?.key,
+                        getPlaySelectedCode(),
+                        matchOdd.matchInfo?.id
+                    )
+
+                    if (matchOdd.matchInfo?.eps == 1) {
+                        unSubscribeChannelHall(
+                            leagueOdd.gameType?.key,
+                            PlayCate.EPS.value,
+                            matchOdd.matchInfo.id
+                        )
+                    }
+
+                    matchOdd.quickPlayCateList?.forEach {
+                        when (it.isSelected) {
+                            true -> {
+                                unSubscribeChannelHall(
+                                    leagueOdd.gameType?.key,
+                                    it.code,
+                                    matchOdd.matchInfo?.id
+                                )
+                            }
+                        }
                     }
                 }
             }
