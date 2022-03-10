@@ -291,8 +291,8 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun showSelfLimitFrozeErrorDialog(errorMsg: String?) {
-        val dialog = SelfLimitFrozeErrorDialog(this)
+        val dialog = SelfLimitFrozeErrorDialog()
         dialog.setMessage(errorMsg)
-        dialog.show()
+        dialog.show(supportFragmentManager, null)
     }
 }

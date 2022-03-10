@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.withdraw
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -258,12 +257,11 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
         btn_delete_bank.setOnClickListener {
             modifyFinish()
-            val passwordDialog = WithdrawPassWordDialog(requireContext(), WithdrawPasswordDialogListener {
+            val passwordDialog = WithdrawPassWordDialog(WithdrawPasswordDialogListener {
                 viewModel.deleteBankCard(args.editBankCard?.id!!.toLong(), it)
             })
-            passwordDialog.apply {
-                show()
-            }
+            passwordDialog.show(childFragmentManager, null)
+
         }
     }
 

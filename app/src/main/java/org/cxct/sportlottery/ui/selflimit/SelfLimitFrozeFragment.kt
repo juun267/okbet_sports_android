@@ -24,10 +24,10 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
     override fun onClick(v: View?) {
         when (v) {
             binding.llImportant -> {
-                val dialog = SelfLimitFrozeImportantDialog(requireContext(), false)
+                val dialog = SelfLimitFrozeImportantDialog(false)
                 dialog.setCanceledOnTouchOutside(true)
-                dialog.setCancelable(true)
-                dialog.show()
+                dialog.isCancelable = true
+                dialog.show(childFragmentManager, null)
             }
             binding.btnConfirm -> {
                 submit()

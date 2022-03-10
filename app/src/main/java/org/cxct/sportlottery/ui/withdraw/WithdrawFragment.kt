@@ -74,7 +74,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         ll_tab_layout.visibility = View.GONE // 預設先隱藏 等待卡片資料讀取完畢後再顯示
 
         btn_info.setOnClickListener {
-            context?.let { context -> CommissionInfoDialog(context).show() }
+            CommissionInfoDialog().show(childFragmentManager, null)
         }
 
         tv_detail.setOnClickListener {

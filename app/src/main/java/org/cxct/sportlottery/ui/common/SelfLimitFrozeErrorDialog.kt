@@ -1,14 +1,10 @@
 package org.cxct.sportlottery.ui.common
 
-import android.content.Context
 import android.os.Bundle
-import android.text.Spanned
-import android.text.TextUtils
-import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
-import androidx.annotation.ColorRes
-import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
+import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_custom_alert.*
 import org.cxct.sportlottery.R
 
@@ -20,14 +16,18 @@ import org.cxct.sportlottery.R
  * this.setCanceledOnTouchOutside(false) //disable 點擊外部關閉 dialog
  * this.setCancelable(false) //disable 按實體鍵 BACK 關閉 dialog
  */
-class SelfLimitFrozeErrorDialog(context: Context) : AlertDialog(context) {
+class SelfLimitFrozeErrorDialog : DialogFragment() {
 
     private var mMessage: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.dialog_self_limit_froze)
-        window?.setBackgroundDrawableResource(android.R.color.transparent)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? = inflater.inflate(R.layout.dialog_self_limit_froze, container, false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initView()
     }
 
