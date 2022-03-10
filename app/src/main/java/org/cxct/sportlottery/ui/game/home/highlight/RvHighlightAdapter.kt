@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,8 +47,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
     }
 
     private fun processData(sportCode: String?, newList: List<OddData>?, selectedOdds: MutableList<String>) {
-        GlobalScope.launch(Dispatchers.IO) {
-            dataList = newList?.map { it ->
+        var newDataList = newList?.map { it ->
                 val matchInfo = MatchInfo(
                     gameType = sportCode,
                     awayName = it.matchInfo?.awayName ?: "",
@@ -86,10 +86,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                     it.oddsSort
                 )
             } ?: listOf()
-            withContext(Dispatchers.Main) {
-                notifyDataSetChanged()
-            }
-        }
+        dataList = newDataList
     }
 
     fun getData() = dataList
