@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -17,6 +18,8 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.finance.FinanceActivity
+import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.GridItemDecoration
 
 class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechViewModel::class) {
 
@@ -303,5 +306,13 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
         })
         rv_pay_type.layoutManager = GridLayoutManager(this@MoneyRechargeActivity, 2)
         rv_pay_type.adapter = bankTypeAdapter
+        rv_pay_type.addItemDecoration(
+            GridItemDecoration(
+                10.dp,
+                7.dp,
+                ContextCompat.getColor(this, R.color.colorWhite),
+                false
+            )
+        )
     }
 }
