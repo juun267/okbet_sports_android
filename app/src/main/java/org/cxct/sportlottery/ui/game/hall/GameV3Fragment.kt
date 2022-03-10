@@ -705,6 +705,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                     game_list.itemAnimator = null
 
+                    unSubscribeChannelHallAll()
                     leagueOdds.forEach { leagueOdd ->
                         subscribeChannelHall(leagueOdd)
                     }
