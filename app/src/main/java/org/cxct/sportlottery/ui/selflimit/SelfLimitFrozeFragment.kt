@@ -111,8 +111,7 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
             }
             setCanceledOnTouchOutside(false)
             setCancelable(false) //不能用系統 BACK 按鈕關閉 dialog
-            show()
-        }
+        }.show(childFragmentManager, null)
     }
 
     private fun initDataLive() {
@@ -137,7 +136,7 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
                         }
                     }
                 }
-                dialog.show()
+                dialog.show(childFragmentManager, null)
             }
 
         })

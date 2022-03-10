@@ -80,7 +80,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
             viewModel.getHost()
             dialog.dismiss()
         })
-        dialog.show()
+        dialog.show(supportFragmentManager, null)
     }
 
     //檢查版本: 當前版號小於最小更新版號 => 強制更新

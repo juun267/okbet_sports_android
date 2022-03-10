@@ -443,7 +443,7 @@ class ProfileCenterActivity :
                 setNegativeButtonText(null)
                 setCanceledOnTouchOutside(false)
                 setCancelable(false)
-            }.show()
+            }.show(supportFragmentManager, null)
         }
 
         viewModel.twoFactorSuccess.observe(this) {
@@ -467,7 +467,7 @@ class ProfileCenterActivity :
                         setNegativeButtonText(null)
                         setCanceledOnTouchOutside(false)
                         setCancelable(false)
-                    }.show()
+                    }.show(supportFragmentManager, null)
                 }
             }
         }

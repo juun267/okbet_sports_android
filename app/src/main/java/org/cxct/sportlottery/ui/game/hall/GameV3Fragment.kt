@@ -546,7 +546,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                     dialog.setCanceledOnTouchOutside(false)
                     dialog.setCancelable(false)
-                    dialog.show()
+                    dialog.show(childFragmentManager, null)
                 }
             }
         }

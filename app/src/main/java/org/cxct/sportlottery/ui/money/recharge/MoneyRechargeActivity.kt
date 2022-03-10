@@ -111,7 +111,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
                     setMessage(apiResult.msg)
                     setNegativeButtonText(null)
                 }.let {
-                    customAlertDialog.show()
+                    customAlertDialog.show(supportFragmentManager, null)
                 }
             } else {
                 //顯示成功彈窗
@@ -148,7 +148,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
                     setNegativeButtonText(null)
                     setTextColor(R.color.colorRed)
                 }.let {
-                    customAlertDialog.show()
+                    customAlertDialog.show(supportFragmentManager, null)
                 }
             } else {
                 //顯示成功彈窗

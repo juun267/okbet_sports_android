@@ -171,8 +171,8 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
                     setCanceledOnTouchOutside(false)
                     setCancelable(false) //不能用系統 BACK 按鈕關閉 dialog
-                    show()
                 }
+                mTokenPromptDialog?.show(supportFragmentManager, null)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -239,8 +239,8 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
                     setCanceledOnTouchOutside(false)
                     setCancelable(false) //不能用系統 BACK 按鈕關閉 dialog
-                    show()
                 }
+                mPromptDialog?.show(supportFragmentManager, null)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
