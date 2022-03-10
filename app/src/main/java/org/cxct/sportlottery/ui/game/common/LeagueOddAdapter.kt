@@ -848,7 +848,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 //itemView.scroll_view_rg.visibility = if(item.quickPlayCateList.isNullOrEmpty()) View.GONE else View.VISIBLE
 
                 setOnCheckedChangeListener { group, checkedId ->
-                    Log.d("Hewie5", "setOnCheckedChangeListener => ${item.matchInfo?.id}")
+                    Log.d("Hewie9", "setOnCheckedChangeListener => ${item.matchInfo?.homeName}")
                     item.quickPlayCateList?.forEach {
                         it.isSelected = (it.hashCode() == checkedId)
                         it.positionButtonPage = 0

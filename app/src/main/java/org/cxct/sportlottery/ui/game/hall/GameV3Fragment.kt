@@ -39,12 +39,12 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsLeagueOddsItem
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.network.outright.season.Season
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
-import org.cxct.sportlottery.network.sport.query.SportQueryData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
@@ -197,12 +197,13 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 },
                 { matchOdd, quickPlayCate ->
                     matchOdd.matchInfo?.let {
-                        mOpenedQuickListMap.clear()
+                        //mOpenedQuickListMap.clear()
                         viewModel.getQuickList2(it.id)
-                        mOpenedQuickListMap[quickPlayCate.code ?: ""] = quickPlayCate
+                        mOpenedQuickListMap[matchOdd.matchInfo.id] = matchOdd
                     }
                 },
                 {
+                    mOpenedQuickListMap.forEach { t, u -> u.isExpand = false }
                     viewModel.clearQuickPlayCateSelected()
                 },
                 { matchId ->
@@ -246,7 +247,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     var isUpdatingLeague = false
 
-    var mOpenedQuickListMap = HashMap<String, QuickPlayCate>()
+    var mLeagueOddList = ArrayList<LeagueOdd>()
+    var mOpenedQuickListMap = HashMap<String, MatchOdd>()
     var mQuickOddListMap = HashMap<String, MutableList<QuickPlayCate>>()
 
     private lateinit var moreEpsInfoBottomSheet: BottomSheetDialog
@@ -710,6 +712,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                     // TODO 這裡要確認是否有其他地方重複呼叫
                     Log.d("Hewie", "observe => OddsListGameHallResult")
+                    String
                     //leagueAdapter.notifyDataSetChanged()
 
 
@@ -778,9 +781,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 //                    }
                     oddsListResult.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                         leagueOdd.matchOdds.forEach { matchOdd ->
-                            matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
-                                mOpenedQuickListMap[quickPlayCate.code]?.let { openedQuick -> quickPlayCate.isSelected = openedQuick.isSelected }
-                            }
+                            matchOdd.isExpand = mOpenedQuickListMap[matchOdd.matchInfo?.id]?.isExpand ?: false
+                            matchOdd.quickPlayCateList = mOpenedQuickListMap[matchOdd.matchInfo?.id]?.quickPlayCateList
 
                             mQuickOddListMap[matchOdd.matchInfo?.id ?: ""] = matchOdd.quickPlayCateList ?: mutableListOf()
                         }
