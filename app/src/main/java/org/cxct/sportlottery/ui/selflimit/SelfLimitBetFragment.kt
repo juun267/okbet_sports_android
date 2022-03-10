@@ -42,10 +42,10 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
     override fun onClick(v: View?) {
         when (v) {
             binding.llImportant -> {
-                val dialog = SelfLimitFrozeImportantDialog(requireContext(), true)
+                val dialog = SelfLimitFrozeImportantDialog(true)
                 dialog.setCanceledOnTouchOutside(true)
-                dialog.setCancelable(true)
-                dialog.show()
+                dialog.isCancelable = true
+                dialog.show(childFragmentManager, null)
             }
             binding.btnConfirm -> {
                 submit()
@@ -142,7 +142,7 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
             }
             setCanceledOnTouchOutside(false)
             setCancelable(false) //不能用系統 BACK 按鈕關閉 dialog
-            show()
+            show(childFragmentManager, null)
         }
     }
 
@@ -162,7 +162,7 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
                         dismiss()
                     }
                 }
-                dialog.show()
+                dialog.show(childFragmentManager, null)
             }
 
         })

@@ -64,6 +64,9 @@ class FinanceViewModel(
     val isFinalPage: LiveData<Boolean>
         get() = _isFinalPage
 
+    val accountHistoryList: LiveData<List<SportBillResult.Row>>
+        get() = _accountHistoryList
+
     private val _isLoading = MutableLiveData<Boolean>()
     private val _userRechargeListResult = MutableLiveData<MutableList<Row>?>()
     private val _userWithdrawResult = MutableLiveData<MutableList<org.cxct.sportlottery.network.withdraw.list.Row>?>()
@@ -76,6 +79,8 @@ class FinanceViewModel(
 
     private val _isFinalPage = MutableLiveData<Boolean>().apply { value = false }
     private var page = 1
+
+    private val _accountHistoryList = MutableLiveData<List<SportBillResult.Row>>()
 
 
     fun setRecordType(recordType: String) {
@@ -121,7 +126,16 @@ class FinanceViewModel(
 
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                OneBoSportApi.moneyService.getUserRechargeList(RechargeListRequest(rechType = filter(rechType), status = filter(status)?.toIntOrNull(), startTime = startTime, endTime = endTime, page = page, pageSize = pageSize))
+                OneBoSportApi.moneyService.getUserRechargeList(
+                    RechargeListRequest(
+                        rechType = filter(rechType),
+                        status = filter(status)?.toIntOrNull(),
+                        startTime = startTime,
+                        endTime = endTime,
+                        page = page,
+                        pageSize = pageSize
+                    )
+                )
             }
 
             result?.rows?.map {
@@ -169,80 +183,66 @@ class FinanceViewModel(
         }
     }
 
-    fun getUserAccountHistoryList(
-        isFirstFetch: Boolean,
+    fun getUserAccountHistory(
+        isFirstFetch: Boolean = false,
         startTime: String? = TimeUtil.getDefaultTimeStamp().startTime,
         endTime: String? = TimeUtil.getDefaultTimeStamp().endTime,
         tranTypeGroup: String? = "bet",
     ) {
-        if (!isFirstFetch && isFinalPage.value == true) return
+        if (isFinalPage.value == true && !isFirstFetch){
+            return
+        }
+
+        if (isFirstFetch) {
+            _isFinalPage.postValue(false)
+            page = 1
+        }
 
         loading()
-        when {
-            isFirstFetch -> {
-                //rechargeLogList.clear()
-                _isFinalPage.postValue(false)
-                page = 1
-            }
-            else -> {
-                if (isFinalPage.value == false) {
-                    page++
-                }
-            }
-        }
 
         viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.moneyService.getBillList(SportBillListRequest(tranTypeGroup = tranTypeGroup, startTime = startTime, endTime = endTime, page = page, pageSize = pageSize))
-            }
+            doNetwork(androidContext) {
+                OneBoSportApi.moneyService.getBillList(
+                    SportBillListRequest(
+                        tranTypeGroup = tranTypeGroup,
+                        startTime = startTime,
+                        endTime = endTime,
+                        page = page,
+                        pageSize = pageSize
+                    )
+                )
+            }?.let { result ->
+                if (result.success) {
+                    if (result.rows.size < pageSize) {
+                        _isFinalPage.postValue(true)
+                    }
 
-            result?.rows?.map {
-//                it.rechState = when (it.status) {
-//                    Status.SUCCESS.code -> androidContext.getString(R.string.recharge_state_success)
-//                    Status.FAILED.code -> androidContext.getString(R.string.recharge_state_failed)
-//                    Status.PROCESSING.code, Status.RECHARGING.code -> androidContext.getString(R.string.recharge_state_processing)
-//                    else -> ""
-//                }
-//
-//                it.rechTypeDisplay = when (it.rechType) {
-//                    RechType.ONLINE_PAYMENT.type -> androidContext.getString(R.string.recharge_channel_online)
-//                    RechType.ADMIN_ADD_MONEY.type -> androidContext.getString(R.string.recharge_channel_admin)
-//                    RechType.CFT.type -> androidContext.getString(R.string.recharge_channel_cft)
-//                    RechType.WEIXIN.type -> androidContext.getString(R.string.recharge_channel_weixin)
-//                    RechType.ALIPAY.type -> androidContext.getString(R.string.recharge_channel_alipay)
-//                    RechType.BANK_TRANSFER.type -> androidContext.getString(R.string.recharge_channel_bank)
-//                    RechType.CRYPTO.type -> androidContext.getString(R.string.recharge_channel_crypto)
-//                    RechType.GCASH.type -> androidContext.getString(R.string.recharge_channel_gcash)
-//                    RechType.GRABPAY.type -> androidContext.getString(R.string.recharge_channel_grabpay)
-//                    RechType.PAYMAYA.type -> androidContext.getString(R.string.recharge_channel_paymaya)
-//                    else -> ""
-//                }
+                    page++
 
-                it.addTime = TimeUtil.timeFormat(it.addTime.toLong(), "yyyy-MM-dd HH:mm:ss")
-                val split = it.addTime.split(' ')
+                    result.rows.map {
+                        it.addTime = TimeUtil.timeFormat(it.addTime.toLong(), "yyyy-MM-dd HH:mm:ss")
+                        val split = it.addTime.split(' ')
+                        it.rechDateStr = split[0]
+                        it.rechTimeStr = split[1]
+                    }
 
-                it.rechDateStr = split[0]
-                it.rechTimeStr = split[1]
-            }
-//
-//            result?.rows?.let {
-//                rechargeLogList.addAll(it)
-//            }
-//
-            result?.total?.let {
-                _isFinalPage.postValue(page * pageSize >= it)
-            }
-            result?.let {
-                if (it.success) {
-                    _userSportBillListResult.postValue(it)
+                    _accountHistoryList.postValue(
+                        mutableListOf<SportBillResult.Row>().apply {
+                            if (!isFirstFetch) {
+                                addAll(accountHistoryList.value ?: listOf())
+                            }
+                            addAll(result.rows)
+                        }
+                    )
+
+                    _userSportBillListResult.postValue(result)
                 }
+
+                hideLoading()
             }
 
-
-            hideLoading()
         }
     }
-
 
     private val withdrawLogList = mutableListOf<org.cxct.sportlottery.network.withdraw.list.Row>()
 
@@ -258,7 +258,14 @@ class FinanceViewModel(
         val filter = { item: String? -> if (item == allTag) null else item }
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                OneBoSportApi.withdrawService.getWithdrawList(WithdrawListRequest(checkStatus = filter(checkStatus)?.toIntOrNull(), uwType = filter(uwType), startTime = startTime, endTime = endTime))
+                OneBoSportApi.withdrawService.getWithdrawList(
+                    WithdrawListRequest(
+                        checkStatus = filter(checkStatus)?.toIntOrNull(),
+                        uwType = filter(uwType),
+                        startTime = startTime,
+                        endTime = endTime
+                    )
+                )
             }
 
             result.apply {

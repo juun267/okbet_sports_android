@@ -1,14 +1,10 @@
 package org.cxct.sportlottery.ui.finance
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_account_history_log.*
@@ -23,14 +19,15 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
 
-
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            recyclerView.layoutManager?.let {
-                val firstVisibleItemPosition: Int = (it as LinearLayoutManager).findFirstVisibleItemPosition()
-                viewModel.getUserRechargeList(false, date_range_selector.startTime.toString(),
-                                              date_range_selector.endTime.toString(),
-                                              selector_order_status.selectedTag,)
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            if (!recyclerView.canScrollVertically(1)) {
+                viewModel.getUserAccountHistory(
+                    false,
+                    date_range_selector.startTime.toString(),
+                    date_range_selector.endTime.toString(),
+                    selector_order_status.selectedTag,
+                )
             }
         }
     }
@@ -41,14 +38,12 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
 
     private val accountHistoryAdapter by lazy {
         AccountHistoryAdapter()
-        }
-
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_account_history_log, container, false).apply {
 
             //setupListColumn(this)
@@ -73,10 +68,12 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
 
     private fun setupSearch(view: View) {
         view.date_range_selector.setOnClickSearchListener {
-            viewModel.getUserAccountHistoryList(true,
-                                          date_range_selector.startTime.toString(),
-                                          date_range_selector.endTime.toString(),
-                                          selector_order_status.selectedTag)
+            viewModel.getUserAccountHistory(
+                true,
+                date_range_selector.startTime.toString(),
+                date_range_selector.endTime.toString(),
+                selector_order_status.selectedTag
+            )
         }
     }
 
@@ -96,15 +93,19 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
         viewModel.isFinalPage.observe(this.viewLifecycleOwner, {
             accountHistoryAdapter.isFinalPage = it
         })
+
         viewModel.userSportBillListResult.observe(this.viewLifecycleOwner, {
             it?.apply {
-                accountHistoryAdapter.data = it.rows
                 tv_total_number.text = it.total.toString()
                 setupNoRecordView(it.rows.isEmpty())
             }
         })
 
-        viewModel.getUserAccountHistoryList(true)
+        viewModel.accountHistoryList.observe(this.viewLifecycleOwner, {
+            accountHistoryAdapter.data = it
+        })
+
+        viewModel.getUserAccountHistory(isFirstFetch = true)
     }
 
     private fun setupNoRecordView(visible: Boolean) {

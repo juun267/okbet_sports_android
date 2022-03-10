@@ -3,20 +3,15 @@ package org.cxct.sportlottery.ui.base
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Handler
-import android.view.LayoutInflater
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import kotlin.reflect.KClass
-
 
 @SuppressLint("InflateParams")
 open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {

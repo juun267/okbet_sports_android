@@ -100,7 +100,7 @@ class CustomSecurityDialog(context: Context) : DialogFragment() {
     }
 
     fun showErrorStatus(b:Boolean){
-        securityCodeStyleEditText.showErrorStatus(b)
+//        securityCodeStyleEditText.showErrorStatus(b)
     }
 
     class PositiveClickListener(private val clickListener: (string:String) -> Unit) {

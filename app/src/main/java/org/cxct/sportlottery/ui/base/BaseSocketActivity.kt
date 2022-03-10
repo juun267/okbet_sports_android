@@ -5,6 +5,7 @@ import android.content.*
 import android.os.Bundle
 import android.os.IBinder
 import androidx.lifecycle.Observer
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.repository.*
@@ -227,10 +228,10 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
             addAction(BackService.SERVICE_SEND_DATA)
         }
 
-        registerReceiver(receiver, filter)
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter)
     }
 
     private fun removeBroadCastReceiver() {
-        unregisterReceiver(receiver)
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver)
     }
 }

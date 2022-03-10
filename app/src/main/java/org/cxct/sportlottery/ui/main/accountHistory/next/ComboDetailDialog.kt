@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.main.accountHistory.next
 
 import android.app.Dialog
 import android.content.Context
+import android.provider.Settings.Global.getString
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
@@ -98,8 +99,9 @@ class ComboDetailDialog internal constructor(
                         holder.setText(R.id.tvScore, matchOdds.rtScore)
                         holder.setText(
                             R.id.tvTeamNames,
-                            matchOdds.homeName + " V.S " + matchOdds.awayName
+                            String.format(mContext.getString(R.string.match_names_2), matchOdds.homeName, matchOdds.awayName)
                         )
+
                         holder.setText(
                             R.id.tvContent,
                             matchOdds.playName + " " + matchOdds.spread + " @ " + matchOdds.odds

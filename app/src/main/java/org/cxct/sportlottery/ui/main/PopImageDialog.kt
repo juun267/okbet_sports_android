@@ -1,8 +1,10 @@
 package org.cxct.sportlottery.ui.main
 
-import android.app.AlertDialog
-import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -16,13 +18,16 @@ import org.cxct.sportlottery.util.JumpUtil
  * 顯示彈窗圖片資料
  */
 //20210414 紀錄：體育暫不使用首頁彈窗圖功能
-class PopImageDialog(context: Context, val imageDataList: List<ImageData>) : AlertDialog(context) {
+class PopImageDialog(val imageDataList: List<ImageData>) : DialogFragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.dialog_pop_image)
-        window?.setBackgroundDrawableResource(android.R.color.transparent)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? = inflater.inflate(R.layout.dialog_pop_image, container, false)
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setupClose()
         initImage()
     }
@@ -39,7 +44,7 @@ class PopImageDialog(context: Context, val imageDataList: List<ImageData>) : Ale
                 //如果有 連結url, 點擊跳轉畫面
                 image.setOnClickListener {
                     if (!imageDataList[0].imageLink.isNullOrEmpty()) {
-                        JumpUtil.toExternalWeb(context, imageDataList[0].imageLink)
+                        JumpUtil.toExternalWeb(context ?: requireContext(), imageDataList[0].imageLink)
                     }
                 }
 
@@ -54,7 +59,7 @@ class PopImageDialog(context: Context, val imageDataList: List<ImageData>) : Ale
                 //加載圖片
                 val url = sConfigData?.resServerHost + imageDataList[0].imageName1
 
-                Glide.with(context)
+                Glide.with(context ?: requireContext())
                     .load(url)
                     .apply(requestOptions)
                     .into(image)

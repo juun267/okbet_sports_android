@@ -19,6 +19,11 @@
         android:networkSecurityConfig="${NETWORK_SECURITY_CONFIG}"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="design_width_in_dp"
+            android:value="375"/>
+
         <activity android:name=".ui.profileCenter.identity.VerifyIdentityActivity"
             android:screenOrientation="portrait" />
         <activity

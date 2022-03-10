@@ -1,29 +1,30 @@
 package org.cxct.sportlottery.ui.withdraw
 
-import android.app.AlertDialog
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.KeyEvent
-import android.view.View
-import android.view.WindowManager
+import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_withdraw_password.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.login.afterTextChanged
 
-class WithdrawPassWordDialog(context: Context, private val listener: WithdrawPasswordDialogListener) : AlertDialog(context) {
+class WithdrawPassWordDialog(private val listener: WithdrawPasswordDialogListener) : DialogFragment() {
+
     private val passwordViewList by lazy { mutableListOf<ImageView>(iv_first, iv_second, iv_third, iv_fourth) }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.dialog_withdraw_password)
-        window?.apply {
-            setBackgroundDrawableResource(android.R.color.transparent)
-            clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
-        }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? = inflater.inflate(R.layout.dialog_withdraw_password, container, false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        dialog?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
         initEvent()
         initView()
     }
@@ -58,7 +59,6 @@ class WithdrawPassWordDialog(context: Context, private val listener: WithdrawPas
                 }
                 return false
             }
-
         })
     }
 
@@ -104,11 +104,11 @@ class WithdrawPassWordDialog(context: Context, private val listener: WithdrawPas
         val showBackground: Drawable?
         val showColor: Int
         if (!isError) {
-            showBackground = ContextCompat.getDrawable(context, R.color.colorSilver)
-            showColor = ContextCompat.getColor(context, R.color.colorSilver)
+            showBackground = ContextCompat.getDrawable(context ?: requireContext(), R.color.colorSilver)
+            showColor = ContextCompat.getColor(context ?: requireContext(), R.color.colorSilver)
         } else {
-            showBackground = ContextCompat.getDrawable(context, R.color.colorRed)
-            showColor = ContextCompat.getColor(context, R.color.colorRed)
+            showBackground = ContextCompat.getDrawable(context ?: requireContext(), R.color.colorRed)
+            showColor = ContextCompat.getColor(context ?: requireContext(), R.color.colorRed)
         }
         cv_frame.setCardBackgroundColor(showColor)
         line1.background = showBackground
@@ -118,12 +118,12 @@ class WithdrawPassWordDialog(context: Context, private val listener: WithdrawPas
 
     private fun modifyFinish() {
         hideKeyBoard()
-        this@WithdrawPassWordDialog.currentFocus?.clearFocus()
+        this@WithdrawPassWordDialog.dialog?.currentFocus?.clearFocus()
     }
 
     private fun showKeyBoard() {
         try {
-            val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -133,8 +133,8 @@ class WithdrawPassWordDialog(context: Context, private val listener: WithdrawPas
     private fun hideKeyBoard() {
         try {
             //*隱藏軟鍵盤
-            val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            val focusedView = this@WithdrawPassWordDialog.currentFocus
+            val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val focusedView = this@WithdrawPassWordDialog.dialog?.currentFocus
             if (inputMethodManager.isActive && focusedView != null) {
                 inputMethodManager.hideSoftInputFromWindow(focusedView.windowToken, 0)
             }

@@ -24,10 +24,10 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
     override fun onClick(v: View?) {
         when (v) {
             binding.llImportant -> {
-                val dialog = SelfLimitFrozeImportantDialog(requireContext(), false)
+                val dialog = SelfLimitFrozeImportantDialog(false)
                 dialog.setCanceledOnTouchOutside(true)
-                dialog.setCancelable(true)
-                dialog.show()
+                dialog.isCancelable = true
+                dialog.show(childFragmentManager, null)
             }
             binding.btnConfirm -> {
                 submit()
@@ -111,8 +111,7 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
             }
             setCanceledOnTouchOutside(false)
             setCancelable(false) //不能用系統 BACK 按鈕關閉 dialog
-            show()
-        }
+        }.show(childFragmentManager, null)
     }
 
     private fun initDataLive() {
@@ -137,7 +136,7 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
                         }
                     }
                 }
-                dialog.show()
+                dialog.show(childFragmentManager, null)
             }
 
         })

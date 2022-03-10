@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -201,7 +202,7 @@ class BackService : Service() {
         bundle.putString(SERVER_MESSAGE_KEY, setJObjToJArray(message))
         val intent = Intent(SERVICE_SEND_DATA)
         intent.putExtras(bundle)
-        sendBroadcast(intent)
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 
     private fun sendConnectStatusToActivity(connectStatus: ServiceConnectStatus) {
@@ -211,7 +212,7 @@ class BackService : Service() {
         val intent = Intent(SERVICE_SEND_DATA).apply {
             putExtras(bundle)
         }
-        sendBroadcast(intent)
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 
     private fun setJObjToJArray(message: String): String {

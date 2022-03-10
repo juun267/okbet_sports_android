@@ -175,8 +175,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                 setNegativeButtonText(null)
                 setCanceledOnTouchOutside(false)
                 setCancelable(false)
-            }?.show()
-            customSecurityDialog?.showErrorStatus(true)
+            }?.show(childFragmentManager, null)
         }
 
         viewModel.twoFactorSuccess.observe(viewLifecycleOwner) {
@@ -200,7 +199,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                         setNegativeButtonText(null)
                         setCanceledOnTouchOutside(false)
                         setCancelable(false)
-                    }?.show()
+                    }?.show(childFragmentManager, null)
                 }
             }
         }

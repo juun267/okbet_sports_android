@@ -362,6 +362,7 @@
     <string name="game_odds">Odds</string>
     <string name="match_names">(Home) %s vs %s (Away)</string>
     <string name="match_names_2">Home %s vs %s Away</string>
+    <string name="match_names_3">Home %s V.S %s Away</string>
     <string name="bet_item">Betting items -</string>
     <string name="match_type_row_in_play">IN-PLAY</string>
     <string name="match_type_row_at_start">SOON</string>

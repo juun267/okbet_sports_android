@@ -73,6 +73,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:visibility="gone"
-        android:background="@color/colorWhite6" />
+        android:background="@color/color_E2E2E2" />
 
 </LinearLayout>

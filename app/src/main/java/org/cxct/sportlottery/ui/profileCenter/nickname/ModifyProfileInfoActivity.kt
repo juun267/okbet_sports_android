@@ -179,6 +179,6 @@ class ModifyProfileInfoActivity :
         dialog.setNegativeButtonText(null)
         dialog.setCanceledOnTouchOutside(false)
         dialog.setCancelable(false)
-        dialog.show()
+        dialog.show(supportFragmentManager, null)
     }
 }

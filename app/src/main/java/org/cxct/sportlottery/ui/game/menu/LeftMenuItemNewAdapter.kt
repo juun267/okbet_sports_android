@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.content_left_menu_item_footer.view.*
 import kotlinx.android.synthetic.main.content_left_menu_item_header.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
+import org.cxct.sportlottery.util.SvgUtil
 import org.cxct.sportlottery.util.listener.OnClickListener
 
 class LeftMenuItemNewAdapter(
@@ -55,7 +56,7 @@ class LeftMenuItemNewAdapter(
         notifyDataSetChanged()
     }
 
-    fun addSpecialEvent(newDataList: MutableList<MenuItemData>,listener: OnClickListener){
+    fun addSpecialEvent(newDataList: MutableList<MenuItemData>, listener: OnClickListener){
         this.specialList = newDataList
         this.listener = listener
         notifyDataSetChanged()
@@ -98,7 +99,7 @@ class LeftMenuItemNewAdapter(
 
                     divider.isVisible = position == selectedNumber - 1
 
-                    if(item.isCurrentSportType){
+                    if (item.isCurrentSportType) {
                         txv_price.setTypeface(txv_price.typeface, Typeface.BOLD)
                         tv_count.setTypeface(tv_count.typeface, Typeface.BOLD)
                         txv_price.isSelected = true
@@ -172,7 +173,7 @@ class LeftMenuItemNewAdapter(
             isShowMemberLevel: Boolean,
             isLogin: Boolean,
             headerSelectedListener: HeaderSelectedListener,
-            specialList:List<MenuItemData>,
+            specialList: List<MenuItemData>,
             listener: OnClickListener
         ) {
             itemView.apply {
@@ -215,6 +216,12 @@ class LeftMenuItemNewAdapter(
                             position: Int
                         ) {
                             holder.setText(R.id.tvSpecialEvent, t.title)
+                            try {//後端有機會給錯格式導致無法解析
+                                val countryIcon = SvgUtil.getSvgDrawable(itemView.context, t.couponIcon)
+                                holder.setImageDrawable(R.id.img_ic, countryIcon)
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
                         }
 
                     }
