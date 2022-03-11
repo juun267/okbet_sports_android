@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.itemview_league_v4.view.*
+import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.FoldState
 import org.cxct.sportlottery.network.common.GameType
@@ -267,7 +267,7 @@ class LeagueAdapter(private val matchType: MatchType) :
         companion object {
             fun from(matchType: MatchType, parent: ViewGroup): ItemViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater.inflate(R.layout.itemview_league_v4, parent, false)
+                val view = layoutInflater.inflate(R.layout.itemview_league_v5, parent, false)
 
                 return ItemViewHolder(matchType, view)
             }
