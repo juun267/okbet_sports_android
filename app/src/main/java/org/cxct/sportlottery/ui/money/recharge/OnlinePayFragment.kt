@@ -118,7 +118,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             bankBottomSheet.show()
         }
     }
-//TODO Bill 等UI出圖
+
     fun setArguments(moneyPayWay: MoneyPayWayData?): OnlinePayFragment {
         mMoneyPayWay = moneyPayWay
         typeIcon = when (mMoneyPayWay?.onlineType) {
@@ -127,7 +127,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             OnlineType.WX.type -> R.drawable.ic_wechat_pay_type
             OnlineType.JUAN.type -> R.drawable.ic_juancash_type
             OnlineType.DISPENSHIN.type -> R.drawable.ic_juancash_type
-            OnlineType.ONLINEBANK.type -> R.drawable.ic_juancash_type
+            OnlineType.ONLINEBANK.type -> R.drawable.ic_bank_default//阿喵說照Ian回應用此圖
             OnlineType.GCASH.type -> R.drawable.ic_g_cash_type
             OnlineType.GRABPAY.type -> R.drawable.ic_grab_pay_type
             OnlineType.PAYMAYA.type -> R.drawable.ic_pay_maya_type

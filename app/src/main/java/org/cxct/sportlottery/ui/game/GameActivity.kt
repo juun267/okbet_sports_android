@@ -34,6 +34,7 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.FastBetFragment
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
@@ -342,6 +343,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 selectTab(tab?.position)
             }
         })
+
+        OverScrollDecoratorHelper.setUpOverScroll(tabLayout)
     }
 
     private fun refreshTabLayout(sportMenuResult: SportMenuResult?) {
