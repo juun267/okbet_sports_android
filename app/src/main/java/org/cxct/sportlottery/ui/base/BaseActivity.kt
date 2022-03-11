@@ -159,9 +159,9 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
                 mTokenPromptDialog = CustomAlertDialog(this@BaseActivity).apply {
                     setTextColor(R.color.colorRed)
-                    setTitle(getString(R.string.prompt))
+                    setTitle(this@BaseActivity.getString(R.string.prompt))
                     setMessage(errorMessage)
-                    setPositiveButtonText(getString(R.string.btn_determine))
+                    setPositiveButtonText(this@BaseActivity.getString(R.string.btn_determine))
                     setNegativeButtonText(null)
                     setPositiveClickListener(View.OnClickListener {
                         positiveClickListener()
@@ -170,7 +170,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                     })
 
                     setCanceledOnTouchOutside(false)
-                    setCancelable(false) //不能用系統 BACK 按鈕關閉 dialog
+                    isCancelable = false //不能用系統 BACK 按鈕關閉 dialog
                 }
                 mTokenPromptDialog?.show(supportFragmentManager, null)
             } catch (e: Exception) {
@@ -230,7 +230,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                     setShowDivider(isShowDivider)
                     setTitle(title)
                     setMessage(errorMessage)
-                    setPositiveButtonText(buttonText ?: getString(R.string.btn_determine))
+                    setPositiveButtonText(buttonText ?: this@BaseActivity.getString(R.string.btn_determine))
                     setNegativeButtonText(null)
                     setPositiveClickListener(View.OnClickListener {
                         positiveClickListener()
@@ -238,7 +238,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                     })
 
                     setCanceledOnTouchOutside(false)
-                    setCancelable(false) //不能用系統 BACK 按鈕關閉 dialog
+                    isCancelable = false //不能用系統 BACK 按鈕關閉 dialog
                 }
                 mPromptDialog?.show(supportFragmentManager, null)
             } catch (e: Exception) {
