@@ -105,18 +105,18 @@ class TransactionRecordDiffAdapter :
                 title_home_name.text = matchOdds.homeName
                 title_away_name.text = matchOdds.awayName
 
-                val oddsTypeStr = when (matchOdds.oddsType) {
-                    OddsType.HK.code -> "(" + context.getString(OddsType.HK.res) + ")"
-                    OddsType.MYS.code -> "(" + context.getString(OddsType.MYS.res) + ")"
-                    OddsType.IDN.code -> "(" + context.getString(OddsType.IDN.res) + ")"
-                    else -> "(" + context.getString(OddsType.EU.res) + ")"
-                }
+//                val oddsTypeStr = when (matchOdds.oddsType) {
+//                    OddsType.HK.code -> "(" + context.getString(OddsType.HK.res) + ")"
+//                    OddsType.MYS.code -> "(" + context.getString(OddsType.MYS.res) + ")"
+//                    OddsType.IDN.code -> "(" + context.getString(OddsType.IDN.res) + ")"
+//                    else -> "(" + context.getString(OddsType.EU.res) + ")"
+//                }
 
                 play_content.setPlayContent(
                     matchOdds.playName,
                     matchOdds.spread,
                     TextUtil.formatForOdd(matchOdds.odds),
-                    oddsTypeStr
+                    matchOdds.oddsType
                 )
 
                 match_play_time.text = TimeUtil.timeFormat(matchOdds.startTime, TimeUtil.YMD_HM_FORMAT)
@@ -158,18 +158,18 @@ class TransactionRecordDiffAdapter :
             itemView.apply {
                 title_league_name.text = "${matchOdds.leagueName} - ${matchOdds.playCateName}"
                 content_play.text = "${getGameTypeName(data.gameType)} ${matchOdds.playCateName}"
-                val oddsTypeStr = when (matchOdds.oddsType) {
-                    OddsType.HK.code -> "(" + context.getString(OddsType.HK.res) + ")"
-                    OddsType.MYS.code -> "(" + context.getString(OddsType.MYS.res) + ")"
-                    OddsType.IDN.code -> "(" + context.getString(OddsType.IDN.res) + ")"
-                    else -> "(" + context.getString(OddsType.EU.res) + ")"
-                }
+//                val oddsTypeStr = when (matchOdds.oddsType) {
+//                    OddsType.HK.code -> "(" + context.getString(OddsType.HK.res) + ")"
+//                    OddsType.MYS.code -> "(" + context.getString(OddsType.MYS.res) + ")"
+//                    OddsType.IDN.code -> "(" + context.getString(OddsType.IDN.res) + ")"
+//                    else -> "(" + context.getString(OddsType.EU.res) + ")"
+//                }
 
                 play_content.setPlayContent(
                     matchOdds.playName,
                     matchOdds.spread,
                     TextUtil.formatForOdd(matchOdds.odds),
-                    oddsTypeStr
+                    matchOdds.oddsType
                 )
                 matchOdds.startTime?.let {
                     play_time.text = TimeUtil.timeFormat(it, TimeUtil.YMD_HM_FORMAT)
