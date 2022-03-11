@@ -510,7 +510,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             this.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             this.adapter = leagueAdapter
             this.itemAnimator = null
-            addItemDecoration(SpaceItemDecoration(context, R.dimen.item_spacing_league))
+            //addItemDecoration(SpaceItemDecoration(context, R.dimen.item_spacing_league))
             setHasFixedSize(true)
         }
     }

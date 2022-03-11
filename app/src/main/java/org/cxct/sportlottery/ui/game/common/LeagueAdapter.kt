@@ -174,6 +174,7 @@ class LeagueAdapter(private val matchType: MatchType) :
 
             setupLeagueOddList(item, leagueOddListener, oddsType)
             setupLeagueOddExpand(item, matchType, leagueListener)
+            checkSpaceItemDecoration()
         }
 
         // region update functions
@@ -245,6 +246,7 @@ class LeagueAdapter(private val matchType: MatchType) :
                 }
                 itemView.league_expand.setExpanded(item.unfold == FoldState.UNFOLD.code, true)
                 updateTimer(matchType, item.gameType)
+                checkSpaceItemDecoration()
 
                 leagueListener?.onClickLeague(item)
             }
@@ -253,6 +255,13 @@ class LeagueAdapter(private val matchType: MatchType) :
         private fun updateTimer(matchType: MatchType, gameType: GameType?) {
             leagueOddAdapter.isTimerEnable =
                 itemView.league_expand.isExpanded && (gameType == GameType.FT || gameType == GameType.BK || matchType == MatchType.PARLAY || matchType == MatchType.AT_START || matchType == MatchType.MY_EVENT)
+        }
+
+        private fun checkSpaceItemDecoration() {
+            when(itemView.league_expand.isExpanded) {
+                true -> itemView.SpaceItemDecorationView.visibility = View.GONE
+                false -> itemView.SpaceItemDecorationView.visibility = View.VISIBLE
+            }
         }
 
         companion object {
