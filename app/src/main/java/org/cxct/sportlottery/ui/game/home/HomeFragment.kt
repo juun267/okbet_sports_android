@@ -783,9 +783,9 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 if (it == ServiceConnectStatus.CONNECTED) {
 
 //                    queryData()
-//                    subscribeTableHallChannel(mSelectMatchType)
-//                    subscribeRecommendHallChannel()
-//                    subscribeHighlightHallChannel()
+                    subscribeTableHallChannel(mSelectMatchType)
+                    subscribeRecommendHallChannel()
+                    subscribeHighlightHallChannel()
                 }
             }
         }
