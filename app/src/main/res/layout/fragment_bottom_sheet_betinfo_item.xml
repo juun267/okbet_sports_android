@@ -31,20 +31,38 @@
             android:background="@drawable/bg_gradient_bottom_sheet_shadow" />
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="37dp"
-            android:paddingTop="5dp"
-            android:orientation="horizontal"
+            android:layout_height="200dp"
+            android:orientation="vertical"
             android:gravity="center_vertical"
+            android:paddingStart="@dimen/margin_8"
+            android:paddingEnd="@dimen/margin_8"
+            android:paddingTop="@dimen/margin_8"
             android:background="@drawable/bg_radius_8_white_top_only">
-            <View
-                android:layout_width="2dp"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/margin_12"
-                android:layout_marginBottom="@dimen/margin_12"
-                android:layout_marginStart="@dimen/margin_16"
-                android:background="@drawable/bg_login_title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                app:cardCornerRadius="@dimen/margin_8">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/margin_24"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:background="@drawable/bg_half_orange_half_blue">
+
+
+                    </LinearLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+            </androidx.cardview.widget.CardView>
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -55,32 +73,9 @@
                 android:textColor="@color/colorBlue"
                 android:textSize="@dimen/textSize14sp"
                 android:layout_marginStart="@dimen/margin_8"/>
-            <ImageView
-                android:layout_width="@dimen/margin_12"
-                android:layout_height="@dimen/margin_12"
-                android:id="@+id/ivBetMoney"
-                android:layout_marginEnd="@dimen/margin_8"
-                android:src="@drawable/ic_bet_list_money"/>
-
-            <TextView
-                android:id="@+id/tv_current_money"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
-                android:gravity="center_vertical"
-                android:textSize="@dimen/textSize14sp"
-                android:layout_marginEnd="@dimen/margin_14"
-                android:textColor="@color/colorBlackLight"
-                tools:text="9,875,241.000 RMB" />
 
 
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_1"
-            android:background="@color/colorWhite4" />
-
 
         <LinearLayout
             android:id="@+id/ll_root"
