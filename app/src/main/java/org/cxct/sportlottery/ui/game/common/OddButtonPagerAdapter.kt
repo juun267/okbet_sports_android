@@ -36,6 +36,7 @@ class OddButtonPagerAdapter(
     var odds: Map<String, List<Odd?>?> = mapOf()
         set(value) {
             this.playCateNameMap = playCateNameMap.addSplitPlayCateTranslation()
+            var oddsSortCount = oddsSort?.split(",")?.size ?: 999 // 最大顯示數量
             field = value.refactorPlayCode().sortOdds().splitPlayCate().reorganizePlay()
                 .filterPlayCateSpanned().sortPlayCate()
             val gameList =
@@ -44,9 +45,11 @@ class OddButtonPagerAdapter(
                         .filter { it.value?.getOrNull(0) == null }).map { it.key }.run {
                         val gameListFilter: MutableList<String>
                         if (this.size > sizeCount(matchInfo?.gameType)) {
-                            gameListFilter = this.take(sizeCount(matchInfo?.gameType)) as MutableList<String> //只取前面8比資料
+                            gameListFilter = this.take(sizeCount(matchInfo?.gameType)) as MutableList<String>
                         } else {
-                            val count = if (sizeCount(matchInfo?.gameType) > this.size) sizeCount(matchInfo?.gameType) - this.size else 0
+                            val maxCount = if(sizeCount(matchInfo?.gameType) < oddsSortCount) sizeCount(matchInfo?.gameType) else oddsSortCount
+                            val count = if (sizeCount(matchInfo?.gameType) > this.size) maxCount - this.size else 0
+
                             gameListFilter = this.take(this.size + 1).toMutableList()
                             for (i in 1..count) {
                                 gameListFilter.add("EmptyData${i}")
