@@ -22,7 +22,7 @@ class LeagueAdapter(private val matchType: MatchType) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class ItemType {
-        ITEM, NO_DATA
+        ITEM, NO_DATA, BOTTOM_NAVIGATION
     }
 
     var data = mutableListOf<LeagueOdd>()
@@ -66,6 +66,7 @@ class LeagueAdapter(private val matchType: MatchType) :
     override fun getItemViewType(position: Int): Int {
         return when {
             data.isEmpty() -> ItemType.NO_DATA.ordinal
+            data.size == position -> ItemType.BOTTOM_NAVIGATION.ordinal
             else -> ItemType.ITEM.ordinal
         }
     }
@@ -90,6 +91,9 @@ class LeagueAdapter(private val matchType: MatchType) :
                     }
                     this.itemView.league_odd_list.itemAnimator = null
                 }
+            }
+            ItemType.BOTTOM_NAVIGATION.ordinal -> {
+                BottomNavigationViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.home_bottom_navigation, parent, false))
             }
             else -> {
                 NoDataViewHolder.from(parent, searchText)
@@ -134,7 +138,7 @@ class LeagueAdapter(private val matchType: MatchType) :
     override fun getItemCount(): Int = if (data.isEmpty()) {
         1
     } else {
-        data.size
+        data.size + 1
     }
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
@@ -278,6 +282,8 @@ class LeagueAdapter(private val matchType: MatchType) :
             }
         }
     }
+
+    class BottomNavigationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }
 
 class LeagueListener(

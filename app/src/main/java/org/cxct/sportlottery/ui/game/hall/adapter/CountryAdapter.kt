@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.hall.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +11,13 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.league.Row
 import org.cxct.sportlottery.ui.common.SocketLinearManager
+import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.util.SvgUtil
 
 class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class ItemType {
-        ITEM_PIN, ITEM, NO_DATA
+        ITEM_PIN, ITEM, NO_DATA, BOTTOM_NAVIGATION
     }
 
     var data = listOf<Row>()
@@ -39,9 +41,11 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var countryLeagueListener: CountryLeagueListener? = null
 
     override fun getItemViewType(position: Int): Int {
+        Log.d("Hewie10", "$position => ${data.size}")
         return when {
             data.isEmpty() -> ItemType.NO_DATA.ordinal
             (position == 0) -> ItemType.ITEM_PIN.ordinal
+            position == data.size + 1 -> ItemType.BOTTOM_NAVIGATION.ordinal
             else -> ItemType.ITEM.ordinal
         }
     }
@@ -64,6 +68,9 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     }
                 }
             }
+            ItemType.BOTTOM_NAVIGATION.ordinal -> {
+                BottomNavigationViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.home_bottom_navigation, parent, false))
+            }
             else -> {
                 NoDataViewHolder.from(parent, searchText)
             }
@@ -85,7 +92,7 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun getItemCount(): Int = if (data.isEmpty()) {
         1
     } else {
-        data.size + 1
+        data.size + 2
     }
 
     class ItemViewHolderPin private constructor(itemView: View) :
@@ -197,4 +204,5 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
     }
+    class BottomNavigationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }
