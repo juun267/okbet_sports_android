@@ -308,7 +308,7 @@ class OddButtonPagerAdapter(
         return this.mapValues { map ->
             val playCateNum =
                 when { //根據IOS給的規則判斷顯示數量
-                    map.key.contains(PlayCate.HDP.value) || map.key.contains(PlayCate.OU.value) || map.key.contains(
+                    map.key.contains(PlayCate.HDP.value) || (map.key.contains(PlayCate.OU.value) && !map.key.contains(PlayCate.SINGLE_OU.value)) || map.key.contains(
                         PlayCate.CORNER_OU.value
                     ) -> 2
 
