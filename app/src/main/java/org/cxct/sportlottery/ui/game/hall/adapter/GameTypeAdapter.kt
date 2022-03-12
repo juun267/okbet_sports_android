@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.itemview_sport_type_v4.view.*
 import kotlinx.android.synthetic.main.itemview_sport_type_v5.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeString
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
@@ -81,7 +82,7 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             itemView.apply {
 
-                sport_type_text.text = item.name
+                sport_type_text.text = getGameTypeString(context, item.code)
 
                 sport_count_text.text = item.num.toString()
 
@@ -172,7 +173,7 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             itemView.apply {
 
-                sport_type_home_text.text = item.name
+                sport_type_home_text.text = getGameTypeString(context, item.code)
 
                 isSelected = item.isSelected
 
