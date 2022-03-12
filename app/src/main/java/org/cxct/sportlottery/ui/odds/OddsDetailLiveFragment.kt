@@ -277,13 +277,13 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                             tv_time_bottom?.setTextColor(
                                 ContextCompat.getColor(
                                     tv_time_bottom.context,
-                                    R.color.colorOrangeLight
+                                    R.color.colorWhite
                                 )
                             )
                             tv_time_top?.setTextColor(
                                 ContextCompat.getColor(
                                     tv_time_bottom.context,
-                                    R.color.colorOrangeLight
+                                    R.color.colorWhite
                                 )
                             )
                         } else {
@@ -523,7 +523,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
             if (args.matchType != MatchType.IN_PLAY) {
                 val timeStr = TimeUtil.timeFormat(startTime, HM_FORMAT)
-                if (!timeStr.isEmpty()) {
+                if (timeStr.isNotEmpty()) {
                     tv_time_bottom.text = timeStr
                 }
                 else {
@@ -532,7 +532,8 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                 tv_time_top.text = TimeUtil.timeFormat(startTime, DM_FORMAT)
             }
             else {
-                tv_time_bottom.text = getString(R.string.time_null)
+                // 不需要一直重置
+//                tv_time_bottom.text = getString(R.string.time_null)
             }
         }
     }

@@ -260,7 +260,7 @@ class BackService : Service() {
 
                     //訂閱完成後檢查是否有訂閱失敗的頻道
                     mSubscribeChannelPending.remove(url)
-                    if (mSubscribeChannelPending.isNotEmpty()){
+                    if (!mSubscribeChannelPending.isNullOrEmpty()){
                         subscribeChannel(mSubscribeChannelPending.first())
                     }
                 }

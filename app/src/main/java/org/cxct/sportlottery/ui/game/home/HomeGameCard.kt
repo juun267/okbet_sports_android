@@ -19,7 +19,7 @@ class HomeGameCard @JvmOverloads constructor(context: Context, attrs: AttributeS
         try {
             view.tv_title.text = typedArray.getText(R.styleable.CustomView_cvTitle)
             view.tv_count.text = typedArray.getText(R.styleable.CustomView_cvCount)
-            view.iv_icon.setImageResource(typedArray.getResourceId(R.styleable.CustomView_cvIcon, -1))
+            view.iv_icon.setImageResource(typedArray.getResourceId(R.styleable.CustomView_cvIcon, 0))
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {

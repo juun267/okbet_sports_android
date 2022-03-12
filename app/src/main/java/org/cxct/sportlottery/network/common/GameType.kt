@@ -17,7 +17,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
     CK("CK", R.string.cricket),
     BB("BB", R.string.baseball),
     RB("RB", R.string.rugby_football),
-    AFT("AFT",R.string.AFT),
+    AFT("AFT",R.string.america_football),
     MR("MR", R.string.motor_racing),
     GF("GF", R.string.golf),
     FB("FB",R.string.financial_bets),
@@ -62,7 +62,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 RB -> "RUGBY FOOTBALL"
                 MR -> "MOTOR RACING"
                 GF -> "GOLF"
-                AFT -> "AMERICA FOOT BALL"
+                AFT -> "AMERICA FOOTBALL"
                 FB -> "Financial Bets"
                 OTHER -> ""
             }
