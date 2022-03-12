@@ -6,7 +6,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,7 +42,6 @@ import org.cxct.sportlottery.network.outright.season.Season
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
-import org.cxct.sportlottery.network.sport.query.SportQueryData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
@@ -1171,7 +1169,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.updateOddsSelectedState()
                 oddsChangeEvent.filterMenuPlayCate()
-
+                oddsChangeEvent.sortOddsMap()
                 when (game_list.adapter) {
                     is LeagueAdapter -> {
                         val leagueOdds = leagueAdapter.data
@@ -1390,6 +1388,20 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             }
         }
     }
+
+    /**
+     * 賠率排序
+     */
+    private fun OddsChangeEvent.sortOddsMap() {
+          this.odds?.forEach { (_, value) ->
+            if (value?.size > 3 && value.first()?.marketSort != 0 && (value.first()?.odds != value.first()?.malayOdds)) {
+                value.sortBy {
+                    it?.marketSort
+                }
+            }
+        }
+    }
+
 
     private fun setEpsBottomSheet(matchInfo: MatchInfo) {
         try {
