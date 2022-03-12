@@ -42,6 +42,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
     var odds: Map<String, List<Odd?>?> = mapOf()
         set(value) {
             this.playCateNameMap = playCateNameMap.addSplitPlayCateTranslation()
+            var oddsSortCount = oddsSort?.split(",")?.size ?: 999 // 最大顯示數量
             field = value.refactorPlayCode().sortOdds().splitPlayCate().reorganizePlay()
                 .filterPlayCateSpanned().sortPlayCate()
             val gameList =
@@ -50,9 +51,11 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
                         .filter { it.value?.getOrNull(0) == null }).map { it.key }.run {
                         val gameListFilter: MutableList<String>
                         if (this.size > sizeCount(matchInfo?.gameType)) {
-                            gameListFilter = this.take(sizeCount(matchInfo?.gameType)) as MutableList<String> //只取前面8比資料
+                            gameListFilter = this.take(sizeCount(matchInfo?.gameType)) as MutableList<String>
                         } else {
-                            val count = if (sizeCount(matchInfo?.gameType) > this.size) sizeCount(matchInfo?.gameType) - this.size else 0
+                            val maxCount = if(sizeCount(matchInfo?.gameType) < oddsSortCount) sizeCount(matchInfo?.gameType) else oddsSortCount
+                            val count = if (sizeCount(matchInfo?.gameType) > this.size) maxCount - this.size else 0
+
                             gameListFilter = this.take(this.size + 1).toMutableList()
                             for (i in 1..count) {
                                 gameListFilter.add("EmptyData${i}")
@@ -541,7 +544,14 @@ class OddButtonPagerViewHolder private constructor(
                         ) ?: odds.second?.getOrNull(0)?.name)?.abridgeOddsName()
                     }
                     playCateCode.isNOGALType() -> {
-                        "第" + odds.second?.getOrNull(0)?.nextScore.toString()
+                        when (LanguageManager.getSelectLanguage(this.context)) {
+                            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
+                                "第" + odds.second?.getOrNull(0)?.nextScore.toString()
+                            }
+                            else -> {
+                                getOrdinalNumbers(odds.second?.getOrNull(0)?.nextScore.toString())
+                            }
+                        }
                     }
                     else -> ""
                 }
@@ -616,7 +626,14 @@ class OddButtonPagerViewHolder private constructor(
                         ) ?: odds.second?.getOrNull(1)?.name)?.abridgeOddsName()
                     }
                     playCateCode.isNOGALType() -> {
-                        "第" + odds.second?.getOrNull(1)?.nextScore.toString()
+                        when (LanguageManager.getSelectLanguage(this.context)) {
+                            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
+                                "第" + odds.second?.getOrNull(1)?.nextScore.toString()
+                            }
+                            else -> {
+                                getOrdinalNumbers(odds.second?.getOrNull(1)?.nextScore.toString())
+                            }
+                        }
                     }
                     else -> ""
                 }
@@ -695,7 +712,16 @@ class OddButtonPagerViewHolder private constructor(
                 visibility = View.VISIBLE
 
                 text = when {
-                    playCateCode.isNOGALType() -> "无"
+                    playCateCode.isNOGALType() -> {
+                        when (LanguageManager.getSelectLanguage(this.context)) {
+                            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
+                                "无"
+                            }
+                            else -> {
+                                "None"
+                            }
+                        }
+                    }
                     playCateCode.isCombination() -> {
                         (odds.second?.getOrNull(2)?.nameMap?.get(
                             LanguageManager.getSelectLanguage(context).key
@@ -776,8 +802,9 @@ class OddButtonPagerViewHolder private constructor(
             oddBtnDraw.betStatus = BetStatus.DEACTIVATED.code
             return
         }
-        val playCateName = playCateNameMap[odds.first].getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
-            .replace(": ", " ").replace("||", "\n")
+        val playCateName =
+            playCateNameMap[odds.first].getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
+                .replace(": ", " ").replace("||", "\n")
         val playCateCode = odds.first ?: ""
         oddBtnType.text = when {
             (odds.second?.all { odd -> odd == null || odd.status == BetStatus.DEACTIVATED.code }
@@ -965,6 +992,15 @@ class OddButtonPagerViewHolder private constructor(
             tv_odds.setTextColor(oddColorStateList(odds.second?.getOrNull(2), oddsType))
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(2))
             isSelected = odds.second?.getOrNull(2)?.isSelected ?: false
+        }
+    }
+
+    private fun getOrdinalNumbers(number:String):String{
+        return when(number){
+            "1" -> "1st"
+            "2" -> "2nd"
+            "3" -> "3rd"
+            else -> "${number}th"
         }
     }
 
