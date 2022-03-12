@@ -2264,7 +2264,7 @@ class GameViewModel(
         if (nowMatchLiveInfo?.matchId == matchId && nowMatchLiveInfo.isNewest && getNewest) return
 
         val tempLiveStreamUrl = gameLiveSharedPreferences.getString(matchId, null)
-
+        // Todo 暫停使用，每次都請求最新的，確保沒問題
         //沒有暫存網址時請求最新網址
         if (getNewest || tempLiveStreamUrl.isNullOrBlank()) {
             viewModelScope.launch {
@@ -2316,11 +2316,11 @@ class GameViewModel(
         return when (response.videoProvider) {
             VideoProvider.Own.code -> {
                 // Todo: 需改成用 StreamURLs，格式依序採用 RTMP, FLV, M3U8，依次使用。
-                if (response.StreamURLs?.isNotEmpty() == true) {
-                    response.StreamURLs?.first { it.format == "rtmp" }.url ?: response.streamURL
-                } else {
+//                if (response.StreamURLs?.isNotEmpty() == true) {
+//                    response.StreamURLs?.first { it.format == "rtmp" }.url ?: response.streamURL
+//                } else {
                     response.streamURL
-                }
+//                }
             }
             VideoProvider.P2.code -> {
                 val liveUrlResponse = OneBoSportApi.matchService.getLiveP2Url(
