@@ -8,6 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp">
+
         <HorizontalScrollView
             android:id="@+id/scroll_view_rg"
             android:layout_width="match_parent"
@@ -16,6 +17,7 @@
             android:layout_marginEnd="16dp"
             android:layout_toLeftOf="@+id/league_odd_quick_cate_close"
             android:scrollbars="none">
+
             <RadioGroup
                 android:id="@+id/league_odd_quick_cate_tabs"
                 android:layout_width="wrap_content"

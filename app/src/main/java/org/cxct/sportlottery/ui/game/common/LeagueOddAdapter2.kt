@@ -142,8 +142,15 @@ class LeagueOddAdapter2(private val matchType: MatchType) :
             setupOddsButton(item, oddsType, leagueOddListener)
 
             //setupQuickCategory(item, oddsType, leagueOddListener)
-            itemView.quickListView.setDatas(item, oddsType)
-            itemView.quickListView.refreshTab()
+            if(item.quickPlayCateList.isNullOrEmpty()) {
+                itemView.quickListView.visibility = View.GONE
+                itemView.league_odd_quick_cate_divider.visibility = View.GONE
+            } else {
+                itemView.quickListView.visibility = View.VISIBLE
+                itemView.league_odd_quick_cate_divider.visibility = View.VISIBLE
+                itemView.quickListView.setDatas(item, oddsType)
+                itemView.quickListView.refreshTab()
+            }
         }
 
         // region update functions

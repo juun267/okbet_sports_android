@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.game.quick
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
@@ -11,7 +10,6 @@ import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.view_quick_list.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_eps.view.*
@@ -23,7 +21,6 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.ui.game.common.*
-import org.cxct.sportlottery.ui.game.hall.GameV3Fragment
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 
@@ -56,8 +53,7 @@ class QuickListView @JvmOverloads constructor(context: Context, attrs: Attribute
     override fun onClick(view: View?) {
         when(view?.id) {
             league_odd_quick_cate_close.id -> {
-                //leagueOddListener?.onClickQuickCateClose()
-                league_odd_quick_cate_close.visibility = View.GONE
+                league_odd_quick_cate_close.visibility = View.INVISIBLE
                 invisibleOddButtons()
                 mQuickPlayCateList.forEach { it.isSelected = false }
             }
@@ -87,19 +83,19 @@ class QuickListView @JvmOverloads constructor(context: Context, attrs: Attribute
             mViewModel._quickOddsListGameHallResult.observe(lifecycleOwner) {
                 it.getContentIfNotHandled()?.let { quickListResult ->
                     if (quickListResult.success) {
+                        league_odd_quick_cate_close.visibility = View.VISIBLE
+                        invisibleOddButtons()
                         val selectedQuickPlayCateCode = mSelectedQuickPlayCate?.code ?: ""
                         val quickOdds = quickListResult.quickListData?.quickOdds?.get(selectedQuickPlayCateCode) ?: mutableMapOf()
                         when (selectedQuickPlayCateCode) {
                             org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_OU.value, org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_HDP.value, org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_ADVANCE.value -> {
                                 setupQuickOddButtonPair(mSelectedQuickPlayCate!!, quickOdds, mOddsType)
                             }
-
                             org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_CORNERS.value, org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_PENALTY.value -> {
-                                //setupQuickOddButtonPager(item, oddsType, leagueOddListener)
+                                setupQuickOddButtonPager(quickOdds, mOddsType)
                             }
-
                             org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_EPS.value -> {
-                                //setupQuickOddButtonEps(item, oddsType, leagueOddListener)
+                                setupQuickOddButtonEps(quickOdds, mOddsType)
                             }
                         }
                     }
@@ -108,20 +104,11 @@ class QuickListView @JvmOverloads constructor(context: Context, attrs: Attribute
         }
     }
 
-    private fun initTabButton() {
-        league_odd_quick_cate_tabs.visibility = if (mQuickPlayCateList.isNullOrEmpty()) { View.GONE } else { View.VISIBLE }
-    }
-
-    private fun initCloseButton() {
-        league_odd_quick_cate_close.visibility = if (mQuickPlayCateList.find { it.isSelected } == null) { View.GONE } else { View.VISIBLE }
-    }
-
     fun setDatas(matchOdd: MatchOdd, oddsType: OddsType) {
         mOddsType = oddsType
         mMatchOdd = matchOdd
         mMatchId = matchOdd.matchInfo?.id ?: ""
         mQuickPlayCateList = matchOdd.quickPlayCateList ?: mutableListOf()
-        Log.d("QuickListView", "quickPlayCateList => ${mQuickPlayCateList?.size}")
     }
 
     fun refreshTab() {
@@ -139,87 +126,7 @@ class QuickListView @JvmOverloads constructor(context: Context, attrs: Attribute
         }
     }
 
-    private fun setupQuickCategory(item: MatchOdd, oddsType: OddsType, leagueOddListener: LeagueOddListener?) {
-        //league_odd_quick_cate_border.visibility = if (item.quickPlayCateList.isNullOrEmpty()) { View.GONE } else { View.VISIBLE }
-        //league_odd_quick_cate_divider.visibility = if (item.quickPlayCateList.isNullOrEmpty()) { View.GONE } else { View.VISIBLE }
-    }
-
-    @SuppressLint("InflateParams")
-    private fun updateQuickCategory(item: MatchOdd, oddsType: OddsType, leagueOddListener: LeagueOddListener?) {
-        invisibleOddButtons()
-        val quickPlayCate = item.quickPlayCateList?.find { it.isSelected }
-        Log.d("Hewie9", "League Name => ${item?.matchInfo?.homeName}")
-        Log.d("Hewie9", "Tab Name => ${quickPlayCate?.name}")
-        Log.d("Hewie9", "Code => ${quickPlayCate?.code}")
-        Log.d("Hewie9", "quickOdds => ${quickPlayCate?.quickOdds}")
-        Log.d("Hewie9", "isExpand => ${item?.isExpand}")
-        Log.d("Hewie9", "-----------------------------------------")
-        if(quickPlayCate?.quickOdds?.size == 0 && !item.isExpand) return
-    }
-
-    private fun setupQuickOddButtonPager(item: MatchOdd, oddsType: OddsType, leagueOddListener: LeagueOddListener?) {
-        league_odd_quick_odd_btn_pager.visibility = View.VISIBLE
-        quick_odd_home.text = item.matchInfo?.homeName ?: ""
-        quick_odd_away.text = item.matchInfo?.awayName ?: ""
-        quick_odd_btn_pager_other.apply {
-            val quickOddButtonPagerAdapter = OddButtonPagerAdapter()
-            quickOddButtonPagerAdapter.setData(
-                item.matchInfo,
-                item.oddsSort,
-                item.quickPlayCateNameMap,
-                item.betPlayCateNameMap
-            )
-            this.adapter = quickOddButtonPagerAdapter.apply {
-                stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT
-                val quickOdds = item.quickPlayCateList?.find { it.isSelected }?.quickOdds ?: mutableMapOf()
-                this.odds = quickOdds
-                Log.d("Hewie", "setupQuickOddButtonPager: quickOdds => ${quickOdds.size}")
-                this.oddsType = oddsType
-                this.listener =
-                    OddButtonListener { matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
-                        leagueOddListener?.onClickBet(
-                            matchInfo,
-                            odd,
-                            playCateCode,
-                            betPlayCateName,
-                            item.betPlayCateNameMap
-                        )
-                    }
-            }
-        }
-    }
-
-    private fun setupQuickOddButtonEps(item: MatchOdd, oddsType: OddsType, leagueOddListener: LeagueOddListener?) {
-        val adapter by lazy {
-            OddButtonEpsAdapter(item.matchInfo).apply {
-                this.oddsType = oddsType
-                listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
-                        leagueOddListener?.onClickBet(
-                            matchInfo,
-                            odd,
-                            playCateCode,
-                            item.quickPlayCateList?.find { it.isSelected }?.name ?: playCateName,
-                            item.betPlayCateNameMap
-                        )
-                    }
-            }
-        }
-        val quickOdds = item.quickPlayCateList?.find { it.isSelected }?.quickOdds ?: mapOf()
-        league_odd_quick_odd_btn_eps.visibility = View.VISIBLE
-        quick_odd_eps_list.apply {
-            this.adapter = adapter.apply {
-                data = quickOdds[quickOdds.keys.firstOrNull()] ?: listOf()
-            }
-        }
-    }
-
-    private fun invisibleOddButtons() {
-        league_odd_quick_odd_btn_pair.visibility = View.GONE
-        league_odd_quick_odd_btn_pager.visibility = View.GONE
-        league_odd_quick_odd_btn_eps.visibility = View.GONE
-    }
-
-    private fun setupQuickOddButtonPair(selectedQuickPlayCate: QuickPlayCate, quickOdds: MutableMap<String, List<Odd?>?>, /*matchOdd: MatchOdd, */oddsType: OddsType/*, leagueOddListener: LeagueOddListener?*/) {
+    private fun setupQuickOddButtonPair(selectedQuickPlayCate: QuickPlayCate, quickOdds: MutableMap<String, List<Odd?>?>, oddsType: OddsType/*, leagueOddListener: LeagueOddListener?*/) {
         val adapter by lazy { OddButtonPairAdapter(mMatchOdd?.matchInfo).apply {
             this.oddsType = oddsType
             listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
@@ -231,8 +138,6 @@ class QuickListView @JvmOverloads constructor(context: Context, attrs: Attribute
 //                    item.betPlayCateNameMap)
             }
         }}
-
-        //  item.quickPlayCateList?.find { it.isSelected }?.quickOdds ?: mapOf()
 
         league_odd_quick_odd_btn_pair.visibility = View.VISIBLE
 
@@ -287,5 +192,64 @@ class QuickListView @JvmOverloads constructor(context: Context, attrs: Attribute
                 }
             )
         }
+    }
+
+    private fun setupQuickOddButtonPager(quickOdds: MutableMap<String, List<Odd?>?>, oddsType: OddsType/*, leagueOddListener: LeagueOddListener?*/) {
+        league_odd_quick_odd_btn_pager.visibility = View.VISIBLE
+        quick_odd_home.text = mMatchOdd?.matchInfo?.homeName ?: ""
+        quick_odd_away.text = mMatchOdd?.matchInfo?.awayName ?: ""
+        quick_odd_btn_pager_other.apply {
+            val quickOddButtonPagerAdapter = OddButtonPagerAdapter()
+            quickOddButtonPagerAdapter.setData(
+                mMatchOdd?.matchInfo,
+                mMatchOdd?.oddsSort,
+                mMatchOdd?.quickPlayCateNameMap,
+                mMatchOdd?.betPlayCateNameMap
+            )
+            this.adapter = quickOddButtonPagerAdapter.apply {
+                stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT
+                this.odds = quickOdds
+                this.oddsType = oddsType
+                this.listener =
+                    OddButtonListener { matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
+//                        leagueOddListener?.onClickBet(
+//                            matchInfo,
+//                            odd,
+//                            playCateCode,
+//                            betPlayCateName,
+//                            item.betPlayCateNameMap
+//                        )
+                    }
+            }
+        }
+    }
+
+    private fun setupQuickOddButtonEps(quickOdds: MutableMap<String, List<Odd?>?>, oddsType: OddsType/*, leagueOddListener: LeagueOddListener?*/) {
+        val adapter by lazy {
+            OddButtonEpsAdapter(mMatchOdd?.matchInfo).apply {
+                this.oddsType = oddsType
+                listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
+//                        leagueOddListener?.onClickBet(
+//                            matchInfo,
+//                            odd,
+//                            playCateCode,
+//                            item.quickPlayCateList?.find { it.isSelected }?.name ?: playCateName,
+//                            item.betPlayCateNameMap
+//                        )
+                    }
+            }
+        }
+        league_odd_quick_odd_btn_eps.visibility = View.VISIBLE
+        quick_odd_eps_list.apply {
+            this.adapter = adapter.apply {
+                data = quickOdds[quickOdds.keys.firstOrNull()] ?: listOf()
+            }
+        }
+    }
+
+    private fun invisibleOddButtons() {
+        league_odd_quick_odd_btn_pair.visibility = View.GONE
+        league_odd_quick_odd_btn_pager.visibility = View.GONE
+        league_odd_quick_odd_btn_eps.visibility = View.GONE
     }
 }
