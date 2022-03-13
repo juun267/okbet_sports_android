@@ -884,7 +884,7 @@ class GameViewModel(
                 //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
                 result.rows?.forEach { row ->
                     row.leagueOdds?.matchOdds?.forEach { oddData ->
-                        //oddData.sortOddsMap() //按照188排序 不使用markSort by Bill
+                        oddData.sortOddsMap() //按照188排序 不使用markSort by Bill
                         oddData.oddsMap?.forEach { map ->
                             map.value?.forEach { odd ->
                                 odd?.isSelected =
@@ -918,6 +918,7 @@ class GameViewModel(
             }?.let { result ->
                 //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
                 result.t?.odds?.forEach { oddData ->
+                    oddData.sortOddsMap()
                     oddData.oddsMap?.forEach { map ->
                         map.value?.forEach { odd ->
                             odd?.isSelected =
