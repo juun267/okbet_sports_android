@@ -333,7 +333,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
         return this.mapValues { map ->
             val playCateNum =
                 when { //根據IOS給的規則判斷顯示數量
-                    map.key.contains(PlayCate.HDP.value) || map.key.contains(PlayCate.OU.value) || map.key.contains(
+                    map.key.contains(PlayCate.HDP.value) || (map.key.contains(PlayCate.OU.value) && !map.key.contains(PlayCate.SINGLE_OU.value)) || map.key.contains(
                         PlayCate.CORNER_OU.value
                     ) -> 2
 
@@ -995,8 +995,8 @@ class OddButtonPagerViewHolder private constructor(
         }
     }
 
-    private fun getOrdinalNumbers(number:String):String{
-        return when(number){
+    private fun getOrdinalNumbers(number:String):String {
+        return when (number) {
             "1" -> "1st"
             "2" -> "2nd"
             "3" -> "3rd"

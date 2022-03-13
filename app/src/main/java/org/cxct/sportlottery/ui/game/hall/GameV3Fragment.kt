@@ -696,17 +696,23 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         ?: oddsListResult.oddsListData?.leagueOdds ?: listOf())
 
                     val gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
-                    leagueAdapter.data = mLeagueOddList.onEach { leagueOdd ->
-                        // 將儲存的賠率表指定的賽事列表裡面
-                        val leagueOddFromMap = leagueOddMap[leagueOdd.league.id]
-                        leagueOddFromMap?.let {
-                            leagueOdd.matchOdds.forEach {
-                                it.oddsMap = leagueOddFromMap.matchOdds.find { matchOdd -> it.matchInfo?.id == matchOdd.matchInfo?.id }?.oddsMap
-                                Log.d("Hewie7", "restore ${leagueOdd.league.id} oddsmap => ${it.oddsMap?.size}")
+                    if (mLeagueOddList.isNotEmpty()) {
+                        leagueAdapter.data = mLeagueOddList.onEach { leagueOdd ->
+                            // 將儲存的賠率表指定的賽事列表裡面
+                            val leagueOddFromMap = leagueOddMap[leagueOdd.league.id]
+                            leagueOddFromMap?.let {
+                                leagueOdd.matchOdds.forEach {
+                                    it.oddsMap =
+                                        leagueOddFromMap.matchOdds.find { matchOdd -> it.matchInfo?.id == matchOdd.matchInfo?.id }?.oddsMap
+                                    Log.d(
+                                        "Hewie7",
+                                        "restore ${leagueOdd.league.id} oddsmap => ${it.oddsMap?.size}"
+                                    )
+                                }
                             }
-                        }
-                        leagueOdd.gameType = gameType
-                    }.toMutableList()
+                            leagueOdd.gameType = gameType
+                        }.toMutableList()
+                    }
 
 //                    game_list.apply {
 //                        adapter = leagueAdapter.apply {
@@ -1202,7 +1208,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.updateOddsSelectedState()
                 oddsChangeEvent.filterMenuPlayCate()
-
+                oddsChangeEvent.sortOddsMap()
                 when (game_list.adapter) {
                     is LeagueAdapter -> {
                         leagueAdapter.data.forEach { leagueOdd ->
@@ -1357,45 +1363,13 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             leagueAdapter.data.filter { leagueOdd -> leagueOdd.league.id == leagueChangeEvent.leagueIdList?.firstOrNull() }
                                 .isNotEmpty()
 
-                        when {
-                            nowGameType == leagueChangeEvent.gameType && hasLeagueIdList -> {
-                                withContext(Dispatchers.Main) {
-                                    viewModel.refreshGame(
-                                        args.matchType
-                                    )
-//                                    viewModel.switchSportType(
-//                                        args.matchType,
-//                                        nowGameType ?: GameType.FT.key
-//                                    )
-                                }
-                            }
-
-                            nowGameType == leagueChangeEvent.gameType && !hasLeagueIdList -> {
-                                if (leagueAdapter.data.size != 0) {
-                                    when (game_list?.adapter) {
-                                        is LeagueAdapter, is CountryAdapter, is OutrightCountryAdapter -> {
-                                            leagueChangeEvent.leagueIdList?.let { leagueIdList ->
-                                                withContext(Dispatchers.Main) {
-                                                    viewModel.getGameHallList(
-                                                        args.matchType,
-                                                        isReloadPlayCate = true,
-                                                        isReloadDate = true,
-                                                        isIncrement = false
-                                                    )
-                                                }
-                                            }
-                                        }
-                                        else -> {
-                                            unSubscribeChannelHallAll()
-                                            viewModel.switchSportType(
-                                                args.matchType,
-                                                nowGameType ?: GameType.FT.key
-                                            )
-                                        }
-                                    }
-                                }
+                        when (nowGameType) {
+                            leagueChangeEvent.gameType -> {
+                                unSubscribeChannelHall(nowGameType ?: GameType.FT.key,getPlayCateMenuCode(),leagueChangeEvent.matchIdList?.firstOrNull())
+                                subscribeChannelHall(nowGameType ?: GameType.FT.key,getPlayCateMenuCode(),leagueChangeEvent.matchIdList?.firstOrNull())
                             }
                         }
+
                         isUpdatingLeague = false
                     }
                 }
@@ -1431,6 +1405,20 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             }
         }
     }
+
+    /**
+     * 賠率排序
+     */
+    private fun OddsChangeEvent.sortOddsMap() {
+          this.odds?.forEach { (_, value) ->
+            if (value?.size > 3 && value.first()?.marketSort != 0 && (value.first()?.odds != value.first()?.malayOdds)) {
+                value.sortBy {
+                    it?.marketSort
+                }
+            }
+        }
+    }
+
 
     private fun setEpsBottomSheet(matchInfo: MatchInfo) {
         try {
