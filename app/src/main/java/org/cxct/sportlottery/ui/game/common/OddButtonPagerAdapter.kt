@@ -544,7 +544,14 @@ class OddButtonPagerViewHolder private constructor(
                         ) ?: odds.second?.getOrNull(0)?.name)?.abridgeOddsName()
                     }
                     playCateCode.isNOGALType() -> {
-                        "第" + odds.second?.getOrNull(0)?.nextScore.toString()
+                        when (LanguageManager.getSelectLanguage(this.context)) {
+                            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
+                                "第" + odds.second?.getOrNull(0)?.nextScore.toString()
+                            }
+                            else -> {
+                                getOrdinalNumbers(odds.second?.getOrNull(0)?.nextScore.toString())
+                            }
+                        }
                     }
                     else -> ""
                 }
@@ -619,7 +626,14 @@ class OddButtonPagerViewHolder private constructor(
                         ) ?: odds.second?.getOrNull(1)?.name)?.abridgeOddsName()
                     }
                     playCateCode.isNOGALType() -> {
-                        "第" + odds.second?.getOrNull(1)?.nextScore.toString()
+                        when (LanguageManager.getSelectLanguage(this.context)) {
+                            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
+                                "第" + odds.second?.getOrNull(1)?.nextScore.toString()
+                            }
+                            else -> {
+                                getOrdinalNumbers(odds.second?.getOrNull(1)?.nextScore.toString())
+                            }
+                        }
                     }
                     else -> ""
                 }
@@ -698,7 +712,16 @@ class OddButtonPagerViewHolder private constructor(
                 visibility = View.VISIBLE
 
                 text = when {
-                    playCateCode.isNOGALType() -> "无"
+                    playCateCode.isNOGALType() -> {
+                        when (LanguageManager.getSelectLanguage(this.context)) {
+                            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
+                                "无"
+                            }
+                            else -> {
+                                "None"
+                            }
+                        }
+                    }
                     playCateCode.isCombination() -> {
                         (odds.second?.getOrNull(2)?.nameMap?.get(
                             LanguageManager.getSelectLanguage(context).key
@@ -968,6 +991,15 @@ class OddButtonPagerViewHolder private constructor(
             tv_odds.setTextColor(oddColorStateList(odds.second?.getOrNull(2), oddsType))
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(2))
             isSelected = odds.second?.getOrNull(2)?.isSelected ?: false
+        }
+    }
+
+    private fun getOrdinalNumbers(number:String):String {
+        return when (number) {
+            "1" -> "1st"
+            "2" -> "2nd"
+            "3" -> "3rd"
+            else -> "${number}th"
         }
     }
 
