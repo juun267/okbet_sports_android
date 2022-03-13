@@ -1316,8 +1316,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                         when (nowGameType) {
                             leagueChangeEvent.gameType -> {
-                                unSubscribeChannelHall(nowGameType ?: GameType.FT.key,getPlayCateMenuCode(),leagueChangeEvent.matchIdList?.firstOrNull())
-                                subscribeChannelHall(nowGameType ?: GameType.FT.key,getPlayCateMenuCode(),leagueChangeEvent.matchIdList?.firstOrNull())
+                                unSubscribeChannelHallAll()
+                                //unSubscribeChannelHall(nowGameType ?: GameType.FT.key, getPlayCateMenuCode(), leagueChangeEvent.matchIdList?.firstOrNull())
+                                subscribeChannelHall(nowGameType ?: GameType.FT.key, getPlayCateMenuCode(), leagueChangeEvent.matchIdList?.firstOrNull())
                             }
                         }
 

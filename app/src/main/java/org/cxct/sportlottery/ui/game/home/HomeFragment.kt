@@ -95,6 +95,28 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         }
     }
 
+    private val mOnSubscribeChannelHallListener = object : OnSubscribeChannelHallListener {
+        override fun subscribeChannel(
+            gameType: String?,
+            cateMenuCode: String?,
+            eventId: String?
+        ) {
+            GlobalScope.launch(Dispatchers.IO) {
+                subscribeChannelHall(gameType, cateMenuCode, eventId)
+            }
+        }
+
+        override fun unSubscribeChannel(
+            gameType: String?,
+            cateMenuCode: String?,
+            eventId: String?
+        ) {
+            GlobalScope.launch(Dispatchers.IO) {
+                unSubscribeChannelHall(gameType, cateMenuCode, eventId)
+            }
+        }
+    }
+
     private val isShowThirdGame = sConfigData?.thirdOpen == FLAG_OPEN
     private var lotteryCount = 0
     private var liveCount = 0
@@ -170,6 +192,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         rv_game_table.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         rv_game_table.adapter = mRvGameTable4Adapter
 
+        mRvGameTable4Adapter.onSubscribeChannelHallListener = mOnSubscribeChannelHallListener
         mRvGameTable4Adapter.onClickOddListener = object : OnClickOddListener {
             override fun onClickBet(matchOdd: MatchOdd, odd: Odd, playCateCode: String, playCateName: String?,
                                     betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?) {
@@ -456,51 +479,51 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
     //訂閱 滾球盤 or 即將開賽 賠率
     private fun subscribeTableHallChannel(selectMatchType: MatchType) {
-        GlobalScope.launch(Dispatchers.IO) {
-            when (selectMatchType) {
-                MatchType.IN_PLAY -> {
-                    mInPlayResult?.matchPreloadData?.datas?.forEach { data ->
-                        data.matchOdds.forEach { match ->
-                            subscribeChannelHall(data.code,
-                                MenuCode.HOME_INPLAY_MOBILE.code,
-                                match.matchInfo?.id)
-                        }
-                    }
-                }
-                MatchType.AT_START -> {
-                    mAtStartResult?.matchPreloadData?.datas?.forEach { data ->
-                        data.matchOdds.forEach { match ->
-                            subscribeChannelHall(data.code,
-                                MenuCode.HOME_ATSTART_MOBILE.code,
-                                match.matchInfo?.id)
-                        }
-                    }
-                }
-            }
-        }
+//        GlobalScope.launch(Dispatchers.IO) {
+//            when (selectMatchType) {
+//                MatchType.IN_PLAY -> {
+//                    mInPlayResult?.matchPreloadData?.datas?.forEach { data ->
+//                        data.matchOdds.forEach { match ->
+//                            subscribeChannelHall(data.code,
+//                                MenuCode.HOME_INPLAY_MOBILE.code,
+//                                match.matchInfo?.id)
+//                        }
+//                    }
+//                }
+//                MatchType.AT_START -> {
+//                    mAtStartResult?.matchPreloadData?.datas?.forEach { data ->
+//                        data.matchOdds.forEach { match ->
+//                            subscribeChannelHall(data.code,
+//                                MenuCode.HOME_ATSTART_MOBILE.code,
+//                                match.matchInfo?.id)
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 
     private fun unsubscribeTableHallChannel() {
-        GlobalScope.launch(Dispatchers.IO) {
-            mInPlayResult?.matchPreloadData?.datas?.forEach { data ->
-                data.matchs?.forEach { match ->
-                    unSubscribeChannelHall(
-                        data.code,
-                        MenuCode.HOME_INPLAY_MOBILE.code,
-                        match.id
-                    )
-                }
-            }
-            mAtStartResult?.matchPreloadData?.datas?.forEach { data ->
-                data.matchs?.forEach { match ->
-                    unSubscribeChannelHall(
-                        data.code,
-                        MenuCode.HOME_ATSTART_MOBILE.code,
-                        match.id
-                    )
-                }
-            }
-        }
+//        GlobalScope.launch(Dispatchers.IO) {
+//            mInPlayResult?.matchPreloadData?.datas?.forEach { data ->
+//                data.matchs?.forEach { match ->
+//                    unSubscribeChannelHall(
+//                        data.code,
+//                        MenuCode.HOME_INPLAY_MOBILE.code,
+//                        match.id
+//                    )
+//                }
+//            }
+//            mAtStartResult?.matchPreloadData?.datas?.forEach { data ->
+//                data.matchs?.forEach { match ->
+//                    unSubscribeChannelHall(
+//                        data.code,
+//                        MenuCode.HOME_ATSTART_MOBILE.code,
+//                        match.id
+//                    )
+//                }
+//            }
+//        }
     }
 
     //訂閱 推薦賽事 賠率

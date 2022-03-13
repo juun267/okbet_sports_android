@@ -21,6 +21,7 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.MenuCode
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
@@ -31,6 +32,7 @@ import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.game.home.OnClickFavoriteListener
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.game.home.OnClickStatisticsListener
+import org.cxct.sportlottery.ui.game.home.OnSubscribeChannelHallListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
@@ -50,6 +52,8 @@ class Vp2GameTable4Adapter (
     var onClickFavoriteListener: OnClickFavoriteListener? = null
 
     var onClickStatisticsListener: OnClickStatisticsListener? = null
+
+    var onSubscribeChannelHallListener: OnSubscribeChannelHallListener? = null
 
     private var isLogin: Boolean = false
     private var oddsType: OddsType = OddsType.EU
@@ -101,6 +105,32 @@ class Vp2GameTable4Adapter (
             holder.bind(data, time)
         } catch (e: Exception) {
             e.printStackTrace()
+        }
+    }
+
+    override fun onViewAttachedToWindow(holder: ViewHolderHdpOu) {
+        super.onViewAttachedToWindow(holder)
+        val position = holder.bindingAdapterPosition
+        if (dataList.count() > position && position >= 0) {
+            val data = dataList[position]
+            onSubscribeChannelHallListener?.subscribeChannel(
+                gameType,
+                if (matchType == MatchType.IN_PLAY) MenuCode.HOME_INPLAY_MOBILE.code else MenuCode.HOME_ATSTART_MOBILE.code,
+                data.matchInfo?.id
+            )
+        }
+    }
+
+    override fun onViewDetachedFromWindow(holder: ViewHolderHdpOu) {
+        super.onViewDetachedFromWindow(holder)
+        val position = holder.bindingAdapterPosition
+        if (dataList.count() > position && position >= 0) {
+            val data = dataList[position]
+            onSubscribeChannelHallListener?.unSubscribeChannel(
+                gameType,
+                if (matchType == MatchType.IN_PLAY) MenuCode.HOME_INPLAY_MOBILE.code else MenuCode.HOME_ATSTART_MOBILE.code,
+                data.matchInfo?.id
+            )
         }
     }
 

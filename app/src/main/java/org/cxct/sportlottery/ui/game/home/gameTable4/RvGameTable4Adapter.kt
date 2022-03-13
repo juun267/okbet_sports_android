@@ -23,6 +23,7 @@ import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelp
 import org.cxct.sportlottery.ui.game.home.OnClickFavoriteListener
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.game.home.OnClickStatisticsListener
+import org.cxct.sportlottery.ui.game.home.OnSubscribeChannelHallListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.GameConfigManager.getGameIcon
 import org.cxct.sportlottery.util.GameConfigManager.getTitleBarBackground
@@ -72,6 +73,8 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var onClickFavoriteListener: OnClickFavoriteListener? = null
 
     var onClickStatisticsListener: OnClickStatisticsListener? = null
+
+    var onSubscribeChannelHallListener: OnSubscribeChannelHallListener? = null
 
     override fun getItemViewType(position: Int): Int {
         return when (mDataList[position].otherMatch.isNullOrEmpty()) {
@@ -176,6 +179,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 data.matchOdds?.let {
                     if (data.vpTableAdapter == null) data.vpTableAdapter = Vp2GameTable4Adapter(mMatchType)
                     data.vpTableAdapter?.onClickMatchListener = onClickMatchListener
+                    data.vpTableAdapter?.onSubscribeChannelHallListener = onSubscribeChannelHallListener
                     data.vpTableAdapter?.onClickOddListener = onClickOddListener
                     data.vpTableAdapter?.onClickFavoriteListener = onClickFavoriteListener
                     data.vpTableAdapter?.onClickStatisticsListener = onClickStatisticsListener
