@@ -121,19 +121,6 @@ class Vp2GameTable4Adapter (
         }
     }
 
-    override fun onViewDetachedFromWindow(holder: ViewHolderHdpOu) {
-        super.onViewDetachedFromWindow(holder)
-        val position = holder.bindingAdapterPosition
-        if (dataList.count() > position && position >= 0) {
-            val data = dataList[position]
-            onSubscribeChannelHallListener?.unSubscribeChannel(
-                gameType,
-                if (matchType == MatchType.IN_PLAY) MenuCode.HOME_INPLAY_MOBILE.code else MenuCode.HOME_ATSTART_MOBILE.code,
-                data.matchInfo?.id
-            )
-        }
-    }
-
     override fun getItemCount(): Int = dataList.size
 
     fun notifySelectedOddsChanged(selectedOdds: MutableList<String>) {

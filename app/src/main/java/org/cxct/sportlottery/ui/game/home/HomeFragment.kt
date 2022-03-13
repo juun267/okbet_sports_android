@@ -83,6 +83,9 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
     private val mRecommendAdapter = RvRecommendAdapter()
 
+    private var tableInPlayMap = mutableMapOf<String, String>()
+    private var tableSoonMap = mutableMapOf<String, String>()
+
     private val mOnClickOddListener = object : OnClickOddListener {
         override fun onClickBet(
             matchOdd: MatchOdd,
@@ -101,18 +104,18 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             cateMenuCode: String?,
             eventId: String?
         ) {
-            GlobalScope.launch(Dispatchers.IO) {
-                subscribeChannelHall(gameType, cateMenuCode, eventId)
+            if (gameType.isNullOrEmpty()) return
+            val id = if (mSelectMatchType == MatchType.IN_PLAY) tableInPlayMap[gameType] else tableSoonMap[gameType]
+            if (id == eventId) return
+            if (mSelectMatchType == MatchType.IN_PLAY) {
+                tableInPlayMap[gameType] = eventId ?: ""
             }
-        }
-
-        override fun unSubscribeChannel(
-            gameType: String?,
-            cateMenuCode: String?,
-            eventId: String?
-        ) {
+            else {
+                tableSoonMap[gameType] = eventId ?: ""
+            }
             GlobalScope.launch(Dispatchers.IO) {
-                unSubscribeChannelHall(gameType, cateMenuCode, eventId)
+                if (!id.isNullOrEmpty()) unSubscribeChannelHall(gameType, cateMenuCode, id)
+                subscribeChannelHall(gameType, cateMenuCode, eventId)
             }
         }
     }
@@ -510,25 +513,21 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     private fun unsubscribeUnSelectMatchTypeHallChannel() {
         GlobalScope.launch(Dispatchers.IO) {
             if (mSelectMatchType == MatchType.IN_PLAY) {
-                mAtStartResult?.matchPreloadData?.datas?.forEach { data ->
-                    data.matchs?.forEach { match ->
-                        unSubscribeChannelHall(
-                            data.code,
-                            MenuCode.HOME_ATSTART_MOBILE.code,
-                            match.id
-                        )
-                    }
+                tableSoonMap.forEach {
+                    unSubscribeChannelHall(
+                        it.key,
+                        MenuCode.HOME_ATSTART_MOBILE.code,
+                        it.value
+                    )
                 }
             }
             else {
-                mInPlayResult?.matchPreloadData?.datas?.forEach { data ->
-                    data.matchs?.forEach { match ->
-                        unSubscribeChannelHall(
-                            data.code,
-                            MenuCode.HOME_INPLAY_MOBILE.code,
-                            match.id
-                        )
-                    }
+                tableInPlayMap.forEach {
+                    unSubscribeChannelHall(
+                        it.key,
+                        MenuCode.HOME_ATSTART_MOBILE.code,
+                        it.value
+                    )
                 }
             }
         }

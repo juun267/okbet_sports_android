@@ -5,5 +5,4 @@ import org.cxct.sportlottery.network.odds.list.MatchOdd
 
 interface OnSubscribeChannelHallListener {
     fun subscribeChannel(gameType: String?, cateMenuCode: String?, eventId: String?)
-    fun unSubscribeChannel(gameType: String?, cateMenuCode: String?, eventId: String?)
 }
