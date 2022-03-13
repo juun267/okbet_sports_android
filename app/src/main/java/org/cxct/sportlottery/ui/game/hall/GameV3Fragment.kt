@@ -696,17 +696,23 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         ?: oddsListResult.oddsListData?.leagueOdds ?: listOf())
 
                     val gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
-                    leagueAdapter.data = mLeagueOddList.onEach { leagueOdd ->
-                        // 將儲存的賠率表指定的賽事列表裡面
-                        val leagueOddFromMap = leagueOddMap[leagueOdd.league.id]
-                        leagueOddFromMap?.let {
-                            leagueOdd.matchOdds.forEach {
-                                it.oddsMap = leagueOddFromMap.matchOdds.find { matchOdd -> it.matchInfo?.id == matchOdd.matchInfo?.id }?.oddsMap
-                                Log.d("Hewie7", "restore ${leagueOdd.league.id} oddsmap => ${it.oddsMap?.size}")
+                    if (mLeagueOddList.isNotEmpty()) {
+                        leagueAdapter.data = mLeagueOddList.onEach { leagueOdd ->
+                            // 將儲存的賠率表指定的賽事列表裡面
+                            val leagueOddFromMap = leagueOddMap[leagueOdd.league.id]
+                            leagueOddFromMap?.let {
+                                leagueOdd.matchOdds.forEach {
+                                    it.oddsMap =
+                                        leagueOddFromMap.matchOdds.find { matchOdd -> it.matchInfo?.id == matchOdd.matchInfo?.id }?.oddsMap
+                                    Log.d(
+                                        "Hewie7",
+                                        "restore ${leagueOdd.league.id} oddsmap => ${it.oddsMap?.size}"
+                                    )
+                                }
                             }
-                        }
-                        leagueOdd.gameType = gameType
-                    }.toMutableList()
+                            leagueOdd.gameType = gameType
+                        }.toMutableList()
+                    }
 
 //                    game_list.apply {
 //                        adapter = leagueAdapter.apply {
