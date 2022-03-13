@@ -243,11 +243,13 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
         rb_in_play.setOnClickListener {
             mSelectMatchType = MatchType.IN_PLAY
+            unsubscribeUnSelectMatchTypeHallChannel()
             refreshTable(mInPlayResult)
         }
 
         rb_as_start.setOnClickListener {
             mSelectMatchType = MatchType.AT_START
+            unsubscribeUnSelectMatchTypeHallChannel()
             refreshTable(mAtStartResult)
         }
     }
@@ -501,6 +503,35 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 //                }
 //            }
 //        }
+    }
+
+
+
+    private fun unsubscribeUnSelectMatchTypeHallChannel() {
+        GlobalScope.launch(Dispatchers.IO) {
+            if (mSelectMatchType == MatchType.IN_PLAY) {
+                mAtStartResult?.matchPreloadData?.datas?.forEach { data ->
+                    data.matchs?.forEach { match ->
+                        unSubscribeChannelHall(
+                            data.code,
+                            MenuCode.HOME_ATSTART_MOBILE.code,
+                            match.id
+                        )
+                    }
+                }
+            }
+            else {
+                mInPlayResult?.matchPreloadData?.datas?.forEach { data ->
+                    data.matchs?.forEach { match ->
+                        unSubscribeChannelHall(
+                            data.code,
+                            MenuCode.HOME_INPLAY_MOBILE.code,
+                            match.id
+                        )
+                    }
+                }
+            }
+        }
     }
 
     private fun unsubscribeTableHallChannel() {
