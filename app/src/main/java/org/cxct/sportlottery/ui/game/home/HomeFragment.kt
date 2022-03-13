@@ -484,28 +484,24 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
     //訂閱 滾球盤 or 即將開賽 賠率
     private fun subscribeTableHallChannel(selectMatchType: MatchType) {
-//        GlobalScope.launch(Dispatchers.IO) {
-//            when (selectMatchType) {
-//                MatchType.IN_PLAY -> {
-//                    mInPlayResult?.matchPreloadData?.datas?.forEach { data ->
-//                        data.matchOdds.forEach { match ->
-//                            subscribeChannelHall(data.code,
-//                                MenuCode.HOME_INPLAY_MOBILE.code,
-//                                match.matchInfo?.id)
-//                        }
-//                    }
-//                }
-//                MatchType.AT_START -> {
-//                    mAtStartResult?.matchPreloadData?.datas?.forEach { data ->
-//                        data.matchOdds.forEach { match ->
-//                            subscribeChannelHall(data.code,
-//                                MenuCode.HOME_ATSTART_MOBILE.code,
-//                                match.matchInfo?.id)
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        GlobalScope.launch(Dispatchers.IO) {
+            when (selectMatchType) {
+                MatchType.IN_PLAY -> {
+                    tableInPlayMap.forEach {
+                        subscribeChannelHall(it.key,
+                            MenuCode.HOME_INPLAY_MOBILE.code,
+                            it.value)
+                    }
+                }
+                MatchType.AT_START -> {
+                    tableSoonMap.forEach {
+                        subscribeChannelHall(it.key,
+                            MenuCode.HOME_ATSTART_MOBILE.code,
+                            it.value)
+                    }
+                }
+            }
+        }
     }
 
 
