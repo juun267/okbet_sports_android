@@ -124,8 +124,8 @@ class GameViewModel(
     val oddsListGameHallResult: LiveData<Event<OddsListResult?>>
         get() = _oddsListGameHallResult
 
-    val quickOddsListGameHallResult: LiveData<Event<OddsListResult?>>
-        get() = _quickOddsListGameHallResult
+//    val quickOddsListGameHallResult: LiveData<Event<OddsListResult?>>
+//        get() = _quickOddsListGameHallResult
 
     val oddsListGameHallIncrementResult: LiveData<Event<OddsListIncrementResult?>>
         get() = _oddsListGameHallIncrementResult
@@ -223,7 +223,7 @@ class GameViewModel(
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _sportCouponMenuResult = MutableLiveData<Event<SportCouponMenuResult>>()
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
-    private val _quickOddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
+
     private val _oddsListGameHallIncrementResult =
         MutableLiveData<Event<OddsListIncrementResult?>>()
     private val _oddsListResult = MutableLiveData<Event<OddsListResult?>>()
@@ -394,7 +394,7 @@ class GameViewModel(
     fun switchMainMatchType() {
         _curChildMatchType.value = null
         _oddsListGameHallResult.value = Event(null)
-        _quickOddsListGameHallResult.value = Event(null)
+        //_quickOddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
         _curMatchType.value = MatchType.MAIN
         filterLeague(listOf())
@@ -403,7 +403,7 @@ class GameViewModel(
     fun switchMatchType(matchType: MatchType) {
         _curChildMatchType.value = null
         _oddsListGameHallResult.value = Event(null)
-        _quickOddsListGameHallResult.value = Event(null)
+        //_quickOddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
         getSportMenu(matchType, onlyRefreshSportMenu = false)
         getAllPlayCategory(matchType)
@@ -413,7 +413,7 @@ class GameViewModel(
     fun switchSpecialMatchType(code: String) {
         _curChildMatchType.value = null
         _oddsListGameHallResult.value = Event(null)
-        _quickOddsListGameHallResult.value = Event(null)
+        //_quickOddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
         //_curMatchType.value  = MatchType.OTHER
         getAllPlayCategoryByCode(code)
@@ -423,7 +423,7 @@ class GameViewModel(
     fun switchChildMatchType(childMatchType: MatchType? = null) {
         _curChildMatchType.value = childMatchType
         _oddsListGameHallResult.value = Event(null)
-        _quickOddsListGameHallResult.value = Event(null)
+        //_quickOddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
         if (childMatchType == MatchType.OTHER_OUTRIGHT || childMatchType == MatchType.OTHER) {
             getGameHallList(
@@ -946,7 +946,7 @@ class GameViewModel(
         }
         _curChildMatchType.value = null
         _oddsListGameHallResult.value = Event(null)
-        _quickOddsListGameHallResult.value = Event(null)
+        //_quickOddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
 
         recordSportType(matchType, item.code)
@@ -1038,7 +1038,7 @@ class GameViewModel(
         }
         _curChildMatchType.value = null
         _oddsListGameHallResult.value = Event(null)
-        _quickOddsListGameHallResult.value = Event(null)
+        //_quickOddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
 
         recordSportType(matchType, gameType)
@@ -1334,7 +1334,7 @@ class GameViewModel(
             }
             MatchType.TODAY.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue -> {
                 _oddsListGameHallResult.value = Event(null)
-                _quickOddsListGameHallResult.value = Event(null)
+                //_quickOddsListGameHallResult.value = Event(null)
                 currentTimeRangeParams = timeRangeParams
             }
         }
@@ -1424,7 +1424,7 @@ class GameViewModel(
                         )
                     else {
                         _oddsListGameHallResult.postValue(Event(result))
-                        _quickOddsListGameHallResult.postValue(Event(result))
+                        //_quickOddsListGameHallResult.postValue(Event(result))
                     }
                 }
 
@@ -1444,7 +1444,7 @@ class GameViewModel(
                 }
                 else -> {
                     _oddsListGameHallResult.postValue(Event(result))
-                    _quickOddsListGameHallResult.postValue(Event(result))
+                    //_quickOddsListGameHallResult.postValue(Event(result))
                 }
             }
 
@@ -1507,46 +1507,46 @@ class GameViewModel(
         }
     }
 
-    fun getQuickList2(matchId: String) {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.oddsService.getQuickList(
-                    QuickListRequest(matchId)
-                )
-            }
-
-            result?.quickListData?.let {
-                val discount = userInfo.value?.discount ?: 1.0F
-                it.quickOdds?.forEach { (_, quickOddsValue) ->
-                    quickOddsValue.forEach { (key, value) ->
-                        value?.forEach { odd ->
-                            odd?.odds = odd?.odds?.applyDiscount(discount)
-                            odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
-
-                            if (key == QuickPlayCate.QUICK_EPS.value) {
-                                odd?.extInfo =
-                                    odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
-                            }
-                        }
-                    }
-                }
-
-                _quickOddsListGameHallResult.postValue(
-                    Event(
-                        _quickOddsListGameHallResult.value?.peekContent()
-                            ?.updateQuickPlayCate(matchId, it, it.playCateNameMap)
-                    )
-                )
-
-                _oddsListResult.postValue(
-                    Event(
-                        _oddsListResult.value?.peekContent()
-                            ?.updateQuickPlayCate(matchId, it, it.playCateNameMap)
-                    )
-                )
-            }
-        }
-    }
+//    fun getQuickList2(matchId: String) {
+//        viewModelScope.launch {
+//            val result = doNetwork(androidContext) {
+//                OneBoSportApi.oddsService.getQuickList(
+//                    QuickListRequest(matchId)
+//                )
+//            }
+//
+//            result?.quickListData?.let {
+//                val discount = userInfo.value?.discount ?: 1.0F
+//                it.quickOdds?.forEach { (_, quickOddsValue) ->
+//                    quickOddsValue.forEach { (key, value) ->
+//                        value?.forEach { odd ->
+//                            odd?.odds = odd?.odds?.applyDiscount(discount)
+//                            odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
+//
+//                            if (key == QuickPlayCate.QUICK_EPS.value) {
+//                                odd?.extInfo =
+//                                    odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
+//                            }
+//                        }
+//                    }
+//                }
+//
+//                _quickOddsListGameHallResult.postValue(
+//                    Event(
+//                        _quickOddsListGameHallResult.value?.peekContent()
+//                            ?.updateQuickPlayCate(matchId, it, it.playCateNameMap)
+//                    )
+//                )
+//
+//                _oddsListResult.postValue(
+//                    Event(
+//                        _oddsListResult.value?.peekContent()
+//                            ?.updateQuickPlayCate(matchId, it, it.playCateNameMap)
+//                    )
+//                )
+//            }
+//        }
+//    }
 
     fun clearQuickPlayCateSelected() {
         _oddsListGameHallResult.postValue(

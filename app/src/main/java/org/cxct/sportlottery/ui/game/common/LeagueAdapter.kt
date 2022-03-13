@@ -155,7 +155,7 @@ class LeagueAdapter(private val matchType: MatchType) :
         RecyclerView.ViewHolder(itemView) {
 
         private val leagueOddAdapter by lazy {
-            LeagueOddAdapter(matchType)
+            LeagueOddAdapter2(matchType)
         }
 
         fun bind(

@@ -198,7 +198,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 { matchOdd, quickPlayCate ->
                     matchOdd.matchInfo?.let {
                         //mOpenedQuickListMap.clear()
-                        viewModel.getQuickList2(it.id)
+                        //viewModel.getQuickList2(it.id)
                         mOpenedQuickListMap[matchOdd.matchInfo.id] = matchOdd
                     }
                 },
@@ -753,20 +753,20 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
 
         // 接收快選列表資料
-        viewModel.quickOddsListGameHallResult.observe(this.viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { oddsListResult ->
-                if (oddsListResult.success) {
-                    oddsListResult.oddsListData?.leagueOdds?.forEach { leagueOdd ->
-                        leagueOdd.matchOdds.forEach { matchOdd ->
-                            matchOdd.isExpand = mOpenedQuickListMap[matchOdd.matchInfo?.id]?.isExpand ?: false
-                            matchOdd.quickPlayCateList = mOpenedQuickListMap[matchOdd.matchInfo?.id]?.quickPlayCateList
-
-                            mQuickOddListMap[matchOdd.matchInfo?.id ?: ""] = matchOdd.quickPlayCateList ?: mutableListOf()
-                        }
-                    }
-                }
-            }
-        }
+//        viewModel.quickOddsListGameHallResult.observe(this.viewLifecycleOwner) {
+//            it.getContentIfNotHandled()?.let { oddsListResult ->
+//                if (oddsListResult.success) {
+//                    oddsListResult.oddsListData?.leagueOdds?.forEach { leagueOdd ->
+//                        leagueOdd.matchOdds.forEach { matchOdd ->
+//                            matchOdd.isExpand = mOpenedQuickListMap[matchOdd.matchInfo?.id]?.isExpand ?: false
+//                            matchOdd.quickPlayCateList = mOpenedQuickListMap[matchOdd.matchInfo?.id]?.quickPlayCateList
+//
+//                            mQuickOddListMap[matchOdd.matchInfo?.id ?: ""] = matchOdd.quickPlayCateList ?: mutableListOf()
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
         viewModel.oddsListGameHallIncrementResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { leagueListIncrementResult ->
