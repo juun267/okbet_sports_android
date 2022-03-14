@@ -1224,7 +1224,7 @@ class GameViewModel(
                 matchType.postValue,
                 getCurrentTimeRangeParams(),
                 leagueIdList,
-                matchIdList,
+                null,
                 isIncrement
             )
         }
