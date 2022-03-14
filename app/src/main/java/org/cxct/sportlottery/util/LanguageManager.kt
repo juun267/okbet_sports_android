@@ -22,6 +22,10 @@ object LanguageManager {
     }
 
     fun getSelectLanguage(context: Context?): Language {
+        //[Martin]無腦鎖定為英文
+        if(BuildConfig.CHANNEL_NAME == "spkx"){
+            return Language.EN
+        }
         //TODO 20210217 Simon 紀錄：目前只有 簡體中文、英文 選項，且預設是簡體中文，待之後 review
         return when (SPUtil.getInstance(context).getSelectLanguage()) {
             Language.ZH.key, Language.ZHT.key -> Language.ZH
