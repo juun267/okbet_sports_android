@@ -5,6 +5,11 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Html
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -45,6 +50,8 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.bet.list.*
 import org.cxct.sportlottery.ui.bet.list.receipt.BetInfoCarReceiptDialog
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
@@ -472,7 +479,32 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         dismiss()
                     }
                 } else {
-                    showBottomSheetDialog(result)
+                    if(result.receipt?.betConfirmTime != null){
+                        val spannableStringBuilder = SpannableStringBuilder()
+                        var text1 = SpannableString(getString(R.string.text_bet_not_success))
+                        var text2= SpannableString(getString(R.string.text_bet_not_success2))
+                        val foregroundSpan = ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.colorRedDark))
+                        text2.setSpan(foregroundSpan, 0, text2.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                        var text3 = SpannableString(getString(R.string.text_bet_not_success3))
+                        var text4 = SpannableString(getString(R.string.text_bet_not_success4))
+                        val foregroundSpan2 = ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.colorRedDark))
+                        text4.setSpan(foregroundSpan2, 0, text4.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                        spannableStringBuilder.append(text1)
+                        spannableStringBuilder.append(text2)
+                        spannableStringBuilder.append(text3)
+                        spannableStringBuilder.append(text4)
+                        showPromptDialog(
+                            title = getString(R.string.prompt),
+                            message = spannableStringBuilder,
+                            success = result.success
+                        ){
+                            dismiss()
+                            //(activity as GameActivity).
+                            viewModel.navTranStatus()
+                        }
+                    }else{
+                        showBottomSheetDialog(result)
+                    }
                 }
             }
         }
@@ -629,11 +661,11 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         betInfoListData?.let { betInfoData ->
             et_bet.apply {
-                hint = getLimitHint(
-                    context,
-                    betInfoListData?.parlayOdds?.min ?: 0,
-                    betInfoListData?.parlayOdds?.max ?: 9999
-                )
+//                hint = getLimitHint(
+//                    context,
+//                    betInfoListData?.parlayOdds?.min ?: 0,
+//                    betInfoListData?.parlayOdds?.max ?: 9999
+//                )
             }
             //[Martin] 判斷馬來盤與歐洲盤賠率是否一樣 若相同 則該項玩法是不支持馬來盤or印尼下注的 則將oddsType
             val currentOddsType = if (betInfoData.matchOdd.odds == betInfoData.matchOdd.malayOdds

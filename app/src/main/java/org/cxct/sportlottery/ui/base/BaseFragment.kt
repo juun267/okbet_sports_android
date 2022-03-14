@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.base
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Handler
+import android.text.Spanned
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -92,6 +93,29 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
                 (activity as BaseActivity<*>).showErrorPromptDialog(
                     title,
                     message,
+                    positiveClickListener
+                )
+            }
+        }
+    }
+
+    fun showPromptDialog(
+        title: String,
+        message: Spanned,
+        success: Boolean,
+        positiveClickListener: () -> Unit
+    ) {
+        if (activity is BaseActivity<*>) {
+            if (success) {
+                (activity as BaseActivity<*>).showPromptDialog(
+                    title,
+                    message,
+                    positiveClickListener
+                )
+            } else {
+                (activity as BaseActivity<*>).showErrorPromptDialog(
+                    title,
+                    message.toString(),
                     positiveClickListener
                 )
             }

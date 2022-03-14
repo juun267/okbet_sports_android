@@ -967,6 +967,11 @@
     <string name="scan_tool_bar">Quét kết quả</string>
     <string name="text_us_east_time">Thời gian được báo cáo theo múi giờ UTC-4.</string>
     <string name="verify_failed_please_retry">Lỗi xảy ra trong quá trình xác thực. Xin thử lại lần nữa</string>
+    <string name="text_cant_play">Bạn đang trong khu vực không thể chơi</string>
+    <string name="text_bet_not_success">Trạng thái phiếu cược đang&#160;</string>
+    <string name="text_bet_not_success2">Chờ</string>
+    <string name="text_bet_not_success3">&#160;Phiếu cược của bạn đang được xử lý, vui lòng kiểm tra&#160;</string>
+    <string name="text_bet_not_success4">ĐÃ CƯỢC.</string>
     <!--自我禁制-->
     <string name="self_limit">Tự loại trừ</string>
     <string name="self_limit_impotent">Chú ý</string>
@@ -1064,5 +1069,6 @@ Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAG
     <string name="text_account_history_withdraw">Rút tiền</string>
     <string name="text_account_history_activity">Số lượng hoạt động</string>
     <string name="text_account_history_credit">Số tiền tín dụng</string>
+    <string name="waiting">Chờ</string>
     <!--歷史紀錄end-->
 </resources>

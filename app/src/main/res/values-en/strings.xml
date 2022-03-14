@@ -937,6 +937,11 @@
     <string name="scan_tool_bar">Scan results</string>
     <string name="text_us_east_time">The time is reported in UTC-4 time zone.</string>
     <string name="verify_failed_please_retry">Verification failed, please try again</string>
+    <string name="text_cant_play">Unable to play in your area</string>
+    <string name="text_bet_not_success">Bet slip status is&#160;</string>
+    <string name="text_bet_not_success2">Waiting</string>
+    <string name="text_bet_not_success3">&#160;our bet slip is processing, please check &#160;</string>
+    <string name="text_bet_not_success4">Record</string>
     <!--自我禁制-->
     <string name="self_limit">Self-exclusion</string>
     <string name="self_limit_impotent">Attention</string>
@@ -1038,5 +1043,6 @@ Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAG
     <string name="text_account_history_withdraw">Withdraw</string>
     <string name="text_account_history_activity">Activity</string>
     <string name="text_account_history_credit">Credit</string>
+    <string name="waiting">Waiting</string>
     <!--歷史紀錄end-->
 </resources>

@@ -122,12 +122,12 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
             it.getContentIfNotHandled()?.let { outrightOddsListResult ->
                 if (outrightOddsListResult.success) {
 
-                    game_toolbar_match_type.text = GameType.values()
-                        .find { gameType -> gameType.key == args.gameType.key }?.string?.let { stringId ->
-                            getString(
-                                stringId
-                            )
-                        }
+//                    game_toolbar_match_type.text = GameType.values()
+//                        .find { gameType -> gameType.key == args.gameType.key }?.string?.let { stringId ->
+//                            getString(
+//                                stringId
+//                            )
+//                        }
 
                     GameConfigManager.getTitleBarBackground(outrightOddsListResult.outrightOddsListData?.sport?.code)
                         ?.let { gameImg ->
