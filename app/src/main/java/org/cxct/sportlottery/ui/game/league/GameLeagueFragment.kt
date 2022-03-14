@@ -403,6 +403,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.updateOddsSelectedState()
+                oddsChangeEvent.filterMenuPlayCate()
 
                 val leagueOdds = leagueAdapter.data
 
@@ -515,6 +516,21 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         }
 
         return this
+    }
+
+
+    /**
+     * 只有有下拉篩選玩法的才需要過濾odds
+     */
+    private fun OddsChangeEvent.filterMenuPlayCate() {
+        val playSelected = playCategoryAdapter.data.find { it.isSelected }
+
+        when (playSelected?.selectionType) {
+            SelectionType.SELECTABLE.code -> {
+                val playCateMenuCode = playSelected.playCateList?.find { it.isSelected }?.code
+                this.odds?.entries?.retainAll { oddMap -> oddMap.key == playCateMenuCode }
+            }
+        }
     }
 
     private fun updateSportBackground(sportCode: String?) {
