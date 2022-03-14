@@ -13,6 +13,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.game.BetRecordType
 
 class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(TransactionStatusViewModel::class) {
     private val recordDiffAdapter by lazy { TransactionRecordDiffAdapter() }
@@ -62,6 +63,18 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
                     add(StatusSheetData(gameType.key, getString(gameType.string)))
                 }
             }
+
+        bet_type_selector.apply {
+            dataList = listOf(StatusSheetData("0", context.getString(R.string.waiting)),StatusSheetData("1", context.getString(R.string.not_settled_order)))
+            itemSelectedListener = { statusSheetData ->
+                statusSheetData.code.let { selectedCode ->
+                    selectedCode?.let {
+                        viewModel.statusList = listOf(it.toInt())
+                    }
+                }
+            }
+        }
+
         game_type_selector.apply {
             dataList = gameTypeStatusSheetData
             itemSelectedListener = { statusSheetData ->

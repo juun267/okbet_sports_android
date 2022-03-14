@@ -1039,5 +1039,6 @@ Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAG
     <string name="text_account_history_withdraw">Withdraw</string>
     <string name="text_account_history_activity">Activity</string>
     <string name="text_account_history_credit">Credit</string>
+    <string name="waiting">Waiting</string>
     <!--歷史紀錄end-->
 </resources>
