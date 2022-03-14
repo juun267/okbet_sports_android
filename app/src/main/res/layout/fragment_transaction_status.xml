@@ -85,15 +85,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_2"
-                android:layout_marginRight="@dimen/margin_10"
-                android:drawableLeft="@drawable/ic_info_white"
+                android:layout_marginEnd="@dimen/margin_10"
                 android:drawablePadding="@dimen/margin_6"
-                android:drawableTint="@color/colorGray"
                 android:text="@string/text_us_east_time"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
                 android:layout_marginBottom="@dimen/margin_10"
                 android:textColor="@color/colorGray"
-                android:textSize="@dimen/textSize14sp" />
+                android:textSize="@dimen/textSize14sp"
+                app:drawableLeftCompat="@drawable/ic_info_white"
+                app:drawableTint="@color/colorGray" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_record"
