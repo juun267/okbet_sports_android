@@ -618,7 +618,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         viewModel.messageListResult.observe(this) {
             it.getContentIfNotHandled()?.let { result ->
                 updateUiWithResult(result)
-                setNewsDialog(result) //公告彈窗
+            //Task 1901 在新版公告介面出來之前先隱藏
+//                setNewsDialog(result) //公告彈窗
             }
         }
 

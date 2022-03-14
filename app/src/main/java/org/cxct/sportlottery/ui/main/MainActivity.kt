@@ -242,7 +242,8 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
         //公告彈窗
         viewModel.promoteNoticeResult.observe(this) {
             it.getContentIfNotHandled()?.let { result ->
-                setNewsDialog(result)
+                //Task 1901 在新版公告介面出來之前先隱藏
+//                setNewsDialog(result)
             }
         }
 
