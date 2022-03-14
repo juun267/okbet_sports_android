@@ -661,11 +661,11 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         betInfoListData?.let { betInfoData ->
             et_bet.apply {
-                hint = getLimitHint(
-                    context,
-                    betInfoListData?.parlayOdds?.min ?: 0,
-                    betInfoListData?.parlayOdds?.max ?: 9999
-                )
+//                hint = getLimitHint(
+//                    context,
+//                    betInfoListData?.parlayOdds?.min ?: 0,
+//                    betInfoListData?.parlayOdds?.max ?: 9999
+//                )
             }
             //[Martin] 判斷馬來盤與歐洲盤賠率是否一樣 若相同 則該項玩法是不支持馬來盤or印尼下注的 則將oddsType
             val currentOddsType = if (betInfoData.matchOdd.odds == betInfoData.matchOdd.malayOdds
