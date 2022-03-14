@@ -302,8 +302,8 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                         }
 
                         if (args.matchType == MatchType.IN_PLAY &&
-                            (args.gameType == GameType.BK || args.gameType == GameType.TN || args.gameType == GameType.VB)
-                            && tv_status_left.isVisible
+                            (args.gameType == GameType.BK || args.gameType == GameType.TN || args.gameType == GameType.VB || args.gameType == GameType.TT)
+//                            && tv_status_left.isVisible
                             && (it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt != null)
                         ) {
                             tv_spt.visibility = View.VISIBLE
@@ -608,6 +608,14 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                 setupBackScore(event)
                 setupStatusTnVb(event)
             }
+            GameType.IH -> {
+                setCardText(event)
+                setupFrontScore(event)
+            }
+            GameType.TT -> {
+                setupBackScore(event)
+                setupStatusTnVb(event)
+            }
             else -> {
             }
         }
@@ -701,13 +709,13 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
             tv_status_left.setTextColor(
                 ContextCompat.getColor(
                     tv_status_left.context,
-                    R.color.colorOrangeLight
+                    R.color.colorWhite8
                 )
             )
             tv_spt.setTextColor(
                 ContextCompat.getColor(
                     tv_status_left.context,
-                    R.color.colorOrangeLight
+                    R.color.colorWhite8
                 )
             )
             val statusValue =
