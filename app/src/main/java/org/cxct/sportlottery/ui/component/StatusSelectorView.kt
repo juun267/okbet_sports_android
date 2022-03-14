@@ -99,6 +99,7 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
 
                 val chainStyle = typedArray.getInt(R.styleable.StatusBottomSheetStyle_horizontalChainStyle, STYLE_NULL)
                 val arrowAtEnd = typedArray.getBoolean(R.styleable.StatusBottomSheetStyle_arrowAtEnd, false)
+                val backgroundFrame = typedArray.getResourceId(R.styleable.StatusBottomSheetStyle_backgroundFrame, STYLE_NULL)
 
                 val constrainSet = ConstraintSet()
 
@@ -125,6 +126,8 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
                         }
                     }
                 }
+                if (backgroundFrame != STYLE_NULL)
+                    cl_root.background = ContextCompat.getDrawable(context, R.drawable.frame_color_silver_light_stroke)
 
                 tv_selected.tag = ""
                 tv_selected.text = typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText)

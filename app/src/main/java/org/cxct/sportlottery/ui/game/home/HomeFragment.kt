@@ -148,6 +148,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
     override fun onDestroyView() {
         super.onDestroyView()
+        unSubscribeChannelHallAll()
         mTimer?.cancel()
         mTimer = null
     }

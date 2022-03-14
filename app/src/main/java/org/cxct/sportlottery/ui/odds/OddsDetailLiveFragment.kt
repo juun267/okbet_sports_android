@@ -277,13 +277,13 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                             tv_time_bottom?.setTextColor(
                                 ContextCompat.getColor(
                                     tv_time_bottom.context,
-                                    R.color.colorOrangeLight
+                                    R.color.colorWhite
                                 )
                             )
                             tv_time_top?.setTextColor(
                                 ContextCompat.getColor(
                                     tv_time_bottom.context,
-                                    R.color.colorOrangeLight
+                                    R.color.colorWhite
                                 )
                             )
                         } else {
@@ -302,8 +302,8 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                         }
 
                         if (args.matchType == MatchType.IN_PLAY &&
-                            (args.gameType == GameType.BK || args.gameType == GameType.TN || args.gameType == GameType.VB)
-                            && tv_status_left.isVisible
+                            (args.gameType == GameType.BK || args.gameType == GameType.TN || args.gameType == GameType.VB || args.gameType == GameType.TT)
+//                            && tv_status_left.isVisible
                             && (it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt != null)
                         ) {
                             tv_spt.visibility = View.VISIBLE
@@ -523,7 +523,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
             if (args.matchType != MatchType.IN_PLAY) {
                 val timeStr = TimeUtil.timeFormat(startTime, HM_FORMAT)
-                if (!timeStr.isEmpty()) {
+                if (timeStr.isNotEmpty()) {
                     tv_time_bottom.text = timeStr
                 }
                 else {
@@ -532,7 +532,8 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                 tv_time_top.text = TimeUtil.timeFormat(startTime, DM_FORMAT)
             }
             else {
-                tv_time_bottom.text = getString(R.string.time_null)
+                // 不需要一直重置
+//                tv_time_bottom.text = getString(R.string.time_null)
             }
         }
     }
@@ -590,7 +591,8 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         if (args.matchType != MatchType.IN_PLAY) return
 
         when (args.gameType) {
-            GameType.FT -> {
+            GameType.FT,
+            GameType.IH -> {
                 setCardText(event)
                 setupFrontScore(event)
             }
@@ -603,10 +605,13 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                 setupBackScore(event)
                 setupStatusTnVb(event)
             }
-            GameType.VB -> {
+            GameType.VB,
+            GameType.TT -> {
                 setupBackScore(event)
                 setupStatusTnVb(event)
             }
+            // Todo: 仍有其他球種待處理
+            // BM, BX, CB, CK, BB, RB, AFT, MR, GF, FB, OTHER
             else -> {
             }
         }
@@ -700,13 +705,13 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
             tv_status_left.setTextColor(
                 ContextCompat.getColor(
                     tv_status_left.context,
-                    R.color.colorOrangeLight
+                    R.color.colorWhite8
                 )
             )
             tv_spt.setTextColor(
                 ContextCompat.getColor(
                     tv_status_left.context,
-                    R.color.colorOrangeLight
+                    R.color.colorWhite8
                 )
             )
             val statusValue =

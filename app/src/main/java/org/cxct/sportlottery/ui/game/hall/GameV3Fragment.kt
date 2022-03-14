@@ -34,6 +34,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.*
+import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeString
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
@@ -706,22 +707,20 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 leagueOdd.matchOdds.forEach {
                                     it.oddsMap =
                                         leagueOddFromMap.matchOdds.find { matchOdd -> it.matchInfo?.id == matchOdd.matchInfo?.id }?.oddsMap
-                                    Log.d(
-                                        "Hewie7",
-                                        "restore ${leagueOdd.league.id} oddsmap => ${it.oddsMap?.size}"
-                                    )
                                 }
                             }
                             leagueOdd.gameType = gameType
                         }.toMutableList()
                     }
 
-//                    game_list.apply {
-//                        adapter = leagueAdapter.apply {
-//                            updateType = null
-//                            data = leagueOdds.onEach { leagueOdd ->
-//                                leagueOdd.gameType = gameType
-//                            }.toMutableList()
+//                    if (leagueOdds.isNotEmpty()) {
+//                        game_list.apply {
+//                            adapter = leagueAdapter.apply {
+//                                updateType = null
+//                                data = leagueOdds.onEach { leagueOdd ->
+//                                    leagueOdd.gameType = gameType
+//                                }.toMutableList()
+//                            }
 //                        }
 //                    }
 
@@ -864,8 +863,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             game_list.apply {
                                 adapter = countryAdapter.apply {
                                     data = rows
-                                    if (args.matchType == MatchType.PARLAY)
-                                        view?.game_toolbar_match_type?.text = data.firstOrNull()?.name
+//                                    if (args.matchType == MatchType.PARLAY)
+//                                        view?.game_toolbar_match_type?.text = data.firstOrNull()?.name
                                 }
                             }
                         }
@@ -940,8 +939,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         viewModel.countryListSearchResult.observe(this.viewLifecycleOwner) {
             hideLoading()
             countryAdapter.data = it
-            if (args.matchType == MatchType.PARLAY)
-                view?.game_toolbar_match_type?.text = it.firstOrNull()?.name
+//            if (args.matchType == MatchType.PARLAY)
+//                view?.game_toolbar_match_type?.text = it.firstOrNull()?.name
         }
 
         viewModel.outrightCountryListSearchResult.observe(this.viewLifecycleOwner) {
@@ -1366,13 +1365,25 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             leagueAdapter.data.filter { leagueOdd -> leagueOdd.league.id == leagueChangeEvent.leagueIdList?.firstOrNull() }
                                 .isNotEmpty()
 
-                        when (nowGameType) {
-                            leagueChangeEvent.gameType -> {
-                                unSubscribeChannelHall(nowGameType ?: GameType.FT.key,getPlayCateMenuCode(),leagueChangeEvent.matchIdList?.firstOrNull())
-                                subscribeChannelHall(nowGameType ?: GameType.FT.key,getPlayCateMenuCode(),leagueChangeEvent.matchIdList?.firstOrNull())
+//                        when (nowGameType) {
+//                            leagueChangeEvent.gameType -> {
+//                                unSubscribeChannelHall(nowGameType ?: GameType.FT.key,getPlayCateMenuCode(),leagueChangeEvent.matchIdList?.firstOrNull())
+//                                subscribeChannelHall(nowGameType ?: GameType.FT.key,getPlayCateMenuCode(),leagueChangeEvent.matchIdList?.firstOrNull())
+//                            }
+//                        }
+
+                        if(nowGameType == leagueChangeEvent.gameType ){
+                            when{
+                                !hasLeagueIdList -> {
+                                    //全刷
+                                    viewModel.getGameHallList(args.matchType,false)
+                                }
+                                else -> {
+                                    unSubscribeChannelHall(nowGameType ?: GameType.FT.key, getPlaySelectedCode(), leagueChangeEvent.matchIdList?.firstOrNull())
+                                    subscribeChannelHall(nowGameType ?: GameType.FT.key, getPlaySelectedCode(), leagueChangeEvent.matchIdList?.firstOrNull())
+                                }
                             }
                         }
-
                         isUpdatingLeague = false
                     }
                 }
@@ -1454,7 +1465,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         gameTypeAdapter.dataSport = gameTypeList
         if (args.matchType != MatchType.OTHER) {
             gameTypeList.find { it.isSelected }.let { item ->
-                game_toolbar_sport_type.text = item?.name ?: resources.getString(GameType.FT.string)
+                game_toolbar_sport_type.text = context?.let { getGameTypeString(it, item?.code) } ?: resources.getString(GameType.FT.string)
                     .toUpperCase(Locale.getDefault())
                 updateSportBackground(item)
 //                subscribeSportChannelHall(item?.code)//12/30 移除平台id与gameType後，切換SportType就不用重新訂閱了，不然會造成畫面一直閃爍 by Bill
@@ -1796,7 +1807,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 false -> {
                     unSubscribeChannelHall(
                         leagueOdd.gameType?.key,
-                        getPlayCateMenuCode(),
+                        getPlaySelectedCode(),
                         matchOdd.matchInfo?.id
                     )
 

@@ -5,6 +5,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -186,6 +187,13 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     ) {
         showPromptDialog(title, message, null, positiveClickListener, false)
     }
+    fun showPromptDialog(
+        title: String? = getString(R.string.prompt),
+        message: Spanned,
+        positiveClickListener: () -> Unit?
+    ) {
+        showPromptDialog(title, message, null, positiveClickListener, false)
+    }
 
     fun showPromptDialog(
         title: String? = getString(R.string.prompt),
@@ -203,6 +211,48 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     fun showErrorPromptDialog(title: String, message: String, positiveClickListener: () -> Unit?) {
         showPromptDialog(title, message, null, positiveClickListener, true)
+    }
+
+    fun showPromptDialog(
+        title: String?,
+        errorMessage: Spanned,
+        buttonText: String?,
+        positiveClickListener: () -> Unit?,
+        isError: Boolean,
+        isShowDivider: Boolean? = false
+    ) {
+        safelyUpdateLayout(Runnable {
+            try {
+                //防止跳出多個 error dialog
+                if (mPromptDialog?.isShowing == true)
+                    mPromptDialog?.dismiss()
+                if (mTokenPromptDialog?.isShowing == true) {
+                    mPromptDialog?.dismiss()
+                    return@Runnable
+                }
+
+                mPromptDialog = CustomAlertDialog(this@BaseActivity).apply {
+                    if (isError) {
+                        setTextColor(R.color.colorRed)
+                    }
+                    setShowDivider(isShowDivider)
+                    setTitle(title)
+                    setMessage(errorMessage)
+                    setPositiveButtonText(buttonText ?: this@BaseActivity.getString(R.string.btn_determine))
+                    setNegativeButtonText(null)
+                    setPositiveClickListener(View.OnClickListener {
+                        positiveClickListener()
+                        mPromptDialog?.dismiss()
+                    })
+
+                    setCanceledOnTouchOutside(false)
+                    isCancelable = false //不能用系統 BACK 按鈕關閉 dialog
+                }
+                mPromptDialog?.show(supportFragmentManager, null)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        })
     }
 
     fun showPromptDialog(

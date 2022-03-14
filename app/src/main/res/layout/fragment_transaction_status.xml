@@ -12,9 +12,9 @@
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:overScrollMode="never"
         android:background="@color/colorBackground"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:overScrollMode="never">
 
         <LinearLayout
             android:id="@+id/block_scroll"
@@ -57,59 +57,68 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/frame_color_silver_light_stroke"
-                android:paddingStart="9dp"
-                android:paddingTop="2dp"
-                android:paddingEnd="5dp"
-                android:paddingBottom="2dp">
+                android:orientation="horizontal">
+
+                <org.cxct.sportlottery.ui.component.StatusSelectorView
+                    android:id="@+id/bet_type_selector"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginVertical="8dp"
+                    android:layout_weight="1"
+                    app:arrowSrc="@drawable/ic_arrow_color_gray"
+                    app:backgroundFrame="@drawable/frame_color_silver_light_stroke"
+                    app:defaultBottomSheetTitleText="@string/choose_bet_state"
+                    app:defaultStatusText="@string/waiting"
+                    app:horizontalChainStyle="spread" />
 
                 <org.cxct.sportlottery.ui.component.StatusSelectorView
                     android:id="@+id/game_type_selector"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginVertical="8dp"
+                    android:layout_weight="1"
                     app:arrowSrc="@drawable/ic_arrow_color_gray"
+                    app:backgroundFrame="@drawable/frame_color_silver_light_stroke"
                     app:defaultBottomSheetTitleText="@string/choose_bet_state"
                     app:defaultStatusText="@string/all_sport"
                     app:horizontalChainStyle="spread" />
-            </RelativeLayout>
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tvUsTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="end"
                 android:layout_marginTop="@dimen/margin_2"
-                android:layout_marginRight="@dimen/margin_10"
-                android:drawableLeft="@drawable/ic_info_white"
-                android:drawablePadding="@dimen/margin_6"
-                android:drawableTint="@color/colorGray"
-                android:text="@string/text_us_east_time"
-                android:layout_gravity="right"
+                android:layout_marginEnd="@dimen/margin_10"
                 android:layout_marginBottom="@dimen/margin_10"
+                android:drawablePadding="@dimen/margin_6"
+                android:text="@string/text_us_east_time"
                 android:textColor="@color/colorGray"
-                android:textSize="@dimen/textSize14sp" />
+                android:textSize="@dimen/textSize14sp"
+                app:drawableLeftCompat="@drawable/ic_info_white"
+                app:drawableTint="@color/colorGray" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_record"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:overScrollMode="never"
-                tools:listitem="@layout/content_parlay_record"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="1"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                tools:listitem="@layout/content_parlay_record" />
 
             <include
                 android:id="@+id/view_back_to_top"
                 layout="@layout/view_back_to_top"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

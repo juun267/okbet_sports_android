@@ -39,7 +39,7 @@
             app:layout_constraintBottom_toTopOf="@id/account_history_bottom_navigation"
             app:layout_constraintTop_toBottomOf="@id/view_notification"
             app:navGraph="@navigation/account_history_navigation"
-            tools:layout="@layout/fragment_home" />
+            tools:layout="@layout/fragment_account_history" />
 
         <!--根據需求先隱藏，確定不用可刪-->
         <org.cxct.sportlottery.ui.common.ServiceFloatingButton

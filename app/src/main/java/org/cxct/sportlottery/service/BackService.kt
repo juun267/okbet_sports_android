@@ -50,6 +50,7 @@ class BackService : Service() {
 
         private const val HEART_BEAT_RATE = 10 * 1000 //每隔10秒進行一次對長連線的心跳檢測
         private const val RECONNECT_LIMIT = 10 //斷線後重連次數限制
+        private const val LOADING_TIME_INTERVAL: Long = 500
     }
 
     private var mToken = ""
@@ -62,6 +63,7 @@ class BackService : Service() {
     private val mSubscribeChannelPending = mutableListOf<String>()
     private var errorFlag = false // Stomp connect錯誤
     private var reconnectionNum = 0//重新連接次數
+    private var delay: Boolean = false
 
     inner class MyBinder : Binder() {
         val service: BackService
@@ -108,15 +110,19 @@ class BackService : Service() {
             mStompClient?.let { stompClient ->
                 stompClient.withClientHeartbeat(HEART_BEAT_RATE).withServerHeartbeat(HEART_BEAT_RATE)
 
+                sendConnectStatusToActivity(ServiceConnectStatus.CONNECTING)
+
                 val lifecycleDisposable =
                     stompClient.lifecycle()
                         .subscribeOn(Schedulers.io())
+                        .delay(if (delay) LOADING_TIME_INTERVAL else 0, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe { lifecycleEvent: LifecycleEvent ->
                             when (lifecycleEvent.type) {
                                 LifecycleEvent.Type.OPENED -> {
                                     Timber.d("Stomp connection opened")
                                     sendConnectStatusToActivity(ServiceConnectStatus.CONNECTED)
+                                    delay = false
                                 }
                                 LifecycleEvent.Type.CLOSED -> {
                                     Timber.d("Stomp connection closed")
@@ -126,6 +132,7 @@ class BackService : Service() {
                                         reconnect()
                                     } else {
                                         sendConnectStatusToActivity(ServiceConnectStatus.RECONNECT_FREQUENCY_LIMIT)
+                                        delay = false
                                     }
                                 }
                                 LifecycleEvent.Type.ERROR -> {
@@ -181,6 +188,7 @@ class BackService : Service() {
     }
 
     fun doReconnect() {
+        delay = true
         errorFlag = false
         reconnectionNum = 0
         reconnect()
@@ -236,12 +244,12 @@ class BackService : Service() {
     private fun subscribeChannel(url: String) {
         if (mSubscribedMap.containsKey(url)) return
 
-        if (mStompClient?.isConnected != true ) {
-            if (!mSubscribeChannelPending.contains(url)){
+        if (mStompClient?.isConnected != true) {
+            if (!mSubscribeChannelPending.contains(url)) {
                 mSubscribeChannelPending.add(url)
             }
         }
-        
+
         Timber.i(">>> subscribe channel: $url")
 
         mStompClient?.run {
@@ -260,7 +268,7 @@ class BackService : Service() {
 
                     //訂閱完成後檢查是否有訂閱失敗的頻道
                     mSubscribeChannelPending.remove(url)
-                    if (mSubscribeChannelPending.isNotEmpty()){
+                    if (!mSubscribeChannelPending.isNullOrEmpty()) {
                         subscribeChannel(mSubscribeChannelPending.first())
                     }
                 }
@@ -323,7 +331,7 @@ class BackService : Service() {
         }
     }
 
-    fun subscribeSportChannelHall(gameType: String?){
+    fun subscribeSportChannelHall(gameType: String?) {
         val url = "$URL_HALL" //推送频道从原本的/notify/hall/{platformId}/{gameType}调整为/notify/hall,移除平台id与gameType,
         subscribeChannel(url)
     }

@@ -38,6 +38,12 @@ class TransactionStatusViewModel(
             getBetList(true)
         }
 
+    var statusList: List<Int>? = BetRecordType.WAIT_SETTLEMENT.code.toList()
+        set(value) {
+            field = value
+            getBetList(true)
+        }
+
     val loading: LiveData<Boolean>
         get() = _loading
     private val _loading = MutableLiveData<Boolean>()
@@ -124,7 +130,7 @@ class TransactionStatusViewModel(
     private fun createUnSettlementBetListRequest(page: Int): BetListRequest {
         return BetListRequest(
             championOnly = 0,
-            BetRecordType.UNSETTLEMENT.code,
+            statusList = statusList,
             page = page,
             gameType = gameType,
             pageSize = pageSize

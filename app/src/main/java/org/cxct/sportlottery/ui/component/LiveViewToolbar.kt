@@ -102,13 +102,17 @@ class LiveViewToolbar @JvmOverloads constructor(
                     when (val httpError = error.cause) {
                         //直播地址播放連線失敗
                         is HttpDataSource.InvalidResponseCodeException -> {
-                            Timber.e("PlayerError = $httpError")
-                            newestUrl = true
-                            //重新獲取最新的直播地址
-                            liveToolBarListener?.getLiveInfo(true)
+//                            Timber.e("PlayerError = $httpError")
+//                            newestUrl = true
+//                            //重新獲取最新的直播地址
+//                            liveToolBarListener?.getLiveInfo(true)
                         }
                     }
                 }
+                Timber.e("PlayerError = $error")
+                newestUrl = true
+                //重新獲取最新的直播地址
+                liveToolBarListener?.getLiveInfo(true)
             }
         }
     }
@@ -142,8 +146,9 @@ class LiveViewToolbar @JvmOverloads constructor(
         iv_play.setOnClickListener {
             when (expand_layout.isExpanded) {
                 true -> {
-                    stopPlayer()
-                    startPlayer(mMatchId, mEventId, mStreamUrl)
+                    // 暫時不給他重複點擊
+//                    stopPlayer()
+//                    startPlayer(mMatchId, mEventId, mStreamUrl)
                 }
                 false -> {
                     switchLiveView(true)
@@ -218,13 +223,15 @@ class LiveViewToolbar @JvmOverloads constructor(
     fun liveLoading() {
         player_view.visibility = View.GONE
         iv_live_status.visibility = View.VISIBLE
+        tvStatus.visibility = View.GONE
         iv_live_status.setImageResource(R.drawable.img_stream_loading)
     }
 
     fun showLiveView(showLive: Boolean) {
         player_view.isVisible = showLive
         iv_live_status.isVisible = !showLive
-        iv_live_status.setImageResource(R.drawable.img_no_live)
+        iv_live_status.setImageResource(R.drawable.bg_no_play)
+        tvStatus.isVisible = !showLive
     }
 
     private fun loadBottomSheetUrl() {
