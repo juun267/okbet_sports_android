@@ -41,10 +41,7 @@ import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.selflimit.SelfLimitActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.*
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
@@ -224,7 +221,7 @@ class ProfileCenterActivity :
 
         //優惠活動
         btn_promotion.setOnClickListener {
-            when(viewModel.userInfo.value?.testFlag) {
+            when (viewModel.userInfo.value?.testFlag) {
                 TestFlag.NORMAL.index -> {
                     toProfileCenter()
                 }
@@ -238,9 +235,9 @@ class ProfileCenterActivity :
         }
 
         //自我約束
-        if(sConfigData?.selfRestraintVerified == "0" ||sConfigData?.selfRestraintVerified == null){
+        if (sConfigData?.selfRestraintVerified == "0" || sConfigData?.selfRestraintVerified == null) {
             btn_self_limit.visibility = View.GONE
-        }else{
+        } else {
             btn_self_limit.visibility = View.VISIBLE
             btn_self_limit.setOnClickListener {
                 startActivity(Intent(this, SelfLimitActivity::class.java))
@@ -422,21 +419,21 @@ class ProfileCenterActivity :
         viewModel.needToSendTwoFactor.observe(this) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    customSecurityDialog =  CustomSecurityDialog(this).apply {
+                    customSecurityDialog = CustomSecurityDialog(this).apply {
                         getSecurityCodeClickListener {
                             this.showSmeTimer300()
                             viewModel.sendTwoFactor()
                         }
-                        positiveClickListener = CustomSecurityDialog.PositiveClickListener{ number ->
+                        positiveClickListener = CustomSecurityDialog.PositiveClickListener { number ->
                             viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
                         }
                     }
-                    customSecurityDialog?.show(supportFragmentManager,null)
+                    customSecurityDialog?.show(supportFragmentManager, null)
                 }
             }
         }
 
-        viewModel.errorMessageDialog.observe(this){
+        viewModel.errorMessageDialog.observe(this) {
             val errorMsg = it ?: getString(R.string.unknown_error)
             CustomAlertDialog(this).apply {
                 setMessage(errorMsg)
@@ -460,15 +457,7 @@ class ProfileCenterActivity :
         //使用者沒有電話號碼
         viewModel.showPhoneNumberMessageDialog.observe(this) {
             it.getContentIfNotHandled()?.let { b ->
-                if(!b){
-                    val errorMsg = getString(R.string.dialog_security_need_phone)
-                    CustomAlertDialog(this).apply {
-                        setMessage(errorMsg)
-                        setNegativeButtonText(null)
-                        setCanceledOnTouchOutside(false)
-                        setCancelable(false)
-                    }.show(supportFragmentManager, null)
-                }
+                if (!b) phoneNumCheckDialog(this, supportFragmentManager)
             }
         }
 
