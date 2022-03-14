@@ -591,7 +591,8 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         if (args.matchType != MatchType.IN_PLAY) return
 
         when (args.gameType) {
-            GameType.FT -> {
+            GameType.FT,
+            GameType.IH -> {
                 setCardText(event)
                 setupFrontScore(event)
             }
@@ -604,18 +605,13 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                 setupBackScore(event)
                 setupStatusTnVb(event)
             }
-            GameType.VB -> {
-                setupBackScore(event)
-                setupStatusTnVb(event)
-            }
-            GameType.IH -> {
-                setCardText(event)
-                setupFrontScore(event)
-            }
+            GameType.VB,
             GameType.TT -> {
                 setupBackScore(event)
                 setupStatusTnVb(event)
             }
+            // Todo: 仍有其他球種待處理
+            // BM, BX, CB, CK, BB, RB, AFT, MR, GF, FB, OTHER
             else -> {
             }
         }
