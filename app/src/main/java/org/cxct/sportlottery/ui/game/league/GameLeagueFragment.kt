@@ -709,7 +709,6 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     private fun unSubscribeChannelSwitchPlayCate() {
         leagueAdapter.data.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach { matchOdd ->
-                Timber.e(">>> unSubscribeChannelHall channel: /ws/notify/hall/1/${leagueOdd.gameType?.key}/${getPlaySelectedCode()}/${matchOdd.matchInfo?.id}")
                 unSubscribeChannelHall(
                     leagueOdd.gameType?.key,
                     getPlaySelectedCode(),
