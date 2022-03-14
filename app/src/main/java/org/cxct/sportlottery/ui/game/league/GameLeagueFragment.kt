@@ -472,34 +472,13 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         receiver.leagueChange.observe(this.viewLifecycleOwner) {
             it?.let { leagueChangeEvent ->
 
-                leagueChangeEvent.leagueIdList?.let { leagueIdList ->
-                    leagueIdList.filter { changedLeagueId ->
-                        leagueAdapter.data.find { adapterLeague -> adapterLeague.league.id == changedLeagueId } != null
-                    }.let { onScreenLeagueIdList ->
-                        if (onScreenLeagueIdList.isNotEmpty())
+                val hasLeagueIdList =
+                    leagueAdapter.data.any { leagueOdd -> leagueOdd.league.id == leagueChangeEvent.leagueIdList?.firstOrNull() }
 
-                        viewModel.getLeagueOddsList( //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
-                                args.matchType,
-                                onScreenLeagueIdList,
-                                listOf(),
-                                isIncrement = true
-                            )
-                    }
+                if (args.gameType.key == leagueChangeEvent.gameType && hasLeagueIdList) { //聯賽數量固定
+                    unSubscribeChannelHall(args.gameType.key, getPlaySelectedCode(), leagueChangeEvent.matchIdList?.firstOrNull())
+                    subscribeChannelHall(args.gameType.key, getPlaySelectedCode(), leagueChangeEvent.matchIdList?.firstOrNull())
                 }
-
-                //收到的gameType与用户当前页面所选球种相同, 则需额外调用/match/odds/simple/list & /match/odds/eps/list
-                if (args.gameType.key == leagueChangeEvent.gameType) {
-                    viewModel.refreshGame(args.matchType)
-                    leagueChangeEvent.leagueIdList?.let { leagueIdList ->
-                        viewModel.getGameHallList(
-                            args.matchType,
-                            isReloadDate = false,
-                            leagueIdList = leagueIdList,
-                            isIncrement = true
-                        )
-                    }
-                }
-
             }
         }
     }
