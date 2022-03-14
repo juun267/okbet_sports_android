@@ -335,15 +335,13 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     private fun updateToolbar(oddsListData: OddsListData?) {
         when {
             (oddsListData?.leagueOdds?.size ?: 0 == 1) -> {
-                game_toolbar_match_type.text =
-                    if (args.matchType == MatchType.AT_START) "" else oddsListData?.sport?.name ?: ""
+                game_toolbar_match_type.text =""
                 game_toolbar_sport_type.text = args.matchCategoryName
-                    ?: (oddsListData?.leagueOdds?.firstOrNull()?.league?.name?.split(" ")
-                        ?.getOrNull(1) ?: "")
+                    ?: (oddsListData?.leagueOdds?.firstOrNull()?.league?.name)
             }
 
             (oddsListData?.leagueOdds?.size ?: 0 > 1) -> {
-                game_toolbar_match_type.text = oddsListData?.sport?.name ?: ""
+                game_toolbar_match_type.text = ""
                 game_toolbar_sport_type.text = args.matchCategoryName ?: when (args.matchType) {
                     MatchType.TODAY -> getString(R.string.home_tab_today)
                     MatchType.EARLY -> getString(R.string.home_tab_early)

@@ -33,6 +33,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.*
+import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeString
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
@@ -830,8 +831,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             game_list.apply {
                                 adapter = countryAdapter.apply {
                                     data = rows
-                                    if (args.matchType == MatchType.PARLAY)
-                                        view?.game_toolbar_match_type?.text = data.firstOrNull()?.name
+//                                    if (args.matchType == MatchType.PARLAY)
+//                                        view?.game_toolbar_match_type?.text = data.firstOrNull()?.name
                                 }
                             }
                         }
@@ -907,8 +908,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         viewModel.countryListSearchResult.observe(this.viewLifecycleOwner) {
             hideLoading()
             countryAdapter.data = it
-            if (args.matchType == MatchType.PARLAY)
-                view?.game_toolbar_match_type?.text = it.firstOrNull()?.name
+//            if (args.matchType == MatchType.PARLAY)
+//                view?.game_toolbar_match_type?.text = it.firstOrNull()?.name
         }
 
         viewModel.outrightCountryListSearchResult.observe(this.viewLifecycleOwner) {
@@ -1402,7 +1403,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         gameTypeAdapter.dataSport = gameTypeList
         if (args.matchType != MatchType.OTHER) {
             gameTypeList.find { it.isSelected }.let { item ->
-                game_toolbar_sport_type.text = item?.name ?: resources.getString(GameType.FT.string)
+                game_toolbar_sport_type.text = context?.let { getGameTypeString(it, item?.code) } ?: resources.getString(GameType.FT.string)
                     .toUpperCase(Locale.getDefault())
                 updateSportBackground(item)
 //                subscribeSportChannelHall(item?.code)//12/30 移除平台id与gameType後，切換SportType就不用重新訂閱了，不然會造成畫面一直閃爍 by Bill
