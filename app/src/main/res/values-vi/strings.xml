@@ -1065,5 +1065,6 @@ Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAG
     <string name="text_account_history_withdraw">Rút tiền</string>
     <string name="text_account_history_activity">Số lượng hoạt động</string>
     <string name="text_account_history_credit">Số tiền tín dụng</string>
+    <string name="waiting">Chờ</string>
     <!--歷史紀錄end-->
 </resources>
