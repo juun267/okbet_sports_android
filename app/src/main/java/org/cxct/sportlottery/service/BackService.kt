@@ -50,6 +50,7 @@ class BackService : Service() {
 
         private const val HEART_BEAT_RATE = 10 * 1000 //每隔10秒進行一次對長連線的心跳檢測
         private const val RECONNECT_LIMIT = 10 //斷線後重連次數限制
+        private const val LOADING_TIME_INTERVAL: Long = 500
     }
 
     private var mToken = ""
@@ -114,7 +115,7 @@ class BackService : Service() {
                 val lifecycleDisposable =
                     stompClient.lifecycle()
                         .subscribeOn(Schedulers.io())
-                        .delay(if (delay) 500 else 0, TimeUnit.MILLISECONDS)
+                        .delay(if (delay) LOADING_TIME_INTERVAL else 0, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe { lifecycleEvent: LifecycleEvent ->
                             when (lifecycleEvent.type) {
