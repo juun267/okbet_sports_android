@@ -2,12 +2,12 @@ package org.cxct.sportlottery.ui.game.quick
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RadioButton
 import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
@@ -34,6 +34,7 @@ class QuickListView @JvmOverloads constructor(context: Context, attrs: Attribute
     private var mMatchOdd: MatchOdd? = null
     private var mOddsType: OddsType = OddsType.HK
     private var mLeagueOddListener: LeagueOddListener? = null
+    private var mCloseTag = false
 
     init {
         addView(LayoutInflater.from(context).inflate(R.layout.view_quick_list, this, false))
@@ -53,9 +54,11 @@ class QuickListView @JvmOverloads constructor(context: Context, attrs: Attribute
     override fun onClick(view: View?) {
         when(view?.id) {
             league_odd_quick_cate_close.id -> {
+                mCloseTag = true
                 league_odd_quick_cate_close.visibility = View.INVISIBLE
                 invisibleOddButtons()
-                mQuickPlayCateList.forEach { it.isSelected = false }
+                clearTabState()
+                mLeagueOddListener?.onClickQuickCateClose()
             }
         }
     }
@@ -63,18 +66,20 @@ class QuickListView @JvmOverloads constructor(context: Context, attrs: Attribute
     private fun initViews() {
         league_odd_quick_cate_close?.setOnClickListener(this)
         league_odd_quick_cate_tabs?.setOnCheckedChangeListener { group, checkedId ->
-//            Log.d("Hewie9", "setOnCheckedChangeListener => ${item.matchInfo?.homeName}")
-//            item.quickPlayCateList?.forEach {
-//                it.isSelected = (it.hashCode() == checkedId)
-//                it.positionButtonPage = 0
-//                it.positionButtonPairTab = 0
-//                if(it.isSelected) {
-//                    item.isExpand = true
-//                    leagueOddListener?.onClickQuickCateTab(item, it)
-//                }
-//            }
-            mViewModel.apiGetQuickList(mMatchId)
-            mSelectedQuickPlayCate = mQuickPlayCateList.find { it.hashCode() == checkedId }
+            if(mCloseTag) {
+                mSelectedQuickPlayCate = null
+                mCloseTag = false
+            } else {
+                mSelectedQuickPlayCate = mQuickPlayCateList.find { it.hashCode() == checkedId }
+                mSelectedQuickPlayCate?.let { mViewModel.apiGetQuickList(mMatchId) }
+            }
+        }
+        // expand view by data
+        if(mMatchOdd?.isExpand == true) {
+            mViewModel.apiGetQuickList(mMatchOdd?.matchInfo?.id ?: "")
+            val selectedQuickPlayCateCode = mMatchOdd?.quickPlayCateList?.find { it.isSelected }.hashCode()
+            mSelectedQuickPlayCate = mQuickPlayCateList.find { it.hashCode() == selectedQuickPlayCateCode }
+            setTabState(selectedQuickPlayCateCode)
         }
     }
 
@@ -98,6 +103,7 @@ class QuickListView @JvmOverloads constructor(context: Context, attrs: Attribute
                                 setupQuickOddButtonEps(mSelectedQuickPlayCate!!, quickOdds, mOddsType, mLeagueOddListener)
                             }
                         }
+                        mLeagueOddListener?.onClickQuickCateTab(mMatchOdd!!, mSelectedQuickPlayCate!!)
                     }
                 }
             }
@@ -125,6 +131,14 @@ class QuickListView @JvmOverloads constructor(context: Context, attrs: Attribute
                 setBackgroundResource(R.drawable.selector_tab)
             })
         }
+    }
+
+    private fun setTabState(id: Int) {
+        league_odd_quick_cate_tabs.check(id)
+    }
+
+    private fun clearTabState() {
+        league_odd_quick_cate_tabs.clearCheck()
     }
 
     private fun setupQuickOddButtonPair(selectedQuickPlayCate: QuickPlayCate, quickOdds: MutableMap<String, List<Odd?>?>, oddsType: OddsType, leagueOddListener: LeagueOddListener?) {

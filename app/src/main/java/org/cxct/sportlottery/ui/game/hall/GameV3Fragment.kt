@@ -199,12 +199,14 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     matchOdd.matchInfo?.let {
                         //mOpenedQuickListMap.clear()
                         //viewModel.getQuickList2(it.id)
-                        mOpenedQuickListMap[matchOdd.matchInfo.id] = matchOdd
+                        //mOpenedQuickListMap[matchOdd.matchInfo.id] = matchOdd
+                        setQuickPlayCateSelected(matchOdd, quickPlayCate)
                     }
                 },
                 {
-                    mOpenedQuickListMap.forEach { t, u -> u.isExpand = false }
-                    viewModel.clearQuickPlayCateSelected()
+                    //mOpenedQuickListMap.forEach { t, u -> u.isExpand = false }
+                    //viewModel.clearQuickPlayCateSelected()
+                    clearQuickPlayCateSelected()
                 },
                 { matchId ->
                     matchId?.let {
@@ -1973,4 +1975,28 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             isIncrement = false
         )
     }
+
+    // region handle LeagueOdd data
+    private fun clearQuickPlayCateSelected() {
+        mLeagueOddList.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                matchOdd.isExpand = false
+                matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                    quickPlayCate.isSelected = false
+                }
+            }
+        }
+    }
+
+    private fun setQuickPlayCateSelected(selectedMatchOdd: MatchOdd, selectedQuickPlayCate: QuickPlayCate) {
+        mLeagueOddList.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                if(selectedMatchOdd.matchInfo?.id == matchOdd.matchInfo?.id) matchOdd.isExpand = true
+                matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                    if(selectedQuickPlayCate.code == quickPlayCate.code) quickPlayCate.isSelected = true
+                }
+            }
+        }
+    }
+    // endregion
 }
