@@ -62,6 +62,7 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.phoneNumCheckDialog
 
 
 class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) {
@@ -80,6 +81,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             //intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             //context.startActivity(intent)
         }
+
         const val ARGS_SWITCH_LANGUAGE = "switch_language"
     }
 
@@ -204,7 +206,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         }
 
         iv_language.setOnClickListener {
-            ChangeLanguageDialog(ChangeLanguageDialog.ClearBetListListener{
+            ChangeLanguageDialog(ChangeLanguageDialog.ClearBetListListener {
                 viewModel.betInfoRepository.clear()
             }).show(supportFragmentManager, null)
         }
@@ -302,7 +304,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             .addToBackStack(BetListFragment::class.java.simpleName)
             .commit()
 
-}
+    }
 
     override fun updateBetListCount(num: Int) {
         sport_bottom_navigation.setBetCount(num)
@@ -400,10 +402,10 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             tabEps?.tv_number?.text = countEps.toString()
 
             //英文 越南文稍微加寬padding 不然會太擠
-            if(LanguageManager.getSelectLanguage(this) != LanguageManager.Language.ZH){
-                for (i in 0 until tabLayout.tabCount){
+            if (LanguageManager.getSelectLanguage(this) != LanguageManager.Language.ZH) {
+                for (i in 0 until tabLayout.tabCount) {
                     tabLayout.getTabAt(i)?.customView.apply {
-                        this?.setPadding(8.dp,0,16.dp,0)
+                        this?.setPadding(8.dp, 0, 16.dp, 0)
                     }
                 }
             }
@@ -452,29 +454,37 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     private fun navDeatilFragment(matchID: String?, gameType: GameType?) {
         when (mNavController.currentDestination?.id) {
             R.id.homeFragment -> {
-                val action = HomeFragmentDirections.actionHomeFragmentToOddsDetailFragment(MatchType.DETAIL,gameType!!,matchID!!,
-                    emptyArray())
+                val action = HomeFragmentDirections.actionHomeFragmentToOddsDetailFragment(
+                    MatchType.DETAIL, gameType!!, matchID!!,
+                    emptyArray()
+                )
                 mNavController.navigate(action)
             }
             R.id.gameV3Fragment -> {
-                val action = GameV3FragmentDirections.actionGameV3FragmentToOddsDetailFragment(MatchType.DETAIL,gameType!!,matchID!!,
-                    emptyArray())
+                val action = GameV3FragmentDirections.actionGameV3FragmentToOddsDetailFragment(
+                    MatchType.DETAIL, gameType!!, matchID!!,
+                    emptyArray()
+                )
                 mNavController.navigate(action)
             }
-            R.id.oddsDetailFragment ->{
+            R.id.oddsDetailFragment -> {
                 val action =
-                    OddsDetailFragmentDirections.actionOddsDetailFragmentSelf(gameType!!,matchID!!,MatchType.DETAIL,emptyArray())
+                    OddsDetailFragmentDirections.actionOddsDetailFragmentSelf(gameType!!, matchID!!, MatchType.DETAIL, emptyArray())
                 mNavController.navigate(action)
             }
-            R.id.oddsDetailLiveFragment ->{
-                val action = OddsDetailLiveFragmentDirections.actionOddsDetailLiveFragmentToOddsDetailFragment(MatchType.DETAIL,gameType!!,matchID!!,
-                    emptyArray())
+            R.id.oddsDetailLiveFragment -> {
+                val action = OddsDetailLiveFragmentDirections.actionOddsDetailLiveFragmentToOddsDetailFragment(
+                    MatchType.DETAIL, gameType!!, matchID!!,
+                    emptyArray()
+                )
                 val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
-                mNavController.navigate(action,navOptions)
+                mNavController.navigate(action, navOptions)
             }
-            R.id.gameLeagueFragment ->{
-                val action = GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(MatchType.DETAIL,gameType!!,matchID!!,
-                    emptyArray())
+            R.id.gameLeagueFragment -> {
+                val action = GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(
+                    MatchType.DETAIL, gameType!!, matchID!!,
+                    emptyArray()
+                )
                 mNavController.navigate(action)
             }
         }
@@ -593,15 +603,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         //使用者沒有電話號碼
         viewModel.showPhoneNumberMessageDialog.observe(this) {
             it.getContentIfNotHandled()?.let { b ->
-                if(!b){
-                    val errorMsg = getString(R.string.dialog_security_need_phone)
-                   CustomAlertDialog(this).apply {
-                        setMessage(errorMsg)
-                        setNegativeButtonText(null)
-                        setCanceledOnTouchOutside(false)
-                        setCancelable(false)
-                    }.show(supportFragmentManager, null)
-                }
+                if (!b) phoneNumCheckDialog(this, supportFragmentManager)
             }
         }
 
@@ -652,11 +654,11 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     MatchType.OTHER -> {
                         tabLayout.getTabAt(3)?.select()
                     }
-                    MatchType.DETAIL->{
-                        navDeatilFragment(it?.matchID,it.gameType)
+                    MatchType.DETAIL -> {
+                        navDeatilFragment(it?.matchID, it.gameType)
                     }
                 }
-            }else if(it?.matchType == MatchType.DETAIL){
+            } else if (it?.matchType == MatchType.DETAIL) {
 
             } else {
                 //viewModel.switchSpecialMatchType(it!!.couponCode!!)
