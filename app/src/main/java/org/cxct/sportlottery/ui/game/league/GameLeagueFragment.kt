@@ -59,6 +59,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         }
                         //之前點選過然後離開又回來 要預設帶入
                         !it.isSelected && it.isLocked == false -> {
+                            unSubscribeChannelSwitchPlayCate()
                             viewModel.switchPlay(
                                 args.matchType,
                                 args.leagueId.toList(),
@@ -69,6 +70,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         }
                     }
                 } else {
+                    unSubscribeChannelSwitchPlayCate()
                     viewModel.switchPlay(
                         args.matchType,
                         args.leagueId.toList(),
@@ -536,13 +538,14 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.code,
                 (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.name
             ),
-            StatusSheetAdapter.ItemCheckedListener { _, data ->
+            StatusSheetAdapter.ItemCheckedListener { _, playCate ->
+                unSubscribeChannelSwitchPlayCate()
                 viewModel.switchPlayCategory(
                     args.matchType,
                     args.leagueId.toList(),
                     args.matchId.toList(),
                     play,
-                    data.code
+                    playCate.code
                 )
                 upDateSelectPlay(play)
                 (activity as BaseActivity<*>).bottomSheet.dismiss()
@@ -683,6 +686,30 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                             matchOdd.matchInfo?.id
                         )
                     }
+                }
+            }
+        }
+    }
+
+    /**
+     * 切換playCateMenu時, 先將原本訂閱的類別解除訂閱
+     */
+    private fun unSubscribeChannelSwitchPlayCate() {
+        leagueAdapter.data.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                Timber.e(">>> unSubscribeChannelHall channel: /ws/notify/hall/1/${leagueOdd.gameType?.key}/${getPlaySelectedCode()}/${matchOdd.matchInfo?.id}")
+                unSubscribeChannelHall(
+                    leagueOdd.gameType?.key,
+                    getPlaySelectedCode(),
+                    matchOdd.matchInfo?.id
+                )
+
+                if (matchOdd.matchInfo?.eps == 1) {
+                    unSubscribeChannelHall(
+                        leagueOdd.gameType?.key,
+                        PlayCate.EPS.value,
+                        matchOdd.matchInfo.id
+                    )
                 }
             }
         }
