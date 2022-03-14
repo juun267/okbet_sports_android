@@ -50,6 +50,7 @@ import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.listener.OnClickListener
+import org.cxct.sportlottery.util.phoneNumCheckDialog
 import org.cxct.sportlottery.widget.highLightTextView.HighlightTextView
 
 @SuppressLint("NotifyDataSetChanged")
@@ -460,7 +461,8 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                         )
                     }
                 }
-                else -> {}
+                else -> {
+                }
             }
         }
         viewModel.notifyFavorite(FavoriteType.SPORT)
@@ -575,14 +577,8 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
         //使用者沒有電話號碼
         viewModel.showPhoneNumberMessageDialog.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
-                if (!b) {
-                    val errorMsg = getString(R.string.dialog_security_need_phone)
-                    this.context?.let { context -> CustomAlertDialog(context) }?.apply {
-                        setMessage(errorMsg)
-                        setNegativeButtonText(null)
-                        setCanceledOnTouchOutside(false)
-                        setCancelable(false)
-                    }?.show(childFragmentManager, null)
+                context?.let { c ->
+                    if (!b) phoneNumCheckDialog(c, childFragmentManager)
                 }
             }
         }
@@ -742,15 +738,15 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
     }
 
     private fun startSearch() {
-        if(searchHistoryList.any {
-            it == etSearch.text.toString()
-        }){
+        if (searchHistoryList.any {
+                it == etSearch.text.toString()
+            }) {
             searchHistoryList.remove(etSearch.text.toString())
             searchHistoryList.add(0, etSearch.text.toString())
-        }else if (searchHistoryList.size == 10){
+        } else if (searchHistoryList.size == 10) {
             searchHistoryList.removeAt(9)
             searchHistoryList.add(0, etSearch.text.toString())
-        }else{
+        } else {
             searchHistoryList.add(0, etSearch.text.toString())
         }
         MultiLanguagesApplication.saveSearchHistory(searchHistoryList)
@@ -855,7 +851,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
         }
 
         when {
-            sportType == GameType.GF || sportType == GameType.FB-> { //GF、FB只有冠軍
+            sportType == GameType.GF || sportType == GameType.FB -> { //GF、FB只有冠軍
                 viewModel.navSpecialEntrance(
                     MatchType.OUTRIGHT,
                     sportType

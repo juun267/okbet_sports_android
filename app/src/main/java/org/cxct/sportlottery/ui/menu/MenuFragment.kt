@@ -37,9 +37,7 @@ import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.vip.VipActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.*
 
 /**
  * 遊戲右側功能選單
@@ -47,6 +45,7 @@ import org.cxct.sportlottery.util.TextUtil
 @SuppressLint("SetTextI18n")
 class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     private var mDownMenuListener: View.OnClickListener? = null
+
     //簡訊驗證彈窗
     private var customSecurityDialog: CustomSecurityDialog? = null
 
@@ -153,22 +152,22 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
                     context?.let { it ->
-                        customSecurityDialog =  CustomSecurityDialog(it).apply {
+                        customSecurityDialog = CustomSecurityDialog(it).apply {
                             getSecurityCodeClickListener {
                                 this.showSmeTimer300()
                                 viewModel.sendTwoFactor()
                             }
-                            positiveClickListener = CustomSecurityDialog.PositiveClickListener{ number ->
+                            positiveClickListener = CustomSecurityDialog.PositiveClickListener { number ->
                                 viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
                             }
                         }
-                        customSecurityDialog?.show(parentFragmentManager,null)
+                        customSecurityDialog?.show(parentFragmentManager, null)
                     }
                 }
             }
         }
 
-        viewModel.errorMessageDialog.observe(viewLifecycleOwner){
+        viewModel.errorMessageDialog.observe(viewLifecycleOwner) {
             val errorMsg = it ?: getString(R.string.unknown_error)
             this.context?.let { context -> CustomAlertDialog(context) }?.apply {
                 setMessage(errorMsg)
@@ -192,14 +191,10 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         //使用者沒有電話號碼
         viewModel.showPhoneNumberMessageDialog.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
-                if(!b){
-                    val errorMsg = getString(R.string.dialog_security_need_phone)
-                    this.context?.let { context -> CustomAlertDialog(context) }?.apply {
-                        setMessage(errorMsg)
-                        setNegativeButtonText(null)
-                        setCanceledOnTouchOutside(false)
-                        setCancelable(false)
-                    }?.show(childFragmentManager, null)
+                if (!b) {
+                    context?.let { c ->
+                        if (!b) phoneNumCheckDialog(c, childFragmentManager)
+                    }
                 }
             }
         }
@@ -404,22 +399,22 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
         menu_odds_type.setOnClickListener {
             menu_odds_type.showOddsTypeChose()
-            menu_odds_type.setOddsEU{
+            menu_odds_type.setOddsEU {
                 viewModel.saveOddsType(OddsType.EU)
                 menu_odds_type.showOddsTypeChose()
                 //mDownMenuListener?.onClick(menu_odds_type)
             }
-            menu_odds_type.setOddsHK{
+            menu_odds_type.setOddsHK {
                 viewModel.saveOddsType(OddsType.HK)
                 menu_odds_type.showOddsTypeChose()
                 //mDownMenuListener?.onClick(menu_odds_type)
             }
-            menu_odds_type.setOddsMY{
+            menu_odds_type.setOddsMY {
                 viewModel.saveOddsType(OddsType.MYS)
                 menu_odds_type.showOddsTypeChose()
                 //mDownMenuListener?.onClick(menu_odds_type)
             }
-            menu_odds_type.setOddsIDN{
+            menu_odds_type.setOddsIDN {
                 viewModel.saveOddsType(OddsType.IDN)
                 menu_odds_type.showOddsTypeChose()
                 //mDownMenuListener?.onClick(menu_odds_type)
