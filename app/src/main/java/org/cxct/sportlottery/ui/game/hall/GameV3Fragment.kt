@@ -1314,13 +1314,19 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             leagueAdapter.data.filter { leagueOdd -> leagueOdd.league.id == leagueChangeEvent.leagueIdList?.firstOrNull() }
                                 .isNotEmpty()
 
-                        when (nowGameType) {
-                            leagueChangeEvent.gameType -> {
-                                unSubscribeChannelHall(nowGameType ?: GameType.FT.key,getPlaySelectedCode(),leagueChangeEvent.matchIdList?.firstOrNull())
-                                subscribeChannelHall(nowGameType ?: GameType.FT.key,getPlaySelectedCode(),leagueChangeEvent.matchIdList?.firstOrNull())
+                        if(nowGameType == leagueChangeEvent.gameType ){
+                            when{
+                                !hasLeagueIdList -> {
+                                    //全刷
+                                    viewModel.getGameHallList(args.matchType,false)
+                                }
+                                else -> {
+                                    unSubscribeChannelHall(nowGameType ?: GameType.FT.key, getPlaySelectedCode(), leagueChangeEvent.matchIdList?.firstOrNull())
+                                    subscribeChannelHall(nowGameType ?: GameType.FT.key, getPlaySelectedCode(), leagueChangeEvent.matchIdList?.firstOrNull())
+                                }
                             }
                         }
-
+                        
                         isUpdatingLeague = false
                     }
                 }
