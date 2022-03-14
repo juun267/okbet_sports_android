@@ -223,13 +223,15 @@ class LiveViewToolbar @JvmOverloads constructor(
     fun liveLoading() {
         player_view.visibility = View.GONE
         iv_live_status.visibility = View.VISIBLE
+        tvStatus.visibility = View.GONE
         iv_live_status.setImageResource(R.drawable.img_stream_loading)
     }
 
     fun showLiveView(showLive: Boolean) {
         player_view.isVisible = showLive
         iv_live_status.isVisible = !showLive
-        iv_live_status.setImageResource(R.drawable.img_no_live)
+        iv_live_status.setImageResource(R.drawable.bg_no_play)
+        tvStatus.isVisible = !showLive
     }
 
     private fun loadBottomSheetUrl() {

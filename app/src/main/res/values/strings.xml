@@ -943,6 +943,7 @@
     <string name="select_id_type">选择身份证件类型</string>
     <string name="scan_tool_bar">扫描结果</string>
     <string name="text_us_east_time">以美东(UTC-4)时间计算</string>
+    <string name="text_cant_play">您所在的区域无法播放</string>
     <!--自我禁制-->
     <string name="self_limit">自我禁制</string>
     <string name="self_limit_impotent">重要事项</string>
