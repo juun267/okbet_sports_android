@@ -2,6 +2,10 @@ package org.cxct.sportlottery.ui.game.betList
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -500,6 +504,28 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         showOddChangeWarn = false
                         btn_bet.isOddsChanged = false
                         showHideWarn()
+                        if(result.receipt?.betConfirmTime != null){
+                            val spannableStringBuilder = SpannableStringBuilder()
+                            var text1 = SpannableString(getString(R.string.text_bet_not_success))
+                            var text2= SpannableString(getString(R.string.text_bet_not_success2))
+                            val foregroundSpan = ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.colorRedDark))
+                            text2.setSpan(foregroundSpan, 0, text2.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                            var text3 = SpannableString(getString(R.string.text_bet_not_success3))
+                            var text4 = SpannableString(getString(R.string.text_bet_not_success4))
+                            val foregroundSpan2 = ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.colorRedDark))
+                            text4.setSpan(foregroundSpan2, 0, text4.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                            spannableStringBuilder.append(text1)
+                            spannableStringBuilder.append(text2)
+                            spannableStringBuilder.append(text3)
+                            spannableStringBuilder.append(text4)
+                            showPromptDialog(
+                                title = getString(R.string.prompt),
+                                message = spannableStringBuilder,
+                                success = result.success
+                            ){
+                                viewModel.navTranStatus()
+                            }
+                        }
                     } else {
                         showErrorPromptDialog(getString(R.string.prompt), resultNotNull.msg) {}
                     }
