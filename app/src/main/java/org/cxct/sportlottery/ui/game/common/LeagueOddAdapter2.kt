@@ -148,7 +148,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) :
             } else {
                 itemView.quickListView.visibility = View.VISIBLE
                 itemView.league_odd_quick_cate_divider.visibility = View.VISIBLE
-                itemView.quickListView.setDatas(item, oddsType)
+                itemView.quickListView.setDatas(item, oddsType, leagueOddListener)
                 itemView.quickListView.refreshTab()
             }
         }

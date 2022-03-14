@@ -739,8 +739,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
 
                     oddsListResult.oddsListData?.leagueOdds?.forEach { leagueOdd ->
-                        leagueOdd.matchOdds.forEach { matchOdd ->
+                        leagueOdd.matchOdds.forEachIndexed { index, matchOdd ->
                             mQuickOddListMap[matchOdd.matchInfo?.id ?: ""] = matchOdd.quickPlayCateList ?: mutableListOf()
+                            //leagueAdapter.updateLeague(index, leagueOdd)
                         }
                     }
                     // TODO 這裡要確認是否有其他地方重複呼叫
