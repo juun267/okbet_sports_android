@@ -900,7 +900,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 this.adapter =
                     OddButtonPagerAdapter(
                         item.matchInfo,
-                        item.oddsSort,
+                        null,//快捷玩法給的oddsSort是Tab的
                         item.quickPlayCateNameMap,
                         item.betPlayCateNameMap
                     ).apply {
