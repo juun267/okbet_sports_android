@@ -448,7 +448,7 @@ class RegisterViewModel(
             return false
         if (sConfigData?.enableEmail == FLAG_OPEN && emailMsg.value != null)
             return false
-        if (sConfigData?.enableAddress == FLAG_OPEN && addressMsg.value != null)
+        if (sConfigData?.enableAddress == FLAG_OPEN && (postalMsg.value != null || provinceMsg.value != null || cityMsg.value != null || addressMsg.value != null))
             return false
         if (sConfigData?.enableWechat == FLAG_OPEN && weChatMsg.value != null)
             return false
