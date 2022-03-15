@@ -14,10 +14,11 @@
         app:el_expanded="true"
         app:el_parallax="0.5">
 
-        <FrameLayout
+        <RelativeLayout
             android:id="@+id/web_view_layout"
             android:layout_width="match_parent"
             android:layout_height="232dp"
+            android:layout_gravity="center"
             android:orientation="vertical">
 
             <ImageView
@@ -26,6 +27,16 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/img_stream_loading"
                 android:scaleType="fitXY"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvStatus"
+                android:text="@string/text_cant_play"
+                android:layout_centerInParent="true"
+                android:textSize="@dimen/margin_14"
+                android:textColor="@color/colorBlue"
+                android:gravity="center"
+                />
 
             <!-- Media Layout -->
             <com.google.android.exoplayer2.ui.PlayerView
@@ -44,7 +55,7 @@
                 android:layout_height="match_parent"
                 app:layout_constraintTop_toBottomOf="@id/v_toolbar"/>
 
-        </FrameLayout>
+        </RelativeLayout>
 
     </net.cachapa.expandablelayout.ExpandableLayout>
 

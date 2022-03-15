@@ -117,9 +117,9 @@
 
             <TextView
                 android:id="@+id/tv_play_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="left"
                 android:text="@{matchOdd.playCateName}"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize14sp"

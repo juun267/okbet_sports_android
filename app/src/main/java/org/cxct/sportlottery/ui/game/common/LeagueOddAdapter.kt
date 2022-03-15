@@ -684,13 +684,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             OverScrollDecoratorHelper.setUpOverScroll(itemView.league_odd_btn_pager_main)
 
             itemView.league_odd_btn_indicator_main.apply {
-
-                visibility = if (item.oddsMap?.size ?: 0 > 2) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
-
                 setupWithViewPager2(itemView.league_odd_btn_pager_main)
             }
         }
@@ -726,6 +719,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 setOnClickListener {
                     leagueOddListener?.onClickQuickCateClose()
                 }
+            }
+
+            itemView.scroll_view_rg.visibility = if (item.quickPlayCateList.isNullOrEmpty()) {
+                View.GONE
+            } else {
+                View.VISIBLE
             }
 
             itemView.league_odd_quick_cate_tabs.apply {
@@ -900,7 +899,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 this.adapter =
                     OddButtonPagerAdapter(
                         item.matchInfo,
-                        item.oddsSort,
+                        null,//快捷玩法給的oddsSort是Tab的
                         item.quickPlayCateNameMap,
                         item.betPlayCateNameMap
                     ).apply {

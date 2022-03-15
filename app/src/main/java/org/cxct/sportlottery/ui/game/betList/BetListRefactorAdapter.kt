@@ -598,11 +598,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         isEnabled = true
                         isFocusable = true
                         isFocusableInTouchMode = true
-                        hint = getLimitHint(
-                            context,
-                            itemData.parlayOdds?.min ?: 0,
-                            itemData.parlayOdds?.max ?: 0
-                        )
+//                        hint = getLimitHint(
+//                            context,
+//                            itemData.parlayOdds?.min ?: 0,
+//                            itemData.parlayOdds?.max ?: 0
+//                        )
                     }
                     et_clickable.isEnabled = true //EditText的click事件
                     cl_quota_detail.visibility = View.VISIBLE
@@ -810,7 +810,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     //init bet amount value
                     val maxAmount = getMaxOrMinAmount(isGetMax = true, betList)
                     val minAmount = getMaxOrMinAmount(isGetMax = false, betList)
-                    hint = getAllSingleMinMaxHint(context, maxAmount, minAmount)
+                    //hint = getAllSingleMinMaxHint(context, maxAmount, minAmount)
 
                     setText(initValue)
                     et_bet_single.setSelection(et_bet_single.text.length)
@@ -1348,11 +1348,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     sConfigData?.systemCurrency
                 )
                 et_bet.apply {
-                    hint = getLimitHint(
-                        context,
-                        itemData.min,
-                        itemData.max
-                    )
+//                    hint = getLimitHint(
+//                        context,
+//                        itemData.min,
+//                        itemData.max
+//                    )
                 }
             }
         }

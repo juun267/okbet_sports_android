@@ -148,6 +148,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
     override fun onDestroyView() {
         super.onDestroyView()
+        unSubscribeChannelHallAll()
         mTimer?.cancel()
         mTimer = null
     }
@@ -783,9 +784,9 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 if (it == ServiceConnectStatus.CONNECTED) {
 
 //                    queryData()
-//                    subscribeTableHallChannel(mSelectMatchType)
-//                    subscribeRecommendHallChannel()
-//                    subscribeHighlightHallChannel()
+                    subscribeTableHallChannel(mSelectMatchType)
+                    subscribeRecommendHallChannel()
+                    subscribeHighlightHallChannel()
                 }
             }
         }

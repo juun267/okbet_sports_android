@@ -6,7 +6,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +33,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.*
+import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeString
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
@@ -43,7 +43,6 @@ import org.cxct.sportlottery.network.outright.season.Season
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
-import org.cxct.sportlottery.network.sport.query.SportQueryData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
@@ -688,14 +687,17 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                     val gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
 
-                    game_list.apply {
-                        adapter = leagueAdapter.apply {
-                            updateType = null
-                            data = leagueOdds.onEach { leagueOdd ->
-                                leagueOdd.gameType = gameType
-                            }.toMutableList()
+                    if (leagueOdds.isNotEmpty()) {
+                        game_list.apply {
+                            adapter = leagueAdapter.apply {
+                                updateType = null
+                                data = leagueOdds.onEach { leagueOdd ->
+                                    leagueOdd.gameType = gameType
+                                }.toMutableList()
+                            }
                         }
                     }
+
 
                     //如果data資料為空時，又有其他球種的情況下，自動選取第一個
                     if (leagueAdapter.data.isNullOrEmpty() && gameTypeAdapter.dataSport.size > 1) {
@@ -829,8 +831,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             game_list.apply {
                                 adapter = countryAdapter.apply {
                                     data = rows
-                                    if (args.matchType == MatchType.PARLAY)
-                                        view?.game_toolbar_match_type?.text = data.firstOrNull()?.name
+//                                    if (args.matchType == MatchType.PARLAY)
+//                                        view?.game_toolbar_match_type?.text = data.firstOrNull()?.name
                                 }
                             }
                         }
@@ -906,8 +908,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         viewModel.countryListSearchResult.observe(this.viewLifecycleOwner) {
             hideLoading()
             countryAdapter.data = it
-            if (args.matchType == MatchType.PARLAY)
-                view?.game_toolbar_match_type?.text = it.firstOrNull()?.name
+//            if (args.matchType == MatchType.PARLAY)
+//                view?.game_toolbar_match_type?.text = it.firstOrNull()?.name
         }
 
         viewModel.outrightCountryListSearchResult.observe(this.viewLifecycleOwner) {
@@ -1168,7 +1170,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.updateOddsSelectedState()
                 oddsChangeEvent.filterMenuPlayCate()
-
+                oddsChangeEvent.sortOddsMap()
                 when (game_list.adapter) {
                     is LeagueAdapter -> {
                         val leagueOdds = leagueAdapter.data
@@ -1313,45 +1315,21 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             leagueAdapter.data.filter { leagueOdd -> leagueOdd.league.id == leagueChangeEvent.leagueIdList?.firstOrNull() }
                                 .isNotEmpty()
 
-                        when {
-                            nowGameType == leagueChangeEvent.gameType && hasLeagueIdList -> {
-                                withContext(Dispatchers.Main) {
-                                    viewModel.refreshGame(
-                                        args.matchType
-                                    )
-//                                    viewModel.switchSportType(
-//                                        args.matchType,
-//                                        nowGameType ?: GameType.FT.key
-//                                    )
-                                }
-                            }
-
-                            nowGameType == leagueChangeEvent.gameType && !hasLeagueIdList -> {
-                                if (leagueAdapter.data.size != 0) {
-                                    when (game_list.adapter) {
-                                        is LeagueAdapter, is CountryAdapter, is OutrightCountryAdapter -> {
-                                            leagueChangeEvent.leagueIdList?.let { leagueIdList ->
-                                                withContext(Dispatchers.Main) {
-                                                    viewModel.getGameHallList(
-                                                        args.matchType,
-                                                        isReloadPlayCate = true,
-                                                        isReloadDate = true,
-                                                        isIncrement = false
-                                                    )
-                                                }
-                                            }
-                                        }
-                                        else -> {
-                                            unSubscribeChannelHallAll()
-                                            viewModel.switchSportType(
-                                                args.matchType,
-                                                nowGameType ?: GameType.FT.key
-                                            )
-                                        }
+                        if(nowGameType == leagueChangeEvent.gameType ){
+                            when{
+                                !hasLeagueIdList -> {
+                                    //全刷
+                                    withContext(Dispatchers.Main) {
+                                        viewModel.getGameHallList(args.matchType,false)
                                     }
+                                }
+                                else -> {
+                                    unSubscribeChannelHall(nowGameType ?: GameType.FT.key, getPlaySelectedCode(), leagueChangeEvent.matchIdList?.firstOrNull())
+                                    subscribeChannelHall(nowGameType ?: GameType.FT.key, getPlaySelectedCode(), leagueChangeEvent.matchIdList?.firstOrNull())
                                 }
                             }
                         }
+                        
                         isUpdatingLeague = false
                     }
                 }
@@ -1388,6 +1366,20 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
     }
 
+    /**
+     * 賠率排序
+     */
+    private fun OddsChangeEvent.sortOddsMap() {
+          this.odds?.forEach { (_, value) ->
+            if (value?.size > 3 && value.first()?.marketSort != 0 && (value.first()?.odds != value.first()?.malayOdds)) {
+                value.sortBy {
+                    it?.marketSort
+                }
+            }
+        }
+    }
+
+
     private fun setEpsBottomSheet(matchInfo: MatchInfo) {
         try {
             val contentView: ViewGroup? =
@@ -1419,7 +1411,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         gameTypeAdapter.dataSport = gameTypeList
         if (args.matchType != MatchType.OTHER) {
             gameTypeList.find { it.isSelected }.let { item ->
-                game_toolbar_sport_type.text = item?.name ?: resources.getString(GameType.FT.string)
+                game_toolbar_sport_type.text = context?.let { getGameTypeString(it, item?.code) } ?: resources.getString(GameType.FT.string)
                     .toUpperCase(Locale.getDefault())
                 updateSportBackground(item)
 //                subscribeSportChannelHall(item?.code)//12/30 移除平台id与gameType後，切換SportType就不用重新訂閱了，不然會造成畫面一直閃爍 by Bill
@@ -1761,7 +1753,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 false -> {
                     unSubscribeChannelHall(
                         leagueOdd.gameType?.key,
-                        getPlayCateMenuCode(),
+                        getPlaySelectedCode(),
                         matchOdd.matchInfo?.id
                     )
 

@@ -3,6 +3,8 @@ package org.cxct.sportlottery.ui.game.language
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
+import org.cxct.sportlottery.BuildConfig
+import org.cxct.sportlottery.BuildConfig.CHANNEL_NAME
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivitySwitchLanguageBinding
 import org.cxct.sportlottery.repository.FLAG_OPEN
@@ -51,6 +53,10 @@ class SwitchLanguageActivity : BaseActivity<LoginViewModel>(LoginViewModel::clas
     }
 
     private fun initView(){
+        if(BuildConfig.CHANNEL_NAME == "spkx"){
+            binding.llChina.visibility  = View.GONE
+            binding.llVietnam.visibility  = View.GONE
+        }
         binding.ivBack.setOnClickListener(this)
         binding.llEnglish.setOnClickListener(this)
         binding.llChina.setOnClickListener(this)

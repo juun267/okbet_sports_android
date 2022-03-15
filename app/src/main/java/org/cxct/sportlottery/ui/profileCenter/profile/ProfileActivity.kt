@@ -32,6 +32,7 @@ import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity.Companion.MODIFY_INFO
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
 import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.phoneNumCheckDialog
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
@@ -48,6 +49,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     enum class SecurityCodeEnterType(val value: Int) {
         REALNAME(0), PW(1)
     }
+
     var securityCodeEnter = SecurityCodeEnterType.REALNAME
 
     private val mSelectMediaListener = object : OnResultCallbackListener<LocalMedia> {
@@ -147,7 +149,8 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         ll_wechat.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.WeChat) }
         //實名制
         ll_verified.setOnClickListener {
-            if (ll_verified.isEnabled) startActivity(Intent(this@ProfileActivity, VerifyIdentityActivity::class.java))}
+            if (ll_verified.isEnabled) startActivity(Intent(this@ProfileActivity, VerifyIdentityActivity::class.java))
+        }
     }
 
     private fun putExtraForProfileInfoActivity(modifyType: ModifyType) {
@@ -181,8 +184,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                     getString(R.string.prompt),
                     getString(R.string.save_avatar_success)
                 ) {}
-            }
-            else
+            } else
                 iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(msg) {} }
         }
 
@@ -266,7 +268,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         }
 
         //簡訊驗證失敗
-        viewModel.errorMessageDialog.observe(this){
+        viewModel.errorMessageDialog.observe(this) {
             val errorMsg = it ?: getString(R.string.unknown_error)
             CustomAlertDialog(this).apply {
                 setMessage(errorMsg)
@@ -298,7 +300,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         }
 
         //確認收到簡訊驗證碼
-        viewModel.twoFactorResult.observe(this){
+        viewModel.twoFactorResult.observe(this) {
             //傳送驗證碼成功後才能解鎖提交按鈕
             customSecurityDialog?.setPositiveBtnClickable(it?.success ?: false)
             sConfigData?.hasGetTwoFactorResult = true
@@ -307,15 +309,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         //使用者沒有電話號碼
         viewModel.showPhoneNumberMessageDialog.observe(this) {
             it.getContentIfNotHandled()?.let { b ->
-                if(!b){
-                    val errorMsg = getString(R.string.dialog_security_need_phone)
-                    CustomAlertDialog(this).apply {
-                        setMessage(errorMsg)
-                        setNegativeButtonText(null)
-                        setCanceledOnTouchOutside(false)
-                        setCancelable(false)
-                    }.show(supportFragmentManager, null)
-                }
+                if (!b) phoneNumCheckDialog(this, supportFragmentManager)
             }
         }
     }

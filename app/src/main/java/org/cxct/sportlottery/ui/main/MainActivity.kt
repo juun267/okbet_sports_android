@@ -31,6 +31,7 @@ import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
+import org.cxct.sportlottery.util.phoneNumCheckDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import java.util.*
@@ -143,7 +144,7 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
         }
 
         iv_language.setOnClickListener {
-            ChangeLanguageDialog(ChangeLanguageDialog.ClearBetListListener{
+            ChangeLanguageDialog(ChangeLanguageDialog.ClearBetListListener {
                 viewModel.betInfoRepository.clear()
             }).show(supportFragmentManager, null)
         }
@@ -223,7 +224,7 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
             getMsgDialog() //登入/登出刷新彈窗公告
             updateUiWithLogin(it)
             //登入登出後要請求使用者是否需要認證手機驗證碼
-            if(it)
+            if (it)
                 viewModel.getTwoFactorValidateStatus()
         }
 
@@ -241,22 +242,15 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
         //公告彈窗
         viewModel.promoteNoticeResult.observe(this) {
             it.getContentIfNotHandled()?.let { result ->
-                setNewsDialog(result)
+                //Task 1901 在新版公告介面出來之前先隱藏
+//                setNewsDialog(result)
             }
         }
 
         //使用者沒有電話號碼
         viewModel.showPhoneNumberMessageDialog.observe(this) {
             it.getContentIfNotHandled()?.let { b ->
-                if (!b) {
-                    val errorMsg = getString(R.string.dialog_security_need_phone)
-                    CustomAlertDialog(this).apply {
-                        setMessage(errorMsg)
-                        setNegativeButtonText(null)
-                        setCanceledOnTouchOutside(false)
-                        setCancelable(false)
-                    }.show(supportFragmentManager, null)
-                }
+                if (!b) phoneNumCheckDialog(this, supportFragmentManager)
             }
         }
     }
@@ -264,8 +258,8 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
     private fun updateUiWithLogin(isLogin: Boolean) {
         if (isLogin) {
             btn_login.visibility = View.GONE
-            iv_menu.visibility =View.VISIBLE
-            iv_notice.visibility =View.VISIBLE
+            iv_menu.visibility = View.VISIBLE
+            iv_notice.visibility = View.VISIBLE
             btn_register.visibility = View.GONE
             toolbar_divider.visibility = View.GONE
             iv_head.visibility = View.GONE
@@ -274,8 +268,8 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
             btn_register.visibility = View.VISIBLE
             toolbar_divider.visibility = View.VISIBLE
             iv_head.visibility = View.GONE
-            iv_menu.visibility =View.GONE
-            iv_notice.visibility =View.GONE
+            iv_menu.visibility = View.GONE
+            iv_notice.visibility = View.GONE
         }
     }
 

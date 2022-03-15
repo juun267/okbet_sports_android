@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.home_game_table_4.view.*
 import kotlinx.android.synthetic.main.home_sport_table_4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
+import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeString
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.service.match_clock.MatchClockCO
@@ -159,7 +160,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         fun bind(data: GameEntity) {
             itemView.apply {
-                tv_game_name.text = data.name
+                tv_game_name.text = getGameTypeString(context, data.code)
                 tv_game_num.text = data.num.toString()
                 val gameCode = data.code
                 getGameIcon(gameCode)?.let {
@@ -227,7 +228,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         getGameIcon(t.code)?.let {
                             holder.getView<ImageView>(R.id.ivSportLogo).setImageResource(it)
                         }
-                        holder.setText(R.id.tvSport, t.name)
+                        holder.setText(R.id.tvSport, getGameTypeString(context, t.code))
                         holder.setText(R.id.tvSportCount, t.num.toString())
                         holder.getView<LinearLayout>(R.id.layoutSport).setOnClickListener {
                             onClickSportListener?.onClick(t)

@@ -57,18 +57,18 @@ class ContentParlayMatchAdapter :
             itemView.apply {
                 content_play.text = "$gameTypeName ${data.playCateName}"
 
-                val oddsTypeStr = when (data.oddsType) {
-                    OddsType.HK.code -> "(" + context.getString(OddsType.HK.res) + ")"
-                    OddsType.MYS.code -> "(" + context.getString(OddsType.MYS.res) + ")"
-                    OddsType.IDN.code -> "(" + context.getString(OddsType.IDN.res) + ")"
-                    else -> "(" + context.getString(OddsType.EU.res) + ")"
-                }
+//                val oddsTypeStr = when (data.oddsType) {
+//                    OddsType.HK.code -> "(" + context.getString(OddsType.HK.res) + ")"
+//                    OddsType.MYS.code -> "(" + context.getString(OddsType.MYS.res) + ")"
+//                    OddsType.IDN.code -> "(" + context.getString(OddsType.IDN.res) + ")"
+//                    else -> "(" + context.getString(OddsType.EU.res) + ")"
+//                }
 
                 parlay_play_content.setPlayContent(
                     data.playName,
                     data.spread,
                     TextUtil.formatForOdd(data.odds),
-                    oddsTypeStr
+                    data.oddsType
                 )
 
                 parlay_play_time.text = TimeUtil.timeFormat(data.startTime, TimeUtil.YMD_HM_FORMAT)

@@ -63,8 +63,9 @@ class MenuItem @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     }
 
     private fun updateNoticeButton() {
-        btn_notice?.visibility = if (noticeCount ?: 0 > 0 && isGuest == false) View.VISIBLE else View.GONE
-        btn_notice?.text = if (noticeCount ?: 0 < 10) noticeCount.toString() else "N"
+        // 2022/3/11需求：不顯示通知數量，待確認不要後可拔除
+//        btn_notice?.visibility = if (noticeCount ?: 0 > 0 && isGuest == false) View.VISIBLE else View.GONE
+//        btn_notice?.text = if (noticeCount ?: 0 < 10) noticeCount.toString() else "N"
     }
 
     fun showOddsTypeChose(){

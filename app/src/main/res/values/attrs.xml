@@ -82,6 +82,7 @@
             <enum name="packed" value="2" />
         </attr>
         <attr name="arrowSrc" format="reference"/>
+        <attr name="backgroundFrame" format="reference"/>
     </declare-styleable>
 
     <declare-styleable name="ToolBarView">
