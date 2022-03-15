@@ -84,6 +84,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         }
     }
 
+    private var mSelectedMatchInfo: MatchInfo? = null
     private val leagueAdapter by lazy {
         LeagueAdapter(args.matchType).apply {
             discount = viewModel.userInfo.value?.discount ?: 1.0F
@@ -114,6 +115,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     }
                 },
                 { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
+                    mSelectedMatchInfo = matchInfo
                     addOddsDialog(matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap)
                     hideKeyboard()
                 },
@@ -174,10 +176,8 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         view.game_league_odd_list.apply {
             this.layoutManager =
                 SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-
-            addItemDecoration(
-                SpaceItemDecoration(context, R.dimen.item_spacing_league)
-            )
+            this.adapter = leagueAdapter
+            //addItemDecoration(SpaceItemDecoration(context, R.dimen.item_spacing_league))
         }
     }
 
@@ -237,7 +237,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     updateSportBackground(oddsListResult.oddsListData?.sport?.code)
 
                     game_league_odd_list.apply {
-                        adapter = leagueAdapter.apply {
+                        leagueAdapter.apply {
                             data = leagueOdds.onEach { leagueOdd ->
                                 leagueOdd.gameType = args.gameType
                             }.toMutableList()
@@ -313,7 +313,16 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     }
                 }
 
-                leagueAdapter.notifyDataSetChanged()
+                //leagueAdapter.notifyDataSetChanged()
+                leagueAdapter.data.forEachIndexed { index, leagueOdd ->
+                    leagueOdd.matchOdds.forEach { matchOdd ->
+                        if(matchOdd.matchInfo?.id == mSelectedMatchInfo?.id) {
+                            leagueAdapter.updateLeague(index, leagueOdd)
+                            mSelectedMatchInfo = null
+                            return@forEach
+                        }
+                    }
+                }
             }
         }
 
