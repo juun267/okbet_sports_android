@@ -1,11 +1,9 @@
 package org.cxct.sportlottery.ui.game.common
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_league_v4.view.*
@@ -17,7 +15,6 @@ import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
-import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SvgUtil
 
 class LeagueAdapter(private val matchType: MatchType) :
