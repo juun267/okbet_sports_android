@@ -46,15 +46,22 @@ class OddButtonPagerAdapter(
                     .plus(field.filterValues { !it.isNullOrEmpty() }
                         .filter { it.value?.getOrNull(0) == null }).map { it.key }.run {
                         val gameListFilter: MutableList<String>
-                        if (this.size > sizeCount(matchInfo?.gameType)) {
-                            gameListFilter = this.take(sizeCount(matchInfo?.gameType)) as MutableList<String>
-                        } else {
-                            val maxCount = if(sizeCount(matchInfo?.gameType) < oddsSortCount) sizeCount(matchInfo?.gameType) else oddsSortCount
-                            val count = if (sizeCount(matchInfo?.gameType) > this.size) maxCount - this.size else 0
 
-                            gameListFilter = this.take(this.size + 1).toMutableList()
-                            for (i in 1..count) {
-                                gameListFilter.add("EmptyData${i}")
+                        when{
+                            getPlaySelectedCodeSelectionType == SelectionType.SELECTABLE.code -> {
+                                gameListFilter = this.take(this.size + 1) as MutableList<String>
+                            }
+                            this.size > sizeCount(matchInfo?.gameType) -> {
+                                gameListFilter = this.take(sizeCount(matchInfo?.gameType)) as MutableList<String>
+                            }
+                            else -> {
+                                val maxCount = if(sizeCount(matchInfo?.gameType) < oddsSortCount) sizeCount(matchInfo?.gameType) else oddsSortCount
+                                val count = if (sizeCount(matchInfo?.gameType) > this.size) maxCount - this.size else 0
+
+                                gameListFilter = this.take(this.size + 1).toMutableList()
+                                for (i in 1..count) {
+                                    gameListFilter.add("EmptyData${i}")
+                                }
                             }
                         }
                         gameListFilter
