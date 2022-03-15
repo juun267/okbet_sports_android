@@ -4,12 +4,10 @@ import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.core.view.marginEnd
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.home_highlight_item.view.*
 import kotlinx.coroutines.*
@@ -18,7 +16,6 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.matchCategory.result.OddData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.MatchOdd
@@ -30,7 +27,6 @@ import org.cxct.sportlottery.ui.game.home.OnClickStatisticsListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
-import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setTextTypeFace
 import java.util.*
@@ -38,15 +34,26 @@ import kotlin.collections.forEach as forEach
 
 class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdpOu>() {
 
+    private var playCateNameMap: Map<String?, Map<String?, String?>?>? = mapOf()
     private var dataList = listOf<MatchOdd>()
     private var discount: Float = 1.0F
     private var oddsType: OddsType = OddsType.EU
 
-    fun setData(sportCode: String?, newList: List<OddData>?, selectedOdds: MutableList<String>) {
-        processData(sportCode, newList, selectedOdds)
+    fun setData(
+        sportCode: String?,
+        newList: List<OddData>?,
+        selectedOdds: MutableList<String>,
+        newPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
+    ) {
+        processData(sportCode, newList, selectedOdds, newPlayCateNameMap)
     }
 
-    private fun processData(sportCode: String?, newList: List<OddData>?, selectedOdds: MutableList<String>) {
+    private fun processData(
+        sportCode: String?,
+        newList: List<OddData>?,
+        selectedOdds: MutableList<String>,
+        newPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
+    ) {
         var newDataList = newList?.map { it ->
                 val matchInfo = MatchInfo(
                     gameType = sportCode,
@@ -87,6 +94,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                 )
             } ?: listOf()
         dataList = newDataList
+        playCateNameMap = newPlayCateNameMap
     }
 
     fun getData() = dataList
@@ -179,7 +187,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             val data = dataList[position]
             var lastIndex = if (position > 0) position - 1 else 0
             val lastData = dataList[lastIndex]
-            holder.bind(data,lastData)
+            holder.bind(data,lastData,playCateNameMap)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -190,8 +198,12 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
     inner class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
         private var oddList: MutableList<Odd?>? = null
 
-        fun bind(data: MatchOdd, lastData: MatchOdd) {
-            setTitle(data,lastData)
+        fun bind(
+            data: MatchOdd,
+            lastData: MatchOdd,
+            playCateNameMap: Map<String?, Map<String?, String?>?>?
+        ) {
+            setTitle(data,lastData,playCateNameMap)
             setupOddList(data)
             setupMatchInfo(data)
             setupTime(data)
@@ -216,7 +228,11 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             }
         }
 
-        private fun setTitle(data: MatchOdd, lastData: MatchOdd) {
+        private fun setTitle(
+            data: MatchOdd,
+            lastData: MatchOdd,
+            playCateNameMap: Map<String?, Map<String?, String?>?>?
+        ) {
             try {
                 itemView.apply {
                     when {
@@ -228,9 +244,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                             val playCate = if(data.oddsSort?.split(",")?.size?:0 > 0) data.oddsSort?.split(",")
                                 ?.getOrNull(0) else data.oddsSort
 
-                            tv_play_type_highlight.text =
-                                data.playCateNameMap?.get(playCate)
-                                    ?.get(LanguageManager.getSelectLanguage(context).key) ?: ""
+                            tv_play_type_highlight.text = playCateNameMap?.get( playCateNameMap?.iterator()?.next()?.key)?.get(LanguageManager.getSelectLanguage(context).key) ?: ""
                         }
                         TimeUtil.isTimeToday(data.matchInfo?.startTime) && !TimeUtil.isTimeToday(
                             lastData.matchInfo?.startTime
