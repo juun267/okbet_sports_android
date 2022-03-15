@@ -542,7 +542,32 @@ class RegisterViewModel(
                 validCode,
                 agreementChecked
             )) {
-            register(createRegisterRequest(inviteCode, userName, loginPassword, fullName, fundPwd, qq, phone, email, address, weChat, zalo, facebook, whatsApp, telegram, securityPb, smsCode, validCode, deviceSn,deviceId))
+            register(
+                createRegisterRequest(
+                    inviteCode,
+                    userName,
+                    loginPassword,
+                    fullName,
+                    fundPwd,
+                    qq,
+                    phone,
+                    email,
+                    postalCode,
+                    province,
+                    city,
+                    address,
+                    weChat,
+                    zalo,
+                    facebook,
+                    whatsApp,
+                    telegram,
+                    securityPb,
+                    smsCode,
+                    validCode,
+                    deviceSn,
+                    deviceId
+                )
+            )
         }
     }
 
@@ -555,6 +580,9 @@ class RegisterViewModel(
         qq: String,
         phone: String,
         email: String,
+        postalCode: String,
+        province: String,
+        city: String,
         address: String,
         weChat: String,
         zalo: String,
@@ -585,8 +613,12 @@ class RegisterViewModel(
                 this.phone = phone
             if (sConfigData?.enableEmail == FLAG_OPEN)
                 this.email = email
-            if (sConfigData?.enableAddress == FLAG_OPEN)
+            if (sConfigData?.enableAddress == FLAG_OPEN) {
+                this.zipCode = postalCode
+                this.province = province
+                this.city = city
                 this.address = address
+            }
             if (sConfigData?.enableWechat == FLAG_OPEN)
                 this.wechat = weChat
             if (sConfigData?.enableZalo == FLAG_OPEN)
