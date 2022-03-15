@@ -1317,7 +1317,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                         if(nowGameType == leagueChangeEvent.gameType ){
                             when{
-                                !hasLeagueIdList -> {
+                                !hasLeagueIdList || args.matchType == MatchType.AT_START-> {
                                     //全刷
                                     withContext(Dispatchers.Main) {
                                         viewModel.getGameHallList(args.matchType,false)
