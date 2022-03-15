@@ -53,8 +53,6 @@ class Vp2GameTable4Adapter (
 
     var onClickStatisticsListener: OnClickStatisticsListener? = null
 
-    var onSubscribeChannelHallListener: OnSubscribeChannelHallListener? = null
-
     private var isLogin: Boolean = false
     private var oddsType: OddsType = OddsType.EU
     private var gameType: String = GameType.FT.key
@@ -105,19 +103,6 @@ class Vp2GameTable4Adapter (
             holder.bind(data, time)
         } catch (e: Exception) {
             e.printStackTrace()
-        }
-    }
-
-    override fun onViewAttachedToWindow(holder: ViewHolderHdpOu) {
-        super.onViewAttachedToWindow(holder)
-        val position = holder.bindingAdapterPosition
-        if (dataList.count() > position && position >= 0) {
-            val data = dataList[position]
-            onSubscribeChannelHallListener?.subscribeChannel(
-                gameType,
-                if (matchType == MatchType.IN_PLAY) MenuCode.HOME_INPLAY_MOBILE.code else MenuCode.HOME_ATSTART_MOBILE.code,
-                data.matchInfo?.id
-            )
         }
     }
 
@@ -205,7 +190,10 @@ class Vp2GameTable4Adapter (
             MatchType.IN_PLAY -> {
                 var needUpdate = false
                 dataList.forEach { matchOdd ->
-                    if (matchOdd.matchInfo?.stopped == TimeCounting.STOP.value) return
+                    if (matchOdd.matchInfo?.stopped == TimeCounting.STOP.value) {
+                        needUpdate = true
+                        return
+                    }
                     matchOdd.matchInfo?.id?.let { id ->
                         timeMap[id]?.let { time ->
                             var newTime = time
@@ -233,7 +221,10 @@ class Vp2GameTable4Adapter (
             MatchType.AT_START -> {
                 var needUpdate = false
                 dataList.forEachIndexed { index, matchOdd ->
-                    if (matchOdd.matchInfo?.stopped == TimeCounting.STOP.value) return
+                    if (matchOdd.matchInfo?.stopped == TimeCounting.STOP.value) {
+                        needUpdate = true
+                        return
+                    }
                     matchOdd.matchInfo?.id?.let { id ->
                         timeMap[id]?.let { time ->
                             var newTime = time - diff
