@@ -35,7 +35,7 @@ val PAYLOAD_SCORE_CHANGE = "payload_score_change"
 val PAYLOAD_CLOCK_CHANGE = "payload_clock_change"
 val PAYLOAD_ODDS_CHANGE = "payload_odds_change"
 
-class LeagueOddAdapter(private val matchType: MatchType, private val playSelectedCodeSelectionType: Int?) :
+class LeagueOddAdapter(private val matchType: MatchType, private val playSelectedCodeSelectionType: Int? ,private val playSelectedCode : String?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var data = listOf<MatchOdd>()
@@ -96,7 +96,8 @@ class LeagueOddAdapter(private val matchType: MatchType, private val playSelecte
                     isTimerEnable,
                     oddsType,
                     matchInfoList,
-                    playSelectedCodeSelectionType
+                    playSelectedCodeSelectionType,
+                    playSelectedCode
                 )
             }
         }
@@ -124,7 +125,8 @@ class LeagueOddAdapter(private val matchType: MatchType, private val playSelecte
             isTimerEnable: Boolean,
             oddsType: OddsType,
             matchInfoList: List<MatchInfo>,
-            playSelectedCodeSelectionType: Int?
+            playSelectedCodeSelectionType: Int?,
+            playSelectedCode: String?
         ) {
             setUpVisibility(item, matchType)
 
@@ -133,7 +135,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private val playSelecte
             val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
             setupMatchTime(item, matchType, isTimerEnable, isTimerPause, leagueOddListener)
 
-            setupOddsButton(item, oddsType, leagueOddListener, playSelectedCodeSelectionType)
+            setupOddsButton(item, oddsType, leagueOddListener, playSelectedCodeSelectionType, playSelectedCode)
 
             setupQuickCategory(item, oddsType, leagueOddListener)
         }
@@ -637,7 +639,8 @@ class LeagueOddAdapter(private val matchType: MatchType, private val playSelecte
             item: MatchOdd,
             oddsType: OddsType,
             leagueOddListener: LeagueOddListener?,
-            playSelectedCodeSelectionType: Int?
+            playSelectedCodeSelectionType: Int?,
+            playSelectedCode: String?,
         ) {
 
             itemView.league_odd_btn_pager_main.apply {
@@ -689,10 +692,9 @@ class LeagueOddAdapter(private val matchType: MatchType, private val playSelecte
 
             itemView.league_odd_btn_indicator_main.apply {
 
-                visibility = if (item.oddsMap?.size ?: 0 > 2) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
+                visibility = when {
+                    item.oddsMap?.size ?: 0 > 2 -> View.VISIBLE
+                    else -> View.GONE
                 }
 
                 setupWithViewPager2(itemView.league_odd_btn_pager_main)

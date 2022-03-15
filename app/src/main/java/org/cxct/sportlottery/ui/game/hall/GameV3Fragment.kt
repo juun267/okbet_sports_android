@@ -153,7 +153,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     private val leagueAdapter by lazy {
-        LeagueAdapter(args.matchType, getPlaySelectedCodeSelectionType()).apply {
+        LeagueAdapter(args.matchType, getPlaySelectedCodeSelectionType(), getPlaySelectedCode()).apply {
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
             leagueListener = LeagueListener({
@@ -691,6 +691,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         game_list.apply {
                             adapter = leagueAdapter.apply {
                                 this.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
+                                this.playSelectedCode = getPlaySelectedCode()
                                 updateType = null
                                 data = leagueOdds.onEach { leagueOdd ->
                                     leagueOdd.gameType = gameType
@@ -1177,6 +1178,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         val leagueOdds = leagueAdapter.data
 
                         leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
+                        leagueAdapter.playSelectedCode = getPlaySelectedCode()
 
                         leagueOdds.forEachIndexed { index, leagueOdd ->
                             if (leagueOdd.matchOdds.any { matchOdd ->

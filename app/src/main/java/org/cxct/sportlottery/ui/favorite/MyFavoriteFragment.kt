@@ -88,7 +88,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     }
 
     private val leagueAdapter by lazy {
-        LeagueAdapter(MatchType.MY_EVENT, getPlaySelectedCodeSelectionType()).apply {
+        LeagueAdapter(MatchType.MY_EVENT, getPlaySelectedCodeSelectionType(), getPlaySelectedCode()).apply {
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
             leagueListener = LeagueListener ({

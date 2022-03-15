@@ -17,7 +17,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 import org.cxct.sportlottery.util.SvgUtil
 
-class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelectionType: Int?) :
+class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelectionType: Int?, var playSelectedCode: String?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val PAYLOAD_MATCH_STATUS = "payload_match_status"
@@ -78,7 +78,7 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ItemType.ITEM.ordinal -> {
-                ItemViewHolder.from(matchType, playSelectedCodeSelectionType, parent).apply {
+                ItemViewHolder.from(matchType, playSelectedCodeSelectionType, playSelectedCode, parent).apply {
 
                     this.itemView.league_odd_list.apply {
                         this.layoutManager =
@@ -138,11 +138,11 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         }
     }
 
-    class ItemViewHolder private constructor(matchType: MatchType, getPlaySelectedCodeSelectionType: Int?, itemView: View) :
+    class ItemViewHolder private constructor(matchType: MatchType, playSelectedCodeSelectionType: Int?, playSelectedCode: String?, itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
         private val leagueOddAdapter by lazy {
-            LeagueOddAdapter(matchType, getPlaySelectedCodeSelectionType)
+            LeagueOddAdapter(matchType, playSelectedCodeSelectionType, playSelectedCode)
         }
 
         fun bind(
@@ -218,11 +218,11 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         }
 
         companion object {
-            fun from(matchType: MatchType, playSelectedCodeSelectionType:Int?, parent: ViewGroup): ItemViewHolder {
+            fun from(matchType: MatchType, playSelectedCodeSelectionType:Int?, playSelectedCode: String?, parent: ViewGroup): ItemViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater.inflate(R.layout.itemview_league_v4, parent, false)
 
-                return ItemViewHolder(matchType, playSelectedCodeSelectionType, view)
+                return ItemViewHolder(matchType, playSelectedCodeSelectionType, playSelectedCode, view)
             }
         }
     }
