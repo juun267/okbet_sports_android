@@ -479,7 +479,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         dismiss()
                     }
                 } else {
-                    if(result.receipt?.betConfirmTime != null){
+                    if(TimeUtil.isTimeAtStart(result.receipt?.betConfirmTime)){
                         val spannableStringBuilder = SpannableStringBuilder()
                         var text1 = SpannableString(getString(R.string.text_bet_not_success))
                         var text2= SpannableString(getString(R.string.text_bet_not_success2))
