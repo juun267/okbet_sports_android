@@ -96,7 +96,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private val playCategoryAdapter by lazy {
         PlayCategoryAdapter().apply {
             playCategoryListener = PlayCategoryListener {
-                if (it.selectionType == SelectionType.SELECTABLE.code) { //被鎖 或是不能下拉
+                if (it.selectionType == SelectionType.SELECTABLE.code) {
                     when {
                         //這個是沒有點選過的狀況 第一次進來 ：開啟選單
                         !it.isSelected && it.isLocked == null -> {
