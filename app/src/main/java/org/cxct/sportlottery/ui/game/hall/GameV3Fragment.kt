@@ -1376,7 +1376,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             when{
                                 !hasLeagueIdList -> {
                                     //全刷
-                                    viewModel.getGameHallList(args.matchType,false)
+                                    withContext(Dispatchers.Main) {
+                                        viewModel.getGameHallList(args.matchType,false)
+                                    }
                                 }
                                 else -> {
                                     unSubscribeChannelHall(nowGameType ?: GameType.FT.key, getPlaySelectedCode(), leagueChangeEvent.matchIdList?.firstOrNull())

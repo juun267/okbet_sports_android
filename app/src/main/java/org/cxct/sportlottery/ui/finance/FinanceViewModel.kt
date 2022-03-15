@@ -21,6 +21,7 @@ import org.cxct.sportlottery.ui.finance.df.UWType
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.ToastUtil
 
 const val pageSize = 20
 
@@ -236,6 +237,11 @@ class FinanceViewModel(
                     )
 
                     _userSportBillListResult.postValue(result)
+                }else{
+                    ToastUtil.showToastInCenter(
+                        androidContext,
+                        result.msg
+                    )
                 }
 
                 hideLoading()

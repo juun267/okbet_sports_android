@@ -767,6 +767,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     //notifyDataSetChanged() // TODO
                 }
                 Log.d("Hewie4", "更新(${item.matchInfo?.homeName})：item.oddsMap.size => ${item.oddsMap?.size}")
+                //itemView.league_odd_btn_indicator_main.apply {
+                // setupWithViewPager2(itemView.league_odd_btn_pager_main)
             }
         }
 
@@ -801,6 +803,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 setOnClickListener {
                     leagueOddListener?.onClickQuickCateClose()
                 }
+            }
+
+            itemView.scroll_view_rg.visibility = if (item.quickPlayCateList.isNullOrEmpty()) {
+                View.GONE
+            } else {
+                View.VISIBLE
             }
 
             itemView.league_odd_quick_cate_tabs.apply {
@@ -1059,7 +1067,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 val quickOddButtonPagerAdapter = OddButtonPagerAdapter()
                 quickOddButtonPagerAdapter.setData(
                     item.matchInfo,
-                    item.oddsSort,
+                    null, //快捷玩法給的oddsSort是Tab的 Old -> item.oddsSort
                     item.quickPlayCateNameMap,
                     item.betPlayCateNameMap
                 )

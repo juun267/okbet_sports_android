@@ -294,7 +294,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
             oddsIndex
         }.thenBy { it })
 
-        return oddsMap
+        return if(oddsSort.isNullOrEmpty()) this else oddsMap
     }
 
     //SINGLE_OU、SINGLE_BTS兩種玩法要特殊處理，後端API沒給翻譯

@@ -206,12 +206,14 @@ class AccountHistoryNextAdapter(
             binding.matchOdd = first
 
             first?.apply {
-                binding.playContent.setPlayContent(
-                    playName,
-                    spread,
-                    odds?.let { TextUtil.formatForOdd(it) },
-                    oddsType.code
-                )
+                first.oddsType?.let {
+                    binding.playContent.setPlayContent(
+                        playName,
+                        spread,
+                        odds?.let { TextUtil.formatForOdd(it) },
+                        it
+                    )
+                }
                 binding.tvGameTypePlayCate.text = "${GameType.getGameTypeString(binding.tvGameTypePlayCate.context, row.gameType)} $playCateName"
 
                 binding.tvTeamNames.text = String.format(binding.tvTeamNames.context.getString(R.string.match_names_2), homeName, awayName)
@@ -251,12 +253,14 @@ class AccountHistoryNextAdapter(
 
             first?.let { it ->
 
-                binding.tvContent.setPlayContent(
-                    it.playName,
-                    it.spread,
-                    it.odds?.let { odd -> TextUtil.formatForOdd(odd) },
-                    binding.tvContent.context.getString(oddsType.res)
-                )
+                it.oddsType?.let { t ->
+                    binding.tvContent.setPlayContent(
+                        it.playName,
+                        it.spread,
+                        it.odds?.let { odd -> TextUtil.formatForOdd(odd) },
+                        t
+                    )
+                }
 
                 binding.tvStartTime.text = TimeUtil.timeFormat(it.startTime, TimeUtil.YMD_HM_FORMAT)
 

@@ -68,6 +68,12 @@
     <string name="e_mail">邮箱</string>
     <string name="hint_e_mail">(请输入邮箱)</string>
     <string name="error_e_mail">邮箱格式错误</string>
+    <string name="postal_code">邮递区号</string>
+    <string name="hint_postal_code">(请输入邮递区号)</string>
+    <string name="province">省</string>
+    <string name="hint_province">(请输入所在省份)</string>
+    <string name="city">城市</string>
+    <string name="hint_city">(请输入所在城市)</string>
     <string name="we_chat">微信</string>
     <string name="identity">实名验证</string>
     <string name="hint_we_chat_number">(请输入微信ID)</string>
