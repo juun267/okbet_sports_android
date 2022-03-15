@@ -88,7 +88,7 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
                             DividerItemDecorator(
                                 ContextCompat.getDrawable(
                                     context,
-                                    R.drawable.divider_gray
+                                    R.drawable.divider_color_white8
                                 )
                             )
                         )
