@@ -728,6 +728,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 }
             }
 
+            itemView.scroll_view_rg.visibility = if (item.quickPlayCateList.isNullOrEmpty()) {
+                View.GONE
+            } else {
+                View.VISIBLE
+            }
+
             itemView.league_odd_quick_cate_tabs.apply {
                 visibility = if (item.quickPlayCateList.isNullOrEmpty()) {
                     View.GONE
