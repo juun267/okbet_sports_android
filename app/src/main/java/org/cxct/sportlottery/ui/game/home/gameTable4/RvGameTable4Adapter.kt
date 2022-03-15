@@ -205,7 +205,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                             val data = it[position]
                             onSubscribeChannelHallListener?.subscribeChannel(
                                 data.matchInfo?.gameType,
-                                if (mMatchType == MatchType.IN_PLAY) MenuCode.HOME_INPLAY_MOBILE.code else MenuCode.HOME_ATSTART_MOBILE.code,
+                                if (mMatchType == MatchType.IN_PLAY || mMatchType == MatchType.MAIN) MenuCode.HOME_INPLAY_MOBILE.code else MenuCode.HOME_ATSTART_MOBILE.code,
                                 data.matchInfo?.id
                             )
                         }

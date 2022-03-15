@@ -110,19 +110,17 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         ) {
             if (gameType.isNullOrEmpty()) return
             val id = if (mSelectMatchType == MatchType.IN_PLAY) tableInPlayMap[gameType] else tableSoonMap[gameType]
+            if (id == eventId) return
+            if (!id.isNullOrEmpty()) {
+                unSubscribeChannelHall(gameType, cateMenuCode, id)
+            }
             if (mSelectMatchType == MatchType.IN_PLAY) {
                 tableInPlayMap[gameType] = eventId ?: ""
             }
             else {
                 tableSoonMap[gameType] = eventId ?: ""
             }
-            if (id != eventId) return
-            GlobalScope.launch(Dispatchers.IO) {
-                if (!id.isNullOrEmpty()) {
-                    unSubscribeChannelHall(gameType, cateMenuCode, id)
-                }
-                subscribeChannelHall(gameType, cateMenuCode, eventId)
-            }
+            subscribeChannelHall(gameType, cateMenuCode, eventId)
         }
     }
 
@@ -449,7 +447,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     odd,
                     ChannelType.HALL,
                     betPlayCateNameMap,
-                    if (mSelectMatchType == MatchType.IN_PLAY) MenuCode.HOME_INPLAY_MOBILE.code else MenuCode.HOME_ATSTART_MOBILE.code
+                    if (mSelectMatchType == MatchType.IN_PLAY || mSelectMatchType == MatchType.MAIN) MenuCode.HOME_INPLAY_MOBILE.code else MenuCode.HOME_ATSTART_MOBILE.code
                 )
             }
         }
@@ -529,10 +527,10 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     }
 
     //訂閱 精選賽事 賠率
-    private fun subscribeHighlightHallChannel() {
+    private fun subscribeHighlightHallChannel(result: MatchCategoryResult? = null) {
         GlobalScope.launch(Dispatchers.IO) {
             val code = mHighlightGameTypeAdapter.dataSport.find { it.isSelected }?.code ?: ""
-            mRvHighlightAdapter.getData().forEach { matchOdd ->
+            result ?: mRvHighlightAdapter.getData().forEach { matchOdd ->
                 subscribeChannelHall(
                     code,
                     MenuCode.SPECIAL_MATCH_MOBILE.code,
@@ -693,7 +691,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             it.getContentIfNotHandled()?.let { result ->
                 unsubscribeHighlightHallChannel() //先取消訂閱當前的賽事
                 refreshHighlight(result)
-                subscribeHighlightHallChannel()
+                subscribeHighlightHallChannel(result)
             }
         }
 
@@ -993,6 +991,8 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     }
 
     private fun queryData() {
+        tableInPlayMap.clear()
+        tableSoonMap.clear()
         viewModel.getSportMenu()
 
         //滾球盤、即將開賽盤
