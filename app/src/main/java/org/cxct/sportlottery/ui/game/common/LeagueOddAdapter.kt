@@ -684,13 +684,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             OverScrollDecoratorHelper.setUpOverScroll(itemView.league_odd_btn_pager_main)
 
             itemView.league_odd_btn_indicator_main.apply {
-
-                visibility = if (item.oddsMap?.size ?: 0 > 2) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
-
                 setupWithViewPager2(itemView.league_odd_btn_pager_main)
             }
         }
