@@ -15,6 +15,7 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
@@ -30,7 +31,8 @@ class OddButtonPagerAdapter(
     private val matchInfo: MatchInfo?,
     private val oddsSort: String?,
     private var playCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
-    private var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? //遊戲名稱顯示用playCateNameMap，下注顯示用betPlayCateNameMap
+    private var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?, //遊戲名稱顯示用playCateNameMap，下注顯示用betPlayCateNameMap
+    private val getPlaySelectedCodeSelectionType: Int?
 ) :
     RecyclerView.Adapter<OddButtonPagerViewHolder>() {
     var odds: Map<String, List<Odd?>?> = mapOf()

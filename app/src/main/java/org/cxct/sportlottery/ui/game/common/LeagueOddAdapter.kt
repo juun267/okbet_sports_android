@@ -35,7 +35,7 @@ val PAYLOAD_SCORE_CHANGE = "payload_score_change"
 val PAYLOAD_CLOCK_CHANGE = "payload_clock_change"
 val PAYLOAD_ODDS_CHANGE = "payload_odds_change"
 
-class LeagueOddAdapter(private val matchType: MatchType) :
+class LeagueOddAdapter(private val matchType: MatchType, private val playSelectedCodeSelectionType: Int?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var data = listOf<MatchOdd>()
@@ -95,7 +95,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     leagueOddListener,
                     isTimerEnable,
                     oddsType,
-                    matchInfoList
+                    matchInfoList,
+                    playSelectedCodeSelectionType
                 )
             }
         }
@@ -122,7 +123,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             leagueOddListener: LeagueOddListener?,
             isTimerEnable: Boolean,
             oddsType: OddsType,
-            matchInfoList: List<MatchInfo>
+            matchInfoList: List<MatchInfo>,
+            playSelectedCodeSelectionType: Int?
         ) {
             setUpVisibility(item, matchType)
 
@@ -131,7 +133,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
             setupMatchTime(item, matchType, isTimerEnable, isTimerPause, leagueOddListener)
 
-            setupOddsButton(item, oddsType, leagueOddListener)
+            setupOddsButton(item, oddsType, leagueOddListener, playSelectedCodeSelectionType)
 
             setupQuickCategory(item, oddsType, leagueOddListener)
         }
@@ -634,7 +636,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         private fun setupOddsButton(
             item: MatchOdd,
             oddsType: OddsType,
-            leagueOddListener: LeagueOddListener?
+            leagueOddListener: LeagueOddListener?,
+            playSelectedCodeSelectionType: Int?
         ) {
 
             itemView.league_odd_btn_pager_main.apply {
@@ -643,7 +646,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         item.matchInfo,
                         item.oddsSort,
                         item.playCateNameMap,
-                        item.betPlayCateNameMap
+                        item.betPlayCateNameMap,
+                        playSelectedCodeSelectionType
                     ).apply {
 
                         this.odds = item.oddsMap ?: mutableMapOf()
@@ -902,7 +906,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         item.matchInfo,
                         null,//快捷玩法給的oddsSort是Tab的
                         item.quickPlayCateNameMap,
-                        item.betPlayCateNameMap
+                        item.betPlayCateNameMap,
+                        null
                     ).apply {
 
                         this.odds = item.quickPlayCateList?.find { it.isSelected }?.quickOdds
