@@ -162,7 +162,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             initObserve()
             initSocketObserver()
             initBottomNavigation()
-            queryData()
+//            queryData()
             mTimer = Timer()
             mTimer?.schedule(object : TimerTask() {
                 override fun run() {
@@ -252,16 +252,20 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
         rb_in_play.setOnClickListener {
             if (mSelectMatchType == MatchType.IN_PLAY) return@setOnClickListener
-            if (mSelectMatchType != MatchType.MAIN) unsubscribeUnSelectMatchTypeHallChannel()
+            if (mSelectMatchType != MatchType.MAIN) {
+                unsubscribeUnSelectMatchTypeHallChannel()
+                viewModel.getMatchPreloadInPlay()
+            }
             mSelectMatchType = MatchType.IN_PLAY
-            viewModel.getMatchPreloadInPlay()
         }
 
         rb_as_start.setOnClickListener {
             if (mSelectMatchType == MatchType.AT_START) return@setOnClickListener
-            if (mSelectMatchType != MatchType.MAIN) unsubscribeUnSelectMatchTypeHallChannel()
+            if (mSelectMatchType != MatchType.MAIN) {
+                unsubscribeUnSelectMatchTypeHallChannel()
+                viewModel.getMatchPreloadAtStart()
+            }
             mSelectMatchType = MatchType.AT_START
-            viewModel.getMatchPreloadAtStart()
         }
     }
 
@@ -493,22 +497,10 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
     private fun unsubscribeUnSelectMatchTypeHallChannel() {
         GlobalScope.launch(Dispatchers.IO) {
-            tableSoonMap.forEach {
-                unSubscribeChannelHall(
-                    it.key,
-                    MenuCode.HOME_ATSTART_MOBILE.code,
-                    it.value
-                )
-            }
+            unsubscribeAllHomeInPlayHallChannel()
+            unsubscribeAllHomeAtSatrtHallChannel()
             tableSoonMap.clear()
-            tableInPlayMap.forEach {
-                unSubscribeChannelHall(
-                    it.key,
-                    MenuCode.HOME_INPLAY_MOBILE.code,
-                    it.value
-                )
-            }
-            tableInPlayMap.clear()
+            tableSoonMap.clear()
         }
     }
     //訂閱 推薦賽事 賠率
@@ -651,7 +643,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     mInPlayResult = result
                     isInPlayResult = true
                     judgeTableBar()
-                    if (mSelectMatchType == MatchType.IN_PLAY) refreshTable(mInPlayResult)
+                    if (mSelectMatchType == MatchType.IN_PLAY || mSelectMatchType == MatchType.MAIN) refreshTable(mInPlayResult)
                 }
             }
 
