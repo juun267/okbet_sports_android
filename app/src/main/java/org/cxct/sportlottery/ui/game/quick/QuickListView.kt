@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.RadioButton
 import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
-import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
@@ -104,6 +103,7 @@ class QuickListView @JvmOverloads constructor(context: Context, attrs: Attribute
                             }
                         }
                         mLeagueOddListener?.onClickQuickCateTab(mMatchOdd!!, mSelectedQuickPlayCate!!)
+                        SpaceItemDecorationView.visibility = View.VISIBLE
                     }
                 }
             }
@@ -265,5 +265,6 @@ class QuickListView @JvmOverloads constructor(context: Context, attrs: Attribute
         league_odd_quick_odd_btn_pair.visibility = View.GONE
         league_odd_quick_odd_btn_pager.visibility = View.GONE
         league_odd_quick_odd_btn_eps.visibility = View.GONE
+        SpaceItemDecorationView.visibility = View.GONE
     }
 }

@@ -443,7 +443,8 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/colorWhite8"
-        app:layout_constraintTop_toBottomOf="@id/league_odd_match_border" />
+        app:layout_constraintTop_toBottomOf="@id/league_odd_match_border"
+        android:layout_marginTop="5dp"/>
 
     <!-- 快選元件 -->
     <org.cxct.sportlottery.ui.game.quick.QuickListView android:id="@+id/quickListView"

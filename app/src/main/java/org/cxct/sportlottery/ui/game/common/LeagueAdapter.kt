@@ -195,7 +195,6 @@ class LeagueAdapter(private val matchType: MatchType) :
                 it.matchInfo?.gameType = item.gameType?.key
             }
             leagueOddAdapter.oddsType = oddsType
-            Log.d("Hewie6", "item.matchOdds => ${item.matchOdds.size}")
             leagueOddAdapter.update()
         }
         fun updateLeagueExpand(item: LeagueOdd, matchType: MatchType) {
@@ -245,8 +244,10 @@ class LeagueAdapter(private val matchType: MatchType) :
                     FoldState.UNFOLD.code
                 }
                 itemView.league_expand.setExpanded(item.unfold == FoldState.UNFOLD.code, true)
+                itemView.league_expand.setOnExpansionUpdateListener { expansionFraction, state ->
+                    checkSpaceItemDecoration()
+                }
                 updateTimer(matchType, item.gameType)
-                checkSpaceItemDecoration()
 
                 leagueListener?.onClickLeague(item)
             }

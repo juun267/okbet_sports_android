@@ -1330,7 +1330,7 @@ class GameViewModel(
         var currentTimeRangeParams: TimeRangeParams? = null
         when (matchType) {
             MatchType.IN_PLAY.postValue, MatchType.AT_START.postValue, MatchType.OTHER.postValue -> {
-                _oddsListResult.value = Event(null)
+                _oddsListResult.postValue(Event(null))
                 currentTimeRangeParams = timeRangeParams
             }
             MatchType.TODAY.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue -> {
