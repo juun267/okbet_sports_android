@@ -48,6 +48,10 @@ class OddButtonPagerAdapter(
                         val gameListFilter: MutableList<String>
 
                         when{
+                            this.isNullOrEmpty() ->{
+                                gameListFilter = mutableListOf()
+                                gameListFilter.add("EmptyData1")
+                            }
                             getPlaySelectedCodeSelectionType == SelectionType.SELECTABLE.code -> {
                                 gameListFilter = this.take(this.size + 1) as MutableList<String>
                             }
