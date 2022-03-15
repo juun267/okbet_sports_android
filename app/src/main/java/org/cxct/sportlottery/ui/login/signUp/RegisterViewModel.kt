@@ -49,6 +49,12 @@ class RegisterViewModel(
         get() = _phoneMsg
     val emailMsg: LiveData<String?>
         get() = _emailMsg
+    val postalMsg: LiveData<String?>
+        get() = _postalMsg
+    val provinceMsg: LiveData<String?>
+        get() = _provinceMsg
+    val cityMsg: LiveData<String?>
+        get() = _cityMsg
     val addressMsg: LiveData<String?>
         get() = _addressMsg
     val weChatMsg: LiveData<String?>
@@ -89,6 +95,9 @@ class RegisterViewModel(
     private val _qqMsg = MutableLiveData<String?>()
     private val _phoneMsg = MutableLiveData<String?>()
     private val _emailMsg = MutableLiveData<String?>()
+    private val _postalMsg = MutableLiveData<String?>()
+    private val _provinceMsg = MutableLiveData<String?>()
+    private val _cityMsg = MutableLiveData<String?>()
     private val _addressMsg = MutableLiveData<String?>()
     private val _weChatMsg = MutableLiveData<String?>()
     private val _zaloMsg = MutableLiveData<String?>()
@@ -214,6 +223,30 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
+    private fun checkPostal(postalCode: String?) {
+        _postalMsg.value = when {
+            postalCode.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
+            else -> null
+        }
+        focusChangeCheckAllInputComplete()
+    }
+
+    private fun checkProvince(province: String?) {
+        _provinceMsg.value = when {
+            province.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
+            else -> null
+        }
+        focusChangeCheckAllInputComplete()
+    }
+
+    private fun checkCity(city: String?) {
+        _cityMsg.value = when {
+            city.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
+            else -> null
+        }
+        focusChangeCheckAllInputComplete()
+    }
+
     private fun checkAddress(address: String?) {
         _addressMsg.value = when {
             address.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
@@ -332,6 +365,9 @@ class RegisterViewModel(
         qq: String,
         phone: String,
         email: String,
+        postalCode: String,
+        province: String,
+        city: String,
         address: String,
         weChat: String,
         zalo: String,
@@ -360,8 +396,12 @@ class RegisterViewModel(
             checkPhone(phone)
         if (sConfigData?.enableEmail == FLAG_OPEN)
             checkEmail(email)
-        if (sConfigData?.enableAddress == FLAG_OPEN)
+        if (sConfigData?.enableAddress == FLAG_OPEN){
+            checkPostal(postalCode)
+            checkProvince(province)
+            checkCity(city)
             checkAddress(address)
+        }
         if (sConfigData?.enableWechat == FLAG_OPEN)
             checkWeChat(weChat)
         if (sConfigData?.enableZalo == FLAG_OPEN)
@@ -462,6 +502,9 @@ class RegisterViewModel(
         qq: String,
         phone: String,
         email: String,
+        postalCode: String,
+        province: String,
+        city: String,
         address: String,
         weChat: String,
         zalo: String,
@@ -485,6 +528,9 @@ class RegisterViewModel(
                 qq,
                 phone,
                 email,
+                postalCode,
+                province,
+                city,
                 address,
                 weChat,
                 zalo,

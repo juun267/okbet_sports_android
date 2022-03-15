@@ -294,6 +294,9 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 eetQq.text.toString(),
                 eetPhone.text.toString(),
                 eetMail.text.toString(),
+                eetPostal.text.toString(),
+                eetProvince.text.toString(),
+                eetCity.text.toString(),
                 eetAddress.text.toString(),
                 eetWeChat.text.toString(),
                 eetZalo.text.toString(),
@@ -361,6 +364,26 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     btnRegisterEnable()
                 }
             }
+            eetPostal.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
+            }
+            eetProvince.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
+            }
+            eetCity.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
+            }
+            eetAddress.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
+            }
             eetWeChat.apply {
                 this.afterTextChanged {
                     btnRegisterEnable()
@@ -423,6 +446,9 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     eetQq.text.toString(),
                     eetPhone.text.toString(),
                     eetMail.text.toString(),
+                    eetPostal.text.toString(),
+                    eetProvince.text.toString(),
+                    eetCity.text.toString(),
                     eetAddress.text.toString(),
                     eetWeChat.text.toString(),
                     eetZalo.text.toString(),
@@ -531,6 +557,10 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             qqMsg.observe(this@RegisterActivity) { binding.etQq.setError(it, false) }
             phoneMsg.observe(this@RegisterActivity) { binding.etPhone.setError(it, false) }
             emailMsg.observe(this@RegisterActivity) { binding.etMail.setError(it, false) }
+            postalMsg.observe(this@RegisterActivity) { binding.etPostal.setError(it, false) }
+            provinceMsg.observe(this@RegisterActivity) { binding.etProvince.setError(it, false) }
+            cityMsg.observe(this@RegisterActivity) { binding.etCity.setError(it, false) }
+            addressMsg.observe(this@RegisterActivity) { binding.etAddress.setError(it, false) }
             weChatMsg.observe(this@RegisterActivity) { binding.etWeChat.setError(it, false) }
             zaloMsg.observe(this@RegisterActivity) { binding.etZalo.setError(it, false) }
             facebookMsg.observe(this@RegisterActivity) { binding.etFacebook.setError(it, false) }
