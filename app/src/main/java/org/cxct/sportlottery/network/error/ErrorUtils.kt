@@ -102,6 +102,7 @@ import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.money.MoneyAddResult
 import org.cxct.sportlottery.network.money.config.MoneyRechCfgResult
 import org.cxct.sportlottery.network.money.list.RechargeListResult
+import org.cxct.sportlottery.network.money.list.SportBillResult
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.odds.quick.QuickListResult
 import org.cxct.sportlottery.network.outright.OutrightResultListResult
@@ -486,6 +487,10 @@ object ErrorUtils {
                     (url.contains(Constants.INDEX_VALIDATE_LOGIN_DEVICE_SMS)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return LogoutResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(Constants.USER_BILL_LIST)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return SportBillResult(it.code, it.msg, listOf(),it.success,0) as T
                     }
                     (url.contains(USER_CREDIT_CIRCLE_HISTORY)) -> {
                         @Suppress("UNCHECKED_CAST")

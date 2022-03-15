@@ -1,11 +1,9 @@
 package org.cxct.sportlottery.ui.game.common
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_league_v4.view.*
@@ -17,10 +15,9 @@ import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
-import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SvgUtil
 
-class LeagueAdapter(private val matchType: MatchType) :
+class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelectionType: Int?, var playSelectedCode: String?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val PAYLOAD_MATCH_STATUS = "payload_match_status"
@@ -81,7 +78,7 @@ class LeagueAdapter(private val matchType: MatchType) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ItemType.ITEM.ordinal -> {
-                ItemViewHolder.from(matchType, parent).apply {
+                ItemViewHolder.from(matchType, playSelectedCodeSelectionType, playSelectedCode, parent).apply {
 
                     this.itemView.league_odd_list.apply {
                         this.layoutManager =
@@ -91,7 +88,7 @@ class LeagueAdapter(private val matchType: MatchType) :
                             DividerItemDecorator(
                                 ContextCompat.getDrawable(
                                     context,
-                                    R.drawable.divider_gray
+                                    R.drawable.divider_color_white8
                                 )
                             )
                         )
@@ -141,11 +138,11 @@ class LeagueAdapter(private val matchType: MatchType) :
         }
     }
 
-    class ItemViewHolder private constructor(matchType: MatchType, itemView: View) :
+    class ItemViewHolder private constructor(matchType: MatchType, playSelectedCodeSelectionType: Int?, playSelectedCode: String?, itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
         private val leagueOddAdapter by lazy {
-            LeagueOddAdapter(matchType)
+            LeagueOddAdapter(matchType, playSelectedCodeSelectionType, playSelectedCode)
         }
 
         fun bind(
@@ -221,11 +218,11 @@ class LeagueAdapter(private val matchType: MatchType) :
         }
 
         companion object {
-            fun from(matchType: MatchType, parent: ViewGroup): ItemViewHolder {
+            fun from(matchType: MatchType, playSelectedCodeSelectionType:Int?, playSelectedCode: String?, parent: ViewGroup): ItemViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater.inflate(R.layout.itemview_league_v4, parent, false)
 
-                return ItemViewHolder(matchType, view)
+                return ItemViewHolder(matchType, playSelectedCodeSelectionType, playSelectedCode, view)
             }
         }
     }

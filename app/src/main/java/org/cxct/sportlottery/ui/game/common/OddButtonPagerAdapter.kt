@@ -15,6 +15,7 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
@@ -30,7 +31,8 @@ class OddButtonPagerAdapter(
     private val matchInfo: MatchInfo?,
     private val oddsSort: String?,
     private var playCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
-    private var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? //遊戲名稱顯示用playCateNameMap，下注顯示用betPlayCateNameMap
+    private var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?, //遊戲名稱顯示用playCateNameMap，下注顯示用betPlayCateNameMap
+    private val getPlaySelectedCodeSelectionType: Int?
 ) :
     RecyclerView.Adapter<OddButtonPagerViewHolder>() {
     var odds: Map<String, List<Odd?>?> = mapOf()
@@ -44,15 +46,26 @@ class OddButtonPagerAdapter(
                     .plus(field.filterValues { !it.isNullOrEmpty() }
                         .filter { it.value?.getOrNull(0) == null }).map { it.key }.run {
                         val gameListFilter: MutableList<String>
-                        if (this.size > sizeCount(matchInfo?.gameType)) {
-                            gameListFilter = this.take(sizeCount(matchInfo?.gameType)) as MutableList<String>
-                        } else {
-                            val maxCount = if(sizeCount(matchInfo?.gameType) < oddsSortCount) sizeCount(matchInfo?.gameType) else oddsSortCount
-                            val count = if (sizeCount(matchInfo?.gameType) > this.size) maxCount - this.size else 0
 
-                            gameListFilter = this.take(this.size + 1).toMutableList()
-                            for (i in 1..count) {
-                                gameListFilter.add("EmptyData${i}")
+                        when{
+                            this.isNullOrEmpty() ->{
+                                gameListFilter = mutableListOf()
+                                gameListFilter.add("EmptyData1")
+                            }
+                            getPlaySelectedCodeSelectionType == SelectionType.SELECTABLE.code -> {
+                                gameListFilter = this.take(this.size + 1) as MutableList<String>
+                            }
+                            this.size > sizeCount(matchInfo?.gameType) -> {
+                                gameListFilter = this.take(sizeCount(matchInfo?.gameType)) as MutableList<String>
+                            }
+                            else -> {
+                                val maxCount = if(sizeCount(matchInfo?.gameType) < oddsSortCount) sizeCount(matchInfo?.gameType) else oddsSortCount
+                                val count = if (sizeCount(matchInfo?.gameType) > this.size) maxCount - this.size else 0
+
+                                gameListFilter = this.take(this.size + 1).toMutableList()
+                                for (i in 1..count) {
+                                    gameListFilter.add("EmptyData${i}")
+                                }
                             }
                         }
                         gameListFilter
@@ -269,7 +282,7 @@ class OddButtonPagerAdapter(
             oddsIndex
         }.thenBy { it })
 
-        return oddsMap
+        return if(oddsSort.isNullOrEmpty()) this else oddsMap
     }
 
     //SINGLE_OU、SINGLE_BTS兩種玩法要特殊處理，後端API沒給翻譯

@@ -60,7 +60,7 @@ class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(D
         when (holder) {
             is ItemViewHolder -> {
                 val data = getItem(position) as ParlayDataItem.Item
-                holder.bind(data.matchOdd, oddsType, gameType)
+                data.matchOdd.oddsType?.let { holder.bind(data.matchOdd, it, gameType) }
             }
 
             is NoDataViewHolder -> {
@@ -81,7 +81,7 @@ class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(D
 
         private val roundAdapter by lazy { RoundAdapter() }
 
-        fun bind(matchOdd: MatchOdd, oddsType: OddsType, gameType: String) {
+        fun bind(matchOdd: MatchOdd, oddsType: String, gameType: String) {
 
             binding.gameType = gameType
             binding.matchOdd = matchOdd
@@ -94,7 +94,7 @@ class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(D
                     playName,
                     spread,
                     TextUtil.formatForOdd(odds),
-                    oddsType.code
+                    oddsType
                 )
 
                 when (gameType) {

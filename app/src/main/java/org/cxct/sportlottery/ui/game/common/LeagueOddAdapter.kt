@@ -35,7 +35,7 @@ val PAYLOAD_SCORE_CHANGE = "payload_score_change"
 val PAYLOAD_CLOCK_CHANGE = "payload_clock_change"
 val PAYLOAD_ODDS_CHANGE = "payload_odds_change"
 
-class LeagueOddAdapter(private val matchType: MatchType) :
+class LeagueOddAdapter(private val matchType: MatchType, private val playSelectedCodeSelectionType: Int? ,private val playSelectedCode : String?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var data = listOf<MatchOdd>()
@@ -95,7 +95,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     leagueOddListener,
                     isTimerEnable,
                     oddsType,
-                    matchInfoList
+                    matchInfoList,
+                    playSelectedCodeSelectionType,
+                    playSelectedCode
                 )
             }
         }
@@ -122,7 +124,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             leagueOddListener: LeagueOddListener?,
             isTimerEnable: Boolean,
             oddsType: OddsType,
-            matchInfoList: List<MatchInfo>
+            matchInfoList: List<MatchInfo>,
+            playSelectedCodeSelectionType: Int?,
+            playSelectedCode: String?
         ) {
             setUpVisibility(item, matchType)
 
@@ -131,7 +135,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
             setupMatchTime(item, matchType, isTimerEnable, isTimerPause, leagueOddListener)
 
-            setupOddsButton(item, oddsType, leagueOddListener)
+            setupOddsButton(item, oddsType, leagueOddListener, playSelectedCodeSelectionType, playSelectedCode)
 
             setupQuickCategory(item, oddsType, leagueOddListener)
         }
@@ -634,7 +638,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         private fun setupOddsButton(
             item: MatchOdd,
             oddsType: OddsType,
-            leagueOddListener: LeagueOddListener?
+            leagueOddListener: LeagueOddListener?,
+            playSelectedCodeSelectionType: Int?,
+            playSelectedCode: String?,
         ) {
 
             itemView.league_odd_btn_pager_main.apply {
@@ -643,7 +649,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         item.matchInfo,
                         item.oddsSort,
                         item.playCateNameMap,
-                        item.betPlayCateNameMap
+                        item.betPlayCateNameMap,
+                        playSelectedCodeSelectionType
                     ).apply {
 
                         this.odds = item.oddsMap ?: mutableMapOf()
@@ -685,10 +692,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
             itemView.league_odd_btn_indicator_main.apply {
 
-                visibility = if (item.oddsMap?.size ?: 0 > 2) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
+                visibility = when {
+                    playSelectedCode == "COMBO" && item.oddsMap?.size ?: 0 > 1 -> View.VISIBLE //玩法特殊處理
+                    item.oddsMap?.size ?: 0 > 2 -> View.VISIBLE
+                    else -> View.GONE
                 }
 
                 setupWithViewPager2(itemView.league_odd_btn_pager_main)
@@ -726,6 +733,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 setOnClickListener {
                     leagueOddListener?.onClickQuickCateClose()
                 }
+            }
+
+            itemView.scroll_view_rg.visibility = if (item.quickPlayCateList.isNullOrEmpty()) {
+                View.GONE
+            } else {
+                View.VISIBLE
             }
 
             itemView.league_odd_quick_cate_tabs.apply {
@@ -900,9 +913,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 this.adapter =
                     OddButtonPagerAdapter(
                         item.matchInfo,
-                        item.oddsSort,
+                        null,//快捷玩法給的oddsSort是Tab的
                         item.quickPlayCateNameMap,
-                        item.betPlayCateNameMap
+                        item.betPlayCateNameMap,
+                        null
                     ).apply {
 
                         this.odds = item.quickPlayCateList?.find { it.isSelected }?.quickOdds
