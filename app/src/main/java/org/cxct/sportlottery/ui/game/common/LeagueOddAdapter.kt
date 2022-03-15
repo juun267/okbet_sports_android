@@ -693,6 +693,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private val playSelecte
             itemView.league_odd_btn_indicator_main.apply {
 
                 visibility = when {
+                    playSelectedCode == "COMBO" && item.oddsMap?.size ?: 0 > 1 -> View.VISIBLE //玩法特殊處理
                     item.oddsMap?.size ?: 0 > 2 -> View.VISIBLE
                     else -> View.GONE
                 }
