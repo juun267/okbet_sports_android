@@ -68,6 +68,12 @@
     <string name="e_mail">Email</string>
     <string name="hint_e_mail">Vui lòng nhập email</string>
     <string name="error_e_mail">Lỗi định dạng email không đúng</string>
+    <string name="postal_code">Mã bưu điện</string>
+    <string name="hint_postal_code">(Vui lòng nhập mã ZIP)</string>
+    <string name="province">Tỉnh</string>
+    <string name="hint_province">(Vui lòng nhập tỉnh)</string>
+    <string name="city">Thành phố</string>
+    <string name="hint_city">(Vui lòng nhập thành phố)</string>
     <string name="we_chat">Wechat</string>
     <string name="hint_we_chat_number">Vui lòng nhập ID WeChat</string>
     <string name="error_we_chat_number">lỗi định dạng Wechat ID không hợp lệ</string>

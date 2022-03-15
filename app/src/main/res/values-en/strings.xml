@@ -68,6 +68,12 @@
     <string name="e_mail">Email</string>
     <string name="hint_e_mail">Email</string>
     <string name="error_e_mail">Email formatted incorrectly</string>
+    <string name="postal_code">Postal code</string>
+    <string name="hint_postal_code">(Please enter ZIP code)</string>
+    <string name="province">Province</string>
+    <string name="hint_province">(Please enter province)</string>
+    <string name="city">City</string>
+    <string name="hint_city">(Please enter city)</string>
     <string name="we_chat">Wechat</string>
     <string name="identity">Verification Identity</string>
     <string name="hint_we_chat_number">Wechat ID</string>
