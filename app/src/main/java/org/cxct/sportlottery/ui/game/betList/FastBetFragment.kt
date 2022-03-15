@@ -22,13 +22,6 @@ import kotlinx.android.synthetic.main.button_bet.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item.*
 import kotlinx.android.synthetic.main.content_bet_info_item.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail.*
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.*
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.button_bet
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.button_fast_bet_setting
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.kv_keyboard
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.tv_add_to_bet_info
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.tv_current_money
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.tv_odd_content_changed
 import kotlinx.android.synthetic.main.fragment_bottom_sheet_betinfo_item.*
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
@@ -567,14 +560,14 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun setupCurrentMoney(money: Double) {
-        tv_current_money.text = "${TextUtil.formatMoney(money)} ${sConfigData?.systemCurrency}"
+        //tv_current_money.text = "${TextUtil.formatMoney(money)} ${sConfigData?.systemCurrency}"
 
     }
 
 
     private fun setupCurrentMoneyView(isLogin: Boolean) {
-        ivBetMoney.visibility = if (isLogin) View.VISIBLE else View.GONE
-        tv_current_money.visibility = if (isLogin) View.VISIBLE else View.GONE
+        //ivBetMoney.visibility = if (isLogin) View.VISIBLE else View.GONE
+        //tv_current_money.visibility = if (isLogin) View.VISIBLE else View.GONE
     }
 
 
