@@ -20,6 +20,9 @@ data class RegisterRequest(
     var facebook: String? = null,
     var whatsapp: String? = null,
     var telegram: String? = null,
+    var province: String? = null,
+    var city: String? = null,
+    var zipCode: String? = null,
     var safeQuestion: String? = null,
     var loginEnvInfo:String? = null
 )
