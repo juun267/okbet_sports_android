@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.favorite
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -89,7 +88,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     }
 
     private val leagueAdapter by lazy {
-        LeagueAdapter(MatchType.MY_EVENT).apply {
+        LeagueAdapter(MatchType.MY_EVENT, getPlaySelectedCodeSelectionType()).apply {
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
             leagueListener = LeagueListener ({
@@ -609,6 +608,13 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
      */
     private fun getPlaySelectedCode(): String? {
         return playCategoryAdapter.data.find { it.isSelected }?.code
+    }
+
+    /**
+     * 取得當前篩選玩法是否可下拉
+     * */
+    private fun getPlaySelectedCodeSelectionType(): Int? {
+        return playCategoryAdapter.data.find { it.isSelected }?.selectionType
     }
 
     private fun getPlayCateMenuCode(): String? {

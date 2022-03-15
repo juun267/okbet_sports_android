@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.game.league
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -85,7 +84,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     }
 
     private val leagueAdapter by lazy {
-        LeagueAdapter(args.matchType).apply {
+        LeagueAdapter(args.matchType, getPlaySelectedCodeSelectionType()).apply {
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
             leagueListener = LeagueListener({
@@ -622,6 +621,13 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
     private fun getPlaySelectedCode(): String? {
         return playCategoryAdapter.data.find { it.isSelected }?.code
+    }
+
+    /**
+     * 取得當前篩選玩法是否可下拉
+     * */
+    private fun getPlaySelectedCodeSelectionType(): Int? {
+        return playCategoryAdapter.data.find { it.isSelected }?.selectionType
     }
 
     private fun getPlayCateMenuCode(): String? {

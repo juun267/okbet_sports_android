@@ -153,7 +153,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     private val leagueAdapter by lazy {
-        LeagueAdapter(args.matchType).apply {
+        LeagueAdapter(args.matchType, getPlaySelectedCodeSelectionType()).apply {
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
             leagueListener = LeagueListener({
@@ -690,6 +690,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     if (leagueOdds.isNotEmpty()) {
                         game_list.apply {
                             adapter = leagueAdapter.apply {
+                                this.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
                                 updateType = null
                                 data = leagueOdds.onEach { leagueOdd ->
                                     leagueOdd.gameType = gameType
@@ -1174,6 +1175,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 when (game_list.adapter) {
                     is LeagueAdapter -> {
                         val leagueOdds = leagueAdapter.data
+
+                        leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
 
                         leagueOdds.forEachIndexed { index, leagueOdd ->
                             if (leagueOdd.matchOdds.any { matchOdd ->
@@ -1697,6 +1700,13 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     private fun getPlaySelectedCode(): String? {
         return playCategoryAdapter.data.find { it.isSelected }?.code
+    }
+
+    /**
+     * 取得當前篩選玩法是否可下拉
+     * */
+    private fun getPlaySelectedCodeSelectionType(): Int? {
+        return playCategoryAdapter.data.find { it.isSelected }?.selectionType
     }
 
     private fun getPlayCateMenuCode(): String? {
