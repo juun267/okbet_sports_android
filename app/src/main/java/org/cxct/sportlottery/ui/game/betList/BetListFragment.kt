@@ -48,6 +48,7 @@ import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.TimeUtil.isTimeAtStart
 
 /**
  * A simple [Fragment] subclass.
@@ -504,7 +505,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         showOddChangeWarn = false
                         btn_bet.isOddsChanged = false
                         showHideWarn()
-                        if(result.receipt?.betConfirmTime != null){
+                        if(isTimeAtStart(result.receipt?.betConfirmTime)){
                             val spannableStringBuilder = SpannableStringBuilder()
                             var text1 = SpannableString(getString(R.string.text_bet_not_success))
                             var text2= SpannableString(getString(R.string.text_bet_not_success2))
