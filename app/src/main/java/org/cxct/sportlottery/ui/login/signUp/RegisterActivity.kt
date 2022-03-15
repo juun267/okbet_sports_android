@@ -207,8 +207,14 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun setupAddress() {
-        binding.etAddress.visibility =
-            if (sConfigData?.enableAddress == FLAG_OPEN) View.VISIBLE else View.GONE
+        (if (sConfigData?.enableAddress == FLAG_OPEN) View.VISIBLE else View.GONE).let { visible ->
+            with(binding) {
+                etPostal.visibility = visible
+                etProvince.visibility = visible
+                etCity.visibility = visible
+                etAddress.visibility = visible
+            }
+        }
     }
 
     private fun setupWeChat() {
