@@ -15,6 +15,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomSheetFragment
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.MetricsUtil
 
 
 /**
@@ -71,7 +72,8 @@ class StatisticsDialog: BaseBottomSheetFragment<StatisticsViewModel>(StatisticsV
             it.setBackgroundResource(android.R.color.transparent)
             it.layoutParams?.height = ViewGroup.LayoutParams.MATCH_PARENT
             BottomSheetBehavior.from<View>(it).apply {
-                peekHeight = resources.displayMetrics.heightPixels - 50.dp
+                //扣除tool bar及status bar的高度
+                peekHeight = resources.displayMetrics.heightPixels - 50.dp - MetricsUtil.getStatusBarHeight()
             }
         }
 
