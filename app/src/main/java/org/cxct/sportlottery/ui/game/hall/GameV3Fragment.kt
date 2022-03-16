@@ -1221,6 +1221,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                         val leagueOdds = leagueAdapter.data
 
+                        if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code){
+                            leagueOdds.filterMenuPlayCate()
+                        }
+
                         leagueOdds.forEachIndexed { index, leagueOdd ->
                             if (leagueOdd.matchOdds.any { matchOdd ->
                                     SocketUpdateUtil.updateMatchOdds(
@@ -1415,6 +1419,25 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
         return this
     }
+
+    /**
+     * 邏輯和 dev2 不同，這裡要再過濾一次玩法資料
+     * */
+
+    private fun MutableList<LeagueOdd>.filterMenuPlayCate() {
+        val playSelected = playCategoryAdapter.data.find { it.isSelected }
+        val playCateMenuCode = playSelected?.playCateList?.find { it.isSelected }?.code
+        when (playSelected?.selectionType) {
+            SelectionType.SELECTABLE.code -> {
+                this.forEach { LeagueOdd ->
+                    LeagueOdd.matchOdds.forEach { MatchOdd ->
+                        MatchOdd.oddsMap?.entries?.retainAll { oddMap -> oddMap.key == playCateMenuCode }
+                    }
+                }
+            }
+        }
+    }
+
 
     /**
      * 只有有下拉篩選玩法的才需要過濾odds
@@ -1756,6 +1779,13 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 )
             }
         }
+    }
+
+    /**
+     * 取得當前篩選玩法是否可下拉
+     * */
+    private fun getPlaySelectedCodeSelectionType(): Int? {
+        return playCategoryAdapter.data.find { it.isSelected }?.selectionType
     }
 
     private fun getPlaySelectedCode(): String? {

@@ -2,20 +2,19 @@ package org.cxct.sportlottery.ui.game
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.*
-import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeEnName
 import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeMenuIcon
+import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeString
+import org.cxct.sportlottery.network.common.GameType.Companion.getSpecificLanguageString
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
@@ -552,7 +551,7 @@ class GameViewModel(
                                 SportMenu(
                                     gameType,
                                     row.name,
-                                    getGameTypeEnName(gameType),
+                                    getSpecificLanguageString(androidContext, gameType.key, LanguageManager.Language.EN.key),
                                     getGameTypeMenuIcon(gameType)
                                 )
                             }

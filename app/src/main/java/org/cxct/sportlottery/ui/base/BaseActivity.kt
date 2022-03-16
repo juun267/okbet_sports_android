@@ -30,6 +30,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.reflect.KClass
 import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.util.commonCheckDialog
 
 abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActivity() {
 
@@ -215,44 +216,22 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     fun showPromptDialog(
         title: String?,
-        errorMessage: Spanned,
+        errorMessageSpan: Spanned,
         buttonText: String?,
         positiveClickListener: () -> Unit?,
         isError: Boolean,
         isShowDivider: Boolean? = false
     ) {
-        safelyUpdateLayout(Runnable {
-            try {
-                //防止跳出多個 error dialog
-                if (mPromptDialog?.isShowing == true)
-                    mPromptDialog?.dismiss()
-                if (mTokenPromptDialog?.isShowing == true) {
-                    mPromptDialog?.dismiss()
-                    return@Runnable
-                }
-
-                mPromptDialog = CustomAlertDialog(this@BaseActivity).apply {
-                    if (isError) {
-                        setTextColor(R.color.colorRed)
-                    }
-                    setShowDivider(isShowDivider)
-                    setTitle(title)
-                    setMessage(errorMessage)
-                    setPositiveButtonText(buttonText ?: this@BaseActivity.getString(R.string.btn_determine))
-                    setNegativeButtonText(null)
-                    setPositiveClickListener(View.OnClickListener {
-                        positiveClickListener()
-                        mPromptDialog?.dismiss()
-                    })
-
-                    setCanceledOnTouchOutside(false)
-                    isCancelable = false //不能用系統 BACK 按鈕關閉 dialog
-                }
-                mPromptDialog?.show(supportFragmentManager, null)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        })
+        commonCheckDialog(
+            context = this,
+            fm = supportFragmentManager,
+            isError = isError,
+            isShowDivider = isShowDivider,
+            title = title,
+            errorMessageSpan = errorMessageSpan,
+            buttonText = buttonText,
+            positiveClickListener = positiveClickListener
+        )
     }
 
     fun showPromptDialog(
@@ -263,38 +242,16 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         isError: Boolean,
         isShowDivider: Boolean? = false
     ) {
-        safelyUpdateLayout(Runnable {
-            try {
-                //防止跳出多個 error dialog
-                if (mPromptDialog?.isShowing == true)
-                    mPromptDialog?.dismiss()
-                if (mTokenPromptDialog?.isShowing == true) {
-                    mPromptDialog?.dismiss()
-                    return@Runnable
-                }
-
-                mPromptDialog = CustomAlertDialog(this@BaseActivity).apply {
-                    if (isError) {
-                        setTextColor(R.color.colorRed)
-                    }
-                    setShowDivider(isShowDivider)
-                    setTitle(title)
-                    setMessage(errorMessage)
-                    setPositiveButtonText(buttonText ?: this@BaseActivity.getString(R.string.btn_determine))
-                    setNegativeButtonText(null)
-                    setPositiveClickListener(View.OnClickListener {
-                        positiveClickListener()
-                        mPromptDialog?.dismiss()
-                    })
-
-                    setCanceledOnTouchOutside(false)
-                    isCancelable = false //不能用系統 BACK 按鈕關閉 dialog
-                }
-                mPromptDialog?.show(supportFragmentManager, null)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        })
+        commonCheckDialog(
+            context = this,
+            fm = supportFragmentManager,
+            isError = isError,
+            isShowDivider = isShowDivider,
+            title = title,
+            errorMessage = errorMessage,
+            buttonText = buttonText,
+            positiveClickListener = positiveClickListener
+        )
     }
 
     fun showBottomSheetDialog(
