@@ -71,10 +71,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private val gameTypeAdapter by lazy {
         GameTypeAdapter().apply {
             gameTypeListener = GameTypeListener {
+                loading()
                 unSubscribeChannelHallAll()
                 viewModel.switchSportType(args.matchType, it)
-                // TODO 切換列表(重載)
-                loading()
                 notifyDataSetChanged()
             }
 
@@ -269,6 +268,16 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             MatchType.OTHER -> viewModel.specialEntrance.value?.couponName
             else -> ""
         }
+    }
+
+    override fun loading() {
+        super.loading()
+        stopTimer()
+    }
+
+    override fun hideLoading() {
+        super.hideLoading()
+        startTimer()
     }
 
     private val onTabSelectedListener = object : TabLayout.OnTabSelectedListener {
@@ -532,22 +541,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     override fun onStart() {
         super.onStart()
-        startTimer()
-        if (args.matchType == MatchType.OTHER) {
-            viewModel.switchSpecialMatchType(viewModel.specialEntrance.value?.couponCode!!)
-        } else {
-            viewModel.getGameHallList(
-                matchType = args.matchType,
-                isReloadDate = true,
-                isReloadPlayCate = true,
-                isLastSportType = true
-            )
 
-            viewModel.getMatchCategoryQuery(args.matchType)
-
-            subscribeSportChannelHall(args.matchType.name)
-        }
-        loading()
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -692,7 +686,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
         viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { oddsListResult ->
-                hideLoading()
 
                 if (oddsListResult.success) {
                     mLeagueOddList.clear()
@@ -758,6 +751,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                 }
                 refreshToolBarUI(this.view)
+                hideLoading()
             }
         }
 
@@ -779,7 +773,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
         viewModel.oddsListGameHallIncrementResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { leagueListIncrementResult ->
-                hideLoading()
                 val leagueListIncrement = leagueListIncrementResult.oddsListResult
 
                 leagueListIncrementResult.leagueIdList?.forEach { leagueId ->
@@ -823,12 +816,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         }
                     }
                 }
+                hideLoading()
             }
         }
 
         viewModel.leagueListResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { leagueListResult ->
-                hideLoading()
                 if (game_tab_odd_v4.visibility == View.VISIBLE && game_tabs.selectedTabPosition != 0)
                     return@observe
 
@@ -871,12 +864,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         }
                     }
                 }
+                hideLoading()
             }
         }
 
         viewModel.outrightLeagueListResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { outrightSeasonListResult ->
-                hideLoading()
 
                 if (game_tab_odd_v4.visibility == View.VISIBLE && game_tabs.selectedTabPosition != 1)
                     return@observe
@@ -890,11 +883,11 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         }
                     }
                 }
+                hideLoading()
             }
         }
 
         viewModel.epsListResult.observe(this.viewLifecycleOwner) {
-            hideLoading()
             it.getContentIfNotHandled()?.let { epsListResult ->
 
                 if (game_tab_odd_v4.visibility == View.VISIBLE && game_tabs.selectedTabPosition != 2)
@@ -935,22 +928,19 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                 }
             }
+            hideLoading()
         }
 
         viewModel.countryListSearchResult.observe(this.viewLifecycleOwner) {
-            hideLoading()
             countryAdapter.data = it
 //            if (args.matchType == MatchType.PARLAY)
 //                view?.game_toolbar_match_type?.text = it.firstOrNull()?.name
-        }
-
-        viewModel.outrightCountryListSearchResult.observe(this.viewLifecycleOwner) {
             hideLoading()
-            outrightCountryAdapter.data = it
         }
 
         viewModel.outrightCountryListSearchResult.observe(this.viewLifecycleOwner) {
             outrightCountryAdapter.data = it
+            hideLoading()
         }
 
 
@@ -968,8 +958,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 MatchType.EPS -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.eps?.num ?: 0 > 0
                 else -> false
             }
-
-            hideLoading()
             when {
                 //當前MatchType有玩法數量，只是目前的球種沒有
                 it && hasGame -> {
@@ -998,17 +986,20 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     //game_no_record_bg.isVisible = false
                 }
             }
+
+            hideLoading()
         }
 
         //當前玩法無賽事
-        viewModel.isNoEvents.observe(this.viewLifecycleOwner ,{
-            hideLoading()
+        viewModel.isNoEvents.observe(this.viewLifecycleOwner) {
             sport_type_list.isVisible = !it
             game_toolbar_sport_type.isVisible = !it
             game_no_record.isVisible = it
             //game_no_record_bg.isVisible = it
-            game_play_category.isVisible = (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START || args.matchType == MatchType.OTHER) && !it
-        })
+            game_play_category.isVisible =
+                (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START || args.matchType == MatchType.OTHER) && !it
+            hideLoading()
+        }
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner) {
             it.peekContent().let {
@@ -1157,7 +1148,21 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         receiver.serviceConnectStatus.observe(this.viewLifecycleOwner) {
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
-                    startTimer()
+                    loading()
+                    if (args.matchType == MatchType.OTHER) {
+                        viewModel.switchSpecialMatchType(viewModel.specialEntrance.value?.couponCode!!)
+                    } else {
+                        viewModel.getGameHallList(
+                            matchType = args.matchType,
+                            isReloadDate = true,
+                            isReloadPlayCate = true,
+                            isLastSportType = true
+                        )
+
+                        viewModel.getMatchCategoryQuery(args.matchType)
+
+                        subscribeSportChannelHall(args.matchType.name)
+                    }
                 }
                 else {
                     stopTimer()
@@ -1664,11 +1669,11 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.name
             ),
             StatusSheetAdapter.ItemCheckedListener { _, playCate ->
+                loading()
                 unSubscribeChannelSwitchPlayCate()
                 viewModel.switchPlayCategory(args.matchType, play, playCate.code)
                 upDateSelectPlay(play)
                 (activity as BaseActivity<*>).bottomSheet.dismiss()
-                loading()
             })
     }
 

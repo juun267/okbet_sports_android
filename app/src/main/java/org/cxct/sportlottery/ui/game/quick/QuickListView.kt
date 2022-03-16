@@ -54,7 +54,7 @@ class QuickListView @JvmOverloads constructor(context: Context, attrs: Attribute
         when(view?.id) {
             league_odd_quick_cate_close.id -> {
                 mCloseTag = true
-                league_odd_quick_cate_close.visibility = View.INVISIBLE
+                league_odd_quick_cate_close.visibility = View.GONE
                 invisibleOddButtons()
                 clearTabState()
                 mLeagueOddListener?.onClickQuickCateClose()
