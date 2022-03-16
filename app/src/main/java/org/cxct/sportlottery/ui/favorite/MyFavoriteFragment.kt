@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.favorite
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -609,6 +608,13 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
      */
     private fun getPlaySelectedCode(): String? {
         return playCategoryAdapter.data.find { it.isSelected }?.code
+    }
+
+    /**
+     * 取得當前篩選玩法是否可下拉
+     * */
+    private fun getPlaySelectedCodeSelectionType(): Int? {
+        return playCategoryAdapter.data.find { it.isSelected }?.selectionType
     }
 
     private fun getPlayCateMenuCode(): String? {
