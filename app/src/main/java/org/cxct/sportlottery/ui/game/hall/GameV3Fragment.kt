@@ -512,7 +512,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         view.game_list.apply {
             this.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             this.adapter = leagueAdapter
-            this.itemAnimator = null
+            //this.itemAnimator = null
             //addItemDecoration(SpaceItemDecoration(context, R.dimen.item_spacing_league))
             setHasFixedSize(true)
         }
@@ -523,7 +523,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         try {
             initObserve()
             initSocketObserver()
-            initBottomNavigation()
+            //initBottomNavigation()
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -732,7 +732,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             onlyRefreshSportMenu = true
                         )
                     }
-                    game_list.itemAnimator = null
+                    //game_list.itemAnimator = null
 
                     mLeagueOddList.forEach { leagueOdd ->
                         unSubscribeChannelHall(leagueOdd)
@@ -1236,7 +1236,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 //leagueAdapter.updateBySocket(index)
                                 leagueOddMap[leagueOdd.league.id] = leagueOdd
                                 Log.d("Hewie7", "store ${leagueOdd.league.id} oddsmap => ${leagueOdd.league.name}")
-                                leagueAdapter.updateLeague(index, leagueOdd)
+
+                                // Safety update list
+                                updateGameList(index, leagueOdd)
                             }
                         }
                     }
@@ -1394,6 +1396,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                 }
             }
+        }
+    }
+
+    private fun updateGameList(index: Int, leagueOdd: LeagueOdd) {
+        if(game_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !game_list.isComputingLayout) {
+            leagueAdapter.updateLeague(index, leagueOdd)
         }
     }
 
