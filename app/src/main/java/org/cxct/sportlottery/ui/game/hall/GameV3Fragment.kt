@@ -73,6 +73,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             gameTypeListener = GameTypeListener {
                 loading()
                 unSubscribeChannelHallAll()
+                viewModel.getSportMenu(args.matchType, onlyRefreshSportMenu = true)
+                viewModel.getAllPlayCategory(args.matchType)
                 viewModel.switchSportType(args.matchType, it)
                 notifyDataSetChanged()
             }
@@ -367,15 +369,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             }
 
             setOnClickListener {
-                GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
-                    ?.let {
-                        val action =
-                            GameV3FragmentDirections.actionGameV3FragmentToLeagueFilterFragment(
-                                it,
-                                args.matchType
-                            )
-                        findNavController().navigate(action)
-                    }
+                GameType.getGameType(viewModel.getSportSelectedCode(args.matchType))?.let {
+                    val action = GameV3FragmentDirections.actionGameV3FragmentToLeagueFilterFragment(it, args.matchType)
+                    findNavController().navigate(action)
+                }
             }
         }
 
@@ -1192,9 +1189,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             }
                         }
                         //如果當前球類沒有任何賽事，改為選取第一個有賽事的球種
-                        if (leagueAdapter.data.size == 0) {
-                            viewModel.getSportMenu(args.matchType, switchFirstTag = true)
-                        }
+                        // 此段邏輯待修正
+//                        if (leagueAdapter.data.size == 0) {
+//                            viewModel.getSportMenu(args.matchType, switchFirstTag = true)
+//                        }
                     }
                 }
             }
@@ -1999,8 +1997,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 if (!isUpdatingLeague) {
                     viewModel.switchSportType(
                         args.matchType,
-                        GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
-                            ?: GameType.FT.key
+                        GameType.getGameType(viewModel.getSportSelectedCode(args.matchType))?.key ?: GameType.FT.key
                     )
                 }
             }

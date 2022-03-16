@@ -1275,7 +1275,6 @@ class GameViewModel(
                 }
 
                 _matchCategoryQueryResult.value = Event(result)
-
             }
         }
     }
@@ -2062,7 +2061,7 @@ class GameViewModel(
     ): SportMenuData {
         this.menu.inPlay.items.map { sport ->
             sport.isSelected = when {
-                ((matchType == MatchType.IN_PLAY) && gameTypeCode != null) -> {
+                ((matchType == MatchType.IN_PLAY) && gameTypeCode != null && sport.num > 0) -> {
                     sport.code == gameTypeCode
                 }
                 else -> {
@@ -2072,7 +2071,7 @@ class GameViewModel(
         }
         this.menu.today.items.map { sport ->
             sport.isSelected = when {
-                ((matchType == MatchType.TODAY) && gameTypeCode != null) -> {
+                ((matchType == MatchType.TODAY) && gameTypeCode != null && sport.num > 0) -> {
                     sport.code == gameTypeCode
                 }
                 else -> {
@@ -2082,7 +2081,7 @@ class GameViewModel(
         }
         this.menu.early.items.map { sport ->
             sport.isSelected = when {
-                ((matchType == MatchType.EARLY) && gameTypeCode != null) -> {
+                ((matchType == MatchType.EARLY) && gameTypeCode != null && sport.num > 0) -> {
                     sport.code == gameTypeCode
                 }
                 else -> {
@@ -2092,7 +2091,7 @@ class GameViewModel(
         }
         this.menu.parlay.items.map { sport ->
             sport.isSelected = when {
-                ((matchType == MatchType.PARLAY) && gameTypeCode != null) -> {
+                ((matchType == MatchType.PARLAY) && gameTypeCode != null && sport.num > 0) -> {
                     sport.code == gameTypeCode
                 }
                 else -> {
@@ -2102,7 +2101,7 @@ class GameViewModel(
         }
         this.menu.outright.items.map { sport ->
             sport.isSelected = when {
-                ((matchType == MatchType.OUTRIGHT) && gameTypeCode != null) -> {
+                ((matchType == MatchType.OUTRIGHT) && gameTypeCode != null && sport.num > 0) -> {
                     sport.code == gameTypeCode
                 }
                 else -> {
@@ -2112,7 +2111,7 @@ class GameViewModel(
         }
         this.atStart.items.map { sport ->
             sport.isSelected = when {
-                ((matchType == MatchType.AT_START) && gameTypeCode != null) -> {
+                ((matchType == MatchType.AT_START) && gameTypeCode != null && sport.num > 0) -> {
                     sport.code == gameTypeCode
                 }
                 else -> {
@@ -2122,7 +2121,7 @@ class GameViewModel(
         }
         this.menu.eps.items.map { sport ->
             sport.isSelected = when {
-                ((matchType == MatchType.EPS) && gameTypeCode != null) -> {
+                ((matchType == MatchType.EPS) && gameTypeCode != null && sport.num > 0) -> {
                     sport.code == gameTypeCode
                 }
                 else -> {
