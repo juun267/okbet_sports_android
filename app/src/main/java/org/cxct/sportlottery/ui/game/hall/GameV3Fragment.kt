@@ -1160,7 +1160,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     startTimer()
                 }
                 else {
-                    startTimer()
+                    stopTimer()
                 }
             }
         }
