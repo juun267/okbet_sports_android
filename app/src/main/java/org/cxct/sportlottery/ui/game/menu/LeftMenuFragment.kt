@@ -312,7 +312,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                         unselectedList.add(
                             MenuItemData(
                                 R.drawable.img_pingpong,
-                                getString(R.string.ping_pong),
+                                getString(R.string.table_tennis),
                                 GameType.TT.key,
                                 0,
                                 it.gameCount,
@@ -354,7 +354,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                         unselectedList.add(
                             MenuItemData(
                                 R.drawable.img_snooker,
-                                getString(R.string.cue_ball),
+                                getString(R.string.snooker),
                                 GameType.CB.key,
                                 0,
                                 it.gameCount,
