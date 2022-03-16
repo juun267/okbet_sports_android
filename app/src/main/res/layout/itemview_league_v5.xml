@@ -58,28 +58,20 @@
         app:layout_constraintTop_toTopOf="@id/league_border"
         tools:ignore="WebViewLayout" />
 
-    <net.cachapa.expandablelayout.ExpandableLayout
-        android:id="@+id/league_expand"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/league_odd_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/league_border"
-        tools:el_expanded="true">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/league_odd_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="false"
-            android:overScrollMode="never"
-            tools:itemCount="1"
-            tools:listitem="@layout/itemview_league_odd_v4" />
-
-    </net.cachapa.expandablelayout.ExpandableLayout>
+        android:nestedScrollingEnabled="false"
+        android:overScrollMode="never"
+        tools:itemCount="1"
+        tools:listitem="@layout/itemview_league_odd_v4"
+        app:layout_constraintTop_toBottomOf="@id/league_border"/>
 
     <View android:id="@+id/SpaceItemDecorationView"
         android:layout_width="match_parent"
         android:layout_height="8dp"
         android:background="@color/colorWhite"
-        app:layout_constraintTop_toBottomOf="@+id/league_expand"/>
+        app:layout_constraintTop_toBottomOf="@+id/league_odd_list" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

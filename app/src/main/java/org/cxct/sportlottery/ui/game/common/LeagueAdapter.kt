@@ -74,23 +74,24 @@ class LeagueAdapter(private val matchType: MatchType) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ItemType.ITEM.ordinal -> {
-                ItemViewHolder.from(matchType, parent).apply {
-
-                    this.itemView.league_odd_list.apply {
-                        this.layoutManager =
-                            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-
-                        addItemDecoration(
-                            DividerItemDecorator(
-                                ContextCompat.getDrawable(
-                                    context,
-                                    R.drawable.divider_color_white8
-                                )
-                            )
-                        )
-                    }
-                    this.itemView.league_odd_list.itemAnimator = null
-                }
+                ItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.itemview_league_v5, parent, false)) //itemview_league_v5
+//                ItemViewHolder.from(matchType, parent).apply {
+//
+//                    this.itemView.league_odd_list.apply {
+//                        this.layoutManager =
+//                            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+//
+//                        addItemDecoration(
+//                            DividerItemDecorator(
+//                                ContextCompat.getDrawable(
+//                                    context,
+//                                    R.drawable.divider_color_white8
+//                                )
+//                            )
+//                        )
+//                    }
+//                    this.itemView.league_odd_list.itemAnimator = null
+//                }
             }
             ItemType.BOTTOM_NAVIGATION.ordinal -> {
                 BottomNavigationViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.home_bottom_navigation, parent, false))
@@ -151,9 +152,7 @@ class LeagueAdapter(private val matchType: MatchType) :
         }
     }
 
-    class ItemViewHolder private constructor(matchType: MatchType, itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
-
+    inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val leagueOddAdapter by lazy {
             LeagueOddAdapter2(matchType)
         }
@@ -163,7 +162,7 @@ class LeagueAdapter(private val matchType: MatchType) :
             matchType: MatchType,
             leagueListener: LeagueListener?,
             leagueOddListener: LeagueOddListener?,
-            oddsType: OddsType
+            oddsType: OddsType,
         ) {
             itemView.league_text.text = item.league.name
 
@@ -174,7 +173,6 @@ class LeagueAdapter(private val matchType: MatchType) :
 
             setupLeagueOddList(item, leagueOddListener, oddsType)
             setupLeagueOddExpand(item, matchType, leagueListener)
-            checkSpaceItemDecoration()
         }
 
         // region update functions
@@ -198,7 +196,8 @@ class LeagueAdapter(private val matchType: MatchType) :
             leagueOddAdapter.update()
         }
         fun updateLeagueExpand(item: LeagueOdd, matchType: MatchType) {
-            itemView.league_expand.setExpanded(item.unfold == FoldState.UNFOLD.code, false)
+            //itemView.league_expand.setExpanded(item.unfold == FoldState.UNFOLD.code, false)
+            //itemView.league_odd_list.visibility = if(item.unfold == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
             updateTimer(matchType, item.gameType)
         }
         // endregion
@@ -209,7 +208,8 @@ class LeagueAdapter(private val matchType: MatchType) :
             oddsType: OddsType
         ) {
             itemView.league_odd_list.apply {
-                league_odd_list.itemAnimator = null
+                //league_odd_list.itemAnimator = null
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 adapter = leagueOddAdapter.apply {
                     setData(item.searchMatchOdds.ifEmpty {
                         item.matchOdds
@@ -219,16 +219,16 @@ class LeagueAdapter(private val matchType: MatchType) :
 
                     this.leagueOddListener = leagueOddListener
                 }
+                addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_color_white8)))
             }
         }
 
-        private fun setupLeagueOddExpand(
-            item: LeagueOdd,
-            matchType: MatchType,
-            leagueListener: LeagueListener?
-        ) {
+        private fun setupLeagueOddExpand(item: LeagueOdd, matchType: MatchType, leagueListener: LeagueListener?) {
 
-            itemView.league_expand.setExpanded(item.unfold == FoldState.UNFOLD.code, false)
+            //itemView.league_expand.setExpanded(item.unfold == FoldState.UNFOLD.code, false)
+            Log.d("Hewie12", "data[adapterPosition].unfold -> ${data[adapterPosition].unfold}")
+            itemView.league_odd_list.visibility = if(data[adapterPosition].unfold == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
+            checkSpaceItemDecoration()
             updateTimer(matchType, item.gameType)
 
 //            itemView.iv_refresh.isVisible = matchType != MatchType.MY_EVENT
@@ -238,16 +238,10 @@ class LeagueAdapter(private val matchType: MatchType) :
             }
 
             itemView.setOnClickListener {
-                item.unfold = if (item.unfold == FoldState.UNFOLD.code) {
-                    FoldState.FOLD.code
-                } else {
-                    FoldState.UNFOLD.code
-                }
-                itemView.league_expand.setExpanded(item.unfold == FoldState.UNFOLD.code, true)
-                itemView.league_expand.setOnExpansionUpdateListener { expansionFraction, state ->
-                    checkSpaceItemDecoration()
-                }
-                updateTimer(matchType, item.gameType)
+                data[adapterPosition].unfold = if (data[adapterPosition].unfold == FoldState.UNFOLD.code) { FoldState.FOLD.code } else { FoldState.UNFOLD.code }
+
+                notifyItemChanged(adapterPosition)
+                //updateTimer(matchType, item.gameType)
 
                 leagueListener?.onClickLeague(item)
             }
@@ -255,23 +249,17 @@ class LeagueAdapter(private val matchType: MatchType) :
 
         private fun updateTimer(matchType: MatchType, gameType: GameType?) {
             leagueOddAdapter.isTimerEnable =
-                itemView.league_expand.isExpanded && (gameType == GameType.FT || gameType == GameType.BK || matchType == MatchType.PARLAY || matchType == MatchType.AT_START || matchType == MatchType.MY_EVENT)
+                itemView.league_odd_list.isShown && (gameType == GameType.FT || gameType == GameType.BK || matchType == MatchType.PARLAY || matchType == MatchType.AT_START || matchType == MatchType.MY_EVENT)
         }
 
         private fun checkSpaceItemDecoration() {
-            when(itemView.league_expand.isExpanded) {
-                true -> itemView.SpaceItemDecorationView.visibility = View.GONE
-                false -> itemView.SpaceItemDecorationView.visibility = View.VISIBLE
+            Log.d("Hewie12", "itemView.league_odd_list.isShown(${itemView.league_odd_list.visibility}) => ${itemView.league_odd_list.isShown}")
+            itemView.SpaceItemDecorationView.visibility = when(itemView.league_odd_list.visibility) {
+                View.VISIBLE -> View.GONE
+                View.GONE -> View.VISIBLE
+                else -> View.VISIBLE
             }
-        }
-
-        companion object {
-            fun from(matchType: MatchType, parent: ViewGroup): ItemViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater.inflate(R.layout.itemview_league_v5, parent, false)
-
-                return ItemViewHolder(matchType, view)
-            }
+            //itemView.SpaceItemDecorationView.visibility = if(itemView.league_odd_list.isShown) View.GONE else View.VISIBLE
         }
     }
 
