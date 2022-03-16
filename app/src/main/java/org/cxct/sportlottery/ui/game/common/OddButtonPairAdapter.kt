@@ -16,7 +16,7 @@ class OddButtonPairAdapter(private val matchInfo: MatchInfo?) :
 
     var odds: List<Odd?> = listOf()
         set(value) {
-            field = value
+            field = value.sortedBy { it?.marketSort }
 
             data = field.withIndex().groupBy {
                 it.index / 2
