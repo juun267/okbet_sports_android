@@ -126,9 +126,6 @@ class QuickListView @JvmOverloads constructor(context: Context, attrs: Attribute
             league_odd_quick_cate_tabs?.addView(rb.apply {
                 text = it.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: it.name
                 id = it.hashCode()
-                setTextColor(ContextCompat.getColorStateList(context, R.color.selector_tab_text_color))
-                setButtonDrawable(R.drawable.selector_null)
-                setBackgroundResource(R.drawable.selector_tab)
             })
         }
     }
