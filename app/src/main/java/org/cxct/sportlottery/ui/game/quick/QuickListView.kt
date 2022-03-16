@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.RadioButton
 import android.widget.RelativeLayout
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +18,7 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
+import org.cxct.sportlottery.network.odds.quick.QuickListData
 import org.cxct.sportlottery.ui.game.common.*
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
@@ -96,7 +96,7 @@ class QuickListView @JvmOverloads constructor(context: Context, attrs: Attribute
                                 setupQuickOddButtonPair(mSelectedQuickPlayCate!!, quickOdds, mOddsType, mLeagueOddListener)
                             }
                             org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_CORNERS.value, org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_PENALTY.value -> {
-                                setupQuickOddButtonPager(quickOdds, mOddsType, mLeagueOddListener)
+                                setupQuickOddButtonPager(quickOdds, mOddsType, mLeagueOddListener, quickListResult.quickListData)
                             }
                             org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_EPS.value -> {
                                 setupQuickOddButtonEps(mSelectedQuickPlayCate!!, quickOdds, mOddsType, mLeagueOddListener)
@@ -206,7 +206,12 @@ class QuickListView @JvmOverloads constructor(context: Context, attrs: Attribute
         }
     }
 
-    private fun setupQuickOddButtonPager(quickOdds: MutableMap<String, List<Odd?>?>, oddsType: OddsType, leagueOddListener: LeagueOddListener?) {
+    private fun setupQuickOddButtonPager(
+    quickOdds: MutableMap<String, List<Odd?>?>,
+    oddsType: OddsType,
+    leagueOddListener: LeagueOddListener?,
+    quickListData: QuickListData?,
+) {
         league_odd_quick_odd_btn_pager.visibility = View.VISIBLE
         quick_odd_home.text = mMatchOdd?.matchInfo?.homeName ?: ""
         quick_odd_away.text = mMatchOdd?.matchInfo?.awayName ?: ""
@@ -214,9 +219,9 @@ class QuickListView @JvmOverloads constructor(context: Context, attrs: Attribute
             val quickOddButtonPagerAdapter = OddButtonPagerAdapter()
             quickOddButtonPagerAdapter.setData(
                 mMatchOdd?.matchInfo,
-                mMatchOdd?.oddsSort,
-                mMatchOdd?.quickPlayCateNameMap,
-                mMatchOdd?.betPlayCateNameMap
+                null,
+                quickListData?.playCateNameMap,
+                quickListData?.betPlayCateNameMap
             )
             this.adapter = quickOddButtonPagerAdapter.apply {
                 stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT

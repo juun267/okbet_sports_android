@@ -755,7 +755,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) :
 
         private fun updateOddsButton(item: MatchOdd, oddsType: OddsType) {
             itemView.rv_league_odd_btn_pager_main.apply {
-                oddButtonPagerAdapter.setData(item.matchInfo, item.oddsSort, item.playCateNameMap, item.betPlayCateNameMap)
+                oddButtonPagerAdapter.setData(item.matchInfo, null, item.playCateNameMap, item.betPlayCateNameMap)
                 oddButtonPagerAdapter.apply {
                     stateRestorationPolicy = StateRestorationPolicy.PREVENT
                     this.odds = item.oddsMap ?: mutableMapOf()

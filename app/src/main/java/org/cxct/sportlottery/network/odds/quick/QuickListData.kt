@@ -5,6 +5,8 @@ import com.squareup.moshi.Json
 import org.cxct.sportlottery.network.odds.Odd
 
 data class QuickListData(
+    @Json(name = "betPlayCateNameMap")
+    var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
     @Json(name = "playCateNameMap")
     var playCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
     @Json(name = "quickOdds")
