@@ -43,6 +43,7 @@ import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.network.outright.season.Season
+import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
@@ -1153,6 +1154,17 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     private val leagueOddMap = HashMap<String, LeagueOdd>()
     private fun initSocketObserver() {
+        receiver.serviceConnectStatus.observe(this.viewLifecycleOwner) {
+            it?.let {
+                if (it == ServiceConnectStatus.CONNECTED) {
+                    startTimer()
+                }
+                else {
+                    startTimer()
+                }
+            }
+        }
+
         receiver.matchStatusChange.observe(this.viewLifecycleOwner) {
             it?.let { matchStatusChangeEvent ->
                 when (game_list.adapter) {
@@ -1973,29 +1985,21 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private var timer: Timer? = null
 
     private fun startTimer() {
-        var timeMillis = 60 * 3 * 1000L
         stopTimer()
-
         timer = Timer()
         timer?.schedule(object : TimerTask() {
             override fun run() {
-                Handler(Looper.getMainLooper()).post {
-                    timeMillis -= 1000
-                    if (timeMillis < 0) {
-                        timeMillis = 60 * 3 * 1000L
-                        viewModel.getAllPlayCategory(args.matchType)
-                        viewModel.getSportMenu(args.matchType, onlyRefreshSportMenu = true)
-                        if (!isUpdatingLeague) {
-                            viewModel.switchSportType(
-                                args.matchType,
-                                GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
-                                    ?: GameType.FT.key
-                            )
-                        }
-                    }
+                viewModel.getAllPlayCategory(args.matchType)
+                viewModel.getSportMenu(args.matchType, onlyRefreshSportMenu = true)
+                if (!isUpdatingLeague) {
+                    viewModel.switchSportType(
+                        args.matchType,
+                        GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
+                            ?: GameType.FT.key
+                    )
                 }
             }
-        }, 1000L, 1000L)
+        }, 60 * 3 * 1000L, 60 * 3 * 1000L)
     }
 
     private fun stopTimer() {
