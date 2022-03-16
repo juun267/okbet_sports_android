@@ -18,21 +18,6 @@
             </shape>
         </rotate>
     </item>
-    <item android:top="-200dp"
-        android:right="210dp"
-        android:left="0dp"
-        android:bottom="-200dp">
-        <rotate android:fromDegrees="22.5"
-            android:pivotX="10%"
-            android:pivotY="10%">
-            <shape android:shape="rectangle">
-                <gradient
-                    android:startColor="#FF6502"
-                    android:endColor="#F6A744"
-                    android:angle="180"/>
-            </shape>
-        </rotate>
-    </item>
 
 
 </layer-list>
