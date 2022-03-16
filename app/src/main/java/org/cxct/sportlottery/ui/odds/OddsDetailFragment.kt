@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import kotlinx.android.synthetic.main.fragment_odds_detail.*
 import kotlinx.android.synthetic.main.fragment_odds_detail.rv_cat
 import kotlinx.android.synthetic.main.fragment_odds_detail.rv_detail
-import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
 import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
@@ -26,11 +25,12 @@ import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
-import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
 import org.cxct.sportlottery.ui.common.SocketLinearManager
+import org.cxct.sportlottery.ui.component.LiveViewToolbar
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
@@ -58,6 +58,19 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 oddsDetailListAdapter?.notifyDataSetChangedByCode(code)
             }
         })
+    }
+
+
+    private val liveToolBarListener by lazy {
+        object : LiveViewToolbar.LiveToolBarListener {
+            override fun getLiveInfo(newestUrl: Boolean) {
+                //do nothing
+            }
+
+            override fun showStatistics() {
+                StatisticsDialog.newInstance(matchId).show(childFragmentManager, StatisticsDialog::class.java.simpleName)
+            }
+        }
     }
 
 
@@ -152,6 +165,7 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                             }
                         }
                         setupStartTime(matchOdd?.matchInfo)
+                        setupLiveView()
                     }
                     false -> {
                         showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
@@ -320,6 +334,14 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         matchInfo?.apply {
             tv_time_top.text = TimeUtil.timeFormat(startTime, TimeUtil.DM_FORMAT)
             tv_time_bottom.text = TimeUtil.timeFormat(startTime, TimeUtil.HM_FORMAT)
+        }
+    }
+
+
+    private fun setupLiveView() {
+        with(live_view_tool_bar){
+            setupToolBarListener(liveToolBarListener)
+            setupPlayerControl(false)
         }
     }
 
