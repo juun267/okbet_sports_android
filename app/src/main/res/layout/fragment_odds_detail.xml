@@ -47,19 +47,27 @@
                         app:fragment="@{fragment}"
                         app:gameViewModel="@{gameViewModel}" />
 
+                    <org.cxct.sportlottery.ui.component.LiveViewToolbar
+                        android:id="@+id/live_view_tool_bar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:minHeight="52dp"
+                        app:layout_constraintTop_toBottomOf="@id/v_toolbar" />
+
                     <View
                         android:id="@+id/v_divider"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/colorWhite8"
-                        app:layout_constraintTop_toBottomOf="@+id/v_toolbar" />
+                        app:layout_constraintTop_toBottomOf="@+id/live_view_tool_bar" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_cat"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:background="@color/colorRed"
+                        android:background="@color/colorWhite"
                         android:orientation="horizontal"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="10dp"
