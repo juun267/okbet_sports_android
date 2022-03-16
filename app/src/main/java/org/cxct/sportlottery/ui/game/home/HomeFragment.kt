@@ -121,7 +121,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
         try {
             selectedSportType = null
-            queryData()
+//            queryData()
             initDiscount()
             initTable()
             initRecommend()
@@ -781,7 +781,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
 
-//                    queryData()
+                    queryData()
                     subscribeTableHallChannel(mSelectMatchType)
                     subscribeRecommendHallChannel()
                     subscribeHighlightHallChannel()
