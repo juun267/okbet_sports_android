@@ -492,7 +492,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
         this.odds?.let { oddTypeSocketMap ->
             oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
-                oddTypeSocketMapEntry.value.onEach { odd ->
+                oddTypeSocketMapEntry.value?.onEach { odd ->
                     odd?.isSelected =
                         viewModel.betInfoList.value?.peekContent()?.any { betInfoListData ->
                             betInfoListData.matchOdd.oddsId == odd?.id
@@ -524,8 +524,8 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
      */
     private fun OddsChangeEvent.sortOddsMap() {
         this.odds?.forEach { (_, value) ->
-            if (value?.size > 3 && value.first()?.marketSort != 0 && (value.first()?.odds != value.first()?.malayOdds)) {
-                value.sortBy {
+            if (value?.size ?: 0> 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
+                value?.sortBy {
                     it?.marketSort
                 }
             }
