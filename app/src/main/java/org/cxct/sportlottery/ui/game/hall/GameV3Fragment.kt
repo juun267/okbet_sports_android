@@ -1234,6 +1234,14 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                         if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code){
                             leagueOdds.filterMenuPlayCate()
+                        } else {
+                            leagueOdds.forEach { LeagueOdd ->
+                                LeagueOdd.matchOdds.forEach { MatchOdd ->
+                                    if(MatchOdd.matchInfo?.id == oddsChangeEvent.eventId){
+                                        MatchOdd.oddsMap = oddsChangeEvent.odds
+                                    }
+                                }
+                            }
                         }
 
                         leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
