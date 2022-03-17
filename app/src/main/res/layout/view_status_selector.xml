@@ -15,7 +15,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:ellipsize="end"
-        android:gravity="center_vertical"
+        android:gravity="center_horizontal"
         android:maxLines="1"
         android:textColor="@color/colorGrayDark"
         android:textSize="@dimen/textSize14sp"
