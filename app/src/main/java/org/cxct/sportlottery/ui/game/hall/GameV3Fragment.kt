@@ -628,7 +628,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             play = null,
                             sortNum = it.sortNum ?: 0,
                         )
-                        item.playCateNum = it.play?.size ?: -1
+                        item.hasPlay = (it.play != null)
                         item.isSelected = it.isSelected
                         tempItem.add(item)
                     }
@@ -739,11 +739,16 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                     //如果data資料為空時，又有其他球種的情況下，自動選取第一個
                     if (mLeagueOddList.isNullOrEmpty() && gameTypeAdapter.dataSport.size > 1) {
-                        viewModel.getSportMenu(
-                            args.matchType,
-                            switchFirstTag = true,
-                            onlyRefreshSportMenu = true
-                        )
+                        if (args.matchType == MatchType.OTHER) {
+                            // 待觀察，再決定是否要補
+                        }
+                        else {
+                            viewModel.getSportMenu(
+                                args.matchType,
+                                switchFirstTag = true,
+                                onlyRefreshSportMenu = true
+                            )
+                        }
                     }
                     //game_list.itemAnimator = null
 
@@ -1527,10 +1532,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
         else {
             gameTypeList.find { it.isSelected }.let { item ->
-                item?.playCateNum?.let { num ->
-                    setOtherOddTab(num < 0)
+                item?.let {
+                    setOtherOddTab(!it.hasPlay)
+                    updateSportBackground(it)
                 }
-                updateSportBackground(item)
             }
         }
 

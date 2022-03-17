@@ -962,12 +962,22 @@ class GameViewModel(
 
         recordSportType(matchType, item.code)
         if (matchType == MatchType.OTHER) {
-            getLeagueList(
-                item.code,
-                currentSpecialCode,
-                getCurrentTimeRangeParams(),
-                isIncrement = false
-            )
+            if (!item.hasPlay) {
+                getLeagueList(
+                    item.code,
+                    currentSpecialCode,
+                    getCurrentTimeRangeParams(),
+                    isIncrement = false
+                )
+            }
+            else {
+                getGameHallList(
+                    matchType = MatchType.OTHER,
+                    isReloadDate = true,
+                    isReloadPlayCate = true,
+                    isLastSportType = true
+                )
+            }
             //getGameHallList(matchType, true, isReloadPlayCate = true)
         } else {
             getGameHallList(matchType, true, isReloadPlayCate = true)
