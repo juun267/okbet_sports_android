@@ -116,25 +116,25 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
         }
 
-    private val keyboard: KeyBoardUtil by lazy {
-        KeyBoardUtil(
-            binding.kvKeyboard,
-            null,
-            sConfigData?.presetBetAmount ?: mutableListOf(),
-            isLogin ?: false,
-            GameConfigManager.maxBetMoney?.toLong(),
-            object : KeyBoardUtil.KeyBoardViewListener {
-                override fun showLoginNotice() {
-                    setSnackBarNotify(isLogin = false)
-                }
-
-                override fun showOrHideKeyBoardBackground(isShow: Boolean, position: Int?) {
-                    binding.llKeyboardBg.visibility = if(isShow) View.VISIBLE else View.GONE
-                    //v_keyboard_shadow.visibility = if(isShow) View.VISIBLE else View.GONE
-                }
-            }
-        )
-    }
+//    private val keyboard: KeyBoardUtil by lazy {
+//        KeyBoardUtil(
+//            binding.kvKeyboard,
+//            null,
+//            sConfigData?.presetBetAmount ?: mutableListOf(),
+//            isLogin ?: false,
+//            GameConfigManager.maxBetMoney?.toLong(),
+//            object : KeyBoardUtil.KeyBoardViewListener {
+//                override fun showLoginNotice() {
+//                    setSnackBarNotify(isLogin = false)
+//                }
+//
+//                override fun showOrHideKeyBoardBackground(isShow: Boolean, position: Int?) {
+//                    binding.llKeyboardBg.visibility = if(isShow) View.VISIBLE else View.GONE
+//                    //v_keyboard_shadow.visibility = if(isShow) View.VISIBLE else View.GONE
+//                }
+//            }
+//        )
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -184,10 +184,12 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun initKeyBoard() {
         binding.etBet.setOnTouchListener { view, event ->
             if (event.action == MotionEvent.ACTION_UP) {
-                if (matchOdd?.status == BetStatus.ACTIVATED.code) keyboard.showKeyboard(
+                if (matchOdd?.status == BetStatus.ACTIVATED.code)
+                    binding.layoutKeyBoard.showKeyboard(
                     view as EditText,
                     null,
-                    betInfoListData?.parlayOdds?.max?.toLong() ?: GameConfigManager.maxBetMoney?.toLong() ?: 0
+                    betInfoListData?.parlayOdds?.max?.toLong() ?: GameConfigManager.maxBetMoney?.toLong() ?: 0,
+                    betInfoListData?.parlayOdds?.min?.toLong()?:0
                 )
             }
             false
@@ -239,7 +241,10 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 isFocusable = true
                 setSelection(text.length)
             }
-            keyboard.showKeyboard(binding.etBet, null, betInfoListData?.parlayOdds?.max?.toLong() ?: GameConfigManager.maxBetMoney?.toLong() ?: 0)
+            binding.layoutKeyBoard.showKeyboard(binding.etBet,null,
+                betInfoListData?.parlayOdds?.max?.toLong() ?: GameConfigManager.maxBetMoney?.toLong() ?: 0,
+                betInfoListData?.parlayOdds?.min?.toLong()  ?: 0)
+            //keyboard.showKeyboard(binding.etBet, null, betInfoListData?.parlayOdds?.max?.toLong() ?: GameConfigManager.maxBetMoney?.toLong() ?: 0)
         }
     }
 
@@ -640,7 +645,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             binding.ivBetLock.visibility = View.VISIBLE
             binding.etBet.isFocusable = false
             binding.etBet.isFocusableInTouchMode = false
-            keyboard.hideKeyboard()
+            binding.layoutKeyBoard.hideKeyboard()
             cl_quota_detail.visibility = View.GONE
             cl_close_waring.visibility = View.VISIBLE
         }
