@@ -652,12 +652,23 @@ class GameViewModel(
                     _sportMenuResult.postValue(null)
 
                     if (isReload && items?.isNotEmpty() == true && gameCode != null) {
-                        getLeagueList(
-                            gameCode,
-                            code,
-                            null,
-                            isIncrement = false
-                        )
+                        val defaultItem = items?.firstOrNull { it.code == gameCode }
+                        if (defaultItem?.play == null) {
+                            getLeagueList(
+                                gameCode,
+                                code,
+                                null,
+                                isIncrement = false
+                            )
+                        }
+                        else {
+                            getGameHallList(
+                                matchType = MatchType.OTHER,
+                                isReloadDate = true,
+                                isReloadPlayCate = true,
+                                isLastSportType = true
+                            )
+                        }
                     }
                 } else {
                     _showErrorDialogMsg.value = result?.msg

@@ -851,12 +851,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     when (args.matchType) {
                         MatchType.OTHER -> {
 
-                            viewModel.getGameHallList(
-                                matchType = args.matchType,
-                                isReloadDate = true,
-                                isReloadPlayCate = true,
-                                isLastSportType = true
-                            )
+
                         }
                         else -> {
                             game_list.apply {
