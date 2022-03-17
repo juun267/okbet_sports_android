@@ -409,16 +409,6 @@ class GameViewModel(
         filterLeague(listOf())
     }
 
-    fun switchSpecialMatchType(code: String) {
-        _curChildMatchType.value = null
-        _oddsListGameHallResult.value = Event(null)
-        //_quickOddsListGameHallResult.value = Event(null)
-        _oddsListResult.value = Event(null)
-        //_curMatchType.value  = MatchType.OTHER
-        getAllPlayCategoryByCode(code)
-        filterLeague(listOf())
-    }
-
     fun switchChildMatchType(childMatchType: MatchType? = null) {
         _curChildMatchType.value = childMatchType
         _oddsListGameHallResult.value = Event(null)
@@ -635,8 +625,12 @@ class GameViewModel(
     }
 
     var currentSpecialCode = ""
-    private fun getAllPlayCategoryByCode(code: String) {
+
+    fun getAllPlayCategoryBySpecialMatchType(code: String = _specialEntrance.value?.couponCode ?: currentSpecialCode, item: Item? = null, isReload: Boolean = false) {
         currentSpecialCode = code
+
+        if (code.isEmpty()) return
+
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.sportService.getQuery(
@@ -646,19 +640,25 @@ class GameViewModel(
                         code
                     )
                 )
-            }?.let { result ->
-                if (result.success) {
+            }.let { result ->
+                if (result?.success == true) {
+                    var items = result.sportQueryData?.items
+                    var gameCode = item?.code ?: getSportSelectedCode(MatchType.OTHER)
+                    if (items?.filter { it.code == gameCode }.isNullOrEmpty()) {
+                        gameCode = items?.getOrNull(0)?.code ?: GameType.FT.key
+                    }
                     specialMenuData = result.sportQueryData
-                    sportQueryData = result.sportQueryData
-                    if (specialMenuData?.items?.isNotEmpty() == true) {
+                    specialMenuData?.updateSportSelectState(gameCode)
+                    _sportMenuResult.postValue(null)
+
+                    if (isReload && items?.isNotEmpty() == true && gameCode != null) {
                         getLeagueList(
-                            specialMenuData?.items?.getOrNull(0)?.code ?: "",
+                            gameCode,
                             code,
                             null,
                             isIncrement = false
                         )
                     }
-                    specialMenuData?.updateSportSelectState(specialMenuData?.items?.getOrNull(0)?.code)
                 } else {
                     _showErrorDialogMsg.value = result?.msg
                 }
@@ -1367,9 +1367,7 @@ class GameViewModel(
                 )
             }?.updateMatchType()
 
-            if(result?.oddsListData?.leagueOdds.isNullOrEmpty()){
-                _isNoHistory.value = true
-            }
+            _isNoHistory.value = result?.oddsListData?.leagueOdds.isNullOrEmpty()
 
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
@@ -2019,10 +2017,10 @@ class GameViewModel(
             sportMenuResult.value?.sportMenuData?.menu?.eps?.items?.find { it.isSelected }?.code
         }
         MatchType.OTHER -> {
-            specialMenuData!!.items?.find { it.isSelected }?.code
+            specialMenuData?.items?.find { it.isSelected }?.code
         }
         MatchType.OTHER_OUTRIGHT -> {
-            specialMenuData!!.items?.find { it.isSelected }?.code
+            specialMenuData?.items?.find { it.isSelected }?.code
         }
         else -> {
             null
@@ -2129,7 +2127,6 @@ class GameViewModel(
                 }
             }
         }
-
         return this
     }
 

@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -60,6 +58,7 @@ import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
+import timber.log.Timber
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -74,7 +73,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 loading()
                 unSubscribeChannelHallAll()
                 viewModel.getSportMenu(args.matchType, onlyRefreshSportMenu = true)
-                viewModel.getAllPlayCategory(args.matchType)
+                if (args.matchType == MatchType.OTHER) {
+                    viewModel.getAllPlayCategoryBySpecialMatchType(item = it)
+                }
+                else {
+                    viewModel.getAllPlayCategory(args.matchType)
+                }
                 viewModel.switchSportType(args.matchType, it)
 //                notifyDataSetChanged()
             }
@@ -614,6 +618,22 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     )
                 }
 
+                MatchType.OTHER -> {
+                    val tempItem: MutableList<Item> = mutableListOf()
+                    viewModel.specialMenuData?.items?.forEach { it ->
+                        val item = Item(
+                            code = it.code ?: "",
+                            name = it.name ?: "",
+                            num = it.num ?: 0,
+                            play = null,
+                            sortNum = it.sortNum ?: 0,
+                        )
+                        item.playCateNum = it.play?.size ?: -1
+                        item.isSelected = it.isSelected
+                        tempItem.add(item)
+                    }
+                    updateSportType(tempItem)
+                }
 
                 else -> {
                 }
@@ -648,8 +668,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 null -> {
                     //init tab select
                     game_tabs.clearOnTabSelectedListeners()
-                    game_tabs.selectTab(game_tabs.getTabAt(0))
                     game_tabs.addOnTabSelectedListener(onTabSelectedListener)
+                    game_tabs.selectTab(game_tabs.getTabAt(0))
                 }
                 MatchType.OTHER_OUTRIGHT -> {
                     game_tabs.selectTab(game_tabs.getTabAt(1))
@@ -740,12 +760,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     Log.d("Hewie", "observe => OddsListGameHallResult")
                     //leagueAdapter.notifyDataSetChanged()
 
-                    when (args.matchType) {
-                        MatchType.OTHER -> {
-                            setOtherOddTab(mLeagueOddList.isNullOrEmpty())
-                        }
-                        else->{}
-                    }
+//                    when (args.matchType) {
+//                        MatchType.OTHER -> {
+//                            setOtherOddTab(mLeagueOddList.isNullOrEmpty())
+//                        }
+//                        else->{}
+//                    }
                 }
                 refreshToolBarUI(this.view)
             }
@@ -826,23 +846,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     val rows = leagueListResult.rows ?: listOf()
 
 
-                    val tempItem: MutableList<Item> = mutableListOf()
-
                     when (args.matchType) {
                         MatchType.OTHER -> {
-                            viewModel.specialMenuData?.items?.forEach { it ->
-                                val item = Item(
-                                    code = it.code ?: "",
-                                    name = it.name ?: "",
-                                    num = it.num ?: 0,
-                                    play = null,
-                                    sortNum = it.sortNum ?: 0,
-                                )
-                                item.isSelected = it.isSelected
-                                tempItem.add(item)
-                            }
 
-                            updateSportType(tempItem)
                             viewModel.getGameHallList(
                                 matchType = args.matchType,
                                 isReloadDate = true,
@@ -1146,7 +1152,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 if (it == ServiceConnectStatus.CONNECTED) {
                     loading()
                     if (args.matchType == MatchType.OTHER) {
-                        viewModel.switchSpecialMatchType(viewModel.specialEntrance.value?.couponCode!!)
+                        viewModel.getAllPlayCategoryBySpecialMatchType(isReload = true)
                     } else {
                         viewModel.getGameHallList(
                             matchType = args.matchType,
@@ -1154,10 +1160,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             isReloadPlayCate = true,
                             isLastSportType = true
                         )
-
-                        viewModel.getMatchCategoryQuery(args.matchType)
-                        subscribeSportChannelHall(args.matchType.name)
                     }
+                    viewModel.getMatchCategoryQuery(args.matchType)
+                    subscribeSportChannelHall(args.matchType.name)
                 }
                 else {
                     stopTimer()
@@ -1368,7 +1373,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         isUpdatingLeague = true
                         //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
                         withContext(Dispatchers.Main) {
-                            viewModel.getAllPlayCategory(args.matchType)
+                            if (args.matchType == MatchType.OTHER) {
+                                viewModel.getAllPlayCategoryBySpecialMatchType(isReload = true)
+                            }
+                            else {
+                                viewModel.getAllPlayCategory(args.matchType)
+                            }
                             viewModel.getSportMenu(args.matchType, onlyRefreshSportMenu = true)
                         }
                         //收到的gameType与用户当前页面所选球种相同, 则需额外调用/match/odds/simple/list & /match/odds/eps/list
@@ -1504,6 +1514,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     private fun updateSportType(gameTypeList: List<Item>, num: Int? = -1) {
         gameTypeAdapter.dataSport = gameTypeList
+
         if (args.matchType != MatchType.OTHER) {
             gameTypeList.find { it.isSelected }.let { item ->
                 game_toolbar_sport_type.text = context?.let { getGameTypeString(it, item?.code) } ?: resources.getString(GameType.FT.string)
@@ -1511,18 +1522,44 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 updateSportBackground(item)
 //                subscribeSportChannelHall(item?.code)//12/30 移除平台id与gameType後，切換SportType就不用重新訂閱了，不然會造成畫面一直閃爍 by Bill
             }
-
-            //即將開賽畫面修正
-            if (args.matchType == MatchType.AT_START) {
-                sport_type_list.visibility = if (num != 0) View.VISIBLE else View.GONE
-                game_toolbar_sport_type.visibility = if (num != 0) View.VISIBLE else View.GONE
-                game_toolbar_champion.visibility = if (num != 0) View.VISIBLE else View.GONE
-                game_play_category.visibility = if (num != 0) View.VISIBLE else View.GONE
+        }
+        else {
+            gameTypeList.find { it.isSelected }.let { item ->
+                item?.playCateNum?.let { num ->
+                    setOtherOddTab(num < 0)
+                }
+                updateSportBackground(item)
             }
-        }else{
-            updateSportBackground(gameTypeList.find { it.isSelected })
         }
 
+        if (gameTypeList.isEmpty()) {
+            sport_type_list.visibility = View.GONE
+            game_toolbar_sport_type.visibility = View.GONE
+            game_toolbar_champion.visibility = View.GONE
+            game_toolbar_calendar.visibility = View.GONE
+            game_tab_odd_v4.visibility = View.GONE
+            game_match_category_pager.visibility = View.GONE
+            game_play_category.visibility = View.GONE
+            game_filter_type_list.visibility = View.GONE
+            return
+        }
+        else {
+            sport_type_list.visibility = View.VISIBLE
+            game_toolbar_sport_type.visibility = View.VISIBLE
+            game_toolbar_calendar.apply {
+                visibility = when (args.matchType) {
+                    MatchType.EARLY -> View.VISIBLE
+                    else -> View.GONE
+                }
+                isSelected = false
+            }
+            game_tab_odd_v4.visibility = when (args.matchType) {
+                MatchType.TODAY, MatchType.EARLY, MatchType.PARLAY, MatchType.OTHER -> View.VISIBLE
+                else -> View.GONE
+            }
+            game_match_category_pager.visibility = if (args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) { View.VISIBLE } else { View.GONE }
+//            game_play_category.visibility = View.VISIBLE
+        }
     }
 
     private fun updateSportBackground(sport: Item?) {
@@ -1985,7 +2022,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         timer = Timer()
         timer?.schedule(object : TimerTask() {
             override fun run() {
-                viewModel.getAllPlayCategory(args.matchType)
+                if (args.matchType == MatchType.OTHER) {
+                    viewModel.getAllPlayCategoryBySpecialMatchType()
+                }
+                else {
+                    viewModel.getAllPlayCategory(args.matchType)
+                }
                 viewModel.getSportMenu(args.matchType, onlyRefreshSportMenu = true)
                 if (!isUpdatingLeague) {
                     viewModel.switchSportType(
