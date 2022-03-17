@@ -661,9 +661,11 @@ class GameViewModel(
                     if (items?.filter { it.code == gameCode }.isNullOrEmpty()) {
                         gameCode = items?.getOrNull(0)?.code ?: GameType.FT.key
                     }
+                    sportQueryData = result.sportQueryData
                     specialMenuData = result.sportQueryData
                     specialMenuData?.updateSportSelectState(gameCode)
                     _sportMenuResult.postValue(null)
+                    getPlayCategory(MatchType.OTHER)
 
                     if (isReload && items?.isNotEmpty() == true && gameCode != null) {
                         val defaultItem = items?.firstOrNull { it.code == gameCode }
@@ -1480,6 +1482,7 @@ class GameViewModel(
                 }
             }
 
+            _isNoEvents.value = result?.oddsListData?.leagueOddsFilter?.size ?: result?.oddsListData?.leagueOdds?.size == 0
             notifyFavorite(FavoriteType.MATCH)
         }
     }
@@ -1625,6 +1628,8 @@ class GameViewModel(
                 clearSelectedLeague()
 
             _leagueListResult.value = (Event(result))
+
+            _isNoEvents.value = result?.rows?.size ?: 0 == 0
 
             notifyFavorite(FavoriteType.LEAGUE)
         }
