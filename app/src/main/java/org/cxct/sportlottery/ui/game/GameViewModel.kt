@@ -1696,8 +1696,8 @@ class GameViewModel(
                         it.isSelected = (it == playList.firstOrNull())
                     }
 
-                    _playList.value = playList
-                    _playCate.value = null
+                    _playList.postValue(playList)
+                    _playCate.postValue(null)
                 }
             }
         } else {
@@ -1711,8 +1711,8 @@ class GameViewModel(
                         it.isSelected = (it == playList.firstOrNull())
                     }
 
-                    _playList.value = playList
-                    _playCate.value = null
+                    _playList.postValue(playList)
+                    _playCate.postValue(null)
                 }
             }
         }
@@ -1859,7 +1859,7 @@ class GameViewModel(
     }
 
     fun filterLeague(leagueList: List<League>) {
-        _leagueFilterList.value = leagueList
+        _leagueFilterList.postValue(leagueList)
 
         clearSelectedLeague()
     }
