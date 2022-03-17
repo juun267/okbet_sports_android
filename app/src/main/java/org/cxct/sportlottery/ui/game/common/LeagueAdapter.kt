@@ -270,7 +270,7 @@ class LeagueAdapter(private val matchType: MatchType) :
             fun from(parent: ViewGroup, searchText: String): NoDataViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val noDataLayoutId = if (searchText.isBlank())
-                    R.layout.view_no_record
+                    R.layout.view_no_record_for_game
                 else
                     R.layout.itemview_game_no_record
                 val view = layoutInflater
