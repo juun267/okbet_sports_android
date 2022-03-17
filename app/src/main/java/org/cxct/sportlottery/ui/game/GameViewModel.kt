@@ -1036,10 +1036,10 @@ class GameViewModel(
         } else {
             _sportMenuResult.value?.updateSportSelectState(matchType, gameType)
         }
-        _curChildMatchType.value = null
-        _oddsListGameHallResult.value = Event(null)
+        _curChildMatchType.postValue(null)
+        _oddsListGameHallResult.postValue(Event(null))
         //_quickOddsListGameHallResult.value = Event(null)
-        _oddsListResult.value = Event(null)
+        _oddsListResult.postValue(Event(null))
 
         recordSportType(matchType, gameType)
         if (matchType == MatchType.OTHER) {
