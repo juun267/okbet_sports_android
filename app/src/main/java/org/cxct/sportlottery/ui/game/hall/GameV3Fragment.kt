@@ -1252,6 +1252,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                                 // Safety update list
                                 updateGameList(index, leagueOdd)
+                                //leagueAdapter.notifyDataSetChanged()
                             }
                         }
                     }
