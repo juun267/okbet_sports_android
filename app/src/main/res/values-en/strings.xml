@@ -945,9 +945,9 @@
     <string name="verify_failed_please_retry">Verification failed, please try again</string>
     <string name="text_cant_play">Unable to play in your area</string>
     <string name="text_bet_not_success">Bet slip status is&#160;</string>
-    <string name="text_bet_not_success2">Waiting</string>
-    <string name="text_bet_not_success3">&#160;our bet slip is processing, please check &#160;</string>
-    <string name="text_bet_not_success4">Record</string>
+    <string name="text_bet_not_success2">waiting</string>
+    <string name="text_bet_not_success3">&#160;Your bet slip is processing, please check &#160;</string>
+    <string name="text_bet_not_success4">Record.</string>
     <!--自我禁制-->
     <string name="self_limit">Self-exclusion</string>
     <string name="self_limit_impotent">Attention</string>
