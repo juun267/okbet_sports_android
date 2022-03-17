@@ -231,6 +231,10 @@ class TransactionStatusActivity :
             updateUiWithResult(it)
         }
 
+        viewModel.settlementNotificationMsg.observe(this) {
+            viewModel.getBetList(true)
+        }
+
         viewModel.isLogin.observe(this) {
             getAnnouncement()
         }
