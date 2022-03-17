@@ -236,6 +236,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     updateSportBackground(oddsListResult.oddsListData?.sport?.code)
 
                     game_league_odd_list.apply {
+                        leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
                         leagueAdapter.apply {
                             data = leagueOdds.onEach { leagueOdd ->
                                 leagueOdd.gameType = args.gameType
@@ -284,6 +285,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
         viewModel.leagueListSearchResult.observe(this.viewLifecycleOwner) {
             leagueAdapter.data = it.toMutableList()
+            leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
         }
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner) {
