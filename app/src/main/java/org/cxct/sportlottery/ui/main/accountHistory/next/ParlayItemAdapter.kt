@@ -93,8 +93,7 @@ class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(D
                 binding.playContent.setPlayContent(
                     playName,
                     spread,
-                    TextUtil.formatForOdd(odds),
-                    oddsType
+                    TextUtil.formatForOdd(odds)
                 )
 
                 when (gameType) {
