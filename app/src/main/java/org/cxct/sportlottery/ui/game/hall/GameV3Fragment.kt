@@ -728,12 +728,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         leagueAdapter.playSelectedCode = getPlaySelectedCode()
                     }
                     else {
+                        // Todo: MatchType.OTHER 要顯示無資料與隱藏篩選清單
                         leagueAdapter.data = mutableListOf()
-                    }
-
-                    if (isReload) {
-                        leagueAdapter.notifyDataSetChanged()
-                        isReload = false
                     }
 
 //                    if (leagueOdds.isNotEmpty()) {
@@ -775,6 +771,11 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                     // TODO 這裡要確認是否有其他地方重複呼叫
                     Log.d("Hewie", "observe => OddsListGameHallResult")
+
+                    if (isReload) {
+                        leagueAdapter.notifyDataSetChanged()
+                        isReload = false
+                    }
                     //leagueAdapter.notifyDataSetChanged()
 
 //                    when (args.matchType) {
