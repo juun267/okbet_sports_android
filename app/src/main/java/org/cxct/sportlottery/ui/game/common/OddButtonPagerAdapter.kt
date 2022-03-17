@@ -704,11 +704,15 @@ class OddButtonPagerViewHolder private constructor(
         }
 
         oddBtnDraw.apply drawButtonSettings@{
-            when {
+            when{
+                (odds.second?.size ?: 0 > 2) -> {
+                    visibility = View.VISIBLE
+                }
                 (odds.second?.size ?: 0 < 3) -> {
                     visibility = View.INVISIBLE
-                    return@drawButtonSettings
                 }
+            }
+            when {
                 odds.second?.all { odd -> odd == null } == true -> {
                     betStatus = BetStatus.DEACTIVATED.code
                     return@drawButtonSettings
@@ -953,11 +957,16 @@ class OddButtonPagerViewHolder private constructor(
             isSelected = odds.second?.getOrNull(1)?.isSelected ?: false
         }
         oddBtnDraw.apply drawButtonSettings@{
-            when {
+            when{
+                (odds.second?.size ?: 0 > 2) -> {
+                    visibility = View.VISIBLE
+                }
                 (odds.second?.size ?: 0 < 3) -> {
                     visibility = View.INVISIBLE
-                    return@drawButtonSettings
                 }
+            }
+
+            when {
                 odds.second?.all { odd -> odd == null } == true -> {
                     betStatus = BetStatus.DEACTIVATED.code
                     return@drawButtonSettings
