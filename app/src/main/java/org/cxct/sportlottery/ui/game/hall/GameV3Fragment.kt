@@ -727,6 +727,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
                         leagueAdapter.playSelectedCode = getPlaySelectedCode()
                     }
+                    else {
+                        leagueAdapter.data = mutableListOf()
+                    }
+
                     if (isReload) {
                         leagueAdapter.notifyDataSetChanged()
                         isReload = false
@@ -970,13 +974,19 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 MatchType.PARLAY -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.parlay?.num ?: 0 > 0
                 MatchType.OUTRIGHT -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.outright?.num ?: 0 > 0
                 MatchType.EPS -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.eps?.num ?: 0 > 0
+                MatchType.OTHER -> viewModel.specialMenuData?.items?.size ?: 0 > 0
                 else -> false
             }
             when {
                 //當前MatchType有玩法數量，只是目前的球種沒有
                 it && hasGame -> {
                     unSubscribeChannelHallAll()
-                    viewModel.switchMatchType(args.matchType)
+                    if (args.matchType == MatchType.OTHER) {
+                        viewModel.getAllPlayCategoryBySpecialMatchType(isReload = true)
+                    }
+                    else {
+                        viewModel.switchMatchType(args.matchType)
+                    }
                     game_no_record.apply {
                         setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
                         visibility = View.GONE
@@ -986,7 +996,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 it && !hasGame -> {
                     game_no_record.apply {
                         setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
-                        isVisible = true
+                        visibility = View.VISIBLE
                     }
 //                    game_no_record_bg.apply {
 //                        isVisible = true

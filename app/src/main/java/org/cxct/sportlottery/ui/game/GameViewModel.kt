@@ -1404,8 +1404,6 @@ class GameViewModel(
                 )
             }?.updateMatchType()
 
-            _isNoHistory.value = result?.oddsListData?.leagueOdds.isNullOrEmpty()
-
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
                     matchOdd.sortOddsMap()
@@ -1482,7 +1480,6 @@ class GameViewModel(
                 }
             }
 
-            _isNoEvents.value = result?.oddsListData?.leagueOddsFilter?.size ?: result?.oddsListData?.leagueOdds?.size == 0
             notifyFavorite(FavoriteType.MATCH)
         }
     }
