@@ -44,7 +44,7 @@
         android:id="@+id/league_odd_quick_odd_btn_pager"
         layout="@layout/view_quick_odd_btn_pager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/quick_view_horizontal_scroll_height"
         android:visibility="gone"
         tools:visibility="visible" />
 
