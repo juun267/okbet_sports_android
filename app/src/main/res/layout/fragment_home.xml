@@ -13,25 +13,27 @@
             type="org.cxct.sportlottery.ui.game.GameViewModel" />
     </data>
 
-    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:orientation="vertical"
         app:srlDragRate="0.3"
         app:srlEnableLoadMore="true"
         app:srlEnablePureScrollMode="true">
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/scroll_view"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorWhite"
-            android:fillViewport="true"
-            android:overScrollMode="never">
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            app:elevation="0dp">
 
-            <LinearLayout
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsingToolbarLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -88,11 +90,11 @@
                                 android:paddingTop="2dp"
                                 android:textColor="@android:color/white"
                                 android:textSize="@dimen/textSize16sp"
+                                app:layout_constrainedWidth="true"
                                 app:layout_constraintBottom_toTopOf="@+id/tv_first_game_count"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constrainedWidth="true"
                                 tools:text="足球" />
 
                             <TextView
@@ -104,11 +106,11 @@
                                 android:includeFontPadding="false"
                                 android:textColor="@android:color/white"
                                 android:textSize="@dimen/textSize16sp"
+                                app:layout_constrainedWidth="true"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constrainedWidth="true"
                                 tools:text="644" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -156,14 +158,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:includeFontPadding="false"
+                                android:paddingTop="2dp"
                                 android:textColor="@android:color/white"
                                 android:textSize="@dimen/textSize16sp"
-                                android:paddingTop="2dp"
+                                app:layout_constrainedWidth="true"
                                 app:layout_constraintBottom_toTopOf="@id/tv_second_game_count"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0"
                                 app:layout_constraintStart_toStartOf="@id/tv_second_game_count"
-                                app:layout_constrainedWidth="true"
                                 tools:text="籃球" />
 
                             <TextView
@@ -175,11 +177,11 @@
                                 android:includeFontPadding="false"
                                 android:textColor="@android:color/white"
                                 android:textSize="@dimen/textSize16sp"
+                                app:layout_constrainedWidth="true"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constrainedWidth="true"
                                 tools:text="48" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -285,208 +287,225 @@
                     </HorizontalScrollView>
 
                 </LinearLayout>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
-                <RadioGroup
-                    android:id="@+id/rg_table_bar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:minHeight="56dp"
-                    android:orientation="horizontal">
+        <FrameLayout
+            android:id="@+id/homeContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            <!-- 整合列表 -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never" />
+        </FrameLayout>
+        <!--<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_weight="1"
-                        android:background="@color/colorSilverLight" />
+            <RadioGroup
+                android:id="@+id/rg_table_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:minHeight="56dp"
+                android:orientation="horizontal">
 
-                    <RadioButton
-                        android:id="@+id/rb_in_play"
-                        android:layout_width="wrap_content"
-                        android:layout_height="28dp"
-                        android:background="@null"
-                        android:button="@null"
-                        android:checked="true"
-                        android:paddingHorizontal="10dp"
-                        android:text="@string/home_tab_in_play"
-                        android:textAllCaps="true"
-                        android:textColor="@color/selector_blue_gray_light"
-                        android:textSize="@dimen/textSize20sp"/>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorSilverLight" />
 
-                    <RadioButton
-                        android:id="@+id/rb_as_start"
-                        android:layout_width="wrap_content"
-                        android:layout_height="28dp"
-                        android:background="@null"
-                        android:button="@null"
-                        android:paddingHorizontal="10dp"
-                        android:text="@string/game_soon"
-                        android:textAllCaps="true"
-                        android:textColor="@color/selector_blue_gray_light"
-                        android:textSize="@dimen/textSize20sp" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_weight="1"
-                        android:background="@color/colorSilverLight" />
-
-                </RadioGroup>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_game_table"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:overScrollMode="never"
-                    tools:itemCount="1"
-                    tools:listitem="@layout/home_game_table_4" />
-
-                <LinearLayout
-                    android:id="@+id/recommend_bar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:minHeight="56dp"
-                    android:orientation="horizontal">
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_weight="1"
-                        android:background="@color/colorSilverLight" />
-
-                    <TextView
-                        android:id="@+id/tv_recommend"
-                        android:layout_width="wrap_content"
-                        android:layout_height="28dp"
-                        android:paddingHorizontal="16dp"
-                        android:text="@string/label_match_recommend"
-                        android:textAllCaps="true"
-                        android:textColor="@color/colorBlue"
-                        android:textSize="@dimen/textSize20sp"/>
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_weight="1"
-                        android:background="@color/colorSilverLight" />
-
-                </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_recommend"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:overScrollMode="never"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="1"
-                    tools:listitem="@layout/home_recommend_item" />
-
-                <LinearLayout
-                    android:id="@+id/highlight_bar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:minHeight="56dp"
-                    android:orientation="horizontal">
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_weight="1"
-                        android:background="@color/colorSilverLight" />
-
-                    <TextView
-                        android:id="@+id/tv_highlight"
-                        android:layout_width="wrap_content"
-                        android:layout_height="28dp"
-                        android:paddingHorizontal="16dp"
-                        android:text="@string/label_highlight"
-                        android:textColor="@color/colorBlue"
-                        android:textSize="@dimen/textSize20sp"/>
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_weight="1"
-                        android:background="@color/colorSilverLight" />
-
-                </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_highlight_sport_type"
+                <RadioButton
+                    android:id="@+id/rb_in_play"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="8dp"
-                    android:minHeight="60dp"
-                    android:nestedScrollingEnabled="false"
-                    android:orientation="horizontal"
-                    android:overScrollMode="never"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="4"
-                    tools:listitem="@layout/itemview_sport_type_v4" />
+                    android:layout_height="28dp"
+                    android:background="@null"
+                    android:button="@null"
+                    android:checked="true"
+                    android:paddingHorizontal="10dp"
+                    android:text="@string/home_tab_in_play"
+                    android:textAllCaps="true"
+                    android:textColor="@color/selector_blue_gray_light"
+                    android:textSize="@dimen/textSize20sp"/>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/highlight_titleBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:gravity="center"
-                    android:minHeight="48dp"
-                    android:orientation="horizontal"
-                    tools:background="@drawable/img_home_title_soccer_background">
+                <RadioButton
+                    android:id="@+id/rb_as_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    android:background="@null"
+                    android:button="@null"
+                    android:paddingHorizontal="10dp"
+                    android:text="@string/game_soon"
+                    android:textAllCaps="true"
+                    android:textColor="@color/selector_blue_gray_light"
+                    android:textSize="@dimen/textSize20sp" />
 
-                    <ImageView
-                        android:id="@+id/highlight_iv_game_icon"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:layout_marginStart="20dp"
-                        android:contentDescription="@null"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:tint="@color/colorGray"
-                        tools:src="@drawable/ic_soccer" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorSilverLight" />
 
-                    <TextView
-                        android:id="@+id/highlight_tv_game_name"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:gravity="center"
-                        android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize18sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="@string/soccer" />
+            </RadioGroup>
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_game_table"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"
+                tools:itemCount="1"
+                tools:listitem="@layout/home_game_table_4" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_game_highlight"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:overScrollMode="never"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="1"
-                    tools:listitem="@layout/home_highlight_item" />
+            <LinearLayout
+                android:id="@+id/recommend_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:minHeight="56dp"
+                android:orientation="horizontal">
 
-                <include
-                    android:id="@+id/view_btm_navigation"
-                    layout="@layout/view_bottom_navigation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorSilverLight" />
+
+                <TextView
+                    android:id="@+id/tv_recommend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    android:paddingHorizontal="16dp"
+                    android:text="@string/label_match_recommend"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorBlue"
+                    android:textSize="@dimen/textSize20sp"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorSilverLight" />
 
             </LinearLayout>
 
-        </androidx.core.widget.NestedScrollView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_recommend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="1"
+                tools:listitem="@layout/home_recommend_item" />
 
-    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+            <LinearLayout
+                android:id="@+id/highlight_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:minHeight="56dp"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorSilverLight" />
+
+                <TextView
+                    android:id="@+id/tv_highlight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    android:paddingHorizontal="16dp"
+                    android:text="@string/label_highlight"
+                    android:textColor="@color/colorBlue"
+                    android:textSize="@dimen/textSize20sp"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorSilverLight" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_highlight_sport_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
+                android:minHeight="60dp"
+                android:nestedScrollingEnabled="false"
+                android:orientation="horizontal"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="4"
+                tools:listitem="@layout/itemview_sport_type_v4" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/highlight_titleBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:gravity="center"
+                android:minHeight="48dp"
+                android:orientation="horizontal"
+                tools:background="@drawable/img_home_title_soccer_background">
+
+                <ImageView
+                    android:id="@+id/highlight_iv_game_icon"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginStart="20dp"
+                    android:contentDescription="@null"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/colorGray"
+                    tools:src="@drawable/ic_soccer" />
+
+                <TextView
+                    android:id="@+id/highlight_tv_game_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:gravity="center"
+                    android:textColor="@color/colorBlackLight"
+                    android:textSize="@dimen/textSize18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/soccer" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_game_highlight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="1"
+                tools:listitem="@layout/home_highlight_item" />
+
+            <include
+                android:id="@+id/view_btm_navigation"
+                layout="@layout/view_bottom_navigation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>-->
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>
