@@ -85,7 +85,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
     private var mSelectedMatchInfo: MatchInfo? = null
     private val leagueAdapter by lazy {
-        LeagueAdapter(args.matchType).apply {
+        LeagueAdapter(args.matchType, getPlaySelectedCodeSelectionType(), getPlaySelectedCode()).apply {
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
             leagueListener = LeagueListener({
@@ -236,6 +236,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     updateSportBackground(oddsListResult.oddsListData?.sport?.code)
 
                     game_league_odd_list.apply {
+                        leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
                         leagueAdapter.apply {
                             data = leagueOdds.onEach { leagueOdd ->
                                 leagueOdd.gameType = args.gameType
@@ -284,6 +285,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
         viewModel.leagueListSearchResult.observe(this.viewLifecycleOwner) {
             leagueAdapter.data = it.toMutableList()
+            leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
         }
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner) {
@@ -492,7 +494,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
         this.odds?.let { oddTypeSocketMap ->
             oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
-                oddTypeSocketMapEntry.value.onEach { odd ->
+                oddTypeSocketMapEntry.value?.onEach { odd ->
                     odd?.isSelected =
                         viewModel.betInfoList.value?.peekContent()?.any { betInfoListData ->
                             betInfoListData.matchOdd.oddsId == odd?.id
@@ -524,8 +526,8 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
      */
     private fun OddsChangeEvent.sortOddsMap() {
         this.odds?.forEach { (_, value) ->
-            if (value?.size > 3 && value.first()?.marketSort != 0 && (value.first()?.odds != value.first()?.malayOdds)) {
-                value.sortBy {
+            if (value?.size ?: 0> 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
+                value?.sortBy {
                     it?.marketSort
                 }
             }

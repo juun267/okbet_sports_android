@@ -244,7 +244,7 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
         this.odds?.let { oddTypeSocketMap ->
             oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
-                oddTypeSocketMapEntry.value.onEach { odd ->
+                oddTypeSocketMapEntry.value?.onEach { odd ->
                     odd?.isSelected =
                         viewModel.betInfoList.value?.peekContent()?.any { betInfoListData ->
                             betInfoListData.matchOdd.oddsId == odd?.id

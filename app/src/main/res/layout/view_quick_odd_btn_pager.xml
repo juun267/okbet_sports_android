@@ -3,94 +3,54 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:ignore="spUsage">
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/colorWhite4"
-        app:layout_constraintBottom_toBottomOf="@id/quick_odd_btn_indicator_other"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:id="@+id/quick_odd_match_border"
-        android:layout_width="176dp"
-        android:layout_height="224dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:id="@+id/quick_odd_button_border"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@id/quick_odd_match_border"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/quick_odd_match_border"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:id="@+id/quick_odd_match_border_row1"
-        android:layout_width="0dp"
-        android:layout_height="53dp"
-        android:layout_marginTop="47dp"
-        app:layout_constraintEnd_toEndOf="@id/quick_odd_match_border"
-        app:layout_constraintStart_toStartOf="@id/quick_odd_match_border"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:layout_height="@dimen/quick_view_horizontal_scroll_height"
+    android:background="@color/colorWhite4"
+    tools:ignore="spUsage,RtlSymmetry">
 
     <TextView
         android:id="@+id/quick_odd_home"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="176dp"
+        android:layout_height="48dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="52dp"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="2"
+        android:paddingEnd="10dp"
         android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize14sp"
-        app:layout_constraintBottom_toBottomOf="@id/quick_odd_match_border_row1"
-        app:layout_constraintEnd_toEndOf="@id/quick_odd_match_border_row1"
+        app:layout_constraintBottom_toTopOf="@+id/quick_odd_away"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="俄罗斯" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="俄罗斯俄罗斯俄罗斯俄罗斯俄罗斯俄罗斯" />
 
     <TextView
         android:id="@+id/quick_odd_away"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="11dp"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="2"
+        android:paddingEnd="10dp"
         android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize14sp"
-        app:layout_constraintEnd_toEndOf="@id/quick_odd_match_border_row1"
+        app:layout_constraintEnd_toEndOf="@+id/quick_odd_home"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/quick_odd_home"
-        tools:text="芬兰" />
+        tools:text="芬兰芬兰芬兰芬兰芬兰芬兰芬兰芬兰" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/quick_odd_btn_pager_other"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="15dp"
         android:orientation="horizontal"
         android:overScrollMode="never"
-        app:layout_constraintBottom_toTopOf="@id/quick_odd_btn_indicator_other"
-        app:layout_constraintEnd_toEndOf="@id/quick_odd_button_border"
-        app:layout_constraintStart_toStartOf="@id/quick_odd_button_border"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/quick_odd_home"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <org.cxct.sportlottery.ui.common.IndicatorView
-        android:id="@+id/quick_odd_btn_indicator_other"
-        android:layout_width="0dp"
-        android:layout_height="16dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="@id/quick_odd_btn_pager_other"
-        app:layout_constraintStart_toStartOf="@id/quick_odd_btn_pager_other"
-        app:layout_constraintTop_toBottomOf="@id/quick_odd_match_border"
-        android:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

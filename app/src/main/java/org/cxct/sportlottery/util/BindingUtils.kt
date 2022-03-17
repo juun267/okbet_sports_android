@@ -390,33 +390,19 @@ fun TextView.setTextTypeFace(type: Int) {
     }
 }
 
-@SuppressLint("SetTextI18n")
-fun TextView.setOddTypeString(oddsType: OddsType?) {
-    apply {
-        text = " (${context.getString((oddsType ?: OddsType.EU).res)})"
-    }
-}
-
 fun TextView.setPlayContent(
     playName: String?,
     spread: String?,
-    formatForOdd: String?,
-    oddsType: String
+    formatForOdd: String?
 ) {
     val playNameStr = if (!playName.isNullOrEmpty()) "<font color=#333333>${playName} </font> " else ""
     val spreadStr = if (!spread.isNullOrEmpty()) "<font color=#B73A20>$spread</font> " else ""
-    val oddStr =  when (oddsType) {
-        OddsType.HK.code -> "(" + context.getString(OddsType.HK.res) + ")"
-        OddsType.MYS.code -> "(" + context.getString(OddsType.MYS.res) + ")"
-        OddsType.IDN.code -> "(" + context.getString(OddsType.IDN.res) + ")"
-        else -> " (${context.getString(OddsType.EU.res)})"
-    }
 
     text = HtmlCompat.fromHtml(
         playNameStr +
                 spreadStr +
                 "<font color=#666666>@ </font> " +
-                "<font color=#B73A20>$formatForOdd </font> " +
-                "<font color=#666666>${oddStr}</font>", HtmlCompat.FROM_HTML_MODE_LEGACY
+                "<font color=#B73A20>$formatForOdd </font> "
+        , HtmlCompat.FROM_HTML_MODE_LEGACY
     )
 }

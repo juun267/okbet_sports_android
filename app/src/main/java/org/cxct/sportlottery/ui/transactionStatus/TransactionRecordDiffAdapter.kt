@@ -115,8 +115,7 @@ class TransactionRecordDiffAdapter :
                 play_content.setPlayContent(
                     matchOdds.playName,
                     matchOdds.spread,
-                    TextUtil.formatForOdd(matchOdds.odds),
-                    matchOdds.oddsType
+                    TextUtil.formatForOdd(matchOdds.odds)
                 )
 
                 match_play_time.text = TimeUtil.timeFormat(matchOdds.startTime, TimeUtil.YMD_HM_FORMAT)
@@ -168,8 +167,7 @@ class TransactionRecordDiffAdapter :
                 play_content.setPlayContent(
                     matchOdds.playName,
                     matchOdds.spread,
-                    TextUtil.formatForOdd(matchOdds.odds),
-                    matchOdds.oddsType
+                    TextUtil.formatForOdd(matchOdds.odds)
                 )
                 matchOdds.startTime?.let {
                     play_time.text = TimeUtil.timeFormat(it, TimeUtil.YMD_HM_FORMAT)

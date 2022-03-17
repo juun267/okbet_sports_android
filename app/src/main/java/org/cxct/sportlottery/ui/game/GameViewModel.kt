@@ -409,28 +409,28 @@ class GameViewModel(
         filterLeague(listOf())
     }
 
-    fun switchSpecialMatchType(code: String) {
-        _curChildMatchType.value = null
-        _oddsListGameHallResult.value = Event(null)
-        //_quickOddsListGameHallResult.value = Event(null)
-        _oddsListResult.value = Event(null)
-        //_curMatchType.value  = MatchType.OTHER
-        getAllPlayCategoryByCode(code)
-        filterLeague(listOf())
-    }
-
     fun switchChildMatchType(childMatchType: MatchType? = null) {
         _curChildMatchType.value = childMatchType
         _oddsListGameHallResult.value = Event(null)
         //_quickOddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
-        if (childMatchType == MatchType.OTHER_OUTRIGHT || childMatchType == MatchType.OTHER) {
-            getGameHallList(
-                matchType = childMatchType,
-                isReloadDate = true,
-                isReloadPlayCate = true
+        if (childMatchType == MatchType.OTHER_OUTRIGHT) {
+            getLeagueList(
+                getSportSelectedCode(MatchType.OTHER) ?: "",
+                currentSpecialCode,
+                null,
+                isIncrement = false
             )
-        } else {
+        }
+        else if (childMatchType == MatchType.OTHER) {
+            getGameHallList(
+                matchType = MatchType.OTHER,
+                isReloadDate = true,
+                isReloadPlayCate = true,
+                isLastSportType = true
+            )
+        }
+        else {
             curMatchType.value?.let {
                 getGameHallList(matchType = it, isReloadDate = true, isReloadPlayCate = true)
             }
@@ -573,7 +573,7 @@ class GameViewModel(
         onlyRefreshSportMenu: Boolean = true
     ) {
         if (!onlyRefreshSportMenu)
-            _isLoading.value = true
+            _isLoading.postValue(true)
 
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -609,7 +609,7 @@ class GameViewModel(
             }
         }
 
-        _isLoading.value = false
+        _isLoading.postValue(false) // TODO IllegalStateException: Cannot invoke setValue on a background thread
     }
 
     fun getAllPlayCategory(matchType: MatchType) {
@@ -635,8 +635,16 @@ class GameViewModel(
     }
 
     var currentSpecialCode = ""
-    private fun getAllPlayCategoryByCode(code: String) {
+
+    fun resetOtherSeelectedGameType() {
+        specialMenuData = null
+    }
+
+    fun getAllPlayCategoryBySpecialMatchType(code: String = _specialEntrance.value?.couponCode ?: currentSpecialCode, item: Item? = null, isReload: Boolean = false) {
         currentSpecialCode = code
+
+        if (code.isEmpty()) return
+
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.sportService.getQuery(
@@ -646,19 +654,36 @@ class GameViewModel(
                         code
                     )
                 )
-            }?.let { result ->
-                if (result.success) {
-                    specialMenuData = result.sportQueryData
-                    sportQueryData = result.sportQueryData
-                    if (specialMenuData?.items?.isNotEmpty() == true) {
-                        getLeagueList(
-                            specialMenuData?.items?.getOrNull(0)?.code ?: "",
-                            code,
-                            null,
-                            isIncrement = false
-                        )
+            }.let { result ->
+                if (result?.success == true) {
+                    var items = result.sportQueryData?.items
+                    var gameCode = item?.code ?: getSportSelectedCode(MatchType.OTHER)
+                    if (items?.filter { it.code == gameCode }.isNullOrEmpty()) {
+                        gameCode = items?.getOrNull(0)?.code ?: GameType.FT.key
                     }
-                    specialMenuData?.updateSportSelectState(specialMenuData?.items?.getOrNull(0)?.code)
+                    specialMenuData = result.sportQueryData
+                    specialMenuData?.updateSportSelectState(gameCode)
+                    _sportMenuResult.postValue(null)
+
+                    if (isReload && items?.isNotEmpty() == true && gameCode != null) {
+                        val defaultItem = items?.firstOrNull { it.code == gameCode }
+                        if (defaultItem?.play == null) {
+                            getLeagueList(
+                                gameCode,
+                                code,
+                                null,
+                                isIncrement = false
+                            )
+                        }
+                        else {
+                            getGameHallList(
+                                matchType = MatchType.OTHER,
+                                isReloadDate = true,
+                                isReloadPlayCate = true,
+                                isLastSportType = true
+                            )
+                        }
+                    }
                 } else {
                     _showErrorDialogMsg.value = result?.msg
                 }
@@ -951,12 +976,22 @@ class GameViewModel(
 
         recordSportType(matchType, item.code)
         if (matchType == MatchType.OTHER) {
-            getLeagueList(
-                item.code,
-                currentSpecialCode,
-                getCurrentTimeRangeParams(),
-                isIncrement = false
-            )
+            if (!item.hasPlay) {
+                getLeagueList(
+                    item.code,
+                    currentSpecialCode,
+                    getCurrentTimeRangeParams(),
+                    isIncrement = false
+                )
+            }
+            else {
+                getGameHallList(
+                    matchType = MatchType.OTHER,
+                    isReloadDate = true,
+                    isReloadPlayCate = true,
+                    isLastSportType = true
+                )
+            }
             //getGameHallList(matchType, true, isReloadPlayCate = true)
         } else {
             getGameHallList(matchType, true, isReloadPlayCate = true)
@@ -1036,10 +1071,10 @@ class GameViewModel(
         } else {
             _sportMenuResult.value?.updateSportSelectState(matchType, gameType)
         }
-        _curChildMatchType.value = null
-        _oddsListGameHallResult.value = Event(null)
+        _curChildMatchType.postValue(null)
+        _oddsListGameHallResult.postValue(Event(null))
         //_quickOddsListGameHallResult.value = Event(null)
-        _oddsListResult.value = Event(null)
+        _oddsListResult.postValue(Event(null))
 
         recordSportType(matchType, gameType)
         if (matchType == MatchType.OTHER) {
@@ -1367,9 +1402,7 @@ class GameViewModel(
                 )
             }?.updateMatchType()
 
-            if(result?.oddsListData?.leagueOdds.isNullOrEmpty()){
-                _isNoHistory.value = true
-            }
+            _isNoHistory.value = result?.oddsListData?.leagueOdds.isNullOrEmpty()
 
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
@@ -2019,10 +2052,10 @@ class GameViewModel(
             sportMenuResult.value?.sportMenuData?.menu?.eps?.items?.find { it.isSelected }?.code
         }
         MatchType.OTHER -> {
-            specialMenuData!!.items?.find { it.isSelected }?.code
+            specialMenuData?.items?.find { it.isSelected }?.code
         }
         MatchType.OTHER_OUTRIGHT -> {
-            specialMenuData!!.items?.find { it.isSelected }?.code
+            specialMenuData?.items?.find { it.isSelected }?.code
         }
         else -> {
             null
@@ -2129,7 +2162,6 @@ class GameViewModel(
                 }
             }
         }
-
         return this
     }
 
