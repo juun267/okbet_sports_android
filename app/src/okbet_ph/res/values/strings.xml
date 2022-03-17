@@ -69,7 +69,7 @@
     <string name="hint_e_mail">Email</string>
     <string name="error_e_mail">Email formatted incorrectly</string>
     <string name="postal_code">Postal code</string>
-    <string name="hint_postal_code">(Please enter ZIP code)</string>
+    <string name="hint_postal_code">(Please enter Postal code)</string>
     <string name="province">Province</string>
     <string name="hint_province">(Please enter province)</string>
     <string name="city">City</string>
