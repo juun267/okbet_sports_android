@@ -122,6 +122,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var onHighLightClickMatchListener: OnSelectItemListener<MatchOdd>? = null //賽事畫面跳轉
     var onHighLightClickFavoriteListener: OnClickFavoriteListener? = null
     var onHighLightClickStatisticsListener: OnClickStatisticsListener? = null
+    private var mPlayCateNameMap: Map<String?, Map<String?, String?>?>? = mapOf()
     // endregion
 
     enum class ItemType {
@@ -405,7 +406,12 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
     // endregion
     // region 賽事精選資料
-    fun setMatchOdd(sportCode: String?, newList: List<OddData>?, selectedOdds: MutableList<String>) {
+    fun setMatchOdd(
+        sportCode: String?,
+        newList: List<OddData>?,
+        selectedOdds: MutableList<String>,
+        newPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
+    ) {
         val list = newList?.mapIndexed { index, it ->
             val matchInfo = MatchInfo(
                 gameType = sportCode,
@@ -418,7 +424,8 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 eps = it.matchInfo?.eps,
                 spt = it.matchInfo?.spt,
                 liveVideo = it.matchInfo?.liveVideo,
-                status = it.matchInfo?.status ?: -1).apply {
+                status = it.matchInfo?.status ?: -1
+            ).apply {
                 startDateDisplay = TimeUtil.timeFormat(this.startTime, "MM/dd")
                 startTimeDisplay = TimeUtil.timeFormat(this.startTime, "HH:mm")
                 isAtStart = TimeUtil.isTimeAtStart(this.startTime)
@@ -427,10 +434,10 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
 
             val odds: MutableMap<String, MutableList<Odd?>?> = mutableMapOf()
-            it.oddsMap.forEach { (key, value) ->
+            it.oddsMap?.forEach { (key, value) ->
                 value?.forEach { odd ->
                     odd?.id?.let {
-                        odd?.isSelected = selectedOdds.contains(it)
+                        odd.isSelected = selectedOdds.contains(it)
                     }
                 }
                 odds[key] = value?.toMutableList()
@@ -447,6 +454,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             )
         } ?: listOf()
         mLastMatchOdd = list.last()
+        mPlayCateNameMap = newPlayCateNameMap
         removeDatas(list.firstOrNull())
         list.forEach { addDataWithSort(it) }
     }
@@ -778,7 +786,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun notifyHighLightOddsDiscountChanged(discount: Float) {
         val list = getMatchOdd()
         list.forEach { matchOdd ->
-            matchOdd.oddsMap.forEach { (key, value) ->
+            matchOdd.oddsMap?.forEach { (key, value) ->
                 value?.forEach { odd ->
                     odd?.updateDiscount(this.discount, discount)
                 }
@@ -802,7 +810,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun notifyHighLightSelectedOddsChanged(selectedOdds: MutableList<String>) {
         val list = getMatchOdd()
         list.forEach { matchOdd ->
-            matchOdd.oddsMap.forEach { (key, value) ->
+            matchOdd.oddsMap?.forEach { (key, value) ->
                 value?.forEach { odd ->
                     odd?.id?.let {
                         odd?.isSelected = selectedOdds.contains(it)

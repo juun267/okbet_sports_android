@@ -161,6 +161,8 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             initDiscount()
             initTable()
             initRecommend()
+            initHighLightBar()
+            initHighLightTitle()
             initHighlight()
             initEvent()
             initObserve()
@@ -197,14 +199,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         rvList.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         rvList.adapter = mHomeListAdapter
         rvList.itemAnimator = null
-    }
-
-    private fun initHighLightBar() {
-        mHomeListAdapter.setGameHighLightBar()
-    }
-
-    private fun initHighLightTitle() {
-        mHomeListAdapter.setGameHighLightTitle()
     }
 
     private fun initDiscount() {
@@ -491,8 +485,55 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             }*/
     }
 
+    private fun initHighLightBar() {
+        mHomeListAdapter.setGameHighLightBar()
+    }
+
+    private fun initHighLightTitle() {
+        mHomeListAdapter.setGameHighLightTitle()
+    }
+
     private fun initHighlight() {
         updateHighlightVisibility(false)
+        mHomeListAdapter.gameTypeListener = GameTypeListener { selectItem ->
+            selectedSportType = selectItem
+
+            mHomeListAdapter.updateHightLightTitle(selectItem)
+
+//            unsubscribeHighlightHallChannel() //先取消訂閱當前的精選賽事
+
+            mHomeListAdapter.getDataSport().forEach { item ->
+                item.isSelected = item.code == selectItem.code
+            }
+            mHomeListAdapter.updateDataSport()
+            //mHomeListAdapter.notifyDataSetChanged()
+            viewModel.getHighlightMatch(selectItem.code)
+        }
+
+        mHomeListAdapter.onHighLightClickOddListener = mOnClickOddListener
+        mHomeListAdapter.onHighLightClickMatchListener = object : OnSelectItemListener<MatchOdd> {
+            override fun onClick(select: MatchOdd) {
+                //scroll_view.smoothScrollTo(0, 0)
+                val code = select.matchInfo?.gameType
+                val matchId = select.matchInfo?.id
+
+                //TODO simon test review 精選賽事是不是一定是 MatchType.TODAY
+                navOddsDetailFragment(code, matchId, MatchType.TODAY)
+            }
+        }
+
+        mHomeListAdapter.onHighLightClickFavoriteListener = object : OnClickFavoriteListener {
+            override fun onClickFavorite(matchId: String?) {
+                viewModel.pinFavorite(FavoriteType.MATCH, matchId)
+            }
+        }
+
+        mHomeListAdapter.onHighLightClickStatisticsListener = object : OnClickStatisticsListener {
+            override fun onClickStatistics(matchId: String?) {
+                navStatisticsPage(matchId)
+            }
+        }
+        /*updateHighlightVisibility(false)
         rv_highlight_sport_type.adapter = mHighlightGameTypeAdapter
         mHighlightGameTypeAdapter.gameTypeListener = GameTypeListener { selectItem ->
             selectedSportType = selectItem
@@ -537,7 +578,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             override fun onClickStatistics(matchId: String?) {
                 navStatisticsPage(matchId)
             }
-        }
+        }*/
     }
 
     private fun refreshTable(result: MatchPreloadResult?) {
@@ -589,7 +630,13 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
     private fun refreshHighlight(result: MatchCategoryResult?) {
         val sportCode = mHighlightGameTypeAdapter.dataSport.find { it.isSelected }?.code ?: ""
-        mRvHighlightAdapter.setData(sportCode, result?.t?.odds, viewModel.betIDList.value?.peekContent() ?: mutableListOf(), result?.t?.playCateNameMap)
+        mHomeListAdapter.setMatchOdd(
+            sportCode,
+            result?.t?.odds,
+            viewModel.betIDList.value?.peekContent() ?: mutableListOf(),
+            result?.t?.playCateNameMap
+        )
+//        mRvHighlightAdapter.setData(sportCode, result?.t?.odds, viewModel.betIDList.value?.peekContent() ?: mutableListOf(), result?.t?.playCateNameMap)
     }
 
     private fun addOddsDialog(
@@ -1244,7 +1291,29 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     }
 
     private fun refreshHighlightMenu(result: MatchCategoryResult) {
-        mHighlightGameTypeAdapter.dataSport = result.t?.menu?.map { menu ->
+        val ary = result.t?.menu?.map { menu ->
+            Item(menu.code ?: "", menu.name ?: "", 0, null, menu.sortNum ?: 0)
+        } as ArrayList<Item>
+        mHomeListAdapter.setDataSport(ary)
+        //mHomeListAdapter.notifyDataSetChanged()
+
+        if (mHomeListAdapter.getDataSport().isNotEmpty()) {
+            if (selectedSportType != null) {
+                selectedSportType?.let {
+                    mHomeListAdapter.gameTypeListener?.onClick(it)
+                }
+            }
+            else {
+                //default 選擇第一個
+                mHomeListAdapter.getDataSport().firstOrNull()?.let {
+                    mHomeListAdapter.gameTypeListener?.onClick(it)
+                }
+            }
+            updateHighlightVisibility(true)
+        } else {
+            updateHighlightVisibility(false)
+        }
+        /*mHighlightGameTypeAdapter.dataSport = result.t?.menu?.map { menu ->
             Item(menu.code ?: "", menu.name ?: "", 0, null, menu.sortNum ?: 0)
         } ?: listOf()
 
@@ -1263,15 +1332,15 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             updateHighlightVisibility(true)
         } else {
             updateHighlightVisibility(false)
-        }
+        }*/
     }
 
     private fun updateRecommendVisibility(show: Boolean) {
-        recommend_bar.isVisible = show
+        //TODO recommend_bar.isVisible = show
     }
 
     private fun updateHighlightVisibility(show: Boolean) {
-        highlight_bar.isVisible = show
-        highlight_titleBar.isVisible = show
+        //TODO highlight_bar.isVisible = show
+        //TODO highlight_titleBar.isVisible = show
     }
 }
