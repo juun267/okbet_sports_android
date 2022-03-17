@@ -269,7 +269,7 @@ abstract class BaseOddButtonViewModel(
             is OddsChangeEvent -> {
                 changeEvent.odds?.forEach { map ->
                     val value = map.value
-                    value.forEach { odd ->
+                    value?.forEach { odd ->
                         odd?.let {
                             val newOdd = org.cxct.sportlottery.network.odds.Odd(
                                 extInfoMap = null,
