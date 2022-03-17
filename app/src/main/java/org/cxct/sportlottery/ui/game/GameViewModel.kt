@@ -414,13 +414,23 @@ class GameViewModel(
         _oddsListGameHallResult.value = Event(null)
         //_quickOddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
-        if (childMatchType == MatchType.OTHER_OUTRIGHT || childMatchType == MatchType.OTHER) {
-            getGameHallList(
-                matchType = childMatchType,
-                isReloadDate = true,
-                isReloadPlayCate = true
+        if (childMatchType == MatchType.OTHER_OUTRIGHT) {
+            getLeagueList(
+                getSportSelectedCode(MatchType.OTHER) ?: "",
+                currentSpecialCode,
+                null,
+                isIncrement = false
             )
-        } else {
+        }
+        else if (childMatchType == MatchType.OTHER) {
+            getGameHallList(
+                matchType = MatchType.OTHER,
+                isReloadDate = true,
+                isReloadPlayCate = true,
+                isLastSportType = true
+            )
+        }
+        else {
             curMatchType.value?.let {
                 getGameHallList(matchType = it, isReloadDate = true, isReloadPlayCate = true)
             }
