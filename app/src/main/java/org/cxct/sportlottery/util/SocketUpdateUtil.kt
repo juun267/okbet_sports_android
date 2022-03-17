@@ -228,7 +228,7 @@ object SocketUpdateUtil {
                                         )
                                     ) updated = true
                                 } else {
-                                    oddsMap[key] = value.toMutableList()
+                                    oddsMap[key] = value?.toMutableList()
                                     updated = true
                                 }
                             }

@@ -329,7 +329,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
         this.odds?.let { oddTypeSocketMap ->
             oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
-                oddTypeSocketMapEntry.value.onEach { odd ->
+                oddTypeSocketMapEntry.value?.onEach { odd ->
                     odd?.isSelected =
                         viewModel.betInfoList.value?.peekContent()?.any { betInfoListData ->
                             betInfoListData.matchOdd.oddsId == odd?.id
@@ -399,6 +399,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
             favorite_game_list.adapter = leagueAdapter
             leagueAdapter.data = leagueOddList.toMutableList()
+            leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
             try {
                 leagueAdapter.data.forEach { leagueOdd ->
                     subscribeChannelHall(leagueOdd)
