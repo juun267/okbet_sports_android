@@ -1239,15 +1239,19 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                         if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code){
                             leagueOdds.filterMenuPlayCate()
-                        } else {
-                            leagueOdds.forEach { LeagueOdd ->
-                                LeagueOdd.matchOdds.forEach { MatchOdd ->
-                                    if(MatchOdd.matchInfo?.id == oddsChangeEvent.eventId){
-                                        MatchOdd.oddsMap = oddsChangeEvent.odds
-                                    }
-                                }
-                            }
                         }
+
+                        //此處須先隱藏 不然賠率會有問題
+                        //TODO 順序邏輯待處理
+//                        else {
+//                            leagueOdds.forEach { LeagueOdd ->
+//                                LeagueOdd.matchOdds.forEach { MatchOdd ->
+//                                    if(MatchOdd.matchInfo?.id == oddsChangeEvent.eventId){
+//                                        MatchOdd.oddsMap = oddsChangeEvent.odds
+//                                    }
+//                                }
+//                            }
+//                        }
 
                         leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
                         leagueAdapter.playSelectedCode = getPlaySelectedCode()
@@ -1266,7 +1270,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                                 // Safety update list
                                 updateGameList(index, leagueOdd)
-                                //leagueAdapter.notifyDataSetChanged()
                             }
                         }
                     }
