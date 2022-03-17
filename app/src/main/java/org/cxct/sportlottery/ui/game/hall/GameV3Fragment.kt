@@ -326,7 +326,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel.resrtOtherSeelectedGameType()
+        viewModel.resetOtherSeelectedGameType()
         return inflater.inflate(R.layout.fragment_game_v3, container, false).apply {
             setupSportTypeList(this)
             setupToolbar(this)

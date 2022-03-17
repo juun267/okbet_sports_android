@@ -626,7 +626,7 @@ class GameViewModel(
 
     var currentSpecialCode = ""
 
-    fun resrtOtherSeelectedGameType() {
+    fun resetOtherSeelectedGameType() {
         specialMenuData = null
     }
 

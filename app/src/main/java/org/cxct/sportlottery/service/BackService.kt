@@ -343,6 +343,17 @@ class BackService : Service() {
         subscribeChannel(url)
     }
 
+    fun unsubscribeCateHallChannel(cateMenuCode: String?) {
+        if (cateMenuCode.isNullOrEmpty()) return
+        //要 clone 一份 list 來處理 url 判斷，避免刪減 map 資料時產生 ConcurrentModificationException
+        val urlList = mSubscribedMap.keys.toList()
+        urlList.forEach { url ->
+            // 解除球種頻道的訂閱, 球種頻道格式:/ws/notify/hall/1/XX/SPECIAL_MATCH_MOBILE/XXXX
+            if (url.contains("$URL_HALL/") && url.contains(cateMenuCode + "/"))
+                unsubscribeChannel(url)
+        }
+    }
+
     fun unsubscribeHallChannel(gameType: String?, cateMenuCode: String?, eventId: String?) {
         if (gameType == null || eventId == null) return
 
