@@ -1,0 +1,177 @@
+package org.cxct.sportlottery.util
+
+import android.content.Context
+import android.text.InputType
+import android.util.AttributeSet
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.EditText
+import android.widget.FrameLayout
+import kotlinx.android.synthetic.main.item_number_keyboard_layout.view.*
+import org.cxct.sportlottery.R
+import org.cxct.sportlottery.repository.sConfigData
+
+class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : FrameLayout(
+        context, attrs, defStyleAttr
+) {
+
+    private val view: View by lazy { LayoutInflater.from(context).inflate(R.layout.item_number_keyboard_layout, null, false) }
+
+    /**键盘点击事件*/
+    private var numCLick: ((number: String) -> Unit)? = null
+
+    init {
+        removeAllViews()
+        addView(view, 0)
+        initView()
+    }
+
+    private fun initView() {
+        sConfigData?.presetBetAmount?.let {
+            tvPlus1.text = "+ ${it[0]}"
+            tvPlus2.text = "+ ${it[1]}"
+            tvPlus3.text = "+ ${it[2]}"
+            tvPlus4.text = "+ ${it[3]}"
+            tvPlus1.setOnClickListener { v ->
+                plus(it[0].toLong())
+            }
+            tvPlus2.setOnClickListener { v ->
+                plus(it[1].toLong())
+            }
+            tvPlus3.setOnClickListener { v ->
+                plus(it[2].toLong())
+            }
+            tvPlus4.setOnClickListener { v ->
+                plus(it[3].toLong())
+            }
+        }
+        tvNum0.setOnClickListener {
+            insert(0)
+        }
+        tvNum1.setOnClickListener {
+            insert(1)
+        }
+        tvNum2.setOnClickListener {
+            insert(2)
+        }
+        tvNum3.setOnClickListener {
+            insert(3)
+        }
+        tvNum4.setOnClickListener {
+            insert(4)
+        }
+        tvNum5.setOnClickListener {
+            insert(5)
+        }
+        tvNum6.setOnClickListener {
+            insert(6)
+        }
+        tvNum7.setOnClickListener {
+            insert(7)
+        }
+        tvNum8.setOnClickListener {
+            insert(8)
+        }
+        tvNum9.setOnClickListener {
+            insert(9)
+        }
+        tvDel.setOnClickListener {
+            delete()
+        }
+        tvDot.setOnClickListener {
+            insertDot()
+        }
+        tvMax.setOnClickListener {
+            plusAll(maxBetMoney ?: 0)
+        }
+        ivKeyboardClose.setOnClickListener {
+            hideKeyboard()
+        }
+    }
+
+    private fun numberClick(number: String) {
+        numCLick?.let { it(number) }
+    }
+
+    /**
+     * 键盘点击事件
+     */
+    fun setNumberClick(click: ((number: String) -> Unit)?) {
+        this.numCLick = click
+    }
+
+    private lateinit var mEditText: EditText
+    private var maxBetMoney: Long? = 0
+    private var isShow = false
+
+    fun showKeyboard(editText: EditText, position: Int?, maxBetMoney: Long, minBetMoney: Long) {
+        this.mEditText = editText
+        this.maxBetMoney = maxBetMoney
+        //InputType.TYPE_NULL 禁止彈出系統鍵盤
+        mEditText.apply {
+            inputType = InputType.TYPE_NULL
+            isFocusable = true
+            isFocusableInTouchMode = true
+        }
+        this.visibility = View.VISIBLE
+        //parent?.visibility = View.VISIBLE
+        tvLimit.text = String.format(
+            "${context.getString(R.string.edt_hint_deposit_money_new)}",
+            TextUtil.formatBetQuota(minBetMoney),
+            TextUtil.formatBetQuota(maxBetMoney)
+        )
+        isShow = true
+
+        //keyBoardViewListener.showOrHideKeyBoardBackground(true, position)
+    }
+    private fun plus(count: Long) {
+        val input = if (mEditText.text.toString() == "") "0" else mEditText.text.toString()
+        val tran = if (input.contains(".")) {
+            input.toDouble() + count
+        } else input.toDouble() + count
+        mEditText.setText(tran.toLong().toString())
+        mEditText.setSelection(mEditText.text.length)
+    }
+    private fun plusAll(all: Long) {
+        mEditText.setText(all.toString())
+        mEditText.setSelection(mEditText.text.length)
+
+    }
+    private fun insert(count: Long) {
+        val editable = mEditText.text
+        val start = mEditText.selectionStart
+        editable.insert(start, count.toString())
+
+    }
+    private fun insertDot() {
+        val editable = mEditText.text
+        val start = mEditText.selectionStart
+        editable.apply {
+            insert(
+                start,
+                if (isNotEmpty()) {
+                    if (!this.toString().contains(".")) "." else return
+                } else {
+                    "0."
+                }
+            )
+        }
+    }
+
+    private fun delete() {
+        val editable = mEditText.text
+        val start = mEditText.selectionStart
+        if (start > 0) {
+            editable.delete(start - 1, start)
+        }
+
+    }
+
+    fun hideKeyboard() {
+        this.visibility = View.GONE
+        if (isShow) mEditText.isFocusable = false
+
+        isShow = false
+    }
+
+}

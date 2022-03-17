@@ -205,18 +205,18 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         rv_bet_list.layoutManager = layoutManager
         betListRefactorAdapter?.setHasStableIds(true)
         rv_bet_list.adapter = betListRefactorAdapter
-        rv_bet_list.addItemDecoration(
-            DividerItemDecoration(
-                context,
-                LinearLayoutManager.VERTICAL
-            ).apply {
-                ContextCompat.getDrawable(
-                    context ?: requireContext(),
-                    R.drawable.divider_color_white8
-                )?.let {
-                    setDrawable(it)
-                }
-            })
+//        rv_bet_list.addItemDecoration(
+//            DividerItemDecoration(
+//                context,
+//                LinearLayoutManager.VERTICAL
+//            ).apply {
+//                ContextCompat.getDrawable(
+//                    context ?: requireContext(),
+//                    R.drawable.divider_color_white8
+//                )?.let {
+//                    setDrawable(it)
+//                }
+//            })
     }
 
     private fun initToolBar() {

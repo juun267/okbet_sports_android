@@ -10,17 +10,17 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.content_bet_info_item.view.*
-import kotlinx.android.synthetic.main.content_bet_info_item.view.et_bet
-import kotlinx.android.synthetic.main.content_bet_info_item.view.tv_error_message
 import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail.view.*
+import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.*
+import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.et_bet
+import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.et_clickable
+import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.iv_bet_lock
+import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.tv_error_message
 import kotlinx.android.synthetic.main.content_bet_list_batch_control.view.*
 import kotlinx.android.synthetic.main.item_bet_list_batch_control.view.*
+import kotlinx.android.synthetic.main.item_bet_list_batch_control.view.ll_winnable
+import kotlinx.android.synthetic.main.item_bet_list_batch_control.view.tv_winnable_amount
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect.view.*
-import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect.view.et_clickable
-import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect.view.ll_winnable
-import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect.view.tv_winnable_amount
-import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect.view.iv_bet_lock
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.info.MatchOdd
@@ -102,7 +102,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         return when (viewType) {
             ViewType.Bet.ordinal -> BetInfoItemViewHolder(
                 layoutInflater.inflate(
-                    R.layout.content_bet_info_item,
+                    R.layout.content_bet_info_item_v2,
                     parent,
                     false
                 )
@@ -400,7 +400,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 et_clickable.setOnClickListener {
                     et_bet.isFocusable = true
-                    onItemClickListener.onShowKeyboard(et_bet, itemData.matchOdd, position, itemData.parlayOdds?.max?.toLong() ?: 0)
+                    //onItemClickListener.onShowKeyboard(et_bet, itemData.matchOdd, position, itemData.parlayOdds?.max?.toLong() ?: 0)
+                    layoutKeyBoard.showKeyboard(et_bet,position,itemData.parlayOdds?.max?.toLong() ?: 0,itemData.parlayOdds?.min?.toLong() ?: 0)
                     onSelectedPositionListener.onSelectChange(
                         bindingAdapterPosition,
                         BetViewType.SINGLE
