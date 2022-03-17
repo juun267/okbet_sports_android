@@ -45,7 +45,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="visible"
-                app:layout_constraintTop_toBottomOf="@id/v_toolbar"
                 app:use_controller="false" />
 
             <!--根據需求，先隱藏賽事動畫-->
@@ -53,8 +52,7 @@
                 android:visibility="gone"
                 android:id="@+id/web_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintTop_toBottomOf="@id/v_toolbar"/>
+                android:layout_height="match_parent" />
 
         </RelativeLayout>
 

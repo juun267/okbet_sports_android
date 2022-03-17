@@ -103,7 +103,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private val playCategoryAdapter by lazy {
         PlayCategoryAdapter().apply {
             playCategoryListener = PlayCategoryListener {
-                if (it.selectionType == SelectionType.SELECTABLE.code) { //被鎖 或是不能下拉
+                if (it.selectionType == SelectionType.SELECTABLE.code) {
                     when {
                         //這個是沒有點選過的狀況 第一次進來 ：開啟選單
                         !it.isSelected && it.isLocked == null -> {
@@ -160,7 +160,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     private val leagueAdapter by lazy {
-        LeagueAdapter(args.matchType).apply {
+        LeagueAdapter(args.matchType, getPlaySelectedCodeSelectionType(), getPlaySelectedCode()).apply {
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
             leagueListener = LeagueListener({
@@ -702,6 +702,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             }
                             leagueOdd.gameType = gameType
                         }.toMutableList()
+                        leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
+                        leagueAdapter.playSelectedCode = getPlaySelectedCode()
                     }
 
 //                    if (leagueOdds.isNotEmpty()) {
@@ -716,7 +718,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 //                    }
 
                     //如果data資料為空時，又有其他球種的情況下，自動選取第一個
-                    if (leagueAdapter.data.isNullOrEmpty() && gameTypeAdapter.dataSport.size > 1) {
+                    if (mLeagueOddList.isNullOrEmpty() && gameTypeAdapter.dataSport.size > 1) {
                         viewModel.getSportMenu(
                             args.matchType,
                             switchFirstTag = true,
@@ -1240,6 +1242,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             leagueOdds.filterMenuPlayCate()
                         }
 
+                        leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
+                        leagueAdapter.playSelectedCode = getPlaySelectedCode()
+
                         leagueOdds.forEachIndexed { index, leagueOdd ->
                             if (leagueOdd.matchOdds.any { matchOdd ->
                                     SocketUpdateUtil.updateMatchOdds(
@@ -1395,8 +1400,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                         if(nowGameType == leagueChangeEvent.gameType ){
                             when{
-                                !hasLeagueIdList -> {
+                                !hasLeagueIdList || args.matchType == MatchType.AT_START-> {
                                     //全刷
+                                    unSubscribeChannelHallAll()
                                     withContext(Dispatchers.Main) {
                                         viewModel.getGameHallList(args.matchType,false)
                                     }

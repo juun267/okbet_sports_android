@@ -15,6 +15,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
@@ -31,12 +32,14 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
     private var oddsSort: String?= null
     private var playCateNameMap: MutableMap<String?, Map<String?, String?>?>?= null
     private var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?= null //遊戲名稱顯示用playCateNameMap，下注顯示用betPlayCateNameMap
+    private var getPlaySelectedCodeSelectionType: Int? = null
 
-    fun setData(matchInfo: MatchInfo?, oddsSort: String?, playCateNameMap: MutableMap<String?, Map<String?, String?>?>?, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?) {
+    fun setData(matchInfo: MatchInfo?, oddsSort: String?, playCateNameMap: MutableMap<String?, Map<String?, String?>?>?, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?, getPlaySelectedCodeSelectionType: Int?) {
         this.matchInfo = matchInfo
         this.oddsSort = oddsSort
         this.playCateNameMap = playCateNameMap
         this.betPlayCateNameMap = betPlayCateNameMap
+        this.getPlaySelectedCodeSelectionType = getPlaySelectedCodeSelectionType
     }
 
     var odds: Map<String, List<Odd?>?> = mapOf()
@@ -50,15 +53,26 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
                     .plus(field.filterValues { !it.isNullOrEmpty() }
                         .filter { it.value?.getOrNull(0) == null }).map { it.key }.run {
                         val gameListFilter: MutableList<String>
-                        if (this.size > sizeCount(matchInfo?.gameType)) {
-                            gameListFilter = this.take(sizeCount(matchInfo?.gameType)) as MutableList<String>
-                        } else {
-                            val maxCount = if(sizeCount(matchInfo?.gameType) < oddsSortCount) sizeCount(matchInfo?.gameType) else oddsSortCount
-                            val count = if (sizeCount(matchInfo?.gameType) > this.size) maxCount - this.size else 0
 
-                            gameListFilter = this.take(this.size + 1).toMutableList()
-                            for (i in 1..count) {
-                                gameListFilter.add("EmptyData${i}")
+                        when{
+                            this.isNullOrEmpty() ->{
+                                gameListFilter = mutableListOf()
+                                gameListFilter.add("EmptyData1")
+                            }
+                            getPlaySelectedCodeSelectionType == SelectionType.SELECTABLE.code -> {
+                                gameListFilter = this.take(this.size + 1) as MutableList<String>
+                            }
+                            this.size > sizeCount(matchInfo?.gameType) -> {
+                                gameListFilter = this.take(sizeCount(matchInfo?.gameType)) as MutableList<String>
+                            }
+                            else -> {
+                                val maxCount = if(sizeCount(matchInfo?.gameType) < oddsSortCount) sizeCount(matchInfo?.gameType) else oddsSortCount
+                                val count = if (sizeCount(matchInfo?.gameType) > this.size) maxCount - this.size else 0
+
+                                gameListFilter = this.take(this.size + 1).toMutableList()
+                                for (i in 1..count) {
+                                    gameListFilter.add("EmptyData${i}")
+                                }
                             }
                         }
                         gameListFilter
