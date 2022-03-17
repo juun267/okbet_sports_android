@@ -157,6 +157,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             selectedSportType = null
             initViews()
             initGameTableBar()
+            initGameRecommendBar()
             initDiscount()
             initTable()
             initRecommend()
@@ -206,10 +207,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         mHomeListAdapter.setGameHighLightTitle()
     }
 
-    private fun initGameRecommendBar() {
-        mHomeListAdapter.setGameRecommendBar()
-    }
-
     private fun initDiscount() {
         val discount = viewModel.userInfo.value?.discount ?: 1.0F
         mRvGameTable4Adapter.notifyOddsDiscountChanged(discount)
@@ -244,6 +241,10 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 }
             }
         }
+    }
+
+    private fun initGameRecommendBar() {
+        mHomeListAdapter.setGameRecommendBar()
     }
 
     private fun initTable() {
@@ -369,8 +370,34 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
     private fun initRecommend() {
         updateRecommendVisibility(false)
-        rv_recommend.adapter = mRecommendAdapter
-        mRecommendAdapter.onClickOddListener = mOnClickOddListener
+//        rv_recommend.adapter = mRecommendAdapter
+        mHomeListAdapter.onRecommendClickOddListener = mOnClickOddListener
+        mHomeListAdapter.onRecommendClickOutrightOddListener = object : OnClickOddListener {
+            override fun onClickBet(
+                matchOdd: MatchOdd, odd: Odd, playCateCode: String, playCateName: String?,
+                betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
+            ) {
+                GameType.getGameType(matchOdd.matchInfo?.gameType)?.let { gameType ->
+                    viewModel.updateMatchBetListForOutRight(
+                        matchType = MatchType.OUTRIGHT,
+                        gameType = gameType,
+                        playCateCode = playCateCode,
+                        matchOdd = org.cxct.sportlottery.network.outright.odds.MatchOdd(
+                            matchInfo = matchOdd.matchInfo,
+                            oddsMap = matchOdd.oddsMap ?: mutableMapOf(),
+                            dynamicMarkets = matchOdd.dynamicMarkets ?: mapOf(),
+                            oddsList = null,
+                            quickPlayCateList = matchOdd.quickPlayCateList,
+                            betPlayCateNameMap = matchOdd.betPlayCateNameMap,
+                            playCateNameMap = matchOdd.playCateNameMap
+                        ),
+                        odd = odd,
+                    )
+                }
+            }
+        }
+
+        /*mRecommendAdapter.onClickOddListener = mOnClickOddListener
         mRecommendAdapter.onClickOutrightOddListener = object : OnClickOddListener {
             override fun onClickBet(matchOdd: MatchOdd, odd: Odd, playCateCode: String, playCateName: String?,
                                     betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?) {
@@ -392,9 +419,29 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     )
                 }
             }
+        }*/
+
+        mHomeListAdapter.onRecommendClickMoreListener = object : OnClickMoreListener {
+            override fun onClickMore(oddsKey: String, matchOdd: MatchOdd) {
+//                scroll_view.smoothScrollTo(0, 0)
+
+                val action = HomeFragmentDirections.actionHomeFragmentToGameOutrightMoreFragment(
+                    oddsKey,
+                    org.cxct.sportlottery.network.outright.odds.MatchOdd(
+                        matchInfo = matchOdd.matchInfo,
+                        oddsMap = matchOdd.oddsMap ?: mutableMapOf(),
+                        dynamicMarkets = matchOdd.dynamicMarkets ?: mapOf(),
+                        oddsList = listOf(),
+                        quickPlayCateList = matchOdd.quickPlayCateList,
+                        betPlayCateNameMap = matchOdd.betPlayCateNameMap,
+                        playCateNameMap = matchOdd.playCateNameMap
+                    )
+                )
+                findNavController().navigate(action)
+            }
         }
 
-        mRecommendAdapter.onClickMoreListener = object : OnClickMoreListener {
+        /*mRecommendAdapter.onClickMoreListener = object : OnClickMoreListener {
             override fun onClickMore(oddsKey: String, matchOdd: MatchOdd) {
                 scroll_view.smoothScrollTo(0, 0)
 
@@ -411,9 +458,24 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     )
                 findNavController().navigate(action)
             }
-        }
+        }*/
 
         mRecommendAdapter.onClickMatchListener = object : OnSelectItemListener<RecommendGameEntity> {
+            override fun onClick(select: RecommendGameEntity) {
+//                scroll_view.smoothScrollTo(0, 0)
+                val code = select.code
+                val matchId = select.matchInfo?.id
+
+                if (select.isOutright == RECOMMEND_OUTRIGHT) {
+                    navGameOutright(select.code, select.leagueId)
+                } else {
+                    //TODO simon test review 推薦賽事是不是一定是 MatchType.TODAY
+                    navOddsDetailFragment(code, matchId, MatchType.TODAY)
+                }
+            }
+        }
+
+        /*mRecommendAdapter.onClickMatchListener = object : OnSelectItemListener<RecommendGameEntity> {
                 override fun onClick(select: RecommendGameEntity) {
                     scroll_view.smoothScrollTo(0, 0)
                     val code = select.code
@@ -426,7 +488,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                         navOddsDetailFragment(code, matchId, MatchType.TODAY)
                     }
                 }
-            }
+            }*/
     }
 
     private fun initHighlight() {
@@ -1176,7 +1238,8 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     }
 
     private fun refreshRecommend(result: MatchRecommendResult) {
-        mRecommendAdapter.setData(result, viewModel.betIDList.value?.peekContent() ?: mutableListOf())
+        mHomeListAdapter.setRecommendData(result, viewModel.betIDList.value?.peekContent() ?: mutableListOf())
+//        mRecommendAdapter.setData(result, viewModel.betIDList.value?.peekContent() ?: mutableListOf())
         updateRecommendVisibility((result.rows?.size ?: 0) > 0)
     }
 

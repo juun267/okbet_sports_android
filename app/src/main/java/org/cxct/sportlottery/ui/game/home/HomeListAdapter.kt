@@ -461,17 +461,17 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val dataList = mutableListOf<RecommendGameEntity>()
         result.rows?.forEach { row ->
             row.leagueOdds?.matchOdds?.forEach { oddData ->
-                val beans = oddData.oddsMap.toSortedMap(compareBy<String> {
+                val beans = oddData.oddsMap?.toSortedMap(compareBy<String> {
                     val sortOrder = oddData.oddsSort?.split(",")
                     sortOrder?.indexOf(it)
-                }.thenBy { it }).map {
+                }.thenBy { it })?.map {
                     OddBean(it.key, it.value?.toList() ?: listOf())
                 }
 
-                beans.forEach {
-                    it.oddList?.forEach { odd ->
+                beans?.forEach {
+                    it.oddList.forEach { odd ->
                         odd?.id?.let { id ->
-                            odd?.isSelected = selectedOdds.contains(id)
+                            odd.isSelected = selectedOdds.contains(id)
                         }
                     }
                 }
@@ -483,7 +483,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     leagueName = if (row.isOutright == RECOMMEND_OUTRIGHT) row.leagueOdds.matchOdds.firstOrNull()?.matchInfo?.name else row.leagueOdds.league?.name,
                     matchInfo = oddData.matchInfo,
                     isOutright = row.isOutright,
-                    oddBeans = beans,
+                    oddBeans = beans ?: listOf(),
                     dynamicMarkets = oddData.dynamicMarkets,
                     playCateMappingList = oddData.playCateMappingList,
                     betPlayCateNameMap = oddData.betPlayCateNameMap,
