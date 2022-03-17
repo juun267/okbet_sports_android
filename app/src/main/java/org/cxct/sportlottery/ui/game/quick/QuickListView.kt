@@ -34,6 +34,8 @@ class QuickListView @JvmOverloads constructor(context: Context, attrs: Attribute
     private var mOddsType: OddsType = OddsType.HK
     private var mLeagueOddListener: LeagueOddListener? = null
     private var mCloseTag = false
+    private var mPlaySelectedCodeSelectionType: Int? = null
+    private var mPlaySelectedCode: String? = null
 
     init {
         addView(LayoutInflater.from(context).inflate(R.layout.view_quick_list, this, false))
@@ -96,7 +98,7 @@ class QuickListView @JvmOverloads constructor(context: Context, attrs: Attribute
                                 setupQuickOddButtonPair(mSelectedQuickPlayCate!!, quickOdds, mOddsType, mLeagueOddListener)
                             }
                             org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_CORNERS.value, org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_PENALTY.value -> {
-                                setupQuickOddButtonPager(quickOdds, mOddsType, mLeagueOddListener, quickListResult.quickListData)
+                                setupQuickOddButtonPager(quickOdds, mOddsType, mLeagueOddListener, quickListResult.quickListData, )
                             }
                             org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_EPS.value -> {
                                 setupQuickOddButtonEps(mSelectedQuickPlayCate!!, quickOdds, mOddsType, mLeagueOddListener)
@@ -110,12 +112,14 @@ class QuickListView @JvmOverloads constructor(context: Context, attrs: Attribute
         }
     }
 
-    fun setDatas(matchOdd: MatchOdd, oddsType: OddsType, leagueOddListener: LeagueOddListener?) {
+    fun setDatas(matchOdd: MatchOdd, oddsType: OddsType, leagueOddListener: LeagueOddListener?, playSelectedCodeSelectionType: Int?, playSelectedCode: String?) {
         mOddsType = oddsType
         mMatchOdd = matchOdd
         mMatchId = matchOdd.matchInfo?.id ?: ""
         mQuickPlayCateList = matchOdd.quickPlayCateList ?: mutableListOf()
         mLeagueOddListener = leagueOddListener
+        mPlaySelectedCodeSelectionType = playSelectedCodeSelectionType
+        mPlaySelectedCode = playSelectedCode
     }
 
     fun refreshTab() {
@@ -221,7 +225,8 @@ class QuickListView @JvmOverloads constructor(context: Context, attrs: Attribute
                 mMatchOdd?.matchInfo,
                 null,
                 quickListData?.playCateNameMap,
-                quickListData?.betPlayCateNameMap
+                quickListData?.betPlayCateNameMap,
+                mPlaySelectedCodeSelectionType
             )
             this.adapter = quickOddButtonPagerAdapter.apply {
                 stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT

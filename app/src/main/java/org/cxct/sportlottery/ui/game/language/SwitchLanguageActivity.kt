@@ -53,10 +53,10 @@ class SwitchLanguageActivity : BaseActivity<LoginViewModel>(LoginViewModel::clas
     }
 
     private fun initView(){
-        if(BuildConfig.CHANNEL_NAME == "spkx"){
-            binding.llChina.visibility  = View.GONE
-            binding.llVietnam.visibility  = View.GONE
-        }
+//        if(BuildConfig.CHANNEL_NAME == "spkx"){
+//            binding.llChina.visibility  = View.GONE
+//            binding.llVietnam.visibility  = View.GONE
+//        }
         binding.ivBack.setOnClickListener(this)
         binding.llEnglish.setOnClickListener(this)
         binding.llChina.setOnClickListener(this)

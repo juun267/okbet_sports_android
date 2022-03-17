@@ -563,7 +563,7 @@ class GameViewModel(
         onlyRefreshSportMenu: Boolean = true
     ) {
         if (!onlyRefreshSportMenu)
-            _isLoading.value = true
+            _isLoading.postValue(true)
 
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -599,7 +599,7 @@ class GameViewModel(
             }
         }
 
-        _isLoading.value = false
+        _isLoading.postValue(false) // TODO IllegalStateException: Cannot invoke setValue on a background thread
     }
 
     fun getAllPlayCategory(matchType: MatchType) {
