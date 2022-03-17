@@ -39,6 +39,11 @@ class GameTableBarViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
         itemView.rb_in_play.visibility = if (inPlayCount == 0) View.GONE else View.VISIBLE
         itemView.rb_as_start.visibility = if (atStartCount == 0) View.GONE else View.VISIBLE
+
+        if (inPlayCount != 0)
+            itemView.rb_in_play.performClick()
+        else if (atStartCount != 0)
+            itemView.rb_as_start.performClick()
     }
 
     interface Listener {

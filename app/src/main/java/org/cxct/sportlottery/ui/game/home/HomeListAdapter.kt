@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.zhy.adapter.recyclerview.CommonAdapter
 import com.zhy.adapter.recyclerview.base.ViewHolder
 import kotlinx.android.synthetic.main.home_game_highlight_title.view.*
@@ -21,7 +22,9 @@ import kotlinx.android.synthetic.main.home_sport_table_4.view.*
 import kotlinx.android.synthetic.main.itemview_sport_type_list.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
+import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeString
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.MenuCode
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
@@ -358,9 +361,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun setGameTableBar(homeGameTableBarItemData: HomeGameTableBarItemData? = HomeGameTableBarItemData()) {
         homeGameTableBarItemData?.let {
             removeDatas(it)
-            val inPlayCount = homeGameTableBarItemData.inPlayResult?.matchPreloadData?.num ?: 0
-            val atStartCount = homeGameTableBarItemData.atStartResult?.matchPreloadData?.num ?: 0
-            if (inPlayCount != 0 && atStartCount != 0) addDataWithSort(it)
+            addDataWithSort(it)
         }
     }
     // endregion
@@ -582,14 +583,14 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     onClickTotalMatchListener?.onClick(data)
                 }
 
-                data.matchOdds?.let {
+                data.matchOdds.let {
                     // TODO 這裡存在一個隱性的效能問題
                     if (data.vpTableAdapter == null) data.vpTableAdapter = Vp2GameTable4Adapter(mMatchType)
                     data.vpTableAdapter?.onClickMatchListener = onClickMatchListener
                     data.vpTableAdapter?.onClickOddListener = onClickOddListener
                     data.vpTableAdapter?.onClickFavoriteListener = onClickFavoriteListener
                     data.vpTableAdapter?.onClickStatisticsListener = onClickStatisticsListener
-                    data.vpTableAdapter?.setData(data.code ?: "", it, isLogin ?: false, oddsType, data.playCateNameMap ?: mapOf(), selectedOdds)
+                    data.vpTableAdapter?.setData(data.code ?: "", it, isLogin ?: false, oddsType, data.playCateNameMap ?: mutableMapOf(), selectedOdds)
                     view_pager.adapter = data.vpTableAdapter
 
                     indicator_view.setupWithViewPager2(view_pager)
@@ -600,6 +601,19 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                             View.VISIBLE
                         }
                     }
+
+                    view_pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                        override fun onPageSelected(position: Int) {
+                            super.onPageSelected(position)
+                            if (position < 0 || position >= it.size || it.isNullOrEmpty()) return
+                            val matchOdd = it[position]
+                            onSubscribeChannelHallListener?.subscribeChannel(
+                                matchOdd.matchInfo?.gameType,
+                                if (mMatchType == MatchType.IN_PLAY || mMatchType == MatchType.MAIN) MenuCode.HOME_INPLAY_MOBILE.code else MenuCode.HOME_ATSTART_MOBILE.code,
+                                matchOdd.matchInfo?.id
+                            )
+                        }
+                    })
                 }
 
                 OverScrollDecoratorHelper.setUpOverScroll(
@@ -637,7 +651,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         getGameIcon(t.code)?.let {
                             holder.getView<ImageView>(R.id.ivSportLogo).setImageResource(it)
                         }
-                        holder.setText(R.id.tvSport, t.name)
+                        holder.setText(R.id.tvSport, getGameTypeString(context, t.name))
                         holder.setText(R.id.tvSportCount, t.num.toString())
                         holder.getView<LinearLayout>(R.id.layoutSport).setOnClickListener {
                             onClickSportListener?.onClick(t)
