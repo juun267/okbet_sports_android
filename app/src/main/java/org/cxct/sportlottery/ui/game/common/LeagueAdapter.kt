@@ -227,7 +227,8 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
             }
 
             itemView.setOnClickListener {
-                data[adapterPosition].unfold = if (data[adapterPosition].unfold == FoldState.UNFOLD.code) { FoldState.FOLD.code } else { FoldState.UNFOLD.code }
+                if(adapterPosition > data.size - 1) return@setOnClickListener
+                data[adapterPosition].unfold = if (data[adapterPosition].unfold == FoldState.UNFOLD.code) { FoldState.FOLD.code } else { FoldState.UNFOLD.code } // TODO IndexOutOfBoundsException: Index: 10, Size: 5
 
                 notifyItemChanged(adapterPosition)
                 //updateTimer(matchType, item.gameType)
