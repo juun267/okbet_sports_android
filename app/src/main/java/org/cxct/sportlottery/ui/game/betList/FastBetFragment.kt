@@ -118,7 +118,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private val keyboard: KeyBoardUtil by lazy {
         KeyBoardUtil(
-            kv_keyboard,
+            binding.kvKeyboard,
             null,
             sConfigData?.presetBetAmount ?: mutableListOf(),
             isLogin ?: false,
@@ -129,8 +129,8 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 }
 
                 override fun showOrHideKeyBoardBackground(isShow: Boolean, position: Int?) {
-                    ll_keyboard_bg.visibility = if(isShow) View.VISIBLE else View.GONE
-                    v_keyboard_shadow.visibility = if(isShow) View.VISIBLE else View.GONE
+                    binding.llKeyboardBg.visibility = if(isShow) View.VISIBLE else View.GONE
+                    //v_keyboard_shadow.visibility = if(isShow) View.VISIBLE else View.GONE
                 }
             }
         )
@@ -169,7 +169,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initClose() {
-        iv_close.setOnClickListener {
+        binding.ivClose.setOnClickListener {
             viewModel.removeBetInfoSingle()
             dismiss()
         }
@@ -182,7 +182,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
 
     private fun initKeyBoard() {
-        et_bet.setOnTouchListener { view, event ->
+        binding.etBet.setOnTouchListener { view, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 if (matchOdd?.status == BetStatus.ACTIVATED.code) keyboard.showKeyboard(
                     view as EditText,
@@ -234,28 +234,28 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             it.visibility = View.GONE
             ll_win_quota_detail.visibility = View.VISIBLE
 
-            et_bet.apply {
+            binding.etBet.apply {
                 setText(parlayOdd?.max.toString())
                 isFocusable = true
                 setSelection(text.length)
             }
-            keyboard.showKeyboard(et_bet, null, betInfoListData?.parlayOdds?.max?.toLong() ?: GameConfigManager.maxBetMoney?.toLong() ?: 0)
+            keyboard.showKeyboard(binding.etBet, null, betInfoListData?.parlayOdds?.max?.toLong() ?: GameConfigManager.maxBetMoney?.toLong() ?: 0)
         }
     }
 
 
     private fun initEditText() {
-        et_bet.apply {
+        binding.etBet.apply {
             filters = arrayOf(MoneyInputFilter())
         }
 
-        et_bet.afterTextChanged {
+        binding.etBet.afterTextChanged {
             button_bet.tv_quota.text =
                 TextUtil.formatMoney(if (it.isEmpty()) 0.0 else (it.toDoubleOrNull() ?: 0.0))
 
             if (it.isEmpty()) {
                 button_bet.tv_quota.text = TextUtil.formatBetQuota(0)
-                tvRealAmount.text = ArithUtil.toMoneyFormat(0.0)
+                binding.tvRealAmount.text = ArithUtil.toMoneyFormat(0.0)
                 tv_check_maximum_limit.visibility = View.GONE
                 ll_bet_quota_detail.visibility = View.GONE
                 ll_win_quota_detail.visibility = View.VISIBLE
@@ -271,8 +271,8 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
                 betInfoListData?.parlayOdds?.max?.let { max ->
                     if (quota > max) {
-                        et_bet.setText(max.toString())
-                        et_bet.setSelection(max.toString().length)
+                        binding.etBet.setText(max.toString())
+                        binding.etBet.setSelection(max.toString().length)
                         return@afterTextChanged
                     }
                 }
@@ -292,32 +292,32 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     OddsType.MYS -> {
                         if (getOdds(matchOdd, currentOddsType) < 0) {
                             realAmount = quota * kotlin.math.abs(getOdds(matchOdd, currentOddsType))
-                            tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
+                            binding.tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
                             win = quota
                         } else {
                             win = quota * getOdds(matchOdd, currentOddsType)
-                            tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
+                            binding.tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
                         }
 
                     }
                     OddsType.IDN -> {
                         if (getOdds(matchOdd, currentOddsType) < 0) {
                             realAmount = quota * kotlin.math.abs(getOdds(matchOdd, currentOddsType))
-                            tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
+                            binding.tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
                             win = quota
                         } else {
                             win = quota * getOdds(matchOdd, currentOddsType)
-                            tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
+                            binding.tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
                         }
                     }
                     OddsType.EU -> {
                         win = quota * (getOdds(matchOdd, currentOddsType) - 1)
-                        tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
+                        binding.tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
 
                     }
                     else -> {
                         win = quota * getOdds(matchOdd, currentOddsType)
-                        tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
+                        binding.tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
                     }
                 }
                 button_bet.tv_quota.text = TextUtil.format(realAmount)
@@ -350,16 +350,16 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun checkMinQuota(quota: Double) {
         betInfoListData?.parlayOdds?.min?.let { min ->
             if (quota < min) {
-                tv_error_message.text = String.format(
+                binding.tvErrorMessage.text = String.format(
                     (context
                         ?: requireContext()).getString(R.string.bet_info_list_minimum_limit_amount),
                     min,
                     sConfigData?.systemCurrency
                 )
-                tv_error_message.visibility = View.VISIBLE
+                binding.tvErrorMessage.visibility = View.VISIBLE
                 button_bet.amountCanBet = false
             } else {
-                tv_error_message.visibility = View.GONE
+                binding.tvErrorMessage.visibility = View.GONE
                 button_bet.amountCanBet = true
             }
         }
@@ -407,11 +407,11 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                                         currentOddsType
                                     )
                                 )
-                                tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
+                                binding.tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
                                 win = betAmount
                             } else {
                                 win = betAmount * getOdds(matchOdd, currentOddsType)
-                                tvRealAmount.text = ArithUtil.toMoneyFormat(betAmount)
+                                binding.tvRealAmount.text = ArithUtil.toMoneyFormat(betAmount)
                             }
 
                         }
@@ -423,21 +423,21 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                                         currentOddsType
                                     )
                                 )
-                                tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
+                                binding.tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
                                 win = betAmount
                             } else {
                                 win = betAmount * getOdds(matchOdd, currentOddsType)
-                                tvRealAmount.text = ArithUtil.toMoneyFormat(betAmount)
+                                binding.tvRealAmount.text = ArithUtil.toMoneyFormat(betAmount)
                             }
                         }
                         OddsType.EU -> {
                             win = betAmount * (getOdds(matchOdd, currentOddsType) - 1)
-                            tvRealAmount.text = ArithUtil.toMoneyFormat(betAmount)
+                            binding.tvRealAmount.text = ArithUtil.toMoneyFormat(betAmount)
 
                         }
                         else -> {
                             win = betAmount * getOdds(matchOdd, currentOddsType)
-                            tvRealAmount.text = ArithUtil.toMoneyFormat(betAmount)
+                            binding.tvRealAmount.text = ArithUtil.toMoneyFormat(betAmount)
                         }
                     }
 
@@ -581,7 +581,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
     ) {
         //隊伍名稱
-        tv_match.text =
+        binding.tvMatch.text =
             if (betInfoListData?.matchType == MatchType.OUTRIGHT) betInfoListData?.outrightMatchInfo?.name
             else "${matchOdd.homeName}${getString(R.string.verse_)}${matchOdd.awayName}"
 
@@ -593,7 +593,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         val inPlay = System.currentTimeMillis() > matchOdd.startTime ?: 0
         when {
             betPlayCateNameMap.isNullOrEmpty() -> {
-                tv_name.text = if (inPlay && betInfoListData?.matchType != MatchType.OUTRIGHT) {
+                binding.tvName.text = if (inPlay && betInfoListData?.matchType != MatchType.OUTRIGHT) {
                     getString(
                         R.string.bet_info_in_play_score,
                         nameOneLine(matchOdd.playCateName),
@@ -603,7 +603,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 } else nameOneLine(matchOdd.playCateName)
             }
             else -> {
-                tv_name.text = if (inPlay && betInfoListData?.matchType != MatchType.OUTRIGHT) {
+                binding.tvName.text = if (inPlay && betInfoListData?.matchType != MatchType.OUTRIGHT) {
                     getString(
                         R.string.bet_info_in_play_score,
                         betPlayCateNameMap?.get(matchOdd.playCode)
@@ -619,27 +619,27 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
 
         if (matchOdd.status == BetStatus.ACTIVATED.code) {
-            cl_item_background.setBackgroundColor(
+            binding.clItemBackground.setBackgroundColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.colorWhite
                 )
             )
-            iv_bet_lock.visibility = View.GONE
-            et_bet.isFocusable = true
-            et_bet.isFocusableInTouchMode = true
+            binding.ivBetLock.visibility = View.GONE
+            binding.etBet.isFocusable = true
+            binding.etBet.isFocusableInTouchMode = true
             cl_quota_detail.visibility = View.VISIBLE
             cl_close_waring.visibility = View.GONE
         } else {
-            cl_item_background.setBackgroundColor(
+            binding.clItemBackground.setBackgroundColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.colorWhite2
                 )
             )
-            iv_bet_lock.visibility = View.VISIBLE
-            et_bet.isFocusable = false
-            et_bet.isFocusableInTouchMode = false
+            binding.ivBetLock.visibility = View.VISIBLE
+            binding.etBet.isFocusable = false
+            binding.etBet.isFocusableInTouchMode = false
             keyboard.hideKeyboard()
             cl_quota_detail.visibility = View.GONE
             cl_close_waring.visibility = View.VISIBLE
@@ -653,7 +653,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
 
         betInfoListData?.let { betInfoData ->
-            et_bet.apply {
+            binding.etBet.apply {
 //                hint = getLimitHint(
 //                    context,
 //                    betInfoListData?.parlayOdds?.min ?: 0,
@@ -670,7 +670,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 oddsType
             }
             betInfoData.singleBetOddsType = currentOddsType
-            OddSpannableString.setupOddsContent(betInfoData, currentOddsType, tv_odds_content)
+            OddSpannableString.setupOddsContent(betInfoData, currentOddsType, binding.tvOddsContent)
         }
     }
 
@@ -695,7 +695,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun addBetSingle() {
         if (matchOdd?.status == BetStatus.LOCKED.code || matchOdd?.status == BetStatus.DEACTIVATED.code) return
-        val stake = if (et_bet.text.toString().isEmpty()) 0.0 else et_bet.text.toString().toDouble()
+        val stake = if (binding.etBet.text.toString().isEmpty()) 0.0 else binding.etBet.text.toString().toDouble()
 
         if (stake > currentMoney ?: 0.0) {
             showErrorPromptDialog(

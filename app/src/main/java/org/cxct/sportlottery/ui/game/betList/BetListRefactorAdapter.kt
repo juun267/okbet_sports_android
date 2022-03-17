@@ -630,9 +630,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             itemCount: Int,
             onItemClickListener: OnItemClickListener
         ) {
-            itemView.iv_close.setOnClickListener {
-                onItemClickListener.onDeleteClick(itemData.matchOdd.oddsId, itemCount)
-            }
+//            itemView.iv_close.setOnClickListener {
+//                onItemClickListener.onDeleteClick(itemData.matchOdd.oddsId, itemCount)
+//            }
         }
 
         private fun setupMaximumLimitView(

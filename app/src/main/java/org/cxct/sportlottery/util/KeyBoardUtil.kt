@@ -35,9 +35,11 @@ class KeyBoardUtil(
     private fun setPresetBetAmount(keys: MutableList<Keyboard.Key>) {
        keys.forEach {
            when(it.codes[0]){
-               KeyBoardCode.PLUS_10.code -> it.label = "+ ${presetBetAmount[0]}"
+               KeyBoardCode.PLUS_25.code -> it.label = "+ ${presetBetAmount[0]}"
                KeyBoardCode.PLUS_50.code -> it.label = "+ ${presetBetAmount[1]}"
-               KeyBoardCode.PLUS_100.code -> it.label = "+ ${presetBetAmount[2]}"
+               KeyBoardCode.PLUS_75.code -> it.label = "+ ${presetBetAmount[2]}"
+               KeyBoardCode.PLUS_100.code -> it.label = "+ ${presetBetAmount[3]}"
+
            }
        }
     }
@@ -102,11 +104,13 @@ class KeyBoardUtil(
                 hideKeyboard()
             }
 
-            KeyBoardCode.PLUS_10.code -> plus(presetBetAmount[0].toLong())
+            //KeyBoardCode.PLUS_10.code -> plus(presetBetAmount[0].toLong())
+            KeyBoardCode.PLUS_25.code -> plus(presetBetAmount[0].toLong())
 
             KeyBoardCode.PLUS_50.code -> plus(presetBetAmount[1].toLong())
+            KeyBoardCode.PLUS_75.code -> plus(presetBetAmount[2].toLong())
 
-            KeyBoardCode.PLUS_100.code -> plus(presetBetAmount[2].toLong())
+            KeyBoardCode.PLUS_100.code -> plus(presetBetAmount[3].toLong())
 
             KeyBoardCode.MAX.code -> {
                 if(isLogin){
