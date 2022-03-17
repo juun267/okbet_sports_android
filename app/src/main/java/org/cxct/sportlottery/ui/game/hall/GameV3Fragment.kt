@@ -76,7 +76,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 viewModel.getSportMenu(args.matchType, onlyRefreshSportMenu = true)
                 viewModel.getAllPlayCategory(args.matchType)
                 viewModel.switchSportType(args.matchType, it)
-                notifyDataSetChanged()
+//                notifyDataSetChanged()
             }
 
             thirdGameListener = ThirdGameListener {
@@ -443,7 +443,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     private fun setupSportBackground(view: View) {
         view.game_bg_layer2.visibility = when (args.matchType) {
-            MatchType.IN_PLAY, MatchType.AT_START, MatchType.OUTRIGHT, MatchType.EPS, MatchType.OTHER -> View.VISIBLE
+            MatchType.IN_PLAY, MatchType.AT_START, MatchType.OUTRIGHT, MatchType.EPS -> View.VISIBLE
             else -> View.GONE
         }
 
@@ -748,8 +748,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                 }
                 refreshToolBarUI(this.view)
-                hideLoading()
             }
+            hideLoading()
         }
 
         // 接收快選列表資料
@@ -813,8 +813,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         }
                     }
                 }
-                hideLoading()
             }
+            hideLoading()
         }
 
         viewModel.leagueListResult.observe(this.viewLifecycleOwner) {
@@ -861,13 +861,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         }
                     }
                 }
-                hideLoading()
             }
+            hideLoading()
         }
 
         viewModel.outrightLeagueListResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { outrightSeasonListResult ->
-
                 if (game_tab_odd_v4.visibility == View.VISIBLE && game_tabs.selectedTabPosition != 1)
                     return@observe
 
@@ -880,8 +879,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         }
                     }
                 }
-                hideLoading()
             }
+            hideLoading()
         }
 
         viewModel.epsListResult.observe(this.viewLifecycleOwner) {
@@ -1157,7 +1156,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         )
 
                         viewModel.getMatchCategoryQuery(args.matchType)
-
                         subscribeSportChannelHall(args.matchType.name)
                     }
                 }
@@ -1188,11 +1186,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 //leagueAdapter.updateBySocket(index)
                             }
                         }
-                        //如果當前球類沒有任何賽事，改為選取第一個有賽事的球種
-                        // 此段邏輯待修正
-//                        if (leagueAdapter.data.size == 0) {
-//                            viewModel.getSportMenu(args.matchType, switchFirstTag = true)
-//                        }
                     }
                 }
             }
