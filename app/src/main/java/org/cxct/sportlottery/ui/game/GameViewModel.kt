@@ -626,6 +626,10 @@ class GameViewModel(
 
     var currentSpecialCode = ""
 
+    fun resrtOtherSeelectedGameType() {
+        specialMenuData = null
+    }
+
     fun getAllPlayCategoryBySpecialMatchType(code: String = _specialEntrance.value?.couponCode ?: currentSpecialCode, item: Item? = null, isReload: Boolean = false) {
         currentSpecialCode = code
 
