@@ -31,6 +31,7 @@ import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.ui.common.CustomLinearLayoutManager
+import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TimeUtil
@@ -1091,38 +1092,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         }
                 }
 
-//                registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-//                    override fun onPageScrolled(
-//                        position: Int,
-//                        positionOffset: Float,
-//                        positionOffsetPixels: Int
-//                    ) {
-//                        super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-//
-//                        item.quickPlayCateList?.find { it.isSelected }?.positionButtonPage =
-//                            position
-//                    }
-//                })
-
-//                setCurrentItem(
-//                    item.quickPlayCateList?.find { it.isSelected }?.positionButtonPage ?: 0, false
-//                )
-//                getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
-//                OverScrollDecoratorHelper.setUpOverScroll(
-//                    getChildAt(0) as RecyclerView,
-//                    OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL
-//                )
+                OverScrollDecoratorHelper.setUpOverScroll(this, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
             }
-
-//            itemView.quick_odd_btn_indicator_other.apply {
-//                visibility =
-//                    if (item.quickPlayCateList?.find { it.isSelected }?.quickOdds?.size ?: 0 > 2) {
-//                        View.VISIBLE
-//                    } else {
-//                        View.GONE
-//                    }
-//                setupWithViewPager2(itemView.quick_odd_btn_pager_other)
-//            }
         }
 
         private fun setupQuickOddButtonEps(

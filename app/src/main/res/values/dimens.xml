@@ -137,4 +137,7 @@
     <dimen name="icon_signifier_marginEnd">16dp</dimen>
     <dimen name="icon_signifier_marginTop">14dp</dimen>
 
+
+    <dimen name="quick_view_horizontal_scroll_height">224dp</dimen>
+
 </resources>
