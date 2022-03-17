@@ -210,8 +210,7 @@ class AccountHistoryNextAdapter(
                     binding.playContent.setPlayContent(
                         playName,
                         spread,
-                        odds?.let { TextUtil.formatForOdd(it) },
-                        it
+                        odds?.let { TextUtil.formatForOdd(it) }
                     )
                 }
                 binding.tvGameTypePlayCate.text = "${GameType.getGameTypeString(binding.tvGameTypePlayCate.context, row.gameType)} $playCateName"
@@ -253,14 +252,11 @@ class AccountHistoryNextAdapter(
 
             first?.let { it ->
 
-                it.oddsType?.let { t ->
-                    binding.tvContent.setPlayContent(
-                        it.playName,
-                        it.spread,
-                        it.odds?.let { odd -> TextUtil.formatForOdd(odd) },
-                        t
-                    )
-                }
+                binding.tvContent.setPlayContent(
+                    it.playName,
+                    it.spread,
+                    it.odds?.let { odd -> TextUtil.formatForOdd(odd) }
+                )
 
                 binding.tvStartTime.text = TimeUtil.timeFormat(it.startTime, TimeUtil.YMD_HM_FORMAT)
 
