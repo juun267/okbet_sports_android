@@ -81,8 +81,8 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     /*private var mInPlayResult: MatchPreloadResult? = null
     private var mAtStartResult: MatchPreloadResult? = null*/
 
-    private val mHighlightGameTypeAdapter = GameTypeAdapter()
-    private val mRvHighlightAdapter = RvHighlightAdapter()
+    /*private val mHighlightGameTypeAdapter = GameTypeAdapter()
+    private val mRvHighlightAdapter = RvHighlightAdapter()*/
 
 //    private val mRecommendAdapter = RvRecommendAdapter()
 
@@ -124,6 +124,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             else {
                 tableSoonMap[gameType] = eventId ?: ""
             }
+            Timber.e("Dean subscribeChannelHall gameType = $gameType, cateMenuCode = $cateMenuCode, eventId = $eventId")
             subscribeChannelHall(gameType, cateMenuCode, eventId)
         }
     }
@@ -639,7 +640,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     }
 
     private fun refreshHighlight(result: MatchCategoryResult?) {
-        val sportCode = mHighlightGameTypeAdapter.dataSport.find { it.isSelected }?.code ?: ""
+        val sportCode = mHomeListAdapter.getDataSport().find { it.isSelected }?.code ?: ""
         mHomeListAdapter.setMatchOdd(
             sportCode,
             result?.t?.odds,
@@ -749,8 +750,8 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     //訂閱 精選賽事 賠率
     private fun subscribeHighlightHallChannel(result: MatchCategoryResult? = null) {
         lifecycleScope.launch {
-            val code = mHighlightGameTypeAdapter.dataSport.find { it.isSelected }?.code ?: ""
-            result ?: mRvHighlightAdapter.getData().forEach { matchOdd ->
+            val code = mHomeListAdapter.getDataSport().find { it.isSelected }?.code ?: ""
+            result ?: mHomeListAdapter.getMatchOdd().forEach { matchOdd ->
                 subscribeChannelHall(
                     code,
                     MenuCode.SPECIAL_MATCH_MOBILE.code,
@@ -762,8 +763,8 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
     private fun unsubscribeHighlightHallChannel() {
         lifecycleScope.launch {
-            val code = mHighlightGameTypeAdapter.dataSport.find { it.isSelected }?.code ?: ""
-            mRvHighlightAdapter.getData().forEach { matchOdd ->
+            val code = mHomeListAdapter.getDataSport().find { it.isSelected }?.code ?: ""
+            mHomeListAdapter.getMatchOdd().forEach { matchOdd ->
                 unSubscribeChannelHall(
                     code,
                     MenuCode.SPECIAL_MATCH_MOBILE.code,
@@ -965,11 +966,11 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 }
             }*/
 
-            mRvHighlightAdapter.getData().forEach {
+            mHomeListAdapter.getMatchOdd().forEach {
                 it.matchInfo?.isFavorite = favorMatchList.contains(it.matchInfo?.id)
             }
 
-            mRvHighlightAdapter.notifyDataSetChanged()
+//            mRvHighlightAdapter.notifyDataSetChanged()
         }
 
         viewModel.isCreditAccount.observe(viewLifecycleOwner) {
@@ -1124,18 +1125,18 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     }
                     MenuCode.SPECIAL_MATCH_MOBILE -> {
                         //精選賽事
-                        val highlightDataList = mRvHighlightAdapter.getData()
+                        val highlightDataList = mHomeListAdapter.getMatchOdd()
                         var isUpdate = false
                         highlightDataList.forEach { updateMatchOdd ->
                             if (SocketUpdateUtil.updateMatchOdds(context, updateMatchOdd, oddsChangeEvent)) {
                                 isUpdate = true
                             }
                         }
-                        if (isUpdate) {
+                        /*if (isUpdate) {
                             Handler(Looper.getMainLooper()).post {
                                 mRvHighlightAdapter.notifyDataSetChanged()
                             }
-                        }
+                        }*/
                     }
                 }
             }
@@ -1200,7 +1201,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 }
 
                 //精選賽事
-                val highlightDataList = mRvHighlightAdapter.getData()
+                val highlightDataList = mHomeListAdapter.getMatchOdd()
                 highlightDataList.forEachIndexed { index, updateMatchOdd ->
                     if (!updateMatchOdd.oddsMap.isNullOrEmpty()) {
                         updateMatchOdd.oddsMap?.forEach { oldOddMap ->
@@ -1209,7 +1210,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
                                 oldOdd.status = BetStatus.LOCKED.code
 
-                                mRvHighlightAdapter.notifyItemChanged(index)
+                                mHomeListAdapter.notifyItemChanged(index)
                             }
                         }
                     }
@@ -1238,9 +1239,9 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 }
 
                 //精選賽事
-                mRvHighlightAdapter.getData().forEachIndexed { index, matchOdd ->
+                mHomeListAdapter.getMatchOdd().forEachIndexed { index, matchOdd ->
                     if (SocketUpdateUtil.updateOddStatus(matchOdd, globalStopEvent)) {
-                        mRvHighlightAdapter.notifyItemChanged(index)
+                        mHomeListAdapter.notifyItemChanged(index)
                     }
                 }
             }
