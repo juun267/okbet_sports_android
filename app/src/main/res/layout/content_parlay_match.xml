@@ -120,7 +120,7 @@
             android:textColor="@color/colorGray"
             android:layout_marginTop="4dp"
             android:textSize="@dimen/textSize13sp"
-            tools:text="密尔沃基雄鹿 6.5 \@ 1.860 (印尼盘)" />
+            tools:text="密尔沃基雄鹿 6.5 \@ 1.860" />
 
     </LinearLayout>
 </LinearLayout>

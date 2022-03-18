@@ -69,7 +69,7 @@
     <string name="hint_e_mail">Email</string>
     <string name="error_e_mail">Email formatted incorrectly</string>
     <string name="postal_code">Postal code</string>
-    <string name="hint_postal_code">(Please enter ZIP code)</string>
+    <string name="hint_postal_code">(Please enter Postal code)</string>
     <string name="province">Province</string>
     <string name="hint_province">(Please enter province)</string>
     <string name="city">City</string>
@@ -611,7 +611,7 @@
     <string name="bet_info_list_clean">Clear all</string>
     <string name="bet_info_bet_balance_insufficient">Balance is not enough</string>
     <string name="bet_info_different_game_type">Different ball species can not be linked for parlay</string>
-    <string name="bet_info_input_quota">Enter the amount</string>
+    <string name="bet_info_input_quota">Please enter the amount</string>
     <string name="bet_info_check_maximum_limit">MAX BET</string>
     <string name="bet_info_bet_quota">bet amount</string>
     <string name="bet_info_win_quota">To win</string>
@@ -946,9 +946,9 @@
     <string name="verify_failed_please_retry">Verification failed, please try again</string>
     <string name="text_cant_play">Unable to play in your area</string>
     <string name="text_bet_not_success">Bet slip status is&#160;</string>
-    <string name="text_bet_not_success2">Waiting</string>
-    <string name="text_bet_not_success3">&#160;our bet slip is processing, please check &#160;</string>
-    <string name="text_bet_not_success4">Record</string>
+    <string name="text_bet_not_success2">waiting</string>
+    <string name="text_bet_not_success3">&#160;Your bet slip is processing, please check &#160;</string>
+    <string name="text_bet_not_success4">Record.</string>
     <!--自我禁制-->
     <string name="self_limit">Self-exclusion</string>
     <string name="self_limit_impotent">Attention</string>
@@ -1051,5 +1051,6 @@ Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAG
     <string name="text_account_history_activity">Activity</string>
     <string name="text_account_history_credit">Credit</string>
     <string name="waiting">Waiting</string>
+    <string name="sec">s</string>
     <!--歷史紀錄end-->
 </resources>

@@ -8,5 +8,7 @@ data class MatchCategoryData(
     @Json(name = "menu")
     val menu: List<Menu>?,
     @Json(name = "odds")
-    val odds: List<OddData>?
+    val odds: List<OddData>?,
+    @Json(name = "playCateNameMap")
+    var playCateNameMap: MutableMap<String?, Map<String?, String?>?>?
 )

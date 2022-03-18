@@ -69,7 +69,7 @@
     <string name="hint_e_mail">Email</string>
     <string name="error_e_mail">Email formatted incorrectly</string>
     <string name="postal_code">Postal code</string>
-    <string name="hint_postal_code">(Please enter ZIP code)</string>
+    <string name="hint_postal_code">(Please enter Postal code)</string>
     <string name="province">Province</string>
     <string name="hint_province">(Please enter province)</string>
     <string name="city">City</string>
@@ -610,7 +610,7 @@
     <string name="bet_info_list_clean">Clear all</string>
     <string name="bet_info_bet_balance_insufficient">Balance is not enough</string>
     <string name="bet_info_different_game_type">Different ball species can not be linked for parlay</string>
-    <string name="bet_info_input_quota">Enter the amount</string>
+    <string name="bet_info_input_quota">Please enter the amount</string>
     <string name="bet_info_check_maximum_limit">MAX BET</string>
     <string name="bet_info_bet_quota">bet amount</string>
     <string name="bet_info_win_quota">To win</string>
