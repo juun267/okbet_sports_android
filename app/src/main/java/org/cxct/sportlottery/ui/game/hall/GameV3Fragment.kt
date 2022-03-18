@@ -1260,8 +1260,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             }
                         }
 
-                        var leagueOdds = leagueAdapter.data.sortOddsMap()
-
+                        var leagueOdds = leagueAdapter.data
+                        leagueOdds.sortOddsMap()
                         when {
                             getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code -> leagueOdds.filterMenuPlayCate()
                             getPlaySelectedCode() == "MAIN" -> { }
