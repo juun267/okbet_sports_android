@@ -56,7 +56,7 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         set(value) {
             if (value != field) {
                 field = value
-                //notifyDataSetChanged()
+                notifyDataSetChanged()
             }
         }
 
