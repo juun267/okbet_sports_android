@@ -427,11 +427,12 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     }
                     matchOdd?.let {
                         val inPlay = System.currentTimeMillis() > it.startTime ?: 0
-                        if (inPlay){
+                        if (it.inplay == 1){
                             tvInGame.visibility = View.VISIBLE
                         }else{
                             tvInGame.visibility = View.GONE
                         }
+                        binding.tvLeagueName.text = it.leagueName
                     }
                     val betAmount = betInfoListData?.betAmount ?: 0.0
 //                    var win = betAmount * getOdds(matchOdd, oddsType)
