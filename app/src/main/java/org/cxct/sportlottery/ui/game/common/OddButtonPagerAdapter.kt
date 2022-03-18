@@ -507,9 +507,14 @@ class OddButtonPagerViewHolder private constructor(
             return
         }
 
-        val playCateName =
+        var playCateName =
             playCateNameMap[odds.first].getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
                 .replace(": ", " ").replace("||", "\n")
+
+        if (playCateName == "null" || playCateName.isNullOrEmpty()){
+            playCateName = "-"
+        }
+
         val betPlayCateName = betPlayCateNameMap[odds.first].getPlayCateName(
             LanguageManager.getSelectLanguage(itemView.context)
         ).replace(": ", " ").replace("||", "\n")
