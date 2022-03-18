@@ -68,9 +68,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     private val args: GameV3FragmentArgs by navArgs()
     private var childMatchType = MatchType.OTHER
-
+    private var mView: View? = null
     private var isReload = true // 重新加載用
-
 
     private val gameTypeAdapter by lazy {
         GameTypeAdapter().apply {
@@ -344,16 +343,18 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         savedInstanceState: Bundle?
     ): View? {
         viewModel.resetOtherSeelectedGameType()
-        return inflater.inflate(R.layout.fragment_game_v3, container, false).apply {
-            setupSportTypeList(this)
-            setupToolbar(this)
-            setupOddTab(this)
-            setupSportBackground(this)
-            setupMatchCategoryPager(this)
-            setupPlayCategory(this)
-            setupGameRow(this)
-            setupGameListView(this)
-        }
+        mView = inflater.inflate(R.layout.fragment_game_v3, container, false)
+        return mView
+//            .apply {
+//            setupSportTypeList(this)
+//            setupToolbar(this)
+//            setupOddTab(this)
+//            setupSportBackground(this)
+//            setupMatchCategoryPager(this)
+//            setupPlayCategory(this)
+//            setupGameRow(this)
+//            setupGameListView(this)
+//        }
     }
 
     private fun setupSportTypeList(view: View) {
@@ -548,7 +549,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             this.adapter = leagueAdapter
             //this.itemAnimator = null
             //addItemDecoration(SpaceItemDecoration(context, R.dimen.item_spacing_league))
-            setHasFixedSize(true)
+            //setHasFixedSize(true)
         }
     }
 
@@ -1563,7 +1564,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
     }
 
-
     /**
      * 只有有下拉篩選玩法的才需要過濾odds
      */
@@ -1605,9 +1605,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
     }
 
-
-
-        private fun setEpsBottomSheet(matchInfo: MatchInfo) {
+    private fun setEpsBottomSheet(matchInfo: MatchInfo) {
         try {
             val contentView: ViewGroup? =
                 activity?.window?.decorView?.findViewById(android.R.id.content)
@@ -2176,6 +2174,20 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         stopTimer()
         unSubscribeChannelHallAll()
         unSubscribeChannelHallSport()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mView?.let {
+            setupSportTypeList(it)
+            setupToolbar(it)
+            setupOddTab(it)
+            setupSportBackground(it)
+            setupMatchCategoryPager(it)
+            setupPlayCategory(it)
+            setupGameRow(it)
+            setupGameListView(it)
+        }
     }
 
     override fun onDestroyView() {
