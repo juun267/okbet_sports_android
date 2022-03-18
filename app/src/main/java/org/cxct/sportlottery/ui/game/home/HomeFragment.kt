@@ -714,6 +714,28 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         startActivity(intent)
     }
 
+    //重新訂閱 滾球盤 or 即將開賽 賠率
+    private fun reSubscribeTableHallChannel(selectMatchType: MatchType) {
+        lifecycleScope.launch {
+            when (selectMatchType) {
+                MatchType.IN_PLAY -> {
+                    tableInPlayMap.forEach { (gameType, eventId) ->
+                        subscribeChannelHall(gameType, MenuCode.HOME_INPLAY_MOBILE.code, eventId)
+                    }
+                }
+                MatchType.AT_START -> {
+                    tableSoonMap.forEach { (gameType, eventId) ->
+                        subscribeChannelHall(gameType, MenuCode.HOME_ATSTART_MOBILE.code, eventId)
+                    }
+
+                }
+                else -> {
+                    //do nothing
+                }
+            }
+        }
+    }
+
     private fun unsubscribeUnSelectMatchTypeHallChannel() {
         lifecycleScope.launch {
             unsubscribeAllHomeInPlayHallChannel()
@@ -1255,6 +1277,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         receiver.producerUp.observe(this.viewLifecycleOwner) {
             it?.let {
                 unSubscribeChannelHallAll()
+                reSubscribeTableHallChannel(mSelectMatchType)
                 subscribeRecommendHallChannel()
                 subscribeHighlightHallChannel()
             }
