@@ -293,7 +293,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     override fun hideLoading() {
         super.hideLoading()
-        startTimer()
+        if (isReload) startTimer()
     }
 
     private val onTabSelectedListener = object : TabLayout.OnTabSelectedListener {
@@ -1433,7 +1433,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 CoroutineScope(Dispatchers.IO).launch {
                     if (!isUpdatingLeague) {
                         isUpdatingLeague = true
-                        isReload = true
                         //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
                         withContext(Dispatchers.Main) {
                             if (args.matchType == MatchType.OTHER) {
@@ -1466,7 +1465,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                     unSubscribeChannelHallAll()
                                     withContext(Dispatchers.Main) {
                                         if (args.matchType == MatchType.OTHER) {
-                                            viewModel.getAllPlayCategoryBySpecialMatchType(isReload = true)
+                                            viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
                                         }
                                         else {
                                             viewModel.getGameHallList(args.matchType,false)
@@ -2137,6 +2136,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     override fun onStop() {
         super.onStop()
+        viewModel.clearSelectedLeague()
+        game_list.adapter = null
         stopTimer()
         unSubscribeChannelHallAll()
         unSubscribeChannelHallSport()
@@ -2144,10 +2145,11 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     override fun onDestroyView() {
         super.onDestroyView()
-
         viewModel.clearSelectedLeague()
-
         game_list.adapter = null
+        stopTimer()
+        unSubscribeChannelHallAll()
+        unSubscribeChannelHallSport()
     }
 
     private fun reloadPage() {
