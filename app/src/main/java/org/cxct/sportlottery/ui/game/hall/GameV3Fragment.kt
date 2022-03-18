@@ -1255,8 +1255,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             }
                         }
 
-                        val leagueOdds = leagueAdapter.data
-                        
+                        var leagueOdds = leagueAdapter.data.sortOddsMap()
+
                         when {
                             getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code -> leagueOdds.filterMenuPlayCate()
                             getPlaySelectedCode() == "MAIN" -> { }
@@ -1521,6 +1521,21 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             }
         }
     }
+
+    private fun MutableList<LeagueOdd>.sortOddsMap() {
+        this.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { MatchOdd ->
+                MatchOdd.oddsMap?.forEach { (key , value) ->
+                    if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds) && (key == PlayCate.OU.value || key == PlayCate.HDP.value)) {
+                        value?.sortBy {
+                            it?.marketSort
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
 
     private fun setEpsBottomSheet(matchInfo: MatchInfo) {
