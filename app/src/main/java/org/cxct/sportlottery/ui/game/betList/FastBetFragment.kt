@@ -418,21 +418,21 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
         }
 
-        viewModel.betInfoList.observe(this.viewLifecycleOwner) {
+        viewModel.betInfoList.observe(this.viewLifecycleOwner) { it ->
             it.peekContent().let { list ->
                 if (list.isNotEmpty()) {
                     betInfoListData = list.getOrNull(0)
                     if (list.size > 1) {
                         dismiss()
                     }
-                    matchOdd?.let {
-                        val inPlay = System.currentTimeMillis() > it.startTime ?: 0
-                        if (it.inplay == 1){
+                    matchOdd?.let { matchOdd->
+                        if (matchOdd.inplay == 1){
                             tvInGame.visibility = View.VISIBLE
                         }else{
                             tvInGame.visibility = View.GONE
                         }
-                        binding.tvLeagueName.text = it.leagueName
+                        binding.tvLeagueName.text = matchOdd.leagueName
+                        binding.ivSportLogo.setImageResource(GameType.getGameTypeIcon(GameType.getGameType(matchOdd.gameType)!!))
                     }
                     val betAmount = betInfoListData?.betAmount ?: 0.0
 //                    var win = betAmount * getOdds(matchOdd, oddsType)

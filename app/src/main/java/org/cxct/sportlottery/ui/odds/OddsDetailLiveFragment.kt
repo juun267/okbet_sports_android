@@ -245,6 +245,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                         result.setupPlayCateTab()
 
                         matchOdd = result.oddsDetailData?.matchOdd
+                        matchOdd?.matchInfo?.leagueName = result.oddsDetailData?.league?.name
                         result.oddsDetailData?.matchOdd?.matchInfo?.homeName?.let { home ->
                             result.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
                                 oddsDetailListAdapter?.homeName = home

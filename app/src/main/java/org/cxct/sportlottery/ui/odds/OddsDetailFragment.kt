@@ -99,7 +99,7 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
                 matchOdd?.let { matchOdd ->
                     viewModel.updateMatchBetList(
-                        matchType = MatchType.IN_PLAY,
+                        matchType = MatchType.TODAY,
                         gameType = args.gameType,
                         playCateCode = oddsDetail?.gameType ?: "",
                         playCateName = oddsDetail?.name ?: "",
@@ -145,6 +145,7 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         result.setupPlayCateTab()
 
                         matchOdd = result.oddsDetailData?.matchOdd
+                        matchOdd?.matchInfo?.leagueName = result.oddsDetailData?.league?.name
                         result.oddsDetailData?.matchOdd?.matchInfo?.homeName?.let { home ->
                             result.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
                                 oddsDetailListAdapter?.homeName = home

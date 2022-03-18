@@ -289,7 +289,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                             R.anim.push_right_to_left_enter,
                             R.anim.pop_bottom_to_top_exit
                         )
-                        .replace(
+                        .add(
                             R.id.fl_bet_list,
                             BetReceiptFragment.newInstance(betResultData, betParlayList)
                         )

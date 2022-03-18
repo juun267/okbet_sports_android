@@ -26,6 +26,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
@@ -594,6 +595,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }else{
                     tvInGame.visibility = View.GONE
                 }
+                tvLeagueName.text = itemData.matchOdd.leagueName
+                ivSportLogo.setImageResource(GameType.getGameTypeIcon(GameType.getGameType(itemData.matchOdd.gameType)!!))
+
                 if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) {
                     cl_item_background.setBackgroundColor(
                         ContextCompat.getColor(

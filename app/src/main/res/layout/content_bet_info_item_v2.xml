@@ -58,6 +58,7 @@
                         <ImageView
                             android:layout_width="@dimen/margin_12"
                             android:layout_height="@dimen/margin_12"
+                            android:id="@+id/ivSportLogo"
                             android:src="@drawable/ic_tennis_icon"
                             app:tint="@color/white"
                             />

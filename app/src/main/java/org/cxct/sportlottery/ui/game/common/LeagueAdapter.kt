@@ -175,6 +175,7 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
                     } else {
                         item.matchOdds
                     }.onEach {
+                        it.matchInfo?.leagueName = item.league.name
                         it.matchInfo?.gameType = item.gameType?.key
                     }
 

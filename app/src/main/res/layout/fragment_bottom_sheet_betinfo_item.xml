@@ -34,6 +34,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center_vertical"
+            android:clickable="true"
             android:paddingStart="@dimen/margin_8"
             android:paddingEnd="@dimen/margin_8"
             android:paddingTop="@dimen/margin_8"
@@ -78,6 +79,7 @@
                             <ImageView
                                 android:layout_width="@dimen/margin_12"
                                 android:layout_height="@dimen/margin_12"
+                                android:id="@+id/ivSportLogo"
                                 android:src="@drawable/ic_tennis_icon"
                                 app:tint="@color/white"
                                 />
