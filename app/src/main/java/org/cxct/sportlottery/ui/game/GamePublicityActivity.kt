@@ -9,6 +9,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.util.LanguageManager
 
 class GamePublicityActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class), View.OnClickListener {
     private lateinit var binding: ActivityGamePublicityBinding
@@ -31,7 +32,15 @@ class GamePublicityActivity : BaseSocketActivity<GameViewModel>(GameViewModel::c
     }
 
     private fun initViews() {
+        initToolBar()
         initOnClickListener()
+    }
+
+    private fun initToolBar() {
+        with(binding) {
+            publicityToolbar.ivLanguage.setImageResource(LanguageManager.getLanguageFlag(this@GamePublicityActivity))
+            publicityToolbar.tvLanguage.text = LanguageManager.getLanguageStringResource(this@GamePublicityActivity)
+        }
     }
 
     private fun initOnClickListener() {
