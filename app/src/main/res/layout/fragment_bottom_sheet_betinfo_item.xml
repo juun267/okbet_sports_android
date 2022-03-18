@@ -63,6 +63,7 @@
                             android:id="@+id/tvInGame"
                             android:paddingEnd="@dimen/margin_8"
                             android:gravity="center"
+                            android:visibility="visible"
                             android:textColor="@color/white"
                             android:textSize="@dimen/margin_12"
                             android:background="@drawable/bg_half_orange_half_blue"
@@ -72,6 +73,7 @@
                             android:layout_height="match_parent"
                             android:background="@drawable/bg_gradient_0066d1_0079fa"
                             android:orientation="horizontal"
+                            android:paddingStart="@dimen/margin_8"
                             android:gravity="center_vertical">
                             <ImageView
                                 android:layout_width="@dimen/margin_12"
@@ -383,12 +385,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
                     android:layout_weight="1"
-                    android:background="@drawable/button_radius_4_ff9e3a_ffbb4e"
+                    android:background="@drawable/button_radius_4_cde5ff"
                     android:gravity="center"
                     android:layout_marginLeft="@dimen/margin_4"
                     android:layout_marginRight="@dimen/margin_4"
                     android:text="@string/bet_info_add_to_bet_info"
-                    android:textColor="@color/color_FFFFFFFF"
+                    android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize14sp" />
 
                 <org.cxct.sportlottery.ui.bet.list.BetButton

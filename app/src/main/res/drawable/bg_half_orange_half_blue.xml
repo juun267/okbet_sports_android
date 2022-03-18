@@ -19,7 +19,7 @@
 
     <item android:top="-100dp"
         android:right="00dp"
-        android:left="30dp"
+        android:left="35dp"
         android:bottom="-100dp">
         <rotate android:fromDegrees="22.5"
             android:pivotX="50%"

@@ -199,6 +199,16 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun initBetButton() {
         ll_root.setOnClickListener {  }
+        matchOdd?.let {
+            val inPlay = System.currentTimeMillis() > it.startTime ?: 0
+            if (inPlay){
+                tvInGame.visibility = View.VISIBLE
+            }else{
+                tvInGame.visibility = View.GONE
+            }
+        }
+
+
 
         button_bet.apply {
             tv_login.setOnClickListener {
