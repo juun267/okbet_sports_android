@@ -13,6 +13,7 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.GamePublicityActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.permission.GooglePermissionActivity
@@ -67,6 +68,11 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         finish()
     }
 
+    private fun goGamePublicityPage() {
+        startActivity(Intent(this@SplashActivity, GamePublicityActivity::class.java))
+        finish()
+    }
+
     //過程中任一流程請求失敗，點擊確定按鈕重試
     private fun showErrorRetryDialog(title: String, message: String) {
         val dialog = CustomAlertDialog(this)
@@ -113,6 +119,17 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                 }
                 false -> {
                     goHomePage()
+                }
+            }
+        }
+
+        viewModel.isLogin.observe(this) {
+            when (it) {
+                true -> {
+                    goGamePage()
+                }
+                false -> {
+                    goGamePublicityPage()
                 }
             }
         }
