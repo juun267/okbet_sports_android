@@ -175,11 +175,16 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 subscribeChannelHall(it)
             }, {
                 loading()
-                viewModel.refreshGame(
-                    args.matchType,
-                    listOf(it.league.id),
-                    listOf()
-                )
+                if (args.matchType == MatchType.OTHER) {
+
+                }
+                else {
+                    viewModel.refreshGame(
+                        args.matchType,
+                        listOf(it.league.id),
+                        listOf()
+                    )
+                }
             })
             leagueOddListener = LeagueOddListener(
                 { matchId, matchInfoList ->
@@ -729,7 +734,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                     else {
                         // Todo: MatchType.OTHER 要顯示無資料與隱藏篩選清單
-                        leagueAdapter.data = mutableListOf()
+//                        leagueAdapter.data = mutableListOf()
                     }
 
 //                    if (leagueOdds.isNotEmpty()) {
@@ -983,7 +988,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 it && hasGame -> {
                     unSubscribeChannelHallAll()
                     if (args.matchType == MatchType.OTHER) {
-                        viewModel.getAllPlayCategoryBySpecialMatchType(isReload = true)
+//                        viewModel.getAllPlayCategoryBySpecialMatchType(isReload = true)
                     }
                     else {
                         viewModel.switchMatchType(args.matchType)
@@ -1413,7 +1418,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
                         withContext(Dispatchers.Main) {
                             if (args.matchType == MatchType.OTHER) {
-                                viewModel.getAllPlayCategoryBySpecialMatchType(isReload = true)
+                                // 後面處理
                             }
                             else {
                                 viewModel.getAllPlayCategory(args.matchType)
@@ -1441,14 +1446,25 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                     //全刷
                                     unSubscribeChannelHallAll()
                                     withContext(Dispatchers.Main) {
-                                        viewModel.getGameHallList(args.matchType,false)
+                                        if (args.matchType == MatchType.OTHER) {
+                                            viewModel.getAllPlayCategoryBySpecialMatchType(isReload = true)
+                                        }
+                                        else {
+                                            viewModel.getGameHallList(args.matchType,false)
+                                        }
                                     }
                                 }
                                 else -> {
                                     unSubscribeChannelHall(nowGameType ?: GameType.FT.key, getPlaySelectedCode(), leagueChangeEvent.matchIdList?.firstOrNull())
                                     subscribeChannelHall(nowGameType ?: GameType.FT.key, getPlaySelectedCode(), leagueChangeEvent.matchIdList?.firstOrNull())
+                                    if (args.matchType == MatchType.OTHER) {
+                                        viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
+                                    }
                                 }
                             }
+                        }
+                        else if (args.matchType == MatchType.OTHER) {
+                            viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
                         }
                         isUpdatingLeague = false
                     }
@@ -1598,7 +1614,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 else -> View.GONE
             }
             game_match_category_pager.visibility = if (args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) { View.VISIBLE } else { View.GONE }
-//            game_play_category.visibility = View.VISIBLE
+            game_play_category.visibility = if (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START ||
+                (args.matchType == MatchType.OTHER && childMatchType == MatchType.OTHER)) { View.VISIBLE } else { View.GONE }
         }
     }
 
