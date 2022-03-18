@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -574,6 +576,8 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         var saveInstanceState: Int = 0
 
+        private var onPageChangeCallback: ViewPager2.OnPageChangeCallback? = null
+
         init {
             itemView.apply {
                 view_pager.getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
@@ -614,7 +618,10 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         }
                     }
 
-                    view_pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                    onPageChangeCallback?.let { callback ->
+                        view_pager.unregisterOnPageChangeCallback(callback)
+                    }
+                    onPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
                         override fun onPageSelected(position: Int) {
                             super.onPageSelected(position)
                             if (position < 0 || position >= it.size || it.isNullOrEmpty()) return
@@ -625,7 +632,10 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                                 matchOdd.matchInfo?.id
                             )
                         }
-                    })
+                    }
+                    onPageChangeCallback?.let { callback ->
+                        view_pager.registerOnPageChangeCallback(callback)
+                    }
                 }
 
                 OverScrollDecoratorHelper.setUpOverScroll(
