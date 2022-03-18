@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import kotlinx.android.synthetic.main.itemview_league_odd_v5.view.*
+import okhttp3.internal.notify
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameStatus
 import org.cxct.sportlottery.network.common.GameType
@@ -146,6 +147,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             setupOddsButton(item, oddsType, leagueOddListener, playSelectedCodeSelectionType)
 
             //setupQuickCategory(item, oddsType, leagueOddListener)
+            Log.e("jeff", "ViewHolderHdpOu")
             if(item.quickPlayCateList.isNullOrEmpty()) {
                 itemView.quickListView.visibility = View.GONE
                 itemView.league_odd_quick_cate_divider.visibility = View.GONE
@@ -165,6 +167,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             setupMatchTime(item, matchType, isTimerEnable, isTimerPause, leagueOddListener)
             updateOddsButton(item, oddsType, playSelectedCodeSelectionType)
 
+            itemView.quickListView.updateQuickSelected()
             //setupQuickCategory(item, oddsType, leagueOddListener)
             //updateQuickCategory(item, oddsType, leagueOddListener)
         }
