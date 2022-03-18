@@ -1537,7 +1537,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
      */
     private fun OddsChangeEvent.sortOddsMap() {
           this.odds?.forEach { (key, value) ->
-            if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds) && (key == PlayCate.OU.value || key == PlayCate.HDP.value)) {
+            if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
                 value?.sortBy {
                     it?.marketSort
                 }
@@ -1549,7 +1549,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         this.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach { MatchOdd ->
                 MatchOdd.oddsMap?.forEach { (key , value) ->
-                    if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds) && (key == PlayCate.OU.value || key == PlayCate.HDP.value)) {
+                    if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
                         value?.sortBy {
                             it?.marketSort
                         }
