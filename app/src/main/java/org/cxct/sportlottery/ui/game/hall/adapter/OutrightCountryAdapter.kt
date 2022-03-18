@@ -23,13 +23,13 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var data = listOf<Row>()
         set(value) {
             field = value
-            notifyDataSetChanged()
+            //notifyDataSetChanged()
         }
 
     var datePin = listOf<Season>()
         set(value) {
             field = value
-            notifyDataSetChanged()
+            //notifyDataSetChanged()
         }
 
     var outrightCountryLeagueListener: OutrightCountryLeagueListener? = null

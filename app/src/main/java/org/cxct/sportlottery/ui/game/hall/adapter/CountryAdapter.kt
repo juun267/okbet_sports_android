@@ -27,19 +27,19 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var data = listOf<Row>()
         set(value) {
             field = value
-            notifyDataSetChanged()
+            //notifyDataSetChanged()
         }
 
     var datePin = listOf<League>()
         set(value) {
             field = value
-            notifyDataSetChanged()
+            //notifyDataSetChanged()
         }
 
     var searchText = ""
         set(value) {
             field = value
-            notifyDataSetChanged()
+            //notifyDataSetChanged()
         }
 
     var countryLeagueListener: CountryLeagueListener? = null

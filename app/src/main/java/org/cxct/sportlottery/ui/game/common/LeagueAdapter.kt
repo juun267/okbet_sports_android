@@ -230,9 +230,9 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
             itemView.setOnClickListener {
                 if(adapterPosition > data.size - 1) return@setOnClickListener
                 data[adapterPosition].unfold = if (data[adapterPosition].unfold == FoldState.UNFOLD.code) { FoldState.FOLD.code } else { FoldState.UNFOLD.code } // TODO IndexOutOfBoundsException: Index: 10, Size: 5
+                updateTimer(matchType, item.gameType)
 
                 notifyItemChanged(adapterPosition)
-                //updateTimer(matchType, item.gameType)
 
                 leagueListener?.onClickLeague(item)
             }
@@ -240,11 +240,10 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
 
         private fun updateTimer(matchType: MatchType, gameType: GameType?) {
             leagueOddAdapter.isTimerEnable =
-                itemView.league_odd_list.isShown && (gameType == GameType.FT || gameType == GameType.BK || matchType == MatchType.PARLAY || matchType == MatchType.AT_START || matchType == MatchType.MY_EVENT)
+                itemView.league_odd_list.visibility == View.VISIBLE && (gameType == GameType.FT || gameType == GameType.BK || matchType == MatchType.PARLAY || matchType == MatchType.AT_START || matchType == MatchType.MY_EVENT)
         }
 
         private fun checkSpaceItemDecoration() {
-            Log.d("Hewie12", "itemView.league_odd_list.isShown(${itemView.league_odd_list.visibility}) => ${itemView.league_odd_list.isShown}")
             itemView.SpaceItemDecorationView.visibility = when(itemView.league_odd_list.visibility) {
                 View.VISIBLE -> View.GONE
                 View.GONE -> View.VISIBLE

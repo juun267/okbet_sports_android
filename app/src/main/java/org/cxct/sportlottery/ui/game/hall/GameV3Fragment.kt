@@ -1466,7 +1466,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 CoroutineScope(Dispatchers.IO).launch {
                     if (!isUpdatingLeague) {
                         isUpdatingLeague = true
-                        isReload = true
+                        //isReload = true
                         //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
                         withContext(Dispatchers.Main) {
                             if (args.matchType == MatchType.OTHER) {

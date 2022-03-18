@@ -51,6 +51,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/quick_odd_home"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:itemCount="5"
+        tools:layout="@layout/itemview_odd_btn_2x2_v6"
+        tools:listitem="@layout/itemview_odd_btn_2x2_v6"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
