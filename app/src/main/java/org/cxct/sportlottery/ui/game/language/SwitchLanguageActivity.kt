@@ -53,8 +53,6 @@ class SwitchLanguageActivity : BaseActivity<LoginViewModel>(LoginViewModel::clas
     }
 
     private fun initView(){
-        binding.llChina.visibility  = View.GONE
-        binding.llVietnam.visibility  = View.GONE
         binding.ivBack.setOnClickListener(this)
         binding.llEnglish.setOnClickListener(this)
         binding.llChina.setOnClickListener(this)
