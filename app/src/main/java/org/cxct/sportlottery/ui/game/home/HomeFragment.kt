@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.view.size
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_game.*
@@ -74,7 +75,7 @@ import java.util.*
 class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class) {
     private lateinit var homeBinding: FragmentHomeBinding
 
-    private val mRvGameTable4Adapter = RvGameTable4Adapter()
+//    private val mRvGameTable4Adapter = RvGameTable4Adapter()
     private var mSelectMatchType: MatchType = MatchType.MAIN
     private var mHomeGameTableBarItemData = HomeListAdapter.HomeGameTableBarItemData()
     /*private var mInPlayResult: MatchPreloadResult? = null
@@ -172,9 +173,13 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             mTimer = Timer()
             mTimer?.schedule(object : TimerTask() {
                 override fun run() {
-                    GlobalScope.launch(Dispatchers.IO) {
-                        mRvGameTable4Adapter.notifyTimeChanged(1)
-                        mRvHighlightAdapter.notifyTimeChanged(1)
+                    lifecycleScope.launch {
+                        with(mHomeListAdapter) {
+                            notifyTimeChanged(1)
+                            notifyHighLightTimeChanged(1)
+                        }
+                        /*mRvGameTable4Adapter.notifyTimeChanged(1)
+                        mRvHighlightAdapter.notifyTimeChanged(1)*/
                     }
                 }
             }, 1000L, 1000L)
@@ -203,9 +208,14 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
     private fun initDiscount() {
         val discount = viewModel.userInfo.value?.discount ?: 1.0F
-        mRvGameTable4Adapter.notifyOddsDiscountChanged(discount)
+        with(mHomeListAdapter) {
+            setDiscount(discount)
+            notifyOddsDiscountChanged(discount)
+            notifyHighLightOddsDiscountChanged(discount)
+        }
+        /*mRvGameTable4Adapter.notifyOddsDiscountChanged(discount)
         mRecommendAdapter.discount = discount
-        mRvHighlightAdapter.notifyOddsDiscountChanged(discount)
+        mRvHighlightAdapter.notifyOddsDiscountChanged(discount)*/
     }
 
     private fun initGameTableBar() {
@@ -331,7 +341,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             }
         }*/
 
-        mRvGameTable4Adapter.onClickStatisticsListener = object : OnClickStatisticsListener {
+        mHomeListAdapter.onClickStatisticsListener = object : OnClickStatisticsListener {
             override fun onClickStatistics(matchId: String?) {
                 navStatisticsPage(matchId)
             }
@@ -704,7 +714,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     }
 
     private fun unsubscribeUnSelectMatchTypeHallChannel() {
-        GlobalScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch {
             unsubscribeAllHomeInPlayHallChannel()
             unsubscribeAllHomeAtSatrtHallChannel()
             tableInPlayMap.clear()
@@ -713,7 +723,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     }
     //訂閱 推薦賽事 賠率
     private fun subscribeRecommendHallChannel() {
-        GlobalScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch {
             mRecommendAdapter.getData().forEach { entity ->
                 subscribeChannelHall(
                     entity.code,
@@ -725,7 +735,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     }
 
     private fun unsubscribeRecommendHallChannel() {
-        GlobalScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch {
             mRecommendAdapter.getData().forEach { entity ->
                 unSubscribeChannelHall(
                     entity.code,
@@ -738,7 +748,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
     //訂閱 精選賽事 賠率
     private fun subscribeHighlightHallChannel(result: MatchCategoryResult? = null) {
-        GlobalScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch {
             val code = mHighlightGameTypeAdapter.dataSport.find { it.isSelected }?.code ?: ""
             result ?: mRvHighlightAdapter.getData().forEach { matchOdd ->
                 subscribeChannelHall(
@@ -751,7 +761,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     }
 
     private fun unsubscribeHighlightHallChannel() {
-        GlobalScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch {
             val code = mHighlightGameTypeAdapter.dataSport.find { it.isSelected }?.code ?: ""
             mRvHighlightAdapter.getData().forEach { matchOdd ->
                 unSubscribeChannelHall(
@@ -766,9 +776,14 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     private fun initObserve() {
         viewModel.userInfo.observe(viewLifecycleOwner) {
             it?.discount?.let { newDiscount ->
-                mRvGameTable4Adapter.notifyOddsDiscountChanged(newDiscount)
+                with(mHomeListAdapter) {
+                    setDiscount(newDiscount)
+                    notifyOddsDiscountChanged(newDiscount)
+                    notifyHighLightOddsDiscountChanged(newDiscount)
+                }
+                /*mRvGameTable4Adapter.notifyOddsDiscountChanged(newDiscount)
                 mRecommendAdapter.discount = newDiscount
-                mRvHighlightAdapter.notifyOddsDiscountChanged(newDiscount)
+                mRvHighlightAdapter.notifyOddsDiscountChanged(newDiscount)*/
             }
         }
         viewModel.sportCouponMenuResult.observe(viewLifecycleOwner) {
@@ -882,21 +897,37 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             }
         }
 
-        viewModel.betIDList.observe(this.viewLifecycleOwner) {
-            GlobalScope.launch(Dispatchers.IO) {
+        viewModel.betIDList.observe(this.viewLifecycleOwner) { event ->
+            event.peekContent()?.let { 
+                lifecycleScope.launch {
+                    with(mHomeListAdapter) {
+                        notifySelectedOddsChanged(it)
+                        notifyRecommendSelectedOddsChanged(it)
+                        notifyHighLightSelectedOddsChanged(it)
+                    }
+                }
+            }
+            /*lifecycleScope.launch {
                 mRvGameTable4Adapter.notifySelectedOddsChanged(it.peekContent())
                 mRecommendAdapter.notifySelectedOddsChanged(it.peekContent())
                 mRvHighlightAdapter.notifySelectedOddsChanged(it.peekContent())
-            }
+            }*/
         }
 
         viewModel.oddsType.observe(this.viewLifecycleOwner) {
             it?.let { oddsType ->
-                GlobalScope.launch(Dispatchers.IO) {
+                lifecycleScope.launch {
+                    with(mHomeListAdapter) {
+                        notifyOddsTypeChanged(oddsType)
+                        recommendOddsType = oddsType
+                        notifyHighLightOddsTypeChanged(oddsType)
+                    }
+                }
+                /*lifecycleScope.launch {
                     mRvGameTable4Adapter.notifyOddsTypeChanged(oddsType)
                     mRecommendAdapter.oddsType = oddsType
                     mRvHighlightAdapter.notifyOddsTypeChanged(oddsType)
-                }
+                }*/
             }
         }
 
@@ -923,11 +954,16 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         }
 
         viewModel.favorMatchList.observe(viewLifecycleOwner) { favorMatchList ->
-            mRvGameTable4Adapter.getData().forEach {
+            mHomeListAdapter.getGameEntityData().forEach {
                 it.matchOdds.forEach { matchOdd ->
                     matchOdd.matchInfo?.isFavorite = favorMatchList.contains(matchOdd.matchInfo?.id)
                 }
             }
+            /*mRvGameTable4Adapter.getData().forEach {
+                it.matchOdds.forEach { matchOdd ->
+                    matchOdd.matchInfo?.isFavorite = favorMatchList.contains(matchOdd.matchInfo?.id)
+                }
+            }*/
 
             mRvHighlightAdapter.getData().forEach {
                 it.matchInfo?.isFavorite = favorMatchList.contains(it.matchInfo?.id)
@@ -942,7 +978,8 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         }
 
         viewModel.isLogin.observe(viewLifecycleOwner) {
-            mRvGameTable4Adapter.isLogin = it
+            mHomeListAdapter.isLogin = it
+//            mRvGameTable4Adapter.isLogin = it
         }
     }
 
@@ -1019,7 +1056,16 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         }
 
         receiver.matchStatusChange.observe(this.viewLifecycleOwner) {
-            GlobalScope.launch(Dispatchers.IO) {
+            lifecycleScope.launch(Dispatchers.IO) {
+                it?.let { matchStatusChangeEvent ->
+                    matchStatusChangeEvent.matchStatusCO?.let { matchStatus ->
+                        val statusValue = matchStatus.statusNameI18n?.get(LanguageManager.getSelectLanguage(context).key) ?: matchStatus.statusName
+                        //滾球盤、即將開賽盤
+                        mHomeListAdapter.notifyMatchStatusChanged(matchStatus, statusValue)
+                    }
+                }
+            }
+            /*lifecycleScope.launch {
                 it?.let { matchStatusChangeEvent ->
                     matchStatusChangeEvent.matchStatusCO?.let { matchStatus ->
                         val statusValue = matchStatus.statusNameI18n?.get(LanguageManager.getSelectLanguage(context).key) ?: matchStatus.statusName
@@ -1027,14 +1073,15 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                         mRvGameTable4Adapter.notifyMatchStatusChanged(matchStatus, statusValue)
                     }
                 }
-            }
+            }*/
         }
 
         receiver.matchClock.observe(this.viewLifecycleOwner) {
             it?.matchClockCO?.let { matchClockCO ->
-                GlobalScope.launch(Dispatchers.IO) {
+                lifecycleScope.launch {
                     //滾球盤、即將開賽盤
-                    mRvGameTable4Adapter.notifyUpdateTime(matchClockCO)
+                    mHomeListAdapter.notifyUpdateTime(matchClockCO)
+//                    mRvGameTable4Adapter.notifyUpdateTime(matchClockCO)
                 }
             }
         }
@@ -1044,17 +1091,17 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 when (oddsChangeEvent.getCateMenuCode()) {
                     MenuCode.HOME_INPLAY_MOBILE, MenuCode.HOME_ATSTART_MOBILE -> {
                         //滾球盤、即將開賽盤
-                        val dataList = mRvGameTable4Adapter.getData()
+                        val dataList = mHomeListAdapter.getGameEntityData()
                         dataList.forEach { gameEntity ->
                             //先找出要更新的 賽事
                             val updateMatchOdd = gameEntity.matchOdds.find { matchOdd ->
                                 matchOdd.matchInfo?.id == oddsChangeEvent.eventId
                             }
-                            updateMatchOdd?.let { updateMatchOddNonNull ->
+                            /*updateMatchOdd?.let { updateMatchOddNonNull ->
                                 if (SocketUpdateUtil.updateMatchOdds(context, updateMatchOddNonNull, oddsChangeEvent)) {
                                     gameEntity.vpTableAdapter?.notifyDataSetChanged()
                                 }
-                            }
+                            }*/
                         }
                     }
                     MenuCode.RECOMMEND -> {
@@ -1108,7 +1155,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         receiver.matchOddsLock.observe(this.viewLifecycleOwner) {
             it?.let { matchOddsLock ->
                 //滾球盤、即將開賽盤
-                val dataList = mRvGameTable4Adapter.getData()
+                val dataList = mHomeListAdapter.getGameEntityData()
                 dataList.forEachIndexed { index, gameEntity ->
                     //先找出要更新的 賽事
                     val updateMatchOdd = gameEntity.matchOdds.find { matchOdd ->
@@ -1125,7 +1172,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                                 oldOdd.status = BetStatus.LOCKED.code
                             }
                         }
-                        mRvGameTable4Adapter.notifySubItemChanged(index, indexMatchOdd)
+                        mHomeListAdapter.notifySubItemChanged(index, indexMatchOdd)
                     }
                 }
 
@@ -1173,10 +1220,10 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         receiver.globalStop.observe(this.viewLifecycleOwner) {
             it?.let { globalStopEvent ->
                 //滾球盤、即將開賽盤
-                mRvGameTable4Adapter.getData().forEachIndexed { index, gameEntity ->
+                mHomeListAdapter.getGameEntityData().forEachIndexed { index, gameEntity ->
                     gameEntity.matchOdds.forEachIndexed { indexMatchOdd, matchOdd ->
                         if (SocketUpdateUtil.updateOddStatus(matchOdd, globalStopEvent)) {
-                            mRvGameTable4Adapter.notifySubItemChanged(index, indexMatchOdd)
+                            mHomeListAdapter.notifySubItemChanged(index, indexMatchOdd)
                         }
                     }
                 }
