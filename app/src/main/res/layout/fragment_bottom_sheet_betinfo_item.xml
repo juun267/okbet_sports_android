@@ -51,7 +51,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/margin_24"
+                        android:layout_height="@dimen/margin_26"
                         android:id="@+id/layoutTitle"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -355,7 +355,7 @@
                 android:id="@+id/tv_odd_content_changed"
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
-                android:background="@color/colorWhite"
+                android:background="@color/color_EAF4FE"
                 android:gravity="center"
                 android:text="@string/bet_info_odd_content_changed"
                 android:textColor="@color/colorRed"

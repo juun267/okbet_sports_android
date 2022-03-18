@@ -159,7 +159,7 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
     }
 
     private fun setupCurrentMoney(money: Double) {
-        tv_current_money.text = "${TextUtil.formatMoney(money)} ${sConfigData?.systemCurrency}"
+        //tv_current_money.text = "${TextUtil.formatMoney(money)} ${sConfigData?.systemCurrency}"
     }
 
 }

@@ -10,6 +10,7 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -199,17 +200,6 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun initBetButton() {
         ll_root.setOnClickListener {  }
-        matchOdd?.let {
-            val inPlay = System.currentTimeMillis() > it.startTime ?: 0
-            if (inPlay){
-                tvInGame.visibility = View.VISIBLE
-            }else{
-                tvInGame.visibility = View.GONE
-            }
-        }
-
-
-
         button_bet.apply {
             tv_login.setOnClickListener {
                 requireContext().startActivity(Intent(requireContext(), LoginActivity::class.java))
@@ -398,7 +388,14 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     if (list.size > 1) {
                         dismiss()
                     }
-
+                    matchOdd?.let {
+                        val inPlay = System.currentTimeMillis() > it.startTime ?: 0
+                        if (inPlay){
+                            tvInGame.visibility = View.VISIBLE
+                        }else{
+                            tvInGame.visibility = View.GONE
+                        }
+                    }
                     val betAmount = betInfoListData?.betAmount ?: 0.0
 //                    var win = betAmount * getOdds(matchOdd, oddsType)
 //                    if (oddsType == OddsType.EU) {
@@ -581,8 +578,14 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
 
     private fun setupCurrentMoneyView(isLogin: Boolean) {
-        //ivBetMoney.visibility = if (isLogin) View.VISIBLE else View.GONE
-        //tv_current_money.visibility = if (isLogin) View.VISIBLE else View.GONE
+//        ivBetMoney.visibility = if (isLogin) View.VISIBLE else View.GONE
+//        tv_current_money.visibility = if (isLogin) View.VISIBLE else View.GONE
+//        if (isLogin){
+//            tv_odd_content_changed.visibility = View.GONE
+//        }else{
+//            tv_odd_content_changed.visibility = View.VISIBLE
+//            tv_odd_content_changed.text = getString(R.)
+//        }
     }
 
 
@@ -661,6 +664,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
 
         if (matchOdd.spreadState != SpreadState.SAME.state || matchOdd.oddState != OddState.SAME.state) {
+            tv_odd_content_changed.text = getString(R.string.bet_info_odd_content_changed)
             tv_odd_content_changed.visibility = View.VISIBLE
             button_bet.isOddsChanged = true
         }

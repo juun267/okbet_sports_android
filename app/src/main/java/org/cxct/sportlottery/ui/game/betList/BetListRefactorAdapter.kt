@@ -15,12 +15,13 @@ import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.et_bet
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.et_clickable
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.iv_bet_lock
+import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.layoutKeyBoard
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.tv_error_message
 import kotlinx.android.synthetic.main.content_bet_list_batch_control.view.*
-import kotlinx.android.synthetic.main.item_bet_list_batch_control.view.*
-import kotlinx.android.synthetic.main.item_bet_list_batch_control.view.ll_winnable
-import kotlinx.android.synthetic.main.item_bet_list_batch_control.view.tv_winnable_amount
-import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect.view.*
+import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v2.view.*
+import kotlinx.android.synthetic.main.item_bet_list_batch_control_v2.view.*
+import kotlinx.android.synthetic.main.item_bet_list_batch_control_v2.view.ll_winnable
+import kotlinx.android.synthetic.main.item_bet_list_batch_control_v2.view.tv_winnable_amount
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.info.MatchOdd
@@ -116,7 +117,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             )
             else -> BatchParlayConnectViewHolder(
                 layoutInflater.inflate(
-                    R.layout.item_bet_list_batch_control_connect,
+                    R.layout.item_bet_list_batch_control_connect_v2,
                     parent,
                     false
                 )
@@ -587,6 +588,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
         private fun setupOddStatus(itemData: BetInfoListData) {
             itemView.apply {
+                val inPlay = System.currentTimeMillis() > itemData.matchOdd.startTime ?: 0
+                if(inPlay){
+                    tvInGame.visibility = View.VISIBLE
+                }else{
+                    tvInGame.visibility = View.GONE
+                }
                 if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) {
                     cl_item_background.setBackgroundColor(
                         ContextCompat.getColor(
@@ -631,9 +638,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             itemCount: Int,
             onItemClickListener: OnItemClickListener
         ) {
-//            itemView.iv_close.setOnClickListener {
-//                onItemClickListener.onDeleteClick(itemData.matchOdd.oddsId, itemCount)
-//            }
+            itemView.iv_close.setOnClickListener {
+                onItemClickListener.onDeleteClick(itemData.matchOdd.oddsId, itemCount)
+            }
         }
 
         private fun setupMaximumLimitView(
@@ -900,7 +907,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 et_container.setOnClickListener {
                     et_bet_single.isFocusable = true
                     et_bet_single.setSelection(et_bet_single.text.length)
-                    onItemClickListener.onShowParlayKeyboard(et_bet_single, itemData, position, getMaxOrMinAmount(isGetMax = true, betList))
+                    layoutKeyBoard.showKeyboard(et_bet_single,position, getMaxOrMinAmount(isGetMax = true, betList), getMaxOrMinAmount(isGetMax = false, betList))
+                    //onItemClickListener.onShowParlayKeyboard(et_bet_single, itemData, position, getMaxOrMinAmount(isGetMax = true, betList))
                     onSelectedPositionListener.onSelectChange(
                         bindingAdapterPosition,
                         BetViewType.SINGLE
@@ -908,7 +916,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
 
                 item_first_single.setOnClickListener {
-                    onItemClickListener.onHideKeyBoard()
+                    //layoutKeyBoard.hideKeyboard()
+                    //onItemClickListener.onHideKeyBoard()
                 }
 
                 setupItemEnable(hasBetClosed)
@@ -1332,7 +1341,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 et_clickable.setOnClickListener {
                     et_bet.isFocusable = true
-                    onItemClickListener.onShowParlayKeyboard(et_bet, data, position, data.max.toLong())
+                    //onItemClickListener.onShowParlayKeyboard(et_bet, data, position, data.max.toLong())
+                    layoutKeyBoard.showKeyboard(et_bet,position, data.max.toLong(), data.min.toLong())
+
                     onSelectedPositionListener.onSelectChange(
                         bindingAdapterPosition,
                         BetViewType.PARLAY
@@ -1396,7 +1407,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         isFocusable = true
                         setSelection(text.length)
                     }
-                    onItemClickListener.onShowParlayKeyboard(et_bet, itemData, position, itemData.max.toLong())
+                    layoutKeyBoard.showKeyboard(et_bet,position, itemData.max.toLong(), itemData.min.toLong())
+                    //onItemClickListener.onShowParlayKeyboard(et_bet, itemData, position, itemData.max.toLong())
                     onSelectedPositionListener.onSelectChange(
                         bindingAdapterPosition,
                         BetViewType.PARLAY
