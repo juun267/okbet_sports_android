@@ -953,7 +953,7 @@
     <string name="text_bet_not_success">滚球投注注单状态&#160;</string>
     <string name="text_bet_not_success2">待成立注单</string>
     <string name="text_bet_not_success3">&#160;您的注单正在处理中请检查您的&#160;</string>
-    <string name="text_bet_not_success4">投注记录</string>
+    <string name="text_bet_not_success4">交易状况</string>
 
     <!--自我禁制-->
     <string name="self_limit">自我禁制</string>
@@ -1055,5 +1055,6 @@ Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAG
     <string name="text_account_history_activity">活动金额</string>
     <string name="text_account_history_credit">信用账户金额</string>
     <string name="waiting">待成立的注单</string>
+    <string name="sec">s</string>
     <!--歷史紀錄end-->
 </resources>

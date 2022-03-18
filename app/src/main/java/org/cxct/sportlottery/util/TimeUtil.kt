@@ -83,6 +83,21 @@ object TimeUtil {
     }
 
     /**
+     * 時間(TimeInMillis) 轉換成 second 格式
+     * @param time: TimeInMillis
+     * @return :String
+     */
+    fun longToSecond(time: Long): String {
+        return try {
+            val sec = time / 1000
+            String.format("%d", sec)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            "-"
+        }
+    }
+
+    /**
      * 時間轉換成日期格式
      * @param time: TimeInMillis
      * @return :String
