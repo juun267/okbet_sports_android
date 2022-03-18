@@ -1275,6 +1275,20 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 }
                             }
                         }
+                        //翻譯更新
+                        leagueOdds.forEach { LeagueOdd ->
+                            LeagueOdd.matchOdds.forEach { MatchOdd ->
+                                if (MatchOdd.matchInfo?.id == oddsChangeEvent.eventId) {
+                                    oddsChangeEvent.playCateNameMap?.let {
+                                        MatchOdd.playCateNameMap?.putAll(oddsChangeEvent.playCateNameMap!!)
+                                    }
+                                    oddsChangeEvent.betPlayCateNameMap?.let {
+                                        MatchOdd.betPlayCateNameMap?.putAll(oddsChangeEvent.betPlayCateNameMap!!)
+                                    }
+                                }
+                            }
+                        }
+
 
                         leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
                         leagueAdapter.playSelectedCode = getPlaySelectedCode()
