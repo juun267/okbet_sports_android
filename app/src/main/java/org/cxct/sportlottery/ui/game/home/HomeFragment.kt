@@ -1120,16 +1120,21 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     MenuCode.HOME_INPLAY_MOBILE, MenuCode.HOME_ATSTART_MOBILE -> {
                         //滾球盤、即將開賽盤
                         val dataList = mHomeListAdapter.getGameEntityData()
-                        dataList.forEach { gameEntity ->
+                        dataList.forEachIndexed { index, gameEntity ->
                             //先找出要更新的 賽事
                             val updateMatchOdd = gameEntity.matchOdds.find { matchOdd ->
                                 matchOdd.matchInfo?.id == oddsChangeEvent.eventId
                             }
-                            /*updateMatchOdd?.let { updateMatchOddNonNull ->
+                            updateMatchOdd?.let { updateMatchOddNonNull ->
                                 if (SocketUpdateUtil.updateMatchOdds(context, updateMatchOddNonNull, oddsChangeEvent)) {
-                                    gameEntity.vpTableAdapter?.notifyDataSetChanged()
+
+                                    mHomeListAdapter.notifySubItemChanged(
+                                        index,
+                                        gameEntity.matchOdds.indexOf(updateMatchOdd)
+                                    )
+//                                    gameEntity.vpTableAdapter?.notifyDataSetChanged()
                                 }
-                            }*/
+                            }
                         }
                     }
                     MenuCode.RECOMMEND -> {
