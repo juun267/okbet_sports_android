@@ -209,7 +209,9 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
 
                     this.leagueOddListener = leagueOddListener
                 }
-                //addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_color_white8))) // TODO IllegalStateException: Cannot add item decoration during a scroll  or layout
+                try {
+                    addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_color_white8))) // TODO IllegalStateException: Cannot add item decoration during a scroll  or layout
+                } catch (e: Exception) {}
             }
         }
 
