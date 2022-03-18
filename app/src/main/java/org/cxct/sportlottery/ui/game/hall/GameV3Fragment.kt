@@ -364,7 +364,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
 
             this.adapter = gameTypeAdapter
-
+            removeItemDecorations()
             addItemDecoration(
                 SpaceItemDecoration(
                     context,
@@ -503,7 +503,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
 
             this.adapter = playCategoryAdapter
-
+            removeItemDecorations()
             addItemDecoration(
                 SpaceItemDecoration(
                     context,
@@ -526,7 +526,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
 
             this.adapter = dateAdapter
-
+            removeItemDecorations()
             addItemDecoration(
                 SpaceItemDecoration(
                     context,
@@ -2233,6 +2233,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         true
                 }
             }
+        }
+    }
+
+    fun <T : RecyclerView> T.removeItemDecorations() {
+        while (itemDecorationCount > 0) {
+            removeItemDecorationAt(0)
         }
     }
     // endregion
