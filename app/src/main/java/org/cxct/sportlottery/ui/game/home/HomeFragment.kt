@@ -1223,7 +1223,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                                 oldOdd?.status = BetStatus.LOCKED.code
 
                                 //20210713 紀錄：只刷新內層 viewPager 的 sub Item，才不會導致每次刷新，viewPager 都會跑到第一頁
-                                mHomeListAdapter.notifySubItemChanged(
+                                mHomeListAdapter.notifyRecommendSubItemChanged(
                                     index,
                                     indexOddBean
                                 )
@@ -1265,7 +1265,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 mHomeListAdapter.getRecommendData().forEachIndexed { index, entity ->
                     entity.oddBeans.forEachIndexed { indexOddBean, oddBean ->
                         if (SocketUpdateUtil.updateOddStatus(oddBean, globalStopEvent)) {
-                            mHomeListAdapter.notifySubItemChanged(index, indexOddBean)
+                            mHomeListAdapter.notifyRecommendSubItemChanged(index, indexOddBean)
                         }
                     }
                 }
