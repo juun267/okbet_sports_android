@@ -23,6 +23,7 @@ import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.GamePublicityActivity
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -384,7 +385,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                     if (sConfigData?.thirdOpen == FLAG_OPEN)
                         MainActivity.reStart(this)
                     else
-                        GameActivity.reStart(this)
+                        GamePublicityActivity.reStart(this)
                 }
             }
             mDownMenuListener?.onClick(btn_sign_out)
