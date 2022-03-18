@@ -1031,7 +1031,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     list.add(data.matchOdd.oddsId)
                 }
                 QuickListManager.setQuickSelectedList(list)
-                Log.e("jeff", "betInfoList")
 
                 val leagueOdds = leagueAdapter.data
                 leagueOdds.forEach { leagueOdd ->

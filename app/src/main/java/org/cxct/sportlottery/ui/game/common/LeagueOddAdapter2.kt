@@ -147,7 +147,6 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             setupOddsButton(item, oddsType, leagueOddListener, playSelectedCodeSelectionType)
 
             //setupQuickCategory(item, oddsType, leagueOddListener)
-            Log.e("jeff", "ViewHolderHdpOu")
             if(item.quickPlayCateList.isNullOrEmpty()) {
                 itemView.quickListView.visibility = View.GONE
                 itemView.league_odd_quick_cate_divider.visibility = View.GONE

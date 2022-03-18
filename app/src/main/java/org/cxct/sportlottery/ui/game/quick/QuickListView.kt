@@ -166,7 +166,6 @@ class QuickListView @JvmOverloads constructor(
 
 
     fun refreshTab() {
-        Log.e("jeff", "refreshTab")
         league_odd_quick_cate_tabs?.removeAllViews()
         mQuickPlayCateList.sortedBy { it.sort }.forEachIndexed { index, it ->
             val inflater =
@@ -273,7 +272,6 @@ class QuickListView @JvmOverloads constructor(
         leagueOddListener: LeagueOddListener?,
         quickListData: QuickListData?,
     ) {
-        Log.e("jeff", "setupQuickOddButtonPager")
         league_odd_quick_odd_btn_pager.visibility = View.VISIBLE
         quick_odd_home.text = mMatchOdd?.matchInfo?.homeName ?: ""
         quick_odd_away.text = mMatchOdd?.matchInfo?.awayName ?: ""
@@ -341,7 +339,6 @@ class QuickListView @JvmOverloads constructor(
     }
 
     fun updateQuickSelected() {
-        Log.e("jeff", "updateQuickSelected")
         mOddButtonPairAdapter.notifyDataSetChanged()
         mQuickOddButtonPagerAdapter.notifyDataSetChanged()
         mOddButtonEpsAdapter.notifyDataSetChanged()

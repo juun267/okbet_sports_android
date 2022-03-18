@@ -884,10 +884,6 @@ class OddButtonPagerViewHolder private constructor(
             tv_odds.setTextColor(oddColorStateList(odds.second?.getOrNull(0), oddsType))
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(0))
             isSelected = odds.second?.getOrNull(0)?.isSelected ?: false
-            Log.e("jeff", "odds id = ${odds.second?.getOrNull(0)?.id}")
-            QuickListManager.getQuickSelectedList()?.forEach {
-                Log.e("jeff", "getQuickSelectedList id = ${it}")
-            }
         }
         oddBtnAway.apply awayButtonSettings@{
             when {

@@ -153,7 +153,6 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     }
 
     private fun setupToolbar(view: View) {
-        Log.e("jeff", "setupToolbar")
         view.game_toolbar_back.setOnClickListener {
             activity?.onBackPressed()
         }
