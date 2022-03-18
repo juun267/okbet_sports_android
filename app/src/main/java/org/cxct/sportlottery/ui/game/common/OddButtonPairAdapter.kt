@@ -10,6 +10,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.QuickListManager
 
 class OddButtonPairAdapter(private val matchInfo: MatchInfo?) :
     RecyclerView.Adapter<OddButtonPairViewHolder>() {
@@ -17,10 +18,15 @@ class OddButtonPairAdapter(private val matchInfo: MatchInfo?) :
     var odds: List<Odd?> = listOf()
         set(value) {
             field = value.sortedBy { it?.marketSort }
-
+            field.forEach {
+                if(QuickListManager.getQuickSelectedList()?.contains(it?.id) == true){
+                    it?.isSelected = true
+                }
+            }
             data = field.withIndex().groupBy {
                 it.index / 2
             }
+            notifyDataSetChanged()
         }
 
     var oddsType: OddsType = OddsType.EU
@@ -89,6 +95,8 @@ class OddButtonPairViewHolder private constructor(
 
             this@OddButtonPairViewHolder.setupOddState(this, oddPair.getOrNull(0)?.value)
 
+            isSelected = QuickListManager.getQuickSelectedList()?.contains( oddPair.getOrNull(0)?.value?.id) ?: false
+
             setOnClickListener {
                 oddPair.getOrNull(0)?.value?.let { odd ->
                     oddButtonListener?.onClickBet(matchInfo, odd, odd.playCode ?: "")
@@ -102,6 +110,8 @@ class OddButtonPairViewHolder private constructor(
             setupOdd(oddPair.getOrNull(1)?.value, oddsType)
 
             this@OddButtonPairViewHolder.setupOddState(this, oddPair.getOrNull(1)?.value)
+
+            isSelected = QuickListManager.getQuickSelectedList()?.contains( oddPair.getOrNull(1)?.value?.id) ?: false
 
             setOnClickListener {
                 oddPair.getOrNull(1)?.value?.let { odd ->

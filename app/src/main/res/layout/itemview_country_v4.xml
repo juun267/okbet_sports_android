@@ -57,4 +57,12 @@
 
     </net.cachapa.expandablelayout.ExpandableLayout>
 
+    <!-- 間隔 -->
+    <View android:id="@+id/SpaceItemDecorationView"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/colorWhite"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/country_border"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

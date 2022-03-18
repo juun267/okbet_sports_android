@@ -175,6 +175,11 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.setOnClickListener {
                 item.isExpand = !item.isExpand
                 itemView.country_league_expand.setExpanded(item.isExpand, true)
+                if(item.isExpand) {
+                    itemView.SpaceItemDecorationView.visibility = View.GONE
+                } else {
+                    itemView.SpaceItemDecorationView.visibility = View.VISIBLE
+                }
             }
         }
 
@@ -196,7 +201,7 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             fun from(parent: ViewGroup): NoDataViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                    .inflate(R.layout.view_no_record, parent, false)
+                    .inflate(R.layout.view_no_record_for_game, parent, false)
 
                 return NoDataViewHolder(view)
             }
