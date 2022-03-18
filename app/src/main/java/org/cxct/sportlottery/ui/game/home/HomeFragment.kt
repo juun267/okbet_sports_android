@@ -84,7 +84,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     private val mHighlightGameTypeAdapter = GameTypeAdapter()
     private val mRvHighlightAdapter = RvHighlightAdapter()
 
-    private val mRecommendAdapter = RvRecommendAdapter()
+//    private val mRecommendAdapter = RvRecommendAdapter()
 
     private val mHomeListAdapter = HomeListAdapter()
 
@@ -464,7 +464,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             }
         }*/
 
-        mRecommendAdapter.onClickMatchListener = object : OnSelectItemListener<RecommendGameEntity> {
+        mHomeListAdapter.onRecommendClickMatchListener = object : OnSelectItemListener<RecommendGameEntity> {
             override fun onClick(select: RecommendGameEntity) {
 //                scroll_view.smoothScrollTo(0, 0)
                 val code = select.code
@@ -724,7 +724,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     //訂閱 推薦賽事 賠率
     private fun subscribeRecommendHallChannel() {
         lifecycleScope.launch {
-            mRecommendAdapter.getData().forEach { entity ->
+            mHomeListAdapter.getRecommendData().forEach { entity ->
                 subscribeChannelHall(
                     entity.code,
                     MenuCode.RECOMMEND.code,
@@ -736,7 +736,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
     private fun unsubscribeRecommendHallChannel() {
         lifecycleScope.launch {
-            mRecommendAdapter.getData().forEach { entity ->
+            mHomeListAdapter.getRecommendData().forEach { entity ->
                 unSubscribeChannelHall(
                     entity.code,
                     MenuCode.RECOMMEND.code,
@@ -1106,7 +1106,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     }
                     MenuCode.RECOMMEND -> {
                         //推薦賽事
-                        val recommendDataList = mRecommendAdapter.getData()
+                        val recommendDataList = mHomeListAdapter.getRecommendData()
                         recommendDataList.forEach { entity ->
                             if (entity.matchInfo?.id != it.eventId) return@forEach
                             var isUpdate = false
@@ -1115,11 +1115,11 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                                     isUpdate = true
                                 }
                             }
-                            if (isUpdate) {
+                            /*if (isUpdate) {
                                 Handler(Looper.getMainLooper()).post {
                                     entity.vpRecommendAdapter?.notifyDataSetChanged()
                                 }
-                            }
+                            }*/
                         }
                     }
                     MenuCode.SPECIAL_MATCH_MOBILE -> {
@@ -1177,7 +1177,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 }
 
                 //推薦賽事
-                val recommendDataList = mRecommendAdapter.getData()
+                val recommendDataList = mHomeListAdapter.getRecommendData()
                 recommendDataList.forEachIndexed { index, entity ->
                     if (entity.matchInfo?.id != matchOddsLock.matchId)
                         return@forEachIndexed
@@ -1190,7 +1190,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                                 oldOdd?.status = BetStatus.LOCKED.code
 
                                 //20210713 紀錄：只刷新內層 viewPager 的 sub Item，才不會導致每次刷新，viewPager 都會跑到第一頁
-                                mRecommendAdapter.notifySubItemChanged(
+                                mHomeListAdapter.notifySubItemChanged(
                                     index,
                                     indexOddBean
                                 )
@@ -1229,10 +1229,10 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 }
 
                 //推薦賽事
-                mRecommendAdapter.getData().forEachIndexed { index, entity ->
+                mHomeListAdapter.getRecommendData().forEachIndexed { index, entity ->
                     entity.oddBeans.forEachIndexed { indexOddBean, oddBean ->
                         if (SocketUpdateUtil.updateOddStatus(oddBean, globalStopEvent)) {
-                            mRecommendAdapter.notifySubItemChanged(index, indexOddBean)
+                            mHomeListAdapter.notifySubItemChanged(index, indexOddBean)
                         }
                     }
                 }
