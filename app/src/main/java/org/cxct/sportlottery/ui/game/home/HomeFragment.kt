@@ -872,6 +872,11 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                             ?: 0) > 0
                     ) {
                         //滾球有資料時
+
+                        //初始化時
+                        if (mSelectMatchType == MatchType.MAIN) {
+                            mSelectMatchType = MatchType.IN_PLAY
+                        }
                         refreshTable(mHomeGameTableBarItemData.inPlayResult)
                     } else if (mSelectMatchType == MatchType.MAIN) {
                         //滾球沒資料且初始化時
