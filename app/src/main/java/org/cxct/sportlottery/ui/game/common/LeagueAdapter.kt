@@ -56,7 +56,7 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         set(value) {
             if (value != field) {
                 field = value
-                //notifyDataSetChanged()
+                notifyDataSetChanged()
             }
         }
 
@@ -94,6 +94,7 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
         if(payloads.isNullOrEmpty()) {
             onBindViewHolder(holder, position)
+            //if(holder is ItemViewHolder) holder.update(data[position], matchType, oddsType)
         }
         else {
             // Update with payload

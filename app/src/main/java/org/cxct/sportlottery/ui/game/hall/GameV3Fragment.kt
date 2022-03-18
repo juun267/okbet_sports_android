@@ -70,6 +70,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     private var isReload = true // 重新加載用
 
+
     private val gameTypeAdapter by lazy {
         GameTypeAdapter().apply {
             gameTypeListener = GameTypeListener {
@@ -776,11 +777,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                     // TODO 這裡要確認是否有其他地方重複呼叫
                     Log.d("Hewie", "observe => OddsListGameHallResult")
+                    isReload = true
 
-                    if (isReload) {
-                        leagueAdapter.notifyDataSetChanged()
-                        isReload = false
-                    }
+//                    if (isReload) {
+//                        leagueAdapter.notifyDataSetChanged()
+//                        isReload = false
+//                    }
                     //leagueAdapter.notifyDataSetChanged()
 
 //                    when (args.matchType) {
@@ -1275,6 +1277,20 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 }
                             }
                         }
+                        //翻譯更新
+                        leagueOdds.forEach { LeagueOdd ->
+                            LeagueOdd.matchOdds.forEach { MatchOdd ->
+                                if (MatchOdd.matchInfo?.id == oddsChangeEvent.eventId) {
+                                    oddsChangeEvent.playCateNameMap?.let {
+                                        MatchOdd.playCateNameMap?.putAll(oddsChangeEvent.playCateNameMap!!)
+                                    }
+                                    oddsChangeEvent.betPlayCateNameMap?.let {
+                                        MatchOdd.betPlayCateNameMap?.putAll(oddsChangeEvent.betPlayCateNameMap!!)
+                                    }
+                                }
+                            }
+                        }
+
 
                         leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
                         leagueAdapter.playSelectedCode = getPlaySelectedCode()
@@ -1293,6 +1309,11 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                                 // Safety update list
                                 updateGameList(index, leagueOdd)
+                                //leagueAdapter.notifyDataSetChanged()
+                                if (isReload) {
+                                    leagueAdapter.notifyDataSetChanged()
+                                    isReload = false
+                                }
                             }
                         }
                     }
