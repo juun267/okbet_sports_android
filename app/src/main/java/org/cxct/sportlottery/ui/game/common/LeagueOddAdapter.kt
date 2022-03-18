@@ -1036,6 +1036,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private val playSelecte
                                     ?: playCateName,
                                 item.betPlayCateNameMap
                             )
+                            notifyDataSetChanged()
                         }
                 }
             }

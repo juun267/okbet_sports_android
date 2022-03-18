@@ -16,6 +16,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_toLeftOf="@+id/league_odd_quick_cate_close"
+            android:overScrollMode="never"
             android:scrollbars="none">
 
             <RadioGroup
@@ -25,17 +26,18 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal" />
         </HorizontalScrollView>
+
         <ImageButton
             android:id="@+id/league_odd_quick_cate_close"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginEnd="16dp"
             android:background="@null"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_close_menu_v4"
             android:visibility="gone"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
             tools:ignore="contentDescription"
             tools:visibility="visible" />
     </RelativeLayout>

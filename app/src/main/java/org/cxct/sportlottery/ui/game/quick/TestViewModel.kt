@@ -1,27 +1,38 @@
 package org.cxct.sportlottery.ui.game.quick
 
-import android.content.Context
+import android.app.Application
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.QuickPlayCate
+import org.cxct.sportlottery.network.feedback.*
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.odds.quick.QuickListData
 import org.cxct.sportlottery.network.odds.quick.QuickListRequest
 import org.cxct.sportlottery.network.odds.quick.QuickListResult
-import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.ui.base.BaseViewModel2
-import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
+import org.cxct.sportlottery.util.TimeUtil
 
-class QuickListViewModel(val context: Context): BaseViewModel2() {
-
+class TestViewModel(
+    private var context: Application,
+    loginRepository: LoginRepository,
+    betInfoRepository: BetInfoRepository,
+    infoCenterRepository: InfoCenterRepository
+) : BaseViewModel(
+    loginRepository,
+    betInfoRepository,
+    infoCenterRepository
+) {
     val _quickOddsListGameHallResult = MutableLiveData<Event<QuickListResult>>()//MutableLiveData<Event<OddsListResult?>>()
 
     fun apiGetQuickList(matchId: String) {
@@ -125,5 +136,4 @@ class QuickListViewModel(val context: Context): BaseViewModel2() {
             map.value?.toMutableList() ?: mutableListOf()
         }.toMutableMap()
     }
-
 }
