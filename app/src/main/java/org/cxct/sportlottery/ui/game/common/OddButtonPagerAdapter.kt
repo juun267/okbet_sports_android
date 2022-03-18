@@ -495,6 +495,11 @@ class OddButtonPagerViewHolder private constructor(
             oddBtnAway.visibility = View.INVISIBLE
             oddBtnDraw.visibility = View.INVISIBLE
             return
+        } else {
+            oddBtnType.visibility = View.VISIBLE
+            oddBtnHome.visibility = View.VISIBLE
+            oddBtnAway.visibility = View.VISIBLE
+            oddBtnDraw.visibility = View.VISIBLE
         }
 
         if (matchInfo.status == null || matchInfo.status == 2 || odds.first.toString()
@@ -815,6 +820,11 @@ class OddButtonPagerViewHolder private constructor(
             oddBtnAway.visibility = View.INVISIBLE
             oddBtnDraw.visibility = View.INVISIBLE
             return
+        } else {
+            oddBtnType.visibility = View.VISIBLE
+            oddBtnHome.visibility = View.VISIBLE
+            oddBtnAway.visibility = View.VISIBLE
+            oddBtnDraw.visibility = View.VISIBLE
         }
         if (matchInfo.status == null || matchInfo.status == 2 || odds.first.toString()
                 .contains("EmptyData")
