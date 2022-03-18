@@ -1256,22 +1256,20 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         }
 
                         val leagueOdds = leagueAdapter.data
-
-                        if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code){
-                            leagueOdds.filterMenuPlayCate()
+                        
+                        when {
+                            getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code -> leagueOdds.filterMenuPlayCate()
+                            getPlaySelectedCode() == "MAIN" -> { }
+                            else -> {
+                                leagueOdds.forEach { LeagueOdd ->
+                                    LeagueOdd.matchOdds.forEach { MatchOdd ->
+                                        if (MatchOdd.matchInfo?.id == oddsChangeEvent.eventId) {
+                                            MatchOdd.oddsMap = oddsChangeEvent.odds
+                                        }
+                                    }
+                                }
+                            }
                         }
-
-                        //此處須先隱藏 不然賠率會有問題
-                        //TODO 順序邏輯待處理
-//                        else {
-//                            leagueOdds.forEach { LeagueOdd ->
-//                                LeagueOdd.matchOdds.forEach { MatchOdd ->
-//                                    if(MatchOdd.matchInfo?.id == oddsChangeEvent.eventId){
-//                                        MatchOdd.oddsMap = oddsChangeEvent.odds
-//                                    }
-//                                }
-//                            }
-//                        }
 
                         leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
                         leagueAdapter.playSelectedCode = getPlaySelectedCode()
