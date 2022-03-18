@@ -1201,7 +1201,7 @@ class GameViewModel(
                 MatchType.OTHER -> {
                     getOddsList(
                         code,
-                        specialEntrance.value?.couponCode!!,
+                        specialEntrance.value?.couponCode ?: "",
                         getCurrentTimeRangeParams(),
                         leagueIdList = leagueIdList,
                         isIncrement = isIncrement
@@ -1371,6 +1371,10 @@ class GameViewModel(
             MatchType.TODAY.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue -> {
                 _oddsListGameHallResult.value = Event(null)
                 //_quickOddsListGameHallResult.value = Event(null)
+                currentTimeRangeParams = timeRangeParams
+            }
+            else -> {
+                _oddsListGameHallResult.value = Event(null)
                 currentTimeRangeParams = timeRangeParams
             }
         }
@@ -1625,8 +1629,6 @@ class GameViewModel(
                 clearSelectedLeague()
 
             _leagueListResult.value = (Event(result))
-
-            _isNoEvents.value = result?.rows?.size ?: 0 == 0
 
             notifyFavorite(FavoriteType.LEAGUE)
         }
