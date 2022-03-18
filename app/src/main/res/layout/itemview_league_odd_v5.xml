@@ -5,22 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorWhite"
-    tools:context="org.cxct.sportlottery.ui.game.common.LeagueOddAdapter"
     tools:ignore="spUsage">
 
     <View
         android:id="@+id/league_odd_match_border"
-        android:layout_width="176dp"
+        android:layout_width="160dp"
         android:layout_height="224dp"
         android:layout_marginStart="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/nested_scroll_view_league_odd"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_league_odd_btn_pager_main"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <View
         android:id="@+id/league_odd_match_border_row1"
-        android:layout_width="176dp"
+        android:layout_width="160dp"
         android:layout_height="58dp"
         android:layout_marginTop="2dp"
         app:layout_constraintEnd_toEndOf="@id/league_odd_match_border"
@@ -30,7 +29,7 @@
 
     <LinearLayout
         android:id="@+id/linear_layout"
-        android:layout_width="176dp"
+        android:layout_width="160dp"
         android:layout_height="45dp"
         android:layout_marginTop="2dp"
         android:gravity="center_vertical"
@@ -103,7 +102,7 @@
 
     <View
         android:id="@+id/league_odd_match_border_row2"
-        android:layout_width="176dp"
+        android:layout_width="160dp"
         android:layout_height="58dp"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
@@ -113,7 +112,7 @@
 
     <View
         android:id="@+id/league_odd_match_border_row3"
-        android:layout_width="176dp"
+        android:layout_width="160dp"
         android:layout_height="58dp"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
@@ -414,42 +413,36 @@
         app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row3"
         tools:ignore="ContentDescription" />
 
-    <RelativeLayout
-        android:id="@+id/nested_scroll_view_league_odd"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:scrollbars="none"
-        app:layout_constraintStart_toEndOf="@id/league_odd_match_border"
-        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_league_odd_btn_pager_main"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="224dp"
             android:layout_marginTop="6dp"
             android:nestedScrollingEnabled="false"
             android:orientation="horizontal"
             android:overScrollMode="never"
+            app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/league_odd_match_border"
+            app:layout_constraintTop_toTopOf="parent"
             tools:itemCount="5"
             tools:layout="@layout/itemview_odd_btn_2x2_v6"
             tools:listitem="@layout/itemview_odd_btn_2x2_v6" />
-
-    </RelativeLayout>
 
     <View
         android:id="@+id/league_odd_quick_cate_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginTop="5dp"
         android:background="@color/colorWhite8"
-        app:layout_constraintTop_toBottomOf="@id/league_odd_match_border"
-        android:layout_marginTop="5dp"/>
+        app:layout_constraintTop_toBottomOf="@id/league_odd_match_border" />
 
     <!-- 快選元件 -->
-    <org.cxct.sportlottery.ui.game.quick.QuickListView android:id="@+id/quickListView"
+    <org.cxct.sportlottery.ui.game.quick.QuickListView
+        android:id="@+id/quickListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/league_odd_quick_cate_divider"/>
+        app:layout_constraintTop_toBottomOf="@id/league_odd_quick_cate_divider" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -173,30 +173,30 @@ class AccountHistoryActivity :
 
     private fun initObserve() {
 
-        viewModel.userInfo.observe(this, {
+        viewModel.userInfo.observe(this) {
             updateAvatar(it?.iconUrl)
-        })
+        }
 
-        viewModel.messageListResult.observe(this, {
+        viewModel.messageListResult.observe(this) {
             updateUiWithResult(it)
-        })
+        }
 
-        viewModel.settlementNotificationMsg.observe(this, {
+        viewModel.settlementNotificationMsg.observe(this) {
             val message = it.getContentIfNotHandled()
             message?.let { messageNotnull -> view_notification.addNotification(messageNotnull) }
-        })
+        }
 
-        viewModel.userInfo.observe(this, {
+        viewModel.userInfo.observe(this) {
             updateAvatar(it?.iconUrl)
-        })
+        }
 
-        viewModel.isLogin.observe(this, {
+        viewModel.isLogin.observe(this) {
             getAnnouncement()
-        })
+        }
 
-        viewModel.nowTransNum.observe(this, {
+        viewModel.nowTransNum.observe(this) {
             navigation_transaction_status.trans_number.text = it.toString()
-        })
+        }
     }
 
     private fun initServiceButton(){
