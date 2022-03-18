@@ -175,6 +175,11 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.setOnClickListener {
                 item.isExpand = !item.isExpand
                 itemView.country_league_expand.setExpanded(item.isExpand, true)
+                if(item.isExpand) {
+                    itemView.SpaceItemDecorationView.visibility = View.GONE
+                } else {
+                    itemView.SpaceItemDecorationView.visibility = View.VISIBLE
+                }
             }
         }
 
