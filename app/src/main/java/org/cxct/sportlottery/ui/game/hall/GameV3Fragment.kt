@@ -296,7 +296,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     override fun hideLoading() {
         super.hideLoading()
-        if (isReload) startTimer()
+        if (timer == null) startTimer()
     }
 
     private val onTabSelectedListener = object : TabLayout.OnTabSelectedListener {
