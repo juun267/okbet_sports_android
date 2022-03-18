@@ -1538,7 +1538,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
 
 
-    private fun setEpsBottomSheet(matchInfo: MatchInfo) {
+        private fun setEpsBottomSheet(matchInfo: MatchInfo) {
         try {
             val contentView: ViewGroup? =
                 activity?.window?.decorView?.findViewById(android.R.id.content)
