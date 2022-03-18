@@ -56,6 +56,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
 
     var playSelectedCodeSelectionType: Int? = null
     var playSelectedCode: String? = null
+    var isNeedRecreateViews = true
 
     private val oddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
@@ -107,6 +108,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
         if(payloads.isNullOrEmpty()) {
             onBindViewHolder(holder, position)
+            //(holder as ViewHolderHdpOu).update(matchType, data[position], leagueOddListener, isTimerEnable, oddsType, playSelectedCodeSelectionType)
         } else {
             Log.d("Hewie", "更新：賽事($position)")
             val matchOdd = payloads.first() as MatchOdd
