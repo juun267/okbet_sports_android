@@ -848,29 +848,36 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
             matchPreloadInPlay.observe(viewLifecycleOwner) {
                 it.getContentIfNotHandled()?.let { result ->
-                    /*mInPlayResult = result
-                    isInPlayResult = true
-                    judgeTableBar()
-                    if (mSelectMatchType == MatchType.IN_PLAY || mSelectMatchType == MatchType.MAIN) refreshTable(mInPlayResult)*/
-
                     mHomeGameTableBarItemData.inPlayResult = result
                     isInPlayResult = true
                     setGameTableBar()
-                    if (mSelectMatchType == MatchType.IN_PLAY || mSelectMatchType == MatchType.MAIN) refreshTable(mHomeGameTableBarItemData.inPlayResult)
+                    //若選擇滾球或初始化時
+                    if (mSelectMatchType == MatchType.IN_PLAY || mSelectMatchType == MatchType.MAIN && (mHomeGameTableBarItemData.inPlayResult?.matchPreloadData?.num
+                            ?: 0) > 0
+                    ) {
+                        //滾球有資料時
+                        refreshTable(mHomeGameTableBarItemData.inPlayResult)
+                    } else if (mSelectMatchType == MatchType.MAIN) {
+                        //滾球沒資料且初始化時
+                        mSelectMatchType = MatchType.AT_START
+                        if (isSoonResult) {
+                            //若即將開賽已經取得資料
+                            refreshTable(mHomeGameTableBarItemData.atStartResult)
+                        }
+                    }
                 }
             }
 
             matchPreloadAtStart.observe(viewLifecycleOwner) {
                 it.getContentIfNotHandled()?.let { result ->
-                    /*mAtStartResult = result
-                    isSoonResult = true
-                    judgeTableBar()
-                    if (mSelectMatchType == MatchType.AT_START) refreshTable(mAtStartResult)*/
-
                     mHomeGameTableBarItemData.atStartResult = result
                     isSoonResult = true
                     setGameTableBar()
-                    if (mSelectMatchType == MatchType.AT_START) refreshTable(mHomeGameTableBarItemData.atStartResult)
+                    if (mSelectMatchType == MatchType.AT_START && (mHomeGameTableBarItemData.atStartResult?.matchPreloadData?.num
+                            ?: 0) > 0
+                    ) {
+                        refreshTable(mHomeGameTableBarItemData.atStartResult)
+                    }
                 }
             }
         }

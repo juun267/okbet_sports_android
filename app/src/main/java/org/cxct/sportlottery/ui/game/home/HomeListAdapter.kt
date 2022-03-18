@@ -362,7 +362,11 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun setGameTableBar(homeGameTableBarItemData: HomeGameTableBarItemData? = HomeGameTableBarItemData()) {
         homeGameTableBarItemData?.let {
             removeDatas(it)
-            addDataWithSort(it)
+            if ((homeGameTableBarItemData.inPlayResult?.matchPreloadData?.num
+                    ?: 0) > 0 || (homeGameTableBarItemData.atStartResult?.matchPreloadData?.num ?: 0) > 0
+            ) {
+                addDataWithSort(it)
+            }
         }
     }
     // endregion
