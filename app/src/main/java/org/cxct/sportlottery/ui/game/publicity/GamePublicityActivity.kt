@@ -44,6 +44,7 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
         initOnClickListener()
         initRecommendView()
         initTitle()
+        initBottomView()
     }
 
     private fun initToolBar() {
@@ -72,6 +73,10 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
             addTitle()
             addSubTitle()
         }
+    }
+
+    private fun initBottomView() {
+        mPublicityAdapter.addBottomView()
     }
 
     private fun initObservers() {

@@ -1,10 +1,14 @@
 package org.cxct.sportlottery.ui.game.publicity
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.HomeBottomNavigationBinding
 import org.cxct.sportlottery.databinding.PublicitySubTitleViewBinding
 import org.cxct.sportlottery.databinding.PublicityTitleViewBinding
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
@@ -48,6 +52,11 @@ class GamePublicityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         removeDatas(PublicitySubTitleImageData())
         addDataWithSort(PublicitySubTitleImageData())
     }
+
+    fun addBottomView() {
+        removeDatas(BottomNavigationItem())
+        addDataWithSort(BottomNavigationItem())
+    }
     //endregion
 
     override fun getItemViewType(position: Int): Int {
@@ -90,11 +99,25 @@ class GamePublicityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     )
                 )
             }
+            ItemType.BOTTOM_NAVIGATION.ordinal -> {
+                BottomNavigationViewHolder(
+                    HomeBottomNavigationBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
+            }
             else -> UndefinedViewHolder(View(parent.context))
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is BottomNavigationViewHolder -> {
+                holder.bind()
+            }
+        }
     }
 
     override fun getItemCount(): Int = mDataList.size
@@ -103,6 +126,22 @@ class GamePublicityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class PublicityTitleViewHolder(binding: PublicityTitleViewBinding) : RecyclerView.ViewHolder(binding.root)
     inner class PublicitySubTitleViewHolder(binding: PublicitySubTitleViewBinding) :
         RecyclerView.ViewHolder(binding.root)
+
+    inner class BottomNavigationViewHolder(val binding: HomeBottomNavigationBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        val context: Context = binding.root.context
+
+        fun bind() {
+            with(binding) {
+                ContextCompat.getDrawable(context, R.color.colorWhite1)?.let { background ->
+                    bottomNavigationView.setTopBackground(background)
+                }
+                ContextCompat.getDrawable(context, R.color.colorGrayDark3)?.let { background ->
+                    bottomNavigationView.setBottomBackground(background)
+                }
+            }
+        }
+    }
 
     class UndefinedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     // endregion
