@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.cxct.sportlottery.databinding.ActivityGamePublicityBinding
+import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameActivity
@@ -87,15 +88,32 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
             }
         }
 
+        viewModel.oddsType.observe(this, {
+            it?.let { oddsType ->
+                mPublicityAdapter.oddsType = it
+            }
+        })
+
         viewModel.publicityRecommend.observe(this, { event ->
             event?.getContentIfNotHandled()?.let { result ->
                 mPublicityAdapter.addRecommend(result.recommendList)
+                subscribeQueryData(result.recommendList)
             }
         })
     }
 
     private fun queryData() {
         viewModel.getRecommend()
+    }
+
+    private fun subscribeChannelHall(recommend: Recommend) {
+        subscribeChannelHall(recommend.gameType, recommend.menuList.firstOrNull()?.code, recommend.id)
+    }
+
+    private fun subscribeQueryData(recommendList: List<Recommend>) {
+        //先解除全部賽事訂閱
+        unSubscribeChannelHallAll()
+        recommendList.forEach { subscribeChannelHall(it) }
     }
 
     override fun onClick(v: View?) {

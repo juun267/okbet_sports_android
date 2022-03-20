@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.publicity
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import org.cxct.sportlottery.databinding.ItemPublicityRecommendBinding
 import org.cxct.sportlottery.databinding.PublicitySubTitleViewBinding
 import org.cxct.sportlottery.databinding.PublicityTitleViewBinding
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
+import org.cxct.sportlottery.ui.menu.OddsType
 
 class GamePublicityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     //排序對應表
@@ -25,6 +27,15 @@ class GamePublicityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         Recommend::class to 3,
         BottomNavigationItem::class to 4
     )
+
+    var oddsType: OddsType = OddsType.EU
+        @SuppressLint("NotifyDataSetChanged")
+        set(value) {
+            if (value != field) {
+                field = value
+                notifyDataSetChanged()
+            }
+        }
 
     enum class ItemType {
         PUBLICITY_TITLE,
@@ -132,7 +143,7 @@ class GamePublicityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         when (holder) {
             is PublicityRecommendViewHolder -> {
                 if (data is Recommend) {
-                    holder.bind(data)
+                    holder.bind(data, oddsType)
                 }
             }
             is BottomNavigationViewHolder -> {
