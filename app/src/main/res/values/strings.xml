@@ -1057,4 +1057,9 @@ Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAG
     <string name="waiting">待成立的注单</string>
     <string name="sec">s</string>
     <!--歷史紀錄end-->
+
+<!--region 宣傳頁-->
+    <string name="hot_recommend">热门推荐</string>
+
+<!--endregion-->
 </resources>

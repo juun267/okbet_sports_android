@@ -4,8 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import org.cxct.sportlottery.databinding.ActivityGamePublicityBinding
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
@@ -13,7 +15,8 @@ import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.util.LanguageManager
 
-class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePublicityViewModel::class), View.OnClickListener {
+class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePublicityViewModel::class),
+    View.OnClickListener {
     private lateinit var binding: ActivityGamePublicityBinding
 
     companion object {
@@ -23,6 +26,8 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
             context.startActivity(intent)
         }
     }
+
+    private val mPublicityAdapter = GamePublicityAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +42,8 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
     private fun initViews() {
         initToolBar()
         initOnClickListener()
+        initRecommendView()
+        initTitle()
     }
 
     private fun initToolBar() {
@@ -50,6 +57,21 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
         binding.tvRegister.setOnClickListener(this)
         binding.tvLogin.setOnClickListener(this)
         binding.publicityToolbar.blockLanguage.setOnClickListener(this)
+    }
+
+    private fun initRecommendView() {
+        with(binding.rvPublicity) {
+            layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = mPublicityAdapter
+            itemAnimator = null
+        }
+    }
+
+    private fun initTitle() {
+        with(mPublicityAdapter) {
+            addTitle()
+            addSubTitle()
+        }
     }
 
     private fun initObservers() {
