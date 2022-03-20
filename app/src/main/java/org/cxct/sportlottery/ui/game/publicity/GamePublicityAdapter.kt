@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.HomeBottomNavigationBinding
+import org.cxct.sportlottery.databinding.ItemPublicityRecommendBinding
 import org.cxct.sportlottery.databinding.PublicitySubTitleViewBinding
 import org.cxct.sportlottery.databinding.PublicityTitleViewBinding
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
@@ -93,6 +94,15 @@ class GamePublicityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             ItemType.PUBLICITY_SUB_TITLE.ordinal -> {
                 PublicitySubTitleViewHolder(
                     PublicitySubTitleViewBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
+            }
+            ItemType.RECOMMEND.ordinal -> {
+                PublicityRecommendViewHolder(
+                    ItemPublicityRecommendBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
