@@ -259,6 +259,7 @@ object Constants {
     const val SPORT_QUERY = "/api/front/sport/query"
     const val SPORT_COUPON_MENU = "/api/front/sport/coupon/menu"
     const val SPORT_SEARCH_ENGINE = "/api/front/sport/searchEngine"
+    const val SPORT_PUBLICITY_RECOMMEND = "/api/front/sport/recommend"
 
 
 
