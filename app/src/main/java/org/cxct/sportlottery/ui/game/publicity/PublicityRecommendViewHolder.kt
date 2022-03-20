@@ -32,6 +32,7 @@ class PublicityRecommendViewHolder(val binding: ItemPublicityRecommendBinding) :
 
             //LeagueView
             with(leagueView) {
+                tvTest.text = "${data.leagueId} - ${data.id}"
                 GameConfigManager.getTitleBarBackground(data.gameType)?.let { titleRes ->
                     root.setBackgroundResource(titleRes)
                 }

@@ -22,6 +22,14 @@
         android:textStyle="bold"
         tools:text="欧洲足球锦标赛2020" />
 
+    <TextView
+        android:id="@+id/tvTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textColor="@color/colorRed"
+        tools:text="xl213123 - xm213123"/>
+
     <ImageView
         android:id="@+id/ivFlag"
         android:layout_width="20dp"
