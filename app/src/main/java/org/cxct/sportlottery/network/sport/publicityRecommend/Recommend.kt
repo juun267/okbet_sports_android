@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network.sport.publicityRecommend
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.network.common.MatchType
 
 @JsonClass(generateAdapter = true)
 data class Recommend(
@@ -46,4 +47,6 @@ data class Recommend(
     val trackerId: String?,
     @Json(name = "tvId")
     val tvId: String
-)
+) {
+    var matchType: MatchType? = null
+}

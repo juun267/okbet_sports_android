@@ -54,6 +54,11 @@ class GamePublicityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         addDataWithSort(PublicitySubTitleImageData())
     }
 
+    fun addRecommend(recommendList: List<Recommend>) {
+        removeDatas(recommendList.firstOrNull())
+        recommendList.forEach { addDataWithSort(it) }
+    }
+
     fun addBottomView() {
         removeDatas(BottomNavigationItem())
         addDataWithSort(BottomNavigationItem())
@@ -123,7 +128,13 @@ class GamePublicityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val data = mDataList[position]
         when (holder) {
+            is PublicityRecommendViewHolder -> {
+                if (data is Recommend) {
+                    holder.bind(data)
+                }
+            }
             is BottomNavigationViewHolder -> {
                 holder.bind()
             }

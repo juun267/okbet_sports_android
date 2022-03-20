@@ -86,6 +86,12 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
                 finish()
             }
         }
+
+        viewModel.publicityRecommend.observe(this, { event ->
+            event?.getContentIfNotHandled()?.let { result ->
+                mPublicityAdapter.addRecommend(result.recommendList)
+            }
+        })
     }
 
     private fun queryData() {

@@ -25,10 +25,10 @@
             android:paddingTop="5dp"
             android:paddingEnd="18dp"
             android:paddingBottom="5dp"
-            android:text="@string/soccer"
             android:textColor="@color/color_FFFFFFFF"
             android:textSize="@dimen/textSize12sp"
-            app:drawableStartCompat="@drawable/img_soccer_white" />
+            app:drawableStartCompat="@drawable/img_soccer_white"
+            tools:text="@string/soccer" />
 
 
         <LinearLayout

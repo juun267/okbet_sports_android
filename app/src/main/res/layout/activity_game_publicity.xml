@@ -21,6 +21,8 @@
         android:id="@+id/rvPublicity"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@color/colorWhite"
+        android:overScrollMode="never"
         app:layout_constraintBottom_toTopOf="@id/viewBottom"
         app:layout_constraintTop_toBottomOf="@id/publicityToolbar" />
 

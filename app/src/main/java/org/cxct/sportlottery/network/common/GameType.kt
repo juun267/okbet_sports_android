@@ -111,5 +111,27 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 OTHER -> R.drawable.ic_game_champ
             }
         }
+
+        fun getGameTypeWhiteIcon(gameType: String): Int {
+            return when(gameType){
+                FT.key -> R.drawable.img_soccer_white
+                BK.key -> R.drawable.img_basketball_white
+                TN.key -> R.drawable.img_tennis_white
+                VB.key -> R.drawable.img_volleyball_white
+                BM.key -> R.drawable.img_badminton_white
+                TT.key -> R.drawable.img_tennis_white
+                IH.key -> R.drawable.img_ice_hockey_white
+                BX.key -> R.drawable.img_boxing_white
+                CB.key -> R.drawable.img_snooker_white
+                CK.key -> R.drawable.img_cricket_white
+                BB.key -> R.drawable.img_baseball_white
+                RB.key -> R.drawable.img_rugby_white
+                AFT.key -> R.drawable.img_amfootball_white
+                MR.key -> R.drawable.img_racing_white
+                GF.key -> R.drawable.img_golf_white
+                FB.key -> R.drawable.img_finance_white
+                else ->R.drawable.ic_game_champ
+            }
+        }
     }
 }
