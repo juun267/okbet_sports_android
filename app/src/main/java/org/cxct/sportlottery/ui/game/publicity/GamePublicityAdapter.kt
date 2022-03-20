@@ -18,12 +18,12 @@ class GamePublicityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     //排序對應表
     private val SORTMAP = mapOf<Any, Int>(
         //標題圖片
-        PublicityTitleImageData::class.java to 1,
+        PublicityTitleImageData::class to 1,
         //熱門推薦..更多
-        PublicitySubTitleImageData::class.java to 2,
+        PublicitySubTitleImageData::class to 2,
         //足球, 滾球, 數量, 聯賽名, 國旗, 賽事內容
-        Recommend::class.java to 3,
-        BottomNavigationItem::class.java to 4
+        Recommend::class to 3,
+        BottomNavigationItem::class to 4
     )
 
     enum class ItemType {
