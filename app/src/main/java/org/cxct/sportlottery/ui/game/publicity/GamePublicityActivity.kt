@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.game
+package org.cxct.sportlottery.ui.game.publicity
 
 import android.content.Context
 import android.content.Intent
@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.View
 import org.cxct.sportlottery.databinding.ActivityGamePublicityBinding
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
