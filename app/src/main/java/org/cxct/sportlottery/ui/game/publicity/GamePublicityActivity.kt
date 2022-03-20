@@ -13,7 +13,7 @@ import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.util.LanguageManager
 
-class GamePublicityActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class), View.OnClickListener {
+class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePublicityViewModel::class), View.OnClickListener {
     private lateinit var binding: ActivityGamePublicityBinding
 
     companion object {
@@ -31,6 +31,7 @@ class GamePublicityActivity : BaseSocketActivity<GameViewModel>(GameViewModel::c
 
         initViews()
         initObservers()
+        queryData()
     }
 
     private fun initViews() {
@@ -58,6 +59,10 @@ class GamePublicityActivity : BaseSocketActivity<GameViewModel>(GameViewModel::c
                 finish()
             }
         }
+    }
+
+    private fun queryData() {
+        viewModel.getRecommend()
     }
 
     override fun onClick(v: View?) {
