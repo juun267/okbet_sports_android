@@ -339,7 +339,7 @@ class BackService : Service() {
     fun subscribeHallChannel(gameType: String?, cateMenuCode: String?, eventId: String?) {
         if (gameType == null || eventId == null) return
 
-        val url = "$URL_HALL/$mPlatformId/$gameType/$cateMenuCode/$eventId"
+        val url = "$URL_HALL/$mPlatformId/$gameType/$eventId"
         subscribeChannel(url)
     }
 
@@ -349,7 +349,7 @@ class BackService : Service() {
         val urlList = mSubscribedMap.keys.toList()
         urlList.forEach { url ->
             // 解除球種頻道的訂閱, 球種頻道格式:/ws/notify/hall/1/XX/SPECIAL_MATCH_MOBILE/XXXX
-            if (url.contains("$URL_HALL/") && url.contains(cateMenuCode + "/"))
+            if (url.contains("$URL_HALL/"))
                 unsubscribeChannel(url)
         }
     }
@@ -357,7 +357,7 @@ class BackService : Service() {
     fun unsubscribeHallChannel(gameType: String?, cateMenuCode: String?, eventId: String?) {
         if (gameType == null || eventId == null) return
 
-        val url = "$URL_HALL/$mPlatformId/$gameType/$cateMenuCode/$eventId"
+        val url = "$URL_HALL/$mPlatformId/$gameType/$eventId"
         unsubscribeChannel(url)
     }
 
