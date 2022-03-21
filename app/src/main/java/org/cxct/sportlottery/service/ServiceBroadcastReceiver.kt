@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -35,6 +36,7 @@ import org.cxct.sportlottery.service.BackService.Companion.CHANNEL_KEY
 import org.cxct.sportlottery.service.BackService.Companion.CONNECT_STATUS
 import org.cxct.sportlottery.service.BackService.Companion.SERVER_MESSAGE_KEY
 import org.cxct.sportlottery.service.BackService.Companion.mUserId
+import org.cxct.sportlottery.util.EncryptUtil
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
@@ -144,10 +146,9 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
     private fun receiveMessage(bundle: Bundle?) {
         val channelStr = bundle?.getString(CHANNEL_KEY, "") ?: ""
         val messageStr = bundle?.getString(SERVER_MESSAGE_KEY, "") ?: ""
-
         try {
             val jsonArray = if (messageStr.isNotEmpty()) {
-                JSONArray(messageStr)
+                JSONArray(EncryptUtil.uncompress(messageStr))
             } else {
                 JSONArray()
             }
@@ -284,6 +285,7 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
                 }
             }
         } catch (e: JSONException) {
+            Log.e("Martin","WS格式出問題")
             e.printStackTrace()
         }
     }

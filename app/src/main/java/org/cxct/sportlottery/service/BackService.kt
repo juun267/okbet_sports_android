@@ -34,7 +34,7 @@ class BackService : Service() {
         const val CONNECT_STATUS = "connectStatus"
 
         private val URL_SOCKET_HOST_AND_PORT: String get() = "${Constants.getBaseUrl()}/api/ws/app/im" //app连接端点,无sockjs
-        const val URL_ALL = "/ws/notify/all" //全体公共频道
+        const val URL_ALL = "/ws/notify/all/encrypted" //全体公共频道
         const val URL_PING = "/ws/ping" //心跳检测通道 （pong消息将发往用户私人频道）
 
         private const val SPORT_HALL_CHANNEL_LENGTH = 6
@@ -42,9 +42,9 @@ class BackService : Service() {
         internal var mUserId: Long? = null
         private var mPlatformId: Long? = null
 
-        const val URL_USER = "/user/self"
-        val URL_USER_PRIVATE: String get() = "/ws/notify/user/$mUserId"  //用户私人频道
-        val URL_PLATFORM get() = "/ws/notify/platform/$mPlatformId" //公共频道  这个通道会通知主站平台维护
+        const val URL_USER = "/user/self/encrypted"
+        val URL_USER_PRIVATE: String get() = "/ws/notify/user/$mUserId/encrypted"  //用户私人频道
+        val URL_PLATFORM get() = "/ws/notify/platform/$mPlatformId/encrypted" //公共频道  这个通道会通知主站平台维护
         const val URL_EVENT = "/ws/notify/event" //具体赛事/赛季频道 //(普通玩法：eventId就是matchId，冠军玩法：eventId是赛季Id)
         const val URL_HALL = "/ws/notify/hall" //大厅赔率频道 //cateMenuCode：HDP&OU=讓球&大小, 1X2=獨贏
 
@@ -304,14 +304,14 @@ class BackService : Service() {
     fun subscribeEventChannel(eventId: String?) {
         if (eventId == null) return
 
-        val url = "$URL_EVENT/$mPlatformId/$eventId"
+        val url = "$URL_EVENT/$mPlatformId/$eventId/encrypted"
         subscribeChannel(url)
     }
 
     fun unsubscribeEventChannel(eventId: String?) {
         if (eventId == null) return
 
-        val url = "$URL_EVENT/$mPlatformId/$eventId"
+        val url = "$URL_EVENT/$mPlatformId/$eventId/encrypted"
         unsubscribeChannel(url)
     }
 
@@ -332,7 +332,7 @@ class BackService : Service() {
     }
 
     fun subscribeSportChannelHall(gameType: String?) {
-        val url = "$URL_HALL" //推送频道从原本的/notify/hall/{platformId}/{gameType}调整为/notify/hall,移除平台id与gameType,
+        val url = "$URL_HALL/encrypted" //推送频道从原本的/notify/hall/{platformId}/{gameType}调整为/notify/hall,移除平台id与gameType,
         subscribeChannel(url)
     }
 
