@@ -8,18 +8,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
-import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item_receipt.*
-import kotlinx.android.synthetic.main.item_match_receipt.*
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item_receipt.tv_match_type
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item_receipt.tv_play_content
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item_receipt.tv_receipt_status
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item_receipt.tv_team_names
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item_receipt.view.*
-import kotlinx.android.synthetic.main.item_match_receipt.view.*
+import kotlinx.android.synthetic.main.view_match_receipt_bet.*
+import kotlinx.android.synthetic.main.view_match_receipt_bet.tv_bet_status
+import kotlinx.android.synthetic.main.view_match_receipt_bet.tv_order_number
+import kotlinx.android.synthetic.main.view_match_receipt_bet.tv_winnable_amount
 import kotlinx.android.synthetic.main.view_match_receipt_bet.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketBottomSheetFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -47,20 +50,20 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
         view.apply {
             result.receipt?.singleBets?.firstOrNull()?.apply {
                 matchOdds?.firstOrNull()?.apply {
-                    tv_league.text = leagueName
+                    view.tvLeague.text = leagueName
                     val teamNamesStr =
                         if (homeName?.length ?: 0 > 15) "$homeName v\n$awayName" else "$homeName v $awayName"
-                    tv_team_names.text = teamNamesStr
-                    tv_match_type.tranByPlayCode(playCode, playCateName)
+                    view.tv_team_names.text = teamNamesStr
+                    view.tv_match_type.tranByPlayCode(playCode, playCateName)
                 }
 
-                view.view_match_receipt.setBetReceiptBackground(status)
-                tv_bet_amount.text = TextUtil.formatMoney(stake ?: 0.0)
-                tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
-                tv_winnable_amount.text = TextUtil.formatMoney(winnable ?: 0.0)
-                tv_bet_status.setBetReceiptStatus(status)
-                tv_bet_status.setReceiptStatusColor(status)
-                tv_receipt_status.setSingleReceiptStatusTips(status)
+                //view.view_match_receipt.setBetReceiptBackground(status)
+                view.tv_bet_amount.text = TextUtil.formatMoney(stake ?: 0.0)
+                view.tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
+                view.tv_winnable_amount.text = TextUtil.formatMoney(winnable ?: 0.0)
+                view.tv_bet_status.setBetReceiptStatus(status)
+                view.tv_bet_status.setReceiptStatusColor(status)
+                view.tv_receipt_status.setSingleReceiptStatusTips(status)
 
                 if (matchType == MatchType.OUTRIGHT) {
                     tv_team_names.visibility = View.GONE
