@@ -28,22 +28,39 @@ class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeS
 
     private fun initView() {
         sConfigData?.presetBetAmount?.let {
-            tvPlus1.text = "+ ${it[0]}"
-            tvPlus2.text = "+ ${it[1]}"
-            tvPlus3.text = "+ ${it[2]}"
-            tvPlus4.text = "+ ${it[3]}"
-            tvPlus1.setOnClickListener { v ->
-                plus(it[0].toLong())
+            if(it[0] != null || it[0] != 0){
+                tvPlus1.text = "+ ${it[0]}"
+                tvPlus1.setOnClickListener { v ->
+                    plus(it[0].toLong())
+                }
+            }else{
+                tvPlus1.visibility = View.GONE
             }
-            tvPlus2.setOnClickListener { v ->
-                plus(it[1].toLong())
+            if(it[1] != null || it[0] != 0){
+                tvPlus2.text = "+ ${it[1]}"
+                tvPlus2.setOnClickListener { v ->
+                    plus(it[1].toLong())
+                }
+            }else{
+                tvPlus2.visibility = View.GONE
             }
-            tvPlus3.setOnClickListener { v ->
-                plus(it[2].toLong())
+            if(it[2] != null || it[0] != 0){
+                tvPlus3.text = "+ ${it[2]}"
+                tvPlus3.setOnClickListener { v ->
+                    plus(it[2].toLong())
+                }
+            }else{
+                tvPlus3.visibility = View.GONE
             }
-            tvPlus4.setOnClickListener { v ->
-                plus(it[3].toLong())
+            if(it[3] != null || it[0] != 0){
+                tvPlus4.text = "+ ${it[3]}"
+                tvPlus4.setOnClickListener { v ->
+                    plus(it[3].toLong())
+                }
+            }else{
+                tvPlus4.visibility = View.GONE
             }
+            
         }
         tvNum0.setOnClickListener {
             insert(0)
