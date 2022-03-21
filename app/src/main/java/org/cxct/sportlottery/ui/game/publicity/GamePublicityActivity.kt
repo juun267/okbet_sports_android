@@ -19,6 +19,7 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import timber.log.Timber
 
+//TODO 玩法賠率顯示順序錯誤，需再寫排序邏輯
 class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePublicityViewModel::class),
     View.OnClickListener {
     private lateinit var binding: ActivityGamePublicityBinding
@@ -114,6 +115,49 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
     // TODO subscribe serviceConnectStatus, matchStatusChange, matchClock, oddsChange, matchOddsLock, globalStop, producerUp, leagueChange
     //endregion
     private fun initSocketObservers() {
+        receiver.matchStatusChange.observe(this, { event ->
+            event?.let { matchStatusChangeEvent ->
+                val targetList = getNewestRecommendData()
+
+                targetList.forEachIndexed { index, recommend ->
+                    val matchList = listOf(recommend).toMutableList()
+                    if (SocketUpdateUtil.updateMatchStatus(
+                            recommend.gameType,
+                            matchList as MutableList<org.cxct.sportlottery.network.common.MatchOdd>,
+                            matchStatusChangeEvent,
+                            this
+                        )
+                    ) {
+                        if (matchList.isNullOrEmpty()) {
+                            //TODO 移除該賽事
+//                                    leagueAdapter.data.remove(leagueOdd)
+                        }
+                        //TODO 更新邏輯待補，跟進GameV3Fragment
+                        //leagueAdapter.updateBySocket(index)
+                    }
+                }
+            }
+        })
+
+        receiver.matchClock.observe(this, {
+            it?.let { matchClockEvent ->
+                val targetList = getNewestRecommendData()
+
+                targetList.forEachIndexed { index, recommend ->
+                    if (
+                        SocketUpdateUtil.updateMatchClock(
+                            recommend,
+                            matchClockEvent
+                        )
+                    ) {
+                        //leagueAdapter.updateBySocket(index)
+                        //leagueAdapter.updateLeague(index, leagueOdd)
+                        //TODO 更新邏輯待補，跟進GameV3Fragment
+                    }
+                }
+            }
+        })
+
         receiver.oddsChange.observe(this, { event ->
             event?.let { oddsChangeEvent ->
                 oddsChangeEvent.sortOddsMap()
