@@ -19,6 +19,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.service.order_settlement.Status
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.game.GameActivity
@@ -229,6 +230,14 @@ class TransactionStatusActivity :
     private fun initObserver() {
         viewModel.messageListResult.observe(this) {
             updateUiWithResult(it)
+        }
+
+        viewModel.settlementNotificationMsg.observe(this) { event ->
+            event.getContentIfNotHandled()?.let {
+                if (it.status == Status.UN_DONE.code || it.status == Status.CANCEL.code) {
+                    viewModel.getBetList(true)
+                }
+            }
         }
 
         viewModel.isLogin.observe(this) {

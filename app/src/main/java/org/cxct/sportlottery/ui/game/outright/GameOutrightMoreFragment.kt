@@ -167,7 +167,7 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
                             val oddsType = outrightOddAdapter.oddsType
 
                             oddTypeSocketMap.forEach { oddTypeSocketMapEntry ->
-                                val oddSocket = oddTypeSocketMapEntry.value.find { oddSocket ->
+                                val oddSocket = oddTypeSocketMapEntry.value?.find { oddSocket ->
                                     oddSocket?.id == odd.id
                                 }
 
@@ -299,7 +299,7 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
         this.odds?.let { oddTypeSocketMap ->
             oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
-                oddTypeSocketMapEntry.value.onEach { odd ->
+                oddTypeSocketMapEntry.value?.onEach { odd ->
                     odd?.isSelected =
                         viewModel.betInfoList.value?.peekContent()?.any { betInfoListData ->
                             betInfoListData.matchOdd.oddsId == odd?.id

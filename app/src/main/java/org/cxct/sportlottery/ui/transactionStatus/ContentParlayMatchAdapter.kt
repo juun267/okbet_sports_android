@@ -67,8 +67,7 @@ class ContentParlayMatchAdapter :
                 parlay_play_content.setPlayContent(
                     data.playName,
                     data.spread,
-                    TextUtil.formatForOdd(data.odds),
-                    data.oddsType
+                    TextUtil.formatForOdd(data.odds)
                 )
 
                 parlay_play_time.text = TimeUtil.timeFormat(data.startTime, TimeUtil.YMD_HM_FORMAT)

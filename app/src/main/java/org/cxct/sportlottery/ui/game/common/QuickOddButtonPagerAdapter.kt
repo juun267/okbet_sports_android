@@ -528,10 +528,11 @@ class QuickOddButtonPagerViewHolder private constructor(
                 visibility = when {
                     playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() -> View.VISIBLE
                     else -> {
-                        when (!odds.second?.getOrNull(0)?.spread.isNullOrEmpty()) {
-                            true -> View.INVISIBLE
-                            false -> View.GONE
-                        }
+//                        when (!odds.second?.getOrNull(0)?.spread.isNullOrEmpty()) {
+//                            true -> View.INVISIBLE
+//                            false -> View.GONE
+//                        }
+                        View.GONE
                     }
                 }
 
@@ -610,10 +611,11 @@ class QuickOddButtonPagerViewHolder private constructor(
                 visibility = when {
                     playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() -> View.VISIBLE
                     else -> {
-                        when (!odds.second?.getOrNull(1)?.spread.isNullOrEmpty()) {
-                            true -> View.INVISIBLE
-                            false -> View.GONE
-                        }
+//                        when (!odds.second?.getOrNull(1)?.spread.isNullOrEmpty()) {
+//                            true -> View.INVISIBLE
+//                            false -> View.GONE
+//                        }
+                        View.GONE
                     }
                 }
 
@@ -884,10 +886,11 @@ class QuickOddButtonPagerViewHolder private constructor(
                 visibility = when {
                     playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() -> View.VISIBLE
                     else -> {
-                        when (!odds.second?.getOrNull(1)?.spread.isNullOrEmpty()) {
-                            true -> View.INVISIBLE
-                            false -> View.GONE
-                        }
+//                        when (!odds.second?.getOrNull(1)?.spread.isNullOrEmpty()) {
+//                            true -> View.INVISIBLE
+//                            false -> View.GONE
+//                        }
+                        View.GONE
                     }
                 }
 

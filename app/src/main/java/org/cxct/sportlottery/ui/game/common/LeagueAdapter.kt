@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.FoldState
@@ -18,7 +19,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 import org.cxct.sportlottery.util.SvgUtil
 
-class LeagueAdapter(private val matchType: MatchType) :
+class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelectionType: Int?, var playSelectedCode: String?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class ItemType {
@@ -55,7 +56,7 @@ class LeagueAdapter(private val matchType: MatchType) :
         set(value) {
             if (value != field) {
                 field = value
-                //notifyDataSetChanged()
+                notifyDataSetChanged()
             }
         }
 
@@ -75,23 +76,6 @@ class LeagueAdapter(private val matchType: MatchType) :
         return when (viewType) {
             ItemType.ITEM.ordinal -> {
                 ItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.itemview_league_v5, parent, false)) //itemview_league_v5
-//                ItemViewHolder.from(matchType, parent).apply {
-//
-//                    this.itemView.league_odd_list.apply {
-//                        this.layoutManager =
-//                            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-//
-//                        addItemDecoration(
-//                            DividerItemDecorator(
-//                                ContextCompat.getDrawable(
-//                                    context,
-//                                    R.drawable.divider_color_white8
-//                                )
-//                            )
-//                        )
-//                    }
-//                    this.itemView.league_odd_list.itemAnimator = null
-//                }
             }
             ItemType.BOTTOM_NAVIGATION.ordinal -> {
                 BottomNavigationViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.home_bottom_navigation, parent, false))
@@ -110,6 +94,7 @@ class LeagueAdapter(private val matchType: MatchType) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
         if(payloads.isNullOrEmpty()) {
             onBindViewHolder(holder, position)
+            //if(holder is ItemViewHolder) holder.update(data[position], matchType, oddsType)
         }
         else {
             // Update with payload
@@ -130,7 +115,9 @@ class LeagueAdapter(private val matchType: MatchType) :
                     matchType,
                     leagueListener,
                     leagueOddListener,
-                    oddsType
+                    oddsType,
+                    playSelectedCodeSelectionType,
+                    playSelectedCode
                 )
             }
         }
@@ -156,13 +143,14 @@ class LeagueAdapter(private val matchType: MatchType) :
         private val leagueOddAdapter by lazy {
             LeagueOddAdapter2(matchType)
         }
-
         fun bind(
             item: LeagueOdd,
             matchType: MatchType,
             leagueListener: LeagueListener?,
             leagueOddListener: LeagueOddListener?,
             oddsType: OddsType,
+            playSelectedCodeSelectionType: Int?,
+            playSelectedCode: String?
         ) {
             itemView.league_text.text = item.league.name
 
@@ -193,7 +181,9 @@ class LeagueAdapter(private val matchType: MatchType) :
                 it.matchInfo?.gameType = item.gameType?.key
             }
             leagueOddAdapter.oddsType = oddsType
-            leagueOddAdapter.update()
+            leagueOddAdapter.playSelectedCodeSelectionType = playSelectedCodeSelectionType
+            leagueOddAdapter.playSelectedCode = playSelectedCode
+            if(itemView.league_odd_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !itemView.league_odd_list.isComputingLayout) { leagueOddAdapter.update() }
         }
         fun updateLeagueExpand(item: LeagueOdd, matchType: MatchType) {
             //itemView.league_expand.setExpanded(item.unfold == FoldState.UNFOLD.code, false)
@@ -219,7 +209,9 @@ class LeagueAdapter(private val matchType: MatchType) :
 
                     this.leagueOddListener = leagueOddListener
                 }
-                addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_color_white8)))
+                try {
+                    addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_color_white8))) // TODO IllegalStateException: Cannot add item decoration during a scroll  or layout
+                } catch (e: Exception) {}
             }
         }
 
@@ -238,10 +230,11 @@ class LeagueAdapter(private val matchType: MatchType) :
             }
 
             itemView.setOnClickListener {
-                data[adapterPosition].unfold = if (data[adapterPosition].unfold == FoldState.UNFOLD.code) { FoldState.FOLD.code } else { FoldState.UNFOLD.code }
+                if(adapterPosition > data.size - 1) return@setOnClickListener
+                data[adapterPosition].unfold = if (data[adapterPosition].unfold == FoldState.UNFOLD.code) { FoldState.FOLD.code } else { FoldState.UNFOLD.code } // TODO IndexOutOfBoundsException: Index: 10, Size: 5
+                updateTimer(matchType, item.gameType)
 
                 notifyItemChanged(adapterPosition)
-                //updateTimer(matchType, item.gameType)
 
                 leagueListener?.onClickLeague(item)
             }
@@ -249,11 +242,10 @@ class LeagueAdapter(private val matchType: MatchType) :
 
         private fun updateTimer(matchType: MatchType, gameType: GameType?) {
             leagueOddAdapter.isTimerEnable =
-                itemView.league_odd_list.isShown && (gameType == GameType.FT || gameType == GameType.BK || matchType == MatchType.PARLAY || matchType == MatchType.AT_START || matchType == MatchType.MY_EVENT)
+                itemView.league_odd_list.visibility == View.VISIBLE && (gameType == GameType.FT || gameType == GameType.BK || matchType == MatchType.PARLAY || matchType == MatchType.AT_START || matchType == MatchType.MY_EVENT)
         }
 
         private fun checkSpaceItemDecoration() {
-            Log.d("Hewie12", "itemView.league_odd_list.isShown(${itemView.league_odd_list.visibility}) => ${itemView.league_odd_list.isShown}")
             itemView.SpaceItemDecorationView.visibility = when(itemView.league_odd_list.visibility) {
                 View.VISIBLE -> View.GONE
                 View.GONE -> View.VISIBLE
@@ -263,14 +255,13 @@ class LeagueAdapter(private val matchType: MatchType) :
         }
     }
 
-    class NoDataViewHolder private constructor(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
+    class NoDataViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         companion object {
             fun from(parent: ViewGroup, searchText: String): NoDataViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val noDataLayoutId = if (searchText.isBlank())
-                    R.layout.view_no_record
+                    R.layout.view_no_record_for_game
                 else
                     R.layout.itemview_game_no_record
                 val view = layoutInflater

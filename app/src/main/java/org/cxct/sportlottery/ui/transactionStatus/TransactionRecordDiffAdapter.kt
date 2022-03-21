@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.ui.transactionStatus
 
+import android.os.CountDownTimer
+import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -115,12 +117,25 @@ class TransactionRecordDiffAdapter :
                 play_content.setPlayContent(
                     matchOdds.playName,
                     matchOdds.spread,
-                    TextUtil.formatForOdd(matchOdds.odds),
-                    matchOdds.oddsType
+                    TextUtil.formatForOdd(matchOdds.odds)
                 )
 
                 match_play_time.text = TimeUtil.timeFormat(matchOdds.startTime, TimeUtil.YMD_HM_FORMAT)
                 content_play.text = "${getGameTypeName(data.gameType)} ${matchOdds.playCateName}"
+
+                val leftTime = data.betConfirmTime?.minus(TimeUtil.getNowTimeStamp())
+
+                object : CountDownTimer(leftTime ?: 0, 1000) {
+
+                    override fun onTick(millisUntilFinished: Long) {
+                        tv_count_down.text = "${TimeUtil.longToSecond(millisUntilFinished)} ${context.getString(R.string.sec)}"
+                    }
+
+                    override fun onFinish() {
+                        tv_count_down.text = "0 ${context.getString(R.string.sec)}"
+                    }
+                }.start()
+
                 content_bet_amount.text = TextUtil.format(data.totalAmount)
                 content_winnable_amount.text = TextUtil.format(data.winnable)
                 content_order_no.text = data.orderNo
@@ -168,8 +183,7 @@ class TransactionRecordDiffAdapter :
                 play_content.setPlayContent(
                     matchOdds.playName,
                     matchOdds.spread,
-                    TextUtil.formatForOdd(matchOdds.odds),
-                    matchOdds.oddsType
+                    TextUtil.formatForOdd(matchOdds.odds)
                 )
                 matchOdds.startTime?.let {
                     play_time.text = TimeUtil.timeFormat(it, TimeUtil.YMD_HM_FORMAT)

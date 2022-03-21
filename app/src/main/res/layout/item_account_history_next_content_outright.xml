@@ -130,7 +130,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_game_type_play_cate"
                 tools:text="菲尼克斯太阳 v 菲尼克斯太阳" />
 
-            <!--playName spread @ odd (oddsType)-->
+            <!--playName spread @ odd-->
             <TextView
                 android:id="@+id/play_content"
                 android:layout_width="wrap_content"
@@ -142,7 +142,7 @@
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_team_names"
-                tools:text="密尔沃基雄鹿 6.5 \@ 1.860 (印尼盘)" />
+                tools:text="密尔沃基雄鹿 6.5 \@ 1.860" />
 
             <TextView
                 android:id="@+id/tv_start_time"
