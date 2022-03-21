@@ -339,14 +339,14 @@ class BackService : Service() {
     fun subscribeHallChannel(gameType: String?, cateMenuCode: String?, eventId: String?) {
         if (gameType == null || eventId == null) return
 
-        val url = "$URL_HALL/$mPlatformId/$gameType/$cateMenuCode/$eventId"
+        val url = "$URL_HALL/$mPlatformId/$gameType/$cateMenuCode/$eventId/encrypted"
         subscribeChannel(url)
     }
 
     fun unsubscribeHallChannel(gameType: String?, cateMenuCode: String?, eventId: String?) {
         if (gameType == null || eventId == null) return
 
-        val url = "$URL_HALL/$mPlatformId/$gameType/$cateMenuCode/$eventId"
+        val url = "$URL_HALL/$mPlatformId/$gameType/$cateMenuCode/$eventId/encrypted"
         unsubscribeChannel(url)
     }
 
