@@ -5,16 +5,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_game_v3.*
 import org.cxct.sportlottery.databinding.ActivityGamePublicityBinding
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameActivity
-import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.SocketUpdateUtil
+import timber.log.Timber
 
 class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePublicityViewModel::class),
     View.OnClickListener {
@@ -28,6 +31,8 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
         }
     }
 
+    private var isNewestDataFromApi = false
+    private var mRecommendList: List<Recommend> = listOf()
     private val mPublicityAdapter = GamePublicityAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +42,7 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
 
         initViews()
         initObservers()
+        initSocketObservers()
         queryData()
     }
 
@@ -96,8 +102,69 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
 
         viewModel.publicityRecommend.observe(this, { event ->
             event?.getContentIfNotHandled()?.let { result ->
+                isNewestDataFromApi = true
+                mRecommendList = result.recommendList
                 mPublicityAdapter.addRecommend(result.recommendList)
                 subscribeQueryData(result.recommendList)
+            }
+        })
+    }
+
+    //region
+    // TODO subscribe serviceConnectStatus, matchStatusChange, matchClock, oddsChange, matchOddsLock, globalStop, producerUp, leagueChange
+    //endregion
+    private fun initSocketObservers() {
+        receiver.oddsChange.observe(this, { event ->
+            event?.let { oddsChangeEvent ->
+                oddsChangeEvent.sortOddsMap()
+
+                val targetList = getNewestRecommendData()
+                targetList.forEachIndexed { index, recommend ->
+                    if (recommend.id == oddsChangeEvent.eventId) {
+                        //region 主要市場 以外的過濾邏輯
+                        /*
+                        when {
+                            getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code -> leagueOdds.filterMenuPlayCate()
+                            getPlaySelectedCode() == "MAIN" -> { }
+                            else -> {
+                                leagueOdds.forEach { LeagueOdd ->
+                                    LeagueOdd.matchOdds.forEach { MatchOdd ->
+                                        if (MatchOdd.matchInfo?.id == oddsChangeEvent.eventId) {
+                                            MatchOdd.oddsMap = oddsChangeEvent.odds
+                                        }
+                                    }
+                                }
+                            }
+                        }*/
+//                        recommend.oddsMap = oddsChangeEvent.odds
+                        //endregion
+
+                        recommend.sortOddsMap()
+
+                        //region 翻譯更新
+                        oddsChangeEvent.playCateNameMap?.let { playCateNameMap ->
+                            recommend.playCateNameMap?.putAll(playCateNameMap)
+                        }
+                        oddsChangeEvent.betPlayCateNameMap?.let { betPlayCateNameMap ->
+                            recommend.betPlayCateNameMap?.putAll(betPlayCateNameMap)
+                        }
+                        //endregion
+
+                        //region 主要市場那列選擇狀態配置
+                        /*leagueAdapter.playSelectedCodeSelectionType =
+                            getPlaySelectedCodeSelectionType()
+                        leagueAdapter.playSelectedCode = getPlaySelectedCode()*/
+                        //endregion
+
+
+                        if (SocketUpdateUtil.updateMatchOdds(this, recommend, oddsChangeEvent)) {
+                            updateRecommendList(index, recommend)
+                        }
+
+                        if (isNewestDataFromApi)
+                            isNewestDataFromApi = false
+                    }
+                }
             }
         })
     }
@@ -114,6 +181,28 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
         //先解除全部賽事訂閱
         unSubscribeChannelHallAll()
         recommendList.forEach { subscribeChannelHall(it) }
+    }
+
+    private fun getNewestRecommendData(): List<Recommend> =
+        if (isNewestDataFromApi) mRecommendList else mPublicityAdapter.getRecommendData()
+
+
+    private fun updateRecommendList(index: Int, recommend: Recommend) {
+        with(binding) {
+            if (rvPublicity.scrollState == RecyclerView.SCROLL_STATE_IDLE && !rvPublicity.isComputingLayout) {
+                mPublicityAdapter.updateRecommendData(index, recommend)
+            }
+        }
+    }
+
+    private fun Recommend.sortOddsMap() {
+        this.oddsMap?.forEach { (_, value) ->
+            if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
+                value?.sortBy {
+                    it?.marketSort
+                }
+            }
+        }
     }
 
     override fun onClick(v: View?) {

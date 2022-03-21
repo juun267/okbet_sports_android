@@ -3,7 +3,14 @@ package org.cxct.sportlottery.network.sport.publicityRecommend
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.odds.MatchInfo
+import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.eps.EpsOdd
+import org.cxct.sportlottery.network.odds.list.QuickPlayCate
+import org.cxct.sportlottery.ui.common.PlayCateMapItem
 
 @JsonClass(generateAdapter = true)
 data class Recommend(
@@ -47,6 +54,18 @@ data class Recommend(
     val trackerId: String?,
     @Json(name = "tvId")
     val tvId: String
-) {
+) : MatchOdd {
     var matchType: MatchType? = null
+    override var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null
+    override var playCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null
+    override var matchInfo: MatchInfo? = null
+    override var oddsMap: MutableMap<String, MutableList<Odd?>?>? = mutableMapOf(
+        PlayCate.HDP.value to mutableListOf(),
+        PlayCate.OU.value to mutableListOf(),
+        PlayCate.SINGLE.value to mutableListOf()
+    )
+    override val oddsSort: String? = null
+    override val quickPlayCateList: MutableList<QuickPlayCate>? = null
+    override val oddsEps: EpsOdd? = null
+    override var playCateMappingList: List<PlayCateMapItem>? = null
 }

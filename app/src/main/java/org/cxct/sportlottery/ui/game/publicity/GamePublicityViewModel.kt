@@ -7,11 +7,13 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
 import org.cxct.sportlottery.network.sport.publicityRecommend.RecommendResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.isTimeAtStart
 import org.cxct.sportlottery.util.TimeUtil.isTimeToday
 import java.text.SimpleDateFormat
@@ -56,6 +58,25 @@ class GamePublicityViewModel(
                 )
             }?.let { result ->
                 if (result.success) {
+                    result.result.recommendList.forEach { recommend ->
+                        with(recommend) {
+                            recommend.matchInfo = MatchInfo(
+                                gameType = gameType,
+                                awayName = awayName,
+                                homeName = homeName,
+                                playCateNum = matchNum,
+                                startTime = startTime,
+                                status = status,
+                                leagueId = leagueId,
+                                leagueName = leagueName,
+                                id = id,
+                                endTime = 0
+                            ).apply {
+                                leagueTime = startTime?.toInt()
+                                startDateDisplay = TimeUtil.timeFormat(startTime, "dd/MM")
+                            }
+                        }
+                    }
                     _publicityRecommend.postValue(Event(result.result.setupMatchType()))
                 }
             }

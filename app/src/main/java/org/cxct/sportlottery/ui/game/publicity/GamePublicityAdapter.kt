@@ -76,6 +76,14 @@ class GamePublicityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
     //endregion
 
+    //region update Function
+    fun updateRecommendData(position: Int, payload: Recommend) {
+        val recommendIndexList = mutableListOf<Int>()
+        mDataList.forEachIndexed { index, item -> if (item is Recommend) recommendIndexList.add(index) }
+        notifyItemChanged(recommendIndexList[position], payload)
+    }
+    //endregion
+
     override fun getItemViewType(position: Int): Int {
         return when (mDataList[position]) {
             is PublicityTitleImageData -> {
@@ -138,6 +146,21 @@ class GamePublicityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+        super.onBindViewHolder(holder, position, payloads)
+        if (payloads.isNullOrEmpty()) {
+            onBindViewHolder(holder, position)
+        } else {
+            payloads.forEachIndexed {index, payload ->
+                when (payload) {
+                    is Recommend -> {
+                        (holder as PublicityRecommendViewHolder).updateLeagueOddList(index, payload, oddsType)
+                    }
+                }
+            }
+        }
+    }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val data = mDataList[position]
         when (holder) {
@@ -177,6 +200,14 @@ class GamePublicityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class UndefinedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     // endregion
+
+    //region Data Getter
+    fun getRecommendData(): MutableList<Recommend> {
+        val result = mutableListOf<Recommend>()
+        mDataList.filterIsInstance<Recommend>().forEach { result.add(it) }
+        return result
+    }
+    //endregion
 
     // region private functions
     // 依照傳入參數刪除同一個類別的資料

@@ -7,7 +7,6 @@ import org.cxct.sportlottery.databinding.ItemPublicityRecommendBinding
 import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeString
 import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeWhiteIcon
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.common.SocketLinearManager
@@ -15,17 +14,15 @@ import org.cxct.sportlottery.ui.game.common.LeagueOddAdapter2
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.SvgUtil
-import org.cxct.sportlottery.util.TimeUtil
-import timber.log.Timber
 
 class PublicityRecommendViewHolder(val binding: ItemPublicityRecommendBinding) : RecyclerView.ViewHolder(binding.root) {
+    private var leagueOddAdapter: LeagueOddAdapter2? = null
+
     fun bind(data: Recommend, oddsType: OddsType) {
-        val leagueOddAdapter by lazy {
-            LeagueOddAdapter2(data.matchType ?: MatchType.EARLY).apply {
-                isTimerEnable = when (data.matchType) {
-                    MatchType.IN_PLAY -> true
-                    else -> false
-                }
+        leagueOddAdapter = LeagueOddAdapter2(data.matchType ?: MatchType.EARLY).apply {
+            isTimerEnable = when (data.matchType) {
+                MatchType.IN_PLAY -> true
+                else -> false
             }
         }
         with(binding) {
@@ -59,21 +56,10 @@ class PublicityRecommendViewHolder(val binding: ItemPublicityRecommendBinding) :
             matchOddList.add(
                 with(data) {
                     MatchOdd(
-                        matchInfo = MatchInfo(
-                            gameType = gameType,
-                            awayName = awayName,
-                            homeName = homeName,
-                            playCateNum = matchNum,
-                            startTime = startTime,
-                            status = status,
-                            leagueId = leagueId,
-                            leagueName = leagueName,
-                            id = id,
-                            endTime = 0
-                        ).apply {
-                            leagueTime = startTime?.toInt()
-                            startDateDisplay = TimeUtil.timeFormat(startTime, "dd/MM")
-                        }
+                        matchInfo = matchInfo,
+                        oddsMap = oddsMap,
+                        playCateNameMap = playCateNameMap,
+                        betPlayCateNameMap = betPlayCateNameMap
                     )
                 }
             )
@@ -82,9 +68,14 @@ class PublicityRecommendViewHolder(val binding: ItemPublicityRecommendBinding) :
             with(rvLeagueList) {
                 layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
                 adapter = leagueOddAdapter
-                leagueOddAdapter.setData(matchOddList, oddsType)
+                leagueOddAdapter?.setData(matchOddList, oddsType)
             }
 
         }
+    }
+
+    fun updateLeagueOddList(index: Int, recommend: Recommend, oddsType: OddsType) {
+        leagueOddAdapter?.oddsType = oddsType
+        leagueOddAdapter?.notifyItemChanged(index, recommend)
     }
 }
