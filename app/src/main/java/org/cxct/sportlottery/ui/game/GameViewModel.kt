@@ -1135,9 +1135,6 @@ class GameViewModel(
                         leagueIdList = leagueIdList,
                     )
                 }
-                MatchType.OUTRIGHT -> {
-                    getOutrightSeasonList(code, false)
-                }
                 MatchType.AT_START -> {
                     checkOddsList(
                         code,
