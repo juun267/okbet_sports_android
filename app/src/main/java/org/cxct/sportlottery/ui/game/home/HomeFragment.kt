@@ -81,6 +81,11 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
     private val mRecommendAdapter = RvRecommendAdapter()
 
+    private var mSubscribeInPlayGameID : MutableList<String> = mutableListOf()
+    private var mSubscribeAtStartGameID : MutableList<String> = mutableListOf()
+    private var mSubscribeRecommendGameID : MutableList<String> = mutableListOf()
+    private var mSubscribeHighlightGameID : MutableList<String> = mutableListOf()
+
     private val mOnClickOddListener = object : OnClickOddListener {
         override fun onClickBet(
             matchOdd: MatchOdd,
@@ -147,6 +152,10 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     override fun onDestroyView() {
         super.onDestroyView()
         unSubscribeChannelHallAll()
+        mSubscribeInPlayGameID.clear()
+        mSubscribeAtStartGameID.clear()
+        mSubscribeRecommendGameID.clear()
+        mSubscribeHighlightGameID.clear()
         mTimer?.cancel()
         mTimer = null
     }
@@ -154,6 +163,10 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     override fun onStop() {
         super.onStop()
         unSubscribeChannelHallAll()
+        mSubscribeInPlayGameID.clear()
+        mSubscribeAtStartGameID.clear()
+        mSubscribeRecommendGameID.clear()
+        mSubscribeHighlightGameID.clear()
     }
 
     private fun initDiscount() {
@@ -461,18 +474,26 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 MatchType.IN_PLAY -> {
                     mInPlayResult?.matchPreloadData?.datas?.forEach { data ->
                         data.matchOdds.forEach { match ->
-                            subscribeChannelHall(data.code,
-                                MenuCode.HOME_INPLAY_MOBILE.code,
-                                match.matchInfo?.id)
+                            val id = match.matchInfo?.id ?: ""
+                            if (!id.isNullOrEmpty()) {
+                                subscribeChannelHall(data.code,
+                                    MenuCode.HOME_INPLAY_MOBILE.code,
+                                    id)
+                                mSubscribeInPlayGameID.add(id)
+                            }
                         }
                     }
                 }
                 MatchType.AT_START -> {
                     mAtStartResult?.matchPreloadData?.datas?.forEach { data ->
                         data.matchOdds.forEach { match ->
-                            subscribeChannelHall(data.code,
-                                MenuCode.HOME_ATSTART_MOBILE.code,
-                                match.matchInfo?.id)
+                            val id = match.matchInfo?.id ?: ""
+                            if (!id.isNullOrEmpty()) {
+                                subscribeChannelHall(data.code,
+                                    MenuCode.HOME_ATSTART_MOBILE.code,
+                                    id)
+                                mSubscribeInPlayGameID.add(id)
+                            }
                         }
                     }
                 }
@@ -480,14 +501,19 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         }
     }
 
-    private fun unsubscribeTableHallChannel(code: String = "") {
-        if (code.isEmpty()) {
-            unsubscribeCateHallChannel(MenuCode.HOME_INPLAY_MOBILE.code)
-            unsubscribeCateHallChannel(MenuCode.HOME_ATSTART_MOBILE.code)
+    private fun unsubscribeTableHallChannel() {
+        mSubscribeInPlayGameID.forEach {
+            if (!mSubscribeRecommendGameID.contains(it) && !mSubscribeHighlightGameID.contains(it)) {
+                unSubscribeChannelEvent(it)
+            }
         }
-        else {
-            unsubscribeCateHallChannel(code)
+        mSubscribeInPlayGameID.clear()
+        mSubscribeAtStartGameID.forEach {
+            if (!mSubscribeRecommendGameID.contains(it) && !mSubscribeHighlightGameID.contains(it)) {
+                unSubscribeChannelEvent(it)
+            }
         }
+        mSubscribeAtStartGameID.clear()
     }
 
     //訂閱 推薦賽事 賠率
@@ -496,28 +522,41 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             if (result != null) {
                 result.rows?.forEach { row ->
                     row.leagueOdds?.matchOdds?.forEach { oddData ->
-                        subscribeChannelHall(
-                            row.sport?.code,
-                            MenuCode.RECOMMEND.code,
-                            oddData.matchInfo?.id
-                        )
+                        val id = oddData.matchInfo?.id ?: ""
+                        if (!id.isNullOrEmpty()) {
+                            subscribeChannelHall(
+                                row.sport?.code,
+                                MenuCode.RECOMMEND.code,
+                                id
+                            )
+                            mSubscribeRecommendGameID.add(id)
+                        }
                     }
                 }
             }
             else {
                 mRecommendAdapter.getData().forEach { entity ->
-                    subscribeChannelHall(
-                        entity.code,
-                        MenuCode.RECOMMEND.code,
-                        entity.matchInfo?.id
-                    )
+                    val id = entity.matchInfo?.id ?: ""
+                    if (!id.isNullOrEmpty()) {
+                        subscribeChannelHall(
+                            entity.code,
+                            MenuCode.RECOMMEND.code,
+                            id
+                        )
+                        mSubscribeRecommendGameID.add(id)
+                    }
                 }
             }
         }
     }
 
     private fun unsubscribeRecommendHallChannel() {
-        unsubscribeCateHallChannel(MenuCode.RECOMMEND.code)
+        mSubscribeRecommendGameID.forEach {
+            if (!mSubscribeInPlayGameID.contains(it) && !mSubscribeAtStartGameID.contains(it) && !mSubscribeHighlightGameID.contains(it)) {
+                unSubscribeChannelEvent(it)
+            }
+        }
+        mSubscribeRecommendGameID.clear()
     }
 
     //訂閱 精選賽事 賠率
@@ -525,11 +564,15 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         GlobalScope.launch(Dispatchers.IO) {
             if (result != null) {
                 result?.t?.odds?.forEach {
-                    subscribeChannelHall(
-                        selectedSportType?.code,
-                        MenuCode.SPECIAL_MATCH_MOBILE.code,
-                        it.matchInfo?.id
-                    )
+                    val id = it.matchInfo?.id ?: ""
+                    if (!id.isNullOrEmpty()) {
+                        subscribeChannelHall(
+                            selectedSportType?.code,
+                            MenuCode.SPECIAL_MATCH_MOBILE.code,
+                            id
+                        )
+                        mSubscribeHighlightGameID.add(id)
+                    }
                 }.apply {
                     withContext(Dispatchers.Main) {
                         setDefaultRb()
@@ -538,11 +581,15 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             }
             else {
                 mRvHighlightAdapter.getData().forEach { matchOdd ->
-                    subscribeChannelHall(
-                        selectedSportType?.code,
-                        MenuCode.SPECIAL_MATCH_MOBILE.code,
-                        matchOdd.matchInfo?.id
-                    )
+                    val id = matchOdd.matchInfo?.id ?: ""
+                    if (!id.isNullOrEmpty()) {
+                        subscribeChannelHall(
+                            selectedSportType?.code,
+                            MenuCode.SPECIAL_MATCH_MOBILE.code,
+                            id
+                        )
+                        mSubscribeHighlightGameID.add(id)
+                    }
                 }.apply {
                     withContext(Dispatchers.Main) {
                         setDefaultRb()
@@ -553,7 +600,12 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     }
 
     private fun unsubscribeHighlightHallChannel() {
-        unsubscribeCateHallChannel(MenuCode.SPECIAL_MATCH_MOBILE.code)
+        mSubscribeHighlightGameID.forEach {
+            if (!mSubscribeInPlayGameID.contains(it) && !mSubscribeAtStartGameID.contains(it) && !mSubscribeRecommendGameID.contains(it)) {
+                unSubscribeChannelEvent(it)
+            }
+        }
+        mSubscribeHighlightGameID.clear()
     }
 
     private fun initObserve() {
