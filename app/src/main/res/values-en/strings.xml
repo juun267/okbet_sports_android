@@ -182,6 +182,7 @@
     <string name="best_recommend">High recommended</string>
     <string name="navigation_web">Web directory</string>
     <string name="other">Other</string>
+    <string name="unknown_name"></string>
     <string name="games_lobby">Game center</string>
     <string name="sport_game">Sports</string>
     <string name="cg_lottery">CG lottery</string>
@@ -567,6 +568,8 @@
     <string name="please_enter_wallet_address">the wallet address</string>
     <string name="network_point">Bank branch</string>
     <string name="please_enter_network_point">your opening bank branch</string>
+    <string name="wallet_phone_number">Phone number</string>
+    <string name="please_enter_wallet_phone_number">Please enter the phone number</string>
     <string name="delete_bank_card">Delete</string>
     <string name="delete_crypto">Delete</string>
     <string name="delete_e_wallet">Delete</string>

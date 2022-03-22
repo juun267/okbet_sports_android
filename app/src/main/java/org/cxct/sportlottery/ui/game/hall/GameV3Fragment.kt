@@ -45,7 +45,6 @@ import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
-import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.*
@@ -59,7 +58,6 @@ import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.QuickListManager
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
-import timber.log.Timber
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -110,32 +108,23 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     private val playCategoryAdapter by lazy {
         PlayCategoryAdapter().apply {
-            playCategoryListener = PlayCategoryListener {
-                if (it.selectionType == SelectionType.SELECTABLE.code) {
-                    when {
-                        //這個是沒有點選過的狀況 第一次進來 ：開啟選單
-                        !it.isSelected && it.isLocked == null -> {
-                            showPlayCateBottomSheet(it)
-                        }
-                        //當前被點選的狀態
-                        it.isSelected -> {
-                            showPlayCateBottomSheet(it)
-                        }
-                        //之前點選過然後離開又回來 要預設帶入
-                        !it.isSelected && it.isLocked == false -> {
-                            unSubscribeChannelSwitchPlayCate()
+            playCategoryListener = PlayCategoryListener(
+                onClickSetItemListener = {
+                    unSubscribeChannelSwitchPlayCate()
 
-                            viewModel.switchPlay(args.matchType, it)
-                            loading()
-                        }
-                    }
-                } else {
+                    viewModel.switchPlay(args.matchType, it)
+                    loading()
+                }, onClickNotSelectableListener = {
                     unSubscribeChannelSwitchPlayCate()
                     viewModel.switchPlay(args.matchType, it)
                     upDateSelectPlay(it)
                     loading()
-                }
-            }
+                }, onSelectPlayCateListener = { play, playCate ->
+                    loading()
+                    unSubscribeChannelSwitchPlayCate()
+                    viewModel.switchPlayCategory(args.matchType, play, playCate.code)
+                    upDateSelectPlay(play)
+                })
         }
     }
 
@@ -1807,24 +1796,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
             ).into(it)
         }
-    }
-
-    private fun showPlayCateBottomSheet(play: Play) {
-        showBottomSheetDialog(
-            play.name,
-            play.playCateList?.map { playCate -> StatusSheetData(playCate.code, playCate.name) }
-                ?: listOf(),
-            StatusSheetData(
-                (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.code,
-                (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.name
-            ),
-            StatusSheetAdapter.ItemCheckedListener { _, playCate ->
-                loading()
-                unSubscribeChannelSwitchPlayCate()
-                viewModel.switchPlayCategory(args.matchType, play, playCate.code)
-                upDateSelectPlay(play)
-                (activity as BaseActivity<*>).bottomSheet.dismiss()
-            })
     }
 
     //更新isLocked狀態
