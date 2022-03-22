@@ -13,7 +13,6 @@ import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeMenuIcon
-import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeString
 import org.cxct.sportlottery.network.common.GameType.Companion.getSpecificLanguageString
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.league.LeagueListRequest
@@ -562,6 +561,17 @@ class GameViewModel(
                     }
                 _sportSortList.postValue(Event(sportCardList))
                 getSportMenu()
+            }
+        }
+    }
+
+    //獲取體育篩選菜單
+    fun getSportMenuFilter() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.sportService.getSportListFilter()
+            }?.let {
+                _sportMenuFilterList.postValue(Event(it.list))
             }
         }
     }
