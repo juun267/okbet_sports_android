@@ -60,7 +60,7 @@ class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeS
             }else{
                 tvPlus4.visibility = View.GONE
             }
-            
+
         }
         tvNum0.setOnClickListener {
             insert(0)
