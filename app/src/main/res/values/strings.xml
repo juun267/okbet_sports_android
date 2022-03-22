@@ -183,6 +183,7 @@
     <string name="best_recommend">劲爆推荐</string>
     <string name="navigation_web">导航网</string>
     <string name="other">其他</string>
+    <string name="unknown_name"></string>
     <string name="games_lobby">游戏大厅</string>
     <string name="sport_game">体育赛事</string>
     <string name="cg_lottery">CG彩票</string>
@@ -559,6 +560,8 @@
     <string name="please_enter_wallet_address">请输入钱包地址</string>
     <string name="network_point">开户网点</string>
     <string name="please_enter_network_point">请输入开户网点</string>
+    <string name="wallet_phone_number">电话号码</string>
+    <string name="please_enter_wallet_phone_number">请输入电话号码</string>
     <string name="delete_bank_card">刪除銀行卡</string>
     <string name="delete_crypto">刪除虚拟币</string>
     <string name="delete_e_wallet">刪除eWallet</string>
@@ -860,10 +863,10 @@
     <string name="parlay_9_block_rule">9串502是由9个不同的赛事组成的502个不同的投注，36个2串1，84个3串1，126个4串1，126个5串1，84个6串1，36个7串1，9个8串1以及1个9串1，至少2个选项获胜以确保派彩，不同球种及冠军玩法不能进行串关投注</string>
     <string name="parlay_10_fold_rule">10串1是10个选项组成的单一投注，必须赢得所有选项方可获得返还，不同球种及冠军玩法不能进行串关投注</string>
     <string name="parlay_10_block_rule">10串1013是由10个不同的赛事组成的1013个不同的投注，45个2串1，120个3串1，210个4串1，252个5串1，210个6串1，120个7串1，45个8串1，10个9串1以及1个10串1，至少2个选项获胜以确保派彩，不同球种及冠军玩法不能进行串关投注</string>
-    <string name="ping_pong">乒乓球</string>
+    <string name="table_tennis">乒乓球</string>
     <string name="ice_hockey">冰球</string>
     <string name="boxing">拳击</string>
-    <string name="cue_ball">台球</string>
+    <string name="snooker">台球</string>
     <string name="cricket">板球</string>
     <string name="baseball">棒球</string>
     <string name="rugby_football">橄榄球</string>

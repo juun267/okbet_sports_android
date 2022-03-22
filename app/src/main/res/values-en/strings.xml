@@ -183,6 +183,7 @@
     <string name="best_recommend">High recommended</string>
     <string name="navigation_web">Web directory</string>
     <string name="other">Other</string>
+    <string name="unknown_name"></string>
     <string name="games_lobby">Game center</string>
     <string name="sport_game">Sports</string>
     <string name="cg_lottery">CG lottery</string>
@@ -238,15 +239,15 @@
     <string name="tennis">Tennis</string>
     <string name="badminton">Badminton</string>
     <string name="volleyball">Volleyball</string>
-    <string name="ping_pong">Ping pong</string>
+    <string name="table_tennis">Table tennis</string>
     <string name="ice_hockey">Ice hockey</string>
     <string name="boxing">Boxing</string>
-    <string name="cue_ball">Billiards</string>
+    <string name="snooker">Snooker</string>
     <string name="cricket">Cricket</string>
     <string name="baseball">Baseball</string>
     <string name="rugby_football">Rugby</string>
     <string name="america_football">American football</string>
-    <string name="motor_racing">Auto racing</string>
+    <string name="motor_racing">Motor Racing</string>
     <string name="golf">Golf</string>
     <string name="financial_bets">Financial Bets</string>
     <string name="section">Period</string>
@@ -568,6 +569,8 @@
     <string name="please_enter_wallet_address">the wallet address</string>
     <string name="network_point">Bank branch</string>
     <string name="please_enter_network_point">your opening bank branch</string>
+    <string name="wallet_phone_number">Phone number</string>
+    <string name="please_enter_wallet_phone_number">Please enter the phone number</string>
     <string name="delete_bank_card">Delete</string>
     <string name="delete_crypto">Delete</string>
     <string name="delete_e_wallet">Delete</string>

@@ -121,7 +121,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
         set(value) {
             if (value != field) {
                 field = value
-                notifyDataSetChanged()
+                //notifyDataSetChanged() // TODO ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy can touch its views.
             }
         }
 

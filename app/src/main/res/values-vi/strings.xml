@@ -161,6 +161,7 @@
     <string name="best_recommend">Đề xuất tốt nhất</string>
     <string name="navigation_web">Mạng điều hướng</string>
     <string name="other">SẮP TỚI</string>
+    <string name="unknown_name"></string>
     <string name="games_lobby">Sảnh trò chơi</string>
     <string name="sport_game">Sport</string>
     <string name="cg_lottery">Xổ số CG</string>
@@ -216,10 +217,10 @@
     <string name="tennis">Quần Vợt</string>
     <string name="badminton">Cầu lông</string>
     <string name="volleyball">Bóng Chuyền</string>
-    <string name="ping_pong">Bóng bàn</string>
+    <string name="table_tennis">Bóng bàn</string>
     <string name="ice_hockey">Khúc côn cầu trên sân băng</string>
     <string name="boxing">Đấm bốc</string>
-    <string name="cue_ball">Bi-a</string>
+    <string name="snooker">Bi-a</string>
     <string name="cricket">Bóng gậy</string>
     <string name="baseball">Bóng chày</string>
     <string name="rugby_football">Bóng bầu dục</string>
@@ -546,6 +547,8 @@
     <string name="please_enter_wallet_address">Vui lòng nhập địa chỉ ví</string>
     <string name="network_point">Địa điểm mở tài khoản</string>
     <string name="please_enter_network_point">Địa điểm mở tài khoản</string>
+    <string name="wallet_phone_number">Số điện thoại</string>
+    <string name="please_enter_wallet_phone_number">Vui lòng nhập số điện thoại</string>
     <string name="delete_bank_card">xóa bỏ</string>
     <string name="delete_crypto">xóa bỏ</string>
     <string name="delete_e_wallet">xóa bỏ</string>

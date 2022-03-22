@@ -95,7 +95,9 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     fun notifyMatchStatusChanged(matchStatusCO: MatchStatusCO, statusValue: String?) {
         mDataList.forEach {
-            it.vpTableAdapter?.notifyMatchStatusChanged(matchStatusCO, statusValue)
+            if (matchStatusCO.gameType == it.code) {
+                it.vpTableAdapter?.notifyMatchStatusChanged(matchStatusCO, statusValue)
+            }
         }
     }
 
@@ -108,7 +110,9 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun notifyUpdateTime(matchClockCO: MatchClockCO?) {
         matchClockCO?.let { matchClock ->
             mDataList.forEach{
-                it.vpTableAdapter?.notifyUpdateTime(matchClock)
+                if (matchClock.gameType == it.code) {
+                    it.vpTableAdapter?.notifyUpdateTime(matchClock)
+                }
             }
         }
     }
