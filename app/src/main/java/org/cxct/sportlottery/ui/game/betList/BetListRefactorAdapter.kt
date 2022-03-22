@@ -589,7 +589,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
         private fun setupOddStatus(itemData: BetInfoListData) {
             itemView.apply {
-                val inPlay = System.currentTimeMillis() > itemData.matchOdd.startTime ?: 0
+                var inPlay = System.currentTimeMillis() > itemData.matchOdd.startTime ?: 0
+                if(itemData.matchOdd.startTime == null)
+                    inPlay = false
                 if(inPlay){
                     tvInGame.visibility = View.VISIBLE
                 }else{
