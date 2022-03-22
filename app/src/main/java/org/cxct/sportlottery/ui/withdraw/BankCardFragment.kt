@@ -272,6 +272,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
             tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
+                    modifyFinish()
                     when(tab?.position) {
                         0 -> {
                             transferType = TransferType.BANK
