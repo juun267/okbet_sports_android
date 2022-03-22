@@ -358,6 +358,8 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     private fun refreshTable(result: MatchPreloadResult?) {
         //先清除之前訂閱項目
         unsubscribeTableHallChannel()
+        mSubscribeInPlayGameID.clear()
+        mSubscribeAtStartGameID.clear()
         val gameDataList: MutableList<GameEntity> = mutableListOf()
         var otherMatchList: MutableList<OtherMatch> = mutableListOf()
         result?.matchPreloadData?.datas?.forEach { data ->
@@ -1011,6 +1013,10 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         receiver.producerUp.observe(this.viewLifecycleOwner) {
             it?.let {
                 unSubscribeChannelHallAll()
+                mSubscribeInPlayGameID.clear()
+                mSubscribeAtStartGameID.clear()
+                mSubscribeRecommendGameID.clear()
+                mSubscribeHighlightGameID.clear()
                 subscribeTableHallChannel(mSelectMatchType)
                 subscribeRecommendHallChannel()
                 subscribeHighlightHallChannel()
