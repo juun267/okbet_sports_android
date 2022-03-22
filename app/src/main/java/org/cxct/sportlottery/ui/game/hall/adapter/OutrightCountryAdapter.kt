@@ -12,23 +12,24 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.outright.season.Row
 import org.cxct.sportlottery.network.outright.season.Season
 import org.cxct.sportlottery.ui.common.SocketLinearManager
+import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.util.SvgUtil
 
 class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     enum class ItemType {
-        ITEM_PIN, ITEM, NO_DATA
+        ITEM_PIN, ITEM, NO_DATA, BOTTOM_NAVIGATION
     }
 
     var data = listOf<Row>()
         set(value) {
             field = value
-            notifyDataSetChanged()
+            //notifyDataSetChanged()
         }
 
     var datePin = listOf<Season>()
         set(value) {
             field = value
-            notifyDataSetChanged()
+            //notifyDataSetChanged()
         }
 
     var outrightCountryLeagueListener: OutrightCountryLeagueListener? = null
@@ -37,6 +38,7 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return when {
             data.isEmpty() -> ItemType.NO_DATA.ordinal
             (position == 0) -> ItemType.ITEM_PIN.ordinal
+            position == data.size + 1 -> ItemType.BOTTOM_NAVIGATION.ordinal
             else -> ItemType.ITEM.ordinal
         }
     }
@@ -61,6 +63,9 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 }
             }
 
+            ItemType.BOTTOM_NAVIGATION.ordinal -> {
+                BottomNavigationViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.home_bottom_navigation, parent, false))
+            }
             else -> {
                 NoDataViewHolder.from(parent)
             }
@@ -83,7 +88,7 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun getItemCount(): Int = if (data.isEmpty()) {
         1
     } else {
-        data.size + 1
+        data.size + 2
     }
 
     class ItemViewHolderPin private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -170,6 +175,11 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.setOnClickListener {
                 item.isExpand = !item.isExpand
                 itemView.country_league_expand.setExpanded(item.isExpand, true)
+                if(item.isExpand) {
+                    itemView.SpaceItemDecorationView.visibility = View.GONE
+                } else {
+                    itemView.SpaceItemDecorationView.visibility = View.VISIBLE
+                }
             }
         }
 
@@ -191,10 +201,12 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             fun from(parent: ViewGroup): NoDataViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                    .inflate(R.layout.view_no_record, parent, false)
+                    .inflate(R.layout.view_no_record_for_game, parent, false)
 
                 return NoDataViewHolder(view)
             }
         }
     }
+
+    class BottomNavigationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }

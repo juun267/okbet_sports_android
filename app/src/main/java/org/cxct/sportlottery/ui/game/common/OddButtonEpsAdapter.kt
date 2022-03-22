@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.QuickListManager
 
 class OddButtonEpsAdapter(private val matchInfo: MatchInfo?) :
     RecyclerView.Adapter<OddButtonEpsViewHolder>() {
@@ -78,6 +79,8 @@ class OddButtonEpsViewHolder private constructor(
             setOnClickListener {
                 oddButtonListener?.onClickBet(matchInfo, odd, PlayCate.EPS.value)
             }
+
+            isSelected = QuickListManager.getQuickSelectedList()?.contains(odd.id) ?: false
         }
     }
 

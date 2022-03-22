@@ -662,7 +662,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             } else if (it?.matchType == MatchType.DETAIL) {
 
             } else {
-                //viewModel.switchSpecialMatchType(it!!.couponCode!!)
+//                viewModel.getAllPlayCategoryBySpecialMatchType(it?.couponCode ?: "")
                 navGameFragment(it!!.matchType)
             }
         }

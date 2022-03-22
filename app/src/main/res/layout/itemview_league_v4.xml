@@ -76,4 +76,10 @@
 
     </net.cachapa.expandablelayout.ExpandableLayout>
 
+    <View android:id="@+id/SpaceItemDecorationView"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/colorWhite"
+        app:layout_constraintTop_toBottomOf="@+id/league_expand"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

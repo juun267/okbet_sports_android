@@ -151,7 +151,7 @@ object ErrorUtils {
 
         response.errorBody()?.let {
             try {
-                error = converter.convert(it)
+                error = converter.convert(it) // TODO com.squareup.moshi.JsonEncodingException: Use JsonReader.setLenient(true) to accept malformed JSON at path $
             } catch (e: IOException) {
                 Timber.e("parseError: $e")
                 throw e

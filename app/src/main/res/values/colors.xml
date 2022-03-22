@@ -45,6 +45,7 @@
 
     <color name="colorGrayLight">#999999</color>
     <color name="colorGrayLight2">#E4E4E4</color>
+    <color name="colorGrayLight3">#EFEFEF</color>
     <color name="colorGray">#666666</color> <!--106 106 106-->
     <color name="colorGrayDark">#404040</color>
     <color name="colorGrayDark2">#444444</color>
