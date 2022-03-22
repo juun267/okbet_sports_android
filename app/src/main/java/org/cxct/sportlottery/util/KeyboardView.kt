@@ -10,6 +10,7 @@ import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.item_number_keyboard_layout.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
+import java.lang.reflect.Method
 
 class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : FrameLayout(
         context, attrs, defStyleAttr
@@ -123,10 +124,11 @@ class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeS
         this.maxBetMoney = maxBetMoney
         //InputType.TYPE_NULL 禁止彈出系統鍵盤
         mEditText.apply {
-            inputType = InputType.TYPE_NULL
+            //inputType = InputType.TYPE_NULL
             isFocusable = true
             isFocusableInTouchMode = true
         }
+        disableKeyboard()
         this.visibility = View.VISIBLE
         //parent?.visibility = View.VISIBLE
         tvLimit.text = String.format(
@@ -138,6 +140,27 @@ class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeS
 
         //keyBoardViewListener.showOrHideKeyBoardBackground(true, position)
     }
+    private fun disableKeyboard(){
+        if (android.os.Build.VERSION.SDK_INT <= 10) {
+            mEditText.setInputType(InputType.TYPE_NULL);
+        } else {
+            var cls:Class<EditText> = EditText::class.java
+            var method:Method
+            try {
+                method = cls.getMethod("setShowSoftInputOnFocus", Boolean::class.java)
+                method.setAccessible(true);
+                method.invoke(mEditText, false)
+            } catch (e: Exception) {//TODO: handle exception
+            }
+            try {
+                method = cls.getMethod("setSoftInputShownOnFocus",Boolean::class.java)
+                method.setAccessible(true)
+                method.invoke(mEditText, false)
+            } catch (e: Exception) {//TODO: handle exception
+            }
+        }
+    }
+
     private fun plus(count: Long) {
         val input = if (mEditText.text.toString() == "") "0" else mEditText.text.toString()
         val tran = if (input.contains(".")) {

@@ -277,11 +277,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     position: Int,
                     max: Long
                 ) {
-                    keyboard?.showKeyboard(editText, position, max)
+                    //keyboard?.showKeyboard(editText, position, max)
                 }
 
                 override fun onHideKeyBoard() {
-                    keyboard?.hideKeyboard()
+                    //keyboard?.hideKeyboard()
                 }
 
                 override fun saveOddsHasChanged(matchOdd: MatchOdd) {
@@ -434,26 +434,26 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initKeyBoard(loginBoolean: Boolean) {
-        keyboard =
-            KeyBoardUtil(
-                binding.kvKeyboard,
-                null,
-                sConfigData?.presetBetAmount ?: mutableListOf(),
-                loginBoolean,
-                GameConfigManager.maxBetMoney?.toLong(),
-                object : KeyBoardUtil.KeyBoardViewListener {
-                    override fun showLoginNotice() {
-                        setSnackBarNotify(isLogin = false)
-                    }
-
-                    override fun showOrHideKeyBoardBackground(isShow: Boolean, position: Int?) {
-                        shadow.visibility = if (isShow) View.VISIBLE else View.GONE
-                        ll_keyboard_bg.visibility = if (isShow) View.VISIBLE else View.GONE
-                        if (position != null) {
-                            rv_bet_list.scrollToPosition(position)
-                        }
-                    }
-                })
+//        keyboard =
+//            KeyBoardUtil(
+//                binding.kvKeyboard,
+//                null,
+//                sConfigData?.presetBetAmount ?: mutableListOf(),
+//                loginBoolean,
+//                GameConfigManager.maxBetMoney?.toLong(),
+//                object : KeyBoardUtil.KeyBoardViewListener {
+//                    override fun showLoginNotice() {
+//                        setSnackBarNotify(isLogin = false)
+//                    }
+//
+//                    override fun showOrHideKeyBoardBackground(isShow: Boolean, position: Int?) {
+//                        shadow.visibility = if (isShow) View.VISIBLE else View.GONE
+//                        ll_keyboard_bg.visibility = if (isShow) View.VISIBLE else View.GONE
+//                        if (position != null) {
+//                            rv_bet_list.scrollToPosition(position)
+//                        }
+//                    }
+//                })
     }
 
     private fun initObserver() {
