@@ -65,8 +65,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private var discount = 1.0F
 
-    private var keyboard: KeyBoardUtil? = null
-
     private var betListRefactorAdapter: BetListRefactorAdapter? = null
 
     private var betAllAmount = 0.0
@@ -268,7 +266,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 }
 
                 override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd, position: Int, max: Long) {
-                    keyboard?.showKeyboard(editText, position, max)
+                    //keyboard?.showKeyboard(editText, position, max)
                 }
 
                 override fun onShowParlayKeyboard(
@@ -469,7 +467,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
 
         viewModel.oddsType.observe(viewLifecycleOwner) {
-            keyboard?.hideKeyboard()
+            //keyboard?.hideKeyboard()
             betListRefactorAdapter?.oddsType = it
             oddsType = it
         }
