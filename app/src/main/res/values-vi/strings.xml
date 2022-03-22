@@ -546,6 +546,8 @@
     <string name="please_enter_wallet_address">Vui lòng nhập địa chỉ ví</string>
     <string name="network_point">Địa điểm mở tài khoản</string>
     <string name="please_enter_network_point">Địa điểm mở tài khoản</string>
+    <string name="wallet_phone_number">Số điện thoại</string>
+    <string name="please_enter_wallet_phone_number">Vui lòng nhập số điện thoại</string>
     <string name="delete_bank_card">xóa bỏ</string>
     <string name="delete_crypto">xóa bỏ</string>
     <string name="delete_e_wallet">xóa bỏ</string>

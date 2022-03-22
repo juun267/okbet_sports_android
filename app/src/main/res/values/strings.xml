@@ -559,6 +559,8 @@
     <string name="please_enter_wallet_address">请输入钱包地址</string>
     <string name="network_point">开户网点</string>
     <string name="please_enter_network_point">请输入开户网点</string>
+    <string name="wallet_phone_number">电话号码</string>
+    <string name="please_enter_wallet_phone_number">请输入电话号码</string>
     <string name="delete_bank_card">刪除銀行卡</string>
     <string name="delete_crypto">刪除虚拟币</string>
     <string name="delete_e_wallet">刪除eWallet</string>

@@ -187,6 +187,9 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             //錢包地址
             setupClearButtonVisibility(et_wallet) { checkWalletAddress(it) }
 
+            //電話號碼
+            setupClearButtonVisibility(et_phone_number) { checkPhoneNumber(it) }
+
             //提款密碼
             setupEyeButtonVisibility(et_withdrawal_password) { checkWithdrawPassword(it) }
         }
@@ -242,8 +245,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                     TransferType.E_WALLET -> { //eWallet暫時寫死 與綁定銀行卡相同
                         addBankCard(
                             bankName = tv_bank_name.text.toString(),
-                            subAddress = et_network_point.getText(),
-                            cardNo = et_bank_card_number.getText(),
+                            cardNo = et_phone_number.getText(),
                             fundPwd = et_withdrawal_password.getText(),
                             id = args.editBankCard?.id?.toString(),
                             uwType = transferType.type,
@@ -320,6 +322,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         et_bank_card_number.resetText()
         et_network_point.resetText()
         et_withdrawal_password.resetText()
+        et_phone_number.resetText()
         mBankSelectorAdapter.initSelectStatus()
         clearFocus()
     }
@@ -364,14 +367,30 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             TransferType.BANK -> {
                 block_bank_card_input.visibility = View.VISIBLE
                 block_crypto_input.visibility = View.GONE
+
+                //region 顯示Bank欄位
+                et_bank_card_number.visibility = View.VISIBLE
+                et_network_point.visibility = View.VISIBLE
+                //endregion
+                //region 隱藏eWallet欄位
+                et_phone_number.visibility = View.GONE
+                //endregion
             }
             TransferType.CRYPTO -> {
                 block_bank_card_input.visibility = View.GONE
                 block_crypto_input.visibility = View.VISIBLE
             }
-            TransferType.E_WALLET -> { //eWallet暫時寫死 與綁定銀行卡相同
+            TransferType.E_WALLET -> {
                 block_bank_card_input.visibility = View.VISIBLE
                 block_crypto_input.visibility = View.GONE
+
+                //region 隱藏Bank欄位
+                et_bank_card_number.visibility = View.GONE
+                et_network_point.visibility = View.GONE
+                //endregion
+                //region 顯示eWallet欄位
+                et_phone_number.visibility = View.VISIBLE
+                //endregion
             }
         }
     }
@@ -488,6 +507,11 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         viewModel.walletAddressMsg.observe(this.viewLifecycleOwner
         ) {
             et_wallet.setError(it ?: "")
+        }
+
+        //電話號碼
+        viewModel.phoneNumberMsg.observe(this.viewLifecycleOwner) {
+            et_phone_number.setError(it ?: "")
         }
 
         //提款密碼

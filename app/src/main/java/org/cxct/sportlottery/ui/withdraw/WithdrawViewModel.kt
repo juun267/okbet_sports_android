@@ -97,6 +97,11 @@ class WithdrawViewModel(
         get() = _networkPointMsg
     private var _networkPointMsg = MutableLiveData<String>()
 
+    //電話號碼錯誤訊息
+    val phoneNumberMsg: LiveData<String>
+        get() = _phoneNumberMsg
+    private var _phoneNumberMsg = MutableLiveData<String>()
+
     //提款密碼錯誤訊息
     val withdrawPasswordMsg: LiveData<String>
         get() = _withdrawPasswordMsg
@@ -305,10 +310,9 @@ class WithdrawViewModel(
             }
             TransferType.E_WALLET.type -> {
                 checkCreateName(fullName ?: "")
-                checkBankCardNumber(cardNo)
-                checkNetWorkPoint(subAddress ?: "")
+                checkPhoneNumber(cardNo)
                 checkWithdrawPassword(withdrawPassword)
-                checkBankCardData()
+                checkEWalletCardData()
             }
             else -> false
         }
@@ -415,6 +419,16 @@ class WithdrawViewModel(
         return true
     }
 
+    private fun checkEWalletCardData(): Boolean {
+        if (createNameErrorMsg.value != "")
+            return false
+        if (phoneNumberMsg.value != "")
+            return false
+        if (withdrawPasswordMsg.value != "")
+            return false
+        return true
+    }
+
     private fun checkBankCardDeleteData(): Boolean {
         if (withdrawPasswordMsg.value != "")
             return false
@@ -438,6 +452,13 @@ class WithdrawViewModel(
     fun checkNetWorkPoint(networkPoint: String) {
         _networkPointMsg.value = when {
             networkPoint.isEmpty() -> androidContext.getString(R.string.error_input_empty)
+            else -> ""
+        }
+    }
+
+    fun checkPhoneNumber(phoneNumber: String) {
+        _phoneNumberMsg.value = when {
+            phoneNumber.isEmpty() -> androidContext.getString(R.string.error_input_empty)
             else -> ""
         }
     }
