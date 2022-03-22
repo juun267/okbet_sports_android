@@ -67,7 +67,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 MR.key -> MR.string
                 GF.key -> GF.string
                 FB.key -> FB.string
-                else -> android.R.string.unknownName
+                else -> R.string.unknown_name
             }
         }
 

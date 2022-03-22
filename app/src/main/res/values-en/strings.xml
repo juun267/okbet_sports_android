@@ -182,6 +182,7 @@
     <string name="best_recommend">High recommended</string>
     <string name="navigation_web">Web directory</string>
     <string name="other">Other</string>
+    <string name="unknown_name"></string>
     <string name="games_lobby">Game center</string>
     <string name="sport_game">Sports</string>
     <string name="cg_lottery">CG lottery</string>
