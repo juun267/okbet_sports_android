@@ -25,7 +25,7 @@ import org.cxct.sportlottery.ui.game.common.LeagueListener
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeListener
-import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategory2Listener
+import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryListener
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.SocketUpdateUtil
@@ -44,7 +44,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
     private val playCategoryAdapter by lazy {
         PlayCategoryAdapter().apply {
-            playCategory2Listener = PlayCategory2Listener(
+            playCategoryListener = PlayCategoryListener(
                 onClickSetItemListener = {
                     unSubscribePlayCateChannel()
                     viewModel.switchPlay(it)

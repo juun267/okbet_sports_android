@@ -45,7 +45,6 @@ import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
-import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.*
@@ -59,7 +58,6 @@ import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.QuickListManager
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
-import timber.log.Timber
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -110,7 +108,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     private val playCategoryAdapter by lazy {
         PlayCategoryAdapter().apply {
-            playCategory2Listener = PlayCategory2Listener(
+            playCategoryListener = PlayCategoryListener(
                 onClickSetItemListener = {
                     unSubscribeChannelSwitchPlayCate()
 

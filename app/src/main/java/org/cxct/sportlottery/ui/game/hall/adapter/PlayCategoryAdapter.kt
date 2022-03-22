@@ -20,14 +20,13 @@ class PlayCategoryAdapter : RecyclerView.Adapter<PlayCategoryAdapter.ViewHolderP
         }
 
     var playCategoryListener: PlayCategoryListener? = null
-    var playCategory2Listener: PlayCategory2Listener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPlayCategory {
         return ViewHolderPlayCategory.from(parent)
     }
 
     override fun onBindViewHolder(holder: ViewHolderPlayCategory, position: Int) {
-        holder.bind(data[position], playCategory2Listener)
+        holder.bind(data[position], playCategoryListener)
     }
 
     override fun getItemCount(): Int = data.size
@@ -35,7 +34,7 @@ class PlayCategoryAdapter : RecyclerView.Adapter<PlayCategoryAdapter.ViewHolderP
     class ViewHolderPlayCategory private constructor(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: Play, playCategoryListener: PlayCategory2Listener?) {
+        fun bind(item: Play, playCategoryListener: PlayCategoryListener?) {
             var initSpinnerAdapter = true
             var initialSetItem: Boolean
             val playSpinnerAdapter by lazy { PlaySpinnerAdapter(item.playCateList?.toMutableList() ?: mutableListOf()) }
@@ -134,15 +133,9 @@ class PlayCategoryAdapter : RecyclerView.Adapter<PlayCategoryAdapter.ViewHolderP
 }
 
 //TODO 將PlayCategory2Listener取代PlayCategoryListener
-@Deprecated("Use 將PlayCategory2Listener取代PlayCategoryListener")
-class PlayCategoryListener(
-    val clickListener: (item: Play) -> Unit,
-) {
-    fun onClick(item: Play) = clickListener(item)
-}
 
 //TODO PlayCategoryListener置換完畢後將PlayCategory2Listener 更名為 PlayCategoryListener
-class PlayCategory2Listener(
+class PlayCategoryListener(
     private val onClickSetItemListener: (item: Play) -> Unit,
     private val onClickNotSelectableListener: (item: Play) -> Unit,
     private val onSelectPlayCateListener: (item: Play, selectItem: PlayCate) -> Unit

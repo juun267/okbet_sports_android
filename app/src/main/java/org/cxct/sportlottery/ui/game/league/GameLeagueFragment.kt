@@ -28,7 +28,7 @@ import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueListener
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
-import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategory2Listener
+import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryListener
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.QuickListManager
@@ -43,7 +43,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     private val playCategoryAdapter by lazy {
 
         PlayCategoryAdapter().apply {
-            playCategory2Listener = PlayCategory2Listener(onClickSetItemListener = {
+            playCategoryListener = PlayCategoryListener(onClickSetItemListener = {
                 unSubscribeChannelSwitchPlayCate()
                 viewModel.switchPlay(
                     args.matchType,
