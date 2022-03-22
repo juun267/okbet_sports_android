@@ -467,7 +467,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     mInPlayResult?.matchPreloadData?.datas?.forEach { data ->
                         data.matchOdds.forEach { match ->
                             subscribeChannelHall(data.code,
-                                MenuCode.HOME_INPLAY_MOBILE.code,
                                 match.matchInfo?.id)
                         }
                     }
@@ -476,7 +475,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     mAtStartResult?.matchPreloadData?.datas?.forEach { data ->
                         data.matchOdds.forEach { match ->
                             subscribeChannelHall(data.code,
-                                MenuCode.HOME_ATSTART_MOBILE.code,
                                 match.matchInfo?.id)
                         }
                     }
@@ -503,7 +501,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     row.leagueOdds?.matchOdds?.forEach { oddData ->
                         subscribeChannelHall(
                             row.sport?.code,
-                            MenuCode.RECOMMEND.code,
                             oddData.matchInfo?.id
                         )
                     }
@@ -513,7 +510,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 mRecommendAdapter.getData().forEach { entity ->
                     subscribeChannelHall(
                         entity.code,
-                        MenuCode.RECOMMEND.code,
                         entity.matchInfo?.id
                     )
                 }
@@ -532,7 +528,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 result?.t?.odds?.forEach {
                     subscribeChannelHall(
                         selectedSportType?.code,
-                        MenuCode.SPECIAL_MATCH_MOBILE.code,
                         it.matchInfo?.id
                     )
                 }.apply {
@@ -545,7 +540,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 mRvHighlightAdapter.getData().forEach { matchOdd ->
                     subscribeChannelHall(
                         selectedSportType?.code,
-                        MenuCode.SPECIAL_MATCH_MOBILE.code,
                         matchOdd.matchInfo?.id
                     )
                 }.apply {

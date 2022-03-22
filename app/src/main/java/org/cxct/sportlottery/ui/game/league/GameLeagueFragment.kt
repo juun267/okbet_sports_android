@@ -487,7 +487,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
                 if (args.gameType.key == leagueChangeEvent.gameType && hasLeagueIdList) { //聯賽數量固定
                     unSubscribeChannelHall(args.gameType.key, getPlaySelectedCode(), leagueChangeEvent.matchIdList?.firstOrNull())
-                    subscribeChannelHall(args.gameType.key, getPlaySelectedCode(), leagueChangeEvent.matchIdList?.firstOrNull())
+                    subscribeChannelHall(args.gameType.key, leagueChangeEvent.matchIdList?.firstOrNull())
                 }
             }
         }
@@ -639,14 +639,12 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 true -> {
                     subscribeChannelHall(
                         leagueOdd.gameType?.key,
-                        getPlaySelectedCode(),
                         matchOdd.matchInfo?.id
                     )
 
                     if (matchOdd.matchInfo?.eps == 1) {
                         subscribeChannelHall(
                             leagueOdd.gameType?.key,
-                            PlayCate.EPS.value,
                             matchOdd.matchInfo.id
                         )
                     }
@@ -656,7 +654,6 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                             true -> {
                                 subscribeChannelHall(
                                     leagueOdd.gameType?.key,
-                                    it.code,
                                     matchOdd.matchInfo?.id
                                 )
                             }

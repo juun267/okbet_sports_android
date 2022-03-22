@@ -530,14 +530,12 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 true -> {
                     subscribeChannelHall(
                         leagueOdd.gameType?.key,
-                        getPlaySelectedCode(),
                         matchOdd.matchInfo?.id
                     )
 
                     if (matchOdd.matchInfo?.eps == 1) {
                         subscribeChannelHall(
                             leagueOdd.gameType?.key,
-                            PlayCate.EPS.value,
                             matchOdd.matchInfo.id
                         )
                     }

@@ -265,7 +265,6 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
             true -> {
                 subscribeChannelHall(
                     args.gameType.key,
-                    PlayCate.OUTRIGHT.value,
                     matchOdd.matchInfo?.id
                 )
             }

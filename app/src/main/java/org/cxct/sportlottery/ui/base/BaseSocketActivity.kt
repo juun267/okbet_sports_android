@@ -146,10 +146,9 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
     fun subscribeChannelHall(
         gameType: String?,
-        cateMenuCode: String?,
         eventId: String?
     ) {
-        backService?.subscribeHallChannel(gameType, cateMenuCode, eventId)
+        backService?.subscribeHallChannel(gameType, eventId)
     }
 
     fun subscribeChannelEvent(

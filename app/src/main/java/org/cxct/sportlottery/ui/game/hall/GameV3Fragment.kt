@@ -1497,7 +1497,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 }
                                 else -> {
                                     unSubscribeChannelHall(nowGameType ?: GameType.FT.key, getPlaySelectedCode(), leagueChangeEvent.matchIdList?.firstOrNull())
-                                    subscribeChannelHall(nowGameType ?: GameType.FT.key, getPlaySelectedCode(), leagueChangeEvent.matchIdList?.firstOrNull())
+                                    subscribeChannelHall(nowGameType ?: GameType.FT.key, leagueChangeEvent.matchIdList?.firstOrNull())
                                     if (args.matchType == MatchType.OTHER) {
                                         viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
                                     }
@@ -1951,14 +1951,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 true -> {
                     subscribeChannelHall(
                         leagueOdd.gameType?.key,
-                        getPlaySelectedCode(),
                         matchOdd.matchInfo?.id
                     )
 
                     if (matchOdd.matchInfo?.eps == 1) {
                         subscribeChannelHall(
                             leagueOdd.gameType?.key,
-                            PlayCate.EPS.value,
                             matchOdd.matchInfo.id
                         )
                     }
@@ -1968,7 +1966,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             true -> {
                                 subscribeChannelHall(
                                     leagueOdd.gameType?.key,
-                                    it.code,
                                     matchOdd.matchInfo?.id
                                 )
                             }
@@ -2101,7 +2098,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 false -> {
                     subscribeChannelHall(
                         gameType?.key,
-                        PlayCate.EPS.value,
                         matchOddsItem.matchInfo?.id
                     )
                 }

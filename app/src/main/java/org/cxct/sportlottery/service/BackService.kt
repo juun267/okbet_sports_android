@@ -336,7 +336,7 @@ class BackService : Service() {
         subscribeChannel(url)
     }
 
-    fun subscribeHallChannel(gameType: String?, cateMenuCode: String?, eventId: String?) {
+    fun subscribeHallChannel(gameType: String?, eventId: String?) {
         if (gameType == null || eventId == null) return
 
         val url = "$URL_HALL/$mPlatformId/$gameType/$eventId"
