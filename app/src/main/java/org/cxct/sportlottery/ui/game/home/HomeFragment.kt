@@ -358,8 +358,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     private fun refreshTable(result: MatchPreloadResult?) {
         //先清除之前訂閱項目
         unsubscribeTableHallChannel()
-        mSubscribeInPlayGameID.clear()
-        mSubscribeAtStartGameID.clear()
         val gameDataList: MutableList<GameEntity> = mutableListOf()
         var otherMatchList: MutableList<OtherMatch> = mutableListOf()
         result?.matchPreloadData?.datas?.forEach { data ->
@@ -506,13 +504,13 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     private fun unsubscribeTableHallChannel() {
         mSubscribeInPlayGameID.forEach {
             if (!mSubscribeRecommendGameID.contains(it) && !mSubscribeHighlightGameID.contains(it)) {
-                unSubscribeChannelEvent(it)
+                unsubscribeHallChannel(it)
             }
         }
         mSubscribeInPlayGameID.clear()
         mSubscribeAtStartGameID.forEach {
             if (!mSubscribeRecommendGameID.contains(it) && !mSubscribeHighlightGameID.contains(it)) {
-                unSubscribeChannelEvent(it)
+                unsubscribeHallChannel(it)
             }
         }
         mSubscribeAtStartGameID.clear()
@@ -555,7 +553,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     private fun unsubscribeRecommendHallChannel() {
         mSubscribeRecommendGameID.forEach {
             if (!mSubscribeInPlayGameID.contains(it) && !mSubscribeAtStartGameID.contains(it) && !mSubscribeHighlightGameID.contains(it)) {
-                unSubscribeChannelEvent(it)
+                unsubscribeHallChannel(it)
             }
         }
         mSubscribeRecommendGameID.clear()
@@ -604,7 +602,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     private fun unsubscribeHighlightHallChannel() {
         mSubscribeHighlightGameID.forEach {
             if (!mSubscribeInPlayGameID.contains(it) && !mSubscribeAtStartGameID.contains(it) && !mSubscribeRecommendGameID.contains(it)) {
-                unSubscribeChannelEvent(it)
+                unsubscribeHallChannel(it)
             }
         }
         mSubscribeHighlightGameID.clear()

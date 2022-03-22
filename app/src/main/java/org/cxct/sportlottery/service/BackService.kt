@@ -350,6 +350,18 @@ class BackService : Service() {
         unsubscribeChannel(url)
     }
 
+    fun unsubscribeHallChannel(eventId: String?) {
+        if (eventId == null) return
+
+        //要 clone 一份 list 來處理 url 判斷，避免刪減 map 資料時產生 ConcurrentModificationException
+        val urlList = mSubscribedMap.keys.toList()
+        urlList.forEach { url ->
+            // 解除球種頻道以外的訂閱, 球種頻道格式:/ws/notify/hall/1/FT
+            if (url.contains("$URL_HALL/") && url.contains("/$eventId"))
+                unsubscribeChannel(url)
+        }
+    }
+
     fun unsubscribeAllHallChannel() {
         //要 clone 一份 list 來處理 url 判斷，避免刪減 map 資料時產生 ConcurrentModificationException
         val urlList = mSubscribedMap.keys.toList()
