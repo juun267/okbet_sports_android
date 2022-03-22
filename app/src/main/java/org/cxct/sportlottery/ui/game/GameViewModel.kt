@@ -307,6 +307,10 @@ class GameViewModel(
     val sportSortList: LiveData<Event<List<SportMenu>>>
         get() = _sportSortList
 
+    private val _sportMenuFilterList = MutableLiveData<Event<List<SportMenuFilter>?>>()
+    val sportMenuFilterList: LiveData<Event<List<SportMenuFilter>?>>
+        get() = _sportMenuFilterList
+
     //發送簡訊碼之後60s無法再發送
     val twoFactorResult: LiveData<BaseSecurityCodeResult?>
         get() = _twoFactorResult
