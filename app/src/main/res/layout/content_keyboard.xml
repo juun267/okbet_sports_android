@@ -110,7 +110,7 @@
 
             <EditText
                 android:id="@+id/et_bet"
-                android:layout_width="213dp"
+                android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="10dp"
@@ -136,7 +136,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/et_bet"
                 app:layout_constraintStart_toStartOf="@+id/et_bet"
                 app:layout_constraintTop_toTopOf="@+id/et_bet"
-                app:layout_constraintEnd_toEndOf="@+id/et_bet" />
+                app:layout_constraintWidth_percent="0.442" />
 
             <LinearLayout
                 android:id="@+id/llActualBet"

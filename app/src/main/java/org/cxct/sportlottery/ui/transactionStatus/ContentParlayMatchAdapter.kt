@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.transactionStatus
 
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,17 +8,18 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_parlay_match.view.*
+import kotlinx.android.synthetic.main.content_parlay_match.view.content_play
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.MatchOdd
-import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 
 class ContentParlayMatchAdapter :
     ListAdapter<MatchOdd, RecyclerView.ViewHolder>(ContentDiffCallBack()) {
     var gameType: String = ""
-    fun setupMatchData(gameType: String, dataList: List<MatchOdd>) {
+    var betConfirmTime: Long? = 0
+    fun setupMatchData(gameType: String, dataList: List<MatchOdd>, betConfirmTime: Long?) {
         this.gameType = gameType
+        this.betConfirmTime = betConfirmTime
         submitList(dataList)
     }
 
@@ -39,7 +41,7 @@ class ContentParlayMatchAdapter :
         val data = getItem(holder.adapterPosition)
         when (holder) {
             is ParlayMatchViewHolder -> {
-                holder.bind(gameType, data)
+                holder.bind(gameType, data, position, betConfirmTime)
             }
         }
     }
@@ -53,7 +55,7 @@ class ContentParlayMatchAdapter :
             }
         }
 
-        fun bind(gameTypeName: String, data: MatchOdd) {
+        fun bind(gameTypeName: String, data: MatchOdd, position: Int, betConfirmTime: Long?) {
             itemView.apply {
                 content_play.text = "$gameTypeName ${data.playCateName}"
 
@@ -76,13 +78,32 @@ class ContentParlayMatchAdapter :
                 content_away_name.text = data.awayName
 //                content_date.setDateNoYear(data.startTime)
                 content_date.visibility = View.GONE
+                if (position == 0) {
+                    if(betConfirmTime?.toInt() != 0){
+                        val leftTime = betConfirmTime?.minus(TimeUtil.getNowTimeStamp())
+                        object : CountDownTimer(leftTime ?: 0, 1000) {
 
+                            override fun onTick(millisUntilFinished: Long) {
+                                tv_count_down_parley.text =
+                                    "${TimeUtil.longToSecond(millisUntilFinished)} ${context.getString(R.string.sec)}"
+                            }
+
+                            override fun onFinish() {
+                                tv_count_down_parley.visibility = View.GONE
+                            }
+                        }.start()
+                    }else{
+                        tv_count_down_parley.visibility = View.GONE
+                    }
+                } else {
+                    tv_count_down_parley.visibility = View.GONE
+                }
                 if (data.rtScore?.isNotEmpty() == true)
                     tv_score_parlay.text = String.format(
                         context.getString(R.string.brackets),
                         data.rtScore
                     )
-                
+
             }
         }
     }
