@@ -42,6 +42,7 @@ import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.network.outright.season.Season
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
+import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
@@ -1163,6 +1164,65 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         viewModel.leagueFilterList.observe(this.viewLifecycleOwner) { leagueList ->
             game_toolbar_champion.isSelected = leagueList.isNotEmpty()
         }
+
+        viewModel.checkInListFromSocket.observe(this.viewLifecycleOwner) {
+            if (it) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    if (!isUpdatingLeague) {
+                        isUpdatingLeague = true
+                        //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
+                        withContext(Dispatchers.Main) {
+                            if (args.matchType == MatchType.OTHER) {
+                                // 後面處理
+                            } else {
+                                viewModel.getAllPlayCategory(args.matchType)
+                            }
+                            viewModel.getSportMenu(args.matchType, onlyRefreshSportMenu = true)
+                        }
+                        //收到的gameType与用户当前页面所选球种相同, 则需额外调用/match/odds/simple/list & /match/odds/eps/list
+                        val nowGameType =
+                            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
+
+                        val hasLeagueIdList =
+                            leagueAdapter.data.any { leagueOdd -> leagueOdd.league.id == mLeagueChangeEvent?.leagueIdList?.firstOrNull() }
+
+//                        when (nowGameType) {
+//                            leagueChangeEvent.gameType -> {
+//                                unSubscribeChannelHall(nowGameType ?: GameType.FT.key,getPlayCateMenuCode(),leagueChangeEvent.matchIdList?.firstOrNull())
+//                                subscribeChannelHall(nowGameType ?: GameType.FT.key,getPlayCateMenuCode(),leagueChangeEvent.matchIdList?.firstOrNull())
+//                            }
+//                        }
+
+                        if (nowGameType == mLeagueChangeEvent?.gameType) {
+                            when {
+                                !hasLeagueIdList ||
+                                        args.matchType == MatchType.AT_START -> {
+                                    //全刷
+                                    unSubscribeChannelHallAll()
+                                    withContext(Dispatchers.Main) {
+                                        if (args.matchType == MatchType.OTHER) {
+                                            viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
+                                        } else {
+                                            viewModel.getGameHallList(args.matchType, false)
+                                        }
+                                    }
+                                }
+                                else -> {
+                                    unSubscribeChannelHall(nowGameType ?: GameType.FT.key, getPlaySelectedCode(), mLeagueChangeEvent?.matchIdList?.firstOrNull())
+                                    subscribeChannelHall(nowGameType ?: GameType.FT.key, getPlaySelectedCode(), mLeagueChangeEvent?.matchIdList?.firstOrNull())
+                                    if (args.matchType == MatchType.OTHER) {
+                                        viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
+                                    }
+                                }
+                            }
+                        } else if (args.matchType == MatchType.OTHER) {
+                            viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
+                        }
+                        isUpdatingLeague = false
+                    }
+                }
+            }
+        }
     }
 
     private fun updateLeaguePin(leagueListPin: List<String>) {
@@ -1206,6 +1266,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     private val leagueOddMap = HashMap<String, LeagueOdd>()
+    private var mLeagueChangeEvent: LeagueChangeEvent? = null
     private fun initSocketObserver() {
         receiver.serviceConnectStatus.observe(this.viewLifecycleOwner) {
             it?.let {
@@ -1464,63 +1525,11 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
         receiver.leagueChange.observe(this.viewLifecycleOwner) {
             it?.let { leagueChangeEvent ->
-                CoroutineScope(Dispatchers.IO).launch {
-                    if (!isUpdatingLeague) {
-                        isUpdatingLeague = true
-                        //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
-                        withContext(Dispatchers.Main) {
-                            if (args.matchType == MatchType.OTHER) {
-                                // 後面處理
-                            }
-                            else {
-                                viewModel.getAllPlayCategory(args.matchType)
-                            }
-                            viewModel.getSportMenu(args.matchType, onlyRefreshSportMenu = true)
-                        }
-                        //收到的gameType与用户当前页面所选球种相同, 则需额外调用/match/odds/simple/list & /match/odds/eps/list
-                        val nowGameType =
-                            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
-
-                        val hasLeagueIdList =
-                            leagueAdapter.data.filter { leagueOdd -> leagueOdd.league.id == leagueChangeEvent.leagueIdList?.firstOrNull() }
-                                .isNotEmpty()
-
-//                        when (nowGameType) {
-//                            leagueChangeEvent.gameType -> {
-//                                unSubscribeChannelHall(nowGameType ?: GameType.FT.key,getPlayCateMenuCode(),leagueChangeEvent.matchIdList?.firstOrNull())
-//                                subscribeChannelHall(nowGameType ?: GameType.FT.key,getPlayCateMenuCode(),leagueChangeEvent.matchIdList?.firstOrNull())
-//                            }
-//                        }
-
-                        if (nowGameType == leagueChangeEvent.gameType) {
-                            when {
-                                !hasLeagueIdList || args.matchType == MatchType.AT_START -> {
-                                    //全刷
-                                    unSubscribeChannelHallAll()
-                                    withContext(Dispatchers.Main) {
-                                        if (args.matchType == MatchType.OTHER) {
-                                            viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
-                                        }
-                                        else {
-                                            viewModel.getGameHallList(args.matchType,false)
-                                        }
-                                    }
-                                }
-                                else -> {
-                                    unSubscribeChannelHall(nowGameType ?: GameType.FT.key, getPlaySelectedCode(), leagueChangeEvent.matchIdList?.firstOrNull())
-                                    subscribeChannelHall(nowGameType ?: GameType.FT.key, getPlaySelectedCode(), leagueChangeEvent.matchIdList?.firstOrNull())
-                                    if (args.matchType == MatchType.OTHER) {
-                                        viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
-                                    }
-                                }
-                            }
-                        }
-                        else if (args.matchType == MatchType.OTHER) {
-                            viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
-                        }
-                        isUpdatingLeague = false
-                    }
-                }
+                mLeagueChangeEvent = leagueChangeEvent
+                viewModel.checkGameInList(
+                    matchType = args.matchType,
+                    leagueIdList = leagueChangeEvent.leagueIdList,
+                )
             }
         }
     }
@@ -1678,9 +1687,18 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 MatchType.TODAY, MatchType.EARLY, MatchType.PARLAY, MatchType.OTHER -> View.VISIBLE
                 else -> View.GONE
             }
-            game_match_category_pager.visibility = if (args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) { View.VISIBLE } else { View.GONE }
+            game_match_category_pager.visibility = if (args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
             game_play_category.visibility = if (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START ||
-                (args.matchType == MatchType.OTHER && childMatchType == MatchType.OTHER)) { View.VISIBLE } else { View.GONE }
+                (args.matchType == MatchType.OTHER && childMatchType == MatchType.OTHER)
+            ) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
         }
     }
 
