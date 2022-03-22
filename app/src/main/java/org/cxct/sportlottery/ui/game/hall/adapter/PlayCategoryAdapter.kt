@@ -132,9 +132,6 @@ class PlayCategoryAdapter : RecyclerView.Adapter<PlayCategoryAdapter.ViewHolderP
     }
 }
 
-//TODO 將PlayCategory2Listener取代PlayCategoryListener
-
-//TODO PlayCategoryListener置換完畢後將PlayCategory2Listener 更名為 PlayCategoryListener
 class PlayCategoryListener(
     private val onClickSetItemListener: (item: Play) -> Unit,
     private val onClickNotSelectableListener: (item: Play) -> Unit,
