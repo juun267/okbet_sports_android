@@ -426,7 +426,9 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         dismiss()
                     }
                     matchOdd?.let { matchOdd->
-                        if (matchOdd.inplay == 1){
+                        //並不是每筆資料都有滾球的Booleam可以判斷 所以改用時間
+                        val inPlay = System.currentTimeMillis() > matchOdd.startTime ?: 0
+                        if (inPlay){
                             tvInGame.visibility = View.VISIBLE
                         }else{
                             tvInGame.visibility = View.GONE

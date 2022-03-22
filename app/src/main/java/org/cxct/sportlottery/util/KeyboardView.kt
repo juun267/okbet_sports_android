@@ -28,39 +28,36 @@ class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeS
 
     private fun initView() {
         sConfigData?.presetBetAmount?.let {
-            if(it[0] != null || it[0] != 0){
-                tvPlus1.text = "+ ${it[0]}"
-                tvPlus1.setOnClickListener { v ->
-                    plus(it[0].toLong())
+            it.forEachIndexed { index, i ->
+                if(index == 0){
+                    tvPlus1.text = "+ ${it[index]}"
+                    tvPlus1.visibility = View.VISIBLE
+                    tvPlus1.setOnClickListener { v ->
+                        plus(it[index].toLong())
+                    }
                 }
-            }else{
-                tvPlus1.visibility = View.GONE
-            }
-            if(it[1] != null || it[0] != 0){
-                tvPlus2.text = "+ ${it[1]}"
-                tvPlus2.setOnClickListener { v ->
-                    plus(it[1].toLong())
+                if(index == 1){
+                    tvPlus2.text = "+ ${it[index]}"
+                    tvPlus2.visibility = View.VISIBLE
+                    tvPlus2.setOnClickListener { v ->
+                        plus(it[index].toLong())
+                    }
                 }
-            }else{
-                tvPlus2.visibility = View.GONE
-            }
-            if(it[2] != null || it[0] != 0){
-                tvPlus3.text = "+ ${it[2]}"
-                tvPlus3.setOnClickListener { v ->
-                    plus(it[2].toLong())
+                if(index == 2){
+                    tvPlus3.text = "+ ${it[index]}"
+                    tvPlus3.visibility = View.VISIBLE
+                    tvPlus3.setOnClickListener { v ->
+                        plus(it[index].toLong())
+                    }
                 }
-            }else{
-                tvPlus3.visibility = View.GONE
-            }
-            if(it[3] != null || it[0] != 0){
-                tvPlus4.text = "+ ${it[3]}"
-                tvPlus4.setOnClickListener { v ->
-                    plus(it[3].toLong())
+                if(index == 3){
+                    tvPlus4.text = "+ ${it[index]}"
+                    tvPlus4.visibility = View.VISIBLE
+                    tvPlus4.setOnClickListener { v ->
+                        plus(it[index].toLong())
+                    }
                 }
-            }else{
-                tvPlus4.visibility = View.GONE
             }
-
         }
         tvNum0.setOnClickListener {
             insert(0)
