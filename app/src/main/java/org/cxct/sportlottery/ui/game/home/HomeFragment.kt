@@ -857,54 +857,48 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
-                when (oddsChangeEvent.getCateMenuCode()) {
-                    MenuCode.HOME_INPLAY_MOBILE, MenuCode.HOME_ATSTART_MOBILE -> {
-                        //滾球盤、即將開賽盤
-                        val dataList = mRvGameTable4Adapter.getData()
-                        dataList.forEach { gameEntity ->
-                            //先找出要更新的 賽事
-                            val updateMatchOdd = gameEntity.matchOdds.find { matchOdd ->
-                                matchOdd.matchInfo?.id == oddsChangeEvent.eventId
-                            }
-                            updateMatchOdd?.let { updateMatchOddNonNull ->
-                                if (SocketUpdateUtil.updateMatchOdds(context, updateMatchOddNonNull, oddsChangeEvent)) {
-                                    gameEntity.vpTableAdapter?.notifyDataSetChanged()
-                                }
-                            }
+                //滾球盤、即將開賽盤
+                val dataList = mRvGameTable4Adapter.getData()
+                dataList.forEach { gameEntity ->
+                    //先找出要更新的 賽事
+                    val updateMatchOdd = gameEntity.matchOdds.find { matchOdd ->
+                        matchOdd.matchInfo?.id == oddsChangeEvent.eventId
+                    }
+                    updateMatchOdd?.let { updateMatchOddNonNull ->
+                        if (SocketUpdateUtil.updateMatchOdds(context, updateMatchOddNonNull, oddsChangeEvent)) {
+                            gameEntity.vpTableAdapter?.notifyDataSetChanged()
                         }
                     }
-                    MenuCode.RECOMMEND -> {
-                        //推薦賽事
-                        val recommendDataList = mRecommendAdapter.getData()
-                        recommendDataList.forEach { entity ->
-                            if (entity.matchInfo?.id != it.eventId) return@forEach
-                            var isUpdate = false
-                            entity.oddBeans.forEach { oddBean ->
-                                if (SocketUpdateUtil.updateMatchOdds(oddBean, oddsChangeEvent)) {
-                                    isUpdate = true
-                                }
-                            }
-                            if (isUpdate) {
-                                Handler(Looper.getMainLooper()).post {
-                                    entity.vpRecommendAdapter?.notifyDataSetChanged()
-                                }
-                            }
+                }
+
+                //推薦賽事
+                val recommendDataList = mRecommendAdapter.getData()
+                recommendDataList.forEach { entity ->
+                    if (entity.matchInfo?.id != it.eventId) return@forEach
+                    var isUpdate = false
+                    entity.oddBeans.forEach { oddBean ->
+                        if (SocketUpdateUtil.updateMatchOdds(oddBean, oddsChangeEvent)) {
+                            isUpdate = true
                         }
                     }
-                    MenuCode.SPECIAL_MATCH_MOBILE -> {
-                        //精選賽事
-                        val highlightDataList = mRvHighlightAdapter.getData()
-                        var isUpdate = false
-                        highlightDataList.forEach { updateMatchOdd ->
-                            if (SocketUpdateUtil.updateMatchOdds(context, updateMatchOdd, oddsChangeEvent)) {
-                                isUpdate = true
-                            }
+                    if (isUpdate) {
+                        Handler(Looper.getMainLooper()).post {
+                            entity.vpRecommendAdapter?.notifyDataSetChanged()
                         }
-                        if (isUpdate) {
-                            Handler(Looper.getMainLooper()).post {
-                                mRvHighlightAdapter.notifyDataSetChanged()
-                            }
-                        }
+                    }
+                }
+
+                //精選賽事
+                val highlightDataList = mRvHighlightAdapter.getData()
+                var isUpdate = false
+                highlightDataList.forEach { updateMatchOdd ->
+                    if (SocketUpdateUtil.updateMatchOdds(context, updateMatchOdd, oddsChangeEvent)) {
+                        isUpdate = true
+                    }
+                }
+                if (isUpdate) {
+                    Handler(Looper.getMainLooper()).post {
+                        mRvHighlightAdapter.notifyDataSetChanged()
                     }
                 }
             }
@@ -1021,20 +1015,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 subscribeRecommendHallChannel()
                 subscribeHighlightHallChannel()
             }
-        }
-    }
-
-    /**
-     * @description channel format : /ws/notify/hall/{platformId}/{gameType}/{cateMenuCode}/{eventId}
-     */
-    private fun OddsChangeEvent.getCateMenuCode(): MenuCode? {
-        return try {
-            this.channel?.split("/")?.getOrNull(6)?.let { cateMenu ->
-                MenuCode.valueOf(cateMenu)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
         }
     }
 
