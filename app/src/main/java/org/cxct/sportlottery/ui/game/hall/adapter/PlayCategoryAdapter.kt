@@ -93,7 +93,6 @@ class PlayCategoryAdapter : RecyclerView.Adapter<PlayCategoryAdapter.ViewHolderP
             itemView.isSelected = item.isSelected
 
             itemView.setOnClickListener {
-                itemView.sp_play.performClick()
                 if (item.selectionType == SelectionType.SELECTABLE.code) {
                     when {
                         //這個是沒有點選過的狀況 第一次進來 ：開啟選單
