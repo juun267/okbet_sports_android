@@ -35,7 +35,7 @@ import kotlin.collections.forEach as forEach
 class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdpOu>() {
 
     private var playCateNameMap: Map<String?, Map<String?, String?>?>? = mapOf()
-    private var dataList = listOf<MatchOdd>()
+    var dataList = mutableListOf<MatchOdd>()
     private var discount: Float = 1.0F
     private var oddsType: OddsType = OddsType.EU
 
@@ -94,7 +94,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                     it.oddsSort
                 )
             } ?: listOf()
-        dataList = newDataList
+        dataList = newDataList.toMutableList()
         playCateNameMap = newPlayCateNameMap
     }
 
