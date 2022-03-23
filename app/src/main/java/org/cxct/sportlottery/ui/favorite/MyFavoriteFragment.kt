@@ -28,6 +28,7 @@ import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeListener
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryListener
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
+import org.cxct.sportlottery.util.PlayCateMenuFilter
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
@@ -46,21 +47,21 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         PlayCategoryAdapter().apply {
             playCategoryListener = PlayCategoryListener(
                 onClickSetItemListener = {
-                    unSubscribePlayCateChannel()
                     viewModel.switchPlay(it)
-                    loading()
+                    leagueAdapter.data.updateOddsSort()
+                    leagueAdapter.notifyDataSetChanged()
                 },
                 onClickNotSelectableListener = {
-                    unSubscribePlayCateChannel()
                     viewModel.switchPlay(it)
                     upDateSelectPlay(it)
-                    loading()
+                    leagueAdapter.data.updateOddsSort()
+                    leagueAdapter.notifyDataSetChanged()
                 },
                 onSelectPlayCateListener = { play, playCate ->
-                    unSubscribePlayCateChannel()
                     viewModel.switchPlayCategory(play, playCate.code)
-                    loading()
                     upDateSelectPlay(play)
+                    leagueAdapter.data.updateOddsSort()
+                    leagueAdapter.notifyDataSetChanged()
                 }
             )
         }
