@@ -219,6 +219,8 @@
     <string name="hint_bet_growth">Bet %d %s lulfilling %d to level up</string>
     <string name="contact_us">Contact us</string>
     <string name="game_rule">Game Rules</string>
+<!--  //TODO news 翻譯待PM提供  -->
+    <string name="news">最新消息</string>
     <string name="sport_bet_rule">Sports betting rules</string>
     <string name="common_sport_description">General Sports description</string>
     <string name="overview">Overview</string>
