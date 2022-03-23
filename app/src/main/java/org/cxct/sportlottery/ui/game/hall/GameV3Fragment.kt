@@ -1546,7 +1546,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
      * */
 
     private fun MutableList<LeagueOdd>.updateOddsSort() {
-        //TODO Bill 這裡篩選
         val nowGameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
         val playCateMenuCode =
