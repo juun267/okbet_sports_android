@@ -56,7 +56,7 @@ class KeyBoardUtil(
         this.maxBetMoney = maxBetMoney
         //InputType.TYPE_NULL 禁止彈出系統鍵盤
         mEditText.apply {
-            inputType = InputType.TYPE_NULL
+            //inputType = InputType.TYPE_NULL
             isFocusable = true
             isFocusableInTouchMode = true
         }

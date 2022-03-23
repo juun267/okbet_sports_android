@@ -75,7 +75,6 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
 
         subscribeChannelHall(
             args.matchOdd.matchInfo?.gameType,
-            PlayCate.OUTRIGHT.value,
             args.matchOdd.matchInfo?.id
         )
     }
@@ -263,7 +262,6 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
             unSubscribeChannelHallAll()
             subscribeChannelHall(
                 args.matchOdd.matchInfo?.gameType,
-                PlayCate.OUTRIGHT.value,
                 args.matchOdd.matchInfo?.id
             )
         })

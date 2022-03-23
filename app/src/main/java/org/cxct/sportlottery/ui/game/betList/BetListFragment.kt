@@ -65,8 +65,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private var discount = 1.0F
 
-    private var keyboard: KeyBoardUtil? = null
-
     private var betListRefactorAdapter: BetListRefactorAdapter? = null
 
     private var betAllAmount = 0.0
@@ -268,7 +266,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 }
 
                 override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd, position: Int, max: Long) {
-                    keyboard?.showKeyboard(editText, position, max)
+                    //keyboard?.showKeyboard(editText, position, max)
                 }
 
                 override fun onShowParlayKeyboard(
@@ -277,11 +275,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     position: Int,
                     max: Long
                 ) {
-                    keyboard?.showKeyboard(editText, position, max)
+                    //keyboard?.showKeyboard(editText, position, max)
                 }
 
                 override fun onHideKeyBoard() {
-                    keyboard?.hideKeyboard()
+                    //keyboard?.hideKeyboard()
                 }
 
                 override fun saveOddsHasChanged(matchOdd: MatchOdd) {
@@ -434,26 +432,26 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initKeyBoard(loginBoolean: Boolean) {
-        keyboard =
-            KeyBoardUtil(
-                binding.kvKeyboard,
-                null,
-                sConfigData?.presetBetAmount ?: mutableListOf(),
-                loginBoolean,
-                GameConfigManager.maxBetMoney?.toLong(),
-                object : KeyBoardUtil.KeyBoardViewListener {
-                    override fun showLoginNotice() {
-                        setSnackBarNotify(isLogin = false)
-                    }
-
-                    override fun showOrHideKeyBoardBackground(isShow: Boolean, position: Int?) {
-                        shadow.visibility = if (isShow) View.VISIBLE else View.GONE
-                        ll_keyboard_bg.visibility = if (isShow) View.VISIBLE else View.GONE
-                        if (position != null) {
-                            rv_bet_list.scrollToPosition(position)
-                        }
-                    }
-                })
+//        keyboard =
+//            KeyBoardUtil(
+//                binding.kvKeyboard,
+//                null,
+//                sConfigData?.presetBetAmount ?: mutableListOf(),
+//                loginBoolean,
+//                GameConfigManager.maxBetMoney?.toLong(),
+//                object : KeyBoardUtil.KeyBoardViewListener {
+//                    override fun showLoginNotice() {
+//                        setSnackBarNotify(isLogin = false)
+//                    }
+//
+//                    override fun showOrHideKeyBoardBackground(isShow: Boolean, position: Int?) {
+//                        shadow.visibility = if (isShow) View.VISIBLE else View.GONE
+//                        ll_keyboard_bg.visibility = if (isShow) View.VISIBLE else View.GONE
+//                        if (position != null) {
+//                            rv_bet_list.scrollToPosition(position)
+//                        }
+//                    }
+//                })
     }
 
     private fun initObserver() {
@@ -469,7 +467,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
 
         viewModel.oddsType.observe(viewLifecycleOwner) {
-            keyboard?.hideKeyboard()
+            //keyboard?.hideKeyboard()
             betListRefactorAdapter?.oddsType = it
             oddsType = it
         }
@@ -808,7 +806,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             if (listData.subscribeChannelType == ChannelType.HALL) {
                 subscribeChannelHall(
                     listData.matchOdd.gameType,
-                    listData.playCateMenuCode,
                     listData.matchOdd.matchId
                 )
             } else {

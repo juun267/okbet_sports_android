@@ -49,6 +49,7 @@
             android:background="@drawable/bg_radius_4_button_white"
             android:gravity="center"
             android:text="+25"
+            android:visibility="gone"
             android:textColor="@color/color_060F20"
             android:textSize="@dimen/textSize14sp" />
 
@@ -61,6 +62,7 @@
             android:background="@drawable/bg_radius_4_button_white"
             android:gravity="center"
             android:text="+50"
+            android:visibility="gone"
             android:textColor="@color/color_060F20"
             android:textSize="@dimen/textSize14sp" />
 
@@ -73,6 +75,7 @@
             android:background="@drawable/bg_radius_4_button_white"
             android:gravity="center"
             android:text="+75"
+            android:visibility="gone"
             android:textColor="@color/color_060F20"
             android:textSize="@dimen/textSize14sp" />
 
@@ -85,6 +88,7 @@
             android:background="@drawable/bg_radius_4_button_white"
             android:gravity="center"
             android:text="+100"
+            android:visibility="gone"
             android:textColor="@color/color_060F20"
             android:textSize="@dimen/textSize14sp" />
 

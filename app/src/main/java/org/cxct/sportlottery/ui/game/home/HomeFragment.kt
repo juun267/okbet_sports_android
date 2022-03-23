@@ -121,6 +121,11 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         return homeBinding.root
     }
 
+    override fun onStart() {
+        super.onStart()
+        viewModel.getSportMenuFilter()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -477,7 +482,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                             val id = match.matchInfo?.id ?: ""
                             if (!id.isNullOrEmpty()) {
                                 subscribeChannelHall(data.code,
-                                    MenuCode.HOME_INPLAY_MOBILE.code,
                                     id)
                                 mSubscribeInPlayGameID.add(id)
                             }
@@ -490,7 +494,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                             val id = match.matchInfo?.id ?: ""
                             if (!id.isNullOrEmpty()) {
                                 subscribeChannelHall(data.code,
-                                    MenuCode.HOME_ATSTART_MOBILE.code,
                                     id)
                                 mSubscribeInPlayGameID.add(id)
                             }
@@ -526,7 +529,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                         if (!id.isNullOrEmpty()) {
                             subscribeChannelHall(
                                 row.sport?.code,
-                                MenuCode.RECOMMEND.code,
                                 id
                             )
                             mSubscribeRecommendGameID.add(id)
@@ -540,7 +542,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     if (!id.isNullOrEmpty()) {
                         subscribeChannelHall(
                             entity.code,
-                            MenuCode.RECOMMEND.code,
                             id
                         )
                         mSubscribeRecommendGameID.add(id)
@@ -568,7 +569,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     if (!id.isNullOrEmpty()) {
                         subscribeChannelHall(
                             selectedSportType?.code,
-                            MenuCode.SPECIAL_MATCH_MOBILE.code,
                             id
                         )
                         mSubscribeHighlightGameID.add(id)
@@ -585,7 +585,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     if (!id.isNullOrEmpty()) {
                         subscribeChannelHall(
                             selectedSportType?.code,
-                            MenuCode.SPECIAL_MATCH_MOBILE.code,
                             id
                         )
                         mSubscribeHighlightGameID.add(id)

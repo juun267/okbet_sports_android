@@ -10,6 +10,7 @@ import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.item_number_keyboard_layout.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
+import java.lang.reflect.Method
 
 class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : FrameLayout(
         context, attrs, defStyleAttr
@@ -28,21 +29,35 @@ class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeS
 
     private fun initView() {
         sConfigData?.presetBetAmount?.let {
-            tvPlus1.text = "+ ${it[0]}"
-            tvPlus2.text = "+ ${it[1]}"
-            tvPlus3.text = "+ ${it[2]}"
-            tvPlus4.text = "+ ${it[3]}"
-            tvPlus1.setOnClickListener { v ->
-                plus(it[0].toLong())
-            }
-            tvPlus2.setOnClickListener { v ->
-                plus(it[1].toLong())
-            }
-            tvPlus3.setOnClickListener { v ->
-                plus(it[2].toLong())
-            }
-            tvPlus4.setOnClickListener { v ->
-                plus(it[3].toLong())
+            it.forEachIndexed { index, i ->
+                if(index == 0){
+                    tvPlus1.text = "+ ${it[index]}"
+                    tvPlus1.visibility = View.VISIBLE
+                    tvPlus1.setOnClickListener { v ->
+                        plus(it[index].toLong())
+                    }
+                }
+                if(index == 1){
+                    tvPlus2.text = "+ ${it[index]}"
+                    tvPlus2.visibility = View.VISIBLE
+                    tvPlus2.setOnClickListener { v ->
+                        plus(it[index].toLong())
+                    }
+                }
+                if(index == 2){
+                    tvPlus3.text = "+ ${it[index]}"
+                    tvPlus3.visibility = View.VISIBLE
+                    tvPlus3.setOnClickListener { v ->
+                        plus(it[index].toLong())
+                    }
+                }
+                if(index == 3){
+                    tvPlus4.text = "+ ${it[index]}"
+                    tvPlus4.visibility = View.VISIBLE
+                    tvPlus4.setOnClickListener { v ->
+                        plus(it[index].toLong())
+                    }
+                }
             }
         }
         tvNum0.setOnClickListener {
@@ -109,10 +124,11 @@ class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeS
         this.maxBetMoney = maxBetMoney
         //InputType.TYPE_NULL 禁止彈出系統鍵盤
         mEditText.apply {
-            inputType = InputType.TYPE_NULL
+            //inputType = InputType.TYPE_NULL
             isFocusable = true
             isFocusableInTouchMode = true
         }
+        disableKeyboard()
         this.visibility = View.VISIBLE
         //parent?.visibility = View.VISIBLE
         tvLimit.text = String.format(
@@ -124,6 +140,27 @@ class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeS
 
         //keyBoardViewListener.showOrHideKeyBoardBackground(true, position)
     }
+    private fun disableKeyboard(){
+        if (android.os.Build.VERSION.SDK_INT <= 10) {
+            mEditText.setInputType(InputType.TYPE_NULL);
+        } else {
+            var cls:Class<EditText> = EditText::class.java
+            var method:Method
+            try {
+                method = cls.getMethod("setShowSoftInputOnFocus", Boolean::class.java)
+                method.setAccessible(true);
+                method.invoke(mEditText, false)
+            } catch (e: Exception) {//TODO: handle exception
+            }
+            try {
+                method = cls.getMethod("setSoftInputShownOnFocus",Boolean::class.java)
+                method.setAccessible(true)
+                method.invoke(mEditText, false)
+            } catch (e: Exception) {//TODO: handle exception
+            }
+        }
+    }
+
     private fun plus(count: Long) {
         val input = if (mEditText.text.toString() == "") "0" else mEditText.text.toString()
         val tran = if (input.contains(".")) {
