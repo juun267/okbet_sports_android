@@ -14,5 +14,5 @@ data class SportMenuFilterResult(
     @Json(name = "success")
     override val success: Boolean,
     @Json(name = "t")
-    val list: List<SportMenuFilter>?
-) : BaseResult()
+    val t: sportMenuList?
+    ) : BaseResult()

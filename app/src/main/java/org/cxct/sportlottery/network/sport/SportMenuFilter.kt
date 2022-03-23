@@ -1,30 +1,36 @@
 package org.cxct.sportlottery.network.sport
 
-data class SportMenuFilter(
-    val gameType: String,
-    val menuList: List<Menu>
-) {
-    data class Menu(
-        val code: String,
-        val name: String,
-        val selectionType: Int,
-        val num: Int,
-        val playCateList: List<PlayCate>,
-        val nameMap: NameMap,
-        val oddsSort: String
-    ) {
-        data class PlayCate(
-            val code: String,
-            val name: String,
-            val playCateNameMap: PlayCateNameMap
-        ) {
-            data class PlayCateNameMap(
-                val mapKey: String
-            )
-        }
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
-        data class NameMap(
-            val mapKey: String
-        )
-    }
+@JsonClass(generateAdapter = true)
+data class SportMenuFilter(
+    @Json(name = "code")
+    val code: String,
+    @Json(name = "name")
+    val name: String,
+    @Json(name = "selectionType")
+    val selectionType: Int,
+    @Json(name = "num")
+    val num: Int,
+   // val playCateList: List<PlayCate>,
+  //  val nameMap: NameMap,
+    @Json(name = "oddsSort")
+    val oddsSort: String,
+    @Json(name = "playCateNameMap")
+    var playCateNameMap: MutableMap<String?, Map<String?, String?>?>? = mutableMapOf(),
+    @Json(name = "playCateMap")
+    var playCateMap: MutableMap<String?, PlayCate>? = mutableMapOf(),
+    ) {
+    data class PlayCate(
+        @Json(name = "code")
+        val code: String,
+        @Json(name = "name")
+        val name: String,
+        @Json(name = "playCateNameMap")
+        var playCateNameMap: MutableMap<String?, Map<String?, String?>?>? = mutableMapOf()
+    )
+    data class NameMap(
+        val mapKey: String
+    )
 }
