@@ -34,7 +34,6 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
-import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.repository.FLAG_OPEN
@@ -47,6 +46,7 @@ import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeListener
 import org.cxct.sportlottery.ui.game.home.gameTable4.*
 import org.cxct.sportlottery.ui.game.home.highlight.RvHighlightAdapter
+import org.cxct.sportlottery.ui.game.home.recommend.OddBean
 import org.cxct.sportlottery.ui.game.home.recommend.RecommendGameEntity
 import org.cxct.sportlottery.ui.game.home.recommend.RvRecommendAdapter
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -57,6 +57,7 @@ import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.PlayCateMenuFilter
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import java.util.*
 
@@ -379,6 +380,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             gameDataList.add(otherGameEntity)
         }
 
+        gameDataList.sortOddsMap()
         mRvGameTable4Adapter.setData(gameDataList, mSelectMatchType, viewModel.betIDList.value?.peekContent() ?: mutableListOf())
         subscribeTableHallChannel(mSelectMatchType)
     }
@@ -857,7 +859,9 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
                 //滾球盤、即將開賽盤
+                val filterCode =  if(rb_as_start.isChecked) "HOME_ATSTART_MOBILE" else "HOME_INPLAY_MOBILE"
                 val dataList = mRvGameTable4Adapter.getData()
+                dataList.sortOddsMap()
                 dataList.forEach { gameEntity ->
                     //先找出要更新的 賽事
                     val updateMatchOdd = gameEntity.matchOdds.find { matchOdd ->
@@ -865,6 +869,8 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     }
                     updateMatchOdd?.let { updateMatchOddNonNull ->
                         if (SocketUpdateUtil.updateMatchOdds(context, updateMatchOddNonNull, oddsChangeEvent)) {
+                            val playCateCode = PlayCateMenuFilter.filterOddsSort(gameEntity.code, filterCode)//之後建enum class
+                            updateMatchOddNonNull.filterMenuPlayCate(playCateCode)
                             gameEntity.vpTableAdapter?.notifyDataSetChanged()
                         }
                     }
@@ -872,6 +878,8 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
                 //推薦賽事
                 val recommendDataList = mRecommendAdapter.getData()
+                recommendDataList.recommendSortOddsMap()
+
                 recommendDataList.forEach { entity ->
                     if (entity.matchInfo?.id != it.eventId) return@forEach
                     var isUpdate = false
@@ -889,14 +897,18 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
                 //精選賽事
                 val highlightDataList = mRvHighlightAdapter.getData()
+                highlightDataList.highlightSortOddsMap()
                 var isUpdate = false
                 highlightDataList.forEach { updateMatchOdd ->
                     if (SocketUpdateUtil.updateMatchOdds(context, updateMatchOdd, oddsChangeEvent)) {
+                        val playCateCode = PlayCateMenuFilter.filterOddsSort(updateMatchOdd.matchInfo?.gameType, filterCode)//之後建enum class
+                        updateMatchOdd.highlightFilterMenuPlayCate(playCateCode)
                         isUpdate = true
                     }
                 }
                 if (isUpdate) {
                     Handler(Looper.getMainLooper()).post {
+                        mRvHighlightAdapter.dataList
                         mRvHighlightAdapter.notifyDataSetChanged()
                     }
                 }
@@ -1090,6 +1102,8 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
     private fun refreshRecommend(result: MatchRecommendResult) {
         mRecommendAdapter.setData(result, viewModel.betIDList.value?.peekContent() ?: mutableListOf())
+        mRecommendAdapter.mDataList.recommendSortOddsMap()
+        mRecommendAdapter.notifyDataSetChanged()
         updateRecommendVisibility((result.rows?.size ?: 0) > 0)
     }
 
@@ -1124,4 +1138,62 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         highlight_bar.isVisible = show
         highlight_titleBar.isVisible = show
     }
+
+    /**
+     * 滾球、即將開賽賠率排序
+     */
+    private fun MutableList<GameEntity>.sortOddsMap() {
+        this.forEach { GameEntity ->
+            GameEntity.matchOdds.forEach { MatchOdd ->
+                MatchOdd.oddsMap?.forEach { (key , value) ->
+                    if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
+                        value?.sortBy {
+                            it?.marketSort
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 滾球、即將開賽 篩選玩法
+     */
+    private fun MatchOdd.filterMenuPlayCate(code: String?) {
+        this.oddsMap?.entries?.retainAll { oddMap -> oddMap.key == code?.split(",")?.get(0) ?: "HDP" }
+    }
+
+    /**
+     * 推薦賽事賠率排序
+     */
+    private fun MutableList<RecommendGameEntity>.recommendSortOddsMap() {
+        this.forEach { RecommendGameEntity ->
+            RecommendGameEntity.oddBeans.forEach { OddBeans ->
+                OddBeans.oddList.sortBy { it?.marketSort }
+            }
+        }
+    }
+
+    /**
+     * 精選賽事賠率排序
+     */
+    private fun MutableList<MatchOdd>.highlightSortOddsMap() {
+        this.forEach { MatchOdd ->
+            MatchOdd.oddsMap?.forEach { (key, value) ->
+                if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
+                    value?.sortBy {
+                        it?.marketSort
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 精選賽事 篩選玩法
+     */
+    private fun MatchOdd.highlightFilterMenuPlayCate(playCateCode: String?) {
+         this.oddsMap?.entries?.retainAll { oddMap -> oddMap.key == playCateCode?.split(",")?.get(0) ?: "HDP" }
+    }
+
 }

@@ -90,8 +90,8 @@ enum class GameType(val key: String, @StringRes val string: Int) {
             return createConfigurationContext(configuration).resources.getString(stringRes)
         }
 
-        fun getGameTypeMenuIcon(gameType: GameType): Int {
-            return when (gameType) {
+        fun getGameTypeMenuIcon(gameType: GameType): Int{
+            return when(gameType){
                 FT -> R.drawable.ic_game_football
                 BK -> R.drawable.ic_game_basketball
                 TN -> R.drawable.ic_game_tennis

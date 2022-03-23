@@ -933,7 +933,7 @@
     <string name="bank_list_not_bink">You do not have a %1$s bound</string>
     <string name="bank_list_add">Add %1$s</string>
     <string name="bank_list_bank">bank card</string>
-    <string name="bank_list_crypto">virtual currency</string>
+    <string name="bank_list_crypto">USDT</string>
     <string name="type_of_certificate">type of certificate</string>
     <string name="take_id_photo">take ID photo</string>
     <string name="prepare_your_id_photo">Prepare your ID photo</string>

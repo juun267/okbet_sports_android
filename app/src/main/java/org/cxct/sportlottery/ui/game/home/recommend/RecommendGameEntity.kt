@@ -12,7 +12,7 @@ class RecommendGameEntity(
     val leagueName: String?,
     val matchInfo: MatchInfo?,
     val isOutright: Int?,
-    var oddBeans: List<OddBean>,
+    var oddBeans: MutableList<OddBean>,
     val dynamicMarkets: Map<String, DynamicMarket>?,
     val playCateMappingList: List<PlayCateMapItem>?,
     var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
@@ -23,5 +23,5 @@ class RecommendGameEntity(
 
 class OddBean(
     val playTypeCode: String,
-    val oddList: List<Odd?>,
+    val oddList: MutableList<Odd?>,
 )
