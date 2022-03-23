@@ -290,6 +290,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     private val onTabSelectedListener = object : TabLayout.OnTabSelectedListener {
         override fun onTabSelected(tab: TabLayout.Tab?) {
+            game_list.adapter = null
             isReload = true
             when (tab?.text.toString()) { //固定寫死
                 getString(R.string.game_tab_league_odd) -> { //賽事
@@ -736,6 +737,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         leagueAdapter.playSelectedCodeSelectionType =
                             getPlaySelectedCodeSelectionType()
                         leagueAdapter.playSelectedCode = getPlaySelectedCode()
+                        if(game_list.adapter !is LeagueAdapter) game_list.adapter = leagueAdapter
                     }
                     else {
                         // Todo: MatchType.OTHER 要顯示無資料與隱藏篩選清單
@@ -779,6 +781,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             //leagueAdapter.updateLeague(index, leagueOdd)
                         }
                     }
+                    leagueAdapter.updateAll()
                     // TODO 這裡要確認是否有其他地方重複呼叫
                     Log.d("Hewie", "observe => OddsListGameHallResult")
                     isReload = true
@@ -1325,16 +1328,11 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             ) {
                                 //leagueAdapter.updateBySocket(index)
                                 leagueOddMap[leagueOdd.league.id] = leagueOdd
-                                Log.d(
-                                    "Hewie7",
-                                    "store ${leagueOdd.league.id} oddsmap => ${leagueOdd.league.name}"
-                                )
 
                                 // Safety update list
                                 updateGameList(index, leagueOdd)
-                                //leagueAdapter.notifyDataSetChanged()
                                 if (isReload) {
-                                    leagueAdapter.notifyDataSetChanged()
+                                    leagueAdapter.updateAll()
                                     isReload = false
                                 }
                             }
@@ -1515,9 +1513,14 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     private fun updateGameList(index: Int, leagueOdd: LeagueOdd) {
+        leagueAdapter.data[index] = leagueOdd
         if (game_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !game_list.isComputingLayout) {
             leagueAdapter.updateLeague(index, leagueOdd)
         }
+    }
+
+    private fun refreshGameList(newList: ArrayList<LeagueOdd>) {
+
     }
 
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
