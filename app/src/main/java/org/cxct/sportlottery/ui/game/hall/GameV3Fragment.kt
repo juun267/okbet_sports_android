@@ -55,6 +55,7 @@ import org.cxct.sportlottery.ui.game.hall.adapter.*
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
+import org.cxct.sportlottery.util.PlayCateMenuFilter
 import org.cxct.sportlottery.util.QuickListManager
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
@@ -1282,26 +1283,13 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                         var leagueOdds = leagueAdapter.data
                         leagueOdds.sortOddsMap()
-                        when {
-                            getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code -> leagueOdds.filterMenuPlayCate()
-                            getPlaySelectedCode() == "MAIN" -> { }
-                            else -> {
-                                leagueOdds.forEach { LeagueOdd ->
-                                    LeagueOdd.matchOdds.forEach { MatchOdd ->
-                                        if (MatchOdd.matchInfo?.id == oddsChangeEvent.eventId) {
-                                            MatchOdd.oddsMap = oddsChangeEvent.odds
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        leagueOdds.updateOddsSort() //篩選玩法
+
                         //翻譯更新
                         leagueOdds.forEach { LeagueOdd ->
                             LeagueOdd.matchOdds.forEach { MatchOdd ->
                                 if (MatchOdd.matchInfo?.id == oddsChangeEvent.eventId) {
-                                    oddsChangeEvent.playCateNameMap?.let {
-                                        MatchOdd.playCateNameMap?.putAll(oddsChangeEvent.playCateNameMap!!)
-                                    }
+                                    //馬克說betPlayCateNameMap還是由socket更新
                                     oddsChangeEvent.betPlayCateNameMap?.let {
                                         MatchOdd.betPlayCateNameMap?.putAll(oddsChangeEvent.betPlayCateNameMap!!)
                                     }
@@ -1548,6 +1536,28 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         MatchOdd.oddsMap?.entries?.retainAll { oddMap -> oddMap.key == playCateMenuCode }
                     }
                 }
+            }
+        }
+    }
+
+    /**
+     * 篩選玩法
+     * 更新翻譯、排序
+     * */
+
+    private fun MutableList<LeagueOdd>.updateOddsSort() {
+        //TODO Bill 這裡篩選
+        val nowGameType =
+            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
+        val playCateMenuCode =
+            if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else getPlaySelectedCode()
+        val oddsSortFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else PlayCateMenuFilter.filterOddsSort(nowGameType, playCateMenuCode)
+        val playCateNameMapFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) PlayCateMenuFilter.filterSelectablePlayCateNameMap(nowGameType,getPlaySelectedCode(), playCateMenuCode) else PlayCateMenuFilter.filterPlayCateNameMap(nowGameType, playCateMenuCode)
+
+        this.forEach { LeagueOdd ->
+            LeagueOdd.matchOdds.forEach { MatchOdd ->
+                MatchOdd.oddsSort = oddsSortFilter
+                MatchOdd.playCateNameMap = playCateNameMapFilter
             }
         }
     }
