@@ -35,7 +35,7 @@ import kotlin.collections.forEach as forEach
 class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdpOu>() {
 
     private var playCateNameMap: Map<String?, Map<String?, String?>?>? = mapOf()
-    private var dataList = listOf<MatchOdd>()
+    var dataList = mutableListOf<MatchOdd>()
     private var discount: Float = 1.0F
     private var oddsType: OddsType = OddsType.EU
 
@@ -94,7 +94,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                     it.oddsSort
                 )
             } ?: listOf()
-        dataList = newDataList
+        dataList = newDataList.toMutableList()
         playCateNameMap = newPlayCateNameMap
     }
 
@@ -280,10 +280,14 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
         }
 
         private fun setupOddList(data: MatchOdd) {
-            itemView.apply {
+            itemView.apply {val oddsSort = data.oddsSort
+                val playCateName =
+                    if (oddsSort?.split(",")?.size ?: 0 > 0)
+                        oddsSort?.split(",")?.getOrNull(0) else oddsSort
                 data.oddsMap?.let {
-                    oddList = if(it.isNotEmpty()) {
-                        it.iterator().next().value
+                    val odds = it[playCateName]
+                    oddList = if(odds?.isNotEmpty() == true) {
+                        odds.toMutableList()
                     } else {
                         mutableListOf()
                     }

@@ -22,13 +22,11 @@ import kotlinx.android.synthetic.main.fragment_bank_card.view.*
 import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
 import kotlinx.android.synthetic.main.item_listview_bank_card.view.iv_bank_icon
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.money.config.MoneyRechCfgData
-import org.cxct.sportlottery.network.money.config.TransferType
-import org.cxct.sportlottery.network.money.config.Bank
-import org.cxct.sportlottery.network.money.config.Detail
+import org.cxct.sportlottery.network.money.config.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.login.LoginEditText
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MoneyManager
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.ToastUtil
@@ -112,9 +110,21 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         initEditTextStatus(et_network_point)
 
         btn_delete_bank.text = when (transferType) {
-            TransferType.BANK -> getString(R.string.delete_bank_card)
-            TransferType.CRYPTO -> getString(R.string.delete_crypto)
-            TransferType.E_WALLET -> getString(R.string.delete_e_wallet)
+            TransferType.BANK -> {
+                btn_delete_bank.isAllCaps = true
+                getString(R.string.delete_bank_card)
+            }
+            TransferType.CRYPTO -> {
+                btn_delete_bank.isAllCaps = true
+                getString(R.string.delete_crypto)
+            }
+            TransferType.E_WALLET -> {
+                when(LanguageManager.getSelectLanguage(context)) {
+                    LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> btn_delete_bank.isAllCaps = false
+                    else -> btn_delete_bank.isAllCaps = true
+                }
+                getString(R.string.delete_e_wallet)
+            }
         }
 
     }
@@ -152,7 +162,9 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             mBankSelectorAdapter = BankSelectorAdapter(lv_bank_item.context, rechCfgData.banks, BankSelectorAdapterListener {
                 updateSelectedBank(it)
                 dismiss()
-            })
+            }).apply {
+                bankType = getBankType() ?: BankType.BANK
+            }
             lv_bank_item.adapter = mBankSelectorAdapter
             mBankSelectorAdapter.initSelectStatus()
             tv_game_type_title.text = getString(R.string.select_bank)
@@ -290,6 +302,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                             changeTransferType(transferType)
                         }
                     }
+                    updateBankSelectorList()
                 }
 
                 override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -522,6 +535,21 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         }
     }
 
+    private fun getBankType(): BankType? = when (transferType) {
+        TransferType.BANK -> BankType.BANK
+        TransferType.E_WALLET -> BankType.E_WALLET
+        else -> null
+    }
+
+    private fun updateBankSelectorList() {
+        getBankType()?.let { bankType ->
+            mBankSelectorAdapter.bankType = bankType
+            mBankSelectorAdapter.bankList.firstOrNull()?.let { initBank ->
+                updateSelectedBank(initBank)
+            }
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         viewModel.clearBankCardFragmentStatus()
@@ -535,10 +563,18 @@ class BankSelectorAdapter(
 ) : BaseAdapter() {
     private var selectedPosition = 0
 
+    val bankList: List<Bank> get() = dataList.filter { it.bankType == bankType.ordinal }
+
+    var bankType: BankType = BankType.BANK
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val holder: ListViewHolder
         // if remove "if (convertView == null)" will get a warning about reuse view.
-        val data = dataList[position]
+        val data = bankList[position]
         if (convertView == null) {
             holder = ListViewHolder()
             val layoutInflater = LayoutInflater.from(context)
@@ -583,7 +619,7 @@ class BankSelectorAdapter(
     }
 
     override fun getCount(): Int {
-        return dataList.size
+        return bankList.size
     }
 
     override fun getItem(position: Int): Any? {
