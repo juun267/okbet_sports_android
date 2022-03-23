@@ -349,7 +349,8 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     override fun onStart() {
         super.onStart()
         viewModel.getSportQuery(getLastPick = true)
-        loading()
+        viewModel.getSportMenuFilter()
+//        loading()
     }
 
     private fun initObserver() {

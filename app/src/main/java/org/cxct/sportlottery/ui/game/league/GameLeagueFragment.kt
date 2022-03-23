@@ -199,6 +199,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             args.matchId.toList(),
             isReloadPlayCate = true
         )
+        viewModel.getSportMenuFilter()
         loading()
     }
 
