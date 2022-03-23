@@ -18,19 +18,17 @@ import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
-import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
-import org.cxct.sportlottery.ui.common.StatusSheetAdapter
-import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueListener
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeListener
-import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryListener
+import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
+import org.cxct.sportlottery.util.PlayCateMenuFilter
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
@@ -47,32 +45,25 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
     private val playCategoryAdapter by lazy {
         PlayCategoryAdapter().apply {
-            playCategoryListener = PlayCategoryListener {
-                if (it.selectionType == SelectionType.SELECTABLE.code) {
-                    when {
-                        //這個是沒有點選過的狀況 第一次進來 ：開啟選單
-                        !it.isSelected && it.isLocked == null -> {
-                            showPlayCateBottomSheet(it)
-                        }
-                        //當前被點選的狀態
-                        it.isSelected -> {
-                            showPlayCateBottomSheet(it)
-                        }
-                        //之前點選過然後離開又回來 要預設帶入
-                        !it.isSelected && it.isLocked == false -> {
-                            unSubscribePlayCateChannel()
-                            viewModel.switchPlay(it)
-                            loading()
-                        }
-                    }
-                } else {
-                    unSubscribePlayCateChannel()
+            playCategoryListener = PlayCategoryListener(
+                onClickSetItemListener = {
+                    viewModel.switchPlay(it)
+                    leagueAdapter.data.updateOddsSort()
+                    leagueAdapter.notifyDataSetChanged()
+                },
+                onClickNotSelectableListener = {
                     viewModel.switchPlay(it)
                     upDateSelectPlay(it)
-                    loading()
+                    leagueAdapter.data.updateOddsSort()
+                    leagueAdapter.notifyDataSetChanged()
+                },
+                onSelectPlayCateListener = { play, playCate ->
+                    viewModel.switchPlayCategory(play, playCate.code)
+                    upDateSelectPlay(play)
+                    leagueAdapter.data.updateOddsSort()
+                    leagueAdapter.notifyDataSetChanged()
                 }
-
-            }
+            )
         }
     }
 
@@ -252,6 +243,20 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 val playSelected = playCategoryAdapter.data.find { play -> play.isSelected }
                 val leagueOdds = leagueAdapter.data
 
+                leagueOdds.updateOddsSort() //篩選玩法
+
+                //翻譯更新
+                leagueOdds.forEach { LeagueOdd ->
+                    LeagueOdd.matchOdds.forEach { MatchOdd ->
+                        if (MatchOdd.matchInfo?.id == oddsChangeEvent.eventId) {
+                            //馬克說betPlayCateNameMap還是由socket更新
+                            oddsChangeEvent.betPlayCateNameMap?.let {
+                                MatchOdd.betPlayCateNameMap?.putAll(oddsChangeEvent.betPlayCateNameMap!!)
+                            }
+                        }
+                    }
+                }
+
                 leagueOdds.forEachIndexed { index, leagueOdd ->
                     if (leagueOdd.matchOdds.any { matchOdd ->
                             SocketUpdateUtil.updateMatchOdds(
@@ -358,7 +363,8 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     override fun onStart() {
         super.onStart()
         viewModel.getSportQuery(getLastPick = true)
-        loading()
+        viewModel.getSportMenuFilter()
+//        loading()
     }
 
     private fun initObserver() {
@@ -508,24 +514,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         playCategoryAdapter.data = plays ?: listOf()
     }
 
-    private fun showPlayCateBottomSheet(play: Play) {
-        showBottomSheetDialog(
-            play.name,
-            play.playCateList?.map { playCate -> StatusSheetData(playCate.code, playCate.name) }
-                ?: listOf(),
-            StatusSheetData(
-                (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.code,
-                (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.name
-            ),
-            StatusSheetAdapter.ItemCheckedListener { _, data ->
-                unSubscribePlayCateChannel()
-                viewModel.switchPlayCategory(play,data.code)
-                loading()
-                upDateSelectPlay(play)
-                (activity as BaseActivity<*>).bottomSheet.dismiss()
-            })
-    }
-
     private fun addOddsDialog(
         matchInfo: MatchInfo?,
         odd: Odd,
@@ -558,14 +546,12 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 true -> {
                     subscribeChannelHall(
                         leagueOdd.gameType?.key,
-                        getPlaySelectedCode(),
                         matchOdd.matchInfo?.id
                     )
 
                     if (matchOdd.matchInfo?.eps == 1) {
                         subscribeChannelHall(
                             leagueOdd.gameType?.key,
-                            PlayCate.EPS.value,
                             matchOdd.matchInfo.id
                         )
                     }
@@ -629,6 +615,26 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 playSelected.code
             }
             else -> null
+        }
+    }
+
+    /**
+     * 篩選玩法
+     * 更新翻譯、排序
+     * */
+
+    private fun MutableList<LeagueOdd>.updateOddsSort() {
+        val nowGameType = GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
+        val playCateMenuCode =
+            if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else getPlaySelectedCode()
+        val oddsSortFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else PlayCateMenuFilter.filterOddsSort(nowGameType, playCateMenuCode)
+        val playCateNameMapFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) PlayCateMenuFilter.filterSelectablePlayCateNameMap(nowGameType,getPlaySelectedCode(), playCateMenuCode) else PlayCateMenuFilter.filterPlayCateNameMap(nowGameType, playCateMenuCode)
+
+        this.forEach { LeagueOdd ->
+            LeagueOdd.matchOdds.forEach { MatchOdd ->
+                MatchOdd.oddsSort = oddsSortFilter
+                MatchOdd.playCateNameMap = playCateNameMapFilter
+            }
         }
     }
 

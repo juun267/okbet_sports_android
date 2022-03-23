@@ -111,6 +111,7 @@ import org.cxct.sportlottery.network.myfavorite.save.MyFavoriteBaseResult
 import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchResult
 import org.cxct.sportlottery.network.myfavorite.query.SportMenuFavoriteResult
 import org.cxct.sportlottery.network.outright.season.OutrightLeagueListResult
+import org.cxct.sportlottery.network.sport.SportMenuFilterResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.network.sport.query.SportQueryResult
 import org.cxct.sportlottery.network.third_game.AutoTransferResult
@@ -254,6 +255,10 @@ object ErrorUtils {
                     (url.contains(SPORT_MENU)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return SportMenuResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(Constants.SPORT_MENU_FILTER)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return SportMenuFilterResult(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(Constants.MYFAVORITE_QUERY)) -> {
                         @Suppress("UNCHECKED_CAST")

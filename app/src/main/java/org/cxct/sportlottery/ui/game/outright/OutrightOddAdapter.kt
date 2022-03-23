@@ -101,6 +101,7 @@ class OutrightOddAdapter :
             }
             is OddViewHolder -> {
                 val item = data[position] as Odd
+                matchOdd?.matchInfo?.leagueName = matchOdd?.matchInfo?.name
                 holder.bind(matchOdd, item, outrightOddListener, oddsType)
             }
             is MoreViewHolder -> {

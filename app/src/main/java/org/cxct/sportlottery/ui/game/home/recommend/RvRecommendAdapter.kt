@@ -40,7 +40,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .dontTransform()
 
-    private var mDataList = listOf<RecommendGameEntity>()
+    var mDataList = mutableListOf<RecommendGameEntity>()
 
     var discount: Float = 1.0F
         set(newDiscount) {
@@ -68,7 +68,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                         val sortOrder = oddData.oddsSort?.split(",")
                         sortOrder?.indexOf(it)
                     }.thenBy { it })?.map {
-                        OddBean(it.key, it.value?.toList() ?: listOf())
+                        OddBean(it.key, it.value?.toMutableList() ?: mutableListOf())
                     }
 
                     beans?.forEach {
@@ -86,7 +86,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                         leagueName = if (row.isOutright == RECOMMEND_OUTRIGHT) row.leagueOdds?.matchOdds?.firstOrNull()?.matchInfo?.name else row.leagueOdds?.league?.name,
                         matchInfo = oddData.matchInfo,
                         isOutright = row.isOutright,
-                        oddBeans = beans ?: mutableListOf(),
+                        oddBeans = beans?.toMutableList() ?: mutableListOf(),
                         dynamicMarkets = oddData.dynamicMarkets,
                         playCateMappingList = oddData.playCateMappingList,
                         betPlayCateNameMap = oddData.betPlayCateNameMap,
@@ -97,9 +97,10 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
             }
             mDataList = dataList
 
-            withContext(Dispatchers.Main) {
-                notifyDataSetChanged()
-            }
+            //改為排序完才刷新畫面
+//            withContext(Dispatchers.Main) {
+//                notifyDataSetChanged()
+//            }
         }
     }
 
@@ -260,7 +261,8 @@ fun RecommendGameEntity.toMatchOdd(): MatchOdd {
         playCateNum = this.matchInfo?.playCateNum ?: -1,
         startTime = this.matchInfo?.startTime,
         status = this.matchInfo?.status ?: -1,
-        name = this.leagueName
+        name = this.leagueName,
+        leagueName = this.leagueName
     )
     val odds: MutableMap<String, MutableList<Odd?>?> = mutableMapOf()
     this.oddBeans.forEach {

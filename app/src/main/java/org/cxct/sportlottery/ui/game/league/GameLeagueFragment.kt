@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.game.league
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,20 +20,18 @@ import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.OddsListData
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.query.Play
-import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
 import org.cxct.sportlottery.ui.common.SocketLinearManager
-import org.cxct.sportlottery.ui.common.StatusSheetAdapter
-import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueListener
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
-import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryListener
+import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
+import org.cxct.sportlottery.util.PlayCateMenuFilter
 import org.cxct.sportlottery.util.QuickListManager
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
@@ -47,31 +44,17 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     private val playCategoryAdapter by lazy {
 
         PlayCategoryAdapter().apply {
-            playCategoryListener = PlayCategoryListener {
-                if (it.selectionType == SelectionType.SELECTABLE.code) {
-                    when {
-                        //這個是沒有點選過的狀況 第一次進來 ：開啟選單
-                        !it.isSelected && it.isLocked == null -> {
-                            showPlayCateBottomSheet(it)
-                        }
-                        //當前被點選的狀態
-                        it.isSelected -> {
-                            showPlayCateBottomSheet(it)
-                        }
-                        //之前點選過然後離開又回來 要預設帶入
-                        !it.isSelected && it.isLocked == false -> {
-                            unSubscribeChannelSwitchPlayCate()
-                            viewModel.switchPlay(
-                                args.matchType,
-                                args.leagueId.toList(),
-                                args.matchId.toList(),
-                                it
-                            )
-                            loading()
-                        }
-                    }
-                } else {
-                    unSubscribeChannelSwitchPlayCate()
+            playCategoryListener = PlayCategoryListener(onClickSetItemListener = {
+                viewModel.switchPlay(
+                    args.matchType,
+                    args.leagueId.toList(),
+                    args.matchId.toList(),
+                    it
+                )
+                leagueAdapter.data.updateOddsSort()
+                leagueAdapter.notifyDataSetChanged()
+            },
+                onClickNotSelectableListener = {
                     viewModel.switchPlay(
                         args.matchType,
                         args.leagueId.toList(),
@@ -79,9 +62,21 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         it
                     )
                     upDateSelectPlay(it)
-                    loading()
-                }
-            }
+                    leagueAdapter.data.updateOddsSort()
+                    leagueAdapter.notifyDataSetChanged()
+                },
+                onSelectPlayCateListener = { play, playCate ->
+                    viewModel.switchPlayCategory(
+                        args.matchType,
+                        args.leagueId.toList(),
+                        args.matchId.toList(),
+                        play,
+                        playCate.code
+                    )
+                    upDateSelectPlay(play)
+                    leagueAdapter.data.updateOddsSort()
+                    leagueAdapter.notifyDataSetChanged()
+                })
         }
     }
 
@@ -205,6 +200,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             args.matchId.toList(),
             isReloadPlayCate = true
         )
+        viewModel.getSportMenuFilter()
         loading()
     }
 
@@ -424,6 +420,20 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
                 val leagueOdds = leagueAdapter.data
 
+                leagueOdds.updateOddsSort() //篩選玩法
+
+                //翻譯更新
+                leagueOdds.forEach { LeagueOdd ->
+                    LeagueOdd.matchOdds.forEach { MatchOdd ->
+                        if (MatchOdd.matchInfo?.id == oddsChangeEvent.eventId) {
+                            //馬克說betPlayCateNameMap還是由socket更新
+                            oddsChangeEvent.betPlayCateNameMap?.let {
+                                MatchOdd.betPlayCateNameMap?.putAll(oddsChangeEvent.betPlayCateNameMap!!)
+                            }
+                        }
+                    }
+                }
+
                 leagueOdds.forEachIndexed { index, leagueOdd ->
                     if (leagueOdd.matchOdds.any { matchOdd ->
                             SocketUpdateUtil.updateMatchOdds(
@@ -493,7 +503,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
                 if (args.gameType.key == leagueChangeEvent.gameType && hasLeagueIdList) { //聯賽數量固定
                     unSubscribeChannelHall(args.gameType.key, getPlaySelectedCode(), leagueChangeEvent.matchIdList?.firstOrNull())
-                    subscribeChannelHall(args.gameType.key, getPlaySelectedCode(), leagueChangeEvent.matchIdList?.firstOrNull())
+                    subscribeChannelHall(args.gameType.key, leagueChangeEvent.matchIdList?.firstOrNull())
                 }
             }
         }
@@ -514,6 +524,25 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         return this
     }
 
+    /**
+     * 篩選玩法
+     * 更新翻譯、排序
+     * */
+
+    private fun MutableList<LeagueOdd>.updateOddsSort() {
+        val nowGameType = args.gameType.key
+        val playCateMenuCode =
+            if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else getPlaySelectedCode()
+        val oddsSortFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else PlayCateMenuFilter.filterOddsSort(nowGameType, playCateMenuCode)
+        val playCateNameMapFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) PlayCateMenuFilter.filterSelectablePlayCateNameMap(nowGameType,getPlaySelectedCode(), playCateMenuCode) else PlayCateMenuFilter.filterPlayCateNameMap(nowGameType, playCateMenuCode)
+
+        this.forEach { LeagueOdd ->
+            LeagueOdd.matchOdds.forEach { MatchOdd ->
+                MatchOdd.oddsSort = oddsSortFilter
+                MatchOdd.playCateNameMap = playCateNameMapFilter
+            }
+        }
+    }
 
     /**
      * 只有有下拉篩選玩法的才需要過濾odds
@@ -553,30 +582,6 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 else -> null
             }
         ).into(game_league_toolbar_bg)
-    }
-
-    private fun showPlayCateBottomSheet(play: Play) {
-        showBottomSheetDialog(
-            play.name,
-            play.playCateList?.map { playCate -> StatusSheetData(playCate.code, playCate.name) }
-                ?: listOf(),
-            StatusSheetData(
-                (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.code,
-                (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.name
-            ),
-            StatusSheetAdapter.ItemCheckedListener { _, playCate ->
-                unSubscribeChannelSwitchPlayCate()
-                viewModel.switchPlayCategory(
-                    args.matchType,
-                    args.leagueId.toList(),
-                    args.matchId.toList(),
-                    play,
-                    playCate.code
-                )
-                upDateSelectPlay(play)
-                (activity as BaseActivity<*>).bottomSheet.dismiss()
-                loading()
-            })
     }
 
     //更新isLocked狀態
@@ -669,14 +674,12 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 true -> {
                     subscribeChannelHall(
                         leagueOdd.gameType?.key,
-                        getPlaySelectedCode(),
                         matchOdd.matchInfo?.id
                     )
 
                     if (matchOdd.matchInfo?.eps == 1) {
                         subscribeChannelHall(
                             leagueOdd.gameType?.key,
-                            PlayCate.EPS.value,
                             matchOdd.matchInfo.id
                         )
                     }
@@ -686,7 +689,6 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                             true -> {
                                 subscribeChannelHall(
                                     leagueOdd.gameType?.key,
-                                    it.code,
                                     matchOdd.matchInfo?.id
                                 )
                             }

@@ -16,6 +16,7 @@
         tools:context="org.cxct.sportlottery.ui.common.CustomTabLayout">
 
         <com.google.android.material.tabs.TabLayout
+            app:tabTextAppearance="@style/NoUppercaseTab"
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="37dp"
@@ -153,6 +154,15 @@
                     app:cvHint="@string/please_enter_network_point"
                     app:cvInputType="text"
                     app:cvTitle="@string/network_point"
+                    app:cvTitleTextStyle="bold" />
+                <!-- 電話號碼 -->
+                <org.cxct.sportlottery.ui.login.LoginEditText
+                    android:id="@+id/et_phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cvHint="@string/please_enter_wallet_phone_number"
+                    app:cvInputType="number"
+                    app:cvTitle="@string/wallet_phone_number"
                     app:cvTitleTextStyle="bold" />
             </LinearLayout>
 

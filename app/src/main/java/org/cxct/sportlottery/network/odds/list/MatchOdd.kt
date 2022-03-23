@@ -30,7 +30,7 @@ data class MatchOdd(
     @Json(name = "quickPlayCateList")
     override var quickPlayCateList: MutableList<QuickPlayCate>? = null,
     @Json(name = "oddsSort")
-    override val oddsSort: String? = null
+    override var oddsSort: String? = null
 ) : MatchOdd {
 
     override val oddsEps: EpsOdd? = null
@@ -41,6 +41,7 @@ data class MatchOdd(
 
     var isExpand = false
     var leagueTime: Int? = null
+    var leagueName:String = ""
     var stopped:Int? = 0
 
     var positionButtonPage = 0

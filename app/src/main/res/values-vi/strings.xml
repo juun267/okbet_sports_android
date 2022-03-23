@@ -121,6 +121,7 @@
     <string name="more">Thêm</string>
     <string name="home_tan_main">THỂ THAO</string>
     <string name="home_tab_in_play">TRONG TRẬN</string>
+    <string name="home_tab_in_play2">Trong Trận</string>
     <string name="home_tab_today">HÔM NAY</string>
     <string name="home_tab_early">CƯỢC SỚM</string>
     <string name="home_tab_parlay">CƯỢC XÂU</string>
@@ -160,6 +161,7 @@
     <string name="best_recommend">Đề xuất tốt nhất</string>
     <string name="navigation_web">Mạng điều hướng</string>
     <string name="other">SẮP TỚI</string>
+    <string name="unknown_name"></string>
     <string name="games_lobby">Sảnh trò chơi</string>
     <string name="sport_game">Sport</string>
     <string name="cg_lottery">Xổ số CG</string>
@@ -545,6 +547,8 @@
     <string name="please_enter_wallet_address">Vui lòng nhập địa chỉ ví</string>
     <string name="network_point">Địa điểm mở tài khoản</string>
     <string name="please_enter_network_point">Địa điểm mở tài khoản</string>
+    <string name="wallet_phone_number">Số điện thoại</string>
+    <string name="please_enter_wallet_phone_number">Vui lòng nhập số điện thoại</string>
     <string name="delete_bank_card">xóa bỏ</string>
     <string name="delete_crypto">xóa bỏ</string>
     <string name="delete_e_wallet">xóa bỏ</string>
