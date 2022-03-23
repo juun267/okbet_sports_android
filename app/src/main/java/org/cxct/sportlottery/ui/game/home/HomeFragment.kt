@@ -896,14 +896,18 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
                 //精選賽事
                 val highlightDataList = mRvHighlightAdapter.getData()
+                highlightDataList.highlightSortOddsMap()
                 var isUpdate = false
                 highlightDataList.forEach { updateMatchOdd ->
                     if (SocketUpdateUtil.updateMatchOdds(context, updateMatchOdd, oddsChangeEvent)) {
+                        val playCateCode = PlayCateMenuFilter.filterOddsSort(updateMatchOdd.matchInfo?.gameType, filterCode)//之後建enum class
+                        updateMatchOdd.highlightFilterMenuPlayCate(playCateCode)
                         isUpdate = true
                     }
                 }
                 if (isUpdate) {
                     Handler(Looper.getMainLooper()).post {
+                        mRvHighlightAdapter.dataList
                         mRvHighlightAdapter.notifyDataSetChanged()
                     }
                 }
@@ -1168,4 +1172,27 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             }
         }
     }
+
+    /**
+     * 精選賽事賠率排序
+     */
+    private fun MutableList<MatchOdd>.highlightSortOddsMap() {
+        this.forEach { MatchOdd ->
+            MatchOdd.oddsMap?.forEach { (key, value) ->
+                if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
+                    value?.sortBy {
+                        it?.marketSort
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 精選賽事 篩選玩法
+     */
+    private fun MatchOdd.highlightFilterMenuPlayCate(playCateCode: String?) {
+         this.oddsMap?.entries?.retainAll { oddMap -> oddMap.key == playCateCode?.split(",")?.get(0) ?: "HDP" }
+    }
+
 }
