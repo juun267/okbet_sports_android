@@ -133,6 +133,11 @@ object MoneyManager {
         RCBC("RCBC",  R.drawable.ic_bank_rcbc),
         EASTWEST("Eastwest",  R.drawable.ic_bank_eastwest),
         CHINABANK("ChinaBank",  R.drawable.ic_bank_china_bank),
-        PNB("PNB",  R.drawable.ic_bank_pnb)
+        PNB("PNB",  R.drawable.ic_bank_pnb),
+        GCASH("Gcash", R.drawable.ic_g_cash_type),
+        PAYMAYA("Paymaya", R.drawable.ic_pay_maya_type),
+        JUANCASH("JuanCash", R.drawable.ic_juancash),
+        GRABPAY("Grabpay", R.drawable.ic_grab_pay_type),
+        ALIPAY("Alipay", R.drawable.ic_alipay_type)
     }
 }
