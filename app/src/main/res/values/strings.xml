@@ -1062,4 +1062,10 @@ Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAG
     <string name="waiting">待成立注单</string>
     <string name="sec">s</string>
     <!--歷史紀錄end-->
+
+    <!--region 最新消息-->
+    <string name="news_tab_game">游戏</string>
+    <string name="news_tab_system">系统</string>
+    <string name="news_tab_plat">平台</string>
+    <!--endregion 最新消息-->
 </resources>

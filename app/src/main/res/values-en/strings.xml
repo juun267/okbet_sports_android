@@ -1058,4 +1058,10 @@ Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAG
     <string name="waiting">Waiting</string>
     <string name="sec">s</string>
     <!--歷史紀錄end-->
+
+    <!--region 最新消息-->
+    <string name="news_tab_game">Game</string>
+    <string name="news_tab_system">System</string>
+    <string name="news_tab_plat">Platform</string>
+    <!--endregion 最新消息-->
 </resources>

@@ -1084,4 +1084,10 @@ Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAG
     <string name="waiting">Chờ</string>
     <string name="sec">s</string>
     <!--歷史紀錄end-->
+
+    <!--region 最新消息-->
+    <string name="news_tab_game">Trò chơi</string>
+    <string name="news_tab_system">Hệ thống</string>
+    <string name="news_tab_plat">Nền tảng</string>
+    <!--endregion 最新消息-->
 </resources>
