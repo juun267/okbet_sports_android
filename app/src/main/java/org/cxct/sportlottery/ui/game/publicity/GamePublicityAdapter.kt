@@ -147,7 +147,6 @@ class GamePublicityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
-        super.onBindViewHolder(holder, position, payloads)
         if (payloads.isNullOrEmpty()) {
             onBindViewHolder(holder, position)
         } else {
