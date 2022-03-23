@@ -2154,6 +2154,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             setupGameRow(it)
             setupGameListView(it)
         }
+        viewModel.getSportMenuFilter()
     }
 
     override fun onDestroyView() {
