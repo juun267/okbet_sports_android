@@ -669,6 +669,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 )
             )
             binding.ivBetLock.visibility = View.GONE
+            binding.viewGrey.visibility = View.VISIBLE
             binding.etBet.isFocusable = true
             binding.etBet.isFocusableInTouchMode = true
             cl_quota_detail.visibility = View.VISIBLE
@@ -681,6 +682,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 )
             )
             binding.ivBetLock.visibility = View.VISIBLE
+            binding.viewGrey.visibility = View.INVISIBLE
             binding.etBet.isFocusable = false
             binding.etBet.isFocusableInTouchMode = false
             binding.layoutKeyBoard.hideKeyboard()
