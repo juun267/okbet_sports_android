@@ -174,6 +174,7 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
+                            android:id="@+id/viewGrey"
                             android:background="@color/colorWhite6"
                             android:layout_marginTop="@dimen/margin_12"
                             app:layout_constraintTop_toBottomOf="@+id/tv_match"
