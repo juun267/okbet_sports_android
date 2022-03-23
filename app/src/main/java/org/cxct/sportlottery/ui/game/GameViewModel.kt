@@ -1164,6 +1164,15 @@ class GameViewModel(
 
         sportCode?.let { code ->
             when (nowChildMatchType) {
+                MatchType.MAIN -> {
+                    getOddsList(
+                        code,
+                        specialEntrance.value?.couponCode ?: "",
+                        getCurrentTimeRangeParams(),
+                        leagueIdList = leagueIdList,
+                        isIncrement = isIncrement
+                    )
+                }
                 MatchType.IN_PLAY -> {
                     getOddsList(
                         code,
@@ -1224,6 +1233,15 @@ class GameViewModel(
                 }
                 MatchType.OTHER_OUTRIGHT -> {
                     getOutrightSeasonList(code, true)
+                }
+                MatchType.MY_EVENT -> {
+                    getOddsList(
+                        code,
+                        specialEntrance.value?.couponCode ?: "",
+                        getCurrentTimeRangeParams(),
+                        leagueIdList = leagueIdList,
+                        isIncrement = isIncrement
+                    )
                 }
                 MatchType.OTHER_EPS -> {
 
@@ -1385,7 +1403,6 @@ class GameViewModel(
             }
             MatchType.TODAY.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue -> {
                 _oddsListGameHallResult.value = Event(null)
-                //_quickOddsListGameHallResult.value = Event(null)
                 currentTimeRangeParams = timeRangeParams
             }
             else -> {
@@ -2049,6 +2066,9 @@ class GameViewModel(
     }
 
     fun getSportSelectedCode(matchType: MatchType): String? = when (matchType) {
+        MatchType.MAIN -> {
+            specialMenuData?.items?.find { it.isSelected }?.code
+        }
         MatchType.IN_PLAY -> {
             sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.find { it.isSelected }?.code
         }
@@ -2074,6 +2094,9 @@ class GameViewModel(
             specialMenuData?.items?.find { it.isSelected }?.code
         }
         MatchType.OTHER_OUTRIGHT -> {
+            specialMenuData?.items?.find { it.isSelected }?.code
+        }
+        MatchType.MY_EVENT -> {
             specialMenuData?.items?.find { it.isSelected }?.code
         }
         else -> {

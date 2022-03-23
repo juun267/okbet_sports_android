@@ -18,6 +18,7 @@ import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 import org.cxct.sportlottery.util.SvgUtil
+import java.util.*
 
 class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelectionType: Int?, var playSelectedCode: String?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -25,6 +26,9 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
     enum class ItemType {
         ITEM, NO_DATA, BOTTOM_NAVIGATION
     }
+
+    var isLock = true
+    var mTimer = Timer()
 
     var data = mutableListOf<LeagueOdd>()
         set(value) {
@@ -89,6 +93,18 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
     // region update by payload functions
     fun updateLeague(position: Int, payload: LeagueOdd) {
         notifyItemChanged(position, payload)
+    }
+
+    // 限制全列表更新頻率
+    fun updateAll() {
+        if(isLock) {
+            Log.d("Hewie", "UpdateAll...")
+            isLock = false
+            notifyDataSetChanged()
+            mTimer.schedule(object: TimerTask() {
+                override fun run() { isLock = true }
+            }, 1000)
+        }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {

@@ -302,9 +302,14 @@ class Vp2GameTable4Adapter (
                 */
         private fun setupOddList(data: MatchOdd) {
             itemView.apply {
+                //要取 datas 的matchOdds 下面的 oddsSort 去抓排序裡第一個的翻譯顯示 2022/01/11 與後端Ｍax確認 by Bill
+                val playCateName =
+                    if (data.oddsSort?.split(",")?.size ?: 0 > 0) data.oddsSort?.split(",")
+                        ?.getOrNull(0) else data.oddsSort
                 data.oddsMap?.let {
-                    oddList = if (it.isNotEmpty()) {
-                        it.iterator().next().value
+                    val odds = it[playCateName]
+                    oddList = if (odds?.isNotEmpty() == true) {
+                        odds.toMutableList()
                     } else {
                         mutableListOf()
                     }
