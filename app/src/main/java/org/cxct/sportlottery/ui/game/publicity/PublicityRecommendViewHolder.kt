@@ -77,7 +77,7 @@ class PublicityRecommendViewHolder(val binding: ItemPublicityRecommendBinding) :
         }
     }
 
-    fun updateLeagueOddList(index: Int, recommend: Recommend, oddsType: OddsType) {
+    fun updateLeagueOddList(recommend: Recommend, oddsType: OddsType) {
         leagueOddAdapter?.oddsType = oddsType
         val leagueOddData = leagueOddAdapter?.data
         if (leagueOddData?.isNullOrEmpty() == true) {
@@ -85,7 +85,7 @@ class PublicityRecommendViewHolder(val binding: ItemPublicityRecommendBinding) :
             leagueOddAdapter?.data = transferMatchOddList(recommend)
         } else {
             //更新現有的oddsMap
-            with(leagueOddData[index]) {
+            with(leagueOddData.first()) {
                 oddsMap = recommend.oddsMap
                 playCateNameMap = recommend.playCateNameMap
                 betPlayCateNameMap = recommend.betPlayCateNameMap

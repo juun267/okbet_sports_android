@@ -153,7 +153,7 @@ class GamePublicityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             payloads.forEachIndexed {index, payload ->
                 when (payload) {
                     is Recommend -> {
-                        (holder as PublicityRecommendViewHolder).updateLeagueOddList(index, payload, oddsType)
+                        (holder as PublicityRecommendViewHolder).updateLeagueOddList(payload, oddsType)
                     }
                 }
             }
