@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_account_history.*
+import kotlinx.android.synthetic.main.activity_account_history.btn_floating_service
+import kotlinx.android.synthetic.main.activity_account_history.drawer_layout
+import kotlinx.android.synthetic.main.activity_account_history.view_notification
 import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
 import kotlinx.android.synthetic.main.sport_bottom_navigation.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
@@ -33,6 +36,7 @@ import org.cxct.sportlottery.ui.menu.ChangeLanguageDialog
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
 
@@ -219,6 +223,9 @@ class AccountHistoryActivity :
     }
 
     private fun initRvMarquee() {
+        account_history_message.setOnClickListener {
+            startActivity(Intent(this, NewsActivity::class.java))
+        }
         rv_marquee.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rv_marquee.adapter = mMarqueeAdapter
     }
