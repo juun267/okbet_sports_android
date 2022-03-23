@@ -29,6 +29,7 @@ import org.cxct.sportlottery.network.money.config.Detail
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.login.LoginEditText
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MoneyManager
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.ToastUtil
@@ -112,9 +113,21 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         initEditTextStatus(et_network_point)
 
         btn_delete_bank.text = when (transferType) {
-            TransferType.BANK -> getString(R.string.delete_bank_card)
-            TransferType.CRYPTO -> getString(R.string.delete_crypto)
-            TransferType.E_WALLET -> getString(R.string.delete_e_wallet)
+            TransferType.BANK -> {
+                btn_delete_bank.isAllCaps = true
+                getString(R.string.delete_bank_card)
+            }
+            TransferType.CRYPTO -> {
+                btn_delete_bank.isAllCaps = true
+                getString(R.string.delete_crypto)
+            }
+            TransferType.E_WALLET -> {
+                when(LanguageManager.getSelectLanguage(context)) {
+                    LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> btn_delete_bank.isAllCaps = false
+                    else -> btn_delete_bank.isAllCaps = true
+                }
+                getString(R.string.delete_e_wallet)
+            }
         }
 
     }
