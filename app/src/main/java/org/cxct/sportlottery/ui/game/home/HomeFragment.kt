@@ -32,6 +32,7 @@ import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
 import org.cxct.sportlottery.network.matchCategory.result.RECOMMEND_OUTRIGHT
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
@@ -379,6 +380,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             gameDataList.add(otherGameEntity)
         }
 
+        gameDataList.sortOddsMap()
         mRvGameTable4Adapter.setData(gameDataList, mSelectMatchType, viewModel.betIDList.value?.peekContent() ?: mutableListOf())
         subscribeTableHallChannel(mSelectMatchType)
     }
@@ -858,6 +860,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             it?.let { oddsChangeEvent ->
                 //滾球盤、即將開賽盤
                 val dataList = mRvGameTable4Adapter.getData()
+                dataList.sortOddsMap()
                 dataList.forEach { gameEntity ->
                     //先找出要更新的 賽事
                     val updateMatchOdd = gameEntity.matchOdds.find { matchOdd ->
@@ -1124,4 +1127,20 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         highlight_bar.isVisible = show
         highlight_titleBar.isVisible = show
     }
-}
+
+    /**
+     * 滾球、即將開賽賠率排序
+     */
+    private fun MutableList<GameEntity>.sortOddsMap() {
+        this.forEach { GameEntity ->
+            GameEntity.matchOdds.forEach { MatchOdd ->
+                MatchOdd.oddsMap?.forEach { (key , value) ->
+                    if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
+                        value?.sortBy {
+                            it?.marketSort
+                        }
+                    }
+                }
+            }
+        }
+    }
