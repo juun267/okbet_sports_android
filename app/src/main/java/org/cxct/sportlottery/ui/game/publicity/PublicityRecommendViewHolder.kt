@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.publicity
 
+import android.annotation.SuppressLint
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +19,7 @@ import org.cxct.sportlottery.util.SvgUtil
 class PublicityRecommendViewHolder(val binding: ItemPublicityRecommendBinding) : RecyclerView.ViewHolder(binding.root) {
     private var leagueOddAdapter: LeagueOddAdapter2? = null
 
+    @SuppressLint("SetTextI18n")
     fun bind(data: Recommend, oddsType: OddsType) {
         leagueOddAdapter = LeagueOddAdapter2(data.matchType ?: MatchType.EARLY).apply {
             isTimerEnable = when (data.matchType) {
@@ -25,6 +27,7 @@ class PublicityRecommendViewHolder(val binding: ItemPublicityRecommendBinding) :
                 else -> false
             }
         }
+
         with(binding) {
             //GameTypeView
             with(gameTypeView) {
@@ -76,6 +79,31 @@ class PublicityRecommendViewHolder(val binding: ItemPublicityRecommendBinding) :
 
     fun updateLeagueOddList(index: Int, recommend: Recommend, oddsType: OddsType) {
         leagueOddAdapter?.oddsType = oddsType
-        leagueOddAdapter?.notifyItemChanged(index, recommend)
+        val leagueOddData = leagueOddAdapter?.data
+        if (leagueOddData?.isNullOrEmpty() == true) {
+            //若沒有資料則直接產生新的
+            leagueOddAdapter?.data = transferMatchOddList(recommend)
+        } else {
+            //更新現有的oddsMap
+            with(leagueOddData[index]) {
+                oddsMap = recommend.oddsMap
+                playCateNameMap = recommend.playCateNameMap
+                betPlayCateNameMap = recommend.betPlayCateNameMap
+            }
+        }
+        leagueOddAdapter?.update()
+    }
+
+    private fun transferMatchOddList(recommend: Recommend): MutableList<MatchOdd> {
+        with(recommend) {
+            return mutableListOf(
+                MatchOdd(
+                    matchInfo = matchInfo,
+                    oddsMap = oddsMap,
+                    playCateNameMap = playCateNameMap,
+                    betPlayCateNameMap = betPlayCateNameMap
+                )
+            )
+        }
     }
 }
