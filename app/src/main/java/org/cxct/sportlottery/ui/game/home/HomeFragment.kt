@@ -32,10 +32,8 @@ import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
 import org.cxct.sportlottery.network.matchCategory.result.RECOMMEND_OUTRIGHT
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
-import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.repository.FLAG_OPEN
@@ -58,6 +56,7 @@ import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.PlayCateMenuFilter
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import java.util.*
 
@@ -859,6 +858,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
                 //滾球盤、即將開賽盤
+                val filterCode =  if(rb_as_start.isChecked) "HOME_ATSTART_MOBILE" else "HOME_INPLAY_MOBILE"
                 val dataList = mRvGameTable4Adapter.getData()
                 dataList.sortOddsMap()
                 dataList.forEach { gameEntity ->
@@ -868,6 +868,8 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     }
                     updateMatchOdd?.let { updateMatchOddNonNull ->
                         if (SocketUpdateUtil.updateMatchOdds(context, updateMatchOddNonNull, oddsChangeEvent)) {
+                            val playCateCode = PlayCateMenuFilter.filterOddsSort(gameEntity.code, filterCode)//之後建enum class
+                            updateMatchOddNonNull.filterMenuPlayCate(playCateCode)
                             gameEntity.vpTableAdapter?.notifyDataSetChanged()
                         }
                     }
@@ -1147,6 +1149,13 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 }
             }
         }
+    }
+    
+    /**
+     * 滾球、即將開賽 篩選玩法
+     */
+    private fun MatchOdd.filterMenuPlayCate(code: String?) {
+        this.oddsMap?.entries?.retainAll { oddMap -> oddMap.key == code }
     }
 
     /**
