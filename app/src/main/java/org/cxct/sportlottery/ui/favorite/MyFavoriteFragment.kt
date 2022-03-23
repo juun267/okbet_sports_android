@@ -243,6 +243,20 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 val playSelected = playCategoryAdapter.data.find { play -> play.isSelected }
                 val leagueOdds = leagueAdapter.data
 
+                leagueOdds.updateOddsSort() //篩選玩法
+
+                //翻譯更新
+                leagueOdds.forEach { LeagueOdd ->
+                    LeagueOdd.matchOdds.forEach { MatchOdd ->
+                        if (MatchOdd.matchInfo?.id == oddsChangeEvent.eventId) {
+                            //馬克說betPlayCateNameMap還是由socket更新
+                            oddsChangeEvent.betPlayCateNameMap?.let {
+                                MatchOdd.betPlayCateNameMap?.putAll(oddsChangeEvent.betPlayCateNameMap!!)
+                            }
+                        }
+                    }
+                }
+
                 leagueOdds.forEachIndexed { index, leagueOdd ->
                     if (leagueOdd.matchOdds.any { matchOdd ->
                             SocketUpdateUtil.updateMatchOdds(
@@ -601,6 +615,26 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 playSelected.code
             }
             else -> null
+        }
+    }
+
+    /**
+     * 篩選玩法
+     * 更新翻譯、排序
+     * */
+
+    private fun MutableList<LeagueOdd>.updateOddsSort() {
+        val nowGameType = GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
+        val playCateMenuCode =
+            if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else getPlaySelectedCode()
+        val oddsSortFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else PlayCateMenuFilter.filterOddsSort(nowGameType, playCateMenuCode)
+        val playCateNameMapFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) PlayCateMenuFilter.filterSelectablePlayCateNameMap(nowGameType,getPlaySelectedCode(), playCateMenuCode) else PlayCateMenuFilter.filterPlayCateNameMap(nowGameType, playCateMenuCode)
+
+        this.forEach { LeagueOdd ->
+            LeagueOdd.matchOdds.forEach { MatchOdd ->
+                MatchOdd.oddsSort = oddsSortFilter
+                MatchOdd.playCateNameMap = playCateNameMapFilter
+            }
         }
     }
 
