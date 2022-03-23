@@ -9,6 +9,7 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
+import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.network.sport.publicityRecommend.RecommendResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
@@ -72,30 +73,52 @@ class GamePublicityViewModel(
                                 id = id,
                                 endTime = 0
                             ).apply {
-                                leagueTime = startTime?.toInt()
-                                startDateDisplay = TimeUtil.timeFormat(startTime, "dd/MM")
+                                setupMatchType(this)
+                                setupMatchTime(this)
                             }
                         }
                     }
-                    _publicityRecommend.postValue(Event(result.result.setupMatchType()))
+
+                    _publicityRecommend.postValue(Event(result.result))
                 }
             }
         }
     }
 
-    fun RecommendResult.setupMatchType(): RecommendResult {
-        recommendList.forEach { data ->
-            data.matchType = when (data.status) {
-                1 -> MatchType.IN_PLAY
-                else -> {
-                    when {
-                        isTimeAtStart(data.startTime) -> MatchType.AT_START
-                        isTimeToday(data.startTime) -> MatchType.TODAY
-                        else -> MatchType.EARLY
+    /**
+     * 設置賽事類型參數(滾球、即將、今日、早盤)
+     */
+    private fun Recommend.setupMatchType(matchInfo: MatchInfo) {
+        matchType = when (status) {
+            1 -> {
+                matchInfo.isInPlay = true
+                MatchType.IN_PLAY
+            }
+            else -> {
+                when {
+                    isTimeAtStart(startTime) -> {
+                        matchInfo.isAtStart = true
+                        MatchType.AT_START
+                    }
+                    isTimeToday(startTime) -> {
+                        MatchType.TODAY
+                    }
+                    else -> {
+                        MatchType.EARLY
                     }
                 }
             }
         }
-        return this
+    }
+
+    /**
+     * 設置賽事時間參數
+     */
+    private fun setupMatchTime(matchInfo: MatchInfo) {
+        matchInfo.startDateDisplay = TimeUtil.timeFormat(matchInfo.startTime, "dd/MM")
+
+        matchInfo.startTimeDisplay = TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
+
+        matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
     }
 }

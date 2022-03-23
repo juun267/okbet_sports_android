@@ -5,6 +5,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.databinding.ItemPublicityRecommendBinding
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeString
 import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeWhiteIcon
 import org.cxct.sportlottery.network.common.MatchType
@@ -22,10 +23,8 @@ class PublicityRecommendViewHolder(val binding: ItemPublicityRecommendBinding) :
     @SuppressLint("SetTextI18n")
     fun bind(data: Recommend, oddsType: OddsType) {
         leagueOddAdapter = LeagueOddAdapter2(data.matchType ?: MatchType.EARLY).apply {
-            isTimerEnable = when (data.matchType) {
-                MatchType.IN_PLAY -> true
-                else -> false
-            }
+            isTimerEnable =
+                (data.gameType == GameType.FT.key || data.gameType == GameType.BK.key || data.matchType == MatchType.PARLAY || data.matchType == MatchType.AT_START || data.matchType == MatchType.MY_EVENT)
         }
 
         with(binding) {
@@ -55,17 +54,7 @@ class PublicityRecommendViewHolder(val binding: ItemPublicityRecommendBinding) :
             }
 
             //region 測試 - 資料結構與其他處不同
-            val matchOddList = mutableListOf<MatchOdd>()
-            matchOddList.add(
-                with(data) {
-                    MatchOdd(
-                        matchInfo = matchInfo,
-                        oddsMap = oddsMap,
-                        playCateNameMap = playCateNameMap,
-                        betPlayCateNameMap = betPlayCateNameMap
-                    )
-                }
-            )
+            val matchOddList = transferMatchOddList(data)
             //endregion
 
             with(rvLeagueList) {
