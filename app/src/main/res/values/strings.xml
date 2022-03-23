@@ -122,6 +122,7 @@
     <string name="more">更多</string>
     <string name="home_tan_main">主页</string>
     <string name="home_tab_in_play">滚球</string>
+    <string name="home_tab_in_play2">滚球赛事</string>
     <string name="home_tab_today">今日</string>
     <string name="home_tab_early">早盘</string>
     <string name="home_tab_parlay">串关</string>
@@ -1057,7 +1058,7 @@ Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAG
     <string name="text_account_history_withdraw">提款</string>
     <string name="text_account_history_activity">活动金额</string>
     <string name="text_account_history_credit">信用账户金额</string>
-    <string name="waiting">待成立的注单</string>
+    <string name="waiting">待成立注单</string>
     <string name="sec">s</string>
     <!--歷史紀錄end-->
 

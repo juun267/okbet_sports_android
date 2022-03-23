@@ -111,14 +111,14 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private fun initRecyclerView() {
         rv_bet_receipt.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL).apply {
-                ContextCompat.getDrawable(
-                    context ?: requireContext(),
-                    R.drawable.divider_color_white8
-                )?.let {
-                    setDrawable(it)
-                }
-            })
+//            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL).apply {
+//                ContextCompat.getDrawable(
+//                    context ?: requireContext(),
+//                    R.drawable.divider_color_white8
+//                )?.let {
+//                    setDrawable(it)
+//                }
+//            })
 
             betReceiptDiffAdapter = BetReceiptDiffAdapter().apply {
                 betResultData?.apply {

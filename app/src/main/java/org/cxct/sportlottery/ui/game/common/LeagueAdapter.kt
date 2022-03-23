@@ -204,6 +204,7 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
                     setData(item.searchMatchOdds.ifEmpty {
                         item.matchOdds
                     }.onEach {
+                        it.matchInfo?.leagueName = item.league.name
                         it.matchInfo?.gameType = item.gameType?.key
                     }, oddsType)
 

@@ -49,7 +49,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
             }
         }
 
-        private fun getGameTypeStringRes(gameType: String?): Int{
+        private fun getGameTypeStringRes(gameType: String?): Int {
             return when (gameType) {
                 FT.key -> FT.string
                 BK.key -> BK.string
@@ -71,7 +71,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
             }
         }
 
-        fun getGameTypeString(context: Context, gameType: String?): String{
+        fun getGameTypeString(context: Context, gameType: String?): String {
             return context.getString(getGameTypeStringRes(gameType))
         }
 
@@ -90,8 +90,8 @@ enum class GameType(val key: String, @StringRes val string: Int) {
             return createConfigurationContext(configuration).resources.getString(stringRes)
         }
 
-        fun getGameTypeMenuIcon(gameType: GameType): Int{
-            return when(gameType){
+        fun getGameTypeMenuIcon(gameType: GameType): Int {
+            return when (gameType) {
                 FT -> R.drawable.ic_game_football
                 BK -> R.drawable.ic_game_basketball
                 TN -> R.drawable.ic_game_tennis
@@ -113,7 +113,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
         }
 
         fun getGameTypeWhiteIcon(gameType: String): Int {
-            return when(gameType){
+            return when (gameType) {
                 FT.key -> R.drawable.img_soccer_white
                 BK.key -> R.drawable.img_basketball_white
                 TN.key -> R.drawable.img_tennis_white
@@ -130,7 +130,29 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 MR.key -> R.drawable.img_racing_white
                 GF.key -> R.drawable.img_golf_white
                 FB.key -> R.drawable.img_finance_white
-                else ->R.drawable.ic_game_champ
+                else -> R.drawable.ic_game_champ
+            }
+        }
+
+        fun getGameTypeIcon(gameType: GameType): Int {
+            return when (gameType) {
+                FT -> R.drawable.selector_sport_type_item_img_ft_v5
+                BK -> R.drawable.selector_sport_type_item_img_bk_v5
+                TN -> R.drawable.selector_sport_type_item_img_tn_v5
+                VB -> R.drawable.selector_sport_type_item_img_vb_v5
+                BM -> R.drawable.selector_sport_type_item_img_bm_v5
+                TT -> R.drawable.selector_sport_type_item_img_tt_v5
+                IH -> R.drawable.selector_sport_type_item_img_ih_v5
+                BX -> R.drawable.selector_sport_type_item_img_bx_v5
+                CB -> R.drawable.selector_sport_type_item_img_cb_v5
+                CK -> R.drawable.selector_sport_type_item_img_ck_v5
+                BB -> R.drawable.selector_sport_type_item_img_bb_v5
+                RB -> R.drawable.selector_sport_type_item_img_rb_v5
+                AFT -> R.drawable.selector_sport_type_item_img_aft_v5
+                MR -> R.drawable.selector_sport_type_item_img_mr_v5
+                GF -> R.drawable.selector_sport_type_item_img_gf_v5
+                FB -> R.drawable.selector_sport_type_item_img_fb_v5
+                OTHER -> R.drawable.ic_game_champ
             }
         }
     }
