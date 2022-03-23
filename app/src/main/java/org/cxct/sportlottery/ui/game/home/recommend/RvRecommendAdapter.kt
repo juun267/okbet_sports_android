@@ -260,7 +260,8 @@ fun RecommendGameEntity.toMatchOdd(): MatchOdd {
         playCateNum = this.matchInfo?.playCateNum ?: -1,
         startTime = this.matchInfo?.startTime,
         status = this.matchInfo?.status ?: -1,
-        name = this.leagueName
+        name = this.leagueName,
+        leagueName = this.leagueName
     )
     val odds: MutableMap<String, MutableList<Odd?>?> = mutableMapOf()
     this.oddBeans.forEach {

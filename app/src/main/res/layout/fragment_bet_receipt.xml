@@ -16,11 +16,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/colorWhite"
-        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/colorBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tool_bar"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tool_bar">
         <!-- TODO: Update blank fragment layout -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_title"
@@ -39,41 +39,41 @@
                 android:id="@+id/iv_receipt"
                 android:layout_width="@dimen/margin_16"
                 android:layout_height="@dimen/margin_16"
-                android:src="@drawable/icon_recept"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginLeft="@dimen/margin_14"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                android:src="@drawable/icon_recept"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_bet_list_receipt"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_14"
                 android:text="@string/bet_list_receipt"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize14sp"
-                android:layout_marginLeft="@dimen/margin_14"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_receipt"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
+                android:id="@+id/ivBetMoney"
                 android:layout_width="@dimen/margin_12"
                 android:layout_height="@dimen/margin_12"
-                android:id="@+id/ivBetMoney"
                 android:layout_marginRight="@dimen/margin_8"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/tv_balance"
+                android:src="@drawable/ic_bet_list_money"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:src="@drawable/ic_bet_list_money"/>
+                app:layout_constraintRight_toLeftOf="@+id/tv_balance"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_balance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin_4"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize14sp"
-                android:layout_marginRight="@dimen/margin_4"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/tv_currency"
                 app:layout_constraintTop_toTopOf="parent"
@@ -83,50 +83,42 @@
                 android:id="@+id/tv_currency"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin_14"
+                android:text="RMB"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize14sp"
-                android:text="RMB"
-                android:layout_marginRight="@dimen/margin_14"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <View
-            android:id="@+id/gray_view"
-            android:layout_width="match_parent"
-            android:layout_height="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/cl_title"
-            android:background="@color/colorGrayGallery" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_bet_receipt"
-            android:overScrollMode="never"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/cl_total_info"
-            app:layout_constraintTop_toBottomOf="@+id/gray_view"
+            app:layout_constraintTop_toBottomOf="@+id/cl_title"
             tools:listitem="@layout/item_match_receipt" />
 
-        <View
-            android:id="@+id/shadow"
-            android:layout_width="match_parent"
-            android:layout_height="16dp"
-            android:background="@drawable/bg_gradient_bottom_sheet_shadow"
-            app:layout_constraintBottom_toTopOf="@+id/cl_total_info"/>
+<!--        <View-->
+<!--            android:id="@+id/shadow"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="16dp"-->
+<!--            android:background="@drawable/bg_gradient_bottom_sheet_shadow"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/cl_total_info" />-->
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_total_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorWhite"
+            android:background="@color/color_EAF4FE"
             android:paddingStart="16dp"
             android:paddingTop="13dp"
             android:paddingEnd="16dp"
+            android:paddingBottom="13dp"
             app:layout_constraintBottom_toTopOf="@+id/tv_already_bet_complete"
-            app:layout_constraintTop_toBottomOf="@+id/rv_bet_receipt"
-            android:paddingBottom="13dp">
+            app:layout_constraintTop_toBottomOf="@+id/rv_bet_receipt">
 
             <TextView
                 android:id="@+id/title_all_bet"
@@ -205,45 +197,48 @@
             android:id="@+id/tv_already_bet_complete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorWhite"
+            android:background="@color/color_EAF4FE"
             android:gravity="center"
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
             android:text="@string/already_bet_complete"
             android:textColor="@color/colorBlue"
             android:textSize="@dimen/textSize13sp"
-            app:layout_constraintBottom_toTopOf="@+id/btn_complete"
-            app:layout_constraintTop_toBottomOf="@+id/cl_total_info" />
+            app:layout_constraintBottom_toTopOf="@+id/btn_complete" />
+
         <View
-            android:layout_width="match_parent"
             android:id="@+id/view"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/margin_1"
             android:background="@color/colorWhite4"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_already_bet_complete"/>
+            app:layout_constraintTop_toBottomOf="@+id/tv_already_bet_complete" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@color/colorWhite6"
-            app:layout_constraintTop_toBottomOf="@id/view"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view" />
 
         <TextView
             android:id="@+id/btn_complete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_8"
+            android:layout_marginRight="@dimen/margin_8"
+            android:layout_marginBottom="@dimen/margin_8"
+            android:layout_marginTop="@dimen/margin_8"
             android:background="@drawable/button_radius_4_117ecd_1053af"
             android:gravity="center"
             android:paddingTop="14dp"
-            android:layout_margin="@dimen/margin_8"
             android:paddingBottom="14dp"
             android:text="@string/complete"
             android:textColor="@android:color/white"
             android:textSize="@dimen/textSize14sp"
-            app:layout_constraintTop_toBottomOf="@+id/view"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

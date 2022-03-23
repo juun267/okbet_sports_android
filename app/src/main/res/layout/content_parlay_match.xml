@@ -30,14 +30,14 @@
                 android:textSize="@dimen/textSize14sp"
                 android:textStyle="bold"
                 tools:text="篮球 让球" />
-
             <TextView
-                android:id="@+id/tv_score_parlay"
+                android:id="@+id/tv_count_down_parley"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:textColor="@color/colorGrayLight"
-                android:textSize="@dimen/textSize12sp"
-                tools:text="(5-26)" />
+                android:textColor="@color/colorBlue"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="30s" />
+
 
         </LinearLayout>
 
@@ -62,11 +62,21 @@
 
             <TextView
                 android:id="@+id/content_league"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize13sp"
                 tools:text="NBA季后赛" />
+
+            <TextView
+                android:id="@+id/tv_score_parlay"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@color/colorGrayLight"
+                android:textSize="@dimen/textSize12sp"
+                tools:text="(5-26)" />
+
 
         </LinearLayout>
 

@@ -122,6 +122,7 @@
     <string name="more">更多</string>
     <string name="home_tan_main">主页</string>
     <string name="home_tab_in_play">滚球</string>
+    <string name="home_tab_in_play2">滚球赛事</string>
     <string name="home_tab_today">今日</string>
     <string name="home_tab_early">早盘</string>
     <string name="home_tab_parlay">串关</string>
@@ -559,6 +560,8 @@
     <string name="please_enter_wallet_address">请输入钱包地址</string>
     <string name="network_point">开户网点</string>
     <string name="please_enter_network_point">请输入开户网点</string>
+    <string name="wallet_phone_number">电话号码</string>
+    <string name="please_enter_wallet_phone_number">请输入电话号码</string>
     <string name="delete_bank_card">刪除銀行卡</string>
     <string name="delete_crypto">刪除虚拟币</string>
     <string name="delete_e_wallet">刪除eWallet</string>
@@ -1055,7 +1058,7 @@ Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAG
     <string name="text_account_history_withdraw">提款</string>
     <string name="text_account_history_activity">活动金额</string>
     <string name="text_account_history_credit">信用账户金额</string>
-    <string name="waiting">待成立的注单</string>
+    <string name="waiting">待成立注单</string>
     <string name="sec">s</string>
     <!--歷史紀錄end-->
 </resources>

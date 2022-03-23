@@ -39,7 +39,7 @@ data class Row (
     @Json(name = "updateTime")
     val updateTime: Long?,
     @Json(name = "betConfirmTime")
-    val betConfirmTime: Long?,
+    val betConfirmTime: Long? = 0,
     @Json(name = "stake")
     val stake: Double,
     @Json(name = "status")

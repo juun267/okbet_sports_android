@@ -64,6 +64,12 @@
         <item name="android:textSize">@dimen/textSize16sp</item>
         <item name="android:textStyle">bold</item>
     </style>
+    <style name="Widget.Button_Custom" parent="android:Widget">
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+
+    </style>
 
     <style name="AppSearchView" parent="Widget.AppCompat.Light.SearchView">
         <item name="android:textSize">@dimen/textSize13sp</item>
