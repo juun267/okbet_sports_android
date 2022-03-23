@@ -106,13 +106,15 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
                 isNewestDataFromApi = true
                 mRecommendList = result.recommendList
                 mPublicityAdapter.addRecommend(result.recommendList)
+                //先解除全部賽事訂閱
+                unSubscribeChannelHallAll()
                 subscribeQueryData(result.recommendList)
             }
         })
     }
 
     //region
-    // TODO subscribe serviceConnectStatus, matchStatusChange, matchClock, oddsChange, matchOddsLock, globalStop, producerUp, leagueChange
+    // TODO subscribe serviceConnectStatus, matchOddsLock, globalStop, producerUp, leagueChange
     //endregion
     private fun initSocketObservers() {
         receiver.matchStatusChange.observe(this, { event ->
@@ -211,6 +213,14 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
                 }
             }
         })
+
+        receiver.producerUp.observe(this, {
+            it?.let {
+                //先解除全部賽事訂閱
+                unSubscribeChannelHallAll()
+                subscribeQueryData(mPublicityAdapter.getRecommendData())
+            }
+        })
     }
 
     private fun queryData() {
@@ -222,8 +232,6 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
     }
 
     private fun subscribeQueryData(recommendList: List<Recommend>) {
-        //先解除全部賽事訂閱
-        unSubscribeChannelHallAll()
         recommendList.forEach { subscribeChannelHall(it) }
     }
 
