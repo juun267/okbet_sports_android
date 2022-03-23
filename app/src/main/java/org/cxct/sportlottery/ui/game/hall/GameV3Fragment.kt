@@ -110,20 +110,19 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         PlayCategoryAdapter().apply {
             playCategoryListener = PlayCategoryListener(
                 onClickSetItemListener = {
-                    unSubscribeChannelSwitchPlayCate()
-
                     viewModel.switchPlay(args.matchType, it)
-                    loading()
+                    leagueAdapter.data.updateOddsSort()
+                    leagueAdapter.notifyDataSetChanged()
                 }, onClickNotSelectableListener = {
-                    unSubscribeChannelSwitchPlayCate()
                     viewModel.switchPlay(args.matchType, it)
                     upDateSelectPlay(it)
-                    loading()
+                    leagueAdapter.data.updateOddsSort()
+                    leagueAdapter.notifyDataSetChanged()
                 }, onSelectPlayCateListener = { play, playCate ->
-                    loading()
-                    unSubscribeChannelSwitchPlayCate()
                     viewModel.switchPlayCategory(args.matchType, play, playCate.code)
                     upDateSelectPlay(play)
+                    leagueAdapter.data.updateOddsSort()
+                    leagueAdapter.notifyDataSetChanged()
                 })
         }
     }
