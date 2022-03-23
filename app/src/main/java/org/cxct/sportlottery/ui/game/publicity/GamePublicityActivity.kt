@@ -130,6 +130,7 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
                             this
                         )
                     ) {
+                        updateRecommendList(index, recommend)
                         if (matchList.isNullOrEmpty()) {
                             //TODO 移除該賽事
 //                                    leagueAdapter.data.remove(leagueOdd)
@@ -152,6 +153,7 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
                             matchClockEvent
                         )
                     ) {
+                        updateRecommendList(index, recommend)
                         //leagueAdapter.updateBySocket(index)
                         //leagueAdapter.updateLeague(index, leagueOdd)
                         //TODO 更新邏輯待補，跟進GameV3Fragment
