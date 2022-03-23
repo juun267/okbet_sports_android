@@ -66,6 +66,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                     eps = it.matchInfo?.eps,
                     spt = it.matchInfo?.spt,
                     liveVideo = it.matchInfo?.liveVideo,
+                    leagueName = it.matchInfo?.leagueName,
                     status = it.matchInfo?.status ?: -1).apply {
                     startDateDisplay = TimeUtil.timeFormat(this.startTime, "MM/dd")
                     startTimeDisplay = TimeUtil.timeFormat(this.startTime, "HH:mm")

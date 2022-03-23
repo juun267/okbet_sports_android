@@ -109,10 +109,11 @@
                             android:letterSpacing="0.05"
                             android:textStyle="bold" />
 
-                        <View
-                            android:id="@+id/et_container"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
+<!--                        <View-->
+<!--                            android:id="@+id/et_container"-->
+<!--                            android:visibility="gone"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent" />-->
 
                     </FrameLayout>
 
