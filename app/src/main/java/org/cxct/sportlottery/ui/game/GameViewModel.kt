@@ -306,8 +306,8 @@ class GameViewModel(
     val sportSortList: LiveData<Event<List<SportMenu>>>
         get() = _sportSortList
 
-    private val _sportMenuFilterList = MutableLiveData<Event<List<SportMenuFilter>?>>()
-    val sportMenuFilterList: LiveData<Event<List<SportMenuFilter>?>>
+    private val _sportMenuFilterList = MutableLiveData<Event<MutableMap<String?, MutableMap<String?, SportMenuFilter>?>?>>()
+    val sportMenuFilterList: LiveData<Event<MutableMap<String?, MutableMap<String?, SportMenuFilter>?>?>>
         get() = _sportMenuFilterList
 
     //發送簡訊碼之後60s無法再發送
@@ -568,10 +568,13 @@ class GameViewModel(
     //獲取體育篩選菜單
     fun getSportMenuFilter() {
         viewModelScope.launch {
-            doNetwork(androidContext) {
+            val result = doNetwork(androidContext) {
                 OneBoSportApi.sportService.getSportListFilter()
-            }?.let {
-                _sportMenuFilterList.postValue(Event(it.list))
+            }
+
+            result?.let {
+                PlayCateMenuFilter.filterList = it.t?.sportMenuList
+                _sportMenuFilterList.postValue(Event(it.t?.sportMenuList))
             }
         }
     }
