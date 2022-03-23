@@ -40,7 +40,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .dontTransform()
 
-    private var mDataList = mutableListOf<RecommendGameEntity>()
+    var mDataList = mutableListOf<RecommendGameEntity>()
 
     var discount: Float = 1.0F
         set(newDiscount) {
@@ -97,9 +97,10 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
             }
             mDataList = dataList
 
-            withContext(Dispatchers.Main) {
-                notifyDataSetChanged()
-            }
+            //改為排序完才刷新畫面
+//            withContext(Dispatchers.Main) {
+//                notifyDataSetChanged()
+//            }
         }
     }
 

@@ -875,6 +875,8 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
                 //推薦賽事
                 val recommendDataList = mRecommendAdapter.getData()
+                recommendDataList.recommendSortOddsMap()
+
                 recommendDataList.forEach { entity ->
                     if (entity.matchInfo?.id != it.eventId) return@forEach
                     var isUpdate = false
@@ -1093,6 +1095,8 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
     private fun refreshRecommend(result: MatchRecommendResult) {
         mRecommendAdapter.setData(result, viewModel.betIDList.value?.peekContent() ?: mutableListOf())
+        mRecommendAdapter.mDataList.recommendSortOddsMap()
+        mRecommendAdapter.notifyDataSetChanged()
         updateRecommendVisibility((result.rows?.size ?: 0) > 0)
     }
 
@@ -1144,3 +1148,15 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             }
         }
     }
+
+    /**
+     * 推薦賽事賠率排序
+     */
+    private fun MutableList<RecommendGameEntity>.recommendSortOddsMap() {
+        this.forEach { RecommendGameEntity ->
+            RecommendGameEntity.oddBeans.forEach { OddBeans ->
+                OddBeans.oddList.sortBy { it?.marketSort }
+            }
+        }
+    }
+}
