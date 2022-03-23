@@ -119,7 +119,7 @@ class VpRecommendAdapter(
                 }
             spannedList.add(OddBean(oddBean.playTypeCode, oddBean.oddList.filterIndexed { index, _ ->
                 index < playCateNum
-            }))
+            }.toMutableList()))
         }
         return spannedList
     }
