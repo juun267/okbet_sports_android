@@ -162,7 +162,7 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
 
         receiver.oddsChange.observe(this, { event ->
             event?.let { oddsChangeEvent ->
-                oddsChangeEvent.sortOddsMap()
+//                oddsChangeEvent.sortOddsMap()
 
                 val targetList = getNewestRecommendData()
                 targetList.forEachIndexed { index, recommend ->
@@ -204,6 +204,7 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
 
 
                         if (SocketUpdateUtil.updateMatchOdds(this, recommend, oddsChangeEvent)) {
+                            recommend.sortOddsByMenu()
                             updateRecommendList(index, recommend)
                         }
 
@@ -254,6 +255,24 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
                     it?.marketSort
                 }
             }
+        }
+    }
+
+    /**
+     * 根據menuList的PlayCate排序賠率玩法
+     */
+    //TODO 20220323 等新版socket更新方式調整完畢後再確認一次此處是否需要移動至別處進行
+    private fun Recommend.sortOddsByMenu() {
+        val sortOrder = this.menuList.firstOrNull()?.playCateList?.map { it.code }
+
+        oddsMap?.let { map ->
+            val filterPlayCateMap = map.filter { sortOrder?.contains(it.key) == true }
+            val sortedMap = filterPlayCateMap.toSortedMap(compareBy<String> {
+                sortOrder?.indexOf(it)
+            }.thenBy { it })
+
+            map.clear()
+            map.putAll(sortedMap)
         }
     }
 
