@@ -231,7 +231,7 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
     }
 
     private fun subscribeChannelHall(recommend: Recommend) {
-        subscribeChannelHall(recommend.gameType, recommend.menuList.firstOrNull()?.code, recommend.id)
+        subscribeChannelHall(recommend.gameType, recommend.id)
     }
 
     private fun subscribeQueryData(recommendList: List<Recommend>) {
