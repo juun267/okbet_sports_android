@@ -1244,7 +1244,7 @@ class GameViewModel(
     ) {
         updatePlaySelectedState(play)
 
-        getLeagueOddsList(matchType, leagueIdList, matchIdList)
+//        getLeagueOddsList(matchType, leagueIdList, matchIdList)
     }
 
     fun switchPlayCategory(
@@ -1259,7 +1259,7 @@ class GameViewModel(
         }
         _playCate.value = playCateCode
 
-        getLeagueOddsList(matchType, leagueIdList, matchIdList)
+//        getLeagueOddsList(matchType, leagueIdList, matchIdList)
     }
 
     /**
