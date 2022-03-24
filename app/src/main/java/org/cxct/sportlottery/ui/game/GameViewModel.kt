@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.game
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -1218,6 +1219,16 @@ class GameViewModel(
 
         val sportCode = getSportSelectedCode(nowMatchType)
 
+//        if(sportCode == null && nowChildMatchType == MatchType.OTHER) {
+//            getOddsList(
+//                code,
+//                specialEntrance.value?.couponCode ?: "",
+//                getCurrentTimeRangeParams(),
+//                leagueIdList = leagueIdList,
+//                isIncrement = isIncrement
+//            )
+//        }
+
         sportCode?.let { code ->
             when (nowChildMatchType) {
                 MatchType.MAIN -> {
@@ -1461,9 +1472,9 @@ class GameViewModel(
                 _oddsListGameHallResult.value = Event(null)
                 currentTimeRangeParams = timeRangeParams
             }
-            else -> {
+            else -> { // 特殊賽事要給特殊代碼 Ex: matchType: "sc:QAtest"
                 _oddsListGameHallResult.value = Event(null)
-                currentTimeRangeParams = timeRangeParams
+                //currentTimeRangeParams = timeRangeParams
             }
         }
 
@@ -1481,6 +1492,13 @@ class GameViewModel(
             else null
         }
 
+        var startTime = ""
+        var endTime = ""
+        if(matchType != MatchType.OTHER.postValue) { // 特殊賽事則不帶時間 Ex: {gameType: "FT", matchType: "sc:QAtest", playCateMenuCode: "MAIN"}
+            startTime = timeFilter(currentTimeRangeParams?.startTime) ?: ""
+            endTime = timeFilter(currentTimeRangeParams?.endTime) ?: ""
+        }
+
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.oddsService.getOddsList(
@@ -1489,8 +1507,8 @@ class GameViewModel(
                         matchTypeFilter(matchType),
                         leagueIdList = emptyFilter(leagueIdList),
                         matchIdList = emptyFilter(matchIdList),
-                        startTime = timeFilter(currentTimeRangeParams?.startTime),
-                        endTime = timeFilter(currentTimeRangeParams?.endTime),
+                        startTime = startTime,
+                        endTime = endTime,
                         playCateMenuCode = getPlayCateSelected()?.code ?: "MAIN"
                     )
                 )
