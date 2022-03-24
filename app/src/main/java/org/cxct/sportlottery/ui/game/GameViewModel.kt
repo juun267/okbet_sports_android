@@ -283,6 +283,10 @@ class GameViewModel(
     val oddsDetailList: LiveData<Event<ArrayList<OddsDetailListData>>>
         get() = _oddsDetailList
 
+    private val _checkInListFromSocket = MutableLiveData<Boolean>()
+    val checkInListFromSocket: LiveData<Boolean>
+        get() = _checkInListFromSocket
+
     //賽事直播網址
     private val _matchLiveInfo = MutableLiveData<Event<LiveStreamInfo>?>()
     val matchLiveInfo: LiveData<Event<LiveStreamInfo>?>
@@ -1131,6 +1135,58 @@ class GameViewModel(
         _curDate.value?.updateDateSelectedState(date)
 
         getGameHallList(matchType, false, date.date)
+    }
+
+    fun checkGameInList(matchType: MatchType, leagueIdList: List<String>? = null) {
+        val nowMatchType = curMatchType.value ?: matchType
+        val nowChildMatchType = curChildMatchType.value ?: matchType
+        val sportCode = getSportSelectedCode(nowMatchType)
+        sportCode?.let { code ->
+            when (nowChildMatchType) {
+                MatchType.IN_PLAY -> {
+                    checkOddsList(
+                        code,
+                        nowChildMatchType.postValue,
+                        leagueIdList = leagueIdList,
+                    )
+                }
+                MatchType.AT_START -> {
+                    checkOddsList(
+                        code,
+                        nowChildMatchType.postValue,
+                        leagueIdList = leagueIdList,
+                    )
+                }
+                MatchType.OTHER -> {
+                    checkOddsList(
+                        code,
+                        specialEntrance.value?.couponCode ?: "",
+                        leagueIdList = leagueIdList,
+                    )
+                }
+                else -> {
+                }
+            }
+        }
+    }
+
+    private fun checkOddsList(gameType: String, matchType: String, leagueIdList: List<String>? = null) {
+        viewModelScope.launch {
+           doNetwork(androidContext) {
+                OneBoSportApi.oddsService.getOddsList(
+                    OddsListRequest(
+                        gameType,
+                        matchType,
+                        leagueIdList = leagueIdList,
+                        playCateMenuCode = getPlayCateSelected()?.code ?: "MAIN"
+                    )
+                )
+            }?.let {
+               if (!it.oddsListData?.leagueOdds.isNullOrEmpty()) {
+                   _checkInListFromSocket.postValue(true)
+               }
+           }
+        }
     }
 
     fun getGameHallList(
