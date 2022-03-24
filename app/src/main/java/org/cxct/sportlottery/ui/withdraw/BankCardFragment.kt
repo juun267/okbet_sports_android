@@ -437,6 +437,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
         viewModel.rechargeConfigs.observe(this.viewLifecycleOwner, Observer { rechCfgData ->
             setupBankSelector(rechCfgData)
+            updateBankSelectorList()
             viewModel.getCryptoBindList(args.editBankCard)
         })
 
