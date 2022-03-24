@@ -45,7 +45,6 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var countryLeagueListener: CountryLeagueListener? = null
 
     override fun getItemViewType(position: Int): Int {
-        Log.d("Hewie10", "$position => ${data.size}")
         return when {
             data.isEmpty() -> ItemType.NO_DATA.ordinal
             (position == 0) -> ItemType.ITEM_PIN.ordinal
