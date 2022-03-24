@@ -19,5 +19,5 @@ data class Receipt(
     @Json(name = "userPlayAmount")
     val userPlayAmount: Double?,
     @Json(name = "betConfirmTime")
-    val betConfirmTime: Long
+    val betConfirmTime: Long? = null
 )
