@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentNewsBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.util.SpaceItemDecoration
 
 class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
     private var _binding: FragmentNewsBinding? = null
@@ -47,6 +49,8 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
         }
     }
 
+    private val newsAdapter by lazy { NewsAdapter() }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentNewsBinding.inflate(inflater, container, false)
         return binding.root
@@ -60,6 +64,7 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
 
     private fun initViews() {
         initTabLayout()
+        initRvNews()
     }
 
     private fun initTabLayout() {
@@ -86,6 +91,14 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
             //endregion
 
             addOnTabSelectedListener(tabLayoutSelectedListener)
+        }
+    }
+
+    private fun initRvNews() {
+        with(binding.rvNews) {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = newsAdapter
+            addItemDecoration(SpaceItemDecoration(context, R.dimen.recyclerview_news_item_dec_spec))
         }
     }
 

@@ -1063,5 +1063,6 @@ Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAG
     <string name="news_tab_game">Game</string>
     <string name="news_tab_system">System</string>
     <string name="news_tab_plat">Platform</string>
+    <string name="news_detail">Detail</string>
     <!--endregion 最新消息-->
 </resources>
