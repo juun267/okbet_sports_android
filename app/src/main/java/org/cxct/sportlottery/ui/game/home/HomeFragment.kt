@@ -46,7 +46,6 @@ import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeListener
 import org.cxct.sportlottery.ui.game.home.gameTable4.*
 import org.cxct.sportlottery.ui.game.home.highlight.RvHighlightAdapter
-import org.cxct.sportlottery.ui.game.home.recommend.OddBean
 import org.cxct.sportlottery.ui.game.home.recommend.RecommendGameEntity
 import org.cxct.sportlottery.ui.game.home.recommend.RvRecommendAdapter
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -57,7 +56,7 @@ import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.PlayCateMenuFilter
+import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import java.util.*
 
@@ -869,7 +868,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     }
                     updateMatchOdd?.let { updateMatchOddNonNull ->
                         if (SocketUpdateUtil.updateMatchOdds(context, updateMatchOddNonNull, oddsChangeEvent)) {
-                            val playCateCode = PlayCateMenuFilter.filterOddsSort(gameEntity.code, filterCode)//之後建enum class
+                            val playCateCode = PlayCateMenuFilterUtils.filterOddsSort(gameEntity.code, filterCode)//之後建enum class
                             updateMatchOddNonNull.filterMenuPlayCate(playCateCode)
                             gameEntity.vpTableAdapter?.notifyDataSetChanged()
                         }
@@ -901,7 +900,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 var isUpdate = false
                 highlightDataList.forEach { updateMatchOdd ->
                     if (SocketUpdateUtil.updateMatchOdds(context, updateMatchOdd, oddsChangeEvent)) {
-                        val playCateCode = PlayCateMenuFilter.filterOddsSort(updateMatchOdd.matchInfo?.gameType, filterCode)//之後建enum class
+                        val playCateCode = PlayCateMenuFilterUtils.filterOddsSort(updateMatchOdd.matchInfo?.gameType, filterCode)//之後建enum class
                         updateMatchOdd.highlightFilterMenuPlayCate(playCateCode)
                         isUpdate = true
                     }

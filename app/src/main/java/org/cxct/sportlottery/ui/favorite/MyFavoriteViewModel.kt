@@ -19,7 +19,7 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
-import org.cxct.sportlottery.util.PlayCateMenuFilter
+import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
 import org.cxct.sportlottery.util.TimeUtil
 
 
@@ -96,7 +96,7 @@ class MyFavoriteViewModel(
             }
 
             result?.let {
-                PlayCateMenuFilter.filterList = it.t?.sportMenuList
+                PlayCateMenuFilterUtils.filterList = it.t?.sportMenuList
             }
         }
     }

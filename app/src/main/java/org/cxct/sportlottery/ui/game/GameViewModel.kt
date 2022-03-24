@@ -578,7 +578,7 @@ class GameViewModel(
             }
 
             result?.let {
-                PlayCateMenuFilter.filterList = it.t?.sportMenuList
+                PlayCateMenuFilterUtils.filterList = it.t?.sportMenuList
                 _sportMenuFilterList.postValue(Event(it.t?.sportMenuList))
             }
         }
