@@ -89,7 +89,9 @@ class ContentParlayMatchAdapter :
                             }
 
                             override fun onFinish() {
-                                tv_count_down_parley.visibility = View.GONE
+                                tv_count_down_parley.text =
+                                    "0 ${context.getString(R.string.sec)}"
+//                                tv_count_down_parley.visibility = View.GONE
                             }
                         }.start()
                     }else{
