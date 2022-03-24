@@ -771,7 +771,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     //game_list.itemAnimator = null
 
                     mLeagueOddList.forEach { leagueOdd ->
-                        unSubscribeChannelHall(leagueOdd)
+                        //unSubscribeChannelHall(leagueOdd)
                         subscribeChannelHall(leagueOdd)
                     }
 
@@ -782,7 +782,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             //leagueAdapter.updateLeague(index, leagueOdd)
                         }
                     }
-                    leagueAdapter.updateAll()
+                    leagueAdapter.limitRefresh()
                     // TODO 這裡要確認是否有其他地方重複呼叫
                     Log.d("Hewie", "observe => OddsListGameHallResult")
                     isReload = true
@@ -1380,7 +1380,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 // Safety update list
                                 updateGameList(index, leagueOdd)
                                 if (isReload) {
-                                    leagueAdapter.updateAll()
+                                    leagueAdapter.limitRefresh()
                                     isReload = false
                                 }
                             }
@@ -2042,23 +2042,23 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         )
                     }
 
-                    matchOdd.quickPlayCateList?.forEach {
-                        when (it.isSelected) {
-                            true -> {
-                                subscribeChannelHall(
-                                    leagueOdd.gameType?.key,
-                                    matchOdd.matchInfo?.id
-                                )
-                            }
-                            false -> {
-                                unSubscribeChannelHall(
-                                    leagueOdd.gameType?.key,
-                                    it.code,
-                                    matchOdd.matchInfo?.id
-                                )
-                            }
-                        }
-                    }
+//                    matchOdd.quickPlayCateList?.forEach {
+//                        when (it.isSelected) {
+//                            true -> {
+//                                subscribeChannelHall(
+//                                    leagueOdd.gameType?.key,
+//                                    matchOdd.matchInfo?.id
+//                                )
+//                            }
+//                            false -> {
+//                                unSubscribeChannelHall(
+//                                    leagueOdd.gameType?.key,
+//                                    it.code,
+//                                    matchOdd.matchInfo?.id
+//                                )
+//                            }
+//                        }
+//                    }
                 }
 
                 false -> {
@@ -2076,13 +2076,13 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         )
                     }
 
-                    matchOdd.quickPlayCateList?.forEach {
-                        unSubscribeChannelHall(
-                            leagueOdd.gameType?.key,
-                            it.code,
-                            matchOdd.matchInfo?.id
-                        )
-                    }
+//                    matchOdd.quickPlayCateList?.forEach {
+//                        unSubscribeChannelHall(
+//                            leagueOdd.gameType?.key,
+//                            it.code,
+//                            matchOdd.matchInfo?.id
+//                        )
+//                    }
                 }
             }
         }

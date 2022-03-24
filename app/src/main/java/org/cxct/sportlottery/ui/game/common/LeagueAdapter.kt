@@ -96,7 +96,7 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
     }
 
     // 限制全列表更新頻率
-    fun updateAll() {
+    fun limitRefresh() {
         if(isLock) {
             Log.d("Hewie", "UpdateAll...")
             isLock = false
