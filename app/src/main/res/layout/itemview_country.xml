@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@color/colorWhite4"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/country_name"
@@ -58,10 +58,12 @@
 
     </net.cachapa.expandablelayout.ExpandableLayout>
 
-    <View
+    <!-- 間隔 -->
+    <View android:id="@+id/SpaceItemDecorationView"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorWhite6"
-        app:layout_constraintTop_toBottomOf="@id/country_border" />
+        android:layout_height="8dp"
+        android:background="@color/colorWhite"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/country_border"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

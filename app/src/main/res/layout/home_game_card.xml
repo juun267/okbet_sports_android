@@ -2,11 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_card"
     android:layout_width="wrap_content"
     android:minWidth="98dp"
-    android:layout_height="wrap_content"
-    android:background="@drawable/fillet_4dp_home_game_item"
-    tools:context=".ui.game.home.HomeGameCard">
+    android:layout_height="50dp"
+    android:background="@drawable/fillet_4dp_home_game_item_blue"
+    tools:context=".ui.game.home.HomeGameCard"
+    tools:ignore="SpUsage" >
 
     <ImageView
         android:id="@+id/iv_icon"
@@ -24,13 +26,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="4dp"
         android:text="@string/basketball"
         android:textColor="@color/colorWhite"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintVertical_chainStyle="packed"
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/iv_icon"
+        app:layout_constraintBottom_toTopOf="@+id/tv_count"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -39,7 +42,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:textColor="@color/colorWhite"
-        android:textSize="@dimen/textSize18sp"
+        android:textSize="@dimen/textSize16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:includeFontPadding="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title"
         tools:text="13" />

@@ -16,18 +16,16 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:paddingStart="10dp"
-            android:paddingTop="6dp"
-            android:paddingEnd="10dp"
-            android:paddingBottom="6dp">
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="6dp">
 
             <TextView
                 android:id="@+id/tv_play_cate_name"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="start"
+                android:gravity="center"
                 android:textColor="@color/colorGray"
-                android:textSize="@dimen/textSize14sp"
+                android:textSize="@dimen/textSize12sp"
                 tools:text="让球" />
         </LinearLayout>
 
@@ -38,16 +36,16 @@
             android:background="@color/colorWhite6" />
 
         <TextView
-            android:id="@+id/tv_play_name"
+            android:id="@+id/tv_play_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="6dp"
             android:textColor="@color/colorGray"
-            android:textSize="@dimen/textSize14sp"
+            android:textSize="@dimen/textSize12sp"
             tools:text="RS巴西体育工会" />
     </LinearLayout>
 

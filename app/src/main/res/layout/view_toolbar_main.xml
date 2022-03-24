@@ -13,10 +13,12 @@
 
     <ImageView
         android:id="@+id/iv_logo"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
         android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginTop="@dimen/margin_4"
+        android:layout_marginBottom="@dimen/margin_4"
         android:adjustViewBounds="true"
         android:contentDescription="@null"
         android:scaleType="fitStart"
@@ -26,11 +28,11 @@
         android:id="@+id/iv_language"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_marginEnd="4dp"
         android:paddingStart="4dp"
         android:paddingEnd="4dp"
-        android:layout_marginEnd="4dp"
         android:src="@drawable/ic_flag_en"
-        />
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/btn_login"
@@ -61,6 +63,14 @@
         android:text="@string/btn_register"
         android:textColor="@color/colorBlackLight" />
 
+    <ImageView
+        android:id="@+id/iv_notice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_bell"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
     <TextView
         android:id="@+id/btn_notice"
         android:layout_width="22dp"
@@ -72,9 +82,8 @@
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/textSize14sp"
         android:visibility="gone"
-        tools:text="N"
-        tools:visibility="visible" />
-    
+        tools:text="N" />
+
 
     <TextView
         android:id="@+id/tv_odds_type"
@@ -95,8 +104,7 @@
         android:visibility="gone"
         app:autoSizeMaxTextSize="15dp"
         app:autoSizeMinTextSize="2dp"
-        app:autoSizeTextType="uniform"
-        app:drawableStartCompat="@drawable/ic_odds_type_change" />
+        app:autoSizeTextType="uniform" />
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/iv_head"
@@ -105,6 +113,17 @@
         android:layout_marginEnd="10dp"
         android:scaleType="centerCrop"
         android:src="@drawable/img_avatar_default"
+        android:visibility="gone"
         app:riv_oval="true" />
+
+    <ImageView
+        android:id="@+id/iv_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="15dp"
+        android:src="@drawable/ic_menu"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
 </LinearLayout>

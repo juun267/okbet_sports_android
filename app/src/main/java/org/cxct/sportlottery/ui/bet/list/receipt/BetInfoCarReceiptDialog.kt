@@ -1,14 +1,23 @@
 package org.cxct.sportlottery.ui.bet.list.receipt
 
 import android.os.Bundle
+import android.text.Spanned
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
+import android.widget.TextView
+import androidx.core.text.HtmlCompat
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item_receipt.*
-import kotlinx.android.synthetic.main.item_match_receipt.*
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item_receipt.tv_match_type
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item_receipt.tv_play_content
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item_receipt.tv_receipt_status
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item_receipt.tv_team_names
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item_receipt.view.*
-import kotlinx.android.synthetic.main.item_match_receipt.view.*
+import kotlinx.android.synthetic.main.view_match_receipt_bet.*
+import kotlinx.android.synthetic.main.view_match_receipt_bet.tv_bet_status
+import kotlinx.android.synthetic.main.view_match_receipt_bet.tv_order_number
+import kotlinx.android.synthetic.main.view_match_receipt_bet.tv_winnable_amount
 import kotlinx.android.synthetic.main.view_match_receipt_bet.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
@@ -16,6 +25,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
 import org.cxct.sportlottery.ui.base.BaseSocketBottomSheetFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 
 class BetInfoCarReceiptDialog(val result: BetAddResult) :
@@ -40,32 +50,48 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
         view.apply {
             result.receipt?.singleBets?.firstOrNull()?.apply {
                 matchOdds?.firstOrNull()?.apply {
-                    tv_play_name.text = playName
-                    tv_league.text = leagueName
-                    tv_team_home.text = homeName
-                    tv_spread.text = spread
-                    tv_team_away.text = awayName
-                    tv_match_type.text = playCateName
-
-                    tv_spread.isVisible = needShowSpread(playCateCode)
+                    view.tvLeague.text = leagueName
+                    val teamNamesStr =
+                        if (homeName?.length ?: 0 > 15) "$homeName v\n$awayName" else "$homeName v $awayName"
+                    view.tv_team_names.text = teamNamesStr
+                    view.tv_match_type.tranByPlayCode(playCode, playCateName)
                 }
 
-                view.view_match_receipt.setBetReceiptBackground(status)
-                tv_bet_amount.text = TextUtil.formatBetQuota(stake ?: 0)
-                tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
-                tv_winnable_amount.text = TextUtil.formatMoney(winnable ?: 0.0)
-                tv_bet_status.setBetReceiptStatus(status)
-                tv_bet_status.setReceiptStatusColor(status)
-                tv_receipt_status.setSingleReceiptStatusTips(status)
+                //view.view_match_receipt.setBetReceiptBackground(status)
+                view.tv_bet_amount.text = TextUtil.formatMoney(stake ?: 0.0)
+                view.tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
+                view.tv_winnable_amount.text = TextUtil.formatMoney(winnable ?: 0.0)
+                view.tv_bet_status.setBetReceiptStatus(status)
+                view.tv_bet_status.setReceiptStatusColor(status)
+                view.tv_receipt_status.setSingleReceiptStatusTips(status)
 
                 if (matchType == MatchType.OUTRIGHT) {
-                    tv_spread.visibility = View.GONE
-                    tv_team_home.visibility = View.GONE
-                    tv_verse.visibility = View.GONE
-                    tv_team_away.visibility = View.GONE
+                    tv_team_names.visibility = View.GONE
                 }
-            }
 
+                val matchOdd = matchOdds?.firstOrNull()
+
+                var currentOddsTypes = oddsType
+                if (matchOdd?.odds == matchOdd?.malayOdds || matchType == MatchType.OUTRIGHT || matchType == MatchType.OTHER_OUTRIGHT) {
+                    currentOddsTypes = OddsType.EU
+                }
+
+                tv_play_content.text = setPlayContent(
+                    needShowSpread(matchOdd?.playCateCode) && (matchType != MatchType.OUTRIGHT),
+                    matchOdd?.playName,
+                    if (matchType != MatchType.OUTRIGHT) matchOdd?.spread else "",
+                    TextUtil.formatForOdd(getOdds(matchOdd, oddsType ?: OddsType.EU)),
+                    tv_play_content.context.getString(matchOdd?.let { matchOdd ->
+                        currentOddsTypes?.let { currentOddsTypes ->
+                            getOddTypeRes(
+                                matchOdd,
+                                currentOddsTypes
+                            )
+                        }
+                    }
+                        ?: OddsType.EU.res)
+                )
+            }
         }
     }
 
@@ -78,6 +104,7 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
     }
 
     private fun initOnclick() {
+        btn_done.text = resources.getString(R.string.complete)
         btn_done.setOnClickListener {
             this@BetInfoCarReceiptDialog.dismiss()
         }
@@ -89,21 +116,53 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
 
     private fun initObserver() {
 
-        viewModel.userMoney.observe(this.viewLifecycleOwner, {
+        viewModel.userMoney.observe(this.viewLifecycleOwner) {
             it?.let { money -> setupCurrentMoney(money) }
-        })
+        }
 
-        viewModel.oddsType.observe(viewLifecycleOwner, {
-            val matchOdd = result.receipt?.singleBets?.firstOrNull()?.matchOdds?.firstOrNull()
-            tv_match_odd.setOddFormat(getOdds(matchOdd, it))
-        })
+        viewModel.oddsType.observe(viewLifecycleOwner) { oddType ->
+
+            result.receipt?.singleBets?.firstOrNull()?.let { betResult ->
+                betResult.matchOdds?.firstOrNull()?.let { matchOdd ->
+                    var currentOddsTypes = oddType
+                    if (matchOdd.odds == matchOdd.malayOdds || betResult.matchType == MatchType.OUTRIGHT || betResult.matchType == MatchType.OTHER_OUTRIGHT) {
+                        currentOddsTypes = OddsType.EU
+                    }
+                    tv_play_content.text = setPlayContent(
+                        needShowSpread(matchOdd.playCateCode) && (betResult.matchType != MatchType.OUTRIGHT),
+                        matchOdd.playName,
+                        if (betResult.matchType != MatchType.OUTRIGHT) matchOdd.spread else "",
+                        TextUtil.formatForOdd(getOdds(matchOdd, currentOddsTypes)),
+                        getString(currentOddsTypes.res)
+                    )
+
+                }
+            }
+        }
 
     }
 
+    private fun setPlayContent(
+        isShowSpread: Boolean,
+        playName: String?,
+        spread: String?,
+        formatForOdd: String,
+        oddsType: String
+    ): Spanned {
+        val playNameStr =
+            if (!playName.isNullOrEmpty()) "<font color=#333333>$playName</font> " else ""
+        val spreadStr =
+            if (!spread.isNullOrEmpty() || isShowSpread) "<font color=#B73A20>$spread</font> " else ""
+
+        return HtmlCompat.fromHtml(
+            playNameStr +
+                    spreadStr +
+                    "<font color=#333333>@ $formatForOdd</font> " , HtmlCompat.FROM_HTML_MODE_LEGACY
+        )
+    }
 
     private fun setupCurrentMoney(money: Double) {
-        tv_current_money.text =
-            getString(R.string.bet_info_current_rmb, TextUtil.formatMoney(money))
+        //tv_current_money.text = "${TextUtil.formatMoney(money)} ${sConfigData?.systemCurrency}"
     }
 
 }

@@ -4,252 +4,300 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    android:clickable="true"
+    android:background="@color/transparent"
     android:focusable="true"
+    android:focusableInTouchMode="true"
     android:orientation="vertical"
     tools:context=".ui.game.menu.LeftMenuFragment"
     tools:ignore="SpUsage,RtlSymmetry,ContentDescription">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/view_toolbar_main"
+        android:background="@color/transparent"
+        android:visibility="invisible" />
+
+
+    <!-- 公告輪播跑馬燈 -->
+    <include
+        android:id="@+id/layout_announce"
+        layout="@layout/view_message"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorWhite1"
-        android:minHeight="56dp">
-
-        <ImageView
-            android:id="@+id/img_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:src="@drawable/ic_menu_left_side"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btn_lobby"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/btn_lobby"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:ellipsize="marquee"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="10dp"
-            android:singleLine="true"
-            android:text="@string/menu"
-            android:textColor="@color/colorBlackLight"
-            android:textSize="@dimen/textSize18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btn_close"
-            app:layout_constraintHorizontal_bias="10"
-            app:layout_constraintStart_toEndOf="@+id/img_menu"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/btn_close"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="8dp"
-            android:background="@null"
-            android:contentDescription="@null"
-            android:padding="8dp"
-            android:src="@drawable/ic_close_menu_v4"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/ct_inplay"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="44dp">
-
-        <ImageView
-            android:id="@+id/img_inplay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:src="@drawable/ic_inplay_v4"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/txv_inplay"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/txv_inplay"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:ellipsize="marquee"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="10dp"
-            android:singleLine="true"
-            android:text="@string/match_type_row_in_play"
-            android:textColor="@color/colorBlackLight"
-            android:textSize="@dimen/textSize14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="10"
-            app:layout_constraintStart_toEndOf="@+id/img_inplay"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/ct_premium_odds"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="44dp">
-
-        <ImageView
-            android:id="@+id/img_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:src="@drawable/ic_price_v4"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/txv_price"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/txv_price"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:ellipsize="marquee"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="10dp"
-            android:singleLine="true"
-            android:text="@string/premium_odds"
-            android:textColor="@color/colorBlackLight"
-            android:textSize="@dimen/textSize14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="10"
-            app:layout_constraintStart_toEndOf="@+id/img_price"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="@color/colorWhite6"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_selected"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:itemCount="2"
-        android:overScrollMode="never"
-        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/content_left_menu_item"
-        tools:orientation="vertical" />
-
-    <View
-        android:id="@+id/line_pin"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="@color/colorWhite6"
-        android:visibility="gone"
+        android:layout_height="20dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:visibility="visible" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/xBanner" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_unselect"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:itemCount="2"
-        android:overScrollMode="never"
-        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/content_left_menu_item"
-        tools:orientation="vertical" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:background="@color/colorWhite"
+        android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="@color/colorWhite6"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/colorWhite1">
 
-    <TextView
-        android:id="@+id/tv_odds_type"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:drawablePadding="10dp"
-        android:gravity="start|center_vertical"
-        android:paddingStart="20dp"
-        android:text="@string/left_menu_odds_type_setting"
-        android:textColor="@color/colorBlackLight"
-        app:drawableStartCompat="@drawable/ic_menu_odds_type" />
+            <ImageView
+                android:id="@+id/img_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/ic_menu_left_side" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="@color/colorWhite6"
-        app:layout_constraintBottom_toBottomOf="parent" />
+            <!--            <TextView-->
+            <!--                android:id="@+id/btn_lobby"-->
+            <!--                android:layout_width="0dp"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                android:layout_weight="1"-->
+            <!--                android:ellipsize="marquee"-->
+            <!--                android:gravity="center_vertical"-->
+            <!--                android:paddingHorizontal="10dp"-->
+            <!--                android:singleLine="true"-->
+            <!--                android:text="@string/menu"-->
+            <!--                android:textColor="@color/colorBlackLight"-->
+            <!--                android:textSize="@dimen/textSize18sp"-->
+            <!--                android:textStyle="bold" />-->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/margin_16"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginEnd="@dimen/margin_8"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:layout_weight="1"
+                android:background="@drawable/bg_search_layout"
+                android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/txv_news_center"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:ellipsize="marquee"
-        android:gravity="center_vertical"
-        android:paddingHorizontal="20dp"
-        android:singleLine="true"
-        android:text="@string/infomation_center"
-        android:textColor="@color/colorBlackLight"
-        android:textSize="@dimen/textSize14sp"
-        android:textStyle="bold" />
+                <ImageView
+                    android:layout_width="@dimen/margin_16"
+                    android:layout_height="@dimen/margin_16"
+                    android:layout_marginStart="@dimen/margin_12"
+                    android:src="@drawable/ic_search" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/ct_game_rule"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="44dp">
+                <EditText
+                    android:id="@+id/etSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/margin_12"
+                    android:layout_marginEnd="@dimen/margin_8"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/text_search"
+                    android:singleLine="true"
+                    android:imeOptions="actionDone"
+                    android:textSize="@dimen/textSize12sp" />
+            </LinearLayout>
 
-        <ImageView
-            android:id="@+id/img_game_rule"
-            android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/btn_close"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:padding="8dp"
+                android:src="@drawable/ic_close_menu_v4" />
+
+        </LinearLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_menu"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:src="@drawable/ic_menu_game_rule"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/txv_game_rule"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="#666" />
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never"
+            tools:itemCount="10"
+            android:visibility="visible"
+            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/content_left_menu_item"
+            tools:orientation="vertical" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_20"
+            android:paddingStart="@dimen/margin_12"
+            android:paddingEnd="@dimen/margin_20"
+            android:visibility="gone">
 
-        <TextView
-            android:id="@+id/txv_game_rule"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:ellipsize="marquee"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="10dp"
-            android:singleLine="true"
-            android:text="@string/game_rule"
-            android:textColor="@color/colorBlackLight"
-            android:textSize="@dimen/textSize14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="10"
-            app:layout_constraintStart_toEndOf="@+id/img_game_rule"
-            app:layout_constraintTop_toTopOf="parent" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/layoutHistory"
+                android:visibility="visible"
+                app:layout_constrainedHeight="true"
+                app:layout_constraintBottom_toTopOf="@+id/layoutTop"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <View
+                    android:id="@+id/view1"
+                    android:layout_width="@dimen/margin_1"
+                    android:layout_height="@dimen/margin_14"
+                    android:background="@color/color_F08E29"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tvHistoryTittle"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvHistoryTittle"/>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvHistoryTittle"
+                    android:text="@string/text_search_history"
+                    android:textColor="@color/color_222222"
+                    android:textSize="@dimen/margin_14"
+                    android:textStyle="bold"
+                    android:layout_marginStart="@dimen/margin_16"
+                    app:layout_constraintStart_toEndOf="@+id/view1"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvClear"
+                    android:text="@string/text_clear"
+                    android:textColor="@color/color_999999"
+                    android:textSize="@dimen/margin_12"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    android:id="@+id/rvHistory"
+                    android:layout_marginStart="@dimen/margin_16"
+                    app:layout_constraintTop_toBottomOf="@+id/tvHistoryTittle"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_marginBottom="@dimen/margin_8"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/layoutTop"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutHistory">
+
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="@dimen/margin_1"
+                    android:layout_height="@dimen/margin_14"
+                    android:background="@color/color_F08E29"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tvTopTittle"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvTopTittle"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvTopTittle"
+                    android:text="@string/text_top_search"
+                    android:textColor="@color/color_222222"
+                    android:textSize="@dimen/margin_14"
+                    android:textStyle="bold"
+                    android:layout_marginStart="@dimen/margin_16"
+                    app:layout_constraintStart_toEndOf="@+id/view2"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvRefresh"
+                    android:text="@string/text_search_refresh"
+                    android:textColor="@color/color_999999"
+                    android:textSize="@dimen/margin_12"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rvTop"
+                    android:layout_marginStart="@dimen/margin_16"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTopTittle"
+                    android:layout_marginTop="@dimen/margin_16"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutSearchResult"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="@dimen/margin_12"
+            android:paddingEnd="@dimen/margin_20"
+            android:visibility="gone">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/rvSearchResult"
+                android:overScrollMode="never"
+                android:layout_marginStart="@dimen/margin_12"
+                android:layout_marginTop="@dimen/margin_20"
+                android:layout_marginBottom="@dimen/margin_16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/layoutNoData"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/list_no_record_img"
+                    android:layout_width="130dp"
+                    android:layout_height="84dp"
+                    android:layout_marginTop="60dp"
+                    android:src="@drawable/ic_img_no_record"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/list_no_record_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:text="@string/text_search_no_result"
+                    android:textColor="@color/colorBlackLight"
+                    android:textSize="@dimen/textSize14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@id/list_no_record_img"
+                    app:layout_constraintStart_toStartOf="@id/list_no_record_img"
+                    app:layout_constraintTop_toBottomOf="@id/list_no_record_img" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/text_search_try_another"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/textSize14sp"
+                    app:layout_constraintEnd_toEndOf="@id/list_no_record_img"
+                    app:layout_constraintStart_toStartOf="@id/list_no_record_img"
+                    app:layout_constraintTop_toBottomOf="@id/list_no_record_text" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
 </LinearLayout>

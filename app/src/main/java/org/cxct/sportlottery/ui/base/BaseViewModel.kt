@@ -18,6 +18,7 @@ import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.util.NetworkUtil
 import retrofit2.Response
+import timber.log.Timber
 import java.net.SocketTimeoutException
 
 
@@ -47,6 +48,10 @@ abstract class BaseViewModel(
     private val _networkExceptionTimeout = MutableLiveData<String>()
     private val _networkExceptionUnknown = MutableLiveData<String>()
 
+    enum class NetWorkResponseType(val code: Int) {
+        REQUEST_TOO_FAST(400)
+    }
+
     //20210526 新增 exceptionHandle 參數，還判斷要不要在 BaseActivity 顯示，exception 錯誤訊息
     @Nullable
     suspend fun <T : BaseResult> doNetwork(
@@ -59,6 +64,7 @@ abstract class BaseViewModel(
                 throw DoNoConnectException()
             doApiFun(apiFun)
         } catch (e: Exception) {
+            Timber.e("doNetwork: $e")
             e.printStackTrace()
             if (exceptionHandle)
                 doOnException(context, e)

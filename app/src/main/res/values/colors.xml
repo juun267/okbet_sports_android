@@ -4,13 +4,14 @@
     <color name="colorBackground">@color/colorWhite1</color>
 
     <color name="colorBlueLight">#1463CF</color>
-    <color name="colorBlue">#1053AF</color>
+    <color name="colorBlue">#0760D4</color>
     <color name="colorBlue2">#0F53AF</color>
     <color name="colorBlueDark">#1F4780</color>
     <color name="colorSilverBlue">#A9BEDF</color>
 
     <color name="colorOrangeLight">#FF9200</color>
     <color name="colorOrange">#FF8000</color>
+    <color name="colorOrange2">#ff9e3c</color>
 
     <color name="colorRedLight">#e7837c</color>
     <color name="colorRed">#E44438</color>
@@ -22,13 +23,15 @@
     <color name="colorGreenSea">#08AB74</color>
     <color name="colorGreenKeppel">#3DB893</color>
 
+    <color name="white">#FFFFFF</color>
     <color name="colorWhite">#FCFCFC</color>
     <color name="colorWhite1">#F3F4F5</color>
     <color name="colorWhite2">#F2F2F2</color>
     <color name="colorWhite3">#EDF4FF</color>
     <color name="colorWhite4">#EDEDED</color>
     <color name="colorWhite5">#EBEBEB</color>
-    <color name="colorWhite6">#E2E2E2</color>
+    <!--根據需求，大底色調整為 #EEEFF0-->
+    <color name="colorWhite6">#EEEFF0</color>
     <color name="colorWhite7">#DFEAF8</color>
     <color name="colorWhite8">#E6E6E6</color>
     <color name="colorWhite9">#F3F3F3</color>
@@ -36,17 +39,22 @@
 
     <color name="colorSilverLight">#CCCCCC</color>
     <color name="colorSilver">#BCBCBC</color>
+    <color name="colorSilver2">#DCDCDC</color>
+    <color name="colorSilver3">#efeff4</color>
     <color name="colorSilverDirk">#B4B4B4</color>
 
     <color name="colorGrayLight">#999999</color>
     <color name="colorGrayLight2">#E4E4E4</color>
+    <color name="colorGrayLight3">#EFEFEF</color>
     <color name="colorGray">#666666</color> <!--106 106 106-->
     <color name="colorGrayDark">#404040</color>
     <color name="colorGrayDark2">#444444</color>
     <color name="colorGrayGallery">#EEEEEE</color>
-
+    <color name="colorGrayText">#888888</color>
     <color name="colorBlackLight">#333333</color>
     <color name="colorBlack">#000000</color>
+    <color name="colorEEEFF0">#EEEFF0</color>
+
 
     <!-- //== 以下不在 v3 color guideline 定義內，但有使用==//-->
     <color name="blueLight">#a9bedf</color>
@@ -55,7 +63,27 @@
     <color name="colorBronze">#CB7C2E</color>
 
     <color name="transparent">#00000000</color>
+    <color name="transparent_black_0">#00000000</color>
     <color name="transparent_black_50">#80000000</color>
+    <color name="transparent_black_60">#99000000</color>
+
+    <color name="color_fff3f3f3">#fff3f3f3</color>
+    <color name="color_ffededed">#ffededed</color>
+    <color name="color_333333">#333333</color>
+    <color name="color_888888">#888888</color>
+    <color name="color_999999">#999999</color>
+    <color name="color_AAAAAA">#AAAAAA</color>
+    <color name="color_FDFDFD">#FDFDFD</color>
+    <color name="color_E2E2E2">#E2E2E2</color>
+    <color name="color_FFFFFFFF">#ffffffff</color>
+    <color name="color_FFEEEFF0">#ffeeeff0</color>
+    <color name="color_F08E29">#ffF08E29</color>
+    <color name="color_222222">#222222</color>
+    <color name="color_060F20">#060F20</color>
+    <color name="color_CDE5FF">#CDE5FF</color>
+    <color name="color_EAF4FE">#EAF4FE</color>
+
+
     <!-- ======================================= -->
 
 </resources>

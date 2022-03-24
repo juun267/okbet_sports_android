@@ -6,6 +6,7 @@ import android.view.*
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_money_submit.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.TextUtil
 
@@ -37,7 +38,7 @@ class MoneySubmitDialog(
     private fun initView() {
         txv_pay_way.text = payWay
         txv_pay_money.text =
-            "${TextUtil.formatMoney(ArithUtil.toMoneyFormat(payMoney.toDouble()).toDouble())} ${getString(R.string.currency)}"
+            "${TextUtil.formatMoney(ArithUtil.toMoneyFormat(payMoney.toDouble()).toDouble())} ${sConfigData?.systemCurrency}"
     }
 
     fun initButton() {

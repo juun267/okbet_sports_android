@@ -1,9 +1,12 @@
 package org.cxct.sportlottery.ui.game.home.recommend
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.moshi.*
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
@@ -30,8 +33,9 @@ class VpRecommendAdapter(
     val dataList: List<OddBean>,
     private val isOutright: Int?,
     val matchOdd: MatchOdd,
-    val playCateMappingList: List<PlayCateMapItem>?,
-    val dynamicMarkets: Map<String, DynamicMarket>?
+    val dynamicMarkets: Map<String, DynamicMarket>?,
+    var playCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
+    var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class ItemType {
@@ -45,12 +49,7 @@ class VpRecommendAdapter(
 
     private val mOddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
-            override fun refreshOddButton(odd: Odd) {
-                dataList.forEachIndexed { index, oddBean ->
-                    if (oddBean.oddList.find { it?.id == odd.id } != null)
-                        notifyItemChanged(index)
-                }
-            }
+            override fun refreshOddButton(odd: Odd) { }
         }
     }
 
@@ -87,11 +86,11 @@ class VpRecommendAdapter(
             when (holder) {
                 is ViewHolderHdpOu -> {
                     val data = dataList.filterPlayCateSpanned(sportCode)[position]
-                    holder.bind(data)
+                    holder.bind(data, playCateNameMap)
                 }
                 is ViewHolderEPS -> {
                     val data = dataList.filterPlayCateSpanned(sportCode)[position]
-                    holder.bind(data)
+                    holder.bind(data, playCateNameMap)
                 }
                 is ViewHolderRecOutright -> {
                     val data = dataList.first()
@@ -108,15 +107,34 @@ class VpRecommendAdapter(
     private fun List<OddBean>.filterPlayCateSpanned(gameType: String?): List<OddBean> {
         val spannedList = mutableListOf<OddBean>()
         this.forEach { oddBean ->
-            val playCateMapItem = playCateMappingList?.find {
-                it.gameType == gameType && it.playCateCode == oddBean.playTypeCode
-            }
+            val playCateNum =
+                when { //根據IOS給的規則判斷顯示數量
+                    oddBean.playTypeCode.contains(PlayCate.HDP.value) || oddBean.playTypeCode.contains(PlayCate.OU.value) || oddBean.playTypeCode.contains(
+                        PlayCate.CORNER_OU.value
+                    ) -> 2
 
+                    oddBean.playTypeCode.contains(PlayCate.SINGLE.value) || oddBean.playTypeCode.contains(PlayCate.NGOAL.value) -> 3
+
+                    else -> 3
+                }
             spannedList.add(OddBean(oddBean.playTypeCode, oddBean.oddList.filterIndexed { index, _ ->
-                index < playCateMapItem?.playCateNum ?: 0
-            }))
+                index < playCateNum
+            }.toMutableList()))
         }
         return spannedList
+    }
+
+    fun notifySelectedOddsChanged(selectedOdds: MutableList<String>) {
+        dataList.forEach {
+            it.oddList.forEach{ odd ->
+                odd?.id?.let { id ->
+                    odd.isSelected = selectedOdds.contains(id)
+                }
+            }
+        }
+        Handler(Looper.getMainLooper()).post {
+            notifyDataSetChanged()
+        }
     }
 
     inner class ViewHolderHdpOu(
@@ -124,24 +142,20 @@ class VpRecommendAdapter(
         override val oddStateChangeListener: OddStateChangeListener = mOddStateRefreshListener
     ) : OddStateViewHolder(itemView) {
 
-        fun bind(data: OddBean) {
+        fun bind(data: OddBean, playCateNameMap: MutableMap<String?, Map<String?, String?>?>?) {
             when (data.playTypeCode) {
                 PlayCate.EPS.value -> {
                     itemView.apply {
-                        tv_play_type_eps.text = matchOdd.playCateMappingList?.find {
-                            it.gameType == sportCode && it.playCateCode == data.playTypeCode
-                        }?.getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
+
+                        tv_play_type_eps.text = playCateNameMap?.get(data.playTypeCode)?.get(LanguageManager.getSelectLanguage(context).key)
 
                         setupOddsButton(btn_odd_eps, data.playTypeCode, data.oddList[0])
                     }
                 }
                 else -> {
                     itemView.apply {
-                        val playTypeStr = matchOdd.playCateMappingList?.find {
-                            it.gameType == sportCode && it.playCateCode == data.playTypeCode
-                        }?.getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
 
-                        tv_play_type.text = playTypeStr
+                        tv_play_type.text = playCateNameMap?.get(data.playTypeCode)?.get(LanguageManager.getSelectLanguage(context).key)
 
                         if (data.oddList.isNotEmpty()) {
                             odd_btn_home.visibility = View.VISIBLE
@@ -170,16 +184,19 @@ class VpRecommendAdapter(
         }
 
         private fun setupOddsButton(oddsButton: OddsButton, playCateCode: String, odd: Odd?) {
+
             oddsButton.apply homeButtonSettings@{
                 setupOdd(odd, oddsType)
                 this@ViewHolderHdpOu.setupOddState(oddsButton, odd)
-                setOnClickListener {
-                    val playCateName = itemView.tv_play_type.text.toString()
+                odd?.let {
+                    this.isSelected = it.isSelected ?: false
 
-                    odd?.let {
+                    setOnClickListener {
+                        val playCateName = itemView.tv_play_type.text.toString()
+
                         onClickOddListener?.onClickBet(matchOdd.apply {
                             this.matchInfo?.gameType = sportCode
-                        }, odd, playCateCode, playCateName)
+                        }, odd, playCateCode, playCateName ,betPlayCateNameMap)
                     }
                 }
             }
@@ -193,125 +210,53 @@ class VpRecommendAdapter(
     ) : OddStateViewHolder(itemView) {
 
         fun bind(data: OddBean, dynamicMarkets: Map<String, DynamicMarket>?) {
+
             itemView.apply {
-                tv_play_type.text =
+                tv_play_type_champion.text =
                     dynamicMarkets?.get(data.playTypeCode)?.getTranslate(itemView.context)
 
-                rec_champ_btn_pre1.apply {
-                    if (data.oddList.isEmpty()) {
-                        visibility = View.GONE
-                        return
-                    }
-
-                    setupOdd(data.oddList.getOrNull(0), oddsType)
-
-                    tv_name.apply {
-                        text = data.oddList.getOrNull(0)?.getSpreadName(context)
-                        visibility = View.VISIBLE
-                    }
-
-                    tv_spread.text = ""
-
-                    this@ViewHolderRecOutright.setupOddState(this, data.oddList.getOrNull(0))
-
-                    isSelected = data.oddList.getOrNull(0)?.isSelected ?: false
-
-                    setOnClickListener {
-                        data.oddList.getOrNull(0)?.let { odd ->
-                            onClickOutrightOddListener?.onClickBet(matchOdd.apply {
-                                this.matchInfo?.gameType = sportCode
-                            }, odd, data.playTypeCode)
-                        }
-                    }
-                }
-
-                rec_champ_btn_pre2.apply {
-                    if (data.oddList.size < 2) {
-                        visibility = View.GONE
-                        return
-                    }
-
-                    setupOdd(data.oddList.getOrNull(1), oddsType)
-
-                    tv_name.apply {
-                        text = data.oddList.getOrNull(1)?.getSpreadName(context)
-                        visibility = View.VISIBLE
-                    }
-
-                    tv_spread.text = ""
-
-                    this@ViewHolderRecOutright.setupOddState(this, data.oddList.getOrNull(1))
-
-                    isSelected = data.oddList.getOrNull(1)?.isSelected ?: false
-
-                    setOnClickListener {
-                        data.oddList.getOrNull(1)?.let { odd ->
-                            onClickOutrightOddListener?.onClickBet(matchOdd.apply {
-                                this.matchInfo?.gameType = sportCode
-                            }, odd, data.playTypeCode)
-                        }
-                    }
-                }
-
-                rec_champ_btn_pre3.apply {
-                    if (data.oddList.size < 3) {
-                        visibility = View.GONE
-                        return
-                    }
-
-                    setupOdd(data.oddList.getOrNull(2), oddsType)
-
-                    tv_name.apply {
-                        text = data.oddList.getOrNull(2)?.getSpreadName(context)
-                        visibility = View.VISIBLE
-                    }
-
-                    tv_spread.text = ""
-
-                    this@ViewHolderRecOutright.setupOddState(this, data.oddList.getOrNull(2))
-
-                    isSelected = data.oddList.getOrNull(2)?.isSelected ?: false
-
-                    setOnClickListener {
-                        data.oddList.getOrNull(2)?.let { odd ->
-                            onClickOutrightOddListener?.onClickBet(matchOdd.apply {
-                                this.matchInfo?.gameType = sportCode
-                            }, odd, data.playTypeCode)
-                        }
-                    }
-                }
-
-                rec_champ_btn_pre4.apply {
-                    if (data.oddList.size < 4) {
-                        visibility = View.GONE
-                        return
-                    }
-
-                    setupOdd(data.oddList.getOrNull(3), oddsType)
-
-                    tv_name.apply {
-                        text = data.oddList.getOrNull(3)?.getSpreadName(context)
-                        visibility = View.VISIBLE
-                    }
-
-                    tv_spread.text = ""
-
-                    this@ViewHolderRecOutright.setupOddState(this, data.oddList.getOrNull(3))
-
-                    isSelected = data.oddList.getOrNull(3)?.isSelected ?: false
-
-                    setOnClickListener {
-                        data.oddList.getOrNull(3)?.let { odd ->
-                            onClickOutrightOddListener?.onClickBet(matchOdd.apply {
-                                this.matchInfo?.gameType = sportCode
-                            }, odd, data.playTypeCode)
-                        }
-                    }
-                }
+                val oddList = data.oddList
+                setupOddsButton(rec_champ_btn_pre1, data.playTypeCode, oddList, 0)
+                setupOddsButton(rec_champ_btn_pre2, data.playTypeCode, oddList, 1)
+                setupOddsButton(rec_champ_btn_pre3, data.playTypeCode, oddList, 2)
+                setupOddsButton(rec_champ_btn_pre4, data.playTypeCode, oddList, 3)
+                setupOddsButton(rec_champ_btn_pre5, data.playTypeCode, oddList, 4)
 
                 rec_champ_more.apply {
+                    isVisible = data.oddList.size > 5
                     setOnClickListener {
                         onClickMoreListener?.onClickMore(data.playTypeCode, matchOdd)
+                    }
+                }
+            }
+        }
+
+        private fun setupOddsButton(oddsButton: OddsButton, playCateCode:String, oddList: List<Odd?>, index: Int) {
+            oddsButton.apply {
+                val odds = oddList.getOrNull(index)
+                if (oddList.size <= index || odds == null) {
+                    visibility = View.GONE
+                    return
+                }
+                odds.let { odd ->
+                    setupOdd(odd, oddsType)
+
+                    tv_name.apply {
+                        text = odd.getSpreadName(context)
+                        visibility = View.VISIBLE
+                    }
+
+                    tv_spread.text = ""
+                    this@ViewHolderRecOutright.setupOddState(this, odd)
+
+                    odd.id?.let { id ->
+                        this.isSelected = odd.isSelected ?: false
+                    }
+
+                    setOnClickListener {
+                        onClickOutrightOddListener?.onClickBet(matchOdd.apply {
+                            this.matchInfo?.gameType = sportCode
+                        }, odd, PlayCate.UNCHECK.value, playCateCode, betPlayCateNameMap)
                     }
                 }
             }
@@ -321,6 +266,9 @@ class VpRecommendAdapter(
             return when (LanguageManager.getSelectLanguage(context)) {
                 LanguageManager.Language.ZH -> {
                     this.zh
+                }
+                LanguageManager.Language.VI -> {
+                    this.vi
                 }
                 else -> {
                     this.en
@@ -333,6 +281,9 @@ class VpRecommendAdapter(
                 LanguageManager.Language.ZH -> {
                     this.nameMap?.get("zh")
                 }
+                LanguageManager.Language.VI -> {
+                    this.nameMap?.get("vi")
+                }
                 else -> this.nameMap?.get("en")
             }
         }
@@ -343,29 +294,32 @@ class VpRecommendAdapter(
         override val oddStateChangeListener: OddStateChangeListener = mOddStateRefreshListener
     ) : OddStateViewHolder(itemView) {
 
-        fun bind(data: OddBean) {
+        fun bind(data: OddBean, playCateNameMap: MutableMap<String?, Map<String?, String?>?>?) {
             itemView.apply {
-                tv_play_type_eps.text = matchOdd.playCateMappingList?.find {
-                    it.gameType == sportCode && it.playCateCode == data.playTypeCode
-                }?.getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
+                tv_play_type_eps.text = playCateNameMap?.get(data.playTypeCode)?.get(LanguageManager.getSelectLanguage(context).key)
 
-                tv_title_eps.text = data.oddList.getOrNull(0)?.name
-
-                setupOddForEPS(btn_odd_eps, data.oddList[0], oddsType)
+                val odd = data.oddList.getOrNull(0)
+                tv_title_eps.text = odd?.name
+                setupOddForEPS(btn_odd_eps, odd, oddsType)
             }
         }
 
         private fun setupOddForEPS(oddsButton: OddsButton, odd: Odd?, oddsType: OddsType) {
             oddsButton.apply {
                 setupOddForEPS(odd, oddsType)
-                setupOddState(oddsButton, odd)
-                setOnClickListener {
-                    val playCateName = itemView.tv_play_type_eps.text.toString()
+                setupOddState(this, odd)
 
-                    odd?.let {
+                odd?.let {
+                    odd.id?.let { id ->
+                        this.isSelected = it.isSelected ?: false
+                    }
+
+                    setOnClickListener {
+                        val playCateName = itemView.tv_play_type_eps.text.toString()
+
                         onClickOddListener?.onClickBet(matchOdd.apply {
                             this.matchInfo?.gameType = sportCode
-                        }, odd, playCateName)
+                        }, odd, PlayCate.UNCHECK.value, playCateName, betPlayCateNameMap)
                     }
                 }
             }

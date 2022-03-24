@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite1"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_14"
+    tools:context=".ui.feedback.suggest.FeedbackSubmitFragment">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/margin_4"
+        app:cardElevation="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_14"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:text="@string/self_limit_per_bet_limit"
+                android:textColor="@color/colorBlackLight"
+                android:textSize="@dimen/textSize13sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_1"
+                android:background="@color/colorWhite6" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_14"
+                android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginRight="@dimen/margin_14"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:text="@string/self_limit_per_bet_limit_content"
+                android:textColor="@color/colorBlackLight"
+                android:textSize="@dimen/textSize12sp" />
+
+            <LinearLayout
+                android:id="@+id/llImportant"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_40"
+                android:layout_marginLeft="@dimen/margin_14"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginRight="@dimen/margin_14"
+                android:layout_marginBottom="@dimen/margin_15"
+                android:background="@drawable/bg_rectangle_white_4dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_14"
+                    android:layout_weight="1"
+                    android:text="@string/self_limit_impotent"
+                    android:textColor="@color/colorBlackLight"
+                    android:textSize="@dimen/textSize13sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="@dimen/margin_16"
+                    android:layout_height="@dimen/margin_16"
+                    android:layout_marginRight="@dimen/margin_14"
+                    android:src="@drawable/ic_blue_info" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_10"
+        app:cardCornerRadius="@dimen/margin_4"
+        app:cardElevation="0dp">
+
+        <LinearLayout
+            android:id="@+id/llSelfLimit"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_40"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/effect_edittext_bg"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:text="@string/self_limit_per_bet_limit_highest"
+                android:textColor="@color/colorBlackLight"
+                android:textSize="@dimen/textSize13sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin_36"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:background="@color/colorWhite6" />
+
+            <EditText
+                android:id="@+id/etMount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin_8"
+                android:layout_weight="1"
+                android:backgroundTint="@android:color/white"
+                android:hint="@string/self_limit_per_bet_limit_input_highest"
+                android:inputType="number"
+                android:textSize="@dimen/textSize12sp" />
+
+            <TextView
+                android:id="@+id/btnConfirm"
+                android:layout_width="76dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/margin_6"
+                android:layout_marginRight="@dimen/margin_14"
+                android:layout_marginBottom="@dimen/margin_6"
+                android:background="@drawable/enable_blue_gray_radius_4_button"
+                android:enabled="false"
+                android:gravity="center"
+                android:text="@string/btn_confirm"
+                android:textColor="@color/enable_blue_light_gray"
+                android:textSize="@dimen/textSize12sp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tvError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:text="@string/self_limit_error"
+        android:textColor="@color/colorRed"
+        android:textSize="@dimen/textSize12sp"/>
+
+
+    <TextView
+        android:id="@+id/tvPerBetLimit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:text="@string/self_limit_per_bet_limit_user"
+        android:textColor="@color/colorRed"
+        android:textSize="@dimen/textSize12sp" />
+
+    <TextView
+        android:id="@+id/tvLimit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:text="@string/self_limit_per_bet_limit_user_limit"
+        android:textColor="@color/colorRed"
+        android:textSize="@dimen/textSize12sp" />
+
+</LinearLayout>

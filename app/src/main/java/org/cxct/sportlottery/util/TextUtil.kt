@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.util
 
+import android.content.Context
+import org.cxct.sportlottery.R
 import java.math.RoundingMode
 
 /**
@@ -42,6 +44,10 @@ object TextUtil : DecimalFormatUtil() {
         return doNumberFormat(any, "###,###,###,###")
     }
 
+    fun formatBetQuotaMoney(any: Any): String {
+        return doNumberFormat(any, "###,###,###,###0.000")
+    }
+
     fun formatForVipRebates(any: Any): String {
         return doNumberFormat(any, "#.# %") { decimalFormat -> decimalFormat.roundingMode = RoundingMode.HALF_UP }
     }
@@ -51,12 +57,12 @@ object TextUtil : DecimalFormatUtil() {
     }
 
     //TODO 應以resource代入, 配合多國語
-    fun replaceParlayByC(str: String): String {
-        return str.replace("C", "串")
+    fun replaceCByParlay(context:Context, str: String): String {
+        return str.replace(" ${context.getString(R.string.conspire)} ", "C")
     }
 
-    fun replaceCByParlay(str: String): String {
-        return str.replace("串", "C")
+    fun getParlayShowName(context:Context, parlayType: String?): String? {
+        return parlayType?.replace("C", " ${context.getString(R.string.conspire)} ")
     }
 
     fun maskFullName(fullName: String): String {

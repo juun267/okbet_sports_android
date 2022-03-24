@@ -46,7 +46,10 @@ object ParlayLimitUtil {
             // 香港盤 可以 odds-num
             val hkOdds = getTotalHkOdds(oddsList, parlayCom.getComList())
             // 投注限額 設定值/odds
-            val maxPayLimit = max!!.divide(odds, 0, RoundingMode.DOWN)
+            //val maxPayLimit = max!!.divide(hkOdds, 0, RoundingMode.DOWN)
+
+            val maxPayLimit = (max!!/hkOdds).toInt().toBigDecimal()
+
             parlayBetLimit.odds = odds
             parlayBetLimit.hdOdds = hkOdds
             parlayBetLimit.max = maxPayLimit
@@ -79,7 +82,7 @@ object ParlayLimitUtil {
     }
 
     private fun getTotalHkOdds(oddsList: List<BigDecimal?>, comList: List<IntArray>): BigDecimal {
-        var totalOdds = BigDecimal.ZERO
+        var totalOdds = BigDecimal.ONE
         for (oddsIndexArray in comList) {
             var odd = BigDecimal.ONE
             for (index in oddsIndexArray) {
@@ -89,6 +92,7 @@ object ParlayLimitUtil {
         }
         return totalOdds
     }
+
 
     /**
      * 取得組合(類型、數量、組合列表)

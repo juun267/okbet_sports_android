@@ -38,7 +38,7 @@
                 android:text="@{matchOdd.leagueName}"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/textSize14sp"
-                app:autoSizeMaxTextSize="@dimen/textSize12sp"
+                app:autoSizeMaxTextSize="@dimen/textSize14sp"
                 app:autoSizeMinTextSize="@dimen/textSize8sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -83,23 +83,25 @@
             android:minHeight="48dp"
             android:orientation="horizontal"
             android:paddingHorizontal="16dp"
-            android:paddingVertical="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="4dp"
             tools:ignore="SpUsage">
 
 
             <TextView
-                android:id="@+id/text_view"
+                android:id="@+id/tv_game_type_play_cate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@{matchOdd.leagueName}"
                 android:textColor="@color/colorBlackLight"
-                android:textSize="@dimen/textSize12sp"
+                android:textSize="@dimen/textSize14sp"
                 android:textStyle="bold"
                 app:autoSizeMaxTextSize="@dimen/textSize12sp"
                 app:autoSizeMinTextSize="@dimen/textSize8sp"
+                app:layout_constraintEnd_toStartOf="@+id/tv_count"
+                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constrainedWidth="true"
                 tools:text="篮球 让球" />
 
 
@@ -112,105 +114,49 @@
                 android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/text_view"
+                app:layout_constraintTop_toTopOf="@+id/tv_game_type_play_cate"
                 tools:text="113 - 116" />
 
             <TextView
-                android:id="@+id/tv_play_name"
+                android:id="@+id/tv_team_names"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@{matchOdd.homeName}"
-                android:textColor="@color/colorGray"
-                android:textSize="@dimen/textSize12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:text="菲尼克斯太阳" />
-
-            <TextView
-                android:id="@+id/tv_score"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="6dp"
-                android:gravity="center"
-                android:text="@{matchOdd.spread}"
-                android:textColor="@color/colorRedDark"
-                android:textSize="@dimen/textSize12sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_play_name"
-                app:layout_constraintStart_toEndOf="@id/tv_play_name"
-                app:layout_constraintTop_toTopOf="@+id/tv_play_name"
-                tools:text="5.5" />
-
-            <TextView
-                android:id="@+id/tv_at"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
                 android:layout_marginVertical="4dp"
-                android:gravity="center"
-                android:text="@string/at"
                 android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_play_name"
-                app:layout_constraintStart_toEndOf="@id/tv_score"
-                app:layout_constraintTop_toTopOf="@+id/tv_play_name" />
-
-            <TextView
-                android:id="@+id/tv_odd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
-                android:layout_marginVertical="4dp"
-                android:gravity="center"
-                android:textColor="@color/colorRedDark"
-                android:textSize="@dimen/textSize12sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_play_name"
-                app:layout_constraintStart_toEndOf="@id/tv_at"
-                app:layout_constraintTop_toTopOf="@+id/tv_play_name"
-                tools:text="1.860" />
-
-            <TextView
-                android:id="@+id/tv_team_home"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="5dp"
-                android:gravity="center"
-                android:text="@{matchOdd.homeName}"
-                android:textColor="@color/colorGray"
-                android:textSize="@dimen/textSize12sp"
-                app:layout_constraintBottom_toTopOf="@+id/tv_play_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_view"
-                tools:text="菲尼克斯太阳" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_game_type_play_cate"
+                tools:text="菲尼克斯太阳 v 菲尼克斯太阳" />
 
+            <!--playName spread @ odd-->
             <TextView
-                android:id="@+id/text_view_v"
+                android:id="@+id/play_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="6dp"
-                android:gravity="center"
-                android:text="@string/verse"
+                android:layout_marginVertical="4dp"
                 android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_team_home"
-                app:layout_constraintStart_toEndOf="@id/tv_team_home"
-                app:layout_constraintTop_toTopOf="@+id/tv_team_home" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_team_names"
+                tools:text="密尔沃基雄鹿 6.5 \@ 1.860" />
 
             <TextView
-                android:id="@+id/tv_team_homeway"
+                android:id="@+id/tv_start_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="6dp"
-                android:gravity="center"
-                android:text="@{matchOdd.awayName}"
+                android:layout_marginVertical="4dp"
                 android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_team_home"
-                app:layout_constraintStart_toEndOf="@id/text_view_v"
-                app:layout_constraintTop_toTopOf="@+id/tv_team_home"
-                tools:text="菲尼克斯太阳" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/play_content"
+                tools:text="2022-02-25 10:42" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -221,7 +167,7 @@
             android:minHeight="48dp"
             android:orientation="horizontal"
             android:paddingHorizontal="16dp"
-            android:paddingVertical="10dp"
+            android:paddingBottom="10dp"
             tools:ignore="SpUsage">
 
             <TextView
@@ -287,10 +233,10 @@
                 android:textColor="@color/colorRed"
                 android:textSize="@dimen/textSize12sp"
                 app:betReceiptStatus="@{row.status}"
-                app:statusVisibility="@{row.status}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_bet"
-                tools:text="取消注單"
+                app:statusVisibility="@{row.status}"
+                tools:text="下注失败"
                 tools:visibility="gone" />
 
             <TextView

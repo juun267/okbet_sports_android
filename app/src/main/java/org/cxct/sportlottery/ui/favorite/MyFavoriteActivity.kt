@@ -17,9 +17,9 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
-import org.cxct.sportlottery.ui.bet.list.BetInfoCarDialog
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
+import org.cxct.sportlottery.ui.game.betList.FastBetFragment
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
@@ -59,7 +59,7 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
         iv_language.setImageResource(LanguageManager.getLanguageFlag(this))
 
         //頭像 當 側邊欄 開/關
-        iv_head.setOnClickListener {
+        iv_menu.setOnClickListener {
             if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
             else {
                 drawer_layout.openDrawer(nav_right)
@@ -80,7 +80,9 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
         }
 
         iv_language.setOnClickListener {
-            ChangeLanguageDialog().show(supportFragmentManager, null)
+            ChangeLanguageDialog(ChangeLanguageDialog.ClearBetListListener{
+                viewModel.betInfoRepository.clear()
+            }).show(supportFragmentManager, null)
         }
     }
 
@@ -188,6 +190,21 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
             .commit()
     }
 
+    private fun showFastBetFragment(){
+        val fastBetFragment = FastBetFragment()
+
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.anim.push_bottom_to_top_enter,
+                R.anim.pop_bottom_to_top_exit,
+                R.anim.push_bottom_to_top_enter,
+                R.anim.pop_bottom_to_top_exit
+            )
+            .add(R.id.fl_bet_list, fastBetFragment)
+            .addToBackStack(BetListFragment::class.java.simpleName)
+            .commit()
+    }
+
     override fun updateBetListCount(num: Int) {
         sport_bottom_navigation.setBetCount(num)
     }
@@ -208,30 +225,35 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
     }
 
     private fun initObserver() {
-        viewModel.showBetUpperLimit.observe(this, {
+        viewModel.showBetUpperLimit.observe(this) {
             if (it.getContentIfNotHandled() == true)
                 snackBarBetUpperLimitNotify.apply {
                     setAnchorView(R.id.my_favorite_bottom_navigation)
                     show()
                 }
-        })
+        }
 
-        viewModel.userInfo.observe(this, {
+        viewModel.userInfo.observe(this) {
             updateAvatar(it?.iconUrl)
-        })
+        }
 
-        viewModel.showBetInfoSingle.observe(this, {
+        viewModel.showBetInfoSingle.observe(this) {
             it?.getContentIfNotHandled()?.let {
-                BetInfoCarDialog().show(
-                    supportFragmentManager,
-                    BetInfoCarDialog::class.java.simpleName
-                )
+                if(viewModel.getIsFastBetOpened()){
+//                    BetInfoCarDialog().show(
+//                        supportFragmentManager,
+//                        BetInfoCarDialog::class.java.simpleName
+//                    )
+                    showFastBetFragment()
+                }else{
+                    showBetListPage()
+                }
             }
-        })
+        }
 
-        viewModel.nowTransNum.observe(this, {
+        viewModel.nowTransNum.observe(this) {
             navigation_transaction_status.trans_number.text = it.toString()
-        })
+        }
     }
 
     private fun initServiceButton() {
@@ -248,16 +270,20 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
     override fun updateUiWithLogin(isLogin: Boolean) {
         if (isLogin) {
             btn_login.visibility = View.GONE
+            iv_menu.visibility =View.VISIBLE
+            iv_notice.visibility =View.VISIBLE
             btn_register.visibility = View.GONE
             toolbar_divider.visibility = View.GONE
-            iv_head.visibility = View.VISIBLE
-            tv_odds_type.visibility = View.VISIBLE
+            iv_head.visibility = View.GONE
+            tv_odds_type.visibility = View.GONE
         } else {
             btn_login.visibility = View.VISIBLE
             btn_register.visibility = View.VISIBLE
             toolbar_divider.visibility = View.VISIBLE
             iv_head.visibility = View.GONE
             tv_odds_type.visibility = View.GONE
+            iv_menu.visibility =View.GONE
+            iv_notice.visibility =View.GONE
         }
     }
 

@@ -75,7 +75,6 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
 
         subscribeChannelHall(
             args.matchOdd.matchInfo?.gameType,
-            PlayCate.OUTRIGHT.value,
             args.matchOdd.matchInfo?.id
         )
     }
@@ -91,29 +90,35 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
         outright_more_type.text = args.matchOdd.dynamicMarkets[oddsKey]?.getTranslate()
 
         outright_more_more.apply {
-            visibility = if (args.matchOdd.oddsMap.size > 1) {
+            visibility = if (args.matchOdd.oddsMap?.size ?: 0 > 1) {
                 View.VISIBLE
             } else {
                 View.GONE
             }
 
             setOnClickListener {
-                showBottomSheetDialog(
-                    getString(R.string.bottom_sheet_title_play_type),
-                    args.matchOdd.oddsMap.keys.map {
-                        StatusSheetData(it, args.matchOdd.dynamicMarkets[it]?.getTranslate())
-                    },
-                    StatusSheetData(
-                        oddsKey,
-                        args.matchOdd.dynamicMarkets[oddsKey]?.getTranslate()
-                    ),
-                    StatusSheetAdapter.ItemCheckedListener { _, data ->
-                        (activity as BaseActivity<*>).bottomSheet.dismiss()
+                args.matchOdd.oddsMap?.keys?.let { it1 ->
+                    showBottomSheetDialog(
+                        getString(R.string.bottom_sheet_title_play_type),
+                        it1.mapNotNull {
+                            var dynamicMarkets = args.matchOdd.dynamicMarkets[it]
+                            if (dynamicMarkets != null) StatusSheetData(
+                                it,
+                                args.matchOdd.dynamicMarkets[it]?.getTranslate()
+                            ) else null
+                        },
+                        StatusSheetData(
+                            oddsKey,
+                            args.matchOdd.dynamicMarkets[oddsKey]?.getTranslate()
+                        ),
+                        StatusSheetAdapter.ItemCheckedListener { _, data ->
+                            (activity as BaseActivity<*>).bottomSheet.dismiss()
 
-                        setupOutrightType(data.code)
-                        setupOutrightOddList(data.code)
-                    }
-                )
+                            setupOutrightType(data.code)
+                            setupOutrightOddList(data.code)
+                        }
+                    )
+                }
             }
         }
     }
@@ -121,7 +126,7 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
     private fun setupOutrightOddList(oddsKey: String?) {
         outright_more_odd_list.apply {
             adapter = outrightOddAdapter.apply {
-                data = args.matchOdd.oddsMap[oddsKey] to args.matchOdd
+                data = args.matchOdd.oddsMap?.get(oddsKey) to args.matchOdd
             }
         }
     }
@@ -161,7 +166,7 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
                             val oddsType = outrightOddAdapter.oddsType
 
                             oddTypeSocketMap.forEach { oddTypeSocketMapEntry ->
-                                val oddSocket = oddTypeSocketMapEntry.value.find { oddSocket ->
+                                val oddSocket = oddTypeSocketMapEntry.value?.find { oddSocket ->
                                     oddSocket?.id == odd.id
                                 }
 
@@ -257,7 +262,6 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
             unSubscribeChannelHallAll()
             subscribeChannelHall(
                 args.matchOdd.matchInfo?.gameType,
-                PlayCate.OUTRIGHT.value,
                 args.matchOdd.matchInfo?.id
             )
         })
@@ -293,7 +297,7 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
         this.odds?.let { oddTypeSocketMap ->
             oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
-                oddTypeSocketMapEntry.value.onEach { odd ->
+                oddTypeSocketMapEntry.value?.onEach { odd ->
                     odd?.isSelected =
                         viewModel.betInfoList.value?.peekContent()?.any { betInfoListData ->
                             betInfoListData.matchOdd.oddsId == odd?.id

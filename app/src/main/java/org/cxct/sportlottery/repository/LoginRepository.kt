@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.cxct.sportlottery.db.dao.UserInfoDao
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
@@ -17,6 +17,7 @@ import org.cxct.sportlottery.network.index.checktoken.CheckTokenResult
 import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
+import org.cxct.sportlottery.network.index.login.ValidateLoginDeviceSmsRequest
 import org.cxct.sportlottery.network.index.login_for_guest.LoginForGuestRequest
 import org.cxct.sportlottery.network.index.logout.LogoutRequest
 import org.cxct.sportlottery.network.index.logout.LogoutResult
@@ -40,7 +41,7 @@ const val KEY_USER_ID = "user_id"
 const val KEY_USER_LEVEL_ID = "user_Level_Id"
 
 
-class LoginRepository(private val androidContext: Context, private val userInfoDao: UserInfoDao) {
+class LoginRepository(private val androidContext: Context) {
     private val sharedPref: SharedPreferences by lazy {
         androidContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
@@ -132,7 +133,7 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
         }
 
     var sOddsType
-        get() = sharedPref.getString(KEY_ODDS_TYPE, OddsType.EU.code)
+        get() = sharedPref.getString(KEY_ODDS_TYPE, OddsType.HK.code)
         set(value) {
             with(sharedPref.edit()) {
                 putString(KEY_ODDS_TYPE, value)
@@ -174,6 +175,14 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
 
         return loginResponse
     }
+
+    suspend fun sendLoginDeviceSms(): Response<LogoutResult> {
+        return OneBoSportApi.indexService.sendLoginDeviceSms()
+    }
+    suspend fun validateLoginDeviceSms(validateLoginDeviceSmsRequest: ValidateLoginDeviceSmsRequest): Response<LogoutResult> {
+        return OneBoSportApi.indexService.validateLoginDeviceSms(validateLoginDeviceSmsRequest)
+    }
+
 
     suspend fun loginForGuest(): Response<LoginResult> {
 
@@ -258,7 +267,8 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
     suspend fun logout(): Response<LogoutResult> {
         _isLogin.value = false
         _isCreditAccount.value = false
-
+        val emptyList = mutableListOf<String>()
+        MultiLanguagesApplication.saveSearchHistory(emptyList)
         return OneBoSportApi.indexService.logout(LogoutRequest()).apply {
             clear()
         }
@@ -267,7 +277,7 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
         _isLogin.postValue(loginData != null)
         _isCreditAccount.postValue(loginData?.creditAccount == 1)
 
-        GameConfigManager.maxBetMoney = loginData?.maxBetMoney ?: 9999
+        GameConfigManager.maxBetMoney = loginData?.maxBetMoney ?: 9999999
         GameConfigManager.maxCpBetMoney = loginData?.maxCpBetMoney ?: 9999
         GameConfigManager.maxParlayBetMoney = loginData?.maxParlayBetMoney ?: 9999
 
@@ -294,19 +304,20 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
     @WorkerThread
     private suspend fun updateUserInfo(loginData: LoginData?) {
         loginData?.let {
-            val userInfo = transform(loginData)
+            val userInfo = transform(it)
+            MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
+//            withContext(Dispatchers.IO) {
+//                userInfoDao.upsert(userInfo)
+//            }
 
-            withContext(Dispatchers.IO) {
-                userInfoDao.upsert(userInfo)
-            }
         }
     }
 
     @WorkerThread
     private suspend fun clearUserInfo() {
         withContext(Dispatchers.IO) {
-            userInfoDao.deleteAll()
-            GameConfigManager.maxBetMoney = 9999
+            MultiLanguagesApplication.getInstance()?.saveUserInfo(null)
+            GameConfigManager.maxBetMoney = 9999999
             GameConfigManager.maxCpBetMoney = 9999
             GameConfigManager.maxParlayBetMoney = 9999
         }
@@ -327,6 +338,7 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
             userRebateList = loginData.userRebateList,
             creditAccount = loginData.creditAccount,
             creditStatus = loginData.creditStatus,
-            discount = loginData.discount
+            discount = loginData.discount,
+            verified = loginData.verified,
         )
 }

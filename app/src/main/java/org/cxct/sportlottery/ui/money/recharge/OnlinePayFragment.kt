@@ -14,6 +14,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.OnlineType
 import org.cxct.sportlottery.network.money.config.RechCfg
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager
@@ -84,7 +85,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         } else {
             cv_pay_bank.visibility = View.VISIBLE
         }
-
+        tv_currency_type.text = sConfigData?.systemCurrency
         tv_pay_gap_subtitle.text =
             if (mMoneyPayWay?.onlineType == OnlineType.WY.type) getString(R.string.title_pay_channel)
             else getString(R.string.title_pay_gap)
@@ -117,19 +118,20 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             bankBottomSheet.show()
         }
     }
-//TODO Bill 等UI出圖
+
     fun setArguments(moneyPayWay: MoneyPayWayData?): OnlinePayFragment {
         mMoneyPayWay = moneyPayWay
         typeIcon = when (mMoneyPayWay?.onlineType) {
             OnlineType.WY.type  -> R.drawable.ic_online_pay_type
             OnlineType.ZFB.type  -> R.drawable.ic_alipay_type
             OnlineType.WX.type -> R.drawable.ic_wechat_pay_type
-            OnlineType.JUAN.type -> R.drawable.ic_juancash
-            OnlineType.DISPENSHIN.type -> R.drawable.ic_juancash
-            OnlineType.ONLINEBANK.type -> R.drawable.ic_juancash
-            OnlineType.GCASH.type -> R.drawable.ic_grab_pay_type
+            OnlineType.JUAN.type -> R.drawable.ic_juancash_type
+            OnlineType.DISPENSHIN.type -> R.drawable.ic_juancash_type
+            OnlineType.ONLINEBANK.type -> R.drawable.ic_bank_default//阿喵說照Ian回應用此圖
+            OnlineType.GCASH.type -> R.drawable.ic_g_cash_type
             OnlineType.GRABPAY.type -> R.drawable.ic_grab_pay_type
             OnlineType.PAYMAYA.type -> R.drawable.ic_pay_maya_type
+            OnlineType.PAYPAL.type -> R.drawable.ic_paypal_type
             else -> R.drawable.ic_online_pay_type
         }
         return this
@@ -202,7 +204,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     private fun getAmountLimitHint(): String {
         return String.format(
-            getString(R.string.edt_hint_deposit_money),
+            "${getString(R.string.edt_hint_deposit_money)} ${sConfigData?.systemCurrency}",
             TextUtil.formatBetQuota(mSelectRechCfgs?.minMoney?.toLong() ?: 0),
             TextUtil.formatBetQuota(mSelectRechCfgs?.maxMoney?.toLong() ?: 999999)
         )

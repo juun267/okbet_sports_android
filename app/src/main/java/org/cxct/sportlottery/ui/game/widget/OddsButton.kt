@@ -5,9 +5,12 @@ import android.content.Context
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
@@ -80,14 +83,16 @@ class OddsButton @JvmOverloads constructor(
 
     fun setupOdd(odd: Odd?, oddsType: OddsType, gameType: String? = null) {
         tv_name.apply {
-            val extInfoStr = odd?.extInfoMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.extInfo
+            val extInfoStr =
+                odd?.extInfoMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.extInfo
             text =
                 if (extInfoStr.isNullOrEmpty())
                     "${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
                 else
                     "$extInfoStr ${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
 
-            visibility = if (odd?.name.isNullOrEmpty()) View.GONE else View.VISIBLE
+            visibility =
+                if (odd?.name.isNullOrEmpty() || gameType == "disable") View.GONE else View.VISIBLE
         }
 
         tv_spread.apply {
@@ -98,15 +103,44 @@ class OddsButton @JvmOverloads constructor(
 
         tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
 
-        isSelected = odd?.isSelected ?: false
+        if (getOdds(odd, oddsType) < 0.0) {
+            tv_odds.setTextColor(
+                ContextCompat.getColorStateList(
+                    context,
+                    R.color.selector_button_odd_bottom_text_red
+                )
+            )
+        } else {
+            tv_odds.setTextColor(
+                ContextCompat.getColorStateList(
+                    context,
+                    R.color.selector_button_odd_bottom_text
+                )
+            )
+        }
 
-        betStatus =
-            if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
+        isSelected = odd?.isSelected ?: false
+        //[Martin]馬來盤＆印尼盤會有負數的賠率
+        //betStatus = if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
+        betStatus = if (odd == null) BetStatus.LOCKED.code else odd.status
+
     }
+
+    //主頁精選oddsButton的判斷
+    fun setupOddName4Home(name: String?, gameType: String? = null) {
+        tv_name.apply {
+            if (gameType?.contains("1X2") == true) {
+                isVisible = true
+                text = name
+            } else isVisible = false
+        }
+    }
+
 
     fun setupOddForEPS(odd: Odd?, oddsType: OddsType) {
         tv_name.apply {
-            text = odd?.extInfo?.toDoubleOrNull()?.let { TextUtil.formatForOdd(it) } ?: odd?.extInfo //低賠率會返回在extInfo
+            text = odd?.extInfo?.toDoubleOrNull()?.let { TextUtil.formatForOdd(it) }
+                ?: odd?.extInfo //低賠率會返回在extInfo
             paint?.flags = Paint.STRIKE_THRU_TEXT_FLAG or Paint.ANTI_ALIAS_FLAG //設置中間線
         }
 
@@ -122,10 +156,27 @@ class OddsButton @JvmOverloads constructor(
             text = TextUtil.formatForOdd(getOdds(odd, oddsType))
         }
 
-        isSelected = odd?.isSelected ?: false
+        if (getOdds(odd, oddsType) < 0.0) {
+            tv_odds.setTextColor(
+                ContextCompat.getColorStateList(
+                    context,
+                    R.color.selector_button_odd_bottom_text_red
+                )
+            )
+        } else {
+            tv_odds.setTextColor(
+                ContextCompat.getColorStateList(
+                    context,
+                    R.color.selector_button_odd_bottom_text_eps
+                )
+            )
+        }
 
-        betStatus =
-            if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
+        isSelected = odd?.isSelected ?: false
+        //[Martin]馬來盤＆印尼盤會有負數的賠率
+        //betStatus = if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
+        betStatus = if (odd == null) BetStatus.LOCKED.code else odd.status
+
     }
 
     //常駐顯示按鈕 依狀態隱藏鎖頭
@@ -182,7 +233,7 @@ class OddsButton @JvmOverloads constructor(
                         if (mFillet) R.drawable.bg_radius_4_button_unselected_red
                         else R.drawable.bg_radius_0_button_red
                     )
-
+                resources.getColor(R.color.colorRed)
                 isActivated = true
             }
             else -> {

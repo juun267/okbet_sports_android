@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.fragment_bet_receipt.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.TextUtil
@@ -24,7 +25,7 @@ import org.cxct.sportlottery.util.TextUtil
  */
 class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
-    val betStatusCancelledCode = 7
+    private val betStatusCancelledCode = 7
 
     private var betResultData: Receipt? = null
 
@@ -61,16 +62,17 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
     private fun initObserver() {
-        viewModel.userMoney.observe(viewLifecycleOwner, {
+        viewModel.userMoney.observe(viewLifecycleOwner) {
             it.let { money -> tv_balance.text = TextUtil.formatMoney(money ?: 0.0) }
-        })
+        }
 
-        viewModel.oddsType.observe(viewLifecycleOwner, {
+        viewModel.oddsType.observe(viewLifecycleOwner) {
             betReceiptDiffAdapter?.oddsType = it
-        })
+        }
     }
 
     private fun initView() {
+        tv_currency.text = sConfigData?.systemCurrency
         setupTotalValue()
 
         initButton()
@@ -94,9 +96,9 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         tv_all_bet_count.text = betCount.toString()
         (context ?: requireContext()).apply {
-            tv_total_bet_amount.text = "${betResultData?.totalStake} ${getString(R.string.currency)}"
+            tv_total_bet_amount.text = "${TextUtil.formatMoney(betResultData?.totalStake?: 0.0)} ${sConfigData?.systemCurrency}"
             tv_total_winnable_amount.text =
-                "${TextUtil.formatMoney(betResultData?.totalWinnable ?: 0.0)} ${getString(R.string.currency)}"
+                "${TextUtil.formatMoney(betResultData?.totalWinnable ?: 0.0)} ${sConfigData?.systemCurrency}"
         }
     }
 
@@ -109,14 +111,14 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private fun initRecyclerView() {
         rv_bet_receipt.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL).apply {
-                ContextCompat.getDrawable(
-                    context ?: requireContext(),
-                    R.drawable.divider_color_white8
-                )?.let {
-                    setDrawable(it)
-                }
-            })
+//            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL).apply {
+//                ContextCompat.getDrawable(
+//                    context ?: requireContext(),
+//                    R.drawable.divider_color_white8
+//                )?.let {
+//                    setDrawable(it)
+//                }
+//            })
 
             betReceiptDiffAdapter = BetReceiptDiffAdapter().apply {
                 betResultData?.apply {

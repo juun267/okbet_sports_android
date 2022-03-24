@@ -7,75 +7,17 @@
     android:background="@color/colorWhite1"
     tools:context=".ui.infoCenter.InfoCenterActivity">
 
-    <include
-        layout="@layout/view_base_tool_bar_no_drawer"/>
+    <include layout="@layout/view_base_tool_bar_no_drawer" />
 
-    <LinearLayout
-        android:id="@+id/ll_tab"
+    <org.cxct.sportlottery.ui.common.CustomTabLayout
+        android:id="@+id/custom_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorBlueLight"
-        android:paddingStart="12dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="12dp"
-        android:paddingBottom="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/app_bar_layout">
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/transparent"
-            app:cardCornerRadius="4dp"
-            app:cardElevation="0dp">
-
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/frame_4dp_white"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/btn_read_letters"
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="@drawable/effect_select_bg_white_transparent"
-                    android:button="@null"
-                    android:checked="true"
-                    android:gravity="center"
-                    android:textColor="@color/color_select_primary_white"
-                    android:textSize="@dimen/textSize16sp"
-                    tools:text="@string/inbox" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorWhite" />
-
-                <RadioButton
-                    android:id="@+id/btn_unread_letters"
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="@drawable/effect_select_bg_white_transparent"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="@string/unread_letters"
-                    android:textColor="@color/color_select_primary_white"
-                    android:textSize="@dimen/textSize16sp"
-                    tools:text="@string/unread_letters" />
-
-            </RadioGroup>
-
-        </androidx.cardview.widget.CardView>
-
-    </LinearLayout>
-
+        app:layout_constraintTop_toBottomOf="@id/app_bar_layout"
+        app:firstTabText="@string/inbox"
+        app:secondTabText="@string/unread_letters"/>
 
     <LinearLayout
         android:id="@+id/ll_title"
@@ -87,20 +29,20 @@
         android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_tab">
+        app:layout_constraintTop_toBottomOf="@+id/custom_tab_layout">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.2"
-            android:maxLines="1"
-            app:autoSizeTextType="uniform"
-            app:autoSizeMaxTextSize="@dimen/textSize12sp"
-            app:autoSizeMinTextSize="8dp"
             android:gravity="center"
+            android:maxLines="1"
             android:text="@string/index"
             android:textColor="@color/colorBlackLight"
-            android:textSize="@dimen/textSize12sp" />
+            android:textSize="@dimen/textSize12sp"
+            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+            app:autoSizeMinTextSize="8dp"
+            app:autoSizeTextType="uniform" />
 
         <TextView
             android:layout_width="0dp"
@@ -166,10 +108,10 @@
         android:background="@drawable/bg_circle_gray6_alpha50"
         android:padding="14dp"
         android:src="@drawable/ic_scroll_to_top"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:visibility="invisible"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

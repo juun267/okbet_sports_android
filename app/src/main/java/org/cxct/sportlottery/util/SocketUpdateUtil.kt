@@ -4,10 +4,7 @@ import android.content.Context
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
-import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.common.MatchOdd
-import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.common.QuickPlayCate
+import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
 import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
@@ -19,60 +16,68 @@ import org.cxct.sportlottery.ui.game.home.recommend.OddBean
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 
 object SocketUpdateUtil {
-
+    @Synchronized
     fun updateMatchStatus(
         gameType: String?,
-        matchOddList: MutableList<MatchOdd>,
+        matchOddList: MutableList<MatchOdd> = arrayListOf(),
         matchStatusChangeEvent: MatchStatusChangeEvent,
         context: Context?
     ): Boolean {
         var isNeedRefresh = false
 
         matchStatusChangeEvent.matchStatusCO?.let { matchStatusCO ->
+            val removeIndex :Int = -1
 
             matchOddList.forEach { matchOdd ->
 
                 if (matchStatusCO.matchId != null && matchStatusCO.matchId == matchOdd.matchInfo?.id) {
 
-                    if (matchStatusCO.status == 100) {
-                        val matchOddIterator = matchOddList.iterator()
-                        while (matchOddIterator.hasNext()) {
-                            val item = matchOddIterator.next()
-                            if (item == matchOdd)
-                                matchOddIterator.remove()
-                        }
-                        isNeedRefresh = true
-                    }
-
                     if (matchStatusCO.status != matchOdd.matchInfo?.socketMatchStatus) {
                         matchOdd.matchInfo?.socketMatchStatus = matchStatusCO.status
                         isNeedRefresh = true
                     }
+                    val statusValue =
+                        matchStatusCO.statusNameI18n?.get(LanguageManager.getSelectLanguage(context).key)
+                            ?: matchStatusCO.statusName
+                    if (statusValue != null && statusValue != matchOdd.matchInfo?.statusName18n) {
 
-                    if (matchStatusCO.statusName != null && matchStatusCO.statusName != matchOdd.matchInfo?.statusName18n) {
-                        val statusValue =
-                            matchStatusCO.statusNameI18n?.get(LanguageManager.getSelectLanguage(context).key)
-                                ?: matchStatusCO.statusName
                         matchOdd.matchInfo?.statusName18n = statusValue
                         isNeedRefresh = true
                     }
+                    if (matchStatusCO.gameType == GameType.CK.key) {
 
-                    if (matchStatusCO.homeScore != null && matchStatusCO.homeScore != matchOdd.matchInfo?.homeScore) {
-                        matchOdd.matchInfo?.homeScore = matchStatusCO.homeScore
-                        isNeedRefresh = true
+                        val homeTotal = matchStatusCO.homeTotalScore ?: 0
+                        val homeOut = matchStatusCO.homeOut ?: 0
+                        if (matchStatusCO.homeScore != null && matchStatusCO.homeScore.toString() != "${homeTotal}/${homeOut}") {
+                            matchOdd.matchInfo?.homeScore = "${homeTotal}/${homeOut}"
+                            isNeedRefresh = true
+                        }
+
+
+                        val awayTotal = matchStatusCO.awayTotalScore ?: 0
+                        val awayOut = matchStatusCO.awayOut ?: 0
+                        if (matchStatusCO.awayScore != null && matchStatusCO.awayScore.toString() != "${awayTotal}/${awayOut}") {
+                            matchOdd.matchInfo?.awayScore = "${awayTotal}/${awayOut}"
+                            isNeedRefresh = true
+                        }
+                    } else {
+                        if (matchStatusCO.homeScore != null && matchStatusCO.homeScore.toString() != matchOdd.matchInfo?.homeScore) {
+                            matchOdd.matchInfo?.homeScore = "${matchStatusCO.homeScore}"
+                            isNeedRefresh = true
+                        }
+                        if (matchStatusCO.awayScore != null && matchStatusCO.awayScore.toString() != matchOdd.matchInfo?.awayScore) {
+                            matchOdd.matchInfo?.awayScore = "${matchStatusCO.awayScore}"
+                            isNeedRefresh = true
+                        }
                     }
 
-                    if (matchStatusCO.awayScore != null && matchStatusCO.awayScore != matchOdd.matchInfo?.awayScore) {
-                        matchOdd.matchInfo?.awayScore = matchStatusCO.awayScore
-                        isNeedRefresh = true
-                    }
 
-                    if ((gameType == GameType.TN.key || gameType == GameType.VB.key) && matchStatusCO.homeTotalScore != null && matchStatusCO.homeTotalScore != matchOdd.matchInfo?.homeTotalScore) {
+                    if ((gameType == GameType.TN.key || gameType == GameType.VB.key || gameType == GameType.TT.key) && matchStatusCO.homeTotalScore != null && matchStatusCO.homeTotalScore != matchOdd.matchInfo?.homeTotalScore) {
                         matchOdd.matchInfo?.homeTotalScore = matchStatusCO.homeTotalScore
                         isNeedRefresh = true
                     }
 
-                    if ((gameType == GameType.TN.key || gameType == GameType.VB.key) && matchStatusCO.awayTotalScore != null && matchStatusCO.awayTotalScore != matchOdd.matchInfo?.awayTotalScore) {
+                    if ((gameType == GameType.TN.key || gameType == GameType.VB.key || gameType == GameType.TT.key) && matchStatusCO.awayTotalScore != null && matchStatusCO.awayTotalScore != matchOdd.matchInfo?.awayTotalScore) {
                         matchOdd.matchInfo?.awayTotalScore = matchStatusCO.awayTotalScore
                         isNeedRefresh = true
                     }
@@ -98,8 +103,15 @@ object SocketUpdateUtil {
                     }
                 }
             }
+            //matchStatusChange status = 100時，賽事結束
+            if (matchStatusCO.status == GameMatchStatus.FINISH.value) {
+                val endGameList = matchOddList.find { it.matchInfo?.id == matchStatusCO.matchId }
+                isNeedRefresh = endGameList != null
+                if(removeIndex != -1){
+                    matchOddList.remove(endGameList)
+                }
+            }
         }
-
         return isNeedRefresh
     }
 
@@ -120,13 +132,19 @@ object SocketUpdateUtil {
                     else -> null
                 }
 
-                isNeedRefresh = when {
-                    (leagueTime != null && leagueTime != matchOdd.matchInfo?.leagueTime) -> {
-                        matchOdd.matchInfo?.leagueTime = leagueTime
-                        true
-                    }
-                    else -> false
+
+                if (leagueTime != null && leagueTime.toInt() != matchOdd.matchInfo?.leagueTime) {
+                    matchOdd.matchInfo?.leagueTime = leagueTime.toInt()
+                    isNeedRefresh = true
                 }
+
+
+                if (matchClockCO.stopped != matchOdd.matchInfo?.stopped) {
+                    matchOdd.matchInfo?.stopped = matchClockCO.stopped
+                    isNeedRefresh = true
+
+                }
+
             }
         }
 
@@ -138,13 +156,15 @@ object SocketUpdateUtil {
      */
     private fun sortOdds(matchOdd: MatchOdd) {
         val sortOrder = matchOdd.oddsSort?.split(",")
-        val oddsMap = matchOdd.oddsMap.toSortedMap(compareBy<String> {
-            val oddsIndex = sortOrder?.indexOf(it)
-            oddsIndex
-        }.thenBy { it })
+        matchOdd.oddsMap?.let { oddMap ->
+            val oddsMap = oddMap.toSortedMap(compareBy<String> {
+                val oddsIndex = sortOrder?.indexOf(it)
+                oddsIndex
+            }.thenBy { it })
 
-        matchOdd.oddsMap.clear()
-        matchOdd.oddsMap.putAll(oddsMap)
+            oddMap.clear()
+            oddMap.putAll(oddsMap)
+        }
     }
 
     fun updateMatchOdds(oddBean: OddBean, oddsChangeEvent: OddsChangeEvent): Boolean {
@@ -197,18 +217,20 @@ object SocketUpdateUtil {
                     (cateMenuCode == PlayCate.OUTRIGHT.value) -> {
                         var updated = false
                         oddsChangeEvent.odds?.forEach { (key, value) ->
-                            if (matchOdd.oddsMap.containsKey(key)) {
-                                if (updateMatchOdds(
-                                        mutableMapOf(
-                                            Pair(
-                                                key, matchOdd.oddsMap[key]
-                                            )
-                                        ), mutableMapOf(Pair(key, value))
-                                    )
-                                ) updated = true
-                            } else {
-                                matchOdd.oddsMap[key] = value.toMutableList()
-                                updated = true
+                            matchOdd.oddsMap?.let { oddsMap ->
+                                if (oddsMap.containsKey(key)) {
+                                    if (updateMatchOdds(
+                                            mutableMapOf(
+                                                Pair(
+                                                    key, oddsMap[key]
+                                                )
+                                            ), mutableMapOf(Pair(key, value))
+                                        )
+                                    ) updated = true
+                                } else {
+                                    oddsMap[key] = value?.toMutableList()
+                                    updated = true
+                                }
                             }
                         }
                         updated
@@ -223,12 +245,31 @@ object SocketUpdateUtil {
                     }
 
                     else -> {
+                        if(matchOdd.oddsMap == null){
+                            matchOdd.oddsMap = mutableMapOf()
+                        }
                         updateMatchOdds(
-                            matchOdd.oddsMap,
+                            matchOdd.oddsMap ?: mutableMapOf(),
                             oddsChangeEvent.odds,
                         )
                     }
                 }
+
+                //更新翻譯
+                if(matchOdd.betPlayCateNameMap == null){
+                    matchOdd.betPlayCateNameMap = mutableMapOf()
+                }
+                updateBetPlayCateNameMap(
+                    matchOdd.betPlayCateNameMap,
+                    oddsChangeEvent.betPlayCateNameMap
+                )
+                if(matchOdd.playCateNameMap == null){
+                    matchOdd.playCateNameMap = mutableMapOf()
+                }
+                updatePlayCateNameMap(
+                    matchOdd.playCateNameMap,
+                    oddsChangeEvent.playCateNameMap
+                )
 
                 isNeedRefreshPlayCate = when (matchOdd.quickPlayCateList.isNullOrEmpty()) {
                     true -> {
@@ -237,11 +278,16 @@ object SocketUpdateUtil {
                     false -> {
                         refreshPlayCate(matchOdd, oddsChangeEvent)
                     }
-                }
+                } || (matchOdd.matchInfo?.playCateNum != oddsChangeEvent.playCateNum)
+
 
                 if (isNeedRefresh) {
                     sortOdds(matchOdd)
                     matchOdd.updateOddStatus()
+                }
+
+                if (isNeedRefreshPlayCate) {
+                    matchOdd.matchInfo?.playCateNum = oddsChangeEvent.playCateNum
                 }
             }
         }
@@ -278,6 +324,24 @@ object SocketUpdateUtil {
             if (this) {
                 oddsDetailListData.updateOddStatus()
             }
+        }
+    }
+
+    private fun updateBetPlayCateNameMap(
+        betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
+        betPlayCateNameMapSocket: Map<String?, Map<String?, String?>?>?,
+    ) {
+        betPlayCateNameMapSocket?.forEach {
+            betPlayCateNameMap?.set(it.key, it.value)
+        }
+    }
+
+    private fun updatePlayCateNameMap(
+        playCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
+        playCateNameMapSocket: Map<String?, Map<String?, String?>?>?
+    ) {
+        playCateNameMapSocket?.forEach {
+            playCateNameMap?.set(it.key, it.value)
         }
     }
 
@@ -417,7 +481,7 @@ object SocketUpdateUtil {
     fun updateOddStatus(matchOdd: MatchOdd, globalStopEvent: GlobalStopEvent): Boolean {
         var isNeedRefresh = false
 
-        matchOdd.oddsMap.values.forEach { odds ->
+        matchOdd.oddsMap?.values?.forEach { odds ->
             odds?.filter { odd ->
                 globalStopEvent.producerId == null || globalStopEvent.producerId == odd?.producerId
             }?.forEach { odd ->
@@ -469,7 +533,7 @@ object SocketUpdateUtil {
         var isNeedRefresh = false
 
         if (matchOdd.matchInfo?.id == matchOddsLockEvent.matchId) {
-            matchOdd.oddsMap.values.forEach { odd ->
+            matchOdd.oddsMap?.values?.forEach { odd ->
                 odd?.forEach {
                     it?.status = BetStatus.LOCKED.code
                     isNeedRefresh = true
@@ -561,6 +625,8 @@ object SocketUpdateUtil {
 
                                     odd?.odds = oddSocket?.odds
                                     odd?.hkOdds = oddSocket?.hkOdds
+                                    odd?.malayOdds = oddSocket?.malayOdds
+                                    odd?.indoOdds = oddSocket?.indoOdds
 
                                     if (odd?.status != oddSocket?.status) {
                                         odd?.status = oddSocket?.status
@@ -582,7 +648,8 @@ object SocketUpdateUtil {
                                 }
 
                                 false -> {
-                                    odds.add(oddSocket)
+                                    if (oddTypeMap.key == oddsMapEntrySocket.key)
+                                        odds.add(oddSocket)
 
                                     isNeedRefresh = true
                                 }
@@ -643,6 +710,8 @@ object SocketUpdateUtil {
 
                 odd?.odds = oddSocket.odds
                 odd?.hkOdds = oddSocket.hkOdds
+                odd?.malayOdds = oddSocket.malayOdds
+                odd?.indoOdds = oddSocket.indoOdds
 
                 if (odd?.status != oddSocket.status) {
                     odd?.status = oddSocket.status
@@ -650,7 +719,7 @@ object SocketUpdateUtil {
                     isNeedRefresh = true
                 }
 
-                if (odd?.spread != oddSocket.spread){
+                if (odd?.spread != oddSocket.spread) {
                     odd?.spread = oddSocket.spread
 
                     isNeedRefresh = true
@@ -709,7 +778,7 @@ object SocketUpdateUtil {
     }
 
     private fun MatchOdd.updateOddStatus() {
-        this.oddsMap.forEach {
+        this.oddsMap?.forEach {
             it.value?.filterNotNull()?.forEach { odd ->
 
                 odd.status = when {

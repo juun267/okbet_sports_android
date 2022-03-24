@@ -35,11 +35,10 @@ enum class OnlineType(val type : Int) {
     TEL(104),
     WPA(105),
     JUAN(201),//201-菲律賓在線網銀
-    //TODO Bill :菲律賓常用的支付 Gcash / GrabPay / PayMaya 充值渠道onlineType 我等等支付測試環境會先添加 稍晚再把對應編號給出來 線上支付的部份
     DISPENSHIN(202),//出款
     ONLINEBANK(203),//網銀
     GCASH(204),//Gcash
     GRABPAY(205),//GrabPay
     PAYMAYA(206),//PayMaya
-
+    PAYPAL(210),//Paypal
 }

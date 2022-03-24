@@ -1,19 +1,27 @@
 package org.cxct.sportlottery.ui.login.signUp
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
+import android.text.*
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.LinkMovementMethod
+import android.text.method.PasswordTransformationMethod
+import android.text.style.ClickableSpan
+import android.util.Log
 import android.view.View
-import android.widget.LinearLayout
+import android.view.inputmethod.EditorInfo
+import android.widget.EditText
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import cn.jpush.android.api.JPushInterface
-import kotlinx.android.synthetic.main.activity_register.*
-import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID
-import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID_DEVICE_CODE
+import com.bumptech.glide.Glide
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.ActivityRegisterBinding
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
@@ -21,45 +29,143 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
-import org.cxct.sportlottery.ui.login.LoginEditText
+import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.util.BitmapUtil
-import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.ToastUtil
-import timber.log.Timber
 import java.util.*
 
-class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::class) {
+class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::class),
+    View.OnClickListener {
 
     private var mSmsTimer: Timer? = null
+    private lateinit var binding: ActivityRegisterBinding
+
+    override fun onClick(v: View?) {
+        when (v) {
+            binding.ivReturn -> {
+                updateValidCode()
+            }
+            binding.tvDuty -> {
+                JumpUtil.toInternalWeb(
+                    this,
+                    Constants.getDutyRuleUrl(this),
+                    resources.getString(R.string.responsible)
+                )
+
+            }
+            binding.tvPrivacy -> {
+                JumpUtil.toInternalWeb(
+                    this,
+                    Constants.getPrivacyRuleUrl(this),
+                    resources.getString(R.string.privacy_policy)
+                )
+
+            }
+            binding.tvAgreement -> {
+                JumpUtil.toInternalWeb(
+                    this,
+                    Constants.getAgreementRuleUrl(this),
+                    resources.getString(R.string.terms_conditions)
+                )
+            }
+
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         setupBackButton()
-        setupRecommendCode()
-        setupMemberAccount()
-        setupLoginPassword()
-        setupConfirmPassword()
         setupFullName()
         setupWithdrawalPassword()
         setupQQ()
         setupPhone()
         setupMail()
+        setupAddress()
         setupWeChat()
         setupZalo()
         setupFacebook()
         setupWhatsApp()
         setupTelegram()
+        setupSecurityPb()
         setupValidCode()
         setupSmsValidCode()
         setupAgreement()
-        setupRegisterAgreementButton()
         setupRegisterButton()
         setupGoToLoginButton()
         initObserve()
+
+        binding.apply {
+            etLoginPassword.endIconImageButton.setOnClickListener {
+                if (etLoginPassword.endIconResourceId == R.drawable.ic_eye_open) {
+                    eetLoginPassword.transformationMethod =
+                        PasswordTransformationMethod.getInstance()
+                    etLoginPassword.setEndIcon(R.drawable.ic_eye_close)
+                } else {
+                    etLoginPassword.setEndIcon(R.drawable.ic_eye_open)
+                    eetLoginPassword.transformationMethod =
+                        HideReturnsTransformationMethod.getInstance()
+                }
+                eetLoginPassword.setSelection(eetLoginPassword.text.toString().length)
+            }
+            etConfirmPassword.endIconImageButton.setOnClickListener {
+                if (etConfirmPassword.endIconResourceId == R.drawable.ic_eye_open) {
+                    eetConfirmPassword.transformationMethod =
+                        PasswordTransformationMethod.getInstance()
+                    etConfirmPassword.setEndIcon(R.drawable.ic_eye_close)
+                } else {
+                    etConfirmPassword.setEndIcon(R.drawable.ic_eye_open)
+                    eetConfirmPassword.transformationMethod =
+                        HideReturnsTransformationMethod.getInstance()
+                }
+                eetConfirmPassword.setSelection(eetConfirmPassword.text.toString().length)
+            }
+            etWithdrawalPwd.endIconImageButton.setOnClickListener {
+                if (etWithdrawalPwd.endIconResourceId == R.drawable.ic_eye_open) {
+                    eetWithdrawalPwd.transformationMethod =
+                        PasswordTransformationMethod.getInstance()
+                    etWithdrawalPwd.setEndIcon(R.drawable.ic_eye_close)
+                } else {
+                    etWithdrawalPwd.setEndIcon(R.drawable.ic_eye_open)
+                    eetWithdrawalPwd.transformationMethod =
+                        HideReturnsTransformationMethod.getInstance()
+                }
+                eetWithdrawalPwd.setSelection(eetWithdrawalPwd.text.toString().length)
+            }
+        }
+
+        binding.ivReturn.setOnClickListener(this)
+        binding.tvDuty.setOnClickListener(this)
+        binding.tvPrivacy.text =
+            getString(R.string.register_privacy) + getString(R.string.register_privacy_policy) + getString(
+                R.string.register_privacy_policy_promotions
+            )
+        binding.tvPrivacy.makeLinks(
+            Pair(
+                applicationContext.getString(R.string.register_privacy_policy),
+                View.OnClickListener {
+                    JumpUtil.toInternalWeb(
+                        this,
+                        Constants.getPrivacyRuleUrl(this),
+                        resources.getString(R.string.privacy_policy)
+                    )
+                })
+        )
+        binding.tvAgreement.text =
+            getString(R.string.register_over_21) + getString(R.string.app_name) + getString(R.string.register_rules)
+        binding.tvAgreement.makeLinks(
+            Pair(applicationContext.getString(R.string.register_rules), View.OnClickListener {
+                JumpUtil.toInternalWeb(
+                    this,
+                    Constants.getAgreementRuleUrl(this),
+                    resources.getString(R.string.terms_conditions)
+                )
+            })
+        )
     }
 
     override fun onDestroy() {
@@ -68,308 +174,436 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun setupBackButton() {
-        btn_back.setOnClickListener { finish() }
-    }
-
-    private fun setupEditTextFocusListener(
-        editText: LoginEditText,
-        doFun: (inputText: String) -> Unit
-    ) {
-        editText.setEditTextOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus)
-                doFun.invoke(editText.getText())
-        }
-    }
-
-    private fun setupRecommendCode() {
-        et_recommend_code.apply {
-            setNecessarySymbolVisibility(if (sConfigData?.enableInviteCode == FLAG_OPEN) View.VISIBLE else View.INVISIBLE)
-            setupEditTextFocusListener(this) { viewModel.checkInviteCode(it) }
-        }
-    }
-
-    private fun setupMemberAccount() {
-        setupEditTextFocusListener(et_member_account) { viewModel.checkAccountExist(it) }
-    }
-
-    private fun setupLoginPassword() {
-        setupEditTextFocusListener(et_login_password) { viewModel.checkLoginPassword(it) }
-    }
-
-    private fun setupConfirmPassword() {
-        setupEditTextFocusListener(et_confirm_password) {
-            viewModel.checkConfirmPassword(
-                et_login_password.getText(),
-                it
-            )
-        }
-
-        //20210427 紀錄：當確認密碼下方的 label 都被關時，要動態調整 MarginBottom 高度，為了符合排版要求
-        if (sConfigData?.enableFullName != FLAG_OPEN &&
-            sConfigData?.enableFundPwd != FLAG_OPEN &&
-            sConfigData?.enableQQ != FLAG_OPEN &&
-            sConfigData?.enablePhone != FLAG_OPEN &&
-            sConfigData?.enableEmail != FLAG_OPEN &&
-            sConfigData?.enableWechat != FLAG_OPEN &&
-            sConfigData?.enableZalo != FLAG_OPEN &&
-            sConfigData?.enableFacebook != FLAG_OPEN &&
-            sConfigData?.enableWhatsApp != FLAG_OPEN &&
-            sConfigData?.enableTelegram != FLAG_OPEN &&
-            sConfigData?.enableTelegram != FLAG_OPEN &&
-            sConfigData?.enableRegValidCode != FLAG_OPEN &&
-            sConfigData?.enableSmsValidCode != FLAG_OPEN
-        )
-            et_confirm_password.setMarginBottom(10.dp)
+        binding.btnBack.setOnClickListener { finish() }
     }
 
     private fun setupFullName() {
-        et_full_name.visibility = if (sConfigData?.enableFullName == FLAG_OPEN) {
-            setupEditTextFocusListener(et_full_name) { viewModel.checkFullName(it) }
-            View.VISIBLE
-        } else View.GONE
+        binding.etFullName.visibility =
+            if (sConfigData?.enableFullName == FLAG_OPEN) View.VISIBLE else View.GONE
     }
 
     private fun setupWithdrawalPassword() {
-        et_withdrawal_pwd.visibility = if (sConfigData?.enableFundPwd == FLAG_OPEN) {
-            setupEditTextFocusListener(et_withdrawal_pwd) { viewModel.checkFundPwd(it) }
-            View.VISIBLE
-        } else View.GONE
+        binding.etWithdrawalPwd.visibility =
+            if (sConfigData?.enableFundPwd == FLAG_OPEN) View.VISIBLE else View.GONE
+
     }
 
     private fun setupQQ() {
-        et_qq.visibility = if (sConfigData?.enableQQ == FLAG_OPEN) {
-            setupEditTextFocusListener(et_qq) { viewModel.checkQQ(it) }
-            View.VISIBLE
-        } else View.GONE
+        binding.etQq.visibility =
+            if (sConfigData?.enableQQ == FLAG_OPEN) View.VISIBLE else View.GONE
+
     }
 
     private fun setupPhone() {
-        et_phone.visibility = if (sConfigData?.enablePhone == FLAG_OPEN) {
-            setupEditTextFocusListener(et_phone) { viewModel.checkPhone(it) }
-            View.VISIBLE
-        } else View.GONE
+        binding.etPhone.visibility =
+            if (sConfigData?.enablePhone == FLAG_OPEN) View.VISIBLE else View.GONE
+
     }
 
     private fun setupMail() {
-        et_mail.visibility = if (sConfigData?.enableEmail == FLAG_OPEN) {
-            setupEditTextFocusListener(et_mail) { viewModel.checkEmail(it) }
-            View.VISIBLE
-        } else View.GONE
+        binding.etMail.visibility =
+            if (sConfigData?.enableEmail == FLAG_OPEN) View.VISIBLE else View.GONE
+
+    }
+
+    private fun setupAddress() {
+        (if (sConfigData?.enableAddress == FLAG_OPEN) View.VISIBLE else View.GONE).let { visible ->
+            with(binding) {
+                etPostal.visibility = visible
+                etProvince.visibility = visible
+                etCity.visibility = visible
+                etAddress.visibility = visible
+            }
+        }
     }
 
     private fun setupWeChat() {
-        et_we_chat.visibility = if (sConfigData?.enableWechat == FLAG_OPEN) {
-            setupEditTextFocusListener(et_we_chat) { viewModel.checkWeChat(it) }
-            View.VISIBLE
-        } else View.GONE
+        binding.etWeChat.visibility =
+            if (sConfigData?.enableWechat == FLAG_OPEN) View.VISIBLE else View.GONE
+
     }
 
     private fun setupZalo() {
-        et_zalo.visibility = if (sConfigData?.enableZalo == FLAG_OPEN) {
-            setupEditTextFocusListener(et_zalo) { viewModel.checkZalo(it) }
-            View.VISIBLE
-        } else View.GONE
+        binding.etZalo.visibility =
+            if (sConfigData?.enableZalo == FLAG_OPEN) View.VISIBLE else View.GONE
+
     }
 
     private fun setupFacebook() {
-        et_facebook.visibility = if (sConfigData?.enableFacebook == FLAG_OPEN) {
-            setupEditTextFocusListener(et_facebook) { viewModel.checkFacebook(it) }
-            View.VISIBLE
-        } else View.GONE
+        binding.etFacebook.visibility =
+            if (sConfigData?.enableFacebook == FLAG_OPEN) View.VISIBLE else View.GONE
     }
 
     private fun setupWhatsApp() {
-        et_whats_app.visibility = if (sConfigData?.enableWhatsApp == FLAG_OPEN) {
-            setupEditTextFocusListener(et_whats_app) { viewModel.checkWhatsApp(it) }
-            View.VISIBLE
-        } else View.GONE
+        binding.etWhatsApp.visibility =
+            if (sConfigData?.enableWhatsApp == FLAG_OPEN) View.VISIBLE else View.GONE
+
     }
 
     private fun setupTelegram() {
-        et_telegram.visibility = if (sConfigData?.enableTelegram == FLAG_OPEN) {
-            setupEditTextFocusListener(et_telegram) { viewModel.checkTelegram(it) }
-            View.VISIBLE
-        } else View.GONE
+        binding.etTelegram.visibility =
+            if (sConfigData?.enableTelegram == FLAG_OPEN) View.VISIBLE else View.GONE
+
+    }
+
+    private fun setupSecurityPb() {
+        binding.etSecurityPb.visibility =
+            if (sConfigData?.enableSafeQuestion == FLAG_OPEN) View.VISIBLE else View.GONE
     }
 
     private fun setupValidCode() {
         if (sConfigData?.enableRegValidCode == FLAG_OPEN) {
-            et_verification_code.visibility = View.VISIBLE
+            binding.blockValidCode.visibility = View.VISIBLE
             updateValidCode()
-            setupEditTextFocusListener(et_verification_code) { viewModel.checkValidCode(it) }
         } else {
-            et_verification_code.visibility = View.GONE
-        }
-
-        et_verification_code.setVerificationCodeBtnOnClickListener {
-            updateValidCode()
+            binding.blockValidCode.visibility = View.GONE
         }
     }
 
     private fun setupSmsValidCode() {
-        block_sms_valid_code.visibility =
+        binding.blockSmsValidCode.visibility =
             if (sConfigData?.enableSmsValidCode == FLAG_OPEN) View.VISIBLE else View.GONE
         if (sConfigData?.enableSmsValidCode == FLAG_OPEN) {
             //手機驗證碼開啟，必定需要手機號欄位輸入
-            et_phone.visibility = View.VISIBLE
-            block_sms_valid_code.visibility = View.VISIBLE
-            setupEditTextFocusListener(et_sms_valid_code) { viewModel.checkSecurityCode(it) }
+            binding.etPhone.visibility = View.VISIBLE
+            binding.blockSmsValidCode.visibility = View.VISIBLE
         } else {
-            block_sms_valid_code.visibility = View.GONE
+            binding.blockSmsValidCode.visibility = View.GONE
         }
 
-        btn_send_sms.setOnClickListener {
+        binding.btnSendSms.setOnClickListener {
             sendSms()
         }
     }
 
     private fun setupAgreement() {
-        when (LanguageManager.getSelectLanguage(this@RegisterActivity)) {
-            LanguageManager.Language.ZH -> ll_agreement.orientation = LinearLayout.HORIZONTAL
-            else -> ll_agreement.orientation = LinearLayout.VERTICAL
-        }
-
-        cb_agreement.setOnClickListener {
-            cb_agreement.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
-            cb_agreement.buttonTintList = null
-            viewModel.checkAgreement(cb_agreement.isChecked)
+        binding.cbAgreement.setOnClickListener {
+            viewModel.checkAgreement(binding.cbAgreement.isChecked)
         }
     }
 
-    private fun setupRegisterAgreementButton() {
-        btn_agreement.setOnClickListener {
-            AgreementDialog().show(supportFragmentManager, null)
-        }
-    }
-
-    private fun setupRegisterButton() {
-        btn_register.setOnClickListener {
-            val inviteCode = et_recommend_code.getText()
-            val userName = et_member_account.getText()
-            val loginPassword = et_login_password.getText()
-            val confirmPassword = et_confirm_password.getText()
-            val fullName = et_full_name.getText()
-            val fundPwd = et_withdrawal_pwd.getText()
-            val qq = et_qq.getText()
-            val phone = et_phone.getText()
-            val email = et_mail.getText()
-            val weChat = et_we_chat.getText()
-            val zalo = et_zalo.getText()
-            val facebook = et_facebook.getText()
-            val whatsApp = et_whats_app.getText()
-            val telegram = et_telegram.getText()
-            val smsCode = et_sms_valid_code.getText()
-            val validCode = et_verification_code.getText()
-            val agreementChecked = cb_agreement.isChecked
-            val deviceSn = getSharedPreferences(UUID_DEVICE_CODE, Context.MODE_PRIVATE).getString(UUID, "") ?: ""
-            Timber.d("UUID = $deviceSn")
-
-            viewModel.registerSubmit(
-                inviteCode,
-                userName,
-                loginPassword,
-                confirmPassword,
-                fullName,
-                fundPwd,
-                qq,
-                phone,
-                email,
-                weChat,
-                zalo,
-                facebook,
-                whatsApp,
-                telegram,
-                smsCode,
-                validCode,
-                agreementChecked,
-                deviceSn
+    private fun btnRegisterEnable() {
+        binding.apply {
+            btnRegister.isEnabled = viewModel.checkAllInput(
+                eetRecommendCode.text.toString(),
+                eetMemberAccount.text.toString(),
+                eetLoginPassword.text.toString(),
+                eetConfirmPassword.text.toString(),
+                eetFullName.text.toString(),
+                eetWithdrawalPwd.text.toString(),
+                eetQq.text.toString(),
+                eetPhone.text.toString(),
+                eetMail.text.toString(),
+                eetPostal.text.toString(),
+                eetProvince.text.toString(),
+                eetCity.text.toString(),
+                eetAddress.text.toString(),
+                eetWeChat.text.toString(),
+                eetZalo.text.toString(),
+                eetFacebook.text.toString(),
+                eetWhatsApp.text.toString(),
+                eetTelegram.text.toString(),
+                eetSecurityPb.text.toString(),
+                eetSmsValidCode.text.toString(),
+                eetVerificationCode.text.toString(),
+                cbAgreement.isChecked
             )
         }
     }
 
+    private fun EditText.setActionListener(isRegisterEnable: Boolean) {
+        this.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId and EditorInfo.IME_MASK_ACTION != 0 && isRegisterEnable) {
+                binding.btnRegister.performClick()
+                true
+            } else {
+                false
+            }
+        }
+    }
+
+    private fun setupRegisterButton() {
+        binding.apply {
+            eetRecommendCode.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
+            }
+            eetMemberAccount.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
+            }
+            eetConfirmPassword.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
+            }
+            eetFullName.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
+            }
+            eetWithdrawalPwd.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
+            }
+            eetQq.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
+            }
+            eetPhone.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
+            }
+            eetMail.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
+            }
+            eetPostal.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
+            }
+            eetProvince.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
+            }
+            eetCity.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
+            }
+            eetAddress.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
+            }
+            eetWeChat.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
+            }
+            eetZalo.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
+            }
+            eetFacebook.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
+            }
+            eetWhatsApp.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
+            }
+            eetTelegram.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
+            }
+            eetSecurityPb.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
+            }
+            eetSmsValidCode.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
+            }
+            eetVerificationCode.apply {
+                this.afterTextChanged {
+                    btnRegisterEnable()
+                }
+            }
+            cbAgreement.setOnCheckedChangeListener { _, _ ->
+                btnRegisterEnable()
+            }
+        }
+
+        binding.btnRegister.setOnClickListener {
+            Log.i(">>>", "btnRegister onclicked")
+            val deviceId = Settings.Secure.getString(
+                applicationContext.contentResolver, Settings.Secure.ANDROID_ID
+            )
+            val deviceSn = JPushInterface.getRegistrationID(applicationContext)
+            binding.apply {
+                viewModel.registerSubmit(
+                    eetRecommendCode.text.toString(),
+                    eetMemberAccount.text.toString(),
+                    eetLoginPassword.text.toString(),
+                    eetConfirmPassword.text.toString(),
+                    eetFullName.text.toString(),
+                    eetWithdrawalPwd.text.toString(),
+                    eetQq.text.toString(),
+                    eetPhone.text.toString(),
+                    eetMail.text.toString(),
+                    eetPostal.text.toString(),
+                    eetProvince.text.toString(),
+                    eetCity.text.toString(),
+                    eetAddress.text.toString(),
+                    eetWeChat.text.toString(),
+                    eetZalo.text.toString(),
+                    eetFacebook.text.toString(),
+                    eetWhatsApp.text.toString(),
+                    eetTelegram.text.toString(),
+                    eetSecurityPb.text.toString(),
+                    eetSmsValidCode.text.toString(),
+                    eetVerificationCode.text.toString(),
+                    cbAgreement.isChecked,
+                    deviceSn,
+                    deviceId
+                )
+            }
+        }
+    }
+
     private fun sendSms() {
-        val phone = et_phone.getText()
+        val phone = binding.eetPhone.text.toString()
         if (phone.isBlank())
             showErrorPromptDialog(
                 getString(R.string.prompt),
                 getString(R.string.hint_phone_number)
             ) {}
         else {
-            btn_send_sms.isEnabled = false
+            binding.btnSendSms.isEnabled = false
             viewModel.sendSms(phone)
         }
     }
 
     private fun updateValidCode() {
         viewModel.getValidCode()
-        et_verification_code.setText(null)
+        binding.eetVerificationCode.setText("");
     }
 
     private fun setupGoToLoginButton() {
-        btn_login.setOnClickListener {
+        binding.btnLogin.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
 
-        btn_visit_first.setOnClickListener {
+        binding.btnVisitFirst.setOnClickListener {
             viewModel.loginAsGuest()
         }
     }
 
     private fun initObserve() {
 
-        viewModel.registerResult.observe(this, {
-            updateUiWithResult(it)
-        })
+        setEditTextIme(binding.btnRegister.isEnabled)
+        viewModel.registerEnable.observe(this) {
+            Log.e(">>>", "registerEnable = $it")
+            setEditTextIme(it)
+        }
 
-        viewModel.validCodeResult.observe(this, {
+        viewModel.registerResult.observe(this) {
             updateUiWithResult(it)
-        })
+        }
 
-        viewModel.smsResult.observe(this, {
+        viewModel.validCodeResult.observe(this) {
             updateUiWithResult(it)
-        })
+        }
 
-        viewModel.loginForGuestResult.observe(this, {
+        viewModel.smsResult.observe(this) {
             updateUiWithResult(it)
-        })
+        }
 
-        viewModel.agreementChecked.observe(this, {
-            if (it?.not() == true) {
-                cb_agreement.setTextColor(ContextCompat.getColor(this, R.color.colorRedDark))
-                cb_agreement.buttonTintList =
-                    ContextCompat.getColorStateList(this, R.color.colorRedDark)
-            } else {
-                cb_agreement.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
-                cb_agreement.buttonTintList = null
-            }
-        })
+        viewModel.loginForGuestResult.observe(this) {
+            updateUiWithResult(it)
+        }
 
         /**
          * 輸入欄位判斷後錯誤提示
          */
         viewModel.apply {
-            inviteCodeMsg.observe(this@RegisterActivity, { et_recommend_code.setError(it) })
-            memberAccountMsg.observe(this@RegisterActivity, { et_member_account.setError(it) })
-            loginPasswordMsg.observe(this@RegisterActivity, { et_login_password.setError(it) })
-            confirmPasswordMsg.observe(this@RegisterActivity, { et_confirm_password.setError(it) })
-            fullNameMsg.observe(this@RegisterActivity, { et_full_name.setError(it) })
-            fundPwdMsg.observe(this@RegisterActivity, { et_withdrawal_pwd.setError(it) })
-            qqMsg.observe(this@RegisterActivity, { et_qq.setError(it) })
-            phoneMsg.observe(this@RegisterActivity, { et_phone.setError(it) })
-            emailMsg.observe(this@RegisterActivity, { et_mail.setError(it) })
-            weChatMsg.observe(this@RegisterActivity, { et_we_chat.setError(it) })
-            zaloMsg.observe(this@RegisterActivity, { et_zalo.setError(it) })
-            facebookMsg.observe(this@RegisterActivity, { et_facebook.setError(it) })
-            whatsAppMsg.observe(this@RegisterActivity, { et_whats_app.setError(it) })
-            telegramMsg.observe(this@RegisterActivity, { et_telegram.setError(it) })
-            securityCodeMsg.observe(this@RegisterActivity, { et_sms_valid_code.setError(it) })
-            validCodeMsg.observe(this@RegisterActivity, { et_verification_code.setError(it) })
-            registerEnable.observe(
-                this@RegisterActivity,
-                { it?.let { btn_register.isEnabled = it } })
+            inviteCodeMsg.observe(this@RegisterActivity) {
+                binding.etRecommendCode.setError(
+                    it,
+                    false
+                )
+            }
+            memberAccountMsg.observe(this@RegisterActivity) {
+                binding.etMemberAccount.setError(
+                    it,
+                    false
+                )
+            }
+            loginPasswordMsg.observe(this@RegisterActivity) {
+                binding.etLoginPassword.setError(
+                    it,
+                    false
+                )
+            }
+            confirmPasswordMsg.observe(this@RegisterActivity) {
+                binding.etConfirmPassword.setError(
+                    it,
+                    false
+                )
+            }
+            fullNameMsg.observe(this@RegisterActivity) { binding.etFullName.setError(it, false) }
+            fundPwdMsg.observe(this@RegisterActivity) {
+                binding.etWithdrawalPwd.setError(
+                    it,
+                    false
+                )
+            }
+            qqMsg.observe(this@RegisterActivity) { binding.etQq.setError(it, false) }
+            phoneMsg.observe(this@RegisterActivity) { binding.etPhone.setError(it, false) }
+            emailMsg.observe(this@RegisterActivity) { binding.etMail.setError(it, false) }
+            postalMsg.observe(this@RegisterActivity) { binding.etPostal.setError(it, false) }
+            provinceMsg.observe(this@RegisterActivity) { binding.etProvince.setError(it, false) }
+            cityMsg.observe(this@RegisterActivity) { binding.etCity.setError(it, false) }
+            addressMsg.observe(this@RegisterActivity) { binding.etAddress.setError(it, false) }
+            weChatMsg.observe(this@RegisterActivity) { binding.etWeChat.setError(it, false) }
+            zaloMsg.observe(this@RegisterActivity) { binding.etZalo.setError(it, false) }
+            facebookMsg.observe(this@RegisterActivity) { binding.etFacebook.setError(it, false) }
+            whatsAppMsg.observe(this@RegisterActivity) { binding.etWhatsApp.setError(it, false) }
+            telegramMsg.observe(this@RegisterActivity) { binding.etTelegram.setError(it, false) }
+            securityPbMsg.observe(this@RegisterActivity) { binding.etSecurityPb.setError(it, false) }
+            securityCodeMsg.observe(this@RegisterActivity) {
+                binding.etSmsValidCode.setError(
+                    it,
+                    false
+                )
+            }
+            validCodeMsg.observe(this@RegisterActivity) {
+                binding.etSmsValidCode.setError(
+                    it,
+                    false
+                )
+            }
         }
 
+    }
+
+    //當所有值都有填，按下enter時，自動點擊註冊鈕
+    private fun setEditTextIme(registerEnable: Boolean) {
+        binding.apply {
+            eetRecommendCode.setActionListener(registerEnable)
+            eetMemberAccount.setActionListener(registerEnable)
+            eetLoginPassword.setActionListener(registerEnable)
+            eetConfirmPassword.setActionListener(registerEnable)
+            eetFullName.setActionListener(registerEnable)
+            eetWithdrawalPwd.setActionListener(registerEnable)
+            eetQq.setActionListener(registerEnable)
+            eetPhone.setActionListener(registerEnable)
+            eetMail.setActionListener(registerEnable)
+            eetWeChat.setActionListener(registerEnable)
+            eetZalo.setActionListener(registerEnable)
+            eetFacebook.setActionListener(registerEnable)
+            eetWhatsApp.setActionListener(registerEnable)
+            eetTelegram.setActionListener(registerEnable)
+            eetSecurityPb.setActionListener(registerEnable)
+            eetSmsValidCode.setActionListener(registerEnable)
+            eetVerificationCode.setActionListener(registerEnable)
+        }
     }
 
     private fun updateUiWithResult(loginResult: LoginResult) {
@@ -385,10 +619,12 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     private fun updateUiWithResult(validCodeResult: ValidCodeResult?) {
         if (validCodeResult?.success == true) {
             val bitmap = BitmapUtil.stringToBitmap(validCodeResult.validCodeData?.img)
-            et_verification_code.setVerificationCode(bitmap)
+            Glide.with(this)
+                .load(bitmap)
+                .into(binding.ivVerification)
         } else {
             updateValidCode()
-            et_verification_code.setVerificationCode(null)
+            //et_verification_code.setVerificationCode(null)
             ToastUtil.showToastInCenter(
                 this@RegisterActivity,
                 getString(R.string.get_valid_code_fail_point)
@@ -397,7 +633,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun updateUiWithResult(smsResult: SmsResult?) {
-        btn_send_sms.isEnabled = true
+        binding.btnSendSms.isEnabled = true
         if (smsResult?.success == true) {
             showSmeTimer300()
         } else {
@@ -417,19 +653,20 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 override fun run() {
                     Handler(Looper.getMainLooper()).post {
                         if (sec-- > 0) {
-                            btn_send_sms.isEnabled = false
-                            btn_send_sms.text = getString(R.string.send_timer, sec)
-                            btn_send_sms.setTextColor(
+                            binding.btnSendSms.isEnabled = false
+                            //btn_send_sms.text = getString(R.string.send_timer, sec)
+                            binding.btnSendSms.text = "${sec}s"
+                            binding.btnSendSms.setTextColor(
                                 ContextCompat.getColor(
                                     this@RegisterActivity,
-                                    R.color.colorBlue
+                                    R.color.colorGrayDark
                                 )
                             )
                         } else {
                             stopSmeTimer()
-                            btn_send_sms.isEnabled = true
-                            btn_send_sms.text = getString(R.string.get_verification_code)
-                            btn_send_sms.setTextColor(Color.WHITE)
+                            binding.btnSendSms.isEnabled = true
+                            binding.btnSendSms.text = getString(R.string.get_verification_code)
+                            binding.btnSendSms.setTextColor(Color.WHITE)
                         }
                     }
                 }
@@ -438,8 +675,8 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             e.printStackTrace()
 
             stopSmeTimer()
-            btn_send_sms.isEnabled = true
-            btn_send_sms.text = getString(R.string.get_verification_code)
+            binding.btnSendSms.isEnabled = true
+            binding.btnSendSms.text = getString(R.string.get_verification_code)
         }
     }
 
@@ -456,6 +693,37 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         dialog.setNegativeButtonText(null)
         dialog.setCanceledOnTouchOutside(false)
         dialog.setCancelable(false)
-        dialog.show()
+        dialog.show(supportFragmentManager, null)
     }
+
+
+    fun TextView.makeLinks(vararg links: Pair<String, View.OnClickListener>) {
+        val spannableString = SpannableString(this.text)
+        var startIndexOfLink = -1
+        for (link in links) {
+            val clickableSpan = object : ClickableSpan() {
+                override fun updateDrawState(textPaint: TextPaint) {
+                    textPaint.color = textPaint.linkColor
+                    textPaint.isUnderlineText = false
+                }
+
+                override fun onClick(view: View) {
+                    Selection.setSelection((view as TextView).text as Spannable, 0)
+                    view.invalidate()
+                    link.second.onClick(view)
+                }
+            }
+            startIndexOfLink = this.text.toString().indexOf(link.first, startIndexOfLink + 1)
+            if (startIndexOfLink == -1) continue // todo if you want to verify your texts contains links text
+            spannableString.setSpan(
+                clickableSpan, startIndexOfLink, startIndexOfLink + link.first.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+        this.movementMethod =
+            LinkMovementMethod.getInstance() // without LinkMovementMethod, link can not click
+        this.setText(spannableString, TextView.BufferType.SPANNABLE)
+    }
+
+
 }

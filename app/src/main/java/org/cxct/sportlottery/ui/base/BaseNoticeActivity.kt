@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.base
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
@@ -14,7 +15,7 @@ import kotlin.reflect.KClass
 abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
     BaseActivity<T>(clazz) {
 
-    private var mNoticeButton: TextView? = null
+    private var mNoticeButton: ImageView? = null
     private var noticeCount: Int? = null
     private var isGuest: Boolean? = null
 
@@ -48,7 +49,7 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
     }
 
     //有 child activity 給定 notice button 顯示
-    fun setupNoticeButton(noticeButton: TextView) {
+    fun setupNoticeButton(noticeButton: ImageView) {
         mNoticeButton = noticeButton
         mNoticeButton?.setOnClickListener {
             startActivity(
@@ -63,10 +64,10 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
             updateNoticeCount(it.size)
         })
 
-        viewModel.userInfo.observe(this, {
+        viewModel.userInfo.observe(this) {
             //是否测试用户（0-正常用户，1-游客，2-内部测试）
             updateUserIdentity(it?.testFlag)
-        })
+        }
     }
 
     private fun updateNoticeCount(noticeCount: Int) {
@@ -84,9 +85,7 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
     }
 
     private fun updateNoticeButton() {
-
-        mNoticeButton?.visibility = if (noticeCount ?: 0 > 0 && isGuest == false) View.VISIBLE else View.GONE
-        mNoticeButton?.text = if (noticeCount ?: 0 < 10) noticeCount.toString() else "N"
+        mNoticeButton?.setImageResource(if (noticeCount ?: 0 > 0 && isGuest == false) R.drawable.icon_bell_with_red_dot else R.drawable.icon_bell)
     }
 
 }

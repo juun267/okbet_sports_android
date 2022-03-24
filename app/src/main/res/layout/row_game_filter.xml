@@ -17,7 +17,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginStart="10dp"
-        android:background="@color/transparent"
+        android:background="@color/transparent_black_0"
         android:padding="4dp"
         android:src="@drawable/ic_arrowleft"
         app:layout_constraintBottom_toBottomOf="@id/game_filter_back_row"
@@ -95,7 +95,7 @@
         app:layout_constraintBottom_toBottomOf="@id/game_filter_back_row"
         app:layout_constraintEnd_toEndOf="@id/game_filter_back_row"
         app:layout_constraintTop_toTopOf="@id/game_filter_back_row"
-        app:queryBackground="@color/transparent"
+        app:queryBackground="@color/transparent_black_0"
         app:queryHint="@string/game_filter_row_search_hint"
         app:searchIcon="@drawable/ic_iconsearch" />
 

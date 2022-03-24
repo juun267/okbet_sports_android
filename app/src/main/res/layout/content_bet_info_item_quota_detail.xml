@@ -24,10 +24,11 @@
         app:layout_constraintTop_toTopOf="@+id/et_bet">
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/tv_check_maximum_limit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:gravity="right"
             android:text="@string/bet_info_check_maximum_limit"
             android:textColor="@color/colorBlue"
             android:textSize="@dimen/textSize12sp"
@@ -76,7 +77,7 @@
             android:layout_height="wrap_content"
             android:gravity="end|center"
             android:orientation="vertical"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -51,10 +51,13 @@
         android:id="@+id/kv_keyboard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp"
         android:layout_marginBottom="20dp"
         android:background="@color/colorWhite"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:keyBackground="@drawable/bg_frame_6dp_white" />
+        android:keyBackground="@drawable/bg_frame_6dp_white"
+        android:paddingBottom="6dp" />
 
 </LinearLayout>

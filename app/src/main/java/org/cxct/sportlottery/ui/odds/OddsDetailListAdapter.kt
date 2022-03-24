@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import kotlinx.android.synthetic.main.home_game_table_4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.OddSpreadForSCO
 import org.cxct.sportlottery.network.common.GameType
@@ -53,13 +52,14 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
     var betInfoList: MutableList<BetInfoListData> = mutableListOf()
         set(value) {
             field = value
-            oddsDetailDataList.forEach { data ->
+            oddsDetailDataList.forEachIndexed { index, data ->
                 data.oddArrayList.forEach { odd ->
                     odd?.isSelected = betInfoList.any { it.matchOdd.oddsId == odd?.id }
-
+                    if (onOddClickListener.clickOdd == odd) {
+                        notifyItemChanged(index)
+                    }
                 }
             }
-            notifyDataSetChanged()
         }
 
     var discount: Float = 1.0F
@@ -228,6 +228,148 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal, PlayCate.SINGLE_SEG5.ordinal,
                     PlayCate.OE.ordinal, PlayCate.OE_SEG1.ordinal, PlayCate.OE_SEG2.ordinal, PlayCate.OE_SEG3.ordinal, PlayCate.OE_SEG4.ordinal, PlayCate.OE_SEG5.ordinal
                     -> LayoutType.SINGLE_2_ITEM.layout
+
+                    PlayCate.EPS.ordinal
+                    -> LayoutType.EPS.layout
+
+                    else -> LayoutType.ONE_LIST.layout
+                }
+            }
+
+            GameType.BM -> {
+                when (viewType) {
+                    PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal,
+                    PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal,
+                    PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OE_SEG1.ordinal, PlayCate.OE_SEG2.ordinal, PlayCate.OE_SEG3.ordinal, PlayCate.OE.ordinal, PlayCate.SET_HDP.ordinal
+                    -> LayoutType.SINGLE_2_ITEM.layout
+
+                    PlayCate.EPS.ordinal
+                    -> LayoutType.EPS.layout
+
+                    else -> LayoutType.ONE_LIST.layout
+                }
+            }
+
+            GameType.AFT -> {
+                when (viewType) {
+                    PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.SINGLE_2ST.ordinal,
+                    PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal, PlayCate.HDP_SEG4.ordinal, PlayCate.HDP_1ST.ordinal, PlayCate.HDP_2ST.ordinal,
+                    PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal, PlayCate.OU_1ST.ordinal, PlayCate.OU_2ST.ordinal
+                    -> LayoutType.SINGLE_2_ITEM.layout
+
+                    PlayCate.EPS.ordinal
+                    -> LayoutType.EPS.layout
+
+                    else -> LayoutType.ONE_LIST.layout
+                }
+            }
+            GameType.BB -> {
+                when (viewType) {
+                    PlayCate.SINGLE.ordinal, PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.OU.ordinal, PlayCate.OU_1ST.ordinal,
+                    PlayCate.EXTRA_TIME.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.TG_OU_H.ordinal, PlayCate.TG_OU_C.ordinal
+                    -> LayoutType.SINGLE_2_ITEM.layout
+
+                    PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_1ST.ordinal
+                    -> LayoutType.SINGLE.layout
+
+                    PlayCate.EPS.ordinal
+                    -> LayoutType.EPS.layout
+
+                    else -> LayoutType.ONE_LIST.layout
+                }
+            }
+
+            GameType.CB -> {
+                when (viewType) {
+                    PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal,
+                    PlayCate.SINGLE_SEG5.ordinal, PlayCate.SINGLE_SEG6.ordinal, PlayCate.SINGLE_SEG7.ordinal, PlayCate.SINGLE_SEG8.ordinal, PlayCate.SINGLE_1ST.ordinal,
+                    PlayCate.HDP.ordinal, PlayCate.OU.ordinal
+                    -> LayoutType.SINGLE_2_ITEM.layout
+
+                    PlayCate.EPS.ordinal
+                    -> LayoutType.EPS.layout
+
+                    else -> LayoutType.ONE_LIST.layout
+                }
+            }
+            GameType.IH -> {
+                when (viewType) {
+                    PlayCate.HDP.ordinal, PlayCate.OU.ordinal, PlayCate.OE.ordinal, PlayCate.SINGLE_ND.ordinal
+                    -> LayoutType.SINGLE_2_ITEM.layout
+
+                    PlayCate.SINGLE.ordinal
+                    -> LayoutType.SINGLE.layout
+
+                    PlayCate.EPS.ordinal
+                    -> LayoutType.EPS.layout
+
+                    else -> LayoutType.ONE_LIST.layout
+                }
+            }
+            GameType.RB -> {
+                when (viewType) {
+                    PlayCate.SINGLE_ND.ordinal,
+                    PlayCate.HDP.ordinal, PlayCate.HDP_1ST.ordinal, PlayCate.HDP_2ST.ordinal,
+                    PlayCate.OU.ordinal, PlayCate.OU_1ST.ordinal, PlayCate.OU_2ST.ordinal,
+                    PlayCate.WM.ordinal
+                    -> LayoutType.SINGLE_2_ITEM.layout
+
+                    PlayCate.SINGLE.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.SINGLE_2ST.ordinal
+                    -> LayoutType.SINGLE.layout
+
+                    PlayCate.EPS.ordinal
+                    -> LayoutType.EPS.layout
+
+                    else -> LayoutType.ONE_LIST.layout
+                }
+            }
+
+            GameType.TT -> {
+                when (viewType) {
+                    PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal,
+                    PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal, PlayCate.HDP_SEG4.ordinal,
+                    PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal,
+                    PlayCate.SET_HDP.ordinal
+                    -> LayoutType.SINGLE_2_ITEM.layout
+
+                    PlayCate.EPS.ordinal
+                    -> LayoutType.EPS.layout
+
+                    else -> LayoutType.ONE_LIST.layout
+                }
+            }
+
+            GameType.BX -> {
+                when (viewType) {
+                    PlayCate.SINGLE.ordinal, PlayCate.OU.ordinal, PlayCate.GTD.ordinal, PlayCate.MOV.ordinal, PlayCate.MOV_UFC.ordinal, PlayCate.ROUND.ordinal, PlayCate.ROUND_UFC.ordinal
+                    -> LayoutType.SINGLE_2_ITEM.layout
+
+                    PlayCate.EPS.ordinal
+                    -> LayoutType.EPS.layout
+
+                    else -> LayoutType.ONE_LIST.layout
+                }
+            }
+
+            GameType.CK -> {
+                when (viewType) {
+                    PlayCate.SINGLE.ordinal, PlayCate.TO_WIN_THE_TOSS.ordinal, PlayCate.TOP_TEAM_BATSMAN_H.ordinal, PlayCate.TOP_TEAM_BATSMAN_C.ordinal, PlayCate.TOP_TEAM_BOWLER_H.ordinal, PlayCate.TOP_TEAM_BOWLER_C.ordinal, PlayCate.MOST_MATCH_FOURS.ordinal, PlayCate.MOST_MATCH_SIXES.ordinal,
+                    PlayCate.HIGHEST_OPENING_PARTNERSHIP.ordinal, PlayCate.RUN_AT_FALL_OF_1ST_WICKET_H.ordinal, PlayCate.RUN_AT_FALL_OF_1ST_WICKET_C.ordinal, PlayCate.WICKET_METHOD_1ST.ordinal, PlayCate.WICKET_METHOD_H_1ST.ordinal, PlayCate.WICKET_METHOD_C_1ST.ordinal,
+                    PlayCate.OVER_RUNS_2_WAY_H_1ST.ordinal, PlayCate.OVER_RUNS_2_WAY_C_1ST.ordinal,
+                    PlayCate.SINGLE_ND.ordinal, PlayCate.TWTT.ordinal, PlayCate.T_BATSMAN_H.ordinal, PlayCate.T_BATSMAN_C.ordinal,
+                    PlayCate.T_BOWLER_H.ordinal, PlayCate.T_BOWLER_C.ordinal, PlayCate.RAFO_1ST_W_H.ordinal, PlayCate.RAFO_1ST_W_C.ordinal, PlayCate.W_METHOD_1ST.ordinal,
+                    PlayCate.W_METHOD_H_1ST.ordinal, PlayCate.W_METHOD_C_1ST.ordinal, PlayCate.O_R_2_WAY_H_1ST.ordinal, PlayCate.O_R_2_WAY_C_1ST.ordinal,
+                    PlayCate.NMO_1ST_H.ordinal, PlayCate.NMO_1ST_C.ordinal, PlayCate.NMO_2ND_H.ordinal, PlayCate.NMO_2ND_C.ordinal, PlayCate.MODW_1ST_H.ordinal,
+                    PlayCate.MODW_1ST_C.ordinal, PlayCate.MODW_2ND_H.ordinal,
+                    PlayCate.MODW_2ND_C.ordinal, PlayCate.S_RAFO_1ST_W_H.ordinal, PlayCate.S_RAFO_1ST_W_C.ordinal,
+                    PlayCate.S_RAFO_2ND_W_H.ordinal, PlayCate.S_RAFO_2ND_W_C.ordinal,
+                    PlayCate.S_MR_1ST_H.ordinal, PlayCate.S_MR_1ST_C.ordinal, PlayCate.S_MR_2ND_H.ordinal, PlayCate.S_MR_2ND_C.ordinal, PlayCate.NMO_H.ordinal, PlayCate.NMO_C.ordinal,
+                    PlayCate.S_MR_H.ordinal, PlayCate.S_MR_C.ordinal, PlayCate.MOD_W_H.ordinal, PlayCate.MOD_W_C.ordinal, PlayCate.OU_2_WAY_1ST_C.ordinal, PlayCate.OU_2_WAY_1ST_H.ordinal,
+                    -> LayoutType.SINGLE_2_ITEM.layout
+
+                    PlayCate.MOST_FOUR.ordinal, PlayCate.MOST_SIX.ordinal,
+                    PlayCate.HOP.ordinal, PlayCate.FIL.ordinal
+                    -> LayoutType.SINGLE.layout
 
                     PlayCate.EPS.ordinal
                     -> LayoutType.EPS.layout
@@ -417,7 +559,11 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 }
                 GameType.TN -> {
                     tvGameName?.text = when {
-                        ( oddsDetail.gameType.contains("-SEG") && !oddsDetail.gameType.contains("CHAMP") && !oddsDetail.gameType.contains("CS-SEG"))|| oddsDetail.gameType.contains("-1ST") || oddsDetail.gameType.contains(
+                        (oddsDetail.gameType.contains("-SEG") && !oddsDetail.gameType.contains("CHAMP") && !oddsDetail.gameType.contains(
+                            "CS-SEG"
+                        )) || oddsDetail.gameType.contains(
+                            "-1ST"
+                        ) || oddsDetail.gameType.contains(
                             "-2ST"
                         ) -> tvGameName?.context?.let { getTitle(it, oddsDetail) }
                         else -> tvGameName?.context?.let { getTitleNormal(oddsDetail) }
@@ -425,11 +571,18 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 }
                 GameType.VB -> {
                     tvGameName?.text = when {
-                        oddsDetail.gameType.contains("-SEG") -> tvGameName?.context?.let { getTitle(it, oddsDetail) }
+                        oddsDetail.gameType.contains("-SEG") -> tvGameName?.context?.let {
+                            getTitle(
+                                it,
+                                oddsDetail
+                            )
+                        }
                         else -> tvGameName?.context?.let { getTitleNormal(oddsDetail) }
                     }
                 }
-
+                else -> {
+                    tvGameName?.text = getTitleNormal(oddsDetail)
+                }
             }
 
 
@@ -564,6 +717,140 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     }
                 }
 
+
+                GameType.BM -> {
+                    when (viewType) {
+                        PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal,
+                        PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal,
+                        PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OE_SEG1.ordinal, PlayCate.OE_SEG2.ordinal, PlayCate.OE_SEG3.ordinal, PlayCate.OE.ordinal, PlayCate.SET_HDP.ordinal
+                        -> forSingle(oddsDetail, 2)
+
+                        PlayCate.EPS.ordinal
+                        -> forEPS(oddsDetail)
+
+                        else -> oneList(oddsDetail)
+                    }
+                }
+
+                GameType.AFT -> {
+                    when (viewType) {
+                        PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.SINGLE_2ST.ordinal,
+                        PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal, PlayCate.HDP_SEG4.ordinal, PlayCate.HDP_1ST.ordinal, PlayCate.HDP_2ST.ordinal,
+                        PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal, PlayCate.OU_1ST.ordinal, PlayCate.OU_2ST.ordinal
+                        -> forSingle(oddsDetail, 2)
+
+                        PlayCate.EPS.ordinal
+                        -> forEPS(oddsDetail)
+
+                        else -> oneList(oddsDetail)
+                    }
+                }
+                GameType.BB -> {
+                    when (viewType) {
+                        PlayCate.SINGLE.ordinal, PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.OU.ordinal, PlayCate.OU_1ST.ordinal,
+                        PlayCate.EXTRA_TIME.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.TG_OU_H.ordinal, PlayCate.TG_OU_C.ordinal
+                        -> forSingle(oddsDetail, 2)
+
+                        PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_1ST.ordinal
+                        -> forSingle(oddsDetail, 3)
+
+                        PlayCate.EPS.ordinal
+                        -> forEPS(oddsDetail)
+
+                        else -> oneList(oddsDetail)
+                    }
+                }
+
+                GameType.CB -> {
+                    when (viewType) {
+                        PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal,
+                        PlayCate.SINGLE_SEG5.ordinal, PlayCate.SINGLE_SEG6.ordinal, PlayCate.SINGLE_SEG7.ordinal, PlayCate.SINGLE_SEG8.ordinal, PlayCate.SINGLE_1ST.ordinal,
+                        PlayCate.HDP.ordinal, PlayCate.OU.ordinal
+                        -> forSingle(oddsDetail, 2)
+
+                        PlayCate.EPS.ordinal
+                        -> forEPS(oddsDetail)
+
+                        else -> oneList(oddsDetail)
+                    }
+                }
+                GameType.IH -> {
+                    when (viewType) {
+                        PlayCate.HDP.ordinal, PlayCate.OU.ordinal, PlayCate.OE.ordinal
+                        -> forSingle(oddsDetail, 2)
+
+                        PlayCate.SINGLE.ordinal
+                        -> forSingle(oddsDetail, 3)
+
+                        PlayCate.EPS.ordinal
+                        -> forEPS(oddsDetail)
+
+                        else -> oneList(oddsDetail)
+                    }
+                }
+                GameType.RB -> {
+                    when (viewType) {
+                        PlayCate.SINGLE_ND.ordinal,
+                        PlayCate.HDP.ordinal, PlayCate.HDP_1ST.ordinal, PlayCate.HDP_2ST.ordinal,
+                        PlayCate.OU.ordinal, PlayCate.OU_1ST.ordinal, PlayCate.OU_2ST.ordinal,
+                        PlayCate.WM.ordinal
+                        -> forSingle(oddsDetail, 2)
+
+                        PlayCate.SINGLE.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.SINGLE_2ST.ordinal
+                        -> forSingle(oddsDetail, 3)
+
+                        PlayCate.EPS.ordinal
+                        -> forEPS(oddsDetail)
+
+                        else -> oneList(oddsDetail)
+                    }
+                }
+
+                GameType.TT -> {
+                    when (viewType) {
+                        PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal,
+                        PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal, PlayCate.HDP_SEG4.ordinal,
+                        PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal,
+                        PlayCate.SET_HDP.ordinal
+                        -> forSingle(oddsDetail, 2)
+
+                        PlayCate.EPS.ordinal
+                        -> forEPS(oddsDetail)
+
+                        else -> oneList(oddsDetail)
+                    }
+                }
+
+                GameType.BX -> {
+                    when (viewType) {
+                        PlayCate.SINGLE.ordinal, PlayCate.OU.ordinal, PlayCate.GTD.ordinal, PlayCate.MOV.ordinal, PlayCate.MOV_UFC.ordinal, PlayCate.ROUND.ordinal, PlayCate.ROUND_UFC.ordinal
+                        -> forSingle(oddsDetail, 2)
+
+                        PlayCate.EPS.ordinal
+                        -> forEPS(oddsDetail)
+
+                        else -> oneList(oddsDetail)
+                    }
+                }
+
+                GameType.CK -> {
+                    when (viewType) {
+                        PlayCate.SINGLE.ordinal, PlayCate.TO_WIN_THE_TOSS.ordinal, PlayCate.TOP_TEAM_BATSMAN_H.ordinal, PlayCate.TOP_TEAM_BATSMAN_C.ordinal, PlayCate.TOP_TEAM_BOWLER_H.ordinal, PlayCate.TOP_TEAM_BOWLER_C.ordinal, PlayCate.MOST_MATCH_FOURS.ordinal, PlayCate.MOST_MATCH_SIXES.ordinal,
+                        PlayCate.HIGHEST_OPENING_PARTNERSHIP.ordinal, PlayCate.RUN_AT_FALL_OF_1ST_WICKET_H.ordinal, PlayCate.RUN_AT_FALL_OF_1ST_WICKET_C.ordinal, PlayCate.WICKET_METHOD_1ST.ordinal, PlayCate.WICKET_METHOD_H_1ST.ordinal, PlayCate.WICKET_METHOD_C_1ST.ordinal,
+                        PlayCate.OVER_RUNS_2_WAY_H_1ST.ordinal, PlayCate.OVER_RUNS_2_WAY_C_1ST.ordinal
+                        -> forSingle(oddsDetail, 2)
+
+                        PlayCate.MOST_FOUR.ordinal, PlayCate.MOST_SIX.ordinal,
+                        PlayCate.HOP.ordinal, PlayCate.FIL.ordinal
+                        -> forSingle(oddsDetail, 3)
+
+                        PlayCate.EPS.ordinal
+                        -> forEPS(oddsDetail)
+
+                        else -> oneList(oddsDetail)
+                    }
+                }
+
                 else -> oneList(oddsDetail)
             }
 
@@ -590,21 +877,45 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
         }
 
-        private fun getTitle(context: Context, oddsDetail: OddsDetailListData): SpannableStringBuilder {
+        private fun getTitle(
+            context: Context,
+            oddsDetail: OddsDetailListData
+        ): SpannableStringBuilder {
             val textColor = ContextCompat.getColor(context, R.color.colorGray)
             val gameTitleContentBuilder = SpannableStringBuilder()
-            val statusWord =  oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)?.split("-")
-            val playName = oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)?.replace("-${statusWord?.last()?:""}","")
-            val stWordSpan = SpannableString(statusWord?.last()?:"")
+            val statusWord =
+                oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)
+                    ?.split("-")
+            val playName =
+                oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)
+                    ?.replace("-${statusWord?.last() ?: ""}", "")
+            val stWordSpan = SpannableString(statusWord?.last() ?: "")
             statusWord?.last()?.length?.let {
-                stWordSpan.setSpan(StyleSpan(Typeface.NORMAL), 0, it, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                stWordSpan.setSpan(ForegroundColorSpan(textColor), 0, it, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                stWordSpan.setSpan(AbsoluteSizeSpan(14,true), 0, it, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                stWordSpan.setSpan(
+                    StyleSpan(Typeface.NORMAL),
+                    0,
+                    it,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                stWordSpan.setSpan(
+                    ForegroundColorSpan(textColor),
+                    0,
+                    it,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                stWordSpan.setSpan(
+                    AbsoluteSizeSpan(14, true),
+                    0,
+                    it,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
             }
             val playNameSpan = SpannableString("$playName ")
             playName?.length?.let {
-                playNameSpan.setSpan(StyleSpan(Typeface.BOLD), 0,
-                    it, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                playNameSpan.setSpan(
+                    StyleSpan(Typeface.BOLD), 0,
+                    it, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
             }
             gameTitleContentBuilder.append(playNameSpan).append(stWordSpan)
 
@@ -613,27 +924,40 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         private fun getTitleNormal(oddsDetail: OddsDetailListData): SpannableStringBuilder {
             val gameTitleContentBuilder = SpannableStringBuilder()
-            val title = oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)
+            val title =
+                oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)
             val playNameSpan = SpannableString(title)
             title?.length?.let {
-                playNameSpan.setSpan(StyleSpan(Typeface.BOLD), 0, it, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                playNameSpan.setSpan(
+                    StyleSpan(Typeface.BOLD),
+                    0,
+                    it,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
             }
             gameTitleContentBuilder.append(playNameSpan)
 
             return gameTitleContentBuilder
         }
 
+        private val epsAdapter by lazy { TypeEPSAdapter() }
+
         private fun forEPS(oddsDetail: OddsDetailListData) {
             val vpEps = itemView.findViewById<ViewPager2>(R.id.vp_eps)
 
             vpEps?.apply {
-                adapter = TypeEPSAdapter(
+                adapter = epsAdapter
+                epsAdapter.setData(
                     oddsDetail,
                     onOddClickListener,
                     oddsType
                 )
                 getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
-                OverScrollDecoratorHelper.setUpOverScroll(getChildAt(0) as RecyclerView, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
+                OverScrollDecoratorHelper.setUpOverScroll(
+                    getChildAt(0) as RecyclerView,
+                    OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL
+                )
+                setCurrentItem(oddsDetail.oddArrayList.indexOf(onOddClickListener.clickOdd), false)
             }
 
             itemView.findViewById<IndicatorView>(R.id.idv_eps).setupWithViewPager2(vpEps)
@@ -756,10 +1080,12 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             oddsDetail.oddArrayList.forEach {
                 it?.let { odd ->
-                    val stringArray: List<String>? = odd.name?.replace("\\s".toRegex(), "")?.split("-")
+                    val stringArray: List<String>? =
+                        odd.name?.replace("\\s".toRegex(), "")?.split("-")
                     stringArray?.let { stringArrayNotNull ->
 
-                        if ((stringArrayNotNull.getOrNull(0)?.toInt() ?: 0) > (stringArrayNotNull.getOrNull(1)?.toInt()
+                        if ((stringArrayNotNull.getOrNull(0)?.toInt()
+                                ?: 0) > (stringArrayNotNull.getOrNull(1)?.toInt()
                                 ?: 0)
                         ) {
                             homeList.add(odd)

@@ -2,13 +2,14 @@ package org.cxct.sportlottery.network
 
 import android.content.Context
 import org.cxct.sportlottery.BuildConfig
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 
 object Constants {
-    val SERVER_URL_LIST = listOf("app66app.com", "app99app.vip", "app66app.vip", "app88app.vip")
+    val SERVER_URL_LIST = listOf("aioweiyaaaf.com", "app99app.vip", "app66app.vip", "app88app.vip")
     var currentServerUrl: String? = null  //當前選擇的的 server url (後續 CheckAppUpdate API 會用到)
     private var mBaseUrl = ""
 
@@ -52,9 +53,12 @@ object Constants {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> "https://cxisport.com/sports-rule/#/"
-                LanguageManager.Language.VI -> "https://cxisport.com/sports-rule/#/vi"
-                else -> "https://cxisport.com/sports-rule/#/us"
+                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/?platform="+context.getString(
+                    R.string.app_name)
+                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/?platform="+context.getString(
+                    R.string.app_name)
+                else -> getBaseUrl()+"sports-rule/#/us/?platform="+context.getString(
+                    R.string.app_name)
             }
 
         } catch (e: UnsupportedEncodingException) {
@@ -62,6 +66,121 @@ object Constants {
             null
         }
     }
+
+    //關於我們
+    fun getAboutUsUrl(context: Context): String? {
+
+        return try {
+            when (getSelectLanguage(context)) {
+                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/about-us?platform="+context.getString(
+                    R.string.app_name)
+                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/about-us?platform="+context.getString(
+                    R.string.app_name)
+                else -> getBaseUrl()+"sports-rule/#/us/about-us?platform="+context.getString(
+                    R.string.app_name)
+            }
+
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    //博彩责任
+    fun getDutyRuleUrl(context: Context): String? {
+
+        return try {
+            when (getSelectLanguage(context)) {
+                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/responsibility?platform="+context.getString(
+                    R.string.app_name)
+                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/responsibility?platform="+context.getString(
+                    R.string.app_name)
+                else -> getBaseUrl()+"sports-rule/#/us/responsibility?platform="+context.getString(
+                    R.string.app_name)
+            }
+
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    //隐私权政策
+    fun getPrivacyRuleUrl(context: Context): String? {
+
+        return try {
+            when (getSelectLanguage(context)) {
+                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/privacy-policy?platform="+context.getString(
+                    R.string.app_name)
+                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/privacy-policy?platform="+context.getString(
+                    R.string.app_name)
+                else -> getBaseUrl()+"sports-rule/#/us/privacy-policy?platform"+context.getString(
+                        R.string.app_name)
+            }
+
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    //规则与条款
+    fun getAgreementRuleUrl(context: Context): String? {
+
+        return try {
+            when (getSelectLanguage(context)) {
+                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/terms-conditions?platform="+context.getString(
+                    R.string.app_name)
+                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/terms-conditions?platform="+context.getString(
+                    R.string.app_name)
+                else -> getBaseUrl()+"sports-rule/#/us/terms-conditions?platform="+context.getString(
+                    R.string.app_name)
+            }
+
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    //常见问题
+    fun getFAQsUrl(context: Context): String? {
+
+        return try {
+            when (getSelectLanguage(context)) {
+                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/faq?platform="+context.getString(
+                    R.string.app_name)
+                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/faq?platform="+context.getString(
+                    R.string.app_name)
+                else -> getBaseUrl()+"sports-rule/#/us/faq?platform"+context.getString(
+                    R.string.app_name)
+            }
+
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    //联系我们
+    fun getContactUrl(context: Context): String? {
+
+        return try {
+            when (getSelectLanguage(context)) {
+                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/contact-us?platform="+context.getString(
+                    R.string.app_name)
+                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/contact-us?platform="+context.getString(
+                    R.string.app_name)
+                else -> getBaseUrl()+"sports-rule/#/us/contact-us?platform"+context.getString(
+                    R.string.app_name)
+            }
+
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
 
     //獲取檢查APP是否有更新版本的URL //輪詢 SERVER_URL_LIST 成功的那組 serverUrl 用來 download .apk
     fun getCheckAppUpdateUrl(serverUrl: String?): String {
@@ -101,6 +220,8 @@ object Constants {
 
     //index
     const val INDEX_LOGIN = "/api/front/index/login"
+    const val INDEX_SEND_LOGIN_DEVICE_SMS = "/api/front/index/sendLoginDeviceSms"
+    const val INDEX_VALIDATE_LOGIN_DEVICE_SMS = "/api/front/index/validateLoginDeviceSms"
     const val INDEX_LOGOUT = "/api/front/index/logout"
     const val INDEX_CONFIG = "/api/front/index/config.json" //获取配置信息
     const val INDEX_VALIDATE_CODE = "/api/front/index/getvalidatecode" //获取验证码
@@ -137,6 +258,9 @@ object Constants {
     const val SPORT_MENU = "/api/front/sport/mobile/menu"
     const val SPORT_QUERY = "/api/front/sport/query"
     const val SPORT_COUPON_MENU = "/api/front/sport/coupon/menu"
+    const val SPORT_SEARCH_ENGINE = "/api/front/sport/searchEngine"
+    const val SPORT_MENU_FILTER = "/api/front/sport/menu/list"
+
 
 
     const val MYFAVORITE_QUERY = "/api/front/myFavorite/query"
@@ -167,6 +291,8 @@ object Constants {
     const val USER_RECHARGE_ADD = "/api/front/userrech/add"
     const val USER_RECHARGE_ONLINE_PAY = "/api/front/userrech/onlinepay"
     const val USER_RECHARGE_LIST = "/api/front/userrech/list"
+    const val USER_BILL_LIST = "/api/front/sportBill/query"
+
 
     //user
     const val USER_INFO = "/api/front/user/info"
@@ -177,10 +303,17 @@ object Constants {
     const val USER_UPDATE_FUND_PWD = "/api/front/user/updatefundpwd" //更新资金密码
     const val USER_WITHDRAW_INFO = "/api/front/user/setWdUserInfo" //設置提款資料
     const val USER_CREDIT_CIRCLE_HISTORY = "/api/front/user/credit/circle/history"
+    const val USER_BET_LIMIT = "/api/front/user/setPerBetLimit"
+    const val USER_FROZE = "/api/front/user/setFroze"
 
     //upload image
     const val UPLOAD_IMG = "/api/upload/image" //上传图片
     const val UPLOAD_VERIFY_PHOTO = "/api/front/user/uploadVerifyPhoto" //上傳實名制文件
+
+    //簡訊碼驗證
+    const val GET_TWO_FACTOR_STATUS = "/api/front/user/getTwoFactorValidateStatus" //取得双重验证状态(success: true 验证成功, false 需重新验证手机)
+    const val SEND_TWO_FACTOR = "/api/front/index/sendTwoFactor" //发送双重验证讯息
+    const val VALIDATE_TWO_FACTOR = "/api/front/index/validateTwoFactor" //双重验证校验
 
     //bank
     const val BANK_MY = "/api/front/user/bank/my"
@@ -190,6 +323,7 @@ object Constants {
     //withdraw
     const val WITHDRAW_ADD = "/api/front/userwithdraw/add"
     const val WITHDRAW_LIST = "/api/front/userwithdraw/list"
+    const val WITHDRAW_UW_CHECK = "/api/front/userwithdraw/getUwCheck"
 
     //feedback
     const val FEEDBACK_QUERYLIST = "/api/front/feedback/querylist"
@@ -214,6 +348,11 @@ object Constants {
     const val MATCH_CATEGORY_SPECIAL_MATCH = "/api/front/matchCategory/special/match/query" //查詢主頁精選賽事
     const val MATCH_CATEGORY_SPECIAL_MENU = "/api/front/matchCategory/special/menu/query" //查詢主頁精選賽事菜单
     const val MATCH_CATEGORY_QUERY = "/api/front/matchCategory/query" //(新)查询参赛表
+
+    //credential
+    const val CREDENTIAL_INITIALIZE = "/api/front/realid/initialize"
+    const val CREDENTIAL_RESULT = "/api/front/realid/checkresult"
+
     //timeout
     const val CONNECT_TIMEOUT: Long = 15 * 1000
     const val WRITE_TIMEOUT: Long = 15 * 1000

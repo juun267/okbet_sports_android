@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.withdraw
 
+import android.annotation.SuppressLint
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -21,13 +22,14 @@ import org.cxct.sportlottery.network.money.config.Detail
 import org.cxct.sportlottery.network.money.config.UwType
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
+import org.cxct.sportlottery.network.withdraw.uwcheck.CheckList
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.util.ArithUtil
-import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.MD5Util
-import org.cxct.sportlottery.util.VerifyConstUtil
+import org.cxct.sportlottery.util.*
 import java.math.RoundingMode
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.math.min
 
 
@@ -95,6 +97,11 @@ class WithdrawViewModel(
         get() = _networkPointMsg
     private var _networkPointMsg = MutableLiveData<String>()
 
+    //電話號碼錯誤訊息
+    val phoneNumberMsg: LiveData<String>
+        get() = _phoneNumberMsg
+    private var _phoneNumberMsg = MutableLiveData<String>()
+
     //提款密碼錯誤訊息
     val withdrawPasswordMsg: LiveData<String>
         get() = _withdrawPasswordMsg
@@ -151,9 +158,21 @@ class WithdrawViewModel(
     private var _addCryptoCardList = MutableLiveData<List<Detail>>()
 
     //判斷Tab是不是要顯示
-    private var _withdrawTabIsShow = MutableLiveData<Event<Boolean>>()
-    val withdrawSystemOperation: LiveData<Event<Boolean>>
+    private var _withdrawTabIsShow = MutableLiveData<List<String>>()
+    val withdrawSystemOperation: LiveData<List<String>>
         get() = _withdrawTabIsShow
+
+    private var _needCheck = MutableLiveData<Boolean>()
+    val needCheck: LiveData<Boolean>
+        get() = _needCheck
+
+    private var _commissionCheckList = MutableLiveData<List<CheckList>>()
+    val commissionCheckList: LiveData<List<CheckList>>
+        get() = _commissionCheckList
+
+    private var _deductMoney = MutableLiveData<Double>()
+    val deductMoney: LiveData<Double>
+        get() = _deductMoney
 
     private var uwBankType: UwType? = null
 
@@ -222,6 +241,20 @@ class WithdrawViewModel(
         }
     }
 
+    fun getUwCheck(){
+        viewModelScope.launch {
+            loading()
+            doNetwork(androidContext) {
+                OneBoSportApi.withdrawService.getWithdrawUwCheck()
+            }?.let { result ->
+                _needCheck.postValue(result.t?.needCheck ?: false)
+                _deductMoney.postValue(result.t?.total?.deductMoney ?: 0.0)
+                _commissionCheckList.postValue(result.t?.checkList ?: listOf())
+                hideLoading()
+            }
+        }
+    }
+
     private fun getWithdrawCardList() {
         viewModelScope.launch {
             loading()
@@ -251,7 +284,7 @@ class WithdrawViewModel(
             viewModelScope.launch {
                 loading()
                 doNetwork(androidContext) {
-                    val userId = userInfoRepository.userInfo.firstOrNull()?.userId.toString()
+                    val userId = userInfoRepository.userInfo!!.firstOrNull()?.userId.toString()
                     OneBoSportApi.bankService.bankAdd(createBankAddRequest(bankName, subAddress, cardNo, fundPwd, userInfo.value?.fullName, id, userId, uwType, bankCode))
                 }?.let { result ->
                     _bankAddResult.value = result
@@ -277,10 +310,9 @@ class WithdrawViewModel(
             }
             TransferType.E_WALLET.type -> {
                 checkCreateName(fullName ?: "")
-                checkBankCardNumber(cardNo)
-                checkNetWorkPoint(subAddress ?: "")
+                checkPhoneNumber(cardNo)
                 checkWithdrawPassword(withdrawPassword)
-                checkBankCardData()
+                checkEWalletCardData()
             }
             else -> false
         }
@@ -346,11 +378,11 @@ class WithdrawViewModel(
                     getWithdrawCardList()
                     //判斷Tab要不要顯示
                     val withdrawConfig = moneyRechCfgData.uwTypes
-                    val bankWithdrawSystemOperation = withdrawConfig.find { it.type == TransferType.BANK.type }?.open.toString() == FLAG_OPEN
-                    val cryptoWithdrawSystemOperation = withdrawConfig.find { it.type == TransferType.CRYPTO.type }?.open.toString() == FLAG_OPEN
-                    val operation = bankWithdrawSystemOperation && cryptoWithdrawSystemOperation
-                    _withdrawTabIsShow.value = Event(operation)
-
+                    val tabList: ArrayList<String> = arrayListOf()
+                    if(withdrawConfig.find { it.type == TransferType.CRYPTO.type }?.open.toString() == FLAG_OPEN) tabList.add(TransferType.CRYPTO.type)
+                    if(withdrawConfig.find { it.type == TransferType.BANK.type }?.open.toString() == FLAG_OPEN) tabList.add(TransferType.BANK.type)
+                    if(withdrawConfig.find { it.type == TransferType.E_WALLET.type }?.open.toString() == FLAG_OPEN) tabList.add(TransferType.E_WALLET.type)
+                    _withdrawTabIsShow.postValue(tabList)
                 }
             }
         }
@@ -387,6 +419,16 @@ class WithdrawViewModel(
         return true
     }
 
+    private fun checkEWalletCardData(): Boolean {
+        if (createNameErrorMsg.value != "")
+            return false
+        if (phoneNumberMsg.value != "")
+            return false
+        if (withdrawPasswordMsg.value != "")
+            return false
+        return true
+    }
+
     private fun checkBankCardDeleteData(): Boolean {
         if (withdrawPasswordMsg.value != "")
             return false
@@ -410,6 +452,13 @@ class WithdrawViewModel(
     fun checkNetWorkPoint(networkPoint: String) {
         _networkPointMsg.value = when {
             networkPoint.isEmpty() -> androidContext.getString(R.string.error_input_empty)
+            else -> ""
+        }
+    }
+
+    fun checkPhoneNumber(phoneNumber: String) {
+        _phoneNumberMsg.value = when {
+            phoneNumber.isEmpty() -> androidContext.getString(R.string.error_input_empty)
             else -> ""
         }
     }
@@ -464,8 +513,8 @@ class WithdrawViewModel(
     fun getWithdrawHint() {
         val limit = getWithdrawAmountLimit()
         _withdrawAmountHint.value = String.format(
-            androidContext.getString(R.string.hint_please_enter_withdraw_amount), limit.min.toLong(), limit.max.toLong()
-        )
+            androidContext.getString(R.string.hint_please_enter_withdraw_amount),
+            limit.min.toLong(), limit.max.toLong()) + sConfigData?.systemCurrency
     }
 
     fun getWithdrawAmountLimit(): WithdrawAmountLimit {
@@ -507,8 +556,9 @@ class WithdrawViewModel(
                 _withdrawRateHint.value = String.format(
                     androidContext.getString(R.string.withdraw_handling_fee_hint),
                     ArithUtil.toMoneyFormat(cardConfig?.feeRate?.times(100)),
-                    ArithUtil.toMoneyFormat((cardConfig?.feeRate)?.times(withdrawAmount ?: 0.0))
-                )
+                    ArithUtil.toMoneyFormat((cardConfig?.feeRate)?.times(withdrawAmount ?: 0.0)),
+
+                ) + sConfigData?.systemCurrency
             }
             TransferType.CRYPTO -> {
                 withdrawCard?.let {
@@ -516,11 +566,13 @@ class WithdrawViewModel(
                     val withdrawNeedAmount = if (withdrawAmount != 0.0 && withdrawAmount != null) cardConfig?.let { withdrawAmount.times(it.exchangeRate ?: 0.0) } ?: 0.0 else 0.0
                     _withdrawCryptoAmountHint.value = String.format(
                         androidContext.getString(R.string.withdraw_crypto_amount_hint),
-                        ArithUtil.toMoneyFormat(withdrawNeedAmount)
+                        ArithUtil.toMoneyFormat(withdrawNeedAmount),
+                        sConfigData?.systemCurrency
                     )
                     _withdrawCryptoFeeHint.value = String.format(
                         androidContext.getString(R.string.withdraw_crypto_fee_hint),
-                        ArithUtil.toMoneyFormat(fee)
+                        ArithUtil.toMoneyFormat(fee),
+                        sConfigData?.systemCurrency
                     )
                     _withdrawRateHint.value = String.format(
                         androidContext.getString(R.string.withdraw_crypto_exchange_rate_hint),
@@ -558,12 +610,17 @@ class WithdrawViewModel(
         val cryptoCardExistence = result.bankCardList?.any { card -> card.uwType == TransferType.CRYPTO.type } == true
         val cryptoWithdrawSwitch = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.open == MoneyRechCfg.Switch.ON.code
 
+        val eWalletCardExistence = result.bankCardList?.any { card -> card.uwType == TransferType.E_WALLET.type } == true
+        val eWalletWithdrawSwitch = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.E_WALLET.type }?.open == MoneyRechCfg.Switch.ON.code
+
         val bankCardExist = bankCardExistence && bankWithdrawSwitch
         val cryptoCardExist = cryptoCardExistence && cryptoWithdrawSwitch
+        val eWalletCardExist = eWalletCardExistence && eWalletWithdrawSwitch
 
         val moneyCardExistSet = mutableSetOf<MoneyCardExist>().apply {
             add(MoneyCardExist(TransferType.BANK, bankCardExist))
             add(MoneyCardExist(TransferType.CRYPTO, cryptoCardExist))
+            add(MoneyCardExist(TransferType.E_WALLET, eWalletCardExist))
         }
 
         _moneyCardExist.value = moneyCardExistSet
@@ -575,17 +632,11 @@ class WithdrawViewModel(
     fun checkBankCardCount() {
         var showAddCryptoCard = false //是否顯示虛擬幣
         val showAddBankCard: Boolean // 是否顯示銀行卡
+        val showAddEWalletCard: Boolean // 是否顯示eWallet
 
         //虛擬幣是否可以被提款或新增卡片
         val cryptoOpen = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.open == MoneyRechCfg.Switch.ON.code
-
-        val bankCardCountLimit = uwBankType?.detailList?.first()?.countLimit
-        val bankCardCount = bankCardList.value?.count { it.transferType == TransferType.BANK || it.transferType == TransferType.E_WALLET }
-        //銀行卡是否可以被提款或新增卡片
-        val bankOpen = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.BANK.type || it.type == TransferType.E_WALLET.type }?.open == MoneyRechCfg.Switch.ON.code
-
         val cryptoCardLimitList = checkCryptoCanBind()
-
         run breaking@{
             if (!cryptoOpen) {
                 showAddCryptoCard = false
@@ -601,13 +652,29 @@ class WithdrawViewModel(
             }
         }
 
+        //銀行卡是否可以被提款或新增卡片
+        val bankCardCountLimit = uwBankType?.detailList?.first()?.countLimit
+        val bankCardCount = bankCardList.value?.count { it.transferType == TransferType.BANK}
+        val bankOpen = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.BANK.type}?.open == MoneyRechCfg.Switch.ON.code
         showAddBankCard = when {
             !bankOpen -> false
             bankCardCountLimit == null -> true
             bankCardCount == null -> true
             else -> bankCardCount < bankCardCountLimit
         }
-        _addMoneyCardSwitch.value = TransferTypeAddSwitch(showAddBankCard, showAddCryptoCard)
+        
+        //E-wallet是否可以被提款或新增卡片
+        val eWalletOpen = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.E_WALLET.type }?.open == MoneyRechCfg.Switch.ON.code
+        val eWalletCardCountLimit = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.E_WALLET.type }?.detailList?.first()?.countLimit
+        val eWalletCardCount = bankCardList.value?.count { it.transferType == TransferType.E_WALLET }
+        showAddEWalletCard = when{
+            !eWalletOpen -> false
+            eWalletCardCountLimit == null -> true
+            eWalletCardCount == null -> true
+            else -> eWalletCardCount < eWalletCardCountLimit
+        }
+
+        _addMoneyCardSwitch.value = TransferTypeAddSwitch(showAddBankCard, showAddCryptoCard, showAddEWalletCard)
     }
 
     data class CryptoCardCountLimit(val channel: String, var count: Int, var canBind: Boolean? = null)

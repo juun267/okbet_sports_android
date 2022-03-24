@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorWhite1"
+    tools:context=".ui.feedback.FeedbackMainActivity">
+
+    <include layout="@layout/view_base_tool_bar_no_drawer" />
+
+    <org.cxct.sportlottery.ui.common.CustomTabLayout
+        android:id="@+id/custom_tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:firstTabText="@string/self_limit_account_login_limit"
+        app:secondTabText="@string/self_limit_per_bet_limit"/>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/vpSelfLimit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

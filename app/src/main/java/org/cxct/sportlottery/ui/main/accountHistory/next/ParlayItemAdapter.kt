@@ -15,10 +15,9 @@ import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.*
 import org.cxct.sportlottery.network.bet.settledDetailList.MatchOdd
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.getOdds
-import org.cxct.sportlottery.util.setOddFormat
+import org.cxct.sportlottery.util.*
 
 class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
@@ -61,7 +60,7 @@ class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(D
         when (holder) {
             is ItemViewHolder -> {
                 val data = getItem(position) as ParlayDataItem.Item
-                holder.bind(data.matchOdd, oddsType, gameType)
+                data.matchOdd.oddsType?.let { holder.bind(data.matchOdd, it, gameType) }
             }
 
             is NoDataViewHolder -> {
@@ -82,16 +81,33 @@ class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(D
 
         private val roundAdapter by lazy { RoundAdapter() }
 
-        fun bind(matchOdd: MatchOdd, oddsType: OddsType, gameType: String) {
+        fun bind(matchOdd: MatchOdd, oddsType: String, gameType: String) {
 
             binding.gameType = gameType
             binding.matchOdd = matchOdd
 
-            matchOdd.let {
-                val odds = getOdds(matchOdd, oddsType)
-                binding.tvOdd.setOddFormat(odds)
+            binding.tvTime.text = TimeUtil.timeFormat(matchOdd.startTime, TimeUtil.YMD_HM_FORMAT)
+
+            matchOdd.apply {
+                val odds = getOdds(matchOdd, matchOdd.oddsType.toString())
+                binding.playContent.setPlayContent(
+                    playName,
+                    spread,
+                    TextUtil.formatForOdd(odds)
+                )
+
+                when (gameType) {
+                    GameType.FT.key, GameType.BK.key -> {
+                        if (rtScore?.isNotEmpty() == true)
+                            binding.tvScore.text = String.format(
+                                binding.tvScore.context.getString(R.string.brackets),
+                                rtScore
+                            )
+                    }
+                }
+                binding.tvTeamNames.text = "$homeName v $awayName"
                 val scoreList = mutableListOf<String>()
-                it.playCateMatchResultList?.map { scoreData ->
+                playCateMatchResultList?.map { scoreData ->
                     scoreList.add(
                         "${
                             scoreData.statusNameI18n?.get(

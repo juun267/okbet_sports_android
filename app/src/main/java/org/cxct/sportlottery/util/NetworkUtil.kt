@@ -29,8 +29,10 @@ object NetworkUtil {
             val networks = cm.allNetworks
             for (network in networks) {
                 val caps = cm.getNetworkCapabilities(network)
-                if (caps.hasTransport(NetworkCapabilities.TRANSPORT_VPN)) {
-                    isAvailable = true
+                if (caps != null) {
+                    if (caps.hasTransport(NetworkCapabilities.TRANSPORT_VPN)) {
+                        isAvailable = true
+                    }
                 }
             }
         }

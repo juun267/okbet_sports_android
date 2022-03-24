@@ -19,6 +19,8 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MatchOddUtil.updateEpsDiscount
 import org.cxct.sportlottery.util.SvgUtil
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.TimeUtil.DAY_FORMAT
+import org.cxct.sportlottery.util.TimeUtil.VI_MD_FORMAT
 
 class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -33,7 +35,7 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
     var discount: Float = 1.0F
         set(value) {
             dataList.forEach { epsLeagueOddsItem ->
-                epsLeagueOddsItem.matchOdds?.forEach { matchOddsItem ->
+                epsLeagueOddsItem.leagueOdds?.matchOdds?.forEach { matchOddsItem ->
                     matchOddsItem.oddsEps?.updateEpsDiscount(field, value)
                 }
             }
@@ -68,8 +70,9 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
                 itemView.ll_content.layoutParams = params
             }
             itemView.tv_date.text = when (LanguageManager.getSelectLanguage(itemView.context)) {
-                LanguageManager.Language.VI -> "${itemView.context.getString(TimeUtil.setupDayOfWeekVi(item.date))} ${TimeUtil.stampToViMD(item.date)}"
-                else -> "${TimeUtil.stampToMD(item.date)}  ${itemView.context.getString(TimeUtil.setupDayOfWeek(item.date))}"
+                LanguageManager.Language.VI -> "${TimeUtil.setupDayOfWeekVi(itemView.context, item.date)} ${TimeUtil.timeFormat(item.date, VI_MD_FORMAT)}"
+                LanguageManager.Language.EN -> "${TimeUtil.setupDayOfWeek(itemView.context, item.date)} ${TimeUtil.timeFormat(item.date, DAY_FORMAT)} ${TimeUtil.monthFormat(itemView.context, item.date)}"
+                else -> "${TimeUtil.setupDayOfWeekVi(itemView.context, item.date)} ${TimeUtil.timeFormat(item.date, DAY_FORMAT)} ${TimeUtil.monthFormat(itemView.context, item.date)}"
             }
         }
     }
@@ -92,16 +95,16 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
         fun bind(item: EpsLeagueOddsItem, mOddsType: OddsType, epsOddListener: EpsOddListener) {
             itemView.apply {
                 ll_league_title.setOnClickListener {
-                    rv_league_odd_list.visibility = if(rv_league_odd_list.visibility == View.VISIBLE){View.GONE} else{View.VISIBLE}
+                    rv_league_odd_list.visibility = if(rv_league_odd_list.visibility == View.VISIBLE){View.GONE} else {View.VISIBLE}
                     item.isClose = !item.isClose
                     epsOddListener.clickListenerLeague(item)
                 }
 
-                item.league?.name?.let {
+                item.leagueOdds?.league?.name?.let {
                     tv_league_title.text = it
                 }
 
-                item.league?.categoryIcon?.let { iconSvg ->
+                item.leagueOdds?.league?.categoryIcon?.let { iconSvg ->
                     if (iconSvg.isNotEmpty()){
                         val countryIcon = SvgUtil.getSvgDrawable(context, iconSvg)
                         iv_country.setImageDrawable(countryIcon)
@@ -118,7 +121,7 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
 
             itemView.rv_league_odd_list.apply {
                 adapter = epsListV2Adapter.apply {
-                    dataList = filterEpsOddsList(item.matchOdds)
+                    dataList = filterEpsOddsList(item.leagueOdds?.matchOdds)
                     oddsType = mOddsType
                 }
             }
@@ -127,10 +130,24 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
         private fun filterEpsOddsList(matchOddsItem: List<MatchOddsItem>?): MutableList<EpsOdds> {
             val epsOddsList = mutableListOf<EpsOdds>()
             matchOddsItem?.forEach {
-                epsOddsList.add(EpsOdds(matchInfo = it.matchInfo, epsItem = null, isTitle = true))
+                epsOddsList.add(
+                    EpsOdds(
+                        betPlayCateNameMap = it.betPlayCateNameMap,
+                        matchInfo = it.matchInfo,
+                        epsItem = null,
+                        isTitle = true
+                    )
+                )
 
-                it.oddsEps?.eps?.forEach { EPSItem ->
-                    epsOddsList.add(EpsOdds(matchInfo = it.matchInfo, epsItem = EPSItem, isTitle = false))
+                it.oddsEps?.eps?.forEach { epsItem ->
+                    epsOddsList.add(
+                        EpsOdds(
+                            betPlayCateNameMap = it.betPlayCateNameMap,
+                            matchInfo = it.matchInfo,
+                            epsItem = epsItem,
+                            isTitle = false
+                        )
+                    )
                 }
             }
             return epsOddsList
@@ -190,11 +207,11 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
 
     class EpsOddListener(
         val clickListenerLeague: (item: EpsLeagueOddsItem) -> Unit,
-        val clickListenerBet: (odd: Odd, matchInfo: MatchInfo) -> Unit,
+        val clickListenerBet: (odd: Odd, matchInfo: MatchInfo, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?) -> Unit,
         val clickBetListenerInfo: (matchInfo: MatchInfo) -> Unit
     ) {
         fun onClickLeague(item: EpsLeagueOddsItem) = clickListenerLeague(item)
-        fun onClickBet(odd: Odd, matchInfo: MatchInfo) = clickListenerBet(odd, matchInfo)
+        fun onClickBet(odd: Odd, matchInfo: MatchInfo, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?) = clickListenerBet(odd, matchInfo, betPlayCateNameMap)
         fun onClickInfo(matchInfo: MatchInfo) = clickBetListenerInfo(matchInfo)
     }
 }

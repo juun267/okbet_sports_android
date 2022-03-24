@@ -11,4 +11,8 @@ data class LeagueChangeEvent(
     override val eventType: String? = EventType.LEAGUE_CHANGE.value,
     @Json(name = "leagueIdList")
     val leagueIdList: List<String>?,
-) : ServiceEventType
+    @Json(name = "matchIdList")
+    val matchIdList: List<String>?,
+    @Json(name = "gameType")
+    val gameType: String?,
+    ) : ServiceEventType

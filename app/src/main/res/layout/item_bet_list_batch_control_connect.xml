@@ -18,13 +18,24 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ll_control_connect"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite2">
+
+        <ImageView
+            android:id="@+id/iv_bet_lock"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_bet_lock"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/ll_connect"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorWhite2"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:orientation="vertical"
@@ -82,9 +93,9 @@
 
             <EditText
                 android:id="@+id/et_bet"
-                android:layout_width="0dp"
+                android:layout_width="213dp"
                 android:layout_marginStart="16dp"
-                android:layout_height="40dp"
+                android:layout_height="44dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="6"
@@ -94,25 +105,26 @@
                 android:maxLength="7"
                 android:textStyle="bold"
                 android:paddingStart="10dp"
-                android:textColor="@color/colorBlackLight"
+                android:textColor="@color/colorBlue"
                 android:textColorHint="@color/colorSilverLight"
                 android:textSize="@dimen/textSize16sp"
+                android:letterSpacing="0.05"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_parlay_type"
                 app:layout_constraintWidth_percent="0.442" />
+
 
             <View
                 android:id="@+id/et_clickable"
                 android:layout_width="0dp"
+                android:layout_height="44dp"
                 android:layout_marginStart="16dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginTop="8dp"
                 android:layout_weight="6"
+                tools:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_parlay_type"
-                app:layout_constraintWidth_percent="0.442" />
-
+                app:layout_constraintEnd_toEndOf="@+id/et_bet"/>
 
             <TextView
                 android:id="@+id/tv_symbol_count"
@@ -243,15 +255,6 @@
                 tools:visibility="visible" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <ImageView
-            android:id="@+id/iv_bet_lock"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/ic_bet_lock"
-            android:visibility="gone"
-            tools:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

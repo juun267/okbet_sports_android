@@ -1,17 +1,21 @@
 package org.cxct.sportlottery.util
 
+import android.annotation.SuppressLint
+import android.graphics.Typeface
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.common.GameMatchStatus
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil.MD_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.MD_HMS_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
@@ -42,16 +46,30 @@ fun TextView.setDateTimeNoYear(timeStamp: Long?) {
     text = TimeUtil.timeFormat(timeStamp, MD_HMS_FORMAT)
 }
 
-
 @BindingAdapter("gameType")
 fun TextView.setGameType(gameType: String?) {
+    if (gameType == null) {
+        visibility = View.GONE
+        return
+    }
     text = when (gameType) {
         GameType.FT.key -> context.getString(GameType.FT.string)
         GameType.BK.key -> context.getString(GameType.BK.string)
         GameType.TN.key -> context.getString(GameType.TN.string)
         GameType.VB.key -> context.getString(GameType.VB.string)
+        GameType.BM.key -> context.getString(GameType.BM.string)
+        GameType.TT.key -> context.getString(GameType.TT.string)
+        GameType.BX.key -> context.getString(GameType.BX.string)
+        GameType.CB.key -> context.getString(GameType.CB.string)
+        GameType.CK.key -> context.getString(GameType.CK.string)
+        GameType.BB.key -> context.getString(GameType.BB.string)
+        GameType.RB.key -> context.getString(GameType.RB.string)
+        GameType.AFT.key -> context.getString(GameType.AFT.string)
+        GameType.MR.key -> context.getString(GameType.MR.string)
+        GameType.GF.key -> context.getString(GameType.GF.string)
         else -> ""
     }
+
 }
 
 @BindingAdapter("parlayType")
@@ -59,15 +77,15 @@ fun TextView.setPlayCateName(parlayType: String?) {
 
     parlayType?.let {
         text = when (LanguageManager.getSelectLanguage(MultiLanguagesApplication.appContext)) {
-            LanguageManager.Language.ZH -> TextUtil.replaceParlayByC(it)
-            else -> it
+            LanguageManager.Language.ZH -> TextUtil.getParlayShowName(this.context, it)
+            else -> TextUtil.getParlayShowName(this.context, it)
         }
     }
 }
 
 @BindingAdapter("dayOfWeek")
 fun TextView.setWeekDay(timeStamp: Long?) {
-    text = context.getString(TimeUtil.setupDayOfWeek(timeStamp))
+    text = TimeUtil.setupDayOfWeek(context, timeStamp)
 }
 
 @BindingAdapter("dayOfWeek")
@@ -110,9 +128,9 @@ fun TextView.setBetReceiptAmount(itemData: BetResult) {
 fun TextView.setBetParlayReceiptAmount(itemData: BetResult, parlayNum: Int?) {
     text = when (itemData.status) {
         else -> if (parlayNum == 1) {
-            itemData.stake?.let { TextUtil.formatBetQuota(it) }
+            itemData.stake?.let { TextUtil.formatMoney(it) }
         } else {
-            itemData.stake?.let { "${TextUtil.formatBetQuota(it)} * $parlayNum" }
+            itemData.stake?.let { "${TextUtil.formatMoney(it)} * $parlayNum" }
         }
     }
 }
@@ -188,9 +206,9 @@ fun TextView.setStatus(status: Int?) {
         text = when (it) {
             0 -> context.getString(R.string.uncheck) //未确认
             1 -> context.getString(R.string.undone) //未结算
-            2 -> context.getString(R.string.win_all) //全赢
+            2 -> context.getString(R.string.win) //全赢
             3 -> context.getString(R.string.win_half) //赢半
-            4 -> context.getString(R.string.lose_all) //全输
+            4 -> context.getString(R.string.lose) //全输
             5 -> context.getString(R.string.lose_half) //输半
             6 -> context.getString(R.string.draw) //和
             7 -> context.getString(R.string.canceled) //已取消
@@ -364,4 +382,27 @@ fun EditText.countTextAmount(textAmount: (Int) -> Unit) {
             }
         }
     })
+}
+
+fun TextView.setTextTypeFace(type: Int) {
+    apply {
+        typeface = Typeface.create(this.typeface, type)
+    }
+}
+
+fun TextView.setPlayContent(
+    playName: String?,
+    spread: String?,
+    formatForOdd: String?
+) {
+    val playNameStr = if (!playName.isNullOrEmpty()) "<font color=#333333>${playName} </font> " else ""
+    val spreadStr = if (!spread.isNullOrEmpty()) "<font color=#B73A20>$spread</font> " else ""
+
+    text = HtmlCompat.fromHtml(
+        playNameStr +
+                spreadStr +
+                "<font color=#666666>@ </font> " +
+                "<font color=#B73A20>$formatForOdd </font> "
+        , HtmlCompat.FROM_HTML_MODE_LEGACY
+    )
 }

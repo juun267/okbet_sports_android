@@ -25,6 +25,10 @@ data class MatchOdd(
     val odds: Double,
     @Json(name = "hkOdds")
     val hkOdds: Double,
+    @Json(name = "malayOdds")
+    var malayOdds: Double,
+    @Json(name = "indoOdds")
+    var indoOdds: Double,
     @Json(name = "oddsId")
     val oddsId: String,
     @Json(name = "playCateId")
@@ -40,5 +44,9 @@ data class MatchOdd(
     @Json(name = "startTime")
     val startTime: Long?,
     @Json(name = "status")
-    val status: Int
+    val status: Int,
+    @Json(name = "oddsType")
+    val oddsType: String,
+    @Json(name = "rtScore")
+    val rtScore: String?,
 ): Parcelable

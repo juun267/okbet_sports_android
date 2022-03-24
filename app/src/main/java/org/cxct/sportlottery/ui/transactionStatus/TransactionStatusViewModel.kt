@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
-import org.cxct.sportlottery.network.bet.list.Row
+import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
@@ -38,6 +38,12 @@ class TransactionStatusViewModel(
             getBetList(true)
         }
 
+    var statusList: List<Int>? = BetRecordType.WAIT_SETTLEMENT.code.toList()
+        set(value) {
+            field = value
+            getBetList(true)
+        }
+
     val loading: LiveData<Boolean>
         get() = _loading
     private val _loading = MutableLiveData<Boolean>()
@@ -51,15 +57,22 @@ class TransactionStatusViewModel(
         get() = _betListData
     private val _betListData = MutableLiveData<BetListData>()
 
+    val responseFailed: LiveData<Boolean>
+        get() = _responseFailed
+    private val _responseFailed = MutableLiveData<Boolean>()
 
     //獲取系統公告
     fun getAnnouncement() {
         if (isLogin.value == true) {
+            loading()
             viewModelScope.launch {
                 doNetwork(androidContext) {
                     val typeList = arrayOf(1)
                     OneBoSportApi.messageService.getPromoteNotice(typeList)
-                }?.let { result -> _messageListResult.postValue(result) }
+                }?.let { result ->
+                    _messageListResult.postValue(result)
+                    hideLoading()
+                }
             }
         } else {
             _messageListResult.value = null
@@ -68,6 +81,8 @@ class TransactionStatusViewModel(
 
     private val pageSize = 20
     private var betListRequesting = false
+    private var requestCount = 0
+    private val requestMaxCount = 2
 
     //獲取交易狀況資料(未結算)
     fun getBetList(firstPage: Boolean = false) {
@@ -84,20 +99,30 @@ class TransactionStatusViewModel(
                 OneBoSportApi.betService.getBetList(betListRequest)
             }?.let { result ->
                 betListRequesting = false
+                if (result.success) {
+                    requestCount = 0
+                    val rowList =
+                        if (page == 1) mutableListOf()
+                        else betListData.value?.row?.toMutableList() ?: mutableListOf()
+                    result.rows?.let { rowList.addAll(it.apply { }) }
+
+                    _betListData.value =
+                        BetListData(
+                            rowList,
+                            loginRepository.mOddsType.value ?: OddsType.HK,
+                            result.other?.totalAmount ?: 0.0,
+                            page,
+                            (rowList.size >= (result.total ?: 0))
+                        )
+                    loginRepository.updateTransNum(result.total ?: 0)
+                } else {
+                    if (result.code == NetWorkResponseType.REQUEST_TOO_FAST.code && requestCount < requestMaxCount) {
+                        requestCount += 1
+                        _responseFailed.postValue(true)
+                    }
+                }
+
                 hideLoading()
-                val rowList =
-                    if (page == 1) mutableListOf<Row>()
-                    else betListData.value?.row?.toMutableList() ?: mutableListOf<Row>()
-                result.rows?.let { rowList.addAll(it.apply { }) }
-                _betListData.value =
-                    BetListData(
-                        rowList,
-                        loginRepository.mOddsType.value ?: OddsType.EU,
-                        result.other?.totalAmount ?: 0,
-                        page,
-                        (rowList.size >= (result.total ?: 0))
-                    )
-                loginRepository.updateTransNum(result.total ?: 0)
             }
         }
     }
@@ -105,7 +130,7 @@ class TransactionStatusViewModel(
     private fun createUnSettlementBetListRequest(page: Int): BetListRequest {
         return BetListRequest(
             championOnly = 0,
-            BetRecordType.UNSETTLEMENT.code,
+            statusList = statusList,
             page = page,
             gameType = gameType,
             pageSize = pageSize

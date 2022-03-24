@@ -2,10 +2,14 @@ package org.cxct.sportlottery
 
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Configuration
+import androidx.preference.PreferenceManager
 import cn.jpush.android.api.JPushInterface
 import com.github.jokar.multilanguages.library.MultiLanguage
-import org.cxct.sportlottery.db.SportRoomDatabase
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.manager.NetworkStatusManager
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.repository.*
@@ -33,11 +37,13 @@ import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.favorite.MyFavoriteViewModel
 import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.profileCenter.creditrecord.CreditRecordViewModel
+import org.cxct.sportlottery.ui.selflimit.SelfLimitViewModel
 import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.ui.statistics.StatisticsViewModel
 import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusViewModel
 import org.cxct.sportlottery.ui.vip.VipViewModel
 import org.cxct.sportlottery.ui.withdraw.WithdrawViewModel
+import org.cxct.sportlottery.util.AppManager
 import org.cxct.sportlottery.util.LanguageManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -45,40 +51,46 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import timber.log.Timber
 import timber.log.Timber.DebugTree
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import org.cxct.sportlottery.ui.game.quick.TestViewModel
+import org.cxct.sportlottery.ui.permission.GooglePermissionViewModel
+
+
 
 
 /**
  * App 內部切換語系
  */
 class MultiLanguagesApplication : Application() {
-    companion object {
-        lateinit var appContext: Context
-        const val UUID_DEVICE_CODE = "uuidDeviceCode"
-        const val UUID = "uuid"
-    }
+    //private var userInfoData : UserInfo?= null
+    private var _userInfo = MutableStateFlow<UserInfo?>(null)
+    val userInfo = _userInfo.asStateFlow()
+    private var isNewsShowed = false
+
 
     private val viewModelModule = module {
-
         viewModel { SplashViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { MoneyRechViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
         viewModel { MainViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { LoginViewModel(get(), get(), get(), get()) }
-        viewModel { RegisterViewModel(get(), get(), get(), get()) }
+        viewModel { LoginViewModel(get(), get(), get(), get(), get()) }
+        viewModel { RegisterViewModel(get(), get(), get(), get(), get()) }
         viewModel { SettlementViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { BetRecordViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { InfoCenterViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { HelpCenterViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { WithdrawViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { ProfileModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { ProfileModel(get(), get(), get(), get(), get(), get(), get(), get()) }
         viewModel { ModifyProfileInfoViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { SettingPasswordViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { FeedbackViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { SelfLimitViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { FinanceViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { ProfileCenterViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
         viewModel { VersionUpdateViewModel(get(), get(), get(), get()) }
         viewModel { MoneyTransferViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { GameViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { MaintenanceViewModel(get(), get(), get(), get(), get()) }
+        viewModel { GameViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { MaintenanceViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { OtherBetRecordViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { VipViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { AccountHistoryViewModel(get(), get(), get(), get(), get(), get()) }
@@ -86,29 +98,28 @@ class MultiLanguagesApplication : Application() {
         viewModel { MyFavoriteViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { CreditRecordViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { StatisticsViewModel(get(), get(), get(), get()) }
+        viewModel { GooglePermissionViewModel(get(), get(), get()) }
+        viewModel { TestViewModel(get(), get(), get(), get()) }
     }
 
     private val repoModule = module {
-        single { UserInfoRepository(get(), get()) }
-        single { LoginRepository(get(), get()) }
+        single { UserInfoRepository(get()) }
+        single { LoginRepository(get()) }
         single { SportMenuRepository() }
         single { SettlementRepository() }
         single { InfoCenterRepository() }
-        single { MoneyRepository(get()) }
+        single { MoneyRepository() }
         single { BetInfoRepository(get()) }
-        single { AvatarRepository(get(), get()) }
+        single { AvatarRepository(get()) }
         single { FeedbackRepository() }
         single { HostRepository(get()) }
         single { ThirdGameRepository() }
-        single { WithdrawRepository(get(), get()) }
+        single { WithdrawRepository(get()) }
         single { PlayQuotaComRepository() }
         single { MyFavoriteRepository() }
+        single { SelfLimitRepository() }
     }
 
-    private val dbModule = module {
-        single { SportRoomDatabase.getDatabase(get()) }
-        single { get<SportRoomDatabase>().userInfoDao() }
-    }
 
     private val serviceModule = module {
         factory { ServiceBroadcastReceiver(get()) }
@@ -130,6 +141,9 @@ class MultiLanguagesApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         appContext = applicationContext
+        instance = this
+        AppManager.init(this)
+        myPref = PreferenceManager.getDefaultSharedPreferences(applicationContext)
 
         MultiLanguage.init { context ->
             //返回自己本地保存选择的语言设置
@@ -143,7 +157,6 @@ class MultiLanguagesApplication : Application() {
                 listOf(
                     viewModelModule,
                     repoModule,
-                    dbModule,
                     serviceModule
                 )
             )
@@ -167,8 +180,14 @@ class MultiLanguagesApplication : Application() {
 
     //極光推播
     private fun initJPush() {
-        JPushInterface.setDebugMode(true) //参数为 true 表示打开调试模式，可看到 sdk 的日志。
+        JPushInterface.setDebugMode(false) //参数为 true 表示打开调试模式，可看到 sdk 的日志。
         JPushInterface.init(this)
+
+        //参数为 true 表示打开调试模式，可看到 sdk 的日志。
+        //[Martin] 拔掉JAnalytics功能是因為上架被阻擋
+//        JAnalyticsInterface.init(this);
+//        JAnalyticsInterface.initCrashHandler(this);
+//        JAnalyticsInterface.setDebugMode(false);
     }
 
     private fun setupDeviceCode() {
@@ -178,5 +197,53 @@ class MultiLanguagesApplication : Application() {
                 .edit()
                 .putString(UUID, java.util.UUID.randomUUID().toString())
                 .apply()
+    }
+
+    fun saveUserInfo(userInfoData: UserInfo?){
+        _userInfo.value = userInfoData
+    }
+    fun userInfo():UserInfo?{
+        return _userInfo.value
+    }
+
+    fun isNewsShow():Boolean{
+        return isNewsShowed
+    }
+
+    fun setIsNewsShow(show:Boolean){
+        this.isNewsShowed = show
+    }
+    companion object {
+        private var myPref: SharedPreferences? = null
+        lateinit var appContext: Context
+        const val UUID_DEVICE_CODE = "uuidDeviceCode"
+        const val UUID = "uuid"
+        private var instance: MultiLanguagesApplication? = null
+
+        fun saveSearchHistory(searchHistory: MutableList<String>?) {
+            this.searchHistory = searchHistory
+        }
+
+        var searchHistory: MutableList<String>?
+            get() {
+                val searchHistoryJson =  myPref!!.getString("search_history", "")
+                val gson = Gson()
+                val type = object : TypeToken<MutableList<String>?>() {}.type
+                var searchHistoryList: MutableList<String>?  = gson.fromJson(searchHistoryJson, type)
+                return searchHistoryList
+            }
+            set(searchHistoryList) {
+                val gson = Gson()
+                val searchHistoryJson = gson.toJson(searchHistoryList)
+                val editor = myPref!!.edit()
+                editor.putString("search_history", searchHistoryJson)
+                editor.apply()
+            }
+
+        fun getInstance(): MultiLanguagesApplication? {
+            if (instance == null) throw IllegalStateException("Application not be created yet.")
+            return instance
+        }
+
     }
 }

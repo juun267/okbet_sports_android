@@ -1,9 +1,10 @@
 package org.cxct.sportlottery.ui.main.accountHistory.next
 
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -20,9 +21,12 @@ import org.cxct.sportlottery.network.bet.settledDetailList.MatchOdd
 import org.cxct.sportlottery.network.bet.settledDetailList.Other
 import org.cxct.sportlottery.network.bet.settledDetailList.Row
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.transactionStatus.ParlayType
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.TextUtil.getParlayShowName
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
 
 class AccountHistoryNextAdapter(
@@ -64,12 +68,15 @@ class AccountHistoryNextAdapter(
         adapterScope.launch {
             val items = listOf(DataItem.TitleBar) + when {
                 list.isNullOrEmpty() -> listOf(DataItem.NoData)
-                isLastPage -> list.map { DataItem.Item(it) } + listOf(DataItem.Footer) + listOf(DataItem.BackToTop)
+                isLastPage -> list.map { DataItem.Item(it) } + listOf(DataItem.Footer) + listOf(
+                    DataItem.BackToTop
+                )
                 else -> list.map { DataItem.Item(it) }
             }
 
             withContext(Dispatchers.Main) { //update in main ui thread
                 submitList(items)
+                scrollToTopListener.onClick()
             }
         }
     }
@@ -132,8 +139,8 @@ class AccountHistoryNextAdapter(
             is DataItem.TitleBar -> ItemType.TITLE_BAR.ordinal
             is DataItem.Item -> {
                 when (getItem(position).parlayType) {
-                    "1C1" -> ItemType.ITEM.ordinal
-                    "OUTRIGHT" -> ItemType.OUTRIGHT.ordinal
+                    ParlayType.SINGLE.key -> ItemType.ITEM.ordinal
+                    ParlayType.OUTRIGHT.key -> ItemType.OUTRIGHT.ordinal
                     else -> ItemType.PARLAY.ordinal
                 }
             }
@@ -150,19 +157,29 @@ class AccountHistoryNextAdapter(
         private val parlayAdapter by lazy { ParlayItemAdapter() }
 
         fun bind(row: Row, oddsType: OddsType) {
-            binding.matchOdd = row.matchOdds?.firstOrNull()
             binding.row = row
-            binding.tvParlayType.text = row.parlayType?.replace("C", "串")
 
-            binding.rvParlay.apply {
-                adapter = parlayAdapter
-                layoutManager = LinearLayoutManager(itemView.context, RecyclerView.VERTICAL, false)
-                parlayAdapter.addFooterAndSubmitList(row.matchOdds, false) //TODO Cheryl: 是否需要換頁
-                parlayAdapter.oddsType = oddsType
-                parlayAdapter.gameType = row.gameType ?: ""
+            binding.apply {
+                matchOdd = row.matchOdds?.firstOrNull()
+                tvParlayType.text = getParlayShowName(itemView.context, row.parlayType)
+                tvDetail.paint.flags = Paint.UNDERLINE_TEXT_FLAG
+                tvDetail.isVisible = (row.parlayComsDetailVOs ?: emptyList()).isNotEmpty()
+                tvDetail.setOnClickListener {
+                    val dialog = row.parlayComsDetailVOs?.let { list ->
+                        ComboDetailDialog(it.context, list)
+                    }
+                    dialog?.show()
+                }
+                rvParlay.apply {
+                    adapter = parlayAdapter
+                    layoutManager =
+                        LinearLayoutManager(itemView.context, RecyclerView.VERTICAL, false)
+                    parlayAdapter.addFooterAndSubmitList(row.matchOdds, false) //TODO Cheryl: 是否需要換頁
+                    parlayAdapter.oddsType = oddsType
+                    parlayAdapter.gameType = row.gameType ?: ""
+                }
+                executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
             }
-
-            binding.executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
         }
 
         companion object {
@@ -188,11 +205,23 @@ class AccountHistoryNextAdapter(
             binding.row = row
             binding.matchOdd = first
 
-            first?.let {
-                val odds = getOdds(first, oddsType)
-                binding.tvOdd.setOddFormat(odds)
-            }
+            first?.apply {
+                first.oddsType?.let {
+                    binding.playContent.setPlayContent(
+                        playName,
+                        spread,
+                        odds?.let { TextUtil.formatForOdd(it) }
+                    )
+                }
+                binding.tvGameTypePlayCate.text = "${GameType.getGameTypeString(binding.tvGameTypePlayCate.context, row.gameType)} $playCateName"
 
+                binding.tvTeamNames.text = String.format(binding.tvTeamNames.context.getString(R.string.match_names_2), homeName, awayName)
+
+                startTime?.let {
+                    binding.tvStartTime.text = TimeUtil.timeFormat(it, TimeUtil.YMD_HM_FORMAT)
+                }
+                binding.tvStartTime.isVisible = row.parlayType != ParlayType.OUTRIGHT.key
+            }
             binding.executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
         }
 
@@ -210,7 +239,6 @@ class AccountHistoryNextAdapter(
 
     }
 
-
     class ItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -222,9 +250,16 @@ class AccountHistoryNextAdapter(
             binding.row = row
             binding.matchOdd = first
 
-            first?.let {
-                val odds = getOdds(first, oddsType)
-                binding.tvOdd.setOddFormat(odds)
+            first?.let { it ->
+
+                binding.tvContent.setPlayContent(
+                    it.playName,
+                    it.spread,
+                    it.odds?.let { odd -> TextUtil.formatForOdd(odd) }
+                )
+
+                binding.tvStartTime.text = TimeUtil.timeFormat(it.startTime, TimeUtil.YMD_HM_FORMAT)
+
                 val scoreList = mutableListOf<String>()
                 it.playCateMatchResultList?.map { scoreData ->
                     scoreList.add(
@@ -238,14 +273,23 @@ class AccountHistoryNextAdapter(
                     )
                 }
 
+                when (row.gameType) {
+                    GameType.FT.key, GameType.BK.key -> {
+                        if (it.rtScore?.isNotEmpty() == true)
+                            binding.tvScore.text = String.format(
+                                binding.tvScore.context.getString(R.string.brackets),
+                                it.rtScore
+                            )
+                    }
+                }
                 binding.listScore.apply {
-                    layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
+                    layoutManager =
+                        LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
                     adapter = roundAdapter
                 }
                 roundAdapter.submitList(scoreList)
 
             }
-
 
             binding.executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
         }
@@ -266,6 +310,7 @@ class AccountHistoryNextAdapter(
         fun bind(data: Other?) {
             binding.other = data
             binding.executePendingBindings()
+            binding.tvCurrencyType.text = sConfigData?.systemCurrency
         }
 
         companion object {
@@ -281,32 +326,32 @@ class AccountHistoryNextAdapter(
 
     class TitleBarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        private val sportStatusList by lazy {
-                listOf(
-                    StatusSheetData("", itemView.context.getString(R.string.all_sport)),
-                    StatusSheetData(GameType.FT.key, itemView.context.getString(GameType.FT.string)),
-                    StatusSheetData(GameType.BK.key, itemView.context.getString(GameType.BK.string)),
-                    StatusSheetData(GameType.TN.key, itemView.context.getString(GameType.TN.string)),
-                    StatusSheetData(GameType.VB.key, itemView.context.getString(GameType.VB.string))
-                )
-        }
-        private val dateString by lazy {
-            { minusDate: Int ->
-                "${TimeUtil.getMinusDate(minusDate)} ${itemView.context.getString(TimeUtil.getMinusDayOfWeek(minusDate))}"
+        private val sportStatusList = mutableListOf<StatusSheetData>().apply {
+            this.add(StatusSheetData("", itemView.context.getString(R.string.all_sport)))
+
+            val itemList = GameType.values()
+            itemList.forEach { gameType ->
+                this.add(StatusSheetData(gameType.key, GameType.getGameTypeString(itemView.context, gameType.key)))
             }
         }
 
-        private val dateStatusList =
-            listOf(
-                StatusSheetData(TimeUtil.getMinusDate(0, YMD_FORMAT), dateString(0)),
-                StatusSheetData(TimeUtil.getMinusDate(1, YMD_FORMAT), dateString(1)),
-                StatusSheetData(TimeUtil.getMinusDate(2, YMD_FORMAT), dateString(2)),
-                StatusSheetData(TimeUtil.getMinusDate(3, YMD_FORMAT), dateString(3)),
-                StatusSheetData(TimeUtil.getMinusDate(4, YMD_FORMAT), dateString(4)),
-                StatusSheetData(TimeUtil.getMinusDate(5, YMD_FORMAT), dateString(5)),
-                StatusSheetData(TimeUtil.getMinusDate(6, YMD_FORMAT), dateString(6)),
-                StatusSheetData(TimeUtil.getMinusDate(7, YMD_FORMAT), dateString(7))
-            )
+        private val dateString by lazy {
+            { minusDate: Int ->
+                "${TimeUtil.getMinusDate(minusDate)} ${
+                    itemView.context.getString(
+                        TimeUtil.getMinusDayOfWeek(
+                            minusDate
+                        )
+                    )
+                }"
+            }
+        }
+
+        private val dateStatusList = mutableListOf<StatusSheetData>().apply {
+            for (i in 0..7) {
+                this.add(StatusSheetData(TimeUtil.getMinusDate(i, YMD_FORMAT), dateString(i)))
+            }
+        }
 
         fun bind(
             nowSelectedDate: String?,
@@ -357,13 +402,13 @@ class AccountHistoryNextAdapter(
         }
     }
 
-
     class BackToTopViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(scrollToTopListener: ScrollToTopListener) {
             itemView.btn_back_to_top.setOnClickListener {
                 scrollToTopListener.onClick()
             }
         }
+
         companion object {
             fun from(parent: ViewGroup) =
                 BackToTopViewHolder(
@@ -372,7 +417,6 @@ class AccountHistoryNextAdapter(
                 )
         }
     }
-
 
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         companion object {

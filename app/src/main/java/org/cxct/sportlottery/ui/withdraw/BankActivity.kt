@@ -38,11 +38,15 @@ class BankActivity : BaseSocketActivity<WithdrawViewModel>(WithdrawViewModel::cl
         modifyType?.let { type ->
             when (type) {
                 TransferType.BANK -> {
-                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, modifyType, null)
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, type, null)
                     mNavController.navigate(action)
                 }
                 TransferType.CRYPTO -> {
-                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, modifyType, null)
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, type, null)
+                    mNavController.navigate(action)
+                }
+                TransferType.E_WALLET -> {
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, type, null)
                     mNavController.navigate(action)
                 }
             }
@@ -62,12 +66,12 @@ class BankActivity : BaseSocketActivity<WithdrawViewModel>(WithdrawViewModel::cl
     }
 
     private fun setupBackButton() {
-        btn_back.setOnClickListener {
+        custom_tool_bar.setOnBackPressListener {
             onBackPressed()
         }
     }
 
     fun changeTitle(title: String) {
-        tv_title.text = title
+        custom_tool_bar.titleText = title
     }
 }

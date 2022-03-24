@@ -54,7 +54,7 @@ class EpsListV2Adapter :
                 isSelected = item.epsItem?.isSelected ?: false
                 setOnClickListener {
                     item.epsItem?.let { Odd ->
-                        item.matchInfo?.let { matchInfo -> clickListener.onClickBet(Odd, matchInfo) }
+                        item.matchInfo?.let { matchInfo -> clickListener.onClickBet(Odd, matchInfo,item.betPlayCateNameMap) }
                     }
                 }
                 setupOddForEPS(item.epsItem, oddsType)
@@ -82,6 +82,7 @@ class EpsListV2Adapter :
         fun bind(matchInfo: MatchInfo?, infoClickListener: EpsListAdapter.EpsOddListener) {
             itemView.tv_game_title.text = "${matchInfo?.homeName} V ${matchInfo?.awayName}"
             itemView.line.visibility = if (adapterPosition == 0) View.GONE else View.VISIBLE
+            itemView.blank.visibility = if (adapterPosition == 0) View.GONE else View.VISIBLE
             itemView.btn_info.setOnClickListener {
                 matchInfo?.let { matchInfo -> infoClickListener.onClickInfo(matchInfo) }
             }

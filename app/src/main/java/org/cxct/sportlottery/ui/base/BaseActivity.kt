@@ -5,27 +5,32 @@ import android.app.Activity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder
+import com.bigkoo.pickerview.view.OptionsPickerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.*
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.game.GameActivity
-import org.cxct.sportlottery.ui.main.MainActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.reflect.KClass
+import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.util.commonCheckDialog
 
 abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActivity() {
 
@@ -33,6 +38,8 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     private var mPromptDialog: CustomAlertDialog? = null
     private var mTokenPromptDialog: CustomAlertDialog? = null
     private var mOnNetworkExceptionListener: View.OnClickListener? = null
+    private var mPickerView: OptionsPickerView<String>? = null
+    private var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一個
 
     val viewModel: T by viewModel(clazz = clazz)
 
@@ -52,34 +59,43 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     }
 
     private fun onTokenStateChanged() {
-        viewModel.errorResultToken.observe(this, Observer {
-            showDialogLogout(it.msg)
-        })
+        viewModel.errorResultToken.observe(this) {
+            showDialogLogout(it)
+        }
     }
 
-    private fun showDialogLogout(message: String) {
-        showTokenPromptDialog(message) {
+    enum class FailType(val code: Int) {
+        MAINTENANCE(2611)
+    }
+
+    private fun showDialogLogout(result: BaseResult) {
+        showTokenPromptDialog(result.msg) {
             viewModel.doLogoutCleanUser {
-                if (sConfigData?.thirdOpen == FLAG_OPEN) MainActivity.reStart(this) else GameActivity.reStart(this)
+                if (result.code != FailType.MAINTENANCE.code) {
+                    if (sConfigData?.thirdOpen == FLAG_OPEN)
+                        MainActivity.reStart(this)
+                    else
+                        GameActivity.reStart(this)
+                }
             }
         }
     }
 
     private fun onNetworkException() {
-        viewModel.networkExceptionUnavailable.observe(this, {
+        viewModel.networkExceptionUnavailable.observe(this) {
             hideLoading()
             showErrorPromptDialog(it) { mOnNetworkExceptionListener?.onClick(null) }
-        })
+        }
 
-        viewModel.networkExceptionTimeout.observe(this, {
+        viewModel.networkExceptionTimeout.observe(this) {
             hideLoading()
             showErrorPromptDialog(it) { mOnNetworkExceptionListener?.onClick(null) }
-        })
+        }
 
-        viewModel.networkExceptionUnknown.observe(this, {
+        viewModel.networkExceptionUnknown.observe(this) {
             hideLoading()
             showErrorPromptDialog(it) { mOnNetworkExceptionListener?.onClick(null) }
-        })
+        }
     }
 
     //20210526 紀錄：call webAPI 的 exception 錯誤提示統一在 BackActivity 處理，若有需要 callback 再使用此 fun
@@ -96,7 +112,10 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     open fun loading(message: String?) {
         if (loadingView == null) {
             loadingView = layoutInflater.inflate(R.layout.layout_loading, null)
-            val params = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT)
+            val params = RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.MATCH_PARENT
+            )
             addContentView(loadingView, params)
         } else {
             loadingView?.rl_loading?.visibility = View.VISIBLE
@@ -142,9 +161,9 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
                 mTokenPromptDialog = CustomAlertDialog(this@BaseActivity).apply {
                     setTextColor(R.color.colorRed)
-                    setTitle(getString(R.string.prompt))
+                    setTitle(this@BaseActivity.getString(R.string.prompt))
                     setMessage(errorMessage)
-                    setPositiveButtonText(getString(R.string.btn_determine))
+                    setPositiveButtonText(this@BaseActivity.getString(R.string.btn_determine))
                     setNegativeButtonText(null)
                     setPositiveClickListener(View.OnClickListener {
                         positiveClickListener()
@@ -153,9 +172,9 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                     })
 
                     setCanceledOnTouchOutside(false)
-                    setCancelable(false) //不能用系統 BACK 按鈕關閉 dialog
-                    show()
+                    isCancelable = false //不能用系統 BACK 按鈕關閉 dialog
                 }
+                mTokenPromptDialog?.show(supportFragmentManager, null)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -165,6 +184,13 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     fun showPromptDialog(
         title: String? = getString(R.string.prompt),
         message: String,
+        positiveClickListener: () -> Unit?
+    ) {
+        showPromptDialog(title, message, null, positiveClickListener, false)
+    }
+    fun showPromptDialog(
+        title: String? = getString(R.string.prompt),
+        message: Spanned,
         positiveClickListener: () -> Unit?
     ) {
         showPromptDialog(title, message, null, positiveClickListener, false)
@@ -190,44 +216,42 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     fun showPromptDialog(
         title: String?,
+        errorMessageSpan: Spanned,
+        buttonText: String?,
+        positiveClickListener: () -> Unit?,
+        isError: Boolean,
+        isShowDivider: Boolean? = false
+    ) {
+        commonCheckDialog(
+            context = this,
+            fm = supportFragmentManager,
+            isError = isError,
+            isShowDivider = isShowDivider,
+            title = title,
+            errorMessageSpan = errorMessageSpan,
+            buttonText = buttonText,
+            positiveClickListener = positiveClickListener
+        )
+    }
+
+    fun showPromptDialog(
+        title: String?,
         errorMessage: String?,
         buttonText: String?,
         positiveClickListener: () -> Unit?,
         isError: Boolean,
         isShowDivider: Boolean? = false
     ) {
-        safelyUpdateLayout(Runnable {
-            try {
-                //防止跳出多個 error dialog
-                if (mPromptDialog?.isShowing == true)
-                    mPromptDialog?.dismiss()
-                if (mTokenPromptDialog?.isShowing == true) {
-                    mPromptDialog?.dismiss()
-                    return@Runnable
-                }
-
-                mPromptDialog = CustomAlertDialog(this@BaseActivity).apply {
-                    if (isError) {
-                        setTextColor(R.color.colorRed)
-                    }
-                    setShowDivider(isShowDivider)
-                    setTitle(title)
-                    setMessage(errorMessage)
-                    setPositiveButtonText(buttonText ?: getString(R.string.btn_determine))
-                    setNegativeButtonText(null)
-                    setPositiveClickListener(View.OnClickListener {
-                        positiveClickListener()
-                        mPromptDialog?.dismiss()
-                    })
-
-                    setCanceledOnTouchOutside(false)
-                    setCancelable(false) //不能用系統 BACK 按鈕關閉 dialog
-                    show()
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        })
+        commonCheckDialog(
+            context = this,
+            fm = supportFragmentManager,
+            isError = isError,
+            isShowDivider = isShowDivider,
+            title = title,
+            errorMessage = errorMessage,
+            buttonText = buttonText,
+            positiveClickListener = positiveClickListener
+        )
     }
 
     fun showBottomSheetDialog(
@@ -235,36 +259,49 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         dataList: List<StatusSheetData>,
         defaultData: StatusSheetData,
         itemClickListener: StatusSheetAdapter.ItemCheckedListener,
-        isShowSelectAll: Boolean = false,
     ) {
-        bottomSheetView.apply {
-            sheet_tv_title.text = title
+        val strList: ArrayList<String?> = arrayListOf()
+        dataList.forEach { strList.add(it.showName) }
 
-            checkbox_select_all.visibility = if (isShowSelectAll) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
+        val defaultPosition = checkDefaultPosition(dataList, defaultData)
 
-            sheet_rv_more.adapter =
-                StatusSheetAdapter(itemClickListener).apply {
-                    this.dataList = dataList
-                    this.defaultCheckedCode = defaultData.code
-                }
-
-            sheet_tv_close.setOnClickListener {
-                bottomSheet.dismiss()
-            }
+        mPickerView = OptionsPickerBuilder(this) { options1, _, _, _ ->
+            itemClickListener.onChecked(true, dataList[options1])
         }
-        bottomSheet.setContentView(bottomSheetView)
-        bottomSheet.show()
+            .setItemVisibleCount(4)
+            .setBgColor(resources.getColor(R.color.colorSilver3))
+            .setCancelColor(resources.getColor(R.color.colorBlackLight))//取消按钮文字颜色
+            .setSubmitText(resources.getString(R.string.complete))
+            .setCancelText(resources.getString(R.string.btn_cancel))
+            .build()
+        mPickerView?.setPicker(strList)
+        mPickerView?.setSelectOptions(defaultPosition)
+        mPickerView?.show()
     }
 
-    protected fun safelyUpdateLayout(runnable: Runnable) {
+    private fun checkDefaultPosition(
+        dataList: List<StatusSheetData>,
+        defaultData: StatusSheetData
+    ): Int {
+        var defaultPosition = 0
+        dataList.forEachIndexed { position, statusSheetData ->
+            if (statusSheetData.code == defaultData.code) {
+                defaultPosition = position
+            }
+        }
+        return defaultPosition
+    }
+
+    private fun safelyUpdateLayout(runnable: Runnable) {
         try {
             mLayoutHandler.post(runnable)
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    fun avoidFastDoubleClick(){
+        mIsEnabled = false
+        Handler().postDelayed({ mIsEnabled = true }, 500)
     }
 }

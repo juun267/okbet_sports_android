@@ -103,7 +103,7 @@ class SettlementViewModel(
 
     private fun setupExpandData(matchResultList: List<MatchResultData>?) {
         val expandData = mutableListOf<MatchResultData>()
-        var showMatch: Boolean = false
+        var showMatch = false
         var showDetail = false
         var nowLeague: MatchResultData? = null
         matchResultList?.apply {
@@ -124,7 +124,14 @@ class SettlementViewModel(
                             showDetail = it.matchExpanded
                         }
                     }
-                    ListType.FIRST_ITEM_FT, ListType.FIRST_ITEM_BK, ListType.FIRST_ITEM_TN, ListType.FIRST_ITEM_BM, ListType.FIRST_ITEM_VB, ListType.DETAIL -> {
+                    ListType.FIRST_ITEM_FT, ListType.FIRST_ITEM_BK, ListType.FIRST_ITEM_TN, ListType.FIRST_ITEM_BM, ListType.FIRST_ITEM_VB, ListType.DETAIL,
+                    ListType.FIRST_ITEM_TT, ListType.FIRST_ITEM_IH, ListType.FIRST_ITEM_BX, ListType.FIRST_ITEM_CB, ListType.FIRST_ITEM_CK, ListType.FIRST_ITEM_BB,
+                    ListType.FIRST_ITEM_RB, ListType.FIRST_ITEM_MR, ListType.FIRST_ITEM_GF, ListType.FIRST_ITEM_AFT -> {
+                        if (showDetail) {
+                            expandData.add(it)
+                        }
+                    }
+                    else -> {
                         if (showDetail) {
                             expandData.add(it)
                         }
@@ -156,6 +163,7 @@ class SettlementViewModel(
                         showData.add(it)
                     }
                 }
+                else -> {}
             }
         }
         _showOutrightData.value = showData
@@ -188,7 +196,7 @@ class SettlementViewModel(
         val clickedIndex = matchResultReformatted.indexOf(clickedItem)
 
         //若資料已存在則不再一次請求資料
-        if (clickedItem.matchExpanded && if (clickedIndex + 1 < matchResultReformatted.size) matchResultReformatted.get(clickedIndex + 1).dataType != listType else true) {
+        if (clickedItem.matchExpanded && if (clickedIndex + 1 < matchResultReformatted.size) matchResultReformatted.getOrNull(clickedIndex + 1)?.dataType != listType else true) {
             clickedItem.matchData?.matchInfo?.id?.let { getMatchDetail(it, clickedItem, gameType) }
         } else {
             filterToShowMatchResult()
@@ -230,6 +238,17 @@ class SettlementViewModel(
             GameType.BK.key -> ListType.FIRST_ITEM_BK
             GameType.TN.key -> ListType.FIRST_ITEM_TN
             GameType.VB.key -> ListType.FIRST_ITEM_VB
+            GameType.TT.key -> ListType.FIRST_ITEM_TT
+            GameType.IH.key -> ListType.FIRST_ITEM_IH
+            GameType.BX.key -> ListType.FIRST_ITEM_BX
+            GameType.CB.key -> ListType.FIRST_ITEM_CB
+            GameType.CK.key -> ListType.FIRST_ITEM_CK
+            GameType.BB.key -> ListType.FIRST_ITEM_BB
+            GameType.RB.key -> ListType.FIRST_ITEM_RB
+            GameType.MR.key -> ListType.FIRST_ITEM_MR
+            GameType.GF.key -> ListType.FIRST_ITEM_GF
+            GameType.AFT.key -> ListType.FIRST_ITEM_AFT
+            GameType.BM.key -> ListType.FIRST_ITEM_BM
             else -> ListType.DETAIL
         }
     }

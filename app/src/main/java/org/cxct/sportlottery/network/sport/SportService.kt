@@ -1,10 +1,12 @@
 package org.cxct.sportlottery.network.sport
-
 import org.cxct.sportlottery.network.Constants.SPORT_COUPON_MENU
 import org.cxct.sportlottery.network.Constants.SPORT_LIST
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
+import org.cxct.sportlottery.network.Constants.SPORT_MENU_FILTER
 import org.cxct.sportlottery.network.Constants.SPORT_QUERY
+import org.cxct.sportlottery.network.Constants.SPORT_SEARCH_ENGINE
 import org.cxct.sportlottery.network.sport.coupon.SportCouponMenuResult
+import org.cxct.sportlottery.network.sport.query.SearchRequest
 import org.cxct.sportlottery.network.sport.query.SportQueryRequest
 import org.cxct.sportlottery.network.sport.query.SportQueryResult
 import retrofit2.Response
@@ -29,4 +31,12 @@ interface SportService {
 
     @GET(SPORT_COUPON_MENU)
     suspend fun getSportCouponMenu(): Response<SportCouponMenuResult>
+
+    @POST(SPORT_SEARCH_ENGINE)
+    suspend fun getSearchResult(
+        @Body searchRequest: SearchRequest
+    ): Response<SearchResponse>
+
+    @GET(SPORT_MENU_FILTER)
+    suspend fun getSportListFilter(): Response<SportMenuFilterResult>
 }

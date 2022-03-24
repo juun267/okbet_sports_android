@@ -12,22 +12,23 @@ import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.upstream.HttpDataSource
-import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_webview.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_webview.view.*
-import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
 import kotlinx.android.synthetic.main.view_toolbar_live.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
 import timber.log.Timber
 
 @SuppressLint("SetJavaScriptEnabled")
-class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
+class LiveViewToolbar @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) :
     LinearLayout(context, attrs, defStyle) {
 
     private val typedArray by lazy {
@@ -44,13 +45,16 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
             R.layout.dialog_bottom_sheet_webview
         )
     }
-    private val bottomSheetView by lazy { LayoutInflater.from(context).inflate(bottomSheetLayout, null) }
+    private val bottomSheetView by lazy {
+        LayoutInflater.from(context).inflate(bottomSheetLayout, null)
+    }
     private val webBottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(context) }
 
     private var mStreamUrl: String? = null
     private var newestUrl: Boolean = false
 
-    lateinit var matchOdd: MatchOdd
+    private var mMatchId: String? = null
+    private var mEventId: String? = null
 
     //exoplayer
     private var exoPlayer: SimpleExoPlayer? = null
@@ -98,13 +102,17 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
                     when (val httpError = error.cause) {
                         //直播地址播放連線失敗
                         is HttpDataSource.InvalidResponseCodeException -> {
-                            Timber.e("PlayerError = $httpError")
-                            newestUrl = true
-                            //重新獲取最新的直播地址
-                            liveToolBarListener?.getLiveInfo(true)
+//                            Timber.e("PlayerError = $httpError")
+//                            newestUrl = true
+//                            //重新獲取最新的直播地址
+//                            liveToolBarListener?.getLiveInfo(true)
                         }
                     }
                 }
+                Timber.e("PlayerError = $error")
+                newestUrl = true
+                //重新獲取最新的直播地址
+                liveToolBarListener?.getLiveInfo(true)
             }
         }
     }
@@ -112,6 +120,7 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
 
     interface LiveToolBarListener {
         fun getLiveInfo(newestUrl: Boolean = false)
+        fun showStatistics()
     }
 
     private var liveToolBarListener: LiveToolBarListener? = null
@@ -133,13 +142,13 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
 
     }
 
-
     private fun initOnclick() {
         iv_play.setOnClickListener {
             when (expand_layout.isExpanded) {
                 true -> {
-                    stopPlayer()
-                    startPlayer()
+                    // 暫時不給他重複點擊
+//                    stopPlayer()
+//                    startPlayer(mMatchId, mEventId, mStreamUrl)
                 }
                 false -> {
                     switchLiveView(true)
@@ -148,8 +157,7 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
         }
 
         iv_statistics.setOnClickListener {
-            setTitle(context.getString(R.string.statistics_title))
-            loadBottomSheetUrl(matchOdd)
+            liveToolBarListener?.showStatistics()
         }
 
         iv_arrow.setOnClickListener {
@@ -172,7 +180,6 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
 
     private fun switchLiveView(open: Boolean) {
         if (!iv_play.isVisible) return
-
         when (open) {
             true -> {
                 iv_arrow.animate().rotation(180f).setDuration(100).start()
@@ -180,12 +187,11 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
                 expand_layout.expand()
                 liveToolBarListener?.getLiveInfo()
                 if (!mStreamUrl.isNullOrEmpty()) {
-                    startPlayer()
+                    startPlayer(mMatchId, mEventId, mStreamUrl)
                 }
             }
             false -> {
                 stopPlayer()
-
                 iv_arrow.animate().rotation(0f).setDuration(100).start()
                 iv_play.isSelected = false
                 expand_layout.collapse()
@@ -217,25 +223,29 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
     fun liveLoading() {
         player_view.visibility = View.GONE
         iv_live_status.visibility = View.VISIBLE
+        tvStatus.visibility = View.GONE
         iv_live_status.setImageResource(R.drawable.img_stream_loading)
     }
 
     fun showLiveView(showLive: Boolean) {
         player_view.isVisible = showLive
         iv_live_status.isVisible = !showLive
-        iv_live_status.setImageResource(R.drawable.img_no_live)
+        iv_live_status.setImageResource(R.drawable.bg_no_play)
+        tvStatus.isVisible = !showLive
     }
 
-    fun setupLiveUrl(streamUrl: String?) {
-        mStreamUrl = streamUrl
-        startPlayer()
-    }
-
-    private fun loadBottomSheetUrl(matchOdd: MatchOdd) {
-        bottomSheetView.bottom_sheet_web_view.loadUrl(
-            sConfigData?.analysisUrl?.replace("{lang}", LanguageManager.getSelectLanguage(context).key)
-                ?.replace("{eventId}", matchOdd.matchInfo.id)
-        )
+    private fun loadBottomSheetUrl() {
+        mMatchId?.let {
+            sConfigData?.analysisUrl?.replace(
+                "{lang}",
+                LanguageManager.getSelectLanguage(context).key
+            )
+                ?.replace("{eventId}", it)
+        }?.let {
+            bottomSheetView.bottom_sheet_web_view.loadUrl(
+                it
+            )
+        }
         webBottomSheet.show()
     }
 
@@ -270,9 +280,8 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
                 exoPlayer = SimpleExoPlayer.Builder(context).build().also { exoPlayer ->
                     player_view.player = exoPlayer
                     val mediaItem =
-                        MediaItem.Builder().setUri(streamUrl).setMimeType(MimeTypes.APPLICATION_M3U8).build()
+                        MediaItem.Builder().setUri(streamUrl).build()
                     exoPlayer.setMediaItem(mediaItem)
-
                     exoPlayer.playWhenReady = playWhenReady
                     exoPlayer.seekTo(currentWindow, playbackPosition)
                     exoPlayer.addListener(playbackStateListener)
@@ -281,7 +290,7 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
             } else {
                 exoPlayer?.let { player ->
                     val mediaItem =
-                        MediaItem.Builder().setUri(streamUrl).setMimeType(MimeTypes.APPLICATION_M3U8).build()
+                        MediaItem.Builder().setUri(streamUrl).build()
                     player.setMediaItem(mediaItem)
                     player.playWhenReady = playWhenReady
                     player.seekTo(currentWindow, playbackPosition)
@@ -302,8 +311,11 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
         exoPlayer = null
     }
 
-    fun startPlayer() {
-        initializePlayer(mStreamUrl)
+    fun startPlayer(matchId: String?, eventId: String?, streamUrl: String?) {
+        mMatchId = matchId
+        mEventId = eventId
+        mStreamUrl = streamUrl
+        initializePlayer(streamUrl)
     }
 
     fun stopPlayer() {

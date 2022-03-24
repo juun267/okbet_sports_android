@@ -14,5 +14,5 @@ data class LoginResult(
     @Json(name = "success")
     override val success: Boolean,
     @Json(name = "t")
-    val loginData: LoginData?
+    val loginData: LoginData? = null
 ) : BaseResult()

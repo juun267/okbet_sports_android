@@ -4,15 +4,16 @@
     android:id="@+id/ll_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="org.cxct.sportlottery.ui.transactionStatus.TransactionRecordDiffAdapter">
 
     <LinearLayout
         android:id="@+id/ll_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorBlue"
-        android:orientation="vertical"
         android:minHeight="76dp"
+        android:orientation="vertical"
         android:paddingHorizontal="16dp"
         android:paddingVertical="9dp">
 
@@ -66,14 +67,30 @@
         android:paddingEnd="16dp"
         android:paddingBottom="10dp">
 
-        <TextView
-            android:id="@+id/content_play"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textColor="@color/colorBlackLight"
-            android:textSize="@dimen/textSize14sp"
-            tools:text="篮球 让球" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/content_play"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/colorBlackLight"
+                android:textSize="@dimen/textSize14sp"
+                android:textStyle="bold"
+                tools:text="篮球 让球" />
+
+            <TextView
+                android:id="@+id/tv_count_down"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@color/colorBlue"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="30s" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -81,41 +98,32 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/spread_name"
-                android:layout_width="wrap_content"
+                android:id="@+id/match_play_time"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:textColor="@color/colorGray"
-                android:textSize="@dimen/textSize13sp"
-                tools:text="密尔沃基雄鹿" />
+                android:textSize="@dimen/textSize12sp"
+                tools:text="2022-02-25 10:42" />
 
             <TextView
-                android:id="@+id/title_spread"
+                android:id="@+id/tv_score"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:textColor="@color/colorRedDark"
-                android:textSize="@dimen/textSize14sp"
-                android:textStyle="bold"
-                tools:text="6.5" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:layout_marginEnd="6dp"
-                android:textColor="@color/colorGray"
-                android:textSize="13sp"
-                android:text="\@" />
-
-            <TextView
-                android:id="@+id/content_odds"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorRedDark"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                tools:text="1.860" />
+                android:layout_height="match_parent"
+                android:textColor="@color/colorGrayLight"
+                android:textSize="@dimen/textSize12sp"
+                tools:text="(5-26)" />
 
         </LinearLayout>
+
+        <!--playName spread @ odd (oddsType)-->
+        <TextView
+            android:id="@+id/play_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorGray"
+            android:textSize="@dimen/textSize13sp"
+            tools:text="密尔沃基雄鹿 6.5 \@ 1.860 (印尼盘)" />
 
         <LinearLayout
             android:layout_width="match_parent"

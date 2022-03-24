@@ -63,6 +63,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
+            android:paddingStart="2dp"
             android:maxLines="1"
             android:text="@string/recharge_log_order_time"
             android:textColor="@color/colorBlackLight"

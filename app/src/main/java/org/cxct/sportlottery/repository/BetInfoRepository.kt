@@ -2,9 +2,10 @@ package org.cxct.sportlottery.repository
 
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.bet.info.MatchOdd
@@ -17,10 +18,15 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.MatchOddUtil
+import org.cxct.sportlottery.util.parlaylimit.ParlayBetLimit
+import org.cxct.sportlottery.util.parlaylimit.ParlayCom
 import org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil
+import kotlin.math.abs
 
 
 const val BET_INFO_MAX_COUNT = 10
@@ -35,13 +41,18 @@ class BetInfoRepository(val androidContext: Context) {
     val showBetInfoSingle: LiveData<Event<Boolean?>>
         get() = _showBetInfoSingle
 
-
     //每個畫面都要觀察
     private val _betInfoList = MutableLiveData<Event<MutableList<BetInfoListData>>>().apply {
         value = Event(mutableListOf())
     }
     val betInfoList: LiveData<Event<MutableList<BetInfoListData>>>
         get() = _betInfoList
+
+    private val _betIDList = MutableLiveData<Event<MutableList<String>>>().apply {
+        value = Event(mutableListOf())
+    }
+    val betIDList: LiveData<Event<MutableList<String>>>
+        get() = _betIDList
 
     private val _showBetUpperLimit = MutableLiveData<Event<Boolean>>()
     val showBetUpperLimit: LiveData<Event<Boolean>>
@@ -72,6 +83,12 @@ class BetInfoRepository(val androidContext: Context) {
                 updatePlayQuota()
             }
         }
+    var oddsType: OddsType = OddsType.EU
+        set(value) {
+            if (value != field) {
+                field = value
+            }
+        }
 
     //用於投注單頁面顯示提醒介面
     val showOddsChangeWarn: LiveData<Boolean>
@@ -87,6 +104,12 @@ class BetInfoRepository(val androidContext: Context) {
         get() = _hasBetPlatClose
     private val _hasBetPlatClose = MutableLiveData<Boolean>()
 
+    private val gameFastBetOpenedSharedPreferences by lazy {
+        androidContext.getSharedPreferences(
+            GameViewModel.GameFastBetOpenedSP,
+            Context.MODE_PRIVATE
+        )
+    }
 
     @Deprecated("串關邏輯修改,使用addInBetOrderParlay")
     fun addInBetInfoParlay() {
@@ -96,7 +119,7 @@ class BetInfoRepository(val androidContext: Context) {
             return
         }
 
-        val gameType = GameType.getGameType(betList[0].matchOdd.gameType)
+        val gameType = GameType.getGameType(betList.getOrNull(0)?.matchOdd?.gameType)
 
         gameType?.let {
             val parlayMatchOddList = betList.map { betInfoListData ->
@@ -157,6 +180,7 @@ class BetInfoRepository(val androidContext: Context) {
                     _parlayList.value?.forEachIndexed { index, parlayOdd ->
                         newParlayList[index].apply {
                             betAmount = parlayOdd.betAmount
+                            inputBetAmountStr = parlayOdd.betAmount.toString()
                             allSingleInput = parlayOdd.allSingleInput
                             amountError = parlayOdd.amountError
                         }
@@ -192,6 +216,12 @@ class BetInfoRepository(val androidContext: Context) {
 
         val item = betList.find { it.matchOdd.oddsId == oddId }
         betList.remove(item)
+
+        val oddIDStr = oddId ?: ""
+        val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
+        oddIDArray.remove(oddIDStr)
+        _betIDList.postValue(Event(oddIDArray))
+
         _removeItem.postValue(Event(item?.matchOdd?.matchId))
         updateBetOrderParlay(betList)
         checkBetInfoContent(betList)
@@ -200,27 +230,34 @@ class BetInfoRepository(val androidContext: Context) {
 
     fun removeClosedPlatItem() {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
+
+        val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
+
         val needRemoveList =
             betList.filter { it.matchOdd.status == BetStatus.LOCKED.code || it.matchOdd.status == BetStatus.DEACTIVATED.code }
         needRemoveList.forEach {
             betList.remove(it)
+            oddIDArray.remove(it.matchOdd.oddsId)
             _removeItem.value = Event(it.matchOdd.matchId)
         }
 
         updateBetOrderParlay(betList)
         checkBetInfoContent(betList)
+        _betIDList.postValue(Event(oddIDArray))
         _betInfoList.postValue(Event(betList))
     }
 
 
     fun clear() {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
-
+        val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
         betList.clear()
+        oddIDArray.clear()
         _matchOddList.value?.clear()
         _parlayList.value?.clear()
 
         checkBetInfoContent(betList)
+        _betIDList.postValue(Event(oddIDArray))
         _betInfoList.postValue(Event(betList))
     }
 
@@ -241,11 +278,15 @@ class BetInfoRepository(val androidContext: Context) {
         matchInfo: MatchInfo,
         odd: Odd,
         subscribeChannelType: ChannelType,
-        playCateMenuCode: String? = null
+        playCateMenuCode: String? = null,
+        oddsType: OddsType?,
+        betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
     ) {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
-
-        if (betList.size >= BET_INFO_MAX_COUNT){
+        oddsType?.let {
+            this.oddsType = it
+        }
+        if (betList.size >= BET_INFO_MAX_COUNT) {
             _showBetUpperLimit.postValue(Event(true))
             return
         }
@@ -267,7 +308,8 @@ class BetInfoRepository(val androidContext: Context) {
         betInfoMatchOdd?.let {
             val data = BetInfoListData(
                 betInfoMatchOdd,
-                getParlayOdd(matchType, gameType, mutableListOf(it)).first()
+                getParlayOdd(matchType, gameType, mutableListOf(it)).first(),
+                betPlayCateNameMap
             ).apply {
                 this.matchType = matchType
                 this.subscribeChannelType = subscribeChannelType
@@ -275,14 +317,16 @@ class BetInfoRepository(val androidContext: Context) {
                 this.outrightMatchInfo = matchInfo
             }
 
-
+            val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
+            oddIDArray.add(it.oddsId)
+            _betIDList.postValue(Event(oddIDArray))
 
             betList.add(data)
             //產生串關注單
             updateBetOrderParlay(betList)
             checkBetInfoContent(betList)
             _betInfoList.postValue(Event(betList))
-            if (betList.size == 1) {
+            if (betList.size == 1 && matchType != MatchType.PARLAY) {
                 _showBetInfoSingle.postValue(Event(true))
             }
         }
@@ -316,6 +360,7 @@ class BetInfoRepository(val androidContext: Context) {
                     GameType.AFT -> playQuotaComData?.oUTRIGHTAFT
                     GameType.MR -> playQuotaComData?.oUTRIGHTMR
                     GameType.GF -> playQuotaComData?.oUTRIGHTGF
+                    else -> playQuotaComData?.oUTRIGHTFT //測試用，需再添加各項球類playQuotaComData
                 }
             }
 
@@ -336,6 +381,7 @@ class BetInfoRepository(val androidContext: Context) {
                     GameType.AFT -> playQuotaComData?.pARLAYAFT
                     GameType.MR -> playQuotaComData?.pARLAYMR
                     GameType.GF -> playQuotaComData?.pARLAYGF
+                    else -> playQuotaComData?.oUTRIGHTFT //測試用，需再添加各項球類playQuotaComData
                 }
             }
             else -> {
@@ -355,6 +401,7 @@ class BetInfoRepository(val androidContext: Context) {
                     GameType.AFT -> playQuotaComData?.sINGLEAFT
                     GameType.MR -> playQuotaComData?.sINGLEMR
                     GameType.GF -> playQuotaComData?.sINGLEGF
+                    else -> playQuotaComData?.oUTRIGHTFT //測試用，需再添加各項球類playQuotaComData
                 }
             }
         }
@@ -375,29 +422,63 @@ class BetInfoRepository(val androidContext: Context) {
             playQuota?.max?.toBigDecimal(),
             playQuota?.min?.toBigDecimal()
         )
-
         var parlayBetLimit = 9999
-        parlayBetLimitMap.map {
-            parlayBetLimit = it.value.max.toInt()
-        }
-
-        var maxBet = 9999
-        val maxBetMoney = GameConfigManager.maxBetMoney
-        val maxCpBetMoney = GameConfigManager.maxCpBetMoney
-        val maxParlayBetMoney = GameConfigManager.maxParlayBetMoney
-
-        maxBet = when (matchType) {
-            MatchType.PARLAY -> maxParlayBetMoney?.let { if (maxParlayBetMoney < parlayBetLimit) maxParlayBetMoney else parlayBetLimit }
-                ?: parlayBetLimit
-
-            MatchType.OUTRIGHT -> maxCpBetMoney?.let { if (maxCpBetMoney < parlayBetLimit) maxCpBetMoney else parlayBetLimit }
-                ?: parlayBetLimit
-
-            else -> maxBetMoney?.let { if (maxBetMoney < parlayBetLimit) maxBetMoney else parlayBetLimit }
-                ?: parlayBetLimit
-        }
+        var userSelfLimit = MultiLanguagesApplication.getInstance()?.userInfo?.value?.perBetLimit
 
         return parlayBetLimitMap.map {
+            parlayBetLimit = it.value.max.toInt()
+            var maxBet = 9999
+            val maxBetMoney = GameConfigManager.maxBetMoney ?: 9999999
+            val maxCpBetMoney = GameConfigManager.maxCpBetMoney
+            val maxParlayBetMoney = GameConfigManager.maxParlayBetMoney ?: 9999999
+            if(it.value.num > 1){
+                //大於1 即為組合型串關 最大下注金額有特殊規則
+                maxBet = calculateComboMaxBet(it.value,playQuota?.max)
+            }else{
+                when (matchType) {
+                    MatchType.PARLAY -> {
+                        if (isParlayBet) {
+                            maxBet =
+                                if (maxParlayBetMoney < parlayBetLimit) maxBetMoney else parlayBetLimit
+                        } else {
+                            maxBet = if (maxBetMoney < parlayBetLimit) maxBetMoney else parlayBetLimit
+                        }
+                    }
+                    MatchType.OUTRIGHT -> maxBet =
+                        maxCpBetMoney?.let { if (maxCpBetMoney < parlayBetLimit) maxCpBetMoney else parlayBetLimit }
+                            ?: parlayBetLimit
+
+                    else -> maxBet =
+                        maxBetMoney.let { if (maxBetMoney < parlayBetLimit) maxBetMoney else parlayBetLimit }
+                            ?: parlayBetLimit
+                }
+
+                //[Martin]為馬來盤＆印度計算投注上限
+                if (oddsType == OddsType.MYS) {
+                    if ((matchOddList.getOrNull(0)?.malayOdds ?: 0.0) < 0.0 && oddsList.size <= 1) {
+                        val myMax = (maxBetMoney.div(abs(matchOddList.getOrNull(0)?.malayOdds ?: 0.0))).toInt()
+                        maxBet = if (myMax < (playQuota?.max ?: 0)) myMax else (playQuota?.max ?: 0)
+                    }
+                } else if (oddsType == OddsType.IDN) {
+                    if (matchOddList.getOrNull(0)?.indoOdds ?: 0.0 < 0.0 && oddsList.size <= 1) {
+                        //印度賠付額上限
+                        val indoMax = ((playQuota?.max?.toDouble()?.plus(abs(matchOddList.getOrNull(0)?.indoOdds ?: 0.0)))?.toInt())?.minus(1)?: 0
+                        //印度使用者投注上限
+                        val indoUserMax = maxBetMoney.div(abs(matchOddList.getOrNull(0)?.indoOdds ?: 0.0)).toInt()
+                        maxBet = if (indoUserMax < indoMax) indoUserMax else indoMax
+                    }
+                }else if(oddsType == OddsType.IDN) {
+                    if (matchOddList[0].indoOdds < 0 && oddsList.size <= 1) {
+                        val indoMax = (((playQuota?.max?.toDouble()?.plus(abs(matchOddList[0].indoOdds))) ?: 0).toInt()) - 1
+                        maxBet = if (maxBetMoney < indoMax) maxBetMoney else indoMax
+                    }
+                }
+            }
+
+            userSelfLimit?.let { t ->
+                maxBet = if (maxBet < t) maxBetMoney else t
+            }
+
             ParlayOdd(
                 parlayType = it.key,
                 max = maxBet,
@@ -405,8 +486,19 @@ class BetInfoRepository(val androidContext: Context) {
                 num = it.value.num,
                 odds = it.value.odds.toDouble(),
                 hkOdds = it.value.hdOdds.toDouble(),
+                //Martin
+                malayOdds = if (oddsList.size > 1) it.value.odds.toDouble() else matchOddList.getOrNull(0)?.malayOdds?:0.0,
+                indoOdds = if (oddsList.size > 1) it.value.odds.toDouble() else matchOddList.getOrNull(0)?.indoOdds?:0.0
             )
         }
+    }
+
+    private fun calculateComboMaxBet(
+        parlayBetLimit: ParlayBetLimit,
+        max: Int?,
+    ): Int {
+        var tempMax = max?.times(parlayBetLimit.num)
+        return tempMax?.div(parlayBetLimit.hdOdds.toDouble())!!.toInt()
     }
 
 
@@ -417,51 +509,6 @@ class BetInfoRepository(val androidContext: Context) {
         hasChanged?.matchOdd?.oddsHasChanged = true
         hasChanged?.matchOdd?.oddState = OddState.SAME.state
     }
-
-    //TODO review 待刪除
-    /*fun notifyBetInfoChanged() {
-        val updateBetInfoList = _betInfoList.value?.peekContent()
-
-        if (updateBetInfoList.isNullOrEmpty()) return
-
-        when (_isParlayPage.value) {
-            true -> {
-                val gameType = GameType.getGameType(updateBetInfoList[0].matchOdd.gameType)
-                gameType?.let {
-                    matchOddList.value?.let {
-                        _parlayList.value =
-                            getParlayOdd(MatchType.PARLAY, gameType, it).toMutableList()
-                    }
-                }
-            }
-
-            false -> {
-                val newList = mutableListOf<BetInfoListData>()
-                updateBetInfoList.forEach { betInfoListData ->
-                    betInfoListData.matchType?.let { matchType ->
-                        val gameType = GameType.getGameType(betInfoListData.matchOdd.gameType)
-                        gameType?.let {
-                            val newBetInfoListData = BetInfoListData(
-                                betInfoListData.matchOdd,
-                                getParlayOdd(
-                                    matchType,
-                                    gameType,
-                                    mutableListOf(betInfoListData.matchOdd)
-                                ).first()
-                            )
-                            newBetInfoListData.matchType = betInfoListData.matchType
-                            newBetInfoListData.input = betInfoListData.input
-                            newBetInfoListData.betAmount = betInfoListData.betAmount
-                            newBetInfoListData.pointMarked = betInfoListData.pointMarked
-                            newList.add(newBetInfoListData)
-                        }
-                    }
-                }
-                checkBetInfoContent(newList)
-                _betInfoList.value = Event(newList)
-            }
-        }
-    }*/
 
     fun notifyBetInfoChanged() {
         val updateBetInfoList = _betInfoList.value?.peekContent()
@@ -504,7 +551,8 @@ class BetInfoRepository(val androidContext: Context) {
                             matchType,
                             gameType,
                             mutableListOf(betInfoListData.matchOdd)
-                        ).first()
+                        ).first(),
+                        betInfoListData.betPlayCateNameMap
                     )
                     newBetInfoListData.matchType = betInfoListData.matchType
                     newBetInfoListData.input = betInfoListData.input
@@ -572,4 +620,16 @@ class BetInfoRepository(val androidContext: Context) {
         _hasBetPlatClose.postValue(hasBetPlatClose)
     }
 
+    fun setFastBetOpened(isOpen: Boolean) {
+        val editor = gameFastBetOpenedSharedPreferences.edit()
+        editor.putBoolean("isOpen", isOpen).apply()
+    }
+
+    fun getIsFastBetOpened(): Boolean{
+        return gameFastBetOpenedSharedPreferences.getBoolean("isOpen", true)
+    }
+
+    fun updateBetAmount(input: String){
+        _betInfoList.value?.peekContent()?.first()?.inputBetAmountStr = input
+    }
 }

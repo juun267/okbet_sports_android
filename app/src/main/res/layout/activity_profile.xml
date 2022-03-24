@@ -8,43 +8,20 @@
     android:orientation="vertical"
     tools:context=".ui.profileCenter.profile.ProfileActivity">
 
-    <RelativeLayout
-        android:id="@+id/toolBar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/tool_bar_height"
-        android:background="@color/colorBlue">
-
-        <ImageButton
-            android:id="@+id/btn_back"
-            android:layout_width="@dimen/tool_bar_height"
-            android:layout_height="@dimen/tool_bar_height"
-            android:layout_centerVertical="true"
-            android:contentDescription="@null"
-            android:background="@null"
-            android:src="@drawable/ic_back" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/profile_info"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/textSize16sp" />
-
-    </RelativeLayout>
+    <include layout="@layout/view_base_tool_bar_no_drawer" />
 
     <ScrollView
-        android:overScrollMode="never"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorWhite"
             android:divider="@drawable/divider_straight"
-            android:showDividers="middle|end"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:showDividers="middle|end">
 
             <LinearLayout
                 android:id="@+id/btn_head"
@@ -136,9 +113,9 @@
                     android:contentDescription="@null"
                     android:src="@drawable/ic_arrow_right_gray" />
 
-                <Space
+                <androidx.legacy.widget.Space
                     android:layout_width="10dp"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
@@ -297,9 +274,9 @@
                     android:contentDescription="@null"
                     android:src="@drawable/ic_arrow_right_gray" />
 
-                <Space
+                <androidx.legacy.widget.Space
                     android:layout_width="10dp"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <!--  QQ號碼  -->
@@ -307,58 +284,50 @@
                 android:id="@+id/ll_qq_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:gravity="center"
+                android:minHeight="44dp"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:minHeight="44dp"
-                    android:orientation="horizontal">
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_personal_info_qq" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginEnd="15dp"
-                        android:contentDescription="@null"
-                        android:src="@drawable/ic_personal_info_qq" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/qq_number"
+                    android:textColor="@color/colorBlackLight"
+                    android:textSize="@dimen/textSize12sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:text="@string/qq_number"
-                        android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize12sp" />
+                <TextView
+                    android:id="@+id/tv_qq_number"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:textColor="@color/colorBlackLight"
+                    android:textSize="@dimen/textSize12sp"
+                    tools:text="1022423383" />
 
-                    <TextView
-                        android:id="@+id/tv_qq_number"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_weight="1"
-                        android:ellipsize="end"
-                        android:gravity="end"
-                        android:maxLines="1"
-                        android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize12sp"
-                        tools:text="1022423383" />
+                <ImageView
+                    android:id="@+id/icon_qq_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_arrow_right_gray" />
 
-                    <ImageView
-                        android:id="@+id/icon_qq_number"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:contentDescription="@null"
-                        android:src="@drawable/ic_arrow_right_gray" />
-
-                    <Space
-                        android:layout_width="10dp"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-
-                
+                <androidx.legacy.widget.Space
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <!--  郵箱  -->
@@ -366,58 +335,50 @@
                 android:id="@+id/ll_e_mail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:gravity="center"
+                android:minHeight="44dp"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:minHeight="44dp"
-                    android:orientation="horizontal">
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_personal_info_email" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginEnd="15dp"
-                        android:contentDescription="@null"
-                        android:src="@drawable/ic_personal_info_email" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/e_mail"
+                    android:textColor="@color/colorBlackLight"
+                    android:textSize="@dimen/textSize12sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:text="@string/e_mail"
-                        android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize12sp" />
+                <TextView
+                    android:id="@+id/tv_e_mail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:textColor="@color/colorBlackLight"
+                    android:textSize="@dimen/textSize12sp"
+                    tools:text="ianlee051＠gmail.com" />
 
-                    <TextView
-                        android:id="@+id/tv_e_mail"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_weight="1"
-                        android:ellipsize="end"
-                        android:gravity="end"
-                        android:maxLines="1"
-                        android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize12sp"
-                        tools:text="ianlee051＠gmail.com" />
+                <ImageView
+                    android:id="@+id/icon_e_mail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_arrow_right_gray" />
 
-                    <ImageView
-                        android:id="@+id/icon_e_mail"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:contentDescription="@null"
-                        android:src="@drawable/ic_arrow_right_gray" />
-
-                    <Space
-                        android:layout_width="10dp"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-
-                
+                <androidx.legacy.widget.Space
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <!--  手機號碼  -->
@@ -425,58 +386,50 @@
                 android:id="@+id/ll_phone_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:gravity="center"
+                android:minHeight="44dp"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:minHeight="44dp"
-                    android:orientation="horizontal">
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_personal_info_mobile" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginEnd="15dp"
-                        android:contentDescription="@null"
-                        android:src="@drawable/ic_personal_info_mobile" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/phone_number"
+                    android:textColor="@color/colorBlackLight"
+                    android:textSize="@dimen/textSize12sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:text="@string/phone_number"
-                        android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize12sp" />
+                <TextView
+                    android:id="@+id/tv_phone_number"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:textColor="@color/colorBlackLight"
+                    android:textSize="@dimen/textSize12sp"
+                    tools:text="1022423383" />
 
-                    <TextView
-                        android:id="@+id/tv_phone_number"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_weight="1"
-                        android:ellipsize="end"
-                        android:gravity="end"
-                        android:maxLines="1"
-                        android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize12sp"
-                        tools:text="1022423383" />
+                <ImageView
+                    android:id="@+id/icon_phone_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_arrow_right_gray" />
 
-                    <ImageView
-                        android:id="@+id/icon_phone_number"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:contentDescription="@null"
-                        android:src="@drawable/ic_arrow_right_gray" />
-
-                    <Space
-                        android:layout_width="10dp"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-
-                
+                <androidx.legacy.widget.Space
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <!--  微信  -->
@@ -484,98 +437,100 @@
                 android:id="@+id/ll_wechat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:minHeight="44dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginEnd="15dp"
-                        android:contentDescription="@null"
-                        android:src="@drawable/ic_personal_info_wechat" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:text="@string/we_chat"
-                        android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize12sp" />
-
-                    <TextView
-                        android:id="@+id/tv_we_chat"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_weight="1"
-                        android:ellipsize="end"
-                        android:gravity="end"
-                        android:maxLines="1"
-                        android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize12sp"
-                        tools:text="2443875459" />
-
-                    <ImageView
-                        android:id="@+id/icon_wechat"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:contentDescription="@null"
-                        android:src="@drawable/ic_arrow_right_gray" />
-
-                    <Space
-                        android:layout_width="10dp"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <!--  實名制  -->
-            <LinearLayout
-                android:id="@+id/ll_identity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="44dp"
                 android:gravity="center"
+                android:minHeight="44dp"
                 android:orientation="horizontal">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginEnd="15dp"
-                        android:contentDescription="@null"
-                        android:src="@drawable/ic_identity" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_personal_info_wechat" />
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_weight="1"
-                        android:text="@string/identity"
-                        android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize12sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/we_chat"
+                    android:textColor="@color/colorBlackLight"
+                    android:textSize="@dimen/textSize12sp" />
 
-                    <ImageView
-                        android:id="@+id/icon_identity"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:contentDescription="@null"
-                        android:src="@drawable/ic_arrow_right_gray" />
+                <TextView
+                    android:id="@+id/tv_we_chat"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:textColor="@color/colorBlackLight"
+                    android:textSize="@dimen/textSize12sp"
+                    tools:text="2443875459" />
 
-                    <Space
-                        android:layout_width="10dp"
-                        android:layout_height="wrap_content"/>
+                <ImageView
+                    android:id="@+id/icon_wechat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_arrow_right_gray" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/ll_verified"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:minHeight="44dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_identity" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:text="@string/identity"
+                    android:textColor="@color/colorBlackLight"
+                    android:textSize="@dimen/textSize12sp" />
+
+                <TextView
+                    android:id="@+id/tv_verified"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:text="@string/not_verify"
+                    android:gravity="end"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/colorRed"
+                    android:textSize="@dimen/textSize12sp" />
+
+                <ImageView
+                    android:id="@+id/icon_identity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_arrow_right_gray" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
         </LinearLayout>
 
     </ScrollView>

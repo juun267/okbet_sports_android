@@ -74,6 +74,17 @@ object GameConfigManager {
             GameType.BK.key -> R.drawable.ic_basketball_icon
             GameType.TN.key -> R.drawable.ic_tennis_icon
             GameType.VB.key -> R.drawable.ic_volley_ball
+            GameType.BM.key -> R.drawable.ic_sport_badminton
+            GameType.TT.key -> R.drawable.ic_sport_pingpong
+            GameType.IH.key -> R.drawable.ic_sport_iceball
+            GameType.BX.key -> R.drawable.ic_sport_boxing
+            GameType.CB.key -> R.drawable.ic_sport_snooker
+            GameType.CK.key -> R.drawable.ic_sport_cricket
+            GameType.BB.key -> R.drawable.ic_sport_baseball
+            GameType.RB.key -> R.drawable.ic_sport_rugby
+            GameType.AFT.key -> R.drawable.ic_sport_amfootball
+            GameType.MR.key -> R.drawable.ic_sport_racing
+            GameType.GF.key -> R.drawable.ic_sport_golf
             else -> null
         }
     }
@@ -85,6 +96,17 @@ object GameConfigManager {
             GameType.BK.key -> R.drawable.img_home_title_basketball_background
             GameType.TN.key -> R.drawable.img_home_title_tennis_background
             GameType.VB.key -> R.drawable.img_home_title_volleyball_background
+            GameType.BM.key -> R.drawable.img_home_title_bm_background
+            GameType.TT.key -> R.drawable.img_home_title_tt_background
+            GameType.IH.key -> R.drawable.img_home_title_ih_background
+            GameType.BX.key -> R.drawable.img_home_title_bx_background
+            GameType.CB.key -> R.drawable.img_home_title_cb_background
+            GameType.CK.key -> R.drawable.img_home_title_ck_background
+            GameType.BB.key -> R.drawable.img_home_title_bb_background
+            GameType.RB.key -> R.drawable.img_home_title_rb_background
+            GameType.AFT.key -> R.drawable.img_home_title_aft_background
+            GameType.MR.key -> R.drawable.img_home_title_mr_background
+            GameType.GF.key -> R.drawable.img_home_title_gf_background
             else -> null
         }
     }

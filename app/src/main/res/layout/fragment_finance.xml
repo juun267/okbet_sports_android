@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite1">
+    android:background="@color/colorWhite1"
+    tools:context="org.cxct.sportlottery.ui.finance.FinanceFragment">
 
     <!-- 帳戶餘額 -->
     <include layout="@layout/view_account_balance" />

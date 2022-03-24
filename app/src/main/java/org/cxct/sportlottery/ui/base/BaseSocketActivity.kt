@@ -5,6 +5,7 @@ import android.content.*
 import android.os.Bundle
 import android.os.IBinder
 import androidx.lifecycle.Observer
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.repository.*
@@ -27,7 +28,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
     val receiver: ServiceBroadcastReceiver by inject()
 
-    private lateinit var backService: BackService
+    private var backService: BackService? = null
     private var isServiceBound = false
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
@@ -54,36 +55,45 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         super.onCreate(savedInstanceState)
 
         receiver.sysMaintenance.observe(this, Observer {
-            startActivity(Intent(this, MaintenanceActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            })
+            if ((it?.status ?: 0) == MaintenanceActivity.MaintainType.FIXING.value) {
+                startActivity(Intent(this, MaintenanceActivity::class.java).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                })
+            }
         })
 
         receiver.serviceConnectStatus.observe(this, Observer { status ->
             when (status) {
                 ServiceConnectStatus.RECONNECT_FREQUENCY_LIMIT -> {
                     hideLoading()
-                    showErrorPromptDialog(getString(R.string.message_socket_connect)) { backService.doReconnect() }
+                    showErrorPromptDialog(getString(R.string.message_socket_connect)) { backService?.doReconnect() }
+                }
+                ServiceConnectStatus.CONNECTING -> {
+                    loading()
+                }
+                ServiceConnectStatus.CONNECTED -> {
+                    hideLoading()
                 }
                 else -> {
+                    hideLoading()
                     //do nothing
                 }
             }
         })
 
-        receiver.playQuotaChange.observe(this, {
+        receiver.playQuotaChange.observe(this) {
             it?.playQuotaComData?.let { playQuotaComData ->
                 viewModel.updatePlayQuota(playQuotaComData)
             }
-        })
+        }
 
-        receiver.userMoney.observe(this, {
+        receiver.userMoney.observe(this) {
             viewModel.updateMoney(it)
-        })
+        }
 
-        receiver.orderSettlement.observe(this, {
+        receiver.orderSettlement.observe(this) {
             viewModel.getSettlementNotification(it)
-        })
+        }
 
         receiver.userNotice.observe(this, Observer {
             it?.userNoticeList?.let { list ->
@@ -91,11 +101,11 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
             }
         })
 
-        receiver.userDiscountChange.observe(this, {
+        receiver.userDiscountChange.observe(this) {
             viewModel.updateDiscount(it?.discount)
-        })
+        }
 
-        receiver.dataSourceChange.observe(this, {
+        receiver.dataSourceChange.observe(this) {
             this.run {
                 fun reStart() = if (sConfigData?.thirdOpen == FLAG_OPEN)
                     MainActivity.reStart(this)
@@ -106,33 +116,45 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
                     message = getString(R.string.message_source_change)
                 ) { reStart() }
             }
-        })
+        }
 
-        receiver.userMaxBetMoneyChange.observe(this, {
-            if(viewModel.isLogin.value == true && sharedPref.getInt(KEY_USER_LEVEL_ID,-1) == it?.userLevelConfigList?.firstOrNull()?.id){
-                GameConfigManager.maxBetMoney = it.userLevelConfigList.firstOrNull()?.maxBetMoney ?: 99999
-                GameConfigManager.maxParlayBetMoney = it.userLevelConfigList.firstOrNull()?.maxParlayBetMoney ?: 99999
-                GameConfigManager.maxCpBetMoney = it.userLevelConfigList.firstOrNull()?.maxCpBetMoney ?: 99999
+        receiver.userInfoChange.observe(this) {
+            if (viewModel.isLogin.value == true) {
+                viewModel.updateDiscount(null)
             }
-        })
+        }
+
+        receiver.userMaxBetMoneyChange.observe(this) {
+            if (viewModel.isLogin.value == true && sharedPref.getInt(
+                    KEY_USER_LEVEL_ID,
+                    -1
+                ) == it?.userLevelConfigList?.firstOrNull()?.id
+            ) {
+                GameConfigManager.maxBetMoney =
+                    it.userLevelConfigList.firstOrNull()?.maxBetMoney ?: 9999999
+                GameConfigManager.maxParlayBetMoney =
+                    it.userLevelConfigList.firstOrNull()?.maxParlayBetMoney ?: 99999
+                GameConfigManager.maxCpBetMoney =
+                    it.userLevelConfigList.firstOrNull()?.maxCpBetMoney ?: 99999
+            }
+        }
     }
 
-    fun subscribeSportChannelHall(gameTypeCode: String?){
-        backService.subscribeSportChannelHall(gameTypeCode)
+    fun subscribeSportChannelHall(gameTypeCode: String ?= null){
+        backService?.subscribeSportChannelHall(gameTypeCode)
     }
 
     fun subscribeChannelHall(
         gameType: String?,
-        cateMenuCode: String?,
         eventId: String?
     ) {
-        backService.subscribeHallChannel(gameType, cateMenuCode, eventId)
+        backService?.subscribeHallChannel(gameType, eventId)
     }
 
     fun subscribeChannelEvent(
         eventId: String?
     ) {
-        backService.subscribeEventChannel(eventId)
+        backService?.subscribeEventChannel(eventId)
     }
 
     fun unSubscribeChannelHall(
@@ -140,31 +162,41 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         cateMenuCode: String?,
         eventId: String?
     ) {
-        backService.unsubscribeHallChannel(gameType, cateMenuCode, eventId)
+        backService?.unsubscribeHallChannel(gameType, cateMenuCode, eventId)
+    }
+
+    fun unSubscribeChannelHall(
+        eventId: String?
+    ) {
+        backService?.unsubscribeHallChannel(eventId)
     }
 
     fun unSubscribeChannelEvent(eventId: String?) {
-        backService.unsubscribeEventChannel(eventId)
+        backService?.unsubscribeEventChannel(eventId)
+    }
+
+    fun unsubscribeHallChannel(eventId: String?) {
+        backService?.unsubscribeHallChannel(eventId)
     }
 
     fun unSubscribeChannelHallAll() {
-        backService.unsubscribeAllHallChannel()
+        backService?.unsubscribeAllHallChannel()
     }
 
     fun unSubscribeChannelHallSport(){
-        backService.unsubscribeSportHallChannel()
+        backService?.unsubscribeSportHallChannel()
     }
 
     fun unSubscribeChannelEventAll() {
-        backService.unsubscribeAllEventChannel()
+        backService?.unsubscribeAllEventChannel()
     }
 
     fun betListPageSubscribeEvent() {
-        backService.betListPageSubscribeEvent()
+        backService?.betListPageSubscribeEvent()
     }
 
     fun betListPageUnSubScribeEvent() {
-        backService.betListPageUnSubScribeEvent()
+        backService?.betListPageUnSubScribeEvent()
     }
 
     override fun onStart() {
@@ -212,10 +244,10 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
             addAction(BackService.SERVICE_SEND_DATA)
         }
 
-        registerReceiver(receiver, filter)
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter)
     }
 
     private fun removeBroadCastReceiver() {
-        unregisterReceiver(receiver)
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver)
     }
 }

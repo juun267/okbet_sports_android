@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite1"
+    android:paddingHorizontal="14dp"
+    android:paddingVertical="15dp"
+    tools:context=".ui.profileCenter.identity.VerifyIdentityFragment">
+
+
+    <!-- 選擇銀行 -->
+    <LinearLayout
+        android:id="@+id/ll_select_credential"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_square_shape_4dp_white"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_channel_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start|center_vertical"
+            android:text="@string/type_of_certificate"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize13sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:background="@color/colorWhite6" />
+
+        <TextView
+            android:id="@+id/tv_select_bank_card"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="28dp"
+            android:layout_weight="1"
+            android:gravity="start|center_vertical"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize12sp"
+            tools:text="UM ID" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="11dp"
+            android:src="@drawable/ic_arrow_down_gray" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/bg_square_shape_4dp_white"
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp"
+        android:paddingBottom="20dp"
+        android:paddingTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/ll_select_credential">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/prepare_your_id_photo"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize12sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
+            android:background="@color/colorWhite6" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="@string/id_description"
+            android:textColor="@color/colorRed" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/img_id_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_id_card"
+                app:layout_constraintEnd_toStartOf="@id/img_password"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/identity_card"
+                android:textColor="@color/colorGray"
+                android:textSize="@dimen/textSize12sp"
+                app:layout_constraintEnd_toEndOf="@+id/img_id_card"
+                app:layout_constraintStart_toStartOf="@+id/img_id_card"
+                app:layout_constraintTop_toBottomOf="@id/img_id_card" />
+
+            <ImageView
+                android:id="@+id/img_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_passport"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/img_id_card"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/passport"
+                android:textColor="@color/colorGray"
+                android:textSize="@dimen/textSize12sp"
+                app:layout_constraintEnd_toEndOf="@+id/img_password"
+                app:layout_constraintStart_toStartOf="@+id/img_password"
+                app:layout_constraintTop_toBottomOf="@id/img_password" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_take_photo"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_radius_20_button_dusk"
+        android:letterSpacing="0.2"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:paddingTop="9dp"
+        android:paddingBottom="9dp"
+        android:text="@string/take_id_photo"
+        android:textAllCaps="true"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/textSize16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/ll_description" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

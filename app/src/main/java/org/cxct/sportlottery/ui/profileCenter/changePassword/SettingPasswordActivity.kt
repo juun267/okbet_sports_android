@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.profileCenter.changePassword
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_setting_password.*
+import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
@@ -26,6 +27,7 @@ class SettingPasswordActivity :
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting_password)
 
+        initView()
         setupBackButton()
         setupTab()
         setupEditText()
@@ -33,29 +35,37 @@ class SettingPasswordActivity :
         initObserve()
     }
 
+    private fun initView() {
+        tv_toolbar_title.text = getString(R.string.setting_password)
+    }
+
     private fun setupBackButton() {
-        btn_back.setOnClickListener {
+        btn_toolbar_back.setOnClickListener {
             finish()
         }
     }
 
     private fun setupTab() {
-        tab_login_password.setOnClickListener {
-            mPwdPage = PwdPage.LOGIN_PWD
-            updateCurrentPwdEditTextHint(mPwdPage, mUserInfo?.updatePayPw)
-            cleanField()
-        }
+        custom_tab_layout.setCustomTabSelectedListener { position ->
+            when (position) {
+                0 -> {
+                    mPwdPage = PwdPage.LOGIN_PWD
+                    updateCurrentPwdEditTextHint(mPwdPage, mUserInfo?.updatePayPw)
+                    cleanField()
+                }
 
-        tab_withdrawal_password.setOnClickListener {
-            mPwdPage = PwdPage.BANK_PWD
-            updateCurrentPwdEditTextHint(mPwdPage, mUserInfo?.updatePayPw)
-            cleanField()
+                1 -> {
+                    mPwdPage = PwdPage.BANK_PWD
+                    updateCurrentPwdEditTextHint(mPwdPage, mUserInfo?.updatePayPw)
+                    cleanField()
+                }
+            }
         }
-
+        
         //初始顯示哪個 tab 頁面
         when (intent.getSerializableExtra(PWD_PAGE)) {
-            PwdPage.BANK_PWD -> tab_withdrawal_password.performClick()
-            else -> tab_login_password.performClick()
+            PwdPage.BANK_PWD -> custom_tab_layout.selectTab(1)
+            else -> custom_tab_layout.selectTab(0)
         }
     }
 

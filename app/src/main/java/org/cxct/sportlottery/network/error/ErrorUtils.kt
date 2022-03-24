@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.Constants.FEEDBACK_QUERYDETAIL
 import org.cxct.sportlottery.network.Constants.FEEDBACK_QUERYLIST
 import org.cxct.sportlottery.network.Constants.FEEDBACK_REPLY
 import org.cxct.sportlottery.network.Constants.FEEDBACK_SAVE
+import org.cxct.sportlottery.network.Constants.GET_TWO_FACTOR_STATUS
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_EXIST
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
@@ -44,6 +45,7 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_LEAGUE_LIST
 import org.cxct.sportlottery.network.Constants.QUERY_FIRST_ORDERS
 import org.cxct.sportlottery.network.Constants.QUERY_SECOND_ORDERS
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
+import org.cxct.sportlottery.network.Constants.SEND_TWO_FACTOR
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.network.Constants.SPORT_QUERY
 import org.cxct.sportlottery.network.Constants.THIRD_ALL_TRANSFER_OUT
@@ -68,6 +70,7 @@ import org.cxct.sportlottery.network.Constants.USER_RECHARGE_ONLINE_PAY
 import org.cxct.sportlottery.network.Constants.USER_UPDATE_FUND_PWD
 import org.cxct.sportlottery.network.Constants.USER_UPDATE_PWD
 import org.cxct.sportlottery.network.Constants.USER_WITHDRAW_INFO
+import org.cxct.sportlottery.network.Constants.VALIDATE_TWO_FACTOR
 import org.cxct.sportlottery.network.Constants.WITHDRAW_ADD
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bank.add.BankAddResult
@@ -78,6 +81,7 @@ import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.network.bet.settledDetailList.BetSettledDetailListResult
 import org.cxct.sportlottery.network.bet.settledList.BetSettledListResult
+import org.cxct.sportlottery.network.common.BaseSecurityCodeResult
 import org.cxct.sportlottery.network.feedback.FeedBackBaseResult
 import org.cxct.sportlottery.network.feedback.FeedbackListResult
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
@@ -98,6 +102,7 @@ import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.money.MoneyAddResult
 import org.cxct.sportlottery.network.money.config.MoneyRechCfgResult
 import org.cxct.sportlottery.network.money.list.RechargeListResult
+import org.cxct.sportlottery.network.money.list.SportBillResult
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.odds.quick.QuickListResult
 import org.cxct.sportlottery.network.outright.OutrightResultListResult
@@ -106,6 +111,7 @@ import org.cxct.sportlottery.network.myfavorite.save.MyFavoriteBaseResult
 import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchResult
 import org.cxct.sportlottery.network.myfavorite.query.SportMenuFavoriteResult
 import org.cxct.sportlottery.network.outright.season.OutrightLeagueListResult
+import org.cxct.sportlottery.network.sport.SportMenuFilterResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.network.sport.query.SportQueryResult
 import org.cxct.sportlottery.network.third_game.AutoTransferResult
@@ -131,6 +137,7 @@ import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListResult
 import retrofit2.Converter
 import retrofit2.Response
+import timber.log.Timber
 import java.io.IOException
 
 
@@ -145,8 +152,9 @@ object ErrorUtils {
 
         response.errorBody()?.let {
             try {
-                error = converter.convert(it)
+                error = converter.convert(it) // TODO com.squareup.moshi.JsonEncodingException: Use JsonReader.setLenient(true) to accept malformed JSON at path $
             } catch (e: IOException) {
+                Timber.e("parseError: $e")
                 throw e
             }
         }
@@ -155,9 +163,15 @@ object ErrorUtils {
             if (it.success != null && it.code != null && it.msg != null) {
                 val url = response.raw().request.url.toString()
                 when {
-                    (url.contains(INDEX_LOGIN) || url.contains(INDEX_REGISTER) || url.contains(
-                        INDEX_CHECK_TOKEN
-                    )) -> {
+                    (url.contains(INDEX_LOGIN)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return LoginResult(it.code, it.msg, it.success,null) as T
+                    }
+                    (url.contains(INDEX_REGISTER)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return LoginResult(it.code, it.msg, it.success,null) as T
+                    }
+                    (url.contains(INDEX_CHECK_TOKEN)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return CheckTokenResult(it.code, it.msg, it.success) as T
                     }
@@ -241,6 +255,10 @@ object ErrorUtils {
                     (url.contains(SPORT_MENU)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return SportMenuResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(Constants.SPORT_MENU_FILTER)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return SportMenuFilterResult(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(Constants.MYFAVORITE_QUERY)) -> {
                         @Suppress("UNCHECKED_CAST")
@@ -329,6 +347,18 @@ object ErrorUtils {
                     (url.contains(BANK_ADD)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return BankAddResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(GET_TWO_FACTOR_STATUS)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return BaseSecurityCodeResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(SEND_TWO_FACTOR)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return BaseSecurityCodeResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(VALIDATE_TWO_FACTOR)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return BaseSecurityCodeResult(it.code, it.msg, it.success) as T
                     }
                     (url.contains(BANK_DELETE)) -> {
                         @Suppress("UNCHECKED_CAST")
@@ -458,6 +488,14 @@ object ErrorUtils {
                             null,
                             null
                         ) as T
+                    }
+                    (url.contains(Constants.INDEX_VALIDATE_LOGIN_DEVICE_SMS)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return LogoutResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(Constants.USER_BILL_LIST)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return SportBillResult(it.code, it.msg, listOf(),it.success,0) as T
                     }
                     (url.contains(USER_CREDIT_CIRCLE_HISTORY)) -> {
                         @Suppress("UNCHECKED_CAST")

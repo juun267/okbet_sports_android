@@ -6,15 +6,23 @@
     android:layout_height="56dp"
     android:background="@color/colorWhite">
 
+    <androidx.legacy.widget.Space
+        android:id="@+id/space"
+        android:layout_width="10dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="@id/country_league_choose"
+        app:layout_constraintBottom_toBottomOf="@id/country_league_choose"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <ImageView
         android:id="@+id/country_league_choose"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:layout_marginStart="20dp"
-        android:scaleType="centerCrop"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:layout_marginStart="10dp"
+        android:scaleType="center"
         android:src="@drawable/selector_item_country_league_choose_v4"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/space"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
@@ -63,10 +71,10 @@
 
     <ImageView
         android:id="@+id/country_league_pin"
-        android:layout_width="26dp"
-        android:layout_height="26dp"
-        android:padding="4dp"
-        android:layout_marginEnd="12dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="4dp"
+        android:padding="12dp"
         android:scaleType="centerCrop"
         android:src="@drawable/selector_item_country_league_pin_v4"
         app:layout_constraintBottom_toBottomOf="parent"

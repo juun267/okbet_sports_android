@@ -35,7 +35,7 @@ data class Row (
     @Json(name = "settleTime")
     val settleTime: String?,
     @Json(name = "stake")
-    val stake: Int?,
+    val stake: Double?,
     @Json(name = "status")
     val status: Int?,
     @Json(name = "totalAmount")
@@ -47,5 +47,10 @@ data class Row (
     @Json(name = "win")
     val win: Double?,
     @Json(name = "winnable")
-    val winnable: Double?
-)
+    val winnable: Double?,
+    @Json(name = "rtScore")
+    val rtScore: String?,
+    @Json(name = "parlayComsDetailVOs")
+    val parlayComsDetailVOs: List<ParlayComsDetailVO>?
+
+    )

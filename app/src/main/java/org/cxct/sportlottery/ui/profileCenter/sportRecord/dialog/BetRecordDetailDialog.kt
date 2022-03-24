@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordViewModel
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.setPlayCateName
 
 class BetRecordDetailDialog(val data: Row) : BaseDialog<BetRecordViewModel>(BetRecordViewModel::class) {
 
@@ -23,6 +24,9 @@ class BetRecordDetailDialog(val data: Row) : BaseDialog<BetRecordViewModel>(BetR
             lifecycleOwner = this@BetRecordDetailDialog
             row = data
             this.textUtil = TextUtil
+            val parlayType = if (data.matchOdds.size == 1) data.matchOdds[0].playCateName else data.parlayType
+            tvBetTitle.setPlayCateName(parlayType)
+
         }
 
         return binding.root
@@ -41,9 +45,9 @@ class BetRecordDetailDialog(val data: Row) : BaseDialog<BetRecordViewModel>(BetR
 
         initRv()
 
-        viewModel.oddsType.observe(viewLifecycleOwner, {
+        viewModel.oddsType.observe(viewLifecycleOwner) {
             rvAdapter.oddsType = it
-        })
+        }
 
     }
 

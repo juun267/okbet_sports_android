@@ -14,6 +14,7 @@
             <flag name="bold_italic" value="3" />
         </attr>
         <attr name="cvEnable" format="boolean" />
+        <attr name="cvEditable" format="boolean" />
         <attr name="cvCount" format="string" />
         <attr name="cvIcon" format="reference" />
         <attr name="cvHint" format="string" />
@@ -66,6 +67,7 @@
 
     <declare-styleable name="CalendarBottomSheetStyle">
         <attr name="calendarLayout" format="reference" />
+        <attr name="dateRange" format="integer" />
     </declare-styleable>
 
     <declare-styleable name="StatusBottomSheetStyle">
@@ -80,11 +82,21 @@
             <enum name="packed" value="2" />
         </attr>
         <attr name="arrowSrc" format="reference"/>
+        <attr name="backgroundFrame" format="reference"/>
     </declare-styleable>
 
     <declare-styleable name="ToolBarView">
         <attr name="title" format="string" />
         <attr name="fragmentNavGraph" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="CustomTabLayout">
+        <attr name="firstTabText" format="string" />
+        <attr name="secondTabText" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="CustomTopToolbar">
+        <attr name="topTitleText" format="string" />
     </declare-styleable>
 
     <declare-styleable name="OddsBetButton">
@@ -127,6 +139,79 @@
     <declare-styleable name="BottomNavigationItem">
         <attr name="btiTitle" format="string" />
         <attr name="btiIcon" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="ExtendedEditText">
+
+        <!--Texts-->
+        <attr name="prefix" format="string" />
+        <attr name="suffix" format="string" />
+
+        <!--Colors-->
+        <attr name="prefixTextColor" format="color" />
+        <attr name="suffixTextColor" format="color" />
+
+    </declare-styleable>
+
+    <declare-styleable name="TextFieldBoxes">
+
+        <!--Texts-->
+        <attr name="labelText" format="string" />
+        <attr name="hintText" format="string" />
+        <attr name="singleText" format="string" />
+        <attr name="helperText" format="string" />
+
+
+        <!--Colors-->
+        <attr name="helperTextColor" format="color" />
+        <attr name="mCounterTextColor" format="color" />
+        <attr name="errorColor" format="color" />
+        <attr name="primaryColor" format="color" />
+        <attr name="secondaryColor" format="color" />
+        <attr name="panelBackgroundColor" format="color" />
+
+        <!--Characters counter-->
+        <attr name="maxCharacters" format="integer" />
+        <attr name="minCharacters" format="integer" />
+
+        <!--Others-->
+        <attr name="enabled" format="boolean" />
+        <attr name="iconSignifier" format="reference" />
+        <attr name="endIcon" format="reference" />
+        <attr name="isResponsiveIconColor" format="boolean" />
+        <attr name="hasClearButton" format="boolean" />
+        <attr name="hasFocus" format="boolean" />
+        <attr name="alwaysShowHint" format="boolean" />
+        <attr name="useDenseSpacing" format="boolean" />
+        <attr name="rtl" format="boolean" />
+        <attr name="hideSelectedTitle" format="boolean" />
+
+        <!-- Set whether to automaticavalidateErrordate, or only on demand
+               @see {@link TextFieldBoxes#setManualValidateError(boolean) } -->
+        <attr name="manualValidateError" format="boolean" />
+
+    </declare-styleable>
+
+    <declare-styleable name="SecurityCodeStyleEditText">
+
+        <!--Texts-->
+        <attr name="scLabelText" format="string" />
+        <attr name="scHintText" format="string" />
+        <attr name="scErrorText" format="string" />
+
+        <!--Icon-->
+        <attr name="scIcon" format="reference" />
+
+
+    </declare-styleable>
+
+    <declare-styleable name="HighlightTextView">
+        <attr name="highlightColor" format="color|reference"/>
+        <attr name="highlightText" format="string"/>
+        <attr name="highlightWidth" format="dimension"/>
+        <attr name="highlightRadius" format="dimension"/>
+        <attr name="highlightBold" format="boolean"/>
+        <attr name="highlightTextColor" format="color|reference"/>
     </declare-styleable>
 
 </resources>

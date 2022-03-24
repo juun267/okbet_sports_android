@@ -81,7 +81,7 @@ class ResultsSettlementActivity :
     }
 
     private fun setupToolbar() {
-        btn_toolbar_back.setOnClickListener {
+        custom_tool_bar.setOnBackPressListener {
             finish()
         }
     }

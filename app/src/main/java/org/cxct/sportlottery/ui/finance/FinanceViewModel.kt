@@ -9,6 +9,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.money.list.RechargeListRequest
 import org.cxct.sportlottery.network.money.list.Row
+import org.cxct.sportlottery.network.money.list.SportBillListRequest
+import org.cxct.sportlottery.network.money.list.SportBillResult
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
@@ -19,6 +21,7 @@ import org.cxct.sportlottery.ui.finance.df.UWType
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.ToastUtil
 
 const val pageSize = 20
 
@@ -48,7 +51,8 @@ class FinanceViewModel(
 
     val userWithdrawListResult: LiveData<MutableList<org.cxct.sportlottery.network.withdraw.list.Row>?>
         get() = _userWithdrawResult
-
+    val userSportBillListResult: LiveData<SportBillResult>
+        get() = _userSportBillListResult
     val recordType: LiveData<String>
         get() = _recordType
 
@@ -61,9 +65,13 @@ class FinanceViewModel(
     val isFinalPage: LiveData<Boolean>
         get() = _isFinalPage
 
+    val accountHistoryList: LiveData<List<SportBillResult.Row>>
+        get() = _accountHistoryList
+
     private val _isLoading = MutableLiveData<Boolean>()
     private val _userRechargeListResult = MutableLiveData<MutableList<Row>?>()
     private val _userWithdrawResult = MutableLiveData<MutableList<org.cxct.sportlottery.network.withdraw.list.Row>?>()
+    private val _userSportBillListResult = MutableLiveData<SportBillResult>()
 
     private val _recordType = MutableLiveData<String>()
 
@@ -72,6 +80,8 @@ class FinanceViewModel(
 
     private val _isFinalPage = MutableLiveData<Boolean>().apply { value = false }
     private var page = 1
+
+    private val _accountHistoryList = MutableLiveData<List<SportBillResult.Row>>()
 
 
     fun setRecordType(recordType: String) {
@@ -117,7 +127,16 @@ class FinanceViewModel(
 
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                OneBoSportApi.moneyService.getUserRechargeList(RechargeListRequest(rechType = filter(rechType), status = filter(status)?.toIntOrNull(), startTime = startTime, endTime = endTime, page = page, pageSize = pageSize))
+                OneBoSportApi.moneyService.getUserRechargeList(
+                    RechargeListRequest(
+                        rechType = filter(rechType),
+                        status = filter(status)?.toIntOrNull(),
+                        startTime = startTime,
+                        endTime = endTime,
+                        page = page,
+                        pageSize = pageSize
+                    )
+                )
             }
 
             result?.rows?.map {
@@ -165,6 +184,71 @@ class FinanceViewModel(
         }
     }
 
+    fun getUserAccountHistory(
+        isFirstFetch: Boolean = false,
+        startTime: String? = TimeUtil.getDefaultTimeStamp().startTime,
+        endTime: String? = TimeUtil.getDefaultTimeStamp().endTime,
+        tranTypeGroup: String? = "bet",
+    ) {
+        if (isFinalPage.value == true && !isFirstFetch){
+            return
+        }
+
+        if (isFirstFetch) {
+            _isFinalPage.postValue(false)
+            page = 1
+        }
+
+        loading()
+
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.moneyService.getBillList(
+                    SportBillListRequest(
+                        tranTypeGroup = tranTypeGroup,
+                        startTime = startTime,
+                        endTime = endTime,
+                        page = page,
+                        pageSize = pageSize
+                    )
+                )
+            }?.let { result ->
+                if (result.success) {
+                    if (result.rows.size < pageSize) {
+                        _isFinalPage.postValue(true)
+                    }
+
+                    page++
+
+                    result.rows.map {
+                        it.addTime = TimeUtil.timeFormat(it.addTime.toLong(), "yyyy-MM-dd HH:mm:ss")
+                        val split = it.addTime.split(' ')
+                        it.rechDateStr = split[0]
+                        it.rechTimeStr = split[1]
+                    }
+
+                    _accountHistoryList.postValue(
+                        mutableListOf<SportBillResult.Row>().apply {
+                            if (!isFirstFetch) {
+                                addAll(accountHistoryList.value ?: listOf())
+                            }
+                            addAll(result.rows)
+                        }
+                    )
+
+                    _userSportBillListResult.postValue(result)
+                }else{
+                    ToastUtil.showToastInCenter(
+                        androidContext,
+                        result.msg
+                    )
+                }
+
+                hideLoading()
+            }
+
+        }
+    }
 
     private val withdrawLogList = mutableListOf<org.cxct.sportlottery.network.withdraw.list.Row>()
 
@@ -180,7 +264,14 @@ class FinanceViewModel(
         val filter = { item: String? -> if (item == allTag) null else item }
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                OneBoSportApi.withdrawService.getWithdrawList(WithdrawListRequest(checkStatus = filter(checkStatus)?.toIntOrNull(), uwType = filter(uwType), startTime = startTime, endTime = endTime))
+                OneBoSportApi.withdrawService.getWithdrawList(
+                    WithdrawListRequest(
+                        checkStatus = filter(checkStatus)?.toIntOrNull(),
+                        uwType = filter(uwType),
+                        startTime = startTime,
+                        endTime = endTime
+                    )
+                )
             }
 
             result.apply {
@@ -225,6 +316,8 @@ class FinanceViewModel(
                 }
 
                 it.displayMoney = TextUtil.formatMoney(it.applyMoney ?: 0.0)
+
+                it.withdrawDeductMoney = TextUtil.formatMoney(it.deductMoney ?: 0.0)
             }
 
             result?.rows?.let {

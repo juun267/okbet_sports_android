@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.transactionStatus
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +19,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.service.order_settlement.Status
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.game.GameActivity
@@ -43,14 +45,14 @@ class TransactionStatusActivity :
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transaction_status)
 
-        setupNoticeButton(btn_notice)
+        setupNoticeButton(iv_notice)
         initToolBar()
         initMenu()
         initBottomNavigation()
         initRvMarquee()
         initObserver()
         initServiceButton()
-        getAnnouncement()
+//        getAnnouncement()
     }
 
     override fun onResume() {
@@ -79,7 +81,7 @@ class TransactionStatusActivity :
         iv_language.setImageResource(LanguageManager.getLanguageFlag(this))
 
         //頭像 當 側邊欄 開/關
-        iv_head.setOnClickListener {
+        iv_menu.setOnClickListener {
             if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
             else {
                 drawer_layout.openDrawer(nav_right)
@@ -100,7 +102,9 @@ class TransactionStatusActivity :
         }
 
         iv_language.setOnClickListener {
-            ChangeLanguageDialog().show(supportFragmentManager, null)
+            ChangeLanguageDialog(ChangeLanguageDialog.ClearBetListListener{
+                viewModel.betInfoRepository.clear()
+            }).show(supportFragmentManager, null)
         }
     }
 
@@ -224,22 +228,33 @@ class TransactionStatusActivity :
     }
 
     private fun initObserver() {
-        viewModel.messageListResult.observe(this, {
+        viewModel.messageListResult.observe(this) {
             updateUiWithResult(it)
-        })
+        }
 
-        viewModel.isLogin.observe(this, {
+        viewModel.settlementNotificationMsg.observe(this) { event ->
+            event.getContentIfNotHandled()?.let {
+                if (it.status == Status.UN_DONE.code || it.status == Status.CANCEL.code) {
+                    viewModel.getBetList(true)
+                }
+            }
+        }
+
+        viewModel.isLogin.observe(this) {
             getAnnouncement()
-        })
+        }
 
-        viewModel.userInfo.observe(this, {
+        viewModel.userInfo.observe(this) {
             updateAvatar(it?.iconUrl)
-        })
+        }
 
-        viewModel.nowTransNum.observe(this, {
+        viewModel.nowTransNum.observe(this) {
             navigation_transaction_status.trans_number.text = it.toString()
-        })
+        }
 
+        viewModel.loading.observe(this) {
+            if (it) loading() else hideLoading()
+        }
     }
 
     private fun initServiceButton() {
@@ -256,11 +271,10 @@ class TransactionStatusActivity :
             it.rows?.forEach { data -> titleList.add(data.title + " - " + data.message) }
 
             mMarqueeAdapter.setData(titleList)
-
             if (messageListResult.success && titleList.size > 0) {
-                rv_marquee.startAuto() //啟動跑馬燈
+                rv_marquee.startAuto(false) //啟動跑馬燈
             } else {
-                rv_marquee.stopAuto() //停止跑馬燈
+                rv_marquee.stopAuto(true) //停止跑馬燈
             }
         }
     }
@@ -268,16 +282,20 @@ class TransactionStatusActivity :
     override fun updateUiWithLogin(isLogin: Boolean) {
         if (isLogin) {
             btn_login.visibility = View.GONE
+            iv_menu.visibility =View.VISIBLE
+            iv_notice.visibility =View.VISIBLE
             btn_register.visibility = View.GONE
             toolbar_divider.visibility = View.GONE
-            iv_head.visibility = View.VISIBLE
-            tv_odds_type.visibility = View.VISIBLE
+            iv_head.visibility = View.GONE
+            tv_odds_type.visibility = View.GONE
         } else {
             btn_login.visibility = View.VISIBLE
             btn_register.visibility = View.VISIBLE
             toolbar_divider.visibility = View.VISIBLE
             iv_head.visibility = View.GONE
             tv_odds_type.visibility = View.GONE
+            iv_menu.visibility =View.GONE
+            iv_notice.visibility =View.GONE
         }
     }
 

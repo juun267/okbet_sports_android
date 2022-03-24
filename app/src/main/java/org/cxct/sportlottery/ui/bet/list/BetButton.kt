@@ -8,6 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.doAfterTextChanged
 import kotlinx.android.synthetic.main.button_bet.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.repository.sConfigData
 
 
 /**
@@ -70,13 +71,14 @@ class BetButton @JvmOverloads constructor(
 
     private fun init() {
         inflate(context, R.layout.button_bet, this)
+        tv_currency_type.text = sConfigData?.systemCurrency
         setupQuotaListener()
     }
 
 
     private fun setupQuotaListener() {
         tv_quota.doAfterTextChanged {
-            isCanSendOut = it.toString().replace(",", "").toInt() != 0
+            isCanSendOut = (it.toString().replace(",", "").toDoubleOrNull()?:0.0) != 0.0
         }
     }
 
@@ -88,7 +90,7 @@ class BetButton @JvmOverloads constructor(
 
     private fun setupOddsChanged(isOddsChanged: Boolean) {
         tv_accept_odds_change.visibility =
-            if (isOddsChanged && tv_quota.text.toString().replace(",", "").toInt() != 0) View.VISIBLE else View.GONE
+            if (isOddsChanged && (tv_quota.text.toString().replace(",", "").toDoubleOrNull()?:0.0) != 0.0) View.VISIBLE else View.GONE
     }
 
 

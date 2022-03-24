@@ -19,6 +19,7 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
+import org.cxct.sportlottery.util.PlayCateMenuFilter
 import org.cxct.sportlottery.util.TimeUtil
 
 
@@ -83,6 +84,19 @@ class MyFavoriteViewModel(
                     selectItem?.code,
                     selectItem?.play?.firstOrNull()?.code
                 )
+            }
+        }
+    }
+
+    //獲取體育篩選菜單
+    fun getSportMenuFilter() {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.sportService.getSportListFilter()
+            }
+
+            result?.let {
+                PlayCateMenuFilter.filterList = it.t?.sportMenuList
             }
         }
     }
@@ -261,5 +275,9 @@ class MyFavoriteViewModel(
             }
         }
         return this
+    }
+
+    fun getIsFastBetOpened(): Boolean{
+        return betInfoRepository.getIsFastBetOpened()
     }
 }

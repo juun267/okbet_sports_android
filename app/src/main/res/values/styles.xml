@@ -12,6 +12,18 @@
         <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
     </style>
 
+    <style name="VietnamTheme" parent="AppTheme">
+        <item name="fontFamily">@font/helvetica</item>
+    </style>
+
+    <style name="ChineseTheme" parent="AppTheme">
+        <item name="fontFamily">@font/helvetica</item>
+    </style>
+
+    <style name="EnglishTheme" parent="AppTheme">
+        <item name="fontFamily">@font/helvetica</item>
+    </style>
+
     <!--20200522 設置activity過場動畫，確保在不同機型過場動畫效果一致-->
     <style name="WindowAnimationStyle">
         <item name="android:activityOpenEnterAnimation">@anim/push_right_to_left_enter</item>
@@ -52,6 +64,12 @@
         <item name="android:textSize">@dimen/textSize16sp</item>
         <item name="android:textStyle">bold</item>
     </style>
+    <style name="Widget.Button_Custom" parent="android:Widget">
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+
+    </style>
 
     <style name="AppSearchView" parent="Widget.AppCompat.Light.SearchView">
         <item name="android:textSize">@dimen/textSize13sp</item>
@@ -80,6 +98,11 @@
     <style name="LeftMenu">
         <item name="android:windowEnterAnimation">@anim/pop_left_to_right_enter_opaque</item>
         <item name="android:windowExitAnimation">@anim/push_right_to_left_exit_opaque</item>
+    </style>
+
+    <style name="NoUppercaseTab" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
 </resources>

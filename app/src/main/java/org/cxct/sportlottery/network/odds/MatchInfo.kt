@@ -21,7 +21,7 @@ data class MatchInfo(
     @Json(name = "id")
     override val id: String, //赛事或赛季id
     @Json(name = "playCateNum")
-    val playCateNum: Int?,
+    override var playCateNum: Int?,
     @Json(name = "startTime")
     val startTime: Long?,
     @Json(name = "status")
@@ -29,7 +29,7 @@ data class MatchInfo(
     @Json(name = "leagueId")
     val leagueId: String? = null,
     @Json(name = "leagueName")
-    val leagueName: String? = null,
+    var leagueName: String? = null,
     @Json(name = "name")
     var name: String? = null,
     @Json(name = "img")
@@ -44,23 +44,28 @@ data class MatchInfo(
     val eps: Int? = null,
     @Json(name = "spt")
     val spt: Int? = null,
+    @Json(name = "trackerId")
+    val trackerId: String? = null,//动画映射id
 
     ) : Parcelable, MatchInfo {
     //Live
     var isInPlay: Boolean? = false
-    override var awayScore: Int? = null //客队分数
-    override var homeScore: Int? = null //主队分数
+    override var awayScore: String? = null //客队分数
+    override var homeScore: String? = null //主队分数
     override var statusName18n: String? = null //状态名称
     override var leagueTime: Int? = null
     override var socketMatchStatus: Int? = null //赛事阶段状态id
+    override var stopped: Int? = null//賽事是否暫停倒數计时 1:是 ，0：否
 
     //At Start
     var isAtStart: Boolean? = false
     var remainTime: Long? = null
+    var hasRefreshed: Boolean? = false
 
     //Other
     var startDateDisplay: String? = null
     var startTimeDisplay: String? = null
+    var timeDisplay: String? = null
 
     var isFavorite = false
 
@@ -74,6 +79,9 @@ data class MatchInfo(
     //FT
     override var homeCards: Int? = null
     override var awayCards: Int? = null
+
+    //999
+    var scoreStatus:Int? = 0
 
 
 }

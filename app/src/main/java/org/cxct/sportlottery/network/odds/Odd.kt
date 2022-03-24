@@ -31,6 +31,15 @@ data class Odd(
     @Json(name = "hkOdds")
     var hkOdds: Double? = null, //香港
 
+    @Json(name = "malayOdds")
+    var malayOdds: Double? = null, //馬來盤
+
+    @Json(name = "indoOdds")
+    var indoOdds: Double? = null, //印尼盤
+
+    @Json(name = "marketSort")
+    var marketSort: Int? = null, //marketSort
+
     @Json(name = "status")
     var status: Int? = null, //0:活跃可用，可投注、1：临时锁定，不允许投注、2：不可用，不可见也不可投注
 
@@ -55,6 +64,8 @@ data class Odd(
 ) : OddStateParams, Parcelable {
 
     var isSelected: Boolean? = false
+
+    var nextScore: String? = "" //FT 玩法下個進球會使用到
 
     override var oddState: Int = OddState.SAME.state
 

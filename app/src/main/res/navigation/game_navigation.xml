@@ -340,6 +340,7 @@
             android:id="@+id/action_oddsDetailFragment_self"
             app:destination="@id/oddsDetailFragment"
             app:enterAnim="@anim/enter_from_right"
+            app:launchSingleTop="true"
             app:popExitAnim="@anim/exit_to_right">
             <argument
                 android:name="gameType"
@@ -493,4 +494,6 @@
                 app:argType="org.cxct.sportlottery.network.common.MatchType" />
         </action>
     </fragment>
+
 </navigation>
+

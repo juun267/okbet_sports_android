@@ -22,6 +22,10 @@ object LanguageManager {
     }
 
     fun getSelectLanguage(context: Context?): Language {
+        //[Martin]無腦鎖定為英文
+//        if(BuildConfig.CHANNEL_NAME == "spkx"){
+//            return Language.EN
+//        }
         //TODO 20210217 Simon 紀錄：目前只有 簡體中文、英文 選項，且預設是簡體中文，待之後 review
         return when (SPUtil.getInstance(context).getSelectLanguage()) {
             Language.ZH.key, Language.ZHT.key -> Language.ZH
@@ -36,7 +40,8 @@ object LanguageManager {
                     local.language == Locale("vi").language -> Language.VI
                     (local.language == Locale.SIMPLIFIED_CHINESE.language && local.country == Locale.SIMPLIFIED_CHINESE.country)
                             || local.language == Locale.TRADITIONAL_CHINESE.language -> Language.ZH
-                    else -> Language.values().find { it.key == BuildConfig.DEFAULT_LANGUAGE } ?: Language.EN
+                    else -> Language.values().find { it.key == BuildConfig.DEFAULT_LANGUAGE }
+                        ?: Language.EN
                 }
 //                Language.EN //2021/10/04 與PM確認過，不管手機是什麼語系，都預先使用英文版本
             }
@@ -49,6 +54,30 @@ object LanguageManager {
             Language.VI -> R.drawable.ic_flag_vi
             else -> R.drawable.ic_flag_en
         }
+    }
+
+    fun getLanguageString(context: Context?): String {
+        return when (getSelectLanguage(context)) {
+            Language.ZH -> "zh"
+            Language.VI -> "vi"
+            else -> "en"
+        }
+    }
+
+    fun getLanguageStringResource(context: Context?): String {
+        return when (getSelectLanguage(context)) {
+            Language.ZH -> context?.resources?.getString(R.string.language_cn) ?: ""
+            Language.VI -> context?.resources?.getString(R.string.language_vi) ?: ""
+            else -> context?.resources?.getString(R.string.language_en) ?: ""
+        }
+    }
+
+    fun getLanguageStringList(context: Context?): List<String> {
+        return listOf(
+            context?.resources?.getString(R.string.language_cn) ?: "",
+            context?.resources?.getString(R.string.language_en) ?: "",
+            context?.resources?.getString(R.string.language_vi) ?: ""
+        )
     }
 
     /**

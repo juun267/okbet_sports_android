@@ -50,6 +50,8 @@ object OddSpannableString {
     private lateinit var playNameSpan: SpannableString
     private lateinit var spreadSpan: SpannableString
     private lateinit var oddsSpan: SpannableString
+    private lateinit var oddsTypeSpan: SpannableString
+
     private var extInfo: SpannableString? = null
 
 
@@ -96,6 +98,9 @@ object OddSpannableString {
 
         setupOddsSpannableString(textView.context, matchOdd, isOddsChanged, oddsType)
 
+        //setupOddsTypeSpannableString(textView.context, oddsType)
+
+
         mergeString(textView)
     }
 
@@ -117,7 +122,7 @@ object OddSpannableString {
     private fun setupSpreadSpannableString(context: Context, matchType: MatchType?, matchOdd: MatchOdd, isChanged: Boolean) {
         val textColor = ContextCompat.getColor(context, if (isChanged) R.color.colorWhite else R.color.colorRedDark)
         val backgroundColor =
-            ContextCompat.getColor(context, if (isChanged) R.color.colorBronze else R.color.transparent)
+            ContextCompat.getColor(context, if (isChanged) R.color.colorBronze else R.color.transparent_black_0)
 
         if (matchOdd.spread.isEmpty() || !needShowSpread(matchOdd.playCode) || matchType == MatchType.OUTRIGHT
         ) {
@@ -134,7 +139,7 @@ object OddSpannableString {
 
     private fun setupOddsSpannableString(context: Context, matchOdd: MatchOdd, isChanged: Boolean, oddsType: OddsType) {
         val textColor = ContextCompat.getColor(context, if (isChanged) R.color.colorWhite else R.color.colorBlackLight)
-        val backgroundColor = ContextCompat.getColor(context, if (isChanged) R.color.colorBronze else R.color.transparent)
+        val backgroundColor = ContextCompat.getColor(context, if (isChanged) R.color.colorBronze else R.color.transparent_black_0)
 
         val odds =
             if (matchOdd.status == BetStatus.ACTIVATED.code) TextUtil.formatForOdd(getOdds(matchOdd, oddsType)) else "–"
@@ -143,6 +148,17 @@ object OddSpannableString {
         oddsSpan.setSpan(ForegroundColorSpan(textColor), 0, oddsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         oddsSpan.setSpan(StyleSpan(Typeface.BOLD), 0, oddsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         oddsSpan.setSpan(BackgroundColorSpan(backgroundColor), 0, oddsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+    }
+
+    private fun setupOddsTypeSpannableString(context: Context, oddsType: OddsType) {
+        val textColor = ContextCompat.getColor(context,  R.color.colorGray)
+        val backgroundColor = ContextCompat.getColor(context,  R.color.transparent_black_0)
+
+        val oddsType = " ("+context.getString(oddsType.res)+")"
+        val oddsEnd = oddsType.length
+        oddsTypeSpan = SpannableString(oddsType)
+        oddsTypeSpan.setSpan(ForegroundColorSpan(textColor), 0, oddsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        oddsTypeSpan.setSpan(BackgroundColorSpan(backgroundColor), 0, oddsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
     }
 
 
@@ -156,6 +172,7 @@ object OddSpannableString {
         oddContentBuilder.append(spreadSpan)
         oddContentBuilder.append(" ＠ ")
         oddContentBuilder.append(oddsSpan)
+        //oddContentBuilder.append(oddsTypeSpan)
 
         textView.text = oddContentBuilder
 

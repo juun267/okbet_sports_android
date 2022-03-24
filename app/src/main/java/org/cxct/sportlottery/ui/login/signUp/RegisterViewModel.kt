@@ -26,7 +26,8 @@ class RegisterViewModel(
     private val androidContext: Context,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
+    infoCenterRepository: InfoCenterRepository,
+    protected val userInfoRepository: UserInfoRepository
 ) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
     val registerResult: LiveData<LoginResult>
         get() = _registerResult
@@ -48,6 +49,14 @@ class RegisterViewModel(
         get() = _phoneMsg
     val emailMsg: LiveData<String?>
         get() = _emailMsg
+    val postalMsg: LiveData<String?>
+        get() = _postalMsg
+    val provinceMsg: LiveData<String?>
+        get() = _provinceMsg
+    val cityMsg: LiveData<String?>
+        get() = _cityMsg
+    val addressMsg: LiveData<String?>
+        get() = _addressMsg
     val weChatMsg: LiveData<String?>
         get() = _weChatMsg
     val zaloMsg: LiveData<String?>
@@ -58,6 +67,8 @@ class RegisterViewModel(
         get() = _whatsAppMsg
     val telegramMsg: LiveData<String?>
         get() = _telegramMsg
+    val securityPbMsg: LiveData<String?>
+        get() = _securityPbMsg
     val securityCodeMsg: LiveData<String?>
         get() = _securityCodeMsg
     val validCodeMsg: LiveData<String?>
@@ -71,7 +82,7 @@ class RegisterViewModel(
     val loginForGuestResult: LiveData<LoginResult>
         get() = _loginForGuestResult
 
-    val agreementChecked: LiveData<Boolean?>
+    private val agreementChecked: LiveData<Boolean?>
         get() = _agreementChecked
 
     private val _registerResult = MutableLiveData<LoginResult>()
@@ -84,11 +95,16 @@ class RegisterViewModel(
     private val _qqMsg = MutableLiveData<String?>()
     private val _phoneMsg = MutableLiveData<String?>()
     private val _emailMsg = MutableLiveData<String?>()
+    private val _postalMsg = MutableLiveData<String?>()
+    private val _provinceMsg = MutableLiveData<String?>()
+    private val _cityMsg = MutableLiveData<String?>()
+    private val _addressMsg = MutableLiveData<String?>()
     private val _weChatMsg = MutableLiveData<String?>()
     private val _zaloMsg = MutableLiveData<String?>()
     private val _facebookMsg = MutableLiveData<String?>()
     private val _whatsAppMsg = MutableLiveData<String?>()
     private val _telegramMsg = MutableLiveData<String?>()
+    private val _securityPbMsg = MutableLiveData<String?>()
     private val _securityCodeMsg = MutableLiveData<String?>()
     private val _validCodeMsg = MutableLiveData<String?>()
     private val _registerEnable = MutableLiveData<Boolean>()
@@ -98,6 +114,7 @@ class RegisterViewModel(
     private val _loginForGuestResult = MutableLiveData<LoginResult>()
     private val _agreementChecked = MutableLiveData<Boolean?>()
 
+    @Deprecated("沒在用")
     fun getAgreementContent(context: Context): Spanned {
         //TODO 添加多國語系 開戶協議 檔案路徑 mapping
         val path = when (LanguageManager.getSelectLanguage(context)) {
@@ -116,7 +133,7 @@ class RegisterViewModel(
      * 檢查輸入欄位
      */
 
-    fun checkInviteCode(inviteCode: String?) {
+    private fun checkInviteCode(inviteCode: String?) {
         _inviteCodeMsg.value = when {
             inviteCode.isNullOrEmpty() -> {
                 if (sConfigData?.enableInviteCode != FLAG_OPEN)
@@ -143,7 +160,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkLoginPassword(password: String?) {
+    private fun checkLoginPassword(password: String?) {
         _loginPasswordMsg.value = when {
             password.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyPwdFormat(password) -> androidContext.getString(R.string.error_register_password)
@@ -154,7 +171,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkConfirmPassword(password: String?, confirmPassword: String?) {
+    private fun checkConfirmPassword(password: String?, confirmPassword: String?) {
         _confirmPasswordMsg.value = when {
             password.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             password != confirmPassword -> androidContext.getString(R.string.error_confirm_password)
@@ -163,7 +180,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkFullName(fullName: String?) {
+    private fun checkFullName(fullName: String?) {
         _fullNameMsg.value = when {
             fullName.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             else -> null
@@ -171,7 +188,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkFundPwd(fundPwd: String?) {
+    private fun checkFundPwd(fundPwd: String?) {
         _fundPwdMsg.value = when {
             fundPwd.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyPayPwd(fundPwd) -> androidContext.getString(R.string.error_withdrawal_pwd)
@@ -180,7 +197,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkQQ(qq: String?) {
+    private fun checkQQ(qq: String?) {
         _qqMsg.value = when {
             qq.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyQQ(qq) -> androidContext.getString(R.string.error_qq_number)
@@ -189,7 +206,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkPhone(phone: String?) {
+    private fun checkPhone(phone: String?) {
         _phoneMsg.value = when {
             phone.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             else -> null
@@ -197,7 +214,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkEmail(email: String?) {
+    private fun checkEmail(email: String?) {
         _emailMsg.value = when {
             email.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyMail(email) -> androidContext.getString(R.string.error_e_mail)
@@ -206,7 +223,39 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkWeChat(weChat: String?) {
+    private fun checkPostal(postalCode: String?) {
+        _postalMsg.value = when {
+            postalCode.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
+            else -> null
+        }
+        focusChangeCheckAllInputComplete()
+    }
+
+    private fun checkProvince(province: String?) {
+        _provinceMsg.value = when {
+            province.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
+            else -> null
+        }
+        focusChangeCheckAllInputComplete()
+    }
+
+    private fun checkCity(city: String?) {
+        _cityMsg.value = when {
+            city.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
+            else -> null
+        }
+        focusChangeCheckAllInputComplete()
+    }
+
+    private fun checkAddress(address: String?) {
+        _addressMsg.value = when {
+            address.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
+            else -> null
+        }
+        focusChangeCheckAllInputComplete()
+    }
+
+    private fun checkWeChat(weChat: String?) {
         _weChatMsg.value = when {
             weChat.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             else -> null
@@ -214,7 +263,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkZalo(zalo: String?) {
+    private fun checkZalo(zalo: String?) {
         _zaloMsg.value = when {
             zalo.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyZalo(zalo) -> androidContext.getString(R.string.error_zalo)
@@ -223,7 +272,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkFacebook(facebook: String?) {
+    private fun checkFacebook(facebook: String?) {
         _facebookMsg.value = when {
             facebook.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyFacebook(facebook) -> androidContext.getString(R.string.error_facebook)
@@ -232,7 +281,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkWhatsApp(whatsApp: String?) {
+    private fun checkWhatsApp(whatsApp: String?) {
         _whatsAppMsg.value = when {
             whatsApp.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyWhatsApp(whatsApp) -> androidContext.getString(R.string.error_whats_app)
@@ -241,7 +290,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkTelegram(telegram: String?) {
+    private fun checkTelegram(telegram: String?) {
         _telegramMsg.value = when {
             telegram.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyTelegram(telegram) -> androidContext.getString(R.string.error_telegram)
@@ -250,7 +299,15 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkSecurityCode(securityCode: String?) {
+    private fun checkSecurityPb(securityPb: String?) {
+        _securityPbMsg.value = when {
+            securityPb.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
+            else -> null
+        }
+        focusChangeCheckAllInputComplete()
+    }
+
+    private fun checkSecurityCode(securityCode: String?) {
         _securityCodeMsg.value = when {
             securityCode.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifySecurityCode(securityCode) -> androidContext.getString(R.string.error_verification_code_by_sms)
@@ -259,7 +316,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkValidCode(validCode: String?) {
+    private fun checkValidCode(validCode: String?) {
         _validCodeMsg.value = when {
             validCode.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyValidCode(validCode) -> androidContext.getString(R.string.error_verification_code)
@@ -298,7 +355,7 @@ class RegisterViewModel(
     }
 
     //檢查是否所有欄位都填寫完畢
-    private fun checkAllInput(
+    fun checkAllInput(
         inviteCode: String,
         userName: String,
         loginPassword: String,
@@ -308,15 +365,20 @@ class RegisterViewModel(
         qq: String,
         phone: String,
         email: String,
+        postalCode: String,
+        province: String,
+        city: String,
+        address: String,
         weChat: String,
         zalo: String,
         facebook: String,
         whatsApp: String,
         telegram: String,
+        securityPb: String,
         smsCode: String,
         validCode: String,
         agreementChecked: Boolean,
-    ) {
+    ): Boolean {
         if (sConfigData?.enableInviteCode == FLAG_OPEN)
             checkInviteCode(inviteCode)
 
@@ -334,6 +396,12 @@ class RegisterViewModel(
             checkPhone(phone)
         if (sConfigData?.enableEmail == FLAG_OPEN)
             checkEmail(email)
+        if (sConfigData?.enableAddress == FLAG_OPEN){
+            checkPostal(postalCode)
+            checkProvince(province)
+            checkCity(city)
+            checkAddress(address)
+        }
         if (sConfigData?.enableWechat == FLAG_OPEN)
             checkWeChat(weChat)
         if (sConfigData?.enableZalo == FLAG_OPEN)
@@ -344,12 +412,16 @@ class RegisterViewModel(
             checkWhatsApp(whatsApp)
         if (sConfigData?.enableTelegram == FLAG_OPEN)
             checkTelegram(telegram)
+        if(sConfigData?.enableSafeQuestion == FLAG_OPEN)
+            checkSecurityPb(securityPb)
         if (sConfigData?.enableSmsValidCode == FLAG_OPEN)
             checkSecurityCode(smsCode)
         if (sConfigData?.enableRegValidCode == FLAG_OPEN)
             checkValidCode(validCode)
 
         checkAgreement(agreementChecked)
+
+        return checkAllInputComplete()
     }
 
     private fun focusChangeCheckAllInputComplete() {
@@ -357,7 +429,7 @@ class RegisterViewModel(
     }
 
 
-    private fun checkAllInputComplete(): Boolean {
+    fun checkAllInputComplete(): Boolean {
         if (sConfigData?.enableInviteCode == FLAG_OPEN && inviteCodeMsg.value != null)
             return false
         if (memberAccountMsg.value != null)
@@ -376,6 +448,8 @@ class RegisterViewModel(
             return false
         if (sConfigData?.enableEmail == FLAG_OPEN && emailMsg.value != null)
             return false
+        if (sConfigData?.enableAddress == FLAG_OPEN && (postalMsg.value != null || provinceMsg.value != null || cityMsg.value != null || addressMsg.value != null))
+            return false
         if (sConfigData?.enableWechat == FLAG_OPEN && weChatMsg.value != null)
             return false
         if (sConfigData?.enableZalo == FLAG_OPEN && zaloMsg.value != null)
@@ -385,6 +459,8 @@ class RegisterViewModel(
         if (sConfigData?.enableWhatsApp == FLAG_OPEN && whatsAppMsg.value != null)
             return false
         if (sConfigData?.enableTelegram == FLAG_OPEN && telegramMsg.value != null)
+            return false
+        if (sConfigData?.enableSafeQuestion == FLAG_OPEN && securityPbMsg.value != null)
             return false
         if (sConfigData?.enableSmsValidCode == FLAG_OPEN && securityCodeMsg.value != null)
             return false
@@ -426,37 +502,72 @@ class RegisterViewModel(
         qq: String,
         phone: String,
         email: String,
+        postalCode: String,
+        province: String,
+        city: String,
+        address: String,
         weChat: String,
         zalo: String,
         facebook: String,
         whatsApp: String,
         telegram: String,
+        securityPb: String,
         smsCode: String,
         validCode: String,
         agreementChecked: Boolean,
-        deviceSn: String
+        deviceSn: String,
+        deviceId: String
     ) {
-        checkAllInput(
-            inviteCode,
-            userName,
-            loginPassword,
-            confirmPassword,
-            fullName,
-            fundPwd,
-            qq,
-            phone,
-            email,
-            weChat,
-            zalo,
-            facebook,
-            whatsApp,
-            telegram,
-            smsCode,
-            validCode,
-            agreementChecked
-        )
-        if (checkAllInputComplete()) {
-            register(createRegisterRequest(inviteCode, userName, loginPassword, fullName, fundPwd, qq, phone, email, weChat, zalo, facebook, whatsApp, telegram, smsCode, validCode, deviceSn))
+        if (checkAllInput(
+                inviteCode,
+                userName,
+                loginPassword,
+                confirmPassword,
+                fullName,
+                fundPwd,
+                qq,
+                phone,
+                email,
+                postalCode,
+                province,
+                city,
+                address,
+                weChat,
+                zalo,
+                facebook,
+                whatsApp,
+                telegram,
+                securityPb,
+                smsCode,
+                validCode,
+                agreementChecked
+            )) {
+            register(
+                createRegisterRequest(
+                    inviteCode,
+                    userName,
+                    loginPassword,
+                    fullName,
+                    fundPwd,
+                    qq,
+                    phone,
+                    email,
+                    postalCode,
+                    province,
+                    city,
+                    address,
+                    weChat,
+                    zalo,
+                    facebook,
+                    whatsApp,
+                    telegram,
+                    securityPb,
+                    smsCode,
+                    validCode,
+                    deviceSn,
+                    deviceId
+                )
+            )
         }
     }
 
@@ -469,21 +580,28 @@ class RegisterViewModel(
         qq: String,
         phone: String,
         email: String,
+        postalCode: String,
+        province: String,
+        city: String,
+        address: String,
         weChat: String,
         zalo: String,
         facebook: String,
         whatsApp: String,
         telegram: String,
+        securityPb: String,
         smsCode: String,
         validCode: String,
-        deviceSn: String
+        deviceSn: String,
+        deviceId: String
     ): RegisterRequest {
         return RegisterRequest(
             userName = userName,
             password = MD5Util.MD5Encode(loginPassword),
             loginSrc = LOGIN_SRC,
             deviceSn = deviceSn,
-            inviteCode = inviteCode
+            inviteCode = inviteCode,
+            loginEnvInfo = deviceId
         ).apply {
             if (sConfigData?.enableFullName == FLAG_OPEN)
                 this.fullName = fullName
@@ -495,6 +613,12 @@ class RegisterViewModel(
                 this.phone = phone
             if (sConfigData?.enableEmail == FLAG_OPEN)
                 this.email = email
+            if (sConfigData?.enableAddress == FLAG_OPEN) {
+                this.zipCode = postalCode
+                this.province = province
+                this.city = city
+                this.address = address
+            }
             if (sConfigData?.enableWechat == FLAG_OPEN)
                 this.wechat = weChat
             if (sConfigData?.enableZalo == FLAG_OPEN)
@@ -505,6 +629,8 @@ class RegisterViewModel(
                 this.whatsapp = whatsApp
             if (sConfigData?.enableTelegram == FLAG_OPEN)
                 this.telegram = telegram
+            if (sConfigData?.enableSafeQuestion == FLAG_OPEN)
+                this.safeQuestion = securityPb
             if (sConfigData?.enableSmsValidCode == FLAG_OPEN)
                 this.securityCode = smsCode
             if (sConfigData?.enableRegValidCode == FLAG_OPEN) {
@@ -519,6 +645,8 @@ class RegisterViewModel(
             doNetwork(androidContext) {
                 loginRepository.register(registerRequest)
             }?.let { result ->
+                // TODO 20220108 更新UserInfo by Hewie
+                userInfoRepository.getUserInfo()
                 _registerResult.postValue(result)
             }
         }

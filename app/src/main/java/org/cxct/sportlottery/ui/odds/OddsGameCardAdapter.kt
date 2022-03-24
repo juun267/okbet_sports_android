@@ -105,7 +105,7 @@ class OddsGameCardAdapter(
             if (matchClockCO?.stopped == 0) {//是否计时停止 1:是 ，0：否
                 when (matchClockCO.gameType) {
                     GameType.BK.key -> {
-                        if (matchClockCO.remainingTimeInPeriod != null || matchClockCO.remainingTimeInPeriod != -1) {
+                        if (matchClockCO.remainingTimeInPeriod != null || matchClockCO.remainingTimeInPeriod != -1L) {
                             itemView.txv_time.text = TimeUtil.timeFormat(
                                 matchClockCO.remainingTimeInPeriod?.times(1000L),
                                 "mm:ss"
@@ -198,17 +198,17 @@ class OddsGameCardAdapter(
                 }
                 GameType.BK.key -> {
                     when (matchStatusCO.status) {
+                        1, 13 -> {
+                            status = context?.getString(R.string.first_session).toString()
+                        }
+                        2,14 -> {
+                            status = context?.getString(R.string.second_session).toString()
+                        }
                         6 -> {
                             status = context?.getString(R.string.first_half_game).toString()
                         }
                         7 -> {
                             status = context?.getString(R.string.second_half_game).toString()
-                        }
-                        13 -> {
-                            status = context?.getString(R.string.first_session).toString()
-                        }
-                        14 -> {
-                            status = context?.getString(R.string.second_session).toString()
                         }
                         15 -> {
                             status = context?.getString(R.string.third_session).toString()
@@ -216,8 +216,11 @@ class OddsGameCardAdapter(
                         16 -> {
                             status = context?.getString(R.string.fourth_session).toString()
                         }
-                        40 -> {
-                            status = context?.getString(R.string.add_time).toString()
+                        106 -> {
+                            status = context?.getString(R.string.add_time_first_half_game).toString()
+                        }
+                        107 -> {
+                            status = context?.getString(R.string.add_time_second_half_game).toString()
                         }
                     }
                 }
@@ -302,8 +305,8 @@ class OddsGameCardAdapter(
         data.forEachIndexed { index, matchInfo ->
             if (matchInfo?.id == matchStatusCO?.matchId) {
                 matchStatusCO?.let {
-                    data[index]?.homeScore = it.homeScore
-                    data[index]?.awayScore = it.awayScore
+                    data[index]?.homeScore = "${it.homeScore}"
+                    data[index]?.awayScore = "${it.awayScore}"
                     matchStatusCOList[index] = matchStatusCO
 
                 }

@@ -7,6 +7,7 @@ data class RegisterRequest(
     val deviceSn: String, //设备号（手机app登录必传）
     var fullName: String? = null,
     var email: String? = null,
+    var address: String? = null,
     var phone: String? = null,
     var qq: String? = null,
     var fundPwd: String? = null,
@@ -18,5 +19,10 @@ data class RegisterRequest(
     var zalo: String? = null,
     var facebook: String? = null,
     var whatsapp: String? = null,
-    var telegram: String? = null
+    var telegram: String? = null,
+    var province: String? = null,
+    var city: String? = null,
+    var zipCode: String? = null,
+    var safeQuestion: String? = null,
+    var loginEnvInfo:String? = null
 )

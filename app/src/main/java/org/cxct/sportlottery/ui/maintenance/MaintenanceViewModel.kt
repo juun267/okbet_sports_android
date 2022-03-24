@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.maintenance
 
+import android.app.Application
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,21 +9,27 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.index.IndexService
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.manager.RequestManager
-import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.InfoCenterRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
-import org.cxct.sportlottery.repository.HostRepository
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 
 
 class MaintenanceViewModel(
-    private val androidContext: Context,
+    androidContext: Application,
     private val hostRepository: HostRepository,
+    userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
-) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+    infoCenterRepository: InfoCenterRepository,
+    favoriteRepository: MyFavoriteRepository,
+) : BaseSocketViewModel(
+    androidContext,
+    userInfoRepository,
+    loginRepository,
+    betInfoRepository,
+    infoCenterRepository,
+    favoriteRepository
+) {
 
 
     val configResult: LiveData<ConfigResult?>

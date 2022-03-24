@@ -4,5 +4,10 @@ data class MenuItemData(
     val imgId: Int,
     val title: String,
     val gameType: String,
-    var isSelected: Int //0:沒被置頂 ; 1:置頂
-)
+    var isSelected: Int, //0:沒被置頂 ; 1:置頂
+    var gameCount: Int,
+    var isCurrentSportType: Boolean
+) {
+    var isHeaderOrFooter = false
+    var couponIcon: String = ""
+}

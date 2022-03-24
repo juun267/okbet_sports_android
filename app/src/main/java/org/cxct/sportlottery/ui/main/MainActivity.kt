@@ -17,6 +17,7 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
@@ -30,8 +31,10 @@ import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
+import org.cxct.sportlottery.util.phoneNumCheckDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
+import java.util.*
 
 class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
 
@@ -56,17 +59,32 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setupNoticeButton(btn_notice)
+        setupNoticeButton(iv_notice)
         initToolBar()
         initMenu()
         initBottomNav()
         initServiceButton()
         initObserve()
+        setFontTheme()
 
         //若啟動頁是使用 local host 進入，到首頁要再 getHost() 一次，背景替換使用最快線路
         //20210414修改邏輯, 若local host可以使用, 就直接使用, 若無法使用才getHost取得可以使用之域名
         /*if (mSplashViewModel.isNeedGetHost())
             mSplashViewModel.getHost()*/
+    }
+
+    private fun setFontTheme() {
+        when (LanguageManager.getSelectLanguage(this)) {
+            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
+                setTheme(R.style.ChineseTheme)
+            }
+            LanguageManager.Language.VI -> {
+                setTheme(R.style.VietnamTheme)
+            }
+            else -> {
+                setTheme(R.style.EnglishTheme)
+            }
+        }
     }
 
     override fun onBackPressed() {
@@ -109,7 +127,7 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
         }
 
         //頭像 當 側邊欄 開/關
-        iv_head.setOnClickListener {
+        iv_menu.setOnClickListener {
             if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
             else {
                 drawer_layout.openDrawer(nav_right)
@@ -126,7 +144,9 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
         }
 
         iv_language.setOnClickListener {
-            ChangeLanguageDialog().show(supportFragmentManager, null)
+            ChangeLanguageDialog(ChangeLanguageDialog.ClearBetListListener {
+                viewModel.betInfoRepository.clear()
+            }).show(supportFragmentManager, null)
         }
     }
 
@@ -200,41 +220,56 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
     }
 
     private fun initObserve() {
-        viewModel.isLogin.observe(this, {
+        viewModel.isLogin.observe(this) {
             getMsgDialog() //登入/登出刷新彈窗公告
             updateUiWithLogin(it)
-        })
+            //登入登出後要請求使用者是否需要認證手機驗證碼
+            if (it)
+                viewModel.getTwoFactorValidateStatus()
+        }
 
-        viewModel.isCreditAccount.observe(this, {
+        viewModel.isCreditAccount.observe(this) {
             if (it) {
                 startActivity(Intent(this, GameActivity::class.java))
                 finish()
             }
-        })
+        }
 
-        viewModel.userInfo.observe(this, {
+        viewModel.userInfo.observe(this) {
             updateAvatar(it?.iconUrl)
-        })
+        }
 
         //公告彈窗
-        viewModel.promoteNoticeResult.observe(this, {
+        viewModel.promoteNoticeResult.observe(this) {
             it.getContentIfNotHandled()?.let { result ->
-                setNewsDialog(result)
+                //Task 1901 在新版公告介面出來之前先隱藏
+//                setNewsDialog(result)
             }
-        })
+        }
+
+        //使用者沒有電話號碼
+        viewModel.showPhoneNumberMessageDialog.observe(this) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (!b) phoneNumCheckDialog(this, supportFragmentManager)
+            }
+        }
     }
 
     private fun updateUiWithLogin(isLogin: Boolean) {
         if (isLogin) {
             btn_login.visibility = View.GONE
+            iv_menu.visibility = View.VISIBLE
+            iv_notice.visibility = View.VISIBLE
             btn_register.visibility = View.GONE
             toolbar_divider.visibility = View.GONE
-            iv_head.visibility = View.VISIBLE
+            iv_head.visibility = View.GONE
         } else {
             btn_login.visibility = View.VISIBLE
             btn_register.visibility = View.VISIBLE
             toolbar_divider.visibility = View.VISIBLE
             iv_head.visibility = View.GONE
+            iv_menu.visibility = View.GONE
+            iv_notice.visibility = View.GONE
         }
     }
 

@@ -23,7 +23,7 @@
     <LinearLayout
         android:id="@+id/block_editText"
         android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_height="44dp"
         android:background="@drawable/effect_edittext_bg"
         android:focusable="true"
         android:gravity="center"
@@ -89,6 +89,8 @@
             android:contentDescription="@null"
             android:gravity="center"
             android:padding="6dp"
+            android:visibility="gone"
+            tools:visibility="visible"
             android:src="@drawable/ic_close_edittext" />
 
         <LinearLayout

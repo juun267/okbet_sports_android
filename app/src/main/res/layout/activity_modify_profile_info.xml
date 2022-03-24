@@ -9,31 +9,7 @@
     android:orientation="vertical"
     tools:context=".ui.profileCenter.nickname.ModifyProfileInfoActivity">
 
-    <RelativeLayout
-        android:id="@+id/toolBar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/tool_bar_height"
-        android:background="@color/colorBlue">
-
-        <ImageButton
-            android:id="@+id/btn_back"
-            android:layout_width="@dimen/tool_bar_height"
-            android:layout_height="@dimen/tool_bar_height"
-            android:layout_centerVertical="true"
-            android:background="@null"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_back" />
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/change_nickname"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/textSize16sp" />
-
-    </RelativeLayout>
+    <include android:id="@+id/tool_bar" layout="@layout/view_base_tool_bar_no_drawer" />
 
     <!--  暱稱  -->
     <LinearLayout
@@ -203,7 +179,7 @@
         android:id="@+id/btn_confirm"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="44dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="15dp"

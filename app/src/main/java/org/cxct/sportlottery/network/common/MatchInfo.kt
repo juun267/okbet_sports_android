@@ -5,8 +5,8 @@ interface MatchInfo {
 
     val gameType: String?
 
-    var awayScore: Int?
-    var homeScore: Int?
+    var awayScore: String?
+    var homeScore: String?
     var statusName18n: String?
     var leagueTime: Int?
     var socketMatchStatus: Int? //赛事阶段状态id
@@ -15,8 +15,10 @@ interface MatchInfo {
     var awayTotalScore: Int?
     var homePoints: Int?
     var awayPoints: Int?
-
+    var playCateNum: Int?
     //FT
     var homeCards: Int?
     var awayCards: Int?
+
+    var stopped: Int? //是否计时停止 1:是 ，0：否
 }

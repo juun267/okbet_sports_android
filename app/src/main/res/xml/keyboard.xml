@@ -1,7 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
-    android:keyHeight="46dp"
-    android:keyWidth="20%p">
+    android:keyHeight="30dp"
+    android:keyWidth="30%p"
+    android:horizontalGap="6dp"
+    android:verticalGap="5dp">
+
+    <Row>
+
+        <Key
+            android:codes="@string/keyboard_code_plus_25"
+            android:keyEdgeFlags="left"
+            android:keyLabel="+25" />
+
+        <Key
+            android:codes="@string/keyboard_code_plus_50"
+            android:keyLabel="+50" />
+
+        <Key
+            android:codes="@string/keyboard_code_plus_75"
+            android:keyLabel="+75" />
+
+        <Key
+            android:codes="@string/keyboard_code_plus_100"
+            android:keyEdgeFlags="right"
+            android:keyLabel="+100" />
+
+    </Row>
 
     <!--1-5-->
     <Row>
@@ -20,17 +44,9 @@
             android:keyLabel="4" />
         <Key
             android:codes="53"
-            android:keyEdgeFlags="right"
             android:keyLabel="5" />
-
-    </Row>
-
-    <!--6-0-->
-    <Row>
-
         <Key
             android:codes="54"
-            android:keyEdgeFlags="left"
             android:keyLabel="6" />
 
         <Key
@@ -42,33 +58,29 @@
         <Key
             android:codes="57"
             android:keyLabel="9" />
-        <Key
-            android:codes="@string/keyboard_code_insert_0"
-            android:keyEdgeFlags="right"
-            android:keyLabel="0" />
 
     </Row>
 
+    <!--6-0-->
     <Row>
 
         <Key
-            android:codes="@string/keyboard_code_plus_10"
+            android:codes="@string/keyboard_code_insert_0"
             android:keyEdgeFlags="left"
-            android:keyLabel="+10" />
+            android:keyLabel="0" />
         <Key
-            android:codes="@string/keyboard_code_plus_50"
-            android:keyLabel="+50" />
+            android:codes="@string/keyboard_code_insert_dot"
+            android:keyLabel="." />
+        <Key
+            android:codes="@string/keyboard_code_max"
+            android:keyLabel="max" />
 
         <Key
-            android:codes="@string/keyboard_code_plus_100"
-            android:keyLabel="+100" />
+            android:codes="@string/keyboard_code_delete"
+            android:keyLabel="" />
 
-        <Key android:codes="@string/keyboard_code_delete" />
-
-        <Key
-            android:codes="@string/keyboard_code_done"
-            android:keyEdgeFlags="right"
-            android:keyLabel="@string/keyboard_done" />
     </Row>
+
+
 
 </Keyboard>

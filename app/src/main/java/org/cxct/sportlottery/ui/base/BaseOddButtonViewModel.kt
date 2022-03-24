@@ -52,6 +52,7 @@ abstract class BaseOddButtonViewModel(
     infoCenterRepository: InfoCenterRepository
 ) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
+    @Deprecated("之後API都會給翻譯")
     protected val playCateMappingList by lazy {
         val json = LocalJsonUtil.getLocalJson(
             MultiLanguagesApplication.appContext,
@@ -60,11 +61,13 @@ abstract class BaseOddButtonViewModel(
         json.fromJson<List<PlayCateMapItem>>() ?: listOf()
     }
 
-    val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
+    val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo!!.asLiveData()
 
     val showBetInfoSingle = betInfoRepository.showBetInfoSingle
 
     val betInfoList = betInfoRepository.betInfoList
+
+    val betIDList = betInfoRepository.betIDList
 
     val showOddsChangeWarn get() = betInfoRepository.showOddsChangeWarn
 
@@ -87,7 +90,8 @@ abstract class BaseOddButtonViewModel(
         get() = betInfoRepository.betParlaySuccess
 
     private val deviceId by lazy {
-        androidContext.getSharedPreferences(UUID_DEVICE_CODE, Context.MODE_PRIVATE).getString(UUID, null) ?: ""
+        androidContext.getSharedPreferences(UUID_DEVICE_CODE, Context.MODE_PRIVATE)
+            .getString(UUID, null) ?: ""
     }
 
     fun getMoney() {
@@ -111,6 +115,8 @@ abstract class BaseOddButtonViewModel(
             when (loginRepository.sOddsType) {
                 OddsType.EU.code -> OddsType.EU
                 OddsType.HK.code -> OddsType.HK
+                OddsType.MYS.code -> OddsType.MYS
+                OddsType.IDN.code -> OddsType.IDN
                 else -> OddsType.EU
             }
         )
@@ -124,10 +130,17 @@ abstract class BaseOddButtonViewModel(
         matchInfo: MatchInfo,
         odd: org.cxct.sportlottery.network.odds.Odd,
         subscribeChannelType: ChannelType,
-        playCateMenuCode: String? = null
+        betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
+        playCateMenuCode: String? = null,
+        otherPlayCateName: String? = null
     ) {
         val betItem = betInfoRepository.betInfoList.value?.peekContent()
             ?.find { it.matchOdd.oddsId == odd.id }
+
+        var currentOddsType = loginRepository.mOddsType.value ?: OddsType.HK
+        if (odd.odds == odd.malayOdds) {
+            currentOddsType = OddsType.EU
+        }
 
         if (betItem == null) {
             matchInfo.let {
@@ -135,12 +148,15 @@ abstract class BaseOddButtonViewModel(
                     matchType = matchType,
                     gameType = gameType,
                     playCateCode = playCateCode,
-                    playCateName = playCateName,
-                    playName = odd.nameMap?.get(LanguageManager.getSelectLanguage(androidContext).key) ?: odd.name ?: "",
-                    matchInfo = matchInfo,
+                    playCateName = otherPlayCateName ?: playCateName,
+                    playName = odd.nameMap?.get(LanguageManager.getSelectLanguage(androidContext).key)
+                        ?: odd.name ?: "",
+                    matchInfo = it,
                     odd = odd,
                     subscribeChannelType = subscribeChannelType,
-                    playCateMenuCode = playCateMenuCode
+                    playCateMenuCode = playCateMenuCode,
+                    oddsType = currentOddsType,
+                    betPlayCateNameMap = betPlayCateNameMap
                 )
             }
         } else {
@@ -169,6 +185,11 @@ abstract class BaseOddButtonViewModel(
         val betItem = betInfoRepository.betInfoList.value?.peekContent()
             ?.find { it.matchOdd.oddsId == odd.id }
 
+        var currentOddsType = loginRepository.mOddsType.value
+        if (odd.odds == odd.malayOdds) {
+            currentOddsType = OddsType.EU
+        }
+
         if (betItem == null) {
             matchOdd.matchInfo?.let {
                 betInfoRepository.addInBetInfo(
@@ -177,11 +198,13 @@ abstract class BaseOddButtonViewModel(
                     playCateCode = playCateCode,
                     playCateName = outrightCateName
                         ?: "",
-                    playName = odd.nameMap?.get(LanguageManager.getSelectLanguage(androidContext).key) ?: odd.name ?: "",
-                    matchInfo = matchOdd.matchInfo,
+                    playName = odd.nameMap?.get(LanguageManager.getSelectLanguage(androidContext).key)
+                        ?: odd.name ?: "",
+                    matchInfo = it,
                     odd = odd,
                     subscribeChannelType = ChannelType.HALL,
-                    playCateMenuCode = PlayCate.OUTRIGHT.value
+                    oddsType = currentOddsType,
+                    betPlayCateNameMap = matchOdd.betPlayCateNameMap
                 )
             }
         } else {
@@ -234,7 +257,8 @@ abstract class BaseOddButtonViewModel(
 
     fun updateLockMatchOdd(matchOddsLock: MatchOddsLockEvent) {
         betInfoRepository.betInfoList.value?.peekContent()
-            ?.find { it.matchOdd.matchId == matchOddsLock.matchId }?.matchOdd?.status = BetStatus.LOCKED.code
+            ?.find { it.matchOdd.matchId == matchOddsLock.matchId }?.matchOdd?.status =
+            BetStatus.LOCKED.code
 
         betInfoRepository.notifyBetInfoChanged()
     }
@@ -245,7 +269,7 @@ abstract class BaseOddButtonViewModel(
             is OddsChangeEvent -> {
                 changeEvent.odds?.forEach { map ->
                     val value = map.value
-                    value.forEach { odd ->
+                    value?.forEach { odd ->
                         odd?.let {
                             val newOdd = org.cxct.sportlottery.network.odds.Odd(
                                 extInfoMap = null,
@@ -253,6 +277,8 @@ abstract class BaseOddButtonViewModel(
                                 name = null,
                                 odds = odd.odds,
                                 hkOdds = odd.hkOdds,
+                                malayOdds = odd.malayOdds,
+                                indoOdds = odd.indoOdds,
                                 producerId = odd.producerId,
                                 spread = odd.spread,
                                 status = odd.status,
@@ -316,20 +342,37 @@ abstract class BaseOddButtonViewModel(
         parlayBetList: List<ParlayOdd>,
         oddsType: OddsType
     ) {
-
+        //調整盤口
+        var currentOddsTypes = oddsType
         //一般注單
         val matchList: MutableList<Odd> = mutableListOf()
         normalBetList.forEach {
-            matchList.add(Odd(it.matchOdd.oddsId, getOdds(it.matchOdd, oddsType), it.betAmount))
+            if (it.matchOdd.odds == it.matchOdd.malayOdds || it.matchType == MatchType.OUTRIGHT || it.matchType == MatchType.OTHER_OUTRIGHT) {
+                currentOddsTypes = OddsType.EU
+            }
+            matchList.add(
+                Odd(
+                    it.matchOdd.oddsId,
+                    getOdds(it.matchOdd, currentOddsTypes),
+                    it.betAmount,
+                    currentOddsTypes.code
+                )
+            )
         }
-
+        //若有串關 則改為EU
+        currentOddsTypes = if (normalBetList.size == 1) {
+            normalBetList.getOrNull(0)?.singleBetOddsType ?: OddsType.EU
+        } else {
+            OddsType.EU
+        }
         //串關注單
         val parlayList: MutableList<Stake> = mutableListOf()
         parlayBetList.forEach {
             if (it.betAmount > 0) {
-                parlayList.add(Stake(TextUtil.replaceCByParlay(it.parlayType), it.betAmount))
+                parlayList.add(Stake(TextUtil.replaceCByParlay(androidContext, it.parlayType), it.betAmount))
             }
         }
+
 
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -338,7 +381,6 @@ abstract class BaseOddButtonViewModel(
                         matchList,
                         parlayList,
                         1,
-                        oddsType.code,
                         2,
                         deviceId
                     )
@@ -350,6 +392,7 @@ abstract class BaseOddButtonViewModel(
                     s.matchType = normalBetList.find { betInfoListData ->
                         betInfoListData.matchOdd.oddsId == m.oddsId
                     }?.matchType
+                    s.oddsType = oddsType
                 }
             }
 
@@ -376,18 +419,17 @@ abstract class BaseOddButtonViewModel(
     fun addBetSingle(stake: Double, betInfoListData: BetInfoListData) {
         val parlayType =
             if (betInfoListData.matchType == MatchType.OUTRIGHT) MatchType.OUTRIGHT.postValue else betInfoListData.parlayOdds?.parlayType
-
         val request = BetAddRequest(
             listOf(
                 Odd(
                     betInfoListData.matchOdd.oddsId,
-                    getOdds(betInfoListData.matchOdd, oddsType.value ?: OddsType.EU),
-                    stake
+                    getOdds(betInfoListData.matchOdd, betInfoListData.singleBetOddsType),
+                    stake,
+                    betInfoListData.singleBetOddsType.code
                 )
             ),
             listOf(Stake(parlayType ?: "", stake)),
             1,
-            oddsType.value?.code ?: OddsType.EU.code,
             2,
             deviceId
         )
@@ -396,6 +438,12 @@ abstract class BaseOddButtonViewModel(
             val result = getBetApi(request)
             _betAddResult.postValue(Event(result))
             result?.receipt?.singleBets?.firstOrNull()?.matchType = betInfoListData.matchType
+            var currentOddsType = loginRepository.mOddsType.value ?: OddsType.HK
+            if (betInfoListData.matchOdd.odds == betInfoListData.matchOdd.malayOdds) {
+                currentOddsType = OddsType.EU
+            }
+            result?.receipt?.singleBets?.firstOrNull()?.oddsType = currentOddsType
+
             Event(result).getContentIfNotHandled()?.success?.let {
                 if (it) {
                     afterBet(betInfoListData.matchType, result)
@@ -433,7 +481,7 @@ abstract class BaseOddButtonViewModel(
         betInfoRepository.clear()
     }
 
-    fun getBetInfoListForParlay() {
+    private fun getBetInfoListForParlay() {
         betInfoRepository.addInBetInfoParlay()
     }
 
@@ -445,9 +493,24 @@ abstract class BaseOddButtonViewModel(
         oldItemOdds: Double,
         newOdd: org.cxct.sportlottery.network.odds.Odd
     ): Int {
+        //馬來盤、印尼盤為null時自行計算
+        var newMalayOdds = 0.0
+        var newIndoOdds = 0.0
+
+        newOdd.hkOdds?.let {
+            newMalayOdds =
+                if (newOdd.hkOdds ?: 0.0 > 1) ArithUtil.oddIdfFormat(-1 / newOdd.hkOdds!!)
+                    .toDouble() else newOdd.hkOdds ?: 0.0
+            newIndoOdds =
+                if (newOdd.hkOdds ?: 0.0 < 1) ArithUtil.oddIdfFormat(-1 / newOdd.hkOdds!!)
+                    .toDouble() else newOdd.hkOdds ?: 0.0
+        }
+
         val odds = when (loginRepository.mOddsType.value) {
             OddsType.EU -> newOdd.odds
             OddsType.HK -> newOdd.hkOdds
+            OddsType.MYS -> newOdd.malayOdds ?: newMalayOdds
+            OddsType.IDN -> newOdd.indoOdds ?: newIndoOdds
             else -> null
         }
         val newOdds = odds ?: 0.0
@@ -467,7 +530,7 @@ abstract class BaseOddButtonViewModel(
 
     protected fun MatchOdd.setupOddDiscount() {
         val discount = userInfo.value?.discount ?: 1F
-        this.oddsMap.forEach {
+        this.oddsMap?.forEach {
             it.value?.filterNotNull()?.forEach { odd ->
                 if (it.key == PlayCate.EPS.value)
                     odd.setupEPSDiscount(discount)
@@ -503,7 +566,7 @@ abstract class BaseOddButtonViewModel(
     }
 
     protected fun MatchOdd.updateOddStatus() {
-        this.oddsMap.forEach {
+        this.oddsMap?.forEach {
             it.value?.filterNotNull()?.forEach { odd ->
 
                 odd.status = when {
@@ -534,7 +597,7 @@ abstract class BaseOddButtonViewModel(
         }
 
         this.quickPlayCateList?.forEach { quickPlayCate ->
-            quickPlayCate.quickOdds?.forEach {
+            quickPlayCate.quickOdds.forEach {
                 it.value?.filterNotNull()?.forEach { odd ->
                     it.value?.let { oddList ->
                         odd.status = when {
@@ -614,11 +677,13 @@ abstract class BaseOddButtonViewModel(
                         newItem.status.let { status -> oldItem.status = status }
 
                         //賠率為啟用狀態時才去判斷是否有賠率變化
+                        var currentOddsType = loginRepository.mOddsType.value ?: OddsType.HK
+                        if (it.odds == it.malayOdds) currentOddsType = OddsType.EU
                         if (oldItem.status == BetStatus.ACTIVATED.code) {
                             oldItem.oddState = getOddState(
                                 getOdds(
                                     oldItem,
-                                    loginRepository.mOddsType.value ?: OddsType.EU
+                                    currentOddsType
                                 ), newItem
                             )
 
@@ -631,6 +696,8 @@ abstract class BaseOddButtonViewModel(
                         if (oldItem.status == BetStatus.ACTIVATED.code) {
                             newItem.odds.let { odds -> oldItem.odds = odds ?: 0.0 }
                             newItem.hkOdds.let { hkOdds -> oldItem.hkOdds = hkOdds ?: 0.0 }
+                            newItem.indoOdds.let { indoOdds -> oldItem.indoOdds = indoOdds ?: 0.0 }
+                            newItem.malayOdds.let { malayOdds -> oldItem.malayOdds = malayOdds ?: 0.0 }
                             newItem.spread.let { spread -> oldItem.spread = spread ?: "" }
                         }
 
@@ -665,7 +732,8 @@ abstract class BaseOddButtonViewModel(
                             matchType,
                             gameType,
                             mutableListOf(betInfoListData.matchOdd)
-                        ).first()
+                        ).first(),
+                        betInfoListData.betPlayCateNameMap
                     )
 
                     newBetInfoListData.matchType = betInfoListData.matchType
@@ -675,6 +743,11 @@ abstract class BaseOddButtonViewModel(
 
                     val newMatchOdd = newBetInfoListData.matchOdd
 
+                    var currentOddsType = loginRepository.mOddsType.value
+                    if (newMatchOdd.odds == newMatchOdd.malayOdds) {
+                        currentOddsType = OddsType.EU
+                    }
+
                     for (newItem in updateList) {
                         try {
                             newItem.let {
@@ -682,7 +755,7 @@ abstract class BaseOddButtonViewModel(
                                     newMatchOdd.oddState = getOddState(
                                         getOdds(
                                             newMatchOdd,
-                                            loginRepository.mOddsType.value ?: OddsType.EU
+                                            currentOddsType ?: OddsType.HK
                                         ), newItem
                                     )
 
@@ -737,12 +810,17 @@ abstract class BaseOddButtonViewModel(
 
             try {
                 newItem.let {
+                    var currentOddsType = loginRepository.mOddsType.value
+                    if (it.odds == it.malayOdds) {
+                        currentOddsType = OddsType.EU
+                    }
+
                     if (it.id == oldItem.oddsId) {
                         if (betAddError == BetAddError.ODDS_HAVE_CHANGED) {
                             oldItem.oddState = getOddState(
                                 getOdds(
                                     oldItem,
-                                    loginRepository.mOddsType.value ?: OddsType.EU
+                                    currentOddsType ?: OddsType.HK
                                 ), newItem
                             )
 

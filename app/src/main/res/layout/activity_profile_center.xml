@@ -13,30 +13,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
-        android:paddingStart="20dp"
+        android:paddingStart="0dp"
         android:paddingEnd="20dp">
 
         <ImageView
             android:id="@+id/profile_center_back"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:padding="5dp"
-            android:src="@drawable/ic_arrow_blue_left"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="10dp"
+            android:src="@drawable/ic_icon_arrow_blue"
             app:layout_constraintBottom_toBottomOf="@id/iv_head"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/iv_head" />
+            app:layout_constraintTop_toTopOf="@id/iv_head"
+            app:tint="@color/colorBlue" />
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/iv_head"
-            android:layout_width="53dp"
-            android:layout_height="53dp"
-            android:layout_marginStart="5dp"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
             android:scaleType="centerCrop"
             android:src="@drawable/img_avatar_default"
             app:layout_constraintStart_toEndOf="@id/profile_center_back"
             app:layout_constraintTop_toTopOf="parent"
-            app:riv_border_color="@color/colorBlue"
-            app:riv_border_width="2dp"
             app:riv_oval="true" />
 
         <TextView
@@ -123,24 +122,24 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:gravity="center_vertical"
+            android:maxWidth="180dp"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/textSize20sp"
             android:textStyle="bold"
-            android:maxWidth="180dp"
             app:autoSizeMaxTextSize="20dp"
             app:autoSizeMinTextSize="2dp"
             tools:text="87,547,000.000" />
 
         <TextView
-            android:id="@+id/tv_currency"
+            android:id="@+id/tv_currency_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
             android:gravity="center_vertical"
-            android:text="@string/bet_info_list_rmb"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/textSize18sp" />
+            android:textSize="@dimen/textSize18sp"
+            tools:text="PHP" />
 
         <ImageButton
             android:id="@+id/btn_refresh_money"
@@ -167,7 +166,7 @@
         android:layout_marginTop="12dp"
         android:background="@color/colorWhite"
         android:paddingHorizontal="16dp"
-        app:cardCornerRadius="8dp"
+        app:cardCornerRadius="6dp"
         app:cardElevation="4dp"
         app:layout_constraintTop_toBottomOf="@id/block_amount">
 
@@ -189,8 +188,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:contentDescription="@null"
                     android:src="@drawable/ic_profile_center_recharge" />
 
@@ -220,8 +219,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:contentDescription="@null"
                     android:src="@drawable/ic_profile_center_withdraw" />
 
@@ -251,7 +250,7 @@
         android:textSize="@dimen/textSize14sp"
         android:textStyle="bold" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -259,9 +258,8 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="@integer/animation_default_duration"
+            android:layout_marginHorizontal="20dp"
             android:overScrollMode="never"
-            android:paddingHorizontal="20dp"
             android:scrollbars="none">
 
             <LinearLayout
@@ -275,32 +273,33 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:gravity="center"
-                    android:minHeight="40dp"
+                    android:minHeight="48dp"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginEnd="30dp"
+                        android:layout_marginEnd="20dp"
                         android:contentDescription="@null"
                         android:src="@drawable/ic_profile_center_credit_bet_record" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
                         android:layout_weight="1"
                         android:text="@string/credit_bet_record"
                         android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize13sp" />
+                        android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:contentDescription="@null"
-                        android:src="@drawable/ic_arrow_right_gray" />
+                        android:rotationY="180"
+                        android:src="@drawable/ic_icon_arrow_blue"
+                        app:tint="@color/color_E2E2E2" />
 
                 </LinearLayout>
 
@@ -310,32 +309,33 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:gravity="center"
-                    android:minHeight="40dp"
+                    android:minHeight="48dp"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginEnd="30dp"
+                        android:layout_marginEnd="20dp"
                         android:contentDescription="@null"
                         android:src="@drawable/ic_profile_center_account_info" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
                         android:layout_weight="1"
                         android:text="@string/profile_info"
                         android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize13sp" />
+                        android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:contentDescription="@null"
-                        android:src="@drawable/ic_arrow_right_gray" />
+                        android:rotationY="180"
+                        android:src="@drawable/ic_icon_arrow_blue"
+                        app:tint="@color/color_E2E2E2" />
 
                 </LinearLayout>
 
@@ -345,32 +345,33 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:gravity="center"
-                    android:minHeight="40dp"
+                    android:minHeight="48dp"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginEnd="30dp"
+                        android:layout_marginEnd="20dp"
                         android:contentDescription="@null"
                         android:src="@drawable/ic_profile_center_account_transfer" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
                         android:layout_weight="1"
                         android:text="@string/account_transfer"
                         android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize13sp" />
+                        android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:contentDescription="@null"
-                        android:src="@drawable/ic_arrow_right_gray" />
+                        android:rotationY="180"
+                        android:src="@drawable/ic_icon_arrow_blue"
+                        app:tint="@color/color_E2E2E2" />
 
                 </LinearLayout>
 
@@ -380,32 +381,33 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:gravity="center"
-                    android:minHeight="40dp"
+                    android:minHeight="48dp"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginEnd="30dp"
+                        android:layout_marginEnd="20dp"
                         android:contentDescription="@null"
                         android:src="@drawable/ic_profile_center_withdrawal_setting" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
                         android:layout_weight="1"
                         android:text="@string/withdraw_setting"
                         android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize13sp" />
+                        android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:contentDescription="@null"
-                        android:src="@drawable/ic_arrow_right_gray" />
+                        android:rotationY="180"
+                        android:src="@drawable/ic_icon_arrow_blue"
+                        app:tint="@color/color_E2E2E2" />
 
                 </LinearLayout>
 
@@ -415,30 +417,29 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:gravity="center"
-                    android:minHeight="40dp"
-                    android:orientation="horizontal">
+                    android:minHeight="48dp"
+                    android:orientation="horizontal"
+                    tools:visibility="gone">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="30dp"
+                        android:layout_marginEnd="20dp"
                         android:contentDescription="@null"
                         android:src="@drawable/ic_profile_center_bet_record" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
                         android:layout_weight="1"
                         android:text="@string/other_bet_record"
                         android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize13sp" />
+                        android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
+
                         android:contentDescription="@null"
                         android:src="@drawable/ic_arrow_right_gray" />
 
@@ -450,39 +451,40 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:gravity="center"
-                    android:minHeight="40dp"
+                    android:minHeight="48dp"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginEnd="30dp"
+                        android:layout_marginEnd="20dp"
                         android:contentDescription="@null"
                         android:src="@drawable/ic_profile_center_fund_detail" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
                         android:layout_weight="1"
                         android:text="@string/fund_detail"
                         android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize13sp" />
+                        android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:contentDescription="@null"
-                        android:src="@drawable/ic_arrow_right_gray" />
+                        android:rotationY="180"
+                        android:src="@drawable/ic_icon_arrow_blue"
+                        app:tint="@color/color_E2E2E2" />
 
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginVertical="4.5dp"
+                    android:layout_marginVertical="2dp"
                     android:background="@color/colorWhite6" />
 
                 <LinearLayout
@@ -491,32 +493,33 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:gravity="center"
-                    android:minHeight="40dp"
+                    android:minHeight="48dp"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginEnd="30dp"
+                        android:layout_marginEnd="20dp"
                         android:contentDescription="@null"
                         android:src="@drawable/ic_profile_center_news" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
                         android:layout_weight="1"
                         android:text="@string/news_center"
                         android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize13sp" />
+                        android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:contentDescription="@null"
-                        android:src="@drawable/ic_arrow_right_gray" />
+                        android:rotationY="180"
+                        android:src="@drawable/ic_icon_arrow_blue"
+                        app:tint="@color/color_E2E2E2" />
 
                 </LinearLayout>
 
@@ -526,32 +529,69 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:gravity="center"
-                    android:minHeight="40dp"
+                    android:minHeight="48dp"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginEnd="30dp"
+                        android:layout_marginEnd="20dp"
                         android:contentDescription="@null"
                         android:src="@drawable/ic_profile_center_gift" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
                         android:layout_weight="1"
                         android:text="@string/promotion"
                         android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize13sp" />
+                        android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:contentDescription="@null"
-                        android:src="@drawable/ic_arrow_right_gray" />
+                        android:rotationY="180"
+                        android:src="@drawable/ic_icon_arrow_blue"
+                        app:tint="@color/color_E2E2E2" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/btn_self_limit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:minHeight="48dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="20dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_self_limit" />
+                    <!--缺翻譯-->
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/self_limit"
+                        android:textColor="@color/colorBlackLight"
+                        android:textSize="@dimen/textSize14sp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:contentDescription="@null"
+                        android:rotationY="180"
+                        android:src="@drawable/ic_icon_arrow_blue"
+                        app:tint="@color/color_E2E2E2" />
 
                 </LinearLayout>
 
@@ -568,24 +608,23 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="30dp"
+
+                        android:layout_marginEnd="20dp"
                         android:contentDescription="@null"
                         android:src="@drawable/ic_profile_center_agency" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
+
                         android:layout_weight="1"
                         android:text="@string/agent"
                         android:textColor="@color/colorGray"
-                        android:textSize="@dimen/textSize13sp" />
+                        android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
                         android:contentDescription="@null"
                         android:src="@drawable/ic_arrow_right_gray" />
 
@@ -594,7 +633,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginVertical="4.5dp"
+                    android:layout_marginVertical="2dp"
                     android:background="@color/colorWhite6" />
 
                 <LinearLayout
@@ -603,32 +642,34 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:gravity="center"
-                    android:minHeight="40dp"
+                    android:minHeight="48dp"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginEnd="30dp"
+                        android:layout_marginEnd="20dp"
                         android:contentDescription="@null"
                         android:src="@drawable/ic_profile_center_help" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
+
                         android:layout_weight="1"
                         android:text="@string/help_center"
                         android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize13sp" />
+                        android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:contentDescription="@null"
-                        android:src="@drawable/ic_arrow_right_gray" />
+                        android:rotationY="180"
+                        android:src="@drawable/ic_icon_arrow_blue"
+                        app:tint="@color/color_E2E2E2" />
 
                 </LinearLayout>
 
@@ -638,32 +679,33 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:gravity="center"
-                    android:minHeight="40dp"
+                    android:minHeight="48dp"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginEnd="30dp"
+                        android:layout_marginEnd="20dp"
                         android:contentDescription="@null"
                         android:src="@drawable/ic_profile_center_feedback" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
                         android:layout_weight="1"
                         android:text="@string/feedback"
                         android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize13sp" />
+                        android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:contentDescription="@null"
-                        android:src="@drawable/ic_arrow_right_gray" />
+                        android:rotationY="180"
+                        android:src="@drawable/ic_icon_arrow_blue"
+                        app:tint="@color/color_E2E2E2" />
 
                 </LinearLayout>
 
@@ -675,8 +717,8 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/bg_radius_20_button_white6"
-                    android:backgroundTint="@color/colorWhite6"
-                    android:minHeight="40dp"
+                    android:backgroundTint="@color/color_E2E2E2"
+                    android:minHeight="42dp"
                     android:text="@string/sign_out"
                     android:textColor="@color/colorGray"
                     android:textSize="@dimen/textSize14sp"
@@ -686,6 +728,7 @@
 
         </ScrollView>
 
+        <!--根據需求先隱藏，確定不用可刪-->
         <org.cxct.sportlottery.ui.common.ServiceFloatingButton
             android:id="@+id/btn_floating_service"
             android:layout_width="match_parent"
@@ -693,8 +736,9 @@
             android:layout_marginBottom="14dp"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 
     <View
         android:layout_width="match_parent"

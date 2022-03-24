@@ -11,9 +11,13 @@ data class Receipt(
     @Json(name = "singleBets")
     val singleBets: List<BetResult>?,
     @Json(name = "totalStake")
-    val totalStake: Int?,
+    val totalStake: Double?,
     @Json(name = "totalWinnable")
     val totalWinnable: Double?,
     @Json(name = "totalNum")
-    val totalNum: Int?
+    val totalNum: Int?,
+    @Json(name = "userPlayAmount")
+    val userPlayAmount: Double?,
+    @Json(name = "betConfirmTime")
+    val betConfirmTime: Long
 )

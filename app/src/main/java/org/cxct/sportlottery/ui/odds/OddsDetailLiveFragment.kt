@@ -9,9 +9,12 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.StyleSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.webkit.*
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -21,27 +24,26 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.exoplayer2.util.Util
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.fragment_game_v3.*
-import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
 import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
-import kotlinx.android.synthetic.main.view_toolbar_live.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailLiveBinding
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.error.HttpError
-import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.repository.FLAG_LIVE
+import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
+import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.TimerManager
 import org.cxct.sportlottery.ui.component.LiveViewToolbar
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
 import org.cxct.sportlottery.util.TimeUtil.DM_FORMAT
@@ -50,12 +52,22 @@ import java.util.*
 
 
 @Suppress("DEPRECATION", "SetTextI18n")
-class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
-    OnOddClickListener, TimerManager {
+class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class), TimerManager, Animation.AnimationListener {
 
     private val args: OddsDetailLiveFragmentArgs by navArgs()
 
     private var oddsDetailListAdapter: OddsDetailListAdapter? = null
+
+    private val tabCateAdapter: TabCateAdapter by lazy {
+        TabCateAdapter(OnItemSelectedListener {
+            tabCateAdapter.selectedPosition = it
+            viewModel.oddsDetailResult.value?.peekContent()?.oddsDetailData?.matchOdd?.playCateTypeList?.getOrNull(
+                it
+            )?.code?.let { code ->
+                oddsDetailListAdapter?.notifyDataSetChangedByCode(code)
+            }
+        })
+    }
 
     private var matchId: String? = null
     private var matchOdd: MatchOdd? = null
@@ -106,6 +118,10 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                     viewModel.getLiveInfo(it, newestUrl)
                 }
             }
+
+            override fun showStatistics() {
+                StatisticsDialog.newInstance(matchId).show(childFragmentManager, StatisticsDialog::class.java.simpleName)
+            }
         }
     }
 
@@ -125,18 +141,21 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         executePendingBindings()
     }.root
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initBottomNavigation()
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initUI()
-        observeData()
-        initSocketObserver()
     }
 
     override fun onStart() {
         super.onStart()
 
         if (Util.SDK_INT >= 24) {
-            live_view_tool_bar.startPlayer()
+            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null)
         }
     }
 
@@ -146,7 +165,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         startTimer()
 
         if ((Util.SDK_INT < 24) || live_view_tool_bar.getExoPlayer() == null) {
-            live_view_tool_bar.startPlayer()
+            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null)
         }
     }
 
@@ -174,7 +193,27 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
     private fun initUI() {
-        oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailLiveFragment).apply {
+//        live_view_tool_bar.gameType = args.gameType //賽事動畫icon用，之後用不到可刪
+        oddsDetailListAdapter = OddsDetailListAdapter(
+            OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
+                matchOdd?.let { matchOdd ->
+                    matchOdd.matchInfo.homeScore = "$curHomeScore"
+                    matchOdd.matchInfo.awayScore = "$curAwayScore"
+
+                    viewModel.updateMatchBetList(
+                        matchType = MatchType.IN_PLAY,
+                        gameType = args.gameType,
+                        playCateCode = oddsDetail?.gameType ?: "",
+                        playCateName = oddsDetail?.name ?: "",
+                        matchInfo = matchOdd.matchInfo,
+                        odd = odd,
+                        subscribeChannelType = ChannelType.EVENT,
+                        betPlayCateNameMap = matchOdd.betPlayCateNameMap,
+                        otherPlayCateName = scoPlayCateNameForBetInfo
+                    )
+                }
+            }
+        ).apply {
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
             oddsDetailListener = OddsDetailListener {
@@ -190,34 +229,23 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         }
 
-        tab_cat.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-            }
-
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                tab?.position?.let { t ->
-                    viewModel.oddsDetailResult.value?.peekContent()?.oddsDetailData?.matchOdd?.playCateTypeList?.getOrNull(
-                        t
-                    )?.code?.let {
-                        oddsDetailListAdapter?.notifyDataSetChangedByCode(it)
-                    }
-                }
-            }
-        })
+        rv_cat.apply {
+            adapter = tabCateAdapter
+            itemAnimator?.changeDuration = 0
+            edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
+        }
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
     private fun observeData() {
-        viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let { result ->
+        viewModel.oddsDetailResult.observe(this.viewLifecycleOwner) {
+            it?.getContentIfNotHandled()?.let { result ->
                 when (result.success) {
                     true -> {
                         result.setupPlayCateTab()
 
                         matchOdd = result.oddsDetailData?.matchOdd
+                        matchOdd?.matchInfo?.leagueName = result.oddsDetailData?.league?.name
                         result.oddsDetailData?.matchOdd?.matchInfo?.homeName?.let { home ->
                             result.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
                                 oddsDetailListAdapter?.homeName = home
@@ -227,9 +255,15 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
                         result.oddsDetailData?.matchOdd?.matchInfo?.let { matchInfo ->
                             if (matchInfo.status == GameStatus.POSTPONED.code
-                                && (matchInfo.gameType == GameType.FT.name || matchInfo.gameType == GameType.BK.name || matchInfo.gameType == GameType.TN.name)) {
+                                && (matchInfo.gameType == GameType.FT.name || matchInfo.gameType == GameType.BK.name || matchInfo.gameType == GameType.TN.name)
+                            ) {
                                 tv_status_left.text = context?.getString(R.string.game_postponed)
-                                tv_status_left.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorRedDark))
+                                tv_status_left.setTextColor(
+                                    ContextCompat.getColor(
+                                        tv_status_left.context,
+                                        R.color.colorRedDark
+                                    )
+                                )
                                 tv_status_left.tag = GameStatus.POSTPONED.code
                             } else {
                                 tv_status_left.tag = null
@@ -244,13 +278,13 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                             tv_time_bottom?.setTextColor(
                                 ContextCompat.getColor(
                                     tv_time_bottom.context,
-                                    R.color.colorOrangeLight
+                                    R.color.colorWhite
                                 )
                             )
                             tv_time_top?.setTextColor(
                                 ContextCompat.getColor(
                                     tv_time_bottom.context,
-                                    R.color.colorOrangeLight
+                                    R.color.colorWhite
                                 )
                             )
                         } else {
@@ -269,12 +303,13 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                         }
 
                         if (args.matchType == MatchType.IN_PLAY &&
-                            (args.gameType == GameType.BK || args.gameType == GameType.TN || args.gameType == GameType.VB)
-                            && tv_status_left.isVisible
+                            (args.gameType == GameType.BK || args.gameType == GameType.TN || args.gameType == GameType.VB || args.gameType == GameType.TT)
+//                            && tv_status_left.isVisible
                             && (it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt != null)
                         ) {
                             tv_spt.visibility = View.VISIBLE
-                            tv_spt.text = " / ${(it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt) ?: 0}"
+                            tv_spt.text =
+                                " / ${(it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt) ?: 0}"
                         } else {
                             tv_spt.visibility = View.GONE
                         }
@@ -285,36 +320,36 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                     }
                 }
             }
-        })
+        }
 
-        viewModel.oddsDetailList.observe(this.viewLifecycleOwner, {
+        viewModel.oddsDetailList.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { list ->
                 if (list.isNotEmpty()) {
                     oddsDetailListAdapter?.oddsDetailDataList = list
                 }
             }
-        })
+        }
 
-        viewModel.betInfoList.observe(this.viewLifecycleOwner, {
+        viewModel.betInfoList.observe(this.viewLifecycleOwner) {
             it.peekContent().let { list ->
                 oddsDetailListAdapter?.betInfoList = list
             }
-        })
+        }
 
-        viewModel.betInfoResult.observe(this.viewLifecycleOwner, {
+        viewModel.betInfoResult.observe(this.viewLifecycleOwner) {
             val eventResult = it.getContentIfNotHandled()
             eventResult?.success?.let { success ->
                 if (!success && eventResult.code != HttpError.BET_INFO_CLOSE.code) {
                     showErrorPromptDialog(getString(R.string.prompt), eventResult.msg) {}
                 }
             }
-        })
+        }
 
-        viewModel.oddsType.observe(this.viewLifecycleOwner, {
+        viewModel.oddsType.observe(this.viewLifecycleOwner) {
             oddsDetailListAdapter?.oddsType = it
-        })
+        }
 
-        viewModel.favorPlayCateList.observe(this.viewLifecycleOwner, {
+        viewModel.favorPlayCateList.observe(this.viewLifecycleOwner) {
             oddsDetailListAdapter?.let { oddsDetailListAdapter ->
                 val playCate = it.find { playCate ->
                     playCate.gameType == args.gameType.key
@@ -358,22 +393,27 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
                 oddsDetailListAdapter.notifyDataSetChanged()
             }
-        })
+        }
 
-        viewModel.matchLiveInfo.observe(this.viewLifecycleOwner, {
+        viewModel.matchLiveInfo.observe(this.viewLifecycleOwner) {
             it?.getContentIfNotHandled()?.let { liveStreamInfo ->
-                live_view_tool_bar.setupLiveUrl(liveStreamInfo.streamUrl)
+                live_view_tool_bar.startPlayer(
+                    matchId,
+                    matchOdd?.matchInfo?.trackerId,
+                    liveStreamInfo.streamUrl
+                )
             }
-        })
+        }
     }
 
     private fun initSocketObserver() {
-        receiver.matchStatusChange.observe(this.viewLifecycleOwner, {
+        receiver.matchStatusChange.observe(this.viewLifecycleOwner) {
             it?.let { matchStatusChangeEvent ->
                 matchStatusChangeEvent.matchStatusCO?.takeIf { ms -> ms.matchId == this.matchId }
                     ?.apply {
                         tv_time_top?.let { tv ->
-                            val statusValue = statusNameI18n?.get(getSelectLanguage(context).key) ?: statusName
+                            val statusValue =
+                                statusNameI18n?.get(getSelectLanguage(context).key) ?: statusName
                             tv.text = statusValue
                         }
 
@@ -384,9 +424,9 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                         setupStatusList(matchStatusChangeEvent)
                     }
             }
-        })
+        }
 
-        receiver.matchClock.observe(this.viewLifecycleOwner, {
+        receiver.matchClock.observe(this.viewLifecycleOwner) {
             it?.let { matchClockEvent ->
                 val updateTime = when (args.gameType) {
                     GameType.FT -> {
@@ -401,12 +441,13 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                 isGamePause = (matchClockEvent.matchClockCO?.stopped == 1)
 
                 updateTime?.let {
-                    startTime = updateTime.toLong()
+                    startTime = updateTime
+                    setupStartTime()
                 }
             }
-        })
+        }
 
-        receiver.matchOddsChange.observe(this.viewLifecycleOwner, {
+        receiver.matchOddsChange.observe(this.viewLifecycleOwner) {
             it?.let { matchOddsChangeEvent ->
                 matchOddsChangeEvent.updateOddsSelectedState()
 
@@ -434,9 +475,9 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                     }
                 }
             }
-        })
+        }
 
-        receiver.globalStop.observe(this.viewLifecycleOwner, {
+        receiver.globalStop.observe(this.viewLifecycleOwner) {
             it?.let { globalStopEvent ->
                 oddsDetailListAdapter?.oddsDetailDataList?.forEachIndexed { index, oddsDetailListData ->
                     if (SocketUpdateUtil.updateOddStatus(
@@ -448,14 +489,14 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                     }
                 }
             }
-        })
+        }
 
-        receiver.producerUp.observe(this.viewLifecycleOwner, {
+        receiver.producerUp.observe(this.viewLifecycleOwner) {
             it?.let {
                 unSubscribeChannelEventAll()
                 subscribeChannelEvent(matchId)
             }
-        })
+        }
     }
 
     private fun MatchOddsChangeEvent.updateOddsSelectedState(): MatchOddsChangeEvent {
@@ -481,11 +522,19 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
             tv_away_name.text = this.awayName ?: ""
 
-            tv_time_bottom.text = getString(R.string.time_null)
-
             if (args.matchType != MatchType.IN_PLAY) {
-                tv_time_bottom.text = TimeUtil.timeFormat(startTime, HM_FORMAT)
+                val timeStr = TimeUtil.timeFormat(startTime, HM_FORMAT)
+                if (timeStr.isNotEmpty()) {
+                    tv_time_bottom.text = timeStr
+                }
+                else {
+                    tv_time_bottom.text = getString(R.string.time_null)
+                }
                 tv_time_top.text = TimeUtil.timeFormat(startTime, DM_FORMAT)
+            }
+            else {
+                // 不需要一直重置
+//                tv_time_bottom.text = getString(R.string.time_null)
             }
         }
     }
@@ -493,10 +542,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     private fun setupLiveView(liveVideo: Int?) {
         live_view_tool_bar.setupToolBarListener(liveToolBarListener)
         live_view_tool_bar.setupPlayerControl(liveVideo.toString() == FLAG_LIVE)
-
-        matchOdd?.let {
-            live_view_tool_bar.matchOdd = it
-        }
+        live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null)
     }
 
     private fun getData() {
@@ -507,46 +553,15 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         }
     }
 
+    @SuppressLint("InflateParams")
     private fun OddsDetailResult.setupPlayCateTab() {
-        tab_cat.removeAllTabs()
         val playCateTypeList = this.oddsDetailData?.matchOdd?.playCateTypeList
         if (playCateTypeList?.isNotEmpty() == true) {
-            for (row in playCateTypeList) {
-                val customTabView =
-                    layoutInflater.inflate(R.layout.tab_odds_detail, null).apply {
-                        findViewById<TextView>(R.id.tv_tab).text = row.name
-                    }
-
-                tab_cat.addTab(
-                    tab_cat.newTab().setCustomView(customTabView),
-                    false
-                )
-            }
-            tab_cat.getTabAt(0)?.select()
+            tabCateAdapter.dataList = playCateTypeList
+            tabCateAdapter.selectedPosition = 0
         } else {
-            tab_cat.visibility = View.GONE
+            rv_cat.visibility = View.GONE
         }
-    }
-
-    override fun getBetInfoList(odd: Odd, oddsDetail: OddsDetailListData) {
-        matchOdd?.let { matchOdd ->
-            matchOdd.matchInfo.homeScore = curHomeScore
-            matchOdd.matchInfo.awayScore = curAwayScore
-
-            viewModel.updateMatchBetList(
-                matchType = MatchType.IN_PLAY,
-                gameType = args.gameType,
-                playCateCode = oddsDetail.gameType,
-                playCateName = oddsDetail.name,
-                matchInfo = matchOdd.matchInfo,
-                odd = odd,
-                subscribeChannelType = ChannelType.EVENT
-            )
-        }
-    }
-
-    override fun removeBetInfoItem(odd: Odd) {
-        viewModel.removeBetInfoItem(odd.id)
     }
 
     private fun setupFrontScore(event: MatchStatusChangeEvent) {
@@ -577,7 +592,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         if (args.matchType != MatchType.IN_PLAY) return
 
         when (args.gameType) {
-            GameType.FT -> {
+            GameType.FT,
+            GameType.IH -> {
                 setCardText(event)
                 setupFrontScore(event)
             }
@@ -590,10 +606,23 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                 setupBackScore(event)
                 setupStatusTnVb(event)
             }
-            GameType.VB -> {
+            GameType.VB,
+            GameType.TT -> {
                 setupBackScore(event)
                 setupStatusTnVb(event)
             }
+            // Todo: 仍有其他球種待處理
+            // BM, BX, CB, CK, BB, RB, AFT, MR, GF, FB, OTHER
+            else -> {
+            }
+        }
+        if(event.matchStatusCO?.status == 999){
+            tv_home_score.visibility = View.VISIBLE
+            tv_away_score.visibility = View.VISIBLE
+            tv_home_score_total.visibility = View.VISIBLE
+            tv_away_score_total.visibility = View.VISIBLE
+            tv_home_score_live.visibility = View.VISIBLE
+            tv_away_score_live.visibility = View.VISIBLE
         }
     }
 
@@ -620,10 +649,16 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         tv_status_left.visibility = View.VISIBLE
         tv_spt.visibility = View.GONE
-        tv_status_left.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorSilver))
+        tv_status_left.setTextColor(
+            ContextCompat.getColor(
+                tv_status_left.context,
+                R.color.colorSilver
+            )
+        )
 
         event.matchStatusList?.forEachIndexed { index, it ->
-            val spanStatusName = SpannableString(it.statusNameI18n?.get(getSelectLanguage(context).key))
+            val spanStatusName =
+                SpannableString(it.statusNameI18n?.get(getSelectLanguage(context).key))
             val spanScore = SpannableString("${it.homeScore ?: 0}-${it.awayScore ?: 0}  ")
 
             if (index == event.matchStatusList.lastIndex) {
@@ -633,7 +668,12 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                     spanStatusName.length,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
-                spanScore.setSpan(StyleSpan(Typeface.BOLD), 0, spanScore.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                spanScore.setSpan(
+                    StyleSpan(Typeface.BOLD),
+                    0,
+                    spanScore.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
             }
 
             statusBuilder.append(spanStatusName).append(spanScore)
@@ -663,13 +703,50 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         tv_status_right.text = statusBuilder
 
         if (tv_status_left.tag != GameStatus.POSTPONED.code) {
-            tv_status_left.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorOrangeLight))
-            tv_spt.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorOrangeLight))
-            val statusValue = event.matchStatusCO?.statusNameI18n?.get(getSelectLanguage(context).key) ?: event.matchStatusCO?.statusName
+            tv_status_left.setTextColor(
+                ContextCompat.getColor(
+                    tv_status_left.context,
+                    R.color.colorWhite8
+                )
+            )
+            tv_spt.setTextColor(
+                ContextCompat.getColor(
+                    tv_status_left.context,
+                    R.color.colorWhite8
+                )
+            )
+            val statusValue =
+                event.matchStatusCO?.statusNameI18n?.get(getSelectLanguage(context).key)
+                    ?: event.matchStatusCO?.statusName
             tv_status_left.text = statusValue
         } else {
-            tv_status_left.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorSilver))
+            tv_status_left.setTextColor(
+                ContextCompat.getColor(
+                    tv_status_left.context,
+                    R.color.colorSilver
+                )
+            )
             tv_spt.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorSilver))
         }
     }
+
+    //作用於頁面轉場流暢性
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
+        return if (enter) {
+            AnimationUtils.loadAnimation(context, nextAnim).apply {
+                setAnimationListener(this@OddsDetailLiveFragment)
+            }
+        } else {
+            super.onCreateAnimation(transit, enter, nextAnim)
+        }
+    }
+
+    override fun onAnimationStart(animation: Animation?) {}
+
+    override fun onAnimationEnd(animation: Animation?) {
+        observeData()
+        initSocketObserver()
+    }
+
+    override fun onAnimationRepeat(animation: Animation?) {}
 }

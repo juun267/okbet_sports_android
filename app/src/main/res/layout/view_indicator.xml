@@ -12,7 +12,7 @@
     app:tabMode="scrollable"
     app:tabPaddingEnd="0dp"
     app:tabPaddingStart="0dp"
-    app:tabRippleColor="@color/transparent"
+    app:tabRippleColor="@color/transparent_black_0"
     tools:context="org.cxct.sportlottery.ui.common.IndicatorView">
 
     <!-- 此處僅為預覽示意，實際上 tab 要動態添加 -->

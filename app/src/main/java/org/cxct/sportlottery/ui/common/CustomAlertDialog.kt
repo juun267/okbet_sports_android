@@ -3,12 +3,13 @@ package org.cxct.sportlottery.ui.common
 import android.content.Context
 import android.os.Bundle
 import android.text.Spanned
-import android.text.TextUtils
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.ColorRes
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_custom_alert.*
 import org.cxct.sportlottery.R
 
@@ -20,7 +21,7 @@ import org.cxct.sportlottery.R
  * this.setCanceledOnTouchOutside(false) //disable 點擊外部關閉 dialog
  * this.setCancelable(false) //disable 按實體鍵 BACK 關閉 dialog
  */
-class CustomAlertDialog(context: Context) : AlertDialog(context) {
+class CustomAlertDialog(context: Context) : DialogFragment() {
 
     private var mTitle: String? = null
     private var mMessage: String? = null
@@ -32,12 +33,19 @@ class CustomAlertDialog(context: Context) : AlertDialog(context) {
     private var mGravity = Gravity.CENTER
     private var mTextColor = R.color.colorBlackLight
     private var isShowDivider: Boolean = false
+    private var isShowDividerBottom: Boolean = true
+
+    var isShowing = dialog?.isShowing
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? = inflater.inflate(R.layout.dialog_custom_alert, container, false)
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.dialog_custom_alert)
-        window?.setBackgroundDrawableResource(android.R.color.transparent)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initView()
     }
 
@@ -64,15 +72,22 @@ class CustomAlertDialog(context: Context) : AlertDialog(context) {
         } else
             btn_negative.text = mNegativeText
 
+        if(mPositiveText == null || mNegativeText == null){
+            view_line.visibility = View.GONE
+        }
 
-        tv_message.setTextColor(ContextCompat.getColor(context, mTextColor))
+        if(mPositiveText == null && mNegativeText == null){
+            block_bottom_bar.visibility = View.GONE
+        }
+
+        tv_message.setTextColor(ContextCompat.getColor(context?:requireContext(), mTextColor))
 
         divider2.visibility = if (isShowDivider) View.VISIBLE else View.GONE
+        divider.visibility = if (isShowDividerBottom) View.VISIBLE else View.GONE
 
         btn_positive.setOnClickListener(mPositiveClickListener)
         btn_negative.setOnClickListener(mNegativeClickListener)
     }
-
 
     ////
     //以下設定要在 dialog.show() 之前才有效果
@@ -83,6 +98,10 @@ class CustomAlertDialog(context: Context) : AlertDialog(context) {
 
     fun setShowDivider(show: Boolean?) {
         isShowDivider = show?:false
+    }
+
+    fun setShowDividerBottom(show: Boolean?) {
+        isShowDividerBottom = show?:true
     }
 
     fun setMessage(message: String?) {
@@ -122,5 +141,9 @@ class CustomAlertDialog(context: Context) : AlertDialog(context) {
 
     fun setNegativeClickListener(negativeClickListener: View.OnClickListener) {
         mNegativeClickListener = negativeClickListener
+    }
+
+    fun setCanceledOnTouchOutside(boolean: Boolean){
+        dialog?.setCanceledOnTouchOutside(boolean)
     }
 }

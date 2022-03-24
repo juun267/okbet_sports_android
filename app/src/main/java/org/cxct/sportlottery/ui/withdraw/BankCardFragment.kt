@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.content_common_bottom_sheet_item.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
 import kotlinx.android.synthetic.main.fragment_bank_card.*
@@ -21,13 +22,11 @@ import kotlinx.android.synthetic.main.fragment_bank_card.view.*
 import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
 import kotlinx.android.synthetic.main.item_listview_bank_card.view.iv_bank_icon
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.money.config.MoneyRechCfgData
-import org.cxct.sportlottery.network.money.config.TransferType
-import org.cxct.sportlottery.network.money.config.Bank
-import org.cxct.sportlottery.network.money.config.Detail
+import org.cxct.sportlottery.network.money.config.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.login.LoginEditText
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MoneyManager
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.ToastUtil
@@ -111,27 +110,41 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         initEditTextStatus(et_network_point)
 
         btn_delete_bank.text = when (transferType) {
-            TransferType.BANK -> getString(R.string.delete_bank_card)
-            TransferType.CRYPTO -> getString(R.string.delete_crypto)
-            TransferType.E_WALLET -> getString(R.string.delete_e_wallet)
+            TransferType.BANK -> {
+                btn_delete_bank.isAllCaps = true
+                getString(R.string.delete_bank_card)
+            }
+            TransferType.CRYPTO -> {
+                btn_delete_bank.isAllCaps = true
+                getString(R.string.delete_crypto)
+            }
+            TransferType.E_WALLET -> {
+                when(LanguageManager.getSelectLanguage(context)) {
+                    LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> btn_delete_bank.isAllCaps = false
+                    else -> btn_delete_bank.isAllCaps = true
+                }
+                getString(R.string.delete_e_wallet)
+            }
         }
 
     }
 
     private fun showHideTab() {
         if (mBankCardStatus) {
-            block_transfer_type.visibility = View.GONE
+            ll_tab_layout.visibility = View.GONE
         } else {
-            block_transfer_type.visibility = View.VISIBLE
+            ll_tab_layout.visibility = View.VISIBLE
         }
 
 
         mAddSwitch?.apply {
-
-            tab_bank_card.visibility = if (bankTransfer) View.VISIBLE else View.GONE
-            tab_crypto.visibility = if (cryptoTransfer) View.VISIBLE else View.GONE
-            tab_e_wallet.visibility = if (bankTransfer) View.VISIBLE else View.GONE
-            block_transfer_type.visibility = if (!(bankTransfer && cryptoTransfer)) View.GONE else View.VISIBLE
+//            tab_bank_card.visibility = if (bankTransfer) View.VISIBLE else View.GONE
+//            tab_crypto.visibility = if (cryptoTransfer) View.VISIBLE else View.GONE
+//            tab_e_wallet.visibility = if (walletTransfer) View.VISIBLE else View.GONE
+            tab_layout.getChildAt(0)?.visibility = if (bankTransfer) View.VISIBLE else View.GONE
+            tab_layout.getChildAt(1)?.visibility = if (cryptoTransfer) View.VISIBLE else View.GONE
+            tab_layout.getChildAt(2)?.visibility = if (walletTransfer) View.VISIBLE else View.GONE
+            ll_tab_layout.visibility = if (!(bankTransfer && cryptoTransfer && walletTransfer) && (bankTransfer xor cryptoTransfer xor walletTransfer)) View.GONE else View.VISIBLE
         }
     }
 
@@ -149,7 +162,9 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             mBankSelectorAdapter = BankSelectorAdapter(lv_bank_item.context, rechCfgData.banks, BankSelectorAdapterListener {
                 updateSelectedBank(it)
                 dismiss()
-            })
+            }).apply {
+                bankType = getBankType() ?: BankType.BANK
+            }
             lv_bank_item.adapter = mBankSelectorAdapter
             mBankSelectorAdapter.initSelectStatus()
             tv_game_type_title.text = getString(R.string.select_bank)
@@ -183,6 +198,9 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
             //錢包地址
             setupClearButtonVisibility(et_wallet) { checkWalletAddress(it) }
+
+            //電話號碼
+            setupClearButtonVisibility(et_phone_number) { checkPhoneNumber(it) }
 
             //提款密碼
             setupEyeButtonVisibility(et_withdrawal_password) { checkWithdrawPassword(it) }
@@ -239,8 +257,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                     TransferType.E_WALLET -> { //eWallet暫時寫死 與綁定銀行卡相同
                         addBankCard(
                             bankName = tv_bank_name.text.toString(),
-                            subAddress = et_network_point.getText(),
-                            cardNo = et_bank_card_number.getText(),
+                            cardNo = et_phone_number.getText(),
                             fundPwd = et_withdrawal_password.getText(),
                             id = args.editBankCard?.id?.toString(),
                             uwType = transferType.type,
@@ -254,17 +271,48 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
         btn_delete_bank.setOnClickListener {
             modifyFinish()
-            val passwordDialog = WithdrawPassWordDialog(requireContext(), WithdrawPasswordDialogListener {
+            val passwordDialog = WithdrawPassWordDialog(WithdrawPasswordDialogListener {
                 viewModel.deleteBankCard(args.editBankCard?.id!!.toLong(), it)
             })
-            passwordDialog.apply {
-                show()
-            }
+            passwordDialog.show(childFragmentManager, null)
+
         }
     }
 
     private fun tabClickEvent() {
         if (!mBankCardStatus) {
+
+            tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    modifyFinish()
+                    when(tab?.position) {
+                        0 -> {
+                            transferType = TransferType.BANK
+                            clearBankInputFiled()
+                            changeTransferType(transferType)
+                        }
+                        1 -> {
+                            transferType = TransferType.CRYPTO
+                            clearCryptoInputFiled()
+                            changeTransferType(transferType)
+                        }
+                        2 -> {//eWallet暫時寫死 與綁定銀行卡相同
+                            transferType = TransferType.E_WALLET
+                            clearBankInputFiled()
+                            changeTransferType(transferType)
+                        }
+                    }
+                    updateBankSelectorList()
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab?) {
+                }
+
+                override fun onTabReselected(tab: TabLayout.Tab?) {
+                }
+
+            })
+            /*
             tab_bank_card.setOnClickListener {
                 transferType = TransferType.BANK
                 clearBankInputFiled()
@@ -280,6 +328,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 clearBankInputFiled()
                 changeTransferType(transferType)
             }
+            */
         }
     }
 
@@ -287,6 +336,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         et_bank_card_number.resetText()
         et_network_point.resetText()
         et_withdrawal_password.resetText()
+        et_phone_number.resetText()
         mBankSelectorAdapter.initSelectStatus()
         clearFocus()
     }
@@ -306,19 +356,22 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private fun changeTab(type: TransferType) {
         when (type) {
             TransferType.BANK -> {
-                tab_bank_card.isSelected = true
-                tab_crypto.isSelected = false
-                tab_e_wallet.isSelected = false
+                tab_layout.getTabAt(0)?.select()
+//                tab_bank_card.isSelected = true
+//                tab_crypto.isSelected = false
+//                tab_e_wallet.isSelected = false
             }
             TransferType.CRYPTO -> {
-                tab_bank_card.isSelected = false
-                tab_crypto.isSelected = true
-                tab_e_wallet.isSelected = false
+                tab_layout.getTabAt(1)?.select()
+//                tab_bank_card.isSelected = false
+//                tab_crypto.isSelected = true
+//                tab_e_wallet.isSelected = false
             }
             TransferType.E_WALLET -> {
-                tab_bank_card.isSelected = false
-                tab_crypto.isSelected = false
-                tab_e_wallet.isSelected = true
+                tab_layout.getTabAt(2)?.select()
+//                tab_bank_card.isSelected = false
+//                tab_crypto.isSelected = false
+//                tab_e_wallet.isSelected = true
             }
         }
     }
@@ -328,14 +381,30 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             TransferType.BANK -> {
                 block_bank_card_input.visibility = View.VISIBLE
                 block_crypto_input.visibility = View.GONE
+
+                //region 顯示Bank欄位
+                et_bank_card_number.visibility = View.VISIBLE
+                et_network_point.visibility = View.VISIBLE
+                //endregion
+                //region 隱藏eWallet欄位
+                et_phone_number.visibility = View.GONE
+                //endregion
             }
             TransferType.CRYPTO -> {
                 block_bank_card_input.visibility = View.GONE
                 block_crypto_input.visibility = View.VISIBLE
             }
-            TransferType.E_WALLET -> { //eWallet暫時寫死 與綁定銀行卡相同
+            TransferType.E_WALLET -> {
                 block_bank_card_input.visibility = View.VISIBLE
                 block_crypto_input.visibility = View.GONE
+
+                //region 隱藏Bank欄位
+                et_bank_card_number.visibility = View.GONE
+                et_network_point.visibility = View.GONE
+                //endregion
+                //region 顯示eWallet欄位
+                et_phone_number.visibility = View.VISIBLE
+                //endregion
             }
         }
     }
@@ -352,18 +421,26 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 hideLoading()
         })
 
-        viewModel.userInfo.observe(this.viewLifecycleOwner, {
-            it?.fullName?.let { fullName -> if (fullName.isNotEmpty()) et_create_name.setText(TextUtil.maskFullName(fullName)) } ?: run {
-                setupClearButtonVisibility(et_create_name) { inputFullName -> viewModel.checkCreateName(inputFullName) }
+        viewModel.userInfo.observe(this.viewLifecycleOwner) {
+            it?.fullName?.let { fullName ->
+                if (fullName.isNotEmpty()) et_create_name.setText(
+                    TextUtil.maskFullName(fullName)
+                )
+            } ?: run {
+                setupClearButtonVisibility(et_create_name) { inputFullName ->
+                    viewModel.checkCreateName(
+                        inputFullName
+                    )
+                }
             }
-        })
+        }
 
         viewModel.rechargeConfigs.observe(this.viewLifecycleOwner, Observer { rechCfgData ->
             setupBankSelector(rechCfgData)
             viewModel.getCryptoBindList(args.editBankCard)
         })
 
-        viewModel.addCryptoCardList.observe(this.viewLifecycleOwner, {
+        viewModel.addCryptoCardList.observe(this.viewLifecycleOwner) {
 
             val sheetList: List<StatusSheetData> = it.map { item ->
                 StatusSheetData(item.contract, item.contract)
@@ -372,12 +449,13 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             sv_protocol.selectedText = it.firstOrNull()?.contract
             sv_protocol.selectedTag = it.firstOrNull()?.contract
 
-            val modifyMoneyCardDetail = it.find { list -> list.contract == args.editBankCard?.bankName }
+            val modifyMoneyCardDetail =
+                it.find { list -> list.contract == args.editBankCard?.bankName }
             setCryptoProtocol(modifyMoneyCardDetail ?: it.firstOrNull())
-        })
+        }
 
 
-        viewModel.bankAddResult.observe(this.viewLifecycleOwner, { result ->
+        viewModel.bankAddResult.observe(this.viewLifecycleOwner) { result ->
             if (result.success) {
                 if (mBankCardStatus) {
                     val promptMessage = when (transferType) {
@@ -401,51 +479,75 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             } else {
                 showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
             }
-        })
+        }
 
-        viewModel.bankDeleteResult.observe(this.viewLifecycleOwner, { result ->
+        viewModel.bankDeleteResult.observe(this.viewLifecycleOwner) { result ->
             if (result.success) {
                 val promptMessage = when (transferType) {
                     TransferType.BANK -> getString(R.string.text_bank_card_delete_success)
                     TransferType.CRYPTO -> getString(R.string.text_crypto_delete_success)
                     TransferType.E_WALLET -> getString(R.string.text_e_wallet_delete_success)
                 }
-                showPromptDialog(getString(R.string.prompt), promptMessage) { mNavController.popBackStack() } //刪除銀行卡成功後回至銀行卡列表bank card list
+                showPromptDialog(
+                    getString(R.string.prompt),
+                    promptMessage
+                ) { mNavController.popBackStack() } //刪除銀行卡成功後回至銀行卡列表bank card list
             } else {
                 showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
             }
-        })
+        }
 
         //錯誤訊息
         //開戶名
-        viewModel.createNameErrorMsg.observe(this.viewLifecycleOwner,
-        {
+        viewModel.createNameErrorMsg.observe(this.viewLifecycleOwner
+        ) {
             et_create_name.setError(it ?: "")
-        })
+        }
 
         //銀行卡號
-        viewModel.bankCardNumberMsg.observe(this.viewLifecycleOwner,
-        {
+        viewModel.bankCardNumberMsg.observe(
+            this.viewLifecycleOwner,
+        ) {
             et_bank_card_number.setError(it ?: "")
-        })
+        }
 
         //開戶網點
-        viewModel.networkPointMsg.observe(this.viewLifecycleOwner,
-        {
+        viewModel.networkPointMsg.observe(this.viewLifecycleOwner
+        ) {
             et_network_point.setError(it ?: "")
-        })
+        }
 
         //錢包地址
-        viewModel.walletAddressMsg.observe(this.viewLifecycleOwner,
-        {
+        viewModel.walletAddressMsg.observe(this.viewLifecycleOwner
+        ) {
             et_wallet.setError(it ?: "")
-        })
+        }
+
+        //電話號碼
+        viewModel.phoneNumberMsg.observe(this.viewLifecycleOwner) {
+            et_phone_number.setError(it ?: "")
+        }
 
         //提款密碼
-        viewModel.withdrawPasswordMsg.observe(this.viewLifecycleOwner,
-        {
+        viewModel.withdrawPasswordMsg.observe(this.viewLifecycleOwner
+        ) {
             et_withdrawal_password.setError(it ?: "")
-        })
+        }
+    }
+
+    private fun getBankType(): BankType? = when (transferType) {
+        TransferType.BANK -> BankType.BANK
+        TransferType.E_WALLET -> BankType.E_WALLET
+        else -> null
+    }
+
+    private fun updateBankSelectorList() {
+        getBankType()?.let { bankType ->
+            mBankSelectorAdapter.bankType = bankType
+            mBankSelectorAdapter.bankList.firstOrNull()?.let { initBank ->
+                updateSelectedBank(initBank)
+            }
+        }
     }
 
     override fun onDestroy() {
@@ -461,10 +563,18 @@ class BankSelectorAdapter(
 ) : BaseAdapter() {
     private var selectedPosition = 0
 
+    val bankList: List<Bank> get() = dataList.filter { it.bankType == bankType.ordinal }
+
+    var bankType: BankType = BankType.BANK
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val holder: ListViewHolder
         // if remove "if (convertView == null)" will get a warning about reuse view.
-        val data = dataList[position]
+        val data = bankList[position]
         if (convertView == null) {
             holder = ListViewHolder()
             val layoutInflater = LayoutInflater.from(context)
@@ -509,7 +619,7 @@ class BankSelectorAdapter(
     }
 
     override fun getCount(): Int {
-        return dataList.size
+        return bankList.size
     }
 
     override fun getItem(position: Int): Any? {

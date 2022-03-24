@@ -4,11 +4,16 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
+import org.cxct.sportlottery.network.index.login.ValidateLoginDeviceSmsRequest
+import org.cxct.sportlottery.network.index.logout.LogoutResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.*
@@ -19,18 +24,26 @@ class LoginViewModel(
     private val androidContext: Context,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
+    infoCenterRepository: InfoCenterRepository,
+    protected val userInfoRepository: UserInfoRepository
 ) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
     val loginFormState: LiveData<LoginFormState>
         get() = _loginFormState
     val loginResult: LiveData<LoginResult>
         get() = _loginResult
+    val loginSmsResult: LiveData<LogoutResult>
+        get() = _loginSmsResult
     val validCodeResult: LiveData<ValidCodeResult?>
         get() = _validCodeResult
+    val validResult: LiveData<LogoutResult>
+        get() = _validResult
 
     private val _loginFormState = MutableLiveData<LoginFormState>()
     private val _loginResult = MutableLiveData<LoginResult>()
+    private val _loginSmsResult = MutableLiveData<LogoutResult>()
     private val _validCodeResult = MutableLiveData<ValidCodeResult?>()
+    private val _validResult = MutableLiveData<LogoutResult>()
+
 
     val account by lazy { loginRepository.account }
     val password by lazy { loginRepository.password }
@@ -63,9 +76,44 @@ class LoginViewModel(
             doNetwork(androidContext) {
                 loginRepository.login(loginRequest)
             }?.let { result ->
+                // TODO 20220108 更新UserInfo by Hewie
+                userInfoRepository.getUserInfo()
 //                result.loginData?.discount = 0.4f //後台修復中 測試用
                 _loginResult.postValue(result)
             }
+        }
+    }
+
+    fun sendLoginDeviceSms() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                loginRepository.sendLoginDeviceSms()
+            }?.let { result ->
+                _loginSmsResult.postValue(result)
+            }
+        }
+    }
+    fun validateLoginDeviceSms(code: String, deviceId: String) {
+
+        val validateRequest = ValidateLoginDeviceSmsRequest(
+            loginEnvInfo = deviceId,
+            validCode = code,
+            loginSrc = LOGIN_SRC
+        )
+
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                loginRepository.validateLoginDeviceSms(validateRequest)
+            }?.let { result ->
+                _validResult.postValue(result)
+            }
+        }
+    }
+
+
+    suspend fun getUserPhone():String?{
+        return withContext(Dispatchers.IO) {
+            userInfoRepository.userInfo?.firstOrNull()?.phone.toString()
         }
     }
 

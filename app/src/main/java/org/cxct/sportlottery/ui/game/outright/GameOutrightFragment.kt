@@ -18,6 +18,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
+import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.GameConfigManager
@@ -25,7 +26,7 @@ import org.cxct.sportlottery.util.SocketUpdateUtil
 import java.util.*
 
 
-class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
+class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class) {
 
     private val args: GameOutrightFragmentArgs by navArgs()
 
@@ -96,6 +97,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
             initObserve()
             initSocketObserver()
             initView()
+            initBottomNavigation()
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -110,22 +112,22 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     }
 
     private fun initObserve() {
-        viewModel.userInfo.observe(this.viewLifecycleOwner, {
+        viewModel.userInfo.observe(this.viewLifecycleOwner) {
             outrightLeagueOddAdapter.discount = it?.discount ?: 1.0F
-        })
+        }
 
-        viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner, {
+        viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner) {
             hideLoading()
 
             it.getContentIfNotHandled()?.let { outrightOddsListResult ->
                 if (outrightOddsListResult.success) {
 
-                    game_toolbar_match_type.text = GameType.values()
-                        .find { gameType -> gameType.key == args.gameType.key }?.string?.let { stringId ->
-                            getString(
-                                stringId
-                            )
-                        }
+//                    game_toolbar_match_type.text = GameType.values()
+//                        .find { gameType -> gameType.key == args.gameType.key }?.string?.let { stringId ->
+//                            getString(
+//                                stringId
+//                            )
+//                        }
 
                     GameConfigManager.getTitleBarBackground(outrightOddsListResult.outrightOddsListData?.sport?.code)
                         ?.let { gameImg ->
@@ -153,9 +155,9 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                     }
                 }
             }
-        })
+        }
 
-        viewModel.betInfoList.observe(this.viewLifecycleOwner, {
+        viewModel.betInfoList.observe(this.viewLifecycleOwner) {
             it.peekContent().let {
                 val odds = mutableListOf<Odd>()
 
@@ -173,18 +175,18 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
 
                 outrightLeagueOddAdapter.notifyDataSetChanged()
             }
-        })
+        }
 
-        viewModel.oddsType.observe(this.viewLifecycleOwner, {
+        viewModel.oddsType.observe(this.viewLifecycleOwner) {
             it?.let { oddsType ->
                 outrightLeagueOddAdapter.oddsType = oddsType
             }
-        })
+        }
     }
 
     private fun initSocketObserver() {
 
-        receiver.oddsChange.observe(this.viewLifecycleOwner, {
+        receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.updateOddsSelectedState()
 
@@ -196,13 +198,13 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                     }
                 }
             }
-        })
+        }
 
-        receiver.matchOddsLock.observe(this.viewLifecycleOwner, {
+        receiver.matchOddsLock.observe(this.viewLifecycleOwner) {
             it?.let { matchOddsLockEvent ->
                 outrightLeagueOddAdapter.data.forEachIndexed { index, matchOdd ->
                     if (matchOdd?.matchInfo?.id == matchOddsLockEvent.matchId) {
-                        matchOdd.oddsMap.forEach { oddsMap ->
+                        matchOdd.oddsMap?.forEach { oddsMap ->
                             oddsMap.value?.forEach { odd ->
                                 odd?.status = BetStatus.LOCKED.code
                             }
@@ -211,9 +213,9 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                     }
                 }
             }
-        })
+        }
 
-        receiver.globalStop.observe(this.viewLifecycleOwner, {
+        receiver.globalStop.observe(this.viewLifecycleOwner) {
             it?.let { globalStopEvent ->
 
                 outrightLeagueOddAdapter.data.forEachIndexed { index, matchOdd ->
@@ -224,15 +226,15 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                     }
                 }
             }
-        })
+        }
 
-        receiver.producerUp.observe(this.viewLifecycleOwner, {
+        receiver.producerUp.observe(this.viewLifecycleOwner) {
             unSubscribeChannelHallAll()
 
             outrightLeagueOddAdapter.data.forEach { matchOdd ->
                 subscribeChannelHall(matchOdd)
             }
-        })
+        }
     }
 
     private fun initView() {
@@ -242,7 +244,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
         this.odds?.let { oddTypeSocketMap ->
             oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
-                oddTypeSocketMapEntry.value.onEach { odd ->
+                oddTypeSocketMapEntry.value?.onEach { odd ->
                     odd?.isSelected =
                         viewModel.betInfoList.value?.peekContent()?.any { betInfoListData ->
                             betInfoListData.matchOdd.oddsId == odd?.id
@@ -263,7 +265,6 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
             true -> {
                 subscribeChannelHall(
                     args.gameType.key,
-                    PlayCate.OUTRIGHT.value,
                     matchOdd.matchInfo?.id
                 )
             }

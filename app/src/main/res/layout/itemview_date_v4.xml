@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="56dp"
     android:layout_height="64dp"
-    android:background="@drawable/shape_date_item_bg_v4">
+    android:background="@drawable/shape_date_item_bg_v4"
+    tools:context="org.cxct.sportlottery.ui.game.hall.adapter.DateAdapter"
+    tools:ignore="SpUsage">
 
     <TextView
         android:id="@+id/date_text_week"
@@ -17,18 +19,17 @@
         android:textColor="@android:color/white"
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="TUESDAY" />
+        tools:text="TUE" />
 
     <TextView
         android:id="@+id/date_text_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="2dp"
         android:textAllCaps="true"
         android:textColor="@color/selector_date_item_text_v4"
-        android:textSize="@dimen/textSize16sp"
+        android:textSize="@dimen/textSize14sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/date_text_month"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/date_text_week"
@@ -43,12 +44,11 @@
         android:textAllCaps="true"
         android:textColor="@color/selector_date_item_text_v4"
         android:textSize="@dimen/textSize12sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/date_text_date"
-        tools:text="October" />
+        tools:text="Oct" />
 
     <TextView
         android:id="@+id/date_text_other"

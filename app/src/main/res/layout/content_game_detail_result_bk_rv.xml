@@ -138,7 +138,7 @@
                     android:gravity="center"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
-                    android:text="0"
+                    tools:text="0"
                     android:textColor="@color/colorGray"
                     android:textSize="@dimen/textSize14sp" />
             </LinearLayout>
@@ -164,7 +164,7 @@
                     android:gravity="center"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
-                    android:text="0"
+                    tools:text="0"
                     android:textColor="@color/colorGray"
                     android:textSize="@dimen/textSize14sp" />
 
@@ -181,7 +181,7 @@
                     android:gravity="center"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
-                    android:text="0"
+                    tools:text="0"
                     android:textColor="@color/colorGray"
                     android:textSize="@dimen/textSize14sp" />
 
@@ -198,7 +198,7 @@
                     android:gravity="center"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
-                    android:text="0"
+                    tools:text="0"
                     android:textColor="@color/colorGray"
                     android:textSize="@dimen/textSize14sp" />
 
@@ -268,7 +268,7 @@
                     android:gravity="center"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
-                    android:text="0"
+                    tools:text="0"
                     android:textColor="@color/colorGray"
                     android:textSize="@dimen/textSize14sp" />
             </LinearLayout>
@@ -294,7 +294,7 @@
                     android:gravity="center"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
-                    android:text="0"
+                    tools:text="0"
                     android:textColor="@color/colorGray"
                     android:textSize="@dimen/textSize14sp" />
 
@@ -311,7 +311,7 @@
                     android:gravity="center"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
-                    android:text="0"
+                    tools:text="0"
                     android:textColor="@color/colorGray"
                     android:textSize="@dimen/textSize14sp" />
 
@@ -328,7 +328,7 @@
                     android:gravity="center"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
-                    android:text="0"
+                    tools:text="0"
                     android:textColor="@color/colorGray"
                     android:textSize="@dimen/textSize14sp" />
 

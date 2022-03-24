@@ -12,6 +12,10 @@ import kotlinx.android.synthetic.main.home_game_table_4.view.*
 import kotlinx.android.synthetic.main.home_recommend_item.view.*
 import kotlinx.android.synthetic.main.home_recommend_item.view.indicator_view
 import kotlinx.android.synthetic.main.home_recommend_item.view.view_pager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.common.PlayCate
@@ -36,7 +40,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .dontTransform()
 
-    private var mDataList = listOf<RecommendGameEntity>()
+    var mDataList = mutableListOf<RecommendGameEntity>()
 
     var discount: Float = 1.0F
         set(newDiscount) {
@@ -55,33 +59,49 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
             notifyDataSetChanged()
         }
 
-    fun setData(result: MatchRecommendResult) {
-        val dataList = mutableListOf<RecommendGameEntity>()
-        result.rows?.forEach { row ->
-            row.leagueOdds?.matchOdds?.forEach { oddData ->
-                val beans = oddData.oddsMap.toSortedMap(compareBy<String> {
-                    val sortOrder = oddData.oddsSort?.split(",")
-                    sortOrder?.indexOf(it)
-                }.thenBy { it }).map {
-                    OddBean(it.key, it.value?.toList() ?: listOf()) }
+    fun setData(result: MatchRecommendResult, selectedOdds: MutableList<String>) {
+        GlobalScope.launch(Dispatchers.IO) {
+            val dataList = mutableListOf<RecommendGameEntity>()
+            result.rows?.forEach { row ->
+                row.leagueOdds?.matchOdds?.forEach { oddData ->
+                    val beans = oddData.oddsMap?.toSortedMap(compareBy<String> {
+                        val sortOrder = oddData.oddsSort?.split(",")
+                        sortOrder?.indexOf(it)
+                    }.thenBy { it })?.map {
+                        OddBean(it.key, it.value?.toMutableList() ?: mutableListOf())
+                    }
 
-                val entity = RecommendGameEntity(
-                    code = row.sport?.code,
-                    name = row.sport?.name,
-                    leagueId = row.leagueOdds.league?.id,
-                    leagueName = if (row.isOutright == RECOMMEND_OUTRIGHT) row.leagueOdds.matchOdds.firstOrNull()?.matchInfo?.name else row.leagueOdds.league?.name,
-                    matchInfo = oddData.matchInfo,
-                    isOutright = row.isOutright,
-                    oddBeans = beans,
-                    dynamicMarkets = oddData.dynamicMarkets,
-                    playCateMappingList = oddData.playCateMappingList
-                )
-                dataList.add(entity)
+                    beans?.forEach {
+                        it.oddList?.forEach { odd ->
+                            odd?.id?.let { id ->
+                                odd?.isSelected = selectedOdds.contains(id)
+                            }
+                        }
+                    }
+
+                    val entity = RecommendGameEntity(
+                        code = row.sport?.code,
+                        name = row.sport?.name,
+                        leagueId = row.leagueOdds?.league?.id,
+                        leagueName = if (row.isOutright == RECOMMEND_OUTRIGHT) row.leagueOdds?.matchOdds?.firstOrNull()?.matchInfo?.name else row.leagueOdds?.league?.name,
+                        matchInfo = oddData.matchInfo,
+                        isOutright = row.isOutright,
+                        oddBeans = beans?.toMutableList() ?: mutableListOf(),
+                        dynamicMarkets = oddData.dynamicMarkets,
+                        playCateMappingList = oddData.playCateMappingList,
+                        betPlayCateNameMap = oddData.betPlayCateNameMap,
+                        playCateNameMap = oddData.playCateNameMap
+                    )
+                    dataList.add(entity)
+                }
             }
-        }
-        mDataList = dataList
+            mDataList = dataList
 
-        notifyDataSetChanged()
+            //改為排序完才刷新畫面
+//            withContext(Dispatchers.Main) {
+//                notifyDataSetChanged()
+//            }
+        }
     }
 
     fun getData() = mDataList
@@ -92,11 +112,17 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
             mDataList[index].vpRecommendAdapter?.notifyItemChanged(indexVpAdapter)
     }
 
+    fun notifySelectedOddsChanged(selectedOdds: MutableList<String>) {
+        mDataList.forEach {
+            it.vpRecommendAdapter?.notifySelectedOddsChanged(selectedOdds)
+        }
+    }
+
     var oddsType: OddsType = OddsType.EU
         set(value) {
             if (value != field) {
                 field = value
-                notifyDataSetChanged()
+                //notifyDataSetChanged() // TODO ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy can touch its views.
             }
         }
 
@@ -190,8 +216,9 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                         data.oddBeans,
                         data.isOutright,
                         data.toMatchOdd(),
-                        data.playCateMappingList,
-                        data.dynamicMarkets
+                        data.dynamicMarkets,
+                        data.playCateNameMap,
+                        data.betPlayCateNameMap
                     )
 
                 data.vpRecommendAdapter?.oddsType = oddsType
@@ -234,13 +261,20 @@ fun RecommendGameEntity.toMatchOdd(): MatchOdd {
         playCateNum = this.matchInfo?.playCateNum ?: -1,
         startTime = this.matchInfo?.startTime,
         status = this.matchInfo?.status ?: -1,
-        name = this.leagueName
+        name = this.leagueName,
+        leagueName = this.leagueName
     )
     val odds: MutableMap<String, MutableList<Odd?>?> = mutableMapOf()
     this.oddBeans.forEach {
         odds[it.playTypeCode] = it.oddList.toMutableList()
     }
-    return MatchOdd(matchInfo, odds, dynamicMarkets = this.dynamicMarkets).apply {
+    return MatchOdd(
+        this.betPlayCateNameMap,
+        this.playCateNameMap,
+        matchInfo,
+        odds,
+        dynamicMarkets = this.dynamicMarkets
+    ).apply {
         playCateMappingList = this@toMatchOdd.playCateMappingList
     }
 }

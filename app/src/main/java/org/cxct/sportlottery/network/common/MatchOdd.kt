@@ -1,15 +1,18 @@
 package org.cxct.sportlottery.network.common
 
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.odds.eps.Odds
+import org.cxct.sportlottery.network.odds.eps.EpsOdd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
 
 interface MatchOdd {
+    var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
+    var playCateNameMap: MutableMap<String?, Map<String?, String?>?>?
     val matchInfo: MatchInfo?
-    val oddsMap: MutableMap<String, MutableList<Odd?>?>
+    var oddsMap: MutableMap<String, MutableList<Odd?>?>?
     val oddsSort: String?
     val quickPlayCateList: MutableList<QuickPlayCate>?
-    val oddsEps: Odds?
+    val oddsEps: EpsOdd?
     var playCateMappingList: List<PlayCateMapItem>?
+
 }

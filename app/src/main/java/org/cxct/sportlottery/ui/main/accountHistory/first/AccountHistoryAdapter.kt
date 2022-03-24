@@ -29,50 +29,21 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener,
         TITLE_BAR, ITEM, FOOTER, NO_DATA
     }
 
-    private var allDateList = mutableListOf<Row>().apply {
-        for (i in 0 until 8) {
-            add(Row(statDate = TimeUtil.getMinusDate(i, TimeUtil.YMD_FORMAT)))
-        }
-    }
-
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
     fun addFooterAndSubmitList(list: MutableList<Row?>, isLastPage: Boolean) {
         adapterScope.launch {
-
-            val newList = mappingDateList(list)
-
+            val reverseList = list.reversed()
             val items = listOf(DataItem.TitleBar) + when {
-                newList.isNullOrEmpty() -> listOf(DataItem.NoData)
-                isLastPage -> newList.map { DataItem.Item(it) } + listOf(DataItem.Footer)
-                else -> newList.map { DataItem.Item(it) }
+                reverseList.isNullOrEmpty() -> listOf(DataItem.NoData)
+                isLastPage -> reverseList.map { DataItem.Item(it) } + listOf(DataItem.Footer)
+                else -> reverseList.map { DataItem.Item(it) }
             }
 
             withContext(Dispatchers.Main) { //update in main ui thread
                 submitList(items)
             }
         }
-    }
-
-    private fun mappingDateList(dataList: MutableList<Row?>): List<Row> {
-
-        allDateList.apply {
-            for (i in 0 until 8) {
-                allDateList[i] = (Row(statDate = TimeUtil.getMinusDate(i, TimeUtil.YMD_FORMAT)))
-            }
-        }
-
-        allDateList.forEachIndexed { index, allDate ->
-            dataList.forEach { data ->
-                if (allDate.statDate == data?.statDate) {
-                    if (data != null) {
-                        allDateList[index] = data
-                    }
-                }
-            }
-        }
-
-        return allDateList
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -113,14 +84,15 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener,
     }
 
     class ItemViewHolder private constructor(val binding: ItemAccountHistoryBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: Row, clickListener: ItemClickListener) {
+        fun bind(data: Row?, clickListener: ItemClickListener) {
             binding.row = data
             binding.textUtil = TextUtil
 
             itemView.setOnClickListener {
-                clickListener.onClick(data)
+                if (data != null) {
+                    clickListener.onClick(data)
+                }
             }
-
             binding.executePendingBindings()
         }
 
@@ -138,14 +110,15 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener,
 
         fun bind(backClickListener: BackClickListener, sportSelectListener: SportSelectListener) {
             itemView.apply {
+                val sportStatusList = mutableListOf<StatusSheetData>().apply {
 
-                val sportStatusList = listOf(
-                    StatusSheetData("", context?.getString(R.string.all_sport)),
-                    StatusSheetData(GameType.FT.key, context?.getString(GameType.FT.string)),
-                    StatusSheetData(GameType.BK.key, context?.getString(GameType.BK.string)),
-                    StatusSheetData(GameType.TN.key, context?.getString(GameType.TN.string)),
-                    StatusSheetData(GameType.VB.key, context?.getString(GameType.VB.string)),
-                )
+                    this.add(StatusSheetData("", context?.getString(R.string.all_sport)))
+
+                    val itemList = GameType.values()
+                    itemList.forEach { gameType ->
+                        this.add(StatusSheetData(gameType.key, GameType.getGameTypeString(context, gameType.key)))
+                    }
+                }
 
                 iv_back.setOnClickListener {
                     backClickListener.onClick()
@@ -207,7 +180,7 @@ sealed class DataItem {
 
     abstract val rowItem: Row?
 
-    data class Item(val row: Row) : DataItem() {
+    data class Item(val row: Row?) : DataItem() {
         override val rowItem = row
     }
 

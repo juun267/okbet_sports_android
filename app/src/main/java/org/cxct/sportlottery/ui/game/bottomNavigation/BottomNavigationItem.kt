@@ -37,11 +37,11 @@ class BottomNavigationItem @JvmOverloads constructor(
                 val title = typedArray.getString(R.styleable.BottomNavigationItem_btiTitle)
                 item_title.text = title
 
-                if (title == trans_number.context.getString(R.string.label_transaction_status)) {
-                    trans_number.visibility = View.VISIBLE
-                } else {
+//                if (title == trans_number.context.getString(R.string.label_transaction_status)) {
+//                    trans_number.visibility = View.VISIBLE
+//                } else {
                     trans_number.visibility = View.GONE
-                }
+//                }
             }
         } catch (e: Exception) {
             e.printStackTrace()

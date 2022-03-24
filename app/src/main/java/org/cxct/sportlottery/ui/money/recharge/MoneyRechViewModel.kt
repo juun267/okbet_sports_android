@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.money.recharge
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -132,6 +133,7 @@ class MoneyRechViewModel(
 
     //獲取充值的基礎配置
     fun getRechCfg() {
+        Log.e(">>>", "getRechCfg")
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 moneyRepository.getRechCfg()
@@ -169,12 +171,17 @@ class MoneyRechViewModel(
 
             dataList.forEach {
                 when (it.rechType) {
-                    org.cxct.sportlottery.network.common.RechType.ONLINEPAYMENT.code -> onlineData.add(
-                        it
-                    )
+                    org.cxct.sportlottery.network.common.RechType.ONLINEPAYMENT.code -> {
+                        if (it.onlineType != 202) //後端說要filter掉202
+                            onlineData.add(
+                                it
+                            )
+                    }
                     else -> transferData.add(it)
                 }
             }
+
+            Log.e(">>>", "onlineData = ${onlineData.size}, transferData = ${transferData.size}")
 
             _onlinePayList.value = onlineData
             _transferPayList.value = transferData
@@ -557,6 +564,7 @@ class MoneyRechViewModel(
             OnlineType.GCASH.type -> androidContext.resources.getString(R.string.online_gcash)
             OnlineType.GRABPAY.type -> androidContext.resources.getString(R.string.online_grab)
             OnlineType.PAYMAYA.type -> androidContext.resources.getString(R.string.online_maya)
+            OnlineType.PAYPAL.type -> androidContext.resources.getString(R.string.online_paypal)
             else -> ""
         }
     }
@@ -581,6 +589,9 @@ class MoneyRechViewModel(
             )
             org.cxct.sportlottery.network.common.RechType.PAYMAYA.code -> androidContext.resources.getString(
                 R.string.online_maya
+            )
+            org.cxct.sportlottery.network.common.RechType.PAYPAL.code -> androidContext.resources.getString(//TODO Bill 等後端補上Paypal
+                R.string.online_paypal
             )
             else -> ""
         }

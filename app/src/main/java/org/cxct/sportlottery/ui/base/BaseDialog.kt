@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.base
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -13,6 +14,7 @@ import kotlin.reflect.KClass
 open class BaseDialog<T : BaseViewModel>(clazz: KClass<T>) : DialogFragment() {
 
     val viewModel: T by sharedViewModel(clazz = clazz)
+    private var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一個
 
     init {
         setStyle(STYLE_NO_TITLE, R.style.MyDialogStyle)
@@ -67,6 +69,16 @@ open class BaseDialog<T : BaseViewModel>(clazz: KClass<T>) : DialogFragment() {
         }
     }
 
+    fun showPromptDialog(
+        title: String? = getString(R.string.prompt),
+        message: String,
+        buttonText: String?,
+        isShowDivider: Boolean,
+        positiveClickListener: () -> Unit?
+    ) {
+        (activity as BaseActivity<*>).showPromptDialog(title, message, buttonText, positiveClickListener, false, isShowDivider)
+    }
+
     fun showErrorPromptDialog(title: String, message: String, positiveClickListener: () -> Unit) {
         if (activity is BaseActivity<*>) {
             (activity as BaseActivity<*>).showErrorPromptDialog(title, message, positiveClickListener)
@@ -81,6 +93,11 @@ open class BaseDialog<T : BaseViewModel>(clazz: KClass<T>) : DialogFragment() {
                 (activity as BaseActivity<*>).showErrorPromptDialog(title, message, positiveClickListener)
             }
         }
+    }
+
+    fun avoidFastDoubleClick(){
+        mIsEnabled = false
+        Handler().postDelayed({ mIsEnabled = true }, 500)
     }
 
 }

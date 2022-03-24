@@ -1,10 +1,9 @@
 package org.cxct.sportlottery.ui.common
 
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 import android.inputmethodservice.Keyboard
 import android.inputmethodservice.Keyboard.KEYCODE_DELETE
 import android.inputmethodservice.Keyboard.KEYCODE_DONE
@@ -19,26 +18,52 @@ class CustomKeyBoardView(context: Context?, attrs: AttributeSet?) : KeyboardView
 
     private var paint: Paint = Paint()
 
+    @SuppressLint("NewApi")
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         try {
             val keys = keyboard.keys
             for (key in keys) {
-                if (key.codes[0] == KeyBoardCode.DOT.code ||
-                    key.codes[0] == KeyBoardCode.PLUS_10.code ||
+                if (
+                    key.codes[0] == KeyBoardCode.PLUS_25.code ||
                     key.codes[0] == KeyBoardCode.PLUS_50.code ||
-                    key.codes[0] == KeyBoardCode.PLUS_100.code ||
-                    key.codes[0] == KEYCODE_DONE
+                    key.codes[0] == KeyBoardCode.PLUS_75.code ||
+                    key.codes[0] == KeyBoardCode.PLUS_100.code
                 ) {
-                    setDrawable(canvas, key, R.drawable.bg_keyboard_count)
+                    setDrawable(canvas, key, R.drawable.bg_radius_4_button_white)
+                    paint.color = context.getColor(R.color.color_060F20)
+
+                    if(key.codes[0] == KeyBoardCode.PLUS_25.code ||
+                        key.codes[0] == KeyBoardCode.PLUS_50.code ||
+                        key.codes[0] == KeyBoardCode.PLUS_75.code ||
+                        key.codes[0] == KeyBoardCode.PLUS_100.code) {
+                        paint.typeface = Typeface.DEFAULT_BOLD
+                    }else{
+                        paint.typeface = Typeface.DEFAULT
+                    }
+
+                    if(key.codes[0] == KeyBoardCode.PLUS_25.code ||
+                        key.codes[0] == KeyBoardCode.PLUS_50.code ||
+                        key.codes[0] == KeyBoardCode.PLUS_75.code ||
+                        key.codes[0] == KeyBoardCode.PLUS_100.code){
+                        paint.typeface = Typeface.DEFAULT_BOLD
+                        paint.color = context.getColor(R.color.color_060F20)
+                    }else{
+                        paint.color = context.getColor(R.color.color_060F20)
+                    }
+                    
                 } else if (key.codes[0] == KEYCODE_DELETE) {
                     setDrawable(canvas, key, R.drawable.bg_keyboard_delete)
+                    paint.typeface = Typeface.DEFAULT
+                    paint.color = context.getColor(R.color.white)
                 } else {
-                    setDrawable(canvas, key, R.drawable.bg_keyboard_number)
+                    setDrawable(canvas, key, R.drawable.bg_radius_4_button_7c7c7c)
+                    paint.typeface = Typeface.DEFAULT_BOLD
+                    paint.color = context.getColor(R.color.white)
                 }
+
                 paint.textAlign = Paint.Align.CENTER
                 paint.textSize = 36f
-                paint.color = Color.WHITE
                 if (key.label != null) {
                     canvas.drawText(
                         key.label.toString(), (key.x + key.width / 2).toFloat(), (
@@ -50,7 +75,6 @@ class CustomKeyBoardView(context: Context?, attrs: AttributeSet?) : KeyboardView
             e.printStackTrace()
         }
     }
-
 
     private fun setDrawable(canvas: Canvas, key: Keyboard.Key, res: Int) {
         val drawable = ContextCompat.getDrawable(context, res)
