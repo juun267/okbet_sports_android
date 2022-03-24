@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import org.cxct.sportlottery.R
@@ -49,9 +50,14 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
         }
     }
 
-    private val newsAdapter by lazy { NewsAdapter() }
+    private val newsAdapter by lazy {
+        NewsAdapter(NewsAdapter.NewsListener {
+            val action = NewsFragmentDirections.actionNewsFragmentToNewsDetailFragment()
+            view?.findNavController()?.navigate(action)
+        })
+    }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentNewsBinding.inflate(inflater, container, false)
         return binding.root
     }

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.databinding.ItemNewsBinding
 
-class NewsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class NewsAdapter(val newsListener: NewsListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var newsList: List<String> = listOf()
         @SuppressLint("NotifyDataSetChanged")
         set(value) {
@@ -28,9 +28,15 @@ class NewsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemCount(): Int = 4
 
-    inner class NewsViewHolder(binding: ItemNewsBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class NewsViewHolder(val binding: ItemNewsBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind() {
-
+            binding.tvDetail.setOnClickListener {
+                newsListener.onClickDetail()
+            }
         }
+    }
+
+    class NewsListener(private val onClickDetail: () -> Unit) {
+        fun onClickDetail() = onClickDetail.invoke()
     }
 }

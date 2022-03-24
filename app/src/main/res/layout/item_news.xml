@@ -34,6 +34,7 @@
             tools:text="2022.03.18" />
 
         <TextView
+            android:id="@+id/tvDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_rectangle_11_gray"
