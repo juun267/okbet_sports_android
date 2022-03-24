@@ -1151,6 +1151,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             }
 
             //leagueAdapter.notifyDataSetChanged()
+            updateAllGameList()
         }
 
         viewModel.leagueFilterList.observe(this.viewLifecycleOwner) { leagueList ->
@@ -1514,8 +1515,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
     }
 
-    private fun refreshGameList(newList: ArrayList<LeagueOdd>) {
-
+    private fun updateAllGameList() {
+        if (game_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !game_list.isComputingLayout) {
+            leagueAdapter.data.forEachIndexed { index, leagueOdd ->  leagueAdapter.updateLeague(index, leagueOdd) }
+        }
     }
 
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
