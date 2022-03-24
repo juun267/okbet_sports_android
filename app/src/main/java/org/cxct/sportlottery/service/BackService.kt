@@ -13,6 +13,7 @@ import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
+import org.cxct.sportlottery.util.EncryptUtil
 import org.cxct.sportlottery.util.HTTPsUtil
 import timber.log.Timber
 import ua.naiksoftware.stomp.Stomp
@@ -23,6 +24,7 @@ import java.io.IOException
 import java.net.ConnectException
 import java.net.NoRouteToHostException
 import java.net.SocketTimeoutException
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -257,7 +259,7 @@ class BackService : Service() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ topicMessage ->
-                    Timber.v("[$url] 訂閱接收訊息: ${topicMessage.payload}")
+                    Timber.v("[$url] 訂閱接收訊息: ${EncryptUtil.uncompress(topicMessage.payload)}")
                     sendMessageToActivity(url, topicMessage.payload)
                 }, { throwable ->
                     Timber.e("[$url] 訂閱通道失敗: $throwable")

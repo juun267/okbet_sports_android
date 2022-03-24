@@ -165,7 +165,7 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
                 }
             }
         } catch (e: JSONException) {
-            Log.e("JSONException","WS格式出問題")
+            Log.e("JSONException","WS格式出問題 $messageStr")
             e.printStackTrace()
         }
     }
