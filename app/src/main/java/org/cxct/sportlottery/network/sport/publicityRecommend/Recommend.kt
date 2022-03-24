@@ -64,7 +64,7 @@ data class Recommend(
         PlayCate.OU.value to mutableListOf(),
         PlayCate.SINGLE.value to mutableListOf()
     )
-    override val oddsSort: String? = null
+    override var oddsSort: String? = null
     override val quickPlayCateList: MutableList<QuickPlayCate>? = null
     override val oddsEps: EpsOdd? = null
     override var playCateMappingList: List<PlayCateMapItem>? = null

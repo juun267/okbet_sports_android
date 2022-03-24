@@ -8,12 +8,15 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.MatchInfo
+import org.cxct.sportlottery.network.sport.SportMenuFilter
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.network.sport.publicityRecommend.RecommendResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.PlayCateMenuFilter
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.isTimeAtStart
 import org.cxct.sportlottery.util.TimeUtil.isTimeToday
@@ -38,6 +41,10 @@ class GamePublicityViewModel(
     private val _publicityRecommend = MutableLiveData<Event<RecommendResult>>()
     val publicityRecommend: LiveData<Event<RecommendResult>>
         get() = _publicityRecommend
+
+    private val _sportMenuFilterList = MutableLiveData<Event<MutableMap<String?, MutableMap<String?, SportMenuFilter>?>?>>()
+    val sportMenuFilterList: LiveData<Event<MutableMap<String?, MutableMap<String?, SportMenuFilter>?>?>>
+        get() = _sportMenuFilterList
 
     fun getRecommend() {
         viewModelScope.launch {
@@ -81,6 +88,20 @@ class GamePublicityViewModel(
 
                     _publicityRecommend.postValue(Event(result.result))
                 }
+            }
+        }
+    }
+
+    //獲取體育篩選菜單
+    fun getSportMenuFilter() {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.sportService.getSportListFilter()
+            }
+
+            result?.let {
+                PlayCateMenuFilter.filterList = it.t?.sportMenuList
+                _sportMenuFilterList.postValue(Event(it.t?.sportMenuList))
             }
         }
     }

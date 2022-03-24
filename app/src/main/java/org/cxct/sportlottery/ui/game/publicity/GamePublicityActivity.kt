@@ -16,8 +16,8 @@ import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.PlayCateMenuFilter
 import org.cxct.sportlottery.util.SocketUpdateUtil
-import timber.log.Timber
 
 //TODO 玩法賠率顯示順序錯誤，需再寫排序邏輯
 class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePublicityViewModel::class),
@@ -45,6 +45,12 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
         initObservers()
         initSocketObservers()
         queryData()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        getSportMenuFilter()
     }
 
     private fun initViews() {
@@ -188,6 +194,7 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
                         //endregion
 
                         recommend.sortOddsMap()
+                        recommend.updateOddsSort() //篩選玩法
 
                         //region 翻譯更新
                         oddsChangeEvent.playCateNameMap?.let { playCateNameMap ->
@@ -228,6 +235,10 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
 
     private fun queryData() {
         viewModel.getRecommend()
+    }
+
+    private fun getSportMenuFilter() {
+        viewModel.getSportMenuFilter()
     }
 
     private fun subscribeChannelHall(recommend: Recommend) {
@@ -276,6 +287,25 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
             map.clear()
             map.putAll(sortedMap)
         }
+    }
+
+    /**
+     * 篩選玩法
+     * 更新翻譯、排序
+     * */
+    private fun Recommend.updateOddsSort() {
+
+        /*val nowGameType =
+            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key*/
+        val nowGameType = gameType
+        /*val playCateMenuCode =
+            if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else getPlaySelectedCode()*/
+        val playCateMenuCode = menuList.firstOrNull()?.code
+        val oddsSortFilter = PlayCateMenuFilter.filterOddsSort(nowGameType, playCateMenuCode)
+        val playCateNameMapFilter = PlayCateMenuFilter.filterPlayCateNameMap(nowGameType, playCateMenuCode)
+
+        oddsSort = oddsSortFilter
+        playCateNameMap = playCateNameMapFilter
     }
 
     override fun onClick(v: View?) {
