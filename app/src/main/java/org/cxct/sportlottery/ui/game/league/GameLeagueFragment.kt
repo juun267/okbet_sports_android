@@ -684,23 +684,23 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         )
                     }
 
-                    matchOdd.quickPlayCateList?.forEach {
-                        when (it.isSelected) {
-                            true -> {
-                                subscribeChannelHall(
-                                    leagueOdd.gameType?.key,
-                                    matchOdd.matchInfo?.id
-                                )
-                            }
-                            false -> {
-                                unSubscribeChannelHall(
-                                    leagueOdd.gameType?.key,
-                                    it.code,
-                                    matchOdd.matchInfo?.id
-                                )
-                            }
-                        }
-                    }
+//                    matchOdd.quickPlayCateList?.forEach {
+//                        when (it.isSelected) {
+//                            true -> {
+//                                subscribeChannelHall(
+//                                    leagueOdd.gameType?.key,
+//                                    matchOdd.matchInfo?.id
+//                                )
+//                            }
+//                            false -> {
+//                                unSubscribeChannelHall(
+//                                    leagueOdd.gameType?.key,
+//                                    it.code,
+//                                    matchOdd.matchInfo?.id
+//                                )
+//                            }
+//                        }
+//                    }
                 }
 
                 false -> {
@@ -718,13 +718,13 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         )
                     }
 
-                    matchOdd.quickPlayCateList?.forEach {
-                        unSubscribeChannelHall(
-                            leagueOdd.gameType?.key,
-                            it.code,
-                            matchOdd.matchInfo?.id
-                        )
-                    }
+//                    matchOdd.quickPlayCateList?.forEach {
+//                        unSubscribeChannelHall(
+//                            leagueOdd.gameType?.key,
+//                            it.code,
+//                            matchOdd.matchInfo?.id
+//                        )
+//                    }
                 }
             }
         }
