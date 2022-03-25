@@ -137,12 +137,7 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
                         )
                     ) {
                         updateRecommendList(index, recommend)
-                        if (matchList.isNullOrEmpty()) {
-                            //TODO 移除該賽事
-//                                    leagueAdapter.data.remove(leagueOdd)
-                        }
                         //TODO 更新邏輯待補，跟進GameV3Fragment
-                        //leagueAdapter.updateBySocket(index)
                     }
                 }
             }
@@ -160,8 +155,6 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
                         )
                     ) {
                         updateRecommendList(index, recommend)
-                        //leagueAdapter.updateBySocket(index)
-                        //leagueAdapter.updateLeague(index, leagueOdd)
                         //TODO 更新邏輯待補，跟進GameV3Fragment
                     }
                 }
@@ -170,29 +163,9 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
 
         receiver.oddsChange.observe(this, { event ->
             event?.let { oddsChangeEvent ->
-//                oddsChangeEvent.sortOddsMap()
-
                 val targetList = getNewestRecommendData()
                 targetList.forEachIndexed { index, recommend ->
                     if (recommend.id == oddsChangeEvent.eventId) {
-                        //region 主要市場 以外的過濾邏輯
-                        /*
-                        when {
-                            getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code -> leagueOdds.filterMenuPlayCate()
-                            getPlaySelectedCode() == "MAIN" -> { }
-                            else -> {
-                                leagueOdds.forEach { LeagueOdd ->
-                                    LeagueOdd.matchOdds.forEach { MatchOdd ->
-                                        if (MatchOdd.matchInfo?.id == oddsChangeEvent.eventId) {
-                                            MatchOdd.oddsMap = oddsChangeEvent.odds
-                                        }
-                                    }
-                                }
-                            }
-                        }*/
-//                        recommend.oddsMap = oddsChangeEvent.odds
-                        //endregion
-
                         recommend.sortOddsMap()
                         recommend.updateOddsSort() //篩選玩法
 
@@ -204,13 +177,6 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
                             recommend.betPlayCateNameMap?.putAll(betPlayCateNameMap)
                         }
                         //endregion
-
-                        //region 主要市場那列選擇狀態配置
-                        /*leagueAdapter.playSelectedCodeSelectionType =
-                            getPlaySelectedCodeSelectionType()
-                        leagueAdapter.playSelectedCode = getPlaySelectedCode()*/
-                        //endregion
-
 
                         if (SocketUpdateUtil.updateMatchOdds(this, recommend, oddsChangeEvent)) {
                             recommend.sortOddsByMenu()
@@ -294,12 +260,7 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
      * 更新翻譯、排序
      * */
     private fun Recommend.updateOddsSort() {
-
-        /*val nowGameType =
-            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key*/
         val nowGameType = gameType
-        /*val playCateMenuCode =
-            if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else getPlaySelectedCode()*/
         val playCateMenuCode = menuList.firstOrNull()?.code
         val oddsSortFilter = PlayCateMenuFilterUtils.filterOddsSort(nowGameType, playCateMenuCode)
         val playCateNameMapFilter = PlayCateMenuFilterUtils.filterPlayCateNameMap(nowGameType, playCateMenuCode)
