@@ -1280,7 +1280,7 @@ class GameViewModel(
                     getOddsList(
                         code,
                         nowChildMatchType.postValue,
-                        getCurrentTimeRangeParams(),
+                        TimeUtil.getAtStartTimeRangeParams(),
                         leagueIdList = leagueIdList,
                         isIncrement = isIncrement
                     )
