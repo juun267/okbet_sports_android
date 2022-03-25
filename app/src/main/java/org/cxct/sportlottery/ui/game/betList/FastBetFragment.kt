@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.betList
 
+import android.animation.Animator
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -17,6 +18,8 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -194,7 +197,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.background = ColorDrawable(Color.TRANSPARENT)
-        initData()
+        //initData()
         initView()
         initDiscount()
         initClose()
@@ -205,6 +208,29 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         initObserve()
         initSocketObserver()
         getCurrentMoney()
+    }
+
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
+        val anim: Animation = AnimationUtils.loadAnimation(activity, nextAnim)
+        anim.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {
+                Log.e("Martin", "Animation started.")
+                // additional functionality
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {
+                Log.e("Martin", "Animation repeating.")
+                // additional functionality
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                Log.e("Martin", "Animation ended.=")
+                if(enter){
+                    initData()
+                }
+            }
+        })
+        return anim
     }
 
     private fun initData() {
@@ -237,6 +263,8 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun dismiss() {
+        Log.e("Martin", "dismiss dismiss.")
+
         activity?.onBackPressed()
         OddSpannableString.clearHandler()
     }
@@ -531,7 +559,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
                     tv_win_quota.text = TextUtil.format(win)
                 } else {
-                    dismiss()
+                    //dismiss()
                 }
             }
         }
