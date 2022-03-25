@@ -712,7 +712,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         }
     }
 
-    private fun showFastBetFragment() {
+    fun showFastBetFragment() {
         val transaction = supportFragmentManager.beginTransaction()
             .setCustomAnimations(
                 R.anim.push_bottom_to_top_enter,

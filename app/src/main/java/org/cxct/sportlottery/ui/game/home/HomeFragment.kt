@@ -41,6 +41,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeListener
@@ -416,6 +417,8 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         playCateName: String?,
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
     ) {
+
+        (activity as GameActivity).showFastBetFragment()
         GameType.getGameType(matchOdd.matchInfo?.gameType)?.let { gameType ->
             matchOdd.matchInfo?.let { matchInfo ->
                 viewModel.updateMatchBetList(
