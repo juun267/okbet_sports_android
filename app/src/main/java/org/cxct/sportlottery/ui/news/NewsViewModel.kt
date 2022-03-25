@@ -30,7 +30,7 @@ class NewsViewModel(
 ) {
 
     companion object {
-        private const val NEWS_PAGE_SIZE = 20
+        private const val NEWS_PAGE_SIZE = 10
     }
 
     private val _newsResult = MutableLiveData<NewsResult>()
@@ -41,10 +41,18 @@ class NewsViewModel(
     val newsList: LiveData<List<News>>
         get() = _newsList
 
+    private val _showAllNews = MutableLiveData<Boolean>()
+    val showAllNews: LiveData<Boolean>
+        get() = _showAllNews
+
     private var newsPage = 1
+    private var loadingNews = false
 
     fun getNewsData(newsType: NewsType, refresh: Boolean = false) {
-        if (newsResult.value?.total ?: 0 <= newsList.value?.size ?: 0) return
+        if ((!refresh && ((newsResult.value?.total ?: 0) <= (newsList.value?.size ?: 0))) || loadingNews) return
+
+        loadingNews = true
+        if (refresh) newsPage = 1
 
         viewModelScope.launch {
             doNetwork(androidContext) {
@@ -61,9 +69,13 @@ class NewsViewModel(
                         }
 
                         addAll(newsResponse.news)
+
+                        _showAllNews.postValue(newsResponse.total == size)
                     })
 
                     _newsResult.postValue(newsResponse)
+
+                    loadingNews = false
                 }
             }
         }

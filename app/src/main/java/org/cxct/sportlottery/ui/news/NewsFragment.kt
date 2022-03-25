@@ -15,6 +15,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentNewsBinding
 import org.cxct.sportlottery.network.common.NewsType
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
 class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
@@ -88,6 +89,7 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
 
         initViews()
         initObservers()
+        queryNewsData(true)
     }
 
     private fun initViews() {
@@ -110,10 +112,18 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
                     }
 
                     tabTextView.text = tab.text
+                }
+            }
 
-                    //預設第一個為選中狀態
-                    if (i == 0)
-                        tabTextView.setTypeface(null, Typeface.BOLD)
+            when (newsType) {
+                NewsType.GAME -> getTabAt(0)
+                NewsType.SYSTEM -> getTabAt(1)
+                NewsType.PLAT -> getTabAt(2)
+            }?.let { selectedTab ->
+                selectedTab.select()
+                with((selectedTab.customView as TextView)) {
+                    setTypeface(null, Typeface.BOLD)
+                    setTextColor(ContextCompat.getColor(context, R.color.colorBlackLight))
                 }
             }
             //endregion
@@ -128,6 +138,8 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
             adapter = newsAdapter
             addItemDecoration(SpaceItemDecoration(context, R.dimen.recyclerview_news_item_dec_spec))
             addOnScrollListener(recyclerViewOnScrollListener)
+
+            OverScrollDecoratorHelper.setUpOverScroll(this, OverScrollDecoratorHelper.ORIENTATION_VERTICAL)
         }
     }
 
@@ -141,10 +153,15 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
                 newsAdapter.newsList = it
             }
         })
+
+        viewModel.showAllNews.observe(viewLifecycleOwner, {
+            newsAdapter.showAllNews = it
+        })
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+
         with(binding) {
             tabLayout.removeOnTabSelectedListener(tabLayoutSelectedListener)
             rvNews.removeOnScrollListener(recyclerViewOnScrollListener)
