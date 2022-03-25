@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:topTitleText="@string/feedback"/>
+        app:topTitleText="@string/commission_deducted_amount_detail"/>
 
     <LinearLayout
         android:id="@+id/ll_check_time"
