@@ -14,6 +14,7 @@ data class FastBetDataBean (
     val playCateCode: String? = "",
     val playCateName: String?,
     val matchInfo: MatchInfo,
+    val matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd? = null,
     val odd: org.cxct.sportlottery.network.odds.Odd,
     val subscribeChannelType: ChannelType,
     val betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
@@ -27,6 +28,7 @@ data class FastBetDataBean (
         parcel.readString(),
         parcel.readParcelable(MatchInfo::class.java.classLoader)!!,
         parcel.readParcelable(Odd::class.java.classLoader)!!,
+        parcel.readParcelable(org.cxct.sportlottery.network.outright.odds.MatchOdd::class.java.classLoader)!!,
         TODO("subscribeChannelType"),
         TODO("betPlayCateNameMap"),
         parcel.readString(),
@@ -57,4 +59,3 @@ data class FastBetDataBean (
         }
     }
 }
-

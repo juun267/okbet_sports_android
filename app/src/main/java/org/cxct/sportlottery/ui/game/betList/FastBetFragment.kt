@@ -185,11 +185,11 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 //            lifecycleOwner = this@FastBetFragment.viewLifecycleOwner
 //            dialog = this@BetInfoCarDialog
         }.executePendingBindings()
-        val bundle = this.arguments
-        //val data = bundle!!.getString("data")
         data = Parcels.unwrap(arguments?.getParcelable("data"))
-
-        Log.e("Martin", "FastBetFragment onCreateView Done" + data)
+        if(viewModel.betInfoList.value?.peekContent()!!.isNotEmpty() || data.matchType == MatchType.PARLAY){
+            initData()
+            dismiss()
+        }
         return binding.root
     }
 
@@ -199,10 +199,6 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         view.background = ColorDrawable(Color.TRANSPARENT)
         //initData()
         initView()
-        initDiscount()
-        initClose()
-        initKeyBoard()
-        initBetButton()
         initQuota()
         initEditText()
         initObserve()
@@ -214,17 +210,13 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         val anim: Animation = AnimationUtils.loadAnimation(activity, nextAnim)
         anim.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {
-                Log.e("Martin", "Animation started.")
-                // additional functionality
+
             }
 
             override fun onAnimationRepeat(animation: Animation?) {
-                Log.e("Martin", "Animation repeating.")
-                // additional functionality
             }
 
             override fun onAnimationEnd(animation: Animation?) {
-                Log.e("Martin", "Animation ended.=")
                 if(enter){
                     initData()
                 }
@@ -235,42 +227,34 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun initData() {
         discount = viewModel.userInfo.value?.discount ?: 1.0F
-        viewModel.updateMatchBetList(
-            data.matchType,
-            data.gameType,
-            data.playCateCode ?: "",
-            data.playCateName ?: "",
-            data.matchInfo!!,
-            data.odd,
-            data.subscribeChannelType,
-            data.betPlayCateNameMap,
-            data.playCateMenuCode
-        )
+        if (data.matchType == MatchType.OUTRIGHT){
+            viewModel.updateMatchBetListForOutRight(
+                matchType = MatchType.OUTRIGHT,
+                gameType = data.gameType,
+                playCateCode = data.playCateCode ?: "",
+                matchOdd = data.matchOdd!!,
+                odd = data.odd
+            )
+        }else{
+            viewModel.updateMatchBetList(
+                data.matchType,
+                data.gameType,
+                data.playCateCode ?: "",
+                data.playCateName ?: "",
+                data.matchInfo!!,
+                data.odd,
+                data.subscribeChannelType,
+                data.betPlayCateNameMap,
+                data.playCateMenuCode
+            )
+        }
     }
 
     private fun initView() {
-
-    }
-
-    private fun initDiscount() {
-    }
-
-    private fun initClose() {
         binding.ivClose.setOnClickListener {
             viewModel.removeBetInfoSingle()
             dismiss()
         }
-    }
-
-    private fun dismiss() {
-        Log.e("Martin", "dismiss dismiss.")
-
-        activity?.onBackPressed()
-        OddSpannableString.clearHandler()
-    }
-
-
-    private fun initKeyBoard() {
         binding.etBet.setOnTouchListener { view, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 if (matchOdd?.status == BetStatus.ACTIVATED.code)
@@ -285,11 +269,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
             false
         }
-    }
-
-
-    private fun initBetButton() {
-        ll_root.setOnClickListener { }
+        binding.llRoot.setOnClickListener { }
         button_bet.apply {
             tv_login.setOnClickListener {
                 requireContext().startActivity(Intent(requireContext(), LoginActivity::class.java))
@@ -306,15 +286,22 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             isCanSendOut = false
         }
 
-        tv_add_to_bet_info.setOnClickListener {
+        binding.tvAddToBetInfo.setOnClickListener {
             addToBetInfoList()
+            dismiss()
         }
 
-        button_fast_bet_setting.setOnClickListener {
+        binding.buttonFastBetSetting.setOnClickListener {
             showSettingDialog()
         }
     }
 
+
+
+    private fun dismiss() {
+        activity?.onBackPressed()
+        OddSpannableString.clearHandler()
+    }
 
     private fun initQuota() {
         tv_check_maximum_limit.setOnClickListener {
@@ -600,11 +587,11 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
         }
 
-        viewModel.showBetInfoSingle.observe(this.viewLifecycleOwner) { event ->
-            event?.peekContent()?.let {
-                if (!it) dismiss()
-            }
-        }
+//        viewModel.showBetInfoSingle.observe(this.viewLifecycleOwner) { event ->
+//            event?.peekContent()?.let {
+//                if (!it) dismiss()
+//            }
+//        }
 
         viewModel.hasBetPlatClose.observe(this.viewLifecycleOwner) {
             button_bet.hasBetPlatClose = it

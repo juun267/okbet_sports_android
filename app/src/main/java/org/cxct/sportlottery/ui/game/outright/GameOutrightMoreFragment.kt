@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.fragment_game_outright_more.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
+import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
@@ -20,8 +21,10 @@ import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
@@ -273,13 +276,29 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
         playCateCode: String
     ) {
         GameType.getGameType(args.matchOdd.matchInfo?.gameType)?.let { gameType ->
-            viewModel.updateMatchBetListForOutRight(
+
+            val fastBetDataBean = FastBetDataBean(
                 matchType = MatchType.OUTRIGHT,
                 gameType = gameType,
+                playCateCode = playCateCode,
+                playCateName =  "",
+                matchInfo = matchOdd.matchInfo!!,
                 matchOdd = matchOdd,
                 odd = odd,
-                playCateCode = playCateCode
+                subscribeChannelType = ChannelType.HALL,
+                betPlayCateNameMap = null,
             )
+            (activity as GameActivity).showFastBetFragment(fastBetDataBean)
+
+
+//            viewModel.updateMatchBetListForOutRight(
+//                matchType = MatchType.OUTRIGHT,
+//                gameType = gameType,
+//                matchOdd = matchOdd,
+//                odd = odd,
+//                playCateCode = playCateCode
+//            )
+
         }
     }
 

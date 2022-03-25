@@ -31,6 +31,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeString
 import org.cxct.sportlottery.network.league.League
@@ -50,6 +51,7 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.*
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.common.*
 import org.cxct.sportlottery.ui.game.hall.adapter.*
@@ -1933,17 +1935,31 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
         gameType?.let {
             matchInfo?.let { matchInfo ->
-                viewModel.updateMatchBetList(
-                    args.matchType,
-                    gameType,
-                    playCateCode,
-                    playCateName,
-                    matchInfo,
-                    odd,
-                    ChannelType.HALL,
-                    betPlayCateNameMap,
+                val fastBetDataBean = FastBetDataBean(
+                    matchType = args.matchType,
+                    gameType = gameType,
+                    playCateCode = playCateCode,
+                    playCateName = playCateName ?: "",
+                    matchInfo = matchInfo,
+                    matchOdd = null,
+                    odd = odd,
+                    subscribeChannelType = ChannelType.HALL,
+                    betPlayCateNameMap = betPlayCateNameMap,
                     getPlayCateMenuCode()
                 )
+                (activity as GameActivity).showFastBetFragment(fastBetDataBean)
+
+//                viewModel.updateMatchBetList(
+//                    args.matchType,
+//                    gameType,
+//                    playCateCode,
+//                    playCateName,
+//                    matchInfo,
+//                    odd,
+//                    ChannelType.HALL,
+//                    betPlayCateNameMap,
+//                    getPlayCateMenuCode()
+//                )
             }
         }
     }

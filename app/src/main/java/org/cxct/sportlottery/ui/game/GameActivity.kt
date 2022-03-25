@@ -733,6 +733,26 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             .commit()
     }
 
+    fun showFastBetFragmentForOutRight(fastBetDataBean: FastBetDataBean) {
+        val transaction = supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.anim.push_bottom_to_top_enter,
+                R.anim.pop_bottom_to_top_exit,
+                R.anim.push_bottom_to_top_enter,
+                R.anim.pop_bottom_to_top_exit
+            )
+
+        val betListFragment = FastBetFragment()
+        val bundle = Bundle()
+        bundle.putParcelable("data",  Parcels.wrap(fastBetDataBean));
+        betListFragment.arguments = bundle;
+
+        transaction
+            .add(R.id.fl_bet_list, betListFragment)
+            .addToBackStack(BetListFragment::class.java.simpleName)
+            .commit()
+    }
+
     fun showFastBetFragment() {
         val transaction = supportFragmentManager.beginTransaction()
             .setCustomAnimations(
