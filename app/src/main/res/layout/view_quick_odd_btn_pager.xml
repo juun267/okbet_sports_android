@@ -1,50 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/quick_view_horizontal_scroll_height"
+    android:orientation="horizontal"
     android:background="@color/colorWhite4"
     tools:ignore="spUsage,RtlSymmetry">
 
-    <TextView
-        android:id="@+id/quick_odd_home"
-        android:layout_width="176dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="52dp"
-        android:ellipsize="end"
-        android:gravity="center_vertical"
-        android:maxLines="2"
-        android:paddingEnd="10dp"
-        android:textColor="@color/colorBlackLight"
-        android:textSize="@dimen/textSize14sp"
-        app:layout_constraintBottom_toTopOf="@+id/quick_odd_away"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="俄罗斯俄罗斯俄罗斯俄罗斯俄罗斯俄罗斯" />
-
-    <TextView
-        android:id="@+id/quick_odd_away"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="11dp"
-        android:ellipsize="end"
-        android:gravity="center_vertical"
-        android:maxLines="2"
-        android:paddingEnd="10dp"
-        android:textColor="@color/colorBlackLight"
-        android:textSize="@dimen/textSize14sp"
-        app:layout_constraintEnd_toEndOf="@+id/quick_odd_home"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/quick_odd_home"
-        tools:text="芬兰芬兰芬兰芬兰芬兰芬兰芬兰芬兰" />
+        android:layout_height="match_parent"
+        android:layout_weight="0.45">
+        <TextView
+            android:id="@+id/quick_odd_home"
+            android:layout_width="176dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="52dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="2"
+            android:paddingEnd="10dp"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintBottom_toTopOf="@+id/quick_odd_away"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="俄罗斯俄罗斯俄罗斯俄罗斯俄罗斯俄罗斯" />
+        <TextView
+            android:id="@+id/quick_odd_away"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="11dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="2"
+            android:paddingEnd="10dp"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintEnd_toEndOf="@+id/quick_odd_home"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/quick_odd_home"
+            tools:text="芬兰芬兰芬兰芬兰芬兰芬兰芬兰芬兰" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/quick_odd_btn_pager_other"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.55"
         android:orientation="horizontal"
         android:overScrollMode="never"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -56,4 +62,4 @@
         tools:layout="@layout/itemview_odd_btn_2x2_v6"
         tools:listitem="@layout/itemview_odd_btn_2x2_v6"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
