@@ -77,10 +77,16 @@ class NewsAdapter(val newsListener: NewsListener) : RecyclerView.Adapter<Recycle
         fun bind() {
             binding.tvNoData.text =
                 binding.root.context.getString(R.string.loading)
+
+            newsListener.onLoadMoreData()
         }
     }
 
-    class NewsListener(private val onClickDetail: (news: News) -> Unit) {
+    class NewsListener(
+        private val onClickDetail: (news: News) -> Unit,
+        private val onLoadMoreData: () -> Unit
+    ) {
         fun onClickDetail(news: News) = onClickDetail.invoke(news)
+        fun onLoadMoreData() = onLoadMoreData.invoke()
     }
 }

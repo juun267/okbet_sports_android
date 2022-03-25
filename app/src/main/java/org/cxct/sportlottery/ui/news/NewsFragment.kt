@@ -71,10 +71,12 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
     }
 
     private val newsAdapter by lazy {
-        NewsAdapter(NewsAdapter.NewsListener { news ->
+        NewsAdapter(NewsAdapter.NewsListener(onClickDetail = { news ->
             val action = NewsFragmentDirections.actionNewsFragmentToNewsDetailFragment(news)
             view?.findNavController()?.navigate(action)
-        })
+        }, onLoadMoreData = {
+            queryNewsData()
+        }))
     }
 
     private var newsType: NewsType = NewsType.GAME
