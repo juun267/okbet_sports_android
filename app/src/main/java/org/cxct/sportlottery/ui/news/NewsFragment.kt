@@ -159,6 +159,10 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
         viewModel.showAllNews.observe(viewLifecycleOwner, {
             newsAdapter.showAllNews = it
         })
+
+        viewModel.loading.observe(viewLifecycleOwner, {
+            if (it) loading() else hideLoading()
+        })
     }
 
     override fun onDestroyView() {
