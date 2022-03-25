@@ -13,7 +13,7 @@
         android:layout_height="47dp"
         android:ellipsize="end"
         android:gravity="center"
-        android:maxLines="2"
+        android:maxLines="3"
         android:textColor="@color/colorGray"
         android:textSize="@dimen/textSize12sp"
         app:autoSizeMaxTextSize="@dimen/textSize12sp"
