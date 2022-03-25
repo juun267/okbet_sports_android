@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.transactionStatus
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,6 +32,7 @@ import org.cxct.sportlottery.ui.menu.ChangeLanguageDialog
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
 
@@ -223,6 +223,9 @@ class TransactionStatusActivity :
     }
 
     private fun initRvMarquee() {
+        tans_status_message.setOnClickListener {
+            startActivity(Intent(this, NewsActivity::class.java))
+        }
         rv_marquee.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rv_marquee.adapter = mMarqueeAdapter
     }
