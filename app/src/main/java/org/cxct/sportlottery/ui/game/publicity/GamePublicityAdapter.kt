@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.game.publicity
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,9 +15,10 @@ import org.cxct.sportlottery.databinding.PublicityTitleViewBinding
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.menu.OddsType
 
-class GamePublicityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapterListener) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     //排序對應表
-    private val SORTMAP = mapOf<Any, Int>(
+    private val sortMap = mapOf<Any, Int>(
         //標題圖片
         PublicityTitleImageData::class to 1,
         //熱門推薦..更多
@@ -130,7 +130,7 @@ class GamePublicityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         LayoutInflater.from(parent.context),
                         parent,
                         false
-                    )
+                    ), publicityAdapterListener
                 )
             }
             ItemType.BOTTOM_NAVIGATION.ordinal -> {
@@ -150,7 +150,7 @@ class GamePublicityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         if (payloads.isNullOrEmpty()) {
             onBindViewHolder(holder, position)
         } else {
-            payloads.forEachIndexed {index, payload ->
+            payloads.forEachIndexed { _, payload ->
                 when (payload) {
                     is Recommend -> {
                         (holder as PublicityRecommendViewHolder).updateLeagueOddList(payload, oddsType)
@@ -171,21 +171,27 @@ class GamePublicityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             is BottomNavigationViewHolder -> {
                 holder.bind()
             }
+            is BaseItemListenerViewHolder -> {
+                holder.bind()
+            }
         }
     }
 
     override fun getItemCount(): Int = mDataList.size
 
     // region ItemViewHolder
-    inner class PublicityTitleViewHolder(binding: PublicityTitleViewBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class PublicityTitleViewHolder(binding: PublicityTitleViewBinding) :
+        BaseItemListenerViewHolder(binding.root, publicityAdapterListener)
+
     inner class PublicitySubTitleViewHolder(binding: PublicitySubTitleViewBinding) :
-        RecyclerView.ViewHolder(binding.root)
+        BaseItemListenerViewHolder(binding.root, publicityAdapterListener)
 
     inner class BottomNavigationViewHolder(val binding: HomeBottomNavigationBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+        BaseItemListenerViewHolder(binding.root, publicityAdapterListener) {
         val context: Context = binding.root.context
 
-        fun bind() {
+        override fun bind() {
+            super.bind()
             with(binding) {
                 ContextCompat.getDrawable(context, R.color.colorWhite1)?.let { background ->
                     bottomNavigationView.setTopBackground(background)
@@ -197,7 +203,7 @@ class GamePublicityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    class UndefinedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    inner class UndefinedViewHolder(itemView: View) : BaseItemListenerViewHolder(itemView, publicityAdapterListener)
     // endregion
 
     //region Data Getter
@@ -220,9 +226,8 @@ class GamePublicityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    // 依照SORTMAP的順序插入資料
+    // 依照sortMap的順序插入資料
     private fun addDataWithSort(src: Any) {
-        Log.d("Dean", "更新：${src::class.java.simpleName}")
         // 如果列表裡面沒東西，直接插
         if (mDataList.isEmpty()) {
             mDataList.add(src)
@@ -239,7 +244,6 @@ class GamePublicityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
         mDataList.add(src)
         notifyItemChanged(mDataList.size - 1)
-        //print("${src}")
     }
 
     private fun isPrev(src: Any, target: Any): Boolean {
@@ -247,6 +251,19 @@ class GamePublicityAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return false
     }
 
-    private fun getSortPoint(item: Any): Int = SORTMAP[item::class] ?: 0
+    private fun getSortPoint(item: Any): Int = sortMap[item::class] ?: 0
     // endregion
+
+    class PublicityAdapterListener(private val onItemClickListener: () -> Unit) {
+        fun onItemClickListener() = onItemClickListener.invoke()
+    }
+}
+
+abstract class BaseItemListenerViewHolder(
+    val view: View,
+    private val publicityAdapterListener: GamePublicityAdapter.PublicityAdapterListener
+) : RecyclerView.ViewHolder(view) {
+    open fun bind() {
+        view.rootView.setOnClickListener { publicityAdapterListener.onItemClickListener() }
+    }
 }

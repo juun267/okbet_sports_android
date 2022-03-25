@@ -34,7 +34,10 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
 
     private var isNewestDataFromApi = false
     private var mRecommendList: List<Recommend> = listOf()
-    private val mPublicityAdapter = GamePublicityAdapter()
+    private val mPublicityAdapter =
+        GamePublicityAdapter(GamePublicityAdapter.PublicityAdapterListener(onItemClickListener = {
+            goLoginPage()
+        }))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +74,7 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
         binding.tvRegister.setOnClickListener(this)
         binding.tvLogin.setOnClickListener(this)
         binding.publicityToolbar.blockLanguage.setOnClickListener(this)
+        binding.rvPublicity.setOnClickListener(this)
     }
 
     private fun initRecommendView() {
@@ -319,6 +323,9 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
                 }
                 publicityToolbar.blockLanguage -> {
                     goSwitchLanguagePage()
+                }
+                rvPublicity -> {
+                    goLoginPage()
                 }
             }
         }

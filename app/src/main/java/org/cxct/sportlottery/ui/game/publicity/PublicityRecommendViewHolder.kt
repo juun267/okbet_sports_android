@@ -13,11 +13,15 @@ import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.common.LeagueOddAdapter2
+import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.SvgUtil
 
-class PublicityRecommendViewHolder(val binding: ItemPublicityRecommendBinding) : RecyclerView.ViewHolder(binding.root) {
+class PublicityRecommendViewHolder(
+    val binding: ItemPublicityRecommendBinding,
+    private val publicityAdapterListener: GamePublicityAdapter.PublicityAdapterListener
+) : RecyclerView.ViewHolder(binding.root) {
     private var leagueOddAdapter: LeagueOddAdapter2? = null
 
     @SuppressLint("SetTextI18n")
@@ -25,6 +29,27 @@ class PublicityRecommendViewHolder(val binding: ItemPublicityRecommendBinding) :
         leagueOddAdapter = LeagueOddAdapter2(data.matchType ?: MatchType.EARLY).apply {
             isTimerEnable =
                 (data.gameType == GameType.FT.key || data.gameType == GameType.BK.key || data.matchType == MatchType.PARLAY || data.matchType == MatchType.AT_START || data.matchType == MatchType.MY_EVENT)
+            leagueOddListener = LeagueOddListener(
+                clickListenerPlayType = { _, _ ->
+                    itemClickEvent()
+                },
+                clickListenerBet = { _, _, _, _, _ ->
+                    itemClickEvent()
+                },
+                clickListenerQuickCateTab = { _, _ ->
+                    itemClickEvent()
+                },
+                clickListenerQuickCateClose = {
+                    itemClickEvent()
+                },
+                clickListenerFavorite = {
+                    itemClickEvent()
+                },
+                clickListenerStatistics = {
+                    itemClickEvent()
+                }, refreshListener = {
+                    itemClickEvent()
+                })
         }
 
         with(binding) {
@@ -81,6 +106,10 @@ class PublicityRecommendViewHolder(val binding: ItemPublicityRecommendBinding) :
             }
         }
         leagueOddAdapter?.update()
+    }
+
+    private fun itemClickEvent() {
+        publicityAdapterListener.onItemClickListener()
     }
 
     private fun transferMatchOddList(recommend: Recommend): MutableList<MatchOdd> {
