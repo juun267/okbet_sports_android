@@ -26,7 +26,8 @@
             android:layout_marginStart="@dimen/margin_4"
             android:text="@string/edt_hint_deposit_money_new"
             android:textColor="@color/white"
-            android:gravity="center_vertical"/>
+            android:gravity="center_vertical"
+            android:visibility="invisible"/>
         <ImageView
             android:layout_width="30dp"
             android:layout_height="match_parent"

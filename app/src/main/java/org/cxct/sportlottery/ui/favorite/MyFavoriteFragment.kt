@@ -28,7 +28,7 @@ import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeListener
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryListener
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
-import org.cxct.sportlottery.util.PlayCateMenuFilter
+import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
@@ -627,8 +627,8 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         val nowGameType = GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
         val playCateMenuCode =
             if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else getPlaySelectedCode()
-        val oddsSortFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else PlayCateMenuFilter.filterOddsSort(nowGameType, playCateMenuCode)
-        val playCateNameMapFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) PlayCateMenuFilter.filterSelectablePlayCateNameMap(nowGameType,getPlaySelectedCode(), playCateMenuCode) else PlayCateMenuFilter.filterPlayCateNameMap(nowGameType, playCateMenuCode)
+        val oddsSortFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else PlayCateMenuFilterUtils.filterOddsSort(nowGameType, playCateMenuCode)
+        val playCateNameMapFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) PlayCateMenuFilterUtils.filterSelectablePlayCateNameMap(nowGameType,getPlaySelectedCode(), playCateMenuCode) else PlayCateMenuFilterUtils.filterPlayCateNameMap(nowGameType, playCateMenuCode)
 
         this.forEach { LeagueOdd ->
             LeagueOdd.matchOdds.forEach { MatchOdd ->

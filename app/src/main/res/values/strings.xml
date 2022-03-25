@@ -985,7 +985,7 @@
     <string name="self_limit_per_bet_limit_user_limit"> (最高可设定:%1$s %3$s-%2$s %3$s)</string>
     <string name="self_limit_error">资料格式不符，请输入整数</string>
     <!--自我禁制-->
-    <string name="e_address">地址</string>
+    <string name="e_address">详细地址</string>
     <string name="hint_e_address">(请输入联系地址)</string>
     <string name="initial_withdrawal_needs_credited">初次提款需入账：%1$s %2$s</string>
     <string name="make_sure_valid_account">初次提款会暂时扣留 %1$s %2$s，以确保您是有效账户。此款项于 30 天后会返还。</string>

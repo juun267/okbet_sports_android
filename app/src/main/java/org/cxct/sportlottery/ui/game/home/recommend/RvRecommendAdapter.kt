@@ -83,7 +83,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                         code = row.sport?.code,
                         name = row.sport?.name,
                         leagueId = row.leagueOdds?.league?.id,
-                        leagueName = if (row.isOutright == RECOMMEND_OUTRIGHT) row.leagueOdds?.matchOdds?.firstOrNull()?.matchInfo?.name else row.leagueOdds?.league?.name,
+                        leagueName = if (row.isOutright == RECOMMEND_OUTRIGHT) row.leagueOdds?.matchOdds?.firstOrNull()?.matchInfo?.name else row.leagueOdds?.matchOdds[0].matchInfo?.leagueName,
                         matchInfo = oddData.matchInfo,
                         isOutright = row.isOutright,
                         oddBeans = beans?.toMutableList() ?: mutableListOf(),

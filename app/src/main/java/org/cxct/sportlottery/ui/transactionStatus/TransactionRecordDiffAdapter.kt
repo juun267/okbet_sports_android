@@ -128,8 +128,8 @@ class TransactionRecordDiffAdapter :
                         }
 
                         override fun onFinish() {
-                            //tv_count_down.text = "0 ${context.getString(R.string.sec)}"
-                            tv_count_down.visibility = View.GONE
+                            tv_count_down.text = "0 ${context.getString(R.string.sec)}"
+//                            tv_count_down.visibility = View.GONE
                         }
                     }.start()
                 }else{

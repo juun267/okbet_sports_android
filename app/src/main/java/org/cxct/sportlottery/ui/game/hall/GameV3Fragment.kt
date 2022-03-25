@@ -56,7 +56,7 @@ import org.cxct.sportlottery.ui.game.hall.adapter.*
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
-import org.cxct.sportlottery.util.PlayCateMenuFilter
+import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
 import org.cxct.sportlottery.util.QuickListManager
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
@@ -771,7 +771,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     //game_list.itemAnimator = null
 
                     mLeagueOddList.forEach { leagueOdd ->
-                        //unSubscribeChannelHall(leagueOdd)
+                        unSubscribeChannelHall(leagueOdd)
                         subscribeChannelHall(leagueOdd)
                     }
 
@@ -1499,63 +1499,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
         receiver.leagueChange.observe(this.viewLifecycleOwner) {
             it?.let { leagueChangeEvent ->
-                CoroutineScope(Dispatchers.IO).launch {
-                    if (!isUpdatingLeague) {
-                        isUpdatingLeague = true
-                        //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
-                        withContext(Dispatchers.Main) {
-                            if (args.matchType == MatchType.OTHER) {
-                                // 後面處理
-                            }
-                            else {
-                                viewModel.getAllPlayCategory(args.matchType)
-                            }
-                            viewModel.getSportMenu(args.matchType, onlyRefreshSportMenu = true)
-                        }
-                        //收到的gameType与用户当前页面所选球种相同, 则需额外调用/match/odds/simple/list & /match/odds/eps/list
-                        val nowGameType =
-                            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
-
-                        val hasLeagueIdList =
-                            leagueAdapter.data.filter { leagueOdd -> leagueOdd.league.id == leagueChangeEvent.leagueIdList?.firstOrNull() }
-                                .isNotEmpty()
-
-//                        when (nowGameType) {
-//                            leagueChangeEvent.gameType -> {
-//                                unSubscribeChannelHall(nowGameType ?: GameType.FT.key,getPlayCateMenuCode(),leagueChangeEvent.matchIdList?.firstOrNull())
-//                                subscribeChannelHall(nowGameType ?: GameType.FT.key,getPlayCateMenuCode(),leagueChangeEvent.matchIdList?.firstOrNull())
-//                            }
-//                        }
-
-                        if (nowGameType == leagueChangeEvent.gameType) {
-                            when {
-                                !hasLeagueIdList || args.matchType == MatchType.AT_START -> {
-                                    //全刷
-                                    unSubscribeChannelHallAll()
-                                    withContext(Dispatchers.Main) {
-                                        if (args.matchType == MatchType.OTHER) {
-                                            viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
-                                        }
-                                        else {
-                                            viewModel.getGameHallList(args.matchType,false)
-                                        }
-                                    }
-                                }
-                                else -> {
-                                    unSubscribeChannelHall(nowGameType ?: GameType.FT.key, getPlaySelectedCode(), leagueChangeEvent.matchIdList?.firstOrNull())
-                                    subscribeChannelHall(nowGameType ?: GameType.FT.key, leagueChangeEvent.matchIdList?.firstOrNull())
-                                    if (args.matchType == MatchType.OTHER) {
-                                        viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
-                                    }
-                                }
-                            }
-                        }
-                        else if (args.matchType == MatchType.OTHER) {
-                            viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
-                        }
-                        isUpdatingLeague = false
-                    }
-                }
+                viewModel.checkGameInList(
+                    matchType = args.matchType,
+                    leagueIdList = leagueChangeEvent.leagueIdList,
+                )
             }
         }
     }
@@ -1614,8 +1561,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
         val playCateMenuCode =
             if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else getPlaySelectedCode()
-        val oddsSortFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else PlayCateMenuFilter.filterOddsSort(nowGameType, playCateMenuCode)
-        val playCateNameMapFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) PlayCateMenuFilter.filterSelectablePlayCateNameMap(nowGameType,getPlaySelectedCode(), playCateMenuCode) else PlayCateMenuFilter.filterPlayCateNameMap(nowGameType, playCateMenuCode)
+        val oddsSortFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else PlayCateMenuFilterUtils.filterOddsSort(nowGameType, playCateMenuCode)
+        val playCateNameMapFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) PlayCateMenuFilterUtils.filterSelectablePlayCateNameMap(nowGameType,getPlaySelectedCode(), playCateMenuCode) else PlayCateMenuFilterUtils.filterPlayCateNameMap(nowGameType, playCateMenuCode)
 
         this.forEach { LeagueOdd ->
             LeagueOdd.matchOdds.forEach { MatchOdd ->
