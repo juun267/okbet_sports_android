@@ -9,9 +9,11 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentNewsBinding
+import org.cxct.sportlottery.network.common.NewsType
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
@@ -31,6 +33,13 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
                         setTextColor(ContextCompat.getColor(context, R.color.colorBlackLight))
                     }
                 }
+                when (tab?.position) {
+                    0 -> newsType = NewsType.GAME
+                    1 -> newsType = NewsType.SYSTEM
+                    2 -> newsType = NewsType.PLAT
+                }
+
+                queryNewsData(true)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -50,12 +59,24 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
         }
     }
 
+    private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            if (!recyclerView.canScrollVertically(1)) {
+                queryNewsData()
+            }
+        }
+    }
+
     private val newsAdapter by lazy {
-        NewsAdapter(NewsAdapter.NewsListener {
-            val action = NewsFragmentDirections.actionNewsFragmentToNewsDetailFragment()
+        NewsAdapter(NewsAdapter.NewsListener { news ->
+            val action = NewsFragmentDirections.actionNewsFragmentToNewsDetailFragment(news)
             view?.findNavController()?.navigate(action)
         })
     }
+
+    private var newsType: NewsType = NewsType.GAME
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentNewsBinding.inflate(inflater, container, false)
@@ -66,6 +87,7 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
         super.onViewCreated(view, savedInstanceState)
 
         initViews()
+        initObservers()
     }
 
     private fun initViews() {
@@ -105,12 +127,29 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = newsAdapter
             addItemDecoration(SpaceItemDecoration(context, R.dimen.recyclerview_news_item_dec_spec))
+            addOnScrollListener(recyclerViewOnScrollListener)
         }
+    }
+
+    private fun queryNewsData(refresh: Boolean = false) {
+        viewModel.getNewsData(newsType, refresh)
+    }
+
+    private fun initObservers() {
+        viewModel.newsList.observe(viewLifecycleOwner, {
+            it?.let {
+                newsAdapter.newsList = it
+            }
+        })
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        binding.tabLayout.removeOnTabSelectedListener(tabLayoutSelectedListener)
+        with(binding) {
+            tabLayout.removeOnTabSelectedListener(tabLayoutSelectedListener)
+            rvNews.removeOnScrollListener(recyclerViewOnScrollListener)
+        }
+
         _binding = null
     }
 }

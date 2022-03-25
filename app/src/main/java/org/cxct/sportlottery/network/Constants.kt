@@ -360,4 +360,7 @@ object Constants {
 
     //rule type
     const val COMBO = "combo"
+
+    //news
+    const val MESSAGE_LIST = "/api/front/message/list"
 }

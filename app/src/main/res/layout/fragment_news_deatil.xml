@@ -15,6 +15,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
@@ -33,6 +34,7 @@
             android:background="@color/color_E2E2E2" />
 
         <TextView
+            android:id="@+id/tvContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
@@ -43,6 +45,7 @@
             tools:text="棒球赛事：2021/03/27 09:05 MLB 美国职棒大联盟 - 热身赛（洛杉矶道奇 VS 奥克兰运动家）-因提供盘口错误，所有在（GMT +8）11:29:27 - 11:36:57 产生的相关投注一律视为无效注单，串关以（1）计算。" />
 
         <TextView
+            android:id="@+id/tvDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
