@@ -437,7 +437,7 @@ object TimeUtil {
         calendar.set(Calendar.MILLISECOND, 0)
         val startTimeStamp = calendar.timeInMillis
 
-        calendar.add(Calendar.DAY_OF_MONTH, 29)
+        calendar.add(Calendar.DAY_OF_MONTH, 28)
         calendar.set(Calendar.HOUR_OF_DAY, 23)
         calendar.set(Calendar.MINUTE, 59)
         calendar.set(Calendar.SECOND, 59)
