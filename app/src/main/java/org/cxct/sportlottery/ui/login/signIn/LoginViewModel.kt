@@ -18,6 +18,7 @@ import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.util.Event
 
 
 class LoginViewModel(
@@ -37,12 +38,15 @@ class LoginViewModel(
         get() = _validCodeResult
     val validResult: LiveData<LogoutResult>
         get() = _validResult
+    val goGameHome: LiveData<Event<Boolean>>
+        get() = _goGameHome
 
     private val _loginFormState = MutableLiveData<LoginFormState>()
     private val _loginResult = MutableLiveData<LoginResult>()
     private val _loginSmsResult = MutableLiveData<LogoutResult>()
     private val _validCodeResult = MutableLiveData<ValidCodeResult?>()
     private val _validResult = MutableLiveData<LogoutResult>()
+    private val _goGameHome = MutableLiveData<Event<Boolean>>()
 
 
     val account by lazy { loginRepository.account }
@@ -154,6 +158,12 @@ class LoginViewModel(
         return when {
             validCode.isBlank() -> context.getString(R.string.hint_verification_code)
             else -> null
+        }
+    }
+
+    fun goGameHome() {
+        loginRepository.isLogin.value?.let { isLogin ->
+            _goGameHome.postValue(Event(isLogin))
         }
     }
 }

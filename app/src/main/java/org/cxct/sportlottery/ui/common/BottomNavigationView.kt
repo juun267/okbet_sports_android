@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.common
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.RelativeLayout
@@ -151,5 +152,13 @@ class BottomNavigationView @JvmOverloads constructor(context: Context, attrs: At
             JumpUtil.toExternalWeb(context, "https://pagcor.ph/regulatory/index.php")
         }
 
+    }
+
+    fun setTopBackground(background: Drawable) {
+        bg_top.background = background
+    }
+
+    fun setBottomBackground(background: Drawable) {
+        bg_bottom.background = background
     }
 }

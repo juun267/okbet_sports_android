@@ -96,7 +96,12 @@ class SplashViewModel(
     }
 
     fun goNextPage() {
-        _skipHomePage.postValue(loginRepository.isCreditAccount.value == true || sConfigData?.thirdOpen != FLAG_OPEN)
+        if (loginRepository.isCreditAccount.value == true || sConfigData?.thirdOpen != FLAG_OPEN)
+            viewModelScope.launch {
+                loginRepository.checkToken()
+            } else {
+            _skipHomePage.postValue(false)
+        }
     }
 
     private suspend fun sendGetHostRequest(index: Int) {

@@ -6,12 +6,15 @@
     <color name="colorBlueLight">#1463CF</color>
     <color name="colorBlue">#0760D4</color>
     <color name="colorBlue2">#0F53AF</color>
+    <color name="colorBlue3">#4A95FF</color>
+    <color name="colorBlue4">#0760DE</color>
     <color name="colorBlueDark">#1F4780</color>
     <color name="colorSilverBlue">#A9BEDF</color>
 
     <color name="colorOrangeLight">#FF9200</color>
     <color name="colorOrange">#FF8000</color>
     <color name="colorOrange2">#ff9e3c</color>
+    <color name="colorOrange3">#FFAF5C</color>
 
     <color name="colorRedLight">#e7837c</color>
     <color name="colorRed">#E44438</color>
@@ -49,6 +52,7 @@
     <color name="colorGray">#666666</color> <!--106 106 106-->
     <color name="colorGrayDark">#404040</color>
     <color name="colorGrayDark2">#444444</color>
+    <color name="colorGrayDark3">#E1E1E1</color>
     <color name="colorGrayGallery">#EEEEEE</color>
     <color name="colorGrayText">#888888</color>
     <color name="colorBlackLight">#333333</color>

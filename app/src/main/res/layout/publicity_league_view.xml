@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    tools:background="@drawable/img_home_title_soccer_background"
+    tools:ignore="SpUsage, ContentDescription">
+
+    <TextView
+        android:id="@+id/tvLeagueName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="15dp"
+        android:layout_weight="1"
+        android:textColor="@color/colorBlackLight"
+        android:textSize="@dimen/textSize14sp"
+        android:textStyle="bold"
+        tools:text="欧洲足球锦标赛2020" />
+
+    <ImageView
+        android:id="@+id/ivFlag"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="14dp"
+        android:src="@drawable/ic_earth" />
+</LinearLayout>
