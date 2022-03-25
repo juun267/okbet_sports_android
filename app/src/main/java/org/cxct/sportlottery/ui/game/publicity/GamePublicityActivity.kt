@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import org.cxct.sportlottery.databinding.ActivityGamePublicityBinding
+import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.SocketLinearManager
@@ -19,7 +20,6 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
 import org.cxct.sportlottery.util.SocketUpdateUtil
 
-//TODO 玩法賠率顯示順序錯誤，需再寫排序邏輯
 class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePublicityViewModel::class),
     View.OnClickListener {
     private lateinit var binding: ActivityGamePublicityBinding
@@ -44,7 +44,6 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
         initViews()
         initObservers()
         initSocketObservers()
-        queryData()
     }
 
     override fun onResume() {
@@ -103,12 +102,13 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
 
         viewModel.oddsType.observe(this, {
             it?.let { oddsType ->
-                mPublicityAdapter.oddsType = it
+                mPublicityAdapter.oddsType = oddsType
             }
         })
 
         viewModel.publicityRecommend.observe(this, { event ->
             event?.getContentIfNotHandled()?.let { result ->
+                hideLoading()
                 isNewestDataFromApi = true
                 mRecommendList = result.recommendList
                 mPublicityAdapter.addRecommend(result.recommendList)
@@ -119,10 +119,17 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
         })
     }
 
-    //region
-    // TODO subscribe serviceConnectStatus, matchOddsLock, globalStop, producerUp, leagueChange
-    //endregion
+    // TODO subscribe leagueChange: 此處尚無需實作邏輯, 看之後有沒有相關需求
     private fun initSocketObservers() {
+        receiver.serviceConnectStatus.observe(this) {
+            it?.let {
+                if (it == ServiceConnectStatus.CONNECTED) {
+                    loading()
+                    queryData()
+                }
+            }
+        }
+
         receiver.matchStatusChange.observe(this, { event ->
             event?.let { matchStatusChangeEvent ->
                 val targetList = getNewestRecommendData()
@@ -185,6 +192,37 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
 
                         if (isNewestDataFromApi)
                             isNewestDataFromApi = false
+                    }
+                }
+            }
+        })
+
+        receiver.matchOddsLock.observe(this, {
+            it?.let { matchOddsLockEvent ->
+                val targetList = getNewestRecommendData()
+
+                targetList.forEachIndexed { index, recommend ->
+                    if (SocketUpdateUtil.updateOddStatus(recommend, matchOddsLockEvent)
+                    ) {
+                        updateRecommendList(index, recommend)
+                        //TODO 更新邏輯待補，跟進GameV3Fragment
+                    }
+                }
+            }
+        })
+
+        receiver.globalStop.observe(this, {
+            it?.let { globalStopEvent ->
+                val targetList = getNewestRecommendData()
+
+                targetList.forEachIndexed { index, recommend ->
+                    if (SocketUpdateUtil.updateOddStatus(
+                            recommend,
+                            globalStopEvent
+                        )
+                    ) {
+                        updateRecommendList(index, recommend)
+                        //TODO 更新邏輯待補，跟進GameV3Fragment
                     }
                 }
             }
