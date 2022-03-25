@@ -39,7 +39,7 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ListView
+    <org.cxct.sportlottery.widget.BottomSheetListView
         android:id="@+id/lv_bank_item"
         android:layout_width="match_parent"
         android:layout_height="144dp"

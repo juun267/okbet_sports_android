@@ -26,8 +26,10 @@ data class BetResult(
     @Json(name = "status")
     val status: Int?,
     @Json(name = "winnable")
-    val winnable: Double?
-) {
+    val winnable: Double?,
+    @Json(name = "reason")
+    val reason: String? = ""
+    ) {
     var matchType: MatchType? = null
     var oddsType: OddsType? = null
 }
