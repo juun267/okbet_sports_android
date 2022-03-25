@@ -605,7 +605,8 @@ class OddButtonPagerViewHolder private constructor(
 
 //            isSelected = odds.second?.getOrNull(0)?.isSelected ?: false
 
-            isSelected = QuickListManager.getQuickSelectedList()?.contains(odds.second?.getOrNull(0)?.id) ?: false
+            //isSelected = QuickListManager.getQuickSelectedList()?.contains(odds.second?.getOrNull(0)?.id) ?: false
+            isSelected = odds.second?.getOrNull(0)?.isSelected ?: false
 
             setOnClickListener {
                 odds.second?.getOrNull(0)?.let { odd ->
