@@ -16,7 +16,7 @@ import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.PlayCateMenuFilter
+import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
 import org.cxct.sportlottery.util.SocketUpdateUtil
 
 //TODO 玩法賠率顯示順序錯誤，需再寫排序邏輯
@@ -301,8 +301,8 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
         /*val playCateMenuCode =
             if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else getPlaySelectedCode()*/
         val playCateMenuCode = menuList.firstOrNull()?.code
-        val oddsSortFilter = PlayCateMenuFilter.filterOddsSort(nowGameType, playCateMenuCode)
-        val playCateNameMapFilter = PlayCateMenuFilter.filterPlayCateNameMap(nowGameType, playCateMenuCode)
+        val oddsSortFilter = PlayCateMenuFilterUtils.filterOddsSort(nowGameType, playCateMenuCode)
+        val playCateNameMapFilter = PlayCateMenuFilterUtils.filterPlayCateNameMap(nowGameType, playCateMenuCode)
 
         oddsSort = oddsSortFilter
         playCateNameMap = playCateNameMapFilter

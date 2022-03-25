@@ -16,7 +16,7 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.PlayCateMenuFilter
+import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.isTimeAtStart
 import org.cxct.sportlottery.util.TimeUtil.isTimeToday
@@ -100,7 +100,7 @@ class GamePublicityViewModel(
             }
 
             result?.let {
-                PlayCateMenuFilter.filterList = it.t?.sportMenuList
+                PlayCateMenuFilterUtils.filterList = it.t?.sportMenuList
                 _sportMenuFilterList.postValue(Event(it.t?.sportMenuList))
             }
         }
