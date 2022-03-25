@@ -21,6 +21,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentHomeBinding
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
+import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeString
@@ -418,20 +419,33 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
     ) {
 
-        (activity as GameActivity).showFastBetFragment()
         GameType.getGameType(matchOdd.matchInfo?.gameType)?.let { gameType ->
             matchOdd.matchInfo?.let { matchInfo ->
-                viewModel.updateMatchBetList(
-                    mSelectMatchType,
-                    gameType,
-                    playCateCode,
-                    playCateName ?: "",
-                    matchInfo,
-                    odd,
-                    ChannelType.HALL,
-                    betPlayCateNameMap,
-                    if (mSelectMatchType == MatchType.IN_PLAY) MenuCode.HOME_INPLAY_MOBILE.code else MenuCode.HOME_ATSTART_MOBILE.code
+                val fastBetDataBean = FastBetDataBean(
+                    matchType = mSelectMatchType,
+                    gameType= gameType,
+                    playCateCode = playCateCode,
+                    playCateName = playCateName ?: "",
+                    matchInfo = matchInfo,
+                    odd = odd,
+                    subscribeChannelType = ChannelType.HALL,
+                    betPlayCateNameMap = betPlayCateNameMap,
+                    playCateMenuCode = if (mSelectMatchType == MatchType.IN_PLAY) MenuCode.HOME_INPLAY_MOBILE.code else MenuCode.HOME_ATSTART_MOBILE.code
                 )
+                (activity as GameActivity).showFastBetFragment(fastBetDataBean)
+
+
+//                viewModel.updateMatchBetList(
+//                    mSelectMatchType,
+//                    gameType,
+//                    playCateCode,
+//                    playCateName ?: "",
+//                    matchInfo,
+//                    odd,
+//                    ChannelType.HALL,
+//                    betPlayCateNameMap,
+//                    if (mSelectMatchType == MatchType.IN_PLAY) MenuCode.HOME_INPLAY_MOBILE.code else MenuCode.HOME_ATSTART_MOBILE.code
+//                )
             }
         }
     }

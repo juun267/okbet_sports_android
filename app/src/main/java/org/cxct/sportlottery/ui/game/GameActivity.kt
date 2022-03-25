@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
@@ -33,7 +34,6 @@ import org.cxct.sportlottery.network.message.Row
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
-import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.FastBetFragment
@@ -63,6 +63,7 @@ import org.cxct.sportlottery.util.MetricsUtil
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.phoneNumCheckDialog
+import org.parceler.Parcels
 
 
 class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) {
@@ -704,12 +705,32 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         viewModel.showBetInfoSingle.observe(this) {
             it?.getContentIfNotHandled()?.let {
                 if (viewModel.getIsFastBetOpened()) {
-                    showFastBetFragment()
+                    //showFastBetFragment()
                 } else {
                     showBetListPage()
                 }
             }
         }
+    }
+
+    fun showFastBetFragment(fastBetDataBean: FastBetDataBean) {
+        val transaction = supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.anim.push_bottom_to_top_enter,
+                R.anim.pop_bottom_to_top_exit,
+                R.anim.push_bottom_to_top_enter,
+                R.anim.pop_bottom_to_top_exit
+            )
+
+        val betListFragment = FastBetFragment()
+        val bundle = Bundle()
+        bundle.putParcelable("data",  Parcels.wrap(fastBetDataBean));
+        betListFragment.arguments = bundle;
+
+        transaction
+            .add(R.id.fl_bet_list, betListFragment)
+            .addToBackStack(BetListFragment::class.java.simpleName)
+            .commit()
     }
 
     fun showFastBetFragment() {
