@@ -289,7 +289,10 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
                 }
                 rgzMap.isNotEmpty() -> {
                     oddsMap = this.filter { !it.key.contains(":") }.toMutableMap()
-                    oddsMap[rgzMap.iterator().next().key] = rgzMap.iterator().next().value
+                    rgzMap.forEach { map ->
+                        val playKeyFilter = map.key.split(":")[0]
+                        oddsMap[playKeyFilter] = map.value
+                    }
                     oddsMap
                 }
                 else -> this
