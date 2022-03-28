@@ -189,6 +189,9 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
         return data.size
     }
 
+    /**
+     * FT: 盤口組合 玩法需特殊處理
+     * */
     private fun Map<String, List<Odd?>?>.splitPlayCate(): Map<String, List<Odd?>?> {
         val splitMap = mutableMapOf<String, List<Odd?>?>()
 
