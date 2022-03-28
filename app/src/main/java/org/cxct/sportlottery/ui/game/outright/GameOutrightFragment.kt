@@ -68,6 +68,19 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
         }
     }
 
+    init {
+        afterAnimateListener = AfterAnimateListener {
+            try {
+                initObserve()
+                initSocketObserver()
+                initView()
+                initBottomNavigation()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -91,19 +104,6 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
 
             adapter = outrightLeagueOddAdapter
 
-        }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        try {
-            initObserve()
-            initSocketObserver()
-            initView()
-            initBottomNavigation()
-
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
     }
 
