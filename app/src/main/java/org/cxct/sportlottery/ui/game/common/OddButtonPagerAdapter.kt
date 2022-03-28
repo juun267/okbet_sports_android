@@ -241,20 +241,30 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
     }
 
     /**
+     * 冒號後面的分數整理 需要取代翻譯的 {S}
      * FT: NOGAL(下個進球) 玩法需特殊處理
      * */
-    private fun Map<String, List<Odd?>?>.reorganizePlay(): Map<String, List<Odd?>?> {
+    private fun Map<String, List<Odd?>?>.sortScores(): Map<String, List<Odd?>?> {
 
-        var splitMap = mutableMapOf<String, List<Odd?>?>()
+        val splitMap: MutableMap<String, List<Odd?>?>
+        val rgzMap = this.filter { (key, _) -> key.contains(":") }
 
-        when (matchInfo?.gameType) {
-            GameType.FT.key -> {
+        when {
+            rgzMap.isNotEmpty() -> {
                 splitMap = this.toMutableMap()
-                splitMap.forEach { oddsMap ->
-                    if (oddsMap.key.contains("${PlayCate.NGOAL.value}:")) {
-                        splitMap[oddsMap.key]?.forEach {
-                            it?.nextScore =
-                                oddsMap.key.split("${PlayCate.NGOAL.value}:")[1] //nextScore 下個進球的分數會放在Key值的冒號後面
+                rgzMap.forEach { rgzMap ->
+                    splitMap[rgzMap.key]?.forEach { odd ->
+                        when {
+                            rgzMap.key.contains("${PlayCate.NGOAL.value}:") -> {
+                                odd?.nextScore =
+                                    rgzMap.key.split("${PlayCate.NGOAL.value}:")[1] //nextScore 下個進球的分數會放在Key值的冒號後面
+                            }
+                            rgzMap.key.contains("${PlayCate.NGOAL_OT.value}:") -> {
+                                odd?.nextScore =
+                                    rgzMap.key.split("${PlayCate.NGOAL_OT.value}:")[1] //nextScore 下個進球的分數會放在Key值的冒號後面
+                            }
+                            else -> odd?.replaceScore =
+                                rgzMap.key.split(":")[1] //翻譯裡面要顯示{S}的分數會放在Key值的冒號後面
                         }
                     }
                 }
@@ -523,6 +533,7 @@ class OddButtonPagerViewHolder private constructor(
         var playCateName =
             playCateNameMap[odds.first].getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
                 .replace(": ", " ").replace("||", "\n")
+
 
         if (playCateName == "null" || playCateName.isNullOrEmpty()){
             playCateName = "-"
