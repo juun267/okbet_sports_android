@@ -272,7 +272,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
 
             //網球玩法特殊處理:网球的特定第几局的玩法(1X2_SEG3_GAMES:1~6) 之前应该是当有两个数字的时候 取大的显示 目前看小金改为取小的显示了 这边再跟著调整一下取小的显示在大厅上
             when {
-                rgzMap.size > 1 && matchInfo?.gameType == GameType.TN.key -> {
+                rgzMap.isNotEmpty() && matchInfo?.gameType == GameType.TN.key && (rgzMap.iterator().next().key.contains("1X2_SEG") && rgzMap.iterator().next().key.contains("_GAMES"))-> {
                     oddsMap = this.filter { !it.key.contains(":") }.toMutableMap()
                     val mutableListIterator = rgzMap.iterator()
                     var iteratorMap: Map.Entry<String, List<Odd?>?>? = null
