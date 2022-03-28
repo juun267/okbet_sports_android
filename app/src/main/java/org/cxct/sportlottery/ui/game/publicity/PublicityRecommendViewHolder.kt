@@ -56,12 +56,7 @@ class PublicityRecommendViewHolder(
             //GameTypeView
             with(gameTypeView) {
                 tvSportType.text = getGameTypeString(root.context, data.gameType)
-                tvSportType.setCompoundDrawablesWithIntrinsicBounds(
-                    ContextCompat.getDrawable(
-                        root.context,
-                        getGameTypeWhiteIcon(data.gameType)
-                    ), null, null, null
-                )
+                ivSportType.setImageResource(getGameTypeWhiteIcon(data.gameType))
                 data.matchType?.resId?.let { matchTypeRes ->
                     tvGameType.text = root.context.getString(matchTypeRes)
                 }
