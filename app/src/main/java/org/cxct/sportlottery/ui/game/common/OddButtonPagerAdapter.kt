@@ -47,7 +47,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
         set(value) {
             this.playCateNameMap = playCateNameMap.addSplitPlayCateTranslation()
             var oddsSortCount = oddsSort?.split(",")?.size ?: 999 // 最大顯示數量
-            field = value.refactorPlayCode().sortOdds().splitPlayCate().reorganizePlay()
+            field = value.sortScores().refactorPlayCode().sortOdds().splitPlayCate()
                 .filterPlayCateSpanned().sortPlayCate()
             val gameList =
                 field.filterValues { !it.isNullOrEmpty() }.filter { it.value?.getOrNull(0) != null }
