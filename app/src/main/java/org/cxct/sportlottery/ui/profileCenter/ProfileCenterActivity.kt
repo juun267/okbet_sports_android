@@ -3,7 +3,12 @@ package org.cxct.sportlottery.ui.profileCenter
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
@@ -141,6 +146,25 @@ class ProfileCenterActivity :
     private fun setupBalance() {
         btn_refresh_money.setOnClickListener {
             getMoney()
+        }
+        ivNotice.setOnClickListener {
+
+            val spannableStringBuilder = SpannableStringBuilder()
+
+            val text1 = SpannableString(this.getString(R.string.text_security_money))
+            //測試資料 自己手打
+            val text2 = SpannableString("30")
+            val foregroundSpan =
+                ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorBlue))
+            text2.setSpan(foregroundSpan, 0, text2.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            val text3 = SpannableString(getString(R.string.text_security_money2))
+            spannableStringBuilder.append(text1)
+            spannableStringBuilder.append(text2)
+            spannableStringBuilder.append(text3)
+            showPromptDialog(
+                getString(R.string.prompt),
+                spannableStringBuilder
+            ) {}
         }
     }
 

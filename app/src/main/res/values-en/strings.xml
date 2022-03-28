@@ -954,6 +954,8 @@
     <string name="text_bet_not_success2">waiting</string>
     <string name="text_bet_not_success3">&#160;Your bet slip is processing, please check &#160;</string>
     <string name="text_bet_not_success4">Record.</string>
+    <string name="text_security_money">Security deposit: 1,000\n</string>
+    <string name="text_security_money2"> days left</string>
     <!--自我禁制-->
     <string name="self_limit">Self-exclusion</string>
     <string name="self_limit_impotent">Attention</string>
