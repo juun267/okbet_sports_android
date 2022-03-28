@@ -32,4 +32,5 @@ data class BankCardList(
     val bankCode: String,
 ) : Parcelable {
     var transferType: TransferType = TransferType.BANK
+    var isSelected = false
 }
