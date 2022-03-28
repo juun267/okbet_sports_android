@@ -1,12 +1,14 @@
 package org.cxct.sportlottery.ui.favorite
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_my_favorite.*
 import kotlinx.android.synthetic.main.fragment_my_favorite.view.*
@@ -51,19 +53,22 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 onClickSetItemListener = {
                     viewModel.switchPlay(it)
                     leagueAdapter.data.updateOddsSort()
-                    leagueAdapter.notifyDataSetChanged()
+                    //leagueAdapter.notifyDataSetChanged()
+                    updateAllGameList()
                 },
                 onClickNotSelectableListener = {
                     viewModel.switchPlay(it)
                     upDateSelectPlay(it)
                     leagueAdapter.data.updateOddsSort()
-                    leagueAdapter.notifyDataSetChanged()
+                    //leagueAdapter.notifyDataSetChanged()
+                    updateAllGameList()
                 },
                 onSelectPlayCateListener = { play, playCate ->
                     viewModel.switchPlayCategory(play, playCate.code)
                     upDateSelectPlay(play)
                     leagueAdapter.data.updateOddsSort()
-                    leagueAdapter.notifyDataSetChanged()
+                    //leagueAdapter.notifyDataSetChanged()
+                    updateAllGameList()
                 }
             )
         }
@@ -175,6 +180,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
     private fun setupLeagueOddList(view: View) {
         view.favorite_game_list.apply {
+            adapter = leagueAdapter
             this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
             addItemDecoration(
@@ -212,7 +218,8 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                             leagueAdapter.data.remove(leagueOdd)
                         }
 
-                        leagueAdapter.notifyItemChanged(index)
+                        //leagueAdapter.notifyItemChanged(index)
+                        updateGameList(index, leagueOdd)
                     }
                 }
             }
@@ -231,7 +238,8 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                         } &&
                         leagueOdd.unfold == FoldState.UNFOLD.code) {
 
-                        leagueAdapter.notifyItemChanged(index)
+                        //leagueAdapter.notifyItemChanged(index)
+                        updateGameList(index, leagueOdd)
                     }
                 }
             }
@@ -271,7 +279,8 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                         } &&
                         leagueOdd.unfold == FoldState.UNFOLD.code
                     ) {
-                        leagueAdapter.notifyItemChanged(index)
+                        //leagueAdapter.notifyItemChanged(index)
+                        updateGameList(index, leagueOdd)
                     }
                 }
             }
@@ -287,7 +296,8 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                         } &&
                         leagueOdd.unfold == FoldState.UNFOLD.code
                     ) {
-                        leagueAdapter.notifyItemChanged(index)
+                        //leagueAdapter.notifyItemChanged(index)
+                        updateGameList(index, leagueOdd)
                     }
                 }
             }
@@ -306,7 +316,8 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                         } &&
                         leagueOdd.unfold == FoldState.UNFOLD.code
                     ) {
-                        leagueAdapter.notifyItemChanged(index)
+                        //leagueAdapter.notifyItemChanged(index)
+                        updateGameList(index, leagueOdd)
                     }
                 }
             }
@@ -346,6 +357,20 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         }
 
         return this
+    }
+
+    private fun updateOddsSelectedState() {
+        leagueAdapter.data.forEach {
+            it.matchOdds.forEach { matchOdd ->
+                matchOdd.oddsMap?.forEach {  oddMap ->
+                    oddMap.value?.forEach { odd ->
+                        odd?.isSelected = viewModel.betInfoList.value?.peekContent()?.any { betInfoListData ->
+                            betInfoListData.matchOdd.oddsId == odd?.id
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -405,13 +430,14 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             hideLoading()
             leagueOddList.filterMenuPlayCate()
 
-            favorite_game_list.adapter = leagueAdapter
+            //favorite_game_list.adapter = leagueAdapter
             leagueAdapter.data = leagueOddList.toMutableList()
             leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
             try {
                 leagueAdapter.data.forEach { leagueOdd ->
                     subscribeChannelHall(leagueOdd)
                 }
+                //leagueAdapter.notifyDataSetChanged()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -428,6 +454,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                                 odd?.isSelected = it.any { betInfoListData ->
                                     betInfoListData.matchOdd.oddsId == odd?.id
                                 }
+                                odd?.isSelected = true
                             }
                         }
 
@@ -437,13 +464,15 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                                     odd?.isSelected = it.any { betInfoListData ->
                                         betInfoListData.matchOdd.oddsId == odd?.id
                                     }
+                                    odd?.isSelected = true
                                 }
                             }
                         }
                     }
                 }
 
-                leagueAdapter.notifyDataSetChanged()
+                //leagueAdapter.notifyDataSetChanged()
+                updateAllGameList()
             }
         }
 
@@ -704,5 +733,18 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
     private fun navStatistics(matchId: String?) {
         StatisticsDialog.newInstance(matchId).show(childFragmentManager, StatisticsDialog::class.java.simpleName)
+    }
+
+    private fun updateGameList(index: Int, leagueOdd: LeagueOdd) {
+        leagueAdapter.data[index] = leagueOdd
+        if (favorite_game_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !favorite_game_list.isComputingLayout) {
+            leagueAdapter.updateLeague(index, leagueOdd)
+        }
+    }
+
+    private fun updateAllGameList() {
+        if (favorite_game_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !favorite_game_list.isComputingLayout) {
+            leagueAdapter.data.forEachIndexed { index, leagueOdd ->  leagueAdapter.updateLeague(index, leagueOdd) }
+        }
     }
 }

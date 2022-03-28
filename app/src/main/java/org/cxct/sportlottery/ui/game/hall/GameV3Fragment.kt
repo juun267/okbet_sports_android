@@ -1078,12 +1078,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
 
 //                leagueAdapter.notifyDataSetChanged()
-                leagueAdapter.data.forEachIndexed { index, leagueOdd ->
-                    leagueAdapter.updateLeague(
-                        index,
-                        leagueOdd
-                    )
-                }
+                updateAllGameList()
 
                 val epsOdds = epsListAdapter.dataList
 
