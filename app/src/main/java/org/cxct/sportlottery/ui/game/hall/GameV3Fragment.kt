@@ -1294,6 +1294,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             ) {
                                 if (leagueOdd.matchOdds.isNullOrEmpty()) {
                                     leagueAdapter.data.remove(leagueOdd)
+                                    leagueAdapter.notifyItemChanged(index)
                                 }
                                 //leagueAdapter.updateBySocket(index)
                             }
