@@ -1494,6 +1494,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
         receiver.leagueChange.observe(this.viewLifecycleOwner) {
             it?.let { leagueChangeEvent ->
+                mLeagueChangeEvent = leagueChangeEvent
                 viewModel.checkGameInList(
                     matchType = args.matchType,
                     leagueIdList = leagueChangeEvent.leagueIdList,
