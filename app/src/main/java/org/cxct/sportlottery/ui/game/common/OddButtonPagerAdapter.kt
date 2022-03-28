@@ -541,6 +541,7 @@ class OddButtonPagerViewHolder private constructor(
             playCateNameMap[odds.first].getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
                 .replace(": ", " ").replace("||", "\n").replace("{S}", replaceScore)
 
+
         if (playCateName == "null" || playCateName.isNullOrEmpty()){
             playCateName = "-"
         }
