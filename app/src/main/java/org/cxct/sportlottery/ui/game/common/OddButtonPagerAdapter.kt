@@ -290,7 +290,8 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
                         iteratorMap = mutableListIterator.next()
                     }
                     if (iteratorMap != null) {
-                        oddsMap[iteratorMap.key] = iteratorMap.value
+                        val playKeyFilter = iteratorMap.key.split(":")[0]
+                        oddsMap[playKeyFilter] = iteratorMap.value
                     }
                     oddsMap
                 }
