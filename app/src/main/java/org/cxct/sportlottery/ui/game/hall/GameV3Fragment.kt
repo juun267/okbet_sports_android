@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -64,7 +65,7 @@ import java.util.*
 import kotlin.collections.HashMap
 
 @RequiresApi(Build.VERSION_CODES.M)
-class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class) {
+class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class), Animation.AnimationListener {
 
     private val args: GameV3FragmentArgs by navArgs()
     private var childMatchType = MatchType.OTHER
@@ -171,8 +172,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 loading()
                 if (args.matchType == MatchType.OTHER) {
 
-                }
-                else {
+                } else {
                     viewModel.refreshGame(
                         args.matchType,
                         listOf(it.league.id),
@@ -329,6 +329,17 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
     }
 
+    init {
+        afterAnimateListener = AfterAnimateListener {
+            try {
+                initObserve()
+                initSocketObserver()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -369,7 +380,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         when (args.matchType) {
             MatchType.OTHER -> view.game_toolbar_match_type.text =
                 gameToolbarMatchTypeText(args.matchType)
-            else -> {}
+            else -> {
+            }
         }
 
         view.game_toolbar_champion.apply {
@@ -541,17 +553,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             //this.itemAnimator = null
             //addItemDecoration(SpaceItemDecoration(context, R.dimen.item_spacing_league))
             //setHasFixedSize(true)
-        }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        try {
-            initObserve()
-            initSocketObserver()
-            //initBottomNavigation()
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
     }
 
@@ -738,9 +739,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         leagueAdapter.playSelectedCodeSelectionType =
                             getPlaySelectedCodeSelectionType()
                         leagueAdapter.playSelectedCode = getPlaySelectedCode()
-                        if(game_list.adapter !is LeagueAdapter) game_list.adapter = leagueAdapter
-                    }
-                    else {
+                        if (game_list.adapter !is LeagueAdapter) game_list.adapter = leagueAdapter
+                    } else {
                         // Todo: MatchType.OTHER 要顯示無資料與隱藏篩選清單
 //                        leagueAdapter.data = mutableListOf()
                     }
@@ -1002,8 +1002,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     unSubscribeChannelHallAll()
                     if (args.matchType == MatchType.OTHER) {
 //                        viewModel.getAllPlayCategoryBySpecialMatchType(isReload = true)
-                    }
-                    else {
+                    } else {
                         viewModel.switchMatchType(args.matchType)
                     }
                     game_no_record.apply {
@@ -1512,7 +1511,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     private fun updateAllGameList() {
         if (game_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !game_list.isComputingLayout) {
-            leagueAdapter.data.forEachIndexed { index, leagueOdd ->  leagueAdapter.updateLeague(index, leagueOdd) }
+            leagueAdapter.data.forEachIndexed { index, leagueOdd -> leagueAdapter.updateLeague(index, leagueOdd) }
         }
     }
 
@@ -1559,8 +1558,15 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
         val playCateMenuCode =
             if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else getPlaySelectedCode()
-        val oddsSortFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else PlayCateMenuFilterUtils.filterOddsSort(nowGameType, playCateMenuCode)
-        val playCateNameMapFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) PlayCateMenuFilterUtils.filterSelectablePlayCateNameMap(nowGameType,getPlaySelectedCode(), playCateMenuCode) else PlayCateMenuFilterUtils.filterPlayCateNameMap(nowGameType, playCateMenuCode)
+        val oddsSortFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else PlayCateMenuFilterUtils.filterOddsSort(
+            nowGameType,
+            playCateMenuCode
+        )
+        val playCateNameMapFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) PlayCateMenuFilterUtils.filterSelectablePlayCateNameMap(
+            nowGameType,
+            getPlaySelectedCode(),
+            playCateMenuCode
+        ) else PlayCateMenuFilterUtils.filterPlayCateNameMap(nowGameType, playCateMenuCode)
 
         this.forEach { LeagueOdd ->
             LeagueOdd.matchOdds.forEach { MatchOdd ->
@@ -1588,7 +1594,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
      * 賠率排序
      */
     private fun OddsChangeEvent.sortOddsMap() {
-          this.odds?.forEach { (key, value) ->
+        this.odds?.forEach { (key, value) ->
             if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
                 value?.sortBy {
                     it?.marketSort
@@ -1600,7 +1606,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private fun MutableList<LeagueOdd>.sortOddsMap() {
         this.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach { MatchOdd ->
-                MatchOdd.oddsMap?.forEach { (key , value) ->
+                MatchOdd.oddsMap?.forEach { (key, value) ->
                     if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
                         value?.sortBy {
                             it?.marketSort
