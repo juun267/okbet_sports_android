@@ -1261,12 +1261,16 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     is LeagueAdapter -> {
 
                         leagueAdapter.data.forEachIndexed { index, leagueOdd ->
-                            if(matchStatusChangeEvent.matchStatusCO?.status == GameMatchStatus.FINISH.value){
-                                leagueOdd.matchOdds.find {
-                                        m ->  m.matchInfo?.id == matchStatusChangeEvent.matchStatusCO.matchId
+                            if (matchStatusChangeEvent.matchStatusCO?.status == GameMatchStatus.FINISH.value) {
+                                leagueOdd.matchOdds.find { m ->
+                                    m.matchInfo?.id == matchStatusChangeEvent.matchStatusCO.matchId
                                 }?.let { mo ->
                                     leagueOdd.matchOdds.remove(mo)
-                                    leagueAdapter.notifyItemChanged(index)
+                                    if (leagueOdd.matchOdds.size > 0) {
+                                        leagueAdapter.notifyItemChanged(index)
+                                    } else {
+                                        leagueAdapter.notifyItemRemoved(index)
+                                    }
                                 }
                             }
                         }
