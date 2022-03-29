@@ -169,12 +169,8 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
             playSelectedCode: String?
         ) {
             itemView.league_text.text = item.league.name
-
-            if (item.league.categoryIcon.isNotEmpty()) {
-                val countryIcon = SvgUtil.getSvgDrawable(itemView.context, item.league.categoryIcon)
-                itemView.iv_country.setImageDrawable(countryIcon)
-            }
-
+            val countryIcon = SvgUtil.getSvgDrawable(itemView.context, item.league.categoryIcon)
+            itemView.iv_country.setImageDrawable(countryIcon)
             setupLeagueOddList(item, leagueOddListener, oddsType)
             setupLeagueOddExpand(item, matchType, leagueListener)
         }
@@ -182,10 +178,8 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         // region update functions
         fun update(item: LeagueOdd, matchType: MatchType, oddsType: OddsType) {
             itemView.league_text.text = item.league.name
-            if (item.league.categoryIcon.isNotEmpty()) {
-                val countryIcon = SvgUtil.getSvgDrawable(itemView.context, item.league.categoryIcon)
-                itemView.iv_country.setImageDrawable(countryIcon)
-            }
+            val countryIcon = SvgUtil.getSvgDrawable(itemView.context, item.league.categoryIcon)
+            itemView.iv_country.setImageDrawable(countryIcon)
             updateLeagueOddList(item, oddsType)
             updateLeagueExpand(item, matchType)
 
