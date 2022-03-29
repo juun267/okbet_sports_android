@@ -516,7 +516,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
     fun getRecommendData(): MutableList<RecommendGameEntity> {
         val result = mutableListOf<RecommendGameEntity>()
-        mDataList.filter { it is RecommendGameEntity }.forEach { result.add(it as RecommendGameEntity) }
+        mDataList.filterIsInstance<RecommendGameEntity>().forEach { result.add(it) }
         return result
     }
     fun setDiscount(newDiscount: Float) {
@@ -756,13 +756,9 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     // region Recommend 指定刷新內部 ViewPager 的 subItem
     //指定刷新內部 ViewPager 的 subItem
-    fun notifyRecommendSubItemChanged(index: Int, indexVpAdapter: Int) {
-        //TODO index需要根據當前類別獲取而非直接使用外部傳遞的index
-        if (index >= 0 && indexVpAdapter >= 0) {
-            val data = mDataList[index]
-            if (data is RecommendGameEntity) {
-                data.vpRecommendAdapter?.notifyItemChanged(indexVpAdapter)
-            }
+    fun notifyRecommendSubItemChanged(entity: RecommendGameEntity, indexVpAdapter: Int) {
+        if (indexVpAdapter >= 0) {
+            entity.vpRecommendAdapter?.notifyItemChanged(indexVpAdapter)
         }
     }
 

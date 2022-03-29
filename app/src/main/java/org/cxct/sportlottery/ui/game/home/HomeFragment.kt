@@ -1232,13 +1232,11 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                         if (SocketUpdateUtil.updateMatchOdds(context, updateMatchOddNonNull, oddsChangeEvent)) {
                             val playCateCode = PlayCateMenuFilterUtils.filterOddsSort(gameEntity.code, filterCode)//之後建enum class
                             updateMatchOddNonNull.filterMenuPlayCate(playCateCode)
+                            mHomeListAdapter.notifySubItemChanged(
+                                index,
+                                gameEntity.matchOdds.indexOf(updateMatchOdd)
+                            )
                         }
-
-                        mHomeListAdapter.notifySubItemChanged(
-                            index,
-                            gameEntity.matchOdds.indexOf(updateMatchOdd)
-                        )
-//                                    gameEntity.vpTableAdapter?.notifyDataSetChanged()
                     }
                 }
 
@@ -1247,17 +1245,11 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 recommendDataList.recommendSortOddsMap()
                 recommendDataList.forEach { entity ->
                     if (entity.matchInfo?.id != it.eventId) return@forEach
-                    var isUpdate = false
-                    entity.oddBeans.forEach { oddBean ->
+                    entity.oddBeans.forEachIndexed { oddIndex, oddBean ->
                         if (SocketUpdateUtil.updateMatchOdds(oddBean, oddsChangeEvent)) {
-                            isUpdate = true
+                            mHomeListAdapter.notifyRecommendSubItemChanged(entity, oddIndex)
                         }
                     }
-                    /*if (isUpdate) {
-                        Handler(Looper.getMainLooper()).post {
-                            entity.vpRecommendAdapter?.notifyDataSetChanged()
-                        }
-                    }*/
                 }
 
                 //精選賽事
@@ -1332,7 +1324,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
                                 //20210713 紀錄：只刷新內層 viewPager 的 sub Item，才不會導致每次刷新，viewPager 都會跑到第一頁
                                 mHomeListAdapter.notifyRecommendSubItemChanged(
-                                    index,
+                                    entity,
                                     indexOddBean
                                 )
                             }
@@ -1373,7 +1365,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 mHomeListAdapter.getRecommendData().forEachIndexed { index, entity ->
                     entity.oddBeans.forEachIndexed { indexOddBean, oddBean ->
                         if (SocketUpdateUtil.updateOddStatus(oddBean, globalStopEvent)) {
-                            mHomeListAdapter.notifyRecommendSubItemChanged(index, indexOddBean)
+                            mHomeListAdapter.notifyRecommendSubItemChanged(entity, indexOddBean)
                         }
                     }
                 }
