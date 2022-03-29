@@ -138,6 +138,18 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         }
     }
 
+    init {
+        afterAnimateListener = AfterAnimateListener {
+            try {
+                initObserve()
+                initSocketObserver()
+                initBottomNavigation()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -176,18 +188,6 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             this.adapter = leagueAdapter
             //addItemDecoration(SpaceItemDecoration(context, R.dimen.item_spacing_league))
-        }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        try {
-            initObserve()
-            initSocketObserver()
-            initBottomNavigation()
-
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
     }
 

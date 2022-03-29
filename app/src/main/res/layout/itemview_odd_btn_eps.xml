@@ -14,7 +14,7 @@
         android:ellipsize="end"
         android:singleLine="true"
         android:textColor="@color/colorBlack"
-        android:textSize="@dimen/textSize16sp"
+        android:textSize="@dimen/textSize14sp"
         app:layout_constraintBottom_toBottomOf="@id/quick_odd_eps_btn1"
         app:layout_constraintEnd_toStartOf="@id/quick_odd_eps_btn1"
         app:layout_constraintStart_toStartOf="parent"
