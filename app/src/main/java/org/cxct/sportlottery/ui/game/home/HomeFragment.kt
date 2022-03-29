@@ -496,7 +496,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                             if (!id.isNullOrEmpty()) {
                                 subscribeChannelHall(data.code,
                                     id)
-                                mSubscribeInPlayGameID.add(id)
+                                mSubscribeAtStartGameID.add(id)
                             }
                         }
                     }
