@@ -88,8 +88,6 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var mUpdateHighLightInterfaceListener = HashMap<Int, UpdateHighLightInterface>()
 
-    private var mLastMatchOdd: MatchOdd? = null
-
     // region GameTable params
     private var mMatchType: MatchType = MatchType.IN_PLAY
     private var selectedOdds = mutableListOf<String>()
@@ -294,7 +292,13 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 holder.onClickMatchListener = onHighLightClickMatchListener
                 holder.onClickFavoriteListener = onHighLightClickFavoriteListener
                 holder.onClickStatisticsListener = onHighLightClickStatisticsListener
-                holder.bind((data as MatchOdd), mLastMatchOdd ?: data, highLightOddsType)
+                if (data is MatchOdd) {
+                    holder.bind(
+                        data,
+                        if (data.matchInfo?.isStartPosition == true) data else mDataList[position - 1] as MatchOdd,
+                        highLightOddsType
+                    )
+                }
                 mUpdateHighLightInterfaceListener[position] = holder.getUpdateHighLightInterface()
             }
             // 底部資訊
@@ -461,7 +465,6 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 it.oddsSort
             )
         } ?: listOf()
-        mLastMatchOdd = list.last()
         mPlayCateNameMap = newPlayCateNameMap
         removeDatas(list.firstOrNull())
         list.forEach { addDataWithSort(it) }
