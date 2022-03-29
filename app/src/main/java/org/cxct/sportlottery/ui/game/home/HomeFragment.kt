@@ -557,11 +557,9 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                         data.matchOdds.forEach { match ->
                             val id = match.matchInfo?.id ?: ""
                             if (!id.isNullOrEmpty()) {
-                                subscribeChannelHall(
-                                    data.code,
-                                    id
-                                )
-                                mSubscribeInPlayGameID.add(id)
+                                subscribeChannelHall(data.code,
+                                    id)
+                                mSubscribeAtStartGameID.add(id)
                             }
                         }
                     }

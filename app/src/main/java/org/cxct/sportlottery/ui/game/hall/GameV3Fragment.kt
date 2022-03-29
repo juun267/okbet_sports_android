@@ -1007,27 +1007,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     } else {
                         viewModel.switchMatchType(args.matchType)
                     }
-                    game_no_record.apply {
-                        setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
-                        visibility = View.GONE
-                    }
-                    //game_no_record_bg.isVisible = false
-                }
-                it && !hasGame -> {
-                    game_no_record.apply {
-                        setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
-                        visibility = View.VISIBLE
-                    }
-//                    game_no_record_bg.apply {
-//                        isVisible = true
-//                    }
-                }
-                else -> {
-                    game_no_record.apply {
-                        setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
-                        visibility = View.GONE
-                    }
-                    //game_no_record_bg.isVisible = false
                 }
             }
 
@@ -1038,7 +1017,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         viewModel.isNoEvents.observe(this.viewLifecycleOwner) {
             sport_type_list.isVisible = !it
             game_toolbar_sport_type.isVisible = !it
-            game_no_record.isVisible = it
             //game_no_record_bg.isVisible = it
             game_play_category.isVisible =
                 (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START || (args.matchType == MatchType.OTHER && childMatchType == MatchType.OTHER)) && !it
