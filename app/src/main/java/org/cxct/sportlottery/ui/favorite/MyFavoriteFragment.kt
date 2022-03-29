@@ -31,6 +31,7 @@ import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryListener
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
+import org.cxct.sportlottery.util.QuickListManager
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
@@ -443,6 +444,12 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner) {
             it.peekContent().let {
+                val list: MutableList<String> = mutableListOf()
+                it.forEach { data ->
+                    list.add(data.matchOdd.oddsId)
+                }
+                QuickListManager.setQuickSelectedList(list)
+
                 val leagueOdds = leagueAdapter.data
 
                 leagueOdds.forEach { leagueOdd ->
@@ -452,7 +459,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                                 odd?.isSelected = it.any { betInfoListData ->
                                     betInfoListData.matchOdd.oddsId == odd?.id
                                 }
-                                odd?.isSelected = true
                             }
                         }
 
@@ -462,7 +468,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                                     odd?.isSelected = it.any { betInfoListData ->
                                         betInfoListData.matchOdd.oddsId == odd?.id
                                     }
-                                    odd?.isSelected = true
                                 }
                             }
                         }
