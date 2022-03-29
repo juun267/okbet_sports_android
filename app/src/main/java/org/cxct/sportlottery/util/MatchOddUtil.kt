@@ -17,7 +17,7 @@ object MatchOddUtil {
         playCateName: String,
         playName: String?,
         matchInfo: MatchInfo,
-        odd: Odd
+        odd: Odd,
     ): MatchOdd? {
         matchInfo.id.let { matchId ->
             odd.id?.let { oddsId ->
@@ -28,7 +28,7 @@ object MatchOddUtil {
                             homeName = matchInfo.homeName,
                             inplay = if (matchType == MatchType.IN_PLAY) INPLAY else 0,
                             leagueId = "",
-                            leagueName = "",
+                            leagueName = matchInfo.leagueName,
                             matchId = matchId,
                             odds = odds,
                             hkOdds = hkOdds,

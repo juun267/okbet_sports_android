@@ -83,6 +83,21 @@ object TimeUtil {
     }
 
     /**
+     * 時間(TimeInMillis) 轉換成 second 格式
+     * @param time: TimeInMillis
+     * @return :String
+     */
+    fun longToSecond(time: Long): String {
+        return try {
+            val sec = time / 1000
+            String.format("%d", sec)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            "-"
+        }
+    }
+
+    /**
      * 時間轉換成日期格式
      * @param time: TimeInMillis
      * @return :String
@@ -422,7 +437,7 @@ object TimeUtil {
         calendar.set(Calendar.MILLISECOND, 0)
         val startTimeStamp = calendar.timeInMillis
 
-        calendar.add(Calendar.DAY_OF_MONTH, 29)
+        calendar.add(Calendar.DAY_OF_MONTH, 28)
         calendar.set(Calendar.HOUR_OF_DAY, 23)
         calendar.set(Calendar.MINUTE, 59)
         calendar.set(Calendar.SECOND, 59)

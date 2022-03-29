@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.base
+package org.cxct.sportlottery.ui.common
 
 import android.app.Activity
 import android.content.Context

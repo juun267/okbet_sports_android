@@ -65,6 +65,19 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
         }
     }
 
+    init {
+        afterAnimateListener = AfterAnimateListener {
+            try {
+                initObserve()
+                initSocketObserver()
+                initView()
+                initBottomNavigation()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -88,19 +101,6 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
 
             adapter = outrightLeagueOddAdapter
 
-        }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        try {
-            initObserve()
-            initSocketObserver()
-            initView()
-            initBottomNavigation()
-
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
     }
 
@@ -244,7 +244,7 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
         this.odds?.let { oddTypeSocketMap ->
             oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
-                oddTypeSocketMapEntry.value.onEach { odd ->
+                oddTypeSocketMapEntry.value?.onEach { odd ->
                     odd?.isSelected =
                         viewModel.betInfoList.value?.peekContent()?.any { betInfoListData ->
                             betInfoListData.matchOdd.oddsId == odd?.id
@@ -265,7 +265,6 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
             true -> {
                 subscribeChannelHall(
                     args.gameType.key,
-                    PlayCate.OUTRIGHT.value,
                     matchOdd.matchInfo?.id
                 )
             }

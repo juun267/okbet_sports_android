@@ -51,6 +51,8 @@ import org.cxct.sportlottery.util.GameConfigManager.getGameIcon
 import org.cxct.sportlottery.util.GameConfigManager.getTitleBarBackground
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.updateEPSDiscount
+import org.cxct.sportlottery.util.OddsSortUtil
+import org.cxct.sportlottery.util.OddsSortUtil.recommendSortOddsMap
 import org.cxct.sportlottery.util.RecyclerViewGridDecoration
 import org.cxct.sportlottery.util.TimeUtil
 import kotlin.collections.ArrayList
@@ -479,8 +481,8 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     val sortOrder = oddData.oddsSort?.split(",")
                     sortOrder?.indexOf(it)
                 }.thenBy { it })?.map {
-                    OddBean(it.key, it.value?.toList() ?: listOf())
-                }
+                    OddBean(it.key, it.value?.toMutableList() ?: mutableListOf())
+                }?.toMutableList()
 
                 beans?.forEach {
                     it.oddList.forEach { odd ->
@@ -490,6 +492,8 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     }
                 }
 
+
+
                 val entity = RecommendGameEntity(
                     code = row.sport?.code,
                     name = row.sport?.name,
@@ -497,7 +501,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     leagueName = if (row.isOutright == RECOMMEND_OUTRIGHT) row.leagueOdds.matchOdds.firstOrNull()?.matchInfo?.name else row.leagueOdds.league?.name,
                     matchInfo = oddData.matchInfo,
                     isOutright = row.isOutright,
-                    oddBeans = beans ?: listOf(),
+                    oddBeans = beans ?: mutableListOf(),
                     dynamicMarkets = oddData.dynamicMarkets,
                     playCateMappingList = oddData.playCateMappingList,
                     betPlayCateNameMap = oddData.betPlayCateNameMap,
@@ -506,6 +510,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 dataList.add(entity)
             }
         }
+        dataList.recommendSortOddsMap()
         removeDatas(dataList.firstOrNull())
         dataList.forEach { addDataWithSort(it) }
     }

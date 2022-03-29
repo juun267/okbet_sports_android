@@ -2,11 +2,13 @@ package org.cxct.sportlottery.ui.game.betList
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,7 +50,6 @@ import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.TimeUtil.isTimeAtStart
 
 /**
  * A simple [Fragment] subclass.
@@ -64,8 +65,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private var discount = 1.0F
 
-    private var keyboard: KeyBoardUtil? = null
-
     private var betListRefactorAdapter: BetListRefactorAdapter? = null
 
     private var betAllAmount = 0.0
@@ -79,6 +78,37 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private var showPlatCloseWarn: Boolean = false //盤口是否被關閉
 
     private var showReceipt: Boolean = false
+
+    private val mHandler = object : Handler(Looper.getMainLooper()) {
+        override fun handleMessage(msg: Message) {
+            when (msg.what) {
+                BET_CONFIRM_TIPS -> {
+                    val spannableStringBuilder = SpannableStringBuilder()
+                    val text1 = SpannableString(getString(R.string.text_bet_not_success))
+                    val text2 = SpannableString(getString(R.string.text_bet_not_success2))
+                    val foregroundSpan =
+                        ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.colorRedDark))
+                    text2.setSpan(foregroundSpan, 0, text2.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    val text3 = SpannableString(getString(R.string.text_bet_not_success3))
+                    val text4 = SpannableString(getString(R.string.text_bet_not_success4))
+                    val foregroundSpan2 =
+                        ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.colorRedDark))
+                    text4.setSpan(foregroundSpan2, 0, text4.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    spannableStringBuilder.append(text1)
+                    spannableStringBuilder.append(text2)
+                    spannableStringBuilder.append(text3)
+                    spannableStringBuilder.append(text4)
+                    showPromptDialog(
+                        title = getString(R.string.prompt),
+                        message = spannableStringBuilder,
+                        success = true
+                    ) {
+                        viewModel.navTranStatus()
+                    }
+                }
+            }
+        }
+    }
 
     private var singleParlayList = mutableListOf(
         ParlayOdd(
@@ -205,18 +235,18 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         rv_bet_list.layoutManager = layoutManager
         betListRefactorAdapter?.setHasStableIds(true)
         rv_bet_list.adapter = betListRefactorAdapter
-        rv_bet_list.addItemDecoration(
-            DividerItemDecoration(
-                context,
-                LinearLayoutManager.VERTICAL
-            ).apply {
-                ContextCompat.getDrawable(
-                    context ?: requireContext(),
-                    R.drawable.divider_color_white8
-                )?.let {
-                    setDrawable(it)
-                }
-            })
+//        rv_bet_list.addItemDecoration(
+//            DividerItemDecoration(
+//                context,
+//                LinearLayoutManager.VERTICAL
+//            ).apply {
+//                ContextCompat.getDrawable(
+//                    context ?: requireContext(),
+//                    R.drawable.divider_color_white8
+//                )?.let {
+//                    setDrawable(it)
+//                }
+//            })
     }
 
     private fun initToolBar() {
@@ -236,7 +266,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 }
 
                 override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd, position: Int, max: Long) {
-                    keyboard?.showKeyboard(editText, position, max)
+                    //keyboard?.showKeyboard(editText, position, max)
                 }
 
                 override fun onShowParlayKeyboard(
@@ -245,11 +275,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     position: Int,
                     max: Long
                 ) {
-                    keyboard?.showKeyboard(editText, position, max)
+                    //keyboard?.showKeyboard(editText, position, max)
                 }
 
                 override fun onHideKeyBoard() {
-                    keyboard?.hideKeyboard()
+                    //keyboard?.hideKeyboard()
                 }
 
                 override fun saveOddsHasChanged(matchOdd: MatchOdd) {
@@ -402,26 +432,26 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initKeyBoard(loginBoolean: Boolean) {
-        keyboard =
-            KeyBoardUtil(
-                binding.kvKeyboard,
-                null,
-                sConfigData?.presetBetAmount ?: mutableListOf(),
-                loginBoolean,
-                GameConfigManager.maxBetMoney?.toLong(),
-                object : KeyBoardUtil.KeyBoardViewListener {
-                    override fun showLoginNotice() {
-                        setSnackBarNotify(isLogin = false)
-                    }
-
-                    override fun showOrHideKeyBoardBackground(isShow: Boolean, position: Int?) {
-                        shadow.visibility = if (isShow) View.VISIBLE else View.GONE
-                        ll_keyboard_bg.visibility = if (isShow) View.VISIBLE else View.GONE
-                        if (position != null) {
-                            rv_bet_list.scrollToPosition(position)
-                        }
-                    }
-                })
+//        keyboard =
+//            KeyBoardUtil(
+//                binding.kvKeyboard,
+//                null,
+//                sConfigData?.presetBetAmount ?: mutableListOf(),
+//                loginBoolean,
+//                GameConfigManager.maxBetMoney?.toLong(),
+//                object : KeyBoardUtil.KeyBoardViewListener {
+//                    override fun showLoginNotice() {
+//                        setSnackBarNotify(isLogin = false)
+//                    }
+//
+//                    override fun showOrHideKeyBoardBackground(isShow: Boolean, position: Int?) {
+//                        shadow.visibility = if (isShow) View.VISIBLE else View.GONE
+//                        ll_keyboard_bg.visibility = if (isShow) View.VISIBLE else View.GONE
+//                        if (position != null) {
+//                            rv_bet_list.scrollToPosition(position)
+//                        }
+//                    }
+//                })
     }
 
     private fun initObserver() {
@@ -437,7 +467,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
 
         viewModel.oddsType.observe(viewLifecycleOwner) {
-            keyboard?.hideKeyboard()
+            //keyboard?.hideKeyboard()
             betListRefactorAdapter?.oddsType = it
             oddsType = it
         }
@@ -505,27 +535,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         showOddChangeWarn = false
                         btn_bet.isOddsChanged = false
                         showHideWarn()
-                        if(isTimeAtStart(result.receipt?.betConfirmTime)){
-                            val spannableStringBuilder = SpannableStringBuilder()
-                            var text1 = SpannableString(getString(R.string.text_bet_not_success))
-                            var text2= SpannableString(getString(R.string.text_bet_not_success2))
-                            val foregroundSpan = ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.colorRedDark))
-                            text2.setSpan(foregroundSpan, 0, text2.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                            var text3 = SpannableString(getString(R.string.text_bet_not_success3))
-                            var text4 = SpannableString(getString(R.string.text_bet_not_success4))
-                            val foregroundSpan2 = ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.colorRedDark))
-                            text4.setSpan(foregroundSpan2, 0, text4.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                            spannableStringBuilder.append(text1)
-                            spannableStringBuilder.append(text2)
-                            spannableStringBuilder.append(text3)
-                            spannableStringBuilder.append(text4)
-                            showPromptDialog(
-                                title = getString(R.string.prompt),
-                                message = spannableStringBuilder,
-                                success = result.success
-                            ){
-                                viewModel.navTranStatus()
-                            }
+                        if (result.receipt?.singleBets?.any { singleBet -> singleBet.status == 0 } == true || result.receipt?.parlayBets?.any { parlayBet -> parlayBet.status == 0 } == true) {
+                            mHandler.removeMessages(BET_CONFIRM_TIPS)
+                            mHandler.sendMessage(Message().apply {
+                                what = BET_CONFIRM_TIPS
+                            })
                         }
                     } else {
                         showErrorPromptDialog(getString(R.string.prompt), resultNotNull.msg) {}
@@ -792,7 +806,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             if (listData.subscribeChannelType == ChannelType.HALL) {
                 subscribeChannelHall(
                     listData.matchOdd.gameType,
-                    listData.playCateMenuCode,
                     listData.matchOdd.matchId
                 )
             } else {
@@ -827,6 +840,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     companion object {
+        private const val BET_CONFIRM_TIPS = 1001
+
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.

@@ -25,39 +25,41 @@ class CustomKeyBoardView(context: Context?, attrs: AttributeSet?) : KeyboardView
             val keys = keyboard.keys
             for (key in keys) {
                 if (
-                    key.codes[0] == KeyBoardCode.PLUS_10.code ||
+                    key.codes[0] == KeyBoardCode.PLUS_25.code ||
                     key.codes[0] == KeyBoardCode.PLUS_50.code ||
-                    key.codes[0] == KeyBoardCode.PLUS_100.code ||
-                    key.codes[0] == KeyBoardCode.MAX.code ||
-                    key.codes[0] == KEYCODE_DONE
+                    key.codes[0] == KeyBoardCode.PLUS_75.code ||
+                    key.codes[0] == KeyBoardCode.PLUS_100.code
                 ) {
-                    setDrawable(canvas, key, R.drawable.bg_keyboard_count)
+                    setDrawable(canvas, key, R.drawable.bg_radius_4_button_white)
+                    paint.color = context.getColor(R.color.color_060F20)
 
-                    if(key.codes[0] == KeyBoardCode.PLUS_10.code ||
+                    if(key.codes[0] == KeyBoardCode.PLUS_25.code ||
                         key.codes[0] == KeyBoardCode.PLUS_50.code ||
-                        key.codes[0] == KeyBoardCode.PLUS_100.code ||
-                        key.codes[0] == KeyBoardCode.MAX.code){
+                        key.codes[0] == KeyBoardCode.PLUS_75.code ||
+                        key.codes[0] == KeyBoardCode.PLUS_100.code) {
                         paint.typeface = Typeface.DEFAULT_BOLD
                     }else{
                         paint.typeface = Typeface.DEFAULT
                     }
 
-                    if( key.codes[0] == KeyBoardCode.PLUS_10.code ||
+                    if(key.codes[0] == KeyBoardCode.PLUS_25.code ||
                         key.codes[0] == KeyBoardCode.PLUS_50.code ||
+                        key.codes[0] == KeyBoardCode.PLUS_75.code ||
                         key.codes[0] == KeyBoardCode.PLUS_100.code){
-                        paint.color = context.getColor(R.color.colorGray)
+                        paint.typeface = Typeface.DEFAULT_BOLD
+                        paint.color = context.getColor(R.color.color_060F20)
                     }else{
-                        paint.color = context.getColor(R.color.colorBlackLight)
+                        paint.color = context.getColor(R.color.color_060F20)
                     }
                     
                 } else if (key.codes[0] == KEYCODE_DELETE) {
                     setDrawable(canvas, key, R.drawable.bg_keyboard_delete)
                     paint.typeface = Typeface.DEFAULT
-                    paint.color = context.getColor(R.color.colorBlackLight)
+                    paint.color = context.getColor(R.color.white)
                 } else {
-                    setDrawable(canvas, key, R.drawable.bg_keyboard_number)
+                    setDrawable(canvas, key, R.drawable.bg_radius_4_button_7c7c7c)
                     paint.typeface = Typeface.DEFAULT_BOLD
-                    paint.color = context.getColor(R.color.colorBlackLight)
+                    paint.color = context.getColor(R.color.white)
                 }
 
                 paint.textAlign = Paint.Align.CENTER

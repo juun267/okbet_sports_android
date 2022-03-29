@@ -8,8 +8,8 @@ abstract class BaseSocketDialog<T : BaseViewModel>(clazz: KClass<T>) : BaseDialo
         (activity as BaseSocketActivity<*>).receiver
     }
 
-    protected fun subscribeChannelHall(gameType: String?, cateMenuCode: String?, eventId: String?) {
-        (activity as BaseSocketActivity<*>).subscribeChannelHall(gameType, cateMenuCode, eventId)
+    protected fun subscribeChannelHall(gameType: String?, eventId: String?) {
+        (activity as BaseSocketActivity<*>).subscribeChannelHall(gameType, eventId)
     }
 
     protected fun subscribeChannelEvent(eventId: String?) {

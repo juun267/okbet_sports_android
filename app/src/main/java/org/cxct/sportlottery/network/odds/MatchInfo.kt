@@ -29,7 +29,7 @@ data class MatchInfo(
     @Json(name = "leagueId")
     val leagueId: String? = null,
     @Json(name = "leagueName")
-    val leagueName: String? = null,
+    var leagueName: String? = null,
     @Json(name = "name")
     var name: String? = null,
     @Json(name = "img")

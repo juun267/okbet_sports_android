@@ -28,7 +28,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
     val receiver: ServiceBroadcastReceiver by inject()
 
-    private lateinit var backService: BackService
+    private var backService: BackService? = null
     private var isServiceBound = false
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
@@ -66,7 +66,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
             when (status) {
                 ServiceConnectStatus.RECONNECT_FREQUENCY_LIMIT -> {
                     hideLoading()
-                    showErrorPromptDialog(getString(R.string.message_socket_connect)) { backService.doReconnect() }
+                    showErrorPromptDialog(getString(R.string.message_socket_connect)) { backService?.doReconnect() }
                 }
                 ServiceConnectStatus.CONNECTING -> {
                     loading()
@@ -141,21 +141,20 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
     }
 
     fun subscribeSportChannelHall(gameTypeCode: String ?= null){
-        backService.subscribeSportChannelHall(gameTypeCode)
+        backService?.subscribeSportChannelHall(gameTypeCode)
     }
 
     fun subscribeChannelHall(
         gameType: String?,
-        cateMenuCode: String?,
         eventId: String?
     ) {
-        backService.subscribeHallChannel(gameType, cateMenuCode, eventId)
+        backService?.subscribeHallChannel(gameType, eventId)
     }
 
     fun subscribeChannelEvent(
         eventId: String?
     ) {
-        backService.subscribeEventChannel(eventId)
+        backService?.subscribeEventChannel(eventId)
     }
 
     fun unSubscribeChannelHall(
@@ -163,39 +162,51 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         cateMenuCode: String?,
         eventId: String?
     ) {
-        backService.unsubscribeHallChannel(gameType, cateMenuCode, eventId)
+        backService?.unsubscribeHallChannel(gameType, cateMenuCode, eventId)
+    }
+
+    fun unSubscribeChannelHall(
+        eventId: String?
+    ) {
+        backService?.unsubscribeHallChannel(eventId)
     }
 
     fun unSubscribeChannelEvent(eventId: String?) {
-        backService.unsubscribeEventChannel(eventId)
+        backService?.unsubscribeEventChannel(eventId)
+    }
+
+    fun unsubscribeHallChannel(eventId: String?) {
+        backService?.unsubscribeHallChannel(eventId)
     }
 
     fun unSubscribeChannelHallAll() {
-        backService.unsubscribeAllHallChannel()
+        backService?.unsubscribeAllHallChannel()
     }
 
+    @Deprecated("現在訂閱時不會帶入CateCode，故無法使用此方式解除訂閱")
     fun unsubscribeAllHomeInPlayHallChannel() {
-        backService.unsubscribeAllHomeInPlayHallChannel()
+        backService?.unsubscribeAllHomeInPlayHallChannel()
     }
 
+    @Deprecated("現在訂閱時不會帶入CateCode，故無法使用此方式解除訂閱")
     fun unsubscribeAllHomeAtSatrtHallChannel() {
-        backService.unsubscribeAllHomeAtSatrtHallChannel()
+        backService?.unsubscribeAllHomeAtSatrtHallChannel()
     }
 
     fun unSubscribeChannelHallSport(){
-        backService.unsubscribeSportHallChannel()
+        backService?.unsubscribeSportHallChannel()
     }
 
     fun unSubscribeChannelEventAll() {
-        backService.unsubscribeAllEventChannel()
+        backService?.unsubscribeAllEventChannel()
     }
 
     fun betListPageSubscribeEvent() {
-        backService.betListPageSubscribeEvent()
+        backService?.betListPageSubscribeEvent()
     }
 
     fun betListPageUnSubScribeEvent() {
-        backService.betListPageUnSubScribeEvent()
+        backService?.betListPageUnSubScribeEvent()
     }
 
     override fun onStart() {

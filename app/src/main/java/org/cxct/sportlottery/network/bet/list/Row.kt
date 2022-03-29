@@ -35,7 +35,11 @@ data class Row (
     @Json(name = "rebateAmount")
     val rebateAmount: Double?,
     @Json(name = "settleTime")
-    val settleTime: String?,
+    val settleTime: Long?,
+    @Json(name = "updateTime")
+    val updateTime: Long?,
+    @Json(name = "betConfirmTime")
+    val betConfirmTime: Long? = 0,
     @Json(name = "stake")
     val stake: Double,
     @Json(name = "status")

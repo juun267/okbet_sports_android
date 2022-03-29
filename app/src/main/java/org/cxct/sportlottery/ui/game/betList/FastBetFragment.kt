@@ -5,11 +5,14 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.text.Html
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -22,13 +25,6 @@ import kotlinx.android.synthetic.main.button_bet.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item.*
 import kotlinx.android.synthetic.main.content_bet_info_item.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail.*
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.*
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.button_bet
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.button_fast_bet_setting
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.kv_keyboard
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.tv_add_to_bet_info
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.tv_current_money
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.tv_odd_content_changed
 import kotlinx.android.synthetic.main.fragment_bottom_sheet_betinfo_item.*
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
@@ -50,8 +46,6 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.bet.list.*
 import org.cxct.sportlottery.ui.bet.list.receipt.BetInfoCarReceiptDialog
-import org.cxct.sportlottery.ui.common.CustomAlertDialog
-import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
@@ -61,6 +55,10 @@ import org.cxct.sportlottery.util.*
 const val INPLAY: Int = 1
 
 class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
+
+    companion object {
+        private const val BET_CONFIRM_TIPS = 1001
+    }
 
     private lateinit var binding: FragmentBottomSheetBetinfoItemBinding
 
@@ -123,24 +121,57 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
         }
 
-    private val keyboard: KeyBoardUtil by lazy {
-        KeyBoardUtil(
-            kv_keyboard,
-            null,
-            sConfigData?.presetBetAmount ?: mutableListOf(),
-            isLogin ?: false,
-            GameConfigManager.maxBetMoney?.toLong(),
-            object : KeyBoardUtil.KeyBoardViewListener {
-                override fun showLoginNotice() {
-                    setSnackBarNotify(isLogin = false)
-                }
+//    private val keyboard: KeyBoardUtil by lazy {
+//        KeyBoardUtil(
+//            binding.kvKeyboard,
+//            null,
+//            sConfigData?.presetBetAmount ?: mutableListOf(),
+//            isLogin ?: false,
+//            GameConfigManager.maxBetMoney?.toLong(),
+//            object : KeyBoardUtil.KeyBoardViewListener {
+//                override fun showLoginNotice() {
+//                    setSnackBarNotify(isLogin = false)
+//                }
+//
+//                override fun showOrHideKeyBoardBackground(isShow: Boolean, position: Int?) {
+//                    binding.llKeyboardBg.visibility = if(isShow) View.VISIBLE else View.GONE
+//                    //v_keyboard_shadow.visibility = if(isShow) View.VISIBLE else View.GONE
+//                }
+//            }
+//        )
+//    }
 
-                override fun showOrHideKeyBoardBackground(isShow: Boolean, position: Int?) {
-                    ll_keyboard_bg.visibility = if(isShow) View.VISIBLE else View.GONE
-                    v_keyboard_shadow.visibility = if(isShow) View.VISIBLE else View.GONE
+    private val mHandler = object : Handler(Looper.getMainLooper()) {
+        override fun handleMessage(msg: Message) {
+            when (msg.what) {
+                BET_CONFIRM_TIPS -> {
+                    val spannableStringBuilder = SpannableStringBuilder()
+                    val text1 = SpannableString(getString(R.string.text_bet_not_success))
+                    val text2 = SpannableString(getString(R.string.text_bet_not_success2))
+                    val foregroundSpan =
+                        ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.colorRedDark))
+                    text2.setSpan(foregroundSpan, 0, text2.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    val text3 = SpannableString(getString(R.string.text_bet_not_success3))
+                    val text4 = SpannableString(getString(R.string.text_bet_not_success4))
+                    val foregroundSpan2 =
+                        ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.colorRedDark))
+                    text4.setSpan(foregroundSpan2, 0, text4.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    spannableStringBuilder.append(text1)
+                    spannableStringBuilder.append(text2)
+                    spannableStringBuilder.append(text3)
+                    spannableStringBuilder.append(text4)
+                    showPromptDialog(
+                        title = getString(R.string.prompt),
+                        message = spannableStringBuilder,
+                        success = true
+                    ) {
+                        dismiss()
+                        //(activity as GameActivity).
+                        viewModel.navTranStatus()
+                    }
                 }
             }
-        )
+        }
     }
 
     override fun onCreateView(
@@ -176,7 +207,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initClose() {
-        iv_close.setOnClickListener {
+        binding.ivClose.setOnClickListener {
             viewModel.removeBetInfoSingle()
             dismiss()
         }
@@ -189,12 +220,15 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
 
     private fun initKeyBoard() {
-        et_bet.setOnTouchListener { view, event ->
+        binding.etBet.setOnTouchListener { view, event ->
             if (event.action == MotionEvent.ACTION_UP) {
-                if (matchOdd?.status == BetStatus.ACTIVATED.code) keyboard.showKeyboard(
+                if (matchOdd?.status == BetStatus.ACTIVATED.code)
+                    binding.etBet.isFocusable = true
+                    binding.layoutKeyBoard.showKeyboard(
                     view as EditText,
                     null,
-                    betInfoListData?.parlayOdds?.max?.toLong() ?: GameConfigManager.maxBetMoney?.toLong() ?: 0
+                    betInfoListData?.parlayOdds?.max?.toLong() ?: GameConfigManager.maxBetMoney?.toLong() ?: 0,
+                    betInfoListData?.parlayOdds?.min?.toLong()?:0
                 )
             }
             false
@@ -204,7 +238,6 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun initBetButton() {
         ll_root.setOnClickListener {  }
-
         button_bet.apply {
             tv_login.setOnClickListener {
                 requireContext().startActivity(Intent(requireContext(), LoginActivity::class.java))
@@ -241,28 +274,31 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             it.visibility = View.GONE
             ll_win_quota_detail.visibility = View.VISIBLE
 
-            et_bet.apply {
+            binding.etBet.apply {
                 setText(parlayOdd?.max.toString())
                 isFocusable = true
                 setSelection(text.length)
             }
-            keyboard.showKeyboard(et_bet, null, betInfoListData?.parlayOdds?.max?.toLong() ?: GameConfigManager.maxBetMoney?.toLong() ?: 0)
+            binding.layoutKeyBoard.showKeyboard(binding.etBet,null,
+                betInfoListData?.parlayOdds?.max?.toLong() ?: GameConfigManager.maxBetMoney?.toLong() ?: 0,
+                betInfoListData?.parlayOdds?.min?.toLong()  ?: 0)
+            //keyboard.showKeyboard(binding.etBet, null, betInfoListData?.parlayOdds?.max?.toLong() ?: GameConfigManager.maxBetMoney?.toLong() ?: 0)
         }
     }
 
 
     private fun initEditText() {
-        et_bet.apply {
+        binding.etBet.apply {
             filters = arrayOf(MoneyInputFilter())
         }
 
-        et_bet.afterTextChanged {
+        binding.etBet.afterTextChanged {
             button_bet.tv_quota.text =
                 TextUtil.formatMoney(if (it.isEmpty()) 0.0 else (it.toDoubleOrNull() ?: 0.0))
 
             if (it.isEmpty()) {
                 button_bet.tv_quota.text = TextUtil.formatBetQuota(0)
-                tvRealAmount.text = ArithUtil.toMoneyFormat(0.0)
+                binding.tvRealAmount.text = ArithUtil.toMoneyFormat(0.0)
                 tv_check_maximum_limit.visibility = View.GONE
                 ll_bet_quota_detail.visibility = View.GONE
                 ll_win_quota_detail.visibility = View.VISIBLE
@@ -278,8 +314,8 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
                 betInfoListData?.parlayOdds?.max?.let { max ->
                     if (quota > max) {
-                        et_bet.setText(max.toString())
-                        et_bet.setSelection(max.toString().length)
+                        binding.etBet.setText(max.toString())
+                        binding.etBet.setSelection(max.toString().length)
                         return@afterTextChanged
                     }
                 }
@@ -299,32 +335,32 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     OddsType.MYS -> {
                         if (getOdds(matchOdd, currentOddsType) < 0) {
                             realAmount = quota * kotlin.math.abs(getOdds(matchOdd, currentOddsType))
-                            tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
+                            binding.tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
                             win = quota
                         } else {
                             win = quota * getOdds(matchOdd, currentOddsType)
-                            tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
+                            binding.tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
                         }
 
                     }
                     OddsType.IDN -> {
                         if (getOdds(matchOdd, currentOddsType) < 0) {
                             realAmount = quota * kotlin.math.abs(getOdds(matchOdd, currentOddsType))
-                            tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
+                            binding.tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
                             win = quota
                         } else {
                             win = quota * getOdds(matchOdd, currentOddsType)
-                            tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
+                            binding.tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
                         }
                     }
                     OddsType.EU -> {
                         win = quota * (getOdds(matchOdd, currentOddsType) - 1)
-                        tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
+                        binding.tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
 
                     }
                     else -> {
                         win = quota * getOdds(matchOdd, currentOddsType)
-                        tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
+                        binding.tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
                     }
                 }
                 button_bet.tv_quota.text = TextUtil.format(realAmount)
@@ -357,16 +393,16 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun checkMinQuota(quota: Double) {
         betInfoListData?.parlayOdds?.min?.let { min ->
             if (quota < min) {
-                tv_error_message.text = String.format(
+                binding.tvErrorMessage.text = String.format(
                     (context
                         ?: requireContext()).getString(R.string.bet_info_list_minimum_limit_amount),
                     min,
                     sConfigData?.systemCurrency
                 )
-                tv_error_message.visibility = View.VISIBLE
+                binding.tvErrorMessage.visibility = View.VISIBLE
                 button_bet.amountCanBet = false
             } else {
-                tv_error_message.visibility = View.GONE
+                binding.tvErrorMessage.visibility = View.GONE
                 button_bet.amountCanBet = true
             }
         }
@@ -383,14 +419,26 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
         }
 
-        viewModel.betInfoList.observe(this.viewLifecycleOwner) {
+        viewModel.betInfoList.observe(this.viewLifecycleOwner) { it ->
             it.peekContent().let { list ->
                 if (list.isNotEmpty()) {
                     betInfoListData = list.getOrNull(0)
                     if (list.size > 1) {
                         dismiss()
                     }
-
+                    matchOdd?.let { matchOdd->
+                        //並不是每筆資料都有滾球的Booleam可以判斷 所以改用時間
+                        var inPlay = System.currentTimeMillis() > matchOdd.startTime ?: 0
+                        if(matchOdd.startTime == null)
+                            inPlay = false
+                        if (inPlay){
+                            tvInGame.visibility = View.VISIBLE
+                        }else{
+                            tvInGame.visibility = View.GONE
+                        }
+                        binding.tvLeagueName.text = matchOdd.leagueName
+                        binding.ivSportLogo.setImageResource(GameType.getGameTypeIcon(GameType.getGameType(matchOdd.gameType)!!))
+                    }
                     val betAmount = betInfoListData?.betAmount ?: 0.0
 //                    var win = betAmount * getOdds(matchOdd, oddsType)
 //                    if (oddsType == OddsType.EU) {
@@ -414,11 +462,11 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                                         currentOddsType
                                     )
                                 )
-                                tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
+                                binding.tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
                                 win = betAmount
                             } else {
                                 win = betAmount * getOdds(matchOdd, currentOddsType)
-                                tvRealAmount.text = ArithUtil.toMoneyFormat(betAmount)
+                                binding.tvRealAmount.text = ArithUtil.toMoneyFormat(betAmount)
                             }
 
                         }
@@ -430,21 +478,21 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                                         currentOddsType
                                     )
                                 )
-                                tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
+                                binding.tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
                                 win = betAmount
                             } else {
                                 win = betAmount * getOdds(matchOdd, currentOddsType)
-                                tvRealAmount.text = ArithUtil.toMoneyFormat(betAmount)
+                                binding.tvRealAmount.text = ArithUtil.toMoneyFormat(betAmount)
                             }
                         }
                         OddsType.EU -> {
                             win = betAmount * (getOdds(matchOdd, currentOddsType) - 1)
-                            tvRealAmount.text = ArithUtil.toMoneyFormat(betAmount)
+                            binding.tvRealAmount.text = ArithUtil.toMoneyFormat(betAmount)
 
                         }
                         else -> {
                             win = betAmount * getOdds(matchOdd, currentOddsType)
-                            tvRealAmount.text = ArithUtil.toMoneyFormat(betAmount)
+                            binding.tvRealAmount.text = ArithUtil.toMoneyFormat(betAmount)
                         }
                     }
 
@@ -479,30 +527,12 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         dismiss()
                     }
                 } else {
-                    if(TimeUtil.isTimeAtStart(result.receipt?.betConfirmTime)){
-                        val spannableStringBuilder = SpannableStringBuilder()
-                        var text1 = SpannableString(getString(R.string.text_bet_not_success))
-                        var text2= SpannableString(getString(R.string.text_bet_not_success2))
-                        val foregroundSpan = ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.colorRedDark))
-                        text2.setSpan(foregroundSpan, 0, text2.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                        var text3 = SpannableString(getString(R.string.text_bet_not_success3))
-                        var text4 = SpannableString(getString(R.string.text_bet_not_success4))
-                        val foregroundSpan2 = ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.colorRedDark))
-                        text4.setSpan(foregroundSpan2, 0, text4.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                        spannableStringBuilder.append(text1)
-                        spannableStringBuilder.append(text2)
-                        spannableStringBuilder.append(text3)
-                        spannableStringBuilder.append(text4)
-                        showPromptDialog(
-                            title = getString(R.string.prompt),
-                            message = spannableStringBuilder,
-                            success = result.success
-                        ){
-                            dismiss()
-                            //(activity as GameActivity).
-                            viewModel.navTranStatus()
-                        }
-                    }else{
+                    if (result.receipt?.singleBets?.any { singleBet -> singleBet.status == 0 } == true || result.receipt?.parlayBets?.any { parlayBet -> parlayBet.status == 0 } == true) {
+                        mHandler.removeMessages(BET_CONFIRM_TIPS)
+                        mHandler.sendMessage(Message().apply {
+                            what = BET_CONFIRM_TIPS
+                        })
+                    } else {
                         showBottomSheetDialog(result)
                     }
                 }
@@ -567,14 +597,20 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun setupCurrentMoney(money: Double) {
-        tv_current_money.text = "${TextUtil.formatMoney(money)} ${sConfigData?.systemCurrency}"
+        //tv_current_money.text = "${TextUtil.formatMoney(money)} ${sConfigData?.systemCurrency}"
 
     }
 
 
     private fun setupCurrentMoneyView(isLogin: Boolean) {
-        ivBetMoney.visibility = if (isLogin) View.VISIBLE else View.GONE
-        tv_current_money.visibility = if (isLogin) View.VISIBLE else View.GONE
+//        ivBetMoney.visibility = if (isLogin) View.VISIBLE else View.GONE
+//        tv_current_money.visibility = if (isLogin) View.VISIBLE else View.GONE
+//        if (isLogin){
+//            tv_odd_content_changed.visibility = View.GONE
+//        }else{
+//            tv_odd_content_changed.visibility = View.VISIBLE
+//            tv_odd_content_changed.text = getString(R.)
+//        }
     }
 
 
@@ -588,7 +624,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
     ) {
         //隊伍名稱
-        tv_match.text =
+        binding.tvMatch.text =
             if (betInfoListData?.matchType == MatchType.OUTRIGHT) betInfoListData?.outrightMatchInfo?.name
             else "${matchOdd.homeName}${getString(R.string.verse_)}${matchOdd.awayName}"
 
@@ -600,7 +636,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         val inPlay = System.currentTimeMillis() > matchOdd.startTime ?: 0
         when {
             betPlayCateNameMap.isNullOrEmpty() -> {
-                tv_name.text = if (inPlay && betInfoListData?.matchType != MatchType.OUTRIGHT) {
+                binding.tvName.text = if (inPlay && betInfoListData?.matchType != MatchType.OUTRIGHT) {
                     getString(
                         R.string.bet_info_in_play_score,
                         nameOneLine(matchOdd.playCateName),
@@ -610,7 +646,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 } else nameOneLine(matchOdd.playCateName)
             }
             else -> {
-                tv_name.text = if (inPlay && betInfoListData?.matchType != MatchType.OUTRIGHT) {
+                binding.tvName.text = if (inPlay && betInfoListData?.matchType != MatchType.OUTRIGHT) {
                     getString(
                         R.string.bet_info_in_play_score,
                         betPlayCateNameMap?.get(matchOdd.playCode)
@@ -626,33 +662,36 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
 
         if (matchOdd.status == BetStatus.ACTIVATED.code) {
-            cl_item_background.setBackgroundColor(
+            binding.clItemBackground.setBackgroundColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.colorWhite
                 )
             )
-            iv_bet_lock.visibility = View.GONE
-            et_bet.isFocusable = true
-            et_bet.isFocusableInTouchMode = true
+            binding.ivBetLock.visibility = View.GONE
+            binding.viewGrey.visibility = View.VISIBLE
+            binding.etBet.isFocusable = true
+            binding.etBet.isFocusableInTouchMode = true
             cl_quota_detail.visibility = View.VISIBLE
             cl_close_waring.visibility = View.GONE
         } else {
-            cl_item_background.setBackgroundColor(
+            binding.clItemBackground.setBackgroundColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.colorWhite2
                 )
             )
-            iv_bet_lock.visibility = View.VISIBLE
-            et_bet.isFocusable = false
-            et_bet.isFocusableInTouchMode = false
-            keyboard.hideKeyboard()
+            binding.ivBetLock.visibility = View.VISIBLE
+            binding.viewGrey.visibility = View.INVISIBLE
+            binding.etBet.isFocusable = false
+            binding.etBet.isFocusableInTouchMode = false
+            binding.layoutKeyBoard.hideKeyboard()
             cl_quota_detail.visibility = View.GONE
             cl_close_waring.visibility = View.VISIBLE
         }
 
         if (matchOdd.spreadState != SpreadState.SAME.state || matchOdd.oddState != OddState.SAME.state) {
+            tv_odd_content_changed.text = getString(R.string.bet_info_odd_content_changed)
             tv_odd_content_changed.visibility = View.VISIBLE
             button_bet.isOddsChanged = true
         }
@@ -660,7 +699,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
 
         betInfoListData?.let { betInfoData ->
-            et_bet.apply {
+            binding.etBet.apply {
 //                hint = getLimitHint(
 //                    context,
 //                    betInfoListData?.parlayOdds?.min ?: 0,
@@ -677,7 +716,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 oddsType
             }
             betInfoData.singleBetOddsType = currentOddsType
-            OddSpannableString.setupOddsContent(betInfoData, currentOddsType, tv_odds_content)
+            OddSpannableString.setupOddsContent(betInfoData, currentOddsType, binding.tvOddsContent)
         }
     }
 
@@ -702,7 +741,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun addBetSingle() {
         if (matchOdd?.status == BetStatus.LOCKED.code || matchOdd?.status == BetStatus.DEACTIVATED.code) return
-        val stake = if (et_bet.text.toString().isEmpty()) 0.0 else et_bet.text.toString().toDouble()
+        val stake = if (binding.etBet.text.toString().isEmpty()) 0.0 else binding.etBet.text.toString().toDouble()
 
         if (stake > currentMoney ?: 0.0) {
             showErrorPromptDialog(

@@ -13,3 +13,10 @@ enum class TransferType(val type: String) {
     CRYPTO("cryptoTransfer"), //虛擬幣
     E_WALLET("eWalletTransfer") //e wallet
 }
+
+/**
+ * 銀行類型 bankType 0:銀行卡, 1:eWallet
+ */
+enum class BankType{
+    BANK, E_WALLET
+}

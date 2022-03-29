@@ -28,18 +28,20 @@ data class MatchOdd(
     @Json(name = "dynamicMarkets")
     val dynamicMarkets: Map<String, DynamicMarket>? = null,
     @Json(name = "quickPlayCateList")
-    override val quickPlayCateList: MutableList<QuickPlayCate>? = null,
+    override var quickPlayCateList: MutableList<QuickPlayCate>? = null,
     @Json(name = "oddsSort")
-    override val oddsSort: String? = null
+    override var oddsSort: String? = null
 ) : MatchOdd {
 
     override val oddsEps: EpsOdd? = null
+    var rvScrollPos: Int? = null
 
     @Deprecated("之後翻譯都要改用playCateNameMap，下注顯示用betPlayCateNameMap")
     override var playCateMappingList: List<PlayCateMapItem>? = null
 
     var isExpand = false
     var leagueTime: Int? = null
+    var leagueName:String = ""
     var stopped:Int? = 0
 
     var positionButtonPage = 0

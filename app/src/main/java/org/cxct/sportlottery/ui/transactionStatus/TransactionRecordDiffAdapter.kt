@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.transactionStatus
 
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,17 +19,14 @@ import kotlinx.android.synthetic.main.content_outright_record.view.content_play
 import kotlinx.android.synthetic.main.content_outright_record.view.content_time_type
 import kotlinx.android.synthetic.main.content_outright_record.view.content_winnable_amount
 import kotlinx.android.synthetic.main.content_outright_record.view.title_league_name
-import kotlinx.android.synthetic.main.content_parlay_match.view.*
 import kotlinx.android.synthetic.main.content_parlay_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TextUtil.getParlayShowName
 import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.setDateTime
 import org.cxct.sportlottery.util.setPlayContent
 
 //TODO 20210719當前api缺少總金額,待後端修正後進行確認
@@ -115,12 +113,30 @@ class TransactionRecordDiffAdapter :
                 play_content.setPlayContent(
                     matchOdds.playName,
                     matchOdds.spread,
-                    TextUtil.formatForOdd(matchOdds.odds),
-                    matchOdds.oddsType
+                    TextUtil.formatForOdd(matchOdds.odds)
                 )
 
                 match_play_time.text = TimeUtil.timeFormat(matchOdds.startTime, TimeUtil.YMD_HM_FORMAT)
                 content_play.text = "${getGameTypeName(data.gameType)} ${matchOdds.playCateName}"
+
+                if(data.betConfirmTime?.toInt() != 0){
+                    val leftTime = data.betConfirmTime?.minus(TimeUtil.getNowTimeStamp())
+                    object : CountDownTimer(leftTime ?: 0, 1000) {
+
+                        override fun onTick(millisUntilFinished: Long) {
+                            tv_count_down.text = "${TimeUtil.longToSecond(millisUntilFinished)} ${context.getString(R.string.sec)}"
+                        }
+
+                        override fun onFinish() {
+                            tv_count_down.text = "0 ${context.getString(R.string.sec)}"
+//                            tv_count_down.visibility = View.GONE
+                        }
+                    }.start()
+                }else{
+                    tv_count_down.visibility = View.GONE
+                }
+
+
                 content_bet_amount.text = TextUtil.format(data.totalAmount)
                 content_winnable_amount.text = TextUtil.format(data.winnable)
                 content_order_no.text = data.orderNo
@@ -168,8 +184,7 @@ class TransactionRecordDiffAdapter :
                 play_content.setPlayContent(
                     matchOdds.playName,
                     matchOdds.spread,
-                    TextUtil.formatForOdd(matchOdds.odds),
-                    matchOdds.oddsType
+                    TextUtil.formatForOdd(matchOdds.odds)
                 )
                 matchOdds.startTime?.let {
                     play_time.text = TimeUtil.timeFormat(it, TimeUtil.YMD_HM_FORMAT)
@@ -226,7 +241,8 @@ class TransactionRecordDiffAdapter :
                         LinearLayoutManager(itemView.context, RecyclerView.VERTICAL, false)
                     contentParlayMatchAdapter.setupMatchData(
                         getGameTypeName(data.gameType),
-                        data.matchOdds
+                        data.matchOdds,
+                        data.betConfirmTime
                     )
 
                 }
