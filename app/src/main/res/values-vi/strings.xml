@@ -959,6 +959,7 @@
     <string name="make_sure_valid_account">Lần rút tiền ban đầu sẽ tạm thời giữ lại %1$s %2$s để đảm bảo rằng bạn là tài khoản hợp lệ. Số tiền này sẽ được hoàn trả sau 30 ngày.</string>
     <string name="type_of_certificate">loại chứng chỉ</string>
     <string name="take_id_photo">Chụp ảnh giấy tờ tùy thân</string>
+    <string name="take_id_gallery">Chọn một bức ảnh</string>
     <string name="prepare_your_id_photo">Chuẩn bị ảnh ID của bạn</string>
     <string name="id_description">· Hãy chắc chắn rằng ảnh ID của bạn hướng lên trên\n· Đảm bảo rằng ảnh ID của bạn được hiển thị rõ ràng\n· Tránh nhấp nháy hoặc phản chiếu</string>
     <string name="identity_card">Identity Card</string>

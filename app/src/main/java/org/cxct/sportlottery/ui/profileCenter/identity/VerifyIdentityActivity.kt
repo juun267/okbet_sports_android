@@ -28,6 +28,11 @@ class VerifyIdentityActivity :
                 mNavController.popBackStack()
         }
     }
+
+
+    fun setToolBar(title:String){
+        tv_toolbar_title.text = title
+    }
     
     fun setToolBarTitleForDetail(){
         tv_toolbar_title.text = getString(R.string.scan_tool_bar)
