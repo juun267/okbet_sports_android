@@ -1259,6 +1259,18 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             it?.let { matchStatusChangeEvent ->
                 when (game_list.adapter) {
                     is LeagueAdapter -> {
+
+                        leagueAdapter.data.forEachIndexed { index, leagueOdd ->
+                            if(matchStatusChangeEvent.matchStatusCO?.status == GameMatchStatus.FINISH.value){
+                                leagueOdd.matchOdds.find {
+                                        m ->  m.matchInfo?.id == matchStatusChangeEvent.matchStatusCO.matchId
+                                }?.let { mo ->
+                                    leagueOdd.matchOdds.remove(mo)
+                                    leagueAdapter.notifyItemChanged(index)
+                                }
+                            }
+                        }
+
                         val leagueOdds = leagueAdapter.data
 
                         leagueOdds.forEachIndexed { index, leagueOdd ->
@@ -1272,7 +1284,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             ) {
                                 if (leagueOdd.matchOdds.isNullOrEmpty()) {
                                     leagueAdapter.data.remove(leagueOdd)
-                                    leagueAdapter.notifyItemChanged(index)
+                                    leagueAdapter.notifyItemRemoved(index)
                                 }
                                 //leagueAdapter.updateBySocket(index)
                             }
