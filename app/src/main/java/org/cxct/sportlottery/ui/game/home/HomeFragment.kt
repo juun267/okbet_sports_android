@@ -124,12 +124,19 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 unSubscribeChannelHall(gameType, cateMenuCode, id)
             }
             if (mSelectMatchType == MatchType.IN_PLAY) {
-                tableInPlayMap[gameType] = eventId ?: ""
+                mSubscribeInPlayGameID.remove(id)
+                eventId?.let {
+                    tableInPlayMap[gameType] = it
+                    mSubscribeInPlayGameID.add(it)
+                }
             }
             else {
-                tableSoonMap[gameType] = eventId ?: ""
+                mSubscribeAtStartGameID.remove(id)
+                eventId?.let {
+                    tableSoonMap[gameType] = it
+                    mSubscribeAtStartGameID.add(it)
+                }
             }
-            Timber.e("Dean subscribeChannelHall gameType = $gameType, cateMenuCode = $cateMenuCode, eventId = $eventId")
             subscribeChannelHall(gameType, eventId)
         }
     }
@@ -779,7 +786,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         }
     }
 
-    /*private fun unsubscribeTableHallChannel() {
+    private fun unsubscribeTableHallChannel() {
         mSubscribeInPlayGameID.forEach {
             if (!mSubscribeRecommendGameID.contains(it) && !mSubscribeHighlightGameID.contains(it)) {
                 unsubscribeHallChannel(it)
@@ -793,13 +800,11 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             }
         }
         mSubscribeAtStartGameID.clear()
-    }*/
+    }
 
     private fun unsubscribeUnSelectMatchTypeHallChannel() {
         lifecycleScope.launch {
-            //TODO 解除訂閱方法不適用，需要重新撰寫
-            unsubscribeAllHomeInPlayHallChannel()
-            unsubscribeAllHomeAtSatrtHallChannel()
+            unsubscribeTableHallChannel()
             tableInPlayMap.clear()
             tableSoonMap.clear()
         }

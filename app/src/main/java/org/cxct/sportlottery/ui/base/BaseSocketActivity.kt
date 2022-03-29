@@ -183,16 +183,6 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         backService?.unsubscribeAllHallChannel()
     }
 
-    @Deprecated("現在訂閱時不會帶入CateCode，故無法使用此方式解除訂閱")
-    fun unsubscribeAllHomeInPlayHallChannel() {
-        backService?.unsubscribeAllHomeInPlayHallChannel()
-    }
-
-    @Deprecated("現在訂閱時不會帶入CateCode，故無法使用此方式解除訂閱")
-    fun unsubscribeAllHomeAtSatrtHallChannel() {
-        backService?.unsubscribeAllHomeAtSatrtHallChannel()
-    }
-
     fun unSubscribeChannelHallSport(){
         backService?.unsubscribeSportHallChannel()
     }

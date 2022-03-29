@@ -33,17 +33,6 @@ abstract class BaseSocketFragment<T : BaseSocketViewModel>(clazz: KClass<T>) :
         (activity as BaseSocketActivity<*>).unSubscribeChannelEvent(eventId)
     }
 
-    @Deprecated("現在訂閱時不會帶入CateCode，故無法使用此方式解除訂閱")
-    protected fun unsubscribeAllHomeInPlayHallChannel() {
-        (activity as BaseSocketActivity<*>).unsubscribeAllHomeInPlayHallChannel()
-    }
-
-    @Deprecated("現在訂閱時不會帶入CateCode，故無法使用此方式解除訂閱")
-    protected fun unsubscribeAllHomeAtSatrtHallChannel() {
-        (activity as BaseSocketActivity<*>).unsubscribeAllHomeAtSatrtHallChannel()
-    }
-
-
     protected fun unsubscribeHallChannel(eventId: String?) {
         (activity as BaseSocketActivity<*>).unsubscribeHallChannel(eventId)
     }
