@@ -82,5 +82,7 @@ data class UserInfo(
     var verified: Int? = null, // 是否通过实名验证,0:未通过 1:已通过 2:验证中 3:验证失败
 
     @ColumnInfo(name = "perBetLimit")
-    val perBetLimit: Int? = null
+    val perBetLimit: Int? = null,
+
+    val uwEnableTime: String? = null
 )

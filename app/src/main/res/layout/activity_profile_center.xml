@@ -149,6 +149,7 @@
             android:background="@null"
             android:contentDescription="@null"
             android:tint="@color/white"
+            android:visibility="gone"
             android:src="@drawable/ic_info" />
 
         <ImageButton
