@@ -28,12 +28,13 @@ class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
     var onClickFavoriteListener: OnClickFavoriteListener? = null
     var onClickStatisticsListener: OnClickStatisticsListener? = null
     private val mOddStateRefreshListener by lazy {
-        object : OddStateViewHolder.OddStateChangeListener {
+        object : OddStateChangeListener {
             override fun refreshOddButton(odd: Odd) { }
         }
     }
 
     fun bind(data: MatchOdd, lastData: MatchOdd, oddsType: OddsType) {
+        itemView.testId.text = "${data.matchInfo?.leagueId} - ${data.matchInfo?.id}"
         setTitle(data,lastData)
         setupOddList(data)
         setupMatchInfo(data)
@@ -295,6 +296,6 @@ class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
             e.printStackTrace()
         }
     }
-    override val oddStateChangeListener: OddStateViewHolder.OddStateChangeListener
+    override val oddStateChangeListener: OddStateChangeListener
         get() = mOddStateRefreshListener
 }
