@@ -40,6 +40,8 @@ class RecommendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(data: RecommendGameEntity, oddsType: OddsType) {
         itemView.apply {
+            //TODO 測試textview, 測試完後移除
+            testId.text = "${data.leagueId} - ${data.matchInfo?.id}"
             block_match_info.setOnClickListener {
                 onClickMatchListener?.onClick(data)
             }
