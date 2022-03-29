@@ -55,6 +55,7 @@ import org.cxct.sportlottery.util.OddsSortUtil
 import org.cxct.sportlottery.util.OddsSortUtil.recommendSortOddsMap
 import org.cxct.sportlottery.util.RecyclerViewGridDecoration
 import org.cxct.sportlottery.util.TimeUtil
+import timber.log.Timber
 import kotlin.collections.ArrayList
 
 /**
@@ -471,7 +472,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
     fun getMatchOdd(): MutableList<MatchOdd> {
         val result = mutableListOf<MatchOdd>()
-        mDataList.filter { it is MatchOdd }.forEach { result.add(it as MatchOdd) }
+        mDataList.filterIsInstance<MatchOdd>().forEach { result.add(it) }
         return result
     }
     // endregion
@@ -775,6 +776,13 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     // endregion
 
     // region TODO HighLight 指定刷新內部 ViewPager 的 subItem
+    fun notifyHighLightItemChanged(matchOdd: MatchOdd) {
+        val notifyIndex = mDataList.indexOf(matchOdd)
+        if (notifyIndex != -1)
+            notifyItemChanged(notifyIndex)
+        else
+            Timber.i("notify HighLight item fail")
+    }
     fun notifyHighLightTimeChanged(diff: Int) {
         var isUpdate = false
         val list = getMatchOdd()

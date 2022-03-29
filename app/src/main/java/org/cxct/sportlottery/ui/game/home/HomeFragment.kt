@@ -1263,6 +1263,8 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                             filterCode
                         )//之後建enum class
                         updateMatchOdd.highlightFilterMenuPlayCate(playCateCode)
+
+                        mHomeListAdapter.notifyHighLightItemChanged(updateMatchOdd)
                     }
                     isUpdate = true
                 }
