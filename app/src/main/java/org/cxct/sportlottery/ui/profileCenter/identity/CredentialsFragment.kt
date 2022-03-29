@@ -16,6 +16,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.component.UploadImageView
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
+import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.RechargePicSelectorDialog
 import org.cxct.sportlottery.util.ToastUtil
 import timber.log.Timber
@@ -143,7 +144,14 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
                 else {
 //                    val action = CredentialsFragmentDirections.actionCredentialsFragmentToCredentialsDetailFragment(null)
 //                    findNavController().navigate(action)
-                    activity?.onBackPressed()
+                    showPromptDialog(
+                        title = getString(R.string.prompt),
+                        message = getString(R.string.upload_success),
+                        success = true
+                    ) {
+                        activity?.onBackPressed()
+                    }
+                    
                 }
             }
         })
@@ -178,12 +186,13 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
             view_identity_doc.apply {
                 imgUploaded(false)
                 tv_upload_title.text = getString(R.string.upload_title)
-                tv_upload_tips.text = getString(R.string.upload_tips)
+                tv_upload_tips.visibility = View.GONE
+                tv_upload.text = getString(R.string.upload_content)
                 uploadListener = UploadImageView.UploadListener {
-                    RechargePicSelectorDialog(
+                    PicSelectorDialog(
                         activityNotNull,
                         mSelectDocMediaListener,
-                        RechargePicSelectorDialog.CropType.RECTANGLE
+                        PicSelectorDialog.CropType.RECTANGLE
                     ).show(parentFragmentManager, CredentialsFragment::class.java.simpleName)
                 }
             }
@@ -191,12 +200,13 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
             view_identity_photo.apply {
                 imgUploaded(false)
                 tv_upload_title.text = getString(R.string.upload_photo_title)
-                tv_upload_tips.text = getString(R.string.upload_photo_tips)
+                tv_upload_tips.visibility = View.GONE
+                tv_upload.text = getString(R.string.upload_photo_content)
                 uploadListener = UploadImageView.UploadListener {
-                    RechargePicSelectorDialog(
+                    PicSelectorDialog(
                         activityNotNull,
                         mSelectPhotoMediaListener,
-                        RechargePicSelectorDialog.CropType.RECTANGLE
+                        PicSelectorDialog.CropType.RECTANGLE
                     ).show(parentFragmentManager, CredentialsFragment::class.java.simpleName)
                 }
             }
