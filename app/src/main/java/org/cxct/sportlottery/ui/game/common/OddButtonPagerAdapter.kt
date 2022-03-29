@@ -374,6 +374,8 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
 
                     map.key.contains(PlayCate.SINGLE.value) || map.key.contains(PlayCate.NGOAL.value) || map.key.contains(PlayCate.NGOAL_OT.value) -> 3
 
+                    map.value?.size ?: 0 < 3 -> 2
+
                     else -> 3
                 }
             map.value?.filterIndexed { index, _ ->
