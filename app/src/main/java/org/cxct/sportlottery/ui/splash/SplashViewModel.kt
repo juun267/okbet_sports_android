@@ -23,6 +23,7 @@ class SplashViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
+    private val userInfoRepository: UserInfoRepository,
     private val playQuotaComRepository: PlayQuotaComRepository
 ) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
@@ -99,6 +100,10 @@ class SplashViewModel(
         if (loginRepository.isCreditAccount.value == true || sConfigData?.thirdOpen != FLAG_OPEN)
             viewModelScope.launch {
                 loginRepository.checkToken()
+
+                if (!userInfoRepository.checkedUserInfo && isLogin.value == true) {
+                    userInfoRepository.getUserInfo()
+                }
             } else {
             _skipHomePage.postValue(false)
         }
