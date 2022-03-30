@@ -90,6 +90,7 @@ class BackService : Service() {
                 reconnect()
             } else {
                 Timber.d("==已建立連線==")
+                connect()
             }
         }
     }
