@@ -47,7 +47,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
         set(value) {
             this.playCateNameMap = playCateNameMap.addSplitPlayCateTranslation()
             var oddsSortCount = oddsSort?.split(",")?.size ?: 999 // 最大顯示數量
-            field = value.refactorPlayCode().sortOdds().splitPlayCate().reorganizePlay()
+            field = value.sortScores().refactorPlayCode().sortOdds().splitPlayCate()
                 .filterPlayCateSpanned().sortPlayCate()
             val gameList =
                 field.filterValues { !it.isNullOrEmpty() }.filter { it.value?.getOrNull(0) != null }
@@ -238,20 +238,30 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
     }
 
     /**
+     * 冒號後面的分數整理 需要取代翻譯的 {S}
      * FT: NOGAL(下個進球) 玩法需特殊處理
      * */
-    private fun Map<String, List<Odd?>?>.reorganizePlay(): Map<String, List<Odd?>?> {
+    private fun Map<String, List<Odd?>?>.sortScores(): Map<String, List<Odd?>?> {
 
-        var splitMap = mutableMapOf<String, List<Odd?>?>()
+        val splitMap: MutableMap<String, List<Odd?>?>
+        val rgzMap = this.filter { (key, _) -> key.contains(":") }
 
-        when (matchInfo?.gameType) {
-            GameType.FT.key -> {
+        when {
+            rgzMap.isNotEmpty() -> {
                 splitMap = this.toMutableMap()
-                splitMap.forEach { oddsMap ->
-                    if (oddsMap.key.contains("${PlayCate.NGOAL.value}:")) {
-                        splitMap[oddsMap.key]?.forEach {
-                            it?.nextScore =
-                                oddsMap.key.split("${PlayCate.NGOAL.value}:")[1] //nextScore 下個進球的分數會放在Key值的冒號後面
+                rgzMap.forEach { rgzMap ->
+                    splitMap[rgzMap.key]?.forEach { odd ->
+                        when {
+                            rgzMap.key.contains("${PlayCate.NGOAL.value}:") -> {
+                                odd?.nextScore =
+                                    rgzMap.key.split("${PlayCate.NGOAL.value}:")[1] //nextScore 下個進球的分數會放在Key值的冒號後面
+                            }
+                            rgzMap.key.contains("${PlayCate.NGOAL_OT.value}:") -> {
+                                odd?.nextScore =
+                                    rgzMap.key.split("${PlayCate.NGOAL_OT.value}:")[1] //nextScore 下個進球的分數會放在Key值的冒號後面
+                            }
+                            else -> odd?.replaceScore =
+                                rgzMap.key.split(":")[1] //翻譯裡面要顯示{S}的分數會放在Key值的冒號後面
                         }
                     }
                 }
@@ -272,7 +282,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
 
             //網球玩法特殊處理:网球的特定第几局的玩法(1X2_SEG3_GAMES:1~6) 之前应该是当有两个数字的时候 取大的显示 目前看小金改为取小的显示了 这边再跟著调整一下取小的显示在大厅上
             when {
-                rgzMap.size > 1 && matchInfo?.gameType == GameType.TN.key -> {
+                rgzMap.isNotEmpty() && matchInfo?.gameType == GameType.TN.key && (rgzMap.iterator().next().key.contains("1X2_SEG") && rgzMap.iterator().next().key.contains("_GAMES"))-> {
                     oddsMap = this.filter { !it.key.contains(":") }.toMutableMap()
                     val mutableListIterator = rgzMap.iterator()
                     var iteratorMap: Map.Entry<String, List<Odd?>?>? = null
@@ -280,13 +290,17 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
                         iteratorMap = mutableListIterator.next()
                     }
                     if (iteratorMap != null) {
-                        oddsMap[iteratorMap.key] = iteratorMap.value
+                        val playKeyFilter = iteratorMap.key.split(":")[0]
+                        oddsMap[playKeyFilter] = iteratorMap.value
                     }
                     oddsMap
                 }
                 rgzMap.isNotEmpty() -> {
                     oddsMap = this.filter { !it.key.contains(":") }.toMutableMap()
-                    oddsMap[rgzMap.iterator().next().key] = rgzMap.iterator().next().value
+                    rgzMap.forEach { map ->
+                        val playKeyFilter = map.key.split(":")[0]
+                        oddsMap[playKeyFilter] = map.value
+                    }
                     oddsMap
                 }
                 else -> this
@@ -349,11 +363,15 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
         return this.mapValues { map ->
             val playCateNum =
                 when { //根據IOS給的規則判斷顯示數量
+                    matchInfo?.gameType == GameType.TT.key && map.key.contains(PlayCate.SINGLE.value) -> 2 //乒乓球獨贏特殊判斷
+
                     map.key.contains(PlayCate.HDP.value) || (map.key.contains(PlayCate.OU.value) && !map.key.contains(PlayCate.SINGLE_OU.value)) || map.key.contains(
                         PlayCate.CORNER_OU.value
                     ) -> 2
 
-                    map.key.contains(PlayCate.SINGLE.value) || map.key.contains(PlayCate.NGOAL.value) -> 3
+                    map.key.contains(PlayCate.SINGLE.value) || map.key.contains(PlayCate.NGOAL.value) || map.key.contains(PlayCate.NGOAL_OT.value) -> 3
+
+                    map.value?.size ?: 0 < 3 -> 2
 
                     else -> 3
                 }
@@ -386,7 +404,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
 
                     sortMap[oddsMap.key] = oddList
                 }
-                oddsMap.key.contains(PlayCate.NGOAL.value) -> {
+                oddsMap.key.contains(PlayCate.NGOAL.value) || oddsMap.key.contains(PlayCate.NGOAL_OT.value)-> {
                     val oddList = oddsMap.value?.toMutableList()
 
                     oddList?.indexOf(oddList.find {
@@ -514,9 +532,11 @@ class OddButtonPagerViewHolder private constructor(
             return
         }
 
+        val replaceScore = odds.second?.firstOrNull()?.replaceScore ?: ""
+
         var playCateName =
             playCateNameMap[odds.first].getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
-                .replace(": ", " ").replace("||", "\n")
+                .replace(": ", " ").replace("||", "\n").replace("{S}", replaceScore)
 
         if (playCateName == "null" || playCateName.isNullOrEmpty()){
             playCateName = "-"
@@ -1106,7 +1126,7 @@ class OddButtonPagerViewHolder private constructor(
     }
 
     private fun String.isNOGALType(): Boolean {
-        return this.contains(PlayCate.NGOAL.value) && !this.isCombination()
+        return (this.contains(PlayCate.NGOAL.value) || this.contains(PlayCate.NGOAL_OT.value)) && !this.isCombination()
     }
 
     /**
