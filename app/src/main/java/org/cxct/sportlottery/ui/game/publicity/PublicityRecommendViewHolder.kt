@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.game.publicity
 
 import android.annotation.SuppressLint
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.databinding.ItemPublicityRecommendBinding
@@ -33,8 +32,17 @@ class PublicityRecommendViewHolder(
                 clickListenerPlayType = { _, _ ->
                     itemClickEvent()
                 },
-                clickListenerBet = { _, _, _, _, _ ->
-                    itemClickEvent()
+                clickListenerBet = { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
+                    publicityAdapterListener.onClickBetListener(
+                        data.gameType,
+                        data.matchType ?: MatchType.EARLY,
+                        matchInfo,
+                        odd,
+                        playCateCode,
+                        playCateName,
+                        betPlayCateNameMap,
+                        data.menuList.firstOrNull()?.code
+                    )
                 },
                 clickListenerQuickCateTab = { _, _ ->
                     itemClickEvent()
