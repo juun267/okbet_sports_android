@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.ui.bet.list.receipt
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Spanned
 import android.util.Log
 import android.view.LayoutInflater
@@ -27,9 +29,13 @@ import org.cxct.sportlottery.ui.base.BaseSocketBottomSheetFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
+import java.util.*
 
 class BetInfoCarReceiptDialog(val result: BetAddResult) :
     BaseSocketBottomSheetFragment<GameViewModel>(GameViewModel::class) {
+
+    val mHandler = Handler(Looper.getMainLooper())
+    var timer = Timer()
 
     init {
         setStyle(STYLE_NORMAL, R.style.LightBackgroundBottomSheet)
@@ -62,6 +68,11 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
                 view.tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
                 view.tv_winnable_amount.text = TextUtil.formatMoney(winnable ?: 0.0)
                 view.tv_bet_status.setBetReceiptStatus(status)
+                if(status == 0){
+                    startTimer(
+                        (result.receipt.betConfirmTime?.minus(System.currentTimeMillis())) ?: 0,
+                        view
+                    )
                 }
                 view.tv_bet_status.setReceiptStatusColor(status)
                 view.tv_receipt_status.setSingleReceiptStatusTips(status)
@@ -164,6 +175,23 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
 
     private fun setupCurrentMoney(money: Double) {
         //tv_current_money.text = "${TextUtil.formatMoney(money)} ${sConfigData?.systemCurrency}"
+    }
+
+    private fun startTimer(startTime: Long, view: View) {
+        var timeMillis = startTime.div(1000)
+        timer.schedule(object :TimerTask(){
+            override fun run() {
+                mHandler.post {
+                    view.tv_bet_status.text = String.format(view.context.getString(R.string.pending), timeMillis)
+                    timeMillis --
+                    if(timeMillis < 0 ) stopTimer()
+                }
+            }
+        }, 1000L, 1000L)
+    }
+
+    private fun stopTimer() {
+       timer.cancel()
     }
 
 }
