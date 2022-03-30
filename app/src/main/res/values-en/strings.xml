@@ -355,12 +355,15 @@
     <string name="suspend">Delay</string>
     <string name="uncheck">Unconfirmed</string>
     <string name="undone">Unsettlement</string>
+    <string name="settled"> -- </string>//TODO Bill 等PM補翻譯
     <string name="win">Win</string>
     <string name="win_half">Win a half</string>
     <string name="lose">Lose</string>
     <string name="lose_half">Lose a half</string>
     <string name="draw">Draw</string>
     <string name="canceled">Canceled</string>
+    <string name="odds_change">Odds had changed</string>
+    <string name="pending">Waiting %1$s s</string>
     <string name="bet_canceled">Betting fails</string>
     <string name="confirmed">Confirmed</string>
     <string name="bet_detail">Bets details</string>

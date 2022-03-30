@@ -333,12 +333,15 @@
     <string name="suspend">delay</string>
     <string name="uncheck">Chưa xác nhận</string>
     <string name="undone">Chưa thanh toán</string>
+    <string name="settled"> -- </string>//TODO Bill 等PM補翻譯
     <string name="win">Thắng</string>
     <string name="win_half">Thắng nửa</string>
     <string name="lose">Thắng</string>
     <string name="lose_half">Thua nửa</string>
     <string name="draw">hòa</string>
     <string name="canceled">đã hủy</string>
+    <string name="odds_change">Tỷ lệ cược đã thay đổi</string>
+    <string name="pending">Đang đợi %1$s giây</string>
     <string name="bet_canceled">Cá cược thất bại</string>
     <string name="confirmed">Dã xác nhận</string>
     <string name="bet_detail">Chi tiết đơn cược</string>
