@@ -1375,8 +1375,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                     leagueAdapter.limitRefresh()
                                     isReload = false
                                 }
-                            } else {
-                                leagueAdapter.notifyItemChanged(index)
+                            }
+                            else {
+                                updateGameList(index, leagueOdd)
                             }
                         }
                     }
