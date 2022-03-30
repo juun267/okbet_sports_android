@@ -705,7 +705,7 @@ class OddButtonPagerViewHolder private constructor(
 
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(1))
 
-            isSelected = QuickListManager.getQuickSelectedList()?.contains(odds.second?.getOrNull(1)?.id) ?: false
+            isSelected = odds.second?.getOrNull(1)?.isSelected ?: false
 
             setOnClickListener {
                 odds.second?.getOrNull(1)?.let { odd ->
@@ -791,7 +791,7 @@ class OddButtonPagerViewHolder private constructor(
 
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(2))
 
-            isSelected = QuickListManager.getQuickSelectedList()?.contains(odds.second?.getOrNull(2)?.id) ?: false
+            isSelected = odds.second?.getOrNull(2)?.isSelected ?: false
 
             setOnClickListener {
                 odds.second?.getOrNull(2)?.let { odd ->
