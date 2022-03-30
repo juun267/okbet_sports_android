@@ -19,6 +19,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
@@ -378,10 +379,12 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         btn_sign_out.setOnClickListener {
             viewModel.doLogoutCleanUser {
                 context?.run {
-                    if (sConfigData?.thirdOpen == FLAG_OPEN)
+                    if (sConfigData?.thirdOpen == FLAG_OPEN) {
                         MainActivity.reStart(this)
-                    else
-                        GamePublicityActivity.reStart(this)
+                    } else {
+                        GameActivity.reStart(this)
+//                        GamePublicityActivity.reStart(this)
+                    }
                 }
             }
             mDownMenuListener?.onClick(btn_sign_out)
