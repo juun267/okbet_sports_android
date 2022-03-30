@@ -876,11 +876,11 @@
     <string name="golf">高尔夫球</string>
     <string name="financial_bets">金融投注</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="upload_title">AAAA</string>
+    <string name="upload_title">上传身份证明文件</string>
     <string name="upload_content">请点击上传身份证明文件</string>
-    <string name="upload_tips">请上传能够证明您身份的文件</string>
-    <string name="upload_photo_title">BBBB</string>
-    <string name="upload_photo_tips">照片档案大小上限: 2MB</string>
+    <string name="upload_tips">・请上传能够证明您身份的文件</string>
+    <string name="upload_photo_title">上传正面照</string>
+    <string name="upload_photo_tips">・照片档案大小上限: 2MB</string>
     <string name="upload_photo_content">请点击上传您的正面照</string>
     <string name="upload_media_reset">重拍</string>
     <string name="upload_fail">上传失败</string>
@@ -888,8 +888,6 @@
     <string name="upload_dialog_content">请拍照或是从相簿中选择一张照片</string>
     <string name="upload_dialog_gallery">相簿</string>
     <string name="upload_dialog_camera">拍照</string>
-
-
     <string name="identity_id">ID 号码</string>
     <string name="identity_last_name">姓</string>
     <string name="identity_first_name">名</string>

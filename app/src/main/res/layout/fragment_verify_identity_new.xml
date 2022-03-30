@@ -166,25 +166,25 @@
             android:textSize="@dimen/textSize16sp"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/ll_description" />
-        <Button
-            android:id="@+id/btnGallery"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_weight="1"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/bg_radius_20_button_dusk"
-            android:letterSpacing="0.2"
-            android:minWidth="0dp"
-            android:layout_marginLeft="@dimen/margin_6"
-            android:minHeight="0dp"
-            android:paddingTop="9dp"
-            android:paddingBottom="9dp"
-            android:text="@string/take_id_gallery"
-            android:textAllCaps="true"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/textSize16sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/ll_description" />
+<!--        <Button-->
+<!--            android:id="@+id/btnGallery"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="44dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:background="@drawable/bg_radius_20_button_dusk"-->
+<!--            android:letterSpacing="0.2"-->
+<!--            android:minWidth="0dp"-->
+<!--            android:layout_marginLeft="@dimen/margin_6"-->
+<!--            android:minHeight="0dp"-->
+<!--            android:paddingTop="9dp"-->
+<!--            android:paddingBottom="9dp"-->
+<!--            android:text="@string/take_id_gallery"-->
+<!--            android:textAllCaps="true"-->
+<!--            android:textColor="@color/colorWhite"-->
+<!--            android:textSize="@dimen/textSize16sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/ll_description" />-->
 
     </LinearLayout>
 

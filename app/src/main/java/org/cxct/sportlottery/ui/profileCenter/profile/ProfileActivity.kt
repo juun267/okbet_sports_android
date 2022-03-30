@@ -149,7 +149,8 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         ll_wechat.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.WeChat) }
         //實名制
         ll_verified.setOnClickListener {
-            if (ll_verified.isEnabled) startActivity(Intent(this@ProfileActivity, VerifyIdentityActivity::class.java))
+            if (ll_verified.isEnabled)
+                startActivity(Intent(this@ProfileActivity, VerifyIdentityActivity::class.java))
         }
     }
 
@@ -195,7 +196,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             tv_id.text = it?.userId?.toString()
             tv_real_name.text = it?.fullName
 
-            ll_verified.isVisible = sConfigData?.realNameWithdrawVerified == VerifySwitchType.OPEN.value
+            ll_verified.isVisible = sConfigData?.enableKYCVerify == VerifySwitchType.OPEN.value
             when (it?.verified) {
                 VerifiedType.PASSED.value -> {
                     ll_verified.isEnabled = false
