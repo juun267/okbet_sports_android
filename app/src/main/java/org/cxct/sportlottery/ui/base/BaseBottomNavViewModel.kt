@@ -40,10 +40,13 @@ abstract class BaseBottomNavViewModel(
         get() = _showShoppingCart
 
     val nowTransNum: LiveData<Int?> get() = loginRepository.transNum
+    val navPublicityPage: LiveData<Event<Boolean>>
+        get() = _navPublicityPage
 
     private val _thirdGameCategory = MutableLiveData<Event<ThirdGameCategory?>>()
     private val _intentClass = MutableLiveData<Event<Class<*>>>()
     private val _showShoppingCart = MutableLiveData<Boolean>()
+    private val _navPublicityPage = MutableLiveData<Event<Boolean>>()
 
     fun getTransNum() {
         if (isLogin.value == true) {
@@ -59,6 +62,9 @@ abstract class BaseBottomNavViewModel(
         _thirdGameCategory.postValue(
             Event(
                 if (isCreditAccount.value == true || sConfigData?.thirdOpen != FLAG_OPEN) {
+                    if (isLogin.value != true) {
+                        _navPublicityPage.postValue(Event(true))
+                    }
                     null
                 } else {
                     thirdGameCategory

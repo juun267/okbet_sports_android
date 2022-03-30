@@ -47,6 +47,7 @@ import org.cxct.sportlottery.ui.game.league.GameLeagueFragmentDirections
 import org.cxct.sportlottery.ui.game.menu.LeftMenuFragment
 import org.cxct.sportlottery.ui.game.outright.GameOutrightFragmentDirections
 import org.cxct.sportlottery.ui.game.outright.GameOutrightMoreFragmentDirections
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -714,6 +715,10 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     showBetListPage()
                 }
             }
+        }
+
+        viewModel.navPublicityPage.observe(this) {
+            GamePublicityActivity.reStart(this)
         }
     }
 

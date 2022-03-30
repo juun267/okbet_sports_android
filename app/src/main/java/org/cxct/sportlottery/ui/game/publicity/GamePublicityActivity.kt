@@ -52,6 +52,7 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
                 },
                 onGoHomePageListener = {
                     GameActivity.reStart(this)
+                    finish()
                 },
                 onClickBetListener = { gameType, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
                     addOddsDialog(
