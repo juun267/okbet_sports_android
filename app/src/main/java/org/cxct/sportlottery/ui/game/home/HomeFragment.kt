@@ -929,7 +929,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
                     viewModel.getLeagueOddsList(mSelectMatchType, leagueIdList, listOf(), isIncrement = true)
                 }
-                queryData()
+                queryData(leagueChangeEvent.gameType ?: "", leagueChangeEvent.leagueIdList)
             }
         }
 
@@ -1041,7 +1041,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         }
     }
 
-    private fun queryData() {
+    private fun queryData(gameType: String = "", leagueIdList: List<String>? = null) {
         viewModel.getSportMenu()
 
         //滾球盤、即將開賽盤
@@ -1051,8 +1051,10 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         //推薦賽事
         viewModel.getRecommendMatch()
 
-        //精選賽事
-        viewModel.getHighlightMenu()
+        if (gameType.isNullOrEmpty() || gameType == selectedSportType?.code) {
+            //精選賽事
+            viewModel.getHighlightMenu()
+        }
     }
 
     private fun updateInPlayUI(gameCateList: List<GameCateData>?) {
