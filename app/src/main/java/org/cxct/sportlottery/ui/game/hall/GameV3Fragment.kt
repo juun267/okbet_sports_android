@@ -739,11 +739,13 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         leagueAdapter.playSelectedCodeSelectionType =
                             getPlaySelectedCodeSelectionType()
                         leagueAdapter.playSelectedCode = getPlaySelectedCode()
-                        if (game_list.adapter !is LeagueAdapter) game_list.adapter = leagueAdapter
                     } else {
+                        leagueAdapter.data = mLeagueOddList
                         // Todo: MatchType.OTHER 要顯示無資料與隱藏篩選清單
 //                        leagueAdapter.data = mutableListOf()
+
                     }
+                    if (game_list.adapter !is LeagueAdapter) game_list.adapter = leagueAdapter
 
 //                    if (leagueOdds.isNotEmpty()) {
 //                        game_list.apply {
