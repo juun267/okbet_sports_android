@@ -146,9 +146,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                     tv_winnable_amount.text = TextUtil.formatMoney(winnable ?: 0.0)
                     tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
                     tv_bet_status.setBetReceiptStatus(status)
-                    if(status == 7){
-                        tv_bet_status.text = reason
-                    }
+
                     tv_bet_status.setReceiptStatusColor(status)
 
                     if (matchType == MatchType.OUTRIGHT) {
