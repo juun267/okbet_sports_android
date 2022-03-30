@@ -15,7 +15,6 @@ import org.cxct.sportlottery.network.sport.publicityRecommend.RecommendResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.isTimeAtStart
@@ -43,8 +42,6 @@ class GamePublicityViewModel(
         get() = _publicityRecommend
 
     private val _sportMenuFilterList = MutableLiveData<Event<MutableMap<String?, MutableMap<String?, SportMenuFilter>?>?>>()
-    val sportMenuFilterList: LiveData<Event<MutableMap<String?, MutableMap<String?, SportMenuFilter>?>?>>
-        get() = _sportMenuFilterList
 
     fun getRecommend() {
         viewModelScope.launch {
@@ -106,6 +103,12 @@ class GamePublicityViewModel(
         }
     }
 
+    //快捷投注單是否開啟
+    fun getIsFastBetOpened(): Boolean {
+        return betInfoRepository.getIsFastBetOpened()
+    }
+
+    //region 宣傳頁推薦賽事資料處理
     /**
      * 設置賽事類型參數(滾球、即將、今日、早盤)
      */
@@ -142,4 +145,5 @@ class GamePublicityViewModel(
 
         matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
     }
+    //endregion
 }

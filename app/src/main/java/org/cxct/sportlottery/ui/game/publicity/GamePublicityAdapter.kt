@@ -12,6 +12,9 @@ import org.cxct.sportlottery.databinding.HomeBottomNavigationBinding
 import org.cxct.sportlottery.databinding.ItemPublicityRecommendBinding
 import org.cxct.sportlottery.databinding.PublicitySubTitleViewBinding
 import org.cxct.sportlottery.databinding.PublicityTitleViewBinding
+import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.odds.MatchInfo
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.menu.OddsType
 
@@ -168,6 +171,9 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                     holder.bind(data, oddsType)
                 }
             }
+            is PublicitySubTitleViewHolder -> {
+                holder.bind()
+            }
             is BottomNavigationViewHolder -> {
                 holder.bind()
             }
@@ -183,8 +189,19 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
     inner class PublicityTitleViewHolder(binding: PublicityTitleViewBinding) :
         BaseItemListenerViewHolder(binding.root, publicityAdapterListener)
 
-    inner class PublicitySubTitleViewHolder(binding: PublicitySubTitleViewBinding) :
-        BaseItemListenerViewHolder(binding.root, publicityAdapterListener)
+    inner class PublicitySubTitleViewHolder(val binding: PublicitySubTitleViewBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind() {
+            with(binding) {
+                tvMore.setGoHomePageListener()
+                ivMore.setGoHomePageListener()
+            }
+        }
+
+        private fun View.setGoHomePageListener() {
+            setOnClickListener { publicityAdapterListener.onGoHomePageListener() }
+        }
+    }
 
     inner class BottomNavigationViewHolder(val binding: HomeBottomNavigationBinding) :
         BaseItemListenerViewHolder(binding.root, publicityAdapterListener) {
@@ -254,8 +271,32 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
     private fun getSortPoint(item: Any): Int = sortMap[item::class] ?: 0
     // endregion
 
-    class PublicityAdapterListener(private val onItemClickListener: () -> Unit) {
+    class PublicityAdapterListener(
+        private val onItemClickListener: () -> Unit,
+        private val onGoHomePageListener: () -> Unit,
+        private val onClickBetListener: (gameType: String, matchType: MatchType, matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?, playCateMenuCode: String?) -> Unit,
+    ) {
         fun onItemClickListener() = onItemClickListener.invoke()
+        fun onGoHomePageListener() = onGoHomePageListener.invoke()
+        fun onClickBetListener(
+            gameType: String,
+            matchType: MatchType,
+            matchInfo: MatchInfo?,
+            odd: Odd,
+            playCateCode: String,
+            playCateName: String,
+            betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
+            playCateMenuCode: String?
+        ) = onClickBetListener.invoke(
+            gameType,
+            matchType,
+            matchInfo,
+            odd,
+            playCateCode,
+            playCateName,
+            betPlayCateNameMap,
+            playCateMenuCode
+        )
     }
 }
 
