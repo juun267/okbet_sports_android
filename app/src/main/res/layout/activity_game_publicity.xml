@@ -68,6 +68,13 @@
         app:layout_constraintStart_toEndOf="@id/tvRegister"
         app:layout_constraintTop_toTopOf="@id/viewBottom" />
 
+    <include
+        android:id="@+id/gameBottomNavigation"
+        layout="@layout/view_bottom_navigation_sport"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
     <!-- 投注單 -->
     <FrameLayout
         android:id="@+id/flBetList"
