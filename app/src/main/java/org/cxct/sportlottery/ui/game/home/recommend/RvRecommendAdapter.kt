@@ -60,7 +60,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
         }
 
     fun setData(result: MatchRecommendResult, selectedOdds: MutableList<String>) {
-        GlobalScope.launch(Dispatchers.IO) {
+//        GlobalScope.launch(Dispatchers.IO) {
             val dataList = mutableListOf<RecommendGameEntity>()
             result.rows?.forEach { row ->
                 row.leagueOdds?.matchOdds?.forEach { oddData ->
@@ -101,7 +101,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
 //            withContext(Dispatchers.Main) {
 //                notifyDataSetChanged()
 //            }
-        }
+//        }
     }
 
     fun getData() = mDataList
