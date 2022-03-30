@@ -26,6 +26,7 @@ import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
 import org.cxct.sportlottery.util.SocketUpdateUtil
@@ -65,6 +66,12 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
                         betPlayCateNameMap,
                         playCateMenuCode
                     )
+                },
+                onShowLoginNotify = {
+                    showLoginNotify()
+                },
+                onClickStatisticsListener = { matchId ->
+                    showStatistics(matchId)
                 })
         )
 
@@ -417,6 +424,18 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
 
     }
     //endregion
+
+    private fun showLoginNotify() {
+        snackBarLoginNotify.apply {
+            setAnchorView(binding.gameBottomNavigation.root.id)
+            show()
+        }
+    }
+
+    private fun showStatistics(matchId: String?) {
+        StatisticsDialog.newInstance(matchId)
+            .show(supportFragmentManager, StatisticsDialog::class.java.simpleName)
+    }
 
     private fun Recommend.sortOddsMap() {
         this.oddsMap?.forEach { (_, value) ->

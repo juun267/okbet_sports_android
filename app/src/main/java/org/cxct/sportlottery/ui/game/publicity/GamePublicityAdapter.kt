@@ -204,11 +204,10 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
     }
 
     inner class BottomNavigationViewHolder(val binding: HomeBottomNavigationBinding) :
-        BaseItemListenerViewHolder(binding.root, publicityAdapterListener) {
+        RecyclerView.ViewHolder(binding.root) {
         val context: Context = binding.root.context
 
-        override fun bind() {
-            super.bind()
+        fun bind() {
             with(binding) {
                 ContextCompat.getDrawable(context, R.color.colorWhite1)?.let { background ->
                     bottomNavigationView.setTopBackground(background)
@@ -275,6 +274,8 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         private val onItemClickListener: () -> Unit,
         private val onGoHomePageListener: () -> Unit,
         private val onClickBetListener: (gameType: String, matchType: MatchType, matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?, playCateMenuCode: String?) -> Unit,
+        private val onShowLoginNotify: () -> Unit,
+        private val onClickStatisticsListener: (matchId: String) -> Unit
     ) {
         fun onItemClickListener() = onItemClickListener.invoke()
         fun onGoHomePageListener() = onGoHomePageListener.invoke()
@@ -297,6 +298,9 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             betPlayCateNameMap,
             playCateMenuCode
         )
+
+        fun onShowLoginNotify() = onShowLoginNotify.invoke()
+        fun onClickStatisticsListener(matchId: String) = onClickStatisticsListener.invoke(matchId)
     }
 }
 

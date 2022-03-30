@@ -30,6 +30,7 @@ class PublicityRecommendViewHolder(
                 (data.gameType == GameType.FT.key || data.gameType == GameType.BK.key || data.matchType == MatchType.PARLAY || data.matchType == MatchType.AT_START || data.matchType == MatchType.MY_EVENT)
             leagueOddListener = LeagueOddListener(
                 clickListenerPlayType = { _, _ ->
+                    //TODO 確認中
                     itemClickEvent()
                 },
                 clickListenerBet = { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
@@ -45,18 +46,20 @@ class PublicityRecommendViewHolder(
                     )
                 },
                 clickListenerQuickCateTab = { _, _ ->
-                    itemClickEvent()
+                    //do nothing
                 },
                 clickListenerQuickCateClose = {
-                    itemClickEvent()
+                    //do nothing
                 },
                 clickListenerFavorite = {
-                    itemClickEvent()
+                    publicityAdapterListener.onShowLoginNotify()
                 },
                 clickListenerStatistics = {
-                    itemClickEvent()
+                    data.matchInfo?.id?.let { matchId ->
+                        publicityAdapterListener.onClickStatisticsListener(matchId)
+                    }
                 }, refreshListener = {
-                    itemClickEvent()
+                    //do nothing
                 })
         }
 
