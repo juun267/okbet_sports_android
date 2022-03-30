@@ -353,7 +353,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
                         PlayCate.CORNER_OU.value
                     ) -> 2
 
-                    map.key.contains(PlayCate.SINGLE.value) || map.key.contains(PlayCate.NGOAL.value) -> 3
+                    map.key.contains(PlayCate.SINGLE.value) || map.key.contains(PlayCate.NGOAL.value) || map.key.contains(PlayCate.NGOAL_OT.value) -> 3
 
                     else -> 3
                 }
@@ -386,7 +386,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
 
                     sortMap[oddsMap.key] = oddList
                 }
-                oddsMap.key.contains(PlayCate.NGOAL.value) -> {
+                oddsMap.key.contains(PlayCate.NGOAL.value) || oddsMap.key.contains(PlayCate.NGOAL_OT.value)-> {
                     val oddList = oddsMap.value?.toMutableList()
 
                     oddList?.indexOf(oddList.find {
@@ -1106,7 +1106,7 @@ class OddButtonPagerViewHolder private constructor(
     }
 
     private fun String.isNOGALType(): Boolean {
-        return this.contains(PlayCate.NGOAL.value) && !this.isCombination()
+        return (this.contains(PlayCate.NGOAL.value) || this.contains(PlayCate.NGOAL_OT.value)) && !this.isCombination()
     }
 
     /**
