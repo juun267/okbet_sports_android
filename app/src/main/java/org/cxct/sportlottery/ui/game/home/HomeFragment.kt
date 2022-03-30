@@ -496,7 +496,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                             if (!id.isNullOrEmpty()) {
                                 subscribeChannelHall(data.code,
                                     id)
-                                mSubscribeInPlayGameID.add(id)
+                                mSubscribeAtStartGameID.add(id)
                             }
                         }
                     }
@@ -862,6 +862,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 val dataList = mRvGameTable4Adapter.getData()
                 dataList.sortOddsMap()
                 dataList.forEach { gameEntity ->
+                    if (oddsChangeEvent.gameType != gameEntity.code) return@forEach
                     //先找出要更新的 賽事
                     val updateMatchOdd = gameEntity.matchOdds.find { matchOdd ->
                         matchOdd.matchInfo?.id == oddsChangeEvent.eventId
@@ -880,6 +881,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 recommendDataList.recommendSortOddsMap()
 
                 recommendDataList.forEach { entity ->
+                    if (oddsChangeEvent.gameType != entity.code) return@forEach
                     if (entity.matchInfo?.id != it.eventId) return@forEach
                     var isUpdate = false
                     entity.oddBeans.forEach { oddBean ->
@@ -895,20 +897,27 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 }
 
                 //精選賽事
-                val highlightDataList = mRvHighlightAdapter.getData()
-                highlightDataList.highlightSortOddsMap()
-                var isUpdate = false
-                highlightDataList.forEach { updateMatchOdd ->
-                    if (SocketUpdateUtil.updateMatchOdds(context, updateMatchOdd, oddsChangeEvent)) {
-                        val playCateCode = PlayCateMenuFilterUtils.filterOddsSort(updateMatchOdd.matchInfo?.gameType, filterCode)//之後建enum class
-                        updateMatchOdd.highlightFilterMenuPlayCate(playCateCode)
-                        isUpdate = true
+                if (oddsChangeEvent.gameType == selectedSportType?.code) {
+                    val highlightDataList = mRvHighlightAdapter.getData()
+                    highlightDataList.highlightSortOddsMap()
+                    var isUpdate = false
+                    highlightDataList.forEach { updateMatchOdd ->
+                        if (SocketUpdateUtil.updateMatchOdds(context,
+                                updateMatchOdd,
+                                oddsChangeEvent)
+                        ) {
+                            val playCateCode =
+                                PlayCateMenuFilterUtils.filterOddsSort(updateMatchOdd.matchInfo?.gameType,
+                                    filterCode)//之後建enum class
+                            updateMatchOdd.highlightFilterMenuPlayCate(playCateCode)
+                            isUpdate = true
+                        }
                     }
-                }
-                if (isUpdate) {
-                    Handler(Looper.getMainLooper()).post {
-                        mRvHighlightAdapter.dataList
-                        mRvHighlightAdapter.notifyDataSetChanged()
+                    if (isUpdate) {
+                        Handler(Looper.getMainLooper()).post {
+                            mRvHighlightAdapter.dataList
+                            mRvHighlightAdapter.notifyDataSetChanged()
+                        }
                     }
                 }
             }
@@ -920,7 +929,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
                     viewModel.getLeagueOddsList(mSelectMatchType, leagueIdList, listOf(), isIncrement = true)
                 }
-                queryData()
+                queryData(leagueChangeEvent.gameType ?: "", leagueChangeEvent.leagueIdList)
             }
         }
 
@@ -1032,7 +1041,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         }
     }
 
-    private fun queryData() {
+    private fun queryData(gameType: String = "", leagueIdList: List<String>? = null) {
         viewModel.getSportMenu()
 
         //滾球盤、即將開賽盤
@@ -1042,8 +1051,10 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         //推薦賽事
         viewModel.getRecommendMatch()
 
-        //精選賽事
-        viewModel.getHighlightMenu()
+        if (gameType.isNullOrEmpty() || gameType == selectedSportType?.code) {
+            //精選賽事
+            viewModel.getHighlightMenu()
+        }
     }
 
     private fun updateInPlayUI(gameCateList: List<GameCateData>?) {

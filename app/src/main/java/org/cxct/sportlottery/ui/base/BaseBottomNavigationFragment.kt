@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.ui.base
 
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.view_bottom_navigation.*
 import org.cxct.sportlottery.R
@@ -13,7 +15,7 @@ import org.cxct.sportlottery.util.JumpUtil
 import kotlin.reflect.KClass
 
 abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KClass<T>) :
-    BaseSocketFragment<T>(clazz) {
+    BaseSocketFragment<T>(clazz), Animation.AnimationListener {
 
     fun initBottomNavigation() {
         //底部hint提示
@@ -132,6 +134,45 @@ abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KCla
             JumpUtil.toExternalWeb(requireContext(), "https://pagcor.ph/regulatory/index.php")
         }
 
+    }
+
+    var afterAnimateListener: AfterAnimateListener? = null
+
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
+        return if (enter) {
+            if (nextAnim == 0) {
+                try {
+                    afterAnimateListener?.onAfterAnimate()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+                super.onCreateAnimation(transit, enter, nextAnim)
+            } else {
+                AnimationUtils.loadAnimation(activity, nextAnim).apply {
+                    setAnimationListener(this@BaseBottomNavigationFragment)
+                }
+            }
+        } else {
+            super.onCreateAnimation(transit, enter, nextAnim)
+        }
+    }
+
+    override fun onAnimationStart(animation: Animation?) {
+
+    }
+
+    override fun onAnimationEnd(animation: Animation?) {
+        try {
+            afterAnimateListener?.onAfterAnimate()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    override fun onAnimationRepeat(animation: Animation?) {}
+
+    class AfterAnimateListener(private val onAfterAnimate: () -> Unit) {
+        fun onAfterAnimate() = onAfterAnimate.invoke()
     }
 
 }
