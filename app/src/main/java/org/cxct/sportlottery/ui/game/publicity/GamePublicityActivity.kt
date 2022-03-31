@@ -6,25 +6,44 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_game_v3.*
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityGamePublicityBinding
+import org.cxct.sportlottery.network.bet.FastBetDataBean
+import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
+import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.odds.MatchInfo
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.betList.BetListFragment
+import org.cxct.sportlottery.ui.game.betList.FastBetFragment
+import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
 import org.cxct.sportlottery.util.SocketUpdateUtil
+import org.parceler.Parcels
 
 class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePublicityViewModel::class),
     View.OnClickListener {
     private lateinit var binding: ActivityGamePublicityBinding
 
     companion object {
+        const val IS_FROM_PUBLICITY = "isFromPublicity"
+        const val PUBLICITY_GAME_TYPE = "publicityGameType"
+        const val PUBLICITY_MATCH_ID = "publicityMatchId"
+        const val PUBLICITY_MATCH_TYPE = "publicityMatchType"
+        const val PUBLICITY_MATCH_LIST = "publicityMatchList"
+
         fun reStart(context: Context) {
             val intent = Intent(context, GamePublicityActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -35,9 +54,38 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
     private var isNewestDataFromApi = false
     private var mRecommendList: List<Recommend> = listOf()
     private val mPublicityAdapter =
-        GamePublicityAdapter(GamePublicityAdapter.PublicityAdapterListener(onItemClickListener = {
-            goLoginPage()
-        }))
+        GamePublicityAdapter(
+            GamePublicityAdapter.PublicityAdapterListener(
+                onItemClickListener = {
+                    goLoginPage()
+                },
+                onGoHomePageListener = {
+                    GameActivity.reStart(this)
+                    finish()
+                },
+                onClickBetListener = { gameType, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
+                    addOddsDialog(
+                        gameType,
+                        matchType,
+                        matchInfo,
+                        odd,
+                        playCateCode,
+                        playCateName,
+                        betPlayCateNameMap,
+                        playCateMenuCode
+                    )
+                },
+                onShowLoginNotify = {
+                    showLoginNotify()
+                },
+                onClickStatisticsListener = { matchId ->
+                    showStatistics(matchId)
+                }, onClickPlayTypeListener = { gameType, matchType, matchId, matchInfoList ->
+                    navDetailFragment(gameType, matchType, matchId, matchInfoList)
+                })
+        )
+
+    private var betListFragment = BetListFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,6 +169,41 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
                 subscribeQueryData(result.recommendList)
             }
         })
+
+        viewModel.showBetInfoSingle.observe(this) { event ->
+            event?.getContentIfNotHandled()?.let {
+                if (it) {
+                    if (viewModel.getIsFastBetOpened()) {
+//                        showFastBetFragment()
+                    } else {
+                        showBetListPage()
+                    }
+                }
+            }
+        }
+
+        viewModel.betInfoList.observe(this) { event ->
+            event?.peekContent()?.let { betList ->
+                val targetList = getNewestRecommendData()
+                targetList.forEachIndexed { index, recommend ->
+                    var needUpdate = false
+                    recommend.oddsMap?.values?.forEach { oddList ->
+                        oddList?.forEach { odd ->
+                            val newSelectStatus = betList.any { betInfoListData ->
+                                betInfoListData.matchOdd.oddsId == odd?.id
+                            }
+                            if (odd?.isSelected != newSelectStatus) {
+                                odd?.isSelected = newSelectStatus
+                                needUpdate = true
+                            }
+                        }
+                    }
+                    if (needUpdate) {
+                        mPublicityAdapter.updateRecommendData(index, recommend)
+                    }
+                }
+            }
+        }
     }
 
     // TODO subscribe leagueChange: 此處尚無需實作邏輯, 看之後有沒有相關需求
@@ -241,6 +324,16 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
         })
     }
 
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount != 0) {
+            for (i in 0 until supportFragmentManager.backStackEntryCount) {
+                supportFragmentManager.popBackStack()
+            }
+            return
+        }
+    }
+
+
     private fun queryData() {
         viewModel.getRecommend()
     }
@@ -267,6 +360,136 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
                 mPublicityAdapter.updateRecommendData(index, recommend)
             }
         }
+    }
+
+    private fun addOddsDialog(
+        gameTypeCode: String,
+        matchType: MatchType,
+        matchInfo: MatchInfo?,
+        odd: Odd,
+        playCateCode: String,
+        playCateName: String,
+        betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
+        playCateMenuCode: String?
+    ) {
+        val gameType = GameType.getGameType(gameTypeCode)
+        gameType?.let {
+            matchInfo?.let { matchInfo ->
+                val fastBetDataBean = FastBetDataBean(
+                    matchType = matchType,
+                    gameType = gameType,
+                    playCateCode = playCateCode,
+                    playCateName = playCateName,
+                    matchInfo = matchInfo,
+                    matchOdd = null,
+                    odd = odd,
+                    subscribeChannelType = ChannelType.HALL,
+                    betPlayCateNameMap = betPlayCateNameMap,
+                    playCateMenuCode
+                )
+                showFastBetFragment(fastBetDataBean)
+
+                /*viewModel.updateMatchBetList(
+                    matchType,
+                    gameType,
+                    playCateCode,
+                    playCateName,
+                    matchInfo,
+                    odd,
+                    ChannelType.HALL,
+                    betPlayCateNameMap,
+                    playCateMenuCode
+                )*/
+            }
+        }
+    }
+
+    //region 開啟(快捷)投注單
+    //跟進GameActivity開啟投注單方式
+    private fun showFastBetFragment(fastBetDataBean: FastBetDataBean) {
+        val transaction = supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.anim.push_bottom_to_top_enter,
+                R.anim.pop_bottom_to_top_exit,
+                R.anim.push_bottom_to_top_enter,
+                R.anim.pop_bottom_to_top_exit
+            )
+
+        val fastBetFragment = FastBetFragment()
+        val bundle = Bundle()
+        bundle.putParcelable("data",  Parcels.wrap(fastBetDataBean))
+        fastBetFragment.arguments = bundle
+
+        transaction
+            .add(binding.flBetList.id, fastBetFragment)
+            .addToBackStack(FastBetFragment::class.java.simpleName)
+            .commit()
+    }
+
+    private fun showBetListPage() {
+        val transaction = supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.anim.push_bottom_to_top_enter,
+                R.anim.pop_bottom_to_top_exit,
+                R.anim.push_bottom_to_top_enter,
+                R.anim.pop_bottom_to_top_exit
+            )
+
+        betListFragment =
+            BetListFragment.newInstance(object : BetListFragment.BetResultListener {
+                override fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>) {
+                    supportFragmentManager.beginTransaction()
+                        .setCustomAnimations(
+                            R.anim.push_right_to_left_enter,
+                            R.anim.pop_bottom_to_top_exit,
+                            R.anim.push_right_to_left_enter,
+                            R.anim.pop_bottom_to_top_exit
+                        )
+                        .add(
+                            binding.flBetList.id,
+                            BetReceiptFragment.newInstance(betResultData, betParlayList)
+                        )
+                        .addToBackStack(BetReceiptFragment::class.java.simpleName)
+                        .commit()
+                }
+
+            })
+
+        transaction
+            .add(binding.flBetList.id, betListFragment, BetListFragment::class.java.simpleName)
+            .addToBackStack(BetListFragment::class.java.simpleName)
+            .commit()
+
+    }
+    //endregion
+
+    private fun showLoginNotify() {
+        snackBarLoginNotify.apply {
+            setAnchorView(binding.viewBottom.id)
+            show()
+        }
+    }
+
+    private fun showStatistics(matchId: String?) {
+        StatisticsDialog.newInstance(matchId)
+            .show(supportFragmentManager, StatisticsDialog::class.java.simpleName)
+    }
+
+    private fun navDetailFragment(
+        gameType: String,
+        matchType: MatchType?,
+        matchId: String?,
+        matchInfoList: List<MatchInfo>
+    ) {
+        startActivity(Intent(this, GameActivity::class.java).apply {
+            putExtra(IS_FROM_PUBLICITY, true)
+            putExtra(PUBLICITY_GAME_TYPE, gameType)
+            putExtra(PUBLICITY_MATCH_TYPE, matchType)
+            putExtra(PUBLICITY_MATCH_ID, matchId)
+            val matchInfoArrayList = arrayListOf<MatchInfo>()
+            matchInfoArrayList.addAll(matchInfoList)
+            putParcelableArrayListExtra(PUBLICITY_MATCH_LIST, matchInfoArrayList)
+        })
     }
 
     private fun Recommend.sortOddsMap() {

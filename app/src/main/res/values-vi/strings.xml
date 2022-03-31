@@ -230,6 +230,18 @@
     <string name="motor_racing">Công thức 1</string>
     <string name="golf">golf</string>
     <string name="financial_bets">Cược Tài Chính</string>
+    <string name="upload_title">Tải lên tài liệu chứng minh nhân dân</string>
+    <string name="upload_content">Vui lòng tải lên tài liệu chứng minh nhân dân</string>
+    <string name="upload_tips">・ Vui lòng tải lên ID hợp lệ có thể được chứng minh danh tính của bạn.</string>
+    <string name="upload_photo_title">Tải lên ảnh hồ sơ của bạn</string>
+    <string name="upload_photo_tips">・ Kích thước tệp tải lên tối đa: 2MB.</string>
+    <string name="upload_photo_content">Vui lòng tải lên ảnh hồ sơ của bạn</string>
+    <string name="upload_media_reset">重拍</string>
+    <string name="upload_fail">上传失败</string>
+    <string name="upload_success">Tải lên thành công</string>
+    <string name="upload_dialog_content">Vui lòng chụp ảnh hoặc chọn ảnh từ album.</string>
+    <string name="upload_dialog_gallery">album</string>
+    <string name="upload_dialog_camera">Chụp hình</string>
     <string name="section">Hiệp</string>
     <string name="total_score_over_time">tổng điểm số /n gồm hiệp phụ</string>
     <string name="plat">Kèo</string>
@@ -963,6 +975,7 @@
     <string name="make_sure_valid_account">Lần rút tiền ban đầu sẽ tạm thời giữ lại %1$s %2$s để đảm bảo rằng bạn là tài khoản hợp lệ. Số tiền này sẽ được hoàn trả sau 30 ngày.</string>
     <string name="type_of_certificate">loại chứng chỉ</string>
     <string name="take_id_photo">Chụp ảnh giấy tờ tùy thân</string>
+    <string name="take_id_gallery">Chọn một bức ảnh</string>
     <string name="prepare_your_id_photo">Chuẩn bị ảnh ID của bạn</string>
     <string name="id_description">· Hãy chắc chắn rằng ảnh ID của bạn hướng lên trên\n· Đảm bảo rằng ảnh ID của bạn được hiển thị rõ ràng\n· Tránh nhấp nháy hoặc phản chiếu</string>
     <string name="identity_card">Identity Card</string>
@@ -979,6 +992,9 @@
     <string name="identity_work">Công việc</string>
     <string name="not_verify">(Chưa được xác minh)</string>
     <string name="verified">(Xác minh)</string>
+    <string name="passed">(Đang xác minh)</string>
+    <string name="verifying">(Xác minh không thành công)</string>
+    <string name="verify_failed">(Xác minh không thành công)</string>
     <string name="select_id_type">Chọn loại ID</string>
     <string name="scan_tool_bar">Quét kết quả</string>
     <string name="text_us_east_time">Thời gian được báo cáo theo múi giờ UTC-4.</string>
@@ -988,6 +1004,8 @@
     <string name="text_bet_not_success2">Chờ</string>
     <string name="text_bet_not_success3">&#160;Phiếu cược của bạn đang được xử lý, vui lòng kiểm tra&#160;</string>
     <string name="text_bet_not_success4">ĐÃ CƯỢC.</string>
+    <string name="text_security_money">Tiền đặt cọc: 1,000\nCòn</string>
+    <string name="text_security_money2"> ngày</string>
     <!--自我禁制-->
     <string name="self_limit">Tự loại trừ</string>
     <string name="self_limit_impotent">Chú ý</string>

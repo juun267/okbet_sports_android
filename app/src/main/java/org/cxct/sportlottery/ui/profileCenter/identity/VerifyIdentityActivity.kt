@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.index.config.VerifySwitchType
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 
@@ -17,6 +19,14 @@ class VerifyIdentityActivity :
         setContentView(R.layout.activity_verify_identity)
 
         initToolbar()
+        checkKYCEnable()
+    }
+
+    private fun checkKYCEnable() {
+        if(sConfigData?.realNameWithdrawVerified == VerifySwitchType.CLOSE.value){
+            val action = VerifyIdentityFragmentDirections.actionVerifyIdentityFragmentToCredentialsFragment()
+            findNavController(R.id.identity_container).navigate(action)
+        }
     }
 
     private fun initToolbar() {
@@ -27,6 +37,11 @@ class VerifyIdentityActivity :
             else
                 mNavController.popBackStack()
         }
+    }
+
+
+    fun setToolBar(title:String){
+        tv_toolbar_title.text = title
     }
     
     fun setToolBarTitleForDetail(){

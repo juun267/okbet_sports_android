@@ -3,12 +3,19 @@ package org.cxct.sportlottery.ui.profileCenter
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile_center.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.Constants
@@ -42,6 +49,8 @@ import org.cxct.sportlottery.ui.selflimit.SelfLimitActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.TimeUtil.getRemainDay
+import org.cxct.sportlottery.util.TimeUtil.getRemainTime
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
@@ -536,6 +545,30 @@ class ProfileCenterActivity :
         btn_edit_nickname.visibility =
             if (userInfo?.setted == FLAG_NICKNAME_IS_SET) View.GONE else View.VISIBLE
         tv_user_id.text = userInfo?.userId?.toString()
+        if(getRemainDay(userInfo?.uwEnableTime) > 0){
+            ivNotice.visibility = View.VISIBLE
+            ivNotice.setOnClickListener {
+
+                val spannableStringBuilder = SpannableStringBuilder()
+
+                val text1 = SpannableString(this.getString(R.string.text_security_money))
+                //測試資料 自己手打
+                val text2 = SpannableString(getRemainDay(userInfo?.uwEnableTime).toString())
+                val foregroundSpan =
+                    ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorBlue))
+                text2.setSpan(foregroundSpan, 0, text2.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                val text3 = SpannableString(getString(R.string.text_security_money2))
+                spannableStringBuilder.append(text1)
+                spannableStringBuilder.append(text2)
+                spannableStringBuilder.append(text3)
+                showPromptDialog(
+                    getString(R.string.prompt),
+                    spannableStringBuilder
+                ) {}
+            }
+        }else{
+            ivNotice.visibility = View.GONE
+        }
     }
 
     private fun uploadImg(file: File) {

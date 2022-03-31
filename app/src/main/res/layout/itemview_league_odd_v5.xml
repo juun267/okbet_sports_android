@@ -18,7 +18,7 @@
             android:layout_weight="0.45">
             <View
                 android:id="@+id/league_odd_match_border"
-                android:layout_width="160dp"
+                android:layout_width="156dp"
                 android:layout_height="224dp"
                 android:layout_marginStart="16dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +26,7 @@
 
             <View
                 android:id="@+id/league_odd_match_border_row1"
-                android:layout_width="160dp"
+                android:layout_width="156dp"
                 android:layout_height="58dp"
                 android:layout_marginTop="2dp"
                 app:layout_constraintEnd_toEndOf="@id/league_odd_match_border"
@@ -36,7 +36,7 @@
 
             <LinearLayout
                 android:id="@+id/linear_layout"
-                android:layout_width="160dp"
+                android:layout_width="156dp"
                 android:layout_height="45dp"
                 android:layout_marginTop="2dp"
                 android:gravity="center_vertical"
@@ -109,7 +109,7 @@
 
             <View
                 android:id="@+id/league_odd_match_border_row2"
-                android:layout_width="160dp"
+                android:layout_width="156dp"
                 android:layout_height="58dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="2dp"
@@ -119,7 +119,7 @@
 
             <View
                 android:id="@+id/league_odd_match_border_row3"
-                android:layout_width="160dp"
+                android:layout_width="156dp"
                 android:layout_height="58dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="2dp"

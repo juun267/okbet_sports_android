@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.game.publicity
 
 import android.annotation.SuppressLint
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.databinding.ItemPublicityRecommendBinding
@@ -30,25 +29,42 @@ class PublicityRecommendViewHolder(
             isTimerEnable =
                 (data.gameType == GameType.FT.key || data.gameType == GameType.BK.key || data.matchType == MatchType.PARLAY || data.matchType == MatchType.AT_START || data.matchType == MatchType.MY_EVENT)
             leagueOddListener = LeagueOddListener(
-                clickListenerPlayType = { _, _ ->
-                    itemClickEvent()
+                clickListenerPlayType = { matchId, matchInfoList ->
+                    //TODO 確認中
+                    publicityAdapterListener.onClickPlayTypeListener(
+                        gameType = data.gameType,
+                        matchType = data.matchType,
+                        matchId = matchId,
+                        matchInfoList = matchInfoList
+                    )
                 },
-                clickListenerBet = { _, _, _, _, _ ->
-                    itemClickEvent()
+                clickListenerBet = { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
+                    publicityAdapterListener.onClickBetListener(
+                        data.gameType,
+                        data.matchType ?: MatchType.EARLY,
+                        matchInfo,
+                        odd,
+                        playCateCode,
+                        playCateName,
+                        betPlayCateNameMap,
+                        data.menuList.firstOrNull()?.code
+                    )
                 },
                 clickListenerQuickCateTab = { _, _ ->
-                    itemClickEvent()
+                    //do nothing
                 },
                 clickListenerQuickCateClose = {
-                    itemClickEvent()
+                    //do nothing
                 },
                 clickListenerFavorite = {
-                    itemClickEvent()
+                    publicityAdapterListener.onShowLoginNotify()
                 },
                 clickListenerStatistics = {
-                    itemClickEvent()
+                    data.matchInfo?.id?.let { matchId ->
+                        publicityAdapterListener.onClickStatisticsListener(matchId)
+                    }
                 }, refreshListener = {
-                    itemClickEvent()
+                    //do nothing
                 })
         }
 
