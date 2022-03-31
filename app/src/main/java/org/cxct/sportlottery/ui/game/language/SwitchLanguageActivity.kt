@@ -37,13 +37,10 @@ class SwitchLanguageActivity : BaseActivity<LoginViewModel>(LoginViewModel::clas
                 selectLanguage(LanguageManager.Language.VI)
             }
             binding.ivLogo ->{
-                if (sConfigData?.thirdOpen == FLAG_OPEN){
+                if (sConfigData?.thirdOpen == FLAG_OPEN)
                     MainActivity.reStart(this)
-                }
-                else{
-                    GameActivity.reStart(this)
-//                    viewModel.goGameHome()
-                }
+                else
+                    viewModel.goGameHome()
             }
         }
     }
@@ -75,26 +72,23 @@ class SwitchLanguageActivity : BaseActivity<LoginViewModel>(LoginViewModel::clas
     }
 
     private fun initObservers() {
-        /*viewModel.goGameHome.observe(this, {
+        viewModel.goGameHome.observe(this, {
             if (it?.getContentIfNotHandled() == true) {
                 GameActivity.reStart(this)
             } else {
                 GamePublicityActivity.reStart(this)
             }
-        })*/
+        })
     }
 
     private fun selectLanguage(select: LanguageManager.Language) {
         if(SPUtil.getInstance(applicationContext).getSelectLanguage() != select.key){
             this?.run {
                 LanguageManager.saveSelectLanguage(this, select)
-                if (sConfigData?.thirdOpen == FLAG_OPEN){
+                if (sConfigData?.thirdOpen == FLAG_OPEN)
                     MainActivity.reStart(this)
-                }
-                else {
-                    GameActivity.reStart(this)
-//                    viewModel.goGameHome()
-                }
+                else
+                    viewModel.goGameHome()
             }
         }
     }

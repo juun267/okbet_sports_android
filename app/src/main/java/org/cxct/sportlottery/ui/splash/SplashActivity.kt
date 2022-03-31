@@ -68,10 +68,10 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         finish()
     }
 
-    /*private fun goGamePublicityPage() {
+    private fun goGamePublicityPage() {
         startActivity(Intent(this@SplashActivity, GamePublicityActivity::class.java))
         finish()
-    }*/
+    }
 
     //過程中任一流程請求失敗，點擊確定按鈕重試
     private fun showErrorRetryDialog(title: String, message: String) {
@@ -123,7 +123,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
             }
         }
 
-        /*viewModel.isLogin.observe(this) {
+        viewModel.isLogin.observe(this) {
             when (it) {
                 true -> {
                     goGamePage()
@@ -132,7 +132,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                     goGamePublicityPage()
                 }
             }
-        }*/
+        }
     }
 
     //提示APP更新對話框
