@@ -197,6 +197,8 @@
     <string name="hint_bet_growth">Cá cược %d %s dân tệ để nhận %d điểm</string>
     <string name="contact_us">liên hệ chúng tôi</string>
     <string name="game_rule">Luật trò chơi</string>
+    <!--  //TODO news 翻譯待PM提供  -->
+    <string name="news">最新消息</string>
     <string name="sport_bet_rule">Quy luật cá cược thể thao</string>
     <string name="common_sport_description">Mô tả chung về môn thể thao</string>
     <string name="overview">tổng quát</string>
@@ -1082,4 +1084,11 @@ Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAG
     <string name="waiting">Chờ</string>
     <string name="sec">s</string>
     <!--歷史紀錄end-->
+
+    <!--region 最新消息-->
+    <string name="news_tab_game">Trò chơi</string>
+    <string name="news_tab_system">Hệ thống</string>
+    <string name="news_tab_plat">Nền tảng</string>
+    <string name="news_detail">Chi tiết</string>
+    <!--endregion 最新消息-->
 </resources>

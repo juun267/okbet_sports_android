@@ -41,6 +41,7 @@ import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.menu.ChangeAppearanceDialog
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeFullScreenDialog
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
+import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.vip.VipActivity
@@ -126,6 +127,9 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                         getString(R.string.game_rule)
                     )
                     dismiss()
+                },
+                {
+                    startActivity(Intent(context, NewsActivity::class.java))
                 }
             )
         )

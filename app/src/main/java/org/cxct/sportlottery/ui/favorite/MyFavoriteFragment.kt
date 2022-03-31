@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_my_favorite.*
 import kotlinx.android.synthetic.main.fragment_my_favorite.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
@@ -22,6 +23,7 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueListener
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
@@ -562,16 +564,29 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             return
         }
 
-        viewModel.updateMatchBetList(
-            MatchType.MY_EVENT,
-            gameType,
-            playCateCode,
-            playCateName,
-            matchInfo,
-            odd,
-            ChannelType.HALL,
-            betPlayCateNameMap
-        )//TODO 訂閱HALL需傳入CateMenuCode
+        val fastBetDataBean = FastBetDataBean(
+            matchType = MatchType.MY_EVENT,
+            gameType = gameType,
+            playCateCode = playCateCode,
+            playCateName = playCateName,
+            matchInfo = matchInfo,
+            matchOdd = null,
+            odd = odd,
+            subscribeChannelType = ChannelType.HALL,
+            betPlayCateNameMap = betPlayCateNameMap,
+        )
+        (activity as GameActivity).showFastBetFragment(fastBetDataBean)
+
+//        viewModel.updateMatchBetList(
+//            MatchType.MY_EVENT,
+//            gameType,
+//            playCateCode,
+//            playCateName,
+//            matchInfo,
+//            odd,
+//            ChannelType.HALL,
+//            betPlayCateNameMap
+//        )//TODO 訂閱HALL需傳入CateMenuCode
     }
 
     private fun subscribeChannelHall(leagueOdd: LeagueOdd) {

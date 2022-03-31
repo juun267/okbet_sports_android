@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite6"
+    android:padding="14dp"
+    tools:ignore="SpUsage">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_square_shape_4dp_white"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="14dp"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize12sp"
+            android:textStyle="bold"
+            tools:text="美国职棒大联盟 - 热身赛（洛杉矶道奇 VS 奥克兰运动家）赛事结果调整" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="6dp"
+            android:background="@color/color_E2E2E2" />
+
+        <TextView
+            android:id="@+id/tvContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="14dp"
+            android:layout_weight="1"
+            android:textColor="@color/colorGrayDark"
+            android:textSize="@dimen/textSize12sp"
+            tools:text="棒球赛事：2021/03/27 09:05 MLB 美国职棒大联盟 - 热身赛（洛杉矶道奇 VS 奥克兰运动家）-因提供盘口错误，所有在（GMT +8）11:29:27 - 11:36:57 产生的相关投注一律视为无效注单，串关以（1）计算。" />
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            android:textColor="@color/colorGray"
+            tools:text="2022.03.18"
+            tools:textSize="@dimen/textSize12sp" />
+    </LinearLayout>
+
+</LinearLayout>

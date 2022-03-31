@@ -67,6 +67,8 @@ data class Odd(
 
     var nextScore: String? = "" //FT 玩法下個進球會使用到
 
+    var replaceScore: String? = "" //翻譯裡面要顯示{S}的分數會放在Key值的冒號後面
+
     override var oddState: Int = OddState.SAME.state
 
     @Transient
