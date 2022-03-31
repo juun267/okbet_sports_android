@@ -459,7 +459,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         } else if (args.matchType == MatchType.OTHER || args.matchType == MatchType.OTHER_OUTRIGHT) {
             epsItem.visibility = View.GONE
         } else {
-            epsItem.visibility = View.VISIBLE
+            epsItem.visibility = View.GONE//0401 特優賠率入口隱藏
         }
     }
 
