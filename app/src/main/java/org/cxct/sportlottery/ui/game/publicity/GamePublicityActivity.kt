@@ -36,6 +36,12 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
     private lateinit var binding: ActivityGamePublicityBinding
 
     companion object {
+        const val IS_FROM_PUBLICITY = "isFromPublicity"
+        const val PUBLICITY_GAME_TYPE = "publicityGameType"
+        const val PUBLICITY_MATCH_ID = "publicityMatchId"
+        const val PUBLICITY_MATCH_TYPE = "publicityMatchType"
+        const val PUBLICITY_MATCH_LIST = "publicityMatchList"
+
         fun reStart(context: Context) {
             val intent = Intent(context, GamePublicityActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -72,6 +78,8 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
                 },
                 onClickStatisticsListener = { matchId ->
                     showStatistics(matchId)
+                }, onClickPlayTypeListener = { gameType, matchType, matchId, matchInfoList ->
+                    navDetailFragment(gameType, matchType, matchId, matchInfoList)
                 })
         )
 
@@ -435,6 +443,23 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
     private fun showStatistics(matchId: String?) {
         StatisticsDialog.newInstance(matchId)
             .show(supportFragmentManager, StatisticsDialog::class.java.simpleName)
+    }
+
+    private fun navDetailFragment(
+        gameType: String,
+        matchType: MatchType?,
+        matchId: String?,
+        matchInfoList: List<MatchInfo>
+    ) {
+        startActivity(Intent(this, GameActivity::class.java).apply {
+            putExtra(IS_FROM_PUBLICITY, true)
+            putExtra(PUBLICITY_GAME_TYPE, gameType)
+            putExtra(PUBLICITY_MATCH_TYPE, matchType)
+            putExtra(PUBLICITY_MATCH_ID, matchId)
+            val matchInfoArrayList = arrayListOf<MatchInfo>()
+            matchInfoArrayList.addAll(matchInfoList)
+            putParcelableArrayListExtra(PUBLICITY_MATCH_LIST, matchInfoArrayList)
+        })
     }
 
     private fun Recommend.sortOddsMap() {

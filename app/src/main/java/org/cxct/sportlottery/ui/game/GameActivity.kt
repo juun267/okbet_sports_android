@@ -30,6 +30,7 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.message.Row
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
@@ -120,10 +121,13 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             }
         }
     }
+    var isFromPublicity: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
+
+        isFromPublicity = intent.getBooleanExtra(GamePublicityActivity.IS_FROM_PUBLICITY, false)
 
         setupNoticeButton(iv_notice)
         initToolBar()
@@ -157,6 +161,23 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             else -> {
                 setTheme(R.style.EnglishTheme)
             }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        if (isFromPublicity) {
+            val matchId = intent.getStringExtra(GamePublicityActivity.PUBLICITY_MATCH_ID)
+            val gameTypeCode = intent.getStringExtra(GamePublicityActivity.PUBLICITY_GAME_TYPE)
+            val gameType = GameType.getGameType(gameTypeCode)
+            val intentMatchType = intent.getSerializableExtra(GamePublicityActivity.PUBLICITY_MATCH_TYPE)
+            val matchType = if (intentMatchType != null) intentMatchType as MatchType else null
+            val matchList =
+                intent.getParcelableArrayListExtra<MatchInfo>(GamePublicityActivity.PUBLICITY_MATCH_LIST)
+            navDeatilFragment(
+                matchID = matchId, gameType = gameType, matchType = matchType, matchList = matchList
+            )
         }
     }
 
@@ -224,6 +245,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             nav_right.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
 
             //左邊側邊攔v4
+            btn_menu_left.visibility = if (isFromPublicity) View.GONE else View.VISIBLE
             btn_menu_left.setOnClickListener {
                 LeftMenuFragment().show(
                     supportFragmentManager,
@@ -327,11 +349,14 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
     //公告
     private fun initRvMarquee() {
+        game_message.visibility = if (isFromPublicity) View.GONE else View.VISIBLE
         rv_marquee.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rv_marquee.adapter = mMarqueeAdapter
     }
 
     private fun initTabLayout() {
+        tabLayout.visibility = if (isFromPublicity) View.GONE else View.VISIBLE
+
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 dismissSwitchLanguageFragment()
@@ -451,39 +476,41 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         }
     }
 
-    private fun navDeatilFragment(matchID: String?, gameType: GameType?) {
+    private fun navDeatilFragment(matchID: String?, gameType: GameType?, matchType: MatchType? = null, matchList: ArrayList<MatchInfo>? = null) {
+        val detailMatchType = matchType ?: MatchType.DETAIL
+        val detailMatchList = matchList?.toTypedArray() ?: emptyArray()
         when (mNavController.currentDestination?.id) {
             R.id.homeFragment -> {
                 val action = HomeFragmentDirections.actionHomeFragmentToOddsDetailFragment(
-                    MatchType.DETAIL, gameType!!, matchID!!,
-                    emptyArray()
+                    detailMatchType, gameType!!, matchID!!,
+                    detailMatchList
                 )
                 mNavController.navigate(action)
             }
             R.id.gameV3Fragment -> {
                 val action = GameV3FragmentDirections.actionGameV3FragmentToOddsDetailFragment(
-                    MatchType.DETAIL, gameType!!, matchID!!,
-                    emptyArray()
+                    detailMatchType, gameType!!, matchID!!,
+                    detailMatchList
                 )
                 mNavController.navigate(action)
             }
             R.id.oddsDetailFragment -> {
                 val action =
-                    OddsDetailFragmentDirections.actionOddsDetailFragmentSelf(gameType!!, matchID!!, MatchType.DETAIL, emptyArray())
+                    OddsDetailFragmentDirections.actionOddsDetailFragmentSelf(gameType!!, matchID!!, detailMatchType, detailMatchList)
                 mNavController.navigate(action)
             }
             R.id.oddsDetailLiveFragment -> {
                 val action = OddsDetailLiveFragmentDirections.actionOddsDetailLiveFragmentToOddsDetailFragment(
-                    MatchType.DETAIL, gameType!!, matchID!!,
-                    emptyArray()
+                    detailMatchType, gameType!!, matchID!!,
+                    detailMatchList
                 )
                 val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
                 mNavController.navigate(action, navOptions)
             }
             R.id.gameLeagueFragment -> {
                 val action = GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(
-                    MatchType.DETAIL, gameType!!, matchID!!,
-                    emptyArray()
+                    detailMatchType, gameType!!, matchID!!,
+                    detailMatchList
                 )
                 mNavController.navigate(action)
             }
@@ -552,7 +579,10 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         }
         when (mNavController.currentDestination?.id) {
             R.id.gameLeagueFragment, R.id.gameOutrightFragment, R.id.gameOutrightMoreFragment, R.id.oddsDetailFragment, R.id.oddsDetailLiveFragment, R.id.leagueFilterFragment -> {
-                mNavController.navigateUp()
+                if (isFromPublicity)
+                    finish()
+                else
+                    mNavController.navigateUp()
             }
 
             R.id.gameV3Fragment -> {
@@ -596,8 +626,10 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         viewModel.isLogin.observe(this) {
             getAnnouncement()
             //登入後要請求使用者是否需要認證手機驗證碼
-            if (it)
+            if (it) {
                 viewModel.getTwoFactorValidateStatus()
+                isFromPublicity = true
+            }
         }
 
         //使用者沒有電話號碼
