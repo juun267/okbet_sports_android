@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityGamePublicityBinding
+import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
@@ -30,6 +31,7 @@ import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
 import org.cxct.sportlottery.util.SocketUpdateUtil
+import org.parceler.Parcels
 
 class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePublicityViewModel::class),
     View.OnClickListener {
@@ -172,7 +174,7 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
             event?.getContentIfNotHandled()?.let {
                 if (it) {
                     if (viewModel.getIsFastBetOpened()) {
-                        showFastBetFragment()
+//                        showFastBetFragment()
                     } else {
                         showBetListPage()
                     }
@@ -363,7 +365,21 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
         val gameType = GameType.getGameType(gameTypeCode)
         gameType?.let {
             matchInfo?.let { matchInfo ->
-                viewModel.updateMatchBetList(
+                val fastBetDataBean = FastBetDataBean(
+                    matchType = matchType,
+                    gameType = gameType,
+                    playCateCode = playCateCode,
+                    playCateName = playCateName,
+                    matchInfo = matchInfo,
+                    matchOdd = null,
+                    odd = odd,
+                    subscribeChannelType = ChannelType.HALL,
+                    betPlayCateNameMap = betPlayCateNameMap,
+                    playCateMenuCode
+                )
+                showFastBetFragment(fastBetDataBean)
+
+                /*viewModel.updateMatchBetList(
                     matchType,
                     gameType,
                     playCateCode,
@@ -373,13 +389,14 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
                     ChannelType.HALL,
                     betPlayCateNameMap,
                     playCateMenuCode
-                )
+                )*/
             }
         }
     }
 
     //region 開啟(快捷)投注單
-    private fun showFastBetFragment() {
+    //跟進GameActivity開啟投注單方式
+    private fun showFastBetFragment(fastBetDataBean: FastBetDataBean) {
         val transaction = supportFragmentManager.beginTransaction()
             .setCustomAnimations(
                 R.anim.push_bottom_to_top_enter,
@@ -389,6 +406,9 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
             )
 
         val fastBetFragment = FastBetFragment()
+        val bundle = Bundle()
+        bundle.putParcelable("data",  Parcels.wrap(fastBetDataBean))
+        fastBetFragment.arguments = bundle
 
         transaction
             .add(binding.flBetList.id, fastBetFragment)
