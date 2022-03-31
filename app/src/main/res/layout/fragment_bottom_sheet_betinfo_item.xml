@@ -218,6 +218,7 @@
                                 app:layout_constraintEnd_toStartOf="@id/tvOdds"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/tv_name"
+                                app:layout_constraintBottom_toTopOf="@+id/tv_odd_content_changed"
                                 tools:text="纽卡斯尔 v 切尔西" />
                             <TextView
                                 android:id="@+id/tvOdds"
@@ -226,27 +227,39 @@
                                 android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
                                 android:textColor="@color/colorBlue"
                                 android:textSize="@dimen/margin_14"
-                                android:layout_marginTop="@dimen/margin_6"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toEndOf="@id/tv_match"
-                                app:layout_constraintTop_toBottomOf="@+id/tv_name"
+                                app:layout_constraintTop_toTopOf="@+id/tv_match"
+
                                 tools:text="0.89" />
+
+                            <TextView
+                                android:id="@+id/tv_odd_content_changed"
+                                android:layout_width="match_parent"
+                                android:layout_height="36dp"
+                                android:background="@color/color_EAF4FE"
+                                android:gravity="center"
+                                android:layout_marginTop="@dimen/margin_12"
+                                android:text="@string/bet_info_odd_content_changed"
+                                android:textColor="@color/colorRed"
+                                android:textSize="@dimen/textSize12sp"
+                                app:layout_constraintTop_toBottomOf="@+id/tv_match"
+                                android:visibility="visible" />
 
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:id="@+id/viewGrey"
-                                android:layout_marginTop="@dimen/margin_12"
                                 android:background="@color/colorWhite6"
                                 app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/tv_match" />
+                                app:layout_constraintTop_toBottomOf="@+id/tv_odd_content_changed" />
 
                             <EditText
                                 android:id="@+id/et_bet"
                                 android:layout_width="213dp"
                                 android:layout_height="40dp"
                                 android:layout_marginStart="@dimen/activity_horizontal_margin"
-                                android:layout_marginTop="22dp"
+                                android:layout_marginTop="28dp"
                                 android:layout_marginBottom="@dimen/margin_10"
                                 android:background="@drawable/effect_select_bet_edit_text"
                                 android:hint="@string/bet_info_input_quota"
@@ -260,7 +273,7 @@
                                 android:textStyle="bold"
                                 app:layout_constraintBottom_toTopOf="@+id/tv_error_message"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/tv_match"
+                                app:layout_constraintTop_toBottomOf="@+id/tv_odd_content_changed"
                                 app:layout_constraintWidth_percent="0.442" />
 
                             <View
@@ -320,6 +333,14 @@
 
                             <include
                                 layout="@layout/content_bet_info_item_quota_detail"
+                                android:layout_height="wrap_content"
+                                android:layout_width="0dp"
+                                app:layout_constraintTop_toTopOf="@+id/viewGrey"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginStart="@dimen/margin_12"
+                                android:layout_marginTop="@dimen/margin_7"
+                                android:layout_marginEnd="@dimen/margin_12"
+                                app:layout_constraintStart_toStartOf="parent"
                                 app:parlayOdd="@{parlayOdd}" />
 
                             <org.cxct.sportlottery.util.KeyboardView
@@ -375,16 +396,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <TextView
-                android:id="@+id/tv_odd_content_changed"
-                android:layout_width="match_parent"
-                android:layout_height="36dp"
-                android:background="@color/color_EAF4FE"
-                android:gravity="center"
-                android:text="@string/bet_info_odd_content_changed"
-                android:textColor="@color/colorRed"
-                android:textSize="@dimen/textSize12sp"
-                android:visibility="gone" />
+
 
             <include layout="@layout/view_bet_info_close_message" />
 

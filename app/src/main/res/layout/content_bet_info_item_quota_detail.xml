@@ -16,9 +16,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_quota_detail"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
         app:layout_constraintBottom_toBottomOf="@+id/et_bet"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/et_bet">
@@ -73,10 +72,9 @@
 
         <LinearLayout
             android:id="@+id/ll_win_quota_detail"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="end|center"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -84,19 +82,20 @@
             app:layout_constraintEnd_toEndOf="parent">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:layout_weight="1"
+                android:gravity="left"
                 android:text="@string/bet_info_win_quota"
-                android:textColor="@color/colorGray"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp" />
 
             <TextView
                 android:id="@+id/tv_win_quota"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/colorBlue"
+                android:gravity="right"
+                android:textColor="@color/color_060F20"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="293.000" />
 
