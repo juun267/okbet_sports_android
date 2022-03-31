@@ -12,13 +12,13 @@ data class News(
     @Json(name = "addTime")
     val addTime: String,
     @Json(name = "id")
-    val id: Int,
+    val id: Int?,
     @Json(name = "message")
     val message: String,
     @Json(name = "msgType")
     val msgType: Int,
     @Json(name = "platformId")
-    val platformId: Int,
+    val platformId: Int?,
     @Json(name = "rechLevels")
     val rechLevels: String,
     @Json(name = "sort")
