@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import org.cxct.sportlottery.databinding.FragmentNewsDeatilBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 
 class NewsDetailFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
     private var _binding: FragmentNewsDeatilBinding? = null
@@ -37,6 +38,8 @@ class NewsDetailFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
                 tvTitle.text = news.title
                 tvContent.text = news.message
                 tvDate.text = news.showDate
+
+                OverScrollDecoratorHelper.setUpOverScroll(scrollView)
             }
         }
     }
