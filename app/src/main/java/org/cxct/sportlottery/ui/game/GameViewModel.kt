@@ -423,11 +423,21 @@ class GameViewModel(
         //_quickOddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
         if (childMatchType == MatchType.OTHER_OUTRIGHT) {
-            getLeagueList(
-                getSportSelectedCode(MatchType.OTHER) ?: "",
-                currentSpecialCode,
-                null,
-                isIncrement = false
+//            getLeagueList(
+//                getSportSelectedCode(MatchType.OTHER_OUTRIGHT) ?: "",
+//                currentSpecialCode,
+//                null,
+//                isIncrement = false
+//            )
+            getOutrightSeasonList(
+                getSportSelectedCode(MatchType.OTHER_OUTRIGHT) ?: "",
+                true
+            )
+        }
+        if(childMatchType == MatchType.OUTRIGHT) {
+            getOutrightSeasonList(
+                getSportSelectedCode(MatchType.OUTRIGHT) ?: "",
+                false
             )
         }
         else if (childMatchType == MatchType.OTHER) {
