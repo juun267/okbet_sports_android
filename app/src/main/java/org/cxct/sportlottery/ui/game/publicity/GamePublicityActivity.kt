@@ -435,7 +435,7 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
 
     private fun showLoginNotify() {
         snackBarLoginNotify.apply {
-            setAnchorView(binding.gameBottomNavigation.root.id)
+            setAnchorView(binding.viewBottom.id)
             show()
         }
     }
