@@ -195,12 +195,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             tv_member_account.text = it?.userName
             tv_id.text = it?.userId?.toString()
             tv_real_name.text = it?.fullName
-            if(sConfigData?.enableKYCVerify == VerifySwitchType.OPEN.value){
-                ll_verified.visibility = View.VISIBLE
-            }else if(sConfigData?.enableKYCVerify == VerifySwitchType.CLOSE.value){
-                ll_verified.visibility = View.GONE
-            }
-            //ll_verified.isVisible = sConfigData?.enableKYCVerify == VerifySwitchType.OPEN.value
+            ll_verified.isVisible = sConfigData?.realNameWithdrawVerified == VerifySwitchType.OPEN.value
             when (it?.verified) {
                 VerifiedType.PASSED.value -> {
                     ll_verified.isEnabled = false

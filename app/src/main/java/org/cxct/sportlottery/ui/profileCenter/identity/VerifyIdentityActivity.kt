@@ -23,7 +23,7 @@ class VerifyIdentityActivity :
     }
 
     private fun checkKYCEnable() {
-        if(sConfigData?.realNameWithdrawVerified == VerifySwitchType.CLOSE.value){
+        if(sConfigData?.enableKYCVerify == VerifySwitchType.CLOSE.value){
             val action = VerifyIdentityFragmentDirections.actionVerifyIdentityFragmentToCredentialsFragment()
             findNavController(R.id.identity_container).navigate(action)
         }
