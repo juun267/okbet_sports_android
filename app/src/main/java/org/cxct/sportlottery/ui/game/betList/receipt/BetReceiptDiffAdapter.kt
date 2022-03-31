@@ -71,6 +71,50 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
         }
     }
 
+     private fun starRunnable(startTime: Long, adapterPosition: Int, tvTime: TextView) {
+        try {
+            if (mRunnableList[adapterPosition] == null) {
+                mRunnableList[adapterPosition] = getRunnable(startTime, adapterPosition, tvTime)
+                mRunnableList[adapterPosition]?.let { mHandler.post(it) }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+     private fun getRunnable(startTime: Long, position: Int, tvTime: TextView): Runnable {
+        return Runnable {
+            refreshTime(startTime, position, tvTime)//可以直接倒數了
+            mRunnableList[position]?.let { mHandler.postDelayed(it, 1000) }
+        }
+    }
+
+    private fun refreshTime(startTime: Long, position: Int, tvTime: TextView) {
+        if (startTime.minus(System.currentTimeMillis()).div(1000L) < 0) {
+            tvTime.text = String.format(
+                tvTime.context.getString(R.string.pending),
+                0
+            )
+            stopRunnable(position)
+        } else {
+            tvTime.text = String.format(
+                tvTime.context.getString(R.string.pending),
+                startTime.minus(System.currentTimeMillis()).div(1000L)
+            )
+        }
+    }
+
+    private fun stopRunnable(position: Int) {
+        try {
+            if (position < 0 || position >= mRunnableList.size || mRunnableList[position] != null) {
+                mRunnableList[position]?.let { mHandler.removeCallbacks(it) }//從執行緒移除
+                mRunnableList[position] = null//取消任務
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
             is DataItem.SingleData -> ItemType.SINGLE.ordinal
