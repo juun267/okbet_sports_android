@@ -18,7 +18,12 @@
                 app:argType="org.cxct.sportlottery.network.credential.CredentialCompleteData"
                 app:nullable="false" />
         </action>
+
+        <action
+            android:id="@+id/action_verifyIdentityFragment_to_credentialsFragment"
+            app:destination="@id/credentialsFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/verifyIdentityDetailFragment"
         android:name="org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDetailFragment"
@@ -29,5 +34,17 @@
             android:name="data"
             app:argType="org.cxct.sportlottery.network.credential.CredentialCompleteData"
             app:nullable="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/credentialsFragment"
+        android:name="org.cxct.sportlottery.ui.profileCenter.identity.CredentialsFragment"
+        android:label="fragment_credentials"
+        tools:layout="@layout/fragment_credentials">
+        <action android:id="@+id/action_credentialsFragment_to_credentialsDetailFragment"
+            app:destination="@id/verifyIdentityDetailFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right"
+            />
     </fragment>
 </navigation>
