@@ -40,9 +40,13 @@ class AutoScrollRecyclerView @JvmOverloads constructor(context: Context, attrs: 
         })
     }
 
+    override fun onTouchEvent(e: MotionEvent?): Boolean {
+        return false
+    }
+
     //判断是否拦截事件
     override fun onInterceptTouchEvent(e: MotionEvent): Boolean {
-        return false
+        return true
     }
 
     private fun initData(attrs: AttributeSet?) {

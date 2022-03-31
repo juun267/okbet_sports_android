@@ -18,6 +18,7 @@ import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 import org.cxct.sportlottery.util.SvgUtil
+import org.cxct.sportlottery.util.SvgUtil.defaultIconPath
 import java.util.*
 
 class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelectionType: Int?, var playSelectedCode: String?) :
@@ -156,6 +157,7 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
     }
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
         private val leagueOddAdapter by lazy {
             LeagueOddAdapter2(matchType)
         }
@@ -169,7 +171,13 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
             playSelectedCode: String?
         ) {
             itemView.league_text.text = item.league.name
-            val countryIcon = SvgUtil.getSvgDrawable(itemView.context, item.league.categoryIcon)
+            val countryIcon = SvgUtil.getSvgDrawable(itemView.context,
+                if(item.league.categoryIcon.isEmpty()){
+                    defaultIconPath
+                }else {
+                    item.league.categoryIcon
+                }
+            )
             itemView.iv_country.setImageDrawable(countryIcon)
             setupLeagueOddList(item, leagueOddListener, oddsType)
             setupLeagueOddExpand(item, matchType, leagueListener)
@@ -178,7 +186,13 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         // region update functions
         fun update(item: LeagueOdd, matchType: MatchType, oddsType: OddsType) {
             itemView.league_text.text = item.league.name
-            val countryIcon = SvgUtil.getSvgDrawable(itemView.context, item.league.categoryIcon)
+            val countryIcon = SvgUtil.getSvgDrawable(itemView.context,
+                if(item.league.categoryIcon.isEmpty()){
+                    defaultIconPath
+                }else {
+                    item.league.categoryIcon
+                }
+            )
             itemView.iv_country.setImageDrawable(countryIcon)
             updateLeagueOddList(item, oddsType)
             updateLeagueExpand(item, matchType)

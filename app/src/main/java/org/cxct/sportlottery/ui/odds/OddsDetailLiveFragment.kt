@@ -28,6 +28,7 @@ import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
 import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailLiveBinding
+import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
@@ -42,6 +43,7 @@ import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.TimerManager
 import org.cxct.sportlottery.ui.component.LiveViewToolbar
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
@@ -200,17 +202,31 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                     matchOdd.matchInfo.homeScore = "$curHomeScore"
                     matchOdd.matchInfo.awayScore = "$curAwayScore"
 
-                    viewModel.updateMatchBetList(
+                    val fastBetDataBean = FastBetDataBean(
                         matchType = MatchType.IN_PLAY,
                         gameType = args.gameType,
                         playCateCode = oddsDetail?.gameType ?: "",
                         playCateName = oddsDetail?.name ?: "",
                         matchInfo = matchOdd.matchInfo,
+                        matchOdd = null,
                         odd = odd,
                         subscribeChannelType = ChannelType.EVENT,
                         betPlayCateNameMap = matchOdd.betPlayCateNameMap,
                         otherPlayCateName = scoPlayCateNameForBetInfo
                     )
+                    (activity as GameActivity).showFastBetFragment(fastBetDataBean)
+
+//                    viewModel.updateMatchBetList(
+//                        matchType = MatchType.IN_PLAY,
+//                        gameType = args.gameType,
+//                        playCateCode = oddsDetail?.gameType ?: "",
+//                        playCateName = oddsDetail?.name ?: "",
+//                        matchInfo = matchOdd.matchInfo,
+//                        odd = odd,
+//                        subscribeChannelType = ChannelType.EVENT,
+//                        betPlayCateNameMap = matchOdd.betPlayCateNameMap,
+//                        otherPlayCateName = scoPlayCateNameForBetInfo
+//                    )
                 }
             }
         ).apply {

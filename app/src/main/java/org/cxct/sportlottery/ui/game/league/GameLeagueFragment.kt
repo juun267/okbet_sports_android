@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.fragment_game_league.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
@@ -24,6 +25,7 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
 import org.cxct.sportlottery.ui.common.SocketLinearManager
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueListener
@@ -243,7 +245,8 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     }
 
                     leagueOdds.forEach { leagueOdd ->
-                        subscribeChannelHall(leagueOdd)
+                        if (leagueOdd.unfold == FoldState.UNFOLD.code)
+                            subscribeChannelHall(leagueOdd)
                     }
                 }
             }
@@ -533,8 +536,15 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         val nowGameType = args.gameType.key
         val playCateMenuCode =
             if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else getPlaySelectedCode()
-        val oddsSortFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else PlayCateMenuFilterUtils.filterOddsSort(nowGameType, playCateMenuCode)
-        val playCateNameMapFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) PlayCateMenuFilterUtils.filterSelectablePlayCateNameMap(nowGameType,getPlaySelectedCode(), playCateMenuCode) else PlayCateMenuFilterUtils.filterPlayCateNameMap(nowGameType, playCateMenuCode)
+        val oddsSortFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else PlayCateMenuFilterUtils.filterOddsSort(
+            nowGameType,
+            playCateMenuCode
+        )
+        val playCateNameMapFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) PlayCateMenuFilterUtils.filterSelectablePlayCateNameMap(
+            nowGameType,
+            getPlaySelectedCode(),
+            playCateMenuCode
+        ) else PlayCateMenuFilterUtils.filterPlayCateNameMap(nowGameType, playCateMenuCode)
 
         this.forEach { LeagueOdd ->
             LeagueOdd.matchOdds.forEach { MatchOdd ->
@@ -629,17 +639,31 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
     ) {
         matchInfo?.let {
-            viewModel.updateMatchBetList(
-                args.matchType,
-                args.gameType,
-                playCateCode,
-                playCateName,
-                matchInfo,
-                odd,
-                ChannelType.HALL,
-                betPlayCateNameMap,
+            val fastBetDataBean = FastBetDataBean(
+                matchType = args.matchType,
+                gameType = args.gameType,
+                playCateCode = playCateCode,
+                playCateName = playCateName ?: "",
+                matchInfo = matchInfo,
+                matchOdd = null,
+                odd = odd,
+                subscribeChannelType = ChannelType.HALL,
+                betPlayCateNameMap = betPlayCateNameMap,
                 getPlayCateMenuCode()
             )
+            (activity as GameActivity).showFastBetFragment(fastBetDataBean)
+
+//            viewModel.updateMatchBetList(
+//                args.matchType,
+//                args.gameType,
+//                playCateCode,
+//                playCateName,
+//                matchInfo,
+//                odd,
+//                ChannelType.HALL,
+//                betPlayCateNameMap,
+//                getPlayCateMenuCode()
+//            )
         }
     }
 
