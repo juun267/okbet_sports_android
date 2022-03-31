@@ -1,12 +1,14 @@
 package org.cxct.sportlottery.ui.game.league
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_game_league.*
 import kotlinx.android.synthetic.main.fragment_game_league.view.*
@@ -33,10 +35,7 @@ import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryListener
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
-import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
-import org.cxct.sportlottery.util.QuickListManager
-import org.cxct.sportlottery.util.SocketUpdateUtil
-import org.cxct.sportlottery.util.SpaceItemDecoration
+import org.cxct.sportlottery.util.*
 
 
 class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class) {
@@ -188,6 +187,57 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             this.adapter = leagueAdapter
             //addItemDecoration(SpaceItemDecoration(context, R.dimen.item_spacing_league))
+            addScrollWithItemVisibility {
+                if (leagueAdapter.data.isNotEmpty()) {
+                    leagueAdapter.data.forEachIndexed { index, leagueOdd ->
+                        if (it.any { vr -> vr == index }) {
+                            if (leagueAdapter.data[index].unfold == FoldState.UNFOLD.code) {
+                                subscribeChannelHall(leagueAdapter.data[index])
+                                Log.d("[subscribe]", "訂閱 ${leagueAdapter.data[index].league.name}")
+                            } else {
+                                Log.d("[subscribe]", "收合中 不訂閱 ${leagueAdapter.data[index].league.name}")
+                            }
+                        } else {
+                            unSubscribeChannelHall(leagueAdapter.data[index])
+                            Log.d("[subscribe]", "取消訂閱 ${leagueAdapter.data[index].league.name}")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun unSubscribeChannelHall(leagueOdd: LeagueOdd) {
+        leagueOdd.matchOdds.forEach { matchOdd ->
+            when (leagueOdd.unfold == FoldState.UNFOLD.code) {
+                true -> {
+                    unSubscribeChannelHall(
+                        leagueOdd.gameType?.key,
+                        getPlaySelectedCode(),
+                        matchOdd.matchInfo?.id
+                    )
+
+                    if (matchOdd.matchInfo?.eps == 1) {
+                        unSubscribeChannelHall(
+                            leagueOdd.gameType?.key,
+                            PlayCate.EPS.value,
+                            matchOdd.matchInfo.id
+                        )
+                    }
+
+                    matchOdd.quickPlayCateList?.forEach {
+                        when (it.isSelected) {
+                            true -> {
+                                unSubscribeChannelHall(
+                                    leagueOdd.gameType?.key,
+                                    it.code,
+                                    matchOdd.matchInfo?.id
+                                )
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -324,7 +374,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 //leagueAdapter.notifyDataSetChanged()
                 leagueAdapter.data.forEachIndexed { index, leagueOdd ->
                     leagueOdd.matchOdds.forEach { matchOdd ->
-                        if(matchOdd.matchInfo?.id == mSelectedMatchInfo?.id) {
+                        if (matchOdd.matchInfo?.id == mSelectedMatchInfo?.id) {
                             leagueAdapter.updateLeague(index, leagueOdd)
                             mSelectedMatchInfo = null
                             return@forEach
@@ -354,7 +404,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     private fun updateToolbar(oddsListData: OddsListData?) {
         when {
             (oddsListData?.leagueOdds?.size ?: 0 == 1) -> {
-                game_toolbar_match_type.text =""
+                game_toolbar_match_type.text = ""
                 game_toolbar_sport_type.text = args.matchCategoryName
                     ?: (oddsListData?.leagueOdds?.firstOrNull()?.league?.name)
             }
@@ -409,7 +459,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         } &&
                         leagueOdd.unfold == FoldState.UNFOLD.code) {
 
-                        leagueAdapter.notifyItemChanged(index)
+//                        leagueAdapter.notifyItemChanged(index)
                     }
                 }
             }
@@ -445,7 +495,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         } &&
                         leagueOdd.unfold == FoldState.UNFOLD.code
                     ) {
-                        leagueAdapter.notifyItemChanged(index)
+                        updateGameList(index, leagueOdd)
                     }
                 }
             }
@@ -493,7 +543,8 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 unSubscribeChannelHallAll()
 
                 leagueAdapter.data.forEach { leagueOdd ->
-                    subscribeChannelHall(leagueOdd)
+                    if (leagueOdd.unfold == FoldState.UNFOLD.code)
+                        subscribeChannelHall(leagueOdd)
                 }
             }
         }
@@ -509,6 +560,13 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     subscribeChannelHall(args.gameType.key, leagueChangeEvent.matchIdList?.firstOrNull())
                 }
             }
+        }
+    }
+
+    private fun updateGameList(index: Int, leagueOdd: LeagueOdd) {
+        leagueAdapter.data[index] = leagueOdd
+        if (game_league_odd_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !game_league_odd_list.isComputingLayout) {
+            leagueAdapter.updateLeague(index, leagueOdd)
         }
     }
 
@@ -573,7 +631,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
      */
     private fun OddsChangeEvent.sortOddsMap() {
         this.odds?.forEach { (_, value) ->
-            if (value?.size ?: 0> 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
+            if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
                 value?.sortBy {
                     it?.marketSort
                 }
