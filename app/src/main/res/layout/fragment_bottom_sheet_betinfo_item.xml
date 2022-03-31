@@ -182,14 +182,27 @@
                                 android:id="@+id/tv_name"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-                                android:layout_marginTop="4dp"
+                                android:layout_marginStart="@dimen/margin_16"
+                                android:layout_marginTop="10dp"
                                 android:textColor="@color/colorBlackLight"
                                 android:textSize="@dimen/textSize13sp"
-                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/tvContent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/tv_odds_content"
                                 tools:text="让球" />
+
+                            <TextView
+                                android:id="@+id/tvContent"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+                                android:layout_marginTop="10dp"
+                                android:textColor="@color/colorRedDark"
+                                android:textSize="@dimen/textSize13sp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/iv_bet_lock"
+                                app:layout_constraintTop_toBottomOf="@+id/tv_odds_content"
+                                tools:text="-0.5/2" />
 
                             <!--玩法名稱:讓球,獨贏..-->
                             <TextView
@@ -198,11 +211,26 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
                                 android:textColor="@color/colorGray"
+                                android:maxLines="2"
+                                android:ellipsize="end"
                                 android:textSize="@dimen/textSize13sp"
-                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_marginTop="@dimen/margin_6"
+                                app:layout_constraintEnd_toStartOf="@id/tvOdds"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/tv_name"
                                 tools:text="纽卡斯尔 v 切尔西" />
+                            <TextView
+                                android:id="@+id/tvOdds"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+                                android:textColor="@color/colorBlue"
+                                android:textSize="@dimen/margin_14"
+                                android:layout_marginTop="@dimen/margin_6"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/tv_match"
+                                app:layout_constraintTop_toBottomOf="@+id/tv_name"
+                                tools:text="0.89" />
 
                             <View
                                 android:layout_width="match_parent"
