@@ -1,13 +1,17 @@
 package org.cxct.sportlottery.ui.game.betList.receipt
 
+import android.os.Handler
+import android.os.Looper
 import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.button_bet.view.*
 import kotlinx.android.synthetic.main.item_match_receipt.view.*
 import kotlinx.android.synthetic.main.item_parlay_receipt.view.*
 import kotlinx.android.synthetic.main.view_match_receipt_bet.view.*
@@ -23,6 +27,8 @@ import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.*
+import timber.log.Timber
+import java.util.*
 
 class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(BetReceiptCallback()) {
 
@@ -36,7 +42,16 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
     var betParlayList: List<ParlayOdd>? = null
 
+    var betConfirmTime: Long? = 0
+
     enum class ItemType { SINGLE, PARLAY_TITLE, PARLAY }
+
+    val mHandler = Handler(Looper.getMainLooper())
+
+    val mRunnableList: MutableList<Runnable?> by lazy {
+        MutableList(itemCount) { _ -> null }
+    }
+
 
     /**
      * @param betParlayList 投注單的串關清單, 用來表示第一項投注單的賠率
