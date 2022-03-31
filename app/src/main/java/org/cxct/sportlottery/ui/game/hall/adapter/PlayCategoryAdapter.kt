@@ -22,8 +22,6 @@ class PlayCategoryAdapter : RecyclerView.Adapter<PlayCategoryAdapter.ViewHolderP
 
     var playCategoryListener: PlayCategoryListener? = null
 
-    var mIsPlayCategotySelected = false
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPlayCategory {
         return ViewHolderPlayCategory(LayoutInflater.from(parent.context).inflate(R.layout.itemview_play_category_v4, parent, false))
     }
@@ -59,6 +57,12 @@ class PlayCategoryAdapter : RecyclerView.Adapter<PlayCategoryAdapter.ViewHolderP
                                 setSelection(count)
                             else
                                 setSelection(selectedIndex)
+
+                            if (item.isSelected) {
+                                itemView.play_name.text = item.playCateList[selectedIndex].name
+                            } else {
+                                itemView.play_name.text = item.name
+                            }
                         }
                     initialSetItem = false
                     //endregion
@@ -71,7 +75,6 @@ class PlayCategoryAdapter : RecyclerView.Adapter<PlayCategoryAdapter.ViewHolderP
                                     playList.getOrNull(position)?.let { playCate ->
                                         playCategoryListener?.onSelectPlayCateListener(item, playCate)
                                         itemView.play_name.text = playCate.name
-                                        mIsPlayCategotySelected = true
                                     }
                                 }
                                 initSpinnerAdapter = false
@@ -83,10 +86,10 @@ class PlayCategoryAdapter : RecyclerView.Adapter<PlayCategoryAdapter.ViewHolderP
                         }
 
                     }
+                } else {
+                    itemView.play_name.text = item.name
                 }
             }
-
-            if(!mIsPlayCategotySelected) itemView.play_name.text = item.name
 
             itemView.play_arrow.visibility =
                 if (item.selectionType == SelectionType.SELECTABLE.code) {
