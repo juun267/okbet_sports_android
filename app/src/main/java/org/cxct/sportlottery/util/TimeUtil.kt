@@ -540,6 +540,21 @@ object TimeUtil {
         }
         return remainTime
     }
+    //[Martin] 這會回傳剩餘幾天
+    fun getRemainDay(timeStamp: Long?): Int {
+        var remainTime = 0L
+        var day = 0
+        try {
+            timeStamp?.apply {
+                remainTime = timeStamp - System.currentTimeMillis()
+                day = (remainTime/ (1000*60*60*24)).toInt()+1
+            }
+        } catch (e: Exception) {
+            Timber.e("時間計算失敗!!! \n$e")
+            e.printStackTrace()
+        }
+        return day
+    }
 
     /**
      * return: 時間是否為今日
