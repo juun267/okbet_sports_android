@@ -283,6 +283,10 @@ class LeftMenuItemNewAdapter(
                 ct_game_rule.setOnClickListener {
                     footerSelectedListener.gameRuleSelected()
                 }
+
+                ct_news.setOnClickListener {
+                    footerSelectedListener.newsSelected()
+                }
             }
         }
     }
@@ -314,10 +318,12 @@ class LeftMenuItemNewAdapter(
     class FooterSelectedListener(
         private val oddTypeSelectedListener: () -> Unit,
         private val appearanceSelectedListener: () -> Unit,
-        private val gameRuleSelectedListener: () -> Unit
+        private val gameRuleSelectedListener: () -> Unit,
+        private val newsSelectedListener: () -> Unit
     ) {
         fun oddTypeSelected() = oddTypeSelectedListener()
         fun appearanceSelected() = appearanceSelectedListener()
         fun gameRuleSelected() = gameRuleSelectedListener()
+        fun newsSelected() = newsSelectedListener()
     }
 }
