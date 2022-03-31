@@ -11,7 +11,7 @@
                 <gradient
                     android:startColor="#FF6502"
                     android:endColor="#F6A744"
-                    android:angle="180"/>
+                    android:angle="135"/>
             </shape>
         </rotate>
     </item>
@@ -27,7 +27,7 @@
                 <gradient
                     android:startColor="#0079FA"
                     android:endColor="#0079FA"
-                    android:angle="180"/>
+                    android:angle="135"/>
             </shape>
         </rotate>
     </item>
