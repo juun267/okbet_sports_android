@@ -952,6 +952,9 @@
     <string name="face_scan_result">face scan result</string>
     <string name="not_verify">(Not yet verified)</string>
     <string name="verified">(Verified)</string>
+    <string name="passed">(Passed)</string>
+    <string name="verifying">(Verifying)</string>
+    <string name="verify_failed">(Verify failed)</string>
     <string name="select_id_type">Select ID Type</string>
     <string name="scan_tool_bar">Scan results</string>
     <string name="text_us_east_time">The time is reported in UTC-4 time zone.</string>

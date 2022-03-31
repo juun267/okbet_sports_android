@@ -195,13 +195,41 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             tv_member_account.text = it?.userName
             tv_id.text = it?.userId?.toString()
             tv_real_name.text = it?.fullName
-
-            ll_verified.isVisible = sConfigData?.enableKYCVerify == VerifySwitchType.OPEN.value
+            if(sConfigData?.enableKYCVerify == VerifySwitchType.OPEN.value){
+                ll_verified.visibility = View.VISIBLE
+            }else if(sConfigData?.enableKYCVerify == VerifySwitchType.CLOSE.value){
+                ll_verified.visibility = View.GONE
+            }
+            //ll_verified.isVisible = sConfigData?.enableKYCVerify == VerifySwitchType.OPEN.value
             when (it?.verified) {
                 VerifiedType.PASSED.value -> {
                     ll_verified.isEnabled = false
                     ll_verified.isClickable = false
-                    tv_verified.text = getString(R.string.verified)
+                    tv_verified.text = getString(R.string.passed)
+                    tv_verified.setTextColor(
+                        ContextCompat.getColor(
+                            tv_verified.context,
+                            R.color.colorBlue
+                        )
+                    )
+                    icon_identity.visibility = View.GONE
+                }
+                VerifiedType.NOT_YET.value -> {
+                    ll_verified.isEnabled = false
+                    ll_verified.isClickable = false
+                    tv_verified.text = getString(R.string.not_verify)
+                    tv_verified.setTextColor(
+                        ContextCompat.getColor(
+                            tv_verified.context,
+                            R.color.colorBlue
+                        )
+                    )
+                    icon_identity.visibility = View.GONE
+                }
+                VerifiedType.VERIFYING.value -> {
+                    ll_verified.isEnabled = false
+                    ll_verified.isClickable = false
+                    tv_verified.text = getString(R.string.verifying)
                     tv_verified.setTextColor(
                         ContextCompat.getColor(
                             tv_verified.context,
@@ -213,7 +241,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 else -> {
                     ll_verified.isEnabled = true
                     ll_verified.isClickable = true
-                    tv_verified.text = getString(R.string.not_verify)
+                    tv_verified.text = getString(R.string.verify_failed)
                     tv_verified.setTextColor(
                         ContextCompat.getColor(
                             tv_verified.context,
