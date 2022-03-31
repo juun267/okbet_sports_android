@@ -146,11 +146,17 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
             is SingleViewHolder -> {
                 val itemData = getItem(position) as DataItem.SingleData
                 holder.bind(itemData.result, currentOddsType)
+                if (itemData.result.status == 0) {
+                    starRunnable(betConfirmTime ?: 0, position, holder.itemView.tv_bet_status)
+                }
             }
 
             is ParlayViewHolder -> {
                 val itemData = getItem(position) as DataItem.ParlayData
                 holder.bind(itemData.result, itemData.firstItem, currentOddsType, betParlayList)
+                if (itemData.result.status == 0) {
+                    starRunnable(betConfirmTime ?: 0, position, holder.itemView.tv_bet_status)
+                }
             }
 
             is ParlayTitleViewHolder -> {
@@ -191,7 +197,9 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                     tv_bet_amount.text = TextUtil.formatMoney(itemData.stake ?: 0.0)
                     tv_winnable_amount.text = TextUtil.formatMoney(winnable ?: 0.0)
                     tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
-                    tv_bet_status.setBetReceiptStatus(status)
+
+                    if (status != 0)
+                        tv_bet_status.setBetReceiptStatus(status)
 
                     tv_bet_status.setReceiptStatusColor(status)
 
@@ -267,7 +275,9 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                     )
                     tv_winnable_amount.text = TextUtil.formatMoney(winnable ?: 0.0)
                     tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
-                    tv_bet_status.setBetReceiptStatus(status)
+                    if (status != 0)
+                        tv_bet_status.setBetReceiptStatus(status)
+
                     tv_bet_status.setReceiptStatusColor(status)
                 }
             }
