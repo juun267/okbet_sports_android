@@ -322,6 +322,16 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
         })
     }
 
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount != 0) {
+            for (i in 0 until supportFragmentManager.backStackEntryCount) {
+                supportFragmentManager.popBackStack()
+            }
+            return
+        }
+    }
+
+
     private fun queryData() {
         viewModel.getRecommend()
     }
