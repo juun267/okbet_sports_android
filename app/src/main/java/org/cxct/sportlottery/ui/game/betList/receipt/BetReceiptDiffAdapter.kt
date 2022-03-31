@@ -44,11 +44,13 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
     fun submit(
         singleList: List<BetResult>,
         parlayList: List<BetResult>,
-        betParlayList: List<ParlayOdd>
+        betParlayList: List<ParlayOdd>,
+        betConfirmTime: Long
     ) {
         adapterScope.launch {
 
             this@BetReceiptDiffAdapter.betParlayList = betParlayList
+            this@BetReceiptDiffAdapter.betConfirmTime = betConfirmTime
 
             val parlayItem =
                 if (parlayList.isNotEmpty())

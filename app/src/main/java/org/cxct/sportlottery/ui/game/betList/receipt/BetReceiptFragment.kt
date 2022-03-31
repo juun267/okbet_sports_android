@@ -125,7 +125,8 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     submit(
                         betResultData?.singleBets ?: listOf(),
                         betResultData?.parlayBets ?: listOf(),
-                        this@BetReceiptFragment.betParlayList ?: listOf()
+                        this@BetReceiptFragment.betParlayList ?: listOf(),
+                        betResultData?.betConfirmTime ?: 0
                     )
                 }
             }
