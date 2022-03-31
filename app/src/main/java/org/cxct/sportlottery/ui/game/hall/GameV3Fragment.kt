@@ -552,8 +552,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 if (leagueAdapter.data.isNotEmpty()) {
                     leagueAdapter.data.forEachIndexed { index, leagueOdd ->
                         if (it.any { vr -> vr == index }) {
-                            subscribeChannelHall(leagueAdapter.data[index])
-                            Log.d("[subscribe]", "訂閱 ${leagueAdapter.data[index].league.name}")
+                            if (leagueAdapter.data[index].unfold == FoldState.UNFOLD.code) {
+                                subscribeChannelHall(leagueAdapter.data[index])
+                                Log.d("[subscribe]", "訂閱 ${leagueAdapter.data[index].league.name}")
+                            } else {
+                                Log.d("[subscribe]", "收合中 不訂閱 ${leagueAdapter.data[index].league.name}")
+                            }
                         } else {
                             unSubscribeChannelHall(leagueAdapter.data[index])
                             Log.d("[subscribe]", "取消訂閱 ${leagueAdapter.data[index].league.name}")
