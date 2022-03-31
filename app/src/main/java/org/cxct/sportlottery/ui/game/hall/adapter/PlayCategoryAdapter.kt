@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.hall.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,8 +22,10 @@ class PlayCategoryAdapter : RecyclerView.Adapter<PlayCategoryAdapter.ViewHolderP
 
     var playCategoryListener: PlayCategoryListener? = null
 
+    var mIsPlayCategotySelected = false
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPlayCategory {
-        return ViewHolderPlayCategory.from(parent)
+        return ViewHolderPlayCategory(LayoutInflater.from(parent.context).inflate(R.layout.itemview_play_category_v4, parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolderPlayCategory, position: Int) {
@@ -31,7 +34,7 @@ class PlayCategoryAdapter : RecyclerView.Adapter<PlayCategoryAdapter.ViewHolderP
 
     override fun getItemCount(): Int = data.size
 
-    class ViewHolderPlayCategory private constructor(itemView: View) :
+    inner class ViewHolderPlayCategory constructor(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
         fun bind(item: Play, playCategoryListener: PlayCategoryListener?) {
@@ -67,6 +70,8 @@ class PlayCategoryAdapter : RecyclerView.Adapter<PlayCategoryAdapter.ViewHolderP
                                 if (!initSpinnerAdapter && !initialSetItem) {
                                     playList.getOrNull(position)?.let { playCate ->
                                         playCategoryListener?.onSelectPlayCateListener(item, playCate)
+                                        itemView.play_name.text = playCate.name
+                                        mIsPlayCategotySelected = true
                                     }
                                 }
                                 initSpinnerAdapter = false
@@ -81,7 +86,7 @@ class PlayCategoryAdapter : RecyclerView.Adapter<PlayCategoryAdapter.ViewHolderP
                 }
             }
 
-            itemView.play_name.text = item.name
+            if(!mIsPlayCategotySelected) itemView.play_name.text = item.name
 
             itemView.play_arrow.visibility =
                 if (item.selectionType == SelectionType.SELECTABLE.code) {
@@ -116,17 +121,6 @@ class PlayCategoryAdapter : RecyclerView.Adapter<PlayCategoryAdapter.ViewHolderP
 
         private fun showPlayCateSpinner() {
             itemView.sp_play.performClick()
-        }
-
-
-        companion object {
-            fun from(parent: ViewGroup): ViewHolderPlayCategory {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater
-                    .inflate(R.layout.itemview_play_category_v4, parent, false)
-
-                return ViewHolderPlayCategory(view)
-            }
         }
     }
 }
