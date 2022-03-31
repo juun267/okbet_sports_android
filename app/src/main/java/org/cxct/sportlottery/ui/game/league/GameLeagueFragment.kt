@@ -457,7 +457,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         } &&
                         leagueOdd.unfold == FoldState.UNFOLD.code) {
 
-                        leagueAdapter.notifyItemChanged(index)
+//                        leagueAdapter.notifyItemChanged(index)
                     }
                 }
             }
@@ -541,7 +541,8 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 unSubscribeChannelHallAll()
 
                 leagueAdapter.data.forEach { leagueOdd ->
-                    subscribeChannelHall(leagueOdd)
+                    if (leagueOdd.unfold == FoldState.UNFOLD.code)
+                        subscribeChannelHall(leagueOdd)
                 }
             }
         }
