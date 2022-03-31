@@ -20,6 +20,7 @@ import org.cxct.sportlottery.network.odds.OddsService
 import org.cxct.sportlottery.network.outright.OutrightService
 import org.cxct.sportlottery.network.playcate.PlayCateListService
 import org.cxct.sportlottery.network.myfavorite.FavoriteService
+import org.cxct.sportlottery.network.news.NewsService
 import org.cxct.sportlottery.network.sport.SportService
 import org.cxct.sportlottery.network.third_game.ThirdGameService
 import org.cxct.sportlottery.network.uploadImg.UploadImgService
@@ -177,5 +178,10 @@ object OneBoSportApi {
         get() = RequestManager.instance
             .retrofit
             .create(CredentialService::class.java)
+
+    val newsService: NewsService
+        get() = RequestManager.instance
+            .retrofit
+            .create(NewsService::class.java)
 
 }

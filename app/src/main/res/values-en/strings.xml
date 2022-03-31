@@ -219,6 +219,8 @@
     <string name="hint_bet_growth">Bet %d %s lulfilling %d to level up</string>
     <string name="contact_us">Contact us</string>
     <string name="game_rule">Game Rules</string>
+<!--  //TODO news 翻譯待PM提供  -->
+    <string name="news">最新消息</string>
     <string name="sport_bet_rule">Sports betting rules</string>
     <string name="common_sport_description">General Sports description</string>
     <string name="overview">Overview</string>
@@ -1056,4 +1058,11 @@ Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAG
     <string name="waiting">Waiting</string>
     <string name="sec">s</string>
     <!--歷史紀錄end-->
+
+    <!--region 最新消息-->
+    <string name="news_tab_game">Game</string>
+    <string name="news_tab_system">System</string>
+    <string name="news_tab_plat">Platform</string>
+    <string name="news_detail">Detail</string>
+    <!--endregion 最新消息-->
 </resources>
