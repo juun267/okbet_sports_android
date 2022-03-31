@@ -275,7 +275,8 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         private val onGoHomePageListener: () -> Unit,
         private val onClickBetListener: (gameType: String, matchType: MatchType, matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?, playCateMenuCode: String?) -> Unit,
         private val onShowLoginNotify: () -> Unit,
-        private val onClickStatisticsListener: (matchId: String) -> Unit
+        private val onClickStatisticsListener: (matchId: String) -> Unit,
+        private val onClickPlayTypeListener: (gameType: String, matchType: MatchType?, matchId: String?, matchInfoList: List<MatchInfo>) -> Unit
     ) {
         fun onItemClickListener() = onItemClickListener.invoke()
         fun onGoHomePageListener() = onGoHomePageListener.invoke()
@@ -301,6 +302,13 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
 
         fun onShowLoginNotify() = onShowLoginNotify.invoke()
         fun onClickStatisticsListener(matchId: String) = onClickStatisticsListener.invoke(matchId)
+        fun onClickPlayTypeListener(
+            gameType: String,
+            matchType: MatchType?,
+            matchId: String?,
+            matchInfoList: List<MatchInfo>
+        ) =
+            onClickPlayTypeListener.invoke(gameType, matchType, matchId, matchInfoList)
     }
 }
 
