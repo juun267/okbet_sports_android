@@ -49,6 +49,8 @@ import org.cxct.sportlottery.ui.selflimit.SelfLimitActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.TimeUtil.getRemainDay
+import org.cxct.sportlottery.util.TimeUtil.getRemainTime
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
@@ -543,8 +545,7 @@ class ProfileCenterActivity :
         btn_edit_nickname.visibility =
             if (userInfo?.setted == FLAG_NICKNAME_IS_SET) View.GONE else View.VISIBLE
         tv_user_id.text = userInfo?.userId?.toString()
-        Log.e("Martin","123="+userInfo?.uwEnableTime)
-        if(!userInfo?.uwEnableTime.isNullOrBlank()){
+        if(getRemainDay(userInfo?.uwEnableTime) > 0){
             ivNotice.visibility = View.VISIBLE
             ivNotice.setOnClickListener {
 
@@ -552,7 +553,7 @@ class ProfileCenterActivity :
 
                 val text1 = SpannableString(this.getString(R.string.text_security_money))
                 //測試資料 自己手打
-                val text2 = SpannableString("30")
+                val text2 = SpannableString(getRemainDay(userInfo?.uwEnableTime).toString())
                 val foregroundSpan =
                     ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorBlue))
                 text2.setSpan(foregroundSpan, 0, text2.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)

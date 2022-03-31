@@ -84,5 +84,5 @@ data class UserInfo(
     @ColumnInfo(name = "perBetLimit")
     val perBetLimit: Int? = null,
 
-    val uwEnableTime: String? = null
+    val uwEnableTime: Long? = 0
 )
