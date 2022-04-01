@@ -77,6 +77,9 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
     val userMoney: LiveData<Double?>
         get() = _userMoney
 
+    val lockMoney: LiveData<Double?>
+        get() = _lockMoney
+
     val userNotice: LiveData<UserNoticeEvent?>
         get() = _userNotice
 
@@ -118,6 +121,7 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
     private val _pingPong = MutableLiveData<PingPongEvent?>()
     private val _producerUp = MutableLiveData<ProducerUpEvent?>()
     private val _userMoney = MutableLiveData<Double?>()
+    private val _lockMoney = MutableLiveData<Double?>()
     private val _userNotice = MutableLiveData<UserNoticeEvent?>()
     private val _sysMaintenance = MutableLiveData<SysMaintenanceEvent?>()
     private val _serviceConnectStatus = MutableLiveData<ServiceConnectStatus>()
@@ -205,6 +209,10 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
             EventType.USER_MONEY -> {
                 val data = ServiceMessage.getUserMoney(jObjStr)
                 _userMoney.value = data?.money
+            }
+            EventType.LOCK_MONEY -> {
+                val data = ServiceMessage.getLockMoney(jObjStr)
+                _lockMoney.value = data?.lockMoney
             }
             EventType.USER_NOTICE -> {
                 val data = ServiceMessage.getUserNotice(jObjStr)

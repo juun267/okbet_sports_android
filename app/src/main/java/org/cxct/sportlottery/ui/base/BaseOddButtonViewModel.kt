@@ -81,8 +81,13 @@ abstract class BaseOddButtonViewModel(
         get() = _betAddResult
 
     protected val mUserMoney = MutableLiveData<Double?>()
+    protected val mLockMoney = MutableLiveData<Double?>()
+
     val userMoney: LiveData<Double?> //使用者餘額
         get() = mUserMoney
+
+    val lockMoney: LiveData<Double?>
+        get() = mLockMoney
 
     private val _betAddResult = MutableLiveData<Event<BetAddResult?>>()
 
@@ -102,6 +107,15 @@ abstract class BaseOddButtonViewModel(
                 OneBoSportApi.userService.getMoney()
             }
             mUserMoney.postValue(userMoneyResult?.money)
+        }
+    }
+
+    fun getLockMoney(){
+        viewModelScope.launch {
+            val userMoneyResult = doNetwork(androidContext) {
+                OneBoSportApi.userService.lockMoney()
+            }
+            mLockMoney.postValue(userMoneyResult?.money)
         }
     }
 

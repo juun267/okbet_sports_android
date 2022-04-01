@@ -52,6 +52,10 @@ abstract class BaseSocketViewModel(
         mUserMoney.postValue(money)
     }
 
+    fun updateLockMoney(money: Double?) {
+        mLockMoney.postValue(money)
+    }
+
     fun getSettlementNotification(event: OrderSettlementEvent?) {
         event?.sportBet?.let {
             when (it.status) {

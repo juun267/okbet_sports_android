@@ -49,6 +49,7 @@ import org.cxct.sportlottery.ui.selflimit.SelfLimitActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.TextUtil.formatMoney
 import org.cxct.sportlottery.util.TimeUtil.getRemainDay
 import org.cxct.sportlottery.util.TimeUtil.getRemainTime
 import timber.log.Timber
@@ -238,7 +239,10 @@ class ProfileCenterActivity :
                     toProfileCenter()
                 }
                 else -> { // TODO 20220108 沒有遊客的話，要確認一下文案是否正確 by Hewie
-                    ToastUtil.showToastInCenter(this, getString(R.string.message_guest_no_permission))
+                    ToastUtil.showToastInCenter(
+                        this,
+                        getString(R.string.message_guest_no_permission)
+                    )
                 }
             }
         }
@@ -342,6 +346,30 @@ class ProfileCenterActivity :
             updateUI(it)
         }
 
+        viewModel.lockMoney.observe(this) {
+            if (it?.toInt()!! > 0) {
+                ivNotice.visibility = View.VISIBLE
+                ivNotice.setOnClickListener { view ->
+                    val spannableStringBuilder = SpannableStringBuilder()
+                    val text1 = SpannableString(getString(R.string.text_security_money, formatMoney(it)))
+                    val text2 = SpannableString(getRemainDay(viewModel.userInfo?.value?.uwEnableTime).toString())
+                    val foregroundSpan =
+                        ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorBlue))
+                    text2.setSpan(foregroundSpan, 0, text2.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    val text3 = SpannableString(getString(R.string.text_security_money2))
+                    spannableStringBuilder.append(text1)
+                    spannableStringBuilder.append(text2)
+                    spannableStringBuilder.append(text3)
+                    showPromptDialog(
+                        getString(R.string.prompt),
+                        spannableStringBuilder
+                    ) {}
+                }
+            } else {
+                ivNotice.visibility = View.GONE
+            }
+        }
+
         viewModel.withdrawSystemOperation.observe(this) {
             val operation = it.getContentIfNotHandled()
             if (operation == false) {
@@ -433,9 +461,10 @@ class ProfileCenterActivity :
                             this.showSmeTimer300()
                             viewModel.sendTwoFactor()
                         }
-                        positiveClickListener = CustomSecurityDialog.PositiveClickListener { number ->
-                            viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
-                        }
+                        positiveClickListener =
+                            CustomSecurityDialog.PositiveClickListener { number ->
+                                viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
+                            }
                     }
                     customSecurityDialog?.show(supportFragmentManager, null)
                 }
@@ -545,28 +574,12 @@ class ProfileCenterActivity :
         btn_edit_nickname.visibility =
             if (userInfo?.setted == FLAG_NICKNAME_IS_SET) View.GONE else View.VISIBLE
         tv_user_id.text = userInfo?.userId?.toString()
-        if(getRemainDay(userInfo?.uwEnableTime) > 0){
+        if (getRemainDay(userInfo?.uwEnableTime) > 0) {
             ivNotice.visibility = View.VISIBLE
             ivNotice.setOnClickListener {
-
-                val spannableStringBuilder = SpannableStringBuilder()
-
-                val text1 = SpannableString(this.getString(R.string.text_security_money))
-                //測試資料 自己手打
-                val text2 = SpannableString(getRemainDay(userInfo?.uwEnableTime).toString())
-                val foregroundSpan =
-                    ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorBlue))
-                text2.setSpan(foregroundSpan, 0, text2.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                val text3 = SpannableString(getString(R.string.text_security_money2))
-                spannableStringBuilder.append(text1)
-                spannableStringBuilder.append(text2)
-                spannableStringBuilder.append(text3)
-                showPromptDialog(
-                    getString(R.string.prompt),
-                    spannableStringBuilder
-                ) {}
+                viewModel.getLockMoney()
             }
-        }else{
+        } else {
             ivNotice.visibility = View.GONE
         }
     }
@@ -581,11 +594,12 @@ class ProfileCenterActivity :
     private fun updateCreditAccountUI(isCreditAccount: Boolean) {
         val thirdOpen = sConfigData?.thirdOpen == FLAG_OPEN
 
-        profile_center_back.visibility = if (isCreditAccount || sConfigData?.thirdOpen != FLAG_OPEN) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
+        profile_center_back.visibility =
+            if (isCreditAccount || sConfigData?.thirdOpen != FLAG_OPEN) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
 
         block_card.visibility = if (isCreditAccount) {
             View.GONE
