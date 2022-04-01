@@ -355,7 +355,7 @@
     <string name="suspend">Delay</string>
     <string name="uncheck">Unconfirmed</string>
     <string name="undone">Unsettlement</string>
-    <string name="settled"> -- </string>//TODO Bill 等PM補翻譯
+    <string name="settled">Settled bets</string>
     <string name="win">Win</string>
     <string name="win_half">Win a half</string>
     <string name="lose">Lose</string>

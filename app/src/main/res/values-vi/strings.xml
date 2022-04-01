@@ -345,7 +345,7 @@
     <string name="suspend">delay</string>
     <string name="uncheck">Chưa xác nhận</string>
     <string name="undone">Chưa thanh toán</string>
-    <string name="settled"> -- </string>//TODO Bill 等PM補翻譯
+    <string name="settled">đặt cược đã được thanh toán</string>
     <string name="win">Thắng</string>
     <string name="win_half">Thắng nửa</string>
     <string name="lose">Thắng</string>
