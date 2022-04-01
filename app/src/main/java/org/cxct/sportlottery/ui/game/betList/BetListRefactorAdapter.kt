@@ -29,6 +29,7 @@ import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -440,6 +441,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
             }
         }
+        var oldOdds = ""
 
         private fun setupOddInfo(
             itemData: BetInfoListData,
@@ -458,6 +460,20 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 //                }
 
                 setupOddsContent(itemData, oddsType = currentOddsType, tv_odds_content)
+                var spread = ""
+                spread = if (itemData.matchOdd.spread.isEmpty() || !PlayCate.needShowSpread(itemData.matchOdd.playCode) || itemData.matchType == MatchType.OUTRIGHT
+                ) {
+                    ""
+                } else {
+                    itemData.matchOdd.spread
+                }
+                tv_odds_content.text = itemData.matchOdd.playName
+                if(oldOdds != TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))){
+                    oldOdds = if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType)) else "–"
+                }
+                tvOdds.text =if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) "@"+TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType)) else "–"
+                tvContent.text = itemData.matchOdd.extInfo+spread
+
 
                 //隊伍名稱
                 tv_match.text = when {

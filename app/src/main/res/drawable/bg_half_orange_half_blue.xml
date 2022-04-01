@@ -25,8 +25,8 @@
             android:pivotY="100%">
             <shape android:shape="rectangle">
                 <gradient
-                    android:startColor="#0079FA"
-                    android:endColor="#0079FA"
+                    android:startColor="#0068D6"
+                    android:endColor="#0068D6"
                     android:angle="135"/>
             </shape>
         </rotate>

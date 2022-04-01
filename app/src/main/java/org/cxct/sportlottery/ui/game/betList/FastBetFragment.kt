@@ -179,6 +179,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
     }
     lateinit var data: FastBetDataBean
+    var oldOdds = ""
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -745,9 +746,16 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
 
         if (matchOdd.spreadState != SpreadState.SAME.state || matchOdd.oddState != OddState.SAME.state) {
-            tv_odd_content_changed.text = getString(R.string.bet_info_odd_content_changed)
-            tv_odd_content_changed.visibility = View.VISIBLE
-            button_bet.isOddsChanged = true
+            //tv_odd_content_changed.text = getString(R.string.bet_info_odd_content_changed)
+            if(oldOdds != TextUtil.formatForOdd(getOdds(matchOdd, oddsType))){
+                tv_odd_content_changed.visibility = View.VISIBLE
+                button_bet.isOddsChanged = true
+                tv_odd_content_changed.text =   getString(
+                    R.string.bet_info_odd_content_changed2,
+                    oldOdds,
+                    TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
+                )
+            }
         }
 
 
@@ -770,7 +778,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 oddsType
             }
             betInfoData.singleBetOddsType = currentOddsType
-            OddSpannableString.setupOddsContent(betInfoData, currentOddsType, binding.tvOddsContent)
+            //OddSpannableString.setupOddsContent(betInfoData, currentOddsType, binding.tvOddsContent)
             var spread = ""
             spread = if (matchOdd.spread.isEmpty() || !PlayCate.needShowSpread(matchOdd.playCode) || betInfoData.matchType == MatchType.OUTRIGHT
             ) {
@@ -779,7 +787,10 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 matchOdd.spread
             }
             binding.tvOddsContent.text = betInfoData.matchOdd.playName
-            binding.tvOdds.text ="@"+ if (matchOdd.status == BetStatus.ACTIVATED.code) TextUtil.formatForOdd(getOdds(matchOdd, oddsType)) else "–"
+            if(oldOdds != TextUtil.formatForOdd(getOdds(matchOdd, oddsType))){
+                oldOdds = if (matchOdd.status == BetStatus.ACTIVATED.code) TextUtil.formatForOdd(getOdds(matchOdd, oddsType)) else "–"
+            }
+            binding.tvOdds.text =if (matchOdd.status == BetStatus.ACTIVATED.code) "@"+TextUtil.formatForOdd(getOdds(matchOdd, oddsType)) else "–"
             binding.tvContent.text = matchOdd.extInfo+spread
 
         }
