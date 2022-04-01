@@ -15,7 +15,7 @@
         android:orientation="vertical">
         <TextView
             android:id="@+id/quick_odd_home"
-            android:layout_width="176dp"
+            android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="52dp"
@@ -28,7 +28,7 @@
             tools:text="俄罗斯俄罗斯俄罗斯俄罗斯俄罗斯俄罗斯" />
         <TextView
             android:id="@+id/quick_odd_away"
-            android:layout_width="176dp"
+            android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="11dp"
