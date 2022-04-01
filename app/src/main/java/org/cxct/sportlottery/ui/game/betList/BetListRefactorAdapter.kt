@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.iv_bet_lock
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.layoutKeyBoard
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.tv_error_message
 import kotlinx.android.synthetic.main.content_bet_list_batch_control.view.*
+import kotlinx.android.synthetic.main.fragment_bottom_sheet_betinfo_item.*
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v2.view.*
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_v2.view.*
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_v2.view.ll_winnable
@@ -460,6 +461,14 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 //                }
 
                 setupOddsContent(itemData, oddsType = currentOddsType, tv_odds_content)
+                if(oldOdds != TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))){
+                    tv_odd_content_changed.visibility = View.VISIBLE
+                    tv_odd_content_changed.text =  context.getString(
+                        R.string.bet_info_odd_content_changed2,
+                        oldOdds,
+                        TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))
+                    )
+                }
                 var spread = ""
                 spread = if (itemData.matchOdd.spread.isEmpty() || !PlayCate.needShowSpread(itemData.matchOdd.playCode) || itemData.matchType == MatchType.OUTRIGHT
                 ) {

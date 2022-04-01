@@ -815,7 +815,7 @@ class GameViewModel(
         this.atStart.items.sortedBy { sport ->
             sport.sortNum
         }
-        this.menu.eps.items.sortedBy { sport ->
+        this.menu.eps?.items?.sortedBy { sport ->
             sport.sortNum
         }
 
@@ -2305,13 +2305,13 @@ class GameViewModel(
                 }
             }
         }
-        this.menu.eps.items.map { sport ->
+        this.menu.eps?.items?.map { sport ->
             sport.isSelected = when {
                 ((matchType == MatchType.EPS) && gameTypeCode != null && sport.num > 0) -> {
                     sport.code == gameTypeCode
                 }
                 else -> {
-                    this.menu.eps.items.indexOf(sport) == 0
+                    this.menu?.eps?.items.indexOf(sport) == 0
                 }
             }
         }
