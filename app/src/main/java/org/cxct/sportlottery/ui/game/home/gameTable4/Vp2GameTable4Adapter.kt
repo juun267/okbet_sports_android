@@ -532,6 +532,7 @@ class Vp2GameTable4Adapter (
 
                         setOnClickListener {
                             oddFirst?.let { odd ->
+                                it.isSelected = !it.isSelected
                                 data.matchInfo?.gameType = gameType
                                 onClickOddListener?.onClickBet(data, odd, playCateName.toString(), itemView.tv_play_type.text.toString(), data.betPlayCateNameMap)
                             }
@@ -565,6 +566,7 @@ class Vp2GameTable4Adapter (
 
                         setOnClickListener {
                             oddSecond?.let { odd ->
+                                it.isSelected = !it.isSelected
                                 data.matchInfo?.gameType = gameType
                                 onClickOddListener?.onClickBet( data, odd, playCateName.toString(), itemView.tv_play_type.text.toString(), data.betPlayCateNameMap )
                             }
@@ -595,6 +597,7 @@ class Vp2GameTable4Adapter (
 
                         setOnClickListener {
                             oddThird?.let { odd ->
+                                it.isSelected = !it.isSelected
                                 data.matchInfo?.gameType = gameType
                                 onClickOddListener?.onClickBet( data, odd, playCateName.toString(), itemView.tv_play_type.text.toString(), data.betPlayCateNameMap )
                             }
