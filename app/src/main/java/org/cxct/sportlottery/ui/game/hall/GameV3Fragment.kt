@@ -1040,12 +1040,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         viewModel.betInfoList.observe(this.viewLifecycleOwner) {
             it.peekContent().let {
 
-                val list: MutableList<String> = mutableListOf()
-                it.forEach { data ->
-                    list.add(data.matchOdd.oddsId)
-                }
-                QuickListManager.setQuickSelectedList(list)
-
                 val leagueOdds = leagueAdapter.data
                 leagueOdds.forEach { leagueOdd ->
                     leagueOdd.matchOdds.forEach { matchOdd ->
@@ -1276,7 +1270,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 when (game_list.adapter) {
                     is LeagueAdapter -> {
 
-                        leagueAdapter.data.forEachIndexed { index, leagueOdd ->
+                        leagueAdapter.data.toList().forEachIndexed { index, leagueOdd ->
                             if (matchStatusChangeEvent.matchStatusCO?.status == GameMatchStatus.FINISH.value) {
                                 leagueOdd.matchOdds.find { m ->
                                     m.matchInfo?.id == matchStatusChangeEvent.matchStatusCO.matchId
@@ -1285,6 +1279,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                     if (leagueOdd.matchOdds.size > 0) {
                                         leagueAdapter.notifyItemChanged(index)
                                     } else {
+                                        leagueAdapter.data.remove(leagueOdd)
                                         leagueAdapter.notifyItemRemoved(index)
                                     }
                                 }

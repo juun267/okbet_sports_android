@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
+import org.cxct.sportlottery.network.bet.info.BetInfoData
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
@@ -23,6 +24,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.MatchOddUtil
+import org.cxct.sportlottery.util.QuickListManager
 import org.cxct.sportlottery.util.parlaylimit.ParlayBetLimit
 import org.cxct.sportlottery.util.parlaylimit.ParlayCom
 import org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil
@@ -217,6 +219,8 @@ class BetInfoRepository(val androidContext: Context) {
         val item = betList.find { it.matchOdd.oddsId == oddId }
         betList.remove(item)
 
+        updateQuickListManager(betList)
+
         val oddIDStr = oddId ?: ""
         val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
         oddIDArray.remove(oddIDStr)
@@ -241,6 +245,8 @@ class BetInfoRepository(val androidContext: Context) {
             _removeItem.value = Event(it.matchOdd.matchId)
         }
 
+        updateQuickListManager(betList)
+
         updateBetOrderParlay(betList)
         checkBetInfoContent(betList)
         _betIDList.postValue(Event(oddIDArray))
@@ -255,6 +261,8 @@ class BetInfoRepository(val androidContext: Context) {
         oddIDArray.clear()
         _matchOddList.value?.clear()
         _parlayList.value?.clear()
+
+        updateQuickListManager(betList)
 
         checkBetInfoContent(betList)
         _betIDList.postValue(Event(oddIDArray))
@@ -322,6 +330,9 @@ class BetInfoRepository(val androidContext: Context) {
             _betIDList.postValue(Event(oddIDArray))
 
             betList.add(data)
+
+            updateQuickListManager(betList)
+
             //產生串關注單
             updateBetOrderParlay(betList)
             checkBetInfoContent(betList)
@@ -527,6 +538,9 @@ class BetInfoRepository(val androidContext: Context) {
                 }
             }
         }
+
+        updateQuickListManager(updateBetInfoList)
+
         checkBetInfoContent(updateBetInfoList)
         updateBetOrderParlay(updateBetInfoList)
         _betInfoList.value = Event(updateBetInfoList)
@@ -562,11 +576,17 @@ class BetInfoRepository(val androidContext: Context) {
                 }
             }
         }
+
+        updateQuickListManager(newList)
+
         checkBetInfoContent(newList)
         _betInfoList.value = Event(newList)
     }
 
     fun notifyBetInfoChanged(newList: MutableList<BetInfoListData>) {
+
+        updateQuickListManager(newList)
+
         checkBetInfoContent(newList)
         _betInfoList.value = Event(newList)
     }
@@ -631,5 +651,10 @@ class BetInfoRepository(val androidContext: Context) {
 
     fun updateBetAmount(input: String){
         _betInfoList.value?.peekContent()?.first()?.inputBetAmountStr = input
+    }
+
+    private fun updateQuickListManager(betList: MutableList<BetInfoListData>) {
+        //更新快捷投注項選中list
+        QuickListManager.setQuickSelectedList(betList.map { bet -> bet.matchOdd.oddsId }.toMutableList())
     }
 }

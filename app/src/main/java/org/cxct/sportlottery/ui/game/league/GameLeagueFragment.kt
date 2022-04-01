@@ -343,12 +343,6 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             it.peekContent().let {
                 val leagueOdds = leagueAdapter.data
 
-                val list: MutableList<String> = mutableListOf()
-                it.forEach { data ->
-                    list.add(data.matchOdd.oddsId)
-                }
-                QuickListManager.setQuickSelectedList(list)
-
                 leagueOdds.forEach { leagueOdd ->
                     leagueOdd.matchOdds.forEach { matchOdd ->
                         matchOdd.oddsMap?.values?.forEach { oddList ->

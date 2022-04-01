@@ -446,11 +446,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner) {
             it.peekContent().let {
-                val list: MutableList<String> = mutableListOf()
-                it.forEach { data ->
-                    list.add(data.matchOdd.oddsId)
-                }
-                QuickListManager.setQuickSelectedList(list)
 
                 val leagueOdds = leagueAdapter.data
 

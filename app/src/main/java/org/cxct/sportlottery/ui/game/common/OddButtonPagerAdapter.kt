@@ -46,7 +46,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
     var odds: Map<String, List<Odd?>?> = mapOf()
         set(value) {
             this.playCateNameMap = playCateNameMap.addSplitPlayCateTranslation()
-            var oddsSortCount = oddsSort?.split(",")?.size ?: 999 // 最大顯示數量
+            val oddsSortCount = oddsSort?.split(",")?.size ?: 999 // 最大顯示數量
             field = value.sortScores().refactorPlayCode().sortOdds().splitPlayCate()
                 .filterPlayCateSpanned().sortPlayCate()
             val gameList =
@@ -281,7 +281,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
     private fun Map<String, List<Odd?>?>.refactorPlayCode(): Map<String, List<Odd?>?> {
         return try {
             val oddsMap: MutableMap<String, List<Odd?>?>
-            val rgzMap = this.filter { (key, value) -> key.contains(":") }
+            val rgzMap = this.filter { (key, _) -> key.contains(":") }
 
             //網球玩法特殊處理:网球的特定第几局的玩法(1X2_SEG3_GAMES:1~6) 之前应该是当有两个数字的时候 取大的显示 目前看小金改为取小的显示了 这边再跟著调整一下取小的显示在大厅上
             when {
@@ -336,19 +336,19 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
 
         this?.let { translationMap.putAll(it) }
 
-        val ou_o_Map: Map<String?, String?>? =
+        val ou_o_Map: Map<String?, String?> =
             mapOf("zh" to "独赢&大", "en" to "1 X 2 & Goals Over", "vi" to "1 X 2 & Trên")
 
-        val ou_u_Map: Map<String?, String?>? =
+        val ou_u_Map: Map<String?, String?> =
             mapOf("zh" to "独赢&小", "en" to "1 X 2 & Goals Under", "vi" to "1 X 2 & Dưới")
 
-        val bts_y_Map: Map<String?, String?>? = mapOf(
+        val bts_y_Map: Map<String?, String?> = mapOf(
             "zh" to "独赢&双方球队进球-是",
             "en" to "1 X 2 & Both to Score Y",
             "vi" to "1 X 2 & Hai Đội Ghi Bàn - Có"
         )
 
-        val bts_n_Map: Map<String?, String?>? = mapOf(
+        val bts_n_Map: Map<String?, String?> = mapOf(
             "zh" to "独赢&双方球队进球-否",
             "en" to "1 X 2 & Both to Score N",
             "vi" to "1 X 2 & Hai Đội Ghi Bàn - Không"
@@ -631,7 +631,7 @@ class OddButtonPagerViewHolder private constructor(
 //            isSelected = odds.second?.getOrNull(0)?.isSelected ?: false
 
             //isSelected = QuickListManager.getQuickSelectedList()?.contains(odds.second?.getOrNull(0)?.id) ?: false
-            isSelected = odds.second?.getOrNull(0)?.isSelected ?: false
+            isSelected = QuickListManager.getQuickSelectedList()?.contains(odds.second?.getOrNull(0)?.id) ?: false
 
             setOnClickListener {
                 odds.second?.getOrNull(0)?.let { odd ->
@@ -731,7 +731,7 @@ class OddButtonPagerViewHolder private constructor(
 
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(1))
 
-            isSelected = odds.second?.getOrNull(1)?.isSelected ?: false
+            isSelected = QuickListManager.getQuickSelectedList()?.contains(odds.second?.getOrNull(1)?.id) ?: false
 
             setOnClickListener {
                 odds.second?.getOrNull(1)?.let { odd ->
@@ -818,7 +818,7 @@ class OddButtonPagerViewHolder private constructor(
 
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(2))
 
-            isSelected = odds.second?.getOrNull(2)?.isSelected ?: false
+            isSelected = QuickListManager.getQuickSelectedList()?.contains(odds.second?.getOrNull(2)?.id) ?: false
 
             setOnClickListener {
                 odds.second?.getOrNull(2)?.let { odd ->
