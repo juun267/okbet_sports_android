@@ -278,7 +278,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
     private fun Map<String, List<Odd?>?>.refactorPlayCode(): Map<String, List<Odd?>?> {
         return try {
             val oddsMap: MutableMap<String, List<Odd?>?>
-            val rgzMap = this.filter { (key, value) -> key.contains(":") }
+            val rgzMap = this.filter { (key, _) -> key.contains(":") }
 
             //網球玩法特殊處理:网球的特定第几局的玩法(1X2_SEG3_GAMES:1~6) 之前应该是当有两个数字的时候 取大的显示 目前看小金改为取小的显示了 这边再跟著调整一下取小的显示在大厅上
             when {
@@ -538,7 +538,7 @@ class OddButtonPagerViewHolder private constructor(
             playCateNameMap[odds.first].getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
                 .replace(": ", " ").replace("||", "\n").replace("{S}", replaceScore)
 
-        if (playCateName == "null" || playCateName.isNullOrEmpty()){
+        if (playCateName == "null" || playCateName.isEmpty()){
             playCateName = "-"
         }
 
