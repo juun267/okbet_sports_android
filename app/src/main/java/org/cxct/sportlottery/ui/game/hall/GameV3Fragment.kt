@@ -1276,7 +1276,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 when (game_list.adapter) {
                     is LeagueAdapter -> {
 
-                        leagueAdapter.data.forEachIndexed { index, leagueOdd ->
+                        leagueAdapter.data.toList().forEachIndexed { index, leagueOdd ->
                             if (matchStatusChangeEvent.matchStatusCO?.status == GameMatchStatus.FINISH.value) {
                                 leagueOdd.matchOdds.find { m ->
                                     m.matchInfo?.id == matchStatusChangeEvent.matchStatusCO.matchId
@@ -1285,6 +1285,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                     if (leagueOdd.matchOdds.size > 0) {
                                         leagueAdapter.notifyItemChanged(index)
                                     } else {
+                                        leagueAdapter.data.remove(leagueOdd)
                                         leagueAdapter.notifyItemRemoved(index)
                                     }
                                 }
