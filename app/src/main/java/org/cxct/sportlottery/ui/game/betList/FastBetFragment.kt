@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
@@ -12,7 +13,9 @@ import android.os.Message
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
+import android.text.style.BackgroundColorSpan
 import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -45,6 +48,7 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.error.BetAddErrorParser
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
@@ -54,6 +58,7 @@ import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.util.*
 import org.parceler.Parcels
 
@@ -175,6 +180,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
     }
     lateinit var data: FastBetDataBean
+    var oldOdds = ""
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -293,6 +299,14 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         binding.buttonFastBetSetting.setOnClickListener {
             showSettingDialog()
+        }
+        binding.btnRecharge.setOnClickListener {
+            if(isLogin == true){
+                startActivity(Intent(context, MoneyRechargeActivity::class.java))
+            }else{
+                startActivity(Intent(context, LoginActivity::class.java))
+            }
+            dismiss()
         }
     }
 
@@ -666,6 +680,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         button_bet.isLogin = isLogin
     }
 
+    var handler = Handler()
 
     private fun setupData(
         matchOdd: MatchOdd,
@@ -741,9 +756,19 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
 
         if (matchOdd.spreadState != SpreadState.SAME.state || matchOdd.oddState != OddState.SAME.state) {
-            tv_odd_content_changed.text = getString(R.string.bet_info_odd_content_changed)
-            tv_odd_content_changed.visibility = View.VISIBLE
-            button_bet.isOddsChanged = true
+            //tv_odd_content_changed.text = getString(R.string.bet_info_odd_content_changed)
+            if(oldOdds != TextUtil.formatForOdd(getOdds(matchOdd, oddsType))){
+                tv_odd_content_changed.visibility = View.VISIBLE
+                handler.postDelayed({
+                    tv_odd_content_changed.setVisibility(View.GONE)
+                }, 3000)
+                button_bet.isOddsChanged = true
+                tv_odd_content_changed.text =   getString(
+                    R.string.bet_info_odd_content_changed2,
+                    oldOdds,
+                    TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
+                )
+            }
         }
 
 
@@ -766,7 +791,21 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 oddsType
             }
             betInfoData.singleBetOddsType = currentOddsType
-            OddSpannableString.setupOddsContent(betInfoData, currentOddsType, binding.tvOddsContent)
+            //OddSpannableString.setupOddsContent(betInfoData, currentOddsType, binding.tvOddsContent)
+            var spread = ""
+            spread = if (matchOdd.spread.isEmpty() || !PlayCate.needShowSpread(matchOdd.playCode) || betInfoData.matchType == MatchType.OUTRIGHT
+            ) {
+                ""
+            } else {
+                matchOdd.spread
+            }
+            binding.tvOddsContent.text = betInfoData.matchOdd.playName
+            if(oldOdds != TextUtil.formatForOdd(getOdds(matchOdd, oddsType))){
+                oldOdds = if (matchOdd.status == BetStatus.ACTIVATED.code) TextUtil.formatForOdd(getOdds(matchOdd, oddsType)) else "–"
+            }
+            binding.tvOdds.text =if (matchOdd.status == BetStatus.ACTIVATED.code) "@"+TextUtil.formatForOdd(getOdds(matchOdd, oddsType)) else "–"
+            binding.tvContent.text = matchOdd.extInfo+spread
+
         }
     }
 

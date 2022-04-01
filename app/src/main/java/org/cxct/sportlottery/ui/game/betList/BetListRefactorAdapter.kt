@@ -2,6 +2,8 @@ package org.cxct.sportlottery.ui.game.betList
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -19,6 +21,7 @@ import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.iv_bet_lock
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.layoutKeyBoard
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.tv_error_message
 import kotlinx.android.synthetic.main.content_bet_list_batch_control.view.*
+import kotlinx.android.synthetic.main.fragment_bottom_sheet_betinfo_item.*
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v2.view.*
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_v2.view.*
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_v2.view.ll_winnable
@@ -29,9 +32,12 @@ import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayRuleStringRes
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
@@ -267,7 +273,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
                 onFocusChangeListener = null
 
-                setupOddInfo(itemData, currentOddsType, betListSize)
+                setupOddInfo(itemData, currentOddsType, betListSize,onItemClickListener)
                 setupMinimumLimitMessage(itemData)
                 onItemClickListener.refreshBetInfoTotal()
 
@@ -440,11 +446,14 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
             }
         }
+        var oldOdds = ""
+        var handler = Handler()
 
         private fun setupOddInfo(
             itemData: BetInfoListData,
             currentOddsType: OddsType,
-            betListSize: Int
+            betListSize: Int,
+            onItemClickListener: OnItemClickListener
         ) {
             itemView.apply {
                 v_point.visibility =
@@ -457,8 +466,34 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 //                    currentOddsType = OddsType.EU
 //                }
 
-                setupOddsContent(itemData, oddsType = currentOddsType, tv_odds_content)
-
+                //setupOddsContent(itemData, oddsType = currentOddsType, tv_odds_content)
+                if(oldOdds != "" && oldOdds != TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))){
+                    tv_odd_content_changed.visibility = View.VISIBLE
+                    handler.postDelayed({
+                        tv_odd_content_changed.setVisibility(View.GONE)
+                    }, 3000)
+                    tv_odd_content_changed.text =  context.getString(
+                        R.string.bet_info_odd_content_changed2,
+                        oldOdds,
+                        TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))
+                    )
+                }
+                var spread = ""
+                spread = if (itemData.matchOdd.spread.isEmpty() || !PlayCate.needShowSpread(itemData.matchOdd.playCode) || itemData.matchType == MatchType.OUTRIGHT
+                ) {
+                    ""
+                } else {
+                    itemData.matchOdd.spread
+                }
+                tv_odds_content.text = itemData.matchOdd.playName
+                if( oldOdds != TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))){
+                    oldOdds = if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType)) else "–"
+                }
+                tvOdds.text =if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) "@"+TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType)) else "–"
+                tvContent.text = itemData.matchOdd.extInfo+spread
+                btnRecharge.setOnClickListener {
+                    onItemClickListener.onRechargeClick()
+                }
                 //隊伍名稱
                 tv_match.text = when {
                     itemData.matchType == MatchType.OUTRIGHT -> itemData.outrightMatchInfo?.name
@@ -1540,6 +1575,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
     interface OnItemClickListener {
         fun onDeleteClick(oddsId: String, currentItemCount: Int)
+        fun onRechargeClick()
         fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd, position: Int, max: Long)
         fun onShowParlayKeyboard(
             editText: EditText,

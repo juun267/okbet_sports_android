@@ -48,6 +48,7 @@ import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.*
 
@@ -265,6 +266,14 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     viewModel.removeBetInfoItem(oddsId)
                 }
 
+                override fun onRechargeClick() {
+                    if(viewModel.getLoginBoolean()){
+                        startActivity(Intent(context, MoneyRechargeActivity::class.java))
+                    }else{
+                        startActivity(Intent(context, LoginActivity::class.java))
+                    }
+                }
+
                 override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd, position: Int, max: Long) {
                     //keyboard?.showKeyboard(editText, position, max)
                 }
@@ -384,7 +393,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         var winnable = 0.0
         winnable = betAmount * odds
         winnable -= (betAmount * num)
-
         return winnable
     }
 
