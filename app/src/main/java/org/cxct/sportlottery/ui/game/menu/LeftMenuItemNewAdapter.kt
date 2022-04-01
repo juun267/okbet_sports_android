@@ -31,7 +31,7 @@ class LeftMenuItemNewAdapter(
 
     var dataList: List<MenuItemData> = listOf()
     var specialList:List<MenuItemData> = listOf()
-    lateinit var listener: OnClickListener
+    var listener: OnClickListener? = null
     var selectedNumber = 0
     var isLogin = false
         set(value) {
@@ -81,7 +81,7 @@ class LeftMenuItemNewAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is HeaderViewHolder -> {
-                holder.bind(isShowMemberLevel, isLogin, headerSelectedListener,specialList,listener)
+                holder.bind(isShowMemberLevel, isLogin, headerSelectedListener, specialList, listener) // UninitializedPropertyAccessException: lateinit property listener has not been initialized
             }
 
             is FooterViewHolder -> {
@@ -174,7 +174,7 @@ class LeftMenuItemNewAdapter(
             isLogin: Boolean,
             headerSelectedListener: HeaderSelectedListener,
             specialList: List<MenuItemData>,
-            listener: OnClickListener
+            listener: OnClickListener?
         ) {
             itemView.apply {
                 divider_login.isVisible = isLogin
@@ -233,7 +233,7 @@ class LeftMenuItemNewAdapter(
                             holder: RecyclerView.ViewHolder,
                             position: Int
                         ) {
-                            listener.onItemClick(position)
+                            listener?.onItemClick(position)
                         }
 
                         override fun onItemLongClick(
