@@ -19,6 +19,16 @@
         android:orientation="vertical"
         android:padding="20dp">
 
+        <!-- 帳號 -->
+        <org.cxct.sportlottery.ui.login.LoginEditText
+            android:id="@+id/et_recharge_online_payer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cvHint="@string/edt_hint_payer"
+            app:cvInputType="text"
+            app:cvEms="20"
+            app:cvTitle="@string/title_payer" />
+
 
         <!-- 充值金額 -->
         <org.cxct.sportlottery.ui.login.LoginEditText
