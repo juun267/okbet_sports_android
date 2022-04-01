@@ -8,10 +8,11 @@
     android:background="@color/colorWhite4"
     tools:ignore="spUsage,RtlSymmetry">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.45">
+        android:layout_weight="0.45"
+        android:orientation="vertical">
         <TextView
             android:id="@+id/quick_odd_home"
             android:layout_width="176dp"
@@ -24,13 +25,10 @@
             android:paddingEnd="10dp"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize14sp"
-            app:layout_constraintBottom_toTopOf="@+id/quick_odd_away"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             tools:text="俄罗斯俄罗斯俄罗斯俄罗斯俄罗斯俄罗斯" />
         <TextView
             android:id="@+id/quick_odd_away"
-            android:layout_width="0dp"
+            android:layout_width="176dp"
             android:layout_height="48dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="11dp"
@@ -40,11 +38,8 @@
             android:paddingEnd="10dp"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize14sp"
-            app:layout_constraintEnd_toEndOf="@+id/quick_odd_home"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/quick_odd_home"
             tools:text="芬兰芬兰芬兰芬兰芬兰芬兰芬兰芬兰" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/quick_odd_btn_pager_other"
