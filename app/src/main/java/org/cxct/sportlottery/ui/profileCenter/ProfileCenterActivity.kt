@@ -50,6 +50,7 @@ import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.TextUtil.formatMoney
+import org.cxct.sportlottery.util.TextUtil.formatMoneyNoDecimal
 import org.cxct.sportlottery.util.TimeUtil.getRemainDay
 import org.cxct.sportlottery.util.TimeUtil.getRemainTime
 import timber.log.Timber
@@ -350,20 +351,27 @@ class ProfileCenterActivity :
             if (it?.toInt()!! > 0) {
                 ivNotice.visibility = View.VISIBLE
                 ivNotice.setOnClickListener { view ->
-                    val spannableStringBuilder = SpannableStringBuilder()
-                    val text1 = SpannableString(getString(R.string.text_security_money, formatMoney(it)))
-                    val text2 = SpannableString(getRemainDay(viewModel.userInfo?.value?.uwEnableTime).toString())
-                    val foregroundSpan =
-                        ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorBlue))
-                    text2.setSpan(foregroundSpan, 0, text2.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                    val text3 = SpannableString(getString(R.string.text_security_money2))
-                    spannableStringBuilder.append(text1)
-                    spannableStringBuilder.append(text2)
-                    spannableStringBuilder.append(text3)
-                    showPromptDialog(
-                        getString(R.string.prompt),
-                        spannableStringBuilder
-                    ) {}
+                    val depositSpannable =
+                        SpannableString(getString(R.string.text_security_money, formatMoneyNoDecimal(it)))
+                    val daysLeftText = getString(
+                        R.string.text_security_money2,
+                        getRemainDay(viewModel.userInfo.value?.uwEnableTime).toString()
+                    )
+                    val remainDaySpannable = SpannableString(daysLeftText)
+                    val remainDay = getRemainDay(viewModel.userInfo.value?.uwEnableTime).toString()
+                    val remainDayStartIndex = daysLeftText.indexOf(remainDay)
+                    remainDaySpannable.setSpan(
+                        ForegroundColorSpan(
+                            ContextCompat.getColor(this, R.color.colorBlue)
+                        ),
+                        remainDayStartIndex,
+                        remainDayStartIndex + remainDay.length, 0
+                    )
+
+                    SecurityDepositDialog().apply {
+                        this.depositText = depositSpannable
+                        this.daysLeftText = remainDaySpannable
+                    }.show(supportFragmentManager, this::class.java.simpleName)
                 }
             } else {
                 ivNotice.visibility = View.GONE

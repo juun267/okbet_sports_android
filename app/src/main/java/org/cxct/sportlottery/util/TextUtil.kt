@@ -36,6 +36,10 @@ object TextUtil : DecimalFormatUtil() {
         return doNumberFormat(int, "###,###,###,##0")
     }
 
+    fun formatMoneyNoDecimal(double: Double): String {
+        return doNumberFormat(ArithUtil.toMoneyFormat(double).toDouble(), "###,###,###,##0")
+    }
+
     fun formatForOdd(any: Any): String {
         return doNumberFormat(any, "###,###,###,##0.00") { decimalFormat -> decimalFormat.roundingMode = RoundingMode.HALF_UP }
     }
