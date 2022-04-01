@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.android.synthetic.main.dialog_bet_record_detail_list.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
 import kotlinx.android.synthetic.main.online_pay_fragment.*
 import kotlinx.android.synthetic.main.online_pay_fragment.view.*
@@ -70,6 +71,10 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             et_recharge_online_amount.setError(it)
         })
 
+        viewModel.rechargeOnlineAccountMsg.observe(viewLifecycleOwner, {
+            et_recharge_online_payer.setError(it)
+        })
+
         //在線充值成功
         viewModel.onlinePayResult.observe(this.viewLifecycleOwner, {
             resetEvent()
@@ -109,7 +114,10 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             } else {
                 ""
             }
-            viewModel.rechargeOnlinePay(requireContext(), mSelectRechCfgs, depositMoney, bankCode)
+
+            val payer = if (needPayerField()) et_recharge_online_payer.getText() else ""
+
+            viewModel.rechargeNormalOnlinePay(requireContext(), mSelectRechCfgs, depositMoney, bankCode, payer)
         }
         ll_pay_gap.setOnClickListener {
             payGapBottomSheet.show()
@@ -143,6 +151,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         ll_remark.visibility = if (mSelectRechCfgs?.remark.isNullOrEmpty()) View.GONE else View.VISIBLE
         tv_hint.text = mSelectRechCfgs?.remark
         et_recharge_online_amount.setHint(getAmountLimitHint())
+        et_recharge_online_payer.visibility = if (needPayerField()) View.VISIBLE else View.GONE
 
         //反利、手續費
         setupRebateFee()
@@ -191,6 +200,10 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                     )
                 }
             }
+
+            et_recharge_online_payer.afterTextChanged {
+                checkRcgNormalOnlineAccount(it)
+            }
         }
     }
 
@@ -198,6 +211,10 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         et_recharge_online_amount.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
             if (!hasFocus)
                 viewModel.checkRcgOnlineAmount(et_recharge_online_amount.getText(), mSelectRechCfgs)
+        }
+        et_recharge_online_payer.setEditTextOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus)
+                viewModel.checkRcgNormalOnlineAccount(et_recharge_online_payer.getText())
         }
     }
 
@@ -358,5 +375,10 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         clearFocus()
         et_recharge_online_amount.setText("")
         viewModel.clearnRechargeStatus()
+    }
+
+    private fun needPayerField(): Boolean = when (mMoneyPayWay?.onlineType) {
+        OnlineType.GCASH.type, OnlineType.PAYMAYA.type -> true
+        else -> false
     }
 }
