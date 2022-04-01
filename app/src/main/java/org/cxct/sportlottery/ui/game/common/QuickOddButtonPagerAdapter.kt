@@ -581,6 +581,7 @@ class QuickOddButtonPagerViewHolder private constructor(
 
             setOnClickListener {
                 odds.second?.getOrNull(0)?.let { odd ->
+                    it.isSelected = !it.isSelected
                     oddButtonListener?.onClickBet(
                         matchInfo,
                         odd,
@@ -680,6 +681,7 @@ class QuickOddButtonPagerViewHolder private constructor(
 
             setOnClickListener {
                 odds.second?.getOrNull(1)?.let { odd ->
+                    it.isSelected = !it.isSelected
                     oddButtonListener?.onClickBet(
                         matchInfo,
                         odd,
@@ -762,6 +764,7 @@ class QuickOddButtonPagerViewHolder private constructor(
 
             setOnClickListener {
                 odds.second?.getOrNull(2)?.let { odd ->
+                    it.isSelected = !it.isSelected
                     oddButtonListener?.onClickBet(
                         matchInfo,
                         odd,

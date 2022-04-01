@@ -77,6 +77,7 @@ class OddButtonEpsViewHolder private constructor(
             this@OddButtonEpsViewHolder.setupOddState(this, odd)
 
             setOnClickListener {
+                it.isSelected = !it.isSelected
                 oddButtonListener?.onClickBet(matchInfo, odd, PlayCate.EPS.value)
             }
 
