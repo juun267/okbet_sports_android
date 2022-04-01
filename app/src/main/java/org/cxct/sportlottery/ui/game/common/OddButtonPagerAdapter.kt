@@ -46,7 +46,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
     var odds: Map<String, List<Odd?>?> = mapOf()
         set(value) {
             this.playCateNameMap = playCateNameMap.addSplitPlayCateTranslation()
-            var oddsSortCount = oddsSort?.split(",")?.size ?: 999 // 最大顯示數量
+            val oddsSortCount = oddsSort?.split(",")?.size ?: 999 // 最大顯示數量
             field = value.sortScores().refactorPlayCode().sortOdds().splitPlayCate()
                 .filterPlayCateSpanned().sortPlayCate()
             val gameList =
@@ -333,19 +333,19 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
 
         this?.let { translationMap.putAll(it) }
 
-        val ou_o_Map: Map<String?, String?>? =
+        val ou_o_Map: Map<String?, String?> =
             mapOf("zh" to "独赢&大", "en" to "1 X 2 & Goals Over", "vi" to "1 X 2 & Trên")
 
-        val ou_u_Map: Map<String?, String?>? =
+        val ou_u_Map: Map<String?, String?> =
             mapOf("zh" to "独赢&小", "en" to "1 X 2 & Goals Under", "vi" to "1 X 2 & Dưới")
 
-        val bts_y_Map: Map<String?, String?>? = mapOf(
+        val bts_y_Map: Map<String?, String?> = mapOf(
             "zh" to "独赢&双方球队进球-是",
             "en" to "1 X 2 & Both to Score Y",
             "vi" to "1 X 2 & Hai Đội Ghi Bàn - Có"
         )
 
-        val bts_n_Map: Map<String?, String?>? = mapOf(
+        val bts_n_Map: Map<String?, String?> = mapOf(
             "zh" to "独赢&双方球队进球-否",
             "en" to "1 X 2 & Both to Score N",
             "vi" to "1 X 2 & Hai Đội Ghi Bàn - Không"
