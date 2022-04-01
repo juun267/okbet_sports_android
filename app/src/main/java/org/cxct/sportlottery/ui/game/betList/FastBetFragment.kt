@@ -58,6 +58,7 @@ import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.util.*
 import org.parceler.Parcels
 
@@ -298,6 +299,14 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         binding.buttonFastBetSetting.setOnClickListener {
             showSettingDialog()
+        }
+        binding.btnRecharge.setOnClickListener {
+            if(isLogin == true){
+                startActivity(Intent(context, MoneyRechargeActivity::class.java))
+            }else{
+                startActivity(Intent(context, LoginActivity::class.java))
+            }
+            dismiss()
         }
     }
 
@@ -671,6 +680,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         button_bet.isLogin = isLogin
     }
 
+    var handler = Handler()
 
     private fun setupData(
         matchOdd: MatchOdd,
@@ -749,6 +759,9 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             //tv_odd_content_changed.text = getString(R.string.bet_info_odd_content_changed)
             if(oldOdds != TextUtil.formatForOdd(getOdds(matchOdd, oddsType))){
                 tv_odd_content_changed.visibility = View.VISIBLE
+                handler.postDelayed({
+                    tv_odd_content_changed.setVisibility(View.GONE)
+                }, 3000)
                 button_bet.isOddsChanged = true
                 tv_odd_content_changed.text =   getString(
                     R.string.bet_info_odd_content_changed2,

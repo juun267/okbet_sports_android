@@ -61,6 +61,14 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="@dimen/margin_14"
                 android:layout_marginStart="16dp"/>
+            <View
+                android:id="@+id/viewGrey3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/colorWhite6"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_rule_single" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -78,10 +86,40 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/bet_list_single"
+                    android:id="@+id/tvSingle"
                     android:layout_marginStart="@dimen/margin_8"
                     android:textColor="@color/colorBlackLight"
                     android:textStyle="bold"
                     android:textSize="@dimen/textSize15sp" />
+
+                <LinearLayout
+                    android:id="@+id/ll_winnable"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5"
+                    android:layout_marginTop="@dimen/margin_17"
+                    android:gravity="end|center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/bet_info_win_quota"
+                        android:textColor="@color/colorBlackLight"
+                        android:textSize="@dimen/textSize12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_winnable_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:textColor="@color/color_060F20"
+                        android:textSize="@dimen/textSize12sp"
+                        tools:text="9.720" />
+
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -141,30 +179,6 @@
 
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/ll_winnable"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="5"
-                        android:gravity="end|center_vertical"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/bet_info_win_quota"
-                            android:textColor="@color/colorGray"
-                            android:textSize="@dimen/textSize12sp" />
-
-                        <TextView
-                            android:id="@+id/tv_winnable_amount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/colorBlue"
-                            android:textSize="@dimen/textSize12sp"
-                            tools:text="9.720" />
-
-                    </LinearLayout>
 
                 </LinearLayout>
 

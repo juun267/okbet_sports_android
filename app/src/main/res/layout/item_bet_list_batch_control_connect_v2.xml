@@ -15,23 +15,26 @@
             type="org.cxct.sportlottery.network.bet.info.ParlayOdd" />
 
     </data>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorBackground">
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:cardCornerRadius="@dimen/margin_8"
-            android:layout_marginBottom="@dimen/margin_8"
             android:layout_marginLeft="@dimen/margin_8"
-            android:layout_marginRight="@dimen/margin_8">
+            android:layout_marginRight="@dimen/margin_8"
+            android:layout_marginBottom="@dimen/margin_8"
+            app:cardCornerRadius="@dimen/margin_8">
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ll_control_connect"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_constraintHeight_default="wrap"
-                android:background="@color/colorWhite">
+                android:background="@color/colorWhite"
+                app:layout_constraintHeight_default="wrap">
 
                 <ImageView
                     android:id="@+id/iv_bet_lock"
@@ -39,26 +42,36 @@
                     android:layout_height="100dp"
                     android:src="@drawable/ic_bet_lock"
                     android:visibility="gone"
-                    tools:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:visibility="visible" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     android:orientation="vertical"
-                    android:paddingTop="9dp">
+                    android:paddingTop="9dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
                     <View
+                        android:id="@+id/view"
                         android:layout_width="@dimen/margin_2"
                         android:layout_height="@dimen/margin_12"
+                        android:layout_marginStart="16dp"
                         android:background="@color/colorBlue"
-                        android:id="@+id/view"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/tv_parlay_type"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_parlay_type"
-                        android:layout_marginStart="16dp"/>
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tv_parlay_type" />
+
+                    <View
+                        android:id="@+id/viewGrey2"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:background="@color/colorWhite6"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_parlay_type" />
 
                     <TextView
                         android:id="@+id/tv_parlay_type"
@@ -80,9 +93,9 @@
                         android:layout_marginEnd="4dp"
                         android:gravity="center"
                         android:text="\@"
-                        android:textStyle="bold"
                         android:textColor="@color/colorBlackLight"
                         android:textSize="@dimen/textSize15sp"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toEndOf="@+id/tv_parlay_type"
                         app:layout_constraintTop_toTopOf="@+id/tv_parlay_type" />
 
@@ -92,9 +105,9 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="start"
-                        android:textStyle="bold"
                         android:textColor="@color/colorBlackLight"
                         android:textSize="@dimen/textSize15sp"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toEndOf="@+id/tv_symbol_odd"
                         app:layout_constraintTop_toTopOf="@id/tv_parlay_type"
                         tools:text="6.120" />
@@ -103,38 +116,37 @@
                         android:id="@+id/btn_rule"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingStart="16dp"
-                        android:paddingTop="10dp"
-                        android:paddingEnd="16dp"
-                        android:paddingBottom="10dp"
                         android:src="@drawable/ic_question_mark"
+                        android:padding="@dimen/margin_4"
+                        android:layout_marginEnd="@dimen/margin_4"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="@+id/tv_parlay_type"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_parlay_type"/>
 
 
                     <EditText
                         android:id="@+id/et_bet"
                         android:layout_width="0dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_height="44dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="@dimen/margin_12"
+                        android:layout_marginTop="28dp"
                         android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="@dimen/margin_8"
                         android:layout_weight="6"
                         android:background="@drawable/effect_select_bet_edit_text_fill_color_white"
                         android:hint="@string/bet_info_input_quota"
                         android:inputType="number"
+                        android:letterSpacing="0.05"
                         android:maxLength="7"
-                        android:textStyle="bold"
                         android:paddingStart="10dp"
-                        android:layout_marginBottom="@dimen/margin_8"
                         android:textColor="@color/colorBlue"
                         android:textColorHint="@color/colorSilverLight"
                         android:textSize="@dimen/textSize16sp"
-                        android:letterSpacing="0.05"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_parlay_type"
+                        android:textStyle="bold"
                         app:layout_constraintBottom_toTopOf="@+id/tv_error_message"
-                        app:layout_constraintWidth_percent="0.442" />
+                        app:layout_constraintEnd_toStartOf="@+id/tv_symbol_count"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/viewGrey2" />
 
 
                     <View
@@ -144,33 +156,34 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
                         android:layout_weight="6"
-                        tools:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_parlay_type"
-                        app:layout_constraintWidth_percent="0.442" />
+                        app:layout_constraintWidth_percent="0.442"
+                        tools:visibility="gone" />
 
                     <TextView
                         android:id="@+id/tv_symbol_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
+                        android:layout_marginEnd="@dimen/margin_4"
                         android:text="X"
                         android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize13sp"
+                        android:textSize="@dimen/textSize14sp"
                         app:layout_constraintBottom_toBottomOf="@+id/et_bet"
-                        app:layout_constraintStart_toEndOf="@+id/et_bet"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_com_count"
                         app:layout_constraintTop_toTopOf="@+id/et_bet" />
 
                     <TextView
                         android:id="@+id/tv_com_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="@dimen/margin_12"
                         android:textColor="@color/colorBlackLight"
-                        android:textSize="@dimen/textSize13sp"
-                        app:layout_constraintBottom_toBottomOf="@id/tv_symbol_count"
-                        app:layout_constraintStart_toEndOf="@+id/tv_symbol_count"
-                        app:layout_constraintTop_toTopOf="@+id/tv_symbol_count"
+                        android:textSize="@dimen/textSize14sp"
+                        app:layout_constraintBottom_toBottomOf="@id/et_bet"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/et_bet"
                         tools:text="1" />
 
                     <androidx.constraintlayout.widget.Guideline
@@ -178,12 +191,23 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.5" />
+                        app:layout_constraintGuide_begin="188dp" />
 
                     <include
+                        layout="@layout/content_bet_info_item_quota_detail_v2"
+                        android:layout_width="0dp"
                         android:id="@+id/item_parlay_quota_detail"
-                        layout="@layout/content_bet_info_item_quota_detail"
-                        app:parlayOdd="@{parlayOdd}"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_12"
+                        android:layout_marginTop="@dimen/margin_8"
+                        android:layout_marginEnd="@dimen/margin_12"
+                        android:layout_marginBottom="@dimen/margin_8"
+                        app:layout_constraintBottom_toTopOf="@+id/et_bet"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/viewGrey2"
+                        app:parlayOdd="@{parlayOdd}" />
+
 
                     <RelativeLayout
                         android:layout_width="0dp"
@@ -268,23 +292,23 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="@dimen/margin_4"
-                        android:textSize="@dimen/textSize13sp"
-                        android:textColor="@color/colorRed"
-                        android:visibility="gone"
                         android:layout_marginBottom="@dimen/margin_4"
+                        android:textColor="@color/colorRed"
+                        android:textSize="@dimen/textSize13sp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toTopOf="@+id/layoutKeyBoard"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/et_bet"
-                        app:layout_constraintBottom_toTopOf="@+id/layoutKeyBoard"
                         tools:text="@string/bet_info_list_minimum_limit_amount"
                         tools:visibility="visible" />
 
                     <org.cxct.sportlottery.util.KeyboardView
-                        android:layout_width="match_parent"
                         android:id="@+id/layoutKeyBoard"
+                        android:layout_width="match_parent"
                         android:layout_height="150dp"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_error_message"
-                        android:visibility="gone"/>
+                        app:layout_constraintTop_toBottomOf="@+id/tv_error_message" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
