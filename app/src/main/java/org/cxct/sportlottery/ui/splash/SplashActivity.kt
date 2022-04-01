@@ -29,7 +29,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         setContentView(R.layout.activity_splash)
 
         setupVersion()
-        checkPermissionGranted()
+        //checkPermissionGranted()
         initObserve()
 
         //流程: 檢查/獲取 host -> 獲取 config -> 檢查維護狀態 -> 檢查版本更新 -> 跳轉畫面

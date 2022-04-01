@@ -17,5 +17,5 @@ data class Menu(
     @Json(name = "outright")
     val outright: Sport, //冠軍
     @Json(name = "eps")
-    val eps: Sport //特优赔率
+    val eps: Sport? //特优赔率
 )

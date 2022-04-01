@@ -428,9 +428,10 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             tabParlay?.tv_title?.setText(R.string.home_tab_parlay)
             tabParlay?.tv_number?.text = countParlay.toString()
 
-            val tabEps = tabLayout.getTabAt(7)?.customView
-            tabEps?.tv_title?.setText(R.string.home_tab_eps)
-            tabEps?.tv_number?.text = countEps.toString()
+            //0401需求先隱藏特優賠率
+//            val tabEps = tabLayout.getTabAt(7)?.customView
+//            tabEps?.tv_title?.setText(R.string.home_tab_eps)
+//            tabEps?.tv_number?.text = countEps.toString()
 
             //英文 越南文稍微加寬padding 不然會太擠
             if (LanguageManager.getSelectLanguage(this) != LanguageManager.Language.ZH) {

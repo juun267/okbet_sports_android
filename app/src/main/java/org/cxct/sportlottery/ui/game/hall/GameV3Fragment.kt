@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -19,9 +18,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
+import kotlinx.android.synthetic.main.content_match_record.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_eps.*
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
+import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import kotlinx.android.synthetic.main.view_game_tab_odd_v4.*
 import kotlinx.android.synthetic.main.view_game_tab_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
@@ -59,10 +60,7 @@ import org.cxct.sportlottery.ui.game.hall.adapter.*
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
-import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
-import org.cxct.sportlottery.util.QuickListManager
-import org.cxct.sportlottery.util.SocketUpdateUtil
-import org.cxct.sportlottery.util.SpaceItemDecoration
+import org.cxct.sportlottery.util.*
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -461,7 +459,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         } else if (args.matchType == MatchType.OTHER || args.matchType == MatchType.OTHER_OUTRIGHT) {
             epsItem.visibility = View.GONE
         } else {
-            epsItem.visibility = View.VISIBLE
+            epsItem.visibility = View.GONE//0401 特優賠率入口隱藏
         }
     }
 
@@ -552,9 +550,23 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         view.game_list.apply {
             this.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             this.adapter = leagueAdapter
-            //this.itemAnimator = null
-            //addItemDecoration(SpaceItemDecoration(context, R.dimen.item_spacing_league))
-            //setHasFixedSize(true)
+            addScrollWithItemVisibility {
+                if (leagueAdapter.data.isNotEmpty()) {
+                    leagueAdapter.data.forEachIndexed { index, leagueOdd ->
+                        if (it.any { vr -> vr == index }) {
+                            if (leagueAdapter.data[index].unfold == FoldState.UNFOLD.code) {
+                                subscribeChannelHall(leagueAdapter.data[index])
+                                Log.d("[subscribe]", "訂閱 ${leagueAdapter.data[index].league.name}")
+                            } else {
+                                Log.d("[subscribe]", "收合中 不訂閱 ${leagueAdapter.data[index].league.name}")
+                            }
+                        } else {
+                            unSubscribeChannelHall(leagueAdapter.data[index])
+                            Log.d("[subscribe]", "取消訂閱 ${leagueAdapter.data[index].league.name}")
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -741,11 +753,13 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         leagueAdapter.playSelectedCodeSelectionType =
                             getPlaySelectedCodeSelectionType()
                         leagueAdapter.playSelectedCode = getPlaySelectedCode()
-                        if (game_list.adapter !is LeagueAdapter) game_list.adapter = leagueAdapter
                     } else {
+                        leagueAdapter.data = mLeagueOddList
                         // Todo: MatchType.OTHER 要顯示無資料與隱藏篩選清單
 //                        leagueAdapter.data = mutableListOf()
+
                     }
+                    if (game_list.adapter !is LeagueAdapter) game_list.adapter = leagueAdapter
 
 //                    if (leagueOdds.isNotEmpty()) {
 //                        game_list.apply {
@@ -1375,8 +1389,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                     leagueAdapter.limitRefresh()
                                     isReload = false
                                 }
-                            }
-                            else {
+                            } else {
                                 updateGameList(index, leagueOdd)
                             }
                         }
