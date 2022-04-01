@@ -306,6 +306,7 @@ object Constants {
     const val USER_CREDIT_CIRCLE_HISTORY = "/api/front/user/credit/circle/history"
     const val USER_BET_LIMIT = "/api/front/user/setPerBetLimit"
     const val USER_FROZE = "/api/front/user/setFroze"
+    const val LOCK_MONEY = "/api/front/user/lockMoney"
 
     //upload image
     const val UPLOAD_IMG = "/api/upload/image" //上传图片

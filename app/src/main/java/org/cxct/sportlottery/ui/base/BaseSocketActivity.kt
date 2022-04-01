@@ -4,6 +4,7 @@ import android.app.ActivityManager
 import android.content.*
 import android.os.Bundle
 import android.os.IBinder
+import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import org.cxct.sportlottery.R
@@ -90,6 +91,10 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
         receiver.userMoney.observe(this) {
             viewModel.updateMoney(it)
+        }
+
+        receiver.lockMoney.observe(this) {
+            viewModel.updateLockMoney(it)
         }
 
         receiver.orderSettlement.observe(this) {

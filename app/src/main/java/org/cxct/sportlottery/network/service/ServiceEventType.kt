@@ -25,6 +25,7 @@ enum class EventType(val value: String) {
     ORDER_SETTLEMENT("ORDER_SETTLEMENT"), //注单结算通知
     USER_INFO_CHANGE("USER_INFO_CHANGE"),//用戶資訊成功
     PING_PONG("PING_PONG"), //ping-pong心跳
+    LOCK_MONEY("LOCK_MONEY"),//冻结金额
 
     /*公共 /notify/all*/
     NOTICE("NOTICE"), //公告

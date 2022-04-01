@@ -984,7 +984,7 @@
     <string name="text_bet_not_success2">Chờ</string>
     <string name="text_bet_not_success3">&#160;Phiếu cược của bạn đang được xử lý, vui lòng kiểm tra&#160;</string>
     <string name="text_bet_not_success4">ĐÃ CƯỢC.</string>
-    <string name="text_security_money">Tiền đặt cọc: 1,000\nCòn</string>
+    <string name="text_security_money">Tiền đặt cọc: %s\nCòn</string>
     <string name="text_security_money2"> ngày</string>
     <!--自我禁制-->
     <string name="self_limit">Tự loại trừ</string>
