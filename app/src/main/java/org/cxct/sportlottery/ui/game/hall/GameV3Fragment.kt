@@ -1040,12 +1040,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         viewModel.betInfoList.observe(this.viewLifecycleOwner) {
             it.peekContent().let {
 
-                val list: MutableList<String> = mutableListOf()
-                it.forEach { data ->
-                    list.add(data.matchOdd.oddsId)
-                }
-                QuickListManager.setQuickSelectedList(list)
-
                 val leagueOdds = leagueAdapter.data
                 leagueOdds.forEach { leagueOdd ->
                     leagueOdd.matchOdds.forEach { matchOdd ->
