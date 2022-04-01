@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
@@ -15,11 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Space;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -29,8 +26,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
 
 import org.cxct.sportlottery.R;
-
-import java.lang.reflect.Field;
 
 
 /**
@@ -59,6 +54,11 @@ public class TextFieldBoxes extends FrameLayout {
      * labelText text at the top.
      */
     protected String labelText;
+
+    /**
+     * subLabelText text at the top.
+     */
+    protected String subLabelText;
 
     /**
      * hintText text at the top.
@@ -189,6 +189,7 @@ public class TextFieldBoxes extends FrameLayout {
     protected AppCompatTextView helperLabel;
     protected AppCompatTextView counterLabel;
     protected AppCompatTextView floatingLabel;
+    protected AppCompatTextView floatingSubLabel;
     protected AppCompatTextView floatingHintLabel;
     protected AppCompatTextView floatingSingle;
     protected AppCompatImageButton clearButton;
@@ -389,6 +390,7 @@ public class TextFieldBoxes extends FrameLayout {
         this.inputLayout = this.findViewById(R.id.text_field_boxes_input_layout);
         this.mainLayout = findViewById(R.id.rl_main);
         this.floatingLabel = findViewById(R.id.text_field_boxes_label);
+        this.floatingSubLabel = findViewById(R.id.text_field_boxes_sub_label);
         this.floatingHintLabel = findViewById(R.id.text_field_boxes_hint_label);
         this.floatingSingle = findViewById(R.id.text_field_boxes_single_label);
         this.panel = findViewById(R.id.text_field_boxes_panel);
@@ -408,6 +410,8 @@ public class TextFieldBoxes extends FrameLayout {
         this.editTextLayout.setAlpha(0f);
         this.floatingLabel.setPivotX(0f);
         this.floatingLabel.setPivotY(0f);
+        this.floatingSubLabel.setPivotX(0f);
+        this.floatingSubLabel.setPivotY(0f);
         this.floatingHintLabel.setPivotX(0f);
         this.floatingHintLabel.setPivotY(0f);
         this.floatingSingle.setPivotX(0f);
@@ -527,6 +531,8 @@ public class TextFieldBoxes extends FrameLayout {
             /* Texts */
             this.labelText = styledAttrs.getString(R.styleable.TextFieldBoxes_labelText)
                     == null ? "" : styledAttrs.getString(R.styleable.TextFieldBoxes_labelText);
+            this.subLabelText = styledAttrs.getString(R.styleable.TextFieldBoxes_subLabelText)
+                    == null ? "" : styledAttrs.getString(R.styleable.TextFieldBoxes_subLabelText);
             this.hintText = styledAttrs.getString(R.styleable.TextFieldBoxes_hintText)
                     == null ? "" : styledAttrs.getString(R.styleable.TextFieldBoxes_hintText);
             this.singleText = styledAttrs.getString(R.styleable.TextFieldBoxes_singleText)
@@ -1004,6 +1010,7 @@ public class TextFieldBoxes extends FrameLayout {
 
         /* Texts */
         setLabelText(this.labelText);
+        setSubLabelText(this.subLabelText);
         setHelperText(this.helperText);
         setHintText(this.hintText);
         setSingleText(this.singleText);
@@ -1046,6 +1053,18 @@ public class TextFieldBoxes extends FrameLayout {
             this.floatingLabel.setVisibility(View.VISIBLE);
             this.labelSpace.setVisibility(View.VISIBLE);
             this.labelSpaceBelow.setVisibility(View.GONE);
+        }
+    }
+
+    public void setSubLabelText(String subLabelText) {
+
+        this.subLabelText = subLabelText;
+        this.floatingSubLabel.setText(this.subLabelText);
+
+        if (subLabelText.isEmpty()) {
+            this.floatingSubLabel.setVisibility(View.GONE);
+        } else {
+            this.floatingSubLabel.setVisibility(View.VISIBLE);
         }
     }
 
