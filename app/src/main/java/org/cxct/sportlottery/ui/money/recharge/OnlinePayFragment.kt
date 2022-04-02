@@ -77,18 +77,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     }
 
     private fun initView() {
-        if (mMoneyPayWay?.onlineType != OnlineType.WX.type
-            && mMoneyPayWay?.onlineType != OnlineType.GCASH.type
-            && mMoneyPayWay?.onlineType != OnlineType.GRABPAY.type
-            && mMoneyPayWay?.onlineType != OnlineType.PAYMAYA.type) {
-            cv_pay_bank.visibility = View.GONE
-        } else {
-            cv_pay_bank.visibility = View.VISIBLE
-        }
         tv_currency_type.text = sConfigData?.systemCurrency
-        tv_pay_gap_subtitle.text =
-            if (mMoneyPayWay?.onlineType == OnlineType.WY.type) getString(R.string.title_pay_channel)
-            else getString(R.string.title_pay_gap)
 
         et_recharge_online_amount.setHint(getAmountLimitHint())
 
@@ -143,6 +132,10 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         ll_remark.visibility = if (mSelectRechCfgs?.remark.isNullOrEmpty()) View.GONE else View.VISIBLE
         tv_hint.text = mSelectRechCfgs?.remark
         et_recharge_online_amount.setHint(getAmountLimitHint())
+
+        cv_pay_bank.visibility = if (mSelectRechCfgs?.banks != null) View.VISIBLE else View.GONE
+        tv_pay_gap_subtitle.text =
+            if (mSelectRechCfgs?.banks != null) getString(R.string.title_pay_channel) else getString(R.string.title_pay_gap)
 
         //反利、手續費
         setupRebateFee()
@@ -340,8 +333,9 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 mSelectRechCfgs = rechCfgsList[position]
                 refreshSelectRechCfgs()
 
-                if (cv_pay_bank.visibility == View.VISIBLE)
+                if (mSelectRechCfgs?.banks != null) {
                     refreshPayBank(mSelectRechCfgs)
+                }
 
                 iv_gap_icon.setImageResource(payRoadSpannerList[position].bankIcon ?: 0)
                 txv_pay_gap.text = payRoadSpannerList[position].bankName
