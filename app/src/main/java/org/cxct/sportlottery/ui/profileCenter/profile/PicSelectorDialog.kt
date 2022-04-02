@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.ui.profileCenter.profile
 
 import android.app.Activity
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +14,7 @@ import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.language.LanguageConfig
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import kotlinx.android.synthetic.main.dialog_custom_alert.*
+import kotlinx.android.synthetic.main.dialog_selector_dialog.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.LanguageManager
 
@@ -28,7 +30,8 @@ class PicSelectorDialog(
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.dialog_custom_alert, container, false)
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        return inflater.inflate(R.layout.dialog_selector_dialog, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,7 +41,7 @@ class PicSelectorDialog(
     }
 
     private fun initView() {
-        tv_title.text = String.format(resources.getString(R.string.title_upload_pic))
+        tv_title.text = String.format(resources.getString(R.string.prompt))
         tv_message.text = String.format(resources.getString(R.string.upload_dialog_content))
         btn_negative.text = String.format(resources.getString(R.string.upload_dialog_camera))
         btn_positive.text = String.format(resources.getString(R.string.upload_dialog_gallery))

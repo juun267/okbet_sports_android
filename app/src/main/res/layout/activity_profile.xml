@@ -489,7 +489,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:minHeight="44dp"
-                android:background="@drawable/bg_frame_enabled_gray"
                 android:orientation="horizontal">
 
                 <ImageView
