@@ -97,4 +97,11 @@ class ProfileModel(
         }
     }
 
+
+    fun getUserInfo() {
+        viewModelScope.launch {
+            userInfoRepository.getUserInfo()
+        }
+    }
+
 }

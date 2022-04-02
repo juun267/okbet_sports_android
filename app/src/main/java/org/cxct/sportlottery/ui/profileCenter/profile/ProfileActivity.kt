@@ -98,6 +98,12 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         initObserve()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        getUserInfo()
+    }
+
     private fun initView() {
         tv_toolbar_title.text = getString(R.string.profile_info)
         sConfigData?.apply {
@@ -210,16 +216,16 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                     icon_identity.visibility = View.GONE
                 }
                 VerifiedType.NOT_YET.value -> {
-                    ll_verified.isEnabled = false
-                    ll_verified.isClickable = false
+                    ll_verified.isEnabled = true
+                    ll_verified.isClickable = true
                     tv_verified.text = getString(R.string.not_verify)
                     tv_verified.setTextColor(
                         ContextCompat.getColor(
                             tv_verified.context,
-                            R.color.colorBlue
+                            R.color.colorRed
                         )
                     )
-                    icon_identity.visibility = View.GONE
+                    icon_identity.visibility = View.VISIBLE
                 }
                 VerifiedType.VERIFYING.value -> {
                     ll_verified.isEnabled = false
@@ -228,7 +234,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                     tv_verified.setTextColor(
                         ContextCompat.getColor(
                             tv_verified.context,
-                            R.color.colorBlue
+                            R.color.colorRed
                         )
                     )
                     icon_identity.visibility = View.GONE
@@ -243,6 +249,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                             R.color.colorRed
                         )
                     )
+                    icon_identity.visibility = View.VISIBLE
                 }
             }
 
@@ -367,5 +374,9 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 itemLayout.isEnabled = false
             }
         }
+    }
+
+    private fun getUserInfo() {
+        viewModel.getUserInfo()
     }
 }

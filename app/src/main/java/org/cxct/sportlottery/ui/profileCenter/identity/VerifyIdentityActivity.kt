@@ -19,23 +19,29 @@ class VerifyIdentityActivity :
         setContentView(R.layout.activity_verify_identity)
 
         initToolbar()
+
+    }
+
+    override fun onStart() {
+        super.onStart()
         checkKYCEnable()
     }
 
     private fun checkKYCEnable() {
-        if(sConfigData?.enableKYCVerify == VerifySwitchType.CLOSE.value){
-            val action = VerifyIdentityFragmentDirections.actionVerifyIdentityFragmentToCredentialsFragment()
-            findNavController(R.id.identity_container).navigate(action)
+        if (sConfigData?.enableKYCVerify == VerifySwitchType.CLOSE.value) {
+            when (mNavController.currentDestination?.id) {
+                R.id.verifyIdentityFragment -> {
+                    val action = VerifyIdentityFragmentDirections.actionVerifyIdentityFragmentToCredentialsFragment()
+                    mNavController.navigate(action)
+                }
+            }
         }
     }
 
     private fun initToolbar() {
         tv_toolbar_title.text = getString(R.string.select_id_type)
         btn_toolbar_back.setOnClickListener {
-            if (mNavController.previousBackStackEntry == null)
-                finish()
-            else
-                mNavController.popBackStack()
+            onBackPressed()
         }
     }
 
@@ -50,5 +56,17 @@ class VerifyIdentityActivity :
 
     fun setToolBarTitle(){
         tv_toolbar_title.text = getString(R.string.select_id_type)
+    }
+
+    override fun onBackPressed() {
+        when (mNavController.currentDestination?.id) {
+            R.id.verifyIdentityFragment -> {
+                finish()
+            }
+            R.id.credentialsFragment -> {
+                finish()
+            }
+        }
+        super.onBackPressed()
     }
 }
