@@ -144,14 +144,25 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
                 else {
 //                    val action = CredentialsFragmentDirections.actionCredentialsFragmentToCredentialsDetailFragment(null)
 //                    findNavController().navigate(action)
-                    showPromptDialog(
+                    /*showPromptDialog(
                         title = getString(R.string.prompt),
                         message = getString(R.string.upload_success),
                         success = true
                     ) {
                         activity?.onBackPressed()
-                    }
+                    }*/
                     
+                }
+            }
+        })
+
+        viewModel.uploadVerifyPhotoResult.observe(viewLifecycleOwner, { event ->
+            event.getContentIfNotHandled()?.let { result ->
+                hideLoading()
+                if (result.success) {
+                    activity?.onBackPressed()
+                } else {
+                    showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
                 }
             }
         })
