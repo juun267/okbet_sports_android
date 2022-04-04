@@ -889,7 +889,8 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
     private fun setupHomeCard(homeGameCard: HomeGameCard, sportMenu: SportMenu) {
         homeGameCard.apply {
-            setTitle(sportMenu.sportName)
+            val title = getGameTypeString(context, sportMenu.gameType.key)
+            setTitle(if (title.isNullOrEmpty()) sportMenu.sportName else title)
             sportMenu.icon?.let { setIcon(sportMenu.icon) }
             setCount(sportMenu.gameCount)
 
