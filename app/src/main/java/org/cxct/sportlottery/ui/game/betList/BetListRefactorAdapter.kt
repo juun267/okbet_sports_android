@@ -1043,6 +1043,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 item_first_single.setOnClickListener {
                     //layoutKeyBoard.hideKeyboard()
                     //onItemClickListener.onHideKeyBoard()
+                    clearFocus()
                 }
 
                 setupItemEnable(hasBetClosed)

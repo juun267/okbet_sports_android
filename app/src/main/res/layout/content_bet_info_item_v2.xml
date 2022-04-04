@@ -341,7 +341,6 @@
                             android:layout_height="150dp"
                             android:layout_marginTop="@dimen/margin_4"
                             android:visibility="gone"
-                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tv_error_message" />
                         <!--                        <View-->
                         <!--                            android:layout_width="match_parent"-->
