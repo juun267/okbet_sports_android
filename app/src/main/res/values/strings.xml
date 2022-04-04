@@ -416,9 +416,9 @@
     <string name="title_account">账号：</string>
     <string name="title_address">地址：</string>
     <string name="title_deposit_money">充值金额</string>
-    <string name="title_payer">賬號</string>
+    <string name="title_payer">账号</string>
     <string name="edt_hint_deposit_money">限额 %1$s～%2$s</string>
-    <string name="edt_hint_payer">請輸入您的帳號</string>
+    <string name="edt_hint_payer">请输入您的账号</string>
     <string name="edt_hint_deposit_money_new">限额 %1$s-%2$s</string>
     <string name="title_real_name">认证姓名</string>
     <string name="title_nick_name">个人昵称</string>
