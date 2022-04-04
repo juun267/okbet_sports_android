@@ -760,10 +760,10 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             if(oldOdds != TextUtil.formatForOdd(getOdds(matchOdd, oddsType))){
                 tv_odd_content_changed.visibility = View.VISIBLE
                 handler.postDelayed({
-                    tv_odd_content_changed.setVisibility(View.GONE)
+                    tv_odd_content_changed?.visibility = View.GONE
                 }, 3000)
                 button_bet.isOddsChanged = true
-                tv_odd_content_changed.text =   getString(
+                tv_odd_content_changed.text = getString(
                     R.string.bet_info_odd_content_changed2,
                     oldOdds,
                     TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
@@ -801,7 +801,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
             binding.tvOddsContent.text = betInfoData.matchOdd.playName
             if(oldOdds != TextUtil.formatForOdd(getOdds(matchOdd, oddsType))){
-                oldOdds = if (matchOdd.status == BetStatus.ACTIVATED.code) TextUtil.formatForOdd(getOdds(matchOdd, oddsType)) else "–"
+                if (matchOdd.status == BetStatus.ACTIVATED.code) oldOdds = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
             }
             binding.tvOdds.text =if (matchOdd.status == BetStatus.ACTIVATED.code) "@"+TextUtil.formatForOdd(getOdds(matchOdd, oddsType)) else "–"
             binding.tvContent.text = matchOdd.extInfo+spread

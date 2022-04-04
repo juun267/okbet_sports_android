@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -470,7 +471,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 if(oldOdds != "" && oldOdds != TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))){
                     tv_odd_content_changed.visibility = View.VISIBLE
                     handler.postDelayed({
-                        tv_odd_content_changed.setVisibility(View.GONE)
+                        tv_odd_content_changed?.visibility = View.GONE
                     }, 3000)
                     tv_odd_content_changed.text =  context.getString(
                         R.string.bet_info_odd_content_changed2,
@@ -487,7 +488,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
                 tv_odds_content.text = itemData.matchOdd.playName
                 if( oldOdds != TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))){
-                    oldOdds = if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType)) else "–"
+                    if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) oldOdds = TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))
                 }
                 tvOdds.text =if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) "@"+TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType)) else "–"
                 tvContent.text = itemData.matchOdd.extInfo+spread
