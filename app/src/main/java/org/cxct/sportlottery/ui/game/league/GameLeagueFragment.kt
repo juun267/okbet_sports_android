@@ -365,6 +365,8 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     }
                 }
 
+                updateAllGameList()
+
                 //leagueAdapter.notifyDataSetChanged()
                 leagueAdapter.data.forEachIndexed { index, leagueOdd ->
                     leagueOdd.matchOdds.forEach { matchOdd ->
@@ -561,6 +563,12 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         leagueAdapter.data[index] = leagueOdd
         if (game_league_odd_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !game_league_odd_list.isComputingLayout) {
             leagueAdapter.updateLeague(index, leagueOdd)
+        }
+    }
+
+    private fun updateAllGameList() {
+        if (game_league_odd_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !game_league_odd_list.isComputingLayout) {
+            leagueAdapter.data.forEachIndexed { index, leagueOdd -> leagueAdapter.updateLeague(index, leagueOdd) }
         }
     }
 
