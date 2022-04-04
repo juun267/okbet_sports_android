@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -12,7 +13,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail.view.*
+import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail_v2.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.et_bet
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.et_clickable
@@ -20,7 +21,6 @@ import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.iv_bet_lock
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.layoutKeyBoard
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.tv_error_message
 import kotlinx.android.synthetic.main.content_bet_list_batch_control.view.*
-import kotlinx.android.synthetic.main.fragment_bottom_sheet_betinfo_item.*
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v2.view.*
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_v2.view.*
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_v2.view.ll_winnable
@@ -444,6 +444,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     false
                 }
 
+                et_bet.setOnFocusChangeListener { v, hasFocus ->
+                    if(!hasFocus) layoutKeyBoard?.hideKeyboard()
+                }
+
 //                et_clickable.setOnClickListener {
 //                    et_bet.isFocusable = true
 //                    //onItemClickListener.onShowKeyboard(et_bet, itemData.matchOdd, position, itemData.parlayOdds?.max?.toLong() ?: 0)
@@ -461,6 +465,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 cl_item_background.setOnClickListener {
                     onItemClickListener.onHideKeyBoard()
+                    clearFocus()
                 }
             }
         }
@@ -1031,6 +1036,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 //                    )
 //                }
 
+                et_bet_single.setOnFocusChangeListener { v, hasFocus ->
+                    if(!hasFocus) layoutKeyBoard?.hideKeyboard()
+                }
+
                 item_first_single.setOnClickListener {
                     //layoutKeyBoard.hideKeyboard()
                     //onItemClickListener.onHideKeyBoard()
@@ -1220,7 +1229,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             mBetView: BetViewType,
             onSelectedPositionListener: OnSelectedPositionListener,
             position: Int
-        ) {
+        )  {
             itemData.let {
                 it?.max =
                     if (GameConfigManager.maxParlayBetMoney?.toLong() ?: 0 > itemData?.max?.toLong() ?: 0) itemData?.max
@@ -1476,6 +1485,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                     }
                     false
+                }
+
+                et_bet.setOnFocusChangeListener { v, hasFocus ->
+                    if(!hasFocus) layoutKeyBoard?.hideKeyboard()
                 }
 
 //                et_clickable.setOnClickListener {
