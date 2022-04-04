@@ -174,6 +174,7 @@ class QuickListView @JvmOverloads constructor(
             league_odd_quick_cate_tabs?.addView(rb.apply {
                 text = it.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: it.name
                 id = it.hashCode()
+                isChecked = it.isSelected
             })
         }
     }

@@ -259,6 +259,7 @@ object Constants {
     const val SPORT_QUERY = "/api/front/sport/query"
     const val SPORT_COUPON_MENU = "/api/front/sport/coupon/menu"
     const val SPORT_SEARCH_ENGINE = "/api/front/sport/searchEngine"
+    const val SPORT_PUBLICITY_RECOMMEND = "/api/front/sport/recommend"
     const val SPORT_MENU_FILTER = "/api/front/sport/menu/list"
 
 
@@ -305,6 +306,7 @@ object Constants {
     const val USER_CREDIT_CIRCLE_HISTORY = "/api/front/user/credit/circle/history"
     const val USER_BET_LIMIT = "/api/front/user/setPerBetLimit"
     const val USER_FROZE = "/api/front/user/setFroze"
+    const val LOCK_MONEY = "/api/front/user/lockMoney"
 
     //upload image
     const val UPLOAD_IMG = "/api/upload/image" //上传图片
@@ -360,4 +362,7 @@ object Constants {
 
     //rule type
     const val COMBO = "combo"
+
+    //news
+    const val MESSAGE_LIST = "/api/front/message/list"
 }

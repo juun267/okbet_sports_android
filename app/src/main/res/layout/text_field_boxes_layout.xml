@@ -70,11 +70,26 @@
                         tools:text="Label" />
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/text_field_boxes_sub_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/text_field_boxes_label"
+                        android:layout_marginTop="@dimen/label2_active_margin_top"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/colorBlackLight"
+                        android:textSize="@dimen/textSize12sp"
+                        android:textStyle="bold"
+                        tools:text="SubLabel" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/text_field_boxes_hint_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/text_field_boxes_label"
                         android:layout_marginTop="@dimen/label2_active_margin_top"
+                        android:layout_toEndOf="@id/text_field_boxes_sub_label"
                         android:gravity="center"
                         android:includeFontPadding="false"
                         android:textColor="@color/colorSilverLight"
@@ -107,6 +122,7 @@
                         android:id="@+id/text_field_boxes_editTextLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/text_field_boxes_sub_label"
                         android:layout_below="@+id/text_field_boxes_label_space"
                         android:layout_gravity="bottom"
                         android:layout_marginBottom="0dp">

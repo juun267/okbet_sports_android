@@ -236,6 +236,7 @@ class ProfileCenterViewModel(
                         )
                         photoResponse.success -> {
                             _photoUrlResult.postValue(Event(photoResponse))
+                            uploadIdentityDoc(docResponse.imgData?.path, photoResponse.imgData?.path)
                         }
                         else -> {
                             val error =
@@ -254,9 +255,9 @@ class ProfileCenterViewModel(
         }
     }
 
-    fun uploadIdentityDoc() {
-        val docPathUrl = _docUrlResult.value?.peekContent()?.imgData?.path
-        val photoPathUrl = _photoUrlResult.value?.peekContent()?.imgData?.path
+    fun uploadIdentityDoc(docPath: String? = null, photoPath: String? = null) {
+        val docPathUrl = docPath ?: _docUrlResult.value?.peekContent()?.imgData?.path
+        val photoPathUrl = photoPath ?: _photoUrlResult.value?.peekContent()?.imgData?.path
         when {
             docPathUrl == null -> {
                 _uploadVerifyPhotoResult.postValue(

@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.Odd
@@ -20,6 +21,8 @@ import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.base.ChannelType
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.SocketUpdateUtil
@@ -65,6 +68,19 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
         }
     }
 
+    init {
+        afterAnimateListener = AfterAnimateListener {
+            try {
+                initObserve()
+                initSocketObserver()
+                initView()
+                initBottomNavigation()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -88,19 +104,6 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
 
             adapter = outrightLeagueOddAdapter
 
-        }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        try {
-            initObserve()
-            initSocketObserver()
-            initView()
-            initBottomNavigation()
-
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
     }
 
@@ -283,13 +286,27 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
         odd: Odd,
         playCateCode: String
     ) {
-        viewModel.updateMatchBetListForOutRight(
+        val fastBetDataBean = FastBetDataBean(
             matchType = MatchType.OUTRIGHT,
             gameType = args.gameType,
             playCateCode = playCateCode,
+            playCateName =  "",
+            matchInfo = matchOdd.matchInfo!!,
             matchOdd = matchOdd,
-            odd = odd
+            odd = odd,
+            subscribeChannelType = ChannelType.HALL,
+            betPlayCateNameMap = null,
         )
+        (activity as GameActivity).showFastBetFragment(fastBetDataBean)
+
+
+//        viewModel.updateMatchBetListForOutRight(
+//            matchType = MatchType.OUTRIGHT,
+//            gameType = args.gameType,
+//            playCateCode = playCateCode,
+//            matchOdd = matchOdd,
+//            odd = odd
+//        )
     }
 
     override fun onStop() {

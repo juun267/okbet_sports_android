@@ -3,14 +3,13 @@ package org.cxct.sportlottery.ui.game.language
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
-import org.cxct.sportlottery.BuildConfig
-import org.cxct.sportlottery.BuildConfig.CHANNEL_NAME
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivitySwitchLanguageBinding
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.util.*
@@ -41,7 +40,7 @@ class SwitchLanguageActivity : BaseActivity<LoginViewModel>(LoginViewModel::clas
                 if (sConfigData?.thirdOpen == FLAG_OPEN)
                     MainActivity.reStart(this)
                 else
-                    GameActivity.reStart(this)
+                    viewModel.goGameHome()
             }
         }
     }
@@ -50,6 +49,7 @@ class SwitchLanguageActivity : BaseActivity<LoginViewModel>(LoginViewModel::clas
         binding = ActivitySwitchLanguageBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initView()
+        initObservers()
     }
 
     private fun initView(){
@@ -71,6 +71,16 @@ class SwitchLanguageActivity : BaseActivity<LoginViewModel>(LoginViewModel::clas
         }
     }
 
+    private fun initObservers() {
+        viewModel.goGameHome.observe(this, {
+            if (it?.getContentIfNotHandled() == true) {
+                GameActivity.reStart(this)
+            } else {
+                GamePublicityActivity.reStart(this)
+            }
+        })
+    }
+
     private fun selectLanguage(select: LanguageManager.Language) {
         if(SPUtil.getInstance(applicationContext).getSelectLanguage() != select.key){
             this?.run {
@@ -78,7 +88,7 @@ class SwitchLanguageActivity : BaseActivity<LoginViewModel>(LoginViewModel::clas
                 if (sConfigData?.thirdOpen == FLAG_OPEN)
                     MainActivity.reStart(this)
                 else
-                    GameActivity.reStart(this)
+                    viewModel.goGameHome()
             }
         }
     }

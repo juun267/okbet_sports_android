@@ -366,6 +366,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                             setOnClickListener {
                                 if (oddList != null && oddList?.size ?: 0 >= 2) {
                                     oddFirst?.let { odd ->
+                                        it.isSelected = !it.isSelected
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
@@ -399,6 +400,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                             setOnClickListener {
                                 if (oddList != null && oddList?.size ?: 0 >= 2) {
                                     oddSecond?.let { odd ->
+                                        it.isSelected = !it.isSelected
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
@@ -431,6 +433,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                             setOnClickListener {
                                 if (oddList != null && oddList?.size ?: 0 >= 2) {
                                     oddThird?.let { odd ->
+                                        it.isSelected = !it.isSelected
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,

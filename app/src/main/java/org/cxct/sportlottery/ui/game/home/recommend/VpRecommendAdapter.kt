@@ -254,6 +254,7 @@ class VpRecommendAdapter(
                     }
 
                     setOnClickListener {
+                        it.isSelected = !it.isSelected
                         onClickOutrightOddListener?.onClickBet(matchOdd.apply {
                             this.matchInfo?.gameType = sportCode
                         }, odd, PlayCate.UNCHECK.value, playCateCode, betPlayCateNameMap)
@@ -317,6 +318,7 @@ class VpRecommendAdapter(
                     setOnClickListener {
                         val playCateName = itemView.tv_play_type_eps.text.toString()
 
+                        it.isSelected = !it.isSelected
                         onClickOddListener?.onClickBet(matchOdd.apply {
                             this.matchInfo?.gameType = sportCode
                         }, odd, PlayCate.UNCHECK.value, playCateName, betPlayCateNameMap)

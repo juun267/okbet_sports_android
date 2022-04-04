@@ -1,13 +1,17 @@
 package org.cxct.sportlottery.ui.game.betList.receipt
 
+import android.os.Handler
+import android.os.Looper
 import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.button_bet.view.*
 import kotlinx.android.synthetic.main.item_match_receipt.view.*
 import kotlinx.android.synthetic.main.item_parlay_receipt.view.*
 import kotlinx.android.synthetic.main.view_match_receipt_bet.view.*
@@ -23,6 +27,7 @@ import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.*
+import java.util.*
 
 class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(BetReceiptCallback()) {
 
@@ -36,7 +41,16 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
     var betParlayList: List<ParlayOdd>? = null
 
+    var betConfirmTime: Long? = 0
+
     enum class ItemType { SINGLE, PARLAY_TITLE, PARLAY }
+
+    val mHandler = Handler(Looper.getMainLooper())
+
+    val mRunnableList: MutableList<Runnable?> by lazy {
+        MutableList(itemCount) { _ -> null }
+    }
+
 
     /**
      * @param betParlayList 投注單的串關清單, 用來表示第一項投注單的賠率
@@ -44,11 +58,13 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
     fun submit(
         singleList: List<BetResult>,
         parlayList: List<BetResult>,
-        betParlayList: List<ParlayOdd>
+        betParlayList: List<ParlayOdd>,
+        betConfirmTime: Long
     ) {
         adapterScope.launch {
 
             this@BetReceiptDiffAdapter.betParlayList = betParlayList
+            this@BetReceiptDiffAdapter.betConfirmTime = betConfirmTime
 
             val parlayItem =
                 if (parlayList.isNotEmpty())
@@ -66,6 +82,50 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
             withContext(Dispatchers.Main) {
                 submitList(items)
             }
+        }
+    }
+
+     private fun starRunnable(startTime: Long, adapterPosition: Int, tvTime: TextView) {
+        try {
+            if (mRunnableList[adapterPosition] == null) {
+                mRunnableList[adapterPosition] = getRunnable(startTime, adapterPosition, tvTime)
+                mRunnableList[adapterPosition]?.let { mHandler.post(it) }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+     private fun getRunnable(startTime: Long, position: Int, tvTime: TextView): Runnable {
+        return Runnable {
+            refreshTime(startTime, position, tvTime)//可以直接倒數了
+            mRunnableList[position]?.let { mHandler.postDelayed(it, 1000) }
+        }
+    }
+
+    private fun refreshTime(startTime: Long, position: Int, tvTime: TextView) {
+        if (startTime.minus(System.currentTimeMillis()).div(1000L) < 0) {
+            tvTime.text = String.format(
+                tvTime.context.getString(R.string.pending),
+                0
+            )
+            stopRunnable(position)
+        } else {
+            tvTime.text = String.format(
+                tvTime.context.getString(R.string.pending),
+                startTime.minus(System.currentTimeMillis()).div(1000L)
+            )
+        }
+    }
+
+    private fun stopRunnable(position: Int) {
+        try {
+            if (position < 0 || position >= mRunnableList.size || mRunnableList[position] != null) {
+                mRunnableList[position]?.let { mHandler.removeCallbacks(it) }//從執行緒移除
+                mRunnableList[position] = null//取消任務
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -100,11 +160,17 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
             is SingleViewHolder -> {
                 val itemData = getItem(position) as DataItem.SingleData
                 holder.bind(itemData.result, currentOddsType)
+                if (itemData.result.status == 0) {
+                    starRunnable(betConfirmTime ?: 0, position, holder.itemView.tv_bet_status)
+                }
             }
 
             is ParlayViewHolder -> {
                 val itemData = getItem(position) as DataItem.ParlayData
                 holder.bind(itemData.result, itemData.firstItem, currentOddsType, betParlayList)
+                if (itemData.result.status == 0) {
+                    starRunnable(betConfirmTime ?: 0, position, holder.itemView.tv_bet_status)
+                }
             }
 
             is ParlayTitleViewHolder -> {
@@ -145,7 +211,10 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                     tv_bet_amount.text = TextUtil.formatMoney(itemData.stake ?: 0.0)
                     tv_winnable_amount.text = TextUtil.formatMoney(winnable ?: 0.0)
                     tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
-                    tv_bet_status.setBetReceiptStatus(status)
+
+                    if (status != 0)
+                        tv_bet_status.setBetReceiptStatus(status)
+
                     tv_bet_status.setReceiptStatusColor(status)
 
                     if (matchType == MatchType.OUTRIGHT) {
@@ -220,7 +289,9 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                     )
                     tv_winnable_amount.text = TextUtil.formatMoney(winnable ?: 0.0)
                     tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
-                    tv_bet_status.setBetReceiptStatus(status)
+                    if (status != 0)
+                        tv_bet_status.setBetReceiptStatus(status)
+
                     tv_bet_status.setReceiptStatusColor(status)
                 }
             }

@@ -21,7 +21,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 5
-        versionName "1.0.84"
+        versionName "1.0.91"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -335,6 +335,7 @@ dependencies {
     implementation "com.alibaba:fastjson:1.1.68.android"
 
     implementation 'com.github.JessYanCoding:AndroidAutoSize:v1.2.1'
+    implementation 'org.parceler:parceler-api:1.1.12'
 
 }
 

@@ -437,7 +437,7 @@ object TimeUtil {
         calendar.set(Calendar.MILLISECOND, 0)
         val startTimeStamp = calendar.timeInMillis
 
-        calendar.add(Calendar.DAY_OF_MONTH, 29)
+        calendar.add(Calendar.DAY_OF_MONTH, 28)
         calendar.set(Calendar.HOUR_OF_DAY, 23)
         calendar.set(Calendar.MINUTE, 59)
         calendar.set(Calendar.SECOND, 59)
@@ -539,6 +539,21 @@ object TimeUtil {
             e.printStackTrace()
         }
         return remainTime
+    }
+    //[Martin] 這會回傳剩餘幾天
+    fun getRemainDay(timeStamp: Long?): Int {
+        var remainTime = 0L
+        var day = 0
+        try {
+            timeStamp?.apply {
+                remainTime = timeStamp - System.currentTimeMillis()
+                day = (remainTime/ (1000*60*60*24)).toInt()+1
+            }
+        } catch (e: Exception) {
+            Timber.e("時間計算失敗!!! \n$e")
+            e.printStackTrace()
+        }
+        return day
     }
 
     /**

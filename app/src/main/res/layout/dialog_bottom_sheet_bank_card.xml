@@ -39,12 +39,13 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lv_bank_item"
         android:layout_width="match_parent"
         android:layout_height="144dp"
         android:divider="@null"
         android:dividerHeight="0dp"
+        android:overScrollMode="never"
         tools:itemCount="5"
         tools:listitem="@layout/item_listview_bank_card" />
 

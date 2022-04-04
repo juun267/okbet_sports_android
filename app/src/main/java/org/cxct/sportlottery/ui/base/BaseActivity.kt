@@ -15,8 +15,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder
 import com.bigkoo.pickerview.view.OptionsPickerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.*
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.BaseResult
@@ -25,12 +25,12 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
+import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.util.commonCheckDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.reflect.KClass
-import org.cxct.sportlottery.ui.main.MainActivity
-import org.cxct.sportlottery.util.commonCheckDialog
 
 abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActivity() {
 
@@ -75,7 +75,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                     if (sConfigData?.thirdOpen == FLAG_OPEN)
                         MainActivity.reStart(this)
                     else
-                        GameActivity.reStart(this)
+                        GamePublicityActivity.reStart(this)
                 }
             }
         }

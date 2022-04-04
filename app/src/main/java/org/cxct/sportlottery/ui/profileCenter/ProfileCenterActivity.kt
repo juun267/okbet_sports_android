@@ -3,12 +3,19 @@ package org.cxct.sportlottery.ui.profileCenter
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile_center.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.Constants
@@ -42,6 +49,10 @@ import org.cxct.sportlottery.ui.selflimit.SelfLimitActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.TextUtil.formatMoney
+import org.cxct.sportlottery.util.TextUtil.formatMoneyNoDecimal
+import org.cxct.sportlottery.util.TimeUtil.getRemainDay
+import org.cxct.sportlottery.util.TimeUtil.getRemainTime
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
@@ -229,7 +240,10 @@ class ProfileCenterActivity :
                     toProfileCenter()
                 }
                 else -> { // TODO 20220108 沒有遊客的話，要確認一下文案是否正確 by Hewie
-                    ToastUtil.showToastInCenter(this, getString(R.string.message_guest_no_permission))
+                    ToastUtil.showToastInCenter(
+                        this,
+                        getString(R.string.message_guest_no_permission)
+                    )
                 }
             }
         }
@@ -333,6 +347,37 @@ class ProfileCenterActivity :
             updateUI(it)
         }
 
+        viewModel.lockMoney.observe(this) {
+            if (it?.toInt()!! > 0) {
+                ivNotice.visibility = View.VISIBLE
+                ivNotice.setOnClickListener { view ->
+                    val depositSpannable =
+                        SpannableString(getString(R.string.text_security_money, formatMoneyNoDecimal(it)))
+                    val daysLeftText = getString(
+                        R.string.text_security_money2,
+                        getRemainDay(viewModel.userInfo.value?.uwEnableTime).toString()
+                    )
+                    val remainDaySpannable = SpannableString(daysLeftText)
+                    val remainDay = getRemainDay(viewModel.userInfo.value?.uwEnableTime).toString()
+                    val remainDayStartIndex = daysLeftText.indexOf(remainDay)
+                    remainDaySpannable.setSpan(
+                        ForegroundColorSpan(
+                            ContextCompat.getColor(this, R.color.colorBlue)
+                        ),
+                        remainDayStartIndex,
+                        remainDayStartIndex + remainDay.length, 0
+                    )
+
+                    SecurityDepositDialog().apply {
+                        this.depositText = depositSpannable
+                        this.daysLeftText = remainDaySpannable
+                    }.show(supportFragmentManager, this::class.java.simpleName)
+                }
+            } else {
+                ivNotice.visibility = View.GONE
+            }
+        }
+
         viewModel.withdrawSystemOperation.observe(this) {
             val operation = it.getContentIfNotHandled()
             if (operation == false) {
@@ -424,9 +469,10 @@ class ProfileCenterActivity :
                             this.showSmeTimer300()
                             viewModel.sendTwoFactor()
                         }
-                        positiveClickListener = CustomSecurityDialog.PositiveClickListener { number ->
-                            viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
-                        }
+                        positiveClickListener =
+                            CustomSecurityDialog.PositiveClickListener { number ->
+                                viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
+                            }
                     }
                     customSecurityDialog?.show(supportFragmentManager, null)
                 }
@@ -536,6 +582,14 @@ class ProfileCenterActivity :
         btn_edit_nickname.visibility =
             if (userInfo?.setted == FLAG_NICKNAME_IS_SET) View.GONE else View.VISIBLE
         tv_user_id.text = userInfo?.userId?.toString()
+        if (getRemainDay(userInfo?.uwEnableTime) > 0) {
+            ivNotice.visibility = View.VISIBLE
+            ivNotice.setOnClickListener {
+                viewModel.getLockMoney()
+            }
+        } else {
+            ivNotice.visibility = View.GONE
+        }
     }
 
     private fun uploadImg(file: File) {
@@ -548,11 +602,12 @@ class ProfileCenterActivity :
     private fun updateCreditAccountUI(isCreditAccount: Boolean) {
         val thirdOpen = sConfigData?.thirdOpen == FLAG_OPEN
 
-        profile_center_back.visibility = if (isCreditAccount || sConfigData?.thirdOpen != FLAG_OPEN) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
+        profile_center_back.visibility =
+            if (isCreditAccount || sConfigData?.thirdOpen != FLAG_OPEN) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
 
         block_card.visibility = if (isCreditAccount) {
             View.GONE

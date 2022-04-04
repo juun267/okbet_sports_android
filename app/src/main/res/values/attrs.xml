@@ -157,6 +157,7 @@
 
         <!--Texts-->
         <attr name="labelText" format="string" />
+        <attr name="subLabelText" format="string" />
         <attr name="hintText" format="string" />
         <attr name="singleText" format="string" />
         <attr name="helperText" format="string" />

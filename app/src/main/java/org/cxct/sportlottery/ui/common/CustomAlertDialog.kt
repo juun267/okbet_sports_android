@@ -41,7 +41,10 @@ class CustomAlertDialog(context: Context) : DialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? = inflater.inflate(R.layout.dialog_custom_alert, container, false)
+    ): View? {
+        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        return inflater.inflate(R.layout.dialog_custom_alert, container, false)
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

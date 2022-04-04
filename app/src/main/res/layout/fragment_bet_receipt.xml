@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
+    android:background="@color/transparent_black_0"
     tools:context=".ui.game.betList.receipt.BetReceiptFragment">
 
     <include
@@ -20,7 +20,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="@dimen/margin_8"
+        android:paddingBottom="@dimen/margin_8"
+
         app:layout_constraintTop_toBottomOf="@+id/tool_bar">
         <!-- TODO: Update blank fragment layout -->
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -205,6 +206,7 @@
             android:text="@string/already_bet_complete"
             android:textColor="@color/colorBlue"
             android:textSize="@dimen/textSize13sp"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/btn_complete" />
 
         <View

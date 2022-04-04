@@ -164,7 +164,9 @@
         android:id="@+id/ct_premium_odds"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <ImageView
             android:layout_width="22dp"

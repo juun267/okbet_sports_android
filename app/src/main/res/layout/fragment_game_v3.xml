@@ -148,14 +148,6 @@
             android:overScrollMode="never"
             android:background="@color/colorWhite"/>
 
-        <include
-            android:id="@+id/game_no_record"
-            layout="@layout/view_no_record"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            tools:visibility="gone" />
-
     </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

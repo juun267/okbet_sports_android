@@ -115,7 +115,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
         } else {
             Log.d("Hewie", "更新：賽事($position)")
             val matchOdd = payloads.first() as MatchOdd
-            (holder as ViewHolderHdpOu).update(matchType, matchOdd, leagueOddListener, isTimerEnable, oddsType, playSelectedCodeSelectionType)
+            (holder as ViewHolderHdpOu).update(matchType, matchOdd, leagueOddListener, isTimerEnable, oddsType, playSelectedCodeSelectionType, playSelectedCode)
         }
     }
 
@@ -163,13 +163,15 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
         }
 
         // region update functions
-        fun update(matchType: MatchType, item: MatchOdd, leagueOddListener: LeagueOddListener?, isTimerEnable: Boolean, oddsType: OddsType, playSelectedCodeSelectionType: Int?) {
+        fun update(matchType: MatchType, item: MatchOdd, leagueOddListener: LeagueOddListener?, isTimerEnable: Boolean, oddsType: OddsType, playSelectedCodeSelectionType: Int?, playSelectedCode: String?) {
             setUpVisibility(item, matchType)
             updateMatchInfo(item, matchType)
             val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
             setupMatchTime(item, matchType, isTimerEnable, isTimerPause, leagueOddListener)
             updateOddsButton(item, oddsType, playSelectedCodeSelectionType)
 
+            itemView.quickListView.setDatas(item, oddsType, leagueOddListener, playSelectedCodeSelectionType, playSelectedCode)
+            itemView.quickListView.refreshTab()
             itemView.quickListView.updateQuickSelected()
             //setupQuickCategory(item, oddsType, leagueOddListener)
             //updateQuickCategory(item, oddsType, leagueOddListener)
@@ -191,7 +193,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             itemView.league_odd_match_play_count.text = item.matchInfo?.playCateNum.toString()
             itemView.league_odd_match_favorite.isSelected = item.matchInfo?.isFavorite ?: false
             itemView.league_odd_match_price_boost.isVisible = item.matchInfo?.eps == 1
-            itemView.space2.isVisible = (item.matchInfo?.eps == 1 || item.matchInfo?.liveVideo == 1)
+            //itemView.space2.isVisible = (item.matchInfo?.eps == 1 || item.matchInfo?.liveVideo == 1)
             itemView.iv_play.isVisible = item.matchInfo?.liveVideo == 1 && (matchType == MatchType.IN_PLAY || matchType == MatchType.MY_EVENT && item.matchInfo.isInPlay == true)
         }
 
@@ -262,7 +264,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             }
 
             itemView.league_odd_match_price_boost.isVisible = item.matchInfo?.eps == 1
-            itemView.space2.isVisible = (item.matchInfo?.eps == 1 || item.matchInfo?.liveVideo == 1)
+            //itemView.space2.isVisible = (item.matchInfo?.eps == 1 || item.matchInfo?.liveVideo == 1)
             itemView.iv_play.isVisible =
                 item.matchInfo?.liveVideo == 1 && (matchType == MatchType.IN_PLAY || matchType == MatchType.MY_EVENT && item.matchInfo.isInPlay == true)
 

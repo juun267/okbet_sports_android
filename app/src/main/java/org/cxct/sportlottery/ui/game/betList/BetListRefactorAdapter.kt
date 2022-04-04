@@ -2,8 +2,11 @@ package org.cxct.sportlottery.ui.game.betList
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -11,7 +14,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail.view.*
+import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail_v2.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.et_bet
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.et_clickable
@@ -29,6 +32,7 @@ import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -40,7 +44,7 @@ import org.cxct.sportlottery.util.*
 class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private enum class ViewType { Bet, Parlay, ParlayFirst }
+    private enum class ViewType { Bet, Parlay, ParlayFirst, Warn }
     enum class BetViewType { SINGLE, PARLAY, NULL }
 
     var betList: MutableList<BetInfoListData>? = mutableListOf()
@@ -100,6 +104,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
     var needScrollToBottom = false //用來紀錄是否為點擊更多選項需滾動至底部
 
+    var isCantParlayWarn = false
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return when (viewType) {
@@ -117,6 +123,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     false
                 )
             )
+            ViewType.Warn.ordinal -> CantParlayWarnViewHolder(layoutInflater.inflate(
+                R.layout.content_cant_parlay_warn,
+                parent,
+                false
+            ))
             else -> BatchParlayConnectViewHolder(
                 layoutInflater.inflate(
                     R.layout.item_bet_list_batch_control_connect_v2,
@@ -186,12 +197,14 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     position
                 )
             }
+            is CantParlayWarnViewHolder -> {}
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         val betSize = betList?.size ?: 0
         return when {
+            isCantParlayWarn && position == (itemCount - 1) -> { ViewType.Warn.ordinal }
             position < betSize -> ViewType.Bet.ordinal
             position == betSize -> ViewType.ParlayFirst.ordinal
             else -> ViewType.Parlay.ordinal
@@ -205,13 +218,25 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             betListSize == 2 || !moreOptionCollapse -> 1
             else -> (parlayList?.size ?: 0)
         }
-        return betListSize + parlayListSize
+        var size = betListSize + parlayListSize
+        if(isCantParlayWarn) { size++ }
+        return size
     }
 
     //使用HasStabledIds需複寫回傳的position, 若仍使用super.getItemId(position), 數據刷新會錯亂.
     //https://blog.csdn.net/karsonNet/article/details/80598435
     override fun getItemId(position: Int): Long {
         return position.toLong()
+    }
+
+    fun showCantParlayWarn() {
+        isCantParlayWarn = true
+        notifyDataSetChanged()
+    }
+
+    fun hideCantParlayWarn() {
+        isCantParlayWarn = false
+        notifyDataSetChanged()
     }
 
     //單注
@@ -267,7 +292,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
                 onFocusChangeListener = null
 
-                setupOddInfo(itemData, currentOddsType, betListSize)
+                setupOddInfo(itemData, currentOddsType, betListSize,onItemClickListener)
                 setupMinimumLimitMessage(itemData)
                 onItemClickListener.refreshBetInfoTotal()
 
@@ -420,6 +445,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     false
                 }
 
+                et_bet.setOnFocusChangeListener { v, hasFocus ->
+                    if(!hasFocus) layoutKeyBoard?.hideKeyboard()
+                }
+
 //                et_clickable.setOnClickListener {
 //                    et_bet.isFocusable = true
 //                    //onItemClickListener.onShowKeyboard(et_bet, itemData.matchOdd, position, itemData.parlayOdds?.max?.toLong() ?: 0)
@@ -437,14 +466,18 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 cl_item_background.setOnClickListener {
                     onItemClickListener.onHideKeyBoard()
+                    clearFocus()
                 }
             }
         }
+        var oldOdds = ""
+        var handler = Handler()
 
         private fun setupOddInfo(
             itemData: BetInfoListData,
             currentOddsType: OddsType,
-            betListSize: Int
+            betListSize: Int,
+            onItemClickListener: OnItemClickListener
         ) {
             itemView.apply {
                 v_point.visibility =
@@ -457,8 +490,34 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 //                    currentOddsType = OddsType.EU
 //                }
 
-                setupOddsContent(itemData, oddsType = currentOddsType, tv_odds_content)
-
+                //setupOddsContent(itemData, oddsType = currentOddsType, tv_odds_content)
+                if(itemData.matchOdd.status == BetStatus.ACTIVATED.code && oldOdds != "" && oldOdds != TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))){
+                    tv_odd_content_changed.visibility = if(handler != null) View.VISIBLE else View.GONE
+                    handler?.postDelayed({
+                        tv_odd_content_changed?.visibility = View.GONE
+                    }, 3000)
+                    tv_odd_content_changed.text =  context.getString(
+                        R.string.bet_info_odd_content_changed2,
+                        oldOdds,
+                        TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))
+                    )
+                }
+                var spread = ""
+                spread = if (itemData.matchOdd.spread.isEmpty() || !PlayCate.needShowSpread(itemData.matchOdd.playCode) || itemData.matchType == MatchType.OUTRIGHT
+                ) {
+                    ""
+                } else {
+                    itemData.matchOdd.spread
+                }
+                tv_odds_content.text = itemData.matchOdd.playName
+                if(itemData.matchOdd.status == BetStatus.ACTIVATED.code && oldOdds != TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))){
+                    oldOdds = TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))
+                }
+                tvOdds.text =if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) "@"+TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType)) else "–"
+                tvContent.text = itemData.matchOdd.extInfo+spread
+                btnRecharge.setOnClickListener {
+                    onItemClickListener.onRechargeClick()
+                }
                 //隊伍名稱
                 tv_match.text = when {
                     itemData.matchType == MatchType.OUTRIGHT -> itemData.outrightMatchInfo?.name
@@ -978,9 +1037,14 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 //                    )
 //                }
 
+                et_bet_single.setOnFocusChangeListener { v, hasFocus ->
+                    if(!hasFocus) layoutKeyBoard?.hideKeyboard()
+                }
+
                 item_first_single.setOnClickListener {
                     //layoutKeyBoard.hideKeyboard()
                     //onItemClickListener.onHideKeyBoard()
+                    clearFocus()
                 }
 
                 setupItemEnable(hasBetClosed)
@@ -1167,7 +1231,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             mBetView: BetViewType,
             onSelectedPositionListener: OnSelectedPositionListener,
             position: Int
-        ) {
+        )  {
             itemData.let {
                 it?.max =
                     if (GameConfigManager.maxParlayBetMoney?.toLong() ?: 0 > itemData?.max?.toLong() ?: 0) itemData?.max
@@ -1425,6 +1489,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     false
                 }
 
+                et_bet.setOnFocusChangeListener { v, hasFocus ->
+                    if(!hasFocus) layoutKeyBoard?.hideKeyboard()
+                }
+
 //                et_clickable.setOnClickListener {
 //                    et_bet.isFocusable = true
 //                    //onItemClickListener.onShowParlayKeyboard(et_bet, data, position, data.max.toLong())
@@ -1538,8 +1606,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         }
     }
 
+    // 警訊
+    class CantParlayWarnViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
     interface OnItemClickListener {
         fun onDeleteClick(oddsId: String, currentItemCount: Int)
+        fun onRechargeClick()
         fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd, position: Int, max: Long)
         fun onShowParlayKeyboard(
             editText: EditText,

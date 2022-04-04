@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.android.synthetic.main.dialog_bet_record_detail_list.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
 import kotlinx.android.synthetic.main.online_pay_fragment.*
 import kotlinx.android.synthetic.main.online_pay_fragment.view.*
@@ -70,6 +71,10 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             et_recharge_online_amount.setError(it)
         })
 
+        viewModel.rechargeOnlineAccountMsg.observe(viewLifecycleOwner, {
+            et_recharge_online_payer.setError(it)
+        })
+
         //在線充值成功
         viewModel.onlinePayResult.observe(this.viewLifecycleOwner, {
             resetEvent()
@@ -77,18 +82,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     }
 
     private fun initView() {
-        if (mMoneyPayWay?.onlineType != OnlineType.WX.type
-            && mMoneyPayWay?.onlineType != OnlineType.GCASH.type
-            && mMoneyPayWay?.onlineType != OnlineType.GRABPAY.type
-            && mMoneyPayWay?.onlineType != OnlineType.PAYMAYA.type) {
-            cv_pay_bank.visibility = View.GONE
-        } else {
-            cv_pay_bank.visibility = View.VISIBLE
-        }
         tv_currency_type.text = sConfigData?.systemCurrency
-        tv_pay_gap_subtitle.text =
-            if (mMoneyPayWay?.onlineType == OnlineType.WY.type) getString(R.string.title_pay_channel)
-            else getString(R.string.title_pay_gap)
 
         et_recharge_online_amount.setHint(getAmountLimitHint())
 
@@ -109,7 +103,10 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             } else {
                 ""
             }
-            viewModel.rechargeOnlinePay(requireContext(), mSelectRechCfgs, depositMoney, bankCode)
+
+            val payer = if (needPayerField()) et_recharge_online_payer.getText() else ""
+
+            viewModel.rechargeNormalOnlinePay(requireContext(), mSelectRechCfgs, depositMoney, bankCode, payer)
         }
         ll_pay_gap.setOnClickListener {
             payGapBottomSheet.show()
@@ -143,6 +140,11 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         ll_remark.visibility = if (mSelectRechCfgs?.remark.isNullOrEmpty()) View.GONE else View.VISIBLE
         tv_hint.text = mSelectRechCfgs?.remark
         et_recharge_online_amount.setHint(getAmountLimitHint())
+        et_recharge_online_payer.visibility = if (needPayerField()) View.VISIBLE else View.GONE
+
+        cv_pay_bank.visibility = if (mSelectRechCfgs?.banks != null) View.VISIBLE else View.GONE
+        tv_pay_gap_subtitle.text =
+            if (mSelectRechCfgs?.banks != null) getString(R.string.title_pay_channel) else getString(R.string.title_pay_gap)
 
         //反利、手續費
         setupRebateFee()
@@ -191,6 +193,10 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                     )
                 }
             }
+
+            et_recharge_online_payer.afterTextChanged {
+                checkRcgNormalOnlineAccount(it)
+            }
         }
     }
 
@@ -198,6 +204,10 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         et_recharge_online_amount.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
             if (!hasFocus)
                 viewModel.checkRcgOnlineAmount(et_recharge_online_amount.getText(), mSelectRechCfgs)
+        }
+        et_recharge_online_payer.setEditTextOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus)
+                viewModel.checkRcgNormalOnlineAccount(et_recharge_online_payer.getText())
         }
     }
 
@@ -340,8 +350,9 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 mSelectRechCfgs = rechCfgsList[position]
                 refreshSelectRechCfgs()
 
-                if (cv_pay_bank.visibility == View.VISIBLE)
+                if (mSelectRechCfgs?.banks != null) {
                     refreshPayBank(mSelectRechCfgs)
+                }
 
                 iv_gap_icon.setImageResource(payRoadSpannerList[position].bankIcon ?: 0)
                 txv_pay_gap.text = payRoadSpannerList[position].bankName
@@ -358,5 +369,10 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         clearFocus()
         et_recharge_online_amount.setText("")
         viewModel.clearnRechargeStatus()
+    }
+
+    private fun needPayerField(): Boolean = when (mMoneyPayWay?.onlineType) {
+        OnlineType.GCASH.type, OnlineType.PAYMAYA.type -> true
+        else -> false
     }
 }

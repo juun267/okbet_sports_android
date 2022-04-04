@@ -98,6 +98,12 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         initObserve()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        getUserInfo()
+    }
+
     private fun initView() {
         tv_toolbar_title.text = getString(R.string.profile_info)
         sConfigData?.apply {
@@ -149,7 +155,8 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         ll_wechat.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.WeChat) }
         //實名制
         ll_verified.setOnClickListener {
-            if (ll_verified.isEnabled) startActivity(Intent(this@ProfileActivity, VerifyIdentityActivity::class.java))
+            if (ll_verified.isEnabled)
+                startActivity(Intent(this@ProfileActivity, VerifyIdentityActivity::class.java))
         }
     }
 
@@ -194,13 +201,12 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             tv_member_account.text = it?.userName
             tv_id.text = it?.userId?.toString()
             tv_real_name.text = it?.fullName
-
             ll_verified.isVisible = sConfigData?.realNameWithdrawVerified == VerifySwitchType.OPEN.value
             when (it?.verified) {
                 VerifiedType.PASSED.value -> {
                     ll_verified.isEnabled = false
                     ll_verified.isClickable = false
-                    tv_verified.text = getString(R.string.verified)
+                    tv_verified.text = getString(R.string.passed)
                     tv_verified.setTextColor(
                         ContextCompat.getColor(
                             tv_verified.context,
@@ -209,7 +215,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                     )
                     icon_identity.visibility = View.GONE
                 }
-                else -> {
+                VerifiedType.NOT_YET.value -> {
                     ll_verified.isEnabled = true
                     ll_verified.isClickable = true
                     tv_verified.text = getString(R.string.not_verify)
@@ -219,6 +225,31 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                             R.color.colorRed
                         )
                     )
+                    icon_identity.visibility = View.VISIBLE
+                }
+                VerifiedType.VERIFYING.value -> {
+                    ll_verified.isEnabled = false
+                    ll_verified.isClickable = false
+                    tv_verified.text = getString(R.string.verifying)
+                    tv_verified.setTextColor(
+                        ContextCompat.getColor(
+                            tv_verified.context,
+                            R.color.colorRed
+                        )
+                    )
+                    icon_identity.visibility = View.GONE
+                }
+                else -> {
+                    ll_verified.isEnabled = true
+                    ll_verified.isClickable = true
+                    tv_verified.text = getString(R.string.verify_failed)
+                    tv_verified.setTextColor(
+                        ContextCompat.getColor(
+                            tv_verified.context,
+                            R.color.colorRed
+                        )
+                    )
+                    icon_identity.visibility = View.VISIBLE
                 }
             }
 
@@ -343,5 +374,9 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 itemLayout.isEnabled = false
             }
         }
+    }
+
+    private fun getUserInfo() {
+        viewModel.getUserInfo()
     }
 }

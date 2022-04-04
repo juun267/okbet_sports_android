@@ -17,6 +17,7 @@ import org.cxct.sportlottery.network.service.play_quota_change.PlayQuotaChangeEv
 import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
 import org.cxct.sportlottery.network.service.user_level_config_change.UserLevelConfigListEvent
+import org.cxct.sportlottery.network.service.user_money.LockMoneyEvent
 import org.cxct.sportlottery.network.service.user_money.UserMoneyEvent
 import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
 
@@ -77,6 +78,11 @@ object ServiceMessage {
 
     fun getUserMoney(messageStr: String): UserMoneyEvent? {
         val adapter = moshi.adapter(UserMoneyEvent::class.java)
+        return adapter.fromJson(messageStr)
+    }
+
+    fun getLockMoney(messageStr: String): LockMoneyEvent? {
+        val adapter = moshi.adapter(LockMoneyEvent::class.java)
         return adapter.fromJson(messageStr)
     }
 

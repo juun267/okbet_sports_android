@@ -197,6 +197,7 @@
     <string name="hint_bet_growth">Cá cược %d %s dân tệ để nhận %d điểm</string>
     <string name="contact_us">liên hệ chúng tôi</string>
     <string name="game_rule">Luật trò chơi</string>
+    <string name="news">Tin tức</string>
     <string name="sport_bet_rule">Quy luật cá cược thể thao</string>
     <string name="common_sport_description">Mô tả chung về môn thể thao</string>
     <string name="overview">tổng quát</string>
@@ -228,6 +229,18 @@
     <string name="motor_racing">Công thức 1</string>
     <string name="golf">golf</string>
     <string name="financial_bets">Cược Tài Chính</string>
+    <string name="upload_title">Tải lên tài liệu chứng minh nhân dân</string>
+    <string name="upload_content">Vui lòng tải lên tài liệu chứng minh nhân dân</string>
+    <string name="upload_tips">Vui lòng tải lên ID hợp lệ có thể được chứng minh danh tính của bạn.</string>
+    <string name="upload_photo_title">Tải lên ảnh hồ sơ của bạn</string>
+    <string name="upload_photo_tips">Kích thước tệp tải lên tối đa: 2MB.</string>
+    <string name="upload_photo_content">Vui lòng tải lên ảnh hồ sơ của bạn</string>
+    <string name="upload_media_reset">重拍</string>
+    <string name="upload_fail">上传失败</string>
+    <string name="upload_success">Tải lên thành công</string>
+    <string name="upload_dialog_content">Vui lòng chụp ảnh hoặc chọn ảnh từ album.</string>
+    <string name="upload_dialog_gallery">Album</string>
+    <string name="upload_dialog_camera">Chụp hình</string>
     <string name="section">Hiệp</string>
     <string name="total_score_over_time">tổng điểm số /n gồm hiệp phụ</string>
     <string name="plat">Kèo</string>
@@ -331,12 +344,15 @@
     <string name="suspend">delay</string>
     <string name="uncheck">Chưa xác nhận</string>
     <string name="undone">Chưa thanh toán</string>
+    <string name="settled">đặt cược đã được thanh toán</string>
     <string name="win">Thắng</string>
     <string name="win_half">Thắng nửa</string>
     <string name="lose">Thắng</string>
     <string name="lose_half">Thua nửa</string>
     <string name="draw">hòa</string>
     <string name="canceled">đã hủy</string>
+    <string name="odds_change">Tỷ lệ cược đã thay đổi</string>
+    <string name="pending">Đang đợi %1$s giây</string>
     <string name="bet_canceled">Cá cược thất bại</string>
     <string name="confirmed">Dã xác nhận</string>
     <string name="bet_detail">Chi tiết đơn cược</string>
@@ -400,7 +416,9 @@
     <string name="title_account">Tài khoản：</string>
     <string name="title_address">Địa chỉ：</string>
     <string name="title_deposit_money">Số tiền nạp</string>
+    <string name="title_payer">Tài khoản</string>
     <string name="edt_hint_deposit_money">Giới hạn %1$s～%2$s</string>
+    <string name="edt_hint_payer">Vui lòng nhập số tài khoản của bạn</string>
     <string name="edt_hint_deposit_money_new">Giới hạn %1$s-%2$s</string>
     <string name="title_real_name">Xác nhận họ tên</string>
     <string name="title_nick_name">Tên</string>
@@ -599,6 +617,7 @@
     <string name="bet_info_accept_odds_change">Chấp nhận các thay đổi và đặt cược</string>
     <string name="bet_info_add_to_bet_info">Thêm vào đơn ca cược</string>
     <string name="bet_info_odd_content_changed">Tỷ lệ cược của một hoặc nhiều lựa chọn, điểm chấp hoặc điểm số đã được thay đổi</string>
+    <string name="bet_info_odd_content_changed2">Tỷ lệ cược đã thay đổi, %s thành %s</string>
     <string name="bet_info_all_bet">Tất cả các cược</string>
     <string name="bet_list_delete_all">Xóa tất cả</string>
     <string name="bet_list_single_warn">(Có thể sử dụng cùng số tiền đặt cược để thực hiện tất cả các lựa chọn riêng lẻ)</string>
@@ -804,6 +823,7 @@
     <string name="odds_button_name_hch">Đội chủ nhà hoặc đội khách - đội nhà</string>
     <string name="odds_button_name_hcc">Đội chủ nhà hoặc đội khách - đội khách</string>
     <string name="bet_fail">Cá cược thất bại</string>
+    <string name="bet_fail_btn">Tỷ lệ cược đã thay đổi</string>
     <string name="credit_record_deactivate">Chức năng thẻ tín dụng bị vô hiệu hóa</string>
     <string name="game_postponed">Trận đấu bị hoãn</string>
     <string name="money_recharge_hint1">Vui lòng gửi thông tin nạp tiền sau khi chuyển khoản thành công.</string>
@@ -957,6 +977,7 @@
     <string name="make_sure_valid_account">Lần rút tiền ban đầu sẽ tạm thời giữ lại %1$s %2$s để đảm bảo rằng bạn là tài khoản hợp lệ. Số tiền này sẽ được hoàn trả sau 30 ngày.</string>
     <string name="type_of_certificate">loại chứng chỉ</string>
     <string name="take_id_photo">Chụp ảnh giấy tờ tùy thân</string>
+    <string name="take_id_gallery">Chọn một bức ảnh</string>
     <string name="prepare_your_id_photo">Chuẩn bị ảnh ID của bạn</string>
     <string name="id_description">· Hãy chắc chắn rằng ảnh ID của bạn hướng lên trên\n· Đảm bảo rằng ảnh ID của bạn được hiển thị rõ ràng\n· Tránh nhấp nháy hoặc phản chiếu</string>
     <string name="identity_card">Identity Card</string>
@@ -973,6 +994,9 @@
     <string name="identity_work">Công việc</string>
     <string name="not_verify">(Chưa được xác minh)</string>
     <string name="verified">(Xác minh)</string>
+    <string name="passed">(Đang xác minh)</string>
+    <string name="verifying">(Xác minh không thành công)</string>
+    <string name="verify_failed">(Xác minh không thành công)</string>
     <string name="select_id_type">Chọn loại ID</string>
     <string name="scan_tool_bar">Quét kết quả</string>
     <string name="text_us_east_time">Thời gian được báo cáo theo múi giờ UTC-4.</string>
@@ -982,6 +1006,8 @@
     <string name="text_bet_not_success2">Chờ</string>
     <string name="text_bet_not_success3">&#160;Phiếu cược của bạn đang được xử lý, vui lòng kiểm tra&#160;</string>
     <string name="text_bet_not_success4">ĐÃ CƯỢC.</string>
+    <string name="text_security_money">Tiền đặt cọc: %s</string>
+    <string name="text_security_money2">Còn %s ngày</string>
     <!--自我禁制-->
     <string name="self_limit">Tự loại trừ</string>
     <string name="self_limit_impotent">Chú ý</string>
@@ -1082,4 +1108,15 @@ Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAG
     <string name="waiting">Chờ</string>
     <string name="sec">s</string>
     <!--歷史紀錄end-->
+
+    <!--region 最新消息-->
+    <string name="news_tab_game">Trò chơi</string>
+    <string name="news_tab_system">Hệ thống</string>
+    <string name="news_tab_plat">Nền tảng</string>
+    <string name="news_detail">Chi tiết</string>
+    <!--endregion 最新消息-->
+
+    <!--region 宣傳頁-->
+    <string name="hot_recommend">Khuyến khích</string>
+    <!--endregion-->
 </resources>
