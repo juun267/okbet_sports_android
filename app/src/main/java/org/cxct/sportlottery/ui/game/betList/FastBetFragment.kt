@@ -759,7 +759,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             //tv_odd_content_changed.text = getString(R.string.bet_info_odd_content_changed)
             if(oldOdds != TextUtil.formatForOdd(getOdds(matchOdd, oddsType))){
                 tv_odd_content_changed.visibility = View.VISIBLE
-                handler.postDelayed({
+                handler?.postDelayed({
                     tv_odd_content_changed?.visibility = View.GONE
                 }, 3000)
                 button_bet.isOddsChanged = true
