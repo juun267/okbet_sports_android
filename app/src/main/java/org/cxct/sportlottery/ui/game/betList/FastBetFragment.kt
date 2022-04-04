@@ -31,6 +31,7 @@ import kotlinx.android.synthetic.main.button_bet.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item.*
 import kotlinx.android.synthetic.main.content_bet_info_item.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail.*
+import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.*
 import kotlinx.android.synthetic.main.fragment_bottom_sheet_betinfo_item.*
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
