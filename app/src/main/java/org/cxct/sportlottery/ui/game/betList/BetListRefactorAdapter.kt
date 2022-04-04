@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.game.betList
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -470,7 +471,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             }
         }
         var oldOdds = ""
-        var handler = Handler()
 
         private fun setupOddInfo(
             itemData: BetInfoListData,
@@ -492,7 +492,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 //setupOddsContent(itemData, oddsType = currentOddsType, tv_odds_content)
                 if(itemData.matchOdd.status == BetStatus.ACTIVATED.code && oldOdds != "" && oldOdds != TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))){
                     tv_odd_content_changed.visibility = View.VISIBLE
-                    handler?.postDelayed({
+                    Handler(Looper.getMainLooper()).postDelayed({
                         tv_odd_content_changed?.visibility = View.GONE
                     }, 3000)
                     tv_odd_content_changed.text =  context.getString(

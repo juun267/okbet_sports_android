@@ -31,6 +31,7 @@ import kotlinx.android.synthetic.main.button_bet.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item.*
 import kotlinx.android.synthetic.main.content_bet_info_item.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail.*
+import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.*
 import kotlinx.android.synthetic.main.fragment_bottom_sheet_betinfo_item.*
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
@@ -680,8 +681,6 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         button_bet.isLogin = isLogin
     }
 
-    var handler = Handler()
-
     private fun setupData(
         matchOdd: MatchOdd,
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
@@ -761,7 +760,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             //tv_odd_content_changed.text = getString(R.string.bet_info_odd_content_changed)
             if(matchOdd.status == BetStatus.ACTIVATED.code && oldOdds != TextUtil.formatForOdd(getOdds(matchOdd, oddsType))){
                 tv_odd_content_changed.visibility = View.VISIBLE
-                handler?.postDelayed({
+                Handler(Looper.getMainLooper()).postDelayed({
                     tv_odd_content_changed?.visibility = View.GONE
                 }, 3000)
                 button_bet.isOddsChanged = true
