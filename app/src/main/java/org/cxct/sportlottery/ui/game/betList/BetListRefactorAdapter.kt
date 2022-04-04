@@ -491,7 +491,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 //setupOddsContent(itemData, oddsType = currentOddsType, tv_odds_content)
                 if(itemData.matchOdd.status == BetStatus.ACTIVATED.code && oldOdds != "" && oldOdds != TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))){
-                    tv_odd_content_changed.visibility = View.VISIBLE
+                    tv_odd_content_changed.visibility = if(handler != null) View.VISIBLE else View.GONE
                     handler?.postDelayed({
                         tv_odd_content_changed?.visibility = View.GONE
                     }, 3000)

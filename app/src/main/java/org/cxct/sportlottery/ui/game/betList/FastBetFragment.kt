@@ -760,7 +760,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         if (matchOdd.spreadState != SpreadState.SAME.state || matchOdd.oddState != OddState.SAME.state) {
             //tv_odd_content_changed.text = getString(R.string.bet_info_odd_content_changed)
             if(matchOdd.status == BetStatus.ACTIVATED.code && oldOdds != TextUtil.formatForOdd(getOdds(matchOdd, oddsType))){
-                tv_odd_content_changed.visibility = View.VISIBLE
+                tv_odd_content_changed.visibility = if(handler != null) View.VISIBLE else View.GONE
                 handler?.postDelayed({
                     tv_odd_content_changed?.visibility = View.GONE
                 }, 3000)
