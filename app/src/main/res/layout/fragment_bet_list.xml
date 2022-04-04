@@ -178,7 +178,7 @@
                 android:background="@color/colorGrayGallery" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_above="@+id/ll_cant_parlay_warn"
+                android:layout_above="@+id/cl_total_info"
                 android:layout_below="@+id/gray_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -200,7 +200,8 @@
                     android:layout_height="16dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toTopOf="@+id/ll_keyboard_bg"
-                    android:background="@drawable/bg_gradient_bottom_sheet_shadow" />
+                    android:background="@drawable/bg_gradient_bottom_sheet_shadow"
+                    android:visibility="gone"/>
 
                 <LinearLayout
                     android:id="@+id/ll_keyboard_bg"
@@ -212,7 +213,7 @@
                     android:background="@color/colorWhite"
                     android:orientation="horizontal"
                     android:padding="6dp"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <org.cxct.sportlottery.ui.common.CustomKeyBoardView
                         android:id="@+id/kv_keyboard"
@@ -232,7 +233,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_no_data"
-                android:layout_above="@+id/ll_cant_parlay_warn"
+                android:layout_above="@+id/cl_total_info"
                 android:layout_below="@+id/gray_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -268,44 +269,6 @@
                     app:layout_constraintGuide_percent="0.25" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_cant_parlay_warn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/cl_total_info"
-                android:background="@color/colorWhite"
-                android:divider="@drawable/divider_color_white8"
-                android:orientation="vertical"
-                android:showDividers="end"
-                android:visibility="gone"
-                tools:visibility="visible">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:paddingStart="6dp"
-                    android:paddingTop="9dp"
-                    android:paddingEnd="6dp"
-                    android:paddingBottom="9dp">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="4dp"
-                        android:src="@drawable/oval_red_6dp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/bet_list_cant_parlay_warn"
-                        android:textColor="@color/colorRed"
-                        android:textSize="@dimen/textSize12sp" />
-                </LinearLayout>
-            </LinearLayout>
 
             <include
                 android:id="@+id/view_bet_total"

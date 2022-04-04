@@ -803,8 +803,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
      * @如果資料只有一筆，也不用顯示
      */
     private fun showHideCantParlayWarn(show: Boolean) {
-        ll_cant_parlay_warn.visibility =
-            if (show && betListRefactorAdapter?.betList?.size ?: 0 > 1) View.VISIBLE else View.GONE
+        if (show && betListRefactorAdapter?.betList?.size ?: 0 > 1) {
+            betListRefactorAdapter?.showCantParlayWarn()
+        } else {
+            betListRefactorAdapter?.hideCantParlayWarn()
+        }
     }
 
     private fun subscribeChannel(list: MutableList<BetInfoListData>) {

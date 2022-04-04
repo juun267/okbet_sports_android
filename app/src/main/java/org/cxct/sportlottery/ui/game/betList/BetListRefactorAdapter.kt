@@ -2,9 +2,7 @@ package org.cxct.sportlottery.ui.game.betList
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -36,9 +34,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayRuleStringRes
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
@@ -47,7 +43,7 @@ import org.cxct.sportlottery.util.*
 class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private enum class ViewType { Bet, Parlay, ParlayFirst }
+    private enum class ViewType { Bet, Parlay, ParlayFirst, Warn }
     enum class BetViewType { SINGLE, PARLAY, NULL }
 
     var betList: MutableList<BetInfoListData>? = mutableListOf()
@@ -107,6 +103,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
     var needScrollToBottom = false //用來紀錄是否為點擊更多選項需滾動至底部
 
+    var isCantParlayWarn = false
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return when (viewType) {
@@ -124,6 +122,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     false
                 )
             )
+            ViewType.Warn.ordinal -> CantParlayWarnViewHolder(layoutInflater.inflate(
+                R.layout.content_cant_parlay_warn,
+                parent,
+                false
+            ))
             else -> BatchParlayConnectViewHolder(
                 layoutInflater.inflate(
                     R.layout.item_bet_list_batch_control_connect_v2,
@@ -193,12 +196,14 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     position
                 )
             }
+            is CantParlayWarnViewHolder -> {}
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         val betSize = betList?.size ?: 0
         return when {
+            isCantParlayWarn && position == (itemCount - 1) -> { ViewType.Warn.ordinal }
             position < betSize -> ViewType.Bet.ordinal
             position == betSize -> ViewType.ParlayFirst.ordinal
             else -> ViewType.Parlay.ordinal
@@ -212,13 +217,25 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             betListSize == 2 || !moreOptionCollapse -> 1
             else -> (parlayList?.size ?: 0)
         }
-        return betListSize + parlayListSize
+        var size = betListSize + parlayListSize
+        if(isCantParlayWarn) { size++ }
+        return size
     }
 
     //使用HasStabledIds需複寫回傳的position, 若仍使用super.getItemId(position), 數據刷新會錯亂.
     //https://blog.csdn.net/karsonNet/article/details/80598435
     override fun getItemId(position: Int): Long {
         return position.toLong()
+    }
+
+    fun showCantParlayWarn() {
+        isCantParlayWarn = true
+        notifyDataSetChanged()
+    }
+
+    fun hideCantParlayWarn() {
+        isCantParlayWarn = false
+        notifyDataSetChanged()
     }
 
     //單注
@@ -1573,6 +1590,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             )
         }
     }
+
+    // 警訊
+    class CantParlayWarnViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     interface OnItemClickListener {
         fun onDeleteClick(oddsId: String, currentItemCount: Int)
