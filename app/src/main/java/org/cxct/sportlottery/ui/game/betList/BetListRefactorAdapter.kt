@@ -468,7 +468,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 //                }
 
                 //setupOddsContent(itemData, oddsType = currentOddsType, tv_odds_content)
-                if(oldOdds != "" && oldOdds != TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))){
+                if(itemData.matchOdd.status == BetStatus.ACTIVATED.code && oldOdds != "" && oldOdds != TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))){
                     tv_odd_content_changed.visibility = View.VISIBLE
                     handler?.postDelayed({
                         tv_odd_content_changed?.visibility = View.GONE
@@ -487,8 +487,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     itemData.matchOdd.spread
                 }
                 tv_odds_content.text = itemData.matchOdd.playName
-                if( oldOdds != TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))){
-                    if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) oldOdds = TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))
+                if(itemData.matchOdd.status == BetStatus.ACTIVATED.code && oldOdds != TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))){
+                    oldOdds = TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))
                 }
                 tvOdds.text =if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) "@"+TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType)) else "–"
                 tvContent.text = itemData.matchOdd.extInfo+spread

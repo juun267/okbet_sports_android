@@ -737,6 +737,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             binding.viewGrey.visibility = View.VISIBLE
             binding.etBet.isFocusable = true
             binding.etBet.isFocusableInTouchMode = true
+            binding.etClickable.isEnabled = true
             cl_quota_detail.visibility = View.VISIBLE
             cl_close_waring.visibility = View.GONE
         } else {
@@ -750,6 +751,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             binding.viewGrey.visibility = View.INVISIBLE
             binding.etBet.isFocusable = false
             binding.etBet.isFocusableInTouchMode = false
+            binding.etClickable.isEnabled = false
             binding.layoutKeyBoard.hideKeyboard()
             cl_quota_detail.visibility = View.GONE
             cl_close_waring.visibility = View.VISIBLE
@@ -757,7 +759,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         if (matchOdd.spreadState != SpreadState.SAME.state || matchOdd.oddState != OddState.SAME.state) {
             //tv_odd_content_changed.text = getString(R.string.bet_info_odd_content_changed)
-            if(oldOdds != TextUtil.formatForOdd(getOdds(matchOdd, oddsType))){
+            if(matchOdd.status == BetStatus.ACTIVATED.code && oldOdds != TextUtil.formatForOdd(getOdds(matchOdd, oddsType))){
                 tv_odd_content_changed.visibility = View.VISIBLE
                 handler?.postDelayed({
                     tv_odd_content_changed?.visibility = View.GONE
@@ -800,8 +802,8 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 matchOdd.spread
             }
             binding.tvOddsContent.text = betInfoData.matchOdd.playName
-            if(oldOdds != TextUtil.formatForOdd(getOdds(matchOdd, oddsType))){
-                if (matchOdd.status == BetStatus.ACTIVATED.code) oldOdds = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
+            if(matchOdd.status == BetStatus.ACTIVATED.code && oldOdds != TextUtil.formatForOdd(getOdds(matchOdd, oddsType))){
+                oldOdds = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
             }
             binding.tvOdds.text =if (matchOdd.status == BetStatus.ACTIVATED.code) "@"+TextUtil.formatForOdd(getOdds(matchOdd, oddsType)) else "–"
             binding.tvContent.text = matchOdd.extInfo+spread
