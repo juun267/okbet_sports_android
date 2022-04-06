@@ -2,9 +2,12 @@ package org.cxct.sportlottery.ui.game.publicity
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
@@ -17,6 +20,24 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.main.MainActivity
+import com.stx.xhb.xbanner.XBanner
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
+
+import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.util.JumpUtil
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+
+import com.youth.banner.holder.BannerImageHolder
+
+import com.youth.banner.adapter.BannerImageAdapter
+
+import android.R.attr.banner
+import org.cxct.sportlottery.network.index.config.ImageData
+
 
 class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapterListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -174,6 +195,9 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             is PublicitySubTitleViewHolder -> {
                 holder.bind()
             }
+            is PublicityTitleViewHolder -> {
+                holder.bind()
+            }
             is BottomNavigationViewHolder -> {
                 holder.bind()
             }
@@ -186,8 +210,43 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
     override fun getItemCount(): Int = mDataList.size
 
     // region ItemViewHolder
-    inner class PublicityTitleViewHolder(binding: PublicityTitleViewBinding) :
-        BaseItemListenerViewHolder(binding.root, publicityAdapterListener)
+    inner class PublicityTitleViewHolder(val binding: PublicityTitleViewBinding) :
+        //BaseItemListenerViewHolder(binding.root, publicityAdapterListener){
+    RecyclerView.ViewHolder(binding.root) {
+        val context: Context = binding.root.context
+        fun bind() {
+            val requestOptions = RequestOptions()
+                .placeholder(R.drawable.ic_image_load)
+                .error(R.drawable.ic_image_broken)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .dontTransform()
+
+            with(binding) {
+                val imagelist = sConfigData?.imageList?.filter {
+                    it.imageType == 2
+                }
+                banner.setAdapter(object :
+                    BannerImageAdapter<ImageData?>(imagelist) {
+                    override fun onBindView(
+                        holder: BannerImageHolder,
+                        data: ImageData?,
+                        position: Int,
+                        size: Int
+                    ) {
+                        //图片加载自己实现
+                        val url = sConfigData?.resServerHost + data?.imageName1
+                        Glide.with(holder.itemView)
+                            .load(url)
+                            .apply(requestOptions)
+                            .into(holder.imageView)
+                        holder.imageView.setOnClickListener {
+                            publicityAdapterListener.onItemClickListener()
+                        }
+                    }
+                })
+            }
+        }
+    }
 
     inner class PublicitySubTitleViewHolder(val binding: PublicitySubTitleViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
