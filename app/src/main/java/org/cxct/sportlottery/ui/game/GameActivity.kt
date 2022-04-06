@@ -692,7 +692,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         viewModel.specialEntrance.observe(this) {
             hideLoading()
             if (it?.couponCode.isNullOrEmpty()) {
-                when (it?.matchType) {
+                when (it?.entranceMatchType) {
                     MatchType.IN_PLAY -> {
                         tabLayout.getTabAt(1)?.select()
                     }
@@ -719,15 +719,15 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     }
                     MatchType.DETAIL -> {
                         it.matchID?.let { matchId ->
-                            navDeatilFragment(matchId, it.gameType ?: GameType.OTHER)
+                            navDeatilFragment(matchId, it.gameType ?: GameType.OTHER, it.gameMatchType)
                         }
                     }
                 }
-            } else if (it?.matchType == MatchType.DETAIL) {
+            } else if (it?.entranceMatchType == MatchType.DETAIL) {
 
             } else {
 //                viewModel.getAllPlayCategoryBySpecialMatchType(it?.couponCode ?: "")
-                navGameFragment(it!!.matchType)
+                navGameFragment(it!!.entranceMatchType)
             }
         }
 

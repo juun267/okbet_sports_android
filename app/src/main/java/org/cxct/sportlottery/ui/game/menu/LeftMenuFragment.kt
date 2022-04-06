@@ -795,7 +795,12 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                                 tvMatch.highlight(etSearch.text.toString())
                                 tvMatch.setOnClickListener {
                                     dismiss()
-                                    viewModel.navSpecialEntrance(MatchType.DETAIL, GameType.getGameType(t.gameType)!!, itt.matchId)
+                                    viewModel.navSpecialEntrance(
+                                        MatchType.DETAIL,
+                                        GameType.getGameType(t.gameType)!!,
+                                        itt.matchId,
+                                        if (itt.isInPlay) MatchType.IN_PLAY else null
+                                    )
                                 }
                             }
                         }
