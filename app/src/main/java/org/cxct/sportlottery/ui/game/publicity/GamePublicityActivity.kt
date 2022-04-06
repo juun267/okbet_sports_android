@@ -105,6 +105,7 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
 
     private fun initViews() {
         initToolBar()
+        initServiceButton()
         initOnClickListener()
         initRecommendView()
         initTitle()
@@ -116,6 +117,10 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
             publicityToolbar.ivLanguage.setImageResource(LanguageManager.getLanguageFlag(this@GamePublicityActivity))
             publicityToolbar.tvLanguage.text = LanguageManager.getLanguageStringResource(this@GamePublicityActivity)
         }
+    }
+
+    private fun initServiceButton() {
+        binding.btnFloatingService.setView(this)
     }
 
     private fun initOnClickListener() {

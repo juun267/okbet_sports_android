@@ -108,7 +108,7 @@ class ProfileCenterActivity :
         setupLogout()
         setupMoreButtons()
         initBottomNav()
-        initServiceButton()
+//        initServiceButton()
         getUserInfo()
         initObserve()
     }
@@ -322,9 +322,9 @@ class ProfileCenterActivity :
         bottom_nav_view.menu.findItem(R.id.chat_page).isVisible = sConfigData?.chatOpen == FLAG_OPEN
     }
 
-    private fun initServiceButton() {
+    /*private fun initServiceButton() {
         btn_floating_service.setView(this)
-    }
+    }*/
 
     private fun getUserInfo() {
         viewModel.getUserInfo()

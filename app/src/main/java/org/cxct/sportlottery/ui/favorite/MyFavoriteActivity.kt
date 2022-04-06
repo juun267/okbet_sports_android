@@ -47,7 +47,7 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
 
         initObserver()
 
-        initServiceButton()
+//        initServiceButton()
     }
 
     override fun initToolBar() {
@@ -256,9 +256,9 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
         }
     }
 
-    private fun initServiceButton() {
+    /*private fun initServiceButton() {
         btn_floating_service.setView(this)
-    }
+    }*/
 
     private fun updateAvatar(iconUrl: String?) {
         Glide.with(this).load(iconUrl)

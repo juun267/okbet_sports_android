@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.maintenance
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_maintenance.*
-import kotlinx.android.synthetic.main.activity_maintenance.btn_floating_service
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
