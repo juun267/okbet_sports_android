@@ -237,7 +237,11 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 text = item.matchInfo?.playCateNum.toString()
 
                 setOnClickListener {
-                    leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
+                    leagueOddListener?.onClickPlayType(
+                        item.matchInfo?.id,
+                        matchInfoList,
+                        if (item.matchInfo?.isInPlay == true) MatchType.IN_PLAY else matchType
+                    )
                 }
             }
 
@@ -256,11 +260,19 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             }
 
             itemView.league_odd_match_border_row1.setOnClickListener {
-                leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
+                leagueOddListener?.onClickPlayType(
+                    item.matchInfo?.id,
+                    matchInfoList,
+                    if (item.matchInfo?.isInPlay == true) MatchType.IN_PLAY else matchType
+                )
             }
 
             itemView.league_odd_match_border_row2.setOnClickListener {
-                leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
+                leagueOddListener?.onClickPlayType(
+                    item.matchInfo?.id,
+                    matchInfoList,
+                    if (item.matchInfo?.isInPlay == true) MatchType.IN_PLAY else matchType
+                )
             }
 
             itemView.league_odd_match_price_boost.isVisible = item.matchInfo?.eps == 1

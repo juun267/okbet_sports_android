@@ -99,9 +99,10 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             leagueOddListener = LeagueOddListener(
                 { matchId, matchInfoList ->
                     when (args.matchType) {
+                    when (gameMatchType) {
                         MatchType.IN_PLAY -> {
                             matchId?.let {
-                                navOddsDetailLive(it)
+                                navOddsDetailLive(it, gameMatchType)
                             }
                         }
                         else -> {
@@ -677,9 +678,9 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         findNavController().navigate(action)
     }
 
-    private fun navOddsDetailLive(matchId: String) {
+    private fun navOddsDetailLive(matchId: String, gameMatchType: MatchType) {
         val action = GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailLiveFragment(
-            args.matchType,
+            gameMatchType,
             args.gameType,
             matchId
         )

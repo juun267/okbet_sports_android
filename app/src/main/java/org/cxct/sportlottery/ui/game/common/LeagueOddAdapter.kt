@@ -229,7 +229,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private val playSelecte
                 text = item.matchInfo?.playCateNum.toString()
 
                 setOnClickListener {
-                    leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
+                    leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList, matchType)
                 }
             }
 
@@ -248,11 +248,11 @@ class LeagueOddAdapter(private val matchType: MatchType, private val playSelecte
             }
 
             itemView.league_odd_match_border_row1.setOnClickListener {
-                leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
+                leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList, matchType)
             }
 
             itemView.league_odd_match_border_row2.setOnClickListener {
-                leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
+                leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList, matchType)
             }
 
             itemView.league_odd_match_price_boost.isVisible = item.matchInfo?.eps == 1
@@ -1261,7 +1261,10 @@ class LeagueOddAdapter(private val matchType: MatchType, private val playSelecte
 }
 
 class LeagueOddListener(
-    val clickListenerPlayType: (matchId: String?, matchInfoList: List<MatchInfo>) -> Unit,
+    /**
+     * matchType 專給串關使用, 主要辨別是否為滾球, 從串關跳轉至滾球賽事詳情
+     */
+    val clickListenerPlayType: (matchId: String?, matchInfoList: List<MatchInfo>, gameMatchType: MatchType) -> Unit,
     val clickListenerBet: (matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?) -> Unit,
     val clickListenerQuickCateTab: (matchOdd: MatchOdd, quickPlayCate: QuickPlayCate) -> Unit,
     val clickListenerQuickCateClose: () -> Unit,
@@ -1269,8 +1272,8 @@ class LeagueOddListener(
     val clickListenerStatistics: (matchId: String?) -> Unit,
     val refreshListener: (leagueId: String) -> Unit,
 ) {
-    fun onClickPlayType(matchId: String?, matchInfoList: List<MatchInfo>) =
-        clickListenerPlayType(matchId, matchInfoList)
+    fun onClickPlayType(matchId: String?, matchInfoList: List<MatchInfo>, gameMatchType: MatchType) =
+        clickListenerPlayType(matchId, matchInfoList, gameMatchType)
 
     fun onClickBet(
         matchInfo: MatchInfo?,
