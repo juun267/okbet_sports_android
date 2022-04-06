@@ -212,6 +212,9 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         //頭像 當 側邊欄 開/關
         iv_menu.setOnClickListener {
+            //若左側側邊欄為開啟狀態, 先將其關閉
+            closeLeftMenu()
+
             if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
             else {
                 drawer_layout.openDrawer(nav_right)
@@ -220,10 +223,12 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         }
 
         btn_login.setOnClickListener {
+            closeLeftMenu()
             startActivity(Intent(this@GameActivity, LoginActivity::class.java))
         }
 
         btn_register.setOnClickListener {
+            closeLeftMenu()
             startActivity(Intent(this@GameActivity, RegisterActivity::class.java))
         }
 
@@ -251,12 +256,14 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
             //左邊側邊攔v4
             btn_menu_left.visibility = if (isFromPublicity) View.GONE else View.VISIBLE
+            nav_left.layoutParams.width = MetricsUtil.getScreenWidth() //動態調整側邊欄寬
             btn_menu_left.setOnClickListener {
-                LeftMenuFragment().show(
-                    supportFragmentManager,
-                    LeftMenuFragment::class.java.simpleName
-                )
+                if (!sub_drawer_layout.isDrawerOpen(nav_left)) sub_drawer_layout.openDrawer(nav_left)
+
+                if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
             }
+            val leftMenuFragment = supportFragmentManager.findFragmentById(R.id.fl_left_menu) as LeftMenuFragment
+            leftMenuFragment.setCloseMenuListener { sub_drawer_layout.closeDrawers() }
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -355,6 +362,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     //公告
     private fun initRvMarquee() {
         game_message.setOnClickListener {
+            closeLeftMenu()
             startActivity(Intent(this, NewsActivity::class.java))
         }
         game_message.visibility = if (isFromPublicity) View.GONE else View.VISIBLE
@@ -977,5 +985,15 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
     private fun removeBetListFragment() {
         supportFragmentManager.beginTransaction().remove(betListFragment).commit()
+    }
+
+    private fun closeLeftMenu() {
+        if (sub_drawer_layout.isDrawerOpen(nav_left)) sub_drawer_layout.closeDrawers()
+    }
+
+    override fun onCloseMenu() {
+        super.onCloseMenu()
+
+        closeLeftMenu()
     }
 }
