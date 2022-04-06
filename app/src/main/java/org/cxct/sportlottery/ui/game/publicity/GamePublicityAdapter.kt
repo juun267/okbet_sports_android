@@ -171,6 +171,9 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                     holder.bind(data, oddsType)
                 }
             }
+            is PublicityTitleViewHolder -> {
+                holder.bind()
+            }
             is PublicitySubTitleViewHolder -> {
                 holder.bind()
             }
@@ -186,8 +189,14 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
     override fun getItemCount(): Int = mDataList.size
 
     // region ItemViewHolder
-    inner class PublicityTitleViewHolder(binding: PublicityTitleViewBinding) :
-        BaseItemListenerViewHolder(binding.root, publicityAdapterListener)
+    inner class PublicityTitleViewHolder(val binding: PublicityTitleViewBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind() {
+            binding.root.setOnClickListener {
+                publicityAdapterListener.onGoHomePageListener()
+            }
+        }
+    }
 
     inner class PublicitySubTitleViewHolder(val binding: PublicitySubTitleViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
