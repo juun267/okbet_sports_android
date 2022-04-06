@@ -51,7 +51,7 @@ class TransactionStatusActivity :
         initBottomNavigation()
         initRvMarquee()
         initObserver()
-        initServiceButton()
+//        initServiceButton()
 //        getAnnouncement()
     }
 
@@ -260,9 +260,9 @@ class TransactionStatusActivity :
         }
     }
 
-    private fun initServiceButton() {
+    /*private fun initServiceButton() {
         btn_floating_service.setView(this)
-    }
+    }*/
 
     private fun getAnnouncement() {
         viewModel.getAnnouncement()

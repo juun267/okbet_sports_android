@@ -30,7 +30,8 @@
             tools:layout="@layout/fragment_my_favorite" />
 
         <!--根據需求先隱藏，確定不用可刪-->
-        <org.cxct.sportlottery.ui.common.ServiceFloatingButton
+        <!--20220406 只有宣傳頁、主頁需顯示-->
+        <!--<org.cxct.sportlottery.ui.common.ServiceFloatingButton
             android:visibility="gone"
             android:id="@+id/btn_floating_service"
             android:layout_width="match_parent"
@@ -38,7 +39,7 @@
             android:layout_marginBottom="14dp"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            app:layout_constraintBottom_toTopOf="@id/my_favorite_bottom_navigation" />
+            app:layout_constraintBottom_toTopOf="@id/my_favorite_bottom_navigation" />-->
 
         <include
             android:id="@+id/my_favorite_bottom_navigation"
