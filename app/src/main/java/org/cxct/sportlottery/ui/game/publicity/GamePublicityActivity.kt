@@ -417,7 +417,7 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
 
         val fastBetFragment = FastBetFragment()
         val bundle = Bundle()
-        bundle.putParcelable("data",  Parcels.wrap(fastBetDataBean))
+        bundle.putParcelable("data", Parcels.wrap(fastBetDataBean))
         fastBetFragment.arguments = bundle
 
         transaction
@@ -481,6 +481,8 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
         matchId: String?,
         matchInfoList: List<MatchInfo>
     ) {
+        unSubscribeChannelHallAll()
+        
         startActivity(Intent(this, GameActivity::class.java).apply {
             putExtra(IS_FROM_PUBLICITY, true)
             putExtra(PUBLICITY_GAME_TYPE, gameType)
