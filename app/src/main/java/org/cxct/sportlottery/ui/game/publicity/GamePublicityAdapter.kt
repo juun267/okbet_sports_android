@@ -242,7 +242,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                             .apply(requestOptions)
                             .into(holder.imageView)
                         holder.imageView.setOnClickListener {
-                            publicityAdapterListener.onItemClickListener()
+                            publicityAdapterListener.onGoHomePageListener()
                         }
                     }
                 })
