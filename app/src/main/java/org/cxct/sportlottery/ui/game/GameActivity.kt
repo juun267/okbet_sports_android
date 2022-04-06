@@ -131,7 +131,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         setContentView(R.layout.activity_game)
 
         isFromPublicity = intent.getBooleanExtra(GamePublicityActivity.IS_FROM_PUBLICITY, false)
-
         setupNoticeButton(iv_notice)
         initToolBar()
         initMenu()
