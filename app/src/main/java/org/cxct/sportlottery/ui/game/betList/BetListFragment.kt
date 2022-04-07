@@ -190,8 +190,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         initToolBar()
 
         initKeyBoard(viewModel.getLoginBoolean())
-        tv_warn_odds_change.setOnClickListener { betListRefactorAdapter?.closeAllKeyboard() }
-        ll_odds_close_warn.setOnClickListener { betListRefactorAdapter?.closeAllKeyboard() }
         fl_title.setOnClickListener { betListRefactorAdapter?.closeAllKeyboard() }
         cl_total_info.setOnClickListener { betListRefactorAdapter?.closeAllKeyboard() }
     }
@@ -240,6 +238,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         rv_bet_list.layoutManager = layoutManager
         betListRefactorAdapter?.setHasStableIds(true)
         rv_bet_list.adapter = betListRefactorAdapter
+        //rv_bet_list.itemAnimator = null
 //        rv_bet_list.addItemDecoration(
 //            DividerItemDecoration(
 //                context,
