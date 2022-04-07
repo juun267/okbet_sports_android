@@ -35,6 +35,7 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
+import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.repository.FLAG_OPEN
@@ -940,6 +941,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
+                oddsChangeEvent.updateOddsMap()
                 //滾球盤、即將開賽盤
                 val filterCode =
                     if (rb_as_start.isChecked) "HOME_ATSTART_MOBILE" else "HOME_INPLAY_MOBILE"
@@ -1265,6 +1267,12 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     private fun updateHighlightVisibility(show: Boolean) {
         highlight_bar.isVisible = show
         highlight_titleBar.isVisible = show
+    }
+
+    private fun OddsChangeEvent.updateOddsMap(): OddsChangeEvent {
+        this.odds = mutableMapOf()
+        this.odds = this.oddsList.associateBy (keySelector= {it.playCateCode.toString()}, valueTransform={it.oddsList}).toMutableMap()
+        return this
     }
 
     /**
