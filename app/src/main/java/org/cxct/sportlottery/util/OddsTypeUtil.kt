@@ -9,12 +9,16 @@ import org.cxct.sportlottery.ui.menu.OddsType
 
 
 fun getOdds(odd: Odd?, oddsType: OddsType): Double {
-    return when (oddsType) {
-        OddsType.EU -> odd?.odds ?: 0.0
-        OddsType.HK -> odd?.hkOdds ?: 0.0
-        //Martin
-        OddsType.MYS -> odd?.malayOdds ?: 0.0
-        OddsType.IDN -> odd?.indoOdds ?: 0.0
+    return if (odd?.isOnlyEUType == true) {
+        odd.odds ?: 0.0
+    } else {
+        when (oddsType) {
+            OddsType.EU -> odd?.odds ?: 0.0
+            OddsType.HK -> odd?.hkOdds ?: 0.0
+            //Martin
+            OddsType.MYS -> odd?.malayOdds ?: 0.0
+            OddsType.IDN -> odd?.indoOdds ?: 0.0
+        }
     }
 }
 
