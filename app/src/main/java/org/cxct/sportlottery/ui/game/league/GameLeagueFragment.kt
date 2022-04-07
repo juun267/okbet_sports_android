@@ -463,6 +463,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
+                oddsChangeEvent.updateOddsMap()
                 oddsChangeEvent.updateOddsSelectedState()
                 oddsChangeEvent.filterMenuPlayCate()
                 oddsChangeEvent.sortOddsMap()
@@ -572,6 +573,12 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         }
     }
 
+    private fun OddsChangeEvent.updateOddsMap(): OddsChangeEvent {
+        this.odds = mutableMapOf()
+        this.odds = this.oddsList.associateBy (keySelector= {it.playCateCode.toString()}, valueTransform={it.oddsList}).toMutableMap()
+        return this
+    }
+
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
         this.odds?.let { oddTypeSocketMap ->
             oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
@@ -583,7 +590,6 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 }
             }
         }
-
         return this
     }
 
