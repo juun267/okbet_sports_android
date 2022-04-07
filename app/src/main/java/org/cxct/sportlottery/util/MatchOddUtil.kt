@@ -49,6 +49,7 @@ object MatchOddUtil {
                             awayScore = matchInfo.awayScore?.toIntOrNull() ?: 0,
                         ).apply {
                             extInfo = odd.extInfo
+                            isOnlyEUType = odd.isOnlyEUType
                         }
 
                     }
