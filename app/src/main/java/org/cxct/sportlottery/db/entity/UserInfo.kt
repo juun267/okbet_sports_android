@@ -84,5 +84,7 @@ data class UserInfo(
     @ColumnInfo(name = "perBetLimit")
     val perBetLimit: Int? = null,
 
-    val uwEnableTime: Long? = 0
+    val uwEnableTime: Long? = 0,
+
+    val maxPayout:Double? = 0.0
 )
