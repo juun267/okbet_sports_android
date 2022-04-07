@@ -38,6 +38,7 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
+import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
@@ -587,6 +588,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
+                SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
                 viewModel.updateMatchOdd(oddsChangeEvent)
             }
         }
@@ -871,4 +873,5 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     interface BetResultListener {
         fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>)
     }
+
 }

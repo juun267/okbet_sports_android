@@ -11,7 +11,7 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout_custom"
         android:layout_width="match_parent"
-        android:layout_height="37dp"
+        android:layout_height="48dp"
         app:tabIndicator="@drawable/custom_tab_indicator"
         app:tabIndicatorFullWidth="false"
         app:tabMode="fixed"
@@ -38,7 +38,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="0dp"
         android:background="@color/color_E2E2E2"
         />
 
