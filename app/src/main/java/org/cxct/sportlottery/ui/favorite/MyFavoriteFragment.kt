@@ -248,6 +248,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
+                oddsChangeEvent.updateOddsMap()
                 oddsChangeEvent.updateOddsSelectedState()
                 oddsChangeEvent.filterMenuPlayCate()
 
@@ -343,6 +344,12 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 loading()
             }
         }
+    }
+
+    private fun OddsChangeEvent.updateOddsMap(): OddsChangeEvent {
+        this.odds = mutableMapOf()
+        this.odds = this.oddsList.associateBy (keySelector= {it.playCateCode.toString()}, valueTransform={it.oddsList}).toMutableMap()
+        return this
     }
 
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
