@@ -871,9 +871,4 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>)
     }
 
-    private fun OddsChangeEvent.updateOddsMap(): OddsChangeEvent {
-        this.odds = mutableMapOf()
-        this.odds = this.oddsList.associateBy (keySelector= {it.playCateCode.toString()}, valueTransform={it.oddsList}).toMutableMap()
-        return this
-    }
 }

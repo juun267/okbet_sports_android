@@ -917,9 +917,4 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         snackBarNotify?.show()
     }
 
-    private fun OddsChangeEvent.updateOddsMap(): OddsChangeEvent {
-        this.odds = mutableMapOf()
-        this.odds = this.oddsList.associateBy (keySelector= {it.playCateCode.toString()}, valueTransform={it.oddsList}).toMutableMap()
-        return this
-    }
 }

@@ -575,9 +575,4 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
         startActivity(Intent(this@GamePublicityActivity, SwitchLanguageActivity::class.java))
     }
 
-    private fun OddsChangeEvent.updateOddsMap(): OddsChangeEvent {
-        this.odds = mutableMapOf()
-        this.odds = this.oddsList.associateBy (keySelector= {it.playCateCode.toString()}, valueTransform={it.oddsList}).toMutableMap()
-        return this
-    }
 }

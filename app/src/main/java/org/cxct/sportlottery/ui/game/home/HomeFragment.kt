@@ -1269,12 +1269,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         highlight_titleBar.isVisible = show
     }
 
-    private fun OddsChangeEvent.updateOddsMap(): OddsChangeEvent {
-        this.odds = mutableMapOf()
-        this.odds = this.oddsList.associateBy (keySelector= {it.playCateCode.toString()}, valueTransform={it.oddsList}).toMutableMap()
-        return this
-    }
-
     /**
      * 滾球、即將開賽賠率排序
      */
