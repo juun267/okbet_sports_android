@@ -16,6 +16,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
+import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.base.ChannelType
@@ -262,6 +263,7 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
 
         receiver.oddsChange.observe(this, { event ->
             event?.let { oddsChangeEvent ->
+                SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
                 val targetList = getNewestRecommendData()
                 targetList.forEachIndexed { index, recommend ->
                     if (recommend.id == oddsChangeEvent.eventId) {
@@ -572,4 +574,5 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
     private fun goSwitchLanguagePage() {
         startActivity(Intent(this@GamePublicityActivity, SwitchLanguageActivity::class.java))
     }
+
 }

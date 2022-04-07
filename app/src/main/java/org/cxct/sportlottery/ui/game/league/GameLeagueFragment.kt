@@ -463,6 +463,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
+                SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
                 oddsChangeEvent.updateOddsSelectedState()
                 oddsChangeEvent.filterMenuPlayCate()
                 oddsChangeEvent.sortOddsMap()
@@ -583,7 +584,6 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 }
             }
         }
-
         return this
     }
 
