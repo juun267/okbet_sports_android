@@ -585,7 +585,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
-                oddsChangeEvent.updateOddsMap()
+                SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
                 viewModel.updateMatchOdd(oddsChangeEvent)
             }
         }

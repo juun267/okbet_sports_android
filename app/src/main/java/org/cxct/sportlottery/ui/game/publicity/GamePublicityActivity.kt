@@ -263,7 +263,7 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
 
         receiver.oddsChange.observe(this, { event ->
             event?.let { oddsChangeEvent ->
-                oddsChangeEvent.updateOddsMap()
+                SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
                 val targetList = getNewestRecommendData()
                 targetList.forEachIndexed { index, recommend ->
                     if (recommend.id == oddsChangeEvent.eventId) {

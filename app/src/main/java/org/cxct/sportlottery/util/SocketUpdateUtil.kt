@@ -295,6 +295,11 @@ object SocketUpdateUtil {
         return isNeedRefresh || isNeedRefreshPlayCate
     }
 
+    fun updateMatchOdds(oddsChangeEvent:OddsChangeEvent){
+        oddsChangeEvent.odds = mutableMapOf()
+        oddsChangeEvent.odds = oddsChangeEvent.oddsList.associateBy (keySelector= {it.playCateCode.toString()}, valueTransform={it.oddsList}).toMutableMap()
+    }
+
     private fun updateMatchOdds(
         oddsMap: MutableMap<String, MutableList<Odd?>?>,
         oddsMapSocket: Map<String, List<Odd?>?>?,
