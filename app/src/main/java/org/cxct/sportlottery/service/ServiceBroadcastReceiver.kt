@@ -316,6 +316,19 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
             }
         }
 
+        this.oddsList.let { oddTypeSocketList ->
+            oddTypeSocketList.forEach { oddsList ->
+                oddsList.oddsList?.forEach { odd ->
+                    odd?.odds = odd?.odds?.applyDiscount(discount)
+                    odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
+
+                    if (oddsList.playCateCode == PlayCate.EPS.value) {
+                        odd?.extInfo = odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
+                    }
+                }
+            }
+        }
+
         return this
     }
 
