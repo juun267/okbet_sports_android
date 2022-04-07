@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.RadioButton
 import android.widget.RelativeLayout
-import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +15,7 @@ import kotlinx.android.synthetic.main.view_quick_list.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_eps.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_pager.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_pair.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
@@ -33,7 +33,7 @@ class QuickListView @JvmOverloads constructor(
 ) : RelativeLayout(context, attrs, defStyleAttr), View.OnClickListener {
 
     private var lifecycleOwner: LifecycleOwner? = null
-    private val mViewModel = QuickListViewModel(context)
+    private val mViewModel = QuickListViewModel(MultiLanguagesApplication.appContext)
     private var mMatchId: String = ""
     private var mQuickPlayCateList = mutableListOf<QuickPlayCate>()
     private var mSelectedQuickPlayCate: QuickPlayCate? = null
@@ -51,14 +51,14 @@ class QuickListView @JvmOverloads constructor(
         OddButtonEpsAdapter(mMatchOdd?.matchInfo)
 
     init {
-        addView(LayoutInflater.from(context).inflate(R.layout.view_quick_list, this, false))
+        addView(LayoutInflater.from(MultiLanguagesApplication.appContext).inflate(R.layout.view_quick_list, this, false))
+        lifecycleOwner = MultiLanguagesApplication.appContext as? LifecycleOwner
+        initViews()
+        initObserver()
     }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        lifecycleOwner = context as? LifecycleOwner
-        initViews()
-        initObserver()
     }
 
     override fun onDetachedFromWindow() {
@@ -169,10 +169,10 @@ class QuickListView @JvmOverloads constructor(
         league_odd_quick_cate_tabs?.removeAllViews()
         mQuickPlayCateList.sortedBy { it.sort }.forEachIndexed { index, it ->
             val inflater =
-                context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                MultiLanguagesApplication.appContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             val rb = inflater.inflate(R.layout.custom_radio_button, null) as RadioButton
             league_odd_quick_cate_tabs?.addView(rb.apply {
-                text = it.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: it.name
+                text = it.nameMap?.get(LanguageManager.getSelectLanguage(MultiLanguagesApplication.appContext).key) ?: it.name
                 id = it.hashCode()
                 isChecked = it.isSelected
             })
