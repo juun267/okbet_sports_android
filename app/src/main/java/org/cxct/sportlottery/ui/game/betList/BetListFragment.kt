@@ -19,7 +19,6 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
@@ -191,6 +190,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         initToolBar()
 
         initKeyBoard(viewModel.getLoginBoolean())
+        fl_title.setOnClickListener { betListRefactorAdapter?.closeAllKeyboard() }
+        cl_total_info.setOnClickListener { betListRefactorAdapter?.closeAllKeyboard() }
     }
 
     private fun initBtnView() {
@@ -237,6 +238,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         rv_bet_list.layoutManager = layoutManager
         betListRefactorAdapter?.setHasStableIds(true)
         rv_bet_list.adapter = betListRefactorAdapter
+        //rv_bet_list.itemAnimator = null
 //        rv_bet_list.addItemDecoration(
 //            DividerItemDecoration(
 //                context,
@@ -289,7 +291,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 }
 
                 override fun onHideKeyBoard() {
-                    //keyboard?.hideKeyboard()
+                    betListRefactorAdapter?.closeAllKeyboard()
                 }
 
                 override fun saveOddsHasChanged(matchOdd: MatchOdd) {

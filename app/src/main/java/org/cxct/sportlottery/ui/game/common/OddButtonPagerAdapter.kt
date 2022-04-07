@@ -1081,11 +1081,15 @@ class OddButtonPagerViewHolder private constructor(
     private fun getOddByType(
         odd: Odd?,
         oddsType: OddsType
-    ) = when (oddsType) {
-        OddsType.EU -> TextUtil.formatForOdd(odd?.odds ?: 1)
-        OddsType.HK -> TextUtil.formatForOdd(odd?.hkOdds ?: 0)
-        OddsType.MYS -> TextUtil.formatForOdd(odd?.malayOdds ?: 0)
-        OddsType.IDN -> TextUtil.formatForOdd(odd?.indoOdds ?: 0)
+    ) = if (odd?.isOnlyEUType == true) {
+        TextUtil.formatForOdd(odd.odds ?: 1)
+    } else {
+        when (oddsType) {
+            OddsType.EU -> TextUtil.formatForOdd(odd?.odds ?: 1)
+            OddsType.HK -> TextUtil.formatForOdd(odd?.hkOdds ?: 0)
+            OddsType.MYS -> TextUtil.formatForOdd(odd?.malayOdds ?: 0)
+            OddsType.IDN -> TextUtil.formatForOdd(odd?.indoOdds ?: 0)
+        }
     }
 
     private fun OddsButton.oddColorStateList(

@@ -277,7 +277,10 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
             false
         }
-        binding.llRoot.setOnClickListener { }
+        binding.etBet.setOnFocusChangeListener { v, hasFocus ->
+            if(!hasFocus) layoutKeyBoard?.hideKeyboard()
+        }
+        binding.clItemBackground.setOnClickListener { clearFocus() }
         button_bet.apply {
             tv_login.setOnClickListener {
                 requireContext().startActivity(Intent(requireContext(), LoginActivity::class.java))
@@ -293,12 +296,10 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
             isCanSendOut = false
         }
-
         binding.tvAddToBetInfo.setOnClickListener {
             addToBetInfoList()
             dismiss()
         }
-
         binding.buttonFastBetSetting.setOnClickListener {
             showSettingDialog()
         }
