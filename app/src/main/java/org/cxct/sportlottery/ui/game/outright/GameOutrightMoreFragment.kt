@@ -161,6 +161,7 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
     private fun initSocketObserver() {
         receiver.oddsChange.observe(this.viewLifecycleOwner, {
             it?.let { oddsChangeEvent ->
+                oddsChangeEvent.updateOddsMap()
                 oddsChangeEvent.updateOddsSelectedState()
                 oddsChangeEvent.odds?.let { oddTypeSocketMap ->
 
@@ -311,6 +312,12 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
                 this.en
             }
         }
+    }
+
+    private fun OddsChangeEvent.updateOddsMap(): OddsChangeEvent {
+        this.odds = mutableMapOf()
+        this.odds = this.oddsList.associateBy (keySelector= {it.playCateCode.toString()}, valueTransform={it.oddsList}).toMutableMap()
+        return this
     }
 
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
