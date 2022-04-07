@@ -212,13 +212,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     }
 
     override fun getItemCount(): Int {
-        val betListSize = betList?.size ?: 0
-        val parlayListSize = when {
-            betListSize < 2 -> 0
-            betListSize == 2 || !moreOptionCollapse -> 1
-            else -> (parlayList?.size ?: 0)
-        }
-        var size = betListSize + parlayListSize
+        var size = getListSize()
         if(isCantParlayWarn) { size++ }
         return size
     }
@@ -237,6 +231,20 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     fun hideCantParlayWarn() {
         isCantParlayWarn = false
         notifyDataSetChanged()
+    }
+
+    fun closeAllKeyboard() {
+        //betList?.forEachIndexed { index, betInfoListData -> notifyItemChanged(index) }
+        for(i in 0 until getListSize()) { notifyItemChanged(i) }
+    }
+    private fun getListSize(): Int {
+        val betListSize = betList?.size ?: 0
+        val parlayListSize = when {
+            betListSize < 2 -> 0
+            betListSize == 2 || !moreOptionCollapse -> 1
+            else -> (parlayList?.size ?: 0)
+        }
+        return betListSize + parlayListSize
     }
 
     //單注
@@ -1043,7 +1051,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 item_first_single.setOnClickListener {
                     //layoutKeyBoard.hideKeyboard()
-                    //onItemClickListener.onHideKeyBoard()
+                    onItemClickListener.onHideKeyBoard()
                     clearFocus()
                 }
 
