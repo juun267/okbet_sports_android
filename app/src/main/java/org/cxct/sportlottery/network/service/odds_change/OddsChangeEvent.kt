@@ -16,9 +16,6 @@ data class OddsChangeEvent(
     val eventId: String?,
     @Json(name = "isLongTermEvent")
     val isLongTermEvent: Int?, //是否是冠军玩法，1：是，0：否
-    @Json(name = "odds")
-    @Deprecated("socket結構odds調整成oddsList")
-    val odds: MutableMap<String, MutableList<Odd?>?>? = mutableMapOf(), //key=>玩法类型code, value=>赔率列表
     @Json(name = "oddsList")
     val oddsList: MutableList<OddsList> = mutableListOf(),
     @Json(name = "dynamicMarkets")
@@ -35,6 +32,7 @@ data class OddsChangeEvent(
     var playCateNameMap: MutableMap<String?, Map<String?, String?>?>?
 ) : ServiceEventType, ServiceChannel {
     override var channel: String? = null
+    var odds: MutableMap<String, MutableList<Odd?>?> = mutableMapOf() //key=>玩法类型code, value=>赔率列表
 }
 
 data class OddsList (
