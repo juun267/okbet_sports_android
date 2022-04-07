@@ -1347,7 +1347,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             }
                         }
 
-                        var leagueOdds = leagueAdapter.data
+                        val leagueOdds = leagueAdapter.data
                         leagueOdds.sortOddsMap()
                         leagueOdds.updateOddsSort() //篩選玩法
 
@@ -1532,7 +1532,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
-        this.odds?.let { oddTypeSocketMap ->
+        this.odds.let { oddTypeSocketMap ->
             oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
                 oddTypeSocketMapEntry.value?.onEach { odd ->
                     odd?.isSelected =
