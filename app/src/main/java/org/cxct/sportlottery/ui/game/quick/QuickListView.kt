@@ -52,17 +52,20 @@ class QuickListView @JvmOverloads constructor(
 
     init {
         addView(LayoutInflater.from(MultiLanguagesApplication.appContext).inflate(R.layout.view_quick_list, this, false))
-        lifecycleOwner = MultiLanguagesApplication.appContext as? LifecycleOwner
-        initViews()
-        initObserver()
     }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+        lifecycleOwner = context as? LifecycleOwner
+        initViews()
+        initObserver()
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
+        lifecycleOwner?.let {
+            mViewModel._quickOddsListGameHallResult.removeObservers(it)
+        }
     }
 
     override fun onClick(view: View?) {
