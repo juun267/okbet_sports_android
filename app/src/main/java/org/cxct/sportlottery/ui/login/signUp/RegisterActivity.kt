@@ -467,7 +467,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun sendSms() {
-        val phone = binding.eetPhone.text.toString()
+        var phone = binding.eetPhone.text.toString()
         if (phone.isBlank())
             showErrorPromptDialog(
                 getString(R.string.prompt),
@@ -475,6 +475,9 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             ) {}
         else {
             binding.btnSendSms.isEnabled = false
+            if(phone.substring(0,1) == "0"){
+                phone = phone.substring(1,phone.length)
+            }
             viewModel.sendSms(phone)
         }
     }
