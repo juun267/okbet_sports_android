@@ -1671,7 +1671,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     )
                         .toUpperCase(Locale.getDefault())
                 updateSportBackground(item)
-//                subscribeSportChannelHall(item?.code)//12/30 移除平台id与gameType後，切換SportType就不用重新訂閱了，不然會造成畫面一直閃爍 by Bill
             }
         } else {
             gameTypeList.find { it.isSelected }.let { item ->
