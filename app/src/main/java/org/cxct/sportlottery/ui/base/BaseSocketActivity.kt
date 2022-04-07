@@ -4,10 +4,12 @@ import android.app.ActivityManager
 import android.content.*
 import android.os.Bundle
 import android.os.IBinder
+import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
+import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
@@ -89,6 +91,10 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
         receiver.userMoney.observe(this) {
             viewModel.updateMoney(it)
+        }
+
+        receiver.lockMoney.observe(this) {
+            viewModel.updateLockMoney(it)
         }
 
         receiver.orderSettlement.observe(this) {
@@ -249,5 +255,19 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
     private fun removeBroadCastReceiver() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver)
+    }
+
+    /**
+     * 賠率排序
+     * copy from GameV3Fragment
+     */
+    protected fun OddsChangeEvent.sortOddsMap() {
+        this.odds?.forEach { (key, value) ->
+            if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
+                value?.sortBy {
+                    it?.marketSort
+                }
+            }
+        }
     }
 }

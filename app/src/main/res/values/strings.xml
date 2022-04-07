@@ -219,6 +219,7 @@
     <string name="hint_bet_growth">投注 %d %s可获得 %d 点成长值</string>
     <string name="contact_us">联络我们</string>
     <string name="game_rule">游戏规则</string>
+    <string name="news">最新消息</string>
     <string name="sport_bet_rule">体育投注规则</string>
     <string name="common_sport_description">一般体育说明</string>
     <string name="overview">概述</string>
@@ -342,12 +343,15 @@
     <string name="suspend">延期</string>
     <string name="uncheck">未确认</string>
     <string name="undone">未结算</string>
+    <string name="settled">已结算</string>
     <string name="win">赢</string>
     <string name="win_half">赢半</string>
     <string name="lose">输</string>
     <string name="lose_half">输半</string>
     <string name="draw">和</string>
     <string name="canceled">已取消</string>
+    <string name="odds_change">賠率已改變</string>
+    <string name="pending">待成立 %1$s 秒</string>
     <string name="bet_canceled">下注失败</string>
     <string name="confirmed">已确认</string>
     <string name="bet_detail">注单详情</string>
@@ -412,7 +416,9 @@
     <string name="title_account">账号：</string>
     <string name="title_address">地址：</string>
     <string name="title_deposit_money">充值金额</string>
+    <string name="title_payer">账号</string>
     <string name="edt_hint_deposit_money">限额 %1$s～%2$s</string>
+    <string name="edt_hint_payer">请输入您的账号</string>
     <string name="edt_hint_deposit_money_new">限额 %1$s-%2$s</string>
     <string name="title_real_name">认证姓名</string>
     <string name="title_nick_name">个人昵称</string>
@@ -612,6 +618,7 @@
     <string name="bet_info_accept_odds_change">接受更改并投注</string>
     <string name="bet_info_add_to_bet_info">加入投注单</string>
     <string name="bet_info_odd_content_changed">一个或多个选项的赔率，让球数或比分已更改</string>
+    <string name="bet_info_odd_content_changed2">赔率已变更，从 %s 至 %s 。</string>
     <string name="bet_info_all_bet">所有投注</string>
     <string name="bet_list_delete_all">全删除</string>
     <string name="bet_list_single_warn">(可用相同的投注额填充所有单项选择)</string>
@@ -820,6 +827,7 @@
     <string name="odds_button_name_hch">主队或客队-主队</string>
     <string name="odds_button_name_hcc">主队或客队-客队</string>
     <string name="bet_fail">下注失敗</string>
+    <string name="bet_fail_btn">赔率已改变</string>
     <string name="credit_record_deactivate">信用功能停用中</string>
     <string name="game_postponed">比赛延期</string>
     <string name="money_recharge_hint1"><font color="#ff4b2c">请先转账成功后再提交充值信息。</font></string>
@@ -875,12 +883,18 @@
     <string name="golf">高尔夫球</string>
     <string name="financial_bets">金融投注</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="upload_title">身份证明文件</string>
-    <string name="upload_tips">・请上传能够证明您身份的文件</string>
-    <string name="upload_photo_title">自拍照</string>
-    <string name="upload_photo_tips">・照片档案大小上限: 2MB</string>
+    <string name="upload_title">上传身份证明文件</string>
+    <string name="upload_content">请点击上传身份证明文件</string>
+    <string name="upload_tips">请上传能够证明您身份的文件</string>
+    <string name="upload_photo_title">上传正面照</string>
+    <string name="upload_photo_tips">照片档案大小上限: 2MB</string>
+    <string name="upload_photo_content">请点击上传您的正面照</string>
     <string name="upload_media_reset">重拍</string>
     <string name="upload_fail">上传失败</string>
+    <string name="upload_success">照片上传成功</string>
+    <string name="upload_dialog_content">请拍照或是从相簿中选择一张照片</string>
+    <string name="upload_dialog_gallery">相簿</string>
+    <string name="upload_dialog_camera">拍照</string>
     <string name="identity_id">ID 号码</string>
     <string name="identity_last_name">姓</string>
     <string name="identity_first_name">名</string>
@@ -942,6 +956,7 @@
     <string name="bank_list_e_wallet">eWallet</string>
     <string name="type_of_certificate">证件类型</string>
     <string name="take_id_photo">拍摄证件照片</string>
+    <string name="take_id_gallery">从相簿中选择</string>
     <string name="prepare_your_id_photo">注备好您的证件照片</string>
     <string name="id_description">·请确认您的证件照正确朝上\n·请确认您的证件照清晰可见\n·请避免闪光或是反射</string>
     <string name="identity_card">Identity Card</string>
@@ -950,6 +965,9 @@
     <string name="verified">(已验证)</string>
     <string name="verify_failed_please_retry">验证失败 请重新再试</string>
     <string name="not_verify">(未验证)</string>
+    <string name="passed">(已通过)</string>
+    <string name="verifying">(验证中)</string>
+    <string name="verify_failed">(验证失败)</string>
     <string name="select_id_type">选择身份证件类型</string>
     <string name="scan_tool_bar">扫描结果</string>
     <string name="text_us_east_time">以美东(UTC-4)时间计算</string>
@@ -958,7 +976,8 @@
     <string name="text_bet_not_success2">待成立注单</string>
     <string name="text_bet_not_success3">&#160;您的注单正在处理中请检查您的&#160;</string>
     <string name="text_bet_not_success4">交易状况</string>
-
+    <string name="text_security_money">押金：%s</string>
+    <string name="text_security_money2">还有%s天</string>
     <!--自我禁制-->
     <string name="self_limit">自我禁制</string>
     <string name="self_limit_impotent">重要事项</string>
@@ -1061,4 +1080,15 @@ Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAG
     <string name="waiting">待成立注单</string>
     <string name="sec">s</string>
     <!--歷史紀錄end-->
+
+    <!--region 最新消息-->
+    <string name="news_tab_game">游戏</string>
+    <string name="news_tab_system">系统</string>
+    <string name="news_tab_plat">平台</string>
+    <string name="news_detail">详细</string>
+    <!--endregion 最新消息-->
+
+<!--region 宣傳頁-->
+    <string name="hot_recommend">热门推荐</string>
+<!--endregion-->
 </resources>

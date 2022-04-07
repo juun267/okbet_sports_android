@@ -26,7 +26,6 @@ object SocketUpdateUtil {
         var isNeedRefresh = false
 
         matchStatusChangeEvent.matchStatusCO?.let { matchStatusCO ->
-            val removeIndex :Int = -1
 
             matchOddList.forEach { matchOdd ->
 
@@ -105,10 +104,11 @@ object SocketUpdateUtil {
             }
             //matchStatusChange status = 100時，賽事結束
             if (matchStatusCO.status == GameMatchStatus.FINISH.value) {
-                val endGameList = matchOddList.find { it.matchInfo?.id == matchStatusCO.matchId }
-                isNeedRefresh = endGameList != null
-                if(removeIndex != -1){
-                    matchOddList.remove(endGameList)
+                matchOddList.find { it.matchInfo?.id == matchStatusCO.matchId }.apply {
+                    isNeedRefresh = this != null
+                    this?.let {
+                        matchOddList.remove(this)
+                    }
                 }
             }
         }

@@ -125,7 +125,8 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     submit(
                         betResultData?.singleBets ?: listOf(),
                         betResultData?.parlayBets ?: listOf(),
-                        this@BetReceiptFragment.betParlayList ?: listOf()
+                        this@BetReceiptFragment.betParlayList ?: listOf(),
+                        betResultData?.betConfirmTime ?: 0
                     )
                 }
             }
@@ -138,15 +139,26 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         //全部都失敗才會顯示投注失敗
         val hasBetSuccess = betResultData?.singleBets?.find { it.status != betStatusCancelledCode } != null
         val hasParlaySuccess = betResultData?.parlayBets?.find { it.status != betStatusCancelledCode } != null
-        tv_already_bet_complete.apply {
-            when (hasBetSuccess || hasParlaySuccess) {
+//        tv_already_bet_complete.apply {
+//            when (hasBetSuccess || hasParlaySuccess) {
+//                true -> {
+//                    text = getString(R.string.bet_succeeded)
+//                    setTextColor(ContextCompat.getColor(context, R.color.colorBlue))
+//                }
+//                false -> {
+//                    text = getString(R.string.bet_fail)
+//                    setTextColor(ContextCompat.getColor(context, R.color.colorRed))
+//                }
+//            }
+//        }
+
+        btn_complete.apply {
+            text = when (hasBetSuccess || hasParlaySuccess) {
                 true -> {
-                    text = getString(R.string.bet_succeeded)
-                    setTextColor(ContextCompat.getColor(context, R.color.colorBlue))
+                    getString(R.string.complete)
                 }
                 false -> {
-                    text = getString(R.string.bet_fail)
-                    setTextColor(ContextCompat.getColor(context, R.color.colorRed))
+                    getString(R.string.bet_fail_btn)
                 }
             }
         }

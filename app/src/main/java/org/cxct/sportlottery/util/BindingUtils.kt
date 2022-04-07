@@ -138,7 +138,14 @@ fun TextView.setBetParlayReceiptAmount(itemData: BetResult, parlayNum: Int?) {
 @BindingAdapter("betReceiptStatus") //状态 0：未开始，1：比赛中，2：已结束，3：延期，4：已取消
 fun TextView.setBetReceiptStatus(status: Int?) {
     text = when (status) {
-        7 -> context.getString(R.string.bet_canceled)
+        0 -> String.format(context.getString(R.string.pending), " ")
+        1 -> context.getString(R.string.undone)
+        2 -> context.getString(R.string.win)
+        3 -> context.getString(R.string.win_half)
+        4 -> context.getString(R.string.lose)
+        5 -> context.getString(R.string.lose_half)
+        6 -> context.getString(R.string.settled)
+        7 -> context.getString(R.string.odds_change)
         else -> context.getString(R.string.confirmed)
     }
 }

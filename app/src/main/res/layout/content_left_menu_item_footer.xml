@@ -71,4 +71,15 @@
             android:textColor="@color/colorBlackLight"
             app:drawableStartCompat="@drawable/icon_game_rule" />
 
+        <TextView
+            android:id="@+id/ct_news"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:drawablePadding="10dp"
+            android:gravity="start|center_vertical"
+            android:paddingStart="20dp"
+            android:text="@string/news"
+            android:textColor="@color/colorBlackLight"
+            app:drawableStartCompat="@drawable/ic_news" />
+
 </LinearLayout>

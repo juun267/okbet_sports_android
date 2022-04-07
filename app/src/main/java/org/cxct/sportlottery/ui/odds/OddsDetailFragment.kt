@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_odds_detail.rv_detail
 import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
+import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
@@ -29,6 +30,7 @@ import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.component.LiveViewToolbar
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.SocketUpdateUtil
@@ -111,17 +113,32 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         oddsDetailListAdapter = OddsDetailListAdapter(
             OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
                 matchOdd?.let { matchOdd ->
-                    viewModel.updateMatchBetList(
+                    val fastBetDataBean = FastBetDataBean(
                         matchType = MatchType.TODAY,
                         gameType = args.gameType,
                         playCateCode = oddsDetail?.gameType ?: "",
                         playCateName = oddsDetail?.name ?: "",
                         matchInfo = matchOdd.matchInfo,
+                        matchOdd = null,
                         odd = odd,
                         subscribeChannelType = ChannelType.EVENT,
                         betPlayCateNameMap = matchOdd.betPlayCateNameMap,
                         otherPlayCateName = scoPlayCateNameForBetInfo
                     )
+                    (activity as GameActivity).showFastBetFragment(fastBetDataBean)
+
+
+//                    viewModel.updateMatchBetList(
+//                        matchType = MatchType.TODAY,
+//                        gameType = args.gameType,
+//                        playCateCode = oddsDetail?.gameType ?: "",
+//                        playCateName = oddsDetail?.name ?: "",
+//                        matchInfo = matchOdd.matchInfo,
+//                        odd = odd,
+//                        subscribeChannelType = ChannelType.EVENT,
+//                        betPlayCateNameMap = matchOdd.betPlayCateNameMap,
+//                        otherPlayCateName = scoPlayCateNameForBetInfo
+//                    )
                 }
             }
         ).apply {

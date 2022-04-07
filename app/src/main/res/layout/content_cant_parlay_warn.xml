@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_cant_parlay_warn"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_above="@+id/cl_total_info"
+    android:background="@color/colorWhite"
+    android:divider="@drawable/divider_color_white8"
+    android:orientation="vertical"
+    android:showDividers="end">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingTop="18dp"
+        android:paddingEnd="8dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="5.5dp"
+            android:src="@drawable/oval_red_6dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/bet_list_cant_parlay_warn"
+            android:textColor="@color/colorRed"
+            android:textSize="@dimen/textSize12sp" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/shadow"
+        android:layout_width="match_parent"
+        android:layout_height="18dp"
+        android:background="@drawable/bg_gradient_bottom_sheet_shadow" />
+</LinearLayout>

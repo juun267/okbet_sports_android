@@ -47,7 +47,9 @@ data class SearchResponse(
                 val matchId: String = "",
                 @Json(name = "startTime")
                 val startTime: String = ""
-            )
+            ) {
+                var isInPlay: Boolean = false
+            }
         }
     }
 }

@@ -96,6 +96,10 @@ class VerifyIdentityFragment :
                 )
             }
         }
+//        btnGallery.setOnClickListener {
+//            val action = VerifyIdentityFragmentDirections.actionVerifyIdentityFragmentToCredentialsFragment()
+//            findNavController().navigate(action)
+//        }
 
     }
 

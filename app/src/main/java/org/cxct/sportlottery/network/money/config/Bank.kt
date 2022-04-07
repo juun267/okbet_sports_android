@@ -11,4 +11,6 @@ data class Bank(
     val value: String?,
     @Json(name = "bankType")
     val bankType: Int
-)
+) {
+    var isSelected = false
+}

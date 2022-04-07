@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.network.user
 
+import org.cxct.sportlottery.network.Constants.LOCK_MONEY
 import org.cxct.sportlottery.network.Constants.USER_BET_LIMIT
 import org.cxct.sportlottery.network.Constants.USER_CREDIT_CIRCLE_HISTORY
 import org.cxct.sportlottery.network.Constants.USER_EDIT_ICON_URL
@@ -68,4 +69,7 @@ interface UserService {
 
     @POST(USER_FROZE)
     suspend fun froze(@Body frozeRequest: FrozeRequest): Response<FrozeResult>
+
+    @GET(LOCK_MONEY)
+    suspend fun lockMoney(): Response<UserMoneyResult>
 }

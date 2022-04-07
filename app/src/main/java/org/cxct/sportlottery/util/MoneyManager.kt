@@ -91,7 +91,7 @@ object MoneyManager {
     }
 
     fun getBankIconByBankName(bankName: String): Int {
-        BankKey.values().map { if (it.bankName == bankName) return it.iconId }
+        BankKey.values().map { if (it.bankName.equals(bankName, ignoreCase = true)) return it.iconId }
         return R.drawable.ic_bank_default
     }
 

@@ -368,11 +368,12 @@ class GameViewModel(
     }
 
     fun navSpecialEntrance(
-        matchType: MatchType,
+        entranceMatchType: MatchType,
         gameType: GameType?,
-        matchId: String
+        matchId: String,
+        gameMatchType: MatchType? = null
     ) {
-        _specialEntrance.postValue(SpecialEntrance(matchType, gameType, matchID = matchId))
+        _specialEntrance.postValue(SpecialEntrance(entranceMatchType = entranceMatchType, gameType, matchID = matchId, gameMatchType = gameMatchType))
     }
 
     private fun getSpecEntranceFromHome(
@@ -423,11 +424,21 @@ class GameViewModel(
         //_quickOddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
         if (childMatchType == MatchType.OTHER_OUTRIGHT) {
-            getLeagueList(
-                getSportSelectedCode(MatchType.OTHER) ?: "",
-                currentSpecialCode,
-                null,
-                isIncrement = false
+//            getLeagueList(
+//                getSportSelectedCode(MatchType.OTHER_OUTRIGHT) ?: "",
+//                currentSpecialCode,
+//                null,
+//                isIncrement = false
+//            )
+            getOutrightSeasonList(
+                getSportSelectedCode(MatchType.OTHER_OUTRIGHT) ?: "",
+                true
+            )
+        }
+        if(childMatchType == MatchType.OUTRIGHT) {
+            getOutrightSeasonList(
+                getSportSelectedCode(MatchType.OUTRIGHT) ?: "",
+                false
             )
         }
         else if (childMatchType == MatchType.OTHER) {
@@ -478,6 +489,8 @@ class GameViewModel(
                 )
             }
             result?.let { it ->
+                it.rows.updateMatchType()
+
                 allSearchData = it.rows
             }
         }
@@ -543,6 +556,16 @@ class GameViewModel(
                 }
             }
             _searchResult.postValue(Event(finalResult))
+        }
+    }
+
+    private fun List<SearchResponse.Row>.updateMatchType() {
+        forEach { row ->
+            row.leagueMatchList.forEach { leagueMatch ->
+                leagueMatch.matchInfoList.forEach { matchInfo ->
+                    matchInfo.isInPlay = System.currentTimeMillis() > matchInfo.startTime.toLong()
+                }
+            }
         }
     }
 
@@ -815,7 +838,7 @@ class GameViewModel(
         this.atStart.items.sortedBy { sport ->
             sport.sortNum
         }
-        this.menu.eps.items.sortedBy { sport ->
+        this.menu.eps?.items?.sortedBy { sport ->
             sport.sortNum
         }
 
@@ -2305,13 +2328,13 @@ class GameViewModel(
                 }
             }
         }
-        this.menu.eps.items.map { sport ->
+        this.menu.eps?.items?.map { sport ->
             sport.isSelected = when {
                 ((matchType == MatchType.EPS) && gameTypeCode != null && sport.num > 0) -> {
                     sport.code == gameTypeCode
                 }
                 else -> {
-                    this.menu.eps.items.indexOf(sport) == 0
+                    this.menu?.eps?.items.indexOf(sport) == 0
                 }
             }
         }

@@ -13,6 +13,7 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.permission.GooglePermissionActivity
@@ -28,7 +29,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         setContentView(R.layout.activity_splash)
 
         setupVersion()
-        checkPermissionGranted()
+        //checkPermissionGranted()
         initObserve()
 
         //流程: 檢查/獲取 host -> 獲取 config -> 檢查維護狀態 -> 檢查版本更新 -> 跳轉畫面
@@ -64,6 +65,11 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
     private fun goMaintenancePage() {
         startActivity(Intent(this@SplashActivity, MaintenanceActivity::class.java))
+        finish()
+    }
+
+    private fun goGamePublicityPage() {
+        startActivity(Intent(this@SplashActivity, GamePublicityActivity::class.java))
         finish()
     }
 
@@ -113,6 +119,17 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                 }
                 false -> {
                     goHomePage()
+                }
+            }
+        }
+
+        viewModel.isLogin.observe(this) {
+            when (it) {
+                true -> {
+                    goGamePage()
+                }
+                false -> {
+                    goGamePublicityPage()
                 }
             }
         }

@@ -1,7 +1,6 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-
+<!--create by Martin-->
 
     <item android:top="00dp"
         android:right="0dp"
@@ -12,9 +11,9 @@
             android:pivotY="0%">
             <shape android:shape="rectangle">
                 <gradient
-                    android:startColor="#0066D1"
-                    android:endColor="#0079FA"
-                    android:angle="180"/>
+                    android:startColor="#0054AC"
+                    android:endColor="#0068D6"
+                    android:angle="135"/>
             </shape>
         </rotate>
     </item>

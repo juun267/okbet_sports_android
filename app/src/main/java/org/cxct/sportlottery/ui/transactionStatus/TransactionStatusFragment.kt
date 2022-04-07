@@ -2,20 +2,16 @@ package org.cxct.sportlottery.ui.transactionStatus
 
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.NestedScrollView
-import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.fragment_transaction_status.*
-import kotlinx.android.synthetic.main.fragment_transaction_status.scroll_view
 import kotlinx.android.synthetic.main.view_back_to_top.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.ui.game.BetRecordType
 
 class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(TransactionStatusViewModel::class) {
     private val recordDiffAdapter by lazy { TransactionRecordDiffAdapter() }
@@ -25,6 +21,12 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
             val nestedScrollViewHeight = scrollView.height
             if (nestedTopView.height <= scrollY + nestedScrollViewHeight) {
                 viewModel.getBetList()
+            }
+
+            if (!scrollView.canScrollVertically(-1)){
+                view_back_to_top.visibility = View.GONE
+            } else {
+                view_back_to_top.visibility = View.VISIBLE
             }
         }
 

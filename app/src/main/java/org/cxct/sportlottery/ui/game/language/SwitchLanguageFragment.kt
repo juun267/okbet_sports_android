@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -99,14 +100,15 @@ class SwitchLanguageFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         binding.llEnglish.setOnClickListener(this)
         binding.llChina.setOnClickListener(this)
         binding.llVietnam.setOnClickListener(this)
-        when (SPUtil.getInstance(context).getSelectLanguage()) {
-            LanguageManager.Language.ZH.key -> {
+        Log.e("Martin","LanguageManager.getSelectLanguage(context)="+LanguageManager.getSelectLanguage(context))
+        when (LanguageManager.getSelectLanguage(context)) {
+            LanguageManager.Language.ZH -> {
                 binding.tvChina.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBlue))
             }
-            LanguageManager.Language.EN.key -> {
+            LanguageManager.Language.EN -> {
                 binding.tvEnglish.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBlue))
             }
-            LanguageManager.Language.VI.key -> {
+            LanguageManager.Language.VI -> {
                 binding.tvVietnam.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBlue))
             }
         }

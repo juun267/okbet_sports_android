@@ -14,11 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <View
-            android:id="@+id/shadow"
-            android:layout_width="match_parent"
-            android:layout_height="16dp"
-            android:background="@drawable/bg_gradient_bottom_sheet_shadow" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_total_info"

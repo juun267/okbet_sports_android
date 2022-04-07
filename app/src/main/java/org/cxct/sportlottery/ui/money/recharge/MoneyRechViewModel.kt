@@ -123,6 +123,11 @@ class MoneyRechViewModel(
         get() = _rechargeOnlineAmountMsg
     private var _rechargeOnlineAmountMsg = MutableLiveData<String>()
 
+    //線上支付充值賬號
+    val rechargeOnlineAccountMsg: LiveData<String>
+        get() = _rechargeOnlineAccountMsg
+    private var _rechargeOnlineAccountMsg = MutableLiveData<String>()
+
     //銀行卡號錯誤訊息
     val bankIDErrorMsg: LiveData<String>
         get() = _bankIDErrorMsg
@@ -250,11 +255,12 @@ class MoneyRechViewModel(
     }
 
     //在線支付 - 一般充值
-    fun rechargeOnlinePay(
+    fun rechargeNormalOnlinePay(
         context: Context,
         mSelectRechCfgs: RechCfg?,
         depositMoney: String,
-        bankCode: String?
+        bankCode: String?,
+        payer: String?
     ) {
         checkRcgOnlineAmount(depositMoney, mSelectRechCfgs)
         if (onlinePayInput()) {
@@ -264,7 +270,11 @@ class MoneyRechViewModel(
                 "rechCfgId" to (mSelectRechCfgs?.id ?: "").toString(),
                 "bankCode" to (bankCode ?: ""),
                 "depositMoney" to depositMoney
-            )
+            ).apply {
+                if (!payer.isNullOrEmpty())
+                    put("payer", payer)
+            }
+
             url += toUrlParamsFormat(queryMap)
             toExternalWeb(context, url)
 
@@ -380,6 +390,17 @@ class MoneyRechViewModel(
                 channelMaxMoney
             ) || rechargeAmount == "0" -> {
                 androidContext.getString(R.string.error_recharge_amount)
+            }
+            else -> {
+                ""
+            }
+        }
+    }
+
+    fun checkRcgNormalOnlineAccount(rechargeAccount: String) {
+        _rechargeOnlineAccountMsg.value = when {
+            rechargeAccount.isEmpty() -> {
+                androidContext.getString(R.string.error_input_empty)
             }
             else -> {
                 ""
