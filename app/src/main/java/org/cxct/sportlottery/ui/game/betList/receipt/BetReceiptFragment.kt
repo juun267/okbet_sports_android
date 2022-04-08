@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.betList.receipt
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -129,6 +130,12 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         betResultData?.betConfirmTime ?: 0
                     )
                 }
+                interfaceStatusChangeListener = object :
+                    BetReceiptDiffAdapter.InterfaceStatusChangeListener{
+                    override fun onChange() {
+                        setReceiptStatus7()
+                    }
+                }
             }
 
             adapter = betReceiptDiffAdapter
@@ -162,5 +169,16 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 }
             }
         }
+        btn_complete.setTextColor(ContextCompat.getColor(btn_complete.context,R.color.white))
+    }
+
+    private fun setReceiptStatus7() {
+        btn_complete.text = getString(R.string.bet_fail_btn)
+        btn_complete.setTextColor(
+            ContextCompat.getColor(
+                btn_complete.context,
+                R.color.colorRedDark
+            )
+        )
     }
 }
