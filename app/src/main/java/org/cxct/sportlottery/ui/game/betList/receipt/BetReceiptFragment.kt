@@ -169,6 +169,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 }
             }
         }
+        btn_complete.setTextColor(ContextCompat.getColor(btn_complete.context,R.color.white))
     }
 
     private fun setReceiptStatus7() {
