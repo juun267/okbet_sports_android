@@ -471,7 +471,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
 
         viewModel.userMoney.observe(viewLifecycleOwner) {
-            it.let { money -> tv_balance.text = TextUtil.formatMoney(money ?: 0.0) }
+            it?.let { money ->
+                tv_balance.text = TextUtil.formatMoney(money ?: 0.0)
+                betListRefactorAdapter?.userMoney = money
+            }
         }
 
         viewModel.oddsType.observe(viewLifecycleOwner) {
