@@ -366,6 +366,8 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
         return this.mapValues { map ->
             val playCateNum =
                 when { //根據IOS給的規則判斷顯示數量
+                    map.value?.size ?: 0 < 3 -> 2
+
                     (matchInfo?.gameType == GameType.TT.key || matchInfo?.gameType == GameType.BM.key) && map.key.contains(PlayCate.SINGLE.value) -> 2 //乒乓球獨贏特殊判斷 羽球獨贏特殊判斷
 
                     map.key.contains(PlayCate.HDP.value) || (map.key.contains(PlayCate.OU.value) && !map.key.contains(PlayCate.SINGLE_OU.value)) || map.key.contains(
@@ -373,8 +375,6 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
                     ) -> 2
 
                     map.key.contains(PlayCate.SINGLE.value) || map.key.contains(PlayCate.NGOAL.value) || map.key.contains(PlayCate.NGOAL_OT.value) -> 3
-
-                    map.value?.size ?: 0 < 3 -> 2
 
                     else -> 3
                 }
