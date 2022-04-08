@@ -336,7 +336,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                 viewModel.loginRepository.checkToken()
             }
             mRunnable?.let {
-                mHandler.postDelayed( it , 1000)
+                mHandler.postDelayed( it , 30000)
             }
         }
     }
