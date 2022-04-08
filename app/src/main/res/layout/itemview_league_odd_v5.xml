@@ -4,18 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:background="@color/colorWhite"
+    android:orientation="vertical"
     tools:ignore="spUsage">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.45">
+
             <View
                 android:id="@+id/league_odd_match_border"
                 android:layout_width="156dp"
@@ -333,8 +335,8 @@
                 android:id="@+id/league_odd_match_price_boost"
                 android:layout_width="24dp"
                 android:layout_height="14dp"
-                android:scaleType="centerCrop"
                 android:paddingRight="@dimen/margin_10"
+                android:scaleType="centerCrop"
                 android:src="@drawable/ic_price_v4"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border_row3"
@@ -406,6 +408,7 @@
                 app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row3"
                 tools:ignore="ContentDescription" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_league_odd_btn_pager_main"
             android:layout_width="0dp"
@@ -426,9 +429,11 @@
         android:background="@color/colorWhite8" />
 
     <!-- 快選元件 -->
-    <org.cxct.sportlottery.ui.game.quick.QuickListView
-        android:id="@+id/quickListView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <ViewStub
+        android:id="@+id/vs_league_quick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout="@layout/itemview_league_quick"
+        tools:visibility="visible" />
 
 </LinearLayout>
