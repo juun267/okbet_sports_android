@@ -82,7 +82,7 @@ object ParlayLimitUtil {
     }
 
     private fun getTotalHkOdds(oddsList: List<BigDecimal?>, comList: List<IntArray>): BigDecimal {
-        var totalOdds = BigDecimal.ONE
+        var totalOdds = BigDecimal.ZERO
         for (oddsIndexArray in comList) {
             var odd = BigDecimal.ONE
             for (index in oddsIndexArray) {
@@ -90,7 +90,7 @@ object ParlayLimitUtil {
             }
             totalOdds = totalOdds.add(OddsLadder.oddsEuToHk(odd))
         }
-        return totalOdds
+        return if (totalOdds == BigDecimal.ZERO) BigDecimal.ONE else totalOdds
     }
 
 
