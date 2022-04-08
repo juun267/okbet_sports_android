@@ -436,6 +436,10 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             )
             val deviceSn = JPushInterface.getRegistrationID(applicationContext)
             binding.apply {
+                var phone = eetPhone.text.toString()
+                if(phone.substring(0,1) == "0"){
+                    phone = phone.substring(1,phone.length)
+                }
                 viewModel.registerSubmit(
                     eetRecommendCode.text.toString(),
                     eetMemberAccount.text.toString(),
@@ -444,7 +448,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     eetFullName.text.toString(),
                     eetWithdrawalPwd.text.toString(),
                     eetQq.text.toString(),
-                    eetPhone.text.toString(),
+                    phone,
                     eetMail.text.toString(),
                     eetPostal.text.toString(),
                     eetProvince.text.toString(),
