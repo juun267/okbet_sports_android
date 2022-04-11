@@ -2310,7 +2310,7 @@ class GameViewModel(
         }
         this.menu.outright.items.map { sport ->
             sport.isSelected = when {
-                ((matchType == MatchType.OUTRIGHT) && gameTypeCode != null && sport.num > 0) -> {
+                ((matchType == MatchType.OUTRIGHT|| matchType == MatchType.PARLAY) && gameTypeCode != null && sport.num > 0) -> {
                     sport.code == gameTypeCode
                 }
                 else -> {
