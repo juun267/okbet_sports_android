@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.league
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -181,29 +182,33 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         }
     }
 
+    @SuppressLint("LogNotTimber")
     private fun setupLeagueOddList(view: View) {
         view.game_league_odd_list.apply {
             this.layoutManager =
                 SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             this.adapter = leagueAdapter
-            //addItemDecoration(SpaceItemDecoration(context, R.dimen.item_spacing_league))
-            addScrollWithItemVisibility {
-                if (leagueAdapter.data.isNotEmpty()) {
-                    leagueAdapter.data.forEachIndexed { index, leagueOdd ->
-                        if (it.any { vr -> vr == index }) {
-                            if (leagueAdapter.data[index].unfold == FoldState.UNFOLD.code) {
-                                subscribeChannelHall(leagueAdapter.data[index])
-                                Log.d("[subscribe]", "訂閱 ${leagueAdapter.data[index].league.name}")
-                            } else {
-                                Log.d("[subscribe]", "收合中 不訂閱 ${leagueAdapter.data[index].league.name}")
-                            }
-                        } else {
-                            unSubscribeChannelHall(leagueAdapter.data[index])
-                            Log.d("[subscribe]", "取消訂閱 ${leagueAdapter.data[index].league.name}")
+            addScrollWithItemVisibility(
+                onScrolling = {
+                    unSubscribeChannelHallAll()
+                },
+                onVisible = {
+                    if (leagueAdapter.data.isNotEmpty()) {
+                        it.forEach { p ->
+                            Log.d(
+                                "[subscribe]",
+                                "訂閱 ${leagueAdapter.data[p.first].league.name} -> " +
+                                        "${leagueAdapter.data[p.first].matchOdds[p.second].matchInfo?.homeName} vs " +
+                                        "${leagueAdapter.data[p.first].matchOdds[p.second].matchInfo?.awayName}"
+                            )
+                            subscribeChannelHall(
+                                leagueAdapter.data[p.first].gameType?.key,
+                                leagueAdapter.data[p.first].matchOdds[p.second].matchInfo?.id
+                            )
                         }
                     }
                 }
-            }
+            )
         }
     }
 
