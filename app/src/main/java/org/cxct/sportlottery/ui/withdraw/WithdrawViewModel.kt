@@ -383,6 +383,8 @@ class WithdrawViewModel(
                     if(withdrawConfig.find { it.type == TransferType.BANK.type }?.open.toString() == FLAG_OPEN) tabList.add(TransferType.BANK.type)
                     if(withdrawConfig.find { it.type == TransferType.E_WALLET.type }?.open.toString() == FLAG_OPEN) tabList.add(TransferType.E_WALLET.type)
                     _withdrawTabIsShow.postValue(tabList)
+
+                    checkBankCardCount()
                 }
             }
         }

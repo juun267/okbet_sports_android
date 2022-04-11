@@ -13,6 +13,7 @@ import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.util.*
+import android.util.Log
 
 
 class SwitchLanguageActivity : BaseActivity<LoginViewModel>(LoginViewModel::class), View.OnClickListener {
@@ -58,14 +59,14 @@ class SwitchLanguageActivity : BaseActivity<LoginViewModel>(LoginViewModel::clas
         binding.llChina.setOnClickListener(this)
         binding.llVietnam.setOnClickListener(this)
         binding.ivLogo.setOnClickListener(this)
-        when (SPUtil.getInstance(this).getSelectLanguage()) {
-            LanguageManager.Language.ZH.key -> {
+        when (LanguageManager.getSelectLanguage(applicationContext)) {
+            LanguageManager.Language.ZH -> {
                 binding.tvChina.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorBlue))
             }
-            LanguageManager.Language.EN.key -> {
+            LanguageManager.Language.EN -> {
                 binding.tvEnglish.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorBlue))
             }
-            LanguageManager.Language.VI.key -> {
+            LanguageManager.Language.VI -> {
                 binding.tvVietnam.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorBlue))
             }
         }

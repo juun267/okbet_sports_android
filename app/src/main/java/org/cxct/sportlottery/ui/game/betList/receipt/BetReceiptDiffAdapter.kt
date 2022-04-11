@@ -33,6 +33,8 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
+    var interfaceStatusChangeListener:InterfaceStatusChangeListener? = null
+
     var oddsType: OddsType = OddsType.EU
         set(value) {
             field = value
@@ -159,7 +161,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
         when (holder) {
             is SingleViewHolder -> {
                 val itemData = getItem(position) as DataItem.SingleData
-                holder.bind(itemData.result, currentOddsType)
+                holder.bind(itemData.result, currentOddsType, interfaceStatusChangeListener)
                 if (itemData.result.status == 0) {
                     starRunnable(betConfirmTime ?: 0, position, holder.itemView.tv_bet_status)
                 }
@@ -167,7 +169,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
             is ParlayViewHolder -> {
                 val itemData = getItem(position) as DataItem.ParlayData
-                holder.bind(itemData.result, itemData.firstItem, currentOddsType, betParlayList)
+                holder.bind(itemData.result, itemData.firstItem, currentOddsType, betParlayList,interfaceStatusChangeListener)
                 if (itemData.result.status == 0) {
                     starRunnable(betConfirmTime ?: 0, position, holder.itemView.tv_bet_status)
                 }
@@ -189,7 +191,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
             }
         }
 
-        fun bind(itemData: BetResult, oddsType: OddsType) {
+        fun bind(itemData: BetResult, oddsType: OddsType,  interfaceStatusChangeListener:InterfaceStatusChangeListener?) {
             itemView.apply {
                 itemData.apply {
                     matchOdds?.firstOrNull()?.apply {
@@ -214,6 +216,9 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
                     if (status != 0)
                         tv_bet_status.setBetReceiptStatus(status)
+
+                    if (status == 7)
+                        interfaceStatusChangeListener?.onChange()
 
                     tv_bet_status.setReceiptStatusColor(status)
 
@@ -256,7 +261,8 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
             itemData: BetResult,
             firstItem: Boolean,
             oddsType: OddsType,
-            betParlay: List<ParlayOdd>?
+            betParlay: List<ParlayOdd>?,
+            interfaceStatusChangeListener:InterfaceStatusChangeListener?
         ) {
             itemView.apply {
                 itemData.apply {
@@ -292,6 +298,9 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                     if (status != 0)
                         tv_bet_status.setBetReceiptStatus(status)
 
+                    if (status == 7)
+                        interfaceStatusChangeListener?.onChange()
+
                     tv_bet_status.setReceiptStatusColor(status)
                 }
             }
@@ -310,7 +319,9 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
         }
     }
 
-
+    interface InterfaceStatusChangeListener {
+        fun onChange()
+    }
 }
 
 class BetReceiptCallback : DiffUtil.ItemCallback<DataItem>() {

@@ -16,6 +16,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
+import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.base.ChannelType
@@ -105,6 +106,7 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
 
     private fun initViews() {
         initToolBar()
+        initServiceButton()
         initOnClickListener()
         initRecommendView()
         initTitle()
@@ -116,6 +118,10 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
             publicityToolbar.ivLanguage.setImageResource(LanguageManager.getLanguageFlag(this@GamePublicityActivity))
             publicityToolbar.tvLanguage.text = LanguageManager.getLanguageStringResource(this@GamePublicityActivity)
         }
+    }
+
+    private fun initServiceButton() {
+        binding.btnFloatingService.setView(this)
     }
 
     private fun initOnClickListener() {
@@ -257,6 +263,7 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
 
         receiver.oddsChange.observe(this, { event ->
             event?.let { oddsChangeEvent ->
+                SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
                 val targetList = getNewestRecommendData()
                 targetList.forEachIndexed { index, recommend ->
                     if (recommend.id == oddsChangeEvent.eventId) {
@@ -417,7 +424,7 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
 
         val fastBetFragment = FastBetFragment()
         val bundle = Bundle()
-        bundle.putParcelable("data",  Parcels.wrap(fastBetDataBean))
+        bundle.putParcelable("data", Parcels.wrap(fastBetDataBean))
         fastBetFragment.arguments = bundle
 
         transaction
@@ -481,6 +488,8 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
         matchId: String?,
         matchInfoList: List<MatchInfo>
     ) {
+        unSubscribeChannelHallAll()
+        
         startActivity(Intent(this, GameActivity::class.java).apply {
             putExtra(IS_FROM_PUBLICITY, true)
             putExtra(PUBLICITY_GAME_TYPE, gameType)
@@ -565,4 +574,5 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
     private fun goSwitchLanguagePage() {
         startActivity(Intent(this@GamePublicityActivity, SwitchLanguageActivity::class.java))
     }
+
 }

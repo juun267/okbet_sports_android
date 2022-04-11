@@ -95,10 +95,10 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             }, {})
 
             leagueOddListener = LeagueOddListener(
-                { matchId, matchInfoList ->
-                    if (matchInfoList.firstOrNull()?.isInPlay == true) {
+                { matchId, matchInfoList, gameMatchType ->
+                    if (gameMatchType == MatchType.IN_PLAY) {
                         matchId?.let {
-                            navOddsDetailLive(matchId)
+                            navOddsDetailLive(matchId, gameMatchType)
                         }
                     } else {
                         matchId?.let {
@@ -248,6 +248,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
+                SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
                 oddsChangeEvent.updateOddsSelectedState()
                 oddsChangeEvent.filterMenuPlayCate()
 
@@ -715,14 +716,14 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         }
     }
 
-    private fun navOddsDetailLive(matchId: String) {
+    private fun navOddsDetailLive(matchId: String, gameMatchType: MatchType) {
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
 
         gameType?.let {
             val action =
                 MyFavoriteFragmentDirections.actionMyFavoriteFragmentToOddsDetailLiveFragment(
-                    MatchType.MY_EVENT,
+                    gameMatchType,
                     gameType,
                     matchId
                 )

@@ -97,11 +97,11 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             })
 
             leagueOddListener = LeagueOddListener(
-                { matchId, matchInfoList ->
-                    when (args.matchType) {
+                { matchId, matchInfoList, gameMatchType ->
+                    when (gameMatchType) {
                         MatchType.IN_PLAY -> {
                             matchId?.let {
-                                navOddsDetailLive(it)
+                                navOddsDetailLive(it, gameMatchType)
                             }
                         }
                         else -> {
@@ -463,6 +463,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
+                SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
                 oddsChangeEvent.updateOddsSelectedState()
                 oddsChangeEvent.filterMenuPlayCate()
                 oddsChangeEvent.sortOddsMap()
@@ -583,7 +584,6 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 }
             }
         }
-
         return this
     }
 
@@ -677,9 +677,9 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         findNavController().navigate(action)
     }
 
-    private fun navOddsDetailLive(matchId: String) {
+    private fun navOddsDetailLive(matchId: String, gameMatchType: MatchType) {
         val action = GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailLiveFragment(
-            args.matchType,
+            gameMatchType,
             args.gameType,
             matchId
         )

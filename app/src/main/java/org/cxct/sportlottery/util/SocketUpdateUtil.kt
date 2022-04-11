@@ -126,7 +126,7 @@ object SocketUpdateUtil {
                     GameType.FT.key -> {
                         matchClockCO.matchTime
                     }
-                    GameType.BK.key -> {
+                    GameType.BK.key,GameType.RB.key,GameType.AFT.key  -> {
                         matchClockCO.remainingTimeInPeriod
                     }
                     else -> null
@@ -293,6 +293,11 @@ object SocketUpdateUtil {
         }
 
         return isNeedRefresh || isNeedRefreshPlayCate
+    }
+
+    fun updateMatchOdds(oddsChangeEvent:OddsChangeEvent){
+        oddsChangeEvent.odds = mutableMapOf()
+        oddsChangeEvent.odds = oddsChangeEvent.oddsList.associateBy (keySelector= {it.playCateCode.toString()}, valueTransform={it.oddsList}).toMutableMap()
     }
 
     private fun updateMatchOdds(

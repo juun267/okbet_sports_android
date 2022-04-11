@@ -366,15 +366,15 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
         return this.mapValues { map ->
             val playCateNum =
                 when { //根據IOS給的規則判斷顯示數量
-                    matchInfo?.gameType == GameType.TT.key && map.key.contains(PlayCate.SINGLE.value) -> 2 //乒乓球獨贏特殊判斷
+                    map.value?.size ?: 0 < 3 -> 2
+
+                    (matchInfo?.gameType == GameType.TT.key || matchInfo?.gameType == GameType.BM.key) && map.key.contains(PlayCate.SINGLE.value) -> 2 //乒乓球獨贏特殊判斷 羽球獨贏特殊判斷
 
                     map.key.contains(PlayCate.HDP.value) || (map.key.contains(PlayCate.OU.value) && !map.key.contains(PlayCate.SINGLE_OU.value)) || map.key.contains(
                         PlayCate.CORNER_OU.value
                     ) -> 2
 
                     map.key.contains(PlayCate.SINGLE.value) || map.key.contains(PlayCate.NGOAL.value) || map.key.contains(PlayCate.NGOAL_OT.value) -> 3
-
-                    map.value?.size ?: 0 < 3 -> 2
 
                     else -> 3
                 }
@@ -1081,11 +1081,15 @@ class OddButtonPagerViewHolder private constructor(
     private fun getOddByType(
         odd: Odd?,
         oddsType: OddsType
-    ) = when (oddsType) {
-        OddsType.EU -> TextUtil.formatForOdd(odd?.odds ?: 1)
-        OddsType.HK -> TextUtil.formatForOdd(odd?.hkOdds ?: 0)
-        OddsType.MYS -> TextUtil.formatForOdd(odd?.malayOdds ?: 0)
-        OddsType.IDN -> TextUtil.formatForOdd(odd?.indoOdds ?: 0)
+    ) = if (odd?.isOnlyEUType == true) {
+        TextUtil.formatForOdd(odd.odds ?: 1)
+    } else {
+        when (oddsType) {
+            OddsType.EU -> TextUtil.formatForOdd(odd?.odds ?: 1)
+            OddsType.HK -> TextUtil.formatForOdd(odd?.hkOdds ?: 0)
+            OddsType.MYS -> TextUtil.formatForOdd(odd?.malayOdds ?: 0)
+            OddsType.IDN -> TextUtil.formatForOdd(odd?.indoOdds ?: 0)
+        }
     }
 
     private fun OddsButton.oddColorStateList(

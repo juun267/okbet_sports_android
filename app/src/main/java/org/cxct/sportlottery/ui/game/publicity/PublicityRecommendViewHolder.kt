@@ -29,8 +29,7 @@ class PublicityRecommendViewHolder(
             isTimerEnable =
                 (data.gameType == GameType.FT.key || data.gameType == GameType.BK.key || data.matchType == MatchType.PARLAY || data.matchType == MatchType.AT_START || data.matchType == MatchType.MY_EVENT)
             leagueOddListener = LeagueOddListener(
-                clickListenerPlayType = { matchId, matchInfoList ->
-                    //TODO 確認中
+                clickListenerPlayType = { matchId, matchInfoList, _ ->
                     publicityAdapterListener.onClickPlayTypeListener(
                         gameType = data.gameType,
                         matchType = data.matchType,

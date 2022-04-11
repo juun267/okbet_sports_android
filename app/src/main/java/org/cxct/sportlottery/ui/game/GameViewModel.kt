@@ -368,11 +368,12 @@ class GameViewModel(
     }
 
     fun navSpecialEntrance(
-        matchType: MatchType,
+        entranceMatchType: MatchType,
         gameType: GameType?,
-        matchId: String
+        matchId: String,
+        gameMatchType: MatchType? = null
     ) {
-        _specialEntrance.postValue(SpecialEntrance(matchType, gameType, matchID = matchId))
+        _specialEntrance.postValue(SpecialEntrance(entranceMatchType = entranceMatchType, gameType, matchID = matchId, gameMatchType = gameMatchType))
     }
 
     private fun getSpecEntranceFromHome(
@@ -488,6 +489,8 @@ class GameViewModel(
                 )
             }
             result?.let { it ->
+                it.rows.updateMatchType()
+
                 allSearchData = it.rows
             }
         }
@@ -553,6 +556,16 @@ class GameViewModel(
                 }
             }
             _searchResult.postValue(Event(finalResult))
+        }
+    }
+
+    private fun List<SearchResponse.Row>.updateMatchType() {
+        forEach { row ->
+            row.leagueMatchList.forEach { leagueMatch ->
+                leagueMatch.matchInfoList.forEach { matchInfo ->
+                    matchInfo.isInPlay = System.currentTimeMillis() > matchInfo.startTime.toLong()
+                }
+            }
         }
     }
 

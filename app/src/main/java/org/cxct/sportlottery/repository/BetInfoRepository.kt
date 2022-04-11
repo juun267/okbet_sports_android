@@ -439,8 +439,7 @@ class BetInfoRepository(val androidContext: Context) {
             val maxBetMoney = GameConfigManager.maxBetMoney ?: 9999999
             val maxCpBetMoney = GameConfigManager.maxCpBetMoney
             val maxParlayBetMoney = GameConfigManager.maxParlayBetMoney ?: 9999999
-            val maxPayout = MultiLanguagesApplication.getInstance()?.userInfo?.value?.maxPayout ?: 9999999.0
-//            Log.e("Martin","userData="+MultiLanguagesApplication.getInstance()?.userInfo?.value?.maxPayout)
+            val maxPayout = MultiLanguagesApplication.getInstance()?.userInfo?.value?.maxPayout ?: 9999999
             if(it.value.num > 1){
                 //大於1 即為組合型串關 最大下注金額有特殊規則
                 maxBet = calculateComboMaxBet(it.value,playQuota?.max)

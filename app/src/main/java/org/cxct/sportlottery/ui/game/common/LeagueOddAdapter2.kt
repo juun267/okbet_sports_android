@@ -14,9 +14,8 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
-import kotlinx.android.synthetic.main.home_game_table_4.view.*
 import kotlinx.android.synthetic.main.itemview_league_odd_v5.view.*
-import okhttp3.internal.notify
+import kotlinx.android.synthetic.main.itemview_league_quick.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameStatus
 import org.cxct.sportlottery.network.common.GameType
@@ -152,13 +151,14 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
 
             //setupQuickCategory(item, oddsType, leagueOddListener)
             if(item.quickPlayCateList.isNullOrEmpty()) {
-                itemView.quickListView.visibility = View.GONE
+                itemView.quickListView?.visibility = View.GONE
                 itemView.league_odd_quick_cate_divider.visibility = View.GONE
             } else {
-                itemView.quickListView.visibility = View.VISIBLE
+                itemView.vs_league_quick?.visibility = View.VISIBLE
+                itemView.quickListView?.visibility = View.VISIBLE
                 itemView.league_odd_quick_cate_divider.visibility = View.VISIBLE
-                itemView.quickListView.setDatas(item, oddsType, leagueOddListener, playSelectedCodeSelectionType, playSelectedCode)
-                itemView.quickListView.refreshTab()
+                itemView.quickListView?.setDatas(item, oddsType, leagueOddListener, playSelectedCodeSelectionType, playSelectedCode)
+                itemView.quickListView?.refreshTab()
             }
         }
 
@@ -170,9 +170,9 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             setupMatchTime(item, matchType, isTimerEnable, isTimerPause, leagueOddListener)
             updateOddsButton(item, oddsType, playSelectedCodeSelectionType)
 
-            itemView.quickListView.setDatas(item, oddsType, leagueOddListener, playSelectedCodeSelectionType, playSelectedCode)
-            itemView.quickListView.refreshTab()
-            itemView.quickListView.updateQuickSelected()
+            itemView.quickListView?.setDatas(item, oddsType, leagueOddListener, playSelectedCodeSelectionType, playSelectedCode)
+            itemView.quickListView?.refreshTab()
+            itemView.quickListView?.updateQuickSelected()
             //setupQuickCategory(item, oddsType, leagueOddListener)
             //updateQuickCategory(item, oddsType, leagueOddListener)
         }
@@ -237,7 +237,11 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 text = item.matchInfo?.playCateNum.toString()
 
                 setOnClickListener {
-                    leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
+                    leagueOddListener?.onClickPlayType(
+                        item.matchInfo?.id,
+                        matchInfoList,
+                        if (item.matchInfo?.isInPlay == true) MatchType.IN_PLAY else matchType
+                    )
                 }
             }
 
@@ -256,11 +260,19 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             }
 
             itemView.league_odd_match_border_row1.setOnClickListener {
-                leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
+                leagueOddListener?.onClickPlayType(
+                    item.matchInfo?.id,
+                    matchInfoList,
+                    if (item.matchInfo?.isInPlay == true) MatchType.IN_PLAY else matchType
+                )
             }
 
             itemView.league_odd_match_border_row2.setOnClickListener {
-                leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
+                leagueOddListener?.onClickPlayType(
+                    item.matchInfo?.id,
+                    matchInfoList,
+                    if (item.matchInfo?.isInPlay == true) MatchType.IN_PLAY else matchType
+                )
             }
 
             itemView.league_odd_match_price_boost.isVisible = item.matchInfo?.eps == 1
@@ -491,7 +503,9 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                             isTimerEnable,
                             isTimerPause,
                             item.matchInfo.leagueTime ?: 0,
-                            item.matchInfo.gameType == GameType.BK.key
+                            (item.matchInfo.gameType == GameType.BK.key ||
+                                    item.matchInfo.gameType == GameType.RB.key||
+                                    item.matchInfo.gameType == GameType.AFT.key)
                         )
 
                     } else {

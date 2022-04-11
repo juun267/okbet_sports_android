@@ -33,6 +33,7 @@ import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
+import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.repository.FLAG_LIVE
@@ -163,7 +164,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
     override fun onResume() {
         super.onResume()
-        getData()
         startTimer()
 
         if ((Util.SDK_INT < 24) || live_view_tool_bar.getExoPlayer() == null) {
@@ -423,6 +423,14 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     }
 
     private fun initSocketObserver() {
+        receiver.serviceConnectStatus.observe(this.viewLifecycleOwner) {
+            it?.let {
+                if (it == ServiceConnectStatus.CONNECTED) {
+                    getData()
+                }
+            }
+        }
+
         receiver.matchStatusChange.observe(this.viewLifecycleOwner) {
             it?.let { matchStatusChangeEvent ->
                 matchStatusChangeEvent.matchStatusCO?.takeIf { ms -> ms.matchId == this.matchId }
@@ -448,7 +456,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                     GameType.FT -> {
                         matchClockEvent.matchClockCO?.matchTime
                     }
-                    GameType.BK -> {
+                    GameType.BK ,GameType.RB ,GameType.AFT-> {
                         matchClockEvent.matchClockCO?.remainingTimeInPeriod
                     }
                     else -> null

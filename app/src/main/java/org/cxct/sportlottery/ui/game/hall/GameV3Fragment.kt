@@ -181,7 +181,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
             })
             leagueOddListener = LeagueOddListener(
-                { matchId, matchInfoList ->
+                { matchId, matchInfoList, _ ->
                     when (args.matchType) {
                         MatchType.IN_PLAY -> {
                             matchId?.let {
@@ -1334,6 +1334,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
+                SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
                 oddsChangeEvent.updateOddsSelectedState()
                 oddsChangeEvent.filterMenuPlayCate()
                 oddsChangeEvent.sortOddsMap()
@@ -1346,7 +1347,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             }
                         }
 
-                        var leagueOdds = leagueAdapter.data
+                        val leagueOdds = leagueAdapter.data
                         leagueOdds.sortOddsMap()
                         leagueOdds.updateOddsSort() //篩選玩法
 
@@ -1525,7 +1526,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
-        this.odds?.let { oddTypeSocketMap ->
+        this.odds.let { oddTypeSocketMap ->
             oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
                 oddTypeSocketMapEntry.value?.onEach { odd ->
                     odd?.isSelected =
@@ -1664,7 +1665,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     )
                         .toUpperCase(Locale.getDefault())
                 updateSportBackground(item)
-//                subscribeSportChannelHall(item?.code)//12/30 移除平台id与gameType後，切換SportType就不用重新訂閱了，不然會造成畫面一直閃爍 by Bill
             }
         } else {
             gameTypeList.find { it.isSelected }.let { item ->
@@ -2249,11 +2249,11 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     ) {
         mLeagueOddList.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach { matchOdd ->
-                if (selectedMatchOdd.matchInfo?.id == matchOdd.matchInfo?.id) matchOdd.isExpand =
-                    true
-                matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
-                    if (selectedQuickPlayCate.code == quickPlayCate.code) quickPlayCate.isSelected =
-                        true
+                if (selectedMatchOdd.matchInfo?.id == matchOdd.matchInfo?.id) {
+                    matchOdd.isExpand = true
+                    matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                        if (selectedQuickPlayCate.code == quickPlayCate.code) quickPlayCate.isSelected = true
+                    }
                 }
             }
         }

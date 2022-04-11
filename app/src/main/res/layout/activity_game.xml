@@ -35,90 +35,115 @@
             app:layout_constraintBottom_toBottomOf="@id/game_message"
             app:layout_constraintTop_toTopOf="@id/game_message" />
 
-        <!-- 遊戲類別列表 -->
-        <ImageView
-            android:id="@+id/btn_menu_left"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:background="@color/colorWhite1"
-            android:contentDescription="@null"
-            android:layout_marginTop="14dp"
-            android:layout_marginBottom="14dp"
-            android:layout_marginStart="16dp"
-            android:scaleType="centerCrop"
-            app:layout_constraintBottom_toTopOf="@id/game_container"
-            android:src="@drawable/ic_side_icon_v2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_notification" />
-
-        <include
-            layout="@layout/view_game_tab_match_type_v4"
-            android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_marginStart="16dp"
-            app:layout_constraintStart_toEndOf="@+id/btn_menu_left"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_notification" />
-
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/game_container"
-            android:name="androidx.navigation.fragment.NavHostFragment"
+        <androidx.drawerlayout.widget.DrawerLayout
+            android:id="@+id/sub_drawer_layout"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/game_bottom_navigation"
-            app:layout_constraintTop_toBottomOf="@id/btn_menu_left"
-            app:navGraph="@navigation/game_navigation"
-            tools:layout="@layout/fragment_home" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="68dp">
 
-        <Button
-            android:id="@+id/game_submit"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="8dp"
-            android:background="@color/colorOrangeLight"
-            android:text="@string/button_league_submit"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/textSize14sp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@id/game_bottom_navigation"
-            tools:ignore="SpUsage,TextContrastCheck"
-            tools:layout_editor_absoluteX="8dp"
-            tools:visibility="visible" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite1">
 
-        <!--根據需求先隱藏，確定不用可刪-->
-        <org.cxct.sportlottery.ui.common.ServiceFloatingButton
-            android:visibility="gone"
-            android:id="@+id/btn_floating_service"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:layout_marginBottom="14dp"
-            app:layout_constraintBottom_toTopOf="@id/game_bottom_navigation"/>
+                <!-- 遊戲類別列表 -->
+                <ImageView
+                    android:id="@+id/btn_menu_left"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginBottom="14dp"
+                    android:background="@color/colorWhite1"
+                    android:contentDescription="@null"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_side_icon_v2"
+                    app:layout_constraintBottom_toTopOf="@id/game_container"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <include
-            android:id="@+id/game_bottom_navigation"
-            layout="@layout/view_bottom_navigation_sport"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            app:layout_constraintBottom_toBottomOf="parent" />
+                <include
+                    layout="@layout/view_game_tab_match_type_v4"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/btn_menu_left"
+                    app:layout_constraintTop_toBottomOf="@id/view_notification" />
+
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/game_container"
+                    android:name="androidx.navigation.fragment.NavHostFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toTopOf="@id/game_bottom_navigation"
+                    app:layout_constraintTop_toBottomOf="@id/btn_menu_left"
+                    app:navGraph="@navigation/game_navigation"
+                    tools:layout="@layout/fragment_home" />
+
+                <Button
+                    android:id="@+id/game_submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@color/colorOrangeLight"
+                    android:text="@string/button_league_submit"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/textSize14sp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toTopOf="@id/game_bottom_navigation"
+                    tools:ignore="SpUsage,TextContrastCheck"
+                    tools:layout_editor_absoluteX="8dp"
+                    tools:visibility="visible" />
+
+                <!--根據需求先隱藏，確定不用可刪-->
+                <org.cxct.sportlottery.ui.common.ServiceFloatingButton
+                    android:id="@+id/btn_floating_service"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginBottom="14dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toTopOf="@id/game_bottom_navigation" />
+
+                <include
+                    android:id="@+id/game_bottom_navigation"
+                    layout="@layout/view_bottom_navigation_sport"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!--左側邊攔v4-->
+            <com.google.android.material.navigation.NavigationView
+                android:id="@+id/nav_left"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="start">
+
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/fl_left_menu"
+                    android:name="org.cxct.sportlottery.ui.game.menu.LeftMenuFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:visibility="visible" />
+            </com.google.android.material.navigation.NavigationView>
+
+        </androidx.drawerlayout.widget.DrawerLayout>
 
         <!-- 投注單 -->
         <FrameLayout
-            tools:visibility="gone"
             android:id="@+id/fl_bet_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!--左側邊攔v4-->
-    <FrameLayout
-        tools:visibility="gone"
-        android:id="@+id/fl_left_menu"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
     <!-- 右側導覽列 -->
     <include layout="@layout/view_nav_right" />

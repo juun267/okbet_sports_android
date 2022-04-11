@@ -215,9 +215,9 @@ class LiveViewToolbar @JvmOverloads constructor(
     }
 
     fun setupPlayerControl(show: Boolean) {
-        switchLiveView(show)
         iv_play.isVisible = show
         iv_arrow.isVisible = show
+        switchLiveView(show)
     }
 
     fun liveLoading() {

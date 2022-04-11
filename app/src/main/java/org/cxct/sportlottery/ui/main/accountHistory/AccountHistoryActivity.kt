@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_account_history.*
-import kotlinx.android.synthetic.main.activity_account_history.btn_floating_service
 import kotlinx.android.synthetic.main.activity_account_history.drawer_layout
 import kotlinx.android.synthetic.main.activity_account_history.view_notification
 import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
@@ -57,7 +56,7 @@ class AccountHistoryActivity :
         initMenu()
         setupNoticeButton(iv_notice)
         initObserve()
-        initServiceButton()
+//        initServiceButton()
     }
 
     override fun initBottomNavigation() {
@@ -203,9 +202,9 @@ class AccountHistoryActivity :
         }
     }
 
-    private fun initServiceButton(){
+    /*private fun initServiceButton(){
         btn_floating_service.setView(this)
-    }
+    }*/
 
     private fun updateUiWithResult(messageListResult: MessageListResult?) {
         val titleList: MutableList<String> = mutableListOf()
