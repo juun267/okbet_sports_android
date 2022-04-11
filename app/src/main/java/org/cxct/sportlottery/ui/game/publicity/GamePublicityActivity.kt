@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
@@ -16,9 +17,8 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
-import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameActivity
@@ -26,15 +26,22 @@ import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.FastBetFragment
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
+import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity.Companion.FROM_ACTIVITY
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.menu.MenuFragment
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.MetricsUtil
 import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.parceler.Parcels
 
-class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePublicityViewModel::class),
+class GamePublicityActivity : BaseBottomNavActivity<GamePublicityViewModel>(GamePublicityViewModel::class),
     View.OnClickListener {
     private lateinit var binding: ActivityGamePublicityBinding
 
@@ -61,8 +68,7 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
                     goLoginPage()
                 },
                 onGoHomePageListener = {
-                    GameActivity.reStart(this)
-                    finish()
+                    goGamePage()
                 },
                 onClickBetListener = { gameType, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
                     addOddsDialog(
@@ -94,6 +100,7 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
         setContentView(binding.root)
 
         initViews()
+        initBaseFun()
         initObservers()
         initSocketObservers()
     }
@@ -113,7 +120,12 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
         initBottomView()
     }
 
-    private fun initToolBar() {
+    private fun initBaseFun() {
+        initMenu()
+        initBottomNavigation()
+    }
+
+    override fun initToolBar() {
         with(binding) {
             publicityToolbar.ivLanguage.setImageResource(LanguageManager.getLanguageFlag(this@GamePublicityActivity))
             publicityToolbar.tvLanguage.text = LanguageManager.getLanguageStringResource(this@GamePublicityActivity)
@@ -125,9 +137,16 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
     }
 
     private fun initOnClickListener() {
+        //region view bottom
         binding.tvRegister.setOnClickListener(this)
         binding.tvLogin.setOnClickListener(this)
+        //endregion
+        //region tool bar
+        binding.publicityToolbar.ivLogo.setOnClickListener(this)
         binding.publicityToolbar.blockLanguage.setOnClickListener(this)
+        setupNoticeButton(binding.publicityToolbar.ivNotice)
+        binding.publicityToolbar.ivMenu.setOnClickListener(this)
+        //endregion
         binding.rvPublicity.setOnClickListener(this)
     }
 
@@ -151,13 +170,6 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
     }
 
     private fun initObservers() {
-        viewModel.isLogin.observe(this) {
-            if (it) {
-                startActivity(Intent(this, GameActivity::class.java))
-                finish()
-            }
-        }
-
         viewModel.oddsType.observe(this, {
             it?.let { oddsType ->
                 mPublicityAdapter.oddsType = oddsType
@@ -433,7 +445,7 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
             .commit()
     }
 
-    private fun showBetListPage() {
+    override fun showBetListPage() {
         val transaction = supportFragmentManager.beginTransaction()
             .setCustomAnimations(
                 R.anim.push_bottom_to_top_enter,
@@ -468,14 +480,11 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
             .commit()
 
     }
-    //endregion
 
-    private fun showLoginNotify() {
-        snackBarLoginNotify.apply {
-            setAnchorView(binding.viewBottom.id)
-            show()
-        }
+    private fun removeBetListFragment() {
+        supportFragmentManager.beginTransaction().remove(betListFragment).commit()
     }
+    //endregion
 
     private fun showStatistics(matchId: String?) {
         StatisticsDialog.newInstance(matchId)
@@ -489,7 +498,7 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
         matchInfoList: List<MatchInfo>
     ) {
         unSubscribeChannelHallAll()
-        
+
         startActivity(Intent(this, GameActivity::class.java).apply {
             putExtra(IS_FROM_PUBLICITY, true)
             putExtra(PUBLICITY_GAME_TYPE, gameType)
@@ -553,8 +562,18 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
                 tvLogin -> {
                     goLoginPage()
                 }
+                publicityToolbar.ivLogo -> {
+                    removeBetListFragment()
+                }
                 publicityToolbar.blockLanguage -> {
                     goSwitchLanguagePage()
+                }
+                publicityToolbar.ivMenu -> {
+                    if (drawerLayout.isDrawerOpen(viewNavRight.navRight)) drawerLayout.closeDrawers()
+                    else {
+                        drawerLayout.openDrawer(viewNavRight.navRight)
+                        viewModel.getMoney()
+                    }
                 }
                 rvPublicity -> {
                     goLoginPage()
@@ -571,8 +590,112 @@ class GamePublicityActivity : BaseSocketActivity<GamePublicityViewModel>(GamePub
         startActivity(Intent(this@GamePublicityActivity, LoginActivity::class.java))
     }
 
+    private fun goGamePage() {
+        GameActivity.reStart(this)
+        finish()
+    }
+
     private fun goSwitchLanguagePage() {
-        startActivity(Intent(this@GamePublicityActivity, SwitchLanguageActivity::class.java))
+        startActivity(Intent(this@GamePublicityActivity, SwitchLanguageActivity::class.java).apply {
+            putExtra(FROM_ACTIVITY, this@GamePublicityActivity::class.java)
+        })
+    }
+
+    override fun initMenu() {
+        //關閉側邊欄滑動行為
+        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+
+        //選單選擇結束要收起選單
+        val menuFrag =
+            supportFragmentManager.findFragmentById(binding.viewNavRight.fragmentMenu.id) as MenuFragment
+        menuFrag.setDownMenuListener { binding.drawerLayout.closeDrawers() }
+        binding.viewNavRight.navRight.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
+    }
+
+    override fun initBottomNavigation() {
+        viewModel.getTransNum()
+        binding.gameBottomNavigation.sportBottomNavigation.setNavigationItemClickListener {
+            when (it) {
+                R.id.navigation_sport -> {
+                    viewModel.navGame()
+                    true
+                }
+                R.id.navigation_game -> {
+                    viewModel.navMyFavorite()
+                    false
+                }
+                R.id.item_bet_list -> {
+                    viewModel.navShoppingCart()
+                    false
+                }
+                R.id.navigation_account_history -> {
+                    viewModel.navAccountHistory()
+                    false
+                }
+                R.id.navigation_transaction_status -> {
+                    viewModel.navTranStatus()
+                    false
+                }
+                else -> false
+            }
+        }
+    }
+
+    override fun updateUiWithLogin(isLogin: Boolean) {
+        with(binding) {
+            if (isLogin) {
+                gameBottomNavigation.sportBottomNavigation.visibility = View.VISIBLE
+                publicityToolbar.ivNotice.visibility = View.VISIBLE
+                publicityToolbar.ivMenu.visibility = View.VISIBLE
+
+                publicityToolbar.blockLanguage.visibility = View.GONE
+
+                viewBottom.layoutParams.height = 55.dp
+            } else {
+                gameBottomNavigation.sportBottomNavigation.visibility = View.GONE
+                publicityToolbar.ivNotice.visibility = View.GONE
+                publicityToolbar.ivMenu.visibility = View.GONE
+
+                publicityToolbar.blockLanguage.visibility = View.VISIBLE
+
+                viewBottom.layoutParams.height = 60.dp
+            }
+        }
+    }
+
+    override fun updateOddsType(oddsType: OddsType) {
+        //盤口顯示方式已調整至右側邊欄
+    }
+
+    override fun updateBetListCount(num: Int) {
+        binding.gameBottomNavigation.sportBottomNavigation.setBetCount(num)
+    }
+
+    override fun showLoginNotify() {
+        snackBarLoginNotify.apply {
+            setAnchorView(binding.viewBottom.id)
+            show()
+        }
+    }
+
+    override fun showMyFavoriteNotify(myFavoriteNotifyType: Int) {
+        setSnackBarMyFavoriteNotify(myFavoriteNotifyType)
+        snackBarMyFavoriteNotify?.apply {
+            setAnchorView(binding.viewBottom.id)
+            show()
+        }
+    }
+
+    override fun navOneSportPage(thirdGameCategory: ThirdGameCategory?) {
+        if (thirdGameCategory != null) {
+            val intent = Intent(this, MainActivity::class.java)
+                .putExtra(MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory)
+            startActivity(intent)
+
+            return
+        }
+
+        goGamePage()
     }
 
 }
