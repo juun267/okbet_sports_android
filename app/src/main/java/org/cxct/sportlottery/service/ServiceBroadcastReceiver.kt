@@ -38,6 +38,8 @@ import org.cxct.sportlottery.service.BackService.Companion.mUserId
 import org.cxct.sportlottery.util.EncryptUtil
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
+import org.cxct.sportlottery.util.MatchOddUtil.convertToIndoOdds
+import org.cxct.sportlottery.util.MatchOddUtil.convertToMYOdds
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -308,6 +310,8 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
                 oddsList.oddsList?.forEach { odd ->
                     odd?.odds = odd?.odds?.applyDiscount(discount)
                     odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
+                    odd?.malayOdds = odd?.hkOdds?.convertToMYOdds()
+                    odd?.indoOdds = odd?.hkOdds?.convertToIndoOdds()
 
                     if (oddsList.playCateCode == PlayCate.EPS.value) {
                         odd?.extInfo = odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()

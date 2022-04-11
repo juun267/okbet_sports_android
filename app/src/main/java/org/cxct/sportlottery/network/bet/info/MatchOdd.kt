@@ -62,5 +62,6 @@ data class MatchOdd(
     var oddsHasChanged = false
     var spreadState: Int = SpreadState.SAME.state
     var extInfo: String? = null //球員名稱
+    var isOnlyEUType: Boolean = false
 }
 

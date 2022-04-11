@@ -2249,11 +2249,11 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     ) {
         mLeagueOddList.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach { matchOdd ->
-                if (selectedMatchOdd.matchInfo?.id == matchOdd.matchInfo?.id) matchOdd.isExpand =
-                    true
-                matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
-                    if (selectedQuickPlayCate.code == quickPlayCate.code) quickPlayCate.isSelected =
-                        true
+                if (selectedMatchOdd.matchInfo?.id == matchOdd.matchInfo?.id) {
+                    matchOdd.isExpand = true
+                    matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                        if (selectedQuickPlayCate.code == quickPlayCate.code) quickPlayCate.isSelected = true
+                    }
                 }
             }
         }
