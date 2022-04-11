@@ -83,6 +83,9 @@ class QuickListView @JvmOverloads constructor(
     private fun initViews() {
         league_odd_quick_cate_close?.setOnClickListener(this)
         league_odd_quick_cate_tabs?.setOnCheckedChangeListener { group, checkedId ->
+            mQuickPlayCateList.forEach {
+                    it.isSelected = it.hashCode() == checkedId
+            }
             if (mCloseTag) {
                 mSelectedQuickPlayCate = null
                 mCloseTag = false
