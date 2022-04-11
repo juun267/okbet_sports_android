@@ -1,10 +1,8 @@
 package org.cxct.sportlottery.ui.game.betList
 
-import android.animation.Animator
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
@@ -13,10 +11,7 @@ import android.os.Message
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
-import android.text.style.BackgroundColorSpan
 import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -63,6 +58,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.util.*
 import org.parceler.Parcels
+import kotlin.math.min
 
 
 const val INPLAY: Int = 1
@@ -183,6 +179,13 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
     lateinit var data: FastBetDataBean
     var oldOdds = ""
+
+    private var mUserMoney: Double = 0.0
+        set(value) {
+            field = value
+            binding.layoutKeyBoard.setMaxBetMoney(getMaxBetMoney())
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -270,7 +273,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 binding.layoutKeyBoard.showKeyboard(
                     view as EditText,
                     null,
-                    betInfoListData?.parlayOdds?.max?.toLong()
+                    getMaxBetMoney()
                         ?: GameConfigManager.maxBetMoney?.toLong() ?: 0,
                     betInfoListData?.parlayOdds?.min?.toLong() ?: 0
                 )
@@ -478,6 +481,12 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
         }
 
+        viewModel.userMoney.observe(viewLifecycleOwner) {
+            it?.let { userMoney ->
+                mUserMoney = userMoney
+            }
+        }
+
         viewModel.betInfoList.observe(this.viewLifecycleOwner) { it ->
             it.peekContent().let { list ->
                 if (list.isNotEmpty()) {
@@ -648,6 +657,12 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         receiver.matchOddsLock.observe(this.viewLifecycleOwner) {
             it?.let { matchOddsLockEvent ->
                 viewModel.updateLockMatchOdd(matchOddsLockEvent)
+            }
+        }
+
+        receiver.userMoney.observe(this.viewLifecycleOwner) {
+            it?.let { userMoney ->
+                mUserMoney = userMoney
             }
         }
     }
@@ -916,6 +931,15 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
         }
         snackBarNotify?.show()
+    }
+
+    private fun getMaxBetMoney(): Long {
+        val parlayMaxBet = betInfoListData?.parlayOdds?.max ?: 0
+        return if (parlayMaxBet > 0) {
+            min(parlayMaxBet.toLong(), mUserMoney.toLong())
+        } else {
+            mUserMoney.toLong()
+        }
     }
 
 }
