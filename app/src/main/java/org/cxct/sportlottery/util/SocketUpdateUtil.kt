@@ -126,7 +126,7 @@ object SocketUpdateUtil {
                     GameType.FT.key -> {
                         matchClockCO.matchTime
                     }
-                    GameType.BK.key -> {
+                    GameType.BK.key,GameType.RB.key,GameType.AFT.key  -> {
                         matchClockCO.remainingTimeInPeriod
                     }
                     else -> null
