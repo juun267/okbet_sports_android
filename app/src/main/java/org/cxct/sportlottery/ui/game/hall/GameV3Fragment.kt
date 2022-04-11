@@ -546,27 +546,32 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             }
     }
 
+    @SuppressLint("LogNotTimber")
     private fun setupGameListView(view: View) {
         view.game_list.apply {
             this.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             this.adapter = leagueAdapter
-            addScrollWithItemVisibility {
-                if (leagueAdapter.data.isNotEmpty()) {
-                    leagueAdapter.data.forEachIndexed { index, leagueOdd ->
-                        if (it.any { vr -> vr == index }) {
-                            if (leagueAdapter.data[index].unfold == FoldState.UNFOLD.code) {
-                                subscribeChannelHall(leagueAdapter.data[index])
-                                Log.d("[subscribe]", "訂閱 ${leagueAdapter.data[index].league.name}")
-                            } else {
-                                Log.d("[subscribe]", "收合中 不訂閱 ${leagueAdapter.data[index].league.name}")
-                            }
-                        } else {
-                            unSubscribeChannelHall(leagueAdapter.data[index])
-                            Log.d("[subscribe]", "取消訂閱 ${leagueAdapter.data[index].league.name}")
+            addScrollWithItemVisibility(
+                onScrolling = {
+                    unSubscribeChannelHallAll()
+                },
+                onVisible = {
+                    if (leagueAdapter.data.isNotEmpty()) {
+                        it.forEach { p ->
+                            Log.d(
+                                "[subscribe]",
+                                "訂閱 ${leagueAdapter.data[p.first].league.name} -> " +
+                                        "${leagueAdapter.data[p.first].matchOdds[p.second].matchInfo?.homeName} vs " +
+                                        "${leagueAdapter.data[p.first].matchOdds[p.second].matchInfo?.awayName}"
+                            )
+                            subscribeChannelHall(
+                                leagueAdapter.data[p.first].gameType?.key,
+                                leagueAdapter.data[p.first].matchOdds[p.second].matchInfo?.id
+                            )
                         }
                     }
                 }
-            }
+            )
         }
     }
 
@@ -1183,7 +1188,11 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                     }
                                 }
                                 else -> {
-                                    unSubscribeChannelHall(nowGameType ?: GameType.FT.key, getPlaySelectedCode(), mLeagueChangeEvent?.matchIdList?.firstOrNull())
+                                    unSubscribeChannelHall(
+                                        nowGameType ?: GameType.FT.key,
+                                        getPlaySelectedCode(),
+                                        mLeagueChangeEvent?.matchIdList?.firstOrNull()
+                                    )
                                     subscribeChannelHall(nowGameType ?: GameType.FT.key, mLeagueChangeEvent?.matchIdList?.firstOrNull())
                                     if (args.matchType == MatchType.OTHER) {
                                         viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
@@ -1568,15 +1577,17 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
         val playCateMenuCode =
             if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else getPlaySelectedCode()
-        val oddsSortFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else PlayCateMenuFilterUtils.filterOddsSort(
-            nowGameType,
-            playCateMenuCode
-        )
-        val playCateNameMapFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) PlayCateMenuFilterUtils.filterSelectablePlayCateNameMap(
-            nowGameType,
-            getPlaySelectedCode(),
-            playCateMenuCode
-        ) else PlayCateMenuFilterUtils.filterPlayCateNameMap(nowGameType, playCateMenuCode)
+        val oddsSortFilter =
+            if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else PlayCateMenuFilterUtils.filterOddsSort(
+                nowGameType,
+                playCateMenuCode
+            )
+        val playCateNameMapFilter =
+            if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) PlayCateMenuFilterUtils.filterSelectablePlayCateNameMap(
+                nowGameType,
+                getPlaySelectedCode(),
+                playCateMenuCode
+            ) else PlayCateMenuFilterUtils.filterPlayCateNameMap(nowGameType, playCateMenuCode)
 
         this.forEach { LeagueOdd ->
             LeagueOdd.matchOdds.forEach { MatchOdd ->
@@ -1699,11 +1710,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 MatchType.TODAY, MatchType.EARLY, MatchType.PARLAY, MatchType.OTHER -> View.VISIBLE
                 else -> View.GONE
             }
-            game_match_category_pager.visibility = if ((args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) && matchCategoryPagerAdapter.itemCount > 0) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
+            game_match_category_pager.visibility =
+                if ((args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) && matchCategoryPagerAdapter.itemCount > 0) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
             game_play_category.visibility = if (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START ||
                 (args.matchType == MatchType.OTHER && childMatchType == MatchType.OTHER)
             ) {
