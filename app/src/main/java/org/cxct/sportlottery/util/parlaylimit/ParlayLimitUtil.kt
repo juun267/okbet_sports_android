@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.util.parlaylimit
 
 import android.annotation.SuppressLint
+import org.cxct.sportlottery.util.ArithUtil
+import timber.log.Timber
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
@@ -48,7 +50,7 @@ object ParlayLimitUtil {
             // 投注限額 設定值/odds
             //val maxPayLimit = max!!.divide(hkOdds, 0, RoundingMode.DOWN)
 
-            val maxPayLimit = (max!!/hkOdds).toInt().toBigDecimal()
+            val maxPayLimit = ArithUtil.div(max!!, hkOdds, 0, RoundingMode.DOWN)
 
             parlayBetLimit.odds = odds
             parlayBetLimit.hdOdds = hkOdds
@@ -82,7 +84,7 @@ object ParlayLimitUtil {
     }
 
     private fun getTotalHkOdds(oddsList: List<BigDecimal?>, comList: List<IntArray>): BigDecimal {
-        var totalOdds = BigDecimal.ONE
+        var totalOdds = BigDecimal.ZERO
         for (oddsIndexArray in comList) {
             var odd = BigDecimal.ONE
             for (index in oddsIndexArray) {
@@ -90,7 +92,7 @@ object ParlayLimitUtil {
             }
             totalOdds = totalOdds.add(OddsLadder.oddsEuToHk(odd))
         }
-        return totalOdds
+        return if (totalOdds == BigDecimal.ZERO) BigDecimal.ONE else totalOdds
     }
 
 
