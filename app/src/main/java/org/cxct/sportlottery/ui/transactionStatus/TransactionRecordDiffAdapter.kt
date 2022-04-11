@@ -34,12 +34,14 @@ class TransactionRecordDiffAdapter :
     ListAdapter<DataItem, RecyclerView.ViewHolder>(TransactionRecordDiffCallBack()) {
     var isLastPage: Boolean = false
     var totalAmount: Double = 0.0
+    var status = 0
 
     private enum class ViewType { Match, Parlay, Outright, LastTotal, NoData }
 
-    fun setupBetList(betListData: BetListData) {
+    fun setupBetList(betListData: BetListData, status: Int) {
         isLastPage = betListData.isLastPage
         totalAmount = betListData.totalMoney
+        this.status = status
         val itemList = when {
             betListData.row.isEmpty() -> listOf(DataItem.NoData)
             else -> betListData.row.map { DataItem.Item(it) } + listOf(DataItem.Total(totalAmount))
@@ -61,7 +63,7 @@ class TransactionRecordDiffAdapter :
         val rvData = getItem(holder.adapterPosition)
         when (holder) {
             is MatchRecordViewHolder -> {
-                holder.bind((rvData as DataItem.Item).row)
+                holder.bind((rvData as DataItem.Item).row,status)
             }
             is ParlayRecordViewHolder -> {
                 holder.bind((rvData as DataItem.Item).row)
@@ -96,7 +98,7 @@ class TransactionRecordDiffAdapter :
             }
         }
 
-        fun bind(data: Row) {
+        fun bind(data: Row, status: Int) {
             val matchOdds = data.matchOdds[0]
             itemView.apply {
                 title_league_name.text = matchOdds.leagueName
@@ -129,7 +131,9 @@ class TransactionRecordDiffAdapter :
 
                         override fun onFinish() {
                             tv_count_down.text = "0 ${context.getString(R.string.sec)}"
-//                            tv_count_down.visibility = View.GONE
+                            if(status != 0){
+                                tv_count_down.visibility = View.GONE
+                            }
                         }
                     }.start()
                 }else{

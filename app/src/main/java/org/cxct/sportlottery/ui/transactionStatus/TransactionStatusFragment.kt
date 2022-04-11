@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.transactionStatus
 
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -92,7 +93,8 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
     private val handler by lazy { Handler() }
     private fun initObserve() {
         viewModel.betListData.observe(viewLifecycleOwner) {
-            recordDiffAdapter.setupBetList(it)
+            Log.e("Martin","123321="+viewModel.statusList)
+            recordDiffAdapter.setupBetList(it, viewModel.statusList?.get(0) ?:0)
             btn_back_to_top.visibility = if (it.row.isEmpty()) View.GONE else View.VISIBLE
             divider.visibility = if (it.row.isEmpty()) View.GONE else View.VISIBLE
         }
