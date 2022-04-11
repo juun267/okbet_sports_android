@@ -92,5 +92,8 @@ data class UserInfoData(
     @Json(name = "perBetLimit")
     val perBetLimit: Int?,
     @Json(name = "uwEnableTime")
-    val uwEnableTime: Long? = 0
+    val uwEnableTime: Long? = 0,
+    @Json(name = "maxPayout")
+    val maxPayout: Double? = 0.0,
+
 )

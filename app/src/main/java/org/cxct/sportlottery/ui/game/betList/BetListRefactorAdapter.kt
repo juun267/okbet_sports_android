@@ -1501,6 +1501,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     if(!hasFocus) layoutKeyBoard?.hideKeyboard()
                 }
 
+                ll_control_connect.setOnClickListener {
+                    onItemClickListener.onHideKeyBoard()
+                    clearFocus()
+                }
+
 //                et_clickable.setOnClickListener {
 //                    et_bet.isFocusable = true
 //                    //onItemClickListener.onShowParlayKeyboard(et_bet, data, position, data.max.toLong())

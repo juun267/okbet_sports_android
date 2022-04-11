@@ -14,6 +14,7 @@ object GameConfigManager {
 
     var maxCpBetMoney: Int? = null//会员对应vip层级的单注冠军最大下注额
 
+
     /**
      * 獲取第三方遊戲 首頁 icon 資源
      *

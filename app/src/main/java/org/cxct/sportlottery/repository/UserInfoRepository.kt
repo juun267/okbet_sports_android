@@ -205,7 +205,8 @@ class UserInfoRepository(private val androidContext: Context) {
             discount = userInfoData.discount,
             verified = userInfoData.verified,
             perBetLimit = userInfoData.perBetLimit,
-            uwEnableTime = userInfoData.uwEnableTime
+            uwEnableTime = userInfoData.uwEnableTime,
+            maxPayout = userInfoData.maxPayout
         )
 
 }
