@@ -47,7 +47,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
         set(value) {
             this.playCateNameMap = playCateNameMap.addSplitPlayCateTranslation()
             val oddsSortCount = oddsSort?.split(",")?.size ?: 999 // 最大顯示數量
-            field = value.sortScores().refactorPlayCode().sortOdds().splitPlayCate()
+            field = value.sortScores().refactorPlayCode().sortOdds().filterOddsStatus().splitPlayCate()
                 .filterPlayCateSpanned().sortPlayCate()
             val gameList =
                 field.filterValues { !it.isNullOrEmpty() }.filter { it.value?.getOrNull(0) != null }
@@ -328,6 +328,13 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
         }.thenBy { it })
 
         return if(oddsSort.isNullOrEmpty()) this else oddsMap
+    }
+
+    /**
+     * 把賠率狀態為 2(不可用，不可见也不可投注) 的狀況過濾掉
+     * */
+    private fun Map<String, List<Odd?>?>.filterOddsStatus(): Map<String, List<Odd?>?> {
+        return filterValues { it?.firstOrNull()?.status != BetStatus.DEACTIVATED.code }
     }
 
     //SINGLE_OU、SINGLE_BTS兩種玩法要特殊處理，後端API沒給翻譯
