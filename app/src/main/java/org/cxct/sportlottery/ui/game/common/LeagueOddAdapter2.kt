@@ -187,6 +187,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 GameType.FT.key -> setFtScoreText(matchType, item)
                 GameType.BK.key -> setBkScoreText(matchType, item)
                 GameType.TT.key -> setVbScoreText(matchType, item)
+                GameType.BM.key -> setBmScoreText(matchType, item)
                 else -> setBkScoreText(matchType, item)//TODO Bill 這裡要等PM確認版型 SocketUpdateUtil
             }
             setStatusTextColor(item)
@@ -228,6 +229,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 GameType.FT.key -> setFtScoreText(matchType, item)
                 GameType.BK.key -> setBkScoreText(matchType, item)
                 GameType.TT.key -> setVbScoreText(matchType, item)
+                GameType.BM.key -> setBmScoreText(matchType, item)
                 else -> setBkScoreText(matchType, item)//TODO Bill 這裡要等PM確認版型 SocketUpdateUtil
             }
 
@@ -312,6 +314,14 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 setPointText(matchType, item)
                 setSptText(item, matchType)
 
+            }
+        }
+
+        private fun setBmScoreText(matchType: MatchType, item: MatchOdd) {
+            itemView.apply {
+                setAllScoreTextAtBottom(matchType, item)
+                setScoreText(matchType, item)
+                setSptText(item, matchType)
             }
         }
 
