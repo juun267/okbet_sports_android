@@ -652,8 +652,11 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                         setupBackScore(event)
                         setupStatusTnVb(event)
                     }
+                    GameType.CK -> {
+                        setupFrontScore(event)
+                    }
                     // Todo: 仍有其他球種待處理
-                    // CK, BB, MR, GF, FB, OTHER
+                    // BB, MR, GF, FB, OTHER
                     else -> {
                     }
                 }
