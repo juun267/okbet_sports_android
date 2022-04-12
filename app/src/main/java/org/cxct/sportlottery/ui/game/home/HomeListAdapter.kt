@@ -1,24 +1,17 @@
 package org.cxct.sportlottery.ui.game.home
 
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import com.zhy.adapter.recyclerview.CommonAdapter
 import com.zhy.adapter.recyclerview.base.ViewHolder
 import kotlinx.android.synthetic.main.home_game_highlight_title.view.*
-import kotlinx.android.synthetic.main.home_game_table_4.view.*
-import kotlinx.android.synthetic.main.home_game_table_4.view.indicator_view
 import kotlinx.android.synthetic.main.home_game_table_4.view.view_pager
 import kotlinx.android.synthetic.main.home_sport_table_4.view.*
 import kotlinx.android.synthetic.main.itemview_sport_type_list.view.*
@@ -26,7 +19,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeString
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.MenuCode
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
@@ -38,11 +30,9 @@ import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.service.match_clock.MatchClockCO
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
 import org.cxct.sportlottery.network.sport.Item
-import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeListener
 import org.cxct.sportlottery.ui.game.home.gameTable4.GameEntity
 import org.cxct.sportlottery.ui.game.home.gameTable4.OtherMatch
-import org.cxct.sportlottery.ui.game.home.gameTable4.Vp2GameTable4Adapter
 import org.cxct.sportlottery.ui.game.home.recommend.OddBean
 import org.cxct.sportlottery.ui.game.home.recommend.RecommendGameEntity
 import org.cxct.sportlottery.ui.game.interfaces.UpdateHighLightInterface
@@ -51,7 +41,6 @@ import org.cxct.sportlottery.util.GameConfigManager.getGameIcon
 import org.cxct.sportlottery.util.GameConfigManager.getTitleBarBackground
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.updateEPSDiscount
-import org.cxct.sportlottery.util.OddsSortUtil
 import org.cxct.sportlottery.util.OddsSortUtil.recommendSortOddsMap
 import org.cxct.sportlottery.util.RecyclerViewGridDecoration
 import org.cxct.sportlottery.util.TimeUtil
@@ -263,6 +252,8 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             is GameTableViewHolder -> {
                 holder.apply {
+                    setParams(mMatchType, selectedOdds, oddsType, isLogin)
+                    //setListeners(onSubscribeChannelHallListener = onSubscribeChannelHallListener)
                     bind(data as GameEntity)
                 }
             }
@@ -303,9 +294,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 mUpdateHighLightInterfaceListener[position] = holder.getUpdateHighLightInterface()
             }
             // 底部資訊
-            is HomeBottomViewHolder -> {
-                // TODO
-            }
+            is HomeBottomViewHolder -> { }
         }
     }
 
@@ -318,6 +307,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             holder.saveInstanceState = holder.itemView.view_pager.currentItem
         }
         if(holder is GameTableViewHolder) {
+            //Log.d("Hewie45", "onViewDetachedFromWindow => ${holder}")
             holder.saveInstanceState = holder.itemView.view_pager.currentItem
         }
     }
@@ -331,20 +321,12 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             holder.itemView.view_pager.setCurrentItem(holder.saveInstanceState, false)
         }
         if(holder is GameTableViewHolder) {
+            //Log.d("Hewie45", "onViewAttachedToWindow => ${holder}")
             holder.itemView.view_pager.setCurrentItem(holder.saveInstanceState, false)
         }
     }
 
     override fun getItemCount(): Int = mDataList.size
-
-    fun updateHighLightList() {
-        mUpdateHighLightInterfaceListener.forEach {
-            val data = mDataList[it.key]
-            if(data is MatchOdd) {
-                it.value.doUpdate(data, data, highLightOddsType)
-            }
-        }
-    }
 
     fun setGameHighLightTitle(homeHighlightGameTitleItemData: HomeHighlightGameTitleItemData = HomeHighlightGameTitleItemData()) {
         removeDatas(homeHighlightGameTitleItemData)
@@ -534,124 +516,22 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 }
             }
         }
-        // TODO notifyDataSetChanged()
     }
-    // endregion
-    // region 底部資訊
-    fun setBottomNavigation(homeBottomNavigationItemData: HomeBottomNavigationItemData = HomeBottomNavigationItemData()) {
-        removeDatas(homeBottomNavigationItemData)
-        addDataWithSort(homeBottomNavigationItemData)
-    }
-    // endregion
     // endregion
 
     // region ViewHolders
     class UndefinedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     // Recommend Game Bar
-    inner class GameRecommendBarViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        init {
-
-        }
-
-        fun bind() {
-
-        }
-    }
+    inner class GameRecommendBarViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     // HighLight Bar
-    inner class GameHighLightBarViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        init {
-
-        }
-
-        fun bind() {
-
-        }
-    }
+    inner class GameHighLightBarViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     // HighLight Title
     inner class GameHighLightTitleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        init {
-
-        }
-
         fun bind(data: HomeHighlightGameTitleItemData) {
             itemView.highlight_tv_game_name.text = data.highlightGameTitle
             itemView.highlight_iv_game_icon.setImageResource(data.highlightGameIcon)
             itemView.highlight_titleBar.setBackgroundResource(data.highlightGameBackground)
-        }
-    }
-    // RvGameTable4Adapter
-    inner class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        var saveInstanceState: Int = 0
-
-        private var onPageChangeCallback: ViewPager2.OnPageChangeCallback? = null
-
-        init {
-            itemView.apply {
-                view_pager.getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
-            }
-        }
-
-        fun bind(data: GameEntity) {
-            itemView.apply {
-                tv_game_name.text = data.name
-                tv_game_num.text = data.num.toString()
-                val gameCode = data.code
-                getGameIcon(gameCode)?.let {
-                    iv_game_icon.setImageResource(it)
-                }
-                getTitleBarBackground(gameCode)?.let {
-                    titleBar.setBackgroundResource(it)
-                }
-                titleBar.setOnClickListener {
-                    onClickTotalMatchListener?.onClick(data)
-                }
-
-                data.matchOdds.let {
-                    // TODO 這裡存在一個隱性的效能問題
-                    if (data.vpTableAdapter == null) data.vpTableAdapter = Vp2GameTable4Adapter(mMatchType)
-                    data.vpTableAdapter?.onClickMatchListener = onClickMatchListener
-                    data.vpTableAdapter?.onClickOddListener = onClickOddListener
-                    data.vpTableAdapter?.onClickFavoriteListener = onClickFavoriteListener
-                    data.vpTableAdapter?.onClickStatisticsListener = onClickStatisticsListener
-                    data.vpTableAdapter?.setData(data.code ?: "", it, isLogin ?: false, oddsType, data.playCateNameMap ?: mutableMapOf(), selectedOdds)
-                    view_pager.adapter = data.vpTableAdapter
-
-                    indicator_view.setupWithViewPager2(view_pager)
-                    indicator_view.apply {
-                        visibility = if (it.size <= 1) {
-                            View.GONE
-                        } else {
-                            View.VISIBLE
-                        }
-                    }
-
-                    onPageChangeCallback?.let { callback ->
-                        view_pager.unregisterOnPageChangeCallback(callback)
-                    }
-                    onPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
-                        override fun onPageSelected(position: Int) {
-                            super.onPageSelected(position)
-                            if (position < 0 || position >= it.size || it.isNullOrEmpty()) return
-                            val matchOdd = it[position]
-                            onSubscribeChannelHallListener?.subscribeChannel(
-                                matchOdd.matchInfo?.gameType,
-                                if (mMatchType == MatchType.IN_PLAY || mMatchType == MatchType.MAIN) MenuCode.HOME_INPLAY_MOBILE.code else MenuCode.HOME_ATSTART_MOBILE.code,
-                                matchOdd.matchInfo?.id
-                            )
-                        }
-                    }
-                    onPageChangeCallback?.let { callback ->
-                        view_pager.registerOnPageChangeCallback(callback)
-                    }
-                }
-
-                OverScrollDecoratorHelper.setUpOverScroll(
-                    view_pager.getChildAt(0) as RecyclerView,
-                    OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL
-                )
-            }
         }
     }
     inner class SportGridViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -804,9 +684,6 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         if (isUpdate) {
             removeDatas(getMatchOdd().firstOrNull())
             list.forEach { addDataWithSort(it) }
-//            Handler(Looper.getMainLooper()).post {
-//                notifyDataSetChanged()
-//            }
         }
 
     }
@@ -820,9 +697,6 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 }
             }
         }
-//        Handler(Looper.getMainLooper()).post {
-//            notifyDataSetChanged()
-//        }
         removeDatas(getMatchOdd().firstOrNull())
         list.forEach { addDataWithSort(it) }
         this.discount = discount
@@ -830,9 +704,6 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     fun notifyHighLightOddsTypeChanged(oddsType: OddsType) {
         this.highLightOddsType = oddsType
-//        Handler(Looper.getMainLooper()).post {
-//            notifyDataSetChanged()
-//        }
     }
 
     fun notifyHighLightSelectedOddsChanged(selectedOdds: MutableList<String>) {
@@ -881,7 +752,6 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
         mDataList.add(src)
         notifyItemChanged(mDataList.size - 1)
-        //print("${src}")
     }
 
     private fun isPrev(src: Any, target: Any): Boolean {
@@ -890,20 +760,6 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     private fun getSortPoint(item: Any): Int = SORTMAP[item::class] ?: 0
-
-//    private fun refresh(src: Any?) {
-//        src?.let {
-//            var start = 0
-//            var last = 0
-//            mDataList.forEachIndexed { index, any ->
-//                if (any::class.isInstance(src)) {
-//                    if (start == 0) start = index
-//                    last = index
-//                }
-//            }
-//            notifyItemRangeChanged(start, (last - start))
-//        }
-//    }
 
     private inline fun <reified T> getFilterData(): List<T> {
         val result = mutableListOf<T>()

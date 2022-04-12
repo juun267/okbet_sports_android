@@ -274,7 +274,6 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
             false -> {
                 unSubscribeChannelHall(
                     args.gameType.key,
-                    PlayCate.OUTRIGHT.value,
                     matchOdd.matchInfo?.id
                 )
             }

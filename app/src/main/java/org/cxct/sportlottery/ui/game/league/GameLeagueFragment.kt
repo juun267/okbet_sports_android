@@ -213,24 +213,14 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 true -> {
                     unSubscribeChannelHall(
                         leagueOdd.gameType?.key,
-                        getPlaySelectedCode(),
                         matchOdd.matchInfo?.id
                     )
-
-                    if (matchOdd.matchInfo?.eps == 1) {
-                        unSubscribeChannelHall(
-                            leagueOdd.gameType?.key,
-                            PlayCate.EPS.value,
-                            matchOdd.matchInfo.id
-                        )
-                    }
 
                     matchOdd.quickPlayCateList?.forEach {
                         when (it.isSelected) {
                             true -> {
                                 unSubscribeChannelHall(
                                     leagueOdd.gameType?.key,
-                                    it.code,
                                     matchOdd.matchInfo?.id
                                 )
                             }
@@ -552,7 +542,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     leagueAdapter.data.any { leagueOdd -> leagueOdd.league.id == leagueChangeEvent.leagueIdList?.firstOrNull() }
 
                 if (args.gameType.key == leagueChangeEvent.gameType && hasLeagueIdList) { //聯賽數量固定
-                    unSubscribeChannelHall(args.gameType.key, getPlaySelectedCode(), leagueChangeEvent.matchIdList?.firstOrNull())
+                    unSubscribeChannelHall(args.gameType.key, leagueChangeEvent.matchIdList?.firstOrNull())
                     subscribeChannelHall(args.gameType.key, leagueChangeEvent.matchIdList?.firstOrNull())
                 }
             }
@@ -761,13 +751,6 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         matchOdd.matchInfo?.id
                     )
 
-                    if (matchOdd.matchInfo?.eps == 1) {
-                        subscribeChannelHall(
-                            leagueOdd.gameType?.key,
-                            matchOdd.matchInfo.id
-                        )
-                    }
-
 //                    matchOdd.quickPlayCateList?.forEach {
 //                        when (it.isSelected) {
 //                            true -> {
@@ -790,17 +773,8 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 false -> {
                     unSubscribeChannelHall(
                         leagueOdd.gameType?.key,
-                        getPlayCateMenuCode(),
                         matchOdd.matchInfo?.id
                     )
-
-                    if (matchOdd.matchInfo?.eps == 1) {
-                        unSubscribeChannelHall(
-                            leagueOdd.gameType?.key,
-                            PlayCate.EPS.value,
-                            matchOdd.matchInfo.id
-                        )
-                    }
 
 //                    matchOdd.quickPlayCateList?.forEach {
 //                        unSubscribeChannelHall(
@@ -822,17 +796,8 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             leagueOdd.matchOdds.forEach { matchOdd ->
                 unSubscribeChannelHall(
                     leagueOdd.gameType?.key,
-                    getPlaySelectedCode(),
                     matchOdd.matchInfo?.id
                 )
-
-                if (matchOdd.matchInfo?.eps == 1) {
-                    unSubscribeChannelHall(
-                        leagueOdd.gameType?.key,
-                        PlayCate.EPS.value,
-                        matchOdd.matchInfo.id
-                    )
-                }
             }
         }
     }
@@ -841,17 +806,8 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         leagueOdd.matchOdds.forEach { matchOdd ->
             unSubscribeChannelHall(
                 leagueOdd.gameType?.key,
-                getPlayCateMenuCode(),
                 matchOdd.matchInfo?.id
             )
-
-            if (matchOdd.matchInfo?.eps == 1) {
-                unSubscribeChannelHall(
-                    leagueOdd.gameType?.key,
-                    PlayCate.EPS.value,
-                    matchOdd.matchInfo.id
-                )
-            }
         }
     }
 

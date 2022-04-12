@@ -592,28 +592,12 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                         leagueOdd.gameType?.key,
                         matchOdd.matchInfo?.id
                     )
-
-                    if (matchOdd.matchInfo?.eps == 1) {
-                        subscribeChannelHall(
-                            leagueOdd.gameType?.key,
-                            matchOdd.matchInfo.id
-                        )
-                    }
                 }
                 false -> {
                     unSubscribeChannelHall(
                         leagueOdd.gameType?.key,
-                        getPlaySelectedCode(),
                         matchOdd.matchInfo?.id
                     )
-
-                    if (matchOdd.matchInfo?.eps == 1) {
-                        unSubscribeChannelHall(
-                            leagueOdd.gameType?.key,
-                            PlayCate.EPS.value,
-                            matchOdd.matchInfo.id
-                        )
-                    }
                 }
             }
         }
@@ -627,7 +611,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             leagueOdd.matchOdds.forEach { matchOdd ->
                 unSubscribeChannelHall(
                     leagueOdd.gameType?.key,
-                    getPlaySelectedCode(),
                     matchOdd.matchInfo?.id
                 )
             }
