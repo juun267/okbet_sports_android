@@ -606,7 +606,7 @@
     <string name="bet_info_parlay_win_quota">số tiền có thể thắng</string>
     <string name="bet_info_add_bet_success">Đặt cược thành công</string>
     <string name="bet_info_current_money">Số dư:%s</string>
-    <string name="bet_info_in_play_score">trận bóng đang diễn ra (%2$s:%3$s)</string>
+    <string name="bet_info_in_play_score">%1$s (%2$s-%3$s)</string>
     <string name="bet_info_system_close_incompatible_item">Bạn chọn cách chơi không phù hợp với luật chơi cược xiên, hệ thống đã tự động giúp bạn hủy bỏ</string>
     <string name="bet_info_list_clean">Xóa bằng một cú nhấp chuột</string>
     <string name="bet_info_bet_balance_insufficient">Số dư không đủ</string>
