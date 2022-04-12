@@ -84,7 +84,7 @@ class QuickListView @JvmOverloads constructor(
         league_odd_quick_cate_close?.setOnClickListener(this)
         league_odd_quick_cate_tabs?.setOnCheckedChangeListener { group, checkedId ->
             mQuickPlayCateList.forEach {
-                    it.isSelected = it.hashCode() == checkedId
+                it.isSelected = it.hashCode() == checkedId
             }
             if (mCloseTag) {
                 mSelectedQuickPlayCate = null
@@ -123,7 +123,8 @@ class QuickListView @JvmOverloads constructor(
                                     mSelectedQuickPlayCate!!,
                                     quickOdds1,
                                     mOddsType,
-                                    mLeagueOddListener
+                                    mLeagueOddListener,
+                                    quickListResult.quickListData
                                 )
                             }
                             org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_CORNERS.value, org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_PENALTY.value -> {
@@ -197,7 +198,8 @@ class QuickListView @JvmOverloads constructor(
         selectedQuickPlayCate: QuickPlayCate,
         quickOdds: MutableMap<String, List<Odd?>?>,
         oddsType: OddsType,
-        leagueOddListener: LeagueOddListener?
+        leagueOddListener: LeagueOddListener?,
+        quickListData: QuickListData?
     ) {
         mOddButtonPairAdapter = OddButtonPairAdapter(mMatchOdd?.matchInfo).apply {
             this.oddsType = oddsType
@@ -217,23 +219,31 @@ class QuickListView @JvmOverloads constructor(
         league_odd_quick_odd_btn_pair.visibility = View.VISIBLE
 
         quick_odd_pair_tab_1.apply {
-            visibility =
-                if (quickOdds.keys.any { it == PlayCate.HDP.value || it == PlayCate.OU.value }
-                    && !(quickOdds[PlayCate.HDP.value].isNullOrEmpty() && quickOdds[PlayCate.OU.value].isNullOrEmpty())) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
+            if (quickOdds.keys.any { it == PlayCate.HDP.value || it == PlayCate.OU.value }
+                && !(quickOdds[PlayCate.HDP.value].isNullOrEmpty() && quickOdds[PlayCate.OU.value].isNullOrEmpty())) {
+                text = quickListData?.playCateNameMap?.get(
+                    quickOdds.keys.find { it == PlayCate.HDP.value || it == PlayCate.OU.value }
+                )?.get(
+                    LanguageManager.getSelectLanguage(MultiLanguagesApplication.appContext).key
+                )
+                visibility = View.VISIBLE
+            } else {
+                visibility = View.GONE
+            }
         }
 
         quick_odd_pair_tab_2.apply {
-            visibility =
-                if (quickOdds.keys.any { it == PlayCate.HDP_1ST.value || it == PlayCate.OU_1ST.value }
-                    && !(quickOdds[PlayCate.HDP_1ST.value].isNullOrEmpty() && quickOdds[PlayCate.OU_1ST.value].isNullOrEmpty())) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
+            if (quickOdds.keys.any { it == PlayCate.HDP_1ST.value || it == PlayCate.OU_1ST.value }
+                && !(quickOdds[PlayCate.HDP_1ST.value].isNullOrEmpty() && quickOdds[PlayCate.OU_1ST.value].isNullOrEmpty())) {
+                text = quickListData?.playCateNameMap?.get(
+                    quickOdds.keys.find { it == PlayCate.HDP_1ST.value || it == PlayCate.OU_1ST.value }
+                )?.get(
+                    LanguageManager.getSelectLanguage(MultiLanguagesApplication.appContext).key
+                )
+                visibility = View.VISIBLE
+            } else {
+                visibility = View.GONE
+            }
         }
 
         quick_odd_pair_list.apply {
