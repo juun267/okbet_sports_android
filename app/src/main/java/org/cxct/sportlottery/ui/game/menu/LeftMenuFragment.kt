@@ -39,6 +39,7 @@ import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.menu.ChangeAppearanceDialog
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeFullScreenDialog
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
@@ -63,6 +64,9 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
         LeftMenuItemNewAdapter(
             sConfigData?.thirdOpen == FLAG_OPEN,
             LeftMenuItemNewAdapter.HeaderSelectedListener(
+                backMainPageSelectedListener = {//backMainPage
+                    startActivity(Intent(context, GamePublicityActivity::class.java))
+                },
                 { //recharge
                     viewModel.checkRechargeSystem()
                     closeMenuFragment()

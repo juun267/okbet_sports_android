@@ -7,14 +7,50 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/block_home"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/ic_home_orange"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/txv_price"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:drawablePadding="10dp"
+            android:gravity="start|center_vertical"
+            android:minHeight="48dp"
+            android:paddingHorizontal="10dp"
+            android:text="@string/go_back_home_page"
+            android:textColor="@color/colorBlackLight" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/color_E2E2E2" />
+
+    <LinearLayout
         android:id="@+id/tv_recharge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="22dp"
-            android:layout_height="22dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
             android:src="@drawable/ic_profile_center_recharge"
@@ -25,7 +61,7 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="48dp"
             android:drawablePadding="10dp"
             android:gravity="start|center_vertical"
             android:minHeight="48dp"
@@ -42,8 +78,8 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="22dp"
-            android:layout_height="22dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
             android:src="@drawable/ic_profile_center_withdraw"
@@ -54,7 +90,7 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="48dp"
             android:drawablePadding="10dp"
             android:gravity="start|center_vertical"
             android:minHeight="48dp"
@@ -71,8 +107,8 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="22dp"
-            android:layout_height="22dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
             android:src="@drawable/ic_member_level"
@@ -83,7 +119,7 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="48dp"
             android:drawablePadding="10dp"
             android:gravity="start|center_vertical"
             android:minHeight="48dp"
@@ -100,8 +136,8 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="22dp"
-            android:layout_height="22dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
             android:src="@drawable/icon_gift"
@@ -112,7 +148,7 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="48dp"
             android:drawablePadding="10dp"
             android:gravity="start|center_vertical"
             android:minHeight="48dp"
@@ -137,8 +173,8 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="22dp"
-            android:layout_height="22dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
             android:src="@drawable/icon_finance"
@@ -149,7 +185,7 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="48dp"
             android:drawablePadding="10dp"
             android:gravity="start|center_vertical"
             android:minHeight="48dp"
@@ -169,8 +205,8 @@
         tools:visibility="visible">
 
         <ImageView
-            android:layout_width="22dp"
-            android:layout_height="22dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
             android:src="@drawable/img_special"
@@ -181,7 +217,7 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="48dp"
             android:drawablePadding="10dp"
             android:gravity="start|center_vertical"
             android:minHeight="48dp"

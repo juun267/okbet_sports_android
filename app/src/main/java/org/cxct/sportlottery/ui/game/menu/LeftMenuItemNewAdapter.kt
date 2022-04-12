@@ -182,6 +182,9 @@ class LeftMenuItemNewAdapter(
                 tv_withdraw.isVisible = isLogin
                 tv_member_level.isVisible = isLogin && isShowMemberLevel
 
+                block_home.setOnClickListener {
+                    headerSelectedListener.backMainPageSelected()
+                }
                 tv_recharge.setOnClickListener {
                     headerSelectedListener.rechargeSelected()
                 }
@@ -292,6 +295,7 @@ class LeftMenuItemNewAdapter(
     }
 
     class HeaderSelectedListener(
+        private val backMainPageSelectedListener: () -> Unit,
         private val rechargeSelectedListener: () -> Unit,
         private val withdrawSelectedListener: () -> Unit,
         private val memberLevelSelectedListener: () -> Unit,
@@ -299,6 +303,7 @@ class LeftMenuItemNewAdapter(
         private val inPlaySelectedListener: () -> Unit,
         private val premiumOddsSelectedListener: () -> Unit,
     ) {
+        fun backMainPageSelected() = backMainPageSelectedListener()
         fun rechargeSelected() = rechargeSelectedListener()
         fun withdrawSelected() = withdrawSelectedListener()
         fun memberLevelSelected() = memberLevelSelectedListener()

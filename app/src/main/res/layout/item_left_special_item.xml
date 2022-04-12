@@ -12,8 +12,8 @@
 
         <ImageView
             android:id="@+id/img_ic"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
             android:src="@drawable/img_menu_champ"
@@ -25,7 +25,7 @@
         <TextView
             android:id="@+id/tvSpecialEvent"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="48dp"
             android:drawablePadding="10dp"
             android:gravity="start|center_vertical"
             android:minHeight="48dp"
