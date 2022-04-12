@@ -615,45 +615,49 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     private fun setupStatusList(event: MatchStatusChangeEvent) {
         if (args.matchType != MatchType.IN_PLAY) return
 
-        when (args.gameType) {
-            GameType.FT,
-            GameType.IH -> {
-                setCardText(event)
-                setupFrontScore(event)
+        when (event.matchStatusCO?.status) {
+            GameMatchStatus.HIDE_SCORE.value -> {
+                tv_home_score.visibility = View.GONE
+                tv_away_score.visibility = View.GONE
+                tv_home_score_total.visibility = View.GONE
+                tv_away_score_total.visibility = View.GONE
+                tv_home_score_live.visibility = View.GONE
+                tv_away_score_live.visibility = View.GONE
             }
-            GameType.BK -> {
-                setupFrontScore(event)
-                setupStatusBk(event)
-            }
-            GameType.TN -> {
-                setupPoint(event)
-                setupBackScore(event)
-                setupStatusTnVb(event)
-            }
-            GameType.VB,
-            GameType.TT -> {
-                setupBackScore(event)
-                setupStatusTnVb(event)
-            }
-            GameType.RB, GameType.AFT -> {
-                setupFrontScore(event)
-            }
-            GameType.BM -> {
-                setupBackScore(event)
-                setupStatusTnVb(event)
-            }
-            // Todo: 仍有其他球種待處理
-            // BX, CB, CK, BB, MR, GF, FB, OTHER
             else -> {
+                when (args.gameType) {
+                    GameType.FT,
+                    GameType.IH -> {
+                        setCardText(event)
+                        setupFrontScore(event)
+                    }
+                    GameType.BK -> {
+                        setupFrontScore(event)
+                        setupStatusBk(event)
+                    }
+                    GameType.TN -> {
+                        setupPoint(event)
+                        setupBackScore(event)
+                        setupStatusTnVb(event)
+                    }
+                    GameType.VB,
+                    GameType.TT -> {
+                        setupBackScore(event)
+                        setupStatusTnVb(event)
+                    }
+                    GameType.RB, GameType.AFT -> {
+                        setupFrontScore(event)
+                    }
+                    GameType.BM -> {
+                        setupBackScore(event)
+                        setupStatusTnVb(event)
+                    }
+                    // Todo: 仍有其他球種待處理
+                    // CK, BB, MR, GF, FB, OTHER
+                    else -> {
+                    }
+                }
             }
-        }
-        if(event.matchStatusCO?.status == 999){
-            tv_home_score.visibility = View.VISIBLE
-            tv_away_score.visibility = View.VISIBLE
-            tv_home_score_total.visibility = View.VISIBLE
-            tv_away_score_total.visibility = View.VISIBLE
-            tv_home_score_live.visibility = View.VISIBLE
-            tv_away_score_live.visibility = View.VISIBLE
         }
     }
 
