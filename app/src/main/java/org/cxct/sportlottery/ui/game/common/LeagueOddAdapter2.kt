@@ -503,7 +503,9 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                             isTimerEnable,
                             isTimerPause,
                             item.matchInfo.leagueTime ?: 0,
-                            item.matchInfo.gameType == GameType.BK.key
+                            (item.matchInfo.gameType == GameType.BK.key ||
+                                    item.matchInfo.gameType == GameType.RB.key||
+                                    item.matchInfo.gameType == GameType.AFT.key)
                         )
 
                     } else {

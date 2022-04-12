@@ -456,7 +456,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                     GameType.FT -> {
                         matchClockEvent.matchClockCO?.matchTime
                     }
-                    GameType.BK -> {
+                    GameType.BK ,GameType.RB ,GameType.AFT-> {
                         matchClockEvent.matchClockCO?.remainingTimeInPeriod
                     }
                     else -> null
