@@ -656,7 +656,8 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                         setupFrontScore(event)
                     }
                     // Todo: 仍有其他球種待處理
-                    // BB, MR, GF, FB, OTHER
+                    // 20220412 根據h5顯示的版面進行同步, MR, GF, FB, OTHER 無法模擬野佔無賽事可參考
+                    // MR, GF, FB, OTHER
                     else -> {
                     }
                 }
