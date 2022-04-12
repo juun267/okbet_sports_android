@@ -91,7 +91,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                 GameType.FT -> {
                     timeMillis += 1000
                 }
-                GameType.BK -> {
+                GameType.BK, GameType.RB, GameType.AFT -> {
                     timeMillis -= 1000
                 }
                 else -> {
@@ -635,8 +635,11 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                 setupBackScore(event)
                 setupStatusTnVb(event)
             }
+            GameType.RB, GameType.AFT -> {
+                setupFrontScore(event)
+            }
             // Todo: 仍有其他球種待處理
-            // BM, BX, CB, CK, BB, RB, AFT, MR, GF, FB, OTHER
+            // BM, BX, CB, CK, BB, MR, GF, FB, OTHER
             else -> {
             }
         }
