@@ -12,7 +12,7 @@
     tools:ignore="SpUsage,RtlSymmetry">
 
     <ImageView
-        android:id="@+id/iv_logo"
+        android:id="@+id/ivLogo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_16"
@@ -34,8 +34,8 @@
             android:id="@+id/iv_language"
             android:layout_width="18dp"
             android:layout_height="18dp"
-            android:layout_marginTop="15dp"
             android:layout_marginStart="6dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="6dp"
             android:layout_marginBottom="15dp"
             android:src="@drawable/ic_flag_cn" />
@@ -49,12 +49,29 @@
             tools:text="@string/language_cn" />
 
         <ImageView
-            android:id="@+id/iv_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:layout_marginEnd="20dp"
             android:src="@drawable/arrow_gray" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ivNotice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="17dp"
+        android:src="@drawable/icon_bell"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/ivMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="17dp"
+        android:src="@drawable/ic_menu"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
 </LinearLayout>

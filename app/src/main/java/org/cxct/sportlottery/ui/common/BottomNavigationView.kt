@@ -15,12 +15,16 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.game.Page
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.menu.ChangeLanguageDialog
 import org.cxct.sportlottery.util.JumpUtil
 
 class BottomNavigationView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : RelativeLayout(context, attrs, defStyle) {
+
+    private var mNowPage: Page? = null
 
     init {
         addView(LayoutInflater.from(context).inflate(R.layout.view_bottom_navigation, this, false))
@@ -89,13 +93,11 @@ class BottomNavigationView @JvmOverloads constructor(context: Context, attrs: At
 
         //語言切換
         img_flag.setOnClickListener {
-            val intent = Intent(context, SwitchLanguageActivity::class.java)
-            context?.startActivity(intent)
+            goSwitchLanguagePage()
         }
 
         txv_language.setOnClickListener {
-            val intent = Intent(context, SwitchLanguageActivity::class.java)
-            context?.startActivity(intent)
+            goSwitchLanguagePage()
         }
 
         //隱私權條款
@@ -154,11 +156,22 @@ class BottomNavigationView @JvmOverloads constructor(context: Context, attrs: At
 
     }
 
+    private fun goSwitchLanguagePage() {
+        val intent = Intent(context, SwitchLanguageActivity::class.java).apply {
+            putExtra(SwitchLanguageActivity.FROM_ACTIVITY, mNowPage ?: Page.GAME)
+        }
+        context?.startActivity(intent)
+    }
+
     fun setTopBackground(background: Drawable) {
         bg_top.background = background
     }
 
     fun setBottomBackground(background: Drawable) {
         bg_bottom.background = background
+    }
+
+    fun setNowPage(page: Page) {
+        mNowPage = page
     }
 }

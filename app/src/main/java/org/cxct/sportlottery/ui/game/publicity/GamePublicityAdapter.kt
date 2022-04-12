@@ -37,6 +37,7 @@ import com.youth.banner.adapter.BannerImageAdapter
 
 import android.R.attr.banner
 import org.cxct.sportlottery.network.index.config.ImageData
+import org.cxct.sportlottery.ui.game.Page
 
 
 class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapterListener) :
@@ -270,6 +271,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
 
         fun bind() {
             with(binding) {
+                bottomNavigationView.setNowPage(Page.PUBLICITY)
                 ContextCompat.getDrawable(context, R.color.colorWhite1)?.let { background ->
                     bottomNavigationView.setTopBackground(background)
                 }
