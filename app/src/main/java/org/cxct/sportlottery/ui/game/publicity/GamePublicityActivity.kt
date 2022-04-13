@@ -5,23 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityGamePublicityBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
-import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.service.ServiceConnectStatus
-import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
-import org.cxct.sportlottery.ui.base.ChannelType
-import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.FastBetFragment
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
@@ -33,15 +24,12 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
-import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
-import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.parceler.Parcels
 
-class GamePublicityActivity : BaseBottomNavActivity<GamePublicityViewModel>(GamePublicityViewModel::class),
+class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class),
     View.OnClickListener {
     private lateinit var binding: ActivityGamePublicityBinding
 
@@ -59,39 +47,6 @@ class GamePublicityActivity : BaseBottomNavActivity<GamePublicityViewModel>(Game
         }
     }
 
-    private var isNewestDataFromApi = false
-    private var mRecommendList: List<Recommend> = listOf()
-    private val mPublicityAdapter =
-        GamePublicityAdapter(
-            GamePublicityAdapter.PublicityAdapterListener(
-                onItemClickListener = {
-                    goLoginPage()
-                },
-                onGoHomePageListener = {
-                    goGamePage()
-                },
-                onClickBetListener = { gameType, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
-                    addOddsDialog(
-                        gameType,
-                        matchType,
-                        matchInfo,
-                        odd,
-                        playCateCode,
-                        playCateName,
-                        betPlayCateNameMap,
-                        playCateMenuCode
-                    )
-                },
-                onShowLoginNotify = {
-                    showLoginNotify()
-                },
-                onClickStatisticsListener = { matchId ->
-                    showStatistics(matchId)
-                }, onClickPlayTypeListener = { gameType, matchType, matchId, matchInfoList ->
-                    navDetailFragment(gameType, matchType, matchId, matchInfoList)
-                })
-        )
-
     private var betListFragment = BetListFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,7 +57,6 @@ class GamePublicityActivity : BaseBottomNavActivity<GamePublicityViewModel>(Game
         initViews()
         initBaseFun()
         initObservers()
-        initSocketObservers()
     }
 
     override fun onResume() {
@@ -115,9 +69,6 @@ class GamePublicityActivity : BaseBottomNavActivity<GamePublicityViewModel>(Game
         initToolBar()
         initServiceButton()
         initOnClickListener()
-        initRecommendView()
-        initTitle()
-        initBottomView()
     }
 
     private fun initBaseFun() {
@@ -147,47 +98,9 @@ class GamePublicityActivity : BaseBottomNavActivity<GamePublicityViewModel>(Game
         setupNoticeButton(binding.publicityToolbar.ivNotice)
         binding.publicityToolbar.ivMenu.setOnClickListener(this)
         //endregion
-        binding.rvPublicity.setOnClickListener(this)
-    }
-
-    private fun initRecommendView() {
-        with(binding.rvPublicity) {
-            layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-            adapter = mPublicityAdapter
-            itemAnimator = null
-        }
-    }
-
-    private fun initTitle() {
-        with(mPublicityAdapter) {
-            addTitle()
-            addSubTitle()
-        }
-    }
-
-    private fun initBottomView() {
-        mPublicityAdapter.addBottomView()
     }
 
     private fun initObservers() {
-        viewModel.oddsType.observe(this, {
-            it?.let { oddsType ->
-                mPublicityAdapter.oddsType = oddsType
-            }
-        })
-
-        viewModel.publicityRecommend.observe(this, { event ->
-            event?.getContentIfNotHandled()?.let { result ->
-                hideLoading()
-                isNewestDataFromApi = true
-                mRecommendList = result.recommendList
-                mPublicityAdapter.addRecommend(result.recommendList)
-                //先解除全部賽事訂閱
-                unSubscribeChannelHallAll()
-                subscribeQueryData(result.recommendList)
-            }
-        })
-
         viewModel.showBetInfoSingle.observe(this) { event ->
             event?.getContentIfNotHandled()?.let {
                 if (it) {
@@ -199,148 +112,6 @@ class GamePublicityActivity : BaseBottomNavActivity<GamePublicityViewModel>(Game
                 }
             }
         }
-
-        viewModel.betInfoList.observe(this) { event ->
-            event?.peekContent()?.let { betList ->
-                val targetList = getNewestRecommendData()
-                targetList.forEachIndexed { index, recommend ->
-                    var needUpdate = false
-                    recommend.oddsMap?.values?.forEach { oddList ->
-                        oddList?.forEach { odd ->
-                            val newSelectStatus = betList.any { betInfoListData ->
-                                betInfoListData.matchOdd.oddsId == odd?.id
-                            }
-                            if (odd?.isSelected != newSelectStatus) {
-                                odd?.isSelected = newSelectStatus
-                                needUpdate = true
-                            }
-                        }
-                    }
-                    if (needUpdate) {
-                        mPublicityAdapter.updateRecommendData(index, recommend)
-                    }
-                }
-            }
-        }
-    }
-
-    // TODO subscribe leagueChange: 此處尚無需實作邏輯, 看之後有沒有相關需求
-    private fun initSocketObservers() {
-        receiver.serviceConnectStatus.observe(this) {
-            it?.let {
-                if (it == ServiceConnectStatus.CONNECTED) {
-                    loading()
-                    queryData()
-                }
-            }
-        }
-
-        receiver.matchStatusChange.observe(this, { event ->
-            event?.let { matchStatusChangeEvent ->
-                val targetList = getNewestRecommendData()
-
-                targetList.forEachIndexed { index, recommend ->
-                    val matchList = listOf(recommend).toMutableList()
-                    if (SocketUpdateUtil.updateMatchStatus(
-                            recommend.gameType,
-                            matchList as MutableList<org.cxct.sportlottery.network.common.MatchOdd>,
-                            matchStatusChangeEvent,
-                            this
-                        )
-                    ) {
-                        updateRecommendList(index, recommend)
-                        //TODO 更新邏輯待補，跟進GameV3Fragment
-                    }
-                }
-            }
-        })
-
-        receiver.matchClock.observe(this, {
-            it?.let { matchClockEvent ->
-                val targetList = getNewestRecommendData()
-
-                targetList.forEachIndexed { index, recommend ->
-                    if (
-                        SocketUpdateUtil.updateMatchClock(
-                            recommend,
-                            matchClockEvent
-                        )
-                    ) {
-                        updateRecommendList(index, recommend)
-                        //TODO 更新邏輯待補，跟進GameV3Fragment
-                    }
-                }
-            }
-        })
-
-        receiver.oddsChange.observe(this, { event ->
-            event?.let { oddsChangeEvent ->
-                SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
-                val targetList = getNewestRecommendData()
-                targetList.forEachIndexed { index, recommend ->
-                    if (recommend.id == oddsChangeEvent.eventId) {
-                        recommend.sortOddsMap()
-                        recommend.updateOddsSort() //篩選玩法
-
-                        //region 翻譯更新
-                        oddsChangeEvent.playCateNameMap?.let { playCateNameMap ->
-                            recommend.playCateNameMap?.putAll(playCateNameMap)
-                        }
-                        oddsChangeEvent.betPlayCateNameMap?.let { betPlayCateNameMap ->
-                            recommend.betPlayCateNameMap?.putAll(betPlayCateNameMap)
-                        }
-                        //endregion
-
-                        if (SocketUpdateUtil.updateMatchOdds(this, recommend, oddsChangeEvent)) {
-                            recommend.sortOddsByMenu()
-                            updateRecommendList(index, recommend)
-                        }
-
-                        if (isNewestDataFromApi)
-                            isNewestDataFromApi = false
-                    }
-                }
-            }
-        })
-
-        receiver.matchOddsLock.observe(this, {
-            it?.let { matchOddsLockEvent ->
-                val targetList = getNewestRecommendData()
-
-                targetList.forEachIndexed { index, recommend ->
-                    if (SocketUpdateUtil.updateOddStatus(recommend, matchOddsLockEvent)
-                    ) {
-                        updateRecommendList(index, recommend)
-                        //TODO 更新邏輯待補，跟進GameV3Fragment
-                    }
-                }
-            }
-        })
-
-        receiver.globalStop.observe(this, {
-            it?.let { globalStopEvent ->
-                val targetList = getNewestRecommendData()
-
-                targetList.forEachIndexed { index, recommend ->
-                    if (SocketUpdateUtil.updateOddStatus(
-                            recommend,
-                            globalStopEvent
-                        )
-                    ) {
-                        updateRecommendList(index, recommend)
-                        //TODO 更新邏輯待補，跟進GameV3Fragment
-                    }
-                }
-            }
-        })
-
-        receiver.producerUp.observe(this, {
-            it?.let {
-                //先解除全部賽事訂閱
-                unSubscribeChannelHallAll()
-                subscribeQueryData(mPublicityAdapter.getRecommendData())
-            }
-        })
     }
 
     override fun onBackPressed() {
@@ -352,80 +123,13 @@ class GamePublicityActivity : BaseBottomNavActivity<GamePublicityViewModel>(Game
         }
     }
 
-
-    private fun queryData() {
-        viewModel.getRecommend()
-    }
-
     private fun getSportMenuFilter() {
         viewModel.getSportMenuFilter()
     }
 
-    private fun subscribeChannelHall(recommend: Recommend) {
-        subscribeChannelHall(recommend.gameType, recommend.id)
-    }
-
-    private fun subscribeQueryData(recommendList: List<Recommend>) {
-        recommendList.forEach { subscribeChannelHall(it) }
-    }
-
-    private fun getNewestRecommendData(): List<Recommend> =
-        if (isNewestDataFromApi) mRecommendList else mPublicityAdapter.getRecommendData()
-
-
-    private fun updateRecommendList(index: Int, recommend: Recommend) {
-        with(binding) {
-            if (rvPublicity.scrollState == RecyclerView.SCROLL_STATE_IDLE && !rvPublicity.isComputingLayout) {
-                mPublicityAdapter.updateRecommendData(index, recommend)
-            }
-        }
-    }
-
-    private fun addOddsDialog(
-        gameTypeCode: String,
-        matchType: MatchType,
-        matchInfo: MatchInfo?,
-        odd: Odd,
-        playCateCode: String,
-        playCateName: String,
-        betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
-        playCateMenuCode: String?
-    ) {
-        val gameType = GameType.getGameType(gameTypeCode)
-        gameType?.let {
-            matchInfo?.let { matchInfo ->
-                val fastBetDataBean = FastBetDataBean(
-                    matchType = matchType,
-                    gameType = gameType,
-                    playCateCode = playCateCode,
-                    playCateName = playCateName,
-                    matchInfo = matchInfo,
-                    matchOdd = null,
-                    odd = odd,
-                    subscribeChannelType = ChannelType.HALL,
-                    betPlayCateNameMap = betPlayCateNameMap,
-                    playCateMenuCode
-                )
-                showFastBetFragment(fastBetDataBean)
-
-                /*viewModel.updateMatchBetList(
-                    matchType,
-                    gameType,
-                    playCateCode,
-                    playCateName,
-                    matchInfo,
-                    odd,
-                    ChannelType.HALL,
-                    betPlayCateNameMap,
-                    playCateMenuCode
-                )*/
-            }
-        }
-    }
-
     //region 開啟(快捷)投注單
     //跟進GameActivity開啟投注單方式
-    private fun showFastBetFragment(fastBetDataBean: FastBetDataBean) {
+    fun showFastBetFragment(fastBetDataBean: FastBetDataBean) {
         val transaction = supportFragmentManager.beginTransaction()
             .setCustomAnimations(
                 R.anim.push_bottom_to_top_enter,
@@ -486,72 +190,6 @@ class GamePublicityActivity : BaseBottomNavActivity<GamePublicityViewModel>(Game
     }
     //endregion
 
-    private fun showStatistics(matchId: String?) {
-        StatisticsDialog.newInstance(matchId)
-            .show(supportFragmentManager, StatisticsDialog::class.java.simpleName)
-    }
-
-    private fun navDetailFragment(
-        gameType: String,
-        matchType: MatchType?,
-        matchId: String?,
-        matchInfoList: List<MatchInfo>
-    ) {
-        unSubscribeChannelHallAll()
-
-        startActivity(Intent(this, GameActivity::class.java).apply {
-            putExtra(IS_FROM_PUBLICITY, true)
-            putExtra(PUBLICITY_GAME_TYPE, gameType)
-            putExtra(PUBLICITY_MATCH_TYPE, matchType)
-            putExtra(PUBLICITY_MATCH_ID, matchId)
-            val matchInfoArrayList = arrayListOf<MatchInfo>()
-            matchInfoArrayList.addAll(matchInfoList)
-            putParcelableArrayListExtra(PUBLICITY_MATCH_LIST, matchInfoArrayList)
-        })
-    }
-
-    private fun Recommend.sortOddsMap() {
-        this.oddsMap?.forEach { (_, value) ->
-            if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
-                value?.sortBy {
-                    it?.marketSort
-                }
-            }
-        }
-    }
-
-    /**
-     * 根據menuList的PlayCate排序賠率玩法
-     */
-    //TODO 20220323 等新版socket更新方式調整完畢後再確認一次此處是否需要移動至別處進行
-    private fun Recommend.sortOddsByMenu() {
-        val sortOrder = this.menuList.firstOrNull()?.playCateList?.map { it.code }
-
-        oddsMap?.let { map ->
-            val filterPlayCateMap = map.filter { sortOrder?.contains(it.key) == true }
-            val sortedMap = filterPlayCateMap.toSortedMap(compareBy<String> {
-                sortOrder?.indexOf(it)
-            }.thenBy { it })
-
-            map.clear()
-            map.putAll(sortedMap)
-        }
-    }
-
-    /**
-     * 篩選玩法
-     * 更新翻譯、排序
-     * */
-    private fun Recommend.updateOddsSort() {
-        val nowGameType = gameType
-        val playCateMenuCode = menuList.firstOrNull()?.code
-        val oddsSortFilter = PlayCateMenuFilterUtils.filterOddsSort(nowGameType, playCateMenuCode)
-        val playCateNameMapFilter = PlayCateMenuFilterUtils.filterPlayCateNameMap(nowGameType, playCateMenuCode)
-
-        oddsSort = oddsSortFilter
-        playCateNameMap = playCateNameMapFilter
-    }
-
     override fun onClick(v: View?) {
         avoidFastDoubleClick()
         with(binding) {
@@ -574,9 +212,6 @@ class GamePublicityActivity : BaseBottomNavActivity<GamePublicityViewModel>(Game
                         drawerLayout.openDrawer(viewNavRight.navRight)
                         viewModel.getMoney()
                     }
-                }
-                rvPublicity -> {
-                    goLoginPage()
                 }
             }
         }
