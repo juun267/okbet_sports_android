@@ -31,8 +31,9 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private var oddsType: OddsType = OddsType.EU
     private var isLogin: Boolean? = false
     private var mPagerPosition = 0
+    private var mMatchOdd: MatchOdd? = null
 
-    private var onPageChangeCallback: ViewPager2.OnPageChangeCallback? = null
+    private var onPageChangeCallback: OnPageChangeCallback? = null
 
     private var onClickTotalMatchListener: OnSelectItemListener<GameEntity>? = null
     private var onClickMatchListener: OnSelectItemListener<MatchInfo>? = null
@@ -66,14 +67,12 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                      onClickMatchListener: OnSelectItemListener<MatchInfo>? = null,
                      onClickOddListener: OnClickOddListener? = null,
                      onClickFavoriteListener: OnClickFavoriteListener? = null,
-                     onClickStatisticsListener: OnClickStatisticsListener? = null,
-                     onSubscribeChannelHallListener: OnSubscribeChannelHallListener? = null) {
+                     onClickStatisticsListener: OnClickStatisticsListener? = null, ) {
         this.onClickTotalMatchListener = onClickTotalMatchListener
         this.onClickMatchListener = onClickMatchListener
         this.onClickOddListener = onClickOddListener
         this.onClickFavoriteListener = onClickFavoriteListener
         this.onClickStatisticsListener = onClickStatisticsListener
-        //this.onSubscribeChannelHallListener = onSubscribeChannelHallListener
     }
 
     fun bind(data: GameEntity) {
@@ -117,15 +116,9 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     override fun onPageSelected(position: Int) {
                         super.onPageSelected(position)
                         if (position < 0 || position >= it.size || it.isNullOrEmpty()) return
-                        val matchOdd = it[position]
+                        mMatchOdd = it[position]
                         mPagerPosition = position
-                        subscribeChannelHall(matchOdd.matchInfo?.gameType, matchOdd.matchInfo?.id)
-                        //subscribeChannelHall(matchOdd.matchInfo?.gameType, matchOdd.matchInfo?.id)
-//                        onSubscribeChannelHallListener?.subscribeChannel(
-//                            matchOdd.matchInfo?.gameType,
-//                            if (mMatchType == MatchType.IN_PLAY || mMatchType == MatchType.MAIN) MenuCode.HOME_INPLAY_MOBILE.code else MenuCode.HOME_ATSTART_MOBILE.code,
-//                            matchOdd.matchInfo?.id
-//                        )
+                        subscribeChannelHall(mMatchOdd?.matchInfo?.gameType, mMatchOdd?.matchInfo?.id)
                     }
 
                     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
@@ -165,8 +158,8 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         (itemView.context as BaseSocketActivity<*>).unSubscribeChannelHall(gameType, eventId)
     }
 
-    fun unsubscribeHallChannel(pagerPosition: Int = mPagerPosition) {
-        unsubscribeHallChannel
+    fun unsubscribeHallChannel() {
+        unsubscribeHallChannel(mMatchOdd?.matchInfo?.gameType, mMatchOdd?.matchInfo?.id)
     }
 
     private fun addOddsDialog(

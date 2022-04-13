@@ -309,6 +309,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         if(holder is GameTableViewHolder) {
             //Log.d("Hewie45", "onViewDetachedFromWindow => ${holder}")
             holder.saveInstanceState = holder.itemView.view_pager.currentItem
+            holder.unsubscribeHallChannel()
         }
     }
 
