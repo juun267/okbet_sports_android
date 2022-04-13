@@ -38,7 +38,7 @@ android {
         debug {
             minifyEnabled false
             zipAlignEnabled true
-            versionNameSuffix "-debug"
+            versionNameSuffix ".debug"
             buildConfigField 'Boolean', 'MOCK', 'false'//使用mock data要設為true
         }
 
