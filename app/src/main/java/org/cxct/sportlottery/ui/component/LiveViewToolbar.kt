@@ -61,6 +61,7 @@ class LiveViewToolbar @JvmOverloads constructor(
             field = value
             iv_animation.visibility = if (field.isNullOrEmpty()) View.GONE else View.VISIBLE
         }
+    private var mTrackerUrl: String = ""
 
     //exoplayer
     private var exoPlayer: SimpleExoPlayer? = null
@@ -378,6 +379,10 @@ class LiveViewToolbar @JvmOverloads constructor(
         initializePlayer(streamUrl)
     }
 
+    fun setupTrackerUrl(trackerUrl: String?) {
+        mTrackerUrl = trackerUrl ?: ""
+    }
+
     fun stopPlayer() {
         releasePlayer()
     }
@@ -406,11 +411,11 @@ class LiveViewToolbar @JvmOverloads constructor(
                 view: WebView?,
                 request: WebResourceRequest?
             ): Boolean {
-                view?.loadUrl(defaultAnimationUrl)
+                view?.loadUrl(mTrackerUrl)
                 return true
             }
         }
-        web_view.loadUrl(defaultAnimationUrl)
+        web_view.loadUrl(mTrackerUrl)
         checkExpandLayoutStatus()
     }
 
