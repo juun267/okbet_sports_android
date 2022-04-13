@@ -6,7 +6,9 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
+import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
@@ -125,6 +127,19 @@ class LiveViewToolbar @JvmOverloads constructor(
 
     private var liveToolBarListener: LiveToolBarListener? = null
 
+
+    var defaultAnimationUrl = ""
+    private fun setAnimationUrl() {
+        defaultAnimationUrl = "https://sports.cxsport.net/animation/?" +
+                "matchId=${mMatchId}" +
+                "&mode=widget" +
+                "&lang=${LanguageManager.getLanguageString(context)}" +
+                "&eventId=${mEventId}"
+    }
+
+    private var isPlayOpen = false
+    private var isAnimationOpen = false
+
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.view_toolbar_live, this, false)
         addView(view).apply {
@@ -152,6 +167,23 @@ class LiveViewToolbar @JvmOverloads constructor(
                 }
                 false -> {
                     switchLiveView(true)
+                }
+            }
+        }
+
+        iv_animation.setOnClickListener {
+            stopPlayer()
+            iv_play.setImageResource(R.drawable.ic_live_player)
+            when (expand_layout.isExpanded && !isPlayOpen) {
+                true -> {
+//                    hideWebView()//根據需求，先隱藏賽事動畫
+                    switchLiveView(false)
+                    isAnimationOpen = false
+                }
+                false -> {
+//                    openWebView()//根據需求，先隱藏賽事動畫
+                    switchLiveView(true)
+                    isAnimationOpen = true
                 }
             }
         }
@@ -315,11 +347,48 @@ class LiveViewToolbar @JvmOverloads constructor(
         mMatchId = matchId
         mEventId = eventId
         mStreamUrl = streamUrl
+        setAnimationUrl()
         initializePlayer(streamUrl)
     }
 
     fun stopPlayer() {
         releasePlayer()
     }
+
+    //region 賽事動畫
+    private fun setAnimationImgIcon(isOn: Boolean) {
+        if (isOn) iv_animation.setImageResource(R.drawable.ic_icon_game_live_soccer_selected)
+        else iv_animation.setImageResource(R.drawable.ic_icon_game_live_soccer_unselected)
+    }
+
+    private fun openWebView() {
+//        setLivePlayImg()
+        web_view.isVisible = true
+//        setAnimationImgIcon(true)
+        player_view.isVisible = false
+
+        web_view.settings.apply {
+            javaScriptEnabled = true
+            useWideViewPort = true
+            displayZoomControls = false
+        }
+        web_view.setInitialScale(25)
+        web_view.webViewClient = object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(
+                view: WebView?,
+                request: WebResourceRequest?
+            ): Boolean {
+                view?.loadUrl(defaultAnimationUrl)
+                return true
+            }
+        }
+        web_view.loadUrl(defaultAnimationUrl)
+    }
+
+    private fun hideWebView() {
+        web_view.isVisible = false
+//        setAnimationImgIcon(false)
+    }
+    //endregion
 
 }
