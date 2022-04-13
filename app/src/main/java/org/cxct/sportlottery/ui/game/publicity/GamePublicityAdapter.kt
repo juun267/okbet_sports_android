@@ -2,42 +2,29 @@ package org.cxct.sportlottery.ui.game.publicity
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
+import com.youth.banner.adapter.BannerImageAdapter
+import com.youth.banner.holder.BannerImageHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.HomeBottomNavigationBinding
 import org.cxct.sportlottery.databinding.ItemPublicityRecommendBinding
 import org.cxct.sportlottery.databinding.PublicitySubTitleViewBinding
 import org.cxct.sportlottery.databinding.PublicityTitleViewBinding
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
-import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.ui.main.MainActivity
-import com.stx.xhb.xbanner.XBanner
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
-
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.util.JumpUtil
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-
-import com.youth.banner.holder.BannerImageHolder
-
-import com.youth.banner.adapter.BannerImageAdapter
-
-import android.R.attr.banner
-import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.ui.game.Page
+import org.cxct.sportlottery.ui.menu.OddsType
 
 
 class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapterListener) :
@@ -337,7 +324,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         private val onItemClickListener: () -> Unit,
         private val onGoHomePageListener: () -> Unit,
         private val onClickBetListener: (gameType: String, matchType: MatchType, matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?, playCateMenuCode: String?) -> Unit,
-        private val onShowLoginNotify: () -> Unit,
+        private val onClickFavoriteListener: (matchId: String?) -> Unit,
         private val onClickStatisticsListener: (matchId: String) -> Unit,
         private val onClickPlayTypeListener: (gameType: String, matchType: MatchType?, matchId: String?, matchInfoList: List<MatchInfo>) -> Unit
     ) {
@@ -363,7 +350,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             playCateMenuCode
         )
 
-        fun onShowLoginNotify() = onShowLoginNotify.invoke()
+        fun onClickFavoriteListener(matchId: String?) = onClickFavoriteListener.invoke(matchId)
         fun onClickStatisticsListener(matchId: String) = onClickStatisticsListener.invoke(matchId)
         fun onClickPlayTypeListener(
             gameType: String,
