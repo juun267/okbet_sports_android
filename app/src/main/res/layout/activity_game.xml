@@ -114,13 +114,7 @@
                     android:layout_height="55dp"
                     app:layout_constraintBottom_toBottomOf="parent" />
 
-                <!-- 投注單 -->
-                <FrameLayout
-                    android:id="@+id/fl_bet_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    tools:visibility="gone" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -140,6 +134,14 @@
             </com.google.android.material.navigation.NavigationView>
 
         </androidx.drawerlayout.widget.DrawerLayout>
+
+        <!-- 投注單 -->
+        <FrameLayout
+            android:id="@+id/fl_bet_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

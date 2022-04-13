@@ -14,14 +14,10 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
-import kotlinx.android.synthetic.main.home_game_table_4.view.*
 import kotlinx.android.synthetic.main.itemview_league_odd_v5.view.*
-import okhttp3.internal.notify
+import kotlinx.android.synthetic.main.itemview_league_quick.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.common.GameStatus
-import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
@@ -152,13 +148,14 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
 
             //setupQuickCategory(item, oddsType, leagueOddListener)
             if(item.quickPlayCateList.isNullOrEmpty()) {
-                itemView.quickListView.visibility = View.GONE
+                itemView.quickListView?.visibility = View.GONE
                 itemView.league_odd_quick_cate_divider.visibility = View.GONE
             } else {
-                itemView.quickListView.visibility = View.VISIBLE
+                itemView.vs_league_quick?.visibility = View.VISIBLE
+                itemView.quickListView?.visibility = View.VISIBLE
                 itemView.league_odd_quick_cate_divider.visibility = View.VISIBLE
-                itemView.quickListView.setDatas(item, oddsType, leagueOddListener, playSelectedCodeSelectionType, playSelectedCode)
-                itemView.quickListView.refreshTab()
+                itemView.quickListView?.setDatas(item, oddsType, leagueOddListener, playSelectedCodeSelectionType, playSelectedCode)
+                itemView.quickListView?.refreshTab()
             }
         }
 
@@ -170,9 +167,9 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             setupMatchTime(item, matchType, isTimerEnable, isTimerPause, leagueOddListener)
             updateOddsButton(item, oddsType, playSelectedCodeSelectionType)
 
-            itemView.quickListView.setDatas(item, oddsType, leagueOddListener, playSelectedCodeSelectionType, playSelectedCode)
-            itemView.quickListView.refreshTab()
-            itemView.quickListView.updateQuickSelected()
+            itemView.quickListView?.setDatas(item, oddsType, leagueOddListener, playSelectedCodeSelectionType, playSelectedCode)
+            itemView.quickListView?.refreshTab()
+            itemView.quickListView?.updateQuickSelected()
             //setupQuickCategory(item, oddsType, leagueOddListener)
             //updateQuickCategory(item, oddsType, leagueOddListener)
         }
@@ -181,14 +178,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             itemView.league_odd_match_name_home.text = item.matchInfo?.homeName
             itemView.league_odd_match_name_away.text = item.matchInfo?.awayName
             showStrongTeam(item)
-            when (item.matchInfo?.gameType) {
-                GameType.VB.key -> setVbScoreText(matchType, item)
-                GameType.TN.key -> setTnScoreText(matchType, item)
-                GameType.FT.key -> setFtScoreText(matchType, item)
-                GameType.BK.key -> setBkScoreText(matchType, item)
-                GameType.TT.key -> setVbScoreText(matchType, item)
-                else -> setBkScoreText(matchType, item)//TODO Bill 這裡要等PM確認版型 SocketUpdateUtil
-            }
+            setupMatchScore(item,matchType)
             setStatusTextColor(item)
             itemView.league_odd_match_play_count.text = item.matchInfo?.playCateNum.toString()
             itemView.league_odd_match_favorite.isSelected = item.matchInfo?.isFavorite ?: false
@@ -222,14 +212,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
 
             showStrongTeam(item)
 
-            when (item.matchInfo?.gameType) {
-                GameType.VB.key -> setVbScoreText(matchType, item)
-                GameType.TN.key -> setTnScoreText(matchType, item)
-                GameType.FT.key -> setFtScoreText(matchType, item)
-                GameType.BK.key -> setBkScoreText(matchType, item)
-                GameType.TT.key -> setVbScoreText(matchType, item)
-                else -> setBkScoreText(matchType, item)//TODO Bill 這裡要等PM確認版型 SocketUpdateUtil
-            }
+            setupMatchScore(item, matchType)
 
             setStatusTextColor(item)
 
@@ -282,6 +265,25 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
 
         }
 
+        private fun setupMatchScore(item: MatchOdd, matchType: MatchType) {
+            when (item.matchInfo?.socketMatchStatus) {
+                GameMatchStatus.HIDE_SCORE.value -> {
+                    hideMatchScoreText()
+                }
+                else -> {
+                    when (item.matchInfo?.gameType) {
+                        GameType.VB.key -> setVbScoreText(matchType, item)
+                        GameType.TN.key -> setTnScoreText(matchType, item)
+                        GameType.FT.key -> setFtScoreText(matchType, item)
+                        GameType.BK.key -> setBkScoreText(matchType, item)
+                        GameType.TT.key -> setVbScoreText(matchType, item)
+                        GameType.BM.key -> setBmScoreText(matchType, item)
+                        else -> setBkScoreText(matchType, item)//TODO Bill 這裡要等PM確認版型 SocketUpdateUtil
+                    }
+                }
+            }
+        }
+
         private fun setFtScoreText(matchType: MatchType, item: MatchOdd) {
             itemView.apply {
                 setScoreTextAtFront(item)
@@ -312,6 +314,28 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 setPointText(matchType, item)
                 setSptText(item, matchType)
 
+            }
+        }
+
+        private fun setBmScoreText(matchType: MatchType, item: MatchOdd) {
+            itemView.apply {
+                setAllScoreTextAtBottom(matchType, item)
+                setScoreText(matchType, item)
+                setSptText(item, matchType)
+            }
+        }
+
+        private fun hideMatchScoreText() {
+            with(itemView) {
+                league_odd_match_score_home.visibility = View.GONE
+                league_odd_match_score_away.visibility = View.GONE
+
+                league_odd_match_total_score_home_bottom.visibility = View.GONE
+                league_odd_match_total_score_away_bottom.visibility = View.GONE
+                league_odd_match_score_home_bottom.visibility = View.GONE
+                league_odd_match_score_away_bottom.visibility = View.GONE
+                league_odd_match_point_home_bottom.visibility = View.GONE
+                league_odd_match_point_away_bottom.visibility = View.GONE
             }
         }
 
@@ -503,7 +527,9 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                             isTimerEnable,
                             isTimerPause,
                             item.matchInfo.leagueTime ?: 0,
-                            item.matchInfo.gameType == GameType.BK.key
+                            (item.matchInfo.gameType == GameType.BK.key ||
+                                    item.matchInfo.gameType == GameType.RB.key||
+                                    item.matchInfo.gameType == GameType.AFT.key)
                         )
 
                     } else {

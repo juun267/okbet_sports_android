@@ -605,7 +605,7 @@
     <string name="bet_info_parlay_win_quota">số tiền có thể thắng</string>
     <string name="bet_info_add_bet_success">Đặt cược thành công</string>
     <string name="bet_info_current_money">Số dư:%s</string>
-    <string name="bet_info_in_play_score">trận bóng đang diễn ra (%2$s:%3$s)</string>
+    <string name="bet_info_in_play_score">%1$s (%2$s-%3$s)</string>
     <string name="bet_info_system_close_incompatible_item">Bạn chọn cách chơi không phù hợp với luật chơi cược xiên, hệ thống đã tự động giúp bạn hủy bỏ</string>
     <string name="bet_info_list_clean">Xóa bằng một cú nhấp chuột</string>
     <string name="bet_info_bet_balance_insufficient">Số dư không đủ</string>
@@ -823,7 +823,7 @@
     <string name="odds_button_name_hch">Đội chủ nhà hoặc đội khách - đội nhà</string>
     <string name="odds_button_name_hcc">Đội chủ nhà hoặc đội khách - đội khách</string>
     <string name="bet_fail">Cá cược thất bại</string>
-    <string name="bet_fail_btn">Tỷ lệ cược đã thay đổi</string>
+    <string name="bet_fail_btn">Đặt cược không thành công</string>
     <string name="credit_record_deactivate">Chức năng thẻ tín dụng bị vô hiệu hóa</string>
     <string name="game_postponed">Trận đấu bị hoãn</string>
     <string name="money_recharge_hint1">Vui lòng gửi thông tin nạp tiền sau khi chuyển khoản thành công.</string>

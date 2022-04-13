@@ -19,7 +19,6 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
@@ -39,6 +38,7 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
+import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
@@ -190,6 +190,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         initToolBar()
 
         initKeyBoard(viewModel.getLoginBoolean())
+        fl_title.setOnClickListener { betListRefactorAdapter?.closeAllKeyboard() }
+        cl_total_info.setOnClickListener { betListRefactorAdapter?.closeAllKeyboard() }
     }
 
     private fun initBtnView() {
@@ -236,6 +238,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         rv_bet_list.layoutManager = layoutManager
         betListRefactorAdapter?.setHasStableIds(true)
         rv_bet_list.adapter = betListRefactorAdapter
+        //rv_bet_list.itemAnimator = null
 //        rv_bet_list.addItemDecoration(
 //            DividerItemDecoration(
 //                context,
@@ -288,7 +291,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 }
 
                 override fun onHideKeyBoard() {
-                    //keyboard?.hideKeyboard()
+                    betListRefactorAdapter?.closeAllKeyboard()
                 }
 
                 override fun saveOddsHasChanged(matchOdd: MatchOdd) {
@@ -471,7 +474,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
 
         viewModel.userMoney.observe(viewLifecycleOwner) {
-            it.let { money -> tv_balance.text = TextUtil.formatMoney(money ?: 0.0) }
+            it?.let { money ->
+                tv_balance.text = TextUtil.formatMoney(money ?: 0.0)
+                betListRefactorAdapter?.userMoney = money
+            }
         }
 
         viewModel.oddsType.observe(viewLifecycleOwner) {
@@ -584,6 +590,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
+                SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
                 viewModel.updateMatchOdd(oddsChangeEvent)
             }
         }
@@ -867,4 +874,5 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     interface BetResultListener {
         fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>)
     }
+
 }

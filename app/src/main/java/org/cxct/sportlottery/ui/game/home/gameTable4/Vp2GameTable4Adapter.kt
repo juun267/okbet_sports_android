@@ -174,7 +174,7 @@ class Vp2GameTable4Adapter (
                                 timeMap[id] = it
                             }
                         }
-                        GameType.BK.key -> {
+                        GameType.BK.key,GameType.RB.key,GameType.AFT.key  -> {
                             matchClockCO.remainingTimeInPeriod?.let {
                                 timeMap[id] = it
                             }

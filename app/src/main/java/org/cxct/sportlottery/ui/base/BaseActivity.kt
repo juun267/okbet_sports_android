@@ -12,12 +12,14 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.viewModelScope
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder
 import com.bigkoo.pickerview.view.OptionsPickerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
 import kotlinx.android.synthetic.main.layout_loading.view.*
+import kotlinx.coroutines.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
@@ -30,6 +32,7 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.util.commonCheckDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
+import java.lang.Runnable
 import kotlin.reflect.KClass
 
 abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActivity() {
@@ -40,6 +43,9 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     private var mOnNetworkExceptionListener: View.OnClickListener? = null
     private var mPickerView: OptionsPickerView<String>? = null
     private var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一個
+    private val mHandler = Handler(Looper.getMainLooper())
+    private var mRunnable:Runnable? = null
+
 
     val viewModel: T by viewModel(clazz = clazz)
 
@@ -50,6 +56,10 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         LayoutInflater.from(this).inflate(R.layout.dialog_bottom_sheet_custom, null)
     }
 
+    override fun onStart() {
+        super.onStart()
+        startCheckToken()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -303,5 +313,31 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     fun avoidFastDoubleClick(){
         mIsEnabled = false
         Handler().postDelayed({ mIsEnabled = true }, 500)
+    }
+
+    private fun startCheckToken() {
+        try {
+            if(viewModel.loginRepository.isLogin.value == true){
+                if(mRunnable==null){
+                    mRunnable = getRunnable()
+                    mRunnable?.let {
+                        mHandler.post(it)
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun getRunnable(): Runnable {
+        return Runnable {
+            viewModel.viewModelScope.launch {
+                viewModel.loginRepository.checkToken()
+            }
+            mRunnable?.let {
+                mHandler.postDelayed( it , 30000)
+            }
+        }
     }
 }

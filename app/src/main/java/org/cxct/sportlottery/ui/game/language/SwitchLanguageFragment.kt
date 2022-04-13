@@ -100,7 +100,6 @@ class SwitchLanguageFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         binding.llEnglish.setOnClickListener(this)
         binding.llChina.setOnClickListener(this)
         binding.llVietnam.setOnClickListener(this)
-        Log.e("Martin","LanguageManager.getSelectLanguage(context)="+LanguageManager.getSelectLanguage(context))
         when (LanguageManager.getSelectLanguage(context)) {
             LanguageManager.Language.ZH -> {
                 binding.tvChina.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBlue))
@@ -111,6 +110,15 @@ class SwitchLanguageFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             LanguageManager.Language.VI -> {
                 binding.tvVietnam.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBlue))
             }
+        }
+        if(sConfigData?.supportLanguage!!.contains("zh")){
+            binding.llChina.visibility = View.VISIBLE
+        }
+        if(sConfigData?.supportLanguage!!.contains("vi")){
+            binding.llVietnam.visibility = View.VISIBLE
+        }
+        if(sConfigData?.supportLanguage!!.contains("en")){
+            binding.llEnglish.visibility = View.VISIBLE
         }
     }
 
