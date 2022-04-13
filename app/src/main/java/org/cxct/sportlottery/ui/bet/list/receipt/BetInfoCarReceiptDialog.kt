@@ -75,7 +75,7 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
                     )
                 }
                 view.tv_bet_status.setReceiptStatusColor(status)
-                view.tv_receipt_status.setSingleReceiptStatusTips(status)
+                //view.tv_receipt_status.setSingleReceiptStatusTips(status)
 
                 if (matchType == MatchType.OUTRIGHT) {
                     tv_team_names.visibility = View.GONE

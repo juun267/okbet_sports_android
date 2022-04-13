@@ -150,7 +150,9 @@
         android:paddingVertical="4dp"
         android:text="@string/bet_succeeded"
         android:textSize="@dimen/textSize13sp"
-        android:textColor="@color/colorBlue" />
+        android:visibility="gone"
+        android:textColor="@color/colorBlue"
+        tools:visibility="visible"/>
 
     <View
         android:layout_width="match_parent"
