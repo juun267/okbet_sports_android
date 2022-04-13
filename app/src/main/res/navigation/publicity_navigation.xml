@@ -106,6 +106,15 @@
                 android:name="matchId"
                 app:argType="string" />
         </action>
+
+        <action
+            android:id="@+id/action_oddsDetailFragment_to_gameV3Fragment"
+            app:destination="@id/gameV3Fragment"
+            app:popUpTo="@id/gameV3Fragment">
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
+        </action>
     </fragment>
 
     <fragment
@@ -165,6 +174,15 @@
             <argument
                 android:name="matchInfoList"
                 app:argType="org.cxct.sportlottery.network.odds.MatchInfo[]" />
+        </action>
+
+        <action
+            android:id="@+id/action_oddsDetailLiveFragment_to_gameV3Fragment"
+            app:destination="@id/gameV3Fragment"
+            app:popUpTo="@id/gameV3Fragment">
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
         </action>
     </fragment>
 </navigation>
