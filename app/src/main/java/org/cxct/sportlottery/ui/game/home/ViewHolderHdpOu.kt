@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.game.home
 
 import android.annotation.SuppressLint
 import android.graphics.Typeface
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.home_highlight_item.view.*
@@ -12,6 +13,7 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.game.interfaces.UpdateHighLightInterface
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -32,9 +34,11 @@ class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
             override fun refreshOddButton(odd: Odd) { }
         }
     }
+    private var mMatchOdd: MatchOdd? = null
 
     fun bind(data: MatchOdd, lastData: MatchOdd, oddsType: OddsType) {
         itemView.testId.text = "${data.matchInfo?.leagueId} - ${data.matchInfo?.id}"
+        mMatchOdd = data
         setTitle(data,lastData)
         setupOddList(data)
         setupMatchInfo(data)
@@ -58,6 +62,7 @@ class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
         itemView.btn_chart.setOnClickListener {
             onClickStatisticsListener?.onClickStatistics(data.matchInfo?.id)
         }
+        subscribeChannelHall(mMatchOdd?.matchInfo?.gameType, mMatchOdd?.matchInfo?.id)
     }
 
     fun getUpdateHighLightInterface(): UpdateHighLightInterface {
@@ -296,6 +301,21 @@ class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
             e.printStackTrace()
         }
     }
+
+    fun subscribeChannelHall(gameType: String?, eventId: String?) {
+        Log.d("Hewie45", "${eventId}(${gameType}) => subscribeChannelHall")
+        (itemView.context as BaseSocketActivity<*>).subscribeChannelHall(gameType, eventId)
+    }
+
+    fun unsubscribeHallChannel(gameType: String?, eventId: String?) {
+        Log.d("Hewie45", "${eventId}(${gameType}) => unsubscribeHallChannel")
+        (itemView.context as BaseSocketActivity<*>).unSubscribeChannelHall(gameType, eventId)
+    }
+
+    fun unsubscribeHallChannel() {
+        unsubscribeHallChannel(mMatchOdd?.matchInfo?.gameType, mMatchOdd?.matchInfo?.id)
+    }
+
     override val oddStateChangeListener: OddStateChangeListener
         get() = mOddStateRefreshListener
 }

@@ -253,7 +253,13 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             is GameTableViewHolder -> {
                 holder.apply {
                     setParams(mMatchType, selectedOdds, oddsType, isLogin)
-                    //setListeners(onSubscribeChannelHallListener = onSubscribeChannelHallListener)
+                    setListeners(
+                        onClickTotalMatchListener = onClickTotalMatchListener,
+                        onClickMatchListener = onClickMatchListener,
+                        onClickOddListener = onClickOddListener,
+                        onClickFavoriteListener = onClickFavoriteListener,
+                        onClickStatisticsListener = onClickStatisticsListener
+                    )
                     bind(data as GameEntity)
                 }
             }
@@ -309,6 +315,12 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         if(holder is GameTableViewHolder) {
             //Log.d("Hewie45", "onViewDetachedFromWindow => ${holder}")
             holder.saveInstanceState = holder.itemView.view_pager.currentItem
+            holder.unsubscribeHallChannel()
+        }
+        if(holder is ViewHolderHdpOu) {
+            holder.unsubscribeHallChannel()
+        }
+        if(holder is RecommendViewHolder) {
             holder.unsubscribeHallChannel()
         }
     }

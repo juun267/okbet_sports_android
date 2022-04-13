@@ -15,7 +15,8 @@
         android:layout_height="wrap_content"
         android:textColor="@color/colorRed"
         android:gravity="center"
-        android:textSize="@dimen/margin_36"/>
+        android:textSize="@dimen/margin_36"
+        android:visibility="gone"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/block_match_info"

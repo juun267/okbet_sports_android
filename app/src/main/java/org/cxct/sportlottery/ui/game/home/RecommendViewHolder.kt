@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.game.home
 
 import android.content.Context
 import android.os.Parcelable
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -13,6 +14,8 @@ import kotlinx.android.synthetic.main.home_recommend_item.view.indicator_view
 import kotlinx.android.synthetic.main.home_recommend_item.view.view_pager
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
+import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.home.recommend.RecommendGameEntity
 import org.cxct.sportlottery.ui.game.home.recommend.VpRecommendAdapter
@@ -31,6 +34,7 @@ class RecommendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         .dontTransform()
 
     var saveInstanceState: Int = 0
+    private var mMatchOdd: MatchOdd? = null
 
     // TODO binding
     var onClickMatchListener: OnSelectItemListener<RecommendGameEntity>? = null
@@ -42,6 +46,7 @@ class RecommendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemView.apply {
             //TODO 測試textview, 測試完後移除
             testId.text = "${data.leagueId} - ${data.matchInfo?.id}"
+            mMatchOdd = data.toMatchOdd()
             block_match_info.setOnClickListener {
                 onClickMatchListener?.onClick(data)
             }
@@ -126,6 +131,7 @@ class RecommendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 }
             }
         }
+        subscribeChannelHall(mMatchOdd?.matchInfo?.gameType, mMatchOdd?.matchInfo?.id)
     }
     private fun org.cxct.sportlottery.network.matchCategory.result.MatchInfo.getStartTime(context: Context): String {
         val dateFormat = "dd / MM"
@@ -134,5 +140,19 @@ class RecommendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             TimeUtil.timeFormat(startTimeNotNull, "$dateFormat\nHH:mm")
                 .replace(todayDate, context.getString(R.string.home_tab_today))
         } ?: ""
+    }
+
+    fun subscribeChannelHall(gameType: String?, eventId: String?) {
+        Log.d("Hewie45", "${eventId}(${gameType}) => subscribeChannelHall")
+        (itemView.context as BaseSocketActivity<*>).subscribeChannelHall(gameType, eventId)
+    }
+
+    fun unsubscribeHallChannel(gameType: String?, eventId: String?) {
+        Log.d("Hewie45", "${eventId}(${gameType}) => unsubscribeHallChannel")
+        (itemView.context as BaseSocketActivity<*>).unSubscribeChannelHall(gameType, eventId)
+    }
+
+    fun unsubscribeHallChannel() {
+        unsubscribeHallChannel(mMatchOdd?.matchInfo?.gameType, mMatchOdd?.matchInfo?.id)
     }
 }

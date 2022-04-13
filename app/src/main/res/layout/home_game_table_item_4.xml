@@ -42,7 +42,8 @@
         app:layout_constraintStart_toEndOf="@id/tv_game_type"
         app:layout_constraintTop_toTopOf="@id/tv_game_type"
         app:layout_constraintBottom_toBottomOf="@id/tv_game_type"
-        android:textSize="18dp"/>
+        android:textSize="18dp"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/tv_game_odd_match_cards_home"
