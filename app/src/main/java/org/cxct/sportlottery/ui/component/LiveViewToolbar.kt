@@ -56,7 +56,11 @@ class LiveViewToolbar @JvmOverloads constructor(
     private var newestUrl: Boolean = false
 
     private var mMatchId: String? = null
-    private var mEventId: String? = null
+    private var mEventId: String? = null //動畫Id
+        set(value) {
+            field = value
+            iv_animation.visibility = if (field.isNullOrEmpty()) View.GONE else View.VISIBLE
+        }
 
     //exoplayer
     private var exoPlayer: SimpleExoPlayer? = null
@@ -135,6 +139,8 @@ class LiveViewToolbar @JvmOverloads constructor(
                 "&mode=widget" +
                 "&lang=${LanguageManager.getLanguageString(context)}" +
                 "&eventId=${mEventId}"
+
+        Timber.e("Dean, defaultAnimationUrl = $defaultAnimationUrl")
     }
 
     private var isPlayOpen = false
@@ -159,6 +165,13 @@ class LiveViewToolbar @JvmOverloads constructor(
 
     private fun initOnclick() {
         iv_play.setOnClickListener {
+            if (!iv_play.isSelected) {
+                iv_play.isSelected = true
+                switchLiveView(true)
+                if (iv_animation.isSelected){
+                    hideWebView()
+                }
+            }
             when (expand_layout.isExpanded) {
                 true -> {
                     // 暫時不給他重複點擊
@@ -172,9 +185,11 @@ class LiveViewToolbar @JvmOverloads constructor(
         }
 
         iv_animation.setOnClickListener {
-            stopPlayer()
-            iv_play.setImageResource(R.drawable.ic_live_player)
-            when (expand_layout.isExpanded && !isPlayOpen) {
+            if (!iv_animation.isSelected) {
+                openWebView()
+                if (iv_play.isSelected) switchLiveView(false)
+            }
+            /*when (expand_layout.isExpanded) {
                 true -> {
 //                    hideWebView()//根據需求，先隱藏賽事動畫
                     switchLiveView(false)
@@ -185,7 +200,7 @@ class LiveViewToolbar @JvmOverloads constructor(
                     switchLiveView(true)
                     isAnimationOpen = true
                 }
-            }
+            }*/
         }
 
         iv_statistics.setOnClickListener {
@@ -193,20 +208,21 @@ class LiveViewToolbar @JvmOverloads constructor(
         }
 
         iv_arrow.setOnClickListener {
-            if (expand_layout.isExpanded) {
-                switchLiveView(false)
-            } else {
-                switchLiveView(true)
-            }
-        }
-
-        expand_layout.setOnExpansionUpdateListener { _, state ->
-            iv_play.setImageResource(
-                when (state) {
-                    0 -> R.drawable.ic_live_player
-                    else -> R.drawable.ic_live_player_selected
+            when {
+                iv_play.isSelected -> {
+                    switchLiveView(false)
                 }
-            )
+                iv_animation.isSelected -> {
+                    hideWebView()
+                }
+                else -> {
+                    when {
+                        iv_play.isVisible -> switchLiveView(true)
+                        iv_animation.isVisible -> openWebView()
+                    }
+                }
+            }
+            checkExpandLayoutStatus()
         }
     }
 
@@ -214,9 +230,8 @@ class LiveViewToolbar @JvmOverloads constructor(
         if (!iv_play.isVisible) return
         when (open) {
             true -> {
-                iv_arrow.animate().rotation(180f).setDuration(100).start()
                 iv_play.isSelected = true
-                expand_layout.expand()
+                checkExpandLayoutStatus()
                 liveToolBarListener?.getLiveInfo()
                 if (!mStreamUrl.isNullOrEmpty()) {
                     startPlayer(mMatchId, mEventId, mStreamUrl)
@@ -224,10 +239,22 @@ class LiveViewToolbar @JvmOverloads constructor(
             }
             false -> {
                 stopPlayer()
-                iv_arrow.animate().rotation(0f).setDuration(100).start()
                 iv_play.isSelected = false
-                expand_layout.collapse()
+                checkExpandLayoutStatus()
             }
+        }
+    }
+
+    /**
+     * 檢查當前是否需要展開賽事直播、動畫Layout
+     */
+    private fun checkExpandLayoutStatus() {
+        if (iv_play.isSelected || iv_animation.isSelected) {
+            iv_arrow.animate().rotation(180f).setDuration(100).start()
+            expand_layout.expand()
+        } else {
+            expand_layout.collapse()
+            iv_arrow.animate().rotation(0f).setDuration(100).start()
         }
     }
 
@@ -362,6 +389,7 @@ class LiveViewToolbar @JvmOverloads constructor(
     }
 
     private fun openWebView() {
+        iv_animation.isSelected = true
 //        setLivePlayImg()
         web_view.isVisible = true
 //        setAnimationImgIcon(true)
@@ -383,10 +411,13 @@ class LiveViewToolbar @JvmOverloads constructor(
             }
         }
         web_view.loadUrl(defaultAnimationUrl)
+        checkExpandLayoutStatus()
     }
 
     private fun hideWebView() {
+        iv_animation.isSelected = false
         web_view.isVisible = false
+        checkExpandLayoutStatus()
 //        setAnimationImgIcon(false)
     }
     //endregion
