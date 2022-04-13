@@ -20,9 +20,7 @@ import kotlinx.android.synthetic.main.dialog_bottom_sheet_webview.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_webview.view.*
 import kotlinx.android.synthetic.main.view_toolbar_live.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.LanguageManager
 import timber.log.Timber
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -131,21 +129,6 @@ class LiveViewToolbar @JvmOverloads constructor(
     }
 
     private var liveToolBarListener: LiveToolBarListener? = null
-
-
-    var defaultAnimationUrl = ""
-    private fun setAnimationUrl() {
-        defaultAnimationUrl = "https://sports.cxsport.net/animation/?" +
-                "matchId=${mMatchId}" +
-                "&mode=widget" +
-                "&lang=${LanguageManager.getLanguageString(context)}" +
-                "&eventId=${mEventId}"
-
-        Timber.e("Dean, defaultAnimationUrl = $defaultAnimationUrl")
-    }
-
-    private var isPlayOpen = false
-    private var isAnimationOpen = false
 
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.view_toolbar_live, this, false)
@@ -294,21 +277,6 @@ class LiveViewToolbar @JvmOverloads constructor(
         tvStatus.isVisible = !showLive
     }
 
-    private fun loadBottomSheetUrl() {
-        mMatchId?.let {
-            sConfigData?.analysisUrl?.replace(
-                "{lang}",
-                LanguageManager.getSelectLanguage(context).key
-            )
-                ?.replace("{eventId}", it)
-        }?.let {
-            bottomSheetView.bottom_sheet_web_view.loadUrl(
-                it
-            )
-        }
-        webBottomSheet.show()
-    }
-
     fun setTitle(title: String) {
         bottomSheetView.sheet_tv_title.text = title
     }
@@ -375,7 +343,6 @@ class LiveViewToolbar @JvmOverloads constructor(
         mMatchId = matchId
         mEventId = eventId
         mStreamUrl = streamUrl
-        setAnimationUrl()
         initializePlayer(streamUrl)
     }
 
@@ -388,11 +355,6 @@ class LiveViewToolbar @JvmOverloads constructor(
     }
 
     //region 賽事動畫
-    private fun setAnimationImgIcon(isOn: Boolean) {
-        if (isOn) iv_animation.setImageResource(R.drawable.ic_icon_game_live_soccer_selected)
-        else iv_animation.setImageResource(R.drawable.ic_icon_game_live_soccer_unselected)
-    }
-
     private fun openWebView() {
         iv_animation.isSelected = true
 //        setLivePlayImg()
