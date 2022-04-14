@@ -31,6 +31,10 @@ class LiveViewToolbar @JvmOverloads constructor(
 ) :
     LinearLayout(context, attrs, defStyle) {
 
+    enum class LiveType{
+        LIVE, ANIMATION
+    }
+
     private val typedArray by lazy {
         context.theme.obtainStyledAttributes(
             attrs,
@@ -122,6 +126,10 @@ class LiveViewToolbar @JvmOverloads constructor(
         }
     }
 
+    private var lastLiveType = LiveType.LIVE
+
+    private var animationLoadFinish = false
+
 
     interface LiveToolBarListener {
         fun getLiveInfo(newestUrl: Boolean = false)
@@ -200,9 +208,9 @@ class LiveViewToolbar @JvmOverloads constructor(
                     hideWebView()
                 }
                 else -> {
-                    when {
-                        iv_play.isVisible -> switchLiveView(true)
-                        iv_animation.isVisible -> openWebView()
+                    when(lastLiveType) {
+                        LiveType.LIVE -> switchLiveView(true)
+                        LiveType.ANIMATION -> openWebView()
                     }
                 }
             }
@@ -215,6 +223,7 @@ class LiveViewToolbar @JvmOverloads constructor(
         when (open) {
             true -> {
                 iv_play.isSelected = true
+                lastLiveType = LiveType.LIVE
                 checkExpandLayoutStatus()
                 liveToolBarListener?.getLiveInfo()
                 if (!mStreamUrl.isNullOrEmpty()) {
@@ -357,6 +366,7 @@ class LiveViewToolbar @JvmOverloads constructor(
     //region 賽事動畫
     private fun openWebView() {
         iv_animation.isSelected = true
+        lastLiveType = LiveType.ANIMATION
 //        setLivePlayImg()
         web_view.isVisible = true
 //        setAnimationImgIcon(true)
@@ -376,14 +386,23 @@ class LiveViewToolbar @JvmOverloads constructor(
                 view?.loadUrl(mTrackerUrl)
                 return true
             }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                animationLoadFinish = true
+            }
         }
-        web_view.loadUrl(mTrackerUrl)
+        if (!animationLoadFinish)
+            web_view.loadUrl(mTrackerUrl)
+        else
+            web_view.onResume()
         checkExpandLayoutStatus()
     }
 
     private fun hideWebView() {
         iv_animation.isSelected = false
         web_view.isVisible = false
+        web_view.onPause()
         checkExpandLayoutStatus()
 //        setAnimationImgIcon(false)
     }
