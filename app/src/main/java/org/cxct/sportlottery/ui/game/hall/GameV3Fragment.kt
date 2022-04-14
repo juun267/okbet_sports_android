@@ -57,6 +57,9 @@ import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.common.*
 import org.cxct.sportlottery.ui.game.hall.adapter.*
+import org.cxct.sportlottery.ui.game.outright.GameOutrightFragmentDirections
+import org.cxct.sportlottery.ui.game.outright.OutrightLeagueOddAdapter
+import org.cxct.sportlottery.ui.game.outright.OutrightOddListener
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
@@ -157,6 +160,41 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             )
         }
     }
+
+    //aaaaa
+    private val outrightLeagueOddAdapter by lazy {
+        OutrightLeagueOddAdapter().apply {
+            discount = viewModel.userInfo.value?.discount ?: 1.0F
+
+            outrightOddListener = OutrightOddListener(
+                { matchOdd, odd, playCateCode ->
+                    matchOdd?.let {
+                        addOddsDialog(matchOdd.matchInfo, odd, playCateCode,"",null)
+                    }
+                },
+                { oddsKey, matchOdd ->
+                    val action =
+                        GameOutrightFragmentDirections.actionGameOutrightFragmentToGameOutrightMoreFragment(
+                            oddsKey,
+                            matchOdd
+                        )
+                    findNavController().navigate(action)
+                },
+                { matchOdd, oddsKey ->
+
+                    subscribeChannelHall(matchOdd)
+
+                    this.data.find { it == matchOdd }?.oddsMap?.get(oddsKey)?.forEach { odd ->
+                        odd?.isExpand?.let { isExpand ->
+                            odd.isExpand = !isExpand
+                        }
+                    }
+                    this.notifyItemChanged(this.data.indexOf(matchOdd))
+                }
+            )
+        }
+    }
+
 
     private val leagueAdapter by lazy {
         LeagueAdapter(
@@ -943,6 +981,62 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             }
             hideLoading()
         }
+
+        viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner) {
+            hideLoading()
+
+            it.getContentIfNotHandled()?.let { outrightOddsListResult ->
+                if (outrightOddsListResult.success) {
+
+//                    game_toolbar_match_type.text = GameType.values()
+//                        .find { gameType -> gameType.key == args.gameType.key }?.string?.let { stringId ->
+//                            getString(
+//                                stringId
+//                            )
+//                        }
+
+                    GameConfigManager.getTitleBarBackground(outrightOddsListResult.outrightOddsListData?.sport?.code)
+                        ?.let { gameImg ->
+                            game_toolbar_bg.setBackgroundResource(gameImg)
+                        }
+
+                    var outrightLeagueOddDataList:MutableList<MatchOdd?> = mutableListOf()
+                        outrightOddsListResult.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds
+                            ?: listOf()
+                    outrightOddsListResult.outrightOddsListData?.leagueOdds?.forEach {  leagueOdd ->
+                        leagueOdd.matchOdds?.forEach { matchOdds ->
+                            outrightLeagueOddDataList.add(matchOdds)
+                        }
+
+                    }
+
+                    outrightLeagueOddDataList.forEachIndexed { index, matchOdd ->
+                        val firstKey = matchOdd?.oddsMap?.keys?.firstOrNull()
+
+                        matchOdd?.oddsMap?.forEach { oddsMap ->
+                            oddsMap.value?.filterNotNull()?.forEach { odd ->
+                                odd.isExpand = true
+                            }
+                        }
+                    }
+
+                    outrightOddsListResult.outrightOddsListData?.leagueOdds.also {
+                        if (it != null) {
+                            outrightLeagueOddAdapter.data = it
+                        }
+                    }
+
+                    outrightOddsListResult.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.forEach { matchOdd ->
+                        subscribeChannelHall(matchOdd)
+                    }
+                    game_list.apply {
+                        adapter = outrightLeagueOddAdapter
+                        isReload = false
+                    }
+                }
+            }
+        }
+
 
         viewModel.epsListResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { epsListResult ->
@@ -2009,6 +2103,29 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 playSelected.code
             }
             else -> null
+        }
+    }
+
+
+    private fun subscribeChannelHall(matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd?) {
+        val isExpand = matchOdd?.oddsMap?.values?.any {
+            it?.any { odd -> odd?.isExpand ?: false } ?: false
+        }
+
+        when (isExpand) {
+            true -> {
+                subscribeChannelHall(
+                    matchOdd.matchInfo?.gameType,
+                    matchOdd.matchInfo?.id
+                )
+            }
+            false -> {
+                unSubscribeChannelHall(
+                    matchOdd.matchInfo?.gameType,
+                    PlayCate.OUTRIGHT.value,
+                    matchOdd.matchInfo?.id
+                )
+            }
         }
     }
 

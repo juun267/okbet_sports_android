@@ -1306,7 +1306,9 @@ class GameViewModel(
 
                 }
                 MatchType.OUTRIGHT -> {
-                    getOutrightSeasonList(code, false)
+                    getOutrightOddsList(code)
+                    //aaaaa
+                    //getOutrightSeasonList(code, false)
                 }
                 MatchType.AT_START -> {
                     getOddsList(
@@ -1446,6 +1448,43 @@ class GameViewModel(
             }
         }
     }
+    fun getOutrightOddsList(gameType: String) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.outrightService.getOutrightOddsList(
+                    OutrightOddsListRequest(
+                        gameType,
+                        matchType = MatchType.OUTRIGHT.postValue
+                    )
+                )
+            }
+
+            result?.outrightOddsListData?.leagueOdds?.forEach { leagueOdd ->
+                leagueOdd.matchOdds?.forEach { matchOdd ->
+                    matchOdd?.oddsMap?.values?.forEach { oddList ->
+                        oddList?.updateOddSelectState()
+                    }
+
+                    matchOdd?.setupOddDiscount()
+                    matchOdd?.setupPlayCate()
+                    matchOdd?.sortOdds()
+
+                    matchOdd?.startDate = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, DMY_FORMAT)
+                    matchOdd?.startTime = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, HM_FORMAT)
+                }
+            }
+
+            val matchOdd =
+                result?.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()
+            matchOdd?.let {
+                matchOdd.playCateMappingList = playCateMappingList
+                matchOdd.updateOddStatus()
+            }
+
+            _outrightOddsListResult.postValue(Event(result))
+        }
+    }
+
 
     fun getOutrightOddsList(gameType: GameType, leagueId: String) {
         viewModelScope.launch {
