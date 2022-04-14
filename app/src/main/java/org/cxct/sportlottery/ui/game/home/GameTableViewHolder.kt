@@ -35,16 +35,16 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private var onPageChangeCallback: OnPageChangeCallback? = null
 
-    var onClickTotalMatchListener: OnSelectItemListener<GameEntity>? = null
-    var onClickMatchListener: OnSelectItemListener<MatchInfo>? = null
+    private var onClickTotalMatchListener: OnSelectItemListener<GameEntity>? = null
+    private var onClickMatchListener: OnSelectItemListener<MatchInfo>? = null
     private var onClickOddListener: OnClickOddListener? = object : OnClickOddListener {
         override fun onClickBet(matchOdd: MatchOdd, odd: Odd, playCateCode: String, playCateName: String?,
                                 betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?) {
             addOddsDialog(matchOdd, odd, playCateCode, playCateName, betPlayCateNameMap)
         }
     }
-    var onClickFavoriteListener: OnClickFavoriteListener? = null
-    var onClickStatisticsListener: OnClickStatisticsListener? = null
+    private var onClickFavoriteListener: OnClickFavoriteListener? = null
+    private var onClickStatisticsListener: OnClickStatisticsListener? = null
     //private var onSubscribeChannelHallListener: OnSubscribeChannelHallListener? = null
 
     init {
