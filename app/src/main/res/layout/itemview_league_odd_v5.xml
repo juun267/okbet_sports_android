@@ -347,16 +347,30 @@
 
             <ImageView
                 android:id="@+id/iv_play"
-                android:layout_width="24dp"
-                android:layout_height="14dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:paddingRight="@dimen/margin_10"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_live_player"
+                android:src="@drawable/ic_living"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border_row3"
                 app:layout_constraintStart_toEndOf="@+id/league_odd_match_price_boost"
                 app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row3"
                 app:tint="@color/colorGray"
+                tools:ignore="ContentDescription"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/iv_animation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/margin_10"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_game_schedule_blue"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border_row3"
+                app:layout_constraintStart_toEndOf="@+id/iv_play"
+                app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row3"
                 tools:ignore="ContentDescription"
                 tools:visibility="visible" />
 
@@ -378,7 +392,7 @@
                 android:textStyle="bold"
                 app:drawableEndCompat="@drawable/ic_arrow_dark_right_v4"
                 app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border_row3"
-                app:layout_constraintStart_toEndOf="@id/iv_play"
+                app:layout_constraintStart_toEndOf="@id/iv_animation"
                 app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row3"
                 tools:text="6" />
 
