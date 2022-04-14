@@ -719,7 +719,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         when {
             betPlayCateNameMap.isNullOrEmpty() -> {
                 binding.tvName.text =
-                    if (inPlay && betInfoListData?.matchType != MatchType.OUTRIGHT) {
+                    if (inPlay && betInfoListData?.matchType != MatchType.OUTRIGHT && matchOdd.gameType == GameType.FT.key) {
                         getString(
                             R.string.bet_info_in_play_score,
                             nameOneLine(matchOdd.playCateName),
@@ -730,7 +730,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
             else -> {
                 binding.tvName.text =
-                    if (inPlay && betInfoListData?.matchType != MatchType.OUTRIGHT) {
+                    if (inPlay && betInfoListData?.matchType != MatchType.OUTRIGHT && matchOdd.gameType == GameType.FT.key) {
                         getString(
                             R.string.bet_info_in_play_score,
                             betPlayCateNameMap?.get(matchOdd.playCode)
