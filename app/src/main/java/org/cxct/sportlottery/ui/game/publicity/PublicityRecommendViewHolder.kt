@@ -56,7 +56,9 @@ class PublicityRecommendViewHolder(
                     //do nothing
                 },
                 clickListenerFavorite = {
-                    publicityAdapterListener.onShowLoginNotify()
+                    it?.let{ matchId ->
+                        publicityAdapterListener.onClickFavoriteListener(matchId)
+                    }
                 },
                 clickListenerStatistics = {
                     data.matchInfo?.id?.let { matchId ->

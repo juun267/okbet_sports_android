@@ -62,9 +62,7 @@ abstract class BaseBottomNavViewModel(
         _thirdGameCategory.postValue(
             Event(
                 if (isCreditAccount.value == true || sConfigData?.thirdOpen != FLAG_OPEN) {
-                    if (isLogin.value != true) {
-                        _navPublicityPage.postValue(Event(true))
-                    }
+                    _navPublicityPage.postValue(Event(true))
                     null
                 } else {
                     thirdGameCategory

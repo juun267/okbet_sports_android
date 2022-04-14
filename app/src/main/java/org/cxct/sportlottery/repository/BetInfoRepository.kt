@@ -415,7 +415,7 @@ class BetInfoRepository(val androidContext: Context) {
         }
 
         val oddsList = matchOddList.map {
-            it.odds.toBigDecimal()
+            Pair(it.odds.toBigDecimal(), it.isOnlyEUType)
         }
 
         val oddsIndexList = oddsList.map {
@@ -452,7 +452,9 @@ class BetInfoRepository(val androidContext: Context) {
                 } ?: 0
 
                 //風控投注額上限
-                val hdOddsPayout = maxPayout.div(it.value.hdOdds.toDouble()).toInt()
+                val hdOddsPayout =
+                    maxPayout.div(if (it.value.isOnlyEUType) it.value.odds.toDouble() - 1 else it.value.hdOdds.toDouble())
+                        .toInt()
 
                 //region parlayBetLimit(球類賽事類型投注額上限), matchTypeMaxBetMoney(會員層級賽事類型投注額上限), userSelfLimit(自我禁制投注額上限), hdOddsPayout(風控投注額上限) 取最小值作為投注額上限
                 listOf(
@@ -485,7 +487,7 @@ class BetInfoRepository(val androidContext: Context) {
                 }*/
 
                 //[Martin]為馬來盤＆印度計算投注上限
-                if (oddsType == OddsType.MYS) {
+                if (oddsType == OddsType.MYS && !it.value.isOnlyEUType) {
                     if ((matchOddList.getOrNull(0)?.malayOdds ?: 0.0) < 0.0 && oddsList.size <= 1) {
                         val myMax = (maxBetMoney.div(abs(matchOddList.getOrNull(0)?.malayOdds ?: 0.0))).toInt()
                         listOf(
@@ -497,7 +499,7 @@ class BetInfoRepository(val androidContext: Context) {
                             maxBet = minLimit
                         }
                     }
-                } else if (oddsType == OddsType.IDN) {
+                } else if (oddsType == OddsType.IDN && !it.value.isOnlyEUType) {
                     if (matchOddList.getOrNull(0)?.indoOdds ?: 0.0 < 0.0 && oddsList.size <= 1) {
                         //印度賠付額上限
                         val indoMax = ((playQuota?.max?.toDouble()?.plus(abs(matchOddList.getOrNull(0)?.indoOdds ?: 0.0)))?.toInt())?.minus(1)?: 0

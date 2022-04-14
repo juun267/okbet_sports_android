@@ -665,7 +665,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             //登入後要請求使用者是否需要認證手機驗證碼
             if (it) {
                 viewModel.getTwoFactorValidateStatus()
-                isFromPublicity = false
             }
         }
 
@@ -903,7 +902,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             return
         }
 
-        tabLayout.getTabAt(0)?.select()
+        GamePublicityActivity.reStart(this)
+//        tabLayout.getTabAt(0)?.select()
     }
 
     private fun updateUiWithResult(messageListResult: MessageListResult?) {
