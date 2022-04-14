@@ -155,7 +155,6 @@ object ArithUtil : DecimalFormatUtil() {
         val b1 = BigDecimal(java.lang.Double.toString(v1))
         val b2 = BigDecimal(java.lang.Double.toString(v2))
         val m = b1.multiply(b2)
-        Timber.e("Dean, s1 = $s1, s2 = $s2, m = $m m double = ${b1.multiply(b2).toDouble()}")
         return b1.multiply(b2).toDouble()
     }
 }
