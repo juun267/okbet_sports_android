@@ -6,7 +6,9 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
+import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
@@ -18,9 +20,7 @@ import kotlinx.android.synthetic.main.dialog_bottom_sheet_webview.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_webview.view.*
 import kotlinx.android.synthetic.main.view_toolbar_live.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.LanguageManager
 import timber.log.Timber
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -54,7 +54,12 @@ class LiveViewToolbar @JvmOverloads constructor(
     private var newestUrl: Boolean = false
 
     private var mMatchId: String? = null
-    private var mEventId: String? = null
+    private var mEventId: String? = null //動畫Id
+        set(value) {
+            field = value
+            iv_animation.visibility = if (field.isNullOrEmpty()) View.GONE else View.VISIBLE
+        }
+    private var mTrackerUrl: String = ""
 
     //exoplayer
     private var exoPlayer: SimpleExoPlayer? = null
@@ -144,6 +149,13 @@ class LiveViewToolbar @JvmOverloads constructor(
 
     private fun initOnclick() {
         iv_play.setOnClickListener {
+            if (!iv_play.isSelected) {
+                iv_play.isSelected = true
+                switchLiveView(true)
+                if (iv_animation.isSelected){
+                    hideWebView()
+                }
+            }
             when (expand_layout.isExpanded) {
                 true -> {
                     // 暫時不給他重複點擊
@@ -156,25 +168,45 @@ class LiveViewToolbar @JvmOverloads constructor(
             }
         }
 
+        iv_animation.setOnClickListener {
+            if (!iv_animation.isSelected) {
+                openWebView()
+                if (iv_play.isSelected) switchLiveView(false)
+            }
+            /*when (expand_layout.isExpanded) {
+                true -> {
+//                    hideWebView()//根據需求，先隱藏賽事動畫
+                    switchLiveView(false)
+                    isAnimationOpen = false
+                }
+                false -> {
+//                    openWebView()//根據需求，先隱藏賽事動畫
+                    switchLiveView(true)
+                    isAnimationOpen = true
+                }
+            }*/
+        }
+
         iv_statistics.setOnClickListener {
             liveToolBarListener?.showStatistics()
         }
 
         iv_arrow.setOnClickListener {
-            if (expand_layout.isExpanded) {
-                switchLiveView(false)
-            } else {
-                switchLiveView(true)
-            }
-        }
-
-        expand_layout.setOnExpansionUpdateListener { _, state ->
-            iv_play.setImageResource(
-                when (state) {
-                    0 -> R.drawable.ic_live_player
-                    else -> R.drawable.ic_live_player_selected
+            when {
+                iv_play.isSelected -> {
+                    switchLiveView(false)
                 }
-            )
+                iv_animation.isSelected -> {
+                    hideWebView()
+                }
+                else -> {
+                    when {
+                        iv_play.isVisible -> switchLiveView(true)
+                        iv_animation.isVisible -> openWebView()
+                    }
+                }
+            }
+            checkExpandLayoutStatus()
         }
     }
 
@@ -182,9 +214,8 @@ class LiveViewToolbar @JvmOverloads constructor(
         if (!iv_play.isVisible) return
         when (open) {
             true -> {
-                iv_arrow.animate().rotation(180f).setDuration(100).start()
                 iv_play.isSelected = true
-                expand_layout.expand()
+                checkExpandLayoutStatus()
                 liveToolBarListener?.getLiveInfo()
                 if (!mStreamUrl.isNullOrEmpty()) {
                     startPlayer(mMatchId, mEventId, mStreamUrl)
@@ -192,10 +223,22 @@ class LiveViewToolbar @JvmOverloads constructor(
             }
             false -> {
                 stopPlayer()
-                iv_arrow.animate().rotation(0f).setDuration(100).start()
                 iv_play.isSelected = false
-                expand_layout.collapse()
+                checkExpandLayoutStatus()
             }
+        }
+    }
+
+    /**
+     * 檢查當前是否需要展開賽事直播、動畫Layout
+     */
+    private fun checkExpandLayoutStatus() {
+        if (iv_play.isSelected || iv_animation.isSelected) {
+            iv_arrow.animate().rotation(180f).setDuration(100).start()
+            expand_layout.expand()
+        } else {
+            expand_layout.collapse()
+            iv_arrow.animate().rotation(0f).setDuration(100).start()
         }
     }
 
@@ -232,21 +275,6 @@ class LiveViewToolbar @JvmOverloads constructor(
         iv_live_status.isVisible = !showLive
         iv_live_status.setImageResource(R.drawable.bg_no_play)
         tvStatus.isVisible = !showLive
-    }
-
-    private fun loadBottomSheetUrl() {
-        mMatchId?.let {
-            sConfigData?.analysisUrl?.replace(
-                "{lang}",
-                LanguageManager.getSelectLanguage(context).key
-            )
-                ?.replace("{eventId}", it)
-        }?.let {
-            bottomSheetView.bottom_sheet_web_view.loadUrl(
-                it
-            )
-        }
-        webBottomSheet.show()
     }
 
     fun setTitle(title: String) {
@@ -318,8 +346,47 @@ class LiveViewToolbar @JvmOverloads constructor(
         initializePlayer(streamUrl)
     }
 
+    fun setupTrackerUrl(trackerUrl: String?) {
+        mTrackerUrl = trackerUrl ?: ""
+    }
+
     fun stopPlayer() {
         releasePlayer()
     }
+
+    //region 賽事動畫
+    private fun openWebView() {
+        iv_animation.isSelected = true
+//        setLivePlayImg()
+        web_view.isVisible = true
+//        setAnimationImgIcon(true)
+        player_view.isVisible = false
+
+        web_view.settings.apply {
+            javaScriptEnabled = true
+            useWideViewPort = true
+            displayZoomControls = false
+        }
+        web_view.setInitialScale(25)
+        web_view.webViewClient = object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(
+                view: WebView?,
+                request: WebResourceRequest?
+            ): Boolean {
+                view?.loadUrl(mTrackerUrl)
+                return true
+            }
+        }
+        web_view.loadUrl(mTrackerUrl)
+        checkExpandLayoutStatus()
+    }
+
+    private fun hideWebView() {
+        iv_animation.isSelected = false
+        web_view.isVisible = false
+        checkExpandLayoutStatus()
+//        setAnimationImgIcon(false)
+    }
+    //endregion
 
 }

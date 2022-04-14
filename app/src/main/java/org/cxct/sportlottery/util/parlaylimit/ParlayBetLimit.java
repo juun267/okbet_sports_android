@@ -42,6 +42,11 @@ public class ParlayBetLimit {
      */
     private BigDecimal min;
 
+    /**
+     * 是否為歐洲盤系列 (僅採用歐洲盤賠率)
+     */
+    private Boolean isOnlyEUType;
+
     public Integer getNum() {
         return num;
     }
@@ -96,6 +101,14 @@ public class ParlayBetLimit {
 
     public void setMin(BigDecimal min) {
         this.min = min;
+    }
+
+    public Boolean getIsOnlyEUType() {
+        return isOnlyEUType;
+    }
+
+    public void setIsOnlyEUType(Boolean isOnlyEUType) {
+        this.isOnlyEUType = isOnlyEUType;
     }
 
     @Override
