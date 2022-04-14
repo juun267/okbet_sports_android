@@ -148,7 +148,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         var currentOddsType = oddsType
         betList?.getOrNull(position)?.apply {
-            if (matchOdd.odds == matchOdd.malayOdds
+            if (matchOdd.isOnlyEUType
+                || matchOdd.odds == matchOdd.malayOdds
                 || matchType == MatchType.OUTRIGHT
                 || matchType == MatchType.OTHER_OUTRIGHT
             ) {

@@ -102,19 +102,24 @@ object MatchOddUtil {
     }
 
     fun Double.applyDiscount(discount: Float): Double {
-        return ArithUtil.round((this - 1).times(discount) + 1, 2, RoundingMode.HALF_UP).toDouble()
+        return ArithUtil.round(
+            ArithUtil.add(ArithUtil.mul(ArithUtil.sub(this, 1.0), discount.toDouble()), 1.0),
+            2,
+            RoundingMode.HALF_UP
+        )
+            .toDouble()
     }
 
     fun Double.applyHKDiscount(discount: Float): Double {
-        return ArithUtil.round(this.times(discount),2,RoundingMode.HALF_UP).toDouble()
+        return ArithUtil.round(ArithUtil.mul(this, discount.toDouble()), 2, RoundingMode.HALF_UP).toDouble()
     }
 
     private fun Double.applyReverselyDiscount(discount: Float): Double {
-        return (this - 1).div(discount) + 1
+        return ArithUtil.add(ArithUtil.div(ArithUtil.sub(this, 1.0), discount.toDouble()), 1.0)
     }
 
     private fun Double.applyReverselyHKDiscount(discount: Float): Double {
-        return this.div(discount)
+        return ArithUtil.div(this, discount.toDouble())
     }
 
     private fun Double.updateDiscount(discount: Float, newDiscount: Float): Double {

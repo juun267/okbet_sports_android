@@ -387,7 +387,8 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 var realAmount = quota
                 var win = 0.0
                 var currentOddsType = oddsType
-                if (matchOdd?.odds == matchOdd?.malayOdds
+                if (matchOdd?.isOnlyEUType == true
+                    || matchOdd?.odds == matchOdd?.malayOdds
                     || betInfoListData?.matchType == MatchType.OUTRIGHT
                     || betInfoListData?.matchType == MatchType.OTHER_OUTRIGHT
                 ) {
