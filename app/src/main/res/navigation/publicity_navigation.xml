@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/publicity_navigation"
+    app:startDestination="@id/publicityFragment">
+
+    <fragment
+        android:id="@+id/publicityFragment"
+        android:name="org.cxct.sportlottery.ui.game.publicity.PublicityFragment"
+        android:label="PublicityFragment"
+        tools:layout="@layout/fragment_publicity">
+
+        <action
+            android:id="@+id/action_publicityFragment_to_oddsDetailFragment"
+            app:destination="@id/oddsDetailFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right">
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
+
+            <argument
+                android:name="gameType"
+                app:argType="org.cxct.sportlottery.network.common.GameType" />
+
+            <argument
+                android:name="matchId"
+                app:argType="string" />
+
+            <argument
+                android:name="matchInfoList"
+                app:argType="org.cxct.sportlottery.network.odds.MatchInfo[]" />
+        </action>
+
+        <action
+            android:id="@+id/action_publicityFragment_to_oddsDetailLiveFragment"
+            app:destination="@id/oddsDetailLiveFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right">
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
+
+            <argument
+                android:name="gameType"
+                app:argType="org.cxct.sportlottery.network.common.GameType" />
+
+            <argument
+                android:name="matchId"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/oddsDetailFragment"
+        android:name="org.cxct.sportlottery.ui.odds.OddsDetailFragment"
+        tools:layout="@layout/fragment_odds_detail">
+
+        <argument
+            android:name="matchType"
+            app:argType="org.cxct.sportlottery.network.common.MatchType" />
+
+        <argument
+            android:name="gameType"
+            app:argType="org.cxct.sportlottery.network.common.GameType" />
+
+        <argument
+            android:name="matchId"
+            app:argType="string" />
+
+        <argument
+            android:name="matchInfoList"
+            app:argType="org.cxct.sportlottery.network.odds.MatchInfo[]" />
+
+        <action
+            android:id="@+id/action_oddsDetailFragment_self"
+            app:destination="@id/oddsDetailFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:launchSingleTop="true"
+            app:popExitAnim="@anim/exit_to_right">
+            <argument
+                android:name="gameType"
+                app:argType="org.cxct.sportlottery.network.common.GameType" />
+
+            <argument
+                android:name="matchId"
+                app:argType="string" />
+        </action>
+
+        <action
+            android:id="@+id/action_oddsDetailFragment_to_oddsDetailLiveFragment"
+            app:destination="@id/oddsDetailLiveFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right">
+
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
+
+            <argument
+                android:name="gameType"
+                app:argType="org.cxct.sportlottery.network.common.GameType" />
+
+            <argument
+                android:name="matchId"
+                app:argType="string" />
+        </action>
+
+        <action
+            android:id="@+id/action_oddsDetailFragment_to_gameV3Fragment"
+            app:destination="@id/gameV3Fragment"
+            app:popUpTo="@id/gameV3Fragment">
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/oddsDetailLiveFragment"
+        android:name="org.cxct.sportlottery.ui.odds.OddsDetailLiveFragment"
+        tools:layout="@layout/fragment_odds_detail_live">
+
+        <argument
+            android:name="matchType"
+            app:argType="org.cxct.sportlottery.network.common.MatchType" />
+
+        <argument
+            android:name="gameType"
+            app:argType="org.cxct.sportlottery.network.common.GameType" />
+
+        <argument
+            android:name="matchId"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action_oddsDetailLiveFragment_self"
+            app:destination="@id/oddsDetailLiveFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right">
+
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
+
+            <argument
+                android:name="gameType"
+                app:argType="org.cxct.sportlottery.network.common.GameType" />
+
+            <argument
+                android:name="matchId"
+                app:argType="string" />
+        </action>
+
+        <action
+            android:id="@+id/action_oddsDetailLiveFragment_to_oddsDetailFragment"
+            app:destination="@id/oddsDetailFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right">
+
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
+
+            <argument
+                android:name="gameType"
+                app:argType="org.cxct.sportlottery.network.common.GameType" />
+
+            <argument
+                android:name="matchId"
+                app:argType="string" />
+
+            <argument
+                android:name="matchInfoList"
+                app:argType="org.cxct.sportlottery.network.odds.MatchInfo[]" />
+        </action>
+
+        <action
+            android:id="@+id/action_oddsDetailLiveFragment_to_gameV3Fragment"
+            app:destination="@id/gameV3Fragment"
+            app:popUpTo="@id/gameV3Fragment">
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
+        </action>
+    </fragment>
+</navigation>

@@ -252,7 +252,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                     if (sConfigData?.thirdOpen == FLAG_OPEN)
                         MainActivity.reStart(this)
                     else
-                        GameActivity.reStart(this)
+                        finish()
                 }
             }
         } else {

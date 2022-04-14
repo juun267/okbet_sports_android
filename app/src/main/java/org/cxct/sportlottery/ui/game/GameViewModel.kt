@@ -29,6 +29,7 @@ import org.cxct.sportlottery.network.matchLiveInfo.MatchLiveUrlRequest
 import org.cxct.sportlottery.network.matchLiveInfo.Response
 import org.cxct.sportlottery.network.matchTracker.MatchTrackerUrl
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
@@ -46,6 +47,9 @@ import org.cxct.sportlottery.network.outright.season.OutrightLeagueListRequest
 import org.cxct.sportlottery.network.outright.season.OutrightLeagueListResult
 import org.cxct.sportlottery.network.sport.*
 import org.cxct.sportlottery.network.sport.coupon.SportCouponMenuResult
+import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
+import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
+import org.cxct.sportlottery.network.sport.publicityRecommend.RecommendResult
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.network.sport.query.SearchRequest
 import org.cxct.sportlottery.network.sport.query.SportQueryData
@@ -66,6 +70,7 @@ import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
 import timber.log.Timber
 import java.lang.Exception
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -321,6 +326,10 @@ class GameViewModel(
     private val _sportMenuFilterList = MutableLiveData<Event<MutableMap<String?, MutableMap<String?, SportMenuFilter>?>?>>()
     val sportMenuFilterList: LiveData<Event<MutableMap<String?, MutableMap<String?, SportMenuFilter>?>?>>
         get() = _sportMenuFilterList
+
+    private val _publicityRecommend = MutableLiveData<Event<RecommendResult>>()
+    val publicityRecommend: LiveData<Event<RecommendResult>>
+        get() = _publicityRecommend
 
     //發送簡訊碼之後60s無法再發送
     val twoFactorResult: LiveData<BaseSecurityCodeResult?>
@@ -2728,4 +2737,91 @@ class GameViewModel(
     fun updateBetAmount(input: String) {
         betInfoRepository.updateBetAmount(input)
     }
+
+    //region 宣傳頁用
+    fun getRecommend() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                val currentTimeMillis = System.currentTimeMillis()
+                val calendar = Calendar.getInstance()
+                calendar.timeInMillis = currentTimeMillis
+                val year = calendar.get(Calendar.YEAR)
+                val month = calendar.get(Calendar.MONTH) + 1
+                val day = calendar.get(Calendar.DAY_OF_MONTH)
+                val timeFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                val startTimeStamp = timeFormat.parse("$year-$month-$day 00:00:00").time
+
+                OneBoSportApi.sportService.getPublicityRecommend(
+                    PublicityRecommendRequest(
+                        currentTimeMillis.toString(),
+                        startTimeStamp.toString()
+                    )
+                )
+            }?.let { result ->
+                if (result.success) {
+                    result.result.recommendList.forEach { recommend ->
+                        with(recommend) {
+                            recommend.matchInfo = MatchInfo(
+                                gameType = gameType,
+                                awayName = awayName,
+                                homeName = homeName,
+                                playCateNum = matchNum,
+                                startTime = startTime,
+                                status = status,
+                                leagueId = leagueId,
+                                leagueName = leagueName,
+                                id = id,
+                                endTime = 0
+                            ).apply {
+                                setupMatchType(this)
+                                setupMatchTime(this)
+                            }
+                        }
+                    }
+
+                    _publicityRecommend.postValue(Event(result.result))
+                }
+            }
+        }
+    }
+
+    //region 宣傳頁推薦賽事資料處理
+    /**
+     * 設置賽事類型參數(滾球、即將、今日、早盤)
+     */
+    private fun Recommend.setupMatchType(matchInfo: MatchInfo) {
+        matchType = when (status) {
+            1 -> {
+                matchInfo.isInPlay = true
+                MatchType.IN_PLAY
+            }
+            else -> {
+                when {
+                    TimeUtil.isTimeAtStart(startTime) -> {
+                        matchInfo.isAtStart = true
+                        MatchType.AT_START
+                    }
+                    TimeUtil.isTimeToday(startTime) -> {
+                        MatchType.TODAY
+                    }
+                    else -> {
+                        MatchType.EARLY
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 設置賽事時間參數
+     */
+    private fun setupMatchTime(matchInfo: MatchInfo) {
+        matchInfo.startDateDisplay = TimeUtil.timeFormat(matchInfo.startTime, "dd/MM")
+
+        matchInfo.startTimeDisplay = TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
+
+        matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
+    }
+    //endregion
+    //endregion
 }

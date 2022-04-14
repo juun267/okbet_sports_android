@@ -103,7 +103,6 @@ class MultiLanguagesApplication : Application() {
         viewModel { GooglePermissionViewModel(get(), get(), get()) }
         viewModel { TestViewModel(get(), get(), get(), get()) }
         viewModel { NewsViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { GamePublicityViewModel(get(), get(), get(), get(), get(), get()) }
     }
 
     private val repoModule = module {
