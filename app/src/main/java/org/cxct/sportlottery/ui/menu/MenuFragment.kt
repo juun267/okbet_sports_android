@@ -19,6 +19,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
+import org.cxct.sportlottery.ui.game.Page
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
@@ -389,7 +390,17 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
         //語系選擇
         menu_language.setOnClickListener {
-            val intent = Intent(context, SwitchLanguageActivity::class.java)
+            val intent = Intent(context, SwitchLanguageActivity::class.java).apply {
+                activity?.let { fragmentActivity ->
+                    putExtra(
+                        SwitchLanguageActivity.FROM_ACTIVITY, when (fragmentActivity) {
+                            is GamePublicityActivity -> Page.PUBLICITY
+                            else -> Page.GAME
+                        }
+                    )
+                }
+            }
+
             context?.startActivity(intent)
             mDownMenuListener?.onClick(menu_language)
         }

@@ -586,7 +586,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 val inPlay = System.currentTimeMillis() > itemData.matchOdd.startTime ?: 0
                 when {
                     itemData.betPlayCateNameMap.isNullOrEmpty() -> {
-                        tv_name.text = when (inPlay && itemData.matchType != MatchType.OUTRIGHT) {
+                        tv_name.text = when (inPlay && itemData.matchType != MatchType.OUTRIGHT && itemData.matchOdd.gameType == GameType.FT.key) {
                             true -> {
                                 context.getString(
                                     R.string.bet_info_in_play_score,
@@ -600,7 +600,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     }
 
                     else -> {
-                        tv_name.text = when (inPlay && itemData.matchType != MatchType.OUTRIGHT) {
+                        tv_name.text = when (inPlay && itemData.matchType != MatchType.OUTRIGHT && itemData.matchOdd.gameType == GameType.FT.key) {
                             true -> {
                                 context.getString(
                                     R.string.bet_info_in_play_score,

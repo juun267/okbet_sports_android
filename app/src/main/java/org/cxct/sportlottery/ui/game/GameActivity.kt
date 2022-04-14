@@ -903,7 +903,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             return
         }
 
-        tabLayout.getTabAt(0)?.select()
+        GamePublicityActivity.reStart(this)
+//        tabLayout.getTabAt(0)?.select()
     }
 
     private fun updateUiWithResult(messageListResult: MessageListResult?) {

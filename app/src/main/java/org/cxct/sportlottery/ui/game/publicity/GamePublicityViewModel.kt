@@ -13,6 +13,7 @@ import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommend
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.network.sport.publicityRecommend.RecommendResult
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
@@ -29,7 +30,7 @@ class GamePublicityViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     favoriteRepository: MyFavoriteRepository
-) : BaseSocketViewModel(
+) : BaseBottomNavViewModel(
     androidContext,
     userInfoRepository,
     loginRepository,
