@@ -2125,24 +2125,13 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
 
     private fun subscribeChannelHall(matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd?) {
-        val isExpand = matchOdd?.oddsMap?.values?.any {
-            it?.any { odd -> odd?.isExpand ?: false } ?: false
-        }
-
-        when (isExpand) {
-            true -> {
-                subscribeChannelHall(
-                    matchOdd.matchInfo?.gameType,
-                    matchOdd.matchInfo?.id
-                )
-            }
-            false -> {
-                unSubscribeChannelHall(
-                    matchOdd.matchInfo?.gameType,
-                    PlayCate.OUTRIGHT.value,
-                    matchOdd.matchInfo?.id
-                )
-            }
+        val gameType =
+            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+        gameType?.let {
+            subscribeChannelHall(
+                it.key,
+                matchOdd?.matchInfo?.id
+            )
         }
     }
 
