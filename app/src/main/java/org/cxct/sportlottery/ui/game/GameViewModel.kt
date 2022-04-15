@@ -2764,6 +2764,7 @@ class GameViewModel(
                             setupMatchType()
                             setupMatchTime()
                             setupPlayCateNum()
+                            setupLeagueName()
                         }
                     }
 
@@ -2816,6 +2817,13 @@ class GameViewModel(
      */
     private fun Recommend.setupPlayCateNum() {
         matchInfo?.playCateNum = playCateNum
+    }
+
+    /**
+     * 聯賽名稱，因matchInfo中後端沒有配置值，故由外層傳入
+     */
+    private fun Recommend.setupLeagueName() {
+        matchInfo?.leagueName = leagueName
     }
     //endregion
     //endregion
