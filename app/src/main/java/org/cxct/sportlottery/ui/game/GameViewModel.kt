@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
+import com.bekawestberg.loopinglayout.library.addViewsAtAnchorEdge
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -446,16 +447,19 @@ class GameViewModel(
 //                null,
 //                isIncrement = false
 //            )
-            getOutrightSeasonList(
-                getSportSelectedCode(MatchType.OTHER_OUTRIGHT) ?: "",
-                true
-            )
+            //aaaaa
+//            getOutrightSeasonList(
+//                getSportSelectedCode(MatchType.OTHER_OUTRIGHT) ?: "",
+//                true
+//            )
+            getOutrightOddsList(getSportSelectedCode(MatchType.OTHER_OUTRIGHT) ?: "")
         }
         if(childMatchType == MatchType.OUTRIGHT) {
-            getOutrightSeasonList(
-                getSportSelectedCode(MatchType.OUTRIGHT) ?: "",
-                false
-            )
+//            getOutrightSeasonList(
+//                getSportSelectedCode(MatchType.OUTRIGHT) ?: "",
+//                false
+//            )
+            getOutrightOddsList(getSportSelectedCode(MatchType.OUTRIGHT) ?: "")
         }
         else if (childMatchType == MatchType.OTHER) {
             getGameHallList(
@@ -1314,7 +1318,6 @@ class GameViewModel(
                 }
                 MatchType.OUTRIGHT -> {
                     getOutrightOddsList(code)
-                    //aaaaa
                     //getOutrightSeasonList(code, false)
                 }
                 MatchType.AT_START -> {
@@ -1339,7 +1342,9 @@ class GameViewModel(
                     )
                 }
                 MatchType.OTHER_OUTRIGHT -> {
-                    getOutrightSeasonList(code, true)
+                    //getOutrightSeasonList(code, true)
+                    getOutrightOddsList(code)
+
                 }
                 MatchType.MY_EVENT -> {
                     getOddsList(
