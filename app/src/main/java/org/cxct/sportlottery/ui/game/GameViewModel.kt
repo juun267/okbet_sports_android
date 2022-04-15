@@ -27,6 +27,7 @@ import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
 import org.cxct.sportlottery.network.matchLiveInfo.MatchLiveUrlRequest
 import org.cxct.sportlottery.network.matchLiveInfo.Response
+import org.cxct.sportlottery.network.matchTracker.MatchTrackerUrl
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
@@ -67,6 +68,7 @@ import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.TimeUtil.DMY_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
+import timber.log.Timber
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
@@ -297,6 +299,11 @@ class GameViewModel(
     private val _matchLiveInfo = MutableLiveData<Event<LiveStreamInfo>?>()
     val matchLiveInfo: LiveData<Event<LiveStreamInfo>?>
         get() = _matchLiveInfo
+
+    //賽事動畫網址
+    private val _matchTrackerUrl = MutableLiveData<Event<MatchTrackerUrl>>()
+    val matchTrackerUrl: LiveData<Event<MatchTrackerUrl>>
+        get() = _matchTrackerUrl
 
     //Loading
     val isLoading: LiveData<Boolean>
@@ -2136,6 +2143,19 @@ class GameViewModel(
                     }
 
                     _oddsDetailList.postValue(Event(list))
+
+                    val animationTrackerId = result.oddsDetailData?.matchOdd?.matchInfo?.trackerId
+                    Timber.e("Dean, animationTrackerId = $animationTrackerId")
+                    if (!animationTrackerId.isNullOrEmpty()) {
+                        doNetwork(androidContext) {
+                            OneBoSportApi.matchService.getMatchTrackerUrl(animationTrackerId)
+                        }?.let { result ->
+                            if (result.success) {
+                                _matchTrackerUrl.postValue(Event(result.matchTrackerUrl))
+                                Timber.e("Dean, tracker url = ${result.matchTrackerUrl.h5Url}")
+                            }
+                        }
+                    }
 
                     notifyFavorite(FavoriteType.PLAY_CATE)
                 }

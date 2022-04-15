@@ -242,6 +242,7 @@ object Constants {
     //match
     const val MATCH_PRELOAD = "/api/front/match/preload"
     const val MATCH_LIVE_URL = "/api/front/match/live/url"
+    const val MATCH_TRACKER_URL = "/api/front/match/tracker/url/{mappingId}"
 
     //match result
     const val MATCH_RESULT_LIST = "/api/front/match/result/list"
