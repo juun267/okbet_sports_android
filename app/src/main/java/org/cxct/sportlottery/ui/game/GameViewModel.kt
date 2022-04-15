@@ -2800,21 +2800,10 @@ class GameViewModel(
                 if (result.success) {
                     result.result.recommendList.forEach { recommend ->
                         with(recommend) {
-                            recommend.matchInfo = MatchInfo(
-                                gameType = gameType,
-                                awayName = awayName,
-                                homeName = homeName,
-                                playCateNum = matchNum,
-                                startTime = startTime,
-                                status = status,
-                                leagueId = leagueId,
-                                leagueName = leagueName,
-                                id = id,
-                                endTime = 0
-                            ).apply {
-                                setupMatchType(this)
-                                setupMatchTime(this)
-                            }
+                            setupMatchType()
+                            setupMatchTime()
+                            setupPlayCateNum()
+                            setupLeagueName()
                         }
                     }
 
@@ -2828,16 +2817,16 @@ class GameViewModel(
     /**
      * 設置賽事類型參數(滾球、即將、今日、早盤)
      */
-    private fun Recommend.setupMatchType(matchInfo: MatchInfo) {
+    private fun Recommend.setupMatchType() {
         matchType = when (status) {
             1 -> {
-                matchInfo.isInPlay = true
+                matchInfo?.isInPlay = true
                 MatchType.IN_PLAY
             }
             else -> {
                 when {
                     TimeUtil.isTimeAtStart(startTime) -> {
-                        matchInfo.isAtStart = true
+                        matchInfo?.isAtStart = true
                         MatchType.AT_START
                     }
                     TimeUtil.isTimeToday(startTime) -> {
@@ -2854,12 +2843,26 @@ class GameViewModel(
     /**
      * 設置賽事時間參數
      */
-    private fun setupMatchTime(matchInfo: MatchInfo) {
-        matchInfo.startDateDisplay = TimeUtil.timeFormat(matchInfo.startTime, "dd/MM")
+    private fun Recommend.setupMatchTime() {
+        matchInfo?.startDateDisplay = TimeUtil.timeFormat(matchInfo?.startTime, "dd/MM")
 
-        matchInfo.startTimeDisplay = TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
+        matchInfo?.startTimeDisplay = TimeUtil.timeFormat(matchInfo?.startTime, "HH:mm")
 
-        matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
+        matchInfo?.remainTime = TimeUtil.getRemainTime(matchInfo?.startTime)
+    }
+
+    /**
+     * 玩法數量設置，因matchInfo中沒有傳入playCateNum，故由外層代入
+     */
+    private fun Recommend.setupPlayCateNum() {
+        matchInfo?.playCateNum = playCateNum
+    }
+
+    /**
+     * 聯賽名稱，因matchInfo中後端沒有配置值，故由外層傳入
+     */
+    private fun Recommend.setupLeagueName() {
+        matchInfo?.leagueName = leagueName
     }
     //endregion
     //endregion
