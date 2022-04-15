@@ -2763,6 +2763,7 @@ class GameViewModel(
                         with(recommend) {
                             setupMatchType()
                             setupMatchTime()
+                            setupPlayCateNum()
                         }
                     }
 
@@ -2808,6 +2809,13 @@ class GameViewModel(
         matchInfo?.startTimeDisplay = TimeUtil.timeFormat(matchInfo?.startTime, "HH:mm")
 
         matchInfo?.remainTime = TimeUtil.getRemainTime(matchInfo?.startTime)
+    }
+
+    /**
+     * 玩法數量設置，因matchInfo中沒有傳入playCateNum，故由外層代入
+     */
+    private fun Recommend.setupPlayCateNum() {
+        matchInfo?.playCateNum = playCateNum
     }
     //endregion
     //endregion
