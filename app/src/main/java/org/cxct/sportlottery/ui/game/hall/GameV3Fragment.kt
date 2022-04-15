@@ -1000,7 +1000,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             game_toolbar_bg.setBackgroundResource(gameImg)
                         }
 
-                    var outrightLeagueOddDataList:MutableList<MatchOdd?> = mutableListOf()
+                    var outrightLeagueOddDataList:MutableList<org.cxct.sportlottery.network.outright.odds.MatchOdd?> = mutableListOf()
                         outrightOddsListResult.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds
                             ?: listOf()
                     outrightOddsListResult.outrightOddsListData?.leagueOdds?.forEach {  leagueOdd ->
@@ -1019,14 +1019,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             }
                         }
                     }
-
-                    outrightOddsListResult.outrightOddsListData?.leagueOdds.also {
-                        if (it != null) {
-                            outrightLeagueOddAdapter.data = it
-                        }
-                    }
-
-                    outrightOddsListResult.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.forEach { matchOdd ->
+                    outrightLeagueOddAdapter.data = outrightLeagueOddDataList
+                    outrightLeagueOddDataList.forEach { matchOdd ->
                         subscribeChannelHall(matchOdd)
                     }
                     game_list.apply {
