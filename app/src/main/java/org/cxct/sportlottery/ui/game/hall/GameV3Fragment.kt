@@ -161,7 +161,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
     }
 
-    //aaaaa
     private val outrightLeagueOddAdapter by lazy {
         OutrightLeagueOddAdapter().apply {
             discount = viewModel.userInfo.value?.discount ?: 1.0F
@@ -169,7 +168,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             outrightOddListener = OutrightOddListener(
                 { matchOdd, odd, playCateCode ->
                     matchOdd?.let {
-                        addOddsDialog(matchOdd.matchInfo, odd, playCateCode,"",null)
+                        addOutRightOddsDialog(matchOdd, odd, playCateCode)
+                        //addOddsDialog(matchOdd.matchInfo, odd, playCateCode,"",null)
                     }
                 },
                 { oddsKey, matchOdd ->
@@ -2032,6 +2032,29 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private fun navStatistics(matchId: String?) {
         StatisticsDialog.newInstance(matchId)
             .show(childFragmentManager, StatisticsDialog::class.java.simpleName)
+    }
+    private fun addOutRightOddsDialog(
+        matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd,
+        odd: Odd,
+        playCateCode: String
+    ) {
+        val gameType =
+            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+        gameType?.let {
+            val fastBetDataBean = FastBetDataBean(
+                matchType = MatchType.OUTRIGHT,
+                gameType = it,
+                playCateCode = playCateCode,
+                playCateName =  "",
+                matchInfo = matchOdd.matchInfo!!,
+                matchOdd = matchOdd,
+                odd = odd,
+                subscribeChannelType = ChannelType.HALL,
+                betPlayCateNameMap = null,
+            )
+            (activity as GameActivity).showFastBetFragment(fastBetDataBean)
+        }
+
     }
 
     private fun addOddsDialog(
