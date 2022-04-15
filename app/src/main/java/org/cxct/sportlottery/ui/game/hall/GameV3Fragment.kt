@@ -174,7 +174,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 },
                 { oddsKey, matchOdd ->
                     val action =
-                        GameOutrightFragmentDirections.actionGameOutrightFragmentToGameOutrightMoreFragment(
+                        GameV3FragmentDirections.actionGameV3FragmentToGameOutrightMoreFragment(
                             oddsKey,
                             matchOdd
                         )
