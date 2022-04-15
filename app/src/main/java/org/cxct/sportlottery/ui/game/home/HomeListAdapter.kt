@@ -432,7 +432,8 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 eps = it.matchInfo?.eps,
                 spt = it.matchInfo?.spt,
                 liveVideo = it.matchInfo?.liveVideo,
-                status = it.matchInfo?.status ?: -1
+                status = it.matchInfo?.status ?: -1,
+                leagueName = it.matchInfo?.leagueName ?: ""
             ).apply {
                 startDateDisplay = TimeUtil.timeFormat(this.startTime, "MM/dd")
                 startTimeDisplay = TimeUtil.timeFormat(this.startTime, "HH:mm")
@@ -575,7 +576,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         getGameIcon(t.code)?.let {
                             holder.getView<ImageView>(R.id.ivSportLogo).setImageResource(it)
                         }
-                        holder.setText(R.id.tvSport, getGameTypeString(context, t.name))
+                        holder.setText(R.id.tvSport, getGameTypeString(context, t.code))
                         holder.setText(R.id.tvSportCount, t.num.toString())
                         holder.getView<LinearLayout>(R.id.layoutSport).setOnClickListener {
                             onClickSportListener?.onClick(t)
