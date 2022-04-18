@@ -589,12 +589,9 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     // region GameTable 指定刷新內部 ViewPager 的 subItem
     fun notifySubItemChanged(index: Int, indexMatchOdd: Int) {
-        //TODO index需要根據當前類別獲取而非直接使用外部傳遞的index
         if (index >= 0 && indexMatchOdd >= 0) {
-            val data = mDataList[index]
-            if (data is GameEntity) {
-                data.vpTableAdapter?.notifyItemChanged(indexMatchOdd)
-            }
+            val data = getGameEntityData()[index]
+            data.vpTableAdapter?.notifyItemChanged(indexMatchOdd)
         }
     }
 
