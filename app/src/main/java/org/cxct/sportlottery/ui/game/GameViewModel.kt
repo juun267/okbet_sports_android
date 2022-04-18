@@ -2763,6 +2763,8 @@ class GameViewModel(
                         with(recommend) {
                             setupMatchType()
                             setupMatchTime()
+                            setupPlayCateNum()
+                            setupLeagueName()
                         }
                     }
 
@@ -2808,6 +2810,20 @@ class GameViewModel(
         matchInfo?.startTimeDisplay = TimeUtil.timeFormat(matchInfo?.startTime, "HH:mm")
 
         matchInfo?.remainTime = TimeUtil.getRemainTime(matchInfo?.startTime)
+    }
+
+    /**
+     * 玩法數量設置，因matchInfo中沒有傳入playCateNum，故由外層代入
+     */
+    private fun Recommend.setupPlayCateNum() {
+        matchInfo?.playCateNum = playCateNum
+    }
+
+    /**
+     * 聯賽名稱，因matchInfo中後端沒有配置值，故由外層傳入
+     */
+    private fun Recommend.setupLeagueName() {
+        matchInfo?.leagueName = leagueName
     }
     //endregion
     //endregion

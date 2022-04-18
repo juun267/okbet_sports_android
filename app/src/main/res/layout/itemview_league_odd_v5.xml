@@ -366,7 +366,7 @@
                 android:layout_height="wrap_content"
                 android:paddingRight="@dimen/margin_10"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_game_schedule_blue"
+                android:src="@drawable/ic_game_schedule"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border_row3"
                 app:layout_constraintStart_toEndOf="@+id/iv_play"
