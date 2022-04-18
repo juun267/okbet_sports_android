@@ -1118,7 +1118,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
         private fun setupItemEnable(hasBetClosed: Boolean) {
             itemView.apply {
-                iv_bet_lock_single.visibility = if (hasBetClosed) View.VISIBLE else View.GONE
+//                iv_bet_lock_single.visibility = if (hasBetClosed) View.VISIBLE else View.GONE
 
                 ll_winnable.visibility = if (hasBetClosed) View.GONE else View.VISIBLE
 
@@ -1395,7 +1395,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
         private fun setupItemEnable(hasBetClosed: Boolean) {
             itemView.apply {
-                iv_bet_lock.visibility = if (hasBetClosed) View.VISIBLE else View.GONE
+//                iv_bet_lock.visibility = if (hasBetClosed) View.VISIBLE else View.GONE
                 //viewGrey.visibility = if (hasBetClosed) View.INVISIBLE else View.VISIBLE
                 item_parlay_quota_detail.visibility = if (hasBetClosed) View.GONE else View.VISIBLE
 

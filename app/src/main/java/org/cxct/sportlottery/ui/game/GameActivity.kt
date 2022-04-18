@@ -63,6 +63,7 @@ import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.ui.odds.OddsDetailFragmentDirections
 import org.cxct.sportlottery.ui.odds.OddsDetailLiveFragmentDirections
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
 import org.cxct.sportlottery.util.phoneNumCheckDialog
@@ -994,5 +995,10 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         super.onCloseMenu()
 
         closeLeftMenu()
+    }
+
+    override fun onDestroy() {
+        expandCheckList.clear()
+        super.onDestroy()
     }
 }
