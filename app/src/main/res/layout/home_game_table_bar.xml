@@ -20,7 +20,6 @@
         android:layout_height="28dp"
         android:background="@null"
         android:button="@null"
-        android:checked="true"
         android:paddingHorizontal="10dp"
         android:text="@string/home_tab_in_play"
         android:textAllCaps="true"

@@ -25,11 +25,17 @@ class GameTableBarViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     }
 
     fun bind(homeGameTableBarItemData: HomeListAdapter.HomeGameTableBarItemData) {
+        setupTabCheckStatus(homeGameTableBarItemData)
         judgeTableBar(homeGameTableBarItemData)
     }
 
     fun setOnGameTableSelectListener(listener: Listener?) {
         mListener = listener
+    }
+
+    private fun setupTabCheckStatus(homeGameTableBarItemData: HomeListAdapter.HomeGameTableBarItemData) {
+        itemView.rb_in_play.isChecked = homeGameTableBarItemData.inPlayResult?.isSelected == true
+        itemView.rb_as_start.isChecked = homeGameTableBarItemData.atStartResult?.isSelected == true
     }
 
     //TableBar 判斷是否隱藏

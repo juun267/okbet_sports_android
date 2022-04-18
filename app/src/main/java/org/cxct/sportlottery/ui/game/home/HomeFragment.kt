@@ -69,6 +69,11 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     private lateinit var homeBinding: FragmentHomeBinding
 
     private var mSelectMatchType: MatchType = MatchType.MAIN
+        set(value) {
+            field = value
+
+            setupTableSelected()
+        }
     private var mHomeGameTableBarItemData = HomeListAdapter.HomeGameTableBarItemData()
 
     private val mHomeListAdapter = HomeListAdapter()
@@ -416,6 +421,24 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         }
     }
 
+    private fun setupTableSelected() {
+        with(mHomeGameTableBarItemData) {
+            when (mSelectMatchType) {
+                MatchType.IN_PLAY -> {
+                    inPlayResult?.isSelected = true
+                    atStartResult?.isSelected = false
+                }
+                MatchType.AT_START -> {
+                    inPlayResult?.isSelected = false
+                    atStartResult?.isSelected = true
+                }
+                else -> {
+                    //do nothing
+                }
+            }
+        }
+    }
+
     private fun refreshTable(result: MatchPreloadResult?) {
         val gameDataList: MutableList<GameEntity> = mutableListOf()
         val otherMatchList: MutableList<OtherMatch> = mutableListOf()
@@ -757,7 +780,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 it.getContentIfNotHandled()?.let { result ->
                     mHomeGameTableBarItemData.inPlayResult = result
                     isInPlayResult = true
-                    setGameTableBar()
+
                     //若選擇滾球或初始化時
                     if (mSelectMatchType == MatchType.IN_PLAY || mSelectMatchType == MatchType.MAIN && (mHomeGameTableBarItemData.inPlayResult?.matchPreloadData?.num
                             ?: 0) > 0
@@ -768,6 +791,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                         if (mSelectMatchType == MatchType.MAIN) {
                             mSelectMatchType = MatchType.IN_PLAY
                         }
+
                         refreshTable(mHomeGameTableBarItemData.inPlayResult)
                     } else if (mSelectMatchType == MatchType.MAIN) {
                         //滾球沒資料且初始化時
@@ -777,6 +801,9 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                             refreshTable(mHomeGameTableBarItemData.atStartResult)
                         }
                     }
+
+                    setupTableSelected()
+                    setGameTableBar()
                 }
             }
 
@@ -784,12 +811,13 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 it.getContentIfNotHandled()?.let { result ->
                     mHomeGameTableBarItemData.atStartResult = result
                     isSoonResult = true
-                    setGameTableBar()
                     if (mSelectMatchType == MatchType.AT_START && (mHomeGameTableBarItemData.atStartResult?.matchPreloadData?.num
                             ?: 0) > 0
                     ) {
                         refreshTable(mHomeGameTableBarItemData.atStartResult)
                     }
+                    setupTableSelected()
+                    setGameTableBar()
                 }
             }
         }

@@ -552,8 +552,6 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         lateinit var adapter: CommonAdapter<OtherMatch>
         init {
             itemView.apply {
-                rvSport.layoutManager =
-                    LinearLayoutManager(context!!, RecyclerView.VERTICAL, false)
                 rvSport.apply {
                     layoutManager = GridLayoutManager(context, 2)
                 }
