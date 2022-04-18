@@ -32,7 +32,6 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
-import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.repository.FLAG_OPEN
@@ -179,7 +178,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             initEvent()
             initObserve()
             initSocketObserver()
-            initBottomNavigation()
             mTimer = Timer()
             mTimer?.schedule(object : TimerTask() {
                 override fun run() {
