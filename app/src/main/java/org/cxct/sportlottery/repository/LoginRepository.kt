@@ -25,6 +25,7 @@ import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.ui.game.BetRecordType
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.AesCryptoUtil
+import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.GameConfigManager
 import retrofit2.Response
 
@@ -51,6 +52,9 @@ class LoginRepository(private val androidContext: Context) {
     val isLogin: LiveData<Boolean>
         get() = _isLogin
 
+    val kickedOut: LiveData<Event<Boolean>>
+        get() = _kickedOut
+
     val transNum: LiveData<Int?> //交易狀況數量
         get() = _transNum
 
@@ -58,6 +62,7 @@ class LoginRepository(private val androidContext: Context) {
         get() = _isCreditAccount
 
     private val _isLogin = MutableLiveData<Boolean>()
+    private val _kickedOut = MutableLiveData<Event<Boolean>>()
     private val _transNum = MutableLiveData<Int?>()
     private val _isCreditAccount = MutableLiveData<Boolean>().apply {
         value = sharedPref.getBoolean(KEY_IS_CREDIT_ACCOUNT, false)
@@ -254,6 +259,11 @@ class LoginRepository(private val androidContext: Context) {
                 _isLogin.value = true
             }
         } else {
+
+            if(_isLogin.value == true){
+                _kickedOut.value = Event(true)
+            }
+
             isCheckToken = false
             _isLogin.value = false
             _isCreditAccount.postValue(false)
