@@ -1170,6 +1170,22 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                 }
                 epsListAdapter.notifyDataSetChanged()
+
+                val odds = mutableListOf<Odd>()
+
+                outrightLeagueOddAdapter.data.forEach { matchOdd ->
+                    matchOdd?.oddsMap?.values?.forEach { oddList ->
+                        odds.addAll(oddList?.filterNotNull() ?: mutableListOf())
+                    }
+                }
+
+                odds.forEach { odd ->
+                    odd.isSelected = it.any { betInfoListData ->
+                        betInfoListData.matchOdd.oddsId == odd.id
+                    }
+                }
+
+                outrightLeagueOddAdapter.notifyDataSetChanged()
             }
         }
 
