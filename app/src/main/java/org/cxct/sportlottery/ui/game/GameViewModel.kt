@@ -459,7 +459,7 @@ class GameViewModel(
 //                getSportSelectedCode(MatchType.OUTRIGHT) ?: "",
 //                false
 //            )
-            getOutrightOddsList(getSportSelectedCode(MatchType.OUTRIGHT) ?: "")
+            getOutrightOddsList(getSportSelectedCode(_curMatchType.value!!) ?: "")
         }
         else if (childMatchType == MatchType.OTHER) {
             getGameHallList(

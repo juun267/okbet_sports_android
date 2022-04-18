@@ -987,14 +987,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
             it.getContentIfNotHandled()?.let { outrightOddsListResult ->
                 if (outrightOddsListResult.success) {
-
-//                    game_toolbar_match_type.text = GameType.values()
-//                        .find { gameType -> gameType.key == args.gameType.key }?.string?.let { stringId ->
-//                            getString(
-//                                stringId
-//                            )
-//                        }
-
                     GameConfigManager.getTitleBarBackground(outrightOddsListResult.outrightOddsListData?.sport?.code)
                         ?.let { gameImg ->
                             game_toolbar_bg.setBackgroundResource(gameImg)
@@ -1018,6 +1010,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 odd.isExpand = true
                             }
                         }
+                    }
+                    if(outrightLeagueOddDataList.isEmpty()){
+
                     }
                     outrightLeagueOddAdapter.data = outrightLeagueOddDataList
                     outrightLeagueOddDataList.forEach { matchOdd ->
