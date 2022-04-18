@@ -52,7 +52,7 @@ class LoginRepository(private val androidContext: Context) {
     val isLogin: LiveData<Boolean>
         get() = _isLogin
 
-    val kickedOut: LiveData<Event<Boolean>>
+    val kickedOut: LiveData<Event<CheckTokenResult>>
         get() = _kickedOut
 
     val transNum: LiveData<Int?> //交易狀況數量
@@ -62,7 +62,7 @@ class LoginRepository(private val androidContext: Context) {
         get() = _isCreditAccount
 
     private val _isLogin = MutableLiveData<Boolean>()
-    private val _kickedOut = MutableLiveData<Event<Boolean>>()
+    private val _kickedOut = MutableLiveData<Event<CheckTokenResult>>()
     private val _transNum = MutableLiveData<Int?>()
     private val _isCreditAccount = MutableLiveData<Boolean>().apply {
         value = sharedPref.getBoolean(KEY_IS_CREDIT_ACCOUNT, false)
@@ -261,7 +261,7 @@ class LoginRepository(private val androidContext: Context) {
         } else {
 
             if(_isLogin.value == true){
-                _kickedOut.value = Event(true)
+                _kickedOut.value = Event(CheckTokenResult)
             }
 
             isCheckToken = false

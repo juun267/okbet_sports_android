@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.base
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -105,6 +106,15 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         viewModel.networkExceptionUnknown.observe(this) {
             hideLoading()
             showErrorPromptDialog(it) { mOnNetworkExceptionListener?.onClick(null) }
+        }
+
+        viewModel.isKickedOut.observe(this) {
+            hideLoading()
+            showTokenPromptDialog(it.getContentIfNotHandled()?.msg.toString()) {
+                val intent = Intent(this@BaseActivity, GamePublicityActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+            }
         }
     }
 
