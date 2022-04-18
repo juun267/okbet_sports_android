@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.splash
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -16,6 +17,7 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import retrofit2.Retrofit
 import timber.log.Timber
+import kotlin.random.Random
 
 class SplashViewModel(
     private val androidContext: Context,
@@ -68,6 +70,7 @@ class SplashViewModel(
                 if (result?.success == true) {
                     setConfig(result)
                     setBaseUrl(hostUrl, retrofit)
+                    result.configData?.let { setRandomSocketUrl(it.wsHost) }
                     getPlayQuotaCom()
                     return@launch
                 } else {
@@ -155,6 +158,7 @@ class SplashViewModel(
                 hostRepository.isNeedGetHost = false
                 setConfig(result)
                 setBaseUrl(baseUrl, retrofit)
+                result.configData?.let { setRandomSocketUrl(it.wsHost) }
                 getPlayQuotaCom()
             } else {
                 Timber.e("==> Check host fail!!! baseUrl = $baseUrl")
@@ -177,6 +181,13 @@ class SplashViewModel(
         hostRepository.hostUrl = baseUrl
         Constants.setBaseUrl(baseUrl)
         RequestManager.instance.retrofit = retrofit
+    }
+
+    private fun setRandomSocketUrl(wsHost:String){
+        val wsList = wsHost.split(',')
+        val randomIndex = Random.nextInt(wsList.size)
+        Constants.setSocketUrl(wsList[randomIndex])
+        Log.e("Martin","wsList="+wsList)
     }
 
     fun isNeedGetHost(): Boolean {

@@ -35,7 +35,7 @@ class BackService : Service() {
         const val SERVER_MESSAGE_KEY = "serverMessage"
         const val CONNECT_STATUS = "connectStatus"
 
-        private val URL_SOCKET_HOST_AND_PORT: String get() = "${Constants.getBaseUrl()}/api/ws/app/im" //app连接端点,无sockjs
+        private val URL_SOCKET_HOST_AND_PORT: String get() = "${Constants.getSocketUrl()}/api/ws/app/im" //app连接端点,无sockjs
         const val URL_ALL = "/ws/notify/all/encrypted" //全体公共频道
         //const val URL_ALL = "/ws/notify/all" //全体公共频道
 
