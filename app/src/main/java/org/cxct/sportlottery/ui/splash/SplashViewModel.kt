@@ -187,7 +187,6 @@ class SplashViewModel(
         val wsList = wsHost.split(',')
         val randomIndex = Random.nextInt(wsList.size)
         Constants.setSocketUrl(wsList[randomIndex])
-        Log.e("Martin","wsList="+wsList)
     }
 
     fun isNeedGetHost(): Boolean {
