@@ -7,12 +7,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zhy.adapter.recyclerview.CommonAdapter
 import com.zhy.adapter.recyclerview.base.ViewHolder
 import kotlinx.android.synthetic.main.home_game_highlight_title.view.*
-import kotlinx.android.synthetic.main.home_game_table_4.view.view_pager
+import kotlinx.android.synthetic.main.home_game_table_4.view.*
 import kotlinx.android.synthetic.main.home_sport_table_4.view.*
 import kotlinx.android.synthetic.main.itemview_sport_type_list.view.*
 import org.cxct.sportlottery.R
@@ -30,6 +29,8 @@ import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.service.match_clock.MatchClockCO
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
 import org.cxct.sportlottery.network.sport.Item
+import org.cxct.sportlottery.network.sport.SportMenu
+import org.cxct.sportlottery.network.sport.coupon.SportCouponMenuData
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeListener
 import org.cxct.sportlottery.ui.game.home.gameTable4.GameEntity
 import org.cxct.sportlottery.ui.game.home.gameTable4.OtherMatch
@@ -45,7 +46,6 @@ import org.cxct.sportlottery.util.OddsSortUtil.recommendSortOddsMap
 import org.cxct.sportlottery.util.RecyclerViewGridDecoration
 import org.cxct.sportlottery.util.TimeUtil
 import timber.log.Timber
-import kotlin.collections.ArrayList
 
 /**
  * @author Hewie
@@ -62,6 +62,7 @@ import kotlin.collections.ArrayList
 class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     // 排序對應表
     private val SORTMAP = mapOf<Any, Int>(
+        MenuItemData::class to 0,
         HomeGameTableBarItemData::class to 1,
         GameEntity::class to 2,
         HomeRecommendBarItemData::class to 3,
@@ -77,6 +78,10 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var mDataList = mutableListOf<Any>()
 
     private var mUpdateHighLightInterfaceListener = HashMap<Int, UpdateHighLightInterface>()
+
+    //region GameMenu params
+    var onClickMenuListener: OnClickMenuListener? = null
+    //endregion
 
     // region GameTable params
     private var mMatchType: MatchType = MatchType.IN_PLAY
@@ -119,6 +124,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class ItemType {
         NONE,
+        MENU_BLOCK, //home_menu_block
         GAME_TABLE_BAR, // rg_table_bar
         ODD_DATA, SPORT_GRID_REPAY, // RvGameTable4Adapter
         RECOMMEND_GAME_BAR, RECOMMEND_GAME, // RvRecommendAdapter
@@ -128,6 +134,17 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     // region ItemClass
+    class MenuItemData {
+        var atStartCount: Int = 0
+        var sportMenuList: List<SportMenu> = listOf()
+        var sportCouponMenuList: List<SportCouponMenuData> = listOf()
+
+        var lotteryVisible = false
+        var liveVisible = false
+        var pokerVisible = false
+        var slotVisible = false
+        var fishingVisible = false
+    }
     class HomeGameTableBarItemData {
         var inPlayResult: MatchPreloadResult? = null
         var atStartResult: MatchPreloadResult? = null
@@ -149,6 +166,9 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {
         return when(val data = mDataList[position]) {
+            is MenuItemData -> {
+                ItemType.MENU_BLOCK.ordinal
+            }
             is HomeGameTableBarItemData -> {
                 ItemType.GAME_TABLE_BAR.ordinal
             }
@@ -189,6 +209,11 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when (viewType) {
+            ItemType.MENU_BLOCK.ordinal -> {
+                val layout = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.home_menu_block, parent, false)
+                return GameMenuViewHolder(layout)
+            }
             ItemType.HIGH_LIGHT_BAR.ordinal -> {
                 val layout = LayoutInflater.from(parent.context)
                     .inflate(R.layout.home_game_highlight_bar, parent, false)
@@ -244,6 +269,12 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val data = mDataList[position]
         when (holder) {
+            is GameMenuViewHolder -> {
+                holder.apply {
+                    setListener(onClickMenuListener)
+                    bind(data as MenuItemData)
+                }
+            }
             is GameTableBarViewHolder -> {
                 holder.apply {
                     this.setOnGameTableSelectListener(onGameTableBarViewHolderListener)
@@ -356,6 +387,24 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     // region set/get Data
+    //region SportMenu, SportCouponMenu block
+    fun initMenuBlock() {
+        setSportMenuData(MenuItemData())
+    }
+
+    private fun setSportMenuData(menuItemData: MenuItemData) {
+        removeDatas(menuItemData)
+        addDataWithSort(menuItemData)
+    }
+
+    private fun getMenuItemData(): MenuItemData =
+        (mDataList.firstOrNull { it is MenuItemData } as? MenuItemData) ?: MenuItemData()
+
+    private fun getMenuItemDataIndex(): Int = getMenuItemData().let { menuItemData ->
+        mDataList.indexOf(menuItemData)
+    }
+
+    //endregion
     // region HighLight Bar Data
     fun setGameHighLightBar(homeHighlightGameBarItemData: HomeHighlightGameBarItemData = HomeHighlightGameBarItemData()) {
         removeDatas(homeHighlightGameBarItemData)
@@ -532,7 +581,6 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
     // endregion
-
     // region 底部資訊
     fun setBottomNavigation(homeBottomNavigationItemData: HomeBottomNavigationItemData = HomeBottomNavigationItemData()) {
         removeDatas(homeBottomNavigationItemData)
@@ -593,6 +641,57 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
     // endregion
+
+    //region GameMenu 刷新
+    fun updateAtStartCount(atStartCount: Int) {
+        val menuItemData = getMenuItemData()
+        menuItemData.atStartCount = atStartCount
+
+        notifyGameMenu(menuItemData)
+    }
+
+    fun updateSportMenuData(sportMenuList: List<SportMenu>) {
+        val menuItemData = getMenuItemData()
+        menuItemData.sportMenuList = sportMenuList
+
+        notifyGameMenu(menuItemData)
+    }
+
+    fun updateSportCouponMenuData(sportCouponMenuList: List<SportCouponMenuData>) {
+        val menuItemData = getMenuItemData()
+        menuItemData.sportCouponMenuList = sportCouponMenuList
+
+        notifyGameMenu(menuItemData)
+    }
+
+    fun updateThirdGameCard(
+        lotteryVisible: Boolean,
+        liveVisible: Boolean,
+        pokerVisible: Boolean,
+        slotVisible: Boolean,
+        fishingVisible: Boolean
+    ) {
+        val menuItemData = getMenuItemData()
+        with(menuItemData) {
+            this.lotteryVisible = lotteryVisible
+            this.liveVisible = liveVisible
+            this.pokerVisible = pokerVisible
+            this.slotVisible = slotVisible
+            this.fishingVisible = fishingVisible
+        }
+
+        notifyGameMenu(menuItemData)
+    }
+
+    fun notifyGameMenu(menuItemData: MenuItemData) {
+        val menuItemIndex = getMenuItemDataIndex()
+        if (menuItemIndex > 0) {
+            notifyItemChanged(menuItemIndex)
+        } else {
+            setSportMenuData(menuItemData)
+        }
+    }
+    //endregion
 
     // region GameTable 指定刷新內部 ViewPager 的 subItem
     fun notifySubItemChanged(index: Int, indexMatchOdd: Int) {

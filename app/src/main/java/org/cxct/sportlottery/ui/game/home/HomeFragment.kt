@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.size
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -14,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentHomeBinding
 import org.cxct.sportlottery.enum.BetStatus
@@ -21,7 +21,6 @@ import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeString
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.MenuCode
 import org.cxct.sportlottery.network.match.MatchPreloadResult
@@ -33,7 +32,6 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.sport.Item
-import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
@@ -172,12 +170,12 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             initGameTableBar()
             initGameRecommendBar()
             initDiscount()
+            initMenu()
             initTable()
             initRecommend()
             initHighLightBar()
             initHighLightTitle()
             initHighlight()
-            initEvent()
             initObserve()
             initSocketObserver()
             mTimer = Timer()
@@ -262,6 +260,61 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
     private fun initGameRecommendBar() {
         mHomeListAdapter.setGameRecommendBar()
+    }
+
+    private fun initMenu() {
+        with(mHomeListAdapter) {
+            onClickMenuListener = OnClickMenuListener(
+                onGameSoon = { viewModel.navSpecialEntrance(MatchType.AT_START, null) },
+                onLottery = { navThirdGame(ThirdGameCategory.CGCP) },
+                onLive = { navThirdGame(ThirdGameCategory.LIVE) },
+                onPoker = { navThirdGame(ThirdGameCategory.QP) },
+                onSlot = { navThirdGame(ThirdGameCategory.DZ) },
+                onFishing = { navThirdGame(ThirdGameCategory.BY) },
+                onGameResult = { startActivity(Intent(activity, ResultsSettlementActivity::class.java)) },
+                onUpdate = { startActivity(Intent(activity, VersionUpdateActivity::class.java)) },
+                onFirstGame = { sportMenu ->
+                    if (sportMenu.entranceType != null) {
+                        sportMenu.entranceType?.let {
+                            viewModel.navSpecialEntrance(
+                                it,
+                                sportMenu.gameType
+                            )
+                        }
+                    } else {
+                        viewModel.setSportClosePromptMessage(MultiLanguagesApplication.appContext.getString(sportMenu.gameType.string))
+                    }
+                },
+                onSecondGame = { sportMenu ->
+                    if (sportMenu.entranceType != null) {
+                        sportMenu.entranceType?.let {
+                            viewModel.navSpecialEntrance(it, sportMenu.gameType)
+                        }
+                    } else {
+                        viewModel.setSportClosePromptMessage(MultiLanguagesApplication.appContext.getString(sportMenu.gameType.string))
+                    }
+                },
+                onHomeCard = { sportMenu ->
+                    if (sportMenu.entranceType != null) {
+                        sportMenu.entranceType?.let {
+                            viewModel.navSpecialEntrance(it, sportMenu.gameType)
+                        }
+                    } else {
+                        viewModel.setSportClosePromptMessage(MultiLanguagesApplication.appContext.getString(sportMenu.gameType.string))
+                    }
+                },
+                onCouponCard = { sportCouponMenuData ->
+                    viewModel.navSpecialEntrance(
+                        MatchType.OTHER,
+                        null,
+                        sportCouponMenuData.couponCode,
+                        sportCouponMenuData.couponName
+                    )
+                }
+            )
+
+            initMenuBlock()
+        }
     }
 
     private fun initTable() {
@@ -507,40 +560,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         }
     }
 
-    private fun initEvent() {
-        card_game_soon.setOnClickListener {
-            viewModel.navSpecialEntrance(MatchType.AT_START, null)
-        }
-
-        card_lottery.setOnClickListener {
-            navThirdGame(ThirdGameCategory.CGCP)
-        }
-
-        card_live.setOnClickListener {
-            navThirdGame(ThirdGameCategory.LIVE)
-        }
-
-        card_poker.setOnClickListener {
-            navThirdGame(ThirdGameCategory.QP)
-        }
-
-        card_slot.setOnClickListener {
-            navThirdGame(ThirdGameCategory.DZ)
-        }
-
-        card_fishing.setOnClickListener {
-            navThirdGame(ThirdGameCategory.BY)
-        }
-
-        card_game_result.setOnClickListener {
-            startActivity(Intent(activity, ResultsSettlementActivity::class.java))
-        }
-
-        card_update.setOnClickListener {
-            startActivity(Intent(activity, VersionUpdateActivity::class.java))
-        }
-    }
-
     private fun navThirdGame(thirdGameCategory: ThirdGameCategory) {
         val intent = Intent(activity, MainActivity::class.java)
             .putExtra(MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory)
@@ -688,85 +707,21 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 }
             }
         }
+
+        viewModel.asStartCount.observe(viewLifecycleOwner) {
+            mHomeListAdapter.updateAtStartCount(it)
+        }
+
         viewModel.sportCouponMenuResult.observe(viewLifecycleOwner) {
             it.peekContent().let { data ->
-                if (special_block_game.size != data.sportCouponMenuData.size) {
-                    special_block_game.removeAllViews()
-                    data.sportCouponMenuData.forEach { sportCouponMenuData ->
-                        special_block_game.addView(HomeGameCard(context ?: requireContext()).apply {
-                            this.apply {
-                                setTitle(sportCouponMenuData.couponName)
-                                setIcon(R.drawable.ic_game_champ)
-                                setOnClickListener {
-                                    viewModel.navSpecialEntrance(
-                                        MatchType.OTHER,
-                                        null,
-                                        sportCouponMenuData.couponCode,
-                                        sportCouponMenuData.couponName
-                                    )
-                                }
-                            }
-                        })
-                    }
-                } else {
-                    data.sportCouponMenuData.forEachIndexed { index, sportCouponMenuData ->
-                        HomeGameCard(context ?: requireContext()).apply {
-                            (special_block_game.getChildAt(index) as HomeGameCard).apply {
-                                setTitle(sportCouponMenuData.couponName)
-                                setIcon(R.drawable.ic_game_champ)
-                                setOnClickListener {
-                                    viewModel.navSpecialEntrance(
-                                        MatchType.OTHER,
-                                        null,
-                                        sportCouponMenuData.couponCode,
-                                        sportCouponMenuData.couponName
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
+                mHomeListAdapter.updateSportCouponMenuData(data.sportCouponMenuData)
             }
         }
 
         viewModel.sportMenuList.observe(viewLifecycleOwner) {
             hideLoading()
             it.peekContent().let { list ->
-                if (block_game.size != list.size) {
-                    block_game.removeAllViews()
-
-                    list.forEachIndexed { index, sportMenu ->
-                        when (index) {
-                            0 -> setupFirstGame(sportMenu)
-                            1 -> setupSecondGame(sportMenu)
-                            else -> {
-                                if (sportMenu.gameCount > 0) {
-                                    block_game.addView(
-                                        HomeGameCard(
-                                            context ?: requireContext()
-                                        ).apply {
-                                            setupHomeCard(this, sportMenu)
-                                        })
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    list.forEachIndexed { index, sportMenu ->
-                        when (index) {
-                            0 -> setupFirstGame(sportMenu)
-                            1 -> setupSecondGame(sportMenu)
-                            else -> {
-                                if (sportMenu.gameCount > 0) {
-                                    setupHomeCard(
-                                        (block_game.getChildAt(index) as HomeGameCard),
-                                        sportMenu
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
+                mHomeListAdapter.updateSportMenuData(list)
             }
         }
 
@@ -892,62 +847,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     private fun setGameTableBar() {
         if (!isInPlayResult || !isSoonResult) return
         mHomeListAdapter.setGameTableBar(mHomeGameTableBarItemData)
-    }
-
-    private fun setupFirstGame(sportMenu: SportMenu) {
-        label_en_first_game.text = context?.getString(R.string.goal_buster)
-        label_first_game.text = sportMenu.sportName
-        sportMenu.icon?.let { iv_first_game.setImageResource(sportMenu.icon) }
-        tv_first_game_count.text = sportMenu.gameCount.toString()
-
-        card_first_game.setOnClickListener {
-            if (sportMenu.entranceType != null) {
-                sportMenu.entranceType?.let {
-                    viewModel.navSpecialEntrance(
-                        it,
-                        sportMenu.gameType
-                    )
-                }
-            } else {
-                viewModel.setSportClosePromptMessage(getString(GameType.TN.string))
-            }
-        }
-    }
-
-    private fun setupSecondGame(sportMenu: SportMenu) {
-        label_en_second_game.text = context?.getString(R.string.top_games)
-        label_second_game.text = sportMenu.sportName
-        sportMenu.icon?.let { iv_second_game.setImageResource(sportMenu.icon) }
-        tv_second_game_count.text = sportMenu.gameCount.toString()
-
-        card_second_game.setOnClickListener {
-            if (sportMenu.entranceType != null) {
-                sportMenu.entranceType?.let {
-                    viewModel.navSpecialEntrance(it, sportMenu.gameType)
-                }
-            } else {
-                viewModel.setSportClosePromptMessage(getString(GameType.TN.string))
-            }
-        }
-    }
-
-    private fun setupHomeCard(homeGameCard: HomeGameCard, sportMenu: SportMenu) {
-        homeGameCard.apply {
-            val title = getGameTypeString(context, sportMenu.gameType.key)
-            setTitle(if (title.isNullOrEmpty()) sportMenu.sportName else title)
-            sportMenu.icon?.let { setIcon(sportMenu.icon) }
-            setCount(sportMenu.gameCount)
-
-            setOnClickListener {
-                if (sportMenu.entranceType != null) {
-                    sportMenu.entranceType?.let {
-                        viewModel.navSpecialEntrance(it, sportMenu.gameType)
-                    }
-                } else {
-                    viewModel.setSportClosePromptMessage(getString(GameType.TN.string))
-                }
-            }
-        }
     }
 
     private fun initSocketObserver() {
@@ -1217,16 +1116,13 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     }
 
     private fun updateThirdGameCard() {
-        card_lottery.visibility =
-            if (isShowThirdGame && lotteryCount > 0 && !isCreditAccount) View.VISIBLE else View.GONE
-        card_live.visibility =
-            if (isShowThirdGame && liveCount > 0 && !isCreditAccount) View.VISIBLE else View.GONE
-        card_poker.visibility =
-            if (isShowThirdGame && pokerCount > 0 && !isCreditAccount) View.VISIBLE else View.GONE
-        card_slot.visibility =
-            if (isShowThirdGame && slotCount > 0 && !isCreditAccount) View.VISIBLE else View.GONE
-        card_fishing.visibility =
-            if (isShowThirdGame && fishingCount > 0 && !isCreditAccount) View.VISIBLE else View.GONE
+        mHomeListAdapter.updateThirdGameCard(
+            lotteryVisible = isShowThirdGame && lotteryCount > 0 && !isCreditAccount,
+            liveVisible = isShowThirdGame && liveCount > 0 && !isCreditAccount,
+            pokerVisible = isShowThirdGame && pokerCount > 0 && !isCreditAccount,
+            slotVisible = isShowThirdGame && slotCount > 0 && !isCreditAccount,
+            fishingVisible = isShowThirdGame && fishingCount > 0 && !isCreditAccount
+        )
     }
 
     private fun navGameOutright(gameTypeCode: String?, matchId: String?) {
