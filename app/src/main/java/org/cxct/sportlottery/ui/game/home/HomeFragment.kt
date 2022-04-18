@@ -75,7 +75,9 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         }
     private var mHomeGameTableBarItemData = HomeListAdapter.HomeGameTableBarItemData()
 
-    private val mHomeListAdapter = HomeListAdapter()
+    private val mHomeListAdapter = HomeListAdapter().apply {
+        setBottomNavigation()
+    }
 
     private var tableInPlayMap = mutableMapOf<String, String>()
     private var tableSoonMap = mutableMapOf<String, String>()

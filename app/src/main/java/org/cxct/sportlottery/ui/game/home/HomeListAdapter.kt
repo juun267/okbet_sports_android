@@ -533,6 +533,13 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
     // endregion
 
+    // region 底部資訊
+    fun setBottomNavigation(homeBottomNavigationItemData: HomeBottomNavigationItemData = HomeBottomNavigationItemData()) {
+        removeDatas(homeBottomNavigationItemData)
+        addDataWithSort(homeBottomNavigationItemData)
+    }
+    // endregion
+
     // region ViewHolders
     class UndefinedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
