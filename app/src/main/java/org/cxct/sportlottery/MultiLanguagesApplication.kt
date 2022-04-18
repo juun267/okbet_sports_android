@@ -69,6 +69,7 @@ class MultiLanguagesApplication : Application() {
     private var _userInfo = MutableStateFlow<UserInfo?>(null)
     val userInfo = _userInfo.asStateFlow()
     private var isNewsShowed = false
+    private var isGameDetailAnimationNeedShow = false
 
 
     private val viewModelModule = module {
@@ -216,6 +217,15 @@ class MultiLanguagesApplication : Application() {
     fun setIsNewsShow(show:Boolean){
         this.isNewsShowed = show
     }
+
+    fun getGameDetailAnimationNeedShow():Boolean{
+        return if(BuildConfig.CHANNEL_NAME == "spkx"){
+            isGameDetailAnimationNeedShow
+        }else{
+            true
+        }
+    }
+
     companion object {
         private var myPref: SharedPreferences? = null
         lateinit var appContext: Context

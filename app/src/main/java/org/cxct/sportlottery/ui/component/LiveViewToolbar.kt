@@ -19,6 +19,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_webview.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_webview.view.*
 import kotlinx.android.synthetic.main.view_toolbar_live.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import timber.log.Timber
@@ -350,7 +351,11 @@ class LiveViewToolbar @JvmOverloads constructor(
 
     fun startPlayer(matchId: String?, eventId: String?, streamUrl: String?) {
         mMatchId = matchId
-        mEventId = eventId
+        if(MultiLanguagesApplication.getInstance()?.getGameDetailAnimationNeedShow() == true){
+            mEventId = eventId
+        }else{
+            mEventId = null
+        }
         mStreamUrl = streamUrl
         initializePlayer(streamUrl)
     }

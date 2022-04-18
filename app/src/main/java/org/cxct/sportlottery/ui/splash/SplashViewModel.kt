@@ -58,6 +58,7 @@ class SplashViewModel(
         val hostUrl = hostRepository.hostUrl
         hostRepository.isNeedGetHost = true
 
+
         viewModelScope.launch {
             if (hostUrl.isNotEmpty()) {
                 Timber.i("==> checkLocalHost: $hostUrl")
