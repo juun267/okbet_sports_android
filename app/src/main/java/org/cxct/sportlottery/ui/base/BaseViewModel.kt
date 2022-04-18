@@ -13,9 +13,11 @@ import org.cxct.sportlottery.exception.DoNoConnectException
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.ErrorUtils
 import org.cxct.sportlottery.network.error.HttpError
+import org.cxct.sportlottery.network.index.checktoken.CheckTokenResult
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.NetworkUtil
 import retrofit2.Response
 import timber.log.Timber
@@ -29,6 +31,10 @@ abstract class BaseViewModel(
 ) : ViewModel() {
     val isLogin: LiveData<Boolean> by lazy {
         loginRepository.isLogin
+    }
+
+    val isKickedOut: LiveData<Event<CheckTokenResult>> by lazy {
+        loginRepository.kickedOut
     }
 
     val errorResultToken: LiveData<BaseResult>
