@@ -721,7 +721,9 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun notifyMatchStatusChanged(matchStatusCO: MatchStatusCO, statusValue: String?) {
         mDataList.forEach {
             if(it is GameEntity) {
-                it.vpTableAdapter?.notifyMatchStatusChanged(matchStatusCO, statusValue)
+                if (it.code == matchStatusCO.gameType) {
+                    it.vpTableAdapter?.notifyMatchStatusChanged(matchStatusCO, statusValue)
+                }
             }
         }
     }
@@ -738,7 +740,9 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         matchClockCO?.let { matchClock ->
             mDataList.forEach{
                 if(it is GameEntity) {
-                    it.vpTableAdapter?.notifyUpdateTime(matchClock)
+                    if (it.code == matchClock.gameType) {
+                        it.vpTableAdapter?.notifyUpdateTime(matchClock)
+                    }
                 }
             }
         }
