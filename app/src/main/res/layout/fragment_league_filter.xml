@@ -30,7 +30,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <View
-                android:id="@+id/view"
+                android:id="@+id/league_filter_all_view"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginStart="16dp"
@@ -48,11 +48,11 @@
                 android:text="@string/league_filter_all"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/textSize16sp"
-                app:layout_constraintBottom_toBottomOf="@id/view"
+                app:layout_constraintBottom_toBottomOf="@id/league_filter_all_view"
                 app:layout_constraintEnd_toStartOf="@id/icon_remain_time_1x2"
                 app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="@id/view"
-                app:layout_constraintTop_toTopOf="@id/view" />
+                app:layout_constraintStart_toStartOf="@id/league_filter_all_view"
+                app:layout_constraintTop_toTopOf="@id/league_filter_all_view" />
 
             <ImageView
                 android:id="@+id/icon_remain_time_1x2"
@@ -62,7 +62,7 @@
                 android:src="@drawable/ic_iconarrow"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@id/league_filter_all"
-                app:layout_constraintEnd_toEndOf="@id/view"
+                app:layout_constraintEnd_toEndOf="@id/league_filter_all_view"
                 app:layout_constraintStart_toEndOf="@+id/league_filter_all"
                 app:layout_constraintTop_toTopOf="@id/league_filter_all"
                 app:tint="@color/colorWhite" />
