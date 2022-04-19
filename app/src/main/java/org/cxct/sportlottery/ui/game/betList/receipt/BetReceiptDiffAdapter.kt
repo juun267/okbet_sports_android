@@ -95,6 +95,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
             if(dataItem.orderNo == sportBet.orderNo)
                 (dataItem as DataItem.SingleData).result.status = sportBet.status
         }
+        submitList(items)
     }
 
      private fun starRunnable(startTime: Long, adapterPosition: Int, tvTime: TextView) {
