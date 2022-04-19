@@ -24,7 +24,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="750:320"
+        app:layout_constraintDimensionRatio="375:310"
         app:banner_loop_time="3000"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
