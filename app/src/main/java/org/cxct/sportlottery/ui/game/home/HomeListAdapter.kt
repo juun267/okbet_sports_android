@@ -559,6 +559,14 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 dataList.add(entity)
             }
         }
+
+        //若沒有推薦賽事, 隱藏推薦賽事Bar
+        if (dataList.size <= 0) {
+            removeDatas(HomeRecommendBarItemData())
+        } else {
+            setGameRecommendBar(HomeRecommendBarItemData())
+        }
+
         dataList.recommendSortOddsMap()
         removeDatas(dataList.firstOrNull())
         dataList.forEach { addDataWithSort(it) }
