@@ -63,47 +63,6 @@ class RegisterSuccessDialog(context: Context) : DialogFragment() {
         }
         tvJump.text = getString(R.string.register_jump,getString(R.string.app_name))
         btnRecharge.setOnClickListener (mNegativeClickListener)
-//            mNegativeClickListener
-//            dismiss()
-//            startActivity(Intent(mContext, MoneyRechargeActivity::class.java))
-//        }
-//        when (mTitle) {
-//            null -> tv_title.visibility = View.GONE
-//            else -> tv_title.text = mTitle
-//        }
-//
-//        tv_message.gravity = mGravity
-//        when {
-//            mSpannedMessage != null -> tv_message.text = mSpannedMessage
-//            mMessage == null -> sv_block_content.visibility = View.GONE
-//            else -> tv_message.text = mMessage
-//        }
-//
-//        if (mPositiveText == null) {
-//            btn_positive.visibility = View.GONE
-//        } else
-//            btn_positive.text = mPositiveText
-//
-//        if (mNegativeText == null) {
-//            btn_negative.visibility = View.GONE
-//        } else
-//            btn_negative.text = mNegativeText
-//
-//        if(mPositiveText == null || mNegativeText == null){
-//            view_line.visibility = View.GONE
-//        }
-//
-//        if(mPositiveText == null && mNegativeText == null){
-//            block_bottom_bar.visibility = View.GONE
-//        }
-//
-//        tv_message.setTextColor(ContextCompat.getColor(context?:requireContext(), mTextColor))
-//
-//        divider2.visibility = if (isShowDivider) View.VISIBLE else View.GONE
-//        divider.visibility = if (isShowDividerBottom) View.VISIBLE else View.GONE
-//
-//        btn_positive.setOnClickListener(mPositiveClickListener)
-//        btn_negative.setOnClickListener(mNegativeClickListener)
     }
     fun setNegativeClickListener(negativeClickListener: View.OnClickListener) {
         mNegativeClickListener = negativeClickListener
