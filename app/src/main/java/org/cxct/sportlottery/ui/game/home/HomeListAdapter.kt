@@ -872,7 +872,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         mDataList.forEachIndexed { index, target ->
             if(isPrev(src, target)) {
                 mDataList.add(index, src)
-                notifyItemChanged(index)
+                notifyItemRangeChanged(index, mDataList.size - 1)
                 return
             }
             if(index == mDataList.size) return
