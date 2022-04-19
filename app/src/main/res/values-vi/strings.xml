@@ -1119,5 +1119,8 @@ Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAG
 
     <!--region 宣傳頁-->
     <string name="hot_recommend">Khuyến khích</string>
+    <string name="recommend_match">Ngàn trận đấu</string>
+    <string name="recommend_best_odd">Tỷ lệ cược tốt nhất</string>
+    <string name="recommend_safe">Cá cược an toàn</string>
     <!--endregion-->
 </resources>
