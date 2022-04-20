@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.outright
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import kotlinx.android.synthetic.main.itemview_outright_league_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
+import org.cxct.sportlottery.ui.game.hall.adapter.CountryAdapter
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.results.OutrightResultDiffAdapter
 import org.cxct.sportlottery.ui.results.OutrightType
@@ -46,6 +48,12 @@ class OutrightLeagueOddAdapter :
             OutrightType.OUTRIGHT.ordinal -> {
                 LeagueOddViewHolder.from(parent)
             }
+            OutrightType.BOTTOM_NAVIGATION.ordinal -> {
+                BottomNavigationViewHolder(
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.home_bottom_navigation, parent, false)
+                )
+            }
             else -> NoDataViewHolder.from(parent)
         }
     }
@@ -62,15 +70,26 @@ class OutrightLeagueOddAdapter :
     }
 
     override fun getItemCount(): Int = if (data.isEmpty()) {
-        1
+        2
     } else {
-        data.size
+        data.size+1
     }
 
     override fun getItemViewType(position: Int): Int {
         return when {
-            data.isEmpty() -> OutrightType.NO_DATA.ordinal
-            else -> OutrightType.OUTRIGHT.ordinal
+            data.isEmpty() -> {
+                if(position == 0 ){
+                    OutrightType.NO_DATA.ordinal
+                }else{
+                    OutrightType.BOTTOM_NAVIGATION.ordinal
+                }
+            }
+            position == (data.size) ->{
+                OutrightType.BOTTOM_NAVIGATION.ordinal
+            }
+            else -> {
+                OutrightType.OUTRIGHT.ordinal
+            }
         }
     }
 
@@ -124,6 +143,7 @@ class OutrightLeagueOddAdapter :
             }
         }
     }
+    class BottomNavigationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
 
 }
