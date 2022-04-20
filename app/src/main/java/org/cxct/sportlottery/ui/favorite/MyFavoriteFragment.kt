@@ -572,7 +572,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             subscribeChannelType = ChannelType.HALL,
             betPlayCateNameMap = betPlayCateNameMap,
         )
-        (activity as GameActivity).showFastBetFragment(fastBetDataBean)
+        (activity as MyFavoriteActivity).showFastBetFragment(fastBetDataBean)
 
 //        viewModel.updateMatchBetList(
 //            MatchType.MY_EVENT,
