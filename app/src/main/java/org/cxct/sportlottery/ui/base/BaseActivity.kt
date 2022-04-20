@@ -347,7 +347,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     private fun getRunnable(): Runnable {
         return Runnable {
             viewModel.viewModelScope.launch {
-                viewModel.loginRepository.checkToken()
+                viewModel.checkIsUserAlive()
             }
             mRunnable?.let {
                 mHandler.postDelayed( it , 30000)
