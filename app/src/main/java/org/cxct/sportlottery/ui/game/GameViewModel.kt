@@ -1295,12 +1295,11 @@ class GameViewModel(
                     )
                 }
                 MatchType.EARLY -> {
-                    val tr = TimeUtil.getEarlyAllTimeRangeParams()
                     getLeagueList(
                         gameType = code,
                         matchType = nowChildMatchType.postValue,
-                        startTime = tr.startTime ?: "",
-                        endTime = tr.endTime,
+                        startTime = getCurrentTimeRangeParams()?.startTime ?: "",
+                        endTime = getCurrentTimeRangeParams()?.endTime,
                         isIncrement = isIncrement
                     )
                 }
