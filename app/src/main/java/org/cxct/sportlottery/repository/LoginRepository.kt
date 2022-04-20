@@ -61,8 +61,8 @@ class LoginRepository(private val androidContext: Context) {
     val isCreditAccount: LiveData<Boolean>
         get() = _isCreditAccount
 
-    private val _isLogin = MutableLiveData<Boolean>()
-    private val _kickedOut = MutableLiveData<Event<String>>()
+    val _isLogin = MutableLiveData<Boolean>()
+    val _kickedOut = MutableLiveData<Event<String?>>()
     private val _transNum = MutableLiveData<Int?>()
     private val _isCreditAccount = MutableLiveData<Boolean>().apply {
         value = sharedPref.getBoolean(KEY_IS_CREDIT_ACCOUNT, false)
