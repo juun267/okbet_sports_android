@@ -60,7 +60,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     private val args: OddsDetailLiveFragmentArgs by navArgs()
 
     private var oddsDetailListAdapter: OddsDetailListAdapter? = null
-
+    private var isLogin:Boolean = false
     private val tabCateAdapter: TabCateAdapter by lazy {
         TabCateAdapter(OnItemSelectedListener {
             tabCateAdapter.selectedPosition = it
@@ -158,7 +158,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         super.onStart()
 
         if (Util.SDK_INT >= 24) {
-            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null)
+            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null,isLogin)
         }
     }
 
@@ -167,7 +167,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         startTimer()
 
         if ((Util.SDK_INT < 24) || live_view_tool_bar.getExoPlayer() == null) {
-            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null)
+            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null,isLogin)
         }
     }
 
@@ -196,6 +196,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
     private fun initUI() {
 //        live_view_tool_bar.gameType = args.gameType //賽事動畫icon用，之後用不到可刪
+        isLogin = viewModel.loginRepository.isLogin.value == true
         oddsDetailListAdapter = OddsDetailListAdapter(
             OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
                 matchOdd?.let { matchOdd ->
@@ -238,7 +239,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
             sportCode = args.gameType
         }
-
         rv_detail.apply {
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             adapter = oddsDetailListAdapter
@@ -416,7 +416,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                 live_view_tool_bar.startPlayer(
                     matchId,
                     matchOdd?.matchInfo?.trackerId,
-                    liveStreamInfo.streamUrl
+                    liveStreamInfo.streamUrl,isLogin
                 )
             }
         }
@@ -572,7 +572,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     private fun setupLiveView(liveVideo: Int?) {
         live_view_tool_bar.setupToolBarListener(liveToolBarListener)
         live_view_tool_bar.setupPlayerControl(liveVideo.toString() == FLAG_LIVE)
-        live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null)
+        live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null,isLogin)
     }
 
     private fun getData() {
