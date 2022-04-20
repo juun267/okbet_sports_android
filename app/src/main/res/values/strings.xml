@@ -53,6 +53,10 @@
     <string name="register_privacy_policy_promotions">向我发送更新和促销信息</string>
     <string name="register_over_21">我已满21岁并且已阅读及同意</string>
     <string name="register_rules">规则与条款</string>
+    <string name="register_success">注册成功</string>
+    <string name="register_watch_first">来去逛逛</string>
+    <string name="register_jump">将在5秒后跳转至%s...</string>
+    <string name="register_recharge_now">立即充值</string>
     <string name="confirm_password">确认密码</string>
     <string name="hint_confirm_password">(请再次输入密码)</string>
     <string name="error_confirm_password">两次密码输入不一致</string>

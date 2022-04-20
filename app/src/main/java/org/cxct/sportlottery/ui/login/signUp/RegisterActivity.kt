@@ -31,6 +31,8 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
+import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
+import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
 import org.cxct.sportlottery.util.BitmapUtil
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.ToastUtil
@@ -616,7 +618,15 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     private fun updateUiWithResult(loginResult: LoginResult) {
         hideLoading()
         if (loginResult.success) {
-            finish()
+            //finish()
+            RegisterSuccessDialog(this).apply {
+                setNegativeClickListener {
+                    dismiss()
+                    startActivity(Intent(this@RegisterActivity, MoneyRechargeActivity::class.java))
+                    finish()
+                }
+            }.show(supportFragmentManager, null)
+
         } else {
             updateValidCode()
             showErrorDialog(loginResult.msg)

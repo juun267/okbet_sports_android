@@ -53,6 +53,10 @@
     <string name="register_privacy_policy_promotions"></string>
     <string name="register_over_21">I am over 21 years of age and have read and agree to the&#160;</string>
     <string name="register_rules">&#160;Rules and Terms</string>
+    <string name="register_success">Register successfully</string>
+    <string name="register_watch_first">Explore the game</string>
+    <string name="register_jump">The page will be jumping to %s 5 sec later.</string>
+    <string name="register_recharge_now">Recharge now</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="hint_confirm_password">Confirm Password</string>
     <string name="error_confirm_password">Password and confirm password don\'t match</string>
