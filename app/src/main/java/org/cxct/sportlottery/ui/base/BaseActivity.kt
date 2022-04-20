@@ -111,10 +111,13 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
         viewModel.isKickedOut.observe(this) {
             hideLoading()
-            showTokenPromptDialog(it.getContentIfNotHandled()?.body()?.msg.toString()) {
-                val intent = Intent(this@BaseActivity, GamePublicityActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
+            it.getContentIfNotHandled()?.let { msg ->
+                showTokenPromptDialog(msg) {
+                    viewModel.loginRepository._isLogin.postValue(false)
+                    val intent = Intent(this@BaseActivity, GamePublicityActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                }
             }
         }
     }
