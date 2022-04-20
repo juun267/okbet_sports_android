@@ -33,7 +33,7 @@ abstract class BaseViewModel(
         loginRepository.isLogin
     }
 
-    val isKickedOut: LiveData<Event<Response<CheckTokenResult>>> by lazy {
+    val isKickedOut: LiveData<Event<String>> by lazy {
         loginRepository.kickedOut
     }
 
