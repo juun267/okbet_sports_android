@@ -439,6 +439,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 leagueAdapter.data.forEach { leagueOdd ->
                     subscribeChannelHall(leagueOdd)
                 }
+                leagueAdapter.limitRefresh()
                 //leagueAdapter.notifyDataSetChanged()
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -571,7 +572,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             subscribeChannelType = ChannelType.HALL,
             betPlayCateNameMap = betPlayCateNameMap,
         )
-        (activity as GameActivity).showFastBetFragment(fastBetDataBean)
+        (activity as MyFavoriteActivity).showFastBetFragment(fastBetDataBean)
 
 //        viewModel.updateMatchBetList(
 //            MatchType.MY_EVENT,
