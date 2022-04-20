@@ -41,6 +41,7 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
         initButton()
         initRecyclerView()
         initFilter()
+        initObserver()
         viewModel.getBetList(true)
     }
 
@@ -116,6 +117,14 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
 
         btn_back_to_top.setOnClickListener {
             scroll_view.smoothScrollTo(0, 0)
+        }
+    }
+
+    private fun initObserver() {
+        viewModel.settlementNotificationMsg.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let {
+                recordDiffAdapter.updateListStatus(it)
+            }
         }
     }
 }

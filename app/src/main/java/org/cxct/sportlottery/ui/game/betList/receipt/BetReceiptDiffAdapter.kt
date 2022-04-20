@@ -24,6 +24,7 @@ import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
+import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.*
@@ -53,6 +54,8 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
         MutableList(itemCount) { _ -> null }
     }
 
+    var items = listOf<DataItem>()
+
 
     /**
      * @param betParlayList 投注單的串關清單, 用來表示第一項投注單的賠率
@@ -79,12 +82,20 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                     }
                 else listOf()
 
-            val items = singleList.map { DataItem.SingleData(it) } + parlayItem
+            items = singleList.map { DataItem.SingleData(it) } + parlayItem
 
             withContext(Dispatchers.Main) {
                 submitList(items)
             }
         }
+    }
+
+    fun updateListStatus(sportBet: SportBet) {
+        items.forEach { dataItem ->
+            if(dataItem.orderNo == sportBet.orderNo)
+                (dataItem as DataItem.SingleData).result.status = sportBet.status
+        }
+        submitList(items)
     }
 
      private fun starRunnable(startTime: Long, adapterPosition: Int, tvTime: TextView) {

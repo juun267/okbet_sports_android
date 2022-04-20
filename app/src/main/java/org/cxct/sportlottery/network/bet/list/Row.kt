@@ -43,7 +43,7 @@ data class Row (
     @Json(name = "stake")
     val stake: Double,
     @Json(name = "status")
-    val status: Int,
+    var status: Int,
     @Json(name = "totalAmount")
     val totalAmount: Double,
     @Json(name = "userId")

@@ -1,13 +1,11 @@
 package org.cxct.sportlottery.ui.game.betList.receipt
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_bet_receipt.*
 import org.cxct.sportlottery.R
@@ -69,6 +67,12 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         viewModel.oddsType.observe(viewLifecycleOwner) {
             betReceiptDiffAdapter?.oddsType = it
+        }
+
+        viewModel.settlementNotificationMsg.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let {
+                betReceiptDiffAdapter?.updateListStatus(it)
+            }
         }
     }
 

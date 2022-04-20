@@ -48,7 +48,7 @@ class LeagueFilterFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                 layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
                 adapter = countryAdapter
             }
-            this.league_filter_all.setOnClickListener {
+            this.league_filter_all_view.setOnClickListener {
                 viewModel.filterLeague(listOf())
                 findNavController().navigateUp()
             }
