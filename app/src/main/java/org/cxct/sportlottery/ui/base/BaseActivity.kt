@@ -71,7 +71,8 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     private fun onTokenStateChanged() {
         viewModel.errorResultToken.observe(this) {
-            showDialogLogout(it)
+            if (it.code != HttpError.KICK_OUT_USER.code)
+                showDialogLogout(it)
         }
     }
 
