@@ -354,4 +354,8 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
             }
         }
     }
+
+    private fun stopRunnable() {
+        mRunnable = null
+    }
 }
