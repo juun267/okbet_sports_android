@@ -987,14 +987,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
             it.getContentIfNotHandled()?.let { outrightOddsListResult ->
                 if (outrightOddsListResult.success) {
-
-//                    game_toolbar_match_type.text = GameType.values()
-//                        .find { gameType -> gameType.key == args.gameType.key }?.string?.let { stringId ->
-//                            getString(
-//                                stringId
-//                            )
-//                        }
-
                     GameConfigManager.getTitleBarBackground(outrightOddsListResult.outrightOddsListData?.sport?.code)
                         ?.let { gameImg ->
                             game_toolbar_bg.setBackgroundResource(gameImg)
@@ -1018,6 +1010,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 odd.isExpand = true
                             }
                         }
+                    }
+                    if(outrightLeagueOddDataList.isEmpty()){
+
                     }
                     outrightLeagueOddAdapter.data = outrightLeagueOddDataList
                     outrightLeagueOddDataList.forEach { matchOdd ->
@@ -1170,6 +1165,22 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                 }
                 epsListAdapter.notifyDataSetChanged()
+
+                val odds = mutableListOf<Odd>()
+
+                outrightLeagueOddAdapter.data.forEach { matchOdd ->
+                    matchOdd?.oddsMap?.values?.forEach { oddList ->
+                        odds.addAll(oddList?.filterNotNull() ?: mutableListOf())
+                    }
+                }
+
+                odds.forEach { odd ->
+                    odd.isSelected = it.any { betInfoListData ->
+                        betInfoListData.matchOdd.oddsId == odd.id
+                    }
+                }
+
+                outrightLeagueOddAdapter.notifyDataSetChanged()
             }
         }
 
