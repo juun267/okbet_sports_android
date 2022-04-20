@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import kotlinx.android.synthetic.main.itemview_league_odd_v5.view.*
 import kotlinx.android.synthetic.main.itemview_league_quick.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
@@ -186,7 +187,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             //itemView.space2.isVisible = (item.matchInfo?.eps == 1 || item.matchInfo?.liveVideo == 1)
             itemView.iv_play.isVisible = item.matchInfo?.liveVideo == 1 && (matchType == MatchType.IN_PLAY || (matchType == MatchType.PARLAY && item.matchInfo.isInPlay == true) || matchType == MatchType.MY_EVENT && item.matchInfo.isInPlay == true)
             itemView.iv_animation.isVisible =
-                item.matchInfo?.isInPlay == true && !(item.matchInfo.trackerId.isNullOrEmpty())
+                item.matchInfo?.isInPlay == true && !(item.matchInfo.trackerId.isNullOrEmpty()) &&  MultiLanguagesApplication.getInstance()?.getGameDetailAnimationNeedShow() == true
         }
 
         // endregion
@@ -257,7 +258,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             itemView.iv_play.isVisible =
                 item.matchInfo?.liveVideo == 1 && (matchType == MatchType.IN_PLAY || (matchType == MatchType.PARLAY && item.matchInfo.isInPlay == true) || matchType == MatchType.MY_EVENT && item.matchInfo.isInPlay == true)
             itemView.iv_animation.isVisible =
-                item.matchInfo?.isInPlay == true && !(item.matchInfo.trackerId.isNullOrEmpty())
+                item.matchInfo?.isInPlay == true && !(item.matchInfo.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()?.getGameDetailAnimationNeedShow() == true
 
         }
 

@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
 import com.bekawestberg.loopinglayout.library.addViewsAtAnchorEdge
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
@@ -2148,20 +2149,21 @@ class GameViewModel(
                     }
 
                     _oddsDetailList.postValue(Event(list))
-
-                    val animationTrackerId = result.oddsDetailData?.matchOdd?.matchInfo?.trackerId
-                    Timber.e("Dean, animationTrackerId = $animationTrackerId")
-                    if (!animationTrackerId.isNullOrEmpty()) {
-                        doNetwork(androidContext) {
-                            OneBoSportApi.matchService.getMatchTrackerUrl(animationTrackerId)
-                        }?.let { result ->
-                            if (result.success) {
-                                _matchTrackerUrl.postValue(Event(result.matchTrackerUrl))
-                                Timber.e("Dean, tracker url = ${result.matchTrackerUrl.h5Url}")
+                    //aaaaa
+                    if(MultiLanguagesApplication.getInstance()?.getGameDetailAnimationNeedShow() == true){
+                        val animationTrackerId = result.oddsDetailData?.matchOdd?.matchInfo?.trackerId
+                        Timber.e("Dean, animationTrackerId = $animationTrackerId")
+                        if (!animationTrackerId.isNullOrEmpty()) {
+                            doNetwork(androidContext) {
+                                OneBoSportApi.matchService.getMatchTrackerUrl(animationTrackerId)
+                            }?.let { result ->
+                                if (result.success) {
+                                    _matchTrackerUrl.postValue(Event(result.matchTrackerUrl))
+                                    Timber.e("Dean, tracker url = ${result.matchTrackerUrl.h5Url}")
+                                }
                             }
                         }
                     }
-
                     notifyFavorite(FavoriteType.PLAY_CATE)
                 }
             }
