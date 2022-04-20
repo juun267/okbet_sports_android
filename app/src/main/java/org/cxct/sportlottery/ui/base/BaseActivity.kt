@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.layout_loading.view.*
 import kotlinx.coroutines.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.BaseResult
+import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
