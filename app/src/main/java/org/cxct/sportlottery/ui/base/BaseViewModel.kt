@@ -33,7 +33,7 @@ abstract class BaseViewModel(
         loginRepository.isLogin
     }
 
-    val isKickedOut: LiveData<Event<String>> by lazy {
+    val isKickedOut: LiveData<Event<String?>> by lazy {
         loginRepository.kickedOut
     }
 
@@ -119,6 +119,18 @@ abstract class BaseViewModel(
             infoCenterRepository.clear()
             loginRepository.logout()
             finishFunction.invoke()
+        }
+    }
+
+    fun checkIsUserAlive() {
+        viewModelScope.launch {
+            doNetwork(MultiLanguagesApplication.appContext) {
+               loginRepository.checkIsUserAlive()
+            }.let{ result ->
+                if (result?.success == false && loginRepository.isLogin.value == true){
+                    loginRepository._kickedOut.value = Event(result.msg)
+                }
+            }
         }
     }
 }

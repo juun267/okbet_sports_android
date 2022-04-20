@@ -270,14 +270,8 @@ class LoginRepository(private val androidContext: Context) {
         return checkTokenResponse
     }
 
-    suspend fun checkIsUserAlive() {
-        val checkTokenResponse = OneBoSportApi.indexService.checkToken()
-        if (!checkTokenResponse.isSuccessful && _isLogin.value == true) {
-            checkTokenResponse.body()?.let {
-                _kickedOut.value = Event(it.msg)
-                _isLogin.value = false
-            }
-        }
+    suspend fun checkIsUserAlive(): Response<CheckTokenResult> {
+        return OneBoSportApi.indexService.checkToken()
     }
 
     suspend fun logout(): Response<LogoutResult> {
