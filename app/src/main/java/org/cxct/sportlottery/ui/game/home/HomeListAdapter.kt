@@ -46,6 +46,7 @@ import org.cxct.sportlottery.util.OddsSortUtil.recommendSortOddsMap
 import org.cxct.sportlottery.util.RecyclerViewGridDecoration
 import org.cxct.sportlottery.util.TimeUtil
 import timber.log.Timber
+import java.util.concurrent.CopyOnWriteArrayList
 
 /**
  * @author Hewie
@@ -75,7 +76,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     )
 
     // 接收任何型別
-    private var mDataList = mutableListOf<Any>()
+    private var mDataList = CopyOnWriteArrayList<Any>()
 
     private var mUpdateHighLightInterfaceListener = HashMap<Int, UpdateHighLightInterface>()
 
@@ -855,8 +856,9 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         src?.let {
             val iterator = mDataList.iterator()
             while (iterator.hasNext()) {
-                if (iterator.next()::class.isInstance(src))
-                    iterator.remove()
+                val nextElement = iterator.next()
+                if (nextElement::class.isInstance(src))
+                    mDataList.remove(nextElement)
             }
         }
     }
