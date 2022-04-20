@@ -260,10 +260,6 @@ class LoginRepository(private val androidContext: Context) {
             }
         } else {
 
-            if(_isLogin.value == true){
-                _kickedOut.value = Event(checkTokenResponse)
-            }
-
             isCheckToken = false
             _isLogin.value = false
             _isCreditAccount.postValue(false)
@@ -272,6 +268,16 @@ class LoginRepository(private val androidContext: Context) {
         }
 
         return checkTokenResponse
+    }
+
+    suspend fun checkIsUserAlive() {
+        val checkTokenResponse = OneBoSportApi.indexService.checkToken()
+        if (!checkTokenResponse.isSuccessful && _isLogin.value == true) {
+            checkTokenResponse.body()?.let {
+                _kickedOut.value = Event(it.msg)
+                _isLogin.value = false
+            }
+        }
     }
 
     suspend fun logout(): Response<LogoutResult> {
