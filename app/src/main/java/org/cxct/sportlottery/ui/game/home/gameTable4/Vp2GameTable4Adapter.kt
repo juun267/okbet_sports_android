@@ -15,7 +15,6 @@ import kotlin.collections.MutableList
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import kotlinx.android.synthetic.main.home_game_table_item_4.view.*
 import kotlinx.android.synthetic.main.home_game_table_item_4.view.iv_play
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.interfaces.OnSelectItemListener

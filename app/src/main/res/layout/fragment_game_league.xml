@@ -75,7 +75,7 @@
             android:overScrollMode="never"
             app:layout_constraintTop_toBottomOf="@id/game_league_play_category"
             tools:itemCount="2"
-            tools:listitem="@layout/itemview_league_odd_v4" />
+            tools:listitem="@layout/itemview_league_odd_v5" />
     </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
