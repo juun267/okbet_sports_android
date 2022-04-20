@@ -439,6 +439,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 leagueAdapter.data.forEach { leagueOdd ->
                     subscribeChannelHall(leagueOdd)
                 }
+                leagueAdapter.limitRefresh()
                 //leagueAdapter.notifyDataSetChanged()
             } catch (e: Exception) {
                 e.printStackTrace()
