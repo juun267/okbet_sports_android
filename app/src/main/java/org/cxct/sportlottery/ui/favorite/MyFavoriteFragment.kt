@@ -23,6 +23,7 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
+import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueListener
@@ -183,7 +184,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     private fun setupLeagueOddList(view: View) {
         view.favorite_game_list.apply {
             adapter = leagueAdapter
-            this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            this.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
 
             addItemDecoration(
                 SpaceItemDecoration(
@@ -434,6 +435,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             leagueOddList.filterMenuPlayCate()
 
             //favorite_game_list.adapter = leagueAdapter
+            favorite_game_list.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             leagueAdapter.data = leagueOddList.toMutableList()
             leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
             try {
