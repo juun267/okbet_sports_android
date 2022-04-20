@@ -43,6 +43,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     private val gameTypeAdapter by lazy {
         GameTypeAdapter().apply {
             gameTypeListener = GameTypeListener {
+                unSubscribeChannelHallAll()
                 viewModel.switchGameType(it)
             }
         }
