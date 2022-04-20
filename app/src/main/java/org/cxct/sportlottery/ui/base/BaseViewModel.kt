@@ -91,7 +91,7 @@ abstract class BaseViewModel(
 
     private fun <T : BaseResult> doResponseError(response: Response<T>): T? {
         val errorResult = ErrorUtils.parseError(response)
-        if (response.code() == HttpError.UNAUTHORIZED.code) {
+        if (response.code() == HttpError.UNAUTHORIZED.code || response.code() == HttpError.KICK_OUT_USER.code ) {
             errorResult?.let {
                 _errorResultToken.postValue(it)
             }
