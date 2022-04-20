@@ -184,7 +184,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     lifecycleScope.launch {
                         with(mHomeListAdapter) {
                             notifyTimeChanged(1)
-                            notifyHighLightTimeChanged(1)
                         }
                     }
                 }

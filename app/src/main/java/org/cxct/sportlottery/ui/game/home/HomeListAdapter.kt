@@ -791,6 +791,11 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         else
             Timber.i("notify HighLight item fail")
     }
+
+    /**
+     * 刷新精選賽事時間
+     * 20220420 後端過濾資料，精選賽事不會有滾球賽事，故先計時精選賽事時間
+     */
     fun notifyHighLightTimeChanged(diff: Int) {
         var isUpdate = false
         val list = getMatchOdd()
@@ -813,7 +818,6 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             removeDatas(getMatchOdd().firstOrNull())
             list.forEach { addDataWithSort(it) }
         }
-
     }
 
     fun notifyHighLightOddsDiscountChanged(discount: Float) {
