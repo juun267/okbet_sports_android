@@ -144,7 +144,7 @@
             android:layout_height="match_parent"
             android:paddingTop="0dp"
             tools:itemCount="1"
-            tools:listitem="@layout/itemview_league_v4"
+            tools:listitem="@layout/itemview_league_v5"
             android:overScrollMode="never"
             android:background="@color/colorWhite"/>
 

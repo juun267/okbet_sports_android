@@ -24,7 +24,7 @@ data class BetResult(
     @Json(name = "stake")
     val stake: Double?,
     @Json(name = "status")
-    val status: Int?,
+    var status: Int?,
     @Json(name = "winnable")
     val winnable: Double?,
     @Json(name = "reason")

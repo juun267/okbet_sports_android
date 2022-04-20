@@ -227,7 +227,7 @@ class LiveViewToolbar @JvmOverloads constructor(
                 checkExpandLayoutStatus()
                 liveToolBarListener?.getLiveInfo()
                 if (!mStreamUrl.isNullOrEmpty()) {
-                    startPlayer(mMatchId, mEventId, mStreamUrl)
+                    startPlayer(mMatchId, mEventId, mStreamUrl,true)
                 }
             }
             false -> {
@@ -270,6 +270,14 @@ class LiveViewToolbar @JvmOverloads constructor(
         iv_play.isVisible = show
         iv_arrow.isVisible = show
         switchLiveView(show)
+    }
+
+    fun setupNotLogin(){
+        player_view.visibility = View.GONE
+        iv_live_status.isVisible = true
+        tvStatus.isVisible = true
+        iv_live_status.setImageResource(R.drawable.bg_no_play)
+        tvStatus.text = context.getString(R.string.login_notify)
     }
 
     fun liveLoading() {
@@ -348,11 +356,15 @@ class LiveViewToolbar @JvmOverloads constructor(
         exoPlayer = null
     }
 
-    fun startPlayer(matchId: String?, eventId: String?, streamUrl: String?) {
+    fun startPlayer(matchId: String?, eventId: String?, streamUrl: String?,isLogin:Boolean) {
         mMatchId = matchId
         mEventId = eventId
         mStreamUrl = streamUrl
-        initializePlayer(streamUrl)
+        if(isLogin){
+            initializePlayer(streamUrl)
+        }else{
+            setupNotLogin()
+        }
     }
 
     fun setupTrackerUrl(trackerUrl: String?) {

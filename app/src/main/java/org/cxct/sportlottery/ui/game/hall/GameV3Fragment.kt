@@ -74,6 +74,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private var childMatchType = MatchType.OTHER
     private var mView: View? = null
     private var isReload = true // 重新加載用
+    private var mLeagueIsFiltered = false // 是否套用聯賽過濾
 
     private val gameTypeAdapter by lazy {
         GameTypeAdapter().apply {
@@ -1241,7 +1242,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
 
         viewModel.leagueFilterList.observe(this.viewLifecycleOwner) { leagueList ->
-            game_toolbar_champion.isSelected = leagueList.isNotEmpty()
+            mLeagueIsFiltered = leagueList.isNotEmpty()
+            game_toolbar_champion.isSelected = mLeagueIsFiltered
+            sport_type_list.visibility = if (mLeagueIsFiltered) View.GONE else View.VISIBLE
         }
 
         viewModel.checkInListFromSocket.observe(this.viewLifecycleOwner) {
@@ -1796,7 +1799,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             game_filter_type_list.visibility = View.GONE
             return
         } else {
-            sport_type_list.visibility = View.VISIBLE
+            sport_type_list.visibility = if (mLeagueIsFiltered) View.GONE else View.VISIBLE
             game_toolbar_sport_type.visibility = View.VISIBLE
             game_toolbar_calendar.apply {
                 visibility = when (args.matchType) {
