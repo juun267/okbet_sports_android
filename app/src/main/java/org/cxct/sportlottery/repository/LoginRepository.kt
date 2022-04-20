@@ -52,7 +52,7 @@ class LoginRepository(private val androidContext: Context) {
     val isLogin: LiveData<Boolean>
         get() = _isLogin
 
-    val kickedOut: LiveData<Event<String>>
+    val kickedOut: LiveData<Event<String?>>
         get() = _kickedOut
 
     val transNum: LiveData<Int?> //交易狀況數量
