@@ -49,6 +49,7 @@ import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
@@ -266,6 +267,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 ivNotice.setOnClickListener { clickNotice() }
                 ivMenu.setOnClickListener { clickMenu() }
                 ivLanguage.setImageResource(LanguageManager.getLanguageFlag(context))
+                btnLogin.setOnClickListener { startActivity(Intent(context, LoginActivity::class.java)) }
+                btnRegister.setOnClickListener { startActivity(Intent(context, RegisterActivity::class.java)) }
             }
         }
     }
@@ -315,12 +318,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         when (activity) {
             is GamePublicityActivity -> (activity as GamePublicityActivity).clickMenu()
         }
-    }
-
-    private fun goSwitchLanguagePage() {
-        startActivity(Intent(context, SwitchLanguageActivity::class.java).apply {
-            putExtra(SwitchLanguageActivity.FROM_ACTIVITY, this::class.java)
-        })
     }
 
     private fun initToolBar() {
