@@ -572,7 +572,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     oldOdds = TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))
                 }
                 tvOdds.text = if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) "@" + TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType)) else "–"
-                tvContent.text = itemData.matchOdd.extInfo + spread
+                if(itemData.matchOdd.extInfo != null){
+                    tvContent.text = itemData.matchOdd.extInfo + spread
+                }else{
+                    tvContent.text = spread
+                }
                 btnRecharge.setOnClickListener {
                     onItemClickListener.onRechargeClick()
                 }
