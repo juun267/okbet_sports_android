@@ -867,7 +867,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initServiceButton() {
-        btn_floating_service.setView(this)
+        //2022/4/21需求：客服只在首頁和宣傳頁、維護頁出現
+        //btn_floating_service.setView(this)
     }
 
     override fun updateUiWithLogin(isLogin: Boolean) {
