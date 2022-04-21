@@ -158,7 +158,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         super.onStart()
 
         if (Util.SDK_INT >= 24) {
-            live_view_tool_bar.initLoginStatus(isLogin)
             live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null,isLogin)
         }
     }
@@ -166,6 +165,8 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     override fun onResume() {
         super.onResume()
         startTimer()
+        isLogin = viewModel.loginRepository.isLogin.value == true
+        live_view_tool_bar.initLoginStatus(isLogin)
 
         if ((Util.SDK_INT < 24) || live_view_tool_bar.getExoPlayer() == null) {
             live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null,isLogin)
@@ -197,7 +198,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
     private fun initUI() {
 //        live_view_tool_bar.gameType = args.gameType //賽事動畫icon用，之後用不到可刪
-        isLogin = viewModel.loginRepository.isLogin.value == true
         oddsDetailListAdapter = OddsDetailListAdapter(
             OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
                 matchOdd?.let { matchOdd ->

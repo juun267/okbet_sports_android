@@ -165,9 +165,14 @@ class LiveViewToolbar @JvmOverloads constructor(
         iv_play.setOnClickListener {
             if (!iv_play.isSelected) {
                 iv_play.isSelected = true
-                switchLiveView(true)
                 if (iv_animation.isSelected){
-                    hideWebView()
+                    if(isLogin){
+                        hideWebView()
+                        switchLiveView(true)
+                    }else{
+                        iv_animation.isSelected = false
+                        setupNotLogin()
+                    }
                 }
             }
             when (expand_layout.isExpanded) {
@@ -186,10 +191,12 @@ class LiveViewToolbar @JvmOverloads constructor(
             if (!iv_animation.isSelected) {
                 if(isLogin){
                     openWebView()
+                    if (iv_play.isSelected) switchLiveView(false)
                 }else{
+                    iv_animation.isSelected = true
+                    iv_play.isSelected = false
                     setupNotLogin()
                 }
-                if (iv_play.isSelected) switchLiveView(false)
             }
             /*when (expand_layout.isExpanded) {
                 true -> {
@@ -215,7 +222,12 @@ class LiveViewToolbar @JvmOverloads constructor(
                     switchLiveView(false)
                 }
                 iv_animation.isSelected -> {
-                    hideWebView()
+                    if(isLogin){
+                        hideWebView()
+                    }else{
+                        setupNotLogin()
+                    }
+                    //hideWebView()
                 }
                 else -> {
                     when(lastLiveType) {
