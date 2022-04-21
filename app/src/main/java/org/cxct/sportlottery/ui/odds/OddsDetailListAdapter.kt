@@ -49,6 +49,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
     RecyclerView.Adapter<OddsDetailListAdapter.ViewHolder>() {
 
 
+    enum class ItemType {
+        ITEM, NO_DATA, BOTTOM_NAVIGATION
+    }
+
     var betInfoList: MutableList<BetInfoListData> = mutableListOf()
         set(value) {
             field = value
