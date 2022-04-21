@@ -48,6 +48,9 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 onLanguageBlockClickListener = {
                     goSwitchLanguagePage()
                 },
+                onNoticeClickListener = {
+                    clickNotice()
+                },
                 onMenuClickListener = {
                     clickMenu()
                 },
@@ -134,6 +137,12 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     private fun removeBetListFragment() {
         when (activity) {
             is GamePublicityActivity -> (activity as GamePublicityActivity).removeBetListFragment()
+        }
+    }
+
+    private fun clickNotice() {
+        when (activity) {
+            is GamePublicityActivity -> (activity as GamePublicityActivity).fragmentClickNotice()
         }
     }
 

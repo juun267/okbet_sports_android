@@ -264,6 +264,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                     //region Click event
                     ivLogo.setOnClickListener { publicityAdapterListener.onLogoClickListener() }
                     blockLanguage.setOnClickListener { publicityAdapterListener.onLanguageBlockClickListener() }
+                    ivNotice.setOnClickListener { publicityAdapterListener.onNoticeClickListener() }
                     ivMenu.setOnClickListener { publicityAdapterListener.onMenuClickListener() }
                     //endregion
                 }
@@ -403,6 +404,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
     class PublicityAdapterListener(
         private val onLogoClickListener: () -> Unit,
         private val onLanguageBlockClickListener: () -> Unit,
+        private val onNoticeClickListener: () -> Unit,
         private val onMenuClickListener: () -> Unit,
         private val onItemClickListener: () -> Unit,
         private val onGoHomePageListener: () -> Unit,
@@ -413,6 +415,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
     ) {
         fun onLogoClickListener() = onLogoClickListener.invoke()
         fun onLanguageBlockClickListener() = onLanguageBlockClickListener.invoke()
+        fun onNoticeClickListener() = onNoticeClickListener.invoke()
         fun onMenuClickListener() = onMenuClickListener.invoke()
         fun onItemClickListener() = onItemClickListener.invoke()
         fun onGoHomePageListener() = onGoHomePageListener.invoke()

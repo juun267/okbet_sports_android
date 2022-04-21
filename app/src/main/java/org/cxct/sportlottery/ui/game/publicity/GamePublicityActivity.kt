@@ -19,6 +19,7 @@ import org.cxct.sportlottery.ui.game.betList.FastBetFragment
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity.Companion.FROM_ACTIVITY
+import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -250,6 +251,14 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                 viewModel.getMoney()
             }
         }
+    }
+
+    fun fragmentClickNotice() {
+        onCloseMenu()
+        startActivity(
+            Intent(this, InfoCenterActivity::class.java)
+                .putExtra(InfoCenterActivity.KEY_READ_PAGE, InfoCenterActivity.YET_READ)
+        )
     }
 
     private fun goRegisterPage() {
