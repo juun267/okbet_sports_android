@@ -249,11 +249,12 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
 
     override fun initBottomNavigation() {
         viewModel.getTransNum()
+        binding.gameBottomNavigation.sportBottomNavigation.clearSelectedStatus()
         binding.gameBottomNavigation.sportBottomNavigation.setNavigationItemClickListener {
             when (it) {
                 R.id.navigation_sport -> {
                     viewModel.navGame()
-                    true
+                    false
                 }
                 R.id.navigation_game -> {
                     viewModel.navMyFavorite()
