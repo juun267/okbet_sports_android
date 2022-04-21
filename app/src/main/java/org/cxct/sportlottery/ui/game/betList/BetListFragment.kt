@@ -48,6 +48,7 @@ import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
+import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
@@ -266,6 +267,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     toolBar.visibility = View.VISIBLE
                     ivLogo.setOnClickListener { removeBetListFragment() }
                     blockLanguage.setOnClickListener { goSwitchLanguagePage() }
+                    ivNotice.setOnClickListener { clickNotice() }
                     ivMenu.setOnClickListener { clickMenu() }
                     ivLanguage.setImageResource(LanguageManager.getLanguageFlag(context))
                     tvLanguage.text = LanguageManager.getLanguageStringResource(context)
@@ -300,6 +302,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun removeBetListFragment() {
         when (activity) {
             is GamePublicityActivity -> (activity as GamePublicityActivity).removeBetListFragment()
+        }
+    }
+
+    private fun clickNotice() {
+        when (activity) {
+            is GamePublicityActivity -> (activity as GamePublicityActivity).fragmentClickNotice()
         }
     }
 
