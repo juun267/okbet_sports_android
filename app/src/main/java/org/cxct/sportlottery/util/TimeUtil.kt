@@ -157,6 +157,7 @@ object TimeUtil {
     ): Long? {
         if (date.isNullOrEmpty()) return null
         val formatter = SimpleDateFormat("$dateFormatPattern S", locale)
+        formatter.timeZone = TimeZone.getTimeZone("GMT+8")
         val startTimeStamp = formatter.parse("$date 00:00:00 000")?.time
         val endTimeStamp = formatter.parse("$date 23:59:59 999")?.time
         return if (timeType == TimeType.START_OF_DAY) startTimeStamp else endTimeStamp
@@ -430,6 +431,7 @@ object TimeUtil {
 
     fun getEarlyAllTimeRangeParams(): TimeRangeParams {
         val calendar = Calendar.getInstance()
+        calendar.timeZone = TimeZone.getTimeZone("GMT+8")
         calendar.add(Calendar.DAY_OF_MONTH, 1)
         calendar.set(Calendar.HOUR_OF_DAY, 0)
         calendar.set(Calendar.MINUTE, 0)
@@ -520,7 +522,7 @@ object TimeUtil {
     fun getFutureDate(day: Int, locale: Locale = Locale.getDefault()): List<String> {
         val weekDateList = mutableListOf<String>()
         val calendar = Calendar.getInstance()
-
+        calendar.timeZone = TimeZone.getTimeZone("GMT+8")
         repeat(day) {
             calendar.add(Calendar.DATE, 1)
             weekDateList.add(timeFormat(calendar.timeInMillis, YMDE_FORMAT, locale = locale))

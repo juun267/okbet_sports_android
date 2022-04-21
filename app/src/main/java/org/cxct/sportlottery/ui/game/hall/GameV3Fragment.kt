@@ -296,6 +296,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             isReload = true
             when (tab?.text.toString()) { //固定寫死
                 getString(R.string.game_tab_league_odd) -> { //賽事
+                    game_toolbar_calendar.visibility = View.VISIBLE
                     if (args.matchType == MatchType.OTHER) {
                         game_play_category.visibility = View.VISIBLE
                     }
@@ -303,6 +304,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     viewModel.switchChildMatchType(childMatchType = args.matchType)
                 }
                 getString(R.string.game_tab_outright_odd) -> { //冠軍
+                    game_toolbar_calendar.visibility = View.GONE
                     if (args.matchType == MatchType.OTHER) {
                         game_play_category.visibility = View.GONE
                         childMatchType = MatchType.OTHER_OUTRIGHT
