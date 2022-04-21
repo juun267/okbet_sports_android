@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.findNavController
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityGamePublicityBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -32,6 +33,8 @@ import org.parceler.Parcels
 class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class),
     View.OnClickListener {
     private lateinit var binding: ActivityGamePublicityBinding
+
+    private val navController by lazy { findNavController(binding.publicityContainer.id) }
 
     companion object {
         const val IS_FROM_PUBLICITY = "isFromPublicity"
@@ -63,6 +66,25 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         super.onResume()
 
         getSportMenuFilter()
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+
+        initDestination()
+    }
+
+    private fun initDestination() {
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            when (destination.id) {
+                R.id.publicityFragment -> {
+                    binding.publicityToolbar.toolBar.visibility = View.GONE
+                }
+                else -> {
+                    binding.publicityToolbar.toolBar.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
     private fun initViews() {
@@ -185,7 +207,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
 
     }
 
-    private fun removeBetListFragment() {
+    fun removeBetListFragment() {
         supportFragmentManager.beginTransaction().remove(betListFragment).commit()
     }
     //endregion
@@ -213,6 +235,16 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                         viewModel.getMoney()
                     }
                 }
+            }
+        }
+    }
+
+    fun clickMenu() {
+        with(binding) {
+            if (drawerLayout.isDrawerOpen(viewNavRight.navRight)) drawerLayout.closeDrawers()
+            else {
+                drawerLayout.openDrawer(viewNavRight.navRight)
+                viewModel.getMoney()
             }
         }
     }
