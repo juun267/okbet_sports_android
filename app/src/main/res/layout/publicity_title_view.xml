@@ -5,17 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-<!--    <ImageView-->
-<!--        android:id="@+id/ivTitle"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:scaleType="centerCrop"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintDimensionRatio="750:320"-->
-<!--        android:src="@drawable/img_publicity_title" />-->
+
     <com.youth.banner.Banner
         android:id="@+id/banner"
         android:layout_width="match_parent"
@@ -24,8 +14,76 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="750:320"
+        app:layout_constraintDimensionRatio="375:310"
         app:banner_loop_time="3000"/>
+
+    <include
+        android:id="@+id/publicityToolbar"
+        layout="@layout/view_toolbar_publicity"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tool_bar_height"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/banner"
+        android:background="@color/color_B3000000">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_weight="1">
+            <ImageView
+                android:layout_width="@dimen/margin_18"
+                android:layout_height="@dimen/margin_18"
+                android:src="@drawable/ic_icon_events" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="@string/recommend_match"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_weight="1">
+            <ImageView
+                android:layout_width="@dimen/margin_18"
+                android:layout_height="@dimen/margin_18"
+                android:src="@drawable/ic_icon_odds" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="@string/recommend_best_odd"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_weight="1">
+            <ImageView
+                android:layout_width="@dimen/margin_18"
+                android:layout_height="@dimen/margin_18"
+                android:src="@drawable/ic_icon_safe" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="@string/recommend_safe"/>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

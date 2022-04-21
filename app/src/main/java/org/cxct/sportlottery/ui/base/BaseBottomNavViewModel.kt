@@ -19,7 +19,8 @@ abstract class BaseBottomNavViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-    favoriteRepository: MyFavoriteRepository
+    favoriteRepository: MyFavoriteRepository,
+    private val intentRepository: IntentRepository
 ) : BaseSocketViewModel(
     androidContext,
     userInfoRepository,
@@ -34,7 +35,7 @@ abstract class BaseBottomNavViewModel(
         get() = _thirdGameCategory
 
     val intentClass: LiveData<Event<Class<*>>>
-        get() = _intentClass
+        get() = intentRepository.intentClass
 
     val showShoppingCart: LiveData<Boolean>
         get() = _showShoppingCart
@@ -44,7 +45,6 @@ abstract class BaseBottomNavViewModel(
         get() = _navPublicityPage
 
     private val _thirdGameCategory = MutableLiveData<Event<ThirdGameCategory?>>()
-    private val _intentClass = MutableLiveData<Event<Class<*>>>()
     private val _showShoppingCart = MutableLiveData<Boolean>()
     private val _navPublicityPage = MutableLiveData<Event<Boolean>>()
 
@@ -72,7 +72,7 @@ abstract class BaseBottomNavViewModel(
     }
 
     fun navGame() {
-        _intentClass.postValue(Event(GameActivity::class.java))
+        intentRepository.setIntentClassLiveData(GameActivity::class.java)
     }
 
     fun navMyFavorite() {
@@ -81,7 +81,7 @@ abstract class BaseBottomNavViewModel(
             return
         }
 
-        _intentClass.postValue(Event(MyFavoriteActivity::class.java))
+        intentRepository.setIntentClassLiveData(MyFavoriteActivity::class.java)
     }
 
     fun navAccountHistory() {
@@ -90,7 +90,7 @@ abstract class BaseBottomNavViewModel(
             return
         }
 
-        _intentClass.postValue(Event(AccountHistoryActivity::class.java))
+        intentRepository.setIntentClassLiveData(AccountHistoryActivity::class.java)
     }
 
     fun navTranStatus() {
@@ -99,7 +99,7 @@ abstract class BaseBottomNavViewModel(
             return
         }
 
-        _intentClass.postValue(Event(TransactionStatusActivity::class.java))
+        intentRepository.setIntentClassLiveData(TransactionStatusActivity::class.java)
     }
 
     fun navShoppingCart() {

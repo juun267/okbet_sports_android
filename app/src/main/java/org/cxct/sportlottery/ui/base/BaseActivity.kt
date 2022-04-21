@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.layout_loading.view.*
 import kotlinx.coroutines.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.BaseResult
+import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
@@ -71,7 +72,8 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     private fun onTokenStateChanged() {
         viewModel.errorResultToken.observe(this) {
-            showDialogLogout(it)
+            if (it.code != HttpError.KICK_OUT_USER.code)
+                showDialogLogout(it)
         }
     }
 
@@ -110,10 +112,13 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
         viewModel.isKickedOut.observe(this) {
             hideLoading()
-            showTokenPromptDialog(it.getContentIfNotHandled()?.body()?.msg.toString()) {
-                val intent = Intent(this@BaseActivity, GamePublicityActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
+            it.getContentIfNotHandled()?.let { msg ->
+                showTokenPromptDialog(msg) {
+                    viewModel.loginRepository._isLogin.postValue(false)
+                    val intent = Intent(this@BaseActivity, GamePublicityActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                }
             }
         }
     }
@@ -343,11 +348,15 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     private fun getRunnable(): Runnable {
         return Runnable {
             viewModel.viewModelScope.launch {
-                viewModel.loginRepository.checkToken()
+                viewModel.checkIsUserAlive()
             }
             mRunnable?.let {
                 mHandler.postDelayed( it , 30000)
             }
         }
+    }
+
+    private fun stopRunnable() {
+        mRunnable = null
     }
 }

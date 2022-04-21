@@ -15,4 +15,4 @@ data class OutrightResultData(
     var seasonExpanded: Boolean = true
 }
 
-enum class OutrightType { TITLE, OUTRIGHT, NO_DATA }
+enum class OutrightType { TITLE, OUTRIGHT, NO_DATA ,BOTTOM_NAVIGATION}

@@ -26,13 +26,15 @@ class AccountHistoryViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     favoriteRepository: MyFavoriteRepository,
+    intentRepository: IntentRepository
 ) : BaseBottomNavViewModel(
     androidContext,
     userInfoRepository,
     loginRepository,
     betInfoRepository,
     infoCenterRepository,
-    favoriteRepository
+    favoriteRepository,
+    intentRepository
 ) {
 
     companion object {

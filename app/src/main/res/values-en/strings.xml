@@ -53,6 +53,10 @@
     <string name="register_privacy_policy_promotions"></string>
     <string name="register_over_21">I am over 21 years of age and have read and agree to the&#160;</string>
     <string name="register_rules">&#160;Rules and Terms</string>
+    <string name="register_success">Register successfully</string>
+    <string name="register_watch_first">Explore the game</string>
+    <string name="register_jump">The page will be jumping to %s 5 sec later.</string>
+    <string name="register_recharge_now">Recharge now</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="hint_confirm_password">Confirm Password</string>
     <string name="error_confirm_password">Password and confirm password don\'t match</string>
@@ -746,7 +750,7 @@
     <string name="my_favorite">My Events</string>
     <string name="credit_bet_record">Rounds history</string>
     <string name="all_plat_type">All platform types</string>
-    <string name="visit_first">Go around</string>
+    <string name="visit_first">Explore the game</string>
     <string name="bet_number">Count</string>
     <string name="bet_money">Amount</string>
     <string name="profit_and_loss">Result</string>
@@ -1088,5 +1092,8 @@ Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAG
 
     <!--region 宣傳頁-->
     <string name="hot_recommend">Recommended</string>
+    <string name="recommend_match">Thousand of match</string>
+    <string name="recommend_best_odd">Best odds</string>
+    <string name="recommend_safe">Safe betting</string>
     <!--endregion-->
 </resources>

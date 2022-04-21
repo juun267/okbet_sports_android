@@ -69,6 +69,7 @@ class MultiLanguagesApplication : Application() {
     private var _userInfo = MutableStateFlow<UserInfo?>(null)
     val userInfo = _userInfo.asStateFlow()
     private var isNewsShowed = false
+    private var isGameDetailAnimationNeedShow = false
 
 
     private val viewModelModule = module {
@@ -91,13 +92,13 @@ class MultiLanguagesApplication : Application() {
         viewModel { ProfileCenterViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
         viewModel { VersionUpdateViewModel(get(), get(), get(), get()) }
         viewModel { MoneyTransferViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { GameViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { GameViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
         viewModel { MaintenanceViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { OtherBetRecordViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { VipViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { AccountHistoryViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { TransactionStatusViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { MyFavoriteViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { AccountHistoryViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { TransactionStatusViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { MyFavoriteViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { CreditRecordViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { StatisticsViewModel(get(), get(), get(), get()) }
         viewModel { GooglePermissionViewModel(get(), get(), get()) }
@@ -121,6 +122,7 @@ class MultiLanguagesApplication : Application() {
         single { PlayQuotaComRepository() }
         single { MyFavoriteRepository() }
         single { SelfLimitRepository() }
+        single { IntentRepository() }
     }
 
 
@@ -216,6 +218,15 @@ class MultiLanguagesApplication : Application() {
     fun setIsNewsShow(show:Boolean){
         this.isNewsShowed = show
     }
+
+    fun getGameDetailAnimationNeedShow():Boolean{
+        return if(BuildConfig.CHANNEL_NAME == "spkx"){
+            isGameDetailAnimationNeedShow
+        }else{
+            true
+        }
+    }
+
     companion object {
         private var myPref: SharedPreferences? = null
         lateinit var appContext: Context

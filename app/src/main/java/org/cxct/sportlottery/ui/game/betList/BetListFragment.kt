@@ -46,7 +46,10 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.bet.list.FastBetSettingDialog
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
@@ -71,6 +74,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private var betAllAmount = 0.0
 
     private var betResultListener: BetResultListener? = null
+
+    private var showToolbar: Boolean = false
 
     private var betParlayList: List<ParlayOdd>? = null //紀錄投注時的串關資料
 
@@ -187,6 +192,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         initBtnView()
         initBtnEvent()
         initRecyclerView()
+        initCommonToolbar()
         initToolBar()
 
         initKeyBoard(viewModel.getLoginBoolean())
@@ -251,6 +257,67 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 //                    setDrawable(it)
 //                }
 //            })
+    }
+
+    private fun initCommonToolbar() {
+        if (showToolbar) {
+            with(binding.toolBar) {
+                toolBar.visibility = View.VISIBLE
+                ivLogo.setOnClickListener { removeBetListFragment() }
+                ivNotice.setOnClickListener { clickNotice() }
+                ivMenu.setOnClickListener { clickMenu() }
+                ivLanguage.setImageResource(LanguageManager.getLanguageFlag(context))
+                btnLogin.setOnClickListener { startActivity(Intent(context, LoginActivity::class.java)) }
+                btnRegister.setOnClickListener { startActivity(Intent(context, RegisterActivity::class.java)) }
+            }
+        }
+    }
+
+    private fun updateCommonToolbarLoginStatus(isLogin: Boolean) {
+        if (!showToolbar) return
+
+        with(binding.toolBar) {
+            if (isLogin) {
+                btnLogin.visibility = View.GONE
+                btnRegister.visibility = View.GONE
+                toolbarDivider.visibility = View.GONE
+                ivHead.visibility = View.GONE
+                tvOddsType.visibility = View.GONE
+                ivNotice.visibility = View.VISIBLE
+                ivMenu.visibility = View.VISIBLE
+            } else {
+                btnLogin.visibility = View.VISIBLE
+                btnRegister.visibility = View.VISIBLE
+                toolbarDivider.visibility = View.VISIBLE
+                ivHead.visibility = View.GONE
+                tvOddsType.visibility = View.GONE
+                ivNotice.visibility = View.GONE
+                ivMenu.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun updateCommonToolbarNotice(hasNotice: Boolean) {
+        binding.toolBar.ivNotice.setImageResource(if (hasNotice) R.drawable.icon_bell_with_red_dot else R.drawable.icon_bell)
+    }
+
+
+    private fun removeBetListFragment() {
+        when (activity) {
+            is GamePublicityActivity -> (activity as GamePublicityActivity).removeBetListFragment()
+        }
+    }
+
+    private fun clickNotice() {
+        when (activity) {
+            is GamePublicityActivity -> (activity as GamePublicityActivity).fragmentClickNotice()
+        }
+    }
+
+    private fun clickMenu() {
+        when (activity) {
+            is GamePublicityActivity -> (activity as GamePublicityActivity).clickMenu()
+        }
     }
 
     private fun initToolBar() {
@@ -471,7 +538,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             setupUserBalanceView(it)
             setupBetButtonType(it)
             initKeyBoard(it)
+            updateCommonToolbarLoginStatus(it)
         }
+
+        viewModel.infoCenterRepository.unreadNoticeList.observe(viewLifecycleOwner, {
+            updateCommonToolbarNotice(it.isNotEmpty())
+        })
 
         viewModel.userMoney.observe(viewLifecycleOwner) {
             it?.let { money ->
@@ -866,8 +938,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
          * @return A new instance of fragment BetListFragment.
          */
         @JvmStatic
-        fun newInstance(betResultListener: BetResultListener) = BetListFragment().apply {
+        fun newInstance(betResultListener: BetResultListener, showToolbar: Boolean = false) = BetListFragment().apply {
             this.betResultListener = betResultListener
+            this.showToolbar = showToolbar
         }
     }
 

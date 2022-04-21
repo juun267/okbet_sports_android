@@ -7,7 +7,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
+import com.bekawestberg.loopinglayout.library.addViewsAtAnchorEdge
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
@@ -83,14 +85,16 @@ class GameViewModel(
     myFavoriteRepository: MyFavoriteRepository,
     private val sportMenuRepository: SportMenuRepository,
     private val thirdGameRepository: ThirdGameRepository,
-    private val withdrawRepository: WithdrawRepository
+    private val withdrawRepository: WithdrawRepository,
+    intentRepository: IntentRepository
 ) : BaseBottomNavViewModel(
     androidContext,
     userInfoRepository,
     loginRepository,
     betInfoRepository,
     infoCenterRepository,
-    myFavoriteRepository
+    myFavoriteRepository,
+    intentRepository
 ) {
     companion object {
         const val GameLiveSP = "GameLiveSharedPreferences"
@@ -446,16 +450,19 @@ class GameViewModel(
 //                null,
 //                isIncrement = false
 //            )
-            getOutrightSeasonList(
-                getSportSelectedCode(MatchType.OTHER_OUTRIGHT) ?: "",
-                true
-            )
+            //aaaaa
+//            getOutrightSeasonList(
+//                getSportSelectedCode(MatchType.OTHER_OUTRIGHT) ?: "",
+//                true
+//            )
+            getOutrightOddsList(getSportSelectedCode(MatchType.OTHER_OUTRIGHT) ?: "")
         }
         if(childMatchType == MatchType.OUTRIGHT) {
-            getOutrightSeasonList(
-                getSportSelectedCode(MatchType.OUTRIGHT) ?: "",
-                false
-            )
+//            getOutrightSeasonList(
+//                getSportSelectedCode(MatchType.OUTRIGHT) ?: "",
+//                false
+//            )
+            getOutrightOddsList(getSportSelectedCode(_curMatchType.value!!) ?: "")
         }
         else if (childMatchType == MatchType.OTHER) {
             getGameHallList(
@@ -1293,12 +1300,11 @@ class GameViewModel(
                     )
                 }
                 MatchType.EARLY -> {
-                    val tr = TimeUtil.getEarlyAllTimeRangeParams()
                     getLeagueList(
                         gameType = code,
                         matchType = nowChildMatchType.postValue,
-                        startTime = tr.startTime ?: "",
-                        endTime = tr.endTime,
+                        startTime = getCurrentTimeRangeParams()?.startTime ?: "",
+                        endTime = getCurrentTimeRangeParams()?.endTime,
                         isIncrement = isIncrement
                     )
                 }
@@ -1313,7 +1319,8 @@ class GameViewModel(
 
                 }
                 MatchType.OUTRIGHT -> {
-                    getOutrightSeasonList(code, false)
+                    getOutrightOddsList(code)
+                    //getOutrightSeasonList(code, false)
                 }
                 MatchType.AT_START -> {
                     getOddsList(
@@ -1337,7 +1344,9 @@ class GameViewModel(
                     )
                 }
                 MatchType.OTHER_OUTRIGHT -> {
-                    getOutrightSeasonList(code, true)
+                    //getOutrightSeasonList(code, true)
+                    getOutrightOddsList(code)
+
                 }
                 MatchType.MY_EVENT -> {
                     getOddsList(
@@ -1453,6 +1462,43 @@ class GameViewModel(
             }
         }
     }
+    fun getOutrightOddsList(gameType: String) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.outrightService.getOutrightOddsList(
+                    OutrightOddsListRequest(
+                        gameType,
+                        matchType = MatchType.OUTRIGHT.postValue
+                    )
+                )
+            }
+
+            result?.outrightOddsListData?.leagueOdds?.forEach { leagueOdd ->
+                leagueOdd.matchOdds?.forEach { matchOdd ->
+                    matchOdd?.oddsMap?.values?.forEach { oddList ->
+                        oddList?.updateOddSelectState()
+                    }
+
+                    matchOdd?.setupOddDiscount()
+                    matchOdd?.setupPlayCate()
+                    matchOdd?.sortOdds()
+
+                    matchOdd?.startDate = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, DMY_FORMAT)
+                    matchOdd?.startTime = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, HM_FORMAT)
+                }
+            }
+
+            val matchOdd =
+                result?.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()
+            matchOdd?.let {
+                matchOdd.playCateMappingList = playCateMappingList
+                matchOdd.updateOddStatus()
+            }
+
+            _outrightOddsListResult.postValue(Event(result))
+        }
+    }
+
 
     fun getOutrightOddsList(gameType: GameType, leagueId: String) {
         viewModelScope.launch {
@@ -2104,20 +2150,21 @@ class GameViewModel(
                     }
 
                     _oddsDetailList.postValue(Event(list))
-
-                    val animationTrackerId = result.oddsDetailData?.matchOdd?.matchInfo?.trackerId
-                    Timber.e("Dean, animationTrackerId = $animationTrackerId")
-                    if (!animationTrackerId.isNullOrEmpty()) {
-                        doNetwork(androidContext) {
-                            OneBoSportApi.matchService.getMatchTrackerUrl(animationTrackerId)
-                        }?.let { result ->
-                            if (result.success) {
-                                _matchTrackerUrl.postValue(Event(result.matchTrackerUrl))
-                                Timber.e("Dean, tracker url = ${result.matchTrackerUrl.h5Url}")
+                    //aaaaa
+                    if(MultiLanguagesApplication.getInstance()?.getGameDetailAnimationNeedShow() == true){
+                        val animationTrackerId = result.oddsDetailData?.matchOdd?.matchInfo?.trackerId
+                        Timber.e("Dean, animationTrackerId = $animationTrackerId")
+                        if (!animationTrackerId.isNullOrEmpty()) {
+                            doNetwork(androidContext) {
+                                OneBoSportApi.matchService.getMatchTrackerUrl(animationTrackerId)
+                            }?.let { result ->
+                                if (result.success) {
+                                    _matchTrackerUrl.postValue(Event(result.matchTrackerUrl))
+                                    Timber.e("Dean, tracker url = ${result.matchTrackerUrl.h5Url}")
+                                }
                             }
                         }
                     }
-
                     notifyFavorite(FavoriteType.PLAY_CATE)
                 }
             }

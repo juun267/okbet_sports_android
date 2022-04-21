@@ -12,6 +12,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.HomeBottomNavigationBinding
 import org.cxct.sportlottery.databinding.ItemPublicityRecommendBinding
@@ -25,6 +26,7 @@ import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.game.Page
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.LanguageManager
 
 
 class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapterListener) :
@@ -47,6 +49,18 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                 field = value
                 notifyDataSetChanged()
             }
+        }
+
+    var isLogin: Boolean = false
+        set(value) {
+            field = value
+            notifyToolbar()
+        }
+
+    var hasNotice: Boolean = false
+        set(value) {
+            field = value
+            notifyToolbar()
         }
 
     enum class ItemType {
@@ -89,6 +103,12 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
     //endregion
 
     //region update Function
+    private fun notifyToolbar() {
+        val publicityTitleData = mDataList.firstOrNull { it is PublicityTitleImageData }
+
+        notifyItemChanged(mDataList.indexOf(publicityTitleData), publicityTitleData)
+    }
+
     fun updateRecommendData(position: Int, payload: Recommend) {
         val recommendIndexList = mutableListOf<Int>()
         mDataList.forEachIndexed { index, item -> if (item is Recommend) recommendIndexList.add(index) }
@@ -167,6 +187,9 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                     is Recommend -> {
                         (holder as PublicityRecommendViewHolder).updateLeagueOddList(payload, oddsType)
                     }
+                    is PublicityTitleImageData -> {
+                        (holder as PublicityTitleViewHolder).updateToolbar()
+                    }
                 }
             }
         }
@@ -184,9 +207,6 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                 holder.bind()
             }
             is PublicitySubTitleViewHolder -> {
-                holder.bind()
-            }
-            is PublicityTitleViewHolder -> {
                 holder.bind()
             }
             is BottomNavigationViewHolder -> {
@@ -213,6 +233,43 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                 .dontTransform()
 
             with(binding) {
+                //region Toolbar
+                with(publicityToolbar) {
+                    //登入狀態, 訊息狀態
+                    updateToolbar()
+
+                    //region Transparent style
+                    toolBar.setBackgroundColor(
+                        ContextCompat.getColor(
+                            MultiLanguagesApplication.appContext,
+                            android.R.color.transparent
+                        )
+                    )
+                    ivLogo.setImageResource(R.drawable.ic_logo_white)
+                    ivNotice.setImageResource(R.drawable.icon_bell_white)
+                    ivMenu.setImageResource(R.drawable.ic_menu_gray)
+                    tvLanguage.setTextColor(
+                        ContextCompat.getColor(
+                            MultiLanguagesApplication.appContext,
+                            R.color.color_FFFFFFFF
+                        )
+                    )
+                    //endregion
+
+                    //region Language block
+                    ivLanguage.setImageResource(LanguageManager.getLanguageFlag(MultiLanguagesApplication.appContext))
+                    tvLanguage.text = LanguageManager.getLanguageStringResource(MultiLanguagesApplication.appContext)
+                    //endregion
+
+                    //region Click event
+                    ivLogo.setOnClickListener { publicityAdapterListener.onLogoClickListener() }
+                    blockLanguage.setOnClickListener { publicityAdapterListener.onLanguageBlockClickListener() }
+                    ivNotice.setOnClickListener { publicityAdapterListener.onNoticeClickListener() }
+                    ivMenu.setOnClickListener { publicityAdapterListener.onMenuClickListener() }
+                    //endregion
+                }
+                //endregion
+
                 val imagelist = sConfigData?.imageList?.filter {
                     it.imageType == 2
                 }
@@ -234,6 +291,30 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                         }
                     }
                 })
+            }
+        }
+
+        fun updateToolbar() {
+            with(binding.publicityToolbar) {
+                if (isLogin) {
+                    ivNotice.visibility = View.VISIBLE
+                    ivMenu.visibility = View.VISIBLE
+
+                    blockLanguage.visibility = View.GONE
+                } else {
+                    ivNotice.visibility = View.GONE
+                    ivMenu.visibility = View.GONE
+
+                    blockLanguage.visibility = View.VISIBLE
+                }
+
+                ivNotice.setImageResource(
+                    if (hasNotice) {
+                        R.drawable.icon_bell_white_red_dot
+                    } else {
+                        R.drawable.icon_bell_white
+                    }
+                )
             }
         }
     }
@@ -321,6 +402,10 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
     // endregion
 
     class PublicityAdapterListener(
+        private val onLogoClickListener: () -> Unit,
+        private val onLanguageBlockClickListener: () -> Unit,
+        private val onNoticeClickListener: () -> Unit,
+        private val onMenuClickListener: () -> Unit,
         private val onItemClickListener: () -> Unit,
         private val onGoHomePageListener: () -> Unit,
         private val onClickBetListener: (gameType: String, matchType: MatchType, matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?, playCateMenuCode: String?) -> Unit,
@@ -328,6 +413,10 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         private val onClickStatisticsListener: (matchId: String) -> Unit,
         private val onClickPlayTypeListener: (gameType: String, matchType: MatchType?, matchId: String?, matchInfoList: List<MatchInfo>) -> Unit
     ) {
+        fun onLogoClickListener() = onLogoClickListener.invoke()
+        fun onLanguageBlockClickListener() = onLanguageBlockClickListener.invoke()
+        fun onNoticeClickListener() = onNoticeClickListener.invoke()
+        fun onMenuClickListener() = onMenuClickListener.invoke()
         fun onItemClickListener() = onItemClickListener.invoke()
         fun onGoHomePageListener() = onGoHomePageListener.invoke()
         fun onClickBetListener(

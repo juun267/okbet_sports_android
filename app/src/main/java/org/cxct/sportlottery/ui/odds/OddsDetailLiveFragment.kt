@@ -46,6 +46,7 @@ import org.cxct.sportlottery.ui.common.TimerManager
 import org.cxct.sportlottery.ui.component.LiveViewToolbar
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
@@ -60,7 +61,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     private val args: OddsDetailLiveFragmentArgs by navArgs()
 
     private var oddsDetailListAdapter: OddsDetailListAdapter? = null
-
+    private var isLogin:Boolean = false
     private val tabCateAdapter: TabCateAdapter by lazy {
         TabCateAdapter(OnItemSelectedListener {
             tabCateAdapter.selectedPosition = it
@@ -158,7 +159,8 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         super.onStart()
 
         if (Util.SDK_INT >= 24) {
-            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null)
+            live_view_tool_bar.initLoginStatus(isLogin)
+            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null,isLogin)
         }
     }
 
@@ -167,7 +169,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         startTimer()
 
         if ((Util.SDK_INT < 24) || live_view_tool_bar.getExoPlayer() == null) {
-            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null)
+            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null,isLogin)
         }
     }
 
@@ -196,6 +198,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
     private fun initUI() {
 //        live_view_tool_bar.gameType = args.gameType //賽事動畫icon用，之後用不到可刪
+        isLogin = viewModel.loginRepository.isLogin.value == true
         oddsDetailListAdapter = OddsDetailListAdapter(
             OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
                 matchOdd?.let { matchOdd ->
@@ -214,7 +217,10 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                         betPlayCateNameMap = matchOdd.betPlayCateNameMap,
                         otherPlayCateName = scoPlayCateNameForBetInfo
                     )
-                    (activity as GameActivity).showFastBetFragment(fastBetDataBean)
+                    when (activity) {
+                        is GameActivity -> (activity as GameActivity).showFastBetFragment(fastBetDataBean)
+                        is GamePublicityActivity -> (activity as GamePublicityActivity).showFastBetFragment(fastBetDataBean)
+                    }
 
 //                    viewModel.updateMatchBetList(
 //                        matchType = MatchType.IN_PLAY,
@@ -238,7 +244,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
             sportCode = args.gameType
         }
-
         rv_detail.apply {
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             adapter = oddsDetailListAdapter
@@ -416,7 +421,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                 live_view_tool_bar.startPlayer(
                     matchId,
                     matchOdd?.matchInfo?.trackerId,
-                    liveStreamInfo.streamUrl
+                    liveStreamInfo.streamUrl,isLogin
                 )
             }
         }
@@ -462,7 +467,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                     GameType.FT -> {
                         matchClockEvent.matchClockCO?.matchTime
                     }
-                    GameType.BK ,GameType.RB ,GameType.AFT-> {
+                    GameType.BK, GameType.RB, GameType.AFT -> {
                         matchClockEvent.matchClockCO?.remainingTimeInPeriod
                     }
                     else -> null
@@ -556,13 +561,11 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                 val timeStr = TimeUtil.timeFormat(startTime, HM_FORMAT)
                 if (timeStr.isNotEmpty()) {
                     tv_time_bottom.text = timeStr
-                }
-                else {
+                } else {
                     tv_time_bottom.text = getString(R.string.time_null)
                 }
                 tv_time_top.text = TimeUtil.timeFormat(startTime, DM_FORMAT)
-            }
-            else {
+            } else {
                 // 不需要一直重置
 //                tv_time_bottom.text = getString(R.string.time_null)
             }
@@ -572,7 +575,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     private fun setupLiveView(liveVideo: Int?) {
         live_view_tool_bar.setupToolBarListener(liveToolBarListener)
         live_view_tool_bar.setupPlayerControl(liveVideo.toString() == FLAG_LIVE)
-        live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null)
+        live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null,isLogin)
     }
 
     private fun getData() {

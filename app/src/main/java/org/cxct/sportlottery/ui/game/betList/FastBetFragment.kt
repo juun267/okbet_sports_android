@@ -826,8 +826,11 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 oldOdds = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
             }
             binding.tvOdds.text =if (matchOdd.status == BetStatus.ACTIVATED.code) "@"+TextUtil.formatForOdd(getOdds(matchOdd, oddsType)) else "–"
-            binding.tvContent.text = matchOdd.extInfo+spread
-
+            if(matchOdd.extInfo != null){
+                binding.tvContent.text = matchOdd.extInfo+spread
+            }else{
+                binding.tvContent.text = spread
+            }
         }
     }
 

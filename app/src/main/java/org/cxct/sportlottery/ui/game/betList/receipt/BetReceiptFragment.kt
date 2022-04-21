@@ -68,12 +68,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         viewModel.oddsType.observe(viewLifecycleOwner) {
             betReceiptDiffAdapter?.oddsType = it
         }
-
-        viewModel.settlementNotificationMsg.observe(viewLifecycleOwner) { event ->
-            event.getContentIfNotHandled()?.let {
-                betReceiptDiffAdapter?.updateListStatus(it)
-            }
-        }
+        
     }
 
     private fun initView() {

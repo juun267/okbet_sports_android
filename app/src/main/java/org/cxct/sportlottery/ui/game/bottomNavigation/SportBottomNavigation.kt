@@ -86,4 +86,12 @@ class SportBottomNavigation @JvmOverloads constructor(
         }
         tv_bet_count.text = betCount.toString()
     }
+
+    /**
+     * 給不需要選中任何選項的頁面使用
+     */
+    fun clearSelectedStatus() {
+        selectedItem?.checked = false
+        selectedItem = null
+    }
 }

@@ -3,10 +3,8 @@ package org.cxct.sportlottery.ui.game.betList
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -130,11 +128,13 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     false
                 )
             )
-            ViewType.Warn.ordinal -> CantParlayWarnViewHolder(layoutInflater.inflate(
-                R.layout.content_cant_parlay_warn,
-                parent,
-                false
-            ))
+            ViewType.Warn.ordinal -> CantParlayWarnViewHolder(
+                layoutInflater.inflate(
+                    R.layout.content_cant_parlay_warn,
+                    parent,
+                    false
+                )
+            )
             else -> BatchParlayConnectViewHolder(
                 layoutInflater.inflate(
                     R.layout.item_bet_list_batch_control_connect_v2,
@@ -208,14 +208,17 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     userMoney
                 )
             }
-            is CantParlayWarnViewHolder -> {}
+            is CantParlayWarnViewHolder -> {
+            }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         val betSize = betList?.size ?: 0
         return when {
-            isCantParlayWarn && position == (itemCount - 1) -> { ViewType.Warn.ordinal }
+            isCantParlayWarn && position == (itemCount - 1) -> {
+                ViewType.Warn.ordinal
+            }
             position < betSize -> ViewType.Bet.ordinal
             position == betSize -> ViewType.ParlayFirst.ordinal
             else -> ViewType.Parlay.ordinal
@@ -224,7 +227,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
     override fun getItemCount(): Int {
         var size = getListSize()
-        if(isCantParlayWarn) { size++ }
+        if (isCantParlayWarn) {
+            size++
+        }
         return size
     }
 
@@ -246,8 +251,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
     fun closeAllKeyboard() {
         //betList?.forEachIndexed { index, betInfoListData -> notifyItemChanged(index) }
-        for(i in 0 until getListSize()) { notifyItemChanged(i) }
+        for (i in 0 until getListSize()) {
+            notifyItemChanged(i)
+        }
     }
+
     private fun getListSize(): Int {
         val betListSize = betList?.size ?: 0
         val parlayListSize = when {
@@ -330,7 +338,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
                 onFocusChangeListener = null
 
-                setupOddInfo(itemData, currentOddsType, betListSize,onItemClickListener)
+                setupOddInfo(itemData, currentOddsType, betListSize, onItemClickListener)
                 setupMinimumLimitMessage(itemData)
                 onItemClickListener.refreshBetInfoTotal()
 
@@ -341,7 +349,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     userMoney.toLong()
                 }
 
-                if(et_bet.isFocusable) {
+                if (et_bet.isFocusable) {
                     layoutKeyBoard?.setMaxBetMoney(inputMaxMoney)
                 }
 
@@ -495,7 +503,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
 
                 et_bet.setOnFocusChangeListener { v, hasFocus ->
-                    if(!hasFocus) layoutKeyBoard?.hideKeyboard()
+                    if (!hasFocus) layoutKeyBoard?.hideKeyboard()
                 }
 
 //                et_clickable.setOnClickListener {
@@ -519,6 +527,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
             }
         }
+
         var oldOdds = ""
         var handler = Handler()
 
@@ -540,12 +549,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 //                }
 
                 //setupOddsContent(itemData, oddsType = currentOddsType, tv_odds_content)
-                if(itemData.matchOdd.status == BetStatus.ACTIVATED.code && oldOdds != "" && oldOdds != TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))){
-                    tv_odd_content_changed.visibility = if(handler != null) View.VISIBLE else View.GONE
+                if (itemData.matchOdd.status == BetStatus.ACTIVATED.code && oldOdds != "" && oldOdds != TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))) {
+                    tv_odd_content_changed.visibility = if (handler != null) View.VISIBLE else View.GONE
                     handler?.postDelayed({
                         tv_odd_content_changed?.visibility = View.GONE
                     }, 3000)
-                    tv_odd_content_changed.text =  context.getString(
+                    tv_odd_content_changed.text = context.getString(
                         R.string.bet_info_odd_content_changed2,
                         oldOdds,
                         TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))
@@ -559,11 +568,15 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     itemData.matchOdd.spread
                 }
                 tv_odds_content.text = itemData.matchOdd.playName
-                if(itemData.matchOdd.status == BetStatus.ACTIVATED.code && oldOdds != TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))){
+                if (itemData.matchOdd.status == BetStatus.ACTIVATED.code && oldOdds != TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))) {
                     oldOdds = TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))
                 }
-                tvOdds.text =if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) "@"+TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType)) else "–"
-                tvContent.text = itemData.matchOdd.extInfo+spread
+                tvOdds.text = if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) "@" + TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType)) else "–"
+                if(itemData.matchOdd.extInfo != null){
+                    tvContent.text = itemData.matchOdd.extInfo + spread
+                }else{
+                    tvContent.text = spread
+                }
                 btnRecharge.setOnClickListener {
                     onItemClickListener.onRechargeClick()
                 }
@@ -1058,7 +1071,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 et_bet_single.isSelected =
                     mSelectedPosition == bindingAdapterPosition && mBetView == BetViewType.SINGLE
 
-                if(et_bet_single.isFocusable) layoutKeyBoard.setMaxBetMoney(getMaxOrMinAmount(isGetMax = true, betList))
+                if (et_bet_single.isFocusable) layoutKeyBoard.setMaxBetMoney(getMaxOrMinAmount(isGetMax = true, betList))
 
                 et_bet_single.setOnTouchListener { view, event ->
                     if (event.action == MotionEvent.ACTION_UP) {
@@ -1096,7 +1109,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 //                }
 
                 et_bet_single.setOnFocusChangeListener { v, hasFocus ->
-                    if(!hasFocus) layoutKeyBoard?.hideKeyboard()
+                    if (!hasFocus) layoutKeyBoard?.hideKeyboard()
                 }
 
                 item_first_single.setOnClickListener {
@@ -1290,7 +1303,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             onSelectedPositionListener: OnSelectedPositionListener,
             position: Int,
             userMoney: Double
-        )  {
+        ) {
             itemData.let {
                 it?.max =
                     if (GameConfigManager.maxParlayBetMoney?.toLong() ?: 0 > itemData?.max?.toLong() ?: 0) itemData?.max
@@ -1462,17 +1475,32 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     setupOddInfo(data, currentOddsType)
                     setupMinimumLimitMessage(data)
                     onItemClickListener.refreshBetInfoTotal()
-
                     /* set listener */
                     val tw: TextWatcher?
+                    var ignore = false
                     tw = object : TextWatcher {
                         override fun afterTextChanged(it: Editable?) {
                             val inputValue =
-                                if (it.isNullOrEmpty()) 0.0 else it.toString().toDouble()
+                                if (it.isNullOrEmpty() || mUserMoney == 0.0) 0.0 else it.toString().toDouble()
+
+                            if (inputValue == 0.0){
+                                if (!ignore) {
+                                    ignore = true
+                                    setText("0")
+                                    setSelection(text.length)
+                                    ignore = false
+                                }
+                                return
+                            }
+
                             if (inputValue > inputMaxMoney) {
                                 val maxValue = TextUtil.formatInputMoney(data.max)
-                                setText(maxValue)
-                                setSelection(maxValue.length)
+                                if (!ignore) {
+                                    ignore = true
+                                    setText(maxValue)
+                                    setSelection(maxValue.length)
+                                    ignore = false
+                                }
                                 return
                             }
 
@@ -1568,7 +1596,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
 
                 et_bet.setOnFocusChangeListener { v, hasFocus ->
-                    if(!hasFocus) layoutKeyBoard?.hideKeyboard()
+                    if (!hasFocus) layoutKeyBoard?.hideKeyboard()
                 }
 
                 ll_control_connect.setOnClickListener {

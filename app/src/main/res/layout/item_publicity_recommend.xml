@@ -8,6 +8,7 @@
 
     <include
         android:id="@+id/gameTypeView"
+        android:visibility="gone"
         layout="@layout/publicity_game_type_view" />
 
     <include
