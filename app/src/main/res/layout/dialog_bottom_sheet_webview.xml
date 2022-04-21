@@ -9,6 +9,7 @@
     tools:layout_gravity="bottom">
 
     <LinearLayout
+        android:id="@+id/ll_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorWhite"
@@ -17,8 +18,8 @@
         <TextView
             android:id="@+id/sheet_tv_title"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="48dp"
+            android:layout_weight="1"
             android:gravity="start|center_vertical"
             android:paddingStart="@dimen/activity_vertical_margin"
             android:textColor="@color/colorBlackLight"

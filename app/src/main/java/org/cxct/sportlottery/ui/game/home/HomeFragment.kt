@@ -1004,7 +1004,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                         ) {
                             val playCateCode = PlayCateMenuFilterUtils.filterOddsSort(
                                 updateMatchOdd.matchInfo?.gameType,
-                                filterCode
+                                "SPECIAL_MATCH_MOBILE"
                             )//之後建enum class
                             updateMatchOdd.highlightFilterMenuPlayCate(playCateCode)
                             isUpdate = true

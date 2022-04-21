@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
+import android.widget.LinearLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_webview.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBottomSheetWebviewBinding
 import org.cxct.sportlottery.repository.sConfigData
@@ -24,11 +26,12 @@ import org.cxct.sportlottery.util.MetricsUtil
  * @description
  */
 @SuppressLint("SetJavaScriptEnabled")
-class StatisticsDialog: BaseBottomSheetFragment<StatisticsViewModel>(StatisticsViewModel::class) {
+class StatisticsDialog : BaseBottomSheetFragment<StatisticsViewModel>(StatisticsViewModel::class) {
 
 
     companion object {
         const val MATCH_ID = "match_id"
+
         @JvmStatic
         fun newInstance(matchId: String?) = StatisticsDialog().apply {
             arguments = Bundle().apply {
@@ -51,29 +54,36 @@ class StatisticsDialog: BaseBottomSheetFragment<StatisticsViewModel>(StatisticsV
         super.onViewCreated(view, savedInstanceState)
         setupTitle()
         setupListener()
+        setupContentHeight()
         setupWebView()
     }
 
 
-    private fun setupTitle(){
+    private fun setupTitle() {
         vBinding.sheetTvTitle.text = context?.getString(R.string.statistics_title)
     }
 
 
-    private fun setupListener(){
+    private fun setupListener() {
         vBinding.ivClose.setOnClickListener {
             dismiss()
         }
     }
 
 
-    private fun setupWebView(){
+    private fun setupContentHeight() {
+        (ll_content.layoutParams as LinearLayout.LayoutParams).setMargins(0, 50.dp, 0, 0)
+    }
+
+
+    private fun setupWebView() {
         dialog?.findViewById<View>(R.id.design_bottom_sheet)?.let {
             it.setBackgroundResource(android.R.color.transparent)
             it.layoutParams?.height = ViewGroup.LayoutParams.MATCH_PARENT
             BottomSheetBehavior.from<View>(it).apply {
                 //扣除tool bar及status bar的高度
-                peekHeight = resources.displayMetrics.heightPixels - 50.dp - MetricsUtil.getStatusBarHeight()
+                peekHeight = resources.displayMetrics.heightPixels
+                isHideable = false
             }
         }
 
@@ -84,11 +94,10 @@ class StatisticsDialog: BaseBottomSheetFragment<StatisticsViewModel>(StatisticsV
 
             sConfigData?.analysisUrl?.replace("{lang}", LanguageManager.getSelectLanguage(context).key)
                 ?.replace("{eventId}", arguments?.getString(MATCH_ID) ?: "")?.let {
-                loadUrl(it)
-            }
+                    loadUrl(it)
+                }
         }
     }
-
 
 
 }
