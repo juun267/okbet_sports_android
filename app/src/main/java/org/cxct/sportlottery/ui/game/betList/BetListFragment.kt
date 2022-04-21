@@ -274,6 +274,24 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
     }
 
+    private fun updateCommonToolbarLoginStatus(isLogin: Boolean) {
+        if (!showToolbar) return
+
+        with(binding.publicityToolbar) {
+            if (isLogin) {
+                ivNotice.visibility = View.VISIBLE
+                ivMenu.visibility = View.VISIBLE
+
+                blockLanguage.visibility = View.GONE
+            } else {
+                ivNotice.visibility = View.GONE
+                ivMenu.visibility = View.GONE
+
+                blockLanguage.visibility = View.VISIBLE
+            }
+        }
+    }
+
     private fun updateCommonToolbarNotice(hasNotice: Boolean) {
         binding.publicityToolbar.ivNotice.setImageResource(if (hasNotice) R.drawable.icon_bell_with_red_dot else R.drawable.icon_bell)
     }
@@ -515,6 +533,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             setupUserBalanceView(it)
             setupBetButtonType(it)
             initKeyBoard(it)
+            updateCommonToolbarLoginStatus(it)
         }
 
         viewModel.infoCenterRepository.unreadNoticeList.observe(viewLifecycleOwner, {
