@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentPublicityBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.FavoriteType
@@ -81,7 +82,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         initToolBar()
         initOnClickListener()
         initRecommendView()
-        initRecommendView()
         initTitle()
         initBottomView()
         initObservers()
@@ -109,12 +109,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     }
 
     private fun initToolBar() {
-        binding.publicityToolbar.toolBar.setBackgroundColor(
-            ContextCompat.getColor(
-                MultiLanguagesApplication.appContext,
-                android.R.color.transparent
-            )
-        )
+        setTransparentToolbar(true)
     }
 
     private fun initOnClickListener() {
@@ -132,7 +127,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                     goLoginPage()
                 }
                 publicityToolbar.ivLogo -> {
-                    when(activity){
+                    when (activity) {
                         is GamePublicityActivity -> (activity as GamePublicityActivity).removeBetListFragment()
                     }
                 }
@@ -140,7 +135,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                     goSwitchLanguagePage()
                 }
                 publicityToolbar.ivMenu -> {
-                    when (activity){
+                    when (activity) {
                         is GamePublicityActivity -> (activity as GamePublicityActivity).clickMenu()
                     }
                 }
@@ -159,6 +154,38 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = mPublicityAdapter
             itemAnimator = null
+
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    setTransparentToolbar((recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() == 0)
+                }
+            })
+        }
+    }
+
+    private fun setTransparentToolbar(isTransparent: Boolean) {
+        with(binding.publicityToolbar) {
+            if (isTransparent) {
+                toolBar.setBackgroundColor(
+                    ContextCompat.getColor(
+                        MultiLanguagesApplication.appContext,
+                        android.R.color.transparent
+                    )
+                )
+                ivLogo.setImageResource(R.drawable.ic_logo_white)
+                ivNotice.setImageResource(R.drawable.icon_bell_white)
+                ivMenu.setImageResource(R.drawable.ic_menu_gray)
+            } else {
+                toolBar.setBackgroundColor(
+                    ContextCompat.getColor(
+                        MultiLanguagesApplication.appContext,
+                        R.color.colorWhite
+                    )
+                )
+                ivLogo.setImageResource(R.drawable.ic_logo)
+                ivNotice.setImageResource(R.drawable.icon_bell)
+                ivMenu.setImageResource(R.drawable.ic_menu)
+            }
         }
     }
 
