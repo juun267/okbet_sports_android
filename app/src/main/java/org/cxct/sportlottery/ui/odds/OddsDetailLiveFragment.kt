@@ -158,6 +158,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         super.onStart()
 
         if (Util.SDK_INT >= 24) {
+            live_view_tool_bar.initLoginStatus(isLogin)
             live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null,isLogin)
         }
     }

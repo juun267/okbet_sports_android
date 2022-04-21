@@ -57,6 +57,7 @@ class LiveViewToolbar @JvmOverloads constructor(
 
     private var mStreamUrl: String? = null
     private var newestUrl: Boolean = false
+    private var isLogin:Boolean = false
 
     private var mMatchId: String? = null
     private var mEventId: String? = null //動畫Id
@@ -156,6 +157,10 @@ class LiveViewToolbar @JvmOverloads constructor(
 
     }
 
+    fun initLoginStatus(login:Boolean){
+        this.isLogin = login
+    }
+
     private fun initOnclick() {
         iv_play.setOnClickListener {
             if (!iv_play.isSelected) {
@@ -179,7 +184,11 @@ class LiveViewToolbar @JvmOverloads constructor(
 
         iv_animation.setOnClickListener {
             if (!iv_animation.isSelected) {
-                openWebView()
+                if(isLogin){
+                    openWebView()
+                }else{
+                    setupNotLogin()
+                }
                 if (iv_play.isSelected) switchLiveView(false)
             }
             /*when (expand_layout.isExpanded) {
