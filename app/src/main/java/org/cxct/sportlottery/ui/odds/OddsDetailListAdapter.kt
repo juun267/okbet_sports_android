@@ -30,6 +30,7 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.common.IndicatorView
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
+import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -46,7 +47,7 @@ import org.cxct.sportlottery.util.MatchOddUtil.updateEPSDiscount
  */
 @SuppressLint("NotifyDataSetChanged")
 class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) :
-    RecyclerView.Adapter<OddsDetailListAdapter.ViewHolder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
     enum class ItemType {
@@ -129,10 +130,14 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
     }
 
     override fun getItemViewType(position: Int): Int {
-        return PlayCate.getPlayCate(oddsDetailDataList[position].gameType).ordinal
+        return when {
+            oddsDetailDataList.isEmpty() -> ItemType.NO_DATA.ordinal
+            oddsDetailDataList.size == position -> ItemType.BOTTOM_NAVIGATION.ordinal
+            else -> PlayCate.getPlayCate(oddsDetailDataList[position].gameType).ordinal
+        }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layout: Int = when (sportCode) {
             GameType.FT -> {
                 when (viewType) {
@@ -386,107 +391,123 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         }
 
-        return ViewHolder(
-            LayoutInflater.from(parent.context).inflate(layout, parent, false),
-            viewType
-        ).apply {
+        return when (viewType) {
+            ItemType.BOTTOM_NAVIGATION.ordinal -> {
+                BottomNavigationViewHolder(
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.home_bottom_navigation, parent, false)
+                )
+            }
+            else ->{
+                ViewHolder(
+                    LayoutInflater.from(parent.context).inflate(layout, parent, false),
+                    viewType
+                ).apply {
 
-            when (layout) {
+                    when (layout) {
 
-                LayoutType.SCO.layout -> {
-                    rvBet?.apply {
-                        addItemDecoration(
-                            DividerItemDecorator(
-                                ContextCompat.getDrawable(
-                                    context,
-                                    R.drawable.divider_color_silverlight_1dp
+                        LayoutType.SCO.layout -> {
+                            rvBet?.apply {
+                                addItemDecoration(
+                                    DividerItemDecorator(
+                                        ContextCompat.getDrawable(
+                                            context,
+                                            R.drawable.divider_color_silverlight_1dp
+                                        )
+                                    )
                                 )
-                            )
-                        )
-                    }
-                }
+                            }
+                        }
 
-                LayoutType.GROUP_4.layout,
-                LayoutType.GROUP_6.layout -> {
-                    rvBet?.apply {
-                        addItemDecoration(
-                            DividerItemDecorator(
-                                ContextCompat.getDrawable(
-                                    context,
-                                    R.drawable.divider_color_white4_2dp
+                        LayoutType.GROUP_4.layout,
+                        LayoutType.GROUP_6.layout -> {
+                            rvBet?.apply {
+                                addItemDecoration(
+                                    DividerItemDecorator(
+                                        ContextCompat.getDrawable(
+                                            context,
+                                            R.drawable.divider_color_white4_2dp
+                                        )
+                                    )
                                 )
-                            )
-                        )
-                    }
-                }
+                            }
+                        }
 
-                LayoutType.CS.layout -> {
-                    rvHome?.apply {
-                        addItemDecoration(
-                            CustomForOddDetailVerticalDivider(
-                                context,
-                                R.dimen.recyclerview_item_dec_spec_odds_detail_odds
-                            )
-                        )
-                    }
-                    rvDraw?.apply {
-                        addItemDecoration(
-                            CustomForOddDetailVerticalDivider(
-                                context,
-                                R.dimen.recyclerview_item_dec_spec_odds_detail_odds
-                            )
-                        )
-                    }
-                    rvAway?.apply {
-                        addItemDecoration(
-                            CustomForOddDetailVerticalDivider(
-                                context,
-                                R.dimen.recyclerview_item_dec_spec_odds_detail_odds
-                            )
-                        )
-                    }
-                }
+                        LayoutType.CS.layout -> {
+                            rvHome?.apply {
+                                addItemDecoration(
+                                    CustomForOddDetailVerticalDivider(
+                                        context,
+                                        R.dimen.recyclerview_item_dec_spec_odds_detail_odds
+                                    )
+                                )
+                            }
+                            rvDraw?.apply {
+                                addItemDecoration(
+                                    CustomForOddDetailVerticalDivider(
+                                        context,
+                                        R.dimen.recyclerview_item_dec_spec_odds_detail_odds
+                                    )
+                                )
+                            }
+                            rvAway?.apply {
+                                addItemDecoration(
+                                    CustomForOddDetailVerticalDivider(
+                                        context,
+                                        R.dimen.recyclerview_item_dec_spec_odds_detail_odds
+                                    )
+                                )
+                            }
+                        }
 
-                LayoutType.ONE_LIST.layout,
-                LayoutType.FG_LG.layout -> {
-                    rvBet?.apply {
-                        addItemDecoration(
-                            CustomForOddDetailVerticalDivider(
-                                context,
-                                R.dimen.recyclerview_item_dec_spec_odds_detail_odds
-                            )
-                        )
-                    }
-                }
+                        LayoutType.ONE_LIST.layout,
+                        LayoutType.FG_LG.layout -> {
+                            rvBet?.apply {
+                                addItemDecoration(
+                                    CustomForOddDetailVerticalDivider(
+                                        context,
+                                        R.dimen.recyclerview_item_dec_spec_odds_detail_odds
+                                    )
+                                )
+                            }
+                        }
 
-                LayoutType.SINGLE.layout,
-                LayoutType.SINGLE_2_ITEM.layout,
-                LayoutType.SINGLE_2_CS.layout -> {
-                    rvBet?.apply {
-                        addItemDecoration(
-                            GridItemDecoration(
-                                context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_odds),
-                                context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_odds),
-                                ContextCompat.getColor(context, R.color.colorWhite),
-                                false
-                            )
-                        )
+                        LayoutType.SINGLE.layout,
+                        LayoutType.SINGLE_2_ITEM.layout,
+                        LayoutType.SINGLE_2_CS.layout -> {
+                            rvBet?.apply {
+                                addItemDecoration(
+                                    GridItemDecoration(
+                                        context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_odds),
+                                        context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_odds),
+                                        ContextCompat.getColor(context, R.color.colorWhite),
+                                        false
+                                    )
+                                )
+                            }
+                        }
                     }
                 }
             }
         }
+
     }
 
 
-    override fun getItemCount(): Int {
-        return oddsDetailDataList.size
+    override fun getItemCount(): Int = if (oddsDetailDataList.isEmpty()) {
+        1
+    } else {
+        oddsDetailDataList.size + 1
     }
 
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindModel(oddsDetailDataList[position])
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is ViewHolder -> {
+                holder.bindModel(oddsDetailDataList[position])
+            }
+        }
     }
-
 
     fun notifyDataSetChangedByCode(code: String) {
         this.code = code
@@ -1396,6 +1417,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             )
 
     }
+
+    class BottomNavigationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
 }
 
