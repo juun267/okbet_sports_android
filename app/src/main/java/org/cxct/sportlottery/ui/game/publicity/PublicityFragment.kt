@@ -42,6 +42,15 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     private val mPublicityAdapter =
         GamePublicityAdapter(
             GamePublicityAdapter.PublicityAdapterListener(
+                onLogoClickListener = {
+                    removeBetListFragment()
+                },
+                onLanguageBlockClickListener = {
+                    goSwitchLanguagePage()
+                },
+                onMenuClickListener = {
+                    clickMenu()
+                },
                 onItemClickListener = {
                     goLoginPage()
                 },
@@ -79,7 +88,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initToolBar()
         initOnClickListener()
         initRecommendView()
         initTitle()
@@ -108,15 +116,8 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         receiver.producerUp.removeObservers(viewLifecycleOwner)
     }
 
-    private fun initToolBar() {
-        setTransparentToolbar(true)
-    }
-
     private fun initOnClickListener() {
         binding.rvPublicity.setOnClickListener(this)
-        binding.publicityToolbar.ivLogo.setOnClickListener(this)
-        binding.publicityToolbar.blockLanguage.setOnClickListener(this)
-        binding.publicityToolbar.ivMenu.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -126,20 +127,19 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 rvPublicity -> {
                     goLoginPage()
                 }
-                publicityToolbar.ivLogo -> {
-                    when (activity) {
-                        is GamePublicityActivity -> (activity as GamePublicityActivity).removeBetListFragment()
-                    }
-                }
-                publicityToolbar.blockLanguage -> {
-                    goSwitchLanguagePage()
-                }
-                publicityToolbar.ivMenu -> {
-                    when (activity) {
-                        is GamePublicityActivity -> (activity as GamePublicityActivity).clickMenu()
-                    }
-                }
             }
+        }
+    }
+
+    private fun removeBetListFragment() {
+        when (activity) {
+            is GamePublicityActivity -> (activity as GamePublicityActivity).removeBetListFragment()
+        }
+    }
+
+    private fun clickMenu() {
+        when (activity) {
+            is GamePublicityActivity -> (activity as GamePublicityActivity).clickMenu()
         }
     }
 
@@ -154,38 +154,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = mPublicityAdapter
             itemAnimator = null
-
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    setTransparentToolbar((recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() == 0)
-                }
-            })
-        }
-    }
-
-    private fun setTransparentToolbar(isTransparent: Boolean) {
-        with(binding.publicityToolbar) {
-            if (isTransparent) {
-                toolBar.setBackgroundColor(
-                    ContextCompat.getColor(
-                        MultiLanguagesApplication.appContext,
-                        android.R.color.transparent
-                    )
-                )
-                ivLogo.setImageResource(R.drawable.ic_logo_white)
-                ivNotice.setImageResource(R.drawable.icon_bell_white)
-                ivMenu.setImageResource(R.drawable.ic_menu_gray)
-            } else {
-                toolBar.setBackgroundColor(
-                    ContextCompat.getColor(
-                        MultiLanguagesApplication.appContext,
-                        R.color.colorWhite
-                    )
-                )
-                ivLogo.setImageResource(R.drawable.ic_logo)
-                ivNotice.setImageResource(R.drawable.icon_bell)
-                ivMenu.setImageResource(R.drawable.ic_menu)
-            }
         }
     }
 
@@ -202,19 +170,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
 
     private fun initObservers() {
         viewModel.isLogin.observe(viewLifecycleOwner, { isLogin ->
-            with(binding) {
-                if (isLogin) {
-                    publicityToolbar.ivNotice.visibility = View.VISIBLE
-                    publicityToolbar.ivMenu.visibility = View.VISIBLE
-
-                    publicityToolbar.blockLanguage.visibility = View.GONE
-                } else {
-                    publicityToolbar.ivNotice.visibility = View.GONE
-                    publicityToolbar.ivMenu.visibility = View.GONE
-
-                    publicityToolbar.blockLanguage.visibility = View.VISIBLE
-                }
-            }
+            mPublicityAdapter.isLogin = isLogin
         })
 
         viewModel.oddsType.observe(viewLifecycleOwner, {

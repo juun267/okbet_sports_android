@@ -75,7 +75,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     }
 
     private fun initDestination() {
-        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+        navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.publicityFragment -> {
                     binding.publicityToolbar.toolBar.visibility = View.GONE
@@ -198,7 +198,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                         .commit()
                 }
 
-            })
+            }, showToolbar = navController.currentDestination?.id == R.id.publicityFragment)
 
         transaction
             .add(binding.flBetList.id, betListFragment, BetListFragment::class.java.simpleName)
@@ -223,6 +223,9 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                     goLoginPage()
                 }
                 publicityToolbar.ivLogo -> {
+                    if (navController.currentDestination?.id != R.id.publicityFragment) {
+                        navController.navigateUp()
+                    }
                     removeBetListFragment()
                 }
                 publicityToolbar.blockLanguage -> {

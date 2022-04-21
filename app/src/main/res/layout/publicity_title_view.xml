@@ -17,6 +17,13 @@
         app:layout_constraintDimensionRatio="375:310"
         app:banner_loop_time="3000"/>
 
+    <include
+        android:id="@+id/publicityToolbar"
+        layout="@layout/view_toolbar_publicity"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tool_bar_height"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"

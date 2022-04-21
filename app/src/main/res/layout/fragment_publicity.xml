@@ -12,11 +12,4 @@
         android:background="@color/colorWhite"
         android:overScrollMode="never" />
 
-    <include
-        android:id="@+id/publicityToolbar"
-        layout="@layout/view_toolbar_publicity"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/tool_bar_height"
-        app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
