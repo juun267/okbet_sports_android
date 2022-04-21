@@ -95,10 +95,6 @@
                 tools:layout_constraintTop_toBottomOf="@id/live_view_tool_bar"
                 tools:listitem="@layout/content_odds_detail_list_item" />
 
-            <include
-                layout="@layout/view_bottom_navigation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
 
         </LinearLayout>
 

@@ -147,7 +147,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initBottomNavigation()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
