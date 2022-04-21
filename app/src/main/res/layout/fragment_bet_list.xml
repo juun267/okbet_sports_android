@@ -22,14 +22,6 @@
             android:background="@color/transparent_black_0"
             android:visibility="invisible" />
 
-        <include
-            android:id="@+id/publicityToolbar"
-            layout="@layout/view_toolbar_publicity"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/tool_bar_height"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -48,7 +48,6 @@ import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
-import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
@@ -261,17 +260,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun initCommonToolbar() {
         if (showToolbar) {
-            with(binding) {
-                toolBar.toolBar.visibility = View.GONE
-                with(publicityToolbar) {
-                    toolBar.visibility = View.VISIBLE
-                    ivLogo.setOnClickListener { removeBetListFragment() }
-                    blockLanguage.setOnClickListener { goSwitchLanguagePage() }
-                    ivNotice.setOnClickListener { clickNotice() }
-                    ivMenu.setOnClickListener { clickMenu() }
-                    ivLanguage.setImageResource(LanguageManager.getLanguageFlag(context))
-                    tvLanguage.text = LanguageManager.getLanguageStringResource(context)
-                }
+            with(binding.toolBar) {
+                toolBar.visibility = View.VISIBLE
+                ivLogo.setOnClickListener { removeBetListFragment() }
+                ivNotice.setOnClickListener { clickNotice() }
+                ivMenu.setOnClickListener { clickMenu() }
+                ivLanguage.setImageResource(LanguageManager.getLanguageFlag(context))
             }
         }
     }
@@ -279,23 +273,29 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun updateCommonToolbarLoginStatus(isLogin: Boolean) {
         if (!showToolbar) return
 
-        with(binding.publicityToolbar) {
+        with(binding.toolBar) {
             if (isLogin) {
+                btnLogin.visibility = View.GONE
+                btnRegister.visibility = View.GONE
+                toolbarDivider.visibility = View.GONE
+                ivHead.visibility = View.GONE
+                tvOddsType.visibility = View.GONE
                 ivNotice.visibility = View.VISIBLE
                 ivMenu.visibility = View.VISIBLE
-
-                blockLanguage.visibility = View.GONE
             } else {
+                btnLogin.visibility = View.VISIBLE
+                btnRegister.visibility = View.VISIBLE
+                toolbarDivider.visibility = View.VISIBLE
+                ivHead.visibility = View.GONE
+                tvOddsType.visibility = View.GONE
                 ivNotice.visibility = View.GONE
                 ivMenu.visibility = View.GONE
-
-                blockLanguage.visibility = View.VISIBLE
             }
         }
     }
 
     private fun updateCommonToolbarNotice(hasNotice: Boolean) {
-        binding.publicityToolbar.ivNotice.setImageResource(if (hasNotice) R.drawable.icon_bell_with_red_dot else R.drawable.icon_bell)
+        binding.toolBar.ivNotice.setImageResource(if (hasNotice) R.drawable.icon_bell_with_red_dot else R.drawable.icon_bell)
     }
 
 
