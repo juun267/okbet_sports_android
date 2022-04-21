@@ -334,6 +334,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             isReload = true
             when (tab?.text.toString()) { //固定寫死
                 getString(R.string.game_tab_league_odd) -> { //賽事
+                    game_toolbar_calendar.visibility = View.VISIBLE
                     if (args.matchType == MatchType.OTHER) {
                         game_play_category.visibility = View.VISIBLE
                     }
@@ -341,6 +342,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     viewModel.switchChildMatchType(childMatchType = args.matchType)
                 }
                 getString(R.string.game_tab_outright_odd) -> { //冠軍
+                    game_toolbar_calendar.visibility = View.GONE
                     if (args.matchType == MatchType.OTHER) {
                         game_play_category.visibility = View.GONE
                         childMatchType = MatchType.OTHER_OUTRIGHT
@@ -783,6 +785,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     if (mLeagueOddList.isNotEmpty()) {
                         leagueAdapter.playSelectedCodeSelectionType =
                             getPlaySelectedCodeSelectionType()
+                        game_list.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
                         leagueAdapter.data = mLeagueOddList.onEach { leagueOdd ->
                             // 將儲存的賠率表指定的賽事列表裡面
                             val leagueOddFromMap = leagueOddMap[leagueOdd.league.id]
@@ -798,6 +801,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             getPlaySelectedCodeSelectionType()
                         leagueAdapter.playSelectedCode = getPlaySelectedCode()
                     } else {
+                        game_list.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
                         leagueAdapter.data = mLeagueOddList
                         // Todo: MatchType.OTHER 要顯示無資料與隱藏篩選清單
 //                        leagueAdapter.data = mutableListOf()
