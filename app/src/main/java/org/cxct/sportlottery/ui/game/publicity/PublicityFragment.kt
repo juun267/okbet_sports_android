@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentPublicityBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.FavoriteType
@@ -23,6 +25,7 @@ import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
@@ -39,6 +42,18 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     private val mPublicityAdapter =
         GamePublicityAdapter(
             GamePublicityAdapter.PublicityAdapterListener(
+                onLogoClickListener = {
+                    removeBetListFragment()
+                },
+                onLanguageBlockClickListener = {
+                    goSwitchLanguagePage()
+                },
+                onNoticeClickListener = {
+                    clickNotice()
+                },
+                onMenuClickListener = {
+                    clickMenu()
+                },
                 onItemClickListener = {
                     goLoginPage()
                 },
@@ -77,7 +92,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         super.onViewCreated(view, savedInstanceState)
 
         initOnClickListener()
-        initRecommendView()
         initRecommendView()
         initTitle()
         initBottomView()
@@ -120,6 +134,30 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         }
     }
 
+    private fun removeBetListFragment() {
+        when (activity) {
+            is GamePublicityActivity -> (activity as GamePublicityActivity).removeBetListFragment()
+        }
+    }
+
+    private fun clickNotice() {
+        when (activity) {
+            is GamePublicityActivity -> (activity as GamePublicityActivity).fragmentClickNotice()
+        }
+    }
+
+    private fun clickMenu() {
+        when (activity) {
+            is GamePublicityActivity -> (activity as GamePublicityActivity).clickMenu()
+        }
+    }
+
+    private fun goSwitchLanguagePage() {
+        startActivity(Intent(context, SwitchLanguageActivity::class.java).apply {
+            putExtra(SwitchLanguageActivity.FROM_ACTIVITY, this::class.java)
+        })
+    }
+
     private fun initRecommendView() {
         with(binding.rvPublicity) {
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
@@ -140,6 +178,14 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     }
 
     private fun initObservers() {
+        viewModel.isLogin.observe(viewLifecycleOwner, { isLogin ->
+            mPublicityAdapter.isLogin = isLogin
+        })
+
+        viewModel.infoCenterRepository.unreadNoticeList.observe(viewLifecycleOwner, {
+            mPublicityAdapter.hasNotice = it.isNotEmpty()
+        })
+
         viewModel.oddsType.observe(viewLifecycleOwner, {
             it?.let { oddsType ->
                 mPublicityAdapter.oddsType = oddsType

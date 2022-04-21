@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.findNavController
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityGamePublicityBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -18,6 +19,7 @@ import org.cxct.sportlottery.ui.game.betList.FastBetFragment
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity.Companion.FROM_ACTIVITY
+import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -32,6 +34,8 @@ import org.parceler.Parcels
 class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class),
     View.OnClickListener {
     private lateinit var binding: ActivityGamePublicityBinding
+
+    private val navController by lazy { findNavController(binding.publicityContainer.id) }
 
     companion object {
         const val IS_FROM_PUBLICITY = "isFromPublicity"
@@ -63,6 +67,25 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         super.onResume()
 
         getSportMenuFilter()
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+
+        initDestination()
+    }
+
+    private fun initDestination() {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.publicityFragment -> {
+                    binding.publicityToolbar.toolBar.visibility = View.GONE
+                }
+                else -> {
+                    binding.publicityToolbar.toolBar.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
     private fun initViews() {
@@ -176,7 +199,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                         .commit()
                 }
 
-            })
+            }, showToolbar = navController.currentDestination?.id == R.id.publicityFragment)
 
         transaction
             .add(binding.flBetList.id, betListFragment, BetListFragment::class.java.simpleName)
@@ -185,7 +208,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
 
     }
 
-    private fun removeBetListFragment() {
+    fun removeBetListFragment() {
         supportFragmentManager.beginTransaction().remove(betListFragment).commit()
     }
     //endregion
@@ -201,6 +224,9 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                     goLoginPage()
                 }
                 publicityToolbar.ivLogo -> {
+                    if (navController.currentDestination?.id != R.id.publicityFragment) {
+                        navController.navigateUp()
+                    }
                     removeBetListFragment()
                 }
                 publicityToolbar.blockLanguage -> {
@@ -215,6 +241,24 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                 }
             }
         }
+    }
+
+    fun clickMenu() {
+        with(binding) {
+            if (drawerLayout.isDrawerOpen(viewNavRight.navRight)) drawerLayout.closeDrawers()
+            else {
+                drawerLayout.openDrawer(viewNavRight.navRight)
+                viewModel.getMoney()
+            }
+        }
+    }
+
+    fun fragmentClickNotice() {
+        onCloseMenu()
+        startActivity(
+            Intent(this, InfoCenterActivity::class.java)
+                .putExtra(InfoCenterActivity.KEY_READ_PAGE, InfoCenterActivity.YET_READ)
+        )
     }
 
     private fun goRegisterPage() {

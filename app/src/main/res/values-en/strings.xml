@@ -1092,5 +1092,8 @@ Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAG
 
     <!--region 宣傳頁-->
     <string name="hot_recommend">Recommended</string>
+    <string name="recommend_match">Thousand of match</string>
+    <string name="recommend_best_odd">Best odds</string>
+    <string name="recommend_safe">Safe betting</string>
     <!--endregion-->
 </resources>

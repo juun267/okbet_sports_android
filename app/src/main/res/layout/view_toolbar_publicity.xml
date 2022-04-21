@@ -61,6 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="17dp"
+        android:minWidth="30dp"
         android:src="@drawable/icon_bell"
         android:visibility="gone"
         tools:visibility="visible" />
