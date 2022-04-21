@@ -274,6 +274,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
     }
 
+    private fun updateCommonToolbarNotice(hasNotice: Boolean) {
+        binding.publicityToolbar.ivNotice.setImageResource(if (hasNotice) R.drawable.icon_bell_with_red_dot else R.drawable.icon_bell)
+    }
+
 
     private fun removeBetListFragment() {
         when (activity) {
@@ -512,6 +516,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             setupBetButtonType(it)
             initKeyBoard(it)
         }
+
+        viewModel.infoCenterRepository.unreadNoticeList.observe(viewLifecycleOwner, {
+            updateCommonToolbarNotice(it.isNotEmpty())
+        })
 
         viewModel.userMoney.observe(viewLifecycleOwner) {
             it?.let { money ->

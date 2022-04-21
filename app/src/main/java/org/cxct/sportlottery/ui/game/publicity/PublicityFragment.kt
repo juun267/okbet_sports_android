@@ -173,6 +173,10 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
             mPublicityAdapter.isLogin = isLogin
         })
 
+        viewModel.infoCenterRepository.unreadNoticeList.observe(viewLifecycleOwner, {
+            mPublicityAdapter.hasNotice = it.isNotEmpty()
+        })
+
         viewModel.oddsType.observe(viewLifecycleOwner, {
             it?.let { oddsType ->
                 mPublicityAdapter.oddsType = oddsType

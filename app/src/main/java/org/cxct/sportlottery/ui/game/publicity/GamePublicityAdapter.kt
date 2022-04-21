@@ -54,7 +54,13 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
     var isLogin: Boolean = false
         set(value) {
             field = value
-            updateToolbarLoginStatus()
+            notifyToolbar()
+        }
+
+    var hasNotice: Boolean = false
+        set(value) {
+            field = value
+            notifyToolbar()
         }
 
     enum class ItemType {
@@ -97,7 +103,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
     //endregion
 
     //region update Function
-    private fun updateToolbarLoginStatus() {
+    private fun notifyToolbar() {
         val publicityTitleData = mDataList.firstOrNull { it is PublicityTitleImageData }
 
         notifyItemChanged(mDataList.indexOf(publicityTitleData), publicityTitleData)
@@ -182,7 +188,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                         (holder as PublicityRecommendViewHolder).updateLeagueOddList(payload, oddsType)
                     }
                     is PublicityTitleImageData -> {
-                        (holder as PublicityTitleViewHolder).updateToolbarLoginStatus()
+                        (holder as PublicityTitleViewHolder).updateToolbar()
                     }
                 }
             }
@@ -229,8 +235,8 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             with(binding) {
                 //region Toolbar
                 with(publicityToolbar) {
-                    //登入狀態
-                    updateToolbarLoginStatus()
+                    //登入狀態, 訊息狀態
+                    updateToolbar()
 
                     //region Transparent style
                     toolBar.setBackgroundColor(
@@ -287,19 +293,27 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             }
         }
 
-        fun updateToolbarLoginStatus() {
-            with(binding) {
+        fun updateToolbar() {
+            with(binding.publicityToolbar) {
                 if (isLogin) {
-                    publicityToolbar.ivNotice.visibility = View.VISIBLE
-                    publicityToolbar.ivMenu.visibility = View.VISIBLE
+                    ivNotice.visibility = View.VISIBLE
+                    ivMenu.visibility = View.VISIBLE
 
-                    publicityToolbar.blockLanguage.visibility = View.GONE
+                    blockLanguage.visibility = View.GONE
                 } else {
-                    publicityToolbar.ivNotice.visibility = View.GONE
-                    publicityToolbar.ivMenu.visibility = View.GONE
+                    ivNotice.visibility = View.GONE
+                    ivMenu.visibility = View.GONE
 
-                    publicityToolbar.blockLanguage.visibility = View.VISIBLE
+                    blockLanguage.visibility = View.VISIBLE
                 }
+
+                ivNotice.setImageResource(
+                    if (hasNotice) {
+                        R.drawable.icon_bell_white_red_dot
+                    } else {
+                        R.drawable.icon_bell_white
+                    }
+                )
             }
         }
     }
