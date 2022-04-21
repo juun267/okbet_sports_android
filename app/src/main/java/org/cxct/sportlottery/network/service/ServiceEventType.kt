@@ -41,7 +41,7 @@ enum class EventType(val value: String) {
     USER_DISCOUNT_CHANGE("USER_DISCOUNT_CHANGE"),
 
     /*公共 /ws/notify/platform/$mPlatformId */
-    DATA_SOURCE_CHANGE("DATA_SOURCE_CHANGE"), //所有体育玩法限额变更
+    DATA_SOURCE_CHANGE("DATA_SOURCE_CHANGE"), //体育數據更新
 
     /*/ws/notify/platform*/
     USER_LEVEL_CONFIG_CHANGE("USER_LEVEL_CONFIG_CHANGE"),
