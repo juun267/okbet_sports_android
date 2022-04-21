@@ -46,6 +46,7 @@ import org.cxct.sportlottery.ui.common.TimerManager
 import org.cxct.sportlottery.ui.component.LiveViewToolbar
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
@@ -214,7 +215,10 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                         betPlayCateNameMap = matchOdd.betPlayCateNameMap,
                         otherPlayCateName = scoPlayCateNameForBetInfo
                     )
-                    (activity as GameActivity).showFastBetFragment(fastBetDataBean)
+                    when (activity) {
+                        is GameActivity -> (activity as GameActivity).showFastBetFragment(fastBetDataBean)
+                        is GamePublicityActivity -> (activity as GamePublicityActivity).showFastBetFragment(fastBetDataBean)
+                    }
 
 //                    viewModel.updateMatchBetList(
 //                        matchType = MatchType.IN_PLAY,
@@ -462,7 +466,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                     GameType.FT -> {
                         matchClockEvent.matchClockCO?.matchTime
                     }
-                    GameType.BK ,GameType.RB ,GameType.AFT-> {
+                    GameType.BK, GameType.RB, GameType.AFT -> {
                         matchClockEvent.matchClockCO?.remainingTimeInPeriod
                     }
                     else -> null
@@ -556,13 +560,11 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                 val timeStr = TimeUtil.timeFormat(startTime, HM_FORMAT)
                 if (timeStr.isNotEmpty()) {
                     tv_time_bottom.text = timeStr
-                }
-                else {
+                } else {
                     tv_time_bottom.text = getString(R.string.time_null)
                 }
                 tv_time_top.text = TimeUtil.timeFormat(startTime, DM_FORMAT)
-            }
-            else {
+            } else {
                 // 不需要一直重置
 //                tv_time_bottom.text = getString(R.string.time_null)
             }
