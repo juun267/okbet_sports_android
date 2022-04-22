@@ -2598,6 +2598,10 @@ class GameViewModel(
      * @param getNewest 是否要獲取最新 true: api請求獲取最新的直播地址 false: 讀取暫存直播地址
      */
     fun getLiveInfo(matchId: String, getNewest: Boolean = false) {
+        //同樣賽事已經請求過最新地址則不再請求
+        val nowMatchLiveInfo = matchLiveInfo.value?.peekContent()
+        if (nowMatchLiveInfo?.matchId == matchId && nowMatchLiveInfo.isNewest && getNewest) return
+
         val tempLiveStreamUrl = gameLiveSharedPreferences.getString(matchId, null)
         // Todo 暫停使用，每次都請求最新的，確保沒問題
         //沒有暫存網址時請求最新網址
