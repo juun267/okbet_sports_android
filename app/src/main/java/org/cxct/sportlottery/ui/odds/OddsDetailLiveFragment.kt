@@ -627,6 +627,9 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
         //region setup game score
         when (event.matchStatusCO?.status) {
+            GameMatchStatus.FINISH.value -> {
+                //donothing
+            }
             GameMatchStatus.HIDE_SCORE.value -> {
                 tv_home_score.visibility = View.GONE
                 tv_away_score.visibility = View.GONE
