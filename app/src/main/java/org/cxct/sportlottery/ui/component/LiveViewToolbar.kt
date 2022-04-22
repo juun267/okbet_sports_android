@@ -92,7 +92,8 @@ class LiveViewToolbar @JvmOverloads constructor(
                             showLiveView(false)
                     }
                     Player.STATE_BUFFERING -> {
-                        liveLoading()
+                        // TODO 載入中的圈圈狀態
+                        if (!player_view.isVisible) liveLoading()
                         Timber.i("ExoPlayer.STATE_BUFFERING     -")
                     }
                     ExoPlayer.STATE_READY -> {
