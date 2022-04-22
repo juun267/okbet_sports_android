@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.game.Page
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.FastBetFragment
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
@@ -274,9 +275,9 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         finish()
     }
 
-    private fun goSwitchLanguagePage() {
+    fun goSwitchLanguagePage() {
         startActivity(Intent(this@GamePublicityActivity, SwitchLanguageActivity::class.java).apply {
-            putExtra(FROM_ACTIVITY, this@GamePublicityActivity::class.java)
+            putExtra(FROM_ACTIVITY, Page.PUBLICITY)
         })
     }
 
