@@ -20,6 +20,7 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
     private var isGuest: Boolean? = null
 
     open fun onCloseMenu() {}
+    open fun updateNoticeButton(noticeCount: Int) {}
 
     protected val snackBarBetUpperLimitNotify by lazy {
         Snackbar.make(
@@ -76,6 +77,7 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
     private fun updateNoticeCount(noticeCount: Int) {
         this.noticeCount = noticeCount
         updateNoticeButton()
+        updateNoticeButton(noticeCount)
     }
 
     private fun updateUserIdentity(isGuest: Long?) {

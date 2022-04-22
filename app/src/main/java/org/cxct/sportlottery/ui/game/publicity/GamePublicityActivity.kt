@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
+import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityGamePublicityBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -80,10 +81,12 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.publicityFragment -> {
-                    binding.publicityToolbar.toolBar.visibility = View.GONE
+                    binding.gameToolbar.toolBar.visibility = View.GONE
+                    setupNoticeButton(binding.publicityToolbar.ivNotice)
                 }
                 else -> {
-                    binding.publicityToolbar.toolBar.visibility = View.VISIBLE
+                    binding.gameToolbar.toolBar.visibility = View.VISIBLE
+                    setupNoticeButton(binding.gameToolbar.ivNotice)
                 }
             }
         }
@@ -101,9 +104,19 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     }
 
     override fun initToolBar() {
+        //region publicityToolbar
         with(binding) {
             publicityToolbar.ivLanguage.setImageResource(LanguageManager.getLanguageFlag(this@GamePublicityActivity))
             publicityToolbar.tvLanguage.text = LanguageManager.getLanguageStringResource(this@GamePublicityActivity)
+        }
+        //endregion
+    }
+
+    override fun updateNoticeButton(noticeCount: Int) {
+        val updatedNoticeResource = if (noticeCount > 0) R.drawable.icon_bell_with_red_dot else R.drawable.icon_bell
+        with(binding) {
+            publicityToolbar.ivNotice.setImageResource(updatedNoticeResource)
+            gameToolbar.ivNotice.setImageResource(updatedNoticeResource)
         }
     }
 
@@ -116,11 +129,16 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         binding.tvRegister.setOnClickListener(this)
         binding.tvLogin.setOnClickListener(this)
         //endregion
-        //region tool bar
+        //region publicity tool bar
         binding.publicityToolbar.ivLogo.setOnClickListener(this)
         binding.publicityToolbar.blockLanguage.setOnClickListener(this)
-        setupNoticeButton(binding.publicityToolbar.ivNotice)
         binding.publicityToolbar.ivMenu.setOnClickListener(this)
+        //endregion
+        //region game tool bar
+        binding.gameToolbar.ivLogo.setOnClickListener(this)
+        binding.gameToolbar.btnLogin.setOnClickListener(this)
+        binding.gameToolbar.btnRegister.setOnClickListener(this)
+        binding.gameToolbar.ivMenu.setOnClickListener(this)
         //endregion
     }
 
@@ -218,13 +236,13 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         avoidFastDoubleClick()
         with(binding) {
             when (v) {
-                tvRegister -> {
+                tvRegister, gameToolbar.btnRegister -> {
                     goRegisterPage()
                 }
-                tvLogin -> {
+                tvLogin, gameToolbar.btnLogin -> {
                     goLoginPage()
                 }
-                publicityToolbar.ivLogo -> {
+                publicityToolbar.ivLogo, gameToolbar.ivLogo -> {
                     if (navController.currentDestination?.id != R.id.publicityFragment) {
                         navController.navigateUp()
                     }
@@ -233,7 +251,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                 publicityToolbar.blockLanguage -> {
                     goSwitchLanguagePage()
                 }
-                publicityToolbar.ivMenu -> {
+                publicityToolbar.ivMenu, gameToolbar.ivMenu -> {
                     if (drawerLayout.isDrawerOpen(viewNavRight.navRight)) drawerLayout.closeDrawers()
                     else {
                         drawerLayout.openDrawer(viewNavRight.navRight)
@@ -326,18 +344,46 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         with(binding) {
             if (isLogin) {
                 gameBottomNavigation.sportBottomNavigation.visibility = View.VISIBLE
+
+                //region publicity tool bar
                 publicityToolbar.ivNotice.visibility = View.VISIBLE
                 publicityToolbar.ivMenu.visibility = View.VISIBLE
 
                 publicityToolbar.blockLanguage.visibility = View.GONE
+                //endregion
+
+                //region game tool bar
+                with(gameToolbar) {
+                    ivNotice.visibility = View.VISIBLE
+                    ivMenu.visibility = View.VISIBLE
+
+                    btnLogin.visibility = View.GONE
+                    btnRegister.visibility = View.GONE
+                    toolbarDivider.visibility = View.GONE
+                }
+                //endregion
 
                 viewBottom.layoutParams.height = 55.dp
             } else {
                 gameBottomNavigation.sportBottomNavigation.visibility = View.GONE
+
+                //region publicity tool bar
                 publicityToolbar.ivNotice.visibility = View.GONE
                 publicityToolbar.ivMenu.visibility = View.GONE
 
                 publicityToolbar.blockLanguage.visibility = View.VISIBLE
+                //endregion
+
+                //region game tool bar
+                with(gameToolbar) {
+                    ivNotice.visibility = View.GONE
+                    ivMenu.visibility = View.GONE
+
+                    btnLogin.visibility = View.VISIBLE
+                    btnRegister.visibility = View.VISIBLE
+                    toolbarDivider.visibility = View.VISIBLE
+                }
+                //endregion
 
                 viewBottom.layoutParams.height = 60.dp
             }

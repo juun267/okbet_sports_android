@@ -13,13 +13,32 @@
         tools:context=".ui.game.GameActivity"
         tools:ignore="SpUsage">
 
-        <!-- toolBar -->
-        <include
-            android:id="@+id/publicityToolbar"
-            layout="@layout/view_toolbar_publicity"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clToolbar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/tool_bar_height"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- publicity toolBar -->
+            <!-- 移入GamePublicityAdapter的PublicityTitleViewHolder中, 此處先隱藏若確認不需要可移除 -->
+            <include
+                android:id="@+id/publicityToolbar"
+                layout="@layout/view_toolbar_publicity"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/tool_bar_height"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- toolBar -->
+            <include
+                android:id="@+id/gameToolbar"
+                layout="@layout/view_toolbar_main"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/tool_bar_height"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/publicityContainer"
@@ -27,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@id/viewBottom"
-            app:layout_constraintTop_toBottomOf="@id/publicityToolbar"
+            app:layout_constraintTop_toBottomOf="@id/clToolbar"
             app:navGraph="@navigation/publicity_navigation"
             tools:layout="@layout/fragment_publicity" />
 
