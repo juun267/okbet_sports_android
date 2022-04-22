@@ -301,6 +301,7 @@ class LiveViewToolbar @JvmOverloads constructor(
     fun setupPlayerControl(show: Boolean) {
         iv_play.isVisible = show
         iv_arrow.isVisible = show
+        if(lastLiveType != LiveType.ANIMATION)
         switchLiveView(show)
     }
 
@@ -401,7 +402,9 @@ class LiveViewToolbar @JvmOverloads constructor(
         }
         mStreamUrl = streamUrl
         if(isLogin){
-            initializePlayer(streamUrl)
+            if(lastLiveType == LiveType.LIVE){
+                initializePlayer(streamUrl)
+            }
         }else{
             setupNotLogin()
         }
