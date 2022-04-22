@@ -248,7 +248,7 @@ class LiveViewToolbar @JvmOverloads constructor(
                 checkExpandLayoutStatus()
                 liveToolBarListener?.getLiveInfo()
                 if (!mStreamUrl.isNullOrEmpty()) {
-                    startPlayer(mMatchId, mEventId, mStreamUrl,true)
+                    startPlayer(mMatchId, mEventId, mStreamUrl, isLogin)
                 }
             }
             false -> {
