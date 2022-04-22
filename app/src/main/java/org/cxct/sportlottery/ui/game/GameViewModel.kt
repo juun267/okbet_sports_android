@@ -1227,9 +1227,14 @@ class GameViewModel(
             getPlayCategory(nowChildMatchType)
         }
 
+        var reloadedDateRow: List<Date>? = null
+
         if (isReloadDate) {
-            getDateRow(nowChildMatchType)
+            reloadedDateRow = getDateRow(nowChildMatchType)
         }
+
+        //20220422 若重新讀取日期列(isReloadDate == true)時，會因postValue 比getCurrentTimeRangeParams取當前日期慢導致取到錯誤的時間
+        val reloadedTimeRange = reloadedDateRow?.find { it.isSelected }?.timeRangeParams
 
         if (isLastSportType)
             _sportMenuResult.value?.updateSportSelectState(
@@ -1272,8 +1277,8 @@ class GameViewModel(
                     getLeagueList(
                         gameType = code,
                         matchType = nowChildMatchType.postValue,
-                        startTime = getCurrentTimeRangeParams()?.startTime ?: "",
-                        endTime = getCurrentTimeRangeParams()?.endTime,
+                        startTime = reloadedTimeRange?.startTime ?: getCurrentTimeRangeParams()?.startTime ?: "",
+                        endTime = reloadedTimeRange?.endTime ?: getCurrentTimeRangeParams()?.endTime,
                         isIncrement = isIncrement
                     )
                 }
@@ -1918,7 +1923,7 @@ class GameViewModel(
         }
     }
 
-    private fun getDateRow(matchType: MatchType) {
+    private fun getDateRow(matchType: MatchType): List<Date>? {
         val dateRow = when (matchType) {
             MatchType.TODAY -> {
                 listOf(Date("", getTodayTimeRangeParams()))
@@ -1937,7 +1942,7 @@ class GameViewModel(
             }
         }
 
-        dateRow.firstOrNull()?.let {
+        return dateRow.firstOrNull()?.let {
             dateRow.updateDateSelectedState(it)
         }
     }
@@ -2396,13 +2401,14 @@ class GameViewModel(
     }
 
 
-    private fun List<Date>.updateDateSelectedState(date: Date) {
+    private fun List<Date>.updateDateSelectedState(date: Date): List<Date> {
         this.forEach {
             it.isSelected = (it == date)
         }
 
         _curDate.postValue(this)
         _curDatePosition.postValue(this.indexOf(date))
+        return this
     }
 
     private fun updatePlaySelectedState(play: Play) {
