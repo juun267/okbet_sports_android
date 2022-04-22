@@ -182,7 +182,11 @@ class LiveViewToolbar @JvmOverloads constructor(
 //                    startPlayer(mMatchId, mEventId, mStreamUrl)
                 }
                 false -> {
-                    switchLiveView(true)
+                    if(isLogin){
+                        switchLiveView(true)
+                    }else{
+                        checkExpandLayoutStatus()
+                    }
                 }
             }
         }
@@ -222,12 +226,7 @@ class LiveViewToolbar @JvmOverloads constructor(
                     switchLiveView(false)
                 }
                 iv_animation.isSelected -> {
-                    if(isLogin){
-                        hideWebView()
-                    }else{
-                        setupNotLogin()
-                    }
-                    //hideWebView()
+                    hideWebView()
                 }
                 else -> {
                     when(lastLiveType) {
@@ -313,6 +312,7 @@ class LiveViewToolbar @JvmOverloads constructor(
         player_view.isVisible = showLive
         iv_live_status.isVisible = !showLive
         iv_live_status.setImageResource(R.drawable.bg_no_play)
+        tvStatus.text= context.getString(R.string.text_cant_play)
         tvStatus.isVisible = !showLive
     }
 
