@@ -55,7 +55,7 @@ class LiveViewToolbar @JvmOverloads constructor(
     }
     private val webBottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(context) }
 
-    private var mStreamUrl: String? = null
+//    private var mStreamUrl: String? = null
     private var newestUrl: Boolean = false
     private var isLogin:Boolean = false
 
@@ -246,10 +246,10 @@ class LiveViewToolbar @JvmOverloads constructor(
                 iv_play.isSelected = true
                 lastLiveType = LiveType.LIVE
                 checkExpandLayoutStatus()
-                liveToolBarListener?.getLiveInfo()
-                if (!mStreamUrl.isNullOrEmpty()) {
-                    startPlayer(mMatchId, mEventId, mStreamUrl, isLogin)
-                }
+                liveToolBarListener?.getLiveInfo(true)
+//                if (!mStreamUrl.isNullOrEmpty()) {
+//                    startPlayer(mMatchId, mEventId, mStreamUrl, isLogin)
+//                }
             }
             false -> {
                 stopPlayer()
@@ -385,9 +385,14 @@ class LiveViewToolbar @JvmOverloads constructor(
         }else{
             mEventId = null
         }
-        mStreamUrl = streamUrl
+//        mStreamUrl = streamUrl
         if(isLogin){
-            initializePlayer(streamUrl)
+            if (streamUrl.isNullOrEmpty()) {
+                showLiveView(false)
+            }
+            else {
+                initializePlayer(streamUrl)
+            }
         }else{
             setupNotLogin()
         }

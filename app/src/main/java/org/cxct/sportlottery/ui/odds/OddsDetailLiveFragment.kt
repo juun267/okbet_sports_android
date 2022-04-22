@@ -420,7 +420,8 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                 live_view_tool_bar.startPlayer(
                     matchId,
                     matchOdd?.matchInfo?.trackerId,
-                    liveStreamInfo.streamUrl,isLogin
+                    liveStreamInfo.streamUrl,
+                    isLogin
                 )
             }
         }
