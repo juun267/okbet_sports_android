@@ -163,6 +163,7 @@ class LiveViewToolbar @JvmOverloads constructor(
 
     private fun initOnclick() {
         iv_play.setOnClickListener {
+            lastLiveType = LiveType.LIVE
             if (!iv_play.isSelected) {
                 iv_play.isSelected = true
                 if (iv_animation.isSelected){
@@ -226,12 +227,22 @@ class LiveViewToolbar @JvmOverloads constructor(
                     switchLiveView(false)
                 }
                 iv_animation.isSelected -> {
+                    lastLiveType = LiveType.ANIMATION
                     hideWebView()
                 }
                 else -> {
                     when(lastLiveType) {
-                        LiveType.LIVE -> switchLiveView(true)
-                        LiveType.ANIMATION -> openWebView()
+                        LiveType.LIVE -> {
+                            switchLiveView(true)
+                        }
+                        LiveType.ANIMATION -> {
+                            iv_animation.isSelected = true
+                            if(isLogin){
+                                openWebView()
+                            }else{
+                                setupNotLogin()
+                            }
+                        }
                     }
                 }
             }
@@ -294,6 +305,7 @@ class LiveViewToolbar @JvmOverloads constructor(
     }
 
     fun setupNotLogin(){
+        checkExpandLayoutStatus()
         player_view.visibility = View.GONE
         iv_live_status.isVisible = true
         tvStatus.isVisible = true
@@ -343,6 +355,8 @@ class LiveViewToolbar @JvmOverloads constructor(
 
     private fun initializePlayer(streamUrl: String?) {
         streamUrl?.let {
+            iv_play.isSelected = true
+            iv_animation.isSelected = false
             if (exoPlayer == null) {
                 exoPlayer = SimpleExoPlayer.Builder(context).build().also { exoPlayer ->
                     player_view.player = exoPlayer
