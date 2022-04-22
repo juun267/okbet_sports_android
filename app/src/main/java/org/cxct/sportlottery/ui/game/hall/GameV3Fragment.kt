@@ -75,6 +75,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private var mView: View? = null
     private var isReload = true // 重新加載用
     private var mLeagueIsFiltered = false // 是否套用聯賽過濾
+    private var mCalendarSelected = false //紀錄日期圖示選中狀態
 
     private val gameTypeAdapter by lazy {
         GameTypeAdapter().apply {
@@ -334,7 +335,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             isReload = true
             when (tab?.text.toString()) { //固定寫死
                 getString(R.string.game_tab_league_odd) -> { //賽事
-                    game_toolbar_calendar.visibility = View.VISIBLE
+                    game_toolbar_calendar.visibility = if (args.matchType == MatchType.EARLY) View.VISIBLE else View.GONE
+                    game_filter_type_list.visibility = if (game_toolbar_calendar.isSelected) View.VISIBLE else View.GONE
                     if (args.matchType == MatchType.OTHER) {
                         game_play_category.visibility = View.VISIBLE
                     }
@@ -343,6 +345,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
                 getString(R.string.game_tab_outright_odd) -> { //冠軍
                     game_toolbar_calendar.visibility = View.GONE
+                    game_filter_type_list.visibility = View.GONE
                     if (args.matchType == MatchType.OTHER) {
                         game_play_category.visibility = View.GONE
                         childMatchType = MatchType.OTHER_OUTRIGHT
@@ -457,7 +460,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             }
 
             setOnClickListener {
-                isSelected = !isSelected
+                val newSelectedStatus = !isSelected
+                mCalendarSelected = newSelectedStatus
+                isSelected = newSelectedStatus
 
                 view.game_filter_type_list.visibility = when (isSelected) {
                     true -> View.VISIBLE
@@ -1806,7 +1811,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     MatchType.EARLY -> View.VISIBLE
                     else -> View.GONE
                 }
-                isSelected = false
+                isSelected = mCalendarSelected
             }
             game_tab_odd_v4.visibility = when (args.matchType) {
                 MatchType.TODAY, MatchType.EARLY, MatchType.PARLAY, MatchType.OTHER -> View.VISIBLE
