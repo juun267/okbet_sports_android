@@ -228,7 +228,7 @@ class GameViewModel(
     val showBetUpperLimit = betInfoRepository.showBetUpperLimit
 
     private val _messageListResult = MutableLiveData<Event<MessageListResult?>>()
-    val _curMatchType = MutableLiveData<MatchType?>()
+    private val _curMatchType = MutableLiveData<MatchType?>()
     private val _curChildMatchType = MutableLiveData<MatchType?>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _sportCouponMenuResult = MutableLiveData<Event<SportCouponMenuResult>>()
@@ -383,6 +383,7 @@ class GameViewModel(
         couponCode: String,
         couponName: String
     ) {
+        _curChildMatchType.value = null
         _specialEntrance.postValue(SpecialEntrance(matchType, gameType, couponCode, couponName))
         gameType?.let { recordSportType(matchType, it.key) }
     }
@@ -422,7 +423,6 @@ class GameViewModel(
     fun switchMainMatchType() {
         _curChildMatchType.value = null
         _oddsListGameHallResult.value = Event(null)
-        //_quickOddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
         _curMatchType.value = MatchType.MAIN
         filterLeague(listOf())
@@ -431,7 +431,6 @@ class GameViewModel(
     fun switchMatchType(matchType: MatchType) {
         _curChildMatchType.value = null
         _oddsListGameHallResult.value = Event(null)
-        //_quickOddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
         getSportMenu(matchType, onlyRefreshSportMenu = false)
         getAllPlayCategory(matchType)
@@ -439,40 +438,23 @@ class GameViewModel(
     }
 
     fun switchChildMatchType(childMatchType: MatchType? = null) {
+        /* 選取 tab 賽事、冠軍、特優 */
         _curChildMatchType.value = childMatchType
         _oddsListGameHallResult.value = Event(null)
-        //_quickOddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
         if (childMatchType == MatchType.OTHER_OUTRIGHT) {
-//            getLeagueList(
-//                getSportSelectedCode(MatchType.OTHER_OUTRIGHT) ?: "",
-//                currentSpecialCode,
-//                null,
-//                isIncrement = false
-//            )
-            //aaaaa
-//            getOutrightSeasonList(
-//                getSportSelectedCode(MatchType.OTHER_OUTRIGHT) ?: "",
-//                true
-//            )
             getOutrightOddsList(getSportSelectedCode(MatchType.OTHER_OUTRIGHT) ?: "")
         }
-        if(childMatchType == MatchType.OUTRIGHT) {
-//            getOutrightSeasonList(
-//                getSportSelectedCode(MatchType.OUTRIGHT) ?: "",
-//                false
-//            )
+        if (childMatchType == MatchType.OUTRIGHT) {
             getOutrightOddsList(getSportSelectedCode(_curMatchType.value!!) ?: "")
-        }
-        else if (childMatchType == MatchType.OTHER) {
+        } else if (childMatchType == MatchType.OTHER) {
             getGameHallList(
                 matchType = MatchType.OTHER,
                 isReloadDate = true,
                 isReloadPlayCate = true,
                 isLastSportType = true
             )
-        }
-        else {
+        } else {
             curMatchType.value?.let {
                 getGameHallList(matchType = it, isReloadDate = true, isReloadPlayCate = true)
             }
@@ -1040,7 +1022,6 @@ class GameViewModel(
         }
         _curChildMatchType.value = null
         _oddsListGameHallResult.value = Event(null)
-        //_quickOddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
 
         recordSportType(matchType, item.code)
@@ -1060,7 +1041,6 @@ class GameViewModel(
                     isLastSportType = true
                 )
             }
-            //getGameHallList(matchType, true, isReloadPlayCate = true)
         } else {
             getGameHallList(matchType, true, isReloadPlayCate = true)
         }
@@ -1152,8 +1132,6 @@ class GameViewModel(
                 getCurrentTimeRangeParams(),
                 isIncrement = false
             )
-            //getGameHallList(matchType, true, isReloadPlayCate = true)
-
         } else {
             getGameHallList(matchType, true, isReloadPlayCate = true)
         }
@@ -1178,7 +1156,6 @@ class GameViewModel(
 
     fun switchMatchDate(matchType: MatchType, date: Date) {
         _curDate.value?.updateDateSelectedState(date)
-
         getGameHallList(matchType, false, date.date)
     }
 
@@ -1262,18 +1239,10 @@ class GameViewModel(
 
         val sportCode = getSportSelectedCode(nowMatchType)
 
-//        if(sportCode == null && nowChildMatchType == MatchType.OTHER) {
-//            getOddsList(
-//                code,
-//                specialEntrance.value?.couponCode ?: "",
-//                getCurrentTimeRangeParams(),
-//                leagueIdList = leagueIdList,
-//                isIncrement = isIncrement
-//            )
-//        }
+        val mt = if(matchType == nowChildMatchType) matchType else nowChildMatchType
 
         sportCode?.let { code ->
-            when (nowChildMatchType) {
+            when (mt) {
                 MatchType.MAIN -> {
                     getOddsList(
                         code,
@@ -1286,7 +1255,7 @@ class GameViewModel(
                 MatchType.IN_PLAY -> {
                     getOddsList(
                         code,
-                        nowChildMatchType.postValue,
+                        matchType.postValue,
                         leagueIdList = leagueIdList,
                         isIncrement = isIncrement
                     )
@@ -1325,7 +1294,7 @@ class GameViewModel(
                 MatchType.AT_START -> {
                     getOddsList(
                         code,
-                        nowChildMatchType.postValue,
+                        matchType.postValue,
                         TimeUtil.getAtStartTimeRangeParams(),
                         leagueIdList = leagueIdList,
                         isIncrement = isIncrement
@@ -1462,6 +1431,7 @@ class GameViewModel(
             }
         }
     }
+
     fun getOutrightOddsList(gameType: String) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -1578,7 +1548,7 @@ class GameViewModel(
 
         var startTime = ""
         var endTime = ""
-        if(matchType != MatchType.OTHER.postValue) { // 特殊賽事則不帶時間 Ex: {gameType: "FT", matchType: "sc:QAtest", playCateMenuCode: "MAIN"}
+        if (matchType != MatchType.OTHER.postValue) { // 特殊賽事則不帶時間 Ex: {gameType: "FT", matchType: "sc:QAtest", playCateMenuCode: "MAIN"}
             startTime = timeFilter(currentTimeRangeParams?.startTime) ?: ""
             endTime = timeFilter(currentTimeRangeParams?.endTime) ?: ""
         }
@@ -2151,7 +2121,7 @@ class GameViewModel(
 
                     _oddsDetailList.postValue(Event(list))
                     //aaaaa
-                    if(MultiLanguagesApplication.getInstance()?.getGameDetailAnimationNeedShow() == true){
+                    if (MultiLanguagesApplication.getInstance()?.getGameDetailAnimationNeedShow() == true) {
                         val animationTrackerId = result.oddsDetailData?.matchOdd?.matchInfo?.trackerId
                         Timber.e("Dean, animationTrackerId = $animationTrackerId")
                         if (!animationTrackerId.isNullOrEmpty()) {
@@ -2386,7 +2356,7 @@ class GameViewModel(
         }
         this.menu.outright.items.map { sport ->
             sport.isSelected = when {
-                ((matchType == MatchType.OUTRIGHT|| matchType == MatchType.PARLAY) && gameTypeCode != null && sport.num > 0) -> {
+                ((matchType == MatchType.OUTRIGHT || matchType == MatchType.PARLAY) && gameTypeCode != null && sport.num > 0) -> {
                     sport.code == gameTypeCode
                 }
                 else -> {
