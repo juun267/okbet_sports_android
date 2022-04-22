@@ -147,7 +147,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initBottomNavigation()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -159,7 +158,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         super.onStart()
 
         if (Util.SDK_INT >= 24) {
-            live_view_tool_bar.initLoginStatus(isLogin)
             live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null,isLogin)
         }
     }
@@ -167,6 +165,8 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     override fun onResume() {
         super.onResume()
         startTimer()
+        isLogin = viewModel.loginRepository.isLogin.value == true
+        live_view_tool_bar.initLoginStatus(isLogin)
 
         if ((Util.SDK_INT < 24) || live_view_tool_bar.getExoPlayer() == null) {
             live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null,isLogin)
@@ -198,7 +198,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
     private fun initUI() {
 //        live_view_tool_bar.gameType = args.gameType //賽事動畫icon用，之後用不到可刪
-        isLogin = viewModel.loginRepository.isLogin.value == true
         oddsDetailListAdapter = OddsDetailListAdapter(
             OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
                 matchOdd?.let { matchOdd ->
@@ -617,14 +616,20 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
         tv_away_score_live.visibility = View.VISIBLE
         tv_away_score_live.text = (event.matchStatusCO?.awayScore ?: 0).toString()
+    }
 
-        ll_time.visibility = View.GONE
+    private fun showBackTimeBlock(show: Boolean) {
+        ll_time.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     private fun setupStatusList(event: MatchStatusChangeEvent) {
         if (args.matchType != MatchType.IN_PLAY) return
 
+        //region setup game score
         when (event.matchStatusCO?.status) {
+            GameMatchStatus.FINISH.value -> {
+                //donothing
+            }
             GameMatchStatus.HIDE_SCORE.value -> {
                 tv_home_score.visibility = View.GONE
                 tv_away_score.visibility = View.GONE
@@ -647,19 +652,16 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                     GameType.TN -> {
                         setupPoint(event)
                         setupBackScore(event)
-                        setupStatusTnVb(event)
                     }
                     GameType.VB,
                     GameType.TT -> {
                         setupBackScore(event)
-                        setupStatusTnVb(event)
                     }
                     GameType.RB, GameType.AFT -> {
                         setupFrontScore(event)
                     }
                     GameType.BM -> {
                         setupBackScore(event)
-                        setupStatusTnVb(event)
                     }
                     GameType.CK -> {
                         setupFrontScore(event)
@@ -672,6 +674,25 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                 }
             }
         }
+        //endregion
+
+        //region setup game status
+        val showScore = event.matchStatusCO?.status != GameMatchStatus.HIDE_SCORE.value
+        when (args.gameType) {
+            GameType.BK -> {
+                setupStatusBk(event)
+            }
+            GameType.TN, GameType.VB, GameType.TT, GameType.BM -> {
+                showBackTimeBlock(false)
+                setupStatusTnVb(event, showScore)
+            }
+            // Todo: 仍有其他球種待處理
+            // 20220412 根據h5顯示的版面進行同步, MR, GF, FB, OTHER 無法模擬野佔無賽事可參考
+            // MR, GF, FB, OTHER
+            else -> {
+            }
+        }
+        //endregion
     }
 
     private fun setCardText(event: MatchStatusChangeEvent) {
@@ -730,12 +751,12 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         tv_status_left.text = statusBuilder
     }
 
-    private fun setupStatusTnVb(event: MatchStatusChangeEvent) {
+    private fun setupStatusTnVb(event: MatchStatusChangeEvent, showScore: Boolean = true) {
 
         val statusBuilder = SpannableStringBuilder()
 
         tv_status_left.visibility = View.VISIBLE
-        tv_status_right.visibility = View.VISIBLE
+        tv_status_right.visibility = if (showScore) View.VISIBLE else View.GONE
 
         event.matchStatusList?.forEachIndexed { index, it ->
             if (index != event.matchStatusList.lastIndex) {

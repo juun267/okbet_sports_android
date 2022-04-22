@@ -194,11 +194,11 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
 
         private fun setUpVisibility(item: MatchOdd, matchType: MatchType) {
 
-            val socketStatus = item.matchInfo?.socketMatchStatus
+            /*val socketStatus = item.matchInfo?.socketMatchStatus
 
             if (matchType == MatchType.AT_START && socketStatus != null) { //有status事件代表遊戲已開始，不會歸類在'即將'
                 itemView.visibility = View.GONE
-            }
+            }*/
 
         }
 

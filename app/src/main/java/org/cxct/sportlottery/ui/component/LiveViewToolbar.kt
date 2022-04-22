@@ -165,9 +165,14 @@ class LiveViewToolbar @JvmOverloads constructor(
         iv_play.setOnClickListener {
             if (!iv_play.isSelected) {
                 iv_play.isSelected = true
-                switchLiveView(true)
                 if (iv_animation.isSelected){
-                    hideWebView()
+                    if(isLogin){
+                        hideWebView()
+                        switchLiveView(true)
+                    }else{
+                        iv_animation.isSelected = false
+                        setupNotLogin()
+                    }
                 }
             }
             when (expand_layout.isExpanded) {
@@ -177,7 +182,11 @@ class LiveViewToolbar @JvmOverloads constructor(
 //                    startPlayer(mMatchId, mEventId, mStreamUrl)
                 }
                 false -> {
-                    switchLiveView(true)
+                    if(isLogin){
+                        switchLiveView(true)
+                    }else{
+                        checkExpandLayoutStatus()
+                    }
                 }
             }
         }
@@ -186,10 +195,12 @@ class LiveViewToolbar @JvmOverloads constructor(
             if (!iv_animation.isSelected) {
                 if(isLogin){
                     openWebView()
+                    if (iv_play.isSelected) switchLiveView(false)
                 }else{
+                    iv_animation.isSelected = true
+                    iv_play.isSelected = false
                     setupNotLogin()
                 }
-                if (iv_play.isSelected) switchLiveView(false)
             }
             /*when (expand_layout.isExpanded) {
                 true -> {
@@ -301,6 +312,7 @@ class LiveViewToolbar @JvmOverloads constructor(
         player_view.isVisible = showLive
         iv_live_status.isVisible = !showLive
         iv_live_status.setImageResource(R.drawable.bg_no_play)
+        tvStatus.text= context.getString(R.string.text_cant_play)
         tvStatus.isVisible = !showLive
     }
 

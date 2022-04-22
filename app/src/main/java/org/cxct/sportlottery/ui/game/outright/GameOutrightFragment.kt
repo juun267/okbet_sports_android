@@ -74,7 +74,6 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                 initObserve()
                 initSocketObserver()
                 initView()
-                initBottomNavigation()
             } catch (e: Exception) {
                 e.printStackTrace()
             }

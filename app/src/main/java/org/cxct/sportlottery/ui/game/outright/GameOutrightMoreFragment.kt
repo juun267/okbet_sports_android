@@ -20,6 +20,7 @@ import org.cxct.sportlottery.network.outright.odds.DynamicMarket
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
@@ -31,7 +32,7 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.SocketUpdateUtil
 
 
-class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
+class GameOutrightMoreFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class) {
 
     private val args: GameOutrightMoreFragmentArgs by navArgs()
 
@@ -72,6 +73,8 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
         initObserver()
 
         initSocketObserver()
+
+        initBottomNavigation()
     }
 
     override fun onStart() {

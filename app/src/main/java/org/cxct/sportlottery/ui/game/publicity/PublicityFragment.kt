@@ -153,9 +153,9 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     }
 
     private fun goSwitchLanguagePage() {
-        startActivity(Intent(context, SwitchLanguageActivity::class.java).apply {
-            putExtra(SwitchLanguageActivity.FROM_ACTIVITY, this::class.java)
-        })
+        when (activity) {
+            is GamePublicityActivity -> (activity as GamePublicityActivity).goSwitchLanguagePage()
+        }
     }
 
     private fun initRecommendView() {
