@@ -25,5 +25,6 @@ object HomePageStatusManager {
     fun clear() {
         inPlaySelectedPage.clear()
         atStartSelectedPage.clear()
+        recommendSelectedOdd.clear()
     }
 }
