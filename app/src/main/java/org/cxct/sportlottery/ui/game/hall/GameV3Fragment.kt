@@ -75,6 +75,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private var mView: View? = null
     private var isReload = true // 重新加載用
     private var mLeagueIsFiltered = false // 是否套用聯賽過濾
+    private var mCalendarSelected = false //紀錄日期圖示選中狀態
 
     private val gameTypeAdapter by lazy {
         GameTypeAdapter().apply {
@@ -334,7 +335,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             isReload = true
             when (tab?.text.toString()) { //固定寫死
                 getString(R.string.game_tab_league_odd) -> { //賽事
-                    game_toolbar_calendar.visibility = View.VISIBLE
+                    game_toolbar_calendar.visibility = if (args.matchType == MatchType.EARLY) View.VISIBLE else View.GONE
+                    game_filter_type_list.visibility = if (game_toolbar_calendar.isSelected) View.VISIBLE else View.GONE
                     if (args.matchType == MatchType.OTHER) {
                         game_play_category.visibility = View.VISIBLE
                     }
@@ -343,6 +345,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
                 getString(R.string.game_tab_outright_odd) -> { //冠軍
                     game_toolbar_calendar.visibility = View.GONE
+                    game_filter_type_list.visibility = View.GONE
                     if (args.matchType == MatchType.OTHER) {
                         game_play_category.visibility = View.GONE
                         childMatchType = MatchType.OTHER_OUTRIGHT
@@ -360,7 +363,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
             }
             game_match_category_pager.isVisible =
-                tab?.text.toString() == getString(R.string.game_tab_league_odd) && (args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) && matchCategoryPagerAdapter.itemCount > 0
+                tab?.text.toString() == getString(R.string.game_tab_league_odd) &&
+                        (args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY)
+                        && matchCategoryPagerAdapter.itemCount > 0
+                        && game_tabs.selectedTabPosition == 0
         }
 
         override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -454,7 +460,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             }
 
             setOnClickListener {
-                isSelected = !isSelected
+                val newSelectedStatus = !isSelected
+                mCalendarSelected = newSelectedStatus
+                isSelected = newSelectedStatus
 
                 view.game_filter_type_list.visibility = when (isSelected) {
                     true -> View.VISIBLE
@@ -533,12 +541,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL
         )
         view.match_category_indicator.setupWithViewPager2(view.match_category_pager)
-        view.game_match_category_pager.visibility =
-            if ((args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) && matchCategoryPagerAdapter.itemCount > 0) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
+        setMatchCategoryPagerVisibility(matchCategoryPagerAdapter.itemCount > 0)
     }
 
     private fun setupPlayCategory(view: View) {
@@ -713,9 +716,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
         viewModel.matchCategoryQueryResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.rows?.let { resultList ->
-                val isCateShow =
-                    ((args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) && resultList.isNotEmpty())
-                game_match_category_pager.isVisible = isCateShow
+                setMatchCategoryPagerVisibility(resultList.isNotEmpty())
                 // TODO view_space_first.isVisible = !isCateShow
                 matchCategoryPagerAdapter.data = resultList
             }
@@ -738,8 +739,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 null -> {
                     //init tab select
                     game_tabs.clearOnTabSelectedListeners()
-                    game_tabs.addOnTabSelectedListener(onTabSelectedListener)
                     game_tabs.selectTab(game_tabs.getTabAt(0))
+                    game_tabs.addOnTabSelectedListener(onTabSelectedListener)
                 }
                 MatchType.OTHER_OUTRIGHT -> {
                     game_tabs.selectTab(game_tabs.getTabAt(1))
@@ -1806,18 +1807,15 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     MatchType.EARLY -> View.VISIBLE
                     else -> View.GONE
                 }
-                isSelected = false
+                isSelected = mCalendarSelected
             }
             game_tab_odd_v4.visibility = when (args.matchType) {
                 MatchType.TODAY, MatchType.EARLY, MatchType.PARLAY, MatchType.OTHER -> View.VISIBLE
                 else -> View.GONE
             }
-            game_match_category_pager.visibility =
-                if ((args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) && matchCategoryPagerAdapter.itemCount > 0) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
+
+            setMatchCategoryPagerVisibility(matchCategoryPagerAdapter.itemCount > 0)
+
             game_play_category.visibility = if (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START ||
                 (args.matchType == MatchType.OTHER && childMatchType == MatchType.OTHER)
             ) {
@@ -2047,6 +2045,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         StatisticsDialog.newInstance(matchId)
             .show(childFragmentManager, StatisticsDialog::class.java.simpleName)
     }
+
     private fun addOutRightOddsDialog(
         matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd,
         odd: Odd,
@@ -2059,7 +2058,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 matchType = MatchType.OUTRIGHT,
                 gameType = it,
                 playCateCode = playCateCode,
-                playCateName =  "",
+                playCateName = "",
                 matchInfo = matchOdd.matchInfo!!,
                 matchOdd = matchOdd,
                 odd = odd,
@@ -2326,15 +2325,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         unSubscribeChannelHallSport()
     }
 
-    private fun reloadPage() {
-        viewModel.getGameHallList(
-            args.matchType,
-            isReloadPlayCate = true,
-            isReloadDate = true,
-            isIncrement = false
-        )
-    }
-
     // region handle LeagueOdd data
     private fun clearQuickPlayCateSelected() {
         mLeagueOddList.forEach { leagueOdd ->
@@ -2367,6 +2357,21 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         while (itemDecorationCount > 0) {
             removeItemDecorationAt(0)
         }
+    }
+
+    /**
+     * @param condition 固定為 match category 數量是否大於0
+     **/
+    private fun setMatchCategoryPagerVisibility(condition: Boolean) {
+        game_match_category_pager.visibility =
+            if ((args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) &&
+                condition &&
+                game_tabs.selectedTabPosition == 0
+            ) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
     }
     // endregion
 }

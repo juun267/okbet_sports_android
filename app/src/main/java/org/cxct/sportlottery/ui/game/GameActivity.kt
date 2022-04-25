@@ -263,7 +263,10 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
             }
             val leftMenuFragment = supportFragmentManager.findFragmentById(R.id.fl_left_menu) as LeftMenuFragment
-            leftMenuFragment.setCloseMenuListener { sub_drawer_layout.closeDrawers() }
+            leftMenuFragment.setCloseMenuListener {
+                hideSoftKeyboard(this)
+                sub_drawer_layout.closeDrawers()
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -514,7 +517,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             }
             R.id.gameV3Fragment -> {
                 val action =
-                    if (detailMatchType == MatchType.IN_PLAY) HomeFragmentDirections.actionHomeFragmentToOddsDetailLiveFragment(
+                    if (detailMatchType == MatchType.IN_PLAY) GameV3FragmentDirections.actionGameV3FragmentToOddsDetailLiveFragment(
                         detailMatchType, gameType, matchID
                     ) else GameV3FragmentDirections.actionGameV3FragmentToOddsDetailFragment(
                         detailMatchType, gameType, matchID,

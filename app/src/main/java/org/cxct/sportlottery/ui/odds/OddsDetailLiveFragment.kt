@@ -31,6 +31,7 @@ import org.cxct.sportlottery.databinding.FragmentOddsDetailLiveBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.error.HttpError
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
@@ -291,6 +292,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                         }
 
                         setupStartTime()
+                        setupInitShowView(result.oddsDetailData?.matchOdd?.matchInfo)
                         setupLiveView(result.oddsDetailData?.matchOdd?.matchInfo?.liveVideo)
 
 
@@ -569,6 +571,13 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 //                tv_time_bottom.text = getString(R.string.time_null)
             }
         }
+    }
+
+    private fun setupInitShowView(matchInfo: MatchInfo?) {
+        live_view_tool_bar.initLiveType(
+            matchInfo?.liveVideo.toString() == FLAG_LIVE,
+            !matchOdd?.matchInfo?.trackerId.isNullOrEmpty()
+        )
     }
 
     private fun setupLiveView(liveVideo: Int?) {

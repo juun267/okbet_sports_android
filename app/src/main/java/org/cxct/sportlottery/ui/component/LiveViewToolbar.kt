@@ -67,6 +67,8 @@ class LiveViewToolbar @JvmOverloads constructor(
         }
     private var mTrackerUrl: String = ""
 
+    private var mLiveShowTag = true
+
     //exoplayer
     private var exoPlayer: SimpleExoPlayer? = null
 
@@ -92,7 +94,8 @@ class LiveViewToolbar @JvmOverloads constructor(
                             showLiveView(false)
                     }
                     Player.STATE_BUFFERING -> {
-                        liveLoading()
+                        // TODO 載入中的圈圈狀態
+                        if (!player_view.isVisible) liveLoading()
                         Timber.i("ExoPlayer.STATE_BUFFERING     -")
                     }
                     ExoPlayer.STATE_READY -> {
@@ -128,7 +131,7 @@ class LiveViewToolbar @JvmOverloads constructor(
         }
     }
 
-    private var lastLiveType = LiveType.LIVE
+    var lastLiveType: LiveType? = null
 
     private var animationLoadFinish = false
 
@@ -163,6 +166,7 @@ class LiveViewToolbar @JvmOverloads constructor(
 
     private fun initOnclick() {
         iv_play.setOnClickListener {
+            lastLiveType = LiveType.LIVE
             if (!iv_play.isSelected) {
                 iv_play.isSelected = true
                 if (iv_animation.isSelected){
@@ -226,12 +230,22 @@ class LiveViewToolbar @JvmOverloads constructor(
                     switchLiveView(false)
                 }
                 iv_animation.isSelected -> {
+                    lastLiveType = LiveType.ANIMATION
                     hideWebView()
                 }
                 else -> {
                     when(lastLiveType) {
-                        LiveType.LIVE -> switchLiveView(true)
-                        LiveType.ANIMATION -> openWebView()
+                        LiveType.LIVE -> {
+                            switchLiveView(true)
+                        }
+                        LiveType.ANIMATION -> {
+                            iv_animation.isSelected = true
+                            if(isLogin){
+                                openWebView()
+                            }else{
+                                setupNotLogin()
+                            }
+                        }
                     }
                 }
             }
@@ -243,15 +257,17 @@ class LiveViewToolbar @JvmOverloads constructor(
         if (!iv_play.isVisible) return
         when (open) {
             true -> {
+                mLiveShowTag = true
                 iv_play.isSelected = true
                 lastLiveType = LiveType.LIVE
                 checkExpandLayoutStatus()
                 liveToolBarListener?.getLiveInfo()
                 if (!mStreamUrl.isNullOrEmpty()) {
-                    startPlayer(mMatchId, mEventId, mStreamUrl,true)
+                    startPlayer(mMatchId, mEventId, mStreamUrl, isLogin)
                 }
             }
             false -> {
+                mLiveShowTag = false
                 stopPlayer()
                 iv_play.isSelected = false
                 checkExpandLayoutStatus()
@@ -290,10 +306,13 @@ class LiveViewToolbar @JvmOverloads constructor(
     fun setupPlayerControl(show: Boolean) {
         iv_play.isVisible = show
         iv_arrow.isVisible = show
-        switchLiveView(show)
+
+        if (mLiveShowTag && lastLiveType == LiveType.LIVE)
+            switchLiveView(show)
     }
 
     fun setupNotLogin(){
+        checkExpandLayoutStatus()
         player_view.visibility = View.GONE
         iv_live_status.isVisible = true
         tvStatus.isVisible = true
@@ -343,6 +362,8 @@ class LiveViewToolbar @JvmOverloads constructor(
 
     private fun initializePlayer(streamUrl: String?) {
         streamUrl?.let {
+            iv_play.isSelected = true
+            iv_animation.isSelected = false
             if (exoPlayer == null) {
                 exoPlayer = SimpleExoPlayer.Builder(context).build().also { exoPlayer ->
                     player_view.player = exoPlayer
@@ -387,7 +408,9 @@ class LiveViewToolbar @JvmOverloads constructor(
         }
         mStreamUrl = streamUrl
         if(isLogin){
-            initializePlayer(streamUrl)
+            if(lastLiveType == LiveType.LIVE){
+                initializePlayer(streamUrl)
+            }
         }else{
             setupNotLogin()
         }
@@ -446,4 +469,18 @@ class LiveViewToolbar @JvmOverloads constructor(
     }
     //endregion
 
+
+    fun initLiveType(hasStream: Boolean, hasAnimation: Boolean) {
+        if (lastLiveType != null) return
+        when {
+            hasStream -> {
+                lastLiveType = LiveType.LIVE
+            }
+            hasAnimation -> {
+                lastLiveType = LiveType.ANIMATION
+                iv_animation.performClick()
+            }
+
+        }
+    }
 }
