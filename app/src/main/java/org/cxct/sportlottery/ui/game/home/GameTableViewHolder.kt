@@ -22,6 +22,8 @@ import org.cxct.sportlottery.ui.game.home.gameTable4.GameEntity
 import org.cxct.sportlottery.ui.game.home.gameTable4.Vp2GameTable4Adapter
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.GameConfigManager
+import org.cxct.sportlottery.util.HomePageStatusManager.atStartSelectedPage
+import org.cxct.sportlottery.util.HomePageStatusManager.inPlaySelectedPage
 
 class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -99,6 +101,24 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 data.vpTableAdapter?.onClickStatisticsListener = onClickStatisticsListener
                 data.vpTableAdapter?.setData(data.code ?: "", it, isLogin ?: false, oddsType, data.playCateNameMap ?: mutableMapOf(), selectedOdds)
                 view_pager.adapter = data.vpTableAdapter
+                onPageChangeCallback?.let { callback ->
+                    view_pager.unregisterOnPageChangeCallback(callback)
+                }
+
+                when (mMatchType) {
+                    MatchType.AT_START -> atStartSelectedPage
+                    else -> inPlaySelectedPage
+                }[gameCode]?.let { selectedMatchId ->
+                    it.indexOfFirst { matchOdd ->
+                        matchOdd.matchInfo?.id == selectedMatchId
+                    }.let { selectedIndex ->
+                        if (selectedIndex >= 0) {
+                            view_pager.post {
+                                view_pager.setCurrentItem(selectedIndex, false)
+                            }
+                        }
+                    }
+                }
 
                 indicator_view.setupWithViewPager2(view_pager)
                 indicator_view.apply {
@@ -108,10 +128,6 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                         View.VISIBLE
                     }
                 }
-
-                onPageChangeCallback?.let { callback ->
-                    view_pager.unregisterOnPageChangeCallback(callback)
-                }
                 onPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
                     override fun onPageSelected(position: Int) {
                         super.onPageSelected(position)
@@ -119,6 +135,14 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                         mMatchOdd = it[position]
                         mPagerPosition = position
                         subscribeChannelHall(mMatchOdd?.matchInfo?.gameType, mMatchOdd?.matchInfo?.id)
+                        mMatchOdd?.matchInfo?.gameType?.let { gameType ->
+                            mMatchOdd?.matchInfo?.id?.let { matchId ->
+                                when (mMatchType) {
+                                    MatchType.AT_START -> atStartSelectedPage
+                                    else -> inPlaySelectedPage
+                                }[gameType] = matchId
+                            }
+                        }
                     }
 
                     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
