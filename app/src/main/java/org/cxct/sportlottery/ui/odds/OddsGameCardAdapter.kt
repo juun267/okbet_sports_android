@@ -35,7 +35,7 @@ class OddsGameCardAdapter(
         set(value) {
             field = value
             notifyDataSetChanged()
-            matchClockCOList = MutableList(data.size) { MatchClockCO(0, sportCode, "", null, 0, -1, 0, 0, 0, 0) }
+            matchClockCOList = MutableList(data.size) { MatchClockCO(gameType = sportCode, matchId = "", matchTime = null, remainingTimeInPeriod = -1, stopped = 0) }
             matchStatusCOList = MutableList(data.size) { MatchStatusCO(sportCode, 0, 0, 0, 0, 0, "", 0, 0, 0) }
         }
 
