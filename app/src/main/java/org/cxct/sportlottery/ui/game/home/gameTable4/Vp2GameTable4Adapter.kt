@@ -86,7 +86,9 @@ class Vp2GameTable4Adapter (
         this.oddsType = oddsType
         this.playCateNameMap = playCateNameMap
         this.selectedOdds = selectedOdds
-        this.notifyDataSetChanged()
+        this.dataList.forEachIndexed { index, matchOdd ->
+            notifyItemChanged(index)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderHdpOu {
