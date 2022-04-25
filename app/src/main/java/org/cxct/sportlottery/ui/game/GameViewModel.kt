@@ -1252,7 +1252,7 @@ class GameViewModel(
                     getOddsList(
                         code,
                         specialEntrance.value?.couponCode ?: "",
-                        getCurrentTimeRangeParams(),
+                        reloadedTimeRange ?: getCurrentTimeRangeParams(),
                         leagueIdList = leagueIdList,
                         isIncrement = isIncrement
                     )
@@ -1286,7 +1286,7 @@ class GameViewModel(
                     getLeagueList(
                         code,
                         nowChildMatchType.postValue,
-                        getCurrentTimeRangeParams(),
+                        reloadedTimeRange ?: getCurrentTimeRangeParams(),
                         date,
                         isIncrement = isIncrement
                     )
@@ -1312,7 +1312,7 @@ class GameViewModel(
                     getOddsList(
                         code,
                         specialEntrance.value?.couponCode ?: "",
-                        getCurrentTimeRangeParams(),
+                        timeRangeParams = reloadedTimeRange ?: getCurrentTimeRangeParams(),
                         leagueIdList = leagueIdList,
                         isIncrement = isIncrement
                     )
@@ -1326,7 +1326,7 @@ class GameViewModel(
                     getOddsList(
                         code,
                         specialEntrance.value?.couponCode ?: "",
-                        getCurrentTimeRangeParams(),
+                        timeRangeParams = reloadedTimeRange ?: getCurrentTimeRangeParams(),
                         leagueIdList = leagueIdList,
                         isIncrement = isIncrement
                     )
