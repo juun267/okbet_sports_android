@@ -5,6 +5,7 @@ import android.os.Parcelable
 import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -21,6 +22,7 @@ import org.cxct.sportlottery.ui.game.home.recommend.RecommendGameEntity
 import org.cxct.sportlottery.ui.game.home.recommend.VpRecommendAdapter
 import org.cxct.sportlottery.ui.game.home.recommend.toMatchOdd
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.HomePageStatusManager.recommendSelectedOdd
 import org.cxct.sportlottery.util.TimeUtil
 
 /**
@@ -41,6 +43,8 @@ class RecommendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var onClickOddListener: OnClickOddListener? = null
     var onClickOutrightOddListener: OnClickOddListener? = null
     var onClickMoreListener: OnClickMoreListener? = null
+
+    private var onPageChangeCallback: ViewPager2.OnPageChangeCallback? = null
 
     fun bind(data: RecommendGameEntity, oddsType: OddsType) {
         itemView.apply {
@@ -120,6 +124,23 @@ class RecommendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             data.vpRecommendAdapter?.onClickMoreListener = onClickMoreListener
 
             view_pager.adapter = data.vpRecommendAdapter
+
+            onPageChangeCallback?.let { callback ->
+                view_pager.unregisterOnPageChangeCallback(callback)
+            }
+            //若該賽事紀錄的應顯示玩法存在，則預設顯示該玩法
+            data.matchInfo?.id?.let { matchId ->
+                data.oddBeans.indexOfFirst { oddBean ->
+                    oddBean.playTypeCode == recommendSelectedOdd[matchId]
+                }.let { selectedIndex ->
+                    if (selectedIndex >= 0) {
+                        view_pager.post {
+                            view_pager.setCurrentItem(selectedIndex, false)
+                        }
+                    }
+                }
+            }
+
             view_pager.getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
             OverScrollDecoratorHelper.setUpOverScroll(view_pager.getChildAt(0) as RecyclerView, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
             indicator_view.setupWithViewPager2(view_pager)
@@ -129,6 +150,23 @@ class RecommendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 } else {
                     View.VISIBLE
                 }
+            }
+
+            onPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    if (position < 0 || position >= data.oddBeans.size || data.oddBeans.isNullOrEmpty()) return
+                    val oddBean = data.oddBeans[position]
+
+                    //紀錄該賽事需顯示哪一個玩法
+                    data.matchInfo?.id?.let { matchId ->
+                        recommendSelectedOdd[matchId] = oddBean.playTypeCode
+                    }
+                }
+            }
+
+            onPageChangeCallback?.let { callback ->
+                view_pager.registerOnPageChangeCallback(callback)
             }
         }
         subscribeChannelHall(mMatchOdd?.matchInfo?.gameType, mMatchOdd?.matchInfo?.id)

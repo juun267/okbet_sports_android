@@ -14,6 +14,12 @@ object HomePageStatusManager {
     var atStartSelectedPage: MutableMap<String, String> = mutableMapOf()
 
     /**
+     * 推薦賽事當前顯示的玩法
+     * <matchId, playTypeCode>
+     */
+    var recommendSelectedOdd: MutableMap<String, String> = mutableMapOf()
+
+    /**
      * 清除首頁滾球、即將、推薦賽事當前顯示狀態
      */
     fun clear() {
