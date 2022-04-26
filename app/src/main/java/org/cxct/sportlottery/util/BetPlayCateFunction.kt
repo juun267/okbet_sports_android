@@ -40,11 +40,11 @@ object BetPlayCateFunction {
     }
 
     /**
-     * 取得 下个得分 的投注玩法名稱
+     * 取得 下个得分, 下个得分 加时赛 的投注玩法名稱
      */
     private fun MutableMap<String?, Map<String?, String?>?>?.getNGOALBetPlayCateName(): Map<String?, String?>? {
         val nGOALMap = this?.filter { map ->
-            map.key?.contains(PlayCate.NGOAL.value) ?: false
+            map.key?.isNumPlatType() ?: false
         }
 
         return nGOALMap?.maxByOrNull { map ->
