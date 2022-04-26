@@ -168,13 +168,10 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
             initViews()
             initGameTableBar()
-            initGameRecommendBar()
             initDiscount()
             initMenu()
             initTable()
             initRecommend()
-            initHighLightBar()
-            initHighLightTitle()
             initHighlight()
             initObserve()
             initSocketObserver()
@@ -255,10 +252,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 }
             }
         }
-    }
-
-    private fun initGameRecommendBar() {
-        mHomeListAdapter.setGameRecommendBar()
     }
 
     private fun initMenu() {
@@ -428,14 +421,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 }
             }
         }
-    }
-
-    private fun initHighLightBar() {
-        mHomeListAdapter.setGameHighLightBar()
-    }
-
-    private fun initHighLightTitle() {
-        mHomeListAdapter.setGameHighLightTitle()
     }
 
     private fun initHighlight() {
