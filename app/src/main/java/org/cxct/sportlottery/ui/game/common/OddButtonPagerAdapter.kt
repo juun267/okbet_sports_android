@@ -37,7 +37,10 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
 
     fun setData(matchInfo: MatchInfo?, oddsSort: String?, playCateNameMap: MutableMap<String?, Map<String?, String?>?>?, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?, getPlaySelectedCodeSelectionType: Int?) {
         this.matchInfo = matchInfo
-        this.oddsSort = oddsSort
+
+        if (!oddsSort.isNullOrEmpty())
+            this.oddsSort = oddsSort
+
         this.playCateNameMap = playCateNameMap
         this.betPlayCateNameMap = betPlayCateNameMap
         this.getPlaySelectedCodeSelectionType = getPlaySelectedCodeSelectionType
