@@ -618,14 +618,14 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             true -> {
                                 context.getString(
                                     R.string.bet_info_in_play_score,
-                                    itemData.betPlayCateNameMap?.getNameMap(itemData.matchOdd.playCode)
+                                    itemData.betPlayCateNameMap?.getNameMap(itemData.matchOdd.gameType, itemData.matchOdd.playCode)
                                         ?.get(LanguageManager.getSelectLanguage(context).key) ?: "",
                                     itemData.matchOdd.homeScore.toString(),
                                     itemData.matchOdd.awayScore.toString()
                                 )
                             }
                             else -> nameOneLine(
-                                itemData.betPlayCateNameMap?.getNameMap(itemData.matchOdd.playCode)
+                                itemData.betPlayCateNameMap?.getNameMap(itemData.matchOdd.gameType, itemData.matchOdd.playCode)
                                     ?.get(LanguageManager.getSelectLanguage(context).key) ?: ""
                             )
                         }

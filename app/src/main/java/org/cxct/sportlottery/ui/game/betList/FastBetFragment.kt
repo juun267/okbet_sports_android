@@ -735,13 +735,13 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     if (inPlay && betInfoListData?.matchType != MatchType.OUTRIGHT && matchOdd.gameType == GameType.FT.key) {
                         getString(
                             R.string.bet_info_in_play_score,
-                            betPlayCateNameMap.getNameMap(matchOdd.playCode)
+                            betPlayCateNameMap.getNameMap(matchOdd.gameType, matchOdd.playCode)
                                 ?.get(LanguageManager.getSelectLanguage(context).key) ?: "",
                             matchOdd.homeScore.toString(),
                             matchOdd.awayScore.toString()
                         )
                     } else nameOneLine(
-                        betPlayCateNameMap.getNameMap(matchOdd.playCode)
+                        betPlayCateNameMap.getNameMap(matchOdd.gameType, matchOdd.playCode)
                             ?.get(LanguageManager.getSelectLanguage(context).key) ?: ""
                     )
             }
