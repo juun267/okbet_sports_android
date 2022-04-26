@@ -241,7 +241,7 @@
                             android:maxLength="7"
                             android:paddingStart="10dp"
                             android:textColor="@color/colorBlue"
-                            android:textColorHint="@color/colorSilverLight"
+                            android:textColorHint="@color/color_404040_cccccc"
                             android:textSize="@dimen/textSize16sp"
                             android:textStyle="bold"
                             app:layout_constraintBottom_toTopOf="@+id/tv_error_message"

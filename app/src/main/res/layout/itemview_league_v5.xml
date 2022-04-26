@@ -10,7 +10,7 @@
         android:id="@+id/league_text"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/colorWhite4"
+        android:background="@color/color_212121_ededed"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="2"

@@ -340,7 +340,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         fun bind() {
             with(binding) {
                 bottomNavigationView.setNowPage(Page.PUBLICITY)
-                ContextCompat.getDrawable(context, R.color.colorWhite1)?.let { background ->
+                ContextCompat.getDrawable(context, R.color.color_141414_F3F4F5)?.let { background ->
                     bottomNavigationView.setTopBackground(background)
                 }
                 ContextCompat.getDrawable(context, R.color.colorGrayDark3)?.let { background ->

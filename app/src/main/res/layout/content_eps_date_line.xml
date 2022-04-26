@@ -18,7 +18,7 @@
             android:layout_height="1dp"
             android:layout_marginEnd="31dp"
             android:layout_weight="1"
-            android:background="@color/colorSilverLight" />
+            android:background="@color/color_404040_cccccc" />
 
         <TextView
             android:id="@+id/tv_date"
@@ -37,7 +37,7 @@
             android:layout_height="1dp"
             android:layout_marginStart="31dp"
             android:layout_weight="1"
-            android:background="@color/colorSilverLight" />
+            android:background="@color/color_404040_cccccc" />
 
     </LinearLayout>
 

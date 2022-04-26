@@ -112,7 +112,7 @@ fun TextView.setBetMaximumLimit(max: Int) {
 
 fun View.setBetReceiptBackground(status: Int?) {
     background = when (status) {
-        7 -> ContextCompat.getDrawable(context, R.color.colorWhite2)
+        7 -> ContextCompat.getDrawable(context, R.color.color_141414_f3f3f3)
         else -> ContextCompat.getDrawable(context, R.color.colorWhite)
     }
 }

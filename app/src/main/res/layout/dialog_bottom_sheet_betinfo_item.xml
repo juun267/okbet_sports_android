@@ -95,7 +95,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/colorWhite4"
+                android:background="@color/color_212121_ededed"
                 android:gravity="center"
                 android:text="@string/bet_info_add_to_bet_info"
                 android:textAllCaps="true"

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite1"
+    android:background="@color/color_141414_F3F4F5"
     tools:context=".ui.profileCenter.sportRecord.SportBetRecordFragment">
 
     <org.cxct.sportlottery.ui.component.DateRangeSearchView
@@ -70,7 +70,7 @@
         android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorWhite3"
+        android:background="@color/color_262626_edf4ff"
         android:orientation="horizontal"
         android:paddingVertical="4dp"
         app:layout_constraintBottom_toTopOf="@id/view_refresh"

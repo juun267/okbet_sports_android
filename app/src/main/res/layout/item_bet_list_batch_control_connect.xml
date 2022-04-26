@@ -21,7 +21,7 @@
         android:id="@+id/ll_control_connect"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorWhite2">
+        android:background="@color/color_141414_f3f3f3">
 
         <ImageView
             android:id="@+id/iv_bet_lock"
@@ -106,7 +106,7 @@
                 android:textStyle="bold"
                 android:paddingStart="10dp"
                 android:textColor="@color/colorBlue"
-                android:textColorHint="@color/colorSilverLight"
+                android:textColorHint="@color/color_404040_cccccc"
                 android:textSize="@dimen/textSize16sp"
                 android:letterSpacing="0.05"
                 app:layout_constraintStart_toStartOf="parent"

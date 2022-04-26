@@ -4,11 +4,13 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import cn.jpush.android.api.JPushInterface
 import com.github.jokar.multilanguages.library.MultiLanguage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.android.synthetic.main.dialog_change_appearance.view.*
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.manager.NetworkStatusManager
 import org.cxct.sportlottery.network.manager.RequestManager
@@ -173,6 +175,8 @@ class MultiLanguagesApplication : Application() {
 
         initJPush()
 
+        setNightMode()
+
         //生成UUID作為設備識別碼
         setupDeviceCode()
     }
@@ -193,6 +197,14 @@ class MultiLanguagesApplication : Application() {
 //        JAnalyticsInterface.init(this);
 //        JAnalyticsInterface.initCrashHandler(this);
 //        JAnalyticsInterface.setDebugMode(false);
+    }
+
+    private fun setNightMode(){
+        if(isNightMode){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
     }
 
     private fun setupDeviceCode() {
@@ -251,6 +263,17 @@ class MultiLanguagesApplication : Application() {
                 val searchHistoryJson = gson.toJson(searchHistoryList)
                 val editor = myPref!!.edit()
                 editor.putString("search_history", searchHistoryJson)
+                editor.apply()
+            }
+        fun saveNightMode(nightMode: Boolean) {
+            isNightMode = nightMode
+        }
+
+        var isNightMode: Boolean
+            get() = myPref!!.getBoolean("is_night_mode", false)
+            set(check) {
+                val editor = myPref!!.edit()
+                editor.putBoolean("is_night_mode", check)
                 editor.apply()
             }
 

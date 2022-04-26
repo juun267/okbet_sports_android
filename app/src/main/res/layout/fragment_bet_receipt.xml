@@ -213,7 +213,7 @@
             android:id="@+id/view"
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_1"
-            android:background="@color/colorWhite4"
+            android:background="@color/color_212121_ededed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_already_bet_complete" />
 

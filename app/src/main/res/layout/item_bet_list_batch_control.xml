@@ -20,7 +20,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorWhite2">
+        android:background="@color/color_141414_f3f3f3">
 
         <ImageView
             android:id="@+id/iv_bet_lock_single"
@@ -83,7 +83,7 @@
                         android:maxLength="7"
                         android:paddingStart="10dp"
                         android:textColor="@color/colorBlue"
-                        android:textColorHint="@color/colorSilverLight"
+                        android:textColorHint="@color/color_404040_cccccc"
                         android:textSize="@dimen/textSize16sp"
                         android:letterSpacing="0.05"
                         android:textStyle="bold" />

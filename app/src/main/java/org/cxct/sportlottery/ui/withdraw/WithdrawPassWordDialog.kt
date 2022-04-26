@@ -104,8 +104,8 @@ class WithdrawPassWordDialog(private val listener: WithdrawPasswordDialogListene
         val showBackground: Drawable?
         val showColor: Int
         if (!isError) {
-            showBackground = ContextCompat.getDrawable(context ?: requireContext(), R.color.colorSilver)
-            showColor = ContextCompat.getColor(context ?: requireContext(), R.color.colorSilver)
+            showBackground = ContextCompat.getDrawable(context ?: requireContext(), R.color.color_666666_bcbcbc)
+            showColor = ContextCompat.getColor(context ?: requireContext(), R.color.color_666666_bcbcbc)
         } else {
             showBackground = ContextCompat.getDrawable(context ?: requireContext(), R.color.colorRed)
             showColor = ContextCompat.getColor(context ?: requireContext(), R.color.colorRed)

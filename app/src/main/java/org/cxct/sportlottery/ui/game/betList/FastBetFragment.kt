@@ -764,7 +764,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             binding.clItemBackground.setBackgroundColor(
                 ContextCompat.getColor(
                     requireContext(),
-                    R.color.colorWhite2
+                    R.color.color_141414_f3f3f3
                 )
             )
             binding.ivBetLock.visibility = View.VISIBLE

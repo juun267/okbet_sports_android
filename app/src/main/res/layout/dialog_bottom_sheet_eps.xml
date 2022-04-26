@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorWhite4"
+        android:background="@color/color_212121_ededed"
         android:gravity="center"
         android:paddingStart="20dp"
         android:paddingTop="10dp"

@@ -71,7 +71,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_1"
-            android:background="@color/colorWhite4" />
+            android:background="@color/color_212121_ededed" />
 
         <LinearLayout
             android:id="@+id/llChina"
@@ -99,7 +99,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_1"
-            android:background="@color/colorWhite4" />
+            android:background="@color/color_212121_ededed" />
 
         <LinearLayout
             android:id="@+id/llVietnam"
@@ -127,7 +127,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_1"
-            android:background="@color/colorWhite4" />
+            android:background="@color/color_212121_ededed" />
 
     </LinearLayout>
 

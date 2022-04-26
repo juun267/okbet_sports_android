@@ -65,7 +65,7 @@
                 android:scrollHorizontally="true"
                 android:singleLine="true"
                 android:textColor="@color/colorBlackLight"
-                android:textColorHint="@color/colorSilverLight"
+                android:textColorHint="@color/color_404040_cccccc"
                 android:textSize="@dimen/textSize12sp"
                 app:autoSizeMaxTextSize="@dimen/textSize12sp"
                 app:autoSizeMinTextSize="@dimen/textSize8sp"

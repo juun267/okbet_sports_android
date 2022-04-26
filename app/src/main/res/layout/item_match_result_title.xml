@@ -11,7 +11,7 @@
         android:id="@+id/block_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorWhite3"
+        android:background="@color/color_262626_edf4ff"
         android:orientation="horizontal">
 
         <LinearLayout

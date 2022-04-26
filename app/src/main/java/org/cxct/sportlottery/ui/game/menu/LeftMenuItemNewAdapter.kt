@@ -271,7 +271,7 @@ class LeftMenuItemNewAdapter(
             itemView.apply {
 
 //                tv_appearance.isVisible = isLogin
-                tv_appearance.isVisible = false //暫時隱藏
+               // tv_appearance.isVisible = false //暫時隱藏
 
                 //盤口設定
                 tv_odds_type.setOnClickListener {

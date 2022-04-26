@@ -3,7 +3,7 @@
     <item android:left="8dp" android:width="24dp" android:height="24dp">
         <rotate android:fromDegrees="45" android:pivotX="50%" android:pivotY="50%">
             <shape android:shape="rectangle">
-                <solid android:color="@color/colorWhite2" />
+                <solid android:color="@color/color_141414_f3f3f3" />
             </shape>
         </rotate>
     </item>

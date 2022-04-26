@@ -68,7 +68,7 @@
             app:autoSizeMinTextSize="@dimen/textSize8sp"
             android:inputType="text"
             android:textColor="@color/colorBlackLight"
-            android:textColorHint="@color/colorSilverLight"
+            android:textColorHint="@color/color_404040_cccccc"
             android:textSize="@dimen/textSize12sp"
             android:ellipsize="end"
             tools:hint="@string/please_input_account" />
@@ -122,7 +122,7 @@
                 android:id="@+id/iv_verification_code"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorSilverLight"
+                android:background="@color/color_404040_cccccc"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
                 android:visibility="gone" />

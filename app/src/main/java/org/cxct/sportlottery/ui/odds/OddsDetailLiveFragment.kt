@@ -313,13 +313,13 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                             tv_time_bottom?.setTextColor(
                                 ContextCompat.getColor(
                                     tv_time_bottom.context,
-                                    R.color.colorSilver
+                                    R.color.color_666666_bcbcbc
                                 )
                             )
                             tv_time_top?.setTextColor(
                                 ContextCompat.getColor(
                                     tv_time_bottom.context,
-                                    R.color.colorSilver
+                                    R.color.color_666666_bcbcbc
                                 )
                             )
                         }
@@ -730,7 +730,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         tv_status_left.setTextColor(
             ContextCompat.getColor(
                 tv_status_left.context,
-                R.color.colorSilver
+                R.color.color_666666_bcbcbc
             )
         )
 
@@ -784,13 +784,13 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
             tv_status_left.setTextColor(
                 ContextCompat.getColor(
                     tv_status_left.context,
-                    R.color.colorWhite8
+                    R.color.color_1F1F1F_e6e6e6
                 )
             )
             tv_spt.setTextColor(
                 ContextCompat.getColor(
                     tv_status_left.context,
-                    R.color.colorWhite8
+                    R.color.color_1F1F1F_e6e6e6
                 )
             )
             val statusValue =
@@ -801,10 +801,10 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
             tv_status_left.setTextColor(
                 ContextCompat.getColor(
                     tv_status_left.context,
-                    R.color.colorSilver
+                    R.color.color_666666_bcbcbc
                 )
             )
-            tv_spt.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorSilver))
+            tv_spt.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.color_666666_bcbcbc))
         }
     }
 

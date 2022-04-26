@@ -92,7 +92,7 @@
                         android:layout_toEndOf="@id/text_field_boxes_sub_label"
                         android:gravity="center"
                         android:includeFontPadding="false"
-                        android:textColor="@color/colorSilverLight"
+                        android:textColor="@color/color_404040_cccccc"
                         android:textSize="@dimen/textSize12sp"
                         tools:text="Label2" />
 

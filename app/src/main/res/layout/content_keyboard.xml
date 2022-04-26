@@ -120,7 +120,7 @@
                 android:maxLength="7"
                 android:paddingStart="10dp"
                 android:textColor="@color/colorBlue"
-                android:textColorHint="@color/colorSilverLight"
+                android:textColorHint="@color/color_404040_cccccc"
                 android:textSize="@dimen/textSize16sp"
                 android:letterSpacing="0.05"
                 android:textStyle="bold"

@@ -157,7 +157,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/margin_1"
-        android:background="@color/colorWhite4" />
+        android:background="@color/color_212121_ededed" />
 
     <FrameLayout
         android:layout_width="match_parent"

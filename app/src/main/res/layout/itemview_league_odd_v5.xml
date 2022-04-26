@@ -432,7 +432,7 @@
         android:id="@+id/league_odd_quick_cate_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorWhite8"
+        android:background="@color/color_1F1F1F_e6e6e6"
         app:layout_constraintTop_toBottomOf="@+id/cl_game" />
 
     <!-- 快選元件 -->
