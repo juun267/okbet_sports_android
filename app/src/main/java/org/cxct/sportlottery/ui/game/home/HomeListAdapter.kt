@@ -464,6 +464,14 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         highlightGameType.dataSport = dataSport
         removeDatas(highlightGameType)
         addDataWithSort(highlightGameType)
+
+        if (dataSport.isNullOrEmpty()) {
+            removeDatas(HomeHighlightGameBarItemData())
+            removeDatas(HomeHighlightGameTitleItemData())
+        } else {
+            setGameHighLightBar()
+            setGameHighLightTitle()
+        }
     }
     fun getDataSport(): ArrayList<Item> {
         var result = HighlightGameTypeItemData()
