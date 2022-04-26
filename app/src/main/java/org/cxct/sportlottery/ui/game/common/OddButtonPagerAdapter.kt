@@ -53,7 +53,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
             field = value.sortScores().refactorPlayCode().sortOdds().filterOddsStatus().splitPlayCate()
                 .filterPlayCateSpanned().sortPlayCate()
             val gameList =
-                field.filterValues { !it.isNullOrEmpty() }.filter { it.value?.getOrNull(0) != null }
+                field.filterValues { !it.isNullOrEmpty() }
                     .plus(field.filterValues { !it.isNullOrEmpty() }
                         .filter { it.value?.getOrNull(0) == null }).map { it.key }.run {
                         val gameListFilter: MutableList<String>
