@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -587,7 +588,35 @@ class OddButtonPagerViewHolder private constructor(
                 }
             }
 
+            //20220426 先判斷spread是否需要顯示，提供name判斷其佈局調整
+            tv_spread.apply {
+                visibility = when (!odds.second?.getOrNull(0)?.spread.isNullOrEmpty()) {
+                    true -> {
+                        View.VISIBLE
+                    }
+                    false -> {
+                        when {
+                            playCateCode.isOUType() -> View.INVISIBLE
+                            else -> {
+                                View.GONE
+                            }
+                        }
+                    }
+                }
+
+                text = odds.second?.getOrNull(0)?.spread ?: ""
+            }
+
+            //20220426 修正spread沒有顯示時，有機會name僅顯示"..."
             tv_name.apply {
+                layoutParams = when (this@homeButtonSettings.tv_spread.visibility) {
+                    View.GONE -> LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+                    else -> LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f)
+                }
+
                 visibility = when {
                     playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() -> View.VISIBLE
                     else -> {
@@ -619,20 +648,6 @@ class OddButtonPagerViewHolder private constructor(
                     }
                     else -> ""
                 }
-            }
-
-            tv_spread.apply {
-                visibility = when (!odds.second?.getOrNull(0)?.spread.isNullOrEmpty()) {
-                    true -> View.VISIBLE
-                    false -> {
-                        when {
-                            playCateCode.isOUType() -> View.INVISIBLE
-                            else -> View.GONE
-                        }
-                    }
-                }
-
-                text = odds.second?.getOrNull(0)?.spread ?: ""
             }
 
             tv_odds.text = getOddByType(odds.second?.getOrNull(0), oddsType)
@@ -674,7 +689,29 @@ class OddButtonPagerViewHolder private constructor(
                 }
             }
 
+            tv_spread.apply {
+                visibility = when (!odds.second?.getOrNull(1)?.spread.isNullOrEmpty()) {
+                    true -> View.VISIBLE
+                    false -> {
+                        when {
+                            playCateCode.isOUType() -> View.INVISIBLE
+                            else -> View.GONE
+                        }
+                    }
+                }
+
+                text = odds.second?.getOrNull(1)?.spread ?: ""
+            }
+
             tv_name.apply {
+                layoutParams = when (this@awayButtonSettings.tv_spread.visibility) {
+                    View.GONE -> LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+                    else -> LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f)
+                }
+
                 visibility = when {
                     playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() -> View.VISIBLE
                     else -> {
@@ -706,20 +743,6 @@ class OddButtonPagerViewHolder private constructor(
                     }
                     else -> ""
                 }
-            }
-
-            tv_spread.apply {
-                visibility = when (!odds.second?.getOrNull(1)?.spread.isNullOrEmpty()) {
-                    true -> View.VISIBLE
-                    false -> {
-                        when {
-                            playCateCode.isOUType() -> View.INVISIBLE
-                            else -> View.GONE
-                        }
-                    }
-                }
-
-                text = odds.second?.getOrNull(1)?.spread ?: ""
             }
 
             tv_odds.text = getOddByType(odds.second?.getOrNull(1), oddsType)
@@ -782,7 +805,30 @@ class OddButtonPagerViewHolder private constructor(
                 }
             }
 
+            tv_spread.apply {
+                visibility = when (!odds.second?.getOrNull(2)?.spread.isNullOrEmpty()) {
+                    true -> View.VISIBLE
+                    false -> {
+                        when {
+                            playCateCode.isOUType() -> View.INVISIBLE
+                            else -> View.GONE
+                        }
+                    }
+                }
+
+                text = odds.second?.getOrNull(2)?.spread ?: ""
+
+            }
+
             tv_name.apply {
+                layoutParams = when (this@drawButtonSettings.tv_spread.visibility) {
+                    View.GONE -> LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+                    else -> LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f)
+                }
+                
                 visibility = View.VISIBLE
 
                 text = when {
@@ -808,21 +854,6 @@ class OddButtonPagerViewHolder private constructor(
                     }
                     else -> ""
                 }
-            }
-
-            tv_spread.apply {
-                visibility = when (!odds.second?.getOrNull(2)?.spread.isNullOrEmpty()) {
-                    true -> View.VISIBLE
-                    false -> {
-                        when {
-                            playCateCode.isOUType() -> View.INVISIBLE
-                            else -> View.GONE
-                        }
-                    }
-                }
-
-                text = odds.second?.getOrNull(2)?.spread ?: ""
-
             }
 
             tv_odds.text = getOddByType(odds.second?.getOrNull(2), oddsType)
