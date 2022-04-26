@@ -210,7 +210,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                     tv_verified.setTextColor(
                         ContextCompat.getColor(
                             tv_verified.context,
-                            R.color.colorBlue
+                            R.color.color_317FFF_1053af
                         )
                     )
                     icon_identity.visibility = View.GONE
@@ -364,12 +364,12 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         tvInfo.apply {
             if (infoData.isNullOrEmpty()) {
                 text = getString(R.string.need_improve)
-                setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.colorBlueDark))
+                setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.color_317FFF_1F4780))
                 iconModify.visibility = View.VISIBLE
                 itemLayout.isEnabled = true
             } else {
                 text = infoData
-                setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.colorGrayDark))
+                setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.color_E0E0E0_404040))
                 iconModify.visibility = View.GONE
                 itemLayout.isEnabled = false
             }

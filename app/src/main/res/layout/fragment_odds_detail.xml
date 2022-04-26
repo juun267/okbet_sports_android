@@ -39,7 +39,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorWhite">
+                    android:background="@color/color_191919_FCFCFC">
 
                     <include
                         android:id="@+id/v_toolbar"
@@ -67,7 +67,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:background="@color/colorWhite"
+                        android:background="@color/color_191919_FCFCFC"
                         android:orientation="horizontal"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="10dp"
@@ -86,14 +86,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true"
-            android:background="@color/colorWhite"
+            android:background="@color/color_191919_FCFCFC"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
+                android:background="@color/color_191919_FCFCFC"
                 android:overScrollMode="never"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:listitem="@layout/content_odds_detail_list_item" />

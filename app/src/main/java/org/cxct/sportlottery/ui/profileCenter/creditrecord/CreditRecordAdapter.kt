@@ -52,11 +52,11 @@ class CreditRecordAdapter : RecyclerView.Adapter<CreditRecordAdapter.ItemViewHol
                                     when {
                                         (item.reward != null && item.reward > 0) -> R.color.colorGreen
                                         (item.reward != null && item.reward < 0) -> R.color.colorRed
-                                        else -> R.color.colorGray
+                                        else -> R.color.color_A3A3A3_666666
                                     }
                                 }
                                 else -> {
-                                    R.color.colorBlueLight
+                                    R.color.color_317FFF_1463cf
                                 }
                             }
                         )

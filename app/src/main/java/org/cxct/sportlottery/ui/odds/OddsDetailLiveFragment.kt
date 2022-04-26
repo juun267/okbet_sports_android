@@ -300,13 +300,13 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                             tv_time_bottom?.setTextColor(
                                 ContextCompat.getColor(
                                     tv_time_bottom.context,
-                                    R.color.colorWhite
+                                    R.color.color_191919_FCFCFC
                                 )
                             )
                             tv_time_top?.setTextColor(
                                 ContextCompat.getColor(
                                     tv_time_bottom.context,
-                                    R.color.colorWhite
+                                    R.color.color_191919_FCFCFC
                                 )
                             )
                         } else {

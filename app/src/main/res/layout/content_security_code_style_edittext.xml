@@ -64,7 +64,7 @@
                 android:maxLength="8"
                 android:scrollHorizontally="true"
                 android:singleLine="true"
-                android:textColor="@color/colorBlackLight"
+                android:textColor="@color/color_e5e5e5_333333"
                 android:textColorHint="@color/color_404040_cccccc"
                 android:textSize="@dimen/textSize12sp"
                 app:autoSizeMaxTextSize="@dimen/textSize12sp"
@@ -94,7 +94,7 @@
                     android:minHeight="32dp"
                     android:text="@string/get_security_code"
                     android:textAllCaps="false"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/color_191919_FCFCFC"
                     android:textSize="@dimen/textSize14sp" />
 
             </LinearLayout>

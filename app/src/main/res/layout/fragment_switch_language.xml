@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="126dp"
-        android:background="@color/colorWhite"
+        android:background="@color/color_191919_FCFCFC"
         android:clickable="true"
         android:gravity="top"
         android:orientation="vertical">
@@ -19,7 +19,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_48"
-            android:background="@color/color_ffededed"
+            android:background="@color/color_212121_ededed"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/margin_8">
 
@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/text_chose_language"
-                android:textColor="@color/colorBlackLight"
+                android:textColor="@color/color_e5e5e5_333333"
                 android:textStyle="bold" />
 
             <ImageView

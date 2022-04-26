@@ -20,7 +20,7 @@
         android:paddingEnd="20dp"
         android:textStyle="bold"
         tools:text="@string/title"
-        android:textColor="@color/colorBlackLight"
+        android:textColor="@color/color_e5e5e5_333333"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,7 +38,7 @@
         android:paddingStart="28dp"
         android:paddingEnd="4dp"
         app:layout_constraintTop_toTopOf="parent"
-        android:buttonTint="@color/colorGrayDark"
+        android:buttonTint="@color/color_E0E0E0_404040"
         android:visibility="gone"/>
 
     <TextView
@@ -50,7 +50,7 @@
         android:paddingEnd="20dp"
         android:text="@string/bottom_sheet_close"
         android:textAllCaps="true"
-        android:textColor="@color/colorGrayLight"
+        android:textColor="@color/color_8F8F8F_999999"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

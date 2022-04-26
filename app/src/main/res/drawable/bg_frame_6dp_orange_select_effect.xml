@@ -3,14 +3,14 @@
     <item android:state_selected="true">
         <shape android:shape="rectangle">
             <corners android:radius="6dp" />
-            <solid android:color="@color/colorOrangeLight" />
+            <solid android:color="@color/color_ff9200" />
         </shape>
     </item>
 
     <item android:state_checked="true">
         <shape android:shape="rectangle">
             <corners android:radius="6dp" />
-            <solid android:color="@color/colorOrangeLight" />
+            <solid android:color="@color/color_FF9143_ff9200" />
         </shape>
     </item>
 

@@ -83,7 +83,7 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private fun setupStateTextColor(item: Row) {
             when (item.checkStatus) {
                 CheckStatus.PROCESSING.code -> {
-                    itemView.rech_log_state.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorGray))
+                    itemView.rech_log_state.setTextColor(ContextCompat.getColor(itemView.context, R.color.color_A3A3A3_666666))
                 }
                 CheckStatus.PASS.code -> {
                     itemView.rech_log_state.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorGreen))

@@ -564,10 +564,10 @@ class WithdrawBankCardAdapter(
 
                 if (bankCard.isSelected) {
                     imgCheckBank.visibility = View.VISIBLE
-                    llSelectBankCard.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite6))
+                    llSelectBankCard.setBackgroundColor(ContextCompat.getColor(context, R.color.color_191919_EEEFF0))
                 } else {
                     imgCheckBank.visibility = View.GONE
-                    llSelectBankCard.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
+                    llSelectBankCard.setBackgroundColor(ContextCompat.getColor(context, R.color.color_191919_FCFCFC))
                 }
             }
         }

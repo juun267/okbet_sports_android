@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorWhite"
+    android:background="@color/color_191919_FCFCFC"
     android:orientation="vertical">
 
     <LinearLayout
@@ -40,7 +40,7 @@
                         android:layout_weight="5"
                         android:gravity="center"
                         android:text="@string/plat"
-                        android:textColor="@color/colorGray"
+                        android:textColor="@color/color_A3A3A3_666666"
                         android:textSize="@dimen/textSize12sp" />
 
                     <View
@@ -60,7 +60,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/first"
-                        android:textColor="@color/colorGray"
+                        android:textColor="@color/color_A3A3A3_666666"
                         android:textSize="@dimen/textSize12sp" />
 
                     <TextView
@@ -69,7 +69,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/second"
-                        android:textColor="@color/colorGray"
+                        android:textColor="@color/color_A3A3A3_666666"
                         android:textSize="@dimen/textSize12sp" />
 
                     <TextView
@@ -78,7 +78,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/third"
-                        android:textColor="@color/colorGray"
+                        android:textColor="@color/color_A3A3A3_666666"
                         android:textSize="@dimen/textSize12sp" />
 
                     <TextView
@@ -87,7 +87,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/fourth"
-                        android:textColor="@color/colorGray"
+                        android:textColor="@color/color_A3A3A3_666666"
                         android:textSize="@dimen/textSize12sp" />
 
                     <TextView
@@ -96,7 +96,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/fifth"
-                        android:textColor="@color/colorGray"
+                        android:textColor="@color/color_A3A3A3_666666"
                         android:textSize="@dimen/textSize12sp" />
 
                     <TextView
@@ -105,7 +105,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/score"
-                        android:textColor="@color/colorGray"
+                        android:textColor="@color/color_A3A3A3_666666"
                         android:textSize="@dimen/textSize12sp" />
 
                     <TextView
@@ -114,7 +114,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/plat"
-                        android:textColor="@color/colorGray"
+                        android:textColor="@color/color_A3A3A3_666666"
                         android:textSize="@dimen/textSize12sp" />
 
                 </LinearLayout>
@@ -127,7 +127,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/colorWhite6" />
+            android:background="@color/color_191919_EEEFF0" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -152,13 +152,13 @@
                     android:paddingTop="6dp"
                     android:paddingEnd="10dp"
                     android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
+                    android:textColor="@color/color_A3A3A3_666666"
                     android:textSize="@dimen/textSize14sp" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/colorWhite6" />
+                    android:background="@color/color_191919_EEEFF0" />
 
                 <TextView
                     android:id="@+id/tv_home_first"
@@ -168,7 +168,7 @@
                     android:gravity="center"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
+                    android:textColor="@color/color_A3A3A3_666666"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="0" />
             </LinearLayout>
@@ -176,7 +176,7 @@
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/colorWhite6" />
+                android:background="@color/color_191919_EEEFF0" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -194,14 +194,14 @@
                     android:gravity="center"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
+                    android:textColor="@color/color_A3A3A3_666666"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="0" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/colorWhite6" />
+                    android:background="@color/color_191919_EEEFF0" />
 
                 <TextView
                     android:id="@+id/tv_home_third"
@@ -211,14 +211,14 @@
                     android:gravity="center"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
+                    android:textColor="@color/color_A3A3A3_666666"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="0" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/colorWhite6" />
+                    android:background="@color/color_191919_EEEFF0" />
 
                 <TextView
                     android:id="@+id/tv_home_fourth"
@@ -228,14 +228,14 @@
                     android:gravity="center"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
+                    android:textColor="@color/color_A3A3A3_666666"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="0" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/colorWhite6" />
+                    android:background="@color/color_191919_EEEFF0" />
 
                 <TextView
                     android:id="@+id/tv_home_fifth"
@@ -245,14 +245,14 @@
                     android:gravity="center"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
+                    android:textColor="@color/color_A3A3A3_666666"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/colorWhite6" />
+                    android:background="@color/color_191919_EEEFF0" />
 
                 <TextView
                     android:id="@+id/tv_home_score"
@@ -262,14 +262,14 @@
                     android:gravity="center"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
+                    android:textColor="@color/color_A3A3A3_666666"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/colorWhite6" />
+                    android:background="@color/color_191919_EEEFF0" />
 
                 <TextView
                     android:id="@+id/tv_home_round"
@@ -279,7 +279,7 @@
                     android:gravity="center"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
+                    android:textColor="@color/color_A3A3A3_666666"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="" />
 
@@ -291,7 +291,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/colorWhite6" />
+            android:background="@color/color_191919_EEEFF0" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -316,13 +316,13 @@
                     android:paddingTop="6dp"
                     android:paddingEnd="10dp"
                     android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
+                    android:textColor="@color/color_A3A3A3_666666"
                     android:textSize="@dimen/textSize14sp" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/colorWhite6" />
+                    android:background="@color/color_191919_EEEFF0" />
 
                 <TextView
                     android:id="@+id/tv_away_first"
@@ -332,7 +332,7 @@
                     android:gravity="center"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
+                    android:textColor="@color/color_A3A3A3_666666"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="0" />
             </LinearLayout>
@@ -340,7 +340,7 @@
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/colorWhite6" />
+                android:background="@color/color_191919_EEEFF0" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -358,14 +358,14 @@
                     android:gravity="center"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
+                    android:textColor="@color/color_A3A3A3_666666"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="0" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/colorWhite6" />
+                    android:background="@color/color_191919_EEEFF0" />
 
                 <TextView
                     android:id="@+id/tv_away_third"
@@ -375,14 +375,14 @@
                     android:gravity="center"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
+                    android:textColor="@color/color_A3A3A3_666666"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="0" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/colorWhite6" />
+                    android:background="@color/color_191919_EEEFF0" />
 
                 <TextView
                     android:id="@+id/tv_away_fourth"
@@ -392,14 +392,14 @@
                     android:gravity="center"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
+                    android:textColor="@color/color_A3A3A3_666666"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="0" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/colorWhite6" />
+                    android:background="@color/color_191919_EEEFF0" />
 
                 <TextView
                     android:id="@+id/tv_away_fifth"
@@ -409,14 +409,14 @@
                     android:gravity="center"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
+                    android:textColor="@color/color_A3A3A3_666666"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/colorWhite6" />
+                    android:background="@color/color_191919_EEEFF0" />
 
                 <TextView
                     android:id="@+id/tv_away_score"
@@ -426,14 +426,14 @@
                     android:gravity="center"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
+                    android:textColor="@color/color_A3A3A3_666666"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/colorWhite6" />
+                    android:background="@color/color_191919_EEEFF0" />
 
                 <TextView
                     android:id="@+id/tv_away_round"
@@ -443,7 +443,7 @@
                     android:gravity="center"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
+                    android:textColor="@color/color_A3A3A3_666666"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="" />
 
@@ -456,7 +456,7 @@
             android:id="@+id/bottom_line"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/colorWhite6" />
+            android:background="@color/color_191919_EEEFF0" />
 
     </LinearLayout>
 </LinearLayout>

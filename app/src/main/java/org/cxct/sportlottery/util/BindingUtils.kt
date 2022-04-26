@@ -113,7 +113,7 @@ fun TextView.setBetMaximumLimit(max: Int) {
 fun View.setBetReceiptBackground(status: Int?) {
     background = when (status) {
         7 -> ContextCompat.getDrawable(context, R.color.color_141414_f3f3f3)
-        else -> ContextCompat.getDrawable(context, R.color.colorWhite)
+        else -> ContextCompat.getDrawable(context, R.color.color_191919_FCFCFC)
     }
 }
 
@@ -172,7 +172,7 @@ fun TextView.setReceiptStatusColor(status: Int?) {
     status?.let {
         val color = when (it) {
             7 -> R.color.colorRed
-            else -> R.color.colorBlue
+            else -> R.color.color_317FFF_1053af
         }
         this.setTextColor(ContextCompat.getColor(context, color))
     }
@@ -189,7 +189,7 @@ fun TextView.setSingleReceiptStatusTips(status: Int?) {
         setTextColor(
             when (statusNotNull) {
                 7 -> ContextCompat.getColor(context, R.color.colorRed)
-                else -> ContextCompat.getColor(context, R.color.colorBlue)
+                else -> ContextCompat.getColor(context, R.color.color_317FFF_1053af)
             }
         )
     }
@@ -199,7 +199,7 @@ fun TextView.setSingleReceiptStatusTips(status: Int?) {
 fun TextView.setGameStatusColor(status: Int?) {
     status?.let {
         val color = when (it) {
-            0, 1, 2, 3 -> R.color.colorBlue
+            0, 1, 2, 3 -> R.color.color_317FFF_0760D4
             else -> R.color.colorRed
         }
         this.setTextColor(ContextCompat.getColor(context, color))
@@ -236,7 +236,7 @@ fun TextView.setBetStatusMoney(status: Int?, money: Double?) {
         }
 
         val color = when (status) {
-            0, 1, 6, 7 -> R.color.colorGrayDark
+            0, 1, 6, 7 -> R.color.color_E0E0E0_404040
             2, 3 -> R.color.colorGreen
             else -> R.color.colorRed
         }
@@ -262,10 +262,10 @@ fun TextView.setRecordStatus(status: Int?) {
 fun TextView.setRecordStatusColor(status: Int?) {
     status?.let {
         val color = when (it) {
-            1 -> R.color.colorGray
+            1 -> R.color.color_A3A3A3_666666
             2 -> R.color.colorGreen
             3 -> R.color.colorRed
-            else -> R.color.colorGray
+            else -> R.color.color_A3A3A3_666666
         }
         this.setTextColor(ContextCompat.getColor(context, color))
     }
@@ -338,8 +338,8 @@ fun TextView.setMoneyColor(profit: Double = 0.0) {
     val color = when {
         profit > 0.0 -> R.color.colorGreen
         profit < 0.0 -> R.color.colorRed
-        profit == 0.0 -> R.color.colorGray
-        else -> R.color.colorGray
+        profit == 0.0 -> R.color.color_A3A3A3_666666
+        else -> R.color.color_A3A3A3_666666
     }
 
     this.setTextColor(ContextCompat.getColor(context, color))
@@ -350,9 +350,9 @@ fun TextView.setMoneyColor(profit: Double = 0.0) {
 fun TextView.setMoneyColorWhite(profit: Double = 0.0) {
 
     val color = when {
-        profit >= 0.0 -> R.color.colorWhite
+        profit >= 0.0 -> R.color.color_191919_FCFCFC
         profit < 0.0 -> R.color.colorRedLight
-        else -> R.color.colorWhite
+        else -> R.color.color_191919_FCFCFC
     }
 
     this.setTextColor(ContextCompat.getColor(context, color))

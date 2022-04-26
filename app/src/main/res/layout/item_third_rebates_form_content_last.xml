@@ -35,7 +35,7 @@
                 android:gravity="center"
                 android:paddingTop="6dp"
                 android:paddingBottom="6dp"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/color_FFFFFF_000000"
                 android:textSize="@dimen/textSize13sp"
                 tools:text="100" />
 
@@ -43,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tilde"
-                android:textColor="@color/colorGray"
+                android:textColor="@color/color_A3A3A3_666666"
                 android:textStyle="bold" />
 
             <TextView
@@ -54,7 +54,7 @@
                 android:gravity="center"
                 android:paddingTop="6dp"
                 android:paddingBottom="6dp"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/color_FFFFFF_000000"
                 android:textSize="@dimen/textSize13sp"
                 tools:text="100" />
         </LinearLayout>
@@ -72,7 +72,7 @@
             android:gravity="center"
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/color_FFFFFF_000000"
             android:textSize="@dimen/textSize13sp"
             tools:background="@color/color_141414_F3F4F5"
             tools:backgroundTint="@color/color_141414_F3F4F5"
@@ -92,7 +92,7 @@
             android:gravity="center"
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/color_FFFFFF_000000"
             android:textSize="@dimen/textSize13sp"
             tools:backgroundTint="@color/color_141414_F3F4F5"
             tools:text="100" />

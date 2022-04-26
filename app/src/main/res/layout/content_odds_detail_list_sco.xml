@@ -56,7 +56,7 @@
         android:id="@+id/rv_bet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorWhite"
+        android:background="@color/color_191919_FCFCFC"
         android:nestedScrollingEnabled="false"
         android:overScrollMode="never"
         tools:itemCount="5"

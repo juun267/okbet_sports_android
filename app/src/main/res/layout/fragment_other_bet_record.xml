@@ -40,7 +40,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/bet_time2"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize12sp"  />
 
         <TextView
@@ -50,7 +50,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/bet_number"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize12sp"  />
 
         <TextView
@@ -60,7 +60,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/bet_money"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize12sp"  />
 
         <TextView
@@ -70,7 +70,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/profit_and_loss"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize12sp"  />
     </LinearLayout>
 

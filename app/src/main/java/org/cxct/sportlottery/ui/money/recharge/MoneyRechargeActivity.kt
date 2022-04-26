@@ -310,7 +310,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
             GridItemDecoration(
                 10.dp,
                 7.dp,
-                ContextCompat.getColor(this, R.color.colorWhite),
+                ContextCompat.getColor(this, R.color.color_191919_FCFCFC),
                 false
             )
         )

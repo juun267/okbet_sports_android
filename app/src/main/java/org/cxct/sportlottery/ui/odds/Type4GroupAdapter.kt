@@ -73,7 +73,7 @@ class Type4GroupAdapter(
                     GridItemDecoration(
                         context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_odds),
                         context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_odds),
-                        ContextCompat.getColor(context, R.color.colorWhite),
+                        ContextCompat.getColor(context, R.color.color_191919_FCFCFC),
                         false
                     )
                 )

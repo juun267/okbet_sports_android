@@ -17,7 +17,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="44dp"
-        android:background="@color/colorWhite"
+        android:background="@color/color_191919_FCFCFC"
         app:layout_constraintTop_toBottomOf="@id/date_range_selector">
 
         <org.cxct.sportlottery.ui.component.StatusSelectorView
@@ -35,7 +35,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
-            android:background="@color/colorWhite6" />
+            android:background="@color/color_191919_EEEFF0" />
 
         <org.cxct.sportlottery.ui.component.StatusSelectorView
             android:id="@+id/selector_method_status"
@@ -66,7 +66,7 @@
             android:paddingStart="2dp"
             android:maxLines="1"
             android:text="@string/recharge_log_order_time"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             app:autoSizeMaxTextSize="@dimen/textSize12sp"
             app:autoSizeMinTextSize="@dimen/textSize8sp" />
 
@@ -79,7 +79,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/recharge_log_recharge_amount"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             app:autoSizeMaxTextSize="@dimen/textSize12sp"
             app:autoSizeMinTextSize="@dimen/textSize8sp" />
 
@@ -92,7 +92,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/recharge_log_channel_type"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             app:autoSizeMaxTextSize="@dimen/textSize12sp"
             app:autoSizeMinTextSize="@dimen/textSize8sp" />
 
@@ -105,7 +105,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/recharge_log_order_state"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             app:autoSizeMaxTextSize="@dimen/textSize12sp"
             app:autoSizeMinTextSize="@dimen/textSize8sp" />
     </LinearLayout>

@@ -292,8 +292,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             .setTitleText(resources.getString(R.string.title_recharge_time))
             .setCancelText(" ")
             .setSubmitText(getString(R.string.picker_submit))
-            .setSubmitColor(ContextCompat.getColor(cv_recharge_time.context, R.color.colorGrayLight))
-            .setCancelColor(ContextCompat.getColor(cv_recharge_time.context, R.color.colorGrayLight))
+            .setSubmitColor(ContextCompat.getColor(cv_recharge_time.context, R.color.color_8F8F8F_999999))
+            .setCancelColor(ContextCompat.getColor(cv_recharge_time.context, R.color.color_8F8F8F_999999))
             .isDialog(true)
             .build() as TimePickerView
 

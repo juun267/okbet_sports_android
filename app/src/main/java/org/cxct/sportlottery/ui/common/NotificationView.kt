@@ -84,7 +84,7 @@ class NotificationView @JvmOverloads constructor(context: Context, attrs: Attrib
         try {
             when (notification?.status) {
                 Status.WIN.code, Status.WIN_HALF.code -> {
-                    rootLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.colorBlue))
+                    rootLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.color_317FFF_1053af))
                     ivIcon.setImageResource(R.drawable.ic_good_news)
                     tvMessage.text = String.format(context.getString(R.string.congratulation_win), tailOrderNo, ArithUtil.toMoneyFormat(notification.grossWin))
                     this.requestLayout()

@@ -750,7 +750,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     cl_item_background.setBackgroundColor(
                         ContextCompat.getColor(
                             context,
-                            R.color.colorWhite
+                            R.color.color_191919_FCFCFC
                         )
                     )
                     iv_bet_lock.visibility = View.GONE

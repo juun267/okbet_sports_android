@@ -24,7 +24,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorWhite"
+                android:background="@color/color_191919_FCFCFC"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <!-- Banner ads -->
@@ -241,7 +241,7 @@
                 android:id="@+id/tab_layout"
                 android:layout_width="match_parent"
                 android:layout_height="85dp"
-                android:background="#E6F0F2F6"
+                android:background="@color/color_141414_F3F4F5"
                 android:gravity="center"
                 android:minHeight="56dp"
                 android:orientation="horizontal"

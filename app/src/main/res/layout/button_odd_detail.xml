@@ -37,7 +37,7 @@
                 android:textColor="@color/selector_button_odd_top_text2"
                 android:textSize="@dimen/textSize13sp"
                 tools:text="义大利"
-                tools:textColor="@color/colorGrayLight" />
+                tools:textColor="@color/color_8F8F8F_999999" />
 
             <TextView
                 android:id="@+id/tv_spread"

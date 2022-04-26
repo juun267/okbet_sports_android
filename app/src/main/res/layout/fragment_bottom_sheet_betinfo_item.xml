@@ -127,7 +127,7 @@
                         android:id="@+id/cl_item_background"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorWhite"
+                        android:background="@color/color_191919_FCFCFC"
                         app:layout_constraintTop_toBottomOf="@+id/layoutTitle">
 
                         <ImageView
@@ -169,7 +169,7 @@
                                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                                 android:layout_marginTop="9dp"
                                 android:layout_marginEnd="8dp"
-                                android:textColor="@color/colorBlackLight"
+                                android:textColor="@color/color_e5e5e5_333333"
                                 android:textSize="@dimen/textSize15sp"
                                 android:textStyle="bold"
                                 app:layout_constraintEnd_toStartOf="@+id/iv_close"
@@ -184,7 +184,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/margin_16"
                                 android:layout_marginTop="10dp"
-                                android:textColor="@color/colorBlackLight"
+                                android:textColor="@color/color_e5e5e5_333333"
                                 android:textSize="@dimen/textSize13sp"
                                 app:layout_constraintEnd_toStartOf="@id/tvContent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -214,7 +214,7 @@
                                 android:ellipsize="end"
                                 android:maxLines="2"
                                 android:layout_marginBottom="@dimen/margin_8"
-                                android:textColor="@color/colorGray"
+                                android:textColor="@color/color_A3A3A3_666666"
                                 android:textSize="@dimen/textSize13sp"
                                 app:layout_constraintBottom_toTopOf="@+id/tv_odd_content_changed"
                                 app:layout_constraintEnd_toStartOf="@id/tvOdds"
@@ -227,7 +227,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-                                android:textColor="@color/colorBlue"
+                                android:textColor="@color/color_317FFF_0760D4"
                                 android:textSize="@dimen/margin_14"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toEndOf="@id/tv_match"
@@ -254,7 +254,7 @@
                                 android:id="@+id/viewGrey"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
-                                android:background="@color/colorWhite6"
+                                android:background="@color/color_191919_EEEFF0"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/tv_odd_content_changed" />
 
@@ -271,7 +271,7 @@
                                 android:letterSpacing="0.05"
                                 android:maxLength="7"
                                 android:paddingStart="10dp"
-                                android:textColor="@color/colorBlue"
+                                android:textColor="@color/color_317FFF_0760D4"
                                 android:textColorHint="@color/color_404040_cccccc"
                                 android:textSize="@dimen/textSize16sp"
                                 android:textStyle="bold"
@@ -322,7 +322,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/actual_bet"
-                                    android:textColor="@color/colorGray"
+                                    android:textColor="@color/color_A3A3A3_666666"
                                     android:textSize="@dimen/textSize12sp" />
 
                                 <TextView
@@ -330,7 +330,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="0.00"
-                                    android:textColor="@color/colorBlue"
+                                    android:textColor="@color/color_317FFF_0760D4"
                                     android:textSize="@dimen/textSize12sp" />
 
                             </LinearLayout>
@@ -452,7 +452,7 @@
                     android:background="@drawable/button_radius_4_cde5ff"
                     android:gravity="center"
                     android:text="@string/bet_info_add_to_bet_info"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
                 <org.cxct.sportlottery.ui.bet.list.BetButton

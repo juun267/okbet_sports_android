@@ -480,7 +480,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                                     GridItemDecoration(
                                         context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_odds),
                                         context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_odds),
-                                        ContextCompat.getColor(context, R.color.colorWhite),
+                                        ContextCompat.getColor(context, R.color.color_191919_FCFCFC),
                                         false
                                     )
                                 )
@@ -906,7 +906,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             context: Context,
             oddsDetail: OddsDetailListData
         ): SpannableStringBuilder {
-            val textColor = ContextCompat.getColor(context, R.color.colorGray)
+            val textColor = ContextCompat.getColor(context, R.color.color_A3A3A3_666666)
             val gameTitleContentBuilder = SpannableStringBuilder()
             val statusWord =
                 oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)

@@ -69,7 +69,7 @@
         android:gravity="center"
         android:maxWidth="100dp"
         android:text="@string/one_key_recovery"
-        android:textColor="@color/colorWhite"
+        android:textColor="@color/color_191919_FCFCFC"
         android:textSize="@dimen/textSize16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

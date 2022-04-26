@@ -64,7 +64,7 @@
         android:id="@+id/SpaceItemDecorationView"
         android:layout_width="match_parent"
         android:layout_height="8dp"
-        android:background="@color/colorWhite"
+        android:background="@color/color_191919_FCFCFC"
         app:layout_constraintTop_toBottomOf="@+id/league_odd_list" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,7 +6,7 @@
     android:layout_height="40dp"
     android:id="@+id/cl_close_waring"
     android:visibility="gone"
-    android:background="@color/colorWhite"
+    android:background="@color/color_191919_FCFCFC"
     tools:ignore="SpUsage">
 
     <TextView
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/bet_info_remove_closed"
-        android:textColor="@color/colorBlue"
+        android:textColor="@color/color_317FFF_0760D4"
         android:textSize="@dimen/textSize12sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"

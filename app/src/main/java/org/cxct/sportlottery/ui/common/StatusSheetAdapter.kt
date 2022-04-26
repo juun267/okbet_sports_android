@@ -88,8 +88,8 @@ class StatusSheetAdapter(private val checkedListener: ItemCheckedListener) :
                 checkbox.setBackgroundColor(
                     if (data.isChecked) ContextCompat.getColor(
                         checkbox.context,
-                        R.color.colorWhite6
-                    ) else ContextCompat.getColor(checkbox.context, R.color.colorWhite)
+                        R.color.color_191919_EEEFF0
+                    ) else ContextCompat.getColor(checkbox.context, R.color.color_191919_FCFCFC)
                 )
             }
         }

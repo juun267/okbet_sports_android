@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_margin="26dp"
-    app:cardBackgroundColor="@color/colorWhite"
+    app:cardBackgroundColor="@color/color_191919_FCFCFC"
     app:cardCornerRadius="6dp"
     app:cardElevation="0dp"
     tools:context="org.cxct.sportlottery.ui.common.CustomAlertDialog">
@@ -26,7 +26,7 @@
             android:layout_marginBottom="11dp"
             android:gravity="center"
             android:text="@string/self_limit_impotent"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/color_FFFFFF_000000"
             android:textSize="@dimen/textSize16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="11dp"
-            android:background="@color/colorWhite6"
+            android:background="@color/color_191919_EEEFF0"
             app:layout_constraintTop_toBottomOf="@+id/tv_title"
             app:layout_constraintVertical_bias="1" />
 

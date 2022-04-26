@@ -5,7 +5,7 @@
     android:id="@+id/cl_root"
     android:layout_width="match_parent"
     android:layout_height="44dp"
-    android:background="@color/colorWhite"
+    android:background="@color/color_191919_FCFCFC"
     tools:layout_margin="10dp"
     tools:context=".ui.component.StatusSelectorView"
     tools:background="@drawable/frame_color_silver_light_stroke">
@@ -17,7 +17,7 @@
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="1"
-        android:textColor="@color/colorGrayDark"
+        android:textColor="@color/color_E0E0E0_404040"
         android:textSize="@dimen/textSize14sp"
         android:paddingHorizontal="14dp"
         app:autoSizeMaxTextSize="@dimen/textSize14sp"

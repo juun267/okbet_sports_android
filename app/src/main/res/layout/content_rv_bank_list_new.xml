@@ -43,7 +43,7 @@
             android:layout_marginBottom="26dp"
             android:gravity="center"
             android:text="@string/add_new"
-            android:textColor="@color/colorBlue"
+            android:textColor="@color/color_317FFF_0760D4"
             android:textSize="@dimen/textSize14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"

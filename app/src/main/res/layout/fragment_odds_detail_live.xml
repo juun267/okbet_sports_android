@@ -37,7 +37,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorWhite"
+                    android:background="@color/color_191919_FCFCFC"
                     android:orientation="vertical">
 
                     <include
@@ -66,7 +66,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:background="@color/colorWhite"
+                        android:background="@color/color_191919_FCFCFC"
                         android:orientation="horizontal"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="10dp"
@@ -80,7 +80,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorWhite"
+            android:background="@color/color_191919_FCFCFC"
             android:orientation="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -88,7 +88,7 @@
                 android:id="@+id/rv_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
+                android:background="@color/color_191919_FCFCFC"
                 android:overScrollMode="never"
                 app:layout_constraintTop_toBottomOf="@id/rv_cat"
                 tools:layout_constraintBottom_toBottomOf="parent"

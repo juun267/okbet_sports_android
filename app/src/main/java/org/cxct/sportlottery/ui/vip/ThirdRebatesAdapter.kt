@@ -91,7 +91,7 @@ class TitleViewHolder private constructor(itemView: View) : RecyclerView.ViewHol
 
     fun bind(itemData: Debate) {
         itemView.apply {
-            ContextCompat.getColorStateList(context, R.color.colorWhite7).let {
+            ContextCompat.getColorStateList(context, R.color.color_191919_DFEAF8).let {
                 title_top_left.backgroundTintList = it
                 title_top_center.backgroundTintList = it
                 title_top_right.backgroundTintList = it

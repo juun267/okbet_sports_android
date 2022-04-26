@@ -20,7 +20,7 @@
         android:paddingStart="16dp"
         android:paddingEnd="4dp"
         android:text="@string/select_all_league"
-        android:textColor="@color/colorBlackLight"
+        android:textColor="@color/color_e5e5e5_333333"
         android:textSize="@dimen/textSize16sp"
         android:textStyle="bold" />
 
@@ -30,7 +30,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="@string/select_cancel"
-        android:textColor="@color/colorGrayLight"
+        android:textColor="@color/color_8F8F8F_999999"
         android:textSize="@dimen/textSize14sp" />
 
 

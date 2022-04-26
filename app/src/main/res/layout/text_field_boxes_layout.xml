@@ -64,7 +64,7 @@
                         android:layout_marginTop="@dimen/label_idle_margin_top"
                         android:gravity="center"
                         android:includeFontPadding="false"
-                        android:textColor="@color/colorGrayText"
+                        android:textColor="@color/color_8F8F8F_999999"
                         android:textSize="@dimen/textSize15sp"
                         android:textStyle="bold"
                         tools:text="Label" />
@@ -78,7 +78,7 @@
                         android:layout_marginEnd="10dp"
                         android:gravity="center"
                         android:includeFontPadding="false"
-                        android:textColor="@color/colorBlackLight"
+                        android:textColor="@color/color_e5e5e5_333333"
                         android:textSize="@dimen/textSize12sp"
                         android:textStyle="bold"
                         tools:text="SubLabel" />
@@ -103,7 +103,7 @@
                         android:layout_centerVertical="true"
                         android:gravity="center"
                         android:includeFontPadding="false"
-                        android:textColor="@color/colorGrayText"
+                        android:textColor="@color/color_8F8F8F_999999"
                         android:textSize="@dimen/textSize14sp"
                         android:textStyle="bold"
                         tools:text="" />

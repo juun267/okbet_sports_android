@@ -24,7 +24,7 @@
             android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorWhite"
+            android:background="@color/color_191919_FCFCFC"
             android:fillViewport="true"
             android:overScrollMode="never">
 
@@ -364,7 +364,7 @@
                         android:paddingHorizontal="16dp"
                         android:text="@string/label_match_recommend"
                         android:textAllCaps="true"
-                        android:textColor="@color/colorBlue"
+                        android:textColor="@color/color_317FFF_0760D4"
                         android:textSize="@dimen/textSize20sp"/>
 
                     <View
@@ -404,7 +404,7 @@
                         android:layout_height="28dp"
                         android:paddingHorizontal="16dp"
                         android:text="@string/label_highlight"
-                        android:textColor="@color/colorBlue"
+                        android:textColor="@color/color_317FFF_0760D4"
                         android:textSize="@dimen/textSize20sp"/>
 
                     <View
@@ -448,7 +448,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:tint="@color/colorGray"
+                        app:tint="@color/color_A3A3A3_666666"
                         tools:src="@drawable/ic_soccer" />
 
                     <TextView
@@ -457,7 +457,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
                         android:gravity="center"
-                        android:textColor="@color/colorBlackLight"
+                        android:textColor="@color/color_e5e5e5_333333"
                         android:textSize="@dimen/textSize18sp"
                         android:textStyle="bold"
                         android:textAllCaps="true"

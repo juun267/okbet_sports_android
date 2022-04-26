@@ -34,7 +34,7 @@
             android:gravity="center_vertical"
             android:singleLine="true"
             android:text="@string/appearance"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -67,7 +67,7 @@
         android:layout_marginStart="20dp"
         android:gravity="center"
         android:text="@string/appearance"
-        android:textColor="@color/colorBlackLight"
+        android:textColor="@color/color_e5e5e5_333333"
         android:textSize="@dimen/textSize14sp"
         android:textStyle="bold" />
 
@@ -89,7 +89,7 @@
             android:paddingStart="10dp"
             android:text="@string/day_mode"
             android:checked="true"
-            android:textColor="@color/colorGrayDark"
+            android:textColor="@color/color_E0E0E0_404040"
             android:textSize="@dimen/textSize14sp" />
 
         <RadioButton
@@ -101,7 +101,7 @@
             android:drawablePadding="10dp"
             android:paddingStart="10dp"
             android:text="@string/night_mode"
-            android:textColor="@color/colorGrayDark"
+            android:textColor="@color/color_E0E0E0_404040"
             android:textSize="@dimen/textSize14sp" />
 
     </RadioGroup>

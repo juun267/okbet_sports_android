@@ -129,7 +129,7 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
                             binding.btnSendSms.setTextColor(
                                 ContextCompat.getColor(
                                     this@PhoneVerifyActivity,
-                                    R.color.colorGrayDark
+                                    R.color.color_E0E0E0_404040
                                 )
                             )
                         } else {

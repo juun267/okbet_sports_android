@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorBlue"
+        android:background="@color/color_317FFF_0760D4"
         android:orientation="horizontal"
         android:paddingStart="16dp"
         android:paddingTop="18dp"
@@ -20,14 +20,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/label_title_parlay"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/color_191919_FCFCFC"
             android:textSize="@dimen/textSize14sp" />
 
         <TextView
             android:id="@+id/title_parlay_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/color_191919_FCFCFC"
             android:textSize="@dimen/textSize14sp"
             tools:text="2 串 1" />
     </LinearLayout>
@@ -63,7 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/bet_info_list_bet_quota"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize13sp" />
 
                 <TextView
@@ -71,7 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize13sp"
                     tools:text="50.000" />
             </LinearLayout>
@@ -84,7 +84,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/bet_info_list_win_quota"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize13sp" />
 
                 <TextView
@@ -106,7 +106,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/colorGrayLight"
+                android:textColor="@color/color_8F8F8F_999999"
                 android:textSize="@dimen/textSize13sp"
                 tools:text="b000003612091822030128" />
 
@@ -114,7 +114,7 @@
                 android:id="@+id/content_parlay_time_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorGrayLight"
+                android:textColor="@color/color_8F8F8F_999999"
                 android:textSize="@dimen/textSize13sp"
                 tools:text="23:04:01 (欧洲盘)" />
         </LinearLayout>

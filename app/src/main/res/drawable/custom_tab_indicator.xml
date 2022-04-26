@@ -7,7 +7,7 @@
             <corners
                 android:bottomRightRadius="0dp" android:bottomLeftRadius="0dp"
                 android:topLeftRadius="2dp" android:topRightRadius="2dp" />
-            <solid android:color="@color/colorBlue" />
+            <solid android:color="@color/color_317FFF_0760D4" />
         </shape>
     </item>
 </layer-list>

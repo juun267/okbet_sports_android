@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorWhite"
+    android:background="@color/color_191919_FCFCFC"
     android:orientation="vertical"
     tools:context=".ui.menu.ChangeLanguageDialog"
     tools:ignore="SpUsage,RtlSymmetry">
@@ -22,7 +22,7 @@
             android:gravity="center"
             android:singleLine="true"
             android:text="@string/left_menu_odds_type_setting"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -57,7 +57,7 @@
             android:button="@null"
             android:gravity="center"
             android:text="@string/odd_type_eu"
-            android:textColor="@color/colorGrayDark"
+            android:textColor="@color/color_E0E0E0_404040"
             android:textSize="@dimen/textSize14sp" />
         <RadioButton
             android:id="@+id/rb_hk"
@@ -67,7 +67,7 @@
             android:button="@null"
             android:gravity="center"
             android:text="@string/odd_type_hk"
-            android:textColor="@color/colorGrayDark"
+            android:textColor="@color/color_E0E0E0_404040"
             android:textSize="@dimen/textSize14sp"
             tools:checked="true"/>
 
@@ -79,7 +79,7 @@
             android:button="@null"
             android:gravity="center"
             android:text="@string/odd_type_mys"
-            android:textColor="@color/colorGrayDark"
+            android:textColor="@color/color_E0E0E0_404040"
             android:textSize="@dimen/textSize14sp" />
         <RadioButton
             android:id="@+id/rb_idn"
@@ -89,7 +89,7 @@
             android:button="@null"
             android:gravity="center"
             android:text="@string/odd_type_idn"
-            android:textColor="@color/colorGrayDark"
+            android:textColor="@color/color_E0E0E0_404040"
             android:textSize="@dimen/textSize14sp" />
 
     </RadioGroup>

@@ -487,7 +487,7 @@ class Vp2GameTable4Adapter (
                             val timeMillisAbs = if (time > 0) time else 0
                             val timeStr = statusName + String.format(itemView.context.resources.getString(R.string.at_start_remain_minute), TimeUtil.longToMinute(timeMillisAbs))
                             tv_match_time.text = timeStr
-                            tv_match_time.setTextColor(ContextCompat.getColor(context, R.color.colorGray))
+                            tv_match_time.setTextColor(ContextCompat.getColor(context, R.color.color_A3A3A3_666666))
                         }
                     }
                     else -> {

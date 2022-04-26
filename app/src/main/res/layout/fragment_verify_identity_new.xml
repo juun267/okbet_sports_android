@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:gravity="start|center_vertical"
             android:text="@string/type_of_certificate"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize13sp"
             android:textStyle="bold" />
 
@@ -37,7 +37,7 @@
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
-            android:background="@color/colorWhite6" />
+            android:background="@color/color_191919_EEEFF0" />
 
         <TextView
             android:id="@+id/tv_select_bank_card"
@@ -46,7 +46,7 @@
             android:layout_marginEnd="28dp"
             android:layout_weight="1"
             android:gravity="start|center_vertical"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize12sp"
             tools:text="UM ID" />
 
@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/prepare_your_id_photo"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize12sp"
             android:textStyle="bold" />
 
@@ -84,7 +84,7 @@
             android:layout_height="1dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="15dp"
-            android:background="@color/colorWhite6" />
+            android:background="@color/color_191919_EEEFF0" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -112,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="@string/identity_card"
-                android:textColor="@color/colorGray"
+                android:textColor="@color/color_A3A3A3_666666"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintEnd_toEndOf="@+id/img_id_card"
                 app:layout_constraintStart_toStartOf="@+id/img_id_card"
@@ -132,7 +132,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="@string/passport"
-                android:textColor="@color/colorGray"
+                android:textColor="@color/color_A3A3A3_666666"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintEnd_toEndOf="@+id/img_password"
                 app:layout_constraintStart_toStartOf="@+id/img_password"
@@ -162,7 +162,7 @@
             android:paddingBottom="9dp"
             android:text="@string/take_id_photo"
             android:textAllCaps="true"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/color_191919_FCFCFC"
             android:textSize="@dimen/textSize16sp"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/ll_description" />
@@ -181,7 +181,7 @@
 <!--            android:paddingBottom="9dp"-->
 <!--            android:text="@string/take_id_gallery"-->
 <!--            android:textAllCaps="true"-->
-<!--            android:textColor="@color/colorWhite"-->
+<!--            android:textColor="@color/color_191919_FCFCFC"-->
 <!--            android:textSize="@dimen/textSize16sp"-->
 <!--            android:textStyle="bold"-->
 <!--            app:layout_constraintTop_toBottomOf="@id/ll_description" />-->

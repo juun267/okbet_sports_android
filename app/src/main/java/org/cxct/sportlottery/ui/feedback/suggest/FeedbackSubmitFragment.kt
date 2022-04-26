@@ -38,7 +38,7 @@ class FeedbackSubmitFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
             tv_input_count.text = String.format("%d / 500", it)
 
             ll_error.visibility = if (it > 0) View.GONE else View.VISIBLE
-            val textColor = if (it > 0) R.color.colorSilverDirk else R.color.colorRedDark
+            val textColor = if (it > 0) R.color.color_616161_b4b4b4 else R.color.colorRedDark
             tv_input_count.setTextColor(ContextCompat.getColor(tv_input_count.context, textColor))
         }
     }

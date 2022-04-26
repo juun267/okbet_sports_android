@@ -119,7 +119,7 @@ class CreditRecordActivity :
                         this@CreditRecordActivity, when {
                             (it.reward != null && it.reward > 0) -> R.color.colorGreen
                             (it.reward != null && it.reward < 0) -> R.color.colorRed
-                            else -> R.color.colorGray
+                            else -> R.color.color_A3A3A3_666666
                         }
                     )
                 )
