@@ -808,13 +808,21 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         }
 
         viewModel.favorMatchList.observe(viewLifecycleOwner) { favorMatchList ->
-            mHomeListAdapter.getGameEntityData().forEach {
-                it.matchOdds.forEach { matchOdd ->
+            val gameEntityData = mHomeListAdapter.getGameEntityData()
+            gameEntityData.forEachIndexed { index, it ->
+                it.matchOdds.forEachIndexed { adapterIndex, matchOdd ->
                     matchOdd.matchInfo?.isFavorite = favorMatchList.contains(matchOdd.matchInfo?.id)
+                    mHomeListAdapter.notifySubItemChanged(index, adapterIndex)
                 }
             }
-            mHomeListAdapter.getMatchOdd().forEach {
-                it.matchInfo?.isFavorite = favorMatchList.contains(it.matchInfo?.id)
+
+            val highlightMatchOdd = mHomeListAdapter.getMatchOdd()
+            highlightMatchOdd.forEach {
+                val isFavorite = favorMatchList.contains(it.matchInfo?.id)
+                if (it.matchInfo?.isFavorite != isFavorite) {
+                    it.matchInfo?.isFavorite = isFavorite
+                    mHomeListAdapter.notifyHighLightItemChanged(it)
+                }
             }
         }
 
