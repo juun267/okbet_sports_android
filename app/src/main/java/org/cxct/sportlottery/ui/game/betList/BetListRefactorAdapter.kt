@@ -38,6 +38,7 @@ import org.cxct.sportlottery.ui.transactionStatus.ParlayType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayRuleStringRes
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.BetPlayCateFunction.getNameMap
 import kotlin.math.min
 
 class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListener) :
@@ -617,14 +618,14 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             true -> {
                                 context.getString(
                                     R.string.bet_info_in_play_score,
-                                    itemData.betPlayCateNameMap?.get(itemData.matchOdd.playCode)
+                                    itemData.betPlayCateNameMap?.getNameMap(itemData.matchOdd.playCode)
                                         ?.get(LanguageManager.getSelectLanguage(context).key) ?: "",
                                     itemData.matchOdd.homeScore.toString(),
                                     itemData.matchOdd.awayScore.toString()
                                 )
                             }
                             else -> nameOneLine(
-                                itemData.betPlayCateNameMap?.get(itemData.matchOdd.playCode)
+                                itemData.betPlayCateNameMap?.getNameMap(itemData.matchOdd.playCode)
                                     ?.get(LanguageManager.getSelectLanguage(context).key) ?: ""
                             )
                         }

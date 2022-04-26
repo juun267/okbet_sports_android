@@ -57,6 +57,7 @@ import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.BetPlayCateFunction.getNameMap
 import org.parceler.Parcels
 import kotlin.math.min
 
@@ -734,13 +735,13 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     if (inPlay && betInfoListData?.matchType != MatchType.OUTRIGHT && matchOdd.gameType == GameType.FT.key) {
                         getString(
                             R.string.bet_info_in_play_score,
-                            betPlayCateNameMap?.get(matchOdd.playCode)
+                            betPlayCateNameMap.getNameMap(matchOdd.playCode)
                                 ?.get(LanguageManager.getSelectLanguage(context).key) ?: "",
                             matchOdd.homeScore.toString(),
                             matchOdd.awayScore.toString()
                         )
                     } else nameOneLine(
-                        betPlayCateNameMap?.get(matchOdd.playCode)
+                        betPlayCateNameMap.getNameMap(matchOdd.playCode)
                             ?.get(LanguageManager.getSelectLanguage(context).key) ?: ""
                     )
             }
