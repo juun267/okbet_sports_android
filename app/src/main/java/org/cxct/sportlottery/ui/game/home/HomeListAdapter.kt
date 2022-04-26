@@ -336,6 +336,21 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.isNullOrEmpty()) {
+            onBindViewHolder(holder, position)
+        } else {
+            val payload = payloads.firstOrNull()
+            when (holder) {
+                is HighlightGameTypeViewHolder -> {
+                    if(payload is HighlightGameTypeItemData) {
+                        holder.update(payload)
+                    }
+                }
+            }
+        }
+    }
+
     override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
         super.onViewDetachedFromWindow(holder)
         if(holder is HighlightGameTypeViewHolder) { // TODO
@@ -458,7 +473,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun updateDataSport() {
         mDataList.forEachIndexed { index, any ->
             if(any is HighlightGameTypeItemData) {
-                notifyItemChanged(index)
+                notifyItemChanged(index, any)
             }
         }
     }
