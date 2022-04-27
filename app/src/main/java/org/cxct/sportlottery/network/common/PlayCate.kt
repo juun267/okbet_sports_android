@@ -398,6 +398,7 @@ enum class PlayCate(val value: String) {
                 CS_OT.value -> CS_OT
                 CS_SEG.value -> CS_SEG
                 CS_SEG1.value -> CS_SEG1
+                LCS.value -> LCS
                 DC.value -> DC
                 DC_BTS.value -> DC_BTS
                 DC_FLG.value -> DC_FLG
