@@ -12,6 +12,7 @@ import com.zhy.adapter.recyclerview.CommonAdapter
 import com.zhy.adapter.recyclerview.base.ViewHolder
 import kotlinx.android.synthetic.main.home_game_table_4.view.*
 import kotlinx.android.synthetic.main.home_sport_table_4.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeString
@@ -170,7 +171,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 getGameIcon(gameCode)?.let {
                     iv_game_icon.setImageResource(it)
                 }
-                getTitleBarBackground(gameCode)?.let {
+                getTitleBarBackground(gameCode, MultiLanguagesApplication.isNightMode)?.let {
                     titleBar.setBackgroundResource(it)
                 }
                 titleBar.setOnClickListener {

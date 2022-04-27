@@ -13,7 +13,7 @@
         android:id="@+id/iv_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/soccer_account"
+        android:src="@drawable/bg_transaction_record"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -70,7 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginTop="10dp"
-        android:background="@color/color_317FFF_0760D4"
+        android:background="@color/color_1D4C99_0760D4"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -83,7 +83,7 @@
             android:layout_weight="1.5"
             android:gravity="center"
             android:text="@string/date"
-            android:textColor="@color/color_191919_FCFCFC"
+            android:textColor="@color/color_FFFFFF_FFFFFF"
             android:textSize="@dimen/textSize12sp" />
 
         <TextView
@@ -92,7 +92,7 @@
             android:layout_weight="2"
             android:gravity="center"
             android:text="@string/bet_amount"
-            android:textColor="@color/color_191919_FCFCFC"
+            android:textColor="@color/color_FFFFFF_FFFFFF"
             android:textSize="@dimen/textSize12sp" />
 
         <TextView
@@ -101,7 +101,7 @@
             android:layout_weight="2"
             android:gravity="center"
             android:text="@string/available_amount"
-            android:textColor="@color/color_191919_FCFCFC"
+            android:textColor="@color/color_FFFFFF_FFFFFF"
             android:textSize="@dimen/textSize12sp" />
 
         <TextView
@@ -110,7 +110,7 @@
             android:layout_weight="2"
             android:gravity="center"
             android:text="@string/win_lose"
-            android:textColor="@color/color_191919_FCFCFC"
+            android:textColor="@color/color_FFFFFF_FFFFFF"
             android:textSize="@dimen/textSize12sp" />
     </LinearLayout>
 

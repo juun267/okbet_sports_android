@@ -11,7 +11,7 @@
         android:id="@+id/ll_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_317FFF_0760D4"
+        android:background="@color/color_1D4C99_0760D4"
         android:minHeight="76dp"
         android:orientation="vertical"
         android:paddingHorizontal="16dp"
@@ -21,7 +21,7 @@
             android:id="@+id/title_league_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/color_191919_FCFCFC"
+            android:textColor="@color/color_FFFFFF_FFFFFF"
             android:textSize="@dimen/textSize14sp"
             tools:text="NBA季后赛" />
 

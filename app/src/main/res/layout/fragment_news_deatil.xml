@@ -37,7 +37,7 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="6dp"
-                android:background="@color/color_E2E2E2" />
+                android:background="@color/color_2B2B2B_e2e2e2" />
 
             <TextView
                 android:id="@+id/tvContent"

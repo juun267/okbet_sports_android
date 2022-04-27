@@ -17,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentHomeBinding
 import org.cxct.sportlottery.enum.BetStatus
@@ -351,7 +352,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 highlight_iv_game_icon.setImageResource(it)
             }
 
-            GameConfigManager.getTitleBarBackground(selectItem.code)?.let {
+            GameConfigManager.getTitleBarBackground(selectItem.code, MultiLanguagesApplication.isNightMode)?.let {
                 highlight_titleBar.setBackgroundResource(it)
             }
 

@@ -402,13 +402,20 @@ fun TextView.setPlayContent(
     spread: String?,
     formatForOdd: String?
 ) {
-    val playNameStr = if (!playName.isNullOrEmpty()) "<font color=#333333>${playName} </font> " else ""
+    var playNameStrColor : String = "#666666"
+    var spreadStrColor : String = "#B73A20"
+
+    if(MultiLanguagesApplication.isNightMode){
+        playNameStrColor = "#A3A3A3"
+    }
+
+    val playNameStr = if (!playName.isNullOrEmpty()) "<font color=$playNameStrColor>${playName} </font> " else ""
     val spreadStr = if (!spread.isNullOrEmpty()) "<font color=#B73A20>$spread</font> " else ""
 
     text = HtmlCompat.fromHtml(
         playNameStr +
                 spreadStr +
-                "<font color=#666666>@ </font> " +
+                "<font color=$playNameStrColor>@ </font> " +
                 "<font color=#B73A20>$formatForOdd </font> "
         , HtmlCompat.FROM_HTML_MODE_LEGACY
     )

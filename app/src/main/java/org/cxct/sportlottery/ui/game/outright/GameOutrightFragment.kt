@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game_outright.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -131,7 +132,8 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
 //                            )
 //                        }
 
-                    GameConfigManager.getTitleBarBackground(outrightOddsListResult.outrightOddsListData?.sport?.code)
+                    GameConfigManager.getTitleBarBackground(outrightOddsListResult.outrightOddsListData?.sport?.code,
+                        MultiLanguagesApplication.isNightMode)
                         ?.let { gameImg ->
                             game_toolbar_bg.setBackgroundResource(gameImg)
                         }

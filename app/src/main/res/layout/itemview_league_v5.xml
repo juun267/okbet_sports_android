@@ -17,7 +17,7 @@
         android:paddingStart="16dp"
         android:paddingEnd="34dp"
         android:textAllCaps="true"
-        android:textColor="#202020"
+        android:textColor="@color/color_e5e5e5_333333"
         android:textSize="@dimen/textSize16sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"

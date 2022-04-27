@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="0dp"
-        android:background="@color/color_E2E2E2"
+        android:background="@color/color_2B2B2B_e2e2e2"
         />
 
 </LinearLayout>

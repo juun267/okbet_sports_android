@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.game.publicity
 import android.annotation.SuppressLint
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.databinding.ItemPublicityRecommendBinding
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeString
@@ -82,7 +83,7 @@ class PublicityRecommendViewHolder(
 
             //LeagueView
             with(leagueView) {
-                GameConfigManager.getTitleBarBackground(data.gameType)?.let { titleRes ->
+                GameConfigManager.getTitleBarBackground(data.gameType,MultiLanguagesApplication.isNightMode)?.let { titleRes ->
                     root.setBackgroundResource(titleRes)
                 }
                 tvLeagueName.text = data.leagueName

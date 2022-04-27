@@ -42,7 +42,6 @@
         android:visibility="gone"/>
 
 
-
     <org.cxct.sportlottery.ui.game.bottomNavigation.SportBottomNavigation
         android:id="@+id/sport_bottom_navigation"
         android:layout_width="match_parent"

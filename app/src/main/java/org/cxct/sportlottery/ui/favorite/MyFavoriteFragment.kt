@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_my_favorite.*
 import kotlinx.android.synthetic.main.fragment_my_favorite.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
@@ -521,29 +522,33 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             GameType.GF.key -> getString(GameType.GF.string)
             else -> ""
         }
+        if(MultiLanguagesApplication.isNightMode){
+            Glide.with(this).load(R.drawable.night_bg_300).into(favorite_bg_layer2)
+        }else{
+            Glide.with(this).load(
+                when (items?.find {
+                    it.isSelected
+                }?.code) {
+                    GameType.FT.key -> R.drawable.soccer108
+                    GameType.BK.key -> R.drawable.basketball108
+                    GameType.TN.key -> R.drawable.tennis108
+                    GameType.VB.key -> R.drawable.volleyball108
+                    GameType.BM.key -> R.drawable.badminton_100
+                    GameType.TT.key -> R.drawable.pingpong_100
+                    GameType.BX.key -> R.drawable.boxing_100
+                    GameType.CB.key -> R.drawable.snooker_100
+                    GameType.CK.key -> R.drawable.cricket_100
+                    GameType.BB.key -> R.drawable.baseball_100
+                    GameType.RB.key -> R.drawable.rugby_100
+                    GameType.AFT.key -> R.drawable.amfootball_100
+                    GameType.IH.key -> R.drawable.icehockey_100
+                    GameType.MR.key -> R.drawable.rancing_100
+                    GameType.GF.key -> R.drawable.golf_108
+                    else -> null
+                }
+            ).into(favorite_bg_layer2)
+        }
 
-        Glide.with(this).load(
-            when (items?.find {
-                it.isSelected
-            }?.code) {
-                GameType.FT.key -> R.drawable.soccer108
-                GameType.BK.key -> R.drawable.basketball108
-                GameType.TN.key -> R.drawable.tennis108
-                GameType.VB.key -> R.drawable.volleyball108
-                GameType.BM.key -> R.drawable.badminton_100
-                GameType.TT.key -> R.drawable.pingpong_100
-                GameType.BX.key -> R.drawable.boxing_100
-                GameType.CB.key -> R.drawable.snooker_100
-                GameType.CK.key -> R.drawable.cricket_100
-                GameType.BB.key -> R.drawable.baseball_100
-                GameType.RB.key -> R.drawable.rugby_100
-                GameType.AFT.key -> R.drawable.amfootball_100
-                GameType.IH.key -> R.drawable.icehockey_100
-                GameType.MR.key -> R.drawable.rancing_100
-                GameType.GF.key -> R.drawable.golf_108
-                else -> null
-            }
-        ).into(favorite_bg_layer2)
     }
 
     private fun updatePlayCategory(plays: List<Play>?) {
