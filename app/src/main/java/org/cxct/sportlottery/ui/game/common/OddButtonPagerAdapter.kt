@@ -22,6 +22,8 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
+import org.cxct.sportlottery.util.BetPlayCateFunction.isNOGALType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.QuickListManager
 import org.cxct.sportlottery.util.TextUtil
@@ -1174,14 +1176,6 @@ class OddButtonPagerViewHolder private constructor(
 
     private fun String.isBTSType(): Boolean {
         return this.contains(PlayCate.BTS.value) && !this.isCombination()
-    }
-
-    private fun String.isCombination(): Boolean {
-        return this.contains(PlayCate.SINGLE_OU.value) || this.contains(PlayCate.SINGLE_BTS.value)
-    }
-
-    private fun String.isNOGALType(): Boolean {
-        return (this.contains(PlayCate.NGOAL.value) || this.contains(PlayCate.NGOAL_OT.value)) && !this.isCombination()
     }
 
     /**
