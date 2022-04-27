@@ -190,20 +190,10 @@ class MyFavoriteViewModel(
                     }
                 )
             )
-
-            getFavoriteMatch(
-                sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.code,
-                play.code
-            )
         }
     }
 
     fun switchPlayCategory(play: Play,playCateCode: String?) {
-        getFavoriteMatch(
-            sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.code,
-            play.code,
-            playCateCode
-        )
         _sportQueryData.postValue(
             Event(
                 _sportQueryData.value?.peekContent()?.updatePlaySelected(play)?.updatePlayCateSelected(playCateCode)
