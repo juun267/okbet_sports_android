@@ -132,7 +132,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
     override fun getItemViewType(position: Int): Int {
         return when {
             oddsDetailDataList.isEmpty() -> ItemType.NO_DATA.ordinal
-            oddsDetailDataList.size == position -> ItemType.BOTTOM_NAVIGATION.ordinal
+            oddsDetailDataList.size == position -> 997
             else -> PlayCate.getPlayCate(oddsDetailDataList[position].gameType).ordinal
         }
     }
@@ -392,7 +392,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         }
 
         return when (viewType) {
-            ItemType.BOTTOM_NAVIGATION.ordinal -> {
+            997 -> {
                 BottomNavigationViewHolder(
                     LayoutInflater.from(parent.context)
                         .inflate(R.layout.home_bottom_navigation, parent, false)

@@ -100,7 +100,6 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         initUI()
         observeData()
         initSocketObserver()
-        initBottomNavigation()
     }
 
     override fun onStart() {
