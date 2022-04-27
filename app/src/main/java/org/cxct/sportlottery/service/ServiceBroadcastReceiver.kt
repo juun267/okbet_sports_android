@@ -154,9 +154,9 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
         val messageStr = bundle?.getString(SERVER_MESSAGE_KEY, "") ?: ""
         val decryptMessage = EncryptUtil.uncompress(messageStr)
         try {
-            val json = JSONTokener(decryptMessage).nextValue()
             decryptMessage?.let {
                 if(it.isNotEmpty()){
+                    val json = JSONTokener(it).nextValue()
                     if (json is JSONArray) {
                         var jsonArray = JSONArray(it)
                         for (i in 0 until jsonArray.length()) {

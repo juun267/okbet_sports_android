@@ -1473,7 +1473,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 if (MatchOdd.matchInfo?.id == oddsChangeEvent.eventId) {
                                     //馬克說betPlayCateNameMap還是由socket更新
                                     oddsChangeEvent.betPlayCateNameMap?.let {
-                                        MatchOdd.betPlayCateNameMap?.putAll(oddsChangeEvent.betPlayCateNameMap!!)
+                                        MatchOdd.betPlayCateNameMap?.putAll(it)
                                     }
                                 }
                             }
