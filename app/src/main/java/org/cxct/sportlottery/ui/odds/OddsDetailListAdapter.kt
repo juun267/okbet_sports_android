@@ -166,7 +166,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     PlayCate.PENALTY_SINGLE_SEG4.ordinal, PlayCate.PENALTY_SINGLE_SEG5.ordinal, PlayCate.PENALTY_SINGLE_SEG6.ordinal
                     -> LayoutType.SINGLE.layout
 
-                    PlayCate.CS.ordinal, PlayCate.CS_OT.ordinal, PlayCate.CS_1ST_SD.ordinal
+                    PlayCate.CS.ordinal, PlayCate.CS_OT.ordinal, PlayCate.CS_1ST_SD.ordinal, PlayCate.LCS.ordinal
                     -> LayoutType.CS.layout
 
                     PlayCate.FGLG.ordinal
@@ -221,7 +221,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     PlayCate.WIN_SEG1_CHAMP.ordinal, PlayCate.LOSE_SEG1_CHAMP.ordinal, PlayCate.TIE_BREAK.ordinal
                     -> LayoutType.SINGLE_2_ITEM.layout
 
-                    PlayCate.CS.ordinal, PlayCate.CS_SEG1.ordinal -> LayoutType.SINGLE_2_CS.layout
+                    PlayCate.CS.ordinal, PlayCate.CS_SEG1.ordinal, PlayCate.LCS.ordinal -> LayoutType.SINGLE_2_CS.layout
 
                     PlayCate.EPS.ordinal
                     -> LayoutType.EPS.layout
@@ -657,7 +657,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         PlayCate.PENALTY_SINGLE_SEG4.ordinal, PlayCate.PENALTY_SINGLE_SEG5.ordinal, PlayCate.PENALTY_SINGLE_SEG6.ordinal
                         -> forSingle(oddsDetail, 3)
 
-                        PlayCate.CS.ordinal, PlayCate.CS_OT.ordinal, PlayCate.CS_1ST_SD.ordinal
+                        PlayCate.CS.ordinal, PlayCate.CS_OT.ordinal, PlayCate.CS_1ST_SD.ordinal, PlayCate.LCS.ordinal,
                         -> forCS(oddsDetail)
 
                         PlayCate.FGLG.ordinal
@@ -718,7 +718,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         PlayCate.WIN_SEG1_CHAMP.ordinal, PlayCate.LOSE_SEG1_CHAMP.ordinal, PlayCate.TIE_BREAK.ordinal
                         -> forSingle(oddsDetail, 2)
 
-                        PlayCate.CS.ordinal, PlayCate.CS_SEG1.ordinal -> forSingleCS(oddsDetail, 2)
+                        PlayCate.CS.ordinal, PlayCate.CS_SEG1.ordinal, PlayCate.LCS.ordinal -> forSingleCS(oddsDetail, 2)
 
                         PlayCate.EPS.ordinal
                         -> forEPS(oddsDetail)
