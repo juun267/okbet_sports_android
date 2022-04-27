@@ -221,7 +221,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
             })
             leagueOddListener = LeagueOddListener(
-                { matchId, matchInfoList, _ ->
+                clickListenerPlayType = { matchId, matchInfoList, _ ->
                     when (args.matchType) {
                         MatchType.IN_PLAY -> {
                             matchId?.let {
@@ -242,10 +242,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         }
                     }
                 },
-                { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
+                clickListenerBet = { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
                     addOddsDialog(matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap)
                 },
-                { matchOdd, quickPlayCate ->
+                clickListenerQuickCateTab = { matchOdd, quickPlayCate ->
                     matchOdd.matchInfo?.let {
                         //mOpenedQuickListMap.clear()
                         //viewModel.getQuickList2(it.id)
@@ -253,20 +253,20 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         setQuickPlayCateSelected(matchOdd, quickPlayCate)
                     }
                 },
-                {
+                clickListenerQuickCateClose = {
                     //mOpenedQuickListMap.forEach { t, u -> u.isExpand = false }
                     //viewModel.clearQuickPlayCateSelected()
                     clearQuickPlayCateSelected()
                 },
-                { matchId ->
+                clickListenerFavorite = { matchId ->
                     matchId?.let {
                         viewModel.pinFavorite(FavoriteType.MATCH, it)
                     }
                 },
-                { matchId ->
+                clickListenerStatistics = { matchId ->
                     navStatistics(matchId)
                 },
-                { matchId ->
+                refreshListener = { matchId ->
                     loading()
                     viewModel.refreshGame(
                         args.matchType,
