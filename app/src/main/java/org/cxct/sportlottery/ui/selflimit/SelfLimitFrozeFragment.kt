@@ -12,6 +12,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.main.MainActivity
 
@@ -131,7 +132,7 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
                                 if (sConfigData?.thirdOpen == FLAG_OPEN)
                                     MainActivity.reStart(requireContext())
                                 else
-                                    GameActivity.reStart(requireContext())
+                                    GamePublicityActivity.reStart(requireContext())
                             }
                         }
                     }
