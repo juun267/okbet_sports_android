@@ -16,11 +16,9 @@ import org.cxct.sportlottery.network.sport.query.SportQueryData
 import org.cxct.sportlottery.network.sport.query.SportQueryRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
-import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
-import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
-import org.cxct.sportlottery.util.TimeUtil
 
 
 class MyFavoriteViewModel(
@@ -129,7 +127,7 @@ class MyFavoriteViewModel(
                 }
 
                 mFavorMatchOddList.postValue(
-                    mFavorMatchOddList.value?.updatePlayCate(matchId, quickListData)
+                    mFavorMatchOddList.value?.updatePlayCate(matchId, quickListData, quickListData.playCateNameMap)
                 )
             }
         }
@@ -242,7 +240,8 @@ class MyFavoriteViewModel(
 
     private fun List<LeagueOdd>.updatePlayCate(
         matchId: String,
-        quickListData: QuickListData
+        quickListData: QuickListData,
+        quickPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
     ): List<LeagueOdd> {
         this.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach { matchOdd ->
@@ -254,6 +253,9 @@ class MyFavoriteViewModel(
                         else -> {
                             quickListData.quickOdds?.get(quickPlayCate.code)
                         }
+                    }?.apply {
+                        setupQuickPlayCate(quickPlayCate.code ?: "")
+                        sortQuickPlayCate(quickPlayCate.code ?: "")
                     }
 
                     quickPlayCate.isSelected =
@@ -263,6 +265,7 @@ class MyFavoriteViewModel(
                         quickOddsApi?.toMutableFormat() ?: mutableMapOf()
                     )
                 }
+                matchOdd.quickPlayCateNameMap = quickPlayCateNameMap
             }
         }
         return this
@@ -279,7 +282,8 @@ class MyFavoriteViewModel(
         return this
     }
 
-    fun getIsFastBetOpened(): Boolean{
+    fun getIsFastBetOpened(): Boolean {
         return betInfoRepository.getIsFastBetOpened()
     }
+
 }

@@ -62,73 +62,10 @@ class TestViewModel(
                     }
 
                     _quickOddsListGameHallResult.postValue(Event(result))
-                    //Event(_quickOddsListGameHallResult.value?.peekContent()?.updateQuickPlayCate(matchId, it, it.playCateNameMap))
                 }
             }
         }
 
-    }
-
-    private fun OddsListResult.updateQuickPlayCate(
-        matchId: String,
-        quickListData: QuickListData,
-        quickPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
-    ): OddsListResult {
-        this.oddsListData?.leagueOdds?.forEach { leagueOdd ->
-            leagueOdd.matchOdds.forEach { matchOdd ->
-                matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
-                    val quickOddsApi = when (quickPlayCate.code) {
-                        QuickPlayCate.QUICK_CORNERS.value, QuickPlayCate.QUICK_PENALTY.value, QuickPlayCate.QUICK_ADVANCE.value -> {
-                            quickListData.quickOdds?.get(quickPlayCate.code)
-                        }
-                        else -> {
-                            quickListData.quickOdds?.get(quickPlayCate.code)
-                        }
-                    }?.apply {
-                        quickPlayCate.code?.let {
-                            setupQuickPlayCate(quickPlayCate.code)
-                            sortQuickPlayCate(quickPlayCate.code)
-                        }
-                    }
-
-                    quickPlayCate.isSelected =
-                        (quickPlayCate.isSelected && (matchOdd.matchInfo?.id == matchId))
-
-                    quickPlayCate.quickOdds.putAll(
-                        quickOddsApi?.toMutableFormat() ?: mutableMapOf()
-                    )
-                }
-                matchOdd.quickPlayCateNameMap = quickPlayCateNameMap
-            }
-        }
-        return this
-    }
-
-    /**
-     * 設置大廳所需顯示的快捷玩法 (api未回傳的玩法需以“—”表示)
-     * 2021.10.25 發現可能會回傳但是是傳null, 故新增邏輯, 該玩法odd為null時也做處理
-     */
-    private fun MutableMap<String, List<Odd?>?>.setupQuickPlayCate(playCate: String) {
-        val playCateSort = QuickPlayCate.values().find { it.value == playCate }?.rowSort?.split(",")
-
-        playCateSort?.forEach {
-            if (!this.keys.contains(it) || this[it] == null)
-                this[it] = mutableListOf(null, null, null)
-        }
-    }
-
-    /**
-     * 根據QuickPlayCate的rowSort將盤口重新排序
-     */
-    private fun MutableMap<String, List<Odd?>?>.sortQuickPlayCate(playCate: String) {
-        val playCateSort = QuickPlayCate.values().find { it.value == playCate }?.rowSort?.split(",")
-        val sortedList = this.toSortedMap(compareBy<String> {
-            val oddsIndex = playCateSort?.indexOf(it)
-            oddsIndex
-        }.thenBy { it })
-
-        this.clear()
-        this.putAll(sortedList)
     }
 
     private fun Map<String, List<Odd?>?>.toMutableFormat(): MutableMap<String, MutableList<Odd?>?> {
