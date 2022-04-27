@@ -262,7 +262,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                         leagueOdd.unfold == FoldState.UNFOLD.code) {
 
                         //leagueAdapter.notifyItemChanged(index)
-                        updateGameList(index, leagueOdd)
+//                        updateGameList(index, leagueOdd)
                     }
                 }
             }
@@ -320,7 +320,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                         leagueOdd.unfold == FoldState.UNFOLD.code
                     ) {
                         //leagueAdapter.notifyItemChanged(index)
-                        updateGameList(index, leagueOdd)
+//                        updateGameList(index, leagueOdd)
                     }
                 }
             }
@@ -340,7 +340,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                         leagueOdd.unfold == FoldState.UNFOLD.code
                     ) {
                         //leagueAdapter.notifyItemChanged(index)
-                        updateGameList(index, leagueOdd)
+//                        updateGameList(index, leagueOdd)
                     }
                 }
             }
@@ -445,7 +445,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 leagueAdapter.data.forEach { leagueOdd ->
                     subscribeChannelHall(leagueOdd)
                 }
-                leagueAdapter.limitRefresh()
+//                leagueAdapter.limitRefresh()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
