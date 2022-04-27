@@ -434,20 +434,23 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             }
         }
 
-        viewModel.favorMatchOddList.observe(this.viewLifecycleOwner) { leagueOddList ->
-            hideLoading()
-            leagueOddList.filterMenuPlayCate()
+        viewModel.favorMatchOddList.observe(this.viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { leagueOddList ->
+                hideLoading()
+                leagueOddList.filterMenuPlayCate()
 
-            favorite_game_list.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-            leagueAdapter.data = leagueOddList.toMutableList()
-            leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
-            try {
-                leagueAdapter.data.forEach { leagueOdd ->
-                    subscribeChannelHall(leagueOdd)
+                favorite_game_list.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+                leagueAdapter.data = leagueOddList.toMutableList()
+                leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
+                try {
+                    /*目前流程 需要先解除再綁定 socket流程下才會回傳內容*/
+                    leagueAdapter.data.forEach { leagueOdd ->
+                        unSubscribeChannelHall(leagueOdd)
+                        subscribeChannelHall(leagueOdd)
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
-//                leagueAdapter.limitRefresh()
-            } catch (e: Exception) {
-                e.printStackTrace()
             }
         }
 
@@ -608,6 +611,32 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                             PlayCate.EPS.value,
                             matchOdd.matchInfo.id
                         )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun unSubscribeChannelHall(leagueOdd: LeagueOdd) {
+        leagueOdd.matchOdds.forEach { matchOdd ->
+            when (leagueOdd.unfold == FoldState.UNFOLD.code) {
+                true -> {
+                    unSubscribeChannelHall(
+                        leagueOdd.gameType?.key,
+                        getPlaySelectedCode(),
+                        matchOdd.matchInfo?.id
+                    )
+
+                    matchOdd.quickPlayCateList?.forEach {
+                        when (it.isSelected) {
+                            true -> {
+                                unSubscribeChannelHall(
+                                    leagueOdd.gameType?.key,
+                                    it.code,
+                                    matchOdd.matchInfo?.id
+                                )
+                            }
+                        }
                     }
                 }
             }
