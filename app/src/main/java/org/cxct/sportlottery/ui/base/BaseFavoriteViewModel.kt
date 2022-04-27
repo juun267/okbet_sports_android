@@ -39,9 +39,9 @@ abstract class BaseFavoriteViewModel(
 
     val notifyMyFavorite = myFavoriteRepository.favorNotify
 
-    val favorMatchOddList: LiveData<List<LeagueOdd>>
+    val favorMatchOddList: LiveData<Event<List<LeagueOdd>>>
         get() = mFavorMatchOddList
-    protected val mFavorMatchOddList = MutableLiveData<List<LeagueOdd>>()
+    protected val mFavorMatchOddList = MutableLiveData<Event<List<LeagueOdd>>>()
 
     val myFavoriteLoading: LiveData<Event<Boolean>>
         get() = mMyFavoriteLoading
@@ -132,13 +132,23 @@ abstract class BaseFavoriteViewModel(
                                 TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
 
                             matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
+
+                            /* #1 將賽事狀態(先前socket回傳取得)放入當前取得的賽事 */
+                            val status = mFavorMatchOddList.value?.peekContent()?.find { lo ->
+                                lo.league.id == leagueOdd.league.id
+                            }?.matchOdds?.find { mo ->
+                                mo.matchInfo?.id == matchInfo.id
+                            }?.matchInfo?.socketMatchStatus
+
+                            matchInfo.socketMatchStatus = status
                         }
 
                         matchOdd.playCateMappingList = playCateMappingList
+
                     }
                 }
 
-                mFavorMatchOddList.postValue(it.updateMatchType())
+                mFavorMatchOddList.postValue(Event(it.updateMatchType()))
             }
         }
     }
@@ -212,11 +222,8 @@ abstract class BaseFavoriteViewModel(
 
                 when (type) {
                     FavoriteType.MATCH -> {
-                        mFavorMatchOddList.postValue(
-                            mFavorMatchOddList.value?.removeFavorMatchOdd(
-                                content
-                            )?.removeFavorLeague()
-                        )
+                        val list = mFavorMatchOddList.value?.peekContent()?.removeFavorMatchOdd(content)?.removeFavorLeague()
+                        mFavorMatchOddList.postValue(Event(list ?: listOf()))
                     }
 
                     else -> {
@@ -259,7 +266,7 @@ abstract class BaseFavoriteViewModel(
                     val oddsIndex = sortOrder?.indexOf(it)
                     oddsIndex
                 }.thenBy { it })
-                
+
                 matchOdd.oddsMap?.clear()
                 if (oddsMap != null) {
                     matchOdd.oddsMap?.putAll(oddsMap)
