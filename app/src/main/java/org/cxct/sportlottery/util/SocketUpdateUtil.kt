@@ -307,7 +307,7 @@ object SocketUpdateUtil {
 
     fun updateMatchOdds(oddsChangeEvent:OddsChangeEvent){
         oddsChangeEvent.odds = mutableMapOf()
-        oddsChangeEvent.odds = oddsChangeEvent.oddsList.associateBy (keySelector= {it.playCateCode.toString()}, valueTransform={it.oddsList}).toMutableMap()
+        oddsChangeEvent.odds = oddsChangeEvent.oddsList.associateBy (keySelector= {it.playCateCode.toString()}, valueTransform={it.oddsList?.filter { it != null }?.toMutableList() }).toMutableMap()
     }
 
     private fun updateMatchOdds(

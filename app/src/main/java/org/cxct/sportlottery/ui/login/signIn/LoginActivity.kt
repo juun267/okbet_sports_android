@@ -25,6 +25,7 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.SelfLimitFrozeErrorDialog
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.util.BitmapUtil
@@ -252,7 +253,8 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                     if (sConfigData?.thirdOpen == FLAG_OPEN)
                         MainActivity.reStart(this)
                     else
-                        finish()
+                        GamePublicityActivity.reStart(this)
+//                        finish()
                 }
             }
         } else {
