@@ -2792,6 +2792,8 @@ class GameViewModel(
                     }
 
                     _publicityRecommend.postValue(Event(result.result))
+
+                    notifyFavorite(FavoriteType.MATCH)
                 }
             }
         }
