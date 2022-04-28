@@ -607,7 +607,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 true -> {
                     unSubscribeChannelHall(
                         leagueOdd.gameType?.key,
-                        getPlaySelectedCode(),
                         matchOdd.matchInfo?.id
                     )
 
@@ -616,7 +615,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                             true -> {
                                 unSubscribeChannelHall(
                                     leagueOdd.gameType?.key,
-                                    it.code,
                                     matchOdd.matchInfo?.id
                                 )
                             }
