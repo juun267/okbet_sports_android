@@ -412,8 +412,8 @@
     <string name="odds_detail_play_type_dc_1X">1/X</string>
     <string name="odds_detail_play_type_dc_2X">2/X</string>
     <string name="odds_detail_play_type_dc_12">44198</string>
-    <string name="odds_detail_play_type_ou_o">tài</string>
-    <string name="odds_detail_play_type_ou_u">xỉu</string>
+    <string name="odds_detail_play_type_ou_o">Trên</string>
+    <string name="odds_detail_play_type_ou_u">Dưới</string>
     <string name="bottom_sheet_close">Đóng</string>
     <string name="bottom_sheet_title_play_type">Thay đổi lối chơi</string>
     <string name="message_recharge_maintain">Hệ thống nạp tiền đang được nâng cấp, vui lòng chờ đợi</string>
