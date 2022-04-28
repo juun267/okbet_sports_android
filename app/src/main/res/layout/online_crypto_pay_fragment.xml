@@ -148,7 +148,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/hint_rate"
-            android:textColor="@color/colorRed"
+            android:textColor="@color/color_E44438_e44438"
             android:textSize="@dimen/textSize12sp" />
 
         <TextView
@@ -156,7 +156,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/txv_recharge_money"
-            android:textColor="@color/colorRed"
+            android:textColor="@color/color_E44438_e44438"
             android:textSize="@dimen/textSize12sp"
             android:layout_marginTop="10dp"/>
 
@@ -167,7 +167,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/hint_fee_rate"
-            android:textColor="@color/colorRed"
+            android:textColor="@color/color_E44438_e44438"
             android:textSize="@dimen/textSize12sp" />
 
 
@@ -178,7 +178,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/hint_fee_amount"
-            android:textColor="@color/colorRed"
+            android:textColor="@color/color_E44438_e44438"
             android:textSize="@dimen/textSize12sp" />
 
         <LinearLayout
@@ -190,7 +190,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_tips"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/color_E44438_e44438"
                 android:textSize="@dimen/textSize12sp" />
 
             <TextView
@@ -198,7 +198,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/money_recharge_hint1"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/color_E44438_e44438"
                 android:textSize="@dimen/textSize12sp" />
 
         </LinearLayout>

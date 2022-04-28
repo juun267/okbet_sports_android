@@ -222,7 +222,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                     tv_verified.setTextColor(
                         ContextCompat.getColor(
                             tv_verified.context,
-                            R.color.colorRed
+                            R.color.color_E44438_e44438
                         )
                     )
                     icon_identity.visibility = View.VISIBLE
@@ -234,7 +234,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                     tv_verified.setTextColor(
                         ContextCompat.getColor(
                             tv_verified.context,
-                            R.color.colorRed
+                            R.color.color_E44438_e44438
                         )
                     )
                     icon_identity.visibility = View.GONE
@@ -246,7 +246,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                     tv_verified.setTextColor(
                         ContextCompat.getColor(
                             tv_verified.context,
-                            R.color.colorRed
+                            R.color.color_E44438_e44438
                         )
                     )
                     icon_identity.visibility = View.VISIBLE

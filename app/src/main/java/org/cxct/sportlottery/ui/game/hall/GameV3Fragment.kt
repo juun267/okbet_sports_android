@@ -629,7 +629,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     val dialog = CustomAlertDialog(context)
                     dialog.setTitle(resources.getString(R.string.prompt))
                     dialog.setMessage(it)
-                    dialog.setTextColor(R.color.colorRed)
+                    dialog.setTextColor(R.color.color_E44438_e44438)
                     dialog.setNegativeButtonText(null)
                     dialog.setPositiveClickListener {
                         viewModel.resetErrorDialogMsg()

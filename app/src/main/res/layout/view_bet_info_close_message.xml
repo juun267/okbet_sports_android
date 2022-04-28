@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/bet_info_odd_content_close"
-        android:textColor="@color/colorRed"
+        android:textColor="@color/color_E44438_e44438"
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintBottom_toTopOf="@+id/tv_remove"
         app:layout_constraintEnd_toEndOf="parent"

@@ -59,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     tools:text="@string/feedback_description_money"
-                    android:textColor="@color/colorRed"
+                    android:textColor="@color/color_E44438_e44438"
                     android:textSize="@dimen/textSize12sp" />
 
                 <Button

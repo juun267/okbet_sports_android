@@ -177,7 +177,7 @@
                         android:layout_alignLeft="@+id/text_field_boxes_editTextLayout"
                         android:layout_alignEnd="@+id/text_field_boxes_editTextLayout"
                         android:layout_alignRight="@+id/text_field_boxes_editTextLayout"
-                        android:background="@color/colorRed"
+                        android:background="@color/color_E44438_e44438"
                         android:visibility="gone" />
 
                 </RelativeLayout>

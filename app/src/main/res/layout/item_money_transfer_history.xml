@@ -107,7 +107,7 @@
                 app:recordStatusColor="@{row.status}"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="成功"
-                tools:textColor="@color/colorGreen" />
+                tools:textColor="@color/color_08dc6e_08dc6e" />
 
         </LinearLayout>
 

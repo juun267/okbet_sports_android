@@ -56,7 +56,7 @@
             app:moneyColor="@{data.netAmount}"
             app:profitFormat="@{data.netAmount}"
             tools:text="+1,060,000.000"
-            tools:textColor="@color/colorGreen" />
+            tools:textColor="@color/color_08dc6e_08dc6e" />
 
 
         <TextView

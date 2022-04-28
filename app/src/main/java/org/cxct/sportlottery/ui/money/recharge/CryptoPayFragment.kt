@@ -196,7 +196,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 if (url.isNotEmpty()) {
                     cv_upload.isActivated = true
                     tv_upload.text = url
-                    tv_upload.setTextColor(ContextCompat.getColor(tv_upload.context,R.color.colorRedDark))
+                    tv_upload.setTextColor(ContextCompat.getColor(tv_upload.context,R.color.color_F75452_b73a20))
                 } else {
                     cv_upload.isActivated = false
                     tv_upload.text = resources.getString(R.string.title_reupload_pic)
@@ -269,7 +269,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         } else {
             cv_upload.isActivated = true
             tv_upload.text = resources.getString(R.string.title_upload_pic_plz)
-            tv_upload.setTextColor(ContextCompat.getColor(tv_upload.context,R.color.colorRedDark))
+            tv_upload.setTextColor(ContextCompat.getColor(tv_upload.context,R.color.color_F75452_b73a20))
         }
     }
 

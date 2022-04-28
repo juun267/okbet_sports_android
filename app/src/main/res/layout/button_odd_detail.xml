@@ -48,7 +48,7 @@
                 android:textColor="@color/selector_button_odd_top_text"
                 android:textSize="@dimen/textSize13sp"
                 tools:text="-0.5/1"
-                tools:textColor="@color/colorRedDark" />
+                tools:textColor="@color/color_F75452_b73a20" />
 
         </LinearLayout>
 

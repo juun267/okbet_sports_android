@@ -69,7 +69,7 @@
             android:background="@color/color_191919_FCFCFC"
             android:gravity="center"
             android:text="@string/bet_info_odd_content_changed"
-            android:textColor="@color/colorRed"
+            android:textColor="@color/color_E44438_e44438"
             android:textSize="@dimen/textSize12sp"
             android:visibility="gone" />
 

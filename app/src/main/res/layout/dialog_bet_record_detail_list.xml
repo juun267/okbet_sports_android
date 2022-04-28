@@ -192,7 +192,7 @@
                             app:layout_constraintTop_toBottomOf="@+id/tv_bet_total_money"
                             app:layout_constraintTop_toTopOf="@+id/text_view4"
                             tools:text="-1,000.000"
-                            tools:textColor="@color/colorRed" />
+                            tools:textColor="@color/color_E44438_e44438" />
 
                         <TextView
                             android:id="@+id/tv_status"

@@ -90,7 +90,7 @@ class NotificationView @JvmOverloads constructor(context: Context, attrs: Attrib
                     this.requestLayout()
                 }
                 Status.CANCEL.code -> {
-                    rootLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.colorRed))
+                    rootLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.color_E44438_e44438))
                     ivIcon.setImageResource(R.drawable.ic_warnning_news)
                     tvMessage.text = String.format(context.getString(R.string.warning_cancel), tailOrderNo)
                     this.requestLayout()

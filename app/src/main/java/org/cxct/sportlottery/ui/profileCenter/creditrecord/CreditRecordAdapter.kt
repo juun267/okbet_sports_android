@@ -50,8 +50,8 @@ class CreditRecordAdapter : RecyclerView.Adapter<CreditRecordAdapter.ItemViewHol
                             itemView.context, when (item.status) {
                                 SettleStatus.UN_SETTLE.status, SettleStatus.SETTLE.status -> {
                                     when {
-                                        (item.reward != null && item.reward > 0) -> R.color.colorGreen
-                                        (item.reward != null && item.reward < 0) -> R.color.colorRed
+                                        (item.reward != null && item.reward > 0) -> R.color.color_08dc6e_08dc6e
+                                        (item.reward != null && item.reward < 0) -> R.color.color_E44438_e44438
                                         else -> R.color.color_A3A3A3_666666
                                     }
                                 }

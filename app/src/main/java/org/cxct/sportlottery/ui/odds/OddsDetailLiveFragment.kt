@@ -282,7 +282,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                                 tv_status_left.setTextColor(
                                     ContextCompat.getColor(
                                         tv_status_left.context,
-                                        R.color.colorRedDark
+                                        R.color.color_F75452_b73a20
                                     )
                                 )
                                 tv_status_left.tag = GameStatus.POSTPONED.code

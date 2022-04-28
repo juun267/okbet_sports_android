@@ -202,7 +202,7 @@
                 android:focusable="true"
                 android:padding="4dp"
                 android:text="@string/forget_password_question"
-                android:textColor="@color/colorRedDark"
+                android:textColor="@color/color_F75452_b73a20"
                 android:textSize="@dimen/textSize13sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/block_valid_code" />

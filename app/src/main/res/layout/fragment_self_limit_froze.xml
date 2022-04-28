@@ -151,7 +151,7 @@
         android:id="@+id/tvUsTime"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8"
-        android:textColor="@color/colorRed"
+        android:textColor="@color/color_E44438_e44438"
         android:textSize="@dimen/textSize12sp"
         android:visibility="visible" />
 
@@ -161,7 +161,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8"
         android:text="@string/self_limit_error"
-        android:textColor="@color/colorRed"
+        android:textColor="@color/color_E44438_e44438"
         android:textSize="@dimen/textSize12sp"
         android:visibility="gone" />
 

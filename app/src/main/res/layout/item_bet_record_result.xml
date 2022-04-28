@@ -117,7 +117,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:maxLines="1"
-                    android:textColor="@color/colorRed"
+                    android:textColor="@color/color_E44438_e44438"
                     android:textSize="@dimen/textSize12sp"
                     app:autoSizeMaxTextSize="@dimen/textSize12sp"
                     app:autoSizeMinTextSize="@dimen/textSize8sp"
@@ -155,7 +155,7 @@
                 app:betStatus="@{row.status}"
                 app:betStatusMoney="@{row.win}"
                 tools:text="+1,060.00"
-                tools:textColor="@color/colorGreen" />
+                tools:textColor="@color/color_08dc6e_08dc6e" />
 
             <TextView
                 android:id="@+id/tv_bet_status2"

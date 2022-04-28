@@ -167,7 +167,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/withdraw_handling_fee_hint"
-            android:textColor="@color/colorRed"
+            android:textColor="@color/color_E44438_e44438"
             android:textSize="@dimen/textSize12sp" />
         <!-- 提款虛擬幣所需餘提示 -->
         <TextView
@@ -176,7 +176,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/withdraw_crypto_amount_hint"
-            android:textColor="@color/colorRed"
+            android:textColor="@color/color_E44438_e44438"
             android:textSize="@dimen/textSize12sp" />
         <!-- 提款虛擬幣手續費提示 -->
         <TextView
@@ -185,7 +185,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/withdraw_crypto_fee_hint"
-            android:textColor="@color/colorRed"
+            android:textColor="@color/color_E44438_e44438"
             android:textSize="@dimen/textSize12sp" />
         <!-- 扣除金额 -->
         <LinearLayout
@@ -223,7 +223,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:textColor="@color/colorRedDark"
+                android:textColor="@color/color_F75452_b73a20"
                 android:textSize="@dimen/textSize12sp" />
 
             <TextView
@@ -294,7 +294,7 @@
                 android:layout_marginEnd="2dp"
                 android:paddingBottom="5dp"
                 android:text="·"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/color_E44438_e44438"
                 android:textSize="12dp"
                 android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@+id/guideline"
@@ -308,7 +308,7 @@
                 android:layout_marginStart="2dp"
                 android:paddingBottom="5dp"
                 android:text="@string/initial_withdrawal_needs_credited"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/color_E44438_e44438"
                 android:textSize="12dp"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -322,7 +322,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
                 android:text="·"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/color_E44438_e44438"
                 android:textSize="12dp"
                 android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@+id/guideline"
@@ -335,7 +335,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
                 android:text="@string/make_sure_valid_account"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/color_E44438_e44438"
                 android:textSize="12dp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"

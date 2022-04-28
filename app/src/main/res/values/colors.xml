@@ -138,14 +138,14 @@
     <color name="colorOrange5">#F56E00</color>
 
     <color name="colorRedLight">#e7837c</color>
-    <color name="colorRed">#E44438</color>
-    <color name="colorRedDark">#B73A20</color>
-    <color name="colorRedPersian">#CE3636</color>
+<!--    <color name="colorRed">#E44438</color>-->
+<!--    <color name="colorRedDark">#B73A20</color>-->
+<!--    <color name="colorRedPersian">#CE3636</color>-->
 
     <color name="colorGreenLight">#08ab75</color>
-    <color name="colorGreen">#08DC6E</color>
+<!--    <color name="colorGreen">#08DC6E</color>-->
     <color name="colorGreenSea">#08AB74</color>
-    <color name="colorGreenKeppel">#3DB893</color>
+<!--    <color name="colorGreenKeppel">#3DB893</color>-->
 
 <!--    <color name="white">#FFFFFF</color>-->
 <!--    <color name="colorWhite">#FCFCFC</color>-->
@@ -185,7 +185,7 @@
 <!--    <color name="blueLight">#a9bedf</color>-->
     <color name="blueDeep">#35485C</color>
 
-    <color name="colorBronze">#CB7C2E</color>
+<!--    <color name="colorBronze">#CB7C2E</color>-->
 
     <color name="transparent">#00000000</color>
     <color name="transparent_black_0">#00000000</color>

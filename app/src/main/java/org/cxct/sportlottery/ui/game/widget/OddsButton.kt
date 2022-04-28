@@ -233,7 +233,7 @@ class OddsButton @JvmOverloads constructor(
                         if (mFillet) R.drawable.bg_radius_4_button_unselected_red
                         else R.drawable.bg_radius_0_button_red
                     )
-                resources.getColor(R.color.colorRed)
+                resources.getColor(R.color.color_E44438_e44438)
                 isActivated = true
             }
             else -> {

@@ -123,7 +123,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
-        android:textColor="@color/colorRedDark"
+        android:textColor="@color/color_F75452_b73a20"
         android:textSize="12dp"
         android:visibility="gone"
         app:layout_constraintStart_toEndOf="@+id/ic_error"

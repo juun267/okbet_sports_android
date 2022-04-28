@@ -231,7 +231,7 @@ public class TextFieldBoxes extends FrameLayout {
         TypedArray themeArray;
 
         /* Get Default Error Color From Theme */
-        DEFAULT_ERROR_COLOR = ContextCompat.getColor(getContext(), R.color.colorRedDark);
+        DEFAULT_ERROR_COLOR = ContextCompat.getColor(getContext(), R.color.color_F75452_b73a20);
 
         /* Get Default Background Color From Theme */
         themeArray = theme.obtainStyledAttributes(new int[]{android.R.attr.colorForeground});

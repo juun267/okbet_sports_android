@@ -176,7 +176,7 @@
                 android:id="@+id/title_fee_rate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/color_E44438_e44438"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="@string/title_fee_rate" />
 
@@ -184,7 +184,7 @@
                 android:id="@+id/tv_fee_rate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/color_E44438_e44438"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="0.500" />
 
@@ -192,7 +192,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/percent"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/color_E44438_e44438"
                 android:textSize="@dimen/textSize12sp" />
         </LinearLayout>
 
@@ -206,7 +206,7 @@
                 android:id="@+id/title_fee_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/color_E44438_e44438"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="@string/title_fee_amount" />
 
@@ -214,7 +214,7 @@
                 android:id="@+id/tv_fee_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/color_E44438_e44438"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="12.000" />
 
@@ -223,7 +223,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/color_E44438_e44438"
                 tools:text="PHP"
                 android:textSize="@dimen/textSize12sp" />
         </LinearLayout>
@@ -238,7 +238,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_tips"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/color_E44438_e44438"
                 android:textSize="@dimen/textSize12sp" />
 
             <TextView
@@ -246,7 +246,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/money_recharge_hint1"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/color_E44438_e44438"
                 android:textSize="@dimen/textSize12sp" />
         </LinearLayout>
 

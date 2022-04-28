@@ -91,7 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:text="@string/id_description"
-            android:textColor="@color/colorRed" />
+            android:textColor="@color/color_E44438_e44438" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

@@ -185,7 +185,7 @@
                         android:layout_marginVertical="5dp"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:textColor="@color/colorRed"
+                        android:textColor="@color/color_E44438_e44438"
                         android:textSize="@dimen/textSize12sp"
                         android:visibility="visible"
                         tools:text="备注 : " />
@@ -244,7 +244,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/hint_rate"
-            android:textColor="@color/colorRed"
+            android:textColor="@color/color_E44438_e44438"
             android:textSize="@dimen/textSize12sp" />
 
         <TextView
@@ -252,7 +252,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/txv_recharge_money"
-            android:textColor="@color/colorRed"
+            android:textColor="@color/color_E44438_e44438"
             android:textSize="@dimen/textSize12sp"
             android:layout_marginTop="10dp"/>
 
@@ -336,7 +336,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/hint_fee_rate"
-            android:textColor="@color/colorRed"
+            android:textColor="@color/color_E44438_e44438"
             android:textSize="@dimen/textSize12sp" />
 
         <TextView
@@ -345,7 +345,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/hint_fee_amount"
-            android:textColor="@color/colorRed"
+            android:textColor="@color/color_E44438_e44438"
             android:textSize="@dimen/textSize12sp" />
 
         <androidx.cardview.widget.CardView

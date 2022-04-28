@@ -141,7 +141,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         ForegroundColorSpan(
                             ContextCompat.getColor(
                                 requireContext(),
-                                R.color.colorRedDark
+                                R.color.color_F75452_b73a20
                             )
                         )
                     text2.setSpan(foregroundSpan, 0, text2.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -151,7 +151,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         ForegroundColorSpan(
                             ContextCompat.getColor(
                                 requireContext(),
-                                R.color.colorRedDark
+                                R.color.color_F75452_b73a20
                             )
                         )
                     text4.setSpan(

@@ -152,7 +152,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8"
         android:text="@string/self_limit_error"
-        android:textColor="@color/colorRed"
+        android:textColor="@color/color_E44438_e44438"
         android:textSize="@dimen/textSize12sp"/>
 
 
@@ -162,7 +162,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8"
         android:text="@string/self_limit_per_bet_limit_user"
-        android:textColor="@color/colorRed"
+        android:textColor="@color/color_E44438_e44438"
         android:textSize="@dimen/textSize12sp" />
 
     <TextView
@@ -171,7 +171,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8"
         android:text="@string/self_limit_per_bet_limit_user_limit"
-        android:textColor="@color/colorRed"
+        android:textColor="@color/color_E44438_e44438"
         android:textSize="@dimen/textSize12sp" />
 
 </LinearLayout>

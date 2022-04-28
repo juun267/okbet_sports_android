@@ -31,7 +31,7 @@ fun commonCheckDialog(
 
     CustomAlertDialog(context).apply {
         if (isError) {
-            setTextColor(R.color.colorRed)
+            setTextColor(R.color.color_E44438_e44438)
         }
         setShowDivider(isShowDivider)
         setTitle(title)
@@ -65,7 +65,7 @@ fun commonCheckDialog(
 
     CustomAlertDialog(context).apply {
         if (isError) {
-            setTextColor(R.color.colorRed)
+            setTextColor(R.color.color_E44438_e44438)
         }
         setShowDivider(isShowDivider)
         setTitle(title)

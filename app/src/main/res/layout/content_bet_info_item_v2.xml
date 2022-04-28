@@ -167,7 +167,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
-                                android:textColor="@color/colorRedDark"
+                                android:textColor="@color/color_F75452_b73a20"
                                 android:textSize="@dimen/textSize13sp"
                                 tools:text="-0.5/2" />
                         </RelativeLayout>
@@ -212,7 +212,7 @@
                             android:gravity="center_vertical"
                             android:paddingStart="@dimen/margin_12"
                             android:text="@string/bet_info_odd_content_changed2"
-                            android:textColor="@color/colorRed"
+                            android:textColor="@color/color_E44438_e44438"
                             android:textSize="@dimen/textSize12sp"
                             android:visibility="gone"
                             app:layout_constraintBottom_toTopOf="@+id/viewGrey"
@@ -311,7 +311,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_marginBottom="8dp"
-                            android:textColor="@color/colorRed"
+                            android:textColor="@color/color_E44438_e44438"
                             android:textSize="@dimen/textSize13sp"
                             android:visibility="gone"
                             app:layout_constraintBottom_toTopOf="@+id/layoutKeyBoard"
