@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_sport_type_list.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
+import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
+import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeListener
 
@@ -28,6 +30,7 @@ class HighlightGameTypeViewHolder(itemView: View) : RecyclerView.ViewHolder(item
             //rvSportType.layoutManager?.onRestoreInstanceState(saveInstanceState)
             mGameTypeAdapter.gameTypeListener = gameTypeListener
             mGameTypeAdapter.isFromHome = true
+            OverScrollDecoratorHelper.setUpOverScroll(rvSportType, ORIENTATION_HORIZONTAL)
         }
     }
 
