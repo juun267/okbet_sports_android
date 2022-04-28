@@ -134,20 +134,20 @@ abstract class BaseFavoriteViewModel(
                             matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
 
                             /* #1 將賽事狀態(先前socket回傳取得)放入當前取得的賽事 */
-                            val status = mFavorMatchOddList.value?.peekContent()?.find { lo ->
+                            val mInfo = mFavorMatchOddList.value?.peekContent()?.find { lo ->
                                 lo.league.id == leagueOdd.league.id
                             }?.matchOdds?.find { mo ->
                                 mo.matchInfo?.id == matchInfo.id
-                            }?.matchInfo?.socketMatchStatus
+                            }?.matchInfo
 
-                            matchInfo.socketMatchStatus = status
+                            matchInfo.socketMatchStatus = mInfo?.socketMatchStatus
+                            matchInfo.statusName18n = mInfo?.statusName18n
+                            matchInfo.homeScore = mInfo?.homeScore
+                            matchInfo.awayScore = mInfo?.awayScore
                         }
-
                         matchOdd.playCateMappingList = playCateMappingList
-
                     }
                 }
-
                 mFavorMatchOddList.postValue(Event(it.updateMatchType()))
             }
         }
