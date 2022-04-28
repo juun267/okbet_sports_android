@@ -59,7 +59,7 @@ abstract class BaseSocketViewModel(
     fun getSettlementNotification(event: OrderSettlementEvent?) {
         event?.sportBet?.let {
             when (it.status) {
-                Status.WIN.code, Status.WIN_HALF.code, Status.CANCEL.code -> {
+                Status.UN_CHECK.code, Status.UN_DONE.code, Status.WIN.code, Status.WIN_HALF.code, Status.CANCEL.code,  Status.LOSE.code,  Status.LOSE_HALF.code,  Status.DRAW.code -> {
                     _settlementNotificationMsg.value = Event(it)
                 }
             }

@@ -23,6 +23,7 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
+import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueListener
@@ -43,6 +44,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     private val gameTypeAdapter by lazy {
         GameTypeAdapter().apply {
             gameTypeListener = GameTypeListener {
+                unSubscribeChannelHallAll()
                 viewModel.switchGameType(it)
             }
         }
@@ -95,10 +97,10 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             }, {})
 
             leagueOddListener = LeagueOddListener(
-                { matchId, matchInfoList ->
-                    if (matchInfoList.firstOrNull()?.isInPlay == true) {
+                { matchId, matchInfoList, gameMatchType ->
+                    if (gameMatchType == MatchType.IN_PLAY) {
                         matchId?.let {
-                            navOddsDetailLive(matchId)
+                            navOddsDetailLive(matchId, gameMatchType)
                         }
                     } else {
                         matchId?.let {
@@ -182,7 +184,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     private fun setupLeagueOddList(view: View) {
         view.favorite_game_list.apply {
             adapter = leagueAdapter
-            this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            this.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
 
             addItemDecoration(
                 SpaceItemDecoration(
@@ -248,6 +250,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
+                SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
                 oddsChangeEvent.updateOddsSelectedState()
                 oddsChangeEvent.filterMenuPlayCate()
 
@@ -432,12 +435,14 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             leagueOddList.filterMenuPlayCate()
 
             //favorite_game_list.adapter = leagueAdapter
+            favorite_game_list.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             leagueAdapter.data = leagueOddList.toMutableList()
             leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
             try {
                 leagueAdapter.data.forEach { leagueOdd ->
                     subscribeChannelHall(leagueOdd)
                 }
+                leagueAdapter.limitRefresh()
                 //leagueAdapter.notifyDataSetChanged()
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -570,7 +575,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             subscribeChannelType = ChannelType.HALL,
             betPlayCateNameMap = betPlayCateNameMap,
         )
-        (activity as GameActivity).showFastBetFragment(fastBetDataBean)
+        (activity as MyFavoriteActivity).showFastBetFragment(fastBetDataBean)
 
 //        viewModel.updateMatchBetList(
 //            MatchType.MY_EVENT,
@@ -715,14 +720,14 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         }
     }
 
-    private fun navOddsDetailLive(matchId: String) {
+    private fun navOddsDetailLive(matchId: String, gameMatchType: MatchType) {
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
 
         gameType?.let {
             val action =
                 MyFavoriteFragmentDirections.actionMyFavoriteFragmentToOddsDetailLiveFragment(
-                    MatchType.MY_EVENT,
+                    gameMatchType,
                     gameType,
                     matchId
                 )

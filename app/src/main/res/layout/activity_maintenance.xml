@@ -61,6 +61,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_maintenance_time"
         tools:text="@string/if_there_is_any_question_please_consult" />
 
+    <!--20220406 只有宣傳頁、主頁需顯示-->
     <org.cxct.sportlottery.ui.common.ServiceFloatingButton
         android:visibility="gone"
         android:id="@+id/btn_floating_service"

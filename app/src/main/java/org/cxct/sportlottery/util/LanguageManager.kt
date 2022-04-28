@@ -3,6 +3,7 @@ package org.cxct.sportlottery.util
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
+import android.util.Log
 import com.github.jokar.multilanguages.library.MultiLanguage
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -34,7 +35,6 @@ object LanguageManager {
             else -> {
                 //若APP local 未設定過語系，就使用系統語系判斷
                 val local = getSystemLocale(context)
-
                 when {
                     local.language == Locale.ENGLISH.language -> Language.EN
                     local.language == Locale("vi").language -> Language.VI

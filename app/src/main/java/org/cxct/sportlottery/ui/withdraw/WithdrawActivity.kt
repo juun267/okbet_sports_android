@@ -13,7 +13,7 @@ class WithdrawActivity : BaseSocketActivity<WithdrawViewModel>(WithdrawViewModel
         setContentView(R.layout.activity_withdraw)
 
         initToolbar()
-        setupServiceButton()
+//        setupServiceButton()
     }
 
     private fun initToolbar() {
@@ -23,7 +23,7 @@ class WithdrawActivity : BaseSocketActivity<WithdrawViewModel>(WithdrawViewModel
         }
     }
 
-    private fun setupServiceButton() {
+    /*private fun setupServiceButton() {
         btn_floating_service.setView(this)
-    }
+    }*/
 }

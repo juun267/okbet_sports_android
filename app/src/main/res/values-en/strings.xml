@@ -53,6 +53,10 @@
     <string name="register_privacy_policy_promotions"></string>
     <string name="register_over_21">I am over 21 years of age and have read and agree to the&#160;</string>
     <string name="register_rules">&#160;Rules and Terms</string>
+    <string name="register_success">Register successfully</string>
+    <string name="register_watch_first">Explore the game</string>
+    <string name="register_jump">The page will be jumping to %s 5 sec later.</string>
+    <string name="register_recharge_now">Recharge now</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="hint_confirm_password">Confirm Password</string>
     <string name="error_confirm_password">Password and confirm password don\'t match</string>
@@ -196,6 +200,7 @@
     <string name="premium_odds">PRICE BOOSTS</string>
     <string name="infomation_center">Information</string>
     <string name="left_menu_odds_type_setting">Odds Setting</string>
+    <string name="go_back_home_page">Back to main page</string>
     <string name="profile_center">Your profile</string>
     <string name="member_level">Member level</string>
     <string name="game_settlement">Result</string>
@@ -615,7 +620,7 @@
     <string name="bet_info_parlay_win_quota">Winning amount:</string>
     <string name="bet_info_add_bet_success">Successful betting</string>
     <string name="bet_info_current_money">Balance:%s</string>
-    <string name="bet_info_in_play_score">IN-PLAY %1$s (%2$s-%3$s)</string>
+    <string name="bet_info_in_play_score">%s (%2$s-%3$s)</string>
     <string name="bet_info_system_close_incompatible_item">Game play you selected can not apply to game play of parlay rules, will automatically be cancelled by system\',</string>
     <string name="bet_info_list_clean">Clear all</string>
     <string name="bet_info_bet_balance_insufficient">Balance is not enough</string>
@@ -745,7 +750,7 @@
     <string name="my_favorite">My Events</string>
     <string name="credit_bet_record">Rounds history</string>
     <string name="all_plat_type">All platform types</string>
-    <string name="visit_first">Go around</string>
+    <string name="visit_first">Explore the game</string>
     <string name="bet_number">Count</string>
     <string name="bet_money">Amount</string>
     <string name="profit_and_loss">Result</string>
@@ -837,7 +842,7 @@
     <string name="odds_button_name_hch">Home/Away-HOME</string>
     <string name="odds_button_name_hcc">Home/Away-Away</string>
     <string name="bet_fail">Betting fails</string>
-    <string name="bet_fail_btn">Odds Had change</string>
+    <string name="bet_fail_btn">Bet unsuccessful</string>
     <string name="credit_record_deactivate">Credit function disabled</string>
     <string name="game_postponed">Game postponed</string>
     <string name="money_recharge_hint1">Please transfer success before you submit recharge information.</string>
@@ -1087,5 +1092,8 @@ Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAG
 
     <!--region 宣傳頁-->
     <string name="hot_recommend">Recommended</string>
+    <string name="recommend_match">Thousand of match</string>
+    <string name="recommend_best_odd">Best odds</string>
+    <string name="recommend_safe">Safe betting</string>
     <!--endregion-->
 </resources>

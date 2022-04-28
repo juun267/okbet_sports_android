@@ -71,22 +71,22 @@ object SocketUpdateUtil {
                     }
 
 
-                    if ((gameType == GameType.TN.key || gameType == GameType.VB.key || gameType == GameType.TT.key) && matchStatusCO.homeTotalScore != null && matchStatusCO.homeTotalScore != matchOdd.matchInfo?.homeTotalScore) {
+                    if (needUpdateTotalScore(gameType) && matchStatusCO.homeTotalScore != null && matchStatusCO.homeTotalScore != matchOdd.matchInfo?.homeTotalScore) {
                         matchOdd.matchInfo?.homeTotalScore = matchStatusCO.homeTotalScore
                         isNeedRefresh = true
                     }
 
-                    if ((gameType == GameType.TN.key || gameType == GameType.VB.key || gameType == GameType.TT.key) && matchStatusCO.awayTotalScore != null && matchStatusCO.awayTotalScore != matchOdd.matchInfo?.awayTotalScore) {
+                    if (needUpdateTotalScore(gameType) && matchStatusCO.awayTotalScore != null && matchStatusCO.awayTotalScore != matchOdd.matchInfo?.awayTotalScore) {
                         matchOdd.matchInfo?.awayTotalScore = matchStatusCO.awayTotalScore
                         isNeedRefresh = true
                     }
 
-                    if (gameType == GameType.TN.key && matchStatusCO.homePoints != null && matchStatusCO.homePoints != matchOdd.matchInfo?.homePoints) {
+                    if (needUpdatePoints(gameType) && matchStatusCO.homePoints != null && matchStatusCO.homePoints != matchOdd.matchInfo?.homePoints) {
                         matchOdd.matchInfo?.homePoints = matchStatusCO.homePoints
                         isNeedRefresh = true
                     }
 
-                    if (gameType == GameType.TN.key && matchStatusCO.awayPoints != null && matchStatusCO.awayPoints != matchOdd.matchInfo?.awayPoints) {
+                    if (needUpdatePoints(gameType) && matchStatusCO.awayPoints != null && matchStatusCO.awayPoints != matchOdd.matchInfo?.awayPoints) {
                         matchOdd.matchInfo?.awayPoints = matchStatusCO.awayPoints
                         isNeedRefresh = true
                     }
@@ -115,6 +115,16 @@ object SocketUpdateUtil {
         return isNeedRefresh
     }
 
+    private fun needUpdateTotalScore(gameType: String?) = when (gameType) {
+        GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.BM.key -> true
+        else -> false
+    }
+
+    private fun needUpdatePoints(gameType: String?) = when (gameType) {
+        GameType.TN.key, GameType.VB.key -> true
+        else -> false
+    }
+
     fun updateMatchClock(matchOdd: MatchOdd, matchClockEvent: MatchClockEvent): Boolean {
         var isNeedRefresh = false
 
@@ -126,7 +136,7 @@ object SocketUpdateUtil {
                     GameType.FT.key -> {
                         matchClockCO.matchTime
                     }
-                    GameType.BK.key -> {
+                    GameType.BK.key,GameType.RB.key,GameType.AFT.key  -> {
                         matchClockCO.remainingTimeInPeriod
                     }
                     else -> null
@@ -293,6 +303,11 @@ object SocketUpdateUtil {
         }
 
         return isNeedRefresh || isNeedRefreshPlayCate
+    }
+
+    fun updateMatchOdds(oddsChangeEvent:OddsChangeEvent){
+        oddsChangeEvent.odds = mutableMapOf()
+        oddsChangeEvent.odds = oddsChangeEvent.oddsList.associateBy (keySelector= {it.playCateCode.toString()}, valueTransform={it.oddsList}).toMutableMap()
     }
 
     private fun updateMatchOdds(

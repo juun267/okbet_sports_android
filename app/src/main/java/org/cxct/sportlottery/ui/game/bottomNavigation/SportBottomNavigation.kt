@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.annotation.IdRes
 import kotlinx.android.synthetic.main.sport_bottom_navigation.view.*
+import kotlinx.android.synthetic.main.view_bottom_navigation_sport.view.*
 import org.cxct.sportlottery.R
 
 class SportBottomNavigation @JvmOverloads constructor(
@@ -79,6 +80,18 @@ class SportBottomNavigation @JvmOverloads constructor(
     }
 
     fun setBetCount(betCount: Int){
+        if(betCount != 0){
+            laExplo.visibility = VISIBLE
+            laExplo.playAnimation()
+        }
         tv_bet_count.text = betCount.toString()
+    }
+
+    /**
+     * 給不需要選中任何選項的頁面使用
+     */
+    fun clearSelectedStatus() {
+        selectedItem?.checked = false
+        selectedItem = null
     }
 }

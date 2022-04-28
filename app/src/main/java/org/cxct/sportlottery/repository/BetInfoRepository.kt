@@ -2,13 +2,11 @@ package org.cxct.sportlottery.repository
 
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
-import org.cxct.sportlottery.network.bet.info.BetInfoData
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
@@ -26,7 +24,6 @@ import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.MatchOddUtil
 import org.cxct.sportlottery.util.QuickListManager
 import org.cxct.sportlottery.util.parlaylimit.ParlayBetLimit
-import org.cxct.sportlottery.util.parlaylimit.ParlayCom
 import org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil
 import kotlin.math.abs
 
@@ -418,7 +415,7 @@ class BetInfoRepository(val androidContext: Context) {
         }
 
         val oddsList = matchOddList.map {
-            it.odds.toBigDecimal()
+            Pair(it.odds.toBigDecimal(), it.isOnlyEUType)
         }
 
         val oddsIndexList = oddsList.map {
@@ -442,13 +439,38 @@ class BetInfoRepository(val androidContext: Context) {
             val maxBetMoney = GameConfigManager.maxBetMoney ?: 9999999
             val maxCpBetMoney = GameConfigManager.maxCpBetMoney
             val maxParlayBetMoney = GameConfigManager.maxParlayBetMoney ?: 9999999
+            val maxPayout = MultiLanguagesApplication.getInstance()?.userInfo?.value?.maxPayout ?: 9999999.0
             if(it.value.num > 1){
                 //大於1 即為組合型串關 最大下注金額有特殊規則
                 maxBet = calculateComboMaxBet(it.value,playQuota?.max)
             }else{
-                when (matchType) {
+                //根據賽事類型的投注上限
+                val matchTypeMaxBetMoney = when {
+                    matchType == MatchType.PARLAY && isParlayBet -> maxParlayBetMoney
+                    matchType == MatchType.OUTRIGHT -> maxCpBetMoney
+                    else -> maxBetMoney
+                } ?: 0
+
+                //風控投注額上限
+                val hdOddsPayout =
+                    maxPayout.div(if (it.value.isOnlyEUType) it.value.odds.toDouble() - 1 else it.value.hdOdds.toDouble())
+                        .toInt()
+
+                //region parlayBetLimit(球類賽事類型投注額上限), matchTypeMaxBetMoney(會員層級賽事類型投注額上限), userSelfLimit(自我禁制投注額上限), hdOddsPayout(風控投注額上限) 取最小值作為投注額上限
+                listOf(
+                    parlayBetLimit,
+                    matchTypeMaxBetMoney,
+                    userSelfLimit ?: 0,
+                    hdOddsPayout
+                ).filter { limit -> limit > 0 }.minOrNull()?.let { minLimit ->
+                    maxBet = minLimit
+                }
+                //endregion
+
+                /*when (matchType) {
                     MatchType.PARLAY -> {
                         if (isParlayBet) {
+                        //TODO 向Martin確認 此處的 maxBetMoney 是否錯誤 應為 maxParlayBetMoney
                             maxBet =
                                 if (maxParlayBetMoney < parlayBetLimit) maxBetMoney else parlayBetLimit
                         } else {
@@ -462,32 +484,47 @@ class BetInfoRepository(val androidContext: Context) {
                     else -> maxBet =
                         maxBetMoney.let { if (maxBetMoney < parlayBetLimit) maxBetMoney else parlayBetLimit }
                             ?: parlayBetLimit
-                }
+                }*/
 
                 //[Martin]為馬來盤＆印度計算投注上限
-                if (oddsType == OddsType.MYS) {
+                if (oddsType == OddsType.MYS && !it.value.isOnlyEUType) {
                     if ((matchOddList.getOrNull(0)?.malayOdds ?: 0.0) < 0.0 && oddsList.size <= 1) {
                         val myMax = (maxBetMoney.div(abs(matchOddList.getOrNull(0)?.malayOdds ?: 0.0))).toInt()
-                        maxBet = if (myMax < (playQuota?.max ?: 0)) myMax else (playQuota?.max ?: 0)
+                        listOf(
+                            myMax,
+                            parlayBetLimit,
+                            maxPayout.toInt(),
+                            userSelfLimit ?: 0
+                        ).filter { limit -> limit > 0 }.minOrNull()?.let { minLimit ->
+                            maxBet = minLimit
+                        }
                     }
-                } else if (oddsType == OddsType.IDN) {
+                } else if (oddsType == OddsType.IDN && !it.value.isOnlyEUType) {
                     if (matchOddList.getOrNull(0)?.indoOdds ?: 0.0 < 0.0 && oddsList.size <= 1) {
                         //印度賠付額上限
                         val indoMax = ((playQuota?.max?.toDouble()?.plus(abs(matchOddList.getOrNull(0)?.indoOdds ?: 0.0)))?.toInt())?.minus(1)?: 0
                         //印度使用者投注上限
                         val indoUserMax = maxBetMoney.div(abs(matchOddList.getOrNull(0)?.indoOdds ?: 0.0)).toInt()
-                        maxBet = if (indoUserMax < indoMax) indoUserMax else indoMax
+
+                        //region indoMax(印度賠付額上限), indoUserMax(印度使用者投注上限), hdOddsPayout(風控投注額上限), userSelfLimit(自我禁制投注額上限) 取最小值作為投注額上限
+                        listOf(
+                            indoMax,
+                            indoUserMax,
+                            maxPayout.toInt(),
+                            userSelfLimit ?: 0
+                        ).filter { limit -> limit > 0 }.minOrNull()?.let { minLimit ->
+                            maxBet = minLimit
+                        }
+                        //endregion
                     }
-                }else if(oddsType == OddsType.IDN) {
+                }
+                //TODO 問Martin, 這一段的用意
+            /*else if(oddsType == OddsType.IDN) {
                     if (matchOddList[0].indoOdds < 0 && oddsList.size <= 1) {
                         val indoMax = (((playQuota?.max?.toDouble()?.plus(abs(matchOddList[0].indoOdds))) ?: 0).toInt()) - 1
                         maxBet = if (maxBetMoney < indoMax) maxBetMoney else indoMax
                     }
-                }
-            }
-
-            userSelfLimit?.let { t ->
-                maxBet = if (maxBet < t) maxBetMoney else t
+                }*/
             }
 
             ParlayOdd(

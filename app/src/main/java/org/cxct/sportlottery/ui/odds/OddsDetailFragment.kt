@@ -32,6 +32,7 @@ import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.component.LiveViewToolbar
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.TextUtil
@@ -125,8 +126,10 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         betPlayCateNameMap = matchOdd.betPlayCateNameMap,
                         otherPlayCateName = scoPlayCateNameForBetInfo
                     )
-                    (activity as GameActivity).showFastBetFragment(fastBetDataBean)
-
+                    when (activity) {
+                        is GameActivity -> (activity as GameActivity).showFastBetFragment(fastBetDataBean)
+                        is GamePublicityActivity -> (activity as GamePublicityActivity).showFastBetFragment(fastBetDataBean)
+                    }
 
 //                    viewModel.updateMatchBetList(
 //                        matchType = MatchType.TODAY,
@@ -357,7 +360,7 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
 
     private fun setupLiveView() {
-        with(live_view_tool_bar){
+        with(live_view_tool_bar) {
             setupToolBarListener(liveToolBarListener)
             setupPlayerControl(false)
         }

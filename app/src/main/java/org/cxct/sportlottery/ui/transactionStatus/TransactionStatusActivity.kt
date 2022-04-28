@@ -21,9 +21,9 @@ import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.service.order_settlement.Status
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
-import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -51,7 +51,7 @@ class TransactionStatusActivity :
         initBottomNavigation()
         initRvMarquee()
         initObserver()
-        initServiceButton()
+//        initServiceButton()
 //        getAnnouncement()
     }
 
@@ -260,9 +260,9 @@ class TransactionStatusActivity :
         }
     }
 
-    private fun initServiceButton() {
+    /*private fun initServiceButton() {
         btn_floating_service.setView(this)
-    }
+    }*/
 
     private fun getAnnouncement() {
         viewModel.getAnnouncement()
@@ -315,6 +315,6 @@ class TransactionStatusActivity :
             return
         }
 
-        startActivity(Intent(this, GameActivity::class.java))
+        startActivity(Intent(this, GamePublicityActivity::class.java))
     }
 }

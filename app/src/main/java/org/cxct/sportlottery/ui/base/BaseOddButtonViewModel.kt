@@ -361,7 +361,7 @@ abstract class BaseOddButtonViewModel(
         //一般注單
         val matchList: MutableList<Odd> = mutableListOf()
         normalBetList.forEach {
-            if (it.matchOdd.odds == it.matchOdd.malayOdds || it.matchType == MatchType.OUTRIGHT || it.matchType == MatchType.OTHER_OUTRIGHT) {
+            if (it.matchOdd.isOnlyEUType || it.matchType == MatchType.OUTRIGHT || it.matchType == MatchType.OTHER_OUTRIGHT) {
                 currentOddsTypes = OddsType.EU
             }
             matchList.add(
@@ -439,7 +439,7 @@ abstract class BaseOddButtonViewModel(
                     betInfoListData.matchOdd.oddsId,
                     getOdds(betInfoListData.matchOdd, betInfoListData.singleBetOddsType),
                     stake,
-                    betInfoListData.singleBetOddsType.code
+                    getSingleBetOddsType(betInfoListData).code
                 )
             ),
             listOf(Stake(parlayType ?: "", stake)),
@@ -452,11 +452,6 @@ abstract class BaseOddButtonViewModel(
             val result = getBetApi(request)
             _betAddResult.postValue(Event(result))
             result?.receipt?.singleBets?.firstOrNull()?.matchType = betInfoListData.matchType
-            var currentOddsType = loginRepository.mOddsType.value ?: OddsType.HK
-            if (betInfoListData.matchOdd.odds == betInfoListData.matchOdd.malayOdds) {
-                currentOddsType = OddsType.EU
-            }
-            result?.receipt?.singleBets?.firstOrNull()?.oddsType = currentOddsType
 
             Event(result).getContentIfNotHandled()?.success?.let {
                 if (it) {

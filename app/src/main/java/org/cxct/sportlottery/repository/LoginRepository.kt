@@ -25,6 +25,7 @@ import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.ui.game.BetRecordType
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.AesCryptoUtil
+import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.GameConfigManager
 import retrofit2.Response
 
@@ -51,13 +52,17 @@ class LoginRepository(private val androidContext: Context) {
     val isLogin: LiveData<Boolean>
         get() = _isLogin
 
+    val kickedOut: LiveData<Event<String?>>
+        get() = _kickedOut
+
     val transNum: LiveData<Int?> //交易狀況數量
         get() = _transNum
 
     val isCreditAccount: LiveData<Boolean>
         get() = _isCreditAccount
 
-    private val _isLogin = MutableLiveData<Boolean>()
+    val _isLogin = MutableLiveData<Boolean>()
+    val _kickedOut = MutableLiveData<Event<String?>>()
     private val _transNum = MutableLiveData<Int?>()
     private val _isCreditAccount = MutableLiveData<Boolean>().apply {
         value = sharedPref.getBoolean(KEY_IS_CREDIT_ACCOUNT, false)
@@ -254,6 +259,7 @@ class LoginRepository(private val androidContext: Context) {
                 _isLogin.value = true
             }
         } else {
+
             isCheckToken = false
             _isLogin.value = false
             _isCreditAccount.postValue(false)
@@ -262,6 +268,10 @@ class LoginRepository(private val androidContext: Context) {
         }
 
         return checkTokenResponse
+    }
+
+    suspend fun checkIsUserAlive(): Response<CheckTokenResult> {
+        return OneBoSportApi.indexService.checkToken()
     }
 
     suspend fun logout(): Response<LogoutResult> {

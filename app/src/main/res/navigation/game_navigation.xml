@@ -201,6 +201,18 @@
                 android:name="matchType"
                 app:argType="org.cxct.sportlottery.network.common.MatchType" />
         </action>
+        <action
+            android:id="@+id/action_gameV3Fragment_to_gameOutrightMoreFragment"
+            app:destination="@id/gameOutrightMoreFragment" >
+
+            <argument
+                android:name="oddsKey"
+                app:argType="string" />
+
+            <argument
+                android:name="matchOdd"
+                app:argType="org.cxct.sportlottery.network.outright.odds.MatchOdd" />
+        </action>
     </fragment>
 
     <fragment

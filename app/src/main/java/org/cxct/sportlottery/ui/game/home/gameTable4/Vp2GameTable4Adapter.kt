@@ -15,7 +15,6 @@ import kotlin.collections.MutableList
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import kotlinx.android.synthetic.main.home_game_table_item_4.view.*
 import kotlinx.android.synthetic.main.home_game_table_item_4.view.iv_play
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
@@ -172,7 +171,7 @@ class Vp2GameTable4Adapter (
                                 timeMap[id] = it
                             }
                         }
-                        GameType.BK.key -> {
+                        GameType.BK.key,GameType.RB.key,GameType.AFT.key  -> {
                             matchClockCO.remainingTimeInPeriod?.let {
                                 timeMap[id] = it
                             }
@@ -257,6 +256,7 @@ class Vp2GameTable4Adapter (
                 if (data.matchInfo?.eps == 1) View.VISIBLE else View.GONE
 
             itemView.iv_play.isVisible = (data.matchInfo?.liveVideo == 1)
+            itemView.iv_animation.isVisible = !(data.matchInfo?.trackerId.isNullOrEmpty())
 
             itemView.table_match_info_border.setOnClickListener {
                 data.matchInfo?.let {

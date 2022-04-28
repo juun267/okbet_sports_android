@@ -49,5 +49,6 @@ enum class GameMatchStatus(val value: Int) {
     FIFTH_BREAK(305),
     SIXTH_BREAK(306),
     SIXTH_SET (441),
-    SEVENTH_SET (442)
+    SEVENTH_SET (442),
+    HIDE_SCORE(999)
 }

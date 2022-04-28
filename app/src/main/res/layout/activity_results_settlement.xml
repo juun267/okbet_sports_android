@@ -168,7 +168,8 @@
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
     <!--根據需求先隱藏，確定不用可刪-->
-    <org.cxct.sportlottery.ui.common.ServiceFloatingButton
+    <!--20220406 只有宣傳頁、主頁需顯示-->
+    <!--<org.cxct.sportlottery.ui.common.ServiceFloatingButton
         android:visibility="gone"
         android:id="@+id/btn_floating_service"
         android:layout_width="match_parent"
@@ -176,6 +177,6 @@
         android:layout_marginBottom="14dp"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

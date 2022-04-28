@@ -19,6 +19,9 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
     private var noticeCount: Int? = null
     private var isGuest: Boolean? = null
 
+    open fun onCloseMenu() {}
+    open fun updateNoticeButton(noticeCount: Int) {}
+
     protected val snackBarBetUpperLimitNotify by lazy {
         Snackbar.make(
             findViewById(android.R.id.content),
@@ -52,6 +55,7 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
     fun setupNoticeButton(noticeButton: ImageView) {
         mNoticeButton = noticeButton
         mNoticeButton?.setOnClickListener {
+            onCloseMenu()
             startActivity(
                 Intent(this, InfoCenterActivity::class.java)
                     .putExtra(InfoCenterActivity.KEY_READ_PAGE, InfoCenterActivity.YET_READ)
@@ -73,6 +77,7 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
     private fun updateNoticeCount(noticeCount: Int) {
         this.noticeCount = noticeCount
         updateNoticeButton()
+        updateNoticeButton(noticeCount)
     }
 
     private fun updateUserIdentity(isGuest: Long?) {

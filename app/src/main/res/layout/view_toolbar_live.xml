@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorWhite"
     android:orientation="vertical">
 
@@ -26,18 +26,18 @@
                 android:id="@+id/iv_live_status"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/img_stream_loading"
-                android:scaleType="fitXY"/>
+                android:scaleType="fitXY"
+                android:src="@drawable/img_stream_loading" />
+
             <TextView
+                android:id="@+id/tvStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tvStatus"
-                android:text="@string/text_cant_play"
                 android:layout_centerInParent="true"
-                android:textSize="@dimen/margin_14"
-                android:textColor="@color/colorBlue"
                 android:gravity="center"
-                />
+                android:text="@string/text_cant_play"
+                android:textColor="@color/colorBlue"
+                android:textSize="@dimen/margin_14" />
 
             <!-- Media Layout -->
             <com.google.android.exoplayer2.ui.PlayerView
@@ -49,10 +49,12 @@
 
             <!--根據需求，先隱藏賽事動畫-->
             <WebView
-                android:visibility="gone"
                 android:id="@+id/web_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:overScrollMode="never"
+                android:visibility="gone" />
 
         </RelativeLayout>
 
@@ -68,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
-            android:src="@drawable/ic_live_player"
+            android:src="@drawable/selector_live_player"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/iv_animation"
@@ -79,39 +81,39 @@
 
         <!--根據需求，先隱藏賽事動畫-->
         <ImageView
-            android:visibility="gone"
             android:id="@+id/iv_animation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
-            android:src="@drawable/ic_icon_game_schedule"
+            android:src="@drawable/selector_game_schedule"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/iv_statistics"
             app:layout_constraintStart_toEndOf="@id/iv_play"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
 
         <ImageView
             android:id="@+id/iv_statistics"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/selector_icon_statistics"
-            app:layout_constraintStart_toEndOf="@+id/iv_animation"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            />
+            app:layout_constraintStart_toEndOf="@+id/iv_animation"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/iv_arrow"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:contentDescription="@null"
-            android:scaleType="centerInside"
             android:paddingHorizontal="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:scaleType="centerInside"
+            android:src="@drawable/selector_ic_arrow_gray_blue_v4"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:src="@drawable/selector_ic_arrow_gray_blue_v4" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

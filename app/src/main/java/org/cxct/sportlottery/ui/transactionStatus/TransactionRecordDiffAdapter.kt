@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.content_parlay_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TextUtil.getParlayShowName
@@ -34,15 +35,26 @@ class TransactionRecordDiffAdapter :
     ListAdapter<DataItem, RecyclerView.ViewHolder>(TransactionRecordDiffCallBack()) {
     var isLastPage: Boolean = false
     var totalAmount: Double = 0.0
+    var status = 0
+    var itemList = listOf<DataItem>()
 
     private enum class ViewType { Match, Parlay, Outright, LastTotal, NoData }
 
-    fun setupBetList(betListData: BetListData) {
+    fun setupBetList(betListData: BetListData, status: Int) {
         isLastPage = betListData.isLastPage
         totalAmount = betListData.totalMoney
-        val itemList = when {
+        this.status = status
+        itemList = when {
             betListData.row.isEmpty() -> listOf(DataItem.NoData)
             else -> betListData.row.map { DataItem.Item(it) } + listOf(DataItem.Total(totalAmount))
+        }
+        submitList(itemList)
+    }
+
+    fun updateListStatus(sportBet: SportBet) {
+        itemList.forEach { dataItem ->
+            if(dataItem.orderNo == sportBet.orderNo)
+                (dataItem as DataItem.Item).row.status = sportBet.status ?: 999
         }
         submitList(itemList)
     }
@@ -61,7 +73,7 @@ class TransactionRecordDiffAdapter :
         val rvData = getItem(holder.adapterPosition)
         when (holder) {
             is MatchRecordViewHolder -> {
-                holder.bind((rvData as DataItem.Item).row)
+                holder.bind((rvData as DataItem.Item).row,status)
             }
             is ParlayRecordViewHolder -> {
                 holder.bind((rvData as DataItem.Item).row)
@@ -96,7 +108,7 @@ class TransactionRecordDiffAdapter :
             }
         }
 
-        fun bind(data: Row) {
+        fun bind(data: Row, status: Int) {
             val matchOdds = data.matchOdds[0]
             itemView.apply {
                 title_league_name.text = matchOdds.leagueName
@@ -129,7 +141,9 @@ class TransactionRecordDiffAdapter :
 
                         override fun onFinish() {
                             tv_count_down.text = "0 ${context.getString(R.string.sec)}"
-//                            tv_count_down.visibility = View.GONE
+                            if(status != 0){
+                                tv_count_down.visibility = View.GONE
+                            }
                         }
                     }.start()
                 }else{

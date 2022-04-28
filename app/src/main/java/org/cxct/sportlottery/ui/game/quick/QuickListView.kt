@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.RadioButton
 import android.widget.RelativeLayout
-import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +15,7 @@ import kotlinx.android.synthetic.main.view_quick_list.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_eps.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_pager.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_pair.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
@@ -33,7 +33,7 @@ class QuickListView @JvmOverloads constructor(
 ) : RelativeLayout(context, attrs, defStyleAttr), View.OnClickListener {
 
     private var lifecycleOwner: LifecycleOwner? = null
-    private val mViewModel = QuickListViewModel(context)
+    private val mViewModel = QuickListViewModel(MultiLanguagesApplication.appContext)
     private var mMatchId: String = ""
     private var mQuickPlayCateList = mutableListOf<QuickPlayCate>()
     private var mSelectedQuickPlayCate: QuickPlayCate? = null
@@ -51,7 +51,7 @@ class QuickListView @JvmOverloads constructor(
         OddButtonEpsAdapter(mMatchOdd?.matchInfo)
 
     init {
-        addView(LayoutInflater.from(context).inflate(R.layout.view_quick_list, this, false))
+        addView(LayoutInflater.from(MultiLanguagesApplication.appContext).inflate(R.layout.view_quick_list, this, false))
     }
 
     override fun onAttachedToWindow() {
@@ -63,6 +63,9 @@ class QuickListView @JvmOverloads constructor(
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
+        lifecycleOwner?.let {
+            mViewModel._quickOddsListGameHallResult.removeObservers(it)
+        }
     }
 
     override fun onClick(view: View?) {
@@ -80,6 +83,9 @@ class QuickListView @JvmOverloads constructor(
     private fun initViews() {
         league_odd_quick_cate_close?.setOnClickListener(this)
         league_odd_quick_cate_tabs?.setOnCheckedChangeListener { group, checkedId ->
+            mQuickPlayCateList.forEach {
+                it.isSelected = it.hashCode() == checkedId
+            }
             if (mCloseTag) {
                 mSelectedQuickPlayCate = null
                 mCloseTag = false
@@ -117,7 +123,8 @@ class QuickListView @JvmOverloads constructor(
                                     mSelectedQuickPlayCate!!,
                                     quickOdds1,
                                     mOddsType,
-                                    mLeagueOddListener
+                                    mLeagueOddListener,
+                                    quickListResult.quickListData
                                 )
                             }
                             org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_CORNERS.value, org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_PENALTY.value -> {
@@ -169,10 +176,10 @@ class QuickListView @JvmOverloads constructor(
         league_odd_quick_cate_tabs?.removeAllViews()
         mQuickPlayCateList.sortedBy { it.sort }.forEachIndexed { index, it ->
             val inflater =
-                context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                MultiLanguagesApplication.appContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             val rb = inflater.inflate(R.layout.custom_radio_button, null) as RadioButton
             league_odd_quick_cate_tabs?.addView(rb.apply {
-                text = it.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: it.name
+                text = it.nameMap?.get(LanguageManager.getSelectLanguage(MultiLanguagesApplication.appContext).key) ?: it.name
                 id = it.hashCode()
                 isChecked = it.isSelected
             })
@@ -191,7 +198,8 @@ class QuickListView @JvmOverloads constructor(
         selectedQuickPlayCate: QuickPlayCate,
         quickOdds: MutableMap<String, List<Odd?>?>,
         oddsType: OddsType,
-        leagueOddListener: LeagueOddListener?
+        leagueOddListener: LeagueOddListener?,
+        quickListData: QuickListData?
     ) {
         mOddButtonPairAdapter = OddButtonPairAdapter(mMatchOdd?.matchInfo).apply {
             this.oddsType = oddsType
@@ -211,23 +219,31 @@ class QuickListView @JvmOverloads constructor(
         league_odd_quick_odd_btn_pair.visibility = View.VISIBLE
 
         quick_odd_pair_tab_1.apply {
-            visibility =
-                if (quickOdds.keys.any { it == PlayCate.HDP.value || it == PlayCate.OU.value }
-                    && !(quickOdds[PlayCate.HDP.value].isNullOrEmpty() && quickOdds[PlayCate.OU.value].isNullOrEmpty())) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
+            if (quickOdds.keys.any { it == PlayCate.HDP.value || it == PlayCate.OU.value }
+                && !(quickOdds[PlayCate.HDP.value].isNullOrEmpty() && quickOdds[PlayCate.OU.value].isNullOrEmpty())) {
+                text = quickListData?.playCateNameMap?.get(
+                    quickOdds.keys.find { it == PlayCate.HDP.value || it == PlayCate.OU.value }
+                )?.get(
+                    LanguageManager.getSelectLanguage(MultiLanguagesApplication.appContext).key
+                )
+                visibility = View.VISIBLE
+            } else {
+                visibility = View.GONE
+            }
         }
 
         quick_odd_pair_tab_2.apply {
-            visibility =
-                if (quickOdds.keys.any { it == PlayCate.HDP_1ST.value || it == PlayCate.OU_1ST.value }
-                    && !(quickOdds[PlayCate.HDP_1ST.value].isNullOrEmpty() && quickOdds[PlayCate.OU_1ST.value].isNullOrEmpty())) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
+            if (quickOdds.keys.any { it == PlayCate.HDP_1ST.value || it == PlayCate.OU_1ST.value }
+                && !(quickOdds[PlayCate.HDP_1ST.value].isNullOrEmpty() && quickOdds[PlayCate.OU_1ST.value].isNullOrEmpty())) {
+                text = quickListData?.playCateNameMap?.get(
+                    quickOdds.keys.find { it == PlayCate.HDP_1ST.value || it == PlayCate.OU_1ST.value }
+                )?.get(
+                    LanguageManager.getSelectLanguage(MultiLanguagesApplication.appContext).key
+                )
+                visibility = View.VISIBLE
+            } else {
+                visibility = View.GONE
+            }
         }
 
         quick_odd_pair_list.apply {

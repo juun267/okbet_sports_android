@@ -63,7 +63,7 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
         initToolBar()
         initMenu()
         initBottomNav()
-        initServiceButton()
+//        initServiceButton()
         initObserve()
         setFontTheme()
 
@@ -211,9 +211,9 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
         bottom_nav_view.menu.findItem(R.id.chat_page).isVisible = sConfigData?.chatOpen == FLAG_OPEN
     }
 
-    private fun initServiceButton() {
+    /*private fun initServiceButton() {
         btn_floating_service.setView(this)
-    }
+    }*/
 
     private fun getMsgDialog() {
         viewModel.getAnnouncement()

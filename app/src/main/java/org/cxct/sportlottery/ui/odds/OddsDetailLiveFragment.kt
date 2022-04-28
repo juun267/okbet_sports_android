@@ -33,6 +33,7 @@ import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
+import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.repository.FLAG_LIVE
@@ -45,6 +46,7 @@ import org.cxct.sportlottery.ui.common.TimerManager
 import org.cxct.sportlottery.ui.component.LiveViewToolbar
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
@@ -59,7 +61,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     private val args: OddsDetailLiveFragmentArgs by navArgs()
 
     private var oddsDetailListAdapter: OddsDetailListAdapter? = null
-
+    private var isLogin:Boolean = false
     private val tabCateAdapter: TabCateAdapter by lazy {
         TabCateAdapter(OnItemSelectedListener {
             tabCateAdapter.selectedPosition = it
@@ -90,7 +92,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                 GameType.FT -> {
                     timeMillis += 1000
                 }
-                GameType.BK -> {
+                GameType.BK, GameType.RB, GameType.AFT -> {
                     timeMillis -= 1000
                 }
                 else -> {
@@ -145,7 +147,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initBottomNavigation()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -157,17 +158,18 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         super.onStart()
 
         if (Util.SDK_INT >= 24) {
-            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null)
+            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null,isLogin)
         }
     }
 
     override fun onResume() {
         super.onResume()
-        getData()
         startTimer()
+        isLogin = viewModel.loginRepository.isLogin.value == true
+        live_view_tool_bar.initLoginStatus(isLogin)
 
         if ((Util.SDK_INT < 24) || live_view_tool_bar.getExoPlayer() == null) {
-            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null)
+            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null,isLogin)
         }
     }
 
@@ -214,7 +216,10 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                         betPlayCateNameMap = matchOdd.betPlayCateNameMap,
                         otherPlayCateName = scoPlayCateNameForBetInfo
                     )
-                    (activity as GameActivity).showFastBetFragment(fastBetDataBean)
+                    when (activity) {
+                        is GameActivity -> (activity as GameActivity).showFastBetFragment(fastBetDataBean)
+                        is GamePublicityActivity -> (activity as GamePublicityActivity).showFastBetFragment(fastBetDataBean)
+                    }
 
 //                    viewModel.updateMatchBetList(
 //                        matchType = MatchType.IN_PLAY,
@@ -238,7 +243,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
             sportCode = args.gameType
         }
-
         rv_detail.apply {
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             adapter = oddsDetailListAdapter
@@ -416,13 +420,27 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                 live_view_tool_bar.startPlayer(
                     matchId,
                     matchOdd?.matchInfo?.trackerId,
-                    liveStreamInfo.streamUrl
+                    liveStreamInfo.streamUrl,isLogin
                 )
+            }
+        }
+
+        viewModel.matchTrackerUrl.observe(viewLifecycleOwner) { event ->
+            event?.getContentIfNotHandled()?.let { matchTrackerUrl ->
+                live_view_tool_bar.setupTrackerUrl(matchTrackerUrl.h5Url)
             }
         }
     }
 
     private fun initSocketObserver() {
+        receiver.serviceConnectStatus.observe(this.viewLifecycleOwner) {
+            it?.let {
+                if (it == ServiceConnectStatus.CONNECTED) {
+                    getData()
+                }
+            }
+        }
+
         receiver.matchStatusChange.observe(this.viewLifecycleOwner) {
             it?.let { matchStatusChangeEvent ->
                 matchStatusChangeEvent.matchStatusCO?.takeIf { ms -> ms.matchId == this.matchId }
@@ -448,7 +466,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                     GameType.FT -> {
                         matchClockEvent.matchClockCO?.matchTime
                     }
-                    GameType.BK -> {
+                    GameType.BK, GameType.RB, GameType.AFT -> {
                         matchClockEvent.matchClockCO?.remainingTimeInPeriod
                     }
                     else -> null
@@ -542,13 +560,11 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                 val timeStr = TimeUtil.timeFormat(startTime, HM_FORMAT)
                 if (timeStr.isNotEmpty()) {
                     tv_time_bottom.text = timeStr
-                }
-                else {
+                } else {
                     tv_time_bottom.text = getString(R.string.time_null)
                 }
                 tv_time_top.text = TimeUtil.timeFormat(startTime, DM_FORMAT)
-            }
-            else {
+            } else {
                 // 不需要一直重置
 //                tv_time_bottom.text = getString(R.string.time_null)
             }
@@ -558,7 +574,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     private fun setupLiveView(liveVideo: Int?) {
         live_view_tool_bar.setupToolBarListener(liveToolBarListener)
         live_view_tool_bar.setupPlayerControl(liveVideo.toString() == FLAG_LIVE)
-        live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null)
+        live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null,isLogin)
     }
 
     private fun getData() {
@@ -600,46 +616,83 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
         tv_away_score_live.visibility = View.VISIBLE
         tv_away_score_live.text = (event.matchStatusCO?.awayScore ?: 0).toString()
+    }
 
-        ll_time.visibility = View.GONE
+    private fun showBackTimeBlock(show: Boolean) {
+        ll_time.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     private fun setupStatusList(event: MatchStatusChangeEvent) {
         if (args.matchType != MatchType.IN_PLAY) return
 
-        when (args.gameType) {
-            GameType.FT,
-            GameType.IH -> {
-                setCardText(event)
-                setupFrontScore(event)
+        //region setup game score
+        when (event.matchStatusCO?.status) {
+            GameMatchStatus.FINISH.value -> {
+                //donothing
             }
+            GameMatchStatus.HIDE_SCORE.value -> {
+                tv_home_score.visibility = View.GONE
+                tv_away_score.visibility = View.GONE
+                tv_home_score_total.visibility = View.GONE
+                tv_away_score_total.visibility = View.GONE
+                tv_home_score_live.visibility = View.GONE
+                tv_away_score_live.visibility = View.GONE
+            }
+            else -> {
+                when (args.gameType) {
+                    GameType.FT,
+                    GameType.IH -> {
+                        setCardText(event)
+                        setupFrontScore(event)
+                    }
+                    GameType.BK -> {
+                        setupFrontScore(event)
+                        setupStatusBk(event)
+                    }
+                    GameType.TN -> {
+                        setupPoint(event)
+                        setupBackScore(event)
+                    }
+                    GameType.VB,
+                    GameType.TT -> {
+                        setupBackScore(event)
+                    }
+                    GameType.RB, GameType.AFT -> {
+                        setupFrontScore(event)
+                    }
+                    GameType.BM -> {
+                        setupBackScore(event)
+                    }
+                    GameType.CK -> {
+                        setupFrontScore(event)
+                    }
+                    // Todo: 仍有其他球種待處理
+                    // 20220412 根據h5顯示的版面進行同步, MR, GF, FB, OTHER 無法模擬野佔無賽事可參考
+                    // MR, GF, FB, OTHER
+                    else -> {
+                    }
+                }
+            }
+        }
+        //endregion
+
+        //region setup game status
+        val showScore = event.matchStatusCO?.status != GameMatchStatus.HIDE_SCORE.value
+        when (args.gameType) {
             GameType.BK -> {
-                setupFrontScore(event)
                 setupStatusBk(event)
             }
-            GameType.TN -> {
-                setupPoint(event)
-                setupBackScore(event)
-                setupStatusTnVb(event)
-            }
-            GameType.VB,
-            GameType.TT -> {
-                setupBackScore(event)
-                setupStatusTnVb(event)
+            GameType.TN, GameType.VB, GameType.TT, GameType.BM -> {
+                showBackTimeBlock(false)
+                setupStatusTnVb(event, showScore)
             }
             // Todo: 仍有其他球種待處理
-            // BM, BX, CB, CK, BB, RB, AFT, MR, GF, FB, OTHER
+            // 20220412 根據h5顯示的版面進行同步, MR, GF, FB, OTHER 無法模擬野佔無賽事可參考
+            // MR, GF, FB, OTHER
             else -> {
             }
         }
-        if(event.matchStatusCO?.status == 999){
-            tv_home_score.visibility = View.VISIBLE
-            tv_away_score.visibility = View.VISIBLE
-            tv_home_score_total.visibility = View.VISIBLE
-            tv_away_score_total.visibility = View.VISIBLE
-            tv_home_score_live.visibility = View.VISIBLE
-            tv_away_score_live.visibility = View.VISIBLE
-        }
+        //endregion
     }
 
     private fun setCardText(event: MatchStatusChangeEvent) {
@@ -698,12 +751,12 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         tv_status_left.text = statusBuilder
     }
 
-    private fun setupStatusTnVb(event: MatchStatusChangeEvent) {
+    private fun setupStatusTnVb(event: MatchStatusChangeEvent, showScore: Boolean = true) {
 
         val statusBuilder = SpannableStringBuilder()
 
         tv_status_left.visibility = View.VISIBLE
-        tv_status_right.visibility = View.VISIBLE
+        tv_status_right.visibility = if (showScore) View.VISIBLE else View.GONE
 
         event.matchStatusList?.forEachIndexed { index, it ->
             if (index != event.matchStatusList.lastIndex) {

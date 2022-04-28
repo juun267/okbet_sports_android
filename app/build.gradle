@@ -21,7 +21,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 5
-        versionName "1.0.92"
+        versionName "1.0.101"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -38,7 +38,7 @@ android {
         debug {
             minifyEnabled false
             zipAlignEnabled true
-            versionNameSuffix "-debug"
+            versionNameSuffix ".debug"
             buildConfigField 'Boolean', 'MOCK', 'false'//使用mock data要設為true
         }
 
@@ -291,6 +291,8 @@ dependencies {
     implementation 'com.xhb:xbanner:1.4.1'
     //androidX 版本使用下面的依赖
     implementation 'com.github.xiaohaibin:XBanner:androidx_v1.1.3'
+    implementation 'io.github.youth5201314:banner:2.2.2'
+
 
     //極光推送sdk
     implementation 'cn.jiguang.sdk:jpush-google:4.5.0'
@@ -336,6 +338,7 @@ dependencies {
 
     implementation 'com.github.JessYanCoding:AndroidAutoSize:v1.2.1'
     implementation 'org.parceler:parceler-api:1.1.12'
+    implementation 'com.airbnb.android:lottie:5.0.3'
 
 }
 

@@ -63,6 +63,7 @@ import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.ui.odds.OddsDetailFragmentDirections
 import org.cxct.sportlottery.ui.odds.OddsDetailLiveFragmentDirections
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
 import org.cxct.sportlottery.util.phoneNumCheckDialog
@@ -131,7 +132,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         setContentView(R.layout.activity_game)
 
         isFromPublicity = intent.getBooleanExtra(GamePublicityActivity.IS_FROM_PUBLICITY, false)
-
         setupNoticeButton(iv_notice)
         initToolBar()
         initMenu()
@@ -173,14 +173,16 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         if (isFromPublicity) {
             val matchId = intent.getStringExtra(GamePublicityActivity.PUBLICITY_MATCH_ID)
             val gameTypeCode = intent.getStringExtra(GamePublicityActivity.PUBLICITY_GAME_TYPE)
-            val gameType = GameType.getGameType(gameTypeCode)
+            val gameType = GameType.getGameType(gameTypeCode) ?: GameType.OTHER
             val intentMatchType = intent.getSerializableExtra(GamePublicityActivity.PUBLICITY_MATCH_TYPE)
             val matchType = if (intentMatchType != null) intentMatchType as MatchType else null
             val matchList =
                 intent.getParcelableArrayListExtra<MatchInfo>(GamePublicityActivity.PUBLICITY_MATCH_LIST)
-            navDeatilFragment(
-                matchID = matchId, gameType = gameType, matchType = matchType, matchList = matchList
-            )
+            matchId?.let {
+                navDeatilFragment(
+                    matchID = matchId, gameType = gameType, matchType = matchType, matchList = matchList
+                )
+            }
         }
     }
 
@@ -210,6 +212,9 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         //頭像 當 側邊欄 開/關
         iv_menu.setOnClickListener {
+            //若左側側邊欄為開啟狀態, 先將其關閉
+            closeLeftMenu()
+
             if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
             else {
                 drawer_layout.openDrawer(nav_right)
@@ -218,10 +223,12 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         }
 
         btn_login.setOnClickListener {
+            closeLeftMenu()
             startActivity(Intent(this@GameActivity, LoginActivity::class.java))
         }
 
         btn_register.setOnClickListener {
+            closeLeftMenu()
             startActivity(Intent(this@GameActivity, RegisterActivity::class.java))
         }
 
@@ -249,12 +256,14 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
             //左邊側邊攔v4
             btn_menu_left.visibility = if (isFromPublicity) View.GONE else View.VISIBLE
+            nav_left.layoutParams.width = MetricsUtil.getScreenWidth() //動態調整側邊欄寬
             btn_menu_left.setOnClickListener {
-                LeftMenuFragment().show(
-                    supportFragmentManager,
-                    LeftMenuFragment::class.java.simpleName
-                )
+                if (!sub_drawer_layout.isDrawerOpen(nav_left)) sub_drawer_layout.openDrawer(nav_left)
+
+                if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
             }
+            val leftMenuFragment = supportFragmentManager.findFragmentById(R.id.fl_left_menu) as LeftMenuFragment
+            leftMenuFragment.setCloseMenuListener { sub_drawer_layout.closeDrawers() }
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -353,6 +362,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     //公告
     private fun initRvMarquee() {
         game_message.setOnClickListener {
+            closeLeftMenu()
             startActivity(Intent(this, NewsActivity::class.java))
         }
         game_message.visibility = if (isFromPublicity) View.GONE else View.VISIBLE
@@ -483,42 +493,63 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         }
     }
 
-    private fun navDeatilFragment(matchID: String?, gameType: GameType?, matchType: MatchType? = null, matchList: ArrayList<MatchInfo>? = null) {
+    private fun navDeatilFragment(
+        matchID: String,
+        gameType: GameType,
+        matchType: MatchType? = null,
+        matchList: ArrayList<MatchInfo>? = null
+    ) {
         val detailMatchType = matchType ?: MatchType.DETAIL
         val detailMatchList = matchList?.toTypedArray() ?: emptyArray()
         when (mNavController.currentDestination?.id) {
             R.id.homeFragment -> {
-                val action = HomeFragmentDirections.actionHomeFragmentToOddsDetailFragment(
-                    detailMatchType, gameType!!, matchID!!,
-                    detailMatchList
-                )
+                val action =
+                    if (detailMatchType == MatchType.IN_PLAY) HomeFragmentDirections.actionHomeFragmentToOddsDetailLiveFragment(
+                        detailMatchType, gameType, matchID
+                    ) else HomeFragmentDirections.actionHomeFragmentToOddsDetailFragment(
+                        detailMatchType, gameType, matchID,
+                        detailMatchList
+                    )
                 mNavController.navigate(action)
             }
             R.id.gameV3Fragment -> {
-                val action = GameV3FragmentDirections.actionGameV3FragmentToOddsDetailFragment(
-                    detailMatchType, gameType!!, matchID!!,
-                    detailMatchList
-                )
+                val action =
+                    if (detailMatchType == MatchType.IN_PLAY) HomeFragmentDirections.actionHomeFragmentToOddsDetailLiveFragment(
+                        detailMatchType, gameType, matchID
+                    ) else GameV3FragmentDirections.actionGameV3FragmentToOddsDetailFragment(
+                        detailMatchType, gameType, matchID,
+                        detailMatchList
+                    )
                 mNavController.navigate(action)
             }
             R.id.oddsDetailFragment -> {
                 val action =
-                    OddsDetailFragmentDirections.actionOddsDetailFragmentSelf(gameType!!, matchID!!, detailMatchType, detailMatchList)
+                    if (detailMatchType == MatchType.IN_PLAY) HomeFragmentDirections.actionHomeFragmentToOddsDetailLiveFragment(
+                        detailMatchType, gameType, matchID
+                    ) else OddsDetailFragmentDirections.actionOddsDetailFragmentSelf(
+                        gameType,
+                        matchID,
+                        detailMatchType,
+                        detailMatchList
+                    )
                 mNavController.navigate(action)
             }
             R.id.oddsDetailLiveFragment -> {
                 val action = OddsDetailLiveFragmentDirections.actionOddsDetailLiveFragmentToOddsDetailFragment(
-                    detailMatchType, gameType!!, matchID!!,
+                    detailMatchType, gameType, matchID,
                     detailMatchList
                 )
                 val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
                 mNavController.navigate(action, navOptions)
             }
             R.id.gameLeagueFragment -> {
-                val action = GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(
-                    detailMatchType, gameType!!, matchID!!,
-                    detailMatchList
-                )
+                val action =
+                    if (detailMatchType == MatchType.IN_PLAY) HomeFragmentDirections.actionHomeFragmentToOddsDetailLiveFragment(
+                        detailMatchType, gameType, matchID
+                    ) else GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(
+                        detailMatchType, gameType, matchID,
+                        detailMatchList
+                    )
                 mNavController.navigate(action)
             }
         }
@@ -635,7 +666,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             //登入後要請求使用者是否需要認證手機驗證碼
             if (it) {
                 viewModel.getTwoFactorValidateStatus()
-                isFromPublicity = false
             }
         }
 
@@ -669,7 +699,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         viewModel.specialEntrance.observe(this) {
             hideLoading()
             if (it?.couponCode.isNullOrEmpty()) {
-                when (it?.matchType) {
+                when (it?.entranceMatchType) {
                     MatchType.IN_PLAY -> {
                         tabLayout.getTabAt(1)?.select()
                     }
@@ -695,14 +725,16 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                         tabLayout.getTabAt(3)?.select()
                     }
                     MatchType.DETAIL -> {
-                        navDeatilFragment(it?.matchID, it.gameType)
+                        it.matchID?.let { matchId ->
+                            navDeatilFragment(matchId, it.gameType ?: GameType.OTHER, it.gameMatchType)
+                        }
                     }
                 }
-            } else if (it?.matchType == MatchType.DETAIL) {
+            } else if (it?.entranceMatchType == MatchType.DETAIL) {
 
             } else {
 //                viewModel.getAllPlayCategoryBySpecialMatchType(it?.couponCode ?: "")
-                navGameFragment(it!!.matchType)
+                navGameFragment(it!!.entranceMatchType)
             }
         }
 
@@ -835,7 +867,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initServiceButton() {
-        btn_floating_service.setView(this)
+        //2022/4/21需求：客服只在首頁和宣傳頁、維護頁出現
+        //btn_floating_service.setView(this)
     }
 
     override fun updateUiWithLogin(isLogin: Boolean) {
@@ -871,7 +904,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             return
         }
 
-        tabLayout.getTabAt(0)?.select()
+        GamePublicityActivity.reStart(this)
+//        tabLayout.getTabAt(0)?.select()
     }
 
     private fun updateUiWithResult(messageListResult: MessageListResult?) {
@@ -952,5 +986,20 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
     private fun removeBetListFragment() {
         supportFragmentManager.beginTransaction().remove(betListFragment).commit()
+    }
+
+    private fun closeLeftMenu() {
+        if (sub_drawer_layout.isDrawerOpen(nav_left)) sub_drawer_layout.closeDrawers()
+    }
+
+    override fun onCloseMenu() {
+        super.onCloseMenu()
+
+        closeLeftMenu()
+    }
+
+    override fun onDestroy() {
+        expandCheckList.clear()
+        super.onDestroy()
     }
 }

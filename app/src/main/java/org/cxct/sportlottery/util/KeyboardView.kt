@@ -140,6 +140,11 @@ class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeS
 
         //keyBoardViewListener.showOrHideKeyBoardBackground(true, position)
     }
+
+    fun setMaxBetMoney(maxBetMoney: Long) {
+        this.maxBetMoney = maxBetMoney
+    }
+
     private fun disableKeyboard(){
         if (android.os.Build.VERSION.SDK_INT <= 10) {
             mEditText.setInputType(InputType.TYPE_NULL);

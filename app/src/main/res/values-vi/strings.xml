@@ -52,6 +52,10 @@
     <string name="register_privacy_policy">&#160;chính sách bảo mật</string>
     <string name="register_privacy_policy_promotions"></string>
     <string name="register_over_21">Tôi đã 21 tuổi, đã đọc và đồng ý với&#160;</string>
+    <string name="register_success">Đăng ký thành công</string>
+    <string name="register_watch_first">Khám phá trò chơi</string>
+    <string name="register_jump">Trang sẽ chuyển sang %s 5 giây sau đó.</string>
+    <string name="register_recharge_now">Nạp tiền ngay bây giờ</string>
     <string name="register_rules">&#160;luật &amp; điều khoản của</string>
     <string name="confirm_password">Xác nhận mật khẩu</string>
     <string name="hint_confirm_password">Vui lòng nhập lại mật khẩu</string>
@@ -174,6 +178,7 @@
     <string name="premium_odds">CƯỢC ĐẶC BIỆT</string>
     <string name="infomation_center">Trung tâm thông tin</string>
     <string name="left_menu_odds_type_setting">Cài đặt kèo chấp</string>
+    <string name="go_back_home_page">Quay lại trang chủ</string>
     <string name="profile_center">Trung tâm cá nhân</string>
     <string name="member_level">Cấp bậc hội viên</string>
     <string name="game_settlement">Kết quả trận đấu</string>
@@ -605,7 +610,7 @@
     <string name="bet_info_parlay_win_quota">số tiền có thể thắng</string>
     <string name="bet_info_add_bet_success">Đặt cược thành công</string>
     <string name="bet_info_current_money">Số dư:%s</string>
-    <string name="bet_info_in_play_score">trận bóng đang diễn ra (%2$s:%3$s)</string>
+    <string name="bet_info_in_play_score">%1$s (%2$s-%3$s)</string>
     <string name="bet_info_system_close_incompatible_item">Bạn chọn cách chơi không phù hợp với luật chơi cược xiên, hệ thống đã tự động giúp bạn hủy bỏ</string>
     <string name="bet_info_list_clean">Xóa bằng một cú nhấp chuột</string>
     <string name="bet_info_bet_balance_insufficient">Số dư không đủ</string>
@@ -733,7 +738,7 @@
     <string name="other_bet_record">lịch sử đặt cược khác</string>
     <string name="credit_bet_record">Lịch sử chu kỳ</string>
     <string name="all_plat_type">Tất cả các loại nền tảng</string>
-    <string name="visit_first">Hãy đến và đi lang thang</string>
+    <string name="visit_first">Khám phá trò chơi</string>
     <string name="bet_number">Số lượt đặt cược</string>
     <string name="bet_money">Số tiền đặt cược</string>
     <string name="profit_and_loss">Lãi và lỗ</string>
@@ -823,7 +828,7 @@
     <string name="odds_button_name_hch">Đội chủ nhà hoặc đội khách - đội nhà</string>
     <string name="odds_button_name_hcc">Đội chủ nhà hoặc đội khách - đội khách</string>
     <string name="bet_fail">Cá cược thất bại</string>
-    <string name="bet_fail_btn">Tỷ lệ cược đã thay đổi</string>
+    <string name="bet_fail_btn">Đặt cược không thành công</string>
     <string name="credit_record_deactivate">Chức năng thẻ tín dụng bị vô hiệu hóa</string>
     <string name="game_postponed">Trận đấu bị hoãn</string>
     <string name="money_recharge_hint1">Vui lòng gửi thông tin nạp tiền sau khi chuyển khoản thành công.</string>
@@ -1118,5 +1123,8 @@ Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAG
 
     <!--region 宣傳頁-->
     <string name="hot_recommend">Khuyến khích</string>
+    <string name="recommend_match">Ngàn trận đấu</string>
+    <string name="recommend_best_odd">Tỷ lệ cược tốt nhất</string>
+    <string name="recommend_safe">Cá cược an toàn</string>
     <!--endregion-->
 </resources>

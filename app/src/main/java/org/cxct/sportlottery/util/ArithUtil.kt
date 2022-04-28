@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.util
 
+import timber.log.Timber
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -79,6 +80,29 @@ object ArithUtil : DecimalFormatUtil() {
         return (value?.toDouble()?.toLong() ?: 0).toString()
     }
 
+    /**
+     * 提供精確的加法運算
+     * @param v1 被加數
+     * @param v2 加數
+     * @return 兩個參數的和
+     */
+    fun add(v1: Double, v2: Double): Double{
+        val b1 = BigDecimal(v1.toString())
+        val b2 = BigDecimal(v2.toString())
+        return b1.add(b2).toDouble()
+    }
+
+    /**
+     * 提供精確的減法運算
+     * @param v1 被減數
+     * @param v2 減數
+     * @return 兩個參數的差
+     */
+    fun sub(v1: Double, v2: Double): Double {
+        val b1 = BigDecimal(v1.toString())
+        val b2 = BigDecimal(v2.toString())
+        return b1.subtract(b2).toDouble()
+    }
 
     /**
      * 除法运算
@@ -96,6 +120,11 @@ object ArithUtil : DecimalFormatUtil() {
         return b1.divide(b2, scale, roundMode).toDouble()
     }
 
+    fun div(b1: BigDecimal, b2: BigDecimal, scale: Int, roundMode: RoundingMode? = RoundingMode.HALF_UP): BigDecimal {
+        require(scale >= 0) { "保留的小数位数必须大于零" }
+        return b1.divide(b2, scale, roundMode)
+    }
+
     /**
      * 小數運算
      */
@@ -106,14 +135,26 @@ object ArithUtil : DecimalFormatUtil() {
     }
 
     /**
+     * 提供(相對)精確的除法運算，當發生除不盡的情況時，精確到小數點以後10位，以後的數字四捨五入
+     */
+    fun div(v1: Double, v2: Double):Double{
+        val b1 = BigDecimal(v1.toString())
+        val b2 = BigDecimal(v2.toString())
+        return b1.divide(b2, BigDecimal.ROUND_HALF_UP).toDouble()
+    }
+
+    /**
      * 提供精确的乘法运算。
      * @param v1 被乘数
      * @param v2 乘数
      * @return 两个参数的积
      */
     fun mul(v1: Double, v2: Double): Double {
+        val s1 = java.lang.Double.toString(v1)
+        val s2 = java.lang.Double.toString(v2)
         val b1 = BigDecimal(java.lang.Double.toString(v1))
         val b2 = BigDecimal(java.lang.Double.toString(v2))
+        val m = b1.multiply(b2)
         return b1.multiply(b2).toDouble()
     }
 }

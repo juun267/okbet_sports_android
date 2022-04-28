@@ -31,6 +31,8 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
+import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
+import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
 import org.cxct.sportlottery.util.BitmapUtil
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.ToastUtil
@@ -436,6 +438,10 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             )
             val deviceSn = JPushInterface.getRegistrationID(applicationContext)
             binding.apply {
+                var phone = eetPhone.text.toString()
+                if(phone.substring(0,1) == "0"){
+                    phone = phone.substring(1,phone.length)
+                }
                 viewModel.registerSubmit(
                     eetRecommendCode.text.toString(),
                     eetMemberAccount.text.toString(),
@@ -444,7 +450,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     eetFullName.text.toString(),
                     eetWithdrawalPwd.text.toString(),
                     eetQq.text.toString(),
-                    eetPhone.text.toString(),
+                    phone,
                     eetMail.text.toString(),
                     eetPostal.text.toString(),
                     eetProvince.text.toString(),
@@ -467,7 +473,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun sendSms() {
-        val phone = binding.eetPhone.text.toString()
+        var phone = binding.eetPhone.text.toString()
         if (phone.isBlank())
             showErrorPromptDialog(
                 getString(R.string.prompt),
@@ -475,6 +481,9 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             ) {}
         else {
             binding.btnSendSms.isEnabled = false
+            if(phone.substring(0,1) == "0"){
+                phone = phone.substring(1,phone.length)
+            }
             viewModel.sendSms(phone)
         }
     }
@@ -609,7 +618,15 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     private fun updateUiWithResult(loginResult: LoginResult) {
         hideLoading()
         if (loginResult.success) {
-            finish()
+            //finish()
+            RegisterSuccessDialog(this).apply {
+                setNegativeClickListener {
+                    dismiss()
+                    startActivity(Intent(this@RegisterActivity, MoneyRechargeActivity::class.java))
+                    finish()
+                }
+            }.show(supportFragmentManager, null)
+
         } else {
             updateValidCode()
             showErrorDialog(loginResult.msg)

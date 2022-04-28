@@ -79,4 +79,6 @@ data class Odd(
     var outrightCateKey: String? = null
 
     var isExpand = false
+
+    val isOnlyEUType = odds == hkOdds && odds == malayOdds && odds == indoOdds
 }

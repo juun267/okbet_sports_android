@@ -230,13 +230,12 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_no_data"
-                android:layout_above="@+id/cl_total_info"
-                android:layout_below="@+id/gray_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_above="@+id/cl_total_info"
+                android:layout_below="@+id/gray_view"
                 android:background="@color/colorWhite"
                 android:visibility="gone"
                 tools:visibility="visible">
@@ -374,7 +373,9 @@
                 android:layout_above="@+id/ll_odds_close_warn"
                 android:background="@color/color_EAF4FE"
                 android:gravity="center"
+                android:paddingStart="@dimen/margin_8"
                 android:paddingTop="9dp"
+                android:paddingEnd="@dimen/margin_8"
                 android:paddingBottom="10dp"
                 android:text="@string/bet_info_odd_content_changed"
                 android:textColor="@color/colorRed"
@@ -415,7 +416,9 @@
                 android:background="@color/color_EAF4FE"
                 android:gravity="center"
                 android:orientation="vertical"
+                android:paddingStart="@dimen/margin_8"
                 android:paddingTop="3dp"
+                android:paddingEnd="@dimen/margin_8"
                 android:paddingBottom="3dp"
                 android:visibility="gone"
                 tools:visibility="visible">

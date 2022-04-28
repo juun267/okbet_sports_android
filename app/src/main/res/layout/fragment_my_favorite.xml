@@ -58,15 +58,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="2dp"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
+                android:padding="10dp"
                 android:overScrollMode="never"
                 android:nestedScrollingEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/favorite_toolbar"
                 tools:itemCount="1"
-                tools:listitem="@layout/itemview_sport_type_v4" />
+                tools:listitem="@layout/itemview_sport_type_v5" />
 
             <LinearLayout
                 android:id="@+id/ll_favorite_game_type_title"
@@ -74,17 +73,6 @@
                 android:layout_height="48dp"
                 android:gravity="center"
                 app:layout_constraintTop_toBottomOf="@id/favorite_game_type_list">
-
-                <TextView
-                    android:id="@+id/favorite_game_type_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:layout_marginEnd="12dp"
-                    android:gravity="center"
-                    android:text="@string/my_favorite"
-                    android:textColor="@color/colorBlackLight"
-                    android:textSize="@dimen/textSize18sp"
-                    tools:text="@string/my_favorite" />
 
                 <TextView
                     android:id="@+id/favorite_game_type"
@@ -124,7 +112,7 @@
                 android:overScrollMode="never"
                 app:layout_constraintTop_toBottomOf="@id/favorite_play_category"
                 tools:itemCount="1"
-                tools:listitem="@layout/itemview_league_v4" />
+                tools:listitem="@layout/itemview_league_v5" />
 
             <FrameLayout
                 android:id="@+id/fl_no_game"

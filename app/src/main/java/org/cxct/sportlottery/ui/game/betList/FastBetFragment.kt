@@ -1,10 +1,8 @@
 package org.cxct.sportlottery.ui.game.betList
 
-import android.animation.Animator
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
@@ -13,10 +11,7 @@ import android.os.Message
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
-import android.text.style.BackgroundColorSpan
 import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -51,6 +46,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.error.BetAddErrorParser
+import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.bet.list.*
@@ -62,6 +58,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.util.*
 import org.parceler.Parcels
+import kotlin.math.min
 
 
 const val INPLAY: Int = 1
@@ -182,6 +179,13 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
     lateinit var data: FastBetDataBean
     var oldOdds = ""
+
+    private var mUserMoney: Double = 0.0
+        set(value) {
+            field = value
+            binding.layoutKeyBoard.setMaxBetMoney(getMaxBetMoney())
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -269,14 +273,17 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 binding.layoutKeyBoard.showKeyboard(
                     view as EditText,
                     null,
-                    betInfoListData?.parlayOdds?.max?.toLong()
+                    getMaxBetMoney()
                         ?: GameConfigManager.maxBetMoney?.toLong() ?: 0,
                     betInfoListData?.parlayOdds?.min?.toLong() ?: 0
                 )
             }
             false
         }
-        binding.llRoot.setOnClickListener { }
+        binding.etBet.setOnFocusChangeListener { v, hasFocus ->
+            if(!hasFocus) layoutKeyBoard?.hideKeyboard()
+        }
+        binding.clItemBackground.setOnClickListener { clearFocus() }
         button_bet.apply {
             tv_login.setOnClickListener {
                 requireContext().startActivity(Intent(requireContext(), LoginActivity::class.java))
@@ -292,12 +299,10 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
             isCanSendOut = false
         }
-
         binding.tvAddToBetInfo.setOnClickListener {
             addToBetInfoList()
             dismiss()
         }
-
         binding.buttonFastBetSetting.setOnClickListener {
             showSettingDialog()
         }
@@ -382,7 +387,8 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 var realAmount = quota
                 var win = 0.0
                 var currentOddsType = oddsType
-                if (matchOdd?.odds == matchOdd?.malayOdds
+                if (matchOdd?.isOnlyEUType == true
+                    || matchOdd?.odds == matchOdd?.malayOdds
                     || betInfoListData?.matchType == MatchType.OUTRIGHT
                     || betInfoListData?.matchType == MatchType.OTHER_OUTRIGHT
                 ) {
@@ -473,6 +479,12 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
                 viewModel.updateBetInfoDiscount(discount, newDiscount)
                 discount = newDiscount
+            }
+        }
+
+        viewModel.userMoney.observe(viewLifecycleOwner) {
+            it?.let { userMoney ->
+                mUserMoney = userMoney
             }
         }
 
@@ -638,6 +650,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
+                SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
                 viewModel.updateMatchOdd(oddsChangeEvent)
             }
         }
@@ -645,6 +658,12 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         receiver.matchOddsLock.observe(this.viewLifecycleOwner) {
             it?.let { matchOddsLockEvent ->
                 viewModel.updateLockMatchOdd(matchOddsLockEvent)
+            }
+        }
+
+        receiver.userMoney.observe(this.viewLifecycleOwner) {
+            it?.let { userMoney ->
+                mUserMoney = userMoney
             }
         }
     }
@@ -701,7 +720,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         when {
             betPlayCateNameMap.isNullOrEmpty() -> {
                 binding.tvName.text =
-                    if (inPlay && betInfoListData?.matchType != MatchType.OUTRIGHT) {
+                    if (inPlay && betInfoListData?.matchType != MatchType.OUTRIGHT && matchOdd.gameType == GameType.FT.key) {
                         getString(
                             R.string.bet_info_in_play_score,
                             nameOneLine(matchOdd.playCateName),
@@ -712,7 +731,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
             else -> {
                 binding.tvName.text =
-                    if (inPlay && betInfoListData?.matchType != MatchType.OUTRIGHT) {
+                    if (inPlay && betInfoListData?.matchType != MatchType.OUTRIGHT && matchOdd.gameType == GameType.FT.key) {
                         getString(
                             R.string.bet_info_in_play_score,
                             betPlayCateNameMap?.get(matchOdd.playCode)
@@ -807,8 +826,11 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 oldOdds = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
             }
             binding.tvOdds.text =if (matchOdd.status == BetStatus.ACTIVATED.code) "@"+TextUtil.formatForOdd(getOdds(matchOdd, oddsType)) else "–"
-            binding.tvContent.text = matchOdd.extInfo+spread
-
+            if(matchOdd.extInfo != null){
+                binding.tvContent.text = matchOdd.extInfo+spread
+            }else{
+                binding.tvContent.text = spread
+            }
         }
     }
 
@@ -915,5 +937,13 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         snackBarNotify?.show()
     }
 
+    private fun getMaxBetMoney(): Long {
+        val parlayMaxBet = betInfoListData?.parlayOdds?.max ?: 0
+        return if (parlayMaxBet > 0) {
+            min(parlayMaxBet.toLong(), mUserMoney.toLong())
+        } else {
+            mUserMoney.toLong()
+        }
+    }
 
 }

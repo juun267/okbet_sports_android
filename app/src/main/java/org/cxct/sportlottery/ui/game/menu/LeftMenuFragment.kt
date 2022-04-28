@@ -34,10 +34,12 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
+import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.menu.ChangeAppearanceDialog
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeFullScreenDialog
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
@@ -55,23 +57,28 @@ import org.cxct.sportlottery.util.phoneNumCheckDialog
 import org.cxct.sportlottery.widget.highLightTextView.HighlightTextView
 
 @SuppressLint("NotifyDataSetChanged")
-class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClickListener {
+class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnClickListener {
+    private var mCloseMenuListener: View.OnClickListener? = null
+
     private var newAdapter =
         LeftMenuItemNewAdapter(
             sConfigData?.thirdOpen == FLAG_OPEN,
             LeftMenuItemNewAdapter.HeaderSelectedListener(
+                backMainPageSelectedListener = {//backMainPage
+                    startActivity(Intent(context, GamePublicityActivity::class.java))
+                },
                 { //recharge
                     viewModel.checkRechargeSystem()
-                    dismiss()
+                    closeMenuFragment()
                 },
                 { //withdraw
                     avoidFastDoubleClick()
                     viewModel.checkWithdrawSystem()
-                    dismiss()
+                    closeMenuFragment()
                 },
                 { //member level
                     startActivity(Intent(context, VipActivity::class.java))
-                    dismiss()
+                    closeMenuFragment()
                 },
                 { //promotion
                     context?.let {
@@ -84,15 +91,15 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                             getString(R.string.promotion)
                         )
                     }
-                    dismiss()
+                    closeMenuFragment()
                 },
                 { //inPlay
                     viewModel.navDirectEntrance(MatchType.IN_PLAY, null)
-                    dismiss()
+                    closeMenuFragment()
                 },
                 { //premium
                     viewModel.navDirectEntrance(MatchType.EPS, null)
-                    dismiss()
+                    closeMenuFragment()
                 }),
             LeftMenuItemNewAdapter.ItemSelectedListener(
                 { sportType -> //點擊
@@ -126,7 +133,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                         Constants.getGameRuleUrl(requireContext()),
                         getString(R.string.game_rule)
                     )
-                    dismiss()
+                    closeMenuFragment()
                 },
                 {
                     startActivity(Intent(context, NewsActivity::class.java))
@@ -152,7 +159,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
             specialList[position].gameType,
             specialList[position].title
         )
-        dismiss()
+        closeMenuFragment()
     }
 
 
@@ -165,8 +172,6 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dialog?.window?.setWindowAnimations(R.style.LeftMenu)
-        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
         initView()
         initObserve()
         initRecyclerView()
@@ -213,7 +218,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
 
         }
         btn_close.setOnClickListener {
-            dismiss()
+            closeMenuFragment()
         }
         img_menu.setOnClickListener {
             etSearch.clearFocus()
@@ -538,7 +543,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
         }
 
         //TODO Bill 判斷使用者有沒有手機號碼
-        viewModel.needToSendTwoFactor.observe(this) {
+        viewModel.needToSendTwoFactor.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
                     context?.let { it ->
@@ -794,8 +799,13 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                                 tvMatch.setCustomText(itt.homeName + " v " + itt.awayName)
                                 tvMatch.highlight(etSearch.text.toString())
                                 tvMatch.setOnClickListener {
-                                    dismiss()
-                                    viewModel.navSpecialEntrance(MatchType.DETAIL, GameType.getGameType(t.gameType)!!, itt.matchId)
+                                    closeMenuFragment()
+                                    viewModel.navSpecialEntrance(
+                                        MatchType.DETAIL,
+                                        GameType.getGameType(t.gameType)!!,
+                                        itt.matchId,
+                                        if (itt.isInPlay) MatchType.IN_PLAY else null
+                                    )
                                 }
                             }
                         }
@@ -860,7 +870,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                     MatchType.OUTRIGHT,
                     sportType
                 )
-                dismiss()
+                closeMenuFragment()
             }
 
             matchType != null -> {
@@ -869,7 +879,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
                         it,
                         sportType
                     )
-                    dismiss()
+                    closeMenuFragment()
                 }
             }
 
@@ -933,6 +943,17 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClic
             }
         }
         snackBarMyFavoriteNotify?.show()
+    }
+
+    /**
+     * 選單選擇結束，需透過 listener 讓上層關閉 選單
+     */
+    fun setCloseMenuListener(listener: View.OnClickListener?) {
+        mCloseMenuListener = listener
+    }
+
+    private fun closeMenuFragment() {
+        mCloseMenuListener?.onClick(null)
     }
 
 }

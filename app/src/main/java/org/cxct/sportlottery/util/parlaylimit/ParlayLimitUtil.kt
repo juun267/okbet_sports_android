@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.util.parlaylimit
 
 import android.annotation.SuppressLint
+import org.cxct.sportlottery.util.ArithUtil
+import timber.log.Timber
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
@@ -34,13 +36,14 @@ object ParlayLimitUtil {
      * @param max
      * @param min
      */
-    fun getParlayLimit(oddsList: List<BigDecimal?>, parlayComList: List<ParlayCom>, max: BigDecimal?, min: BigDecimal?): Map<String, ParlayBetLimit> {
+    fun getParlayLimit(oddsList: List<Pair<BigDecimal?, Boolean>>, parlayComList: List<ParlayCom>, max: BigDecimal?, min: BigDecimal?): Map<String, ParlayBetLimit> {
         var max = max
         var min = min
         val result: MutableMap<String, ParlayBetLimit> = LinkedHashMap()
         max = max ?: BigDecimal.valueOf(999)
         min = min ?: BigDecimal.ONE
-        for (parlayCom in parlayComList) {
+
+        parlayComList.forEachIndexed { index, parlayCom ->
             val parlayBetLimit = ParlayBetLimit()
             val odds = getTotalOdds(oddsList, parlayCom.getComList())
             // 香港盤 可以 odds-num
@@ -48,13 +51,14 @@ object ParlayLimitUtil {
             // 投注限額 設定值/odds
             //val maxPayLimit = max!!.divide(hkOdds, 0, RoundingMode.DOWN)
 
-            val maxPayLimit = (max!!/hkOdds).toInt().toBigDecimal()
+            val maxPayLimit = ArithUtil.div(max!!, hkOdds, 0, RoundingMode.DOWN)
 
             parlayBetLimit.odds = odds
             parlayBetLimit.hdOdds = hkOdds
             parlayBetLimit.max = maxPayLimit
             parlayBetLimit.min = min
             parlayBetLimit.num = parlayCom.num
+            parlayBetLimit.isOnlyEUType = oddsList[index].second
             result[parlayCom.parlayType] = parlayBetLimit
         }
         return result
@@ -66,7 +70,7 @@ object ParlayLimitUtil {
      * @param oddsList
      * @return
      */
-    private fun getTotalOdds(oddsList: List<BigDecimal?>, comList: List<IntArray>): BigDecimal {
+    private fun getTotalOdds(oddsList: List<Pair<BigDecimal?, Boolean>>, comList: List<IntArray>): BigDecimal {
         var totalOdds = BigDecimal.ZERO
 
         // 取出每種排列組合 [0,1] [0,2] [0,1,2,3]
@@ -74,23 +78,23 @@ object ParlayLimitUtil {
             var odd = BigDecimal.ONE
             for (index in oddsIndexArray) {
                 //  賠率相乘
-                odd = odd.multiply(oddsList[index])
+                odd = odd.multiply(oddsList[index].first)
             }
             totalOdds = totalOdds.add(odd)
         }
         return totalOdds
     }
 
-    private fun getTotalHkOdds(oddsList: List<BigDecimal?>, comList: List<IntArray>): BigDecimal {
-        var totalOdds = BigDecimal.ONE
+    private fun getTotalHkOdds(oddsList: List<Pair<BigDecimal?, Boolean>>, comList: List<IntArray>): BigDecimal {
+        var totalOdds = BigDecimal.ZERO
         for (oddsIndexArray in comList) {
             var odd = BigDecimal.ONE
             for (index in oddsIndexArray) {
-                odd = odd.multiply(oddsList[index])
+                odd = odd.multiply(oddsList[index].first)
             }
             totalOdds = totalOdds.add(OddsLadder.oddsEuToHk(odd))
         }
-        return totalOdds
+        return if (totalOdds == BigDecimal.ZERO) BigDecimal.ONE else totalOdds
     }
 
 

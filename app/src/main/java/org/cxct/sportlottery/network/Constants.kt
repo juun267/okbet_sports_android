@@ -12,6 +12,8 @@ object Constants {
     val SERVER_URL_LIST = listOf("aioweiyaaaf.com", "app99app.vip", "app66app.vip", "app88app.vip")
     var currentServerUrl: String? = null  //當前選擇的的 server url (後續 CheckAppUpdate API 會用到)
     private var mBaseUrl = ""
+    private var mSocketUrl = ""
+
 
     fun setBaseUrl(baseUrl: String) {
         mBaseUrl = baseUrl
@@ -19,6 +21,14 @@ object Constants {
 
     fun getBaseUrl(): String {
         return mBaseUrl.httpFormat()
+    }
+
+    fun setSocketUrl(baseUrl: String) {
+        mSocketUrl = baseUrl
+    }
+
+    fun getSocketUrl(): String {
+        return mSocketUrl
     }
 
     //20210401 記錄問題：retrofit.setBaseUrl() format http://[isNotEmpty]/ or https://[isNotEmpty]/，否則會直接 exception
@@ -242,6 +252,7 @@ object Constants {
     //match
     const val MATCH_PRELOAD = "/api/front/match/preload"
     const val MATCH_LIVE_URL = "/api/front/match/live/url"
+    const val MATCH_TRACKER_URL = "/api/front/match/tracker/url/{mappingId}"
 
     //match result
     const val MATCH_RESULT_LIST = "/api/front/match/result/list"

@@ -14,13 +14,14 @@ import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
-import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.FastBetFragment
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -31,6 +32,7 @@ import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
+import org.parceler.Parcels
 
 class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavoriteViewModel::class) {
 
@@ -47,7 +49,7 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
 
         initObserver()
 
-        initServiceButton()
+//        initServiceButton()
     }
 
     override fun initToolBar() {
@@ -190,17 +192,22 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
             .commit()
     }
 
-    private fun showFastBetFragment(){
-        val fastBetFragment = FastBetFragment()
-
-        supportFragmentManager.beginTransaction()
+    fun showFastBetFragment(fastBetDataBean: FastBetDataBean) {
+        val transaction = supportFragmentManager.beginTransaction()
             .setCustomAnimations(
                 R.anim.push_bottom_to_top_enter,
                 R.anim.pop_bottom_to_top_exit,
                 R.anim.push_bottom_to_top_enter,
                 R.anim.pop_bottom_to_top_exit
             )
-            .add(R.id.fl_bet_list, fastBetFragment)
+
+        val betListFragment = FastBetFragment()
+        val bundle = Bundle()
+        bundle.putParcelable("data", Parcels.wrap(fastBetDataBean));
+        betListFragment.arguments = bundle;
+
+        transaction
+            .add(R.id.fl_bet_list, betListFragment)
             .addToBackStack(BetListFragment::class.java.simpleName)
             .commit()
     }
@@ -244,7 +251,7 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
 //                        supportFragmentManager,
 //                        BetInfoCarDialog::class.java.simpleName
 //                    )
-                    showFastBetFragment()
+//                    showFastBetFragment()
                 }else{
                     showBetListPage()
                 }
@@ -256,9 +263,9 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
         }
     }
 
-    private fun initServiceButton() {
+    /*private fun initServiceButton() {
         btn_floating_service.setView(this)
-    }
+    }*/
 
     private fun updateAvatar(iconUrl: String?) {
         Glide.with(this).load(iconUrl)
@@ -300,6 +307,6 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
             return
         }
 
-        startActivity(Intent(this, GameActivity::class.java))
+        startActivity(Intent(this, GamePublicityActivity::class.java))
     }
 }

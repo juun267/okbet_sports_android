@@ -100,7 +100,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
     private fun initView() {
         changeTransferType(transferType)
-        showHideTab()
 
         initEditTextStatus(et_create_name)
         initEditTextStatus(et_bank_card_number)
@@ -124,14 +123,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             }
         }
 
-    }
-
-    private fun showHideTab() {
-        if (mBankCardStatus) {
-            ll_tab_layout.visibility = View.GONE
-        } else {
-            ll_tab_layout.visibility = View.VISIBLE
-        }
     }
 
     private fun initEditTextStatus(setupView: LoginEditText) {
@@ -440,10 +431,8 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 tab_layout.getTabAt(0)?.view?.visibility = if (bankTransfer) View.VISIBLE else View.GONE
                 tab_layout.getTabAt(1)?.view?.visibility = if (cryptoTransfer) View.VISIBLE else View.GONE
                 tab_layout.getTabAt(2)?.view?.visibility = if (walletTransfer) View.VISIBLE else View.GONE
-                if (!mBankCardStatus) {
-                    ll_tab_layout.visibility =
-                        if (!(bankTransfer && cryptoTransfer && walletTransfer) && (bankTransfer xor cryptoTransfer xor walletTransfer)) View.GONE else View.VISIBLE
-                }
+                ll_tab_layout.visibility =
+                    if ((!(bankTransfer && cryptoTransfer && walletTransfer) && (bankTransfer xor cryptoTransfer xor walletTransfer)) || mBankCardStatus) View.GONE else View.VISIBLE
             }
         })
 

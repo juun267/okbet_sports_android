@@ -8,14 +8,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.exception.DoNoConnectException
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.ErrorUtils
 import org.cxct.sportlottery.network.error.HttpError
+import org.cxct.sportlottery.network.index.checktoken.CheckTokenResult
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.NetworkUtil
 import retrofit2.Response
 import timber.log.Timber
@@ -29,6 +32,10 @@ abstract class BaseViewModel(
 ) : ViewModel() {
     val isLogin: LiveData<Boolean> by lazy {
         loginRepository.isLogin
+    }
+
+    val isKickedOut: LiveData<Event<String?>> by lazy {
+        loginRepository.kickedOut
     }
 
     val errorResultToken: LiveData<BaseResult>
@@ -85,7 +92,7 @@ abstract class BaseViewModel(
 
     private fun <T : BaseResult> doResponseError(response: Response<T>): T? {
         val errorResult = ErrorUtils.parseError(response)
-        if (response.code() == HttpError.UNAUTHORIZED.code) {
+        if (response.code() == HttpError.UNAUTHORIZED.code || response.code() == HttpError.KICK_OUT_USER.code ) {
             errorResult?.let {
                 _errorResultToken.postValue(it)
             }
@@ -113,6 +120,18 @@ abstract class BaseViewModel(
             infoCenterRepository.clear()
             loginRepository.logout()
             finishFunction.invoke()
+        }
+    }
+
+    fun checkIsUserAlive() {
+        viewModelScope.launch {
+            doNetwork(MultiLanguagesApplication.appContext) {
+               loginRepository.checkIsUserAlive()
+            }.let{ result ->
+                if (result?.success == false && loginRepository.isLogin.value == true){
+                    loginRepository._kickedOut.value = Event(result.msg)
+                }
+            }
         }
     }
 }

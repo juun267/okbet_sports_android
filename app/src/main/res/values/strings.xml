@@ -53,6 +53,10 @@
     <string name="register_privacy_policy_promotions">向我发送更新和促销信息</string>
     <string name="register_over_21">我已满21岁并且已阅读及同意</string>
     <string name="register_rules">规则与条款</string>
+    <string name="register_success">注册成功</string>
+    <string name="register_watch_first">来去逛逛</string>
+    <string name="register_jump">将在5秒后跳转至%s...</string>
+    <string name="register_recharge_now">立即充值</string>
     <string name="confirm_password">确认密码</string>
     <string name="hint_confirm_password">(请再次输入密码)</string>
     <string name="error_confirm_password">两次密码输入不一致</string>
@@ -196,6 +200,7 @@
     <string name="premium_odds">特优赔率</string>
     <string name="infomation_center">信息中心</string>
     <string name="left_menu_odds_type_setting">盘口设定</string>
+    <string name="go_back_home_page">返回首页</string>
     <string name="profile_center">个人中心</string>
     <string name="member_level">会员层级</string>
     <string name="game_settlement">赛果结算</string>
@@ -606,7 +611,7 @@
     <string name="bet_info_parlay_win_quota">可赢金额：</string>
     <string name="bet_info_add_bet_success">投注成功</string>
     <string name="bet_info_current_money">余额:%s</string>
-    <string name="bet_info_in_play_score">滚球 %1$s (%2$s-%3$s)</string>
+    <string name="bet_info_in_play_score">%1$s (%2$s-%3$s)</string>
     <string name="bet_info_system_close_incompatible_item">您选择的部分玩法不适用于串关规则的玩法,系统已帮您自动取消</string>
     <string name="bet_info_list_clean">一键清空</string>
     <string name="bet_info_bet_balance_insufficient">余额不足</string>
@@ -827,7 +832,7 @@
     <string name="odds_button_name_hch">主队或客队-主队</string>
     <string name="odds_button_name_hcc">主队或客队-客队</string>
     <string name="bet_fail">下注失敗</string>
-    <string name="bet_fail_btn">赔率已改变</string>
+    <string name="bet_fail_btn">投注不成功</string>
     <string name="credit_record_deactivate">信用功能停用中</string>
     <string name="game_postponed">比赛延期</string>
     <string name="money_recharge_hint1"><font color="#ff4b2c">请先转账成功后再提交充值信息。</font></string>
@@ -1090,5 +1095,8 @@ Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAG
 
 <!--region 宣傳頁-->
     <string name="hot_recommend">热门推荐</string>
+    <string name="recommend_match">万场赛事</string>
+    <string name="recommend_best_odd">最佳赔率</string>
+    <string name="recommend_safe">安全投注</string>
 <!--endregion-->
 </resources>

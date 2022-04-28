@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_bet_receipt.*
 import org.cxct.sportlottery.R
@@ -69,6 +68,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         viewModel.oddsType.observe(viewLifecycleOwner) {
             betReceiptDiffAdapter?.oddsType = it
         }
+        
     }
 
     private fun initView() {
@@ -129,6 +129,12 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         betResultData?.betConfirmTime ?: 0
                     )
                 }
+                interfaceStatusChangeListener = object :
+                    BetReceiptDiffAdapter.InterfaceStatusChangeListener{
+                    override fun onChange() {
+                        setReceiptStatus7()
+                    }
+                }
             }
 
             adapter = betReceiptDiffAdapter
@@ -162,5 +168,16 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 }
             }
         }
+        btn_complete.setTextColor(ContextCompat.getColor(btn_complete.context,R.color.white))
+    }
+
+    private fun setReceiptStatus7() {
+        btn_complete.text = getString(R.string.bet_fail_btn)
+        btn_complete.setTextColor(
+            ContextCompat.getColor(
+                btn_complete.context,
+                R.color.white
+            )
+        )
     }
 }

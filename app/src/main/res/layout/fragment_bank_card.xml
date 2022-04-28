@@ -13,13 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:visibility="gone"
         tools:context="org.cxct.sportlottery.ui.common.CustomTabLayout">
 
         <com.google.android.material.tabs.TabLayout
             app:tabTextAppearance="@style/NoUppercaseTab"
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="37dp"
+            android:layout_height="48dp"
             app:tabIndicator="@drawable/custom_tab_indicator"
             app:tabIndicatorFullWidth="false"
             app:tabMode="fixed"
@@ -49,7 +50,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="0dp"
             android:background="@color/colorWhite6" />
 
     </LinearLayout>

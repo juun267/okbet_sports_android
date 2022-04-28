@@ -14,6 +14,7 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.util.GameConfigManager
@@ -116,7 +117,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
                 fun reStart() = if (sConfigData?.thirdOpen == FLAG_OPEN)
                     MainActivity.reStart(this)
                 else
-                    GameActivity.reStart(this)
+                    GamePublicityActivity.reStart(this)
                 showErrorPromptDialog(
                     title = getString(R.string.prompt),
                     message = getString(R.string.message_source_change)

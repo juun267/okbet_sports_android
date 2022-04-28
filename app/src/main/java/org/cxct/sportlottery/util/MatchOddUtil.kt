@@ -49,6 +49,7 @@ object MatchOddUtil {
                             awayScore = matchInfo.awayScore?.toIntOrNull() ?: 0,
                         ).apply {
                             extInfo = odd.extInfo
+                            isOnlyEUType = odd.isOnlyEUType
                         }
 
                     }
@@ -101,19 +102,24 @@ object MatchOddUtil {
     }
 
     fun Double.applyDiscount(discount: Float): Double {
-        return (this - 1).times(discount) + 1
+        return ArithUtil.round(
+            ArithUtil.add(ArithUtil.mul(ArithUtil.sub(this, 1.0), discount.toDouble()), 1.0),
+            2,
+            RoundingMode.HALF_UP
+        )
+            .toDouble()
     }
 
     fun Double.applyHKDiscount(discount: Float): Double {
-        return this.times(discount)
+        return ArithUtil.round(ArithUtil.mul(this, discount.toDouble()), 2, RoundingMode.HALF_UP).toDouble()
     }
 
     private fun Double.applyReverselyDiscount(discount: Float): Double {
-        return (this - 1).div(discount) + 1
+        return ArithUtil.add(ArithUtil.div(ArithUtil.sub(this, 1.0), discount.toDouble()), 1.0)
     }
 
     private fun Double.applyReverselyHKDiscount(discount: Float): Double {
-        return this.div(discount)
+        return ArithUtil.div(this, discount.toDouble())
     }
 
     private fun Double.updateDiscount(discount: Float, newDiscount: Float): Double {
@@ -123,7 +129,7 @@ object MatchOddUtil {
     private fun Double.updateHKDiscount(discount: Float, newDiscount: Float): Double {
         return this.applyReverselyHKDiscount(discount).applyHKDiscount(newDiscount)
     }
-    private fun Double.convertToMYOdds(): Double {
+    fun Double.convertToMYOdds(): Double {
 
         return when {
             this == 0.0 -> {
@@ -131,14 +137,14 @@ object MatchOddUtil {
             }
             this > 1 -> {
                 //(-1 / this)
-                ArithUtil.div(-1.0,this,3, RoundingMode.HALF_EVEN)
+                ArithUtil.div(-1.0,this,2, RoundingMode.DOWN)
             }
             else -> {
                 this
             }
         }
     }
-    private fun Double.convertToIndoOdds(): Double {
+    fun Double.convertToIndoOdds(): Double {
         return when {
             this == 0.0 -> {
                 this
@@ -148,7 +154,7 @@ object MatchOddUtil {
             }
             else -> {
                 //(-1 / this)
-                ArithUtil.div(-1.0, this, 3, RoundingMode.HALF_EVEN)
+                ArithUtil.div(-1.0, this, 2, RoundingMode.DOWN)
             }
         }
     }
