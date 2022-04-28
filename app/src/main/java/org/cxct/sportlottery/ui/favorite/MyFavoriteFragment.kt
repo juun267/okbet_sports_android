@@ -489,9 +489,11 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             if (favorMatchList.isNullOrEmpty()) {
                 favorite_toolbar.visibility = View.VISIBLE
                 fl_no_game.visibility = View.VISIBLE
+                appbar_layout.visibility = View.GONE
             } else {
                 favorite_toolbar.visibility = View.GONE
                 fl_no_game.visibility = View.GONE
+                appbar_layout.visibility = View.VISIBLE
             }
         }
 
