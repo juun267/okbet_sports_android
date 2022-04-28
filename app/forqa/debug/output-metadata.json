@@ -10,8 +10,8 @@
     {
       "type": "SINGLE",
       "filters": [],
-      "versionCode": 1,
-      "versionName": "1.0.50-debug",
+      "versionCode": 5,
+      "versionName": "1.0.103.debug",
       "outputFile": "app-forqa-debug.apk"
     }
   ]
