@@ -163,7 +163,8 @@ class AccountHistoryNextAdapter(
                 matchOdd = row.matchOdds?.firstOrNull()
                 tvParlayType.text = getParlayShowName(itemView.context, row.parlayType)
                 tvDetail.paint.flags = Paint.UNDERLINE_TEXT_FLAG
-                tvDetail.isVisible = (row.parlayComsDetailVOs ?: emptyList()).isNotEmpty()
+                // 暫時隱藏，配合後端更新再開啟
+                tvDetail.isVisible = false//(row.parlayComsDetailVOs ?: emptyList()).isNotEmpty()
                 tvDetail.setOnClickListener {
                     val dialog = row.parlayComsDetailVOs?.let { list ->
                         ComboDetailDialog(it.context, list)
