@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.common
 
 import android.content.Context
+import android.util.DisplayMetrics
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
@@ -31,6 +32,10 @@ class ScrollCenterLayoutManager(context: Context?, @RecyclerView.Orientation ori
             snapPreference: Int
         ): Int {
             return boxStart + (boxEnd - boxStart) / 2 - (viewStart + (viewEnd - viewStart) / 2)
+        }
+
+        override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics?): Float {
+            return 100f / (displayMetrics?.densityDpi ?: 0)
         }
     }
 }
