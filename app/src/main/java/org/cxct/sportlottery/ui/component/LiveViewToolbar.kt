@@ -67,6 +67,8 @@ class LiveViewToolbar @JvmOverloads constructor(
         }
     private var mTrackerUrl: String = ""
 
+    private var mLiveShowTag = true
+
     //exoplayer
     private var exoPlayer: SimpleExoPlayer? = null
 
@@ -129,7 +131,7 @@ class LiveViewToolbar @JvmOverloads constructor(
         }
     }
 
-    private var lastLiveType = LiveType.LIVE
+    var lastLiveType: LiveType? = null
 
     private var animationLoadFinish = false
 
@@ -255,6 +257,7 @@ class LiveViewToolbar @JvmOverloads constructor(
         if (!iv_play.isVisible) return
         when (open) {
             true -> {
+                mLiveShowTag = true
                 iv_play.isSelected = true
                 lastLiveType = LiveType.LIVE
                 checkExpandLayoutStatus()
@@ -264,6 +267,7 @@ class LiveViewToolbar @JvmOverloads constructor(
                 }
             }
             false -> {
+                mLiveShowTag = false
                 stopPlayer()
                 iv_play.isSelected = false
                 checkExpandLayoutStatus()
@@ -302,8 +306,9 @@ class LiveViewToolbar @JvmOverloads constructor(
     fun setupPlayerControl(show: Boolean) {
         iv_play.isVisible = show
         iv_arrow.isVisible = show
-        if(lastLiveType != LiveType.ANIMATION)
-        switchLiveView(show)
+
+        if (mLiveShowTag && lastLiveType == LiveType.LIVE)
+            switchLiveView(show)
     }
 
     fun setupNotLogin(){
@@ -464,4 +469,18 @@ class LiveViewToolbar @JvmOverloads constructor(
     }
     //endregion
 
+
+    fun initLiveType(hasStream: Boolean, hasAnimation: Boolean) {
+        if (lastLiveType != null) return
+        when {
+            hasStream -> {
+                lastLiveType = LiveType.LIVE
+            }
+            hasAnimation -> {
+                lastLiveType = LiveType.ANIMATION
+                iv_animation.performClick()
+            }
+
+        }
+    }
 }

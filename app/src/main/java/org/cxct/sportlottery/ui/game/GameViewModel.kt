@@ -1227,9 +1227,14 @@ class GameViewModel(
             getPlayCategory(nowChildMatchType)
         }
 
+        var reloadedDateRow: List<Date>? = null
+
         if (isReloadDate) {
-            getDateRow(nowChildMatchType)
+            reloadedDateRow = getDateRow(nowChildMatchType)
         }
+
+        //20220422 若重新讀取日期列(isReloadDate == true)時，會因postValue 比getCurrentTimeRangeParams取當前日期慢導致取到錯誤的時間
+        val reloadedTimeRange = reloadedDateRow?.find { it.isSelected }?.timeRangeParams
 
         if (isLastSportType)
             _sportMenuResult.value?.updateSportSelectState(
@@ -1247,7 +1252,7 @@ class GameViewModel(
                     getOddsList(
                         code,
                         specialEntrance.value?.couponCode ?: "",
-                        getCurrentTimeRangeParams(),
+                        reloadedTimeRange ?: getCurrentTimeRangeParams(),
                         leagueIdList = leagueIdList,
                         isIncrement = isIncrement
                     )
@@ -1272,8 +1277,8 @@ class GameViewModel(
                     getLeagueList(
                         gameType = code,
                         matchType = nowChildMatchType.postValue,
-                        startTime = getCurrentTimeRangeParams()?.startTime ?: "",
-                        endTime = getCurrentTimeRangeParams()?.endTime,
+                        startTime = reloadedTimeRange?.startTime ?: getCurrentTimeRangeParams()?.startTime ?: "",
+                        endTime = reloadedTimeRange?.endTime ?: getCurrentTimeRangeParams()?.endTime,
                         isIncrement = isIncrement
                     )
                 }
@@ -1281,7 +1286,7 @@ class GameViewModel(
                     getLeagueList(
                         code,
                         nowChildMatchType.postValue,
-                        getCurrentTimeRangeParams(),
+                        reloadedTimeRange ?: getCurrentTimeRangeParams(),
                         date,
                         isIncrement = isIncrement
                     )
@@ -1307,7 +1312,7 @@ class GameViewModel(
                     getOddsList(
                         code,
                         specialEntrance.value?.couponCode ?: "",
-                        getCurrentTimeRangeParams(),
+                        timeRangeParams = reloadedTimeRange ?: getCurrentTimeRangeParams(),
                         leagueIdList = leagueIdList,
                         isIncrement = isIncrement
                     )
@@ -1321,7 +1326,7 @@ class GameViewModel(
                     getOddsList(
                         code,
                         specialEntrance.value?.couponCode ?: "",
-                        getCurrentTimeRangeParams(),
+                        timeRangeParams = reloadedTimeRange ?: getCurrentTimeRangeParams(),
                         leagueIdList = leagueIdList,
                         isIncrement = isIncrement
                     )
@@ -1918,7 +1923,7 @@ class GameViewModel(
         }
     }
 
-    private fun getDateRow(matchType: MatchType) {
+    private fun getDateRow(matchType: MatchType): List<Date>? {
         val dateRow = when (matchType) {
             MatchType.TODAY -> {
                 listOf(Date("", getTodayTimeRangeParams()))
@@ -1937,7 +1942,7 @@ class GameViewModel(
             }
         }
 
-        dateRow.firstOrNull()?.let {
+        return dateRow.firstOrNull()?.let {
             dateRow.updateDateSelectedState(it)
         }
     }
@@ -2396,13 +2401,14 @@ class GameViewModel(
     }
 
 
-    private fun List<Date>.updateDateSelectedState(date: Date) {
+    private fun List<Date>.updateDateSelectedState(date: Date): List<Date> {
         this.forEach {
             it.isSelected = (it == date)
         }
 
         _curDate.postValue(this)
         _curDatePosition.postValue(this.indexOf(date))
+        return this
     }
 
     private fun updatePlaySelectedState(play: Play) {
@@ -2522,33 +2528,6 @@ class GameViewModel(
             }
         }
         return this
-    }
-
-    /**
-     * 設置大廳所需顯示的快捷玩法 (api未回傳的玩法需以“—”表示)
-     * 2021.10.25 發現可能會回傳但是是傳null, 故新增邏輯, 該玩法odd為null時也做處理
-     */
-    private fun MutableMap<String, List<Odd?>?>.setupQuickPlayCate(playCate: String) {
-        val playCateSort = QuickPlayCate.values().find { it.value == playCate }?.rowSort?.split(",")
-
-        playCateSort?.forEach {
-            if (!this.keys.contains(it) || this[it] == null)
-                this[it] = mutableListOf(null, null, null)
-        }
-    }
-
-    /**
-     * 根據QuickPlayCate的rowSort將盤口重新排序
-     */
-    private fun MutableMap<String, List<Odd?>?>.sortQuickPlayCate(playCate: String) {
-        val playCateSort = QuickPlayCate.values().find { it.value == playCate }?.rowSort?.split(",")
-        val sortedList = this.toSortedMap(compareBy<String> {
-            val oddsIndex = playCateSort?.indexOf(it)
-            oddsIndex
-        }.thenBy { it })
-
-        this.clear()
-        this.putAll(sortedList)
     }
 
     private fun OddsListResult.clearQuickPlayCateSelected(): OddsListResult {
@@ -2786,6 +2765,8 @@ class GameViewModel(
                     }
 
                     _publicityRecommend.postValue(Event(result.result))
+
+                    notifyFavorite(FavoriteType.MATCH)
                 }
             }
         }

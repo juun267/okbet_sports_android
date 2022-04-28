@@ -4,6 +4,8 @@ import android.graphics.Rect
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_league_v5.view.*
+import org.cxct.sportlottery.network.common.QuickPlayCate
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 
 /**
@@ -15,7 +17,7 @@ fun RecyclerView.addScrollWithItemVisibility(onScrolling: () -> Unit, onVisible:
     addOnScrollListener(object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
-            when(newState){
+            when (newState) {
                 //停止
                 RecyclerView.SCROLL_STATE_IDLE -> {
 
@@ -34,41 +36,6 @@ fun RecyclerView.addScrollWithItemVisibility(onScrolling: () -> Unit, onVisible:
                     }
 
                     onVisible(visibleRangePair)
-
-
-//                    val manager = layoutManager
-//                    if (manager is LinearLayoutManager) {
-//                        val firstPosition = manager.findFirstVisibleItemPosition()
-//                        val lastPosition = manager.findLastVisibleItemPosition()
-//                        val visibleRangePair = mutableListOf<Pair<Int, Int>>()
-//                        for (leaguePosition in firstPosition..lastPosition) {
-//                            val view = manager.findViewByPosition(leaguePosition) ?: continue
-//                            val rect = Rect()
-//                            val isVisible = view.getGlobalVisibleRect(rect)
-//                            if (isVisible) {
-//                                val viewByPosition = manager.findViewByPosition(leaguePosition)
-//                                viewByPosition?.let {
-//                                    if (getChildViewHolder(it) is LeagueAdapter.ItemViewHolder) {
-//                                        val viewHolder = getChildViewHolder(it) as LeagueAdapter.ItemViewHolder
-//                                        val m = viewHolder.itemView.league_odd_list.layoutManager
-//                                        if (m is LinearLayoutManager) {
-//                                            val first: Int = m.findFirstVisibleItemPosition()
-//                                            val last: Int = m.findLastVisibleItemPosition()
-//                                            for (matchPosition in first..last) {
-//                                                val mView = m.findViewByPosition(matchPosition) ?: continue
-//                                                val mRect = Rect()
-//                                                val mIsVisible = mView.getGlobalVisibleRect(mRect)
-//                                                if (mIsVisible) {
-//                                                    visibleRangePair.add(Pair(leaguePosition, matchPosition))
-//                                                }
-//                                            }
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-//                        onVisible(visibleRangePair)
-//                    }
                 }
 
                 //手指滾動
@@ -80,7 +47,7 @@ fun RecyclerView.addScrollWithItemVisibility(onScrolling: () -> Unit, onVisible:
     })
 }
 
-fun RecyclerView.getVisibleRangePosition(): List<Int>{
+fun RecyclerView.getVisibleRangePosition(): List<Int> {
     return mutableListOf<Int>().apply {
         val manager = layoutManager
         if (manager is LinearLayoutManager) {
@@ -96,4 +63,31 @@ fun RecyclerView.getVisibleRangePosition(): List<Int>{
             }
         }
     }
+}
+
+/**
+ * 設置大廳所需顯示的快捷玩法 (api未回傳的玩法需以“—”表示)
+ * 2021.10.25 發現可能會回傳但是是傳null, 故新增邏輯, 該玩法odd為null時也做處理
+ */
+fun MutableMap<String, List<Odd?>?>.setupQuickPlayCate(playCate: String) {
+    val playCateSort = QuickPlayCate.values().find { it.value == playCate }?.rowSort?.split(",")
+
+    playCateSort?.forEach {
+        if (!this.keys.contains(it) || this[it] == null)
+            this[it] = mutableListOf(null, null, null)
+    }
+}
+
+/**
+ * 根據QuickPlayCate的rowSort將盤口重新排序
+ */
+fun MutableMap<String, List<Odd?>?>.sortQuickPlayCate(playCate: String) {
+    val playCateSort = QuickPlayCate.values().find { it.value == playCate }?.rowSort?.split(",")
+    val sortedList = this.toSortedMap(compareBy<String> {
+        val oddsIndex = playCateSort?.indexOf(it)
+        oddsIndex
+    }.thenBy { it })
+
+    this.clear()
+    this.putAll(sortedList)
 }

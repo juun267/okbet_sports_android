@@ -22,6 +22,7 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import java.util.*
 
@@ -92,7 +93,7 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
                 if (sConfigData?.thirdOpen == FLAG_OPEN)
                     MainActivity.reStart(this)
                 else
-                    GameActivity.reStart(this)
+                    GamePublicityActivity.reStart(this)
             } else {
                 binding.etVerificationCode.setError(
                     getString(R.string.login_phone_verify_error),
@@ -109,7 +110,7 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
             if (sConfigData?.thirdOpen == FLAG_OPEN)
                 MainActivity.reStart(this)
             else
-                GameActivity.reStart(this)
+                GamePublicityActivity.reStart(this)
         }
     }
 

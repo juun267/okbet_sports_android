@@ -85,7 +85,7 @@ class SwitchLanguageActivity : BaseActivity<LoginViewModel>(LoginViewModel::clas
                 else {
                     when (intent.getSerializableExtra(FROM_ACTIVITY)) {
                         Page.PUBLICITY -> goGamePublicityPage()
-                        else -> GameActivity.reStart(this)
+                        else -> GamePublicityActivity.reStart(this)
                     }
                 }
             }

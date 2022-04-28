@@ -38,6 +38,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.menu.ChangeAppearanceDialog
@@ -183,6 +184,9 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
                 layoutSearch.visibility = View.VISIBLE
                 rv_menu.visibility = View.GONE
                 initSearch()
+            } else {
+                layoutSearch.visibility = View.GONE
+                rv_menu.visibility = View.VISIBLE
             }
         }
         etSearch.addTextChangedListener(object : TextWatcher {
@@ -221,7 +225,9 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
             closeMenuFragment()
         }
         img_menu.setOnClickListener {
+            hideKeyboard()
             etSearch.clearFocus()
+            etSearch.setText("")
             layoutSearch.visibility = View.GONE
             layoutSearchResult.visibility = View.GONE
             rv_menu.visibility = View.VISIBLE
@@ -954,6 +960,7 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
 
     private fun closeMenuFragment() {
         mCloseMenuListener?.onClick(null)
+        etSearch.setText("")
     }
 
 }
