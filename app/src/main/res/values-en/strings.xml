@@ -401,8 +401,8 @@
     <string name="x12_x_play_name">Draw</string>
     <string name="no_history_content">Your current selection has nothing～</string>
     <string name="no_history_search">No data found for your search or filter</string>
-    <string name="odd_button_ou_o">Big</string>
-    <string name="odd_button_ou_u">Small</string>
+    <string name="odd_button_ou_o">Over</string>
+    <string name="odd_button_ou_u">Under</string>
     <string name="game_tab_league_odd">Match</string>
     <string name="game_tab_outright_odd">Outright</string>
     <string name="game_tab_price_boosts_odd">Price boosts</string>

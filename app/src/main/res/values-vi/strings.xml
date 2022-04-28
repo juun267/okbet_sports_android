@@ -391,8 +391,8 @@
     <string name="x12_x_play_name">Hòa trận</string>
     <string name="no_history_content">Lựa chọn hiện tại của bạn chưa có nội dung</string>
     <string name="no_history_search">Không có dữ liệu tương ứng cho mục tìm kiếm của bạn</string>
-    <string name="odd_button_ou_o">tài</string>
-    <string name="odd_button_ou_u">xỉu</string>
+    <string name="odd_button_ou_o">Trên</string>
+    <string name="odd_button_ou_u">Dưới</string>
     <string name="game_tab_league_odd">Sự kiện</string>
     <string name="game_tab_outright_odd">Nhà vô địch</string>
     <string name="game_tab_price_boosts_odd">Tỷ lệ cược cao</string>
