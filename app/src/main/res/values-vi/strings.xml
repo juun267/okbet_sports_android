@@ -189,6 +189,8 @@
     <string name="now_level">cấp độ hiện tại:</string>
     <string name="growth_requirement">Giá trị tăng trưởng yêu cầu：</string>
     <string name="no_value">không</string>
+    <string name="day_mode">Chế độ ban ngày</string>
+    <string name="night_mode">Chế độ ban đêm</string>
     <string name="title_rebates_selector_form">Danh mục quyền lợi cấp độ trò chơi</string>
     <string name="member_name_level_one">hội viên phổ thông</string>
     <string name="next_level_tips">Cần tăng thêm khoảng %1$s điểm</string>
