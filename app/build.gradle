@@ -76,7 +76,7 @@ android {
         }
         forqa {
             buildConfigField "String", "CHANNEL_NAME", "\"spplat1\""
-            resValue "string", "app_name", "OKBET"
+            resValue "string", "app_name", "OKbet"
             applicationId "com.happysport.sl.test"
             buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
             buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
@@ -90,7 +90,7 @@ android {
         }
         OkbetPH {
             buildConfigField "String", "CHANNEL_NAME", "\"spkx\""
-            resValue "string", "app_name", "OKBET"
+            resValue "string", "app_name", "OKbet"
             applicationId "com.okbet.ph"
             buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
             buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
@@ -118,7 +118,7 @@ android {
         }
         spnew1{
             buildConfigField "String", "CHANNEL_NAME", "\"spnew1\""
-            resValue "string", "app_name", "OKBET"
+            resValue "string", "app_name", "OKbet"
             applicationId "com.okbet.spnew1"
             buildConfigField "String", "DEFAULT_LANGUAGE", "\"zh\""
             buildConfigField "String", "SYSTEM_CURREMCY", "\"RMB\""
