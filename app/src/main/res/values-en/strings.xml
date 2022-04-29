@@ -321,7 +321,7 @@
     <string name="updatable">Can update</string>
     <string name="internal_download">Internal download</string>
     <string name="denied_read_memory_card">Memory Card Access Denied</string>
-    <string name="current_versionIs_the_latest_version">Your app is new vesion</string>
+    <string name="current_versionIs_the_latest_version">Your App is  the latest version</string>
     <string name="external_download">External download</string>
     <string name="update">Update</string>
     <string name="update_now">Update now</string>
