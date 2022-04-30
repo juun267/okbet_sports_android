@@ -126,7 +126,7 @@
 
             <TextView
                 android:id="@+id/btnConfirm"
-                android:layout_width="76dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="@dimen/margin_6"
@@ -135,7 +135,10 @@
                 android:background="@drawable/enable_blue_gray_radius_4_button"
                 android:enabled="false"
                 android:gravity="center"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:text="@string/btn_confirm"
+                android:textAllCaps="true"
                 android:textColor="@color/enable_blue_light_gray"
                 android:textSize="@dimen/textSize12sp"
                 android:textStyle="bold" />
