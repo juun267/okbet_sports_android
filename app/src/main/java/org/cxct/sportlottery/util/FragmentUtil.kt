@@ -23,7 +23,8 @@ fun commonCheckDialog(
     title: String?,
     errorMessageSpan: Spanned,
     buttonText: String?,
-    positiveClickListener: () -> Unit?
+    positiveClickListener: () -> Unit?,
+    isOutsideCancelable: Boolean = false
 ) {
     if (checkDialogIsShowing(fm, errorMessageSpan.toString())) {
         return
@@ -43,8 +44,8 @@ fun commonCheckDialog(
             this.dismiss()
         }
 
-        setCanceledOnTouchOutside(false)
-        isCancelable = false //不能用系統 BACK 按鈕關閉 dialog
+        setCanceledOnTouchOutside(isOutsideCancelable)
+        isCancelable = isOutsideCancelable //不能用系統 BACK 按鈕關閉 dialog
     }.show(fm, errorMessageSpan.toString())
 }
 

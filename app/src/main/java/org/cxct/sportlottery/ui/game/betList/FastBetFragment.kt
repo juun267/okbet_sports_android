@@ -168,7 +168,8 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     showPromptDialog(
                         title = getString(R.string.prompt),
                         message = spannableStringBuilder,
-                        success = true
+                        success = true,
+                        isOutsideCancelable = true
                     ) {
                         dismiss()
                         //(activity as GameActivity).
