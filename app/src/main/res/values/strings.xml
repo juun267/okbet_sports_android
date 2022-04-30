@@ -627,7 +627,7 @@
     <string name="bet_info_list_clean">Clear all</string>
     <string name="bet_info_bet_balance_insufficient">Balance is not enough</string>
     <string name="bet_info_different_game_type">Different ball species can not be linked for parlay</string>
-    <string name="bet_info_input_quota">Please enter the amount</string>
+    <string name="bet_info_input_quota">Enter the amount</string>
     <string name="bet_info_check_maximum_limit">MAX BET</string>
     <string name="bet_info_bet_quota">bet amount</string>
     <string name="bet_info_win_quota">To win</string>
