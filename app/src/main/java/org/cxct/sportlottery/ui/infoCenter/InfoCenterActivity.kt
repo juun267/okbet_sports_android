@@ -14,6 +14,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.infoCenter.InfoCenterData
 import org.cxct.sportlottery.repository.MsgType
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterViewModel::class) {
 
@@ -84,6 +85,7 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
     }
 
     private fun initToolbar() {
+        tv_toolbar_title.setTitleLetterSpacing()
         tv_toolbar_title.text = getString(R.string.news_center)
         btn_toolbar_back.setOnClickListener {
             finish()
