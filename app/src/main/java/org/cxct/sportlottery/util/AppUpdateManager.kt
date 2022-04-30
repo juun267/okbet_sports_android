@@ -32,7 +32,7 @@ object AppUpdateManager {
         request.setMimeType("application/vnd.android.package-archive")
 
         context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) //创建下載目录
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "cp.apk") //设置文件存放路径
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "OkBet.apk") //设置文件存放路径
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
 
         return request
