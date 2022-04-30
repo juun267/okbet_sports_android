@@ -1031,7 +1031,7 @@
     <string name="self_limit_confirm_alert_content">Tài khoản này đã áp dụng chế độ tự loại trừ, vui lòng liên hệ với bộ phận dịch vụ khách hàng của chúng tôi để biết chi tiết.</string>
     <string name="self_limit_account_login_limit">Hạn chế đăng nhập</string>
     <string name="self_limit_froze_content">Để bảo vệ quyền lợi của mình, bạn có thể đăng ký \"tự khai trừ\" bất cứ lúc nào. Sau khi bạn đăng ký tự loại trừ, bạn sẽ không thể đăng nhập để tận hưởng các dịch vụ trong thời gian tự loại trừ. Các tùy chọn như sau:</string>
-    <string name="self_limit_froze_days">ngày</string>
+    <string name="self_limit_froze_days">Ngày</string>
     <string name="self_limit_froze_input_days">Vui lòng nhập số ngày</string>
     <string name="self_limit_froze_impotent">"· Tự loại trừ có hiệu lực ngay sau khi thiết lập\n· Chúng tôi sẽ giữ số dư của bạn trong khoảng thời gian tự loại trừ đã định.\n· Nếu bạn đăng ký tự loại trừ trong các trò chơi trò chơi khác, nó sẽ không tự động áp dụng cho trò chơi này.\n· Trong thời gian tự loại trừ, nếu bạn cố gắng mở một tài khoản mới, tài khoản có thể bị đóng băng sau khi hệ thống phát hiện ra.\n· Trong thời gian tự loại trừ, bạn có thể liên hệ với bộ phận dịch vụ khách hàng để hủy chức năng tự loại trừ.\n· Sau khi quá trình tự loại trừ hết hạn, tài khoản của bạn sẽ tự động được kích hoạt lại."</string>
     <string name="self_limit_per_bet_limit_content">Bạn có thể đăng ký \"cược giới hạn\" để giới hạn số tiền đặt cược mỗi lần. Sau khi đăng ký đặt cược giới hạn, tổng số tiền đặt cược của bạn sẽ không vượt quá giá trị đã đặt của bạn:</string>
