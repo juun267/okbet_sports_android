@@ -96,8 +96,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:minWidth="62dp"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_marginStart="@dimen/margin_10"
+                android:layout_marginEnd="@dimen/margin_10"
                 android:text="@string/self_limit_froze_days"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize13sp"
@@ -107,7 +109,6 @@
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/margin_36"
                 android:layout_marginTop="@dimen/margin_10"
                 android:layout_marginBottom="@dimen/margin_10"
                 android:background="@color/colorWhite6" />
