@@ -286,7 +286,7 @@
     <string name="more_service">More service</string>
     <string name="account_transfer">Transfer Limit</string>
     <string name="money_recycle_succeed">Recovery limit successfully</string>
-    <string name="news_center">Message</string>
+    <string name="news_center">My Information</string>
     <string name="help_center">Help</string>
     <string name="fund_detail">Fund Details</string>
     <string name="feedback">Feedback</string>
@@ -327,7 +327,7 @@
     <string name="update_now">Update now</string>
     <string name="install">Install</string>
     <string name="inbox">Inbox (%1$d)</string>
-    <string name="unread_letters">Unread email (%1$d)</string>
+    <string name="unread_letters">Unread (%1$d)</string>
     <string name="index">Numbers</string>
     <string name="title">Headline</string>
     <string name="time">Time</string>
