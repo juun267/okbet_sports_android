@@ -107,8 +107,8 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
                     navSportEntrance(sportType)
                 },
                 { gameType, addOrRemove -> //圖釘
-                    when (viewModel.userInfo.value?.testFlag) {
-                        TestFlag.NORMAL.index -> {
+                    when (viewModel.isLogin.value) {
+                        true -> {
                             viewModel.pinFavorite(
                                 FavoriteType.SPORT,
                                 gameType

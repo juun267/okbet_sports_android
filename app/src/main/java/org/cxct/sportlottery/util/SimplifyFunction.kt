@@ -1,9 +1,11 @@
 package org.cxct.sportlottery.util
 
 import android.graphics.Rect
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_league_v5.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
@@ -90,4 +92,16 @@ fun MutableMap<String, List<Odd?>?>.sortQuickPlayCate(playCate: String) {
 
     this.clear()
     this.putAll(sortedList)
+}
+
+/**
+ * 調整標題文字間距
+ * 中文之外無間距
+ */
+fun TextView.setTitleLetterSpacing() {
+    this.letterSpacing =
+        when (LanguageManager.getSelectLanguage(MultiLanguagesApplication.appContext)) {
+            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> 0.2F
+            else -> 0F
+        }
 }

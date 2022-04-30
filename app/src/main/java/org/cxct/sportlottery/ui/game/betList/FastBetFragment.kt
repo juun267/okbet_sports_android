@@ -168,7 +168,8 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     showPromptDialog(
                         title = getString(R.string.prompt),
                         message = spannableStringBuilder,
-                        success = true
+                        success = true,
+                        isOutsideCancelable = true
                     ) {
                         dismiss()
                         //(activity as GameActivity).
@@ -603,13 +604,12 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         dismiss()
                     }
                 } else {
+                    showBottomSheetDialog(result)
                     if (result.receipt?.singleBets?.any { singleBet -> singleBet.status == 0 } == true || result.receipt?.parlayBets?.any { parlayBet -> parlayBet.status == 0 } == true) {
                         mHandler.removeMessages(BET_CONFIRM_TIPS)
                         mHandler.sendMessage(Message().apply {
                             what = BET_CONFIRM_TIPS
                         })
-                    } else {
-                        showBottomSheetDialog(result)
                     }
                 }
             }
