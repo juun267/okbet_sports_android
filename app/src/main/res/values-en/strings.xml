@@ -767,8 +767,8 @@
     <string name="odd_type_title">Odds Setting</string>
     <string name="odd_type_eu">EU Odds</string>
     <string name="odd_type_hk">HK Odds</string>
-    <string name="odd_type_mys">MYS Odds</string>
-    <string name="odd_type_idn">IDN Odds</string>
+    <string name="odd_type_mys">MY Odds</string>
+    <string name="odd_type_idn">ID Odds</string>
     <string name="withdraw_uw_check">Deduction</string>
     <string name="choose_method">Choose channel</string>
     <string name="choose_order">Select bets</string>
