@@ -10,5 +10,7 @@ data class QuickListData(
     @Json(name = "playCateNameMap")
     var playCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
     @Json(name = "quickOdds")
-    val quickOdds: Map<String, MutableMap<String, List<Odd?>?>>?
+    val quickOdds: Map<String, MutableMap<String, List<Odd?>?>>?,
+    @Json(name = "oddsSort")
+    val oddsSortMap: Map<String?, String?>?
 )
