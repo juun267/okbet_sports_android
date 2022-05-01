@@ -35,6 +35,9 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
     private var transferPayList = mutableListOf<MoneyPayWayData>()
     private var onlinePayList = mutableListOf<MoneyPayWayData>()
 
+    private var gotTransferPay: Boolean = false
+    private var gotOnlinePay: Boolean = false
+
     private var mCurrentFragment: Fragment? = null
 
     private var apiResult: MoneyAddResult = MoneyAddResult(0, "", false, "")
@@ -76,7 +79,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
 
         viewModel.transferPayList.observe(this@MoneyRechargeActivity, Observer {
             hideLoading()
-            custom_tab_layout.visibility = View.VISIBLE //獲取資金資料完畢, 顯示充值分類
+            gotTransferPay = true
             transferPayList = it ?: return@Observer
             custom_tab_layout.firstTabVisibility = if (transferPayList.size > 0) {
                 transferPageChange()
@@ -85,9 +88,12 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
                 custom_tab_layout.selectTab(RechargeType.ONLINE_PAY.tabPosition)
                 View.GONE
             }
+
+            updateTabLayoutVisibility()
         })
 
         viewModel.onlinePayList.observe(this@MoneyRechargeActivity, Observer {
+            gotOnlinePay = true
             onlinePayList = it ?: return@Observer
             custom_tab_layout.secondTabVisibility = if (onlinePayList.size > 0) {
                 if (custom_tab_layout.selectedTabPosition == RechargeType.ONLINE_PAY.tabPosition) {
@@ -97,6 +103,8 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
             } else {
                 View.GONE
             }
+
+            updateTabLayoutVisibility()
         })
 
         //轉帳支付 - 銀行 微信 支付寶...
@@ -316,5 +324,14 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
                 false
             )
         )
+    }
+
+    /**
+     * 檢查是否需要顯示充值分類Tab
+     */
+    private fun updateTabLayoutVisibility() {
+        if (gotOnlinePay && gotTransferPay) {
+            custom_tab_layout.visibility = if (transferPayList.isNullOrEmpty() && onlinePayList.isNullOrEmpty()) View.VISIBLE else View.GONE
+        }
     }
 }
