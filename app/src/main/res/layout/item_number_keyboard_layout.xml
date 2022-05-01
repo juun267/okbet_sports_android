@@ -227,7 +227,7 @@
             android:layout_marginEnd="@dimen/margin_2"            android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
-            android:text="Max"
+            android:text="@string/keyboard_max"
             android:textColor="@color/white"
             android:textSize="@dimen/textSize14sp" />
 
