@@ -817,8 +817,8 @@
     <string name="credit_record_status_unsettle">The settlement date has not yet been reached</string>
     <string name="parlay_rule_nc1_ex">When there are more options, %1$s string 1 can be combined into a double sequence, for example, %2$s matches can be combined into %2$s matches %1$s string 1</string>
     <string name="game_play_type">Game category</string>
-    <string name="spt_number_3_2">3set2win</string>
-    <string name="spt_number_5_3">5set3win</string>
+    <string name="spt_number_3_2">Best of 3</string>
+    <string name="spt_number_5_3">Best of 5</string>
     <string name="bet_notify_max_limit">Can add maximum 10 options to betslip</string>
     <string name="myfavorite_notify_league_add">Added to My League</string>
     <string name="myfavorite_notify_league_remove">Remove from My League</string>
