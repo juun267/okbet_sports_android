@@ -99,9 +99,6 @@ class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeS
         tvMax.setOnClickListener {
             plusAll(maxBetMoney ?: 0)
         }
-        ivKeyboardClose.setOnClickListener {
-            hideKeyboard()
-        }
     }
 
     private fun numberClick(number: String) {
@@ -131,11 +128,6 @@ class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeS
         disableKeyboard()
         this.visibility = View.VISIBLE
         //parent?.visibility = View.VISIBLE
-        tvLimit.text = String.format(
-            "${context.getString(R.string.edt_hint_deposit_money_new)}",
-            TextUtil.formatBetQuota(minBetMoney),
-            TextUtil.formatBetQuota(maxBetMoney)
-        )
         isShow = true
 
         //keyBoardViewListener.showOrHideKeyBoardBackground(true, position)
