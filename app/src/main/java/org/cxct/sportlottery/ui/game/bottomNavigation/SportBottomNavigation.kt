@@ -63,7 +63,7 @@ class SportBottomNavigation @JvmOverloads constructor(
     }
 
     private fun selectItem(item: BottomNavigationItem) {
-        if (selectedItem != item) {
+        if (selectedItem != item || item == navigation_sport) {
             selectedItem?.checked = false
             item.checked = true
             selectedItem = item

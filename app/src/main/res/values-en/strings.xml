@@ -818,10 +818,10 @@
     <string name="spt_number_3_2">Best of 3</string>
     <string name="spt_number_5_3">Best of 5</string>
     <string name="bet_notify_max_limit">Can add maximum 10 options to betslip</string>
-    <string name="myfavorite_notify_league_add">Added to My League</string>
-    <string name="myfavorite_notify_league_remove">Remove from My League</string>
-    <string name="myfavorite_notify_match_add">Added to My Matches</string>
-    <string name="myfavorite_notify_match_remove">Remove from My Matches</string>
+    <string name="myfavorite_notify_league_add">Added to My Competitions.</string>
+    <string name="myfavorite_notify_league_remove">Remove from My Competitions.</string>
+    <string name="myfavorite_notify_match_add">Added to My Events.</string>
+    <string name="myfavorite_notify_match_remove">Remove from My Events.</string>
     <string name="myfavorite_notify_detail_add">Added to My bets</string>
     <string name="myfavorite_notify_detail_remove">Remove from My bets</string>
     <string name="statistics_title">statistics</string>
