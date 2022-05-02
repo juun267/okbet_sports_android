@@ -124,7 +124,7 @@ object Constants {
                     R.string.app_name)
                 LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/privacy-policy?platform="+context.getString(
                     R.string.app_name)
-                else -> getBaseUrl()+"sports-rule/#/us/privacy-policy?platform"+context.getString(
+                else -> getBaseUrl()+"sports-rule/#/us/privacy-policy?platform="+context.getString(
                         R.string.app_name)
             }
 
