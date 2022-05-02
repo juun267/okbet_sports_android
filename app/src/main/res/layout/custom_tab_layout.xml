@@ -12,6 +12,7 @@
         android:id="@+id/tab_layout_custom"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        app:tabTextAppearance="@style/NoUppercaseTab"
         app:tabIndicator="@drawable/custom_tab_indicator"
         app:tabIndicatorFullWidth="false"
         app:tabMode="fixed"

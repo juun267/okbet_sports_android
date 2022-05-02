@@ -199,26 +199,11 @@ object Constants {
 
     //.apk 下載 url
     fun getAppDownloadUrl(): String {
-        return "https://download." + currentServerUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/cp.apk"
+        return "https://download." + currentServerUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/OkBet.apk"
     }
 
     fun getHostListUrl(serverUrl: String?): String {
         return "https://${BuildConfig.CHANNEL_NAME}.$serverUrl/api/front/domainconfig/appdomain/${BuildConfig.CHANNEL_NAME}.json"
-    }
-
-    fun getGameRuleUrl(context: Context, type: String): String? {
-        return try {
-            when (getSelectLanguage(context)) {
-
-                LanguageManager.Language.ZH -> "https://sportsrule.cxct.org/".plus("?type=$type")
-
-                else -> "https://sportsrule.cxct.org/us".plus("?type=$type")
-            }
-
-        } catch (e: UnsupportedEncodingException) {
-            e.printStackTrace()
-            null
-        }
     }
 
     //bet

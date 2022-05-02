@@ -124,6 +124,31 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
     }
 
     fun showPromptDialog(
+        title: String,
+        message: Spanned,
+        success: Boolean,
+        isOutsideCancelable: Boolean,
+        positiveClickListener: () -> Unit
+    ) {
+        if (activity is BaseActivity<*>) {
+            if (success) {
+                (activity as BaseActivity<*>).showPromptDialog(
+                    title,
+                    message,
+                    isOutsideCancelable = isOutsideCancelable,
+                    positiveClickListener
+                )
+            } else {
+                (activity as BaseActivity<*>).showErrorPromptDialog(
+                    title,
+                    message.toString(),
+                    positiveClickListener
+                )
+            }
+        }
+    }
+
+    fun showPromptDialog(
         title: String? = getString(R.string.prompt),
         message: String,
         buttonText: String?,

@@ -44,6 +44,7 @@ class QuickListView @JvmOverloads constructor(
     private var mPlaySelectedCodeSelectionType: Int? = null
     private var mPlaySelectedCode: String? = null
     private var quickOdds1: MutableMap<String, List<Odd?>?> = mutableMapOf()
+    private var quickOddsSort: String? = null
     private var mOddButtonPairAdapter: OddButtonPairAdapter =
         OddButtonPairAdapter(mMatchOdd?.matchInfo)
     private var mQuickOddButtonPagerAdapter: OddButtonPagerAdapter = OddButtonPagerAdapter()
@@ -117,6 +118,7 @@ class QuickListView @JvmOverloads constructor(
                         quickOdds1 =
                             quickListResult.quickListData?.quickOdds?.get(selectedQuickPlayCateCode)
                                 ?: mutableMapOf()
+                        quickOddsSort = quickListResult.quickListData?.oddsSortMap?.get(selectedQuickPlayCateCode)
                         when (selectedQuickPlayCateCode) {
                             org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_OU.value, org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_HDP.value, org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_ADVANCE.value -> {
                                 setupQuickOddButtonPair(
@@ -130,6 +132,7 @@ class QuickListView @JvmOverloads constructor(
                             org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_CORNERS.value, org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_PENALTY.value -> {
                                 setupQuickOddButtonPager(
                                     quickOdds1,
+                                    quickOddsSort,
                                     mOddsType,
                                     mLeagueOddListener,
                                     quickListResult.quickListData,
@@ -285,6 +288,7 @@ class QuickListView @JvmOverloads constructor(
 
     private fun setupQuickOddButtonPager(
         quickOdds: MutableMap<String, List<Odd?>?>,
+        oddsSort: String?,
         oddsType: OddsType,
         leagueOddListener: LeagueOddListener?,
         quickListData: QuickListData?,
@@ -296,7 +300,7 @@ class QuickListView @JvmOverloads constructor(
             mQuickOddButtonPagerAdapter = OddButtonPagerAdapter()
             mQuickOddButtonPagerAdapter.setData(
                 mMatchOdd?.matchInfo,
-                null,
+                oddsSort,
                 quickListData?.playCateNameMap,
                 quickListData?.betPlayCateNameMap,
                 mPlaySelectedCodeSelectionType

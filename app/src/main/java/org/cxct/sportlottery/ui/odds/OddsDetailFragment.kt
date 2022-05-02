@@ -353,7 +353,11 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
     private fun setupStartTime(matchInfo: MatchInfo?) {
         matchInfo?.apply {
-            tv_time_top.text = TimeUtil.timeFormat(startTime, TimeUtil.DM_FORMAT)
+            tv_time_top.text =
+                if (TimeUtil.isTimeToday(startTime)) getString(R.string.home_tab_today) else TimeUtil.timeFormat(
+                    startTime,
+                    TimeUtil.DM_FORMAT
+                )
             tv_time_bottom.text = TimeUtil.timeFormat(startTime, TimeUtil.HM_FORMAT)
         }
     }

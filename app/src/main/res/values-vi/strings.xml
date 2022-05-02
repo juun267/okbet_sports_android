@@ -189,6 +189,8 @@
     <string name="now_level">cấp độ hiện tại:</string>
     <string name="growth_requirement">Giá trị tăng trưởng yêu cầu：</string>
     <string name="no_value">không</string>
+    <string name="day_mode">Chế độ ban ngày</string>
+    <string name="night_mode">Chế độ ban đêm</string>
     <string name="title_rebates_selector_form">Danh mục quyền lợi cấp độ trò chơi</string>
     <string name="member_name_level_one">hội viên phổ thông</string>
     <string name="next_level_tips">Cần tăng thêm khoảng %1$s điểm</string>
@@ -391,8 +393,8 @@
     <string name="x12_x_play_name">Hòa trận</string>
     <string name="no_history_content">Lựa chọn hiện tại của bạn chưa có nội dung</string>
     <string name="no_history_search">Không có dữ liệu tương ứng cho mục tìm kiếm của bạn</string>
-    <string name="odd_button_ou_o">tài</string>
-    <string name="odd_button_ou_u">xỉu</string>
+    <string name="odd_button_ou_o">Trên</string>
+    <string name="odd_button_ou_u">Dưới</string>
     <string name="game_tab_league_odd">Sự kiện</string>
     <string name="game_tab_outright_odd">Nhà vô địch</string>
     <string name="game_tab_price_boosts_odd">Tỷ lệ cược cao</string>
@@ -410,8 +412,8 @@
     <string name="odds_detail_play_type_dc_1X">1/X</string>
     <string name="odds_detail_play_type_dc_2X">2/X</string>
     <string name="odds_detail_play_type_dc_12">44198</string>
-    <string name="odds_detail_play_type_ou_o">tài</string>
-    <string name="odds_detail_play_type_ou_u">xỉu</string>
+    <string name="odds_detail_play_type_ou_o">Trên</string>
+    <string name="odds_detail_play_type_ou_u">Dưới</string>
     <string name="bottom_sheet_close">Đóng</string>
     <string name="bottom_sheet_title_play_type">Thay đổi lối chơi</string>
     <string name="message_recharge_maintain">Hệ thống nạp tiền đang được nâng cấp, vui lòng chờ đợi</string>
@@ -502,7 +504,7 @@
     <string name="online_bank">Ngân hàng trực tuyến</string>
     <string name="online_juan">JuanCash</string>
     <string name="online_dispenshing">Rút tiền</string>
-    <string name="online_online_bank">網銀</string>
+    <string name="online_online_bank">Ngân hàng trực tuyến</string>
     <string name="online_gcash">Gcash</string>
     <string name="online_grab">GrabPay</string>
     <string name="online_maya">PayMaya</string>
@@ -755,6 +757,8 @@
     <string name="odd_type_title">Thể loại kèo</string>
     <string name="odd_type_eu">Kèo Châu Âu</string>
     <string name="odd_type_hk">Kèo Hồng Kông</string>
+    <string name="odd_type_mys">Kèo Malay</string>
+    <string name="odd_type_idn">Kèo Indo</string>
     <string name="choose_method">Chọn một kênh</string>
     <string name="choose_order">Chọn đơn</string>
     <string name="submit_time">thời gian gửi</string>
@@ -762,11 +766,12 @@
     <string name="not_reply_yet">Chưa có phản hồi</string>
     <string name="main_footer_desc">Giấy phép hợp pháp do cơ quan quản lý trò chơi Malta Châu Âu (MGA), ủy ban giám sát GC của Anh ( Gambling Commission ) và ủy ban trò chơi của chính phủ Philippines (PAGCOR) cấp./n
     Được đăng ký tại Quần đảo Virgin thuộc Anh, đây là một công ty trò chơi hợp pháp được Hiệp hội Trò chơi Quốc tế công nhận. Trước khi đăng ký tài khoản giải trí vui lòng đảm bảo bạn đã đủ 18 tuổi trở lên!</string>
-    <string name="match_not_exist"></string>
+    <string name="match_not_exist">trận đấu không tồn tại</string>
     <string name="odds_not_exist">Tỷ lệ trò chơi không tồn tại</string>
     <string name="match_invalid_status">Trận đấu không thể đặt cược</string>
     <string name="odds_locked">Cách chơi này không thể đặt cược</string>
     <string name="parlay_un_support">Trận đấu này không hỗ trợ cược xiên</string>
+    <string name="identity">Xác minh họ và tên</string>
     <string name="odds_id_not_allow_bet">Tỷ lệ cược này không cho phép đặt cược</string>
     <string name="odds_have_changed">Tỷ lệ cược chấp đã được thay đổi, vui lòng đặt cược lại</string>
     <string name="bet_info_content_has_been_changed">Tỷ lệ cược hoặc trạng thái trò chơi bạn chọn đã được thay đổi, vui lòng đặt cược lại</string>
@@ -1026,14 +1031,15 @@
     <string name="self_limit_confirm_alert_content">Tài khoản này đã áp dụng chế độ tự loại trừ, vui lòng liên hệ với bộ phận dịch vụ khách hàng của chúng tôi để biết chi tiết.</string>
     <string name="self_limit_account_login_limit">Hạn chế đăng nhập</string>
     <string name="self_limit_froze_content">Để bảo vệ quyền lợi của mình, bạn có thể đăng ký \"tự khai trừ\" bất cứ lúc nào. Sau khi bạn đăng ký tự loại trừ, bạn sẽ không thể đăng nhập để tận hưởng các dịch vụ trong thời gian tự loại trừ. Các tùy chọn như sau:</string>
-    <string name="self_limit_froze_days">ngày</string>
+    <string name="self_limit_froze_days">Ngày</string>
     <string name="self_limit_froze_input_days">Vui lòng nhập số ngày</string>
     <string name="self_limit_froze_impotent">"· Tự loại trừ có hiệu lực ngay sau khi thiết lập\n· Chúng tôi sẽ giữ số dư của bạn trong khoảng thời gian tự loại trừ đã định.\n· Nếu bạn đăng ký tự loại trừ trong các trò chơi trò chơi khác, nó sẽ không tự động áp dụng cho trò chơi này.\n· Trong thời gian tự loại trừ, nếu bạn cố gắng mở một tài khoản mới, tài khoản có thể bị đóng băng sau khi hệ thống phát hiện ra.\n· Trong thời gian tự loại trừ, bạn có thể liên hệ với bộ phận dịch vụ khách hàng để hủy chức năng tự loại trừ.\n· Sau khi quá trình tự loại trừ hết hạn, tài khoản của bạn sẽ tự động được kích hoạt lại."</string>
     <string name="self_limit_per_bet_limit_content">Bạn có thể đăng ký \"cược giới hạn\" để giới hạn số tiền đặt cược mỗi lần. Sau khi đăng ký đặt cược giới hạn, tổng số tiền đặt cược của bạn sẽ không vượt quá giá trị đã đặt của bạn:</string>
     <string name="self_limit_per_bet_limit_highest">Giới hạn trên</string>
+    <string name="self_limit_per_bet_limit">Giới hạn</string>
     <string name="self_limit_per_bet_limit_input_highest">Vui lòng nhập số</string>
     <string name="self_limit_per_bet_limit_impotent">· Bạn có thể sửa đổi giới hạn đặt cược của mình bất cứ lúc nào. Sửa đổi sẽ có hiệu lực sau khi gửi yêu cầu.</string>
-    <string name="self_limit_per_bet_limit_user">‧Cược giới hạn hiện tại: %s</string>
+    <string name="self_limit_per_bet_limit_user">Cược giới hạn hiện tại: %s</string>
     <string name="self_limit_per_bet_limit_user_none">Không có</string>
     <string name="self_limit_per_bet_limit_user_limit"> (Cược giới hạn tối đa:%1$s %3$s-%2$s %3$s)</string>
     <string name="self_limit_error">Định dạng trường không chính xác, vui lòng nhập một số nguyên.</string>
