@@ -66,6 +66,12 @@
     <color name="color_CAE0FF">#CAE0FF</color>
     <color name="color_E2E2E2">#E2E2E2</color>
     <color name="color_1D4C99">#1D4C99</color>
+    <color name="color_FAFAFA">#FAFAFA</color>
+    <color name="color_D2D2D7">#d2d2d7</color>
+    <color name="color_1A1A1A">#1A1A1A</color>
+    <color name="color_404348">#404348</color>
+    <color name="color_AFAFB9">#AFAFB9</color>
+    <color name="color_939393">#939393</color>
 
     <!--以下部分，是系统中的白天的色值 -->
     <!--命名規則，color_[夜間色碼]_[白天色碼] -->
@@ -78,6 +84,9 @@
     <color name="color_1D4C99_0760D4">@color/color_0760D4</color>
     <color name="color_317FFF_1F4780">@color/color_1F4780</color>
     <color name="color_317FFF_0760D4">@color/color_0760D4</color>
+    <color name="color_1A1A1A_0760D4">@color/color_0760D4</color>
+    <color name="color_404348_FFFFFF">@color/color_FFFFFF</color>
+    <color name="color_FFFFFF_0760D4">@color/color_0760D4</color>
 
     <color name="color_FF9E3C_FF9E3C">@color/color_FF9E3C</color>
     <color name="color_FF9143_ff9200">@color/color_ff9200</color>
@@ -91,6 +100,7 @@
     <color name="color_F75452_b73a20">@color/color_b73a20</color>
     <color name="color_FFFFFF_FFFFFF">@color/color_FFFFFF</color>
     <color name="color_191919_FCFCFC">@color/color_FCFCFC</color>
+    <color name="color_FCFCFC_191919">@color/color_191919</color>
     <color name="color_CAE0FF_FCFCFC">@color/color_FCFCFC</color>
     <color name="color_317FFF_666666">@color/color_666666</color>
     <color name="color_191919_EEEFF0">@color/color_EEEFF0</color>
@@ -113,6 +123,12 @@
     <color name="color_e5e5e5_333333">@color/color_333333</color>
     <color name="color_FFFFFF_000000">@color/color_000000</color>
     <color name="color_000000_FFFFFF">@color/color_FFFFFF</color>
+    <color name="color_212121_EAF4FE">@color/color_EAF4FE</color>
+    <color name="color_1A1A1A_FAFAFA">@color/color_FAFAFA</color>
+    <color name="color_404348_D2D2D7">@color/color_D2D2D7</color>
+    <color name="color_CCCCCC_999999">@color/color_999999</color>
+    <color name="color_939393_333333">@color/color_333333</color>
+
     <!-- [End]重新配置的色彩架構 -->
 
 
@@ -198,8 +214,6 @@
 <!--    <color name="color_999999">#999999</color>-->
 <!--    <color name="color_AAAAAA">#AAAAAA</color>-->
     <color name="color_FDFDFD">#FDFDFD</color>
-    <color name="color_FFFFFFFF">#ffffffff</color>
-    <color name="color_FFEEEFF0">#ffeeeff0</color>
     <color name="color_F08E29">#ffF08E29</color>
     <color name="color_222222">#222222</color>
     <color name="color_060F20">#060F20</color>

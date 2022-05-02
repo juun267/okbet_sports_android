@@ -116,6 +116,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
             }
         })
+        binding.btnLogin.requestFocus()
 //        et_password.eyeVisibility = View.GONE
 //        et_password.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
 //            if (hasFocus && et_password.eyeVisibility == View.GONE) {

@@ -251,7 +251,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                     tvLanguage.setTextColor(
                         ContextCompat.getColor(
                             MultiLanguagesApplication.appContext,
-                            R.color.color_FFFFFFFF
+                            R.color.color_FFFFFF_FFFFFF
                         )
                     )
                     //endregion
