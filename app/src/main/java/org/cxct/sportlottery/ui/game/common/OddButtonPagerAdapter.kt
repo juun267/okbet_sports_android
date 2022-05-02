@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,8 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
+import org.cxct.sportlottery.util.BetPlayCateFunction.isNOGALType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.QuickListManager
 import org.cxct.sportlottery.util.TextUtil
@@ -37,7 +40,10 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
 
     fun setData(matchInfo: MatchInfo?, oddsSort: String?, playCateNameMap: MutableMap<String?, Map<String?, String?>?>?, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?, getPlaySelectedCodeSelectionType: Int?) {
         this.matchInfo = matchInfo
-        this.oddsSort = oddsSort
+
+        if (!oddsSort.isNullOrEmpty())
+            this.oddsSort = oddsSort
+
         this.playCateNameMap = playCateNameMap
         this.betPlayCateNameMap = betPlayCateNameMap
         this.getPlaySelectedCodeSelectionType = getPlaySelectedCodeSelectionType
@@ -50,7 +56,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
             field = value.sortScores().refactorPlayCode().sortOdds().filterOddsStatus().splitPlayCate()
                 .filterPlayCateSpanned().sortPlayCate()
             val gameList =
-                field.filterValues { !it.isNullOrEmpty() }.filter { it.value?.getOrNull(0) != null }
+                field.filterValues { !it.isNullOrEmpty() }
                     .plus(field.filterValues { !it.isNullOrEmpty() }
                         .filter { it.value?.getOrNull(0) == null }).map { it.key }.run {
                         val gameListFilter: MutableList<String>
@@ -284,14 +290,16 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
             val rgzMap = this.filter { (key, _) -> key.contains(":") }
 
             //網球玩法特殊處理:网球的特定第几局的玩法(1X2_SEG3_GAMES:1~6) 之前应该是当有两个数字的时候 取大的显示 目前看小金改为取小的显示了 这边再跟著调整一下取小的显示在大厅上
+            //網球玩法特殊處理:网球的特定第几局的玩法(1X2_SEG3_GAMES:1~6) 2022/4/26 跟IOS H5同步 顯示最小的
             when {
                 rgzMap.isNotEmpty() && matchInfo?.gameType == GameType.TN.key && (rgzMap.iterator().next().key.contains("1X2_SEG") && rgzMap.iterator().next().key.contains("_GAMES"))-> {
                     oddsMap = this.filter { !it.key.contains(":") }.toMutableMap()
                     val mutableListIterator = rgzMap.iterator()
                     var iteratorMap: Map.Entry<String, List<Odd?>?>? = null
-                    while (mutableListIterator.hasNext()) {
-                        iteratorMap = mutableListIterator.next()
-                    }
+//                    while (mutableListIterator.hasNext()) {
+//                        iteratorMap = mutableListIterator.next()
+//                    }
+                    iteratorMap = mutableListIterator.next()
                     if (iteratorMap != null) {
                         val playKeyFilter = iteratorMap.key.split(":")[0]
                         oddsMap[playKeyFilter] = iteratorMap.value
@@ -582,7 +590,35 @@ class OddButtonPagerViewHolder private constructor(
                 }
             }
 
+            //20220426 先判斷spread是否需要顯示，提供name判斷其佈局調整
+            tv_spread.apply {
+                visibility = when (!odds.second?.getOrNull(0)?.spread.isNullOrEmpty()) {
+                    true -> {
+                        View.VISIBLE
+                    }
+                    false -> {
+                        when {
+                            playCateCode.isOUType() -> View.INVISIBLE
+                            else -> {
+                                View.GONE
+                            }
+                        }
+                    }
+                }
+
+                text = odds.second?.getOrNull(0)?.spread ?: ""
+            }
+
+            //20220426 修正spread沒有顯示時，有機會name僅顯示"..."
             tv_name.apply {
+                layoutParams = when (this@homeButtonSettings.tv_spread.visibility) {
+                    View.GONE -> LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+                    else -> LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f)
+                }
+
                 visibility = when {
                     playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() -> View.VISIBLE
                     else -> {
@@ -616,20 +652,6 @@ class OddButtonPagerViewHolder private constructor(
                 }
             }
 
-            tv_spread.apply {
-                visibility = when (!odds.second?.getOrNull(0)?.spread.isNullOrEmpty()) {
-                    true -> View.VISIBLE
-                    false -> {
-                        when {
-                            playCateCode.isOUType() -> View.INVISIBLE
-                            else -> View.GONE
-                        }
-                    }
-                }
-
-                text = odds.second?.getOrNull(0)?.spread ?: ""
-            }
-
             tv_odds.text = getOddByType(odds.second?.getOrNull(0), oddsType)
             tv_odds.setTextColor(oddColorStateList(odds.second?.getOrNull(0), oddsType))
 
@@ -642,7 +664,7 @@ class OddButtonPagerViewHolder private constructor(
 
             setOnClickListener {
                 odds.second?.getOrNull(0)?.let { odd ->
-                    it.isSelected = !it.isSelected
+                    //it.isSelected = !it.isSelected
                     oddButtonListener?.onClickBet(
                         matchInfo,
                         odd,
@@ -669,7 +691,29 @@ class OddButtonPagerViewHolder private constructor(
                 }
             }
 
+            tv_spread.apply {
+                visibility = when (!odds.second?.getOrNull(1)?.spread.isNullOrEmpty()) {
+                    true -> View.VISIBLE
+                    false -> {
+                        when {
+                            playCateCode.isOUType() -> View.INVISIBLE
+                            else -> View.GONE
+                        }
+                    }
+                }
+
+                text = odds.second?.getOrNull(1)?.spread ?: ""
+            }
+
             tv_name.apply {
+                layoutParams = when (this@awayButtonSettings.tv_spread.visibility) {
+                    View.GONE -> LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+                    else -> LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f)
+                }
+
                 visibility = when {
                     playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() -> View.VISIBLE
                     else -> {
@@ -703,20 +747,6 @@ class OddButtonPagerViewHolder private constructor(
                 }
             }
 
-            tv_spread.apply {
-                visibility = when (!odds.second?.getOrNull(1)?.spread.isNullOrEmpty()) {
-                    true -> View.VISIBLE
-                    false -> {
-                        when {
-                            playCateCode.isOUType() -> View.INVISIBLE
-                            else -> View.GONE
-                        }
-                    }
-                }
-
-                text = odds.second?.getOrNull(1)?.spread ?: ""
-            }
-
             tv_odds.text = getOddByType(odds.second?.getOrNull(1), oddsType)
             tv_odds.setTextColor(oddColorStateList(odds.second?.getOrNull(1), oddsType))
 
@@ -742,7 +772,7 @@ class OddButtonPagerViewHolder private constructor(
 
             setOnClickListener {
                 odds.second?.getOrNull(1)?.let { odd ->
-                    it.isSelected = !it.isSelected
+//                    it.isSelected = !it.isSelected
                     oddButtonListener?.onClickBet(
                         matchInfo,
                         odd,
@@ -777,7 +807,30 @@ class OddButtonPagerViewHolder private constructor(
                 }
             }
 
+            tv_spread.apply {
+                visibility = when (!odds.second?.getOrNull(2)?.spread.isNullOrEmpty()) {
+                    true -> View.VISIBLE
+                    false -> {
+                        when {
+                            playCateCode.isOUType() -> View.INVISIBLE
+                            else -> View.GONE
+                        }
+                    }
+                }
+
+                text = odds.second?.getOrNull(2)?.spread ?: ""
+
+            }
+
             tv_name.apply {
+                layoutParams = when (this@drawButtonSettings.tv_spread.visibility) {
+                    View.GONE -> LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+                    else -> LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f)
+                }
+                
                 visibility = View.VISIBLE
 
                 text = when {
@@ -805,21 +858,6 @@ class OddButtonPagerViewHolder private constructor(
                 }
             }
 
-            tv_spread.apply {
-                visibility = when (!odds.second?.getOrNull(2)?.spread.isNullOrEmpty()) {
-                    true -> View.VISIBLE
-                    false -> {
-                        when {
-                            playCateCode.isOUType() -> View.INVISIBLE
-                            else -> View.GONE
-                        }
-                    }
-                }
-
-                text = odds.second?.getOrNull(2)?.spread ?: ""
-
-            }
-
             tv_odds.text = getOddByType(odds.second?.getOrNull(2), oddsType)
             tv_odds.setTextColor(oddColorStateList(odds.second?.getOrNull(2), oddsType))
 
@@ -829,7 +867,7 @@ class OddButtonPagerViewHolder private constructor(
 
             setOnClickListener {
                 odds.second?.getOrNull(2)?.let { odd ->
-                    it.isSelected = !it.isSelected
+//                    it.isSelected = !it.isSelected
                     oddButtonListener?.onClickBet(
                         matchInfo,
                         odd,
@@ -1138,14 +1176,6 @@ class OddButtonPagerViewHolder private constructor(
 
     private fun String.isBTSType(): Boolean {
         return this.contains(PlayCate.BTS.value) && !this.isCombination()
-    }
-
-    private fun String.isCombination(): Boolean {
-        return this.contains(PlayCate.SINGLE_OU.value) || this.contains(PlayCate.SINGLE_BTS.value)
-    }
-
-    private fun String.isNOGALType(): Boolean {
-        return (this.contains(PlayCate.NGOAL.value) || this.contains(PlayCate.NGOAL_OT.value)) && !this.isCombination()
     }
 
     /**

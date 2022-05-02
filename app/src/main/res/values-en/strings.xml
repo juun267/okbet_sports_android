@@ -401,8 +401,8 @@
     <string name="x12_x_play_name">Draw</string>
     <string name="no_history_content">Your current selection has nothing～</string>
     <string name="no_history_search">No data found for your search or filter</string>
-    <string name="odd_button_ou_o">Big</string>
-    <string name="odd_button_ou_u">Small</string>
+    <string name="odd_button_ou_o">Over</string>
+    <string name="odd_button_ou_u">Under</string>
     <string name="game_tab_league_odd">Match</string>
     <string name="game_tab_outright_odd">Outright</string>
     <string name="game_tab_price_boosts_odd">Price boosts</string>
@@ -420,8 +420,8 @@
     <string name="odds_detail_play_type_dc_1X">1/X</string>
     <string name="odds_detail_play_type_dc_2X">2/X</string>
     <string name="odds_detail_play_type_dc_12">1/2</string>
-    <string name="odds_detail_play_type_ou_o">Big</string>
-    <string name="odds_detail_play_type_ou_u">Small</string>
+    <string name="odds_detail_play_type_ou_o">Over</string>
+    <string name="odds_detail_play_type_ou_u">Under</string>
     <string name="bottom_sheet_close">Close</string>
     <string name="bottom_sheet_title_play_type">Change playing method</string>
     <string name="message_recharge_maintain">Please wait while the top-up system is being upgraded</string>
@@ -769,6 +769,7 @@
     <string name="odd_type_hk">HK Odds</string>
     <string name="odd_type_mys">MYS Odds</string>
     <string name="odd_type_idn">IDN Odds</string>
+    <string name="withdraw_uw_check">Deduction</string>
     <string name="choose_method">Choose channel</string>
     <string name="choose_order">Select bets</string>
     <string name="submit_time">Submit time:</string>

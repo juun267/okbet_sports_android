@@ -50,6 +50,7 @@ import org.cxct.sportlottery.ui.bet.list.*
 import org.cxct.sportlottery.ui.bet.list.receipt.BetInfoCarReceiptDialog
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -129,7 +130,7 @@ class SwitchLanguageFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                 if (sConfigData?.thirdOpen == FLAG_OPEN)
                     MainActivity.reStart(this)
                 else
-                    GameActivity.reStart(this)
+                    GamePublicityActivity.reStart(this)
             }
         }
     }

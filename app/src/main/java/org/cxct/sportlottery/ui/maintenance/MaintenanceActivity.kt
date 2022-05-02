@@ -9,6 +9,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 
 class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(MaintenanceViewModel::class) {
@@ -50,7 +51,7 @@ class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(Maintenance
                     if (sConfigData?.thirdOpen == FLAG_OPEN)
                         MainActivity.reStart(this)
                     else
-                        GameActivity.reStart(this)
+                        GamePublicityActivity.reStart(this)
                     finish()
                 } else {
                     //do nothing

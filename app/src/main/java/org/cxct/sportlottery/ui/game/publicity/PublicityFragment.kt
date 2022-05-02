@@ -226,6 +226,21 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 }
             }
         }
+
+        viewModel.favorMatchList.observe(viewLifecycleOwner) { favorMatchList ->
+            val targetList = getNewestRecommendData()
+            targetList.forEachIndexed { index, recommend ->
+                var needUpdate = false
+                val isFavorite = favorMatchList.contains(recommend.matchInfo?.id)
+                if (recommend.matchInfo?.isFavorite != isFavorite) {
+                    recommend.matchInfo?.isFavorite = isFavorite
+                    needUpdate = true
+                }
+                if (needUpdate) {
+                    mPublicityAdapter.updateRecommendData(index, recommend)
+                }
+            }
+        }
     }
 
     // TODO subscribe leagueChange: 此處尚無需實作邏輯, 看之後有沒有相關需求

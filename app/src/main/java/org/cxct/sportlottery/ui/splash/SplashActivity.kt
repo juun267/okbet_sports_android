@@ -124,14 +124,15 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         }
 
         viewModel.isLogin.observe(this) {
-            when (it) {
-                true -> {
-                    goGamePage()
-                }
-                false -> {
-                    goGamePublicityPage()
-                }
-            }
+            goGamePublicityPage()
+//            when (it) {
+//                true -> {
+//                    goGamePage()
+//                }
+//                false -> {
+//                    goGamePublicityPage()
+//                }
+//            }
         }
     }
 
