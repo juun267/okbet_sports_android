@@ -214,9 +214,6 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
         viewModel.isLogin.observe(this) {
             getMsgDialog() //登入/登出刷新彈窗公告
             updateUiWithLogin(it)
-            //登入登出後要請求使用者是否需要認證手機驗證碼
-            if (it)
-                viewModel.getTwoFactorValidateStatus()
         }
 
         viewModel.navActivity.observe(this) { event ->

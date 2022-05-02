@@ -7,9 +7,9 @@
     <string name="unknown_error">unknown error</string>
     <string name="error_reading_file">Error reading from file</string>
     <string name="message_guest_no_permission">Guest account not be able to access, please register first</string>
-    <string name="message_socket_connect">Internet connections timed out please try again</string>
-    <string name="message_network_no_connect">Please check your internet connection and try again</string>
-    <string name="message_network_timeout">Internet connections timed out please try again</string>
+    <string name="message_socket_connect">The connection has timed out, please try again.</string>
+    <string name="message_network_no_connect">The connection has timed out, please try again.</string>
+    <string name="message_network_timeout">The connection has timed out, please try again.</string>
     <string name="error">Error</string>
     <string name="error_input_empty">This field is required</string>
     <string name="error_incompatible_format">The name that you entered is not valid</string>
@@ -818,10 +818,10 @@
     <string name="spt_number_3_2">Best of 3</string>
     <string name="spt_number_5_3">Best of 5</string>
     <string name="bet_notify_max_limit">Can add maximum 10 options to betslip</string>
-    <string name="myfavorite_notify_league_add">Added to My League</string>
-    <string name="myfavorite_notify_league_remove">Remove from My League</string>
-    <string name="myfavorite_notify_match_add">Added to My Matches</string>
-    <string name="myfavorite_notify_match_remove">Remove from My Matches</string>
+    <string name="myfavorite_notify_league_add">Added to My Competitions.</string>
+    <string name="myfavorite_notify_league_remove">Remove from My Competitions.</string>
+    <string name="myfavorite_notify_match_add">Added to My Events.</string>
+    <string name="myfavorite_notify_match_remove">Remove from My Events.</string>
     <string name="myfavorite_notify_detail_add">Added to My bets</string>
     <string name="myfavorite_notify_detail_remove">Remove from My bets</string>
     <string name="statistics_title">statistics</string>

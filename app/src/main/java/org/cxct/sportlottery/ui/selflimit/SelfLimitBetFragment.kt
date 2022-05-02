@@ -132,10 +132,10 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
 
     private fun submit() {
         CustomAlertDialog(requireContext()).apply {
-            setTitle(getString(R.string.self_limit_fix_confirm))
-            setMessage(getString(R.string.self_limit_fix_confirm_content))
-            setPositiveButtonText(getString(R.string.btn_confirm))
-            setNegativeButtonText(getString(R.string.btn_cancel))
+            setTitle(this@SelfLimitBetFragment.getString(R.string.self_limit_fix_confirm))
+            setMessage(this@SelfLimitBetFragment.getString(R.string.self_limit_fix_confirm_content))
+            setPositiveButtonText(this@SelfLimitBetFragment.getString(R.string.btn_confirm))
+            setNegativeButtonText(this@SelfLimitBetFragment.getString(R.string.btn_cancel))
             setPositiveClickListener {
                 viewModel.setPerBetLimit(binding.etMount.text.toString().toInt())
                 dismiss()
@@ -145,18 +145,17 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
             }
             setCanceledOnTouchOutside(false)
             setCancelable(false) //不能用系統 BACK 按鈕關閉 dialog
-            show(childFragmentManager, null)
-        }
+        }.show(childFragmentManager, null)
     }
 
     private fun initDataLive() {
         viewModel.perBetLimitResult.observe(this.viewLifecycleOwner, {
             if (it.success) {
                 val dialog = CustomAlertDialog(requireActivity()).apply {
-                    setTitle(getString(R.string.self_limit_fix_confirm))
-                    setMessage(getString(R.string.self_limit_fix_confirm_done))
+                    setTitle(this@SelfLimitBetFragment.getString(R.string.self_limit_fix_confirm))
+                    setMessage(this@SelfLimitBetFragment.getString(R.string.self_limit_fix_confirm_done))
                     setNegativeButtonText(null)
-                    setPositiveButtonText(getString(R.string.btn_confirm))
+                    setPositiveButtonText(this@SelfLimitBetFragment.getString(R.string.btn_confirm))
                     setCancelable(false)
                     setPositiveClickListener {
                         updateBetLimit(binding.etMount.text.toString())
