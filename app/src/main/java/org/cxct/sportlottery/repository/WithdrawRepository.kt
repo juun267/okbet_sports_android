@@ -183,14 +183,6 @@ class WithdrawRepository(
         _showSecurityDialog.value = Event(!getTwoFactorStatus())
     }
 
-    //確認使用者有無手機碼 true：有手機碼 false：無手機碼
-    suspend fun checkUserPhoneNumber(): Boolean {
-        if(!getTwoFactorStatus())//後台有開簡訊驗證的狀況下才需要顯示Dialog
-            _hasPhoneNumber.value = Event(userInfoRepository.userInfo?.firstOrNull()?.phone.toString().isNotEmpty())
-        
-        return userInfoRepository.userInfo?.firstOrNull()?.phone.toString().isNotEmpty()
-    }
-
     /**
      * 使用者使否擁有手機號碼
      * @return true: 有, false: 沒有
