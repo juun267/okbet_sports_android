@@ -266,7 +266,6 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
         //是否顯示簡訊驗證彈窗
         viewModel.showSecurityDialog.observe(this) {
-            val hasPhoneNumber = MultiLanguagesApplication.getInstance()?.userInfo()?.phone?.isNotEmpty()
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
                     customSecurityDialog = CustomSecurityDialog(this).apply {
@@ -280,7 +279,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                             }
                     }
                     customSecurityDialog?.show(supportFragmentManager, null)
-                } else if (hasPhoneNumber == true && !b) { //有手機號碼又不用驗證的狀態下
+                } else if (!b) { //有手機號碼又不用驗證的狀態下
                     when (securityCodeEnter) {
                         SecurityCodeEnterType.REALNAME -> {
                             putExtraForProfileInfoActivity(ModifyType.RealName)
