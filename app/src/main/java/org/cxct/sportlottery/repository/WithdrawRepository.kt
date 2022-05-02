@@ -127,21 +127,55 @@ class WithdrawRepository(
 
     //提款判斷權限
     private suspend fun withdrawCheckPermissions() {
-        this.checkNeedUpdatePassWord().let {
-            when{
-                !checkUserPhoneNumber() -> { }
-                !getTwoFactorStatus() && (it || verifyProfileInfoComplete()) -> {
+        val needUpdatePassWord = checkNeedUpdatePassWord()
+        when {
+            //是否需要更新提款密碼
+            needUpdatePassWord -> {
+                val twoFactorStatus = checkTwoFactorStatus()
+
+                //是否需要顯示簡訊驗證 false: 需顯示簡訊驗證
+                if (twoFactorStatus == false) {
                     sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.UPDATE_PW.ordinal
                     _showSecurityDialog.value = Event(true)
+                } else if (twoFactorStatus == true) {
+                    //不需要簡訊驗證，提示需更新提款密碼
+                    _needToUpdateWithdrawPassword.postValue(Event(needUpdatePassWord))
                 }
-                else ->  _needToUpdateWithdrawPassword.value = Event(it)
+            }
+            verifyProfileInfoComplete() -> {
+                checkProfileInfoComplete()
+            }
+            else -> {
+                checkBankCardPermissions()
             }
         }
     }
 
-    //判斷要不要顯示簡訊驗證 true: 顯示 false:不顯示
+    /**
+     * 判斷要不要顯示簡訊驗證
+     * success: true 验证成功, false 需重新验证手机
+     */
     private suspend fun getTwoFactorStatus(): Boolean {
         val response = OneBoSportApi.withdrawService.getTwoFactorStatus() //(success: true 验证成功, false 需重新验证手机), 在进行新增银行卡、更新银行卡密码、更新用户密码、设定真实姓名之前先判断此状态, 如果为false, 就显示验证手机简讯的画面
+        return response.body()?.success ?: true
+    }
+
+    /**
+     * 判斷要不要顯示簡訊驗證
+     * @return true 验证成功, false 需重新验证手机, null 需簡訊驗證卻沒有手機號碼
+     */
+    private suspend fun checkTwoFactorStatus(): Boolean? {
+        val response =
+            OneBoSportApi.withdrawService.getTwoFactorStatus() //(success: true 验证成功, false 需重新验证手机), 在进行新增银行卡、更新银行卡密码、更新用户密码、设定真实姓名之前先判断此状态, 如果为false, 就显示验证手机简讯的画面
+        if (response.body()?.success == false) {
+            checkUserHavePhoneNumber().let { hasPhone ->
+                if (!hasPhone) {
+                    //因需要顯示簡訊驗證卻沒有手機號碼時
+                    _hasPhoneNumber.postValue(Event(hasPhone))
+                    return null
+                }
+            }
+        }
         return response.body()?.success ?: true
     }
 
@@ -155,6 +189,14 @@ class WithdrawRepository(
             _hasPhoneNumber.value = Event(userInfoRepository.userInfo?.firstOrNull()?.phone.toString().isNotEmpty())
         
         return userInfoRepository.userInfo?.firstOrNull()?.phone.toString().isNotEmpty()
+    }
+
+    /**
+     * 使用者使否擁有手機號碼
+     * @return true: 有, false: 沒有
+     */
+    private suspend fun checkUserHavePhoneNumber(): Boolean {
+        return userInfoRepository.userInfo?.firstOrNull()?.phone?.isNotEmpty() ?: false
     }
 
     //提款設置判斷權限, 判斷需不需要更新提現密碼 -> 個人資料是否完善
@@ -183,14 +225,7 @@ class WithdrawRepository(
      * complete true: 個人資訊有缺漏, false: 個人資訊完整
      */
     suspend fun checkProfileInfoComplete() {
-        when{
-            !checkUserPhoneNumber() -> { }
-            !getTwoFactorStatus() && verifyProfileInfoComplete() ->{
-                sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.COMPLETET_PROFILE_INFO.ordinal
-                _showSecurityDialog.value  = Event(true)
-            }
-            else -> _needToCompleteProfileInfo.value = Event(verifyProfileInfoComplete())
-        }
+        _needToCompleteProfileInfo.postValue(Event(verifyProfileInfoComplete()))
     }
 
     //提款設置用
@@ -320,14 +355,7 @@ class WithdrawRepository(
                         }
                     }
 
-                    when{
-                        !checkUserPhoneNumber() -> { }
-                        !getTwoFactorStatus() && promptMessageId != -1 ->{
-                            sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.BIND_BANK_CARD.ordinal
-                            _showSecurityDialog.value  = Event(true)
-                        }
-                        else -> _needToBindBankCard.value = Event(promptMessageId)
-                    }
+                    checkNeedToBindBankCard(promptMessageId)
 
                 }
             }
@@ -335,7 +363,28 @@ class WithdrawRepository(
         return response
     }
 
+    /**
+     * 檢查是否需要跳轉置綁定銀行卡，若需要則先進行二次簡訊驗證
+     */
+    private suspend fun checkNeedToBindBankCard(promptMessageId: Int) {
+        //promptMessageId不為-1時表示需要新增銀行卡
+        val needBindBankCard = promptMessageId != -1
+        if (needBindBankCard) {
+            val twoFactorStatus = checkTwoFactorStatus()
 
+            //是否需要顯示簡訊驗證 false: 需顯示簡訊驗證
+            if (twoFactorStatus == false) {
+                sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.BIND_BANK_CARD.ordinal
+                _showSecurityDialog.value = Event(true)
+            } else if (twoFactorStatus == true) {
+                //不需要簡訊驗證，提示需先綁定銀行卡
+                _needToBindBankCard.postValue(Event(promptMessageId))
+            }
+        } else {
+            //不需要新增銀行卡時, 一樣透過此LiveData傳遞
+            _needToBindBankCard.postValue(Event(promptMessageId))
+        }
+    }
 
     private fun checkBankSystem(bankCardList: List<BankCardList>): Boolean {
         var hasBinding = false
