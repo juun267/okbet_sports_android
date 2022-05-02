@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptDiffAdapter"
     android:layout_width="match_parent"
-    android:background="@color/colorBackground"
+    android:background="@color/color_141414_F3F4F5"
     android:layout_height="wrap_content"
 
     tools:ignore="SpUsage">

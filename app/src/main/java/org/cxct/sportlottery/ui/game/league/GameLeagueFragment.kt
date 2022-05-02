@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.fragment_game_league.*
 import kotlinx.android.synthetic.main.fragment_game_league.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
@@ -648,15 +649,22 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
 
     private fun updateSportBackground(sportCode: String?) {
-        Glide.with(requireContext()).load(
-            when (sportCode) {
-                GameType.FT.key -> R.drawable.soccer48
-                GameType.BK.key -> R.drawable.basketball48
-                GameType.TN.key -> R.drawable.tennis48
-                GameType.VB.key -> R.drawable.volleyball48
-                else -> null
-            }
-        ).into(game_league_toolbar_bg)
+        if(MultiLanguagesApplication.isNightMode){
+            Glide.with(requireContext()).load(
+              R.drawable.night_bg_300
+            ).into(game_league_toolbar_bg)
+        }else{
+            Glide.with(requireContext()).load(
+                when (sportCode) {
+                    GameType.FT.key -> R.drawable.soccer48
+                    GameType.BK.key -> R.drawable.basketball48
+                    GameType.TN.key -> R.drawable.tennis48
+                    GameType.VB.key -> R.drawable.volleyball48
+                    else -> null
+                }
+            ).into(game_league_toolbar_bg)
+        }
+
     }
 
     //更新isLocked狀態

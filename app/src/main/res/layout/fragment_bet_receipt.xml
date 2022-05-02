@@ -114,7 +114,7 @@
             android:id="@+id/cl_total_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/color_EAF4FE"
+            android:background="@color/color_191919_EAF4FE"
             android:paddingStart="16dp"
             android:paddingTop="13dp"
             android:paddingEnd="16dp"

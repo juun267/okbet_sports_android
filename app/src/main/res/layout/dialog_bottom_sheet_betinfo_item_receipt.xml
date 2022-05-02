@@ -30,6 +30,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/color_191919_FCFCFC"
                 android:orientation="vertical">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -173,7 +174,7 @@
             android:paddingVertical="14dp"
             android:textSize="@dimen/textSize13sp"
             android:text="@string/complete"
-            android:textColor="@color/color_191919_FCFCFC" />
+            android:textColor="@color/color_FFFFFF_FFFFFF" />
 
     </FrameLayout>
 

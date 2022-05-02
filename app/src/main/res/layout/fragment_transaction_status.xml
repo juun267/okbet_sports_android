@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:srlDragRate="0.3"
+    android:background="@color/color_191919_FCFCFC"
     app:srlEnableLoadMore="true"
     app:srlEnablePureScrollMode="true">
 

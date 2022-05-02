@@ -62,6 +62,8 @@
     <color name="color_1A1A1A_FFFFFF">@color/color_1A1A1A</color>
     <color name="color_939393_999999">@color/color_939393</color>
     <color name="color_FCFCFC_191919">@color/color_FCFCFC</color>
+    <color name="color_FFFFFF_666666">@color/color_FFFFFF</color>
+    <color name="color_191919_EAF4FE">@color/color_191919</color>
 
 
 </resources>
