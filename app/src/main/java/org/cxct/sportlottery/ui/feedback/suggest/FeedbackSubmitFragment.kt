@@ -29,7 +29,6 @@ class FeedbackSubmitFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
         super.onViewCreated(view, savedInstanceState)
         initView()
         initButton()
-        initDataLive()
     }
 
     private fun initView() {
@@ -52,22 +51,6 @@ class FeedbackSubmitFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
                 tv_input_count.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorRedDark))
             }
         }
-    }
-
-    private fun initDataLive() {
-        //2/5問了 說直接跳回第一頁 沒給彈窗UI也沒說要跳提示
-        viewModel.feedBackBaseResult.observe(viewLifecycleOwner, {
-            it?.getContentIfNotHandled()?.let { result ->
-                val msgContent = if (result.success) getString(R.string.feedback_submit_succeed) else result.msg
-                val dialog = CustomAlertDialog(requireActivity()).apply {
-                    setTitle(getString(R.string.prompt))
-                    setMessage(msgContent)
-                    setNegativeButtonText(null)
-                }
-                dialog.show(childFragmentManager, null)
-                view?.findNavController()?.navigate(R.id.action_feedbackSubmitFragment_to_feedbackSuggestFragment)
-            }
-        })
     }
 
 }
