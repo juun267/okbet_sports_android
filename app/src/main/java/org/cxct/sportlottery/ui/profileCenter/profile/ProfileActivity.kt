@@ -136,7 +136,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         //真實姓名
         ll_real_name.setOnClickListener {
             securityCodeEnter = SecurityCodeEnterType.REALNAME
-            putExtraForProfileInfoActivity(ModifyType.RealName)
+            viewModel.checkNeedToShowSecurityDialog()//檢查有需不需要簡訊認證
         }
         //暱稱
         btn_nickname.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.NickName) }
