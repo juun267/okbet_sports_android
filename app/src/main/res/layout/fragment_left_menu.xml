@@ -72,6 +72,8 @@
                     android:background="@android:color/transparent"
                     android:hint="@string/text_search"
                     android:singleLine="true"
+                    android:textColorHint="@color/color_939393_333333"
+                    android:textColor="@color/color_939393_333333"
                     android:imeOptions="actionDone"
                     android:textSize="@dimen/textSize12sp" />
             </LinearLayout>
@@ -134,7 +136,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/tvHistoryTittle"
                     android:text="@string/text_search_history"
-                    android:textColor="@color/color_222222"
+                    android:textColor="@color/color_191919_FCFCFC"
                     android:textSize="@dimen/margin_14"
                     android:textStyle="bold"
                     android:layout_marginStart="@dimen/margin_16"
@@ -185,7 +187,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/tvTopTittle"
                     android:text="@string/text_top_search"
-                    android:textColor="@color/color_222222"
+                    android:textColor="@color/color_191919_FCFCFC"
                     android:textSize="@dimen/margin_14"
                     android:textStyle="bold"
                     android:layout_marginStart="@dimen/margin_16"

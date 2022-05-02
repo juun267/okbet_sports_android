@@ -22,7 +22,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/tvMatch"
-        android:textColor="@color/color_222222"
+        android:textColor="@color/color_FCFCFC_191919"
         android:textSize="@dimen/margin_14"
         android:textStyle="bold"
         app:highlightText="UFC"
@@ -32,7 +32,7 @@
         android:ellipsize="end"
         android:lines="1"
         app:highlightColor="@color/color_317FFF_0760D4"
-        app:highlightTextColor="@color/color_191919_FCFCFC"
+        app:highlightTextColor="@color/color_FCFCFC_191919"
         app:layout_constraintStart_toEndOf="@+id/tvTime"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

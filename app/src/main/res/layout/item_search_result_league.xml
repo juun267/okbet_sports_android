@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvLeagueTittle"
-        android:textColor="@color/color_222222"
+        android:textColor="@color/color_FCFCFC_191919"
         android:textSize="@dimen/margin_14"
         android:textStyle="bold"
         app:highlightText="UFC"
@@ -28,7 +28,7 @@
         app:highlightRadius="0dp"
         android:gravity="center_horizontal"
         app:highlightColor="@color/color_317FFF_0760D4"
-        app:highlightTextColor="@color/color_191919_FCFCFC"
+        app:highlightTextColor="@color/color_FCFCFC_191919"
         android:layout_marginStart="@dimen/margin_16"
         app:layout_constraintStart_toEndOf="@+id/view1"
         app:layout_constraintTop_toTopOf="parent" />

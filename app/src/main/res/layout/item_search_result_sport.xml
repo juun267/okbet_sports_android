@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvResultTittle"
-        android:textColor="@color/color_222222"
+        android:textColor="@color/color_FCFCFC_191919"
         android:textSize="@dimen/margin_14"
         android:textStyle="bold"
         android:text="1234"

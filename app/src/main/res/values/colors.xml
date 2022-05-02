@@ -72,6 +72,10 @@
     <color name="color_404348">#404348</color>
     <color name="color_AFAFB9">#AFAFB9</color>
     <color name="color_939393">#939393</color>
+    <color name="color_CDE5FF">#CDE5FF</color>
+    <color name="color_EAF4FE">#EAF4FE</color>
+    <color name="color_232628">#232628</color>
+
 
     <!--以下部分，是系统中的白天的色值 -->
     <!--命名規則，color_[夜間色碼]_[白天色碼] -->
@@ -128,6 +132,11 @@
     <color name="color_404348_D2D2D7">@color/color_D2D2D7</color>
     <color name="color_CCCCCC_999999">@color/color_999999</color>
     <color name="color_939393_333333">@color/color_333333</color>
+    <color name="color_999999_CDE5FF">@color/color_CDE5FF</color>
+    <color name="color_232628_EAF4FE">@color/color_EAF4FE</color>
+    <color name="color_2B2B2B_FCFCFC">@color/color_FCFCFC</color>
+    <color name="color_1A1A1A_FFFFFF">@color/color_FFFFFF</color>
+    <color name="color_939393_999999">@color/color_999999</color>
 
     <!-- [End]重新配置的色彩架構 -->
 
@@ -217,8 +226,6 @@
     <color name="color_F08E29">#ffF08E29</color>
     <color name="color_222222">#222222</color>
     <color name="color_060F20">#060F20</color>
-    <color name="color_CDE5FF">#CDE5FF</color>
-    <color name="color_EAF4FE">#EAF4FE</color>
     <color name="color_D65752">#D65752</color>
     <color name="color_F9DDDE">#F9DDDE</color>
     <color name="color_FFE136">#FFE136</color>
