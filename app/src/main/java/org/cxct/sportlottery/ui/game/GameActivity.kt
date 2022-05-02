@@ -387,7 +387,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                selectTab(tab?.position)
+
             }
         })
 

@@ -385,7 +385,7 @@
     <string name="bet_item">Betting items -</string>
     <string name="match_type_row_in_play">IN-PLAY</string>
     <string name="match_type_row_at_start">SOON</string>
-    <string name="at_start_remain_minute">%s minutes</string>
+    <string name="at_start_remain_minute">%s minute</string>
     <string name="match_type_row_btn_bs">Concede goals &amp; over/under</string>
     <string name="game_filter_row_search_hint">Please enter league name</string>
     <string name="game_filter_row_search_hint_league">Please enter team name</string>
@@ -1023,8 +1023,7 @@
     <string name="faqs">FAQs</string>
     <string name="live_chat">Live Chat</string>
     <string name="contact">Contact Us</string>
-    <string name="btm_navigation_hint">%1$s is a Registered Trade Mark, Brand and Business Name Owned by Ekxinum Inc.
-Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR).</string>
+    <string name="btm_navigation_hint">%1$s is a Registered Trade Mark, Brand and Business Name Owned by Ekxinum Inc. Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR).</string>
     <string name="btm_navigation_copyright">COPYRIGHT © 2022 %1$s ALL RIGHTS RESERVED</string>
     <string name="e_address">Address</string>
     <string name="brackets">(%s)</string>
