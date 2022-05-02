@@ -5,7 +5,9 @@
     android:layout_width="wrap_content"
     android:layout_height="60dp"
     android:minWidth="70dp"
-    tools:ignore="SpUsage">
+    android:layout_marginEnd="12dp"
+    android:paddingStart="12dp"
+    tools:ignore="RtlSymmetry,SpUsage">
 
     <ImageView
         android:id="@+id/sport_type_home_img"
