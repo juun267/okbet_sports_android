@@ -383,7 +383,7 @@
     <string name="bet_item">Betting items -</string>
     <string name="match_type_row_in_play">IN-PLAY</string>
     <string name="match_type_row_at_start">SOON</string>
-    <string name="at_start_remain_minute">%s minutes</string>
+    <string name="at_start_remain_minute">%s minute</string>
     <string name="match_type_row_btn_bs">Concede goals &amp; over/under</string>
     <string name="game_filter_row_search_hint">Please enter league name</string>
     <string name="game_filter_row_search_hint_league">Please enter team name</string>
