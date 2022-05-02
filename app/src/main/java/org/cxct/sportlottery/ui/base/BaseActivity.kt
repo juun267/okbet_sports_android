@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.base
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.content.res.Resources
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -21,6 +22,7 @@ import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import kotlinx.coroutines.*
+import me.jessyan.autosize.AutoSizeCompat
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.HttpError
@@ -370,4 +372,16 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     private fun stopRunnable() {
         mRunnable = null
     }
+
+    /**
+     * 修正 auto size 偶發失效問題
+     * */
+    override fun getResources(): Resources {
+
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            AutoSizeCompat.autoConvertDensityOfGlobal(super.getResources())
+        }
+        return super.getResources()
+    }
+
 }
