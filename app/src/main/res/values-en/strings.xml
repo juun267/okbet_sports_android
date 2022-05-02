@@ -204,7 +204,7 @@
     <string name="profile_center">Profile</string>
     <string name="member_level">Member level</string>
     <string name="game_settlement">Result</string>
-    <string name="version_update">Update version</string>
+    <string name="version_update">Update Version</string>
     <string name="odds_type">Handicap-%s</string>
     <string name="sign_out">Logout</string>
     <string name="label_version">Version number Ver %s</string>
