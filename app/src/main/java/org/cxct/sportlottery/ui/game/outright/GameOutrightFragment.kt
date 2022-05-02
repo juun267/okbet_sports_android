@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,7 +30,7 @@ import org.cxct.sportlottery.util.SocketUpdateUtil
 import java.util.*
 
 
-class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class) {
+class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class), Animation.AnimationListener {
 
     private val args: GameOutrightFragmentArgs by navArgs()
 
@@ -289,7 +290,7 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
             matchType = MatchType.OUTRIGHT,
             gameType = args.gameType,
             playCateCode = playCateCode,
-            playCateName =  "",
+            playCateName = "",
             matchInfo = matchOdd.matchInfo!!,
             matchOdd = matchOdd,
             odd = odd,

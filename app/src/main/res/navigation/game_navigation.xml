@@ -14,6 +14,7 @@
             android:id="@+id/action_homeFragment_to_gameFragment"
             app:destination="@id/gameV3Fragment"
             app:enterAnim="@anim/enter_from_right"
+            app:popEnterAnim="@anim/none"
             app:popExitAnim="@anim/exit_to_right">
             <argument
                 android:name="matchType"
@@ -24,6 +25,7 @@
             android:id="@+id/action_homeFragment_to_oddsDetailLiveFragment"
             app:destination="@id/oddsDetailLiveFragment"
             app:enterAnim="@anim/enter_from_right"
+            app:popEnterAnim="@anim/none"
             app:popExitAnim="@anim/exit_to_right">
 
             <argument
@@ -43,6 +45,7 @@
             android:id="@+id/action_homeFragment_to_oddsDetailFragment"
             app:destination="@id/oddsDetailFragment"
             app:enterAnim="@anim/enter_from_right"
+            app:popEnterAnim="@anim/none"
             app:popExitAnim="@anim/exit_to_right">
 
             <argument
@@ -66,6 +69,7 @@
             android:id="@+id/action_homeFragment_to_gameOutrightFragment"
             app:destination="@id/gameOutrightFragment"
             app:enterAnim="@anim/enter_from_right"
+            app:popEnterAnim="@anim/none"
             app:popExitAnim="@anim/exit_to_right">
             <argument
                 android:name="gameType"
@@ -111,6 +115,7 @@
             android:id="@+id/action_gameV3Fragment_to_gameLeagueFragment"
             app:destination="@id/gameLeagueFragment"
             app:enterAnim="@anim/enter_from_right"
+            app:popEnterAnim="@anim/none"
             app:popExitAnim="@anim/exit_to_right">
             <argument
                 android:name="matchType"
@@ -138,6 +143,7 @@
             android:id="@+id/action_gameV3Fragment_to_gameOutrightFragment"
             app:destination="@id/gameOutrightFragment"
             app:enterAnim="@anim/enter_from_right"
+            app:popEnterAnim="@anim/none"
             app:popExitAnim="@anim/exit_to_right">
             <argument
                 android:name="gameType"
@@ -152,6 +158,7 @@
             android:id="@+id/action_gameV3Fragment_to_oddsDetailFragment"
             app:destination="@id/oddsDetailFragment"
             app:enterAnim="@anim/enter_from_right"
+            app:popEnterAnim="@anim/none"
             app:popExitAnim="@anim/exit_to_right">
 
             <argument
@@ -175,6 +182,7 @@
             android:id="@+id/action_gameV3Fragment_to_oddsDetailLiveFragment"
             app:destination="@id/oddsDetailLiveFragment"
             app:enterAnim="@anim/enter_from_right"
+            app:popEnterAnim="@anim/none"
             app:popExitAnim="@anim/exit_to_right">
 
             <argument
@@ -244,6 +252,7 @@
             android:id="@+id/action_gameLeagueFragment_to_oddsDetailFragment"
             app:destination="@id/oddsDetailFragment"
             app:enterAnim="@anim/enter_from_right"
+            app:popEnterAnim="@anim/none"
             app:popExitAnim="@anim/exit_to_right">
 
             <argument
@@ -267,6 +276,7 @@
             android:id="@+id/action_gameLeagueFragment_to_oddsDetailLiveFragment"
             app:destination="@id/oddsDetailLiveFragment"
             app:enterAnim="@anim/enter_from_right"
+            app:popEnterAnim="@anim/none"
             app:popExitAnim="@anim/exit_to_right">
 
             <argument
@@ -353,6 +363,7 @@
             app:destination="@id/oddsDetailFragment"
             app:enterAnim="@anim/enter_from_right"
             app:launchSingleTop="true"
+            app:popEnterAnim="@anim/none"
             app:popExitAnim="@anim/exit_to_right">
             <argument
                 android:name="gameType"
@@ -367,6 +378,7 @@
             android:id="@+id/action_oddsDetailFragment_to_oddsDetailLiveFragment"
             app:destination="@id/oddsDetailLiveFragment"
             app:enterAnim="@anim/enter_from_right"
+            app:popEnterAnim="@anim/none"
             app:popExitAnim="@anim/exit_to_right">
 
             <argument
@@ -413,6 +425,7 @@
             android:id="@+id/action_oddsDetailLiveFragment_self"
             app:destination="@id/oddsDetailLiveFragment"
             app:enterAnim="@anim/enter_from_right"
+            app:popEnterAnim="@anim/none"
             app:popExitAnim="@anim/exit_to_right">
 
             <argument
@@ -432,6 +445,7 @@
             android:id="@+id/action_oddsDetailLiveFragment_to_oddsDetailFragment"
             app:destination="@id/oddsDetailFragment"
             app:enterAnim="@anim/enter_from_right"
+            app:popEnterAnim="@anim/none"
             app:popExitAnim="@anim/exit_to_right">
 
             <argument
