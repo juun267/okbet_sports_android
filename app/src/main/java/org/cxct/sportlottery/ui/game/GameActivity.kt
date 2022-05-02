@@ -528,7 +528,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             }
             R.id.oddsDetailFragment -> {
                 val action =
-                    if (detailMatchType == MatchType.IN_PLAY) HomeFragmentDirections.actionHomeFragmentToOddsDetailLiveFragment(
+                    if (detailMatchType == MatchType.IN_PLAY) OddsDetailFragmentDirections.actionOddsDetailFragmentToOddsDetailLiveFragment(
                         detailMatchType, gameType, matchID
                     ) else OddsDetailFragmentDirections.actionOddsDetailFragmentSelf(
                         gameType,
