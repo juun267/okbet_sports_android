@@ -201,21 +201,23 @@ class WithdrawRepository(
 
     //提款設置判斷權限, 判斷需不需要更新提現密碼 -> 個人資料是否完善
     suspend fun settingCheckPermissions() {
-        this.checkNeedUpdatePassWord().let {
-            //顯示簡訊認證彈窗
-            when{
-                !checkUserPhoneNumber() -> { }
-                !getTwoFactorStatus() && (it || verifyProfileInfoComplete()) ->{
+
+        val twoFactorStatus = checkTwoFactorStatus()
+        val needUpdatePassWord = checkNeedUpdatePassWord()
+
+        when {
+            needUpdatePassWord -> {
+                //是否需要顯示簡訊驗證 false: 需顯示簡訊驗證
+                if (twoFactorStatus == false) {
                     sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.SETTING_PW.ordinal
                     _showSecurityDialog.value = Event(true)
+                } else if (twoFactorStatus == true) {
+                    //不需要簡訊驗證，提示需更新提款密碼
+                    _needToUpdateWithdrawPassword.postValue(Event(needUpdatePassWord))
                 }
-                else -> {
-                    if (it) {
-                        _settingNeedToUpdateWithdrawPassword.value = Event(it)
-                    } else {
-                        checkSettingProfileInfoComplete()
-                    }
-                }
+            }
+            else -> {
+                checkSettingProfileInfoComplete()
             }
         }
     }
@@ -232,12 +234,19 @@ class WithdrawRepository(
     private suspend fun checkSettingProfileInfoComplete() {
         sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.SETTING_PROFILE_INFO.ordinal
         verifyProfileInfoComplete().let { verify ->
-            /*if (verify) {
-                _settingNeedToCompleteProfileInfo.value = Event(verify)
+            val twoFactorStatus = checkTwoFactorStatus()
+            //資料完整準備進入提款設置頁面
+            if (!verify) {
+                if (twoFactorStatus == false) {
+                    _showSecurityDialog.value = Event(true)
+                } else if (twoFactorStatus == true) {
+                    //不需要簡訊驗證，提示需更新提款密碼
+                    _settingNeedToCompleteProfileInfo.postValue(Event(verify))
+                }
             } else {
-
-            }*/
-            _settingNeedToCompleteProfileInfo.value = Event(verify)
+                //資料不完善通知跳轉個人資訊頁面
+                _settingNeedToCompleteProfileInfo.value = Event(verify)
+            }
         }
     }
 
