@@ -7,9 +7,9 @@
     <string name="unknown_error">unknown error</string>
     <string name="error_reading_file">Error reading from file</string>
     <string name="message_guest_no_permission">Guest account not be able to access, please register first</string>
-    <string name="message_socket_connect">Internet connections timed out please try again</string>
-    <string name="message_network_no_connect">Please check your internet connection and try again</string>
-    <string name="message_network_timeout">Internet connections timed out please try again</string>
+    <string name="message_socket_connect">The connection has timed out, please try again.</string>
+    <string name="message_network_no_connect">The connection has timed out, please try again.</string>
+    <string name="message_network_timeout">The connection has timed out, please try again.</string>
     <string name="error">Error</string>
     <string name="error_input_empty">This field is required</string>
     <string name="error_incompatible_format">The name that you entered is not valid</string>
