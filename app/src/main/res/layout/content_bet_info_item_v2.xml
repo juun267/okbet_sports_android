@@ -168,6 +168,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
                                 android:textColor="@color/colorRedDark"
+                                android:textStyle="bold"
                                 android:textSize="@dimen/textSize13sp"
                                 tools:text="-0.5/2" />
                         </RelativeLayout>
@@ -195,6 +196,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+                            android:textStyle="bold"
                             android:textColor="@color/colorBlue"
                             android:textSize="@dimen/margin_14"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -338,7 +340,7 @@
                         <org.cxct.sportlottery.util.KeyboardView
                             android:id="@+id/layoutKeyBoard"
                             android:layout_width="match_parent"
-                            android:layout_height="150dp"
+                            android:layout_height="120dp"
                             android:layout_marginTop="@dimen/margin_4"
                             android:visibility="gone"
                             app:layout_constraintTop_toBottomOf="@+id/tv_error_message" />

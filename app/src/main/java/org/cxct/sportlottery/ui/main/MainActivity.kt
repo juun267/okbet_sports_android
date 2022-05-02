@@ -14,10 +14,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
-import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
@@ -193,14 +191,7 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
                     false
                 }
                 R.id.my_account_page -> {
-                    when (viewModel.userInfo.value?.testFlag) {
-                        TestFlag.NORMAL.index -> {
-                            startActivity(Intent(this, ProfileCenterActivity::class.java))
-                        }
-                        else -> { //遊客 //尚未登入
-                            startActivity(Intent(this, RegisterActivity::class.java))
-                        }
-                    }
+                    viewModel.navActivity(ProfileCenterActivity::class.java)
                     false
                 }
                 else -> false
@@ -226,6 +217,12 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
             //登入登出後要請求使用者是否需要認證手機驗證碼
             if (it)
                 viewModel.getTwoFactorValidateStatus()
+        }
+
+        viewModel.navActivity.observe(this) { event ->
+            event.getContentIfNotHandled()?.let {
+                startActivity(Intent(this, it))
+            }
         }
 
         viewModel.isCreditAccount.observe(this) {

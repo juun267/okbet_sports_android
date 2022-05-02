@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="dot">・</string>
+    <string name="dot2">‧</string>
     <string name="greet">Hi!</string>
     <string name="tilde">～</string>
     <string name="start">*</string>

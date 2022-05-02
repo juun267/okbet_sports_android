@@ -1214,11 +1214,23 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         val gameType = GameType.getGameType(gameTypeCode)
         if (gameType != null && matchId != null) {
             findNavController().navigate(
-                HomeFragmentDirections.actionHomeFragmentToOddsDetailLiveFragment(
-                    matchType,
-                    gameType,
-                    matchId
-                )
+                when (matchType) {
+                    MatchType.IN_PLAY -> {
+                        HomeFragmentDirections.actionHomeFragmentToOddsDetailLiveFragment(
+                            matchType,
+                            gameType,
+                            matchId
+                        )
+                    }
+                    else -> {
+                        HomeFragmentDirections.actionHomeFragmentToOddsDetailFragment(
+                            matchType,
+                            gameType,
+                            matchId,
+                            emptyArray() //TODO 現在沒有在詳情頁切換賽事的功能, 先補空array
+                        )
+                    }
+                }
             )
         }
     }

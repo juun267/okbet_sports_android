@@ -342,7 +342,9 @@ enum class PlayCate(val value: String) {
     MOD_W_H("MOD_W_H"),
     MOD_W_C("MOD_W_C"),
     OU_2_WAY_1ST_C("O/U-2-WAY-1ST-C"),
-    OU_2_WAY_1ST_H("O/U-2-WAY-1ST-H");
+    OU_2_WAY_1ST_H("O/U-2-WAY-1ST-H"),
+    BOTTOM_NAVIGATION("BOTTOM_NAVIGATION"),
+    NO_DATA("NO_DATA");
 
     companion object {
         /**
@@ -690,6 +692,8 @@ enum class PlayCate(val value: String) {
                 MOD_W_C.value -> MOD_W_C
                 OU_2_WAY_1ST_C.value -> OU_2_WAY_1ST_C
                 OU_2_WAY_1ST_H.value -> OU_2_WAY_1ST_H
+                BOTTOM_NAVIGATION.value -> BOTTOM_NAVIGATION
+                NO_DATA.value -> NO_DATA
                 else -> UNCHECK
             }
         }

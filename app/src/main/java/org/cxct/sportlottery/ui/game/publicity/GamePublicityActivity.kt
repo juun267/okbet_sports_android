@@ -143,6 +143,14 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     }
 
     private fun initObservers() {
+        viewModel.showBetUpperLimit.observe(this) {
+            if (it.getContentIfNotHandled() == true)
+                snackBarBetUpperLimitNotify.apply {
+                    setAnchorView(R.id.viewBottom)
+                    show()
+                }
+        }
+
         viewModel.showBetInfoSingle.observe(this) { event ->
             event?.getContentIfNotHandled()?.let {
                 if (it) {

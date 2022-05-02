@@ -126,9 +126,8 @@ class MyFavoriteViewModel(
                     }
                 }
 
-                mFavorMatchOddList.postValue(
-                    mFavorMatchOddList.value?.updatePlayCate(matchId, quickListData, quickListData.playCateNameMap)
-                )
+                val list = mFavorMatchOddList.value?.peekContent()?.updatePlayCate(matchId, quickListData, quickListData.playCateNameMap)
+                mFavorMatchOddList.postValue(Event(list?: listOf()))
             }
         }
     }
@@ -198,12 +197,6 @@ class MyFavoriteViewModel(
             Event(
                 _sportQueryData.value?.peekContent()?.updatePlaySelected(play)?.updatePlayCateSelected(playCateCode)
             )
-        )
-    }
-
-    fun clearQuickPlayCateSelected() {
-        mFavorMatchOddList.postValue(
-            mFavorMatchOddList.value?.clearQuickPlayCateSelected()
         )
     }
 

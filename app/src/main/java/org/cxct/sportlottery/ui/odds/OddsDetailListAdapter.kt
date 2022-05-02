@@ -30,12 +30,18 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.common.IndicatorView
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
+import org.cxct.sportlottery.ui.feedback.record.FeedbackListAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
+import org.cxct.sportlottery.ui.game.hall.adapter.CountryAdapter
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.updateEPSDiscount
+import timber.log.Timber
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 /**
@@ -48,11 +54,6 @@ import org.cxct.sportlottery.util.MatchOddUtil.updateEPSDiscount
 @SuppressLint("NotifyDataSetChanged")
 class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-
-    enum class ItemType {
-        ITEM, NO_DATA, BOTTOM_NAVIGATION
-    }
 
     var betInfoList: MutableList<BetInfoListData> = mutableListOf()
         set(value) {
@@ -131,8 +132,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
     override fun getItemViewType(position: Int): Int {
         return when {
-            oddsDetailDataList.isEmpty() -> ItemType.NO_DATA.ordinal
-            oddsDetailDataList.size == position -> 997
+            oddsDetailDataList.isEmpty() -> PlayCate.getPlayCate("NO_DATA").ordinal
+            position == oddsDetailDataList.size  -> PlayCate.getPlayCate("BOTTOM_NAVIGATION").ordinal
             else -> PlayCate.getPlayCate(oddsDetailDataList[position].gameType).ordinal
         }
     }
@@ -392,7 +393,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         }
 
         return when (viewType) {
-            997 -> {
+            PlayCate.BOTTOM_NAVIGATION.ordinal -> {
                 BottomNavigationViewHolder(
                     LayoutInflater.from(parent.context)
                         .inflate(R.layout.home_bottom_navigation, parent, false)

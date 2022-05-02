@@ -223,6 +223,15 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     fun showPromptDialog(
         title: String? = getString(R.string.prompt),
+        message: Spanned,
+        isOutsideCancelable: Boolean,
+        positiveClickListener: () -> Unit?
+    ) {
+        showPromptDialog(title, message, null, positiveClickListener, false, isOutsideCancelable = isOutsideCancelable)
+    }
+
+    fun showPromptDialog(
+        title: String? = getString(R.string.prompt),
         message: String,
         buttonText: String?,
         isShowDivider: Boolean,
@@ -245,7 +254,8 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         buttonText: String?,
         positiveClickListener: () -> Unit?,
         isError: Boolean,
-        isShowDivider: Boolean? = false
+        isShowDivider: Boolean? = false,
+        isOutsideCancelable: Boolean = false
     ) {
         commonCheckDialog(
             context = this,
@@ -255,7 +265,8 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
             title = title,
             errorMessageSpan = errorMessageSpan,
             buttonText = buttonText,
-            positiveClickListener = positiveClickListener
+            positiveClickListener = positiveClickListener,
+            isOutsideCancelable = isOutsideCancelable
         )
     }
 
