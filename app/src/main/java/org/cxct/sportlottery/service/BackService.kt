@@ -90,13 +90,14 @@ class BackService : Service() {
                 reconnect()
             } else {
                 Timber.d("==已建立連線==")
-                connect()
+                //connect()
+                sendConnectStatusToActivity(ServiceConnectStatus.CONNECTED) // TODO(測試) 不直接重新連線，改發送已連線訊號
             }
         }
     }
 
     override fun onDestroy() {
-        Timber.i("onDestroy()")
+        Timber.d("==已斷線==")
         disconnect()
         super.onDestroy()
     }
