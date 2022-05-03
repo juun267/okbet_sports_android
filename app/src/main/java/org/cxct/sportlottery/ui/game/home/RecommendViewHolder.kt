@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.home_recommend_item.view.view_pager
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.home.recommend.RecommendGameEntity
 import org.cxct.sportlottery.ui.game.home.recommend.VpRecommendAdapter
@@ -32,7 +31,6 @@ class RecommendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .dontTransform()
 
-    var saveInstanceState: Int = 0
     var mMatchOdd: MatchOdd? = null
 
     // TODO binding
@@ -131,9 +129,7 @@ class RecommendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     oddBean.playTypeCode == recommendSelectedOdd[matchId]
                 }.let { selectedIndex ->
                     if (selectedIndex >= 0) {
-                        view_pager.post {
-                            view_pager.setCurrentItem(selectedIndex, false)
-                        }
+                        view_pager.setCurrentItem(selectedIndex, false)
                     }
                 }
             }

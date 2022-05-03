@@ -27,7 +27,6 @@ import org.cxct.sportlottery.util.HomePageStatusManager.inPlaySelectedPage
 
 class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    var saveInstanceState: Int = 0
     private var mMatchType: MatchType = MatchType.IN_PLAY
     private var selectedOdds = mutableListOf<String>()
     private var oddsType: OddsType = OddsType.EU
@@ -112,9 +111,9 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                         matchOdd.matchInfo?.id == selectedMatchId
                     }.let { selectedIndex ->
                         if (selectedIndex >= 0) {
-                            view_pager.post {
-                                view_pager.setCurrentItem(selectedIndex, false)
-                            }
+                            view_pager.setCurrentItem(selectedIndex, false)
+                            val mo = data.matchOdds[selectedIndex]
+                            subscribeChannelHall(mo.matchInfo?.gameType, mo.matchInfo?.id)
                         }
                     }
                 }

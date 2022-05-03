@@ -355,24 +355,12 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         if(holder is HighlightGameTypeViewHolder) { // TODO
             holder.saveInstanceState = holder.itemView.rvSportType.layoutManager?.onSaveInstanceState()
         }
-        if(holder is RecommendViewHolder) {
-            holder.saveInstanceState = holder.itemView.view_pager.currentItem
-        }
-        if(holder is GameTableViewHolder) {
-            holder.saveInstanceState = holder.itemView.view_pager.currentItem
-        }
     }
 
     override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
         super.onViewAttachedToWindow(holder)
         if(holder is HighlightGameTypeViewHolder) {
             holder.itemView.rvSportType.layoutManager?.onRestoreInstanceState(holder.saveInstanceState)
-        }
-        if(holder is RecommendViewHolder) {
-            holder.itemView.view_pager.setCurrentItem(holder.saveInstanceState, false)
-        }
-        if(holder is GameTableViewHolder) {
-            holder.itemView.view_pager.setCurrentItem(holder.saveInstanceState, false)
         }
     }
 
