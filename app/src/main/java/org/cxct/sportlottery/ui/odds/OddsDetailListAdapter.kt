@@ -658,8 +658,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         PlayCate.PENALTY_SINGLE_SEG4.ordinal, PlayCate.PENALTY_SINGLE_SEG5.ordinal, PlayCate.PENALTY_SINGLE_SEG6.ordinal
                         -> forSingle(oddsDetail, 3)
 
-                        PlayCate.CS.ordinal, PlayCate.CS_OT.ordinal, PlayCate.CS_1ST_SD.ordinal, PlayCate.LCS.ordinal,
+                        PlayCate.CS.ordinal, PlayCate.CS_OT.ordinal, PlayCate.CS_1ST_SD.ordinal
                         -> forCS(oddsDetail)
+
+                        PlayCate.LCS.ordinal -> forLCS(oddsDetail)
 
                         PlayCate.FGLG.ordinal
                         -> forFGLG(oddsDetail)
@@ -1076,6 +1078,92 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             rvAway?.apply {
                 adapter =
                     TypeCSAdapter(oddsDetail, awayList, onOddClickListener, oddsType)
+                layoutManager = LinearLayoutManager(itemView.context)
+            }
+
+            if (drawList.size == 0) {
+                rvDraw?.visibility = View.GONE
+                itemView.findViewById<TextView>(R.id.tv_draw).visibility = View.GONE
+            }
+        }
+
+        private fun forLCS(oddsDetail: OddsDetailListData) {
+
+            tvHomeName?.text = homeName
+            tvAwayName?.text = awayName
+
+            itemView.findViewById<LinearLayout>(R.id.ll_content).visibility =
+                if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+
+            val homeList: MutableList<Odd> = mutableListOf()
+            val drawList: MutableList<Odd> = mutableListOf()
+            val awayList: MutableList<Odd> = mutableListOf()
+
+            for (odd in oddsDetail.oddArrayList) {
+                if (odd?.name?.contains(" - ") == true) {
+                    val stringArray: List<String> = odd.name.split(" - ")
+                    if (stringArray[0].toInt() > stringArray[1].toInt()) {
+                        homeList.add(odd)
+                    }
+                    if (stringArray[0].toInt() == stringArray[1].toInt()) {
+                        drawList.add(odd)
+                    }
+                    if (stringArray[0].toInt() < stringArray[1].toInt()) {
+                        awayList.add(odd)
+                    }
+                } else {
+                    val list: MutableList<Odd?> = mutableListOf()
+                    list.add(odd)
+                    val od = OddsDetailListData(
+                        oddsDetail.gameType,
+                        oddsDetail.typeCodes,
+                        oddsDetail.name,
+                        list,
+                        oddsDetail.nameMap,
+                        oddsDetail.rowSort
+                    )
+
+                    rvBet?.apply {
+                        adapter = TypeOneListAdapter(
+                            od,
+                            onOddClickListener,
+                            oddsType,
+                            isOddPercentage = true
+                        )
+                        layoutManager = LinearLayoutManager(itemView.context)
+                    }
+                }
+            }
+
+            homeList.sortBy {
+                it.name?.split(" - ")?.get(1)?.toInt()
+            }
+            homeList.sortBy {
+                it.name?.split(" - ")?.get(0)?.toInt()
+            }
+
+            awayList.sortBy {
+                it.name?.split(" - ")?.get(0)?.toInt()
+            }
+            awayList.sortBy {
+                it.name?.split(" - ")?.get(1)?.toInt()
+            }
+
+            rvHome?.apply {
+                adapter =
+                    TypeCSAdapter(oddsDetail, homeList, onOddClickListener, oddsType, isOddPercentage = true)
+                layoutManager = LinearLayoutManager(itemView.context)
+            }
+
+            rvDraw?.apply {
+                adapter =
+                    TypeCSAdapter(oddsDetail, drawList, onOddClickListener, oddsType, isOddPercentage = true)
+                layoutManager = LinearLayoutManager(itemView.context)
+            }
+
+            rvAway?.apply {
+                adapter =
+                    TypeCSAdapter(oddsDetail, awayList, onOddClickListener, oddsType, isOddPercentage = true)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
