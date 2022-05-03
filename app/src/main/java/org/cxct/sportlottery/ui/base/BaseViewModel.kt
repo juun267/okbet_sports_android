@@ -124,6 +124,7 @@ abstract class BaseViewModel(
         viewModelScope.launch {
             betInfoRepository.clear()
             infoCenterRepository.clear()
+            loginRepository.clear()
             finishFunction.invoke()
         }
     }
