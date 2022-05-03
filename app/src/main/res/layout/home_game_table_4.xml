@@ -51,6 +51,7 @@
             android:gravity="center"
             android:textColor="@color/colorBlue"
             android:textSize="@dimen/textSize14sp"
+            android:textStyle="bold"
             tools:text="21" />
 
     </LinearLayout>
@@ -65,8 +66,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:minHeight="148dp"
-            tools:listitem="@layout/home_game_table_item_4"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/home_game_table_item_4" />
 
         <org.cxct.sportlottery.ui.common.IndicatorView
             android:id="@+id/indicator_view"

@@ -274,7 +274,7 @@ class LoginRepository(private val androidContext: Context) {
         return OneBoSportApi.indexService.checkToken()
     }
 
-    suspend fun logout(): Response<LogoutResult> {
+    suspend fun logoutAPI(): Response<LogoutResult> {
         _isLogin.value = false
         _isCreditAccount.value = false
         val emptyList = mutableListOf<String>()
@@ -283,6 +283,15 @@ class LoginRepository(private val androidContext: Context) {
             clear()
         }
     }
+
+    suspend fun logout() {
+        _isLogin.value = false
+        _isCreditAccount.value = false
+        val emptyList = mutableListOf<String>()
+        MultiLanguagesApplication.saveSearchHistory(emptyList)
+        clear()
+    }
+
     private fun updateLoginData(loginData: LoginData?) {
         _isLogin.postValue(loginData != null)
         _isCreditAccount.postValue(loginData?.creditAccount == 1)

@@ -96,7 +96,6 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var onClickSportListener: OnSelectItemListener<OtherMatch>? = null
     var onClickFavoriteListener: OnClickFavoriteListener? = null
     var onClickStatisticsListener: OnClickStatisticsListener? = null
-    var onSubscribeChannelHallListener: OnSubscribeChannelHallListener? = null
 
     var onGameTableBarViewHolderListener: GameTableBarViewHolder.Listener? = null
     // endregion
@@ -356,33 +355,12 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         if(holder is HighlightGameTypeViewHolder) { // TODO
             holder.saveInstanceState = holder.itemView.rvSportType.layoutManager?.onSaveInstanceState()
         }
-        if(holder is RecommendViewHolder) {
-            holder.saveInstanceState = holder.itemView.view_pager.currentItem
-        }
-        if(holder is GameTableViewHolder) {
-            //Log.d("Hewie45", "onViewDetachedFromWindow => ${holder}")
-            holder.saveInstanceState = holder.itemView.view_pager.currentItem
-            holder.unsubscribeHallChannel()
-        }
-        if(holder is ViewHolderHdpOu) {
-            holder.unsubscribeHallChannel()
-        }
-        if(holder is RecommendViewHolder) {
-            holder.unsubscribeHallChannel()
-        }
     }
 
     override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
         super.onViewAttachedToWindow(holder)
         if(holder is HighlightGameTypeViewHolder) {
             holder.itemView.rvSportType.layoutManager?.onRestoreInstanceState(holder.saveInstanceState)
-        }
-        if(holder is RecommendViewHolder) {
-            holder.itemView.view_pager.setCurrentItem(holder.saveInstanceState, false)
-        }
-        if(holder is GameTableViewHolder) {
-            //Log.d("Hewie45", "onViewAttachedToWindow => ${holder}")
-            holder.itemView.view_pager.setCurrentItem(holder.saveInstanceState, false)
         }
     }
 

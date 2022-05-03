@@ -211,6 +211,17 @@
   },
   {
     "titleNameMap": {
+      "zh": "PayMaya",
+      "en": "PayMaya",
+      "vi": "PayMaya"
+    },
+    "subtitle": "微信转账支付",
+    "image": "ic_pay_maya",
+    "rechType": "payMaya",
+    "onlineType": "0"
+  },
+  {
+    "titleNameMap": {
       "zh": "Gcash",
       "en": "Gcash",
       "vi": "Gcash"
@@ -229,17 +240,6 @@
     "subtitle": "GrabPay转账支付",
     "image": "ic_grab_pay",
     "rechType": "grabPay",
-    "onlineType": "0"
-  },
-  {
-    "titleNameMap": {
-      "zh": "PayMaya",
-      "en": "PayMaya",
-      "vi": "PayMaya"
-    },
-    "subtitle": "微信转账支付",
-    "image": "ic_pay_maya",
-    "rechType": "payMaya",
     "onlineType": "0"
   },
   {

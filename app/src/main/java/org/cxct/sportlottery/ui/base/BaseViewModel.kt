@@ -116,7 +116,7 @@ abstract class BaseViewModel(
 
     fun doLogoutAPI() {
         viewModelScope.launch {
-            loginRepository.logout()
+            loginRepository.logoutAPI()
         }
     }
 
@@ -124,6 +124,7 @@ abstract class BaseViewModel(
         viewModelScope.launch {
             betInfoRepository.clear()
             infoCenterRepository.clear()
+            loginRepository.logout()
             finishFunction.invoke()
         }
     }

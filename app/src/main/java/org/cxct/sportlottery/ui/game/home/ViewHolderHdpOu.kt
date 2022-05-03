@@ -34,7 +34,7 @@ class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
             override fun refreshOddButton(odd: Odd) { }
         }
     }
-    private var mMatchOdd: MatchOdd? = null
+    var mMatchOdd: MatchOdd? = null
 
     fun bind(data: MatchOdd, lastData: MatchOdd, oddsType: OddsType) {
         itemView.testId.text = "${data.matchInfo?.leagueId} - ${data.matchInfo?.id}"
@@ -62,7 +62,7 @@ class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
         itemView.btn_chart.setOnClickListener {
             onClickStatisticsListener?.onClickStatistics(data.matchInfo?.id)
         }
-        subscribeChannelHall(mMatchOdd?.matchInfo?.gameType, mMatchOdd?.matchInfo?.id)
+//        subscribeChannelHall(mMatchOdd?.matchInfo?.gameType, mMatchOdd?.matchInfo?.id)
     }
 
     fun getUpdateHighLightInterface(): UpdateHighLightInterface {
@@ -300,20 +300,6 @@ class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-    }
-
-    fun subscribeChannelHall(gameType: String?, eventId: String?) {
-        Log.d("Hewie45", "${eventId}(${gameType}) => subscribeChannelHall")
-        (itemView.context as BaseSocketActivity<*>).subscribeChannelHall(gameType, eventId)
-    }
-
-    fun unsubscribeHallChannel(gameType: String?, eventId: String?) {
-        Log.d("Hewie45", "${eventId}(${gameType}) => unsubscribeHallChannel")
-        (itemView.context as BaseSocketActivity<*>).unSubscribeChannelHall(gameType, eventId)
-    }
-
-    fun unsubscribeHallChannel() {
-        unsubscribeHallChannel(mMatchOdd?.matchInfo?.gameType, mMatchOdd?.matchInfo?.id)
     }
 
     override val oddStateChangeListener: OddStateChangeListener
