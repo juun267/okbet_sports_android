@@ -653,8 +653,8 @@
     <string name="complete">Completed</string>
     <string name="winnable_amount_colon">To Win：</string>
     <string name="finance">Fund details</string>
-    <string name="record_recharge">Recharge record</string>
-    <string name="record_withdrawal">Withdrawal record</string>
+    <string name="record_recharge">Recharge Record</string>
+    <string name="record_withdrawal">Withdrawal Record</string>
     <string name="record_conversion">Conversion Record</string>
     <string name="record_history">History</string>
     <string name="recharge_state_success">success</string>
