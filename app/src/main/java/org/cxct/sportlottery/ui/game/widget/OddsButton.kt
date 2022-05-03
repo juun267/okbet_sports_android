@@ -81,7 +81,7 @@ class OddsButton @JvmOverloads constructor(
         }
     }
 
-    fun setupOdd(odd: Odd?, oddsType: OddsType, gameType: String? = null) {
+    fun setupOdd(odd: Odd?, oddsType: OddsType, gameType: String? = null, isOddPercentage:Boolean? = false) {
         tv_name.apply {
             val extInfoStr =
                 odd?.extInfoMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.extInfo
@@ -101,7 +101,10 @@ class OddsButton @JvmOverloads constructor(
                 if (odd?.spread.isNullOrEmpty() || odd?.playCode == PlayCate.DOUBLE_D_P.value || odd?.playCode == PlayCate.TRIPLE_D_P.value) View.GONE else View.VISIBLE
         }
 
-        tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
+        if(isOddPercentage == true)
+            tv_odds?.text = TextUtil.formatForOddPercentage(getOdds(odd, oddsType)-1)
+        else
+            tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
 
         if (getOdds(odd, oddsType) < 0.0) {
             tv_odds.setTextColor(
