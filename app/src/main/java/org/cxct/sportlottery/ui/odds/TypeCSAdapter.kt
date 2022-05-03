@@ -21,7 +21,8 @@ class TypeCSAdapter(
     private val oddsDetail: OddsDetailListData,
     private val oddsList: List<Odd?>,
     private val onOddClickListener: OnOddClickListener,
-    private val oddsType: OddsType
+    private val oddsType: OddsType,
+    private val isOddPercentage:Boolean? = false
 ) : RecyclerView.Adapter<TypeCSAdapter.ViewHolder>() {
 
 
@@ -54,7 +55,7 @@ class TypeCSAdapter(
 
         fun bindModel(odd: Odd?) {
             btnOdds?.apply {
-                setupOdd(odd, oddsType)
+                setupOdd(odd, oddsType, isOddPercentage = isOddPercentage)
                 setupOddState(this, odd)
                 setOnClickListener {
                     odd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
