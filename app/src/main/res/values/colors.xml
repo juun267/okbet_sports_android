@@ -140,6 +140,11 @@
     <color name="color_939393_999999">@color/color_999999</color>
     <color name="color_FFFFFF_666666">@color/color_666666</color>
 
+    <!--region 特殊處理顏色-->
+    <color name="home_card_top_text_color">#40FFFFFF</color>
+    <color name="home_card_text_color">#FFFFFF</color>
+    <!--endregion 特殊處理顏色-->
+
     <!-- [End]重新配置的色彩架構 -->
 
 
