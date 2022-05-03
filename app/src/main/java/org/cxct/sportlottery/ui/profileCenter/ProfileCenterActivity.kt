@@ -178,6 +178,7 @@ class ProfileCenterActivity :
 
     private fun setupLogout() {
         btn_logout.setOnClickListener {
+            viewModel.doLogoutAPI()
             viewModel.doLogoutCleanUser {
                 run {
                     if (sConfigData?.thirdOpen == FLAG_OPEN)

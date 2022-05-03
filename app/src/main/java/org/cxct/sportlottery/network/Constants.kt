@@ -124,7 +124,7 @@ object Constants {
                     R.string.app_name)
                 LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/privacy-policy?platform="+context.getString(
                     R.string.app_name)
-                else -> getBaseUrl()+"sports-rule/#/us/privacy-policy?platform"+context.getString(
+                else -> getBaseUrl()+"sports-rule/#/us/privacy-policy?platform="+context.getString(
                         R.string.app_name)
             }
 
@@ -162,7 +162,7 @@ object Constants {
                     R.string.app_name)
                 LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/faq?platform="+context.getString(
                     R.string.app_name)
-                else -> getBaseUrl()+"sports-rule/#/us/faq?platform"+context.getString(
+                else -> getBaseUrl()+"sports-rule/#/us/faq?platform="+context.getString(
                     R.string.app_name)
             }
 
@@ -181,7 +181,7 @@ object Constants {
                     R.string.app_name)
                 LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/contact-us?platform="+context.getString(
                     R.string.app_name)
-                else -> getBaseUrl()+"sports-rule/#/us/contact-us?platform"+context.getString(
+                else -> getBaseUrl()+"sports-rule/#/us/contact-us?platform="+context.getString(
                     R.string.app_name)
             }
 

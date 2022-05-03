@@ -32,6 +32,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="@string/more"
+        android:textAllCaps="true"
         android:textColor="@color/colorGray"
         android:textSize="@dimen/textSize12sp" />
 

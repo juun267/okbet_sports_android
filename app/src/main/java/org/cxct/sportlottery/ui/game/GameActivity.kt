@@ -64,6 +64,7 @@ import org.cxct.sportlottery.ui.odds.OddsDetailFragmentDirections
 import org.cxct.sportlottery.ui.odds.OddsDetailLiveFragmentDirections
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
+import org.cxct.sportlottery.util.HomePageStatusManager
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
 import org.cxct.sportlottery.util.phoneNumCheckDialog
@@ -386,7 +387,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                selectTab(tab?.position)
+
             }
         })
 
@@ -527,7 +528,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             }
             R.id.oddsDetailFragment -> {
                 val action =
-                    if (detailMatchType == MatchType.IN_PLAY) HomeFragmentDirections.actionHomeFragmentToOddsDetailLiveFragment(
+                    if (detailMatchType == MatchType.IN_PLAY) OddsDetailFragmentDirections.actionOddsDetailFragmentToOddsDetailLiveFragment(
                         detailMatchType, gameType, matchID
                     ) else OddsDetailFragmentDirections.actionOddsDetailFragmentSelf(
                         gameType,
@@ -666,10 +667,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         viewModel.isLogin.observe(this) {
             getAnnouncement()
-            //登入後要請求使用者是否需要認證手機驗證碼
-            if (it) {
-                viewModel.getTwoFactorValidateStatus()
-            }
         }
 
         //使用者沒有電話號碼
@@ -1003,6 +1000,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
     override fun onDestroy() {
         expandCheckList.clear()
+        HomePageStatusManager.clear()
         super.onDestroy()
     }
 }

@@ -18,7 +18,7 @@
         android:layout_marginBottom="15dp"
         android:layout_weight="1"
         android:textColor="@color/colorBlackLight"
-        android:textSize="@dimen/textSize14sp"
+        android:textSize="@dimen/textSize16sp"
         android:textStyle="bold"
         tools:text="欧洲足球锦标赛2020" />
 

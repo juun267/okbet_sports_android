@@ -592,28 +592,12 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                         leagueOdd.gameType?.key,
                         matchOdd.matchInfo?.id
                     )
-
-                    if (matchOdd.matchInfo?.eps == 1) {
-                        subscribeChannelHall(
-                            leagueOdd.gameType?.key,
-                            matchOdd.matchInfo.id
-                        )
-                    }
                 }
                 false -> {
                     unSubscribeChannelHall(
                         leagueOdd.gameType?.key,
-                        getPlaySelectedCode(),
                         matchOdd.matchInfo?.id
                     )
-
-                    if (matchOdd.matchInfo?.eps == 1) {
-                        unSubscribeChannelHall(
-                            leagueOdd.gameType?.key,
-                            PlayCate.EPS.value,
-                            matchOdd.matchInfo.id
-                        )
-                    }
                 }
             }
         }
@@ -625,7 +609,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 true -> {
                     unSubscribeChannelHall(
                         leagueOdd.gameType?.key,
-                        getPlaySelectedCode(),
                         matchOdd.matchInfo?.id
                     )
 
@@ -634,13 +617,26 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                             true -> {
                                 unSubscribeChannelHall(
                                     leagueOdd.gameType?.key,
-                                    it.code,
                                     matchOdd.matchInfo?.id
                                 )
                             }
                         }
                     }
                 }
+            }
+        }
+    }
+
+    /**
+     * 解除訂閱當前所選擇的PlayCate(MAIN, MATCH, 1ST ...)
+     */
+    private fun unSubscribePlayCateChannel() {
+        leagueAdapter.data.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                unSubscribeChannelHall(
+                    leagueOdd.gameType?.key,
+                    matchOdd.matchInfo?.id
+                )
             }
         }
     }

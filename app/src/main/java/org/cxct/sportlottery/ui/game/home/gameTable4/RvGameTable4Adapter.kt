@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.zhy.adapter.recyclerview.CommonAdapter
 import com.zhy.adapter.recyclerview.base.ViewHolder
 import kotlinx.android.synthetic.main.home_game_table_4.view.*
@@ -16,17 +17,21 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeString
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.MenuCode
 import org.cxct.sportlottery.network.odds.MatchInfo
+import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.service.match_clock.MatchClockCO
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.home.OnClickFavoriteListener
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.game.home.OnClickStatisticsListener
+import org.cxct.sportlottery.ui.game.home.OnSubscribeChannelHallListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.GameConfigManager.getGameIcon
 import org.cxct.sportlottery.util.GameConfigManager.getTitleBarBackground
 import org.cxct.sportlottery.util.RecyclerViewGridDecoration
+import timber.log.Timber
 
 class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -72,6 +77,8 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var onClickFavoriteListener: OnClickFavoriteListener? = null
 
     var onClickStatisticsListener: OnClickStatisticsListener? = null
+
+    var onSubscribeChannelHallListener: OnSubscribeChannelHallListener? = null
 
     override fun getItemViewType(position: Int): Int {
         return when (mDataList[position].otherMatch.isNullOrEmpty()) {
@@ -177,7 +184,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     onClickTotalMatchListener?.onClick(data)
                 }
 
-                data.matchOdds?.let {
+                data.matchOdds?.let { it ->
                     if (data.vpTableAdapter == null) data.vpTableAdapter = Vp2GameTable4Adapter(mMatchType)
                     data.vpTableAdapter?.onClickMatchListener = onClickMatchListener
                     data.vpTableAdapter?.onClickOddListener = onClickOddListener
@@ -194,6 +201,19 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                             View.VISIBLE
                         }
                     }
+
+                    view_pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                        override fun onPageSelected(position: Int) {
+                            super.onPageSelected(position)
+                            if (position < 0 || position >= it.size || it.isNullOrEmpty()) return
+                            val data = it[position]
+                            onSubscribeChannelHallListener?.subscribeChannel(
+                                data.matchInfo?.gameType,
+                                if (mMatchType == MatchType.IN_PLAY || mMatchType == MatchType.MAIN) MenuCode.HOME_INPLAY_MOBILE.code else MenuCode.HOME_ATSTART_MOBILE.code,
+                                data.matchInfo?.id
+                            )
+                        }
+                    })
                 }
 
                 OverScrollDecoratorHelper.setUpOverScroll(

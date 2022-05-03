@@ -7,9 +7,9 @@
     <string name="unknown_error">unknown error</string>
     <string name="error_reading_file">Error reading from file</string>
     <string name="message_guest_no_permission">Guest account not be able to access, please register first</string>
-    <string name="message_socket_connect">Internet connections timed out please try again</string>
-    <string name="message_network_no_connect">Please check your internet connection and try again</string>
-    <string name="message_network_timeout">Internet connections timed out please try again</string>
+    <string name="message_socket_connect">The connection has timed out, please try again.</string>
+    <string name="message_network_no_connect">The connection has timed out, please try again.</string>
+    <string name="message_network_timeout">The connection has timed out, please try again.</string>
     <string name="error">Error</string>
     <string name="error_input_empty">This field is required</string>
     <string name="error_incompatible_format">The name that you entered is not valid</string>
@@ -204,7 +204,7 @@
     <string name="profile_center">Profile</string>
     <string name="member_level">Member level</string>
     <string name="game_settlement">Result</string>
-    <string name="version_update">Update version</string>
+    <string name="version_update">Update Version</string>
     <string name="odds_type">Handicap-%s</string>
     <string name="sign_out">Logout</string>
     <string name="label_version">Version number Ver %s</string>
@@ -385,7 +385,7 @@
     <string name="bet_item">Betting items -</string>
     <string name="match_type_row_in_play">IN-PLAY</string>
     <string name="match_type_row_at_start">SOON</string>
-    <string name="at_start_remain_minute">%s minutes</string>
+    <string name="at_start_remain_minute">%s minute</string>
     <string name="match_type_row_btn_bs">Concede goals &amp; over/under</string>
     <string name="game_filter_row_search_hint">Please enter league name</string>
     <string name="game_filter_row_search_hint_league">Please enter team name</string>
@@ -655,8 +655,8 @@
     <string name="complete">Completed</string>
     <string name="winnable_amount_colon">To Win：</string>
     <string name="finance">Fund details</string>
-    <string name="record_recharge">Recharge record</string>
-    <string name="record_withdrawal">Withdrawal record</string>
+    <string name="record_recharge">Recharge Record</string>
+    <string name="record_withdrawal">Withdrawal Record</string>
     <string name="record_conversion">Conversion Record</string>
     <string name="record_history">History</string>
     <string name="recharge_state_success">success</string>
@@ -820,10 +820,10 @@
     <string name="spt_number_3_2">Best of 3</string>
     <string name="spt_number_5_3">Best of 5</string>
     <string name="bet_notify_max_limit">Can add maximum 10 options to betslip</string>
-    <string name="myfavorite_notify_league_add">Added to My League</string>
-    <string name="myfavorite_notify_league_remove">Remove from My League</string>
-    <string name="myfavorite_notify_match_add">Added to My Matches</string>
-    <string name="myfavorite_notify_match_remove">Remove from My Matches</string>
+    <string name="myfavorite_notify_league_add">Added to My Competitions.</string>
+    <string name="myfavorite_notify_league_remove">Remove from My Competitions.</string>
+    <string name="myfavorite_notify_match_add">Added to My Events.</string>
+    <string name="myfavorite_notify_match_remove">Remove from My Events.</string>
     <string name="myfavorite_notify_detail_add">Added to My bets</string>
     <string name="myfavorite_notify_detail_remove">Remove from My bets</string>
     <string name="statistics_title">statistics</string>
@@ -1023,8 +1023,7 @@
     <string name="faqs">FAQs</string>
     <string name="live_chat">Live Chat</string>
     <string name="contact">Contact Us</string>
-    <string name="btm_navigation_hint">%1$s is a Registered Trade Mark, Brand and Business Name Owned by Ekxinum Inc.
-Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR).</string>
+    <string name="btm_navigation_hint">%1$s is a Registered Trade Mark, Brand and Business Name Owned by Ekxinum Inc. Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR).</string>
     <string name="btm_navigation_copyright">COPYRIGHT © 2022 %1$s ALL RIGHTS RESERVED</string>
     <string name="e_address">Address</string>
     <string name="brackets">(%s)</string>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/highlight_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:minHeight="56dp"
+    android:orientation="horizontal"
+    tools:ignore="SpUsage">
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="1"
+        android:background="@color/colorSilverLight" />
+
+    <TextView
+        android:id="@+id/tv_highlight"
+        android:layout_width="wrap_content"
+        android:layout_height="28dp"
+        android:gravity="center"
+        android:paddingHorizontal="16dp"
+        android:text="@string/label_highlight"
+        android:textAllCaps="true"
+        android:textColor="@color/colorBlue"
+        android:textSize="@dimen/textSize16sp" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="1"
+        android:background="@color/colorSilverLight" />
+
+</LinearLayout>
