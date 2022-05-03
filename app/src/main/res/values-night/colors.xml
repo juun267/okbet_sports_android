@@ -68,6 +68,9 @@
     <!--region 特殊處理顏色-->
     <color name="home_card_top_text_color">#1AFFFFFF</color>
     <color name="home_card_text_color">#CAE0FF</color>
+    <color name="play_category_text_color">#FFFFFF</color>
+    <color name="play_category_stroke_color">#317FFF</color>
+    <color name="play_category_solid_color">#317FFF</color>
     <!--endregion 特殊處理顏色-->
 
 </resources>
