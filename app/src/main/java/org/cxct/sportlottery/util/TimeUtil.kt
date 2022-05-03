@@ -428,6 +428,27 @@ object TimeUtil {
         }
     }
 
+    /**
+     * 帳戶歷史時間以美東時間做計算
+     */
+    fun getAccountHistoryTimeRangeParams(): TimeRangeParams {
+        val endTimeCalendar = getTodayEndTimeCalendar()
+        val startTimeCalendar = getTodayStartTimeCalendar()
+
+        val eUSTimeZone = TimeZone.getTimeZone("GMT-4")
+        endTimeCalendar.timeZone = eUSTimeZone
+        startTimeCalendar.timeZone = eUSTimeZone
+        startTimeCalendar.add(Calendar.DATE, -7)
+
+        return object: TimeRangeParams {
+            override val startTime: String
+                get() = startTimeCalendar.timeInMillis.toString()
+            override val endTime: String
+                get() = endTimeCalendar.timeInMillis.toString()
+
+        }
+    }
+
 
     fun getEarlyAllTimeRangeParams(): TimeRangeParams {
         val calendar = Calendar.getInstance()
