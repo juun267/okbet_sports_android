@@ -71,6 +71,7 @@
     <color name="play_category_text_color">#FFFFFF</color>
     <color name="play_category_stroke_color">#317FFF</color>
     <color name="play_category_solid_color">#317FFF</color>
+    <color name="play_category_pop_bg_color">@color/color_1F1F1F</color>
     <!--endregion 特殊處理顏色-->
 
 </resources>

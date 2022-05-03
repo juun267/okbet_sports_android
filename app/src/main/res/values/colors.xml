@@ -146,6 +146,7 @@
     <color name="play_category_text_color">@color/color_0760D4</color>
     <color name="play_category_stroke_color">@color/color_0760D4</color>
     <color name="play_category_solid_color">#00000000</color>
+    <color name="play_category_pop_bg_color">@color/color_FCFCFC</color>
     <!--endregion 特殊處理顏色-->
 
     <!-- [End]重新配置的色彩架構 -->
