@@ -370,6 +370,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
         //退出登入
         btn_sign_out.setOnClickListener {
+            viewModel.doLogoutAPI()
             viewModel.doLogoutCleanUser {
                 context?.run {
                     if (sConfigData?.thirdOpen == FLAG_OPEN)
