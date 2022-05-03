@@ -331,7 +331,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
      */
     private fun updateTabLayoutVisibility() {
         if (gotOnlinePay && gotTransferPay) {
-            custom_tab_layout.visibility = if (transferPayList.isNullOrEmpty() && onlinePayList.isNullOrEmpty()) View.VISIBLE else View.GONE
+            custom_tab_layout.visibility = if (!transferPayList.isNullOrEmpty() && !onlinePayList.isNullOrEmpty()) View.VISIBLE else View.GONE
         }
     }
 }
