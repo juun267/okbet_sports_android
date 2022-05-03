@@ -17,7 +17,7 @@ object TextUtil : DecimalFormatUtil() {
     }
 
     fun format(any: Any): String {
-        return doNumberFormat(any, "###,###,###,##0.000")
+        return doNumberFormat(any, "###,###,###,##0.0000")
     }
 
     fun formatInputMoney(any: Any): String {
