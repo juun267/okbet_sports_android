@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.home
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -10,7 +11,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.MultiLanguagesApplication
@@ -39,6 +42,7 @@ import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeListener
 import org.cxct.sportlottery.ui.game.home.gameTable4.*
 import org.cxct.sportlottery.ui.game.home.recommend.RecommendGameEntity
@@ -52,6 +56,7 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.OddsSortUtil.recommendSortOddsMap
 import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
 import org.cxct.sportlottery.util.SocketUpdateUtil
+import org.cxct.sportlottery.util.getVisibleRangePosition
 import java.util.*
 
 
@@ -62,6 +67,7 @@ import java.util.*
  * 3. 賽事推薦 - 冠軍樣式
  * 4. 賽事推薦 投注
  */
+@SuppressLint("LogNotTimber")
 class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class) {
     private lateinit var homeBinding: FragmentHomeBinding
 
@@ -98,37 +104,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
         ) {
             addOddsDialog(matchOdd, odd, playCateCode, playCateName, betPlayCateNameMap)
-        }
-    }
-
-    private val mOnSubscribeChannelHallListener = object : OnSubscribeChannelHallListener {
-        override fun subscribeChannel(
-            gameType: String?,
-            cateMenuCode: String?,
-            eventId: String?
-        ) {
-            if (gameType.isNullOrEmpty()) return
-            val id = if (mSelectMatchType == MatchType.IN_PLAY) tableInPlayMap[gameType] else tableSoonMap[gameType]
-            if (id == eventId) return
-            if (!id.isNullOrEmpty()) {
-                unSubscribeChannelHall(gameType, id)
-            }
-            if (mSelectMatchType == MatchType.IN_PLAY) {
-                mSubscribeInPlayGameID.remove(id)
-                eventId?.let {
-                    tableInPlayMap[gameType] = it
-                    mSubscribeInPlayGameID.add(it)
-                }
-            }
-            else {
-                mSubscribeAtStartGameID.remove(id)
-                eventId?.let {
-                    tableSoonMap[gameType] = it
-                    mSubscribeAtStartGameID.add(it)
-                }
-            }
-            Log.d("Hewie45", "mOnSubscribeChannelHallListener => ${gameType}, ${eventId}")
-            subscribeChannelHall(gameType, eventId)
         }
     }
 
@@ -211,9 +186,72 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     }
 
     private fun initViews() {
-        rvList.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-        rvList.adapter = mHomeListAdapter
-        rvList.itemAnimator = null
+        rvList.apply {
+            layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = mHomeListAdapter
+            itemAnimator = null
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    when (newState) {
+                        //停止
+                        RecyclerView.SCROLL_STATE_IDLE -> {
+                            getVisibleRangePosition().forEach { itemPosition ->
+                                val viewByPosition = layoutManager?.findViewByPosition(itemPosition)
+                                viewByPosition?.let {
+                                    when (getChildViewHolder(it)) {
+                                        is ViewHolderHdpOu -> {
+                                            val viewHolder = getChildViewHolder(it) as ViewHolderHdpOu
+                                            subscribeChannelHall(
+                                                viewHolder.mMatchOdd?.matchInfo?.gameType,
+                                                viewHolder.mMatchOdd?.matchInfo?.id
+                                            )
+                                            Log.d(
+                                                "[subscribe]",
+                                                "訂閱 " +
+                                                        "${viewHolder.mMatchOdd?.matchInfo?.homeName} vs " +
+                                                        "${viewHolder.mMatchOdd?.matchInfo?.awayName}"
+                                            )
+                                        }
+                                        is RecommendViewHolder -> {
+                                            val viewHolder = getChildViewHolder(it) as RecommendViewHolder
+                                            subscribeChannelHall(
+                                                viewHolder.mMatchOdd?.matchInfo?.gameType,
+                                                viewHolder.mMatchOdd?.matchInfo?.id
+                                            )
+                                            Log.d(
+                                                "[subscribe]",
+                                                "訂閱 " +
+                                                        "${viewHolder.mMatchOdd?.matchInfo?.homeName} vs " +
+                                                        "${viewHolder.mMatchOdd?.matchInfo?.awayName}"
+                                            )
+                                        }
+                                        is GameTableViewHolder -> {
+                                            val viewHolder = getChildViewHolder(it) as GameTableViewHolder
+                                            subscribeChannelHall(
+                                                viewHolder.mMatchOdd?.matchInfo?.gameType,
+                                                viewHolder.mMatchOdd?.matchInfo?.id
+                                            )
+                                            Log.d(
+                                                "[subscribe]",
+                                                "訂閱 " +
+                                                        "${viewHolder.mMatchOdd?.matchInfo?.homeName} vs " +
+                                                        "${viewHolder.mMatchOdd?.matchInfo?.awayName}"
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        //手指滾動
+                        RecyclerView.SCROLL_STATE_DRAGGING -> {
+                            unSubscribeChannelHallAll()
+                        }
+                    }
+                }
+            })
+        }
     }
 
     private fun initDiscount() {
@@ -310,7 +348,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     }
 
     private fun initTable() {
-        mHomeListAdapter.onSubscribeChannelHallListener = mOnSubscribeChannelHallListener
         mHomeListAdapter.onClickOddListener = object : OnClickOddListener {
             override fun onClickBet(matchOdd: MatchOdd, odd: Odd, playCateCode: String, playCateName: String?,
                                     betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?) {
@@ -596,6 +633,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             tableSoonMap.clear()
         }
     }
+
     //訂閱 推薦賽事 賠率
     private fun subscribeRecommendHallChannel(result: MatchRecommendResult? = null) {
         lifecycleScope.launch(Dispatchers.IO) {
@@ -612,8 +650,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 mHomeListAdapter.getRecommendData().forEach { entity ->
                     val id = entity.matchInfo?.id ?: ""
                     if (id.isNotEmpty()) {
@@ -762,7 +799,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         }
 
         viewModel.betIDList.observe(this.viewLifecycleOwner) { event ->
-            event.peekContent()?.let { 
+            event.peekContent()?.let {
                 lifecycleScope.launch {
                     with(mHomeListAdapter) {
                         notifySelectedOddsChanged(it)

@@ -33,7 +33,7 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private var oddsType: OddsType = OddsType.EU
     private var isLogin: Boolean? = false
     private var mPagerPosition = 0
-    private var mMatchOdd: MatchOdd? = null
+    var mMatchOdd: MatchOdd? = null
 
     private var onPageChangeCallback: OnPageChangeCallback? = null
 
@@ -47,7 +47,6 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
     private var onClickFavoriteListener: OnClickFavoriteListener? = null
     private var onClickStatisticsListener: OnClickStatisticsListener? = null
-    //private var onSubscribeChannelHallListener: OnSubscribeChannelHallListener? = null
 
     init {
         itemView.apply {
@@ -173,17 +172,13 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     fun subscribeChannelHall(gameType: String?, eventId: String?) {
-        Log.d("Hewie45", "${eventId}(${gameType}) => subscribeChannelHall")
+        Log.d("[subscribe]", "訂閱 ${eventId}(${gameType}) => subscribeChannelHall")
         (itemView.context as BaseSocketActivity<*>).subscribeChannelHall(gameType, eventId)
     }
 
     fun unsubscribeHallChannel(gameType: String?, eventId: String?) {
-        Log.d("Hewie45", "${eventId}(${gameType}) => unsubscribeHallChannel")
+        Log.d("[subscribe]", "解除訂閱 ${eventId}(${gameType}) => unsubscribeHallChannel")
         (itemView.context as BaseSocketActivity<*>).unSubscribeChannelHall(gameType, eventId)
-    }
-
-    fun unsubscribeHallChannel() {
-        unsubscribeHallChannel(mMatchOdd?.matchInfo?.gameType, mMatchOdd?.matchInfo?.id)
     }
 
     private fun addOddsDialog(
