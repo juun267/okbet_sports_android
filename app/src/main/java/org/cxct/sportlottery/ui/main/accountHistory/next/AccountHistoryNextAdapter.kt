@@ -216,7 +216,16 @@ class AccountHistoryNextAdapter(
                 }
                 binding.tvGameTypePlayCate.text = "${GameType.getGameTypeString(binding.tvGameTypePlayCate.context, row.gameType)} $playCateName"
 
-                binding.tvTeamNames.text = String.format(binding.tvTeamNames.context.getString(R.string.match_names_2), homeName, awayName)
+                if (!homeName.isNullOrEmpty() && !awayName.isNullOrEmpty()) {
+                    binding.tvTeamNames.text =
+                        String.format(binding.tvTeamNames.context.getString(R.string.match_names_2),
+                            homeName,
+                            awayName)
+                    binding.tvTeamNames.visibility = View.VISIBLE
+                }
+                else {
+                    binding.tvTeamNames.visibility = View.GONE
+                }
 
                 startTime?.let {
                     binding.tvStartTime.text = TimeUtil.timeFormat(it, TimeUtil.YMD_HM_FORMAT)

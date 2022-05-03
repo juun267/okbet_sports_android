@@ -685,7 +685,7 @@
     <string name="log_detail_rebate_money">Số tiền hoàn lãi：</string>
     <string name="log_detail_review_time">Thời gian xét duyệt：</string>
     <string name="log_detail_reason">Ghi chú：</string>
-    <string name="finance_log_selector_until">đến</string>
+    <string name="finance_log_selector_until">Đến</string>
     <string name="finance_list_no_record">Tạm thời không có nội dung</string>
     <string name="feedback_detail">thông tin phải hồi</string>
     <string name="feedback_tabName_problem">Câu hỏi và gợi ý</string>
