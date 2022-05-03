@@ -96,7 +96,6 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var onClickSportListener: OnSelectItemListener<OtherMatch>? = null
     var onClickFavoriteListener: OnClickFavoriteListener? = null
     var onClickStatisticsListener: OnClickStatisticsListener? = null
-    var onSubscribeChannelHallListener: OnSubscribeChannelHallListener? = null
 
     var onGameTableBarViewHolderListener: GameTableBarViewHolder.Listener? = null
     // endregion
@@ -360,15 +359,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             holder.saveInstanceState = holder.itemView.view_pager.currentItem
         }
         if(holder is GameTableViewHolder) {
-            //Log.d("Hewie45", "onViewDetachedFromWindow => ${holder}")
             holder.saveInstanceState = holder.itemView.view_pager.currentItem
-            holder.unsubscribeHallChannel()
-        }
-        if(holder is ViewHolderHdpOu) {
-            holder.unsubscribeHallChannel()
-        }
-        if(holder is RecommendViewHolder) {
-            holder.unsubscribeHallChannel()
         }
     }
 
@@ -381,7 +372,6 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             holder.itemView.view_pager.setCurrentItem(holder.saveInstanceState, false)
         }
         if(holder is GameTableViewHolder) {
-            //Log.d("Hewie45", "onViewAttachedToWindow => ${holder}")
             holder.itemView.view_pager.setCurrentItem(holder.saveInstanceState, false)
         }
     }
