@@ -25,7 +25,7 @@ object TextUtil : DecimalFormatUtil() {
     }
 
     fun formatMoney(double: Double): String {
-        return doNumberFormat(ArithUtil.toMoneyFormat(double).toDouble(), "###,###,###,##0.000")
+        return doNumberFormat(ArithUtil.toMoneyFormat(double).toDouble(), "###,###,###,##0.0000")
     }
 
     fun formatMoney(int: Int): String {
