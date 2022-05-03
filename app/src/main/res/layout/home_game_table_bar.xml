@@ -23,10 +23,11 @@
         android:background="@null"
         android:button="@null"
         android:paddingHorizontal="10dp"
-        android:text="@string/home_tab_in_play"
+        android:text="@string/home_tab_in_play2"
         android:textAllCaps="true"
         android:textColor="@color/selector_blue_gray_light"
-        android:textSize="@dimen/textSize16sp" />
+        android:textSize="@dimen/textSize16sp"
+        android:textStyle="bold" />
 
     <RadioButton
         android:id="@+id/rb_as_start"
@@ -38,7 +39,8 @@
         android:text="@string/game_soon"
         android:textAllCaps="true"
         android:textColor="@color/selector_blue_gray_light"
-        android:textSize="@dimen/textSize16sp" />
+        android:textSize="@dimen/textSize16sp"
+        android:textStyle="bold" />
 
     <View
         android:layout_width="0dp"
