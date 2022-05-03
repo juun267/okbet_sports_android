@@ -34,6 +34,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="68dp"
+        android:gravity="center"
         android:text="@string/no_game_description"
         android:textColor="@color/colorGray"
         android:textSize="@dimen/textSize14sp"

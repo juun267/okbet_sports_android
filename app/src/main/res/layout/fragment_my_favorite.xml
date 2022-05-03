@@ -127,23 +127,17 @@
             android:overScrollMode="never"
             app:layout_constraintTop_toBottomOf="@id/favorite_play_category"
             tools:itemCount="1"
-            tools:listitem="@layout/itemview_league_v5" />
-
-        <FrameLayout
-            android:id="@+id/fl_no_game"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="@color/colorWhite"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/favorite_toolbar"
-            tools:visibility="visible">
-
-            <include layout="@layout/view_no_game" />
-
-        </FrameLayout>
+            tools:listitem="@layout/itemview_league_v5"
+            android:visibility="gone"/>
 
     </FrameLayout>
+
+    <include
+        android:id="@+id/fl_no_game"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/include_my_favorite_empty"
+        android:visibility="gone"/>
 
 <!--    <androidx.core.widget.NestedScrollView-->
 <!--        android:layout_width="match_parent"-->
