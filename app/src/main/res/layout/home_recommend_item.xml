@@ -112,6 +112,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="18dp"
             android:gravity="center"
+            android:lineSpacingExtra="8dp"
             android:textColor="@color/colorGray"
             android:textSize="@dimen/textSize12sp"
             app:layout_constraintBottom_toBottomOf="parent"
