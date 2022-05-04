@@ -18,6 +18,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_2B2B2B_FCFCFC"
             android:orientation="vertical">
 
             <TextView
@@ -34,7 +35,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_1"
-                android:background="@color/color_191919_EEEFF0" />
+                android:background="@color/color_2B2B2B_e2e2e2" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -110,7 +111,7 @@
                 android:layout_marginLeft="@dimen/margin_36"
                 android:layout_marginTop="@dimen/margin_10"
                 android:layout_marginBottom="@dimen/margin_10"
-                android:background="@color/color_191919_EEEFF0" />
+                android:background="@color/color_2B2B2B_e2e2e2" />
 
             <EditText
                 android:id="@+id/etMount"
@@ -119,7 +120,9 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/margin_8"
                 android:layout_weight="1"
-                android:backgroundTint="@android:color/white"
+                android:backgroundTint="@color/transparent"
+                android:textColor="@color/color_404040_cccccc"
+                android:textColorHint="@color/color_404040_cccccc"
                 android:hint="@string/self_limit_per_bet_limit_input_highest"
                 android:inputType="number"
                 android:textSize="@dimen/textSize12sp" />
