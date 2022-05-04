@@ -4,9 +4,6 @@
     android:id="@+id/button_odd_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:layout_width="wrap_content"
-    tools:layout_height="wrap_content"
-    tools:layout_gravity="center"
     android:background="@drawable/selector_button_radius_4_odds"
     tools:ignore="SpUsage,ContentDescription">
 
