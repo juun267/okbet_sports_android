@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.*
 import kotlinx.android.synthetic.main.home_game_table_4.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
@@ -83,7 +84,7 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             GameConfigManager.getGameIcon(gameCode)?.let {
                 iv_game_icon.setImageResource(it)
             }
-            GameConfigManager.getTitleBarBackground(gameCode)?.let {
+            GameConfigManager.getTitleBarBackground(gameCode, MultiLanguagesApplication.isNightMode)?.let {
                 titleBar.setBackgroundResource(it)
             }
             titleBar.setOnClickListener {

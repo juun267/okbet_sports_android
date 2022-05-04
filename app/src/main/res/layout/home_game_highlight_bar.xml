@@ -13,7 +13,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_weight="1"
-        android:background="@color/colorSilverLight" />
+        android:background="@color/color_404040_cccccc" />
 
     <TextView
         android:id="@+id/tv_highlight"
@@ -23,7 +23,7 @@
         android:paddingHorizontal="16dp"
         android:text="@string/label_highlight"
         android:textAllCaps="true"
-        android:textColor="@color/colorBlue"
+        android:textColor="@color/color_317FFF_0760D4"
         android:textSize="@dimen/textSize16sp"
         android:textStyle="bold" />
 
@@ -31,6 +31,6 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_weight="1"
-        android:background="@color/colorSilverLight" />
+        android:background="@color/color_404040_cccccc" />
 
 </LinearLayout>

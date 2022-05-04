@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.home_game_highlight_title.view.*
 import kotlinx.android.synthetic.main.home_game_table_4.view.*
 import kotlinx.android.synthetic.main.home_sport_table_4.view.*
 import kotlinx.android.synthetic.main.itemview_sport_type_list.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeString
@@ -374,7 +375,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val homeHighlightGameTitleItemData = HomeHighlightGameTitleItemData().apply {
             this.highlightGameCode = selectItem.code
             this.highlightGameIcon = getGameIcon(selectItem.code) ?: R.drawable.ic_soccer
-            this.highlightGameBackground = getTitleBarBackground(selectItem.code) ?: R.drawable.img_home_title_soccer_background
+            this.highlightGameBackground = getTitleBarBackground(selectItem.code, MultiLanguagesApplication.isNightMode) ?: R.drawable.img_home_title_soccer_background
         }
         removeDatas(homeHighlightGameTitleItemData)
         addDataWithSort(homeHighlightGameTitleItemData)

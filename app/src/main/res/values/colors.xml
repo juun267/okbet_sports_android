@@ -75,6 +75,7 @@
     <color name="color_CDE5FF">#CDE5FF</color>
     <color name="color_EAF4FE">#EAF4FE</color>
     <color name="color_232628">#232628</color>
+    <color name="color_202020">#202020</color>
 
 
     <!--以下部分，是系统中的白天的色值 -->
@@ -139,6 +140,8 @@
     <color name="color_1A1A1A_FFFFFF">@color/color_FFFFFF</color>
     <color name="color_939393_999999">@color/color_999999</color>
     <color name="color_FFFFFF_666666">@color/color_666666</color>
+    <color name="color_e5e5e5_202020">@color/color_202020</color>
+    <color name="color_e5e5e5_000000">@color/color_000000</color>
 
     <!--region 特殊處理顏色-->
     <color name="home_card_top_text_color">#40FFFFFF</color>

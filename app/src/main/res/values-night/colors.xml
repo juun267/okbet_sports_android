@@ -64,6 +64,8 @@
     <color name="color_FCFCFC_191919">@color/color_FCFCFC</color>
     <color name="color_FFFFFF_666666">@color/color_FFFFFF</color>
     <color name="color_191919_EAF4FE">@color/color_191919</color>
+    <color name="color_e5e5e5_202020">@color/color_e5e5e5</color>
+    <color name="color_e5e5e5_000000">@color/color_e5e5e5</color>
 
     <!--region 特殊處理顏色-->
     <color name="home_card_top_text_color">#1AFFFFFF</color>
