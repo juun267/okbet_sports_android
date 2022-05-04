@@ -28,13 +28,13 @@
         app:tint="@color/colorBlackLight" />
 
     <TextView
+        android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:gravity="center"
         android:text="@string/account_history_overview"
         android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize14sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/iv_bg"
         app:layout_constraintTop_toTopOf="parent" />
 

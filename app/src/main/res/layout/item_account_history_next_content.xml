@@ -124,7 +124,6 @@
                 android:text="@{matchOdd.playCateName}"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize14sp"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/list_score"
                 app:layout_constraintStart_toEndOf="@id/tv_game_type"
                 app:layout_constraintTop_toTopOf="parent"

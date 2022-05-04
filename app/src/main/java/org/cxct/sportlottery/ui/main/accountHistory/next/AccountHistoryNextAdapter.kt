@@ -30,13 +30,10 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TextUtil.getParlayShowName
-import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
-import org.cxct.sportlottery.util.setPlayContent
 
 class AccountHistoryNextAdapter(
     private val itemClickListener: ItemClickListener,
@@ -384,6 +381,8 @@ class AccountHistoryNextAdapter(
                 iv_back.setOnClickListener {
                     backClickListener.onClick()
                 }
+
+                tv_title.setTextWithStrokeWidth(context?.getString(R.string.bet_num_and_bet_date) ?: "", 0.7f)
 
                 date_selector.cl_root.layoutParams.height = 40.dp
                 date_selector.tv_selected.gravity = Gravity.CENTER_VERTICAL or Gravity.START
