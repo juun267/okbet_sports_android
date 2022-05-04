@@ -116,6 +116,11 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             val itemMarginBottom: Int = typedArray.getDimensionPixelOffset(R.styleable.CustomView_cvMarginBottom, 10.dp)
             setMarginBottom(itemMarginBottom)
 
+            //分割線顏色
+            val dividerColor: Int = typedArray.getResourceId(R.styleable.CustomView_cvIcon, 0)
+            if (dividerColor != 0) {
+                view.v_divider.setBackgroundResource(dividerColor)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {

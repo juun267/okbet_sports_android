@@ -17,6 +17,7 @@
         <attr name="cvEditable" format="boolean" />
         <attr name="cvCount" format="string" />
         <attr name="cvIcon" format="reference" />
+        <attr name="cvDividerColor" format="reference" />
         <attr name="cvHint" format="string" />
         <attr name="cvText" format="string" />
         <attr name="cvEms" format="integer" />
