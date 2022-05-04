@@ -271,7 +271,7 @@
             android:paddingVertical="9dp"
             android:text="@string/submit"
             android:textAlignment="center"
-            android:textColor="@color/color_191919_FCFCFC"
+            android:textColor="@color/color_FFFFFF_FFFFFF"
             android:textSize="@dimen/textSize16sp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout

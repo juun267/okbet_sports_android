@@ -181,6 +181,7 @@
                     android:layout_marginBottom="15dp"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="@null"
+                    app:cardBackgroundColor="@color/color_191919_FCFCFC"
                     app:contentPaddingLeft="10dp">
 
                     <LinearLayout
@@ -257,7 +258,7 @@
                 android:paddingBottom="9dp"
                 android:text="@string/submit"
                 android:textAllCaps="true"
-                android:textColor="@color/color_191919_FCFCFC"
+                android:textColor="@color/color_FFFFFF_FFFFFF"
                 android:textSize="@dimen/textSize16sp"
                 android:textStyle="bold" />
 

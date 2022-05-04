@@ -199,7 +199,8 @@
             android:minHeight="0dp"
             android:padding="9dp"
             android:text="@string/submit"
-            android:textColor="@color/color_191919_FCFCFC" />
+            android:textColor="@color/color_FFFFFF_FFFFFF"
+            />
     </LinearLayout>
 
 </ScrollView>

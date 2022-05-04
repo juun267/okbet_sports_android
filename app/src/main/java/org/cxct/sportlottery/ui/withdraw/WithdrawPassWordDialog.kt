@@ -25,6 +25,7 @@ class WithdrawPassWordDialog(private val listener: WithdrawPasswordDialogListene
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
+        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
         initEvent()
         initView()
     }
