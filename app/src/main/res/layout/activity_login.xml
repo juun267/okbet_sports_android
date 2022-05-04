@@ -20,7 +20,7 @@
     <ImageButton
         android:id="@+id/btn_back"
         android:layout_width="26dp"
-        android:layout_height="26dp"
+        android:layout_height="20dp"
         android:layout_marginStart="24dp"
         android:background="@null"
         android:contentDescription="@null"
@@ -49,7 +49,7 @@
                 android:id="@+id/view"
                 android:layout_width="6dp"
                 android:layout_height="26dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="13dp"
                 android:background="@drawable/bg_login_title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -57,7 +57,7 @@
             <TextView
                 android:id="@+id/label_register"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:layout_marginLeft="14dp"
                 android:text="@string/btn_login"
                 android:textColor="@color/colorBlackLight"
@@ -70,12 +70,13 @@
             <org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
                 android:id="@+id/et_account"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_height="52dp"
+                android:layout_marginTop="20dp"
                 app:iconSignifier="@drawable/ic_login_account"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/label_register"
-                app:singleText="@string/member_account">
+                app:labelText="@string/member_account"
+                app:hintText="@string/account_hint">
 
                 <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
                     android:id="@+id/eet_account"
@@ -95,14 +96,15 @@
             <org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
                 android:id="@+id/et_password"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
                 android:layout_marginTop="8dp"
                 app:endIcon="@drawable/ic_eye_open"
                 app:iconSignifier="@drawable/ic_login_password"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_account"
-                app:singleText="@string/login_password">
+                app:labelText="@string/login_password"
+                app:hintText="@string/password_hint">
 
                 <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
                     android:id="@+id/eet_password"
@@ -214,7 +216,7 @@
                 android:layout_height="46dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="6dp"
-                android:background="@drawable/bg_radius_20_button_dusk"
+                android:background="@drawable/bg_radius_23_button_dusk"
                 android:text="@string/btn_login"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/textSize17sp"
