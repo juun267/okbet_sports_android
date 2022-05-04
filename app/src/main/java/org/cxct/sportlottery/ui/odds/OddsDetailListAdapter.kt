@@ -78,8 +78,11 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         odd?.updateEPSDiscount(field, value)
                     }
                 } else {
-                    oddsDetailListData.oddArrayList.forEach { odd ->
-                        odd?.updateDiscount(field, value)
+                    //LCS的玩法不能使用DISCOUNT
+                    if (oddsDetailListData.gameType != PlayCate.LCS.value) {
+                        oddsDetailListData.oddArrayList.forEach { odd ->
+                            odd?.updateDiscount(field, value)
+                        }
                     }
                 }
             }
