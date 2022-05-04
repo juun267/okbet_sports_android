@@ -92,7 +92,8 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
             data.matchOdds.let {
                 // TODO 這裡存在一個隱性的效能問題
-                if (data.vpTableAdapter == null) data.vpTableAdapter = Vp2GameTable4Adapter(mMatchType)
+//                if (data.vpTableAdapter == null)
+                data.vpTableAdapter = Vp2GameTable4Adapter(mMatchType)
                 data.vpTableAdapter?.onClickMatchListener = onClickMatchListener
                 data.vpTableAdapter?.onClickOddListener = onClickOddListener
                 data.vpTableAdapter?.onClickFavoriteListener = onClickFavoriteListener

@@ -1098,4 +1098,9 @@
     <string name="recommend_best_odd">最佳赔率</string>
     <string name="recommend_safe">安全投注</string>
 <!--endregion-->
+
+    <!--region 我的賽事-->
+    <string name="my_favorite_empty_title">我的赛事</string>
+    <string name="my_favorite_empty_msg">选择上面的图标，会将其添加到”我的赛事”中。\n您可以对其进行分组并轻松访问你感兴趣的所有赛事。</string>
+    <!--endregion-->
 </resources>
