@@ -175,6 +175,7 @@ class SplashViewModel(
         hostRepository.platformId = result?.configData?.platformId ?: -1
         sConfigData = result?.configData
         _configResult.postValue(result)
+        gotConfigData = true
     }
 
     private fun setBaseUrl(baseUrl: String, retrofit: Retrofit) {

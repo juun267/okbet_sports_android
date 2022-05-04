@@ -21,6 +21,11 @@ const val PROJECT_CODE = "cx_sports" //項目代碼
 
 var sConfigData: ConfigData? = null
 
+/**
+ * 紀錄是否第一次開啟app取得configData
+ */
+var gotConfigData: Boolean = false
+
 class StaticData {
     companion object{
         fun getTestFlag(index: Long?): TestFlag? {

@@ -92,6 +92,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        getConfigData()
         initOnClickListener()
         initRecommendView()
         initTitle()
@@ -118,6 +119,10 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         receiver.matchOddsLock.removeObservers(viewLifecycleOwner)
         receiver.globalStop.removeObservers(viewLifecycleOwner)
         receiver.producerUp.removeObservers(viewLifecycleOwner)
+    }
+
+    private fun getConfigData() {
+        viewModel.getConfigData()
     }
 
     private fun initOnClickListener() {
@@ -239,6 +244,14 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 }
                 if (needUpdate) {
                     mPublicityAdapter.updateRecommendData(index, recommend)
+                }
+            }
+        }
+
+        viewModel.gotConfig.observe(viewLifecycleOwner) { event ->
+            event?.getContentIfNotHandled()?.let { isReload ->
+                if (isReload) {
+                    mPublicityAdapter.updateToolbarBannerImage()
                 }
             }
         }
