@@ -32,7 +32,7 @@
     <string name="please_input_password">(your login password)</string>
     <string name="login_password">Password</string>
     <string name="remember_password">Save this password</string>
-    <string name="forget_password_question">Forgot password？</string>
+    <string name="forget_password_question">Forgot password?</string>
     <string name="desc_forget_password">Please contact customer service</string>
     <string name="sign_up_know">sign up now</string>
     <string name="recommend_code">Invite Code</string>
@@ -115,7 +115,7 @@
     <string name="hint_security_code"><font size="12">(Please enter the verification code.)</font></string>
     <string name="dialog_security_need_phone">Your personal information is not complete, please contact customer service.</string>
     <string name="btn_agreement">Account Opening Agreement</string>
-    <string name="have_account">Already have an account？</string>
+    <string name="have_account">Already have an account?</string>
     <string name="btn_login">Login</string>
     <string name="btn_register">Sign Up</string>
     <string name="no_announcement">No announcement</string>
