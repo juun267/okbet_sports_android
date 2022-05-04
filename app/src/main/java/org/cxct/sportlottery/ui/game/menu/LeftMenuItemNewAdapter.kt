@@ -13,6 +13,7 @@ import com.zhy.adapter.recyclerview.base.ViewHolder
 import kotlinx.android.synthetic.main.content_left_menu_item.view.*
 import kotlinx.android.synthetic.main.content_left_menu_item_footer.view.*
 import kotlinx.android.synthetic.main.content_left_menu_item_header.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
 import org.cxct.sportlottery.util.SvgUtil
@@ -272,7 +273,11 @@ class LeftMenuItemNewAdapter(
 
 //                tv_appearance.isVisible = isLogin
                // tv_appearance.isVisible = false //暫時隱藏
-
+                if (MultiLanguagesApplication.isNightMode){
+                    tv_appearance.text = context.getString(R.string.appearance)+": "+context.getString(R.string.night_mode)
+                }else{
+                    tv_appearance.text = context.getString(R.string.appearance)+": "+context.getString(R.string.day_mode)
+                }
                 //盤口設定
                 tv_odds_type.setOnClickListener {
                     footerSelectedListener.oddTypeSelected()
