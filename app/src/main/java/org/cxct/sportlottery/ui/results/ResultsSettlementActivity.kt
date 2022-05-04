@@ -331,13 +331,13 @@ class ResultsSettlementActivity :
             val day = calendar.get(Calendar.DAY_OF_MONTH)
             val week = calendar.get(Calendar.DAY_OF_WEEK)
             val weekName = mapOf<Int, String>(
-                1 to getString(R.string.sunday),
-                2 to getString(R.string.monday),
-                3 to getString(R.string.tuesday),
-                4 to getString(R.string.wednesday),
-                5 to getString(R.string.thursday),
-                6 to getString(R.string.friday),
-                7 to getString(R.string.saturday)
+                1 to getString(R.string.sunday2),
+                2 to getString(R.string.monday2),
+                3 to getString(R.string.tuesday2),
+                4 to getString(R.string.wednesday2),
+                5 to getString(R.string.thursday2),
+                6 to getString(R.string.friday2),
+                7 to getString(R.string.saturday2)
             ) //1:星期日, 2:星期一, ...
             weekList.add("${weekName[week]}\n${String.format("%02d", month)}-${String.format("%02d", day)}")
         }

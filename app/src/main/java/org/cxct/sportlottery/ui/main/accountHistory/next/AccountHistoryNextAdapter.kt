@@ -163,7 +163,8 @@ class AccountHistoryNextAdapter(
                 matchOdd = row.matchOdds?.firstOrNull()
                 tvParlayType.text = getParlayShowName(itemView.context, row.parlayType)
                 tvDetail.paint.flags = Paint.UNDERLINE_TEXT_FLAG
-                tvDetail.isVisible = (row.parlayComsDetailVOs ?: emptyList()).isNotEmpty()
+                // 暫時隱藏，配合後端更新再開啟
+                tvDetail.isVisible = false//(row.parlayComsDetailVOs ?: emptyList()).isNotEmpty()
                 tvDetail.setOnClickListener {
                     val dialog = row.parlayComsDetailVOs?.let { list ->
                         ComboDetailDialog(it.context, list)
@@ -215,7 +216,16 @@ class AccountHistoryNextAdapter(
                 }
                 binding.tvGameTypePlayCate.text = "${GameType.getGameTypeString(binding.tvGameTypePlayCate.context, row.gameType)} $playCateName"
 
-                binding.tvTeamNames.text = String.format(binding.tvTeamNames.context.getString(R.string.match_names_2), homeName, awayName)
+                if (!homeName.isNullOrEmpty() && !awayName.isNullOrEmpty()) {
+                    binding.tvTeamNames.text =
+                        String.format(binding.tvTeamNames.context.getString(R.string.match_names_2),
+                            homeName,
+                            awayName)
+                    binding.tvTeamNames.visibility = View.VISIBLE
+                }
+                else {
+                    binding.tvTeamNames.visibility = View.GONE
+                }
 
                 startTime?.let {
                     binding.tvStartTime.text = TimeUtil.timeFormat(it, TimeUtil.YMD_HM_FORMAT)

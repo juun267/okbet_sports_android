@@ -114,6 +114,12 @@ abstract class BaseViewModel(
         }
     }
 
+    fun doLogoutAPI() {
+        viewModelScope.launch {
+            loginRepository.logoutAPI()
+        }
+    }
+
     fun doLogoutCleanUser(finishFunction: () -> Unit) {
         viewModelScope.launch {
             betInfoRepository.clear()

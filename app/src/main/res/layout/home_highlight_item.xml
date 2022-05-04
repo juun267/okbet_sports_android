@@ -60,6 +60,14 @@
         app:layout_constraintVertical_bias="0">
 
         <TextView
+            android:id="@+id/testId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textSize18sp"
+            android:textColor="@color/colorRed"
+            android:visibility="gone"/>
+
+        <TextView
             android:id="@+id/tv_game_name_home"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -193,7 +201,7 @@
             android:contentDescription="@null"
             app:tint="@color/color_A3A3A3_666666"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon_chart" />
+            android:src="@drawable/ic_chart" />
 
         <ImageView
             android:id="@+id/btn_star"

@@ -5,13 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentSelfLimitFrozeBinding
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
-import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -99,10 +99,10 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
 
     private fun submit() {
         CustomAlertDialog(requireContext()).apply {
-            setTitle(getString(R.string.self_limit_confirm))
-            setMessage(getString(R.string.self_limit_confirm_content))
-            setPositiveButtonText(getString(R.string.btn_confirm))
-            setNegativeButtonText(getString(R.string.btn_cancel))
+            setTitle(this@SelfLimitFrozeFragment.getString(R.string.self_limit_confirm))
+            setMessage(this@SelfLimitFrozeFragment.getString(R.string.self_limit_confirm_content))
+            setPositiveButtonText(this@SelfLimitFrozeFragment.getString(R.string.btn_confirm))
+            setNegativeButtonText(this@SelfLimitFrozeFragment.getString(R.string.btn_cancel))
             setPositiveClickListener {
                 viewModel.setFroze(binding.etFrozeDay.text.toString().toInt())
                 dismiss()
@@ -120,19 +120,19 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
 
             if (it.success) {
                 val dialog = CustomAlertDialog(requireActivity()).apply {
-                    setTitle(getString(R.string.self_limit_confirm))
-                    setMessage(getString(R.string.self_limit_confirm_done))
+                    setTitle(this@SelfLimitFrozeFragment.getString(R.string.self_limit_confirm))
+                    setMessage(this@SelfLimitFrozeFragment.getString(R.string.self_limit_confirm_done))
                     setNegativeButtonText(null)
                     setCancelable(false)
-                    setPositiveButtonText(getString(R.string.btn_confirm))
+                    setPositiveButtonText(this@SelfLimitFrozeFragment.getString(R.string.btn_confirm))
                     setPositiveClickListener {
                         dismiss()
                         viewModel.doLogoutCleanUser {
                             run {
                                 if (sConfigData?.thirdOpen == FLAG_OPEN)
-                                    MainActivity.reStart(requireContext())
+                                    MainActivity.reStart(MultiLanguagesApplication.appContext)
                                 else
-                                    GamePublicityActivity.reStart(requireContext())
+                                    GamePublicityActivity.reStart(MultiLanguagesApplication.appContext)
                             }
                         }
                     }

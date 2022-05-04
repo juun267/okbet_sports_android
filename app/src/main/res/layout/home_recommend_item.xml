@@ -9,6 +9,15 @@
     tools:context=".ui.game.home.recommend.RvRecommendAdapter"
     tools:ignore="spUsage">
 
+    <TextView
+        android:id="@+id/testId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorRed"
+        android:gravity="center"
+        android:textSize="@dimen/margin_36"
+        android:visibility="gone"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/block_match_info"
         android:layout_width="match_parent"
@@ -103,6 +112,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="18dp"
             android:gravity="center"
+            android:lineSpacingExtra="8dp"
             android:textColor="@color/color_A3A3A3_666666"
             android:textSize="@dimen/textSize12sp"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -89,6 +89,12 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun initObserve() {
+        viewModel.navActivity.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let {
+                startActivity(Intent(context, it))
+            }
+        }
+
         viewModel.oddsType.observe(viewLifecycleOwner) {
             updateOddsType(it)
         }
@@ -306,21 +312,8 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
         //個人中心
         menu_profile_center.setOnClickListener {
-            when (viewModel.userInfo.value?.testFlag) {
-                TestFlag.NORMAL.index -> {
-                    startActivity(Intent(context, ProfileCenterActivity::class.java))
-                }
-                TestFlag.TEST.index -> {
-                    startActivity(Intent(context, ProfileCenterActivity::class.java))
-                }
-                null -> { //尚未登入
-                    startActivity(Intent(context, LoginActivity::class.java))
-                }
-                else -> { //遊客 TODO 20221208 拿掉遊客選項，預設以外行為需要另外定義(先預設登入) by Hewie
-                    startActivity(Intent(context, LoginActivity::class.java))
-                    //ToastUtil.showToastInCenter(context, getString(R.string.message_guest_no_permission))
-                }
-            }
+            viewModel.navActivity(ProfileCenterActivity::class.java)
+            //遊客 TODO 20221208 拿掉遊客選項，預設以外行為需要另外定義(先預設登入) by Hewie
             mDownMenuListener?.onClick(menu_profile_center)
         }
 
@@ -377,6 +370,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
         //退出登入
         btn_sign_out.setOnClickListener {
+            viewModel.doLogoutAPI()
             viewModel.doLogoutCleanUser {
                 context?.run {
                     if (sConfigData?.thirdOpen == FLAG_OPEN)

@@ -23,10 +23,9 @@ abstract class BaseSocketFragment<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
     protected fun unSubscribeChannelHall(
         gameType: String?,
-        cateMenuCode: String?,
         eventId: String?
     ) {
-        (activity as BaseSocketActivity<*>).unSubscribeChannelHall(gameType, cateMenuCode, eventId)
+        (activity as BaseSocketActivity<*>).unSubscribeChannelHall(gameType, eventId)
     }
 
     protected fun unSubscribeChannelEvent(eventId: String?) {
@@ -40,6 +39,7 @@ abstract class BaseSocketFragment<T : BaseSocketViewModel>(clazz: KClass<T>) :
     protected fun unSubscribeChannelHall(eventId: String?) {
         (activity as BaseSocketActivity<*>).unSubscribeChannelHall(eventId)
     }
+
     protected fun unSubscribeChannelHallAll() {
         (activity as BaseSocketActivity<*>).unSubscribeChannelHallAll()
     }

@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network.sport.publicityRecommend
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.network.common.FoldState
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
@@ -68,4 +69,6 @@ data class Recommend(
     override val quickPlayCateList: MutableList<QuickPlayCate>? = null
     override val oddsEps: EpsOdd? = null
     override var playCateMappingList: List<PlayCateMapItem>? = null
+
+    var unfold: Int = FoldState.UNFOLD.code
 }

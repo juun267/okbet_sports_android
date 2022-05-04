@@ -911,10 +911,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             val gameTitleContentBuilder = SpannableStringBuilder()
             val statusWord =
                 oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)
-                    ?.split("-")
+                    ?.split("-", "–")
             val playName =
                 oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)
-                    ?.replace("-${statusWord?.last() ?: ""}", "")
+                    ?.replace("-${statusWord?.last() ?: ""}", "")?.replace("–${statusWord?.last() ?: ""}", "")
             val stWordSpan = SpannableString(statusWord?.last() ?: "")
             statusWord?.last()?.length?.let {
                 stWordSpan.setSpan(

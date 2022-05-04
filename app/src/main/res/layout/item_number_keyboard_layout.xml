@@ -17,35 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/tvLimit"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/margin_4"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="@string/edt_hint_deposit_money_new"
-            android:textColor="@color/white"
-            android:visibility="invisible" />
-
-        <ImageView
-            android:id="@+id/ivKeyboardClose"
-            android:layout_width="30dp"
-            android:layout_height="match_parent"
-            android:padding="@dimen/margin_10"
-            android:src="@drawable/ic_close"
-            app:tint="@color/color_404040_cccccc" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
         android:paddingVertical="@dimen/margin_2">
 
         <TextView
@@ -60,7 +31,7 @@
             android:text="+25"
             android:textColor="@color/color_060F20"
             android:textSize="@dimen/textSize14sp"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/tvPlus2"
@@ -111,7 +82,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:paddingVertical="@dimen/margin_4">
+        android:paddingVertical="@dimen/margin_3">
 
         <TextView
             android:id="@+id/tvNum1"
@@ -237,8 +208,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@color/color_060F20"
-        android:paddingVertical="@dimen/margin_4">
+        android:paddingVertical="@dimen/margin_3"
+        android:background="@color/color_060F20">
 
         <TextView
             android:id="@+id/tvNum0"
@@ -275,7 +246,7 @@
             android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
-            android:text="Max"
+            android:text="@string/keyboard_max"
             android:textColor="@color/white"
             android:textSize="@dimen/textSize14sp" />
 

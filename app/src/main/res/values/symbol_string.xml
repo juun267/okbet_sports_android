@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="dot">・</string>
+    <string name="dot2">‧</string>
     <string name="greet">Hi!</string>
     <string name="tilde">～</string>
     <string name="start">*</string>
     <string name="verse_lower">&#160;&#160;vs&#160;&#160;</string>
     <string name="verse_">&#160;&#160;v&#160;&#160;</string>
-    <string name="unknown_data">–</string>
+    <string name="unknown_data">-</string>
     <string name="percent">%</string>
     <string name="id">ID</string>
     <string name="at">\u0040</string>

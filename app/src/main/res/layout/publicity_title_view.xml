@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:ignore="UseCompoundDrawables">
+    tools:ignore="UseCompoundDrawables, SpUsage">
 
 
     <com.youth.banner.Banner
@@ -56,7 +56,8 @@
                 android:layout_marginTop="4dp"
                 android:gravity="center"
                 android:text="@string/recommend_match"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/textSize12sp" />
 
         </LinearLayout>
 
@@ -82,7 +83,8 @@
                 android:layout_marginTop="4dp"
                 android:gravity="center"
                 android:text="@string/recommend_best_odd"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/textSize12sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -107,7 +109,8 @@
                 android:layout_marginTop="4dp"
                 android:gravity="center"
                 android:text="@string/recommend_safe"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/textSize12sp" />
         </LinearLayout>
 
 

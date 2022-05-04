@@ -72,7 +72,12 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
     }
 
     // region ItemClass
-    class PublicityTitleImageData
+    class PublicityTitleImageData {
+        /**
+         * 是否已經重新獲取ConfigData
+         */
+        var reloadConfig: Boolean = false
+    }
     class PublicitySubTitleImageData
     class BottomNavigationItem
     // endregion
@@ -107,6 +112,13 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         val publicityTitleData = mDataList.firstOrNull { it is PublicityTitleImageData }
 
         notifyItemChanged(mDataList.indexOf(publicityTitleData), publicityTitleData)
+    }
+
+    fun updateToolbarBannerImage() {
+        removeDatas(PublicityTitleImageData())
+        addDataWithSort(PublicityTitleImageData().apply {
+            this.reloadConfig = true
+        })
     }
 
     fun updateRecommendData(position: Int, payload: Recommend) {
@@ -185,10 +197,10 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             payloads.forEachIndexed { _, payload ->
                 when (payload) {
                     is Recommend -> {
-                        (holder as PublicityRecommendViewHolder).updateLeagueOddList(payload, oddsType)
+                        (holder as PublicityRecommendViewHolder).update(payload, oddsType)
                     }
                     is PublicityTitleImageData -> {
-                        (holder as PublicityTitleViewHolder).updateToolbar()
+                        (holder as PublicityTitleViewHolder).updateToolbar(payload)
                     }
                 }
             }
@@ -200,11 +212,13 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         when (holder) {
             is PublicityRecommendViewHolder -> {
                 if (data is Recommend) {
-                    holder.bind(data, oddsType)
+                    holder.bind(data, oddsType) { notifyItemChanged(position, data) }
                 }
             }
             is PublicityTitleViewHolder -> {
-                holder.bind()
+                if (data is PublicityTitleImageData){
+                    holder.bind(data)
+                }
             }
             is PublicitySubTitleViewHolder -> {
                 holder.bind()
@@ -225,18 +239,12 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         //BaseItemListenerViewHolder(binding.root, publicityAdapterListener){
     RecyclerView.ViewHolder(binding.root) {
         val context: Context = binding.root.context
-        fun bind() {
-            val requestOptions = RequestOptions()
-                .placeholder(R.drawable.ic_image_load)
-                .error(R.drawable.ic_image_broken)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .dontTransform()
-
+        fun bind(data: PublicityTitleImageData) {
             with(binding) {
                 //region Toolbar
                 with(publicityToolbar) {
                     //登入狀態, 訊息狀態
-                    updateToolbar()
+                    updateToolbar(data)
 
                     //region Transparent style
                     toolBar.setBackgroundColor(
@@ -270,31 +278,10 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                 }
                 //endregion
 
-                val imagelist = sConfigData?.imageList?.filter {
-                    it.imageType == 2
-                }
-                banner.setAdapter(object :
-                    BannerImageAdapter<ImageData?>(imagelist) {
-                    override fun onBindView(
-                        holder: BannerImageHolder,
-                        data: ImageData?,
-                        position: Int,
-                        size: Int
-                    ) {
-                        val url = sConfigData?.resServerHost + data?.imageName1
-                        Glide.with(holder.itemView)
-                            .load(url)
-                            .apply(requestOptions)
-                            .into(holder.imageView)
-                        holder.imageView.setOnClickListener {
-                            publicityAdapterListener.onGoHomePageListener()
-                        }
-                    }
-                })
             }
         }
 
-        fun updateToolbar() {
+        fun updateToolbar(data: PublicityTitleImageData) {
             with(binding.publicityToolbar) {
                 if (isLogin) {
                     ivNotice.visibility = View.VISIBLE
@@ -315,6 +302,42 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                         R.drawable.icon_bell_white
                     }
                 )
+
+                setupBanner(data)
+            }
+        }
+
+        private fun setupBanner(data: PublicityTitleImageData) {
+            if (data.reloadConfig) {
+                val requestOptions = RequestOptions()
+                    .placeholder(R.drawable.ic_image_load)
+                    .error(R.drawable.ic_image_broken)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .dontTransform()
+
+                with(binding) {
+                    val imageList = sConfigData?.imageList?.filter {
+                        it.imageType == 2
+                    }
+                    banner.setAdapter(object :
+                        BannerImageAdapter<ImageData?>(imageList) {
+                        override fun onBindView(
+                            holder: BannerImageHolder,
+                            data: ImageData?,
+                            position: Int,
+                            size: Int
+                        ) {
+                            val url = sConfigData?.resServerHost + data?.imageName1
+                            Glide.with(holder.itemView)
+                                .load(url)
+                                .apply(requestOptions)
+                                .into(holder.imageView)
+                            holder.imageView.setOnClickListener {
+                                publicityAdapterListener.onGoHomePageListener()
+                            }
+                        }
+                    })
+                }
             }
         }
     }

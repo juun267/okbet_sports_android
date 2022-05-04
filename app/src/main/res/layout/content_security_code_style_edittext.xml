@@ -4,17 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/block_security_code"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_content"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="horizontal"
         app:cardCornerRadius="4dp"
         app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,7 +18,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@drawable/bg_radius_4dp_solid_fdfdfd_bg_e2e2e2"
             android:orientation="horizontal"
             android:padding="4dp">
@@ -112,6 +107,7 @@
         android:src="@drawable/ic_error_tip"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cv_content"
         tools:visibility="visible" />
 
@@ -119,8 +115,6 @@
         android:id="@+id/txv_error_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
         android:textColor="@color/color_F75452_b73a20"
@@ -128,6 +122,7 @@
         android:visibility="gone"
         app:layout_constraintStart_toEndOf="@+id/ic_error"
         app:layout_constraintTop_toBottomOf="@+id/cv_content"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:text="@string/dialog_security_error"
         tools:visibility="visible" />
 

@@ -439,8 +439,8 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             val deviceSn = JPushInterface.getRegistrationID(applicationContext)
             binding.apply {
                 var phone = eetPhone.text.toString()
-                if(phone.substring(0,1) == "0"){
-                    phone = phone.substring(1,phone.length)
+                if (phone.isNotEmpty() && phone.substring(0, 1) == "0") {
+                    phone = phone.substring(1, phone.length)
                 }
                 viewModel.registerSubmit(
                     eetRecommendCode.text.toString(),

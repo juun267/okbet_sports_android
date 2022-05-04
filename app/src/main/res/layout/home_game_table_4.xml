@@ -35,7 +35,7 @@
             android:gravity="center"
             android:textAllCaps="true"
             android:textColor="@color/color_e5e5e5_333333"
-            android:textSize="@dimen/textSize18sp"
+            android:textSize="@dimen/textSize16sp"
             android:textStyle="bold"
             tools:text="@string/soccer" />
 
@@ -51,6 +51,7 @@
             android:gravity="center"
             android:textColor="@color/color_317FFF_0760D4"
             android:textSize="@dimen/textSize14sp"
+            android:textStyle="bold"
             tools:text="21" />
 
     </LinearLayout>
@@ -65,8 +66,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:minHeight="148dp"
-            tools:listitem="@layout/home_game_table_item_4"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/home_game_table_item_4" />
 
         <org.cxct.sportlottery.ui.common.IndicatorView
             android:id="@+id/indicator_view"

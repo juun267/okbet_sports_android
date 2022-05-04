@@ -149,6 +149,9 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             playSelectedCodeSelectionType: Int?,
             playSelectedCode: String?
         ) {
+
+            itemView.v_top.visibility = if (bindingAdapterPosition == 0) View.GONE else View.VISIBLE
+
             setUpVisibility(item, matchType)
             setupMatchInfo(item, matchType, matchInfoList, leagueOddListener)
             val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
@@ -505,11 +508,12 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 else
                     Typeface.NORMAL
 
-                league_odd_match_score_home.apply { setTypeface(this.typeface, homeStrongType) }
+                //隊伍名稱粗體隱藏
+                /*league_odd_match_score_home.apply { setTypeface(this.typeface, homeStrongType) }
                 league_odd_match_name_home.apply { setTypeface(this.typeface, homeStrongType) }
 
                 league_odd_match_score_away.apply { setTypeface(this.typeface, awayStrongType) }
-                league_odd_match_name_away.apply { setTypeface(this.typeface, awayStrongType) }
+                league_odd_match_name_away.apply { setTypeface(this.typeface, awayStrongType) }*/
             }
         }
 

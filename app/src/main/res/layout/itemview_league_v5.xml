@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:ignore="SpUsage,ContentDescription,WebViewLayout">
+    tools:ignore="SpUsage,ContentDescription,WebViewLayout,UnusedAttribute">
 
     <TextView
         android:id="@+id/league_text"
@@ -14,11 +14,12 @@
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="2"
+        android:lineHeight="20dp"
         android:paddingStart="16dp"
         android:paddingEnd="34dp"
         android:textAllCaps="true"
         android:textColor="@color/color_e5e5e5_333333"
-        android:textSize="@dimen/textSize16sp"
+        android:textSize="@dimen/textSize14sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="欧洲足球锦标赛2020" />

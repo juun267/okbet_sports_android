@@ -502,7 +502,7 @@
     <string name="online_bank">在线网银</string>
     <string name="online_juan">JuanCash</string>
     <string name="online_dispenshing">出款</string>
-    <string name="online_online_bank">網銀</string>
+    <string name="online_online_bank">网银线上</string>
     <string name="online_gcash">Gcash</string>
     <string name="online_grab">GrabPay</string>
     <string name="online_maya">PayMaya</string>
@@ -878,7 +878,7 @@
     <string name="parlay_10_block_rule">10串1013是由10个不同的赛事组成的1013个不同的投注，45个2串1，120个3串1，210个4串1，252个5串1，210个6串1，120个7串1，45个8串1，10个9串1以及1个10串1，至少2个选项获胜以确保派彩，不同球种及冠军玩法不能进行串关投注</string>
     <string name="table_tennis">乒乓球</string>
     <string name="ice_hockey">冰球</string>
-    <string name="boxing">拳击</string>
+    <string name="boxing">拳击/格斗</string>
     <string name="snooker">台球</string>
     <string name="cricket">板球</string>
     <string name="baseball">棒球</string>
@@ -1004,7 +1004,7 @@
     <string name="self_limit_per_bet_limit_highest">上限</string>
     <string name="self_limit_per_bet_limit_input_highest">请输入数字</string>
     <string name="self_limit_per_bet_limit_impotent">您随时可以修改您的每次投注上限。修改将于申请送出后生效</string>
-    <string name="self_limit_per_bet_limit_user">‧已设置投注上限：%s</string>
+    <string name="self_limit_per_bet_limit_user">已设置投注上限：%s</string>
     <string name="self_limit_per_bet_limit_user_none">无</string>
     <string name="self_limit_per_bet_limit_user_limit"> (最高可设定:%1$s %3$s-%2$s %3$s)</string>
     <string name="self_limit_error">资料格式不符，请输入整数</string>
@@ -1027,8 +1027,7 @@
     <string name="faqs">常见问题</string>
     <string name="live_chat">在线客服</string>
     <string name="contact">联系我们</string>
-    <string name="btm_navigation_hint">%1$s is a Registered Trade Mark, Brand and Business Name Owned by Ekxinum Inc.
-Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR).</string>
+    <string name="btm_navigation_hint">%1$s is a Registered Trade Mark, Brand and Business Name Owned by Ekxinum Inc. Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR).</string>
     <string name="btm_navigation_copyright">COPYRIGHT © 2022 %1$s ALL RIGHTS RESERVED</string>
     <string name="front_side_result">证件正面扫描结果</string>
     <string name="reverse_side_result">证件反面扫描结果</string>
@@ -1099,4 +1098,9 @@ Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAG
     <string name="recommend_best_odd">最佳赔率</string>
     <string name="recommend_safe">安全投注</string>
 <!--endregion-->
+
+    <!--region 我的賽事-->
+    <string name="my_favorite_empty_title">我的赛事</string>
+    <string name="my_favorite_empty_msg">选择上面的图标，会将其添加到”我的赛事”中。\n您可以对其进行分组并轻松访问你感兴趣的所有赛事。</string>
+    <!--endregion-->
 </resources>

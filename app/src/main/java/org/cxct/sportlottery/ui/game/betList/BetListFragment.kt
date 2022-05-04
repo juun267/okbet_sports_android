@@ -915,7 +915,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             if (listData.subscribeChannelType == ChannelType.HALL) {
                 unSubscribeChannelHall(
                     listData.matchOdd.gameType,
-                    listData.playCateMenuCode,
                     listData.matchOdd.matchId
                 )
             } else {

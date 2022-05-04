@@ -491,10 +491,12 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 favorite_toolbar.visibility = View.VISIBLE
                 fl_no_game.visibility = View.VISIBLE
                 appbar_layout.visibility = View.GONE
+                favorite_game_list.visibility = View.GONE
             } else {
                 favorite_toolbar.visibility = View.GONE
                 fl_no_game.visibility = View.GONE
                 appbar_layout.visibility = View.VISIBLE
+                favorite_game_list.visibility = View.VISIBLE
             }
         }
 
@@ -597,28 +599,12 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                         leagueOdd.gameType?.key,
                         matchOdd.matchInfo?.id
                     )
-
-                    if (matchOdd.matchInfo?.eps == 1) {
-                        subscribeChannelHall(
-                            leagueOdd.gameType?.key,
-                            matchOdd.matchInfo.id
-                        )
-                    }
                 }
                 false -> {
                     unSubscribeChannelHall(
                         leagueOdd.gameType?.key,
-                        getPlaySelectedCode(),
                         matchOdd.matchInfo?.id
                     )
-
-                    if (matchOdd.matchInfo?.eps == 1) {
-                        unSubscribeChannelHall(
-                            leagueOdd.gameType?.key,
-                            PlayCate.EPS.value,
-                            matchOdd.matchInfo.id
-                        )
-                    }
                 }
             }
         }
@@ -630,7 +616,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 true -> {
                     unSubscribeChannelHall(
                         leagueOdd.gameType?.key,
-                        getPlaySelectedCode(),
                         matchOdd.matchInfo?.id
                     )
 
@@ -639,13 +624,26 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                             true -> {
                                 unSubscribeChannelHall(
                                     leagueOdd.gameType?.key,
-                                    it.code,
                                     matchOdd.matchInfo?.id
                                 )
                             }
                         }
                     }
                 }
+            }
+        }
+    }
+
+    /**
+     * 解除訂閱當前所選擇的PlayCate(MAIN, MATCH, 1ST ...)
+     */
+    private fun unSubscribePlayCateChannel() {
+        leagueAdapter.data.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                unSubscribeChannelHall(
+                    leagueOdd.gameType?.key,
+                    matchOdd.matchInfo?.id
+                )
             }
         }
     }

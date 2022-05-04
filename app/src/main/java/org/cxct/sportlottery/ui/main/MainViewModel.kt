@@ -19,10 +19,12 @@ import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameItemData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LanguageManager
 
@@ -48,6 +50,10 @@ class MainViewModel(
         get() = loginRepository.token
 
     val userId = loginRepository.userId
+
+    val navActivity: LiveData<Event<Class<*>>>
+        get() = _navActivity
+    private val _navActivity = MutableLiveData<Event<Class<*>>>()
 
     val isCreditAccount: LiveData<Boolean> = loginRepository.isCreditAccount
 
@@ -316,18 +322,6 @@ class MainViewModel(
         }
     }
 
-    //取得使用者是否需要手機驗證
-    fun getTwoFactorValidateStatus() {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.withdrawService.getTwoFactorStatus()
-            }
-            if (result?.success == false) { //代表需要驗證
-                withdrawRepository.checkUserPhoneNumber()//檢查有沒有手機號碼
-            }
-        }
-    }
-
     //發送簡訊驗證碼
     fun sendTwoFactor() {
         viewModelScope.launch {
@@ -350,6 +344,18 @@ class MainViewModel(
                 }
                 else
                     _errorMessageDialog.value = result.msg
+            }
+        }
+    }
+
+    fun navActivity(navClass: Class<*>) {
+        when (navClass) {
+            ProfileCenterActivity::class.java -> {
+                if (isLogin.value == true) {
+                    _navActivity.postValue(Event(navClass))
+                } else {
+                    _navActivity.postValue(Event(LoginActivity::class.java))
+                }
             }
         }
     }

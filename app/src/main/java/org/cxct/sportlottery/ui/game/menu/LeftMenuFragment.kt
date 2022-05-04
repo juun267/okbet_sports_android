@@ -16,7 +16,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.zhy.adapter.recyclerview.CommonAdapter
 import com.zhy.adapter.recyclerview.base.ViewHolder
 import kotlinx.android.synthetic.main.fragment_left_menu.*
-import kotlinx.android.synthetic.main.fragment_left_menu.btn_close
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import kotlinx.android.synthetic.main.snackbar_my_favorite_notify.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
@@ -31,14 +30,11 @@ import org.cxct.sportlottery.network.sport.SearchResult
 import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.FLAG_OPEN
-import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
-import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.menu.ChangeAppearanceDialog
@@ -107,18 +103,7 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
                     navSportEntrance(sportType)
                 },
                 { gameType, addOrRemove -> //圖釘
-                    when (viewModel.userInfo.value?.testFlag) {
-                        TestFlag.NORMAL.index -> {
-                            viewModel.pinFavorite(
-                                FavoriteType.SPORT,
-                                gameType
-                            )
-                            setSnackBarMyFavoriteNotify(myFavoriteNotifyType = addOrRemove)
-                        }
-                        else -> { //遊客 //尚未登入
-                            setSnackBarMyFavoriteNotify(isLogin = false)
-                        }
-                    }
+                    viewModel.leftPinFavorite(gameType, addOrRemove)
                 }
             ),
             LeftMenuItemNewAdapter.FooterSelectedListener(
@@ -718,6 +703,18 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
                 }
             }
 
+        }
+
+        viewModel.leftNotifyLogin.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let {
+                setSnackBarMyFavoriteNotify(isLogin = false)
+            }
+        }
+
+        viewModel.leftNotifyFavorite.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let {
+                setSnackBarMyFavoriteNotify(myFavoriteNotifyType = it)
+            }
         }
 
     }

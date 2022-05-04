@@ -20,6 +20,7 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.MenuCode
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
@@ -30,6 +31,7 @@ import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.game.home.OnClickFavoriteListener
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.game.home.OnClickStatisticsListener
+import org.cxct.sportlottery.ui.game.home.OnSubscribeChannelHallListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
@@ -84,7 +86,9 @@ class Vp2GameTable4Adapter (
         this.oddsType = oddsType
         this.playCateNameMap = playCateNameMap
         this.selectedOdds = selectedOdds
-        this.notifyDataSetChanged()
+        this.dataList.forEachIndexed { index, matchOdd ->
+            notifyItemChanged(index)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderHdpOu {
@@ -187,7 +191,10 @@ class Vp2GameTable4Adapter (
             MatchType.IN_PLAY -> {
                 var needUpdate = false
                 dataList.forEach { matchOdd ->
-                    if (matchOdd.matchInfo?.stopped == TimeCounting.STOP.value) return
+                    if (matchOdd.matchInfo?.stopped == TimeCounting.STOP.value) {
+                        needUpdate = true
+                        return
+                    }
                     matchOdd.matchInfo?.id?.let { id ->
                         timeMap[id]?.let { time ->
                             var newTime = time
@@ -215,7 +222,10 @@ class Vp2GameTable4Adapter (
             MatchType.AT_START -> {
                 var needUpdate = false
                 dataList.forEachIndexed { index, matchOdd ->
-                    if (matchOdd.matchInfo?.stopped == TimeCounting.STOP.value) return
+                    if (matchOdd.matchInfo?.stopped == TimeCounting.STOP.value) {
+                        needUpdate = true
+                        return
+                    }
                     matchOdd.matchInfo?.id?.let { id ->
                         timeMap[id]?.let { time ->
                             var newTime = time - diff
@@ -333,9 +343,11 @@ class Vp2GameTable4Adapter (
                     }
                 }
 
+                test_match_id.text = "${data?.leagueId} - ${data?.id}"
+
                 when (matchType) {
                     MatchType.IN_PLAY -> {
-                        tv_game_type.text = context.getString(R.string.home_tab_in_play)
+                        tv_game_type.text = context.getString(R.string.home_tab_in_play2)
 
                         when (gameType) {
                             GameType.TN.key -> {

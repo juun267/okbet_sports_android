@@ -83,5 +83,7 @@ data class MatchInfo(
     //999
     var scoreStatus:Int? = 0
 
-
+    // For Android use
+    var isStartPosition: Boolean = false
+    var isLastPosition: Boolean = false
 }

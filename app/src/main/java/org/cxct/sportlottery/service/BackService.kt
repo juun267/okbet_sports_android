@@ -90,13 +90,14 @@ class BackService : Service() {
                 reconnect()
             } else {
                 Timber.d("==已建立連線==")
-                connect()
+                //connect()
+                sendConnectStatusToActivity(ServiceConnectStatus.CONNECTED) // TODO(測試) 不直接重新連線，改發送已連線訊號
             }
         }
     }
 
     override fun onDestroy() {
-        Timber.i("onDestroy()")
+        Timber.d("==已斷線==")
         disconnect()
         super.onDestroy()
     }
@@ -356,7 +357,7 @@ class BackService : Service() {
         subscribeChannel(url)
     }
 
-    fun unsubscribeHallChannel(gameType: String?, cateMenuCode: String?, eventId: String?) {
+    fun unsubscribeHallChannel(gameType: String?, eventId: String?) {
         if (gameType == null || eventId == null) return
 
         val url = "$URL_HALL/$mPlatformId/$gameType/$eventId/encrypted"

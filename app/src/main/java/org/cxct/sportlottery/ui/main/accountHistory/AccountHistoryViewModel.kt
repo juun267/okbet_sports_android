@@ -93,8 +93,9 @@ class AccountHistoryViewModel(
     private var mBetDetailRequest: BetSettledDetailListRequest? = null
 
     val recordDataList = mutableListOf<Row?>()
-    val startTime = TimeUtil.getDefaultTimeStamp(7).startTime
-    val endTime = TimeUtil.getDefaultTimeStamp(7).endTime
+    private val accountHistoryTimeRangeParams = TimeUtil.getAccountHistoryTimeRangeParams()
+    val startTime = accountHistoryTimeRangeParams.startTime
+    val endTime = accountHistoryTimeRangeParams.endTime
 
 
     fun getNextPage(visibleItemCount: Int, firstVisibleItemPosition: Int, totalItemCount: Int) {

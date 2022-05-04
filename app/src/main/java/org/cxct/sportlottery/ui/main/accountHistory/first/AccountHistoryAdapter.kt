@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.main.accountHistory.first
 
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.view_account_history_title_bar.view.*
+import kotlinx.android.synthetic.main.view_status_selector.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,9 +18,8 @@ import org.cxct.sportlottery.databinding.ItemAccountHistoryBinding
 import org.cxct.sportlottery.network.bet.settledList.Row
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil
 
 class AccountHistoryAdapter(private val clickListener: ItemClickListener,
                             private val backClickListener: BackClickListener,
@@ -125,6 +126,8 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener,
                 }
 
                 sportSelectListener.onSelect("")
+                status_selector.cl_root.layoutParams.height = 40.dp
+                status_selector.tv_selected.gravity = Gravity.CENTER_VERTICAL or Gravity.START
                 status_selector.setCloseBtnText(context?.getString(R.string.bottom_sheet_close))
                 status_selector.dataList = sportStatusList
                 status_selector.setOnItemSelectedListener {

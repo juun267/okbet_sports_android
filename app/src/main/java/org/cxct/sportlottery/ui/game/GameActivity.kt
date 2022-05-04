@@ -62,12 +62,13 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.ui.odds.OddsDetailFragmentDirections
 import org.cxct.sportlottery.ui.odds.OddsDetailLiveFragmentDirections
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.MetricsUtil
-import org.cxct.sportlottery.util.phoneNumCheckDialog
 import org.parceler.Parcels
+
+
+
 
 
 class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) {
@@ -386,7 +387,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                selectTab(tab?.position)
+
             }
         })
 
@@ -410,36 +411,41 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             val countEps =
                 sportMenuResult?.sportMenuData?.menu?.eps?.items?.sumBy { it.num } ?: 0
 
-            val tabAll = tabLayout.getTabAt(0)?.customView
-            tabAll?.tv_title?.setText(R.string.home_tan_main)
-            //2022/01/05 主頁數量規則從使用"串關數量"修改為"其他玩法的加總"
-            tabAll?.tv_number?.text =
-                countParlay.plus(countInPlay).plus(countAtStart).plus(countToday).plus(countEarly)
+            tabLayout.getTabAt(0)?.customView?.apply {
+                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tan_main), 0.7f)
+                tv_number?.text = countParlay.plus(countInPlay).plus(countAtStart).plus(countToday).plus(countEarly)
                     .plus(countOutright).plus(countEps).toString()
+            }
 
-            val tabInPlay = tabLayout.getTabAt(1)?.customView
-            tabInPlay?.tv_title?.setText(R.string.home_tab_in_play)
-            tabInPlay?.tv_number?.text = countInPlay.toString()
+            tabLayout.getTabAt(1)?.customView?.apply {
+                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_in_play), 0.7f)
+                tv_number?.text = countInPlay.toString()
+            }
 
-            val tabAtStart = tabLayout.getTabAt(2)?.customView
-            tabAtStart?.tv_title?.setText(R.string.home_tab_at_start)
-            tabAtStart?.tv_number?.text = countAtStart.toString()
+            tabLayout.getTabAt(2)?.customView?.apply {
+                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_at_start), 0.7f)
+                tv_number?.text = countAtStart.toString()
+            }
 
-            val tabToday = tabLayout.getTabAt(3)?.customView
-            tabToday?.tv_title?.setText(R.string.home_tab_today)
-            tabToday?.tv_number?.text = countToday.toString()
+            tabLayout.getTabAt(3)?.customView?.apply {
+                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_today), 0.7f)
+                tv_number?.text = countToday.toString()
+            }
 
-            val tabEarly = tabLayout.getTabAt(4)?.customView
-            tabEarly?.tv_title?.setText(R.string.home_tab_early)
-            tabEarly?.tv_number?.text = countEarly.toString()
+            tabLayout.getTabAt(4)?.customView?.apply {
+                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_early), 0.7f)
+                tv_number?.text = countEarly.toString()
+            }
 
-            val tabOutright = tabLayout.getTabAt(5)?.customView
-            tabOutright?.tv_title?.setText(R.string.home_tab_outright)
-            tabOutright?.tv_number?.text = countOutright.toString()
+            tabLayout.getTabAt(5)?.customView?.apply {
+                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_outright), 0.7f)
+                tv_number?.text = countOutright.toString()
+            }
 
-            val tabParlay = tabLayout.getTabAt(6)?.customView
-            tabParlay?.tv_title?.setText(R.string.home_tab_parlay)
-            tabParlay?.tv_number?.text = countParlay.toString()
+            tabLayout.getTabAt(6)?.customView?.apply {
+                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_parlay), 0.7f)
+                tv_number?.text = countParlay.toString()
+            }
 
             //0401需求先隱藏特優賠率
 //            val tabEps = tabLayout.getTabAt(7)?.customView
@@ -527,7 +533,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             }
             R.id.oddsDetailFragment -> {
                 val action =
-                    if (detailMatchType == MatchType.IN_PLAY) HomeFragmentDirections.actionHomeFragmentToOddsDetailLiveFragment(
+                    if (detailMatchType == MatchType.IN_PLAY) OddsDetailFragmentDirections.actionOddsDetailFragmentToOddsDetailLiveFragment(
                         detailMatchType, gameType, matchID
                     ) else OddsDetailFragmentDirections.actionOddsDetailFragmentSelf(
                         gameType,
@@ -666,10 +672,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         viewModel.isLogin.observe(this) {
             getAnnouncement()
-            //登入後要請求使用者是否需要認證手機驗證碼
-            if (it) {
-                viewModel.getTwoFactorValidateStatus()
-            }
         }
 
         //使用者沒有電話號碼
@@ -1003,6 +1005,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
     override fun onDestroy() {
         expandCheckList.clear()
+        HomePageStatusManager.clear()
         super.onDestroy()
     }
 }

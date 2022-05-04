@@ -124,7 +124,7 @@ object Constants {
                     R.string.app_name)
                 LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/privacy-policy?platform="+context.getString(
                     R.string.app_name)
-                else -> getBaseUrl()+"sports-rule/#/us/privacy-policy?platform"+context.getString(
+                else -> getBaseUrl()+"sports-rule/#/us/privacy-policy?platform="+context.getString(
                         R.string.app_name)
             }
 
@@ -162,7 +162,7 @@ object Constants {
                     R.string.app_name)
                 LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/faq?platform="+context.getString(
                     R.string.app_name)
-                else -> getBaseUrl()+"sports-rule/#/us/faq?platform"+context.getString(
+                else -> getBaseUrl()+"sports-rule/#/us/faq?platform="+context.getString(
                     R.string.app_name)
             }
 
@@ -181,7 +181,7 @@ object Constants {
                     R.string.app_name)
                 LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/contact-us?platform="+context.getString(
                     R.string.app_name)
-                else -> getBaseUrl()+"sports-rule/#/us/contact-us?platform"+context.getString(
+                else -> getBaseUrl()+"sports-rule/#/us/contact-us?platform="+context.getString(
                     R.string.app_name)
             }
 
@@ -199,26 +199,11 @@ object Constants {
 
     //.apk 下載 url
     fun getAppDownloadUrl(): String {
-        return "https://download." + currentServerUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/cp.apk"
+        return "https://download." + currentServerUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/OkBet.apk"
     }
 
     fun getHostListUrl(serverUrl: String?): String {
         return "https://${BuildConfig.CHANNEL_NAME}.$serverUrl/api/front/domainconfig/appdomain/${BuildConfig.CHANNEL_NAME}.json"
-    }
-
-    fun getGameRuleUrl(context: Context, type: String): String? {
-        return try {
-            when (getSelectLanguage(context)) {
-
-                LanguageManager.Language.ZH -> "https://sportsrule.cxct.org/".plus("?type=$type")
-
-                else -> "https://sportsrule.cxct.org/us".plus("?type=$type")
-            }
-
-        } catch (e: UnsupportedEncodingException) {
-            e.printStackTrace()
-            null
-        }
     }
 
     //bet

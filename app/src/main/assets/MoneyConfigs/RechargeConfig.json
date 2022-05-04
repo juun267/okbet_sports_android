@@ -167,17 +167,6 @@
   },
   {
     "titleNameMap": {
-      "zh": "網銀線上",
-      "en": "Internet Banking",
-      "vi": "Ngân hàng trực tuyến"
-    },
-    "subtitle": "菲律賓在線網銀",
-    "image": "ic_internet_bank",
-    "rechType": "onlinePayment",
-    "onlineType": "203"
-  },
-  {
-    "titleNameMap": {
       "zh": "Gcash",
       "en": "Gcash",
       "vi": "Gcash"
@@ -222,6 +211,17 @@
   },
   {
     "titleNameMap": {
+      "zh": "PayMaya",
+      "en": "PayMaya",
+      "vi": "PayMaya"
+    },
+    "subtitle": "微信转账支付",
+    "image": "ic_pay_maya",
+    "rechType": "payMaya",
+    "onlineType": "0"
+  },
+  {
+    "titleNameMap": {
       "zh": "Gcash",
       "en": "Gcash",
       "vi": "Gcash"
@@ -244,13 +244,13 @@
   },
   {
     "titleNameMap": {
-      "zh": "PayMaya",
-      "en": "PayMaya",
-      "vi": "PayMaya"
+      "zh": "网银线上",
+      "en": "Internet Banking",
+      "vi": "Ngân hàng trực tuyến"
     },
-    "subtitle": "微信转账支付",
-    "image": "ic_pay_maya",
-    "rechType": "payMaya",
-    "onlineType": "0"
+    "subtitle": "菲律賓在線網銀",
+    "image": "ic_internet_bank",
+    "rechType": "onlinePayment",
+    "onlineType": "203"
   }
 ]
