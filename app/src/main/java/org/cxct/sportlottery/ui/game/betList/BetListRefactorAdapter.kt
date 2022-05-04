@@ -572,7 +572,13 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 if (itemData.matchOdd.status == BetStatus.ACTIVATED.code && oldOdds != TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))) {
                     oldOdds = TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))
                 }
-                tvOdds.text = if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) "@" + TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType)) else "–"
+                //反波膽顯示 %
+                var tvOdd = "@" + TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))
+                if(itemData.matchOdd.playCode == PlayCate.LCS.value)
+                    tvOdd = TextUtil.formatForOddPercentage(getOdds(itemData.matchOdd, currentOddsType)-1)
+
+                tvOdds.text = if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) tvOdd else "–"
+
                 if(itemData.matchOdd.extInfo != null){
                     tvContent.text = itemData.matchOdd.extInfo + spread
                 }else{
