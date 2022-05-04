@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:ignore="SpUsage,ContentDescription,WebViewLayout">
+    tools:ignore="SpUsage,ContentDescription,WebViewLayout,UnusedAttribute">
 
     <TextView
         android:id="@+id/league_text"
@@ -14,6 +14,7 @@
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="2"
+        android:lineHeight="20dp"
         android:paddingStart="16dp"
         android:paddingEnd="34dp"
         android:textAllCaps="true"
