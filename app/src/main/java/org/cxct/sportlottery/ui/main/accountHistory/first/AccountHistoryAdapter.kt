@@ -64,7 +64,7 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener,
 
             is ItemViewHolder -> {
                 val data = getItem(position) as DataItem.Item
-                holder.bind(data.row, clickListener)
+                holder.bind(data.row, clickListener, position)
             }
 
             is FooterViewHolder -> {
@@ -85,7 +85,7 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener,
     }
 
     class ItemViewHolder private constructor(val binding: ItemAccountHistoryBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: Row?, clickListener: ItemClickListener) {
+        fun bind(data: Row?, clickListener: ItemClickListener, position: Int) {
             binding.row = data
             binding.textUtil = TextUtil
 
@@ -94,6 +94,7 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener,
                     clickListener.onClick(data)
                 }
             }
+            if (position % 2 == 0) itemView.setBackgroundResource(R.color.colorWhite2)
             binding.executePendingBindings()
         }
 

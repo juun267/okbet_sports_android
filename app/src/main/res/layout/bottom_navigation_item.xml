@@ -23,10 +23,10 @@
         android:id="@+id/item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
         android:layout_marginBottom="5dp"
         android:maxLines="1"
-        android:gravity="center_horizontal"
+        android:gravity="center"
+        android:includeFontPadding="false"
         android:textColor="@color/selector_blue_gray_light"
         app:autoSizeMaxTextSize="@dimen/textSize12sp"
         app:autoSizeMinTextSize="@dimen/textSize8sp"
@@ -49,7 +49,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="123"
-        tools:visibility="visible"
-        />
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
