@@ -24,6 +24,7 @@ import org.cxct.sportlottery.network.odds.quick.QuickListData
 import org.cxct.sportlottery.ui.game.common.*
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.setBackColorWithColorMode
 
 class QuickListView @JvmOverloads constructor(
     context: Context,
@@ -51,7 +52,20 @@ class QuickListView @JvmOverloads constructor(
         OddButtonEpsAdapter(mMatchOdd?.matchInfo)
 
     init {
-        addView(LayoutInflater.from(MultiLanguagesApplication.appContext).inflate(R.layout.view_quick_list, this, false))
+        addView(LayoutInflater.from(MultiLanguagesApplication.appContext).inflate(R.layout.view_quick_list, this, false).apply {
+            league_odd_quick_odd_btn_pair.setBackColorWithColorMode(
+                lightModeColor = R.color.color_ededed, darkModeColor = R.color.color_212121
+            )
+            league_odd_quick_odd_btn_pager.setBackColorWithColorMode(
+                lightModeColor = R.color.color_ededed, darkModeColor = R.color.color_212121
+            )
+            league_odd_quick_odd_btn_eps.setBackColorWithColorMode(
+                lightModeColor = R.color.color_ededed, darkModeColor = R.color.color_212121
+            )
+            SpaceItemDecorationView.setBackColorWithColorMode(
+                lightModeColor = R.color.color_FCFCFC, darkModeColor = R.color.color_191919
+            )
+        })
     }
 
     override fun onAttachedToWindow() {
