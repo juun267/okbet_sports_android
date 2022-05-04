@@ -1128,9 +1128,9 @@
 
     <!--region 宣傳頁-->
     <string name="hot_recommend">Khuyến khích</string>
-    <string name="recommend_match">Ngàn trận đấu</string>
-    <string name="recommend_best_odd">Tỷ lệ cược tốt nhất</string>
-    <string name="recommend_safe">Cá cược an toàn</string>
+    <string name="recommend_match">10.000 trò chơi trực tiếp hàng tháng</string>
+    <string name="recommend_best_odd">Giá tốt hơn\nDịch vụ tôt hơn</string>
+    <string name="recommend_safe">Quy trình an toàn, Dễ dàng, Nhanh chóng</string>
     <!--endregion-->
 
     <!--region 我的賽事-->
