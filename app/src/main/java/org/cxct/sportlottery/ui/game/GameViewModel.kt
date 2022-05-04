@@ -103,6 +103,10 @@ class GameViewModel(
 
     val token = loginRepository.token
 
+    val gotConfig: LiveData<Event<Boolean>>
+        get() = _gotConfig
+    private val _gotConfig = MutableLiveData<Event<Boolean>>()
+
     private val gameLiveSharedPreferences by lazy {
         androidContext.getSharedPreferences(
             GameLiveSP,
@@ -2810,6 +2814,28 @@ class GameViewModel(
      */
     private fun Recommend.setupLeagueName() {
         matchInfo?.leagueName = leagueName
+    }
+    //endregion
+
+    //region 進入宣傳頁重新獲取config.json
+    fun getConfigData() {
+        //若是第一次啟動app則不再重新獲取一次config.json
+        if (gotConfigData) {
+            gotConfigData = false
+            _gotConfig.postValue(Event(true))
+            return
+        }
+
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.indexService.getConfig()
+            }?.let { configResult ->
+                if (configResult.success){
+                    sConfigData = configResult.configData
+                    _gotConfig.postValue(Event(true))
+                }
+            }
+        }
     }
     //endregion
     //endregion
