@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.util
 
 import android.graphics.Rect
+import android.text.SpannableString
+import android.text.Spanned
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -9,6 +11,7 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
+import org.cxct.sportlottery.widget.FakeBoldSpan
 
 /**
  * @author kevin
@@ -104,4 +107,13 @@ fun TextView.setTitleLetterSpacing() {
             LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> 0.2F
             else -> 0F
         }
+}
+
+/**
+ * 目前需求有font weight 500 約等於0.7f
+ */
+fun TextView.setTextWithStrokeWidth(str: String, width: Float) {
+    val span = SpannableString(str)
+    span.setSpan(FakeBoldSpan(width), 0, span.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+    text = span
 }
