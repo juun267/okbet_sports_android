@@ -156,7 +156,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         var dataSport = arrayListOf<Item>()
     }
     class HomeHighlightGameTitleItemData {
-        var highlightGameTitle: String = ""
+        var highlightGameCode: String = ""
         var highlightGameIcon: Int = R.drawable.ic_soccer
         var highlightGameBackground: Int = R.drawable.img_home_title_soccer_background
     }
@@ -372,7 +372,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
     fun updateHightLightTitle(selectItem: Item) {
         val homeHighlightGameTitleItemData = HomeHighlightGameTitleItemData().apply {
-            this.highlightGameTitle = selectItem.name
+            this.highlightGameCode = selectItem.code
             this.highlightGameIcon = getGameIcon(selectItem.code) ?: R.drawable.ic_soccer
             this.highlightGameBackground = getTitleBarBackground(selectItem.code) ?: R.drawable.img_home_title_soccer_background
         }
@@ -608,7 +608,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     // HighLight Title
     inner class GameHighLightTitleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(data: HomeHighlightGameTitleItemData) {
-            itemView.highlight_tv_game_name.text = data.highlightGameTitle
+            itemView.highlight_tv_game_name.text = getGameTypeString(itemView.context, data.highlightGameCode)
             itemView.highlight_iv_game_icon.setImageResource(data.highlightGameIcon)
             itemView.highlight_titleBar.setBackgroundResource(data.highlightGameBackground)
         }
