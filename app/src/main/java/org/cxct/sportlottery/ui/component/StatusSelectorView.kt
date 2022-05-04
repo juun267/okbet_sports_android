@@ -32,6 +32,7 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
     private val bottomSheetView: View by lazy { LayoutInflater.from(context).inflate(bottomSheetLayout, null) }
     private val bottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(context) }
     private val arrowImg by lazy { typedArray.getResourceId(R.styleable.StatusBottomSheetStyle_arrowSrc, R.drawable.ic_arrow_gray)}
+    private val textGravity by lazy { typedArray.getInt(R.styleable.StatusBottomSheetStyle_textGravity, 0x11)}
 
     var selectedText: String? = typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText)
         get() = tv_selected.text.toString()
@@ -131,6 +132,7 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
 
                 tv_selected.tag = ""
                 tv_selected.text = typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText)
+                tv_selected.gravity = textGravity
             }
 
         } catch (e: Exception) {
