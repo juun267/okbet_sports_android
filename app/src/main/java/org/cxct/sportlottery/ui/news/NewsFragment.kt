@@ -112,6 +112,7 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
                         width = ViewGroup.LayoutParams.WRAP_CONTENT
                         height = ViewGroup.LayoutParams.WRAP_CONTENT
                     }
+                    tabTextView.setTextColor(ContextCompat.getColor(context, R.color.color_A3A3A3_666666))
 
                     tabTextView.text = tab.text
                 }

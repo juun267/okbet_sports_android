@@ -107,7 +107,7 @@
         android:minWidth="49dp"
         android:paddingHorizontal="2dp"
         android:text="@string/inquire"
-        android:textColor="@color/color_191919_FCFCFC"
+        android:textColor="@color/color_FFFFFF_FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/ll_end_date"
         app:layout_constraintWidth_max="wrap"
