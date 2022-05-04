@@ -80,7 +80,7 @@
         android:drawablePadding="@dimen/margin_6"
         android:text="@string/text_us_east_time"
         android:textColor="@color/colorGray"
-        android:textSize="@dimen/textSize14sp"
+        android:textSize="@dimen/textSize12sp"
         app:drawableLeftCompat="@drawable/ic_info_white"
         app:drawableTint="@color/colorGray"
         app:layout_constraintEnd_toEndOf="parent"
