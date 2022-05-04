@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.game.quick
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RadioButton
@@ -211,7 +210,7 @@ class QuickListView @JvmOverloads constructor(
                     leagueOddListener?.onClickBet(
                         matchInfo,
                         odd,
-                        playCateCode,
+                        getQuickPairPlayCateCode(playCateCode),
                         selectedQuickPlayCate.name ?: playCateName,
                         mMatchOdd?.betPlayCateNameMap
                     )
@@ -283,6 +282,34 @@ class QuickListView @JvmOverloads constructor(
                     else -> R.id.quick_odd_pair_tab_1
                 }
             )
+        }
+    }
+
+    /**
+     * 從使用Piar排版的快捷玩法中尋找對應的playCateCode
+     *
+     * @see org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_OU
+     * @see org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_HDP
+     * @see org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_ADVANCE
+     */
+    private fun getQuickPairPlayCateCode(quickPlayCateCode: String): String {
+        return when {
+            quickPlayCateCode.contains(PlayCate.HDP_1ST.value) -> {
+                PlayCate.HDP_1ST.value
+            }
+            quickPlayCateCode.contains(PlayCate.HDP.value) -> {
+                PlayCate.HDP.value
+            }
+            quickPlayCateCode.contains(PlayCate.OU_1ST.value) -> {
+                PlayCate.OU_1ST.value
+            }
+            quickPlayCateCode.contains(PlayCate.OU.value) -> {
+                PlayCate.OU.value
+            }
+            quickPlayCateCode.contains(PlayCate.ADVANCE.value) -> {
+                PlayCate.ADVANCE.value
+            }
+            else -> ""
         }
     }
 
