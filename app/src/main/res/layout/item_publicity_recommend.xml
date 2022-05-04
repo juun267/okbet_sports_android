@@ -23,4 +23,10 @@
         tools:itemCount="1"
         tools:listitem="@layout/itemview_league_odd_v5" />
 
+    <View
+        android:id="@+id/SpaceItemDecorationView"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/colorWhite" />
+
 </LinearLayout>

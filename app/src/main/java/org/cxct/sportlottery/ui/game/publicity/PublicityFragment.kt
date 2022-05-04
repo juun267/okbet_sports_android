@@ -168,7 +168,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         with(binding.rvPublicity) {
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = mPublicityAdapter
-            itemAnimator = null
         }
     }
 
