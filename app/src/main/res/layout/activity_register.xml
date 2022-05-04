@@ -23,7 +23,7 @@
     <ImageButton
         android:id="@+id/btn_back"
         android:layout_width="26dp"
-        android:layout_height="26dp"
+        android:layout_height="20dp"
         android:layout_marginStart="24dp"
         android:background="@null"
         android:contentDescription="@null"
@@ -55,7 +55,7 @@
                 android:id="@+id/view"
                 android:layout_width="6dp"
                 android:layout_height="26dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="13dp"
                 android:background="@drawable/bg_login_title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -63,7 +63,7 @@
             <TextView
                 android:id="@+id/label_register"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:layout_marginLeft="14dp"
                 android:text="@string/btn_register"
                 android:textColor="@color/colorBlackLight"
@@ -77,10 +77,11 @@
                 android:id="@+id/et_recommend_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="20dp"
                 app:hintText="@string/hint_recommend_code"
                 app:iconSignifier="@drawable/ic_login_recommend"
                 app:labelText="@string/recommend_code"
+                app:labelTextStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/label_register">
 
@@ -102,10 +103,11 @@
                 android:id="@+id/et_member_account"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 app:hintText="@string/hint_member_account"
                 app:iconSignifier="@drawable/ic_login_account"
                 app:labelText="@string/member_account"
+                app:labelTextStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_recommend_code">
 
@@ -124,11 +126,12 @@
                 android:id="@+id/et_login_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 app:endIcon="@drawable/ic_eye_close"
                 app:hintText="@string/hint_register_password"
                 app:iconSignifier="@drawable/ic_login_password"
                 app:labelText="@string/login_password"
+                app:labelTextStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_member_account">
 
@@ -147,11 +150,12 @@
                 android:id="@+id/et_confirm_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 app:endIcon="@drawable/ic_eye_close"
                 app:hintText="@string/hint_confirm_password"
                 app:iconSignifier="@drawable/ic_login_password"
                 app:labelText="@string/confirm_password"
+                app:labelTextStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_login_password">
 
@@ -170,10 +174,11 @@
                 android:id="@+id/et_full_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 app:hintText="@string/hint_real_name"
                 app:iconSignifier="@drawable/ic_login_name"
                 app:labelText="@string/real_name"
+                app:labelTextStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_confirm_password">
 
@@ -192,11 +197,12 @@
                 android:id="@+id/et_withdrawal_pwd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 app:endIcon="@drawable/ic_eye_close"
                 app:hintText="@string/hint_withdrawal_pwd"
                 app:iconSignifier="@drawable/ic_login_withdraw_number"
                 app:labelText="@string/withdrawal_pwd"
+                app:labelTextStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_full_name">
 
@@ -216,10 +222,11 @@
                 android:id="@+id/et_qq"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 app:hintText="@string/hint_qq_number"
                 app:iconSignifier="@drawable/ic_login_qq"
                 app:labelText="@string/qq_number"
+                app:labelTextStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_withdrawal_pwd">
 
@@ -238,11 +245,12 @@
                 android:id="@+id/et_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 app:hintText="@string/hint_phone_number"
                 app:iconSignifier="@drawable/ic_login_phone_number"
                 app:subLabelText="+63"
                 app:labelText="@string/phone_number"
+                app:labelTextStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_qq">
 
@@ -261,7 +269,7 @@
                 android:id="@+id/block_sms_valid_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:gravity="center"
                 android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
@@ -275,6 +283,7 @@
                     app:hintText="@string/hint_verification_code_by_sms"
                     app:iconSignifier="@drawable/ic_login_verify"
                     app:labelText="@string/verification_code_by_sms"
+                    app:labelTextStyle="normal"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/ll_send_sms"
@@ -333,10 +342,11 @@
                 android:id="@+id/et_mail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 app:hintText="@string/hint_e_mail"
                 app:iconSignifier="@drawable/ic_login_mail"
                 app:labelText="@string/e_mail"
+                app:labelTextStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/block_sms_valid_code">
 
@@ -355,10 +365,11 @@
                 android:id="@+id/et_postal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 app:hintText="@string/hint_postal_code"
                 app:iconSignifier="@drawable/ic_postal_code"
                 app:labelText="@string/postal_code"
+                app:labelTextStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_mail">
 
@@ -377,10 +388,11 @@
                 android:id="@+id/et_province"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 app:hintText="@string/hint_province"
                 app:iconSignifier="@drawable/ic_province"
                 app:labelText="@string/province"
+                app:labelTextStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_postal">
 
@@ -399,10 +411,11 @@
                 android:id="@+id/et_city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 app:hintText="@string/hint_city"
                 app:iconSignifier="@drawable/ic_city"
                 app:labelText="@string/city"
+                app:labelTextStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_province">
 
@@ -421,10 +434,11 @@
                 android:id="@+id/et_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 app:hintText="@string/hint_e_address"
                 app:iconSignifier="@drawable/ic_detail_address"
                 app:labelText="@string/e_address"
+                app:labelTextStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_city">
 
@@ -443,10 +457,11 @@
                 android:id="@+id/et_we_chat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 app:hintText="@string/hint_we_chat_number"
                 app:iconSignifier="@drawable/ic_login_wechat"
                 app:labelText="@string/we_chat"
+                app:labelTextStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_address">
 
@@ -465,10 +480,11 @@
                 android:id="@+id/et_zalo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 app:hintText="@string/hint_zalo"
                 app:iconSignifier="@drawable/ic_login_zalo"
                 app:labelText="@string/zalo"
+                app:labelTextStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_we_chat">
 
@@ -487,10 +503,11 @@
                 android:id="@+id/et_facebook"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 app:hintText="@string/hint_facebook"
                 app:iconSignifier="@drawable/ic_login_facebook"
                 app:labelText="@string/facebook"
+                app:labelTextStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_zalo">
 
@@ -509,10 +526,11 @@
                 android:id="@+id/et_whats_app"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 app:hintText="@string/hint_whats_app"
                 app:iconSignifier="@drawable/ic_login_whatsapp"
                 app:labelText="@string/whats_app"
+                app:labelTextStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_facebook">
 
@@ -531,10 +549,11 @@
                 android:id="@+id/et_telegram"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 app:hintText="@string/hint_telegram"
                 app:iconSignifier="@drawable/ic_login_telegram"
                 app:labelText="@string/telegram"
+                app:labelTextStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_whats_app">
 
@@ -553,10 +572,11 @@
                 android:id="@+id/et_security_pb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 app:hintText="@string/hint_security_pb"
                 app:iconSignifier="@drawable/ic_security_pb"
                 app:labelText="@string/security_pb"
+                app:labelTextStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_telegram">
 
@@ -576,7 +596,7 @@
                 android:id="@+id/block_valid_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:gravity="center"
                 android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
@@ -589,6 +609,7 @@
                     android:layout_weight="1"
                     app:iconSignifier="@drawable/ic_login_verify"
                     app:singleText="@string/verification_code"
+                    app:singleTextStyle="normal"
                     app:hideSelectedTitle="true">
 
                     <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
@@ -636,7 +657,7 @@
                 android:id="@+id/clAgreement"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="6dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/block_valid_code">
 
@@ -673,24 +694,25 @@
                     android:id="@+id/cbPrivacy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
                     android:button="@drawable/effect_login_select_checkbox"
                     android:checked="true"
-                    android:paddingStart="4dp"
+                    android:paddingStart="6dp"
                     android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize13sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvDutyTitle" />
+                    app:layout_constraintTop_toTopOf="@+id/tvPrivacy"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvPrivacy"/>
 
                 <TextView
                     android:id="@+id/tvPrivacy"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="13dp"
                     android:gravity="left"
                     android:textColor="@color/colorBlackLight"
                     android:textColorLink="@color/colorBlue"
                     android:textSize="@dimen/textSize13sp"
+                    android:lineSpacingExtra="3dp"
                     app:layout_constraintEnd_toEndOf="@+id/clAgreement"
                     app:layout_constraintStart_toEndOf="@+id/cbPrivacy"
                     app:layout_constraintTop_toBottomOf="@+id/tvDutyTitle" />
@@ -700,24 +722,25 @@
                     android:id="@+id/cbAgreement"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
                     android:button="@drawable/effect_login_select_checkbox"
                     android:checked="true"
-                    android:paddingStart="4dp"
+                    android:paddingStart="6dp"
                     android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize13sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cbPrivacy" />
+                    app:layout_constraintTop_toTopOf="@+id/tvAgreement"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvAgreement"/>
 
                 <TextView
                     android:id="@+id/tvAgreement"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="14dp"
                     android:gravity="left"
                     android:textColor="@color/colorBlackLight"
                     android:textColorLink="@color/colorBlue"
                     android:textSize="@dimen/textSize13sp"
+                    android:lineSpacingExtra="3dp"
                     app:layout_constraintEnd_toEndOf="@+id/clAgreement"
                     app:layout_constraintStart_toEndOf="@+id/cbAgreement"
                     app:layout_constraintTop_toBottomOf="@+id/cbPrivacy" />
@@ -766,7 +789,7 @@
                 android:layout_height="46dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="6dp"
-                android:background="@drawable/bg_radius_20_button_dusk"
+                android:background="@drawable/bg_radius_23_button_dusk"
                 android:enabled="false"
                 android:text="@string/btn_register"
                 android:textColor="@android:color/white"

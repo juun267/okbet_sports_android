@@ -70,12 +70,13 @@
             <org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
                 android:id="@+id/et_account"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 app:iconSignifier="@drawable/ic_login_account"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/label_register"
                 app:labelText="@string/member_account"
+                app:labelTextStyle="normal"
                 app:hintText="@string/account_hint">
 
                 <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
@@ -96,14 +97,15 @@
             <org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
                 android:id="@+id/et_password"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="8dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 app:endIcon="@drawable/ic_eye_open"
                 app:iconSignifier="@drawable/ic_login_password"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_account"
                 app:labelText="@string/login_password"
+                app:labelTextStyle="normal"
                 app:hintText="@string/password_hint">
 
                 <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
@@ -123,7 +125,7 @@
                 android:id="@+id/block_valid_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:gravity="center"
                 android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
@@ -136,7 +138,8 @@
                     android:layout_weight="1"
                     app:iconSignifier="@drawable/ic_login_verify"
                     app:hideSelectedTitle="true"
-                    app:singleText="@string/verification_code">
+                    app:singleText="@string/verification_code"
+                    app:singleTextStyle="normal">
 
                     <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
                         android:id="@+id/eet_verification_code"
