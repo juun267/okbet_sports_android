@@ -121,14 +121,6 @@
                     tools:listitem="@layout/itemview_date_v4"
                     tools:visibility="visible" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:background="@color/colorWhite"
-                    app:layout_constraintTop_toBottomOf="@id/game_filter_type_list" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>

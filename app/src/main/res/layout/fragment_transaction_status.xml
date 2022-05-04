@@ -73,7 +73,8 @@
                     app:backgroundFrame="@drawable/frame_color_silver_light_stroke"
                     app:defaultBottomSheetTitleText="@string/choose_bet_state"
                     app:defaultStatusText="@string/waiting"
-                    app:horizontalChainStyle="spread" />
+                    app:horizontalChainStyle="spread"
+                    app:textGravity="start|center_vertical" />
 
                 <org.cxct.sportlottery.ui.component.StatusSelectorView
                     android:id="@+id/game_type_selector"
@@ -86,7 +87,8 @@
                     app:backgroundFrame="@drawable/frame_color_silver_light_stroke"
                     app:defaultBottomSheetTitleText="@string/choose_bet_state"
                     app:defaultStatusText="@string/all_sport"
-                    app:horizontalChainStyle="spread" />
+                    app:horizontalChainStyle="spread"
+                    app:textGravity="start|center_vertical" />
 
             </LinearLayout>
 
@@ -101,7 +103,7 @@
                 android:drawablePadding="@dimen/margin_6"
                 android:text="@string/text_us_east_time"
                 android:textColor="@color/colorGray"
-                android:textSize="@dimen/textSize14sp"
+                android:textSize="@dimen/textSize12sp"
                 app:drawableLeftCompat="@drawable/ic_info_white"
                 app:drawableTint="@color/colorGray" />
 

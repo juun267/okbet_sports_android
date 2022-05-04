@@ -90,6 +90,7 @@ fun phoneNumCheckDialog(context: Context, fm: FragmentManager) {
         return
     }
     CustomAlertDialog(context).apply {
+        setTitle(context.getString(R.string.prompt))
         setMessage(errorMsg)
         setNegativeButtonText(null)
         setCanceledOnTouchOutside(false)
