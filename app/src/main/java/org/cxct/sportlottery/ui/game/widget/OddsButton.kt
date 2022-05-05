@@ -12,6 +12,7 @@ import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
@@ -114,7 +115,8 @@ class OddsButton @JvmOverloads constructor(
             tv_odds.setTextColor(
                 ContextCompat.getColorStateList(
                     context,
-                    R.color.selector_button_odd_bottom_text
+                    if (MultiLanguagesApplication.isNightMode) R.color.selector_button_odd_bottom_text_dark
+                    else R.color.selector_button_odd_bottom_text
                 )
             )
         }
@@ -184,7 +186,10 @@ class OddsButton @JvmOverloads constructor(
         img_odd_lock.apply {
             background = ContextCompat.getDrawable(
                 context,
-                if (mFillet) R.drawable.bg_radius_4_button_odds_lock else R.drawable.bg_radius_0_button_odds_lock
+                if (mFillet) {
+                    if (MultiLanguagesApplication.isNightMode) R.drawable.bg_radius_4_button_odds_lock_dark
+                    else R.drawable.bg_radius_4_button_odds_lock
+                } else R.drawable.bg_radius_0_button_odds_lock
             )
 
             visibility =
@@ -240,11 +245,25 @@ class OddsButton @JvmOverloads constructor(
                 button_odd_detail.background =
                     ContextCompat.getDrawable(
                         context,
-                        if (mFillet) R.drawable.selector_button_radius_4_odds
-                        else R.drawable.selector_button_radius_0_odds
+                        if (mFillet) {
+                            if (MultiLanguagesApplication.isNightMode) R.drawable.selector_button_radius_4_odds_dark
+                            else R.drawable.selector_button_radius_4_odds
+                        } else R.drawable.selector_button_radius_0_odds
                     )
 
                 isActivated = false
+
+                tv_odds.setTextColor(
+                    ContextCompat.getColorStateList(
+                        context,
+                        if (MultiLanguagesApplication.isNightMode) {
+                            R.color.selector_button_odd_bottom_text_dark
+                        } else R.color.selector_button_odd_bottom_text
+                    )
+                )
+                if (MultiLanguagesApplication.isNightMode) {
+                    tv_odds.isActivated = true
+                }
             }
         }
     }

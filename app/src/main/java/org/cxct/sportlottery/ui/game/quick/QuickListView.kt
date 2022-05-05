@@ -160,10 +160,13 @@ class QuickListView @JvmOverloads constructor(
                                 )
                             }
                         }
-                        mLeagueOddListener?.onClickQuickCateTab(
-                            mMatchOdd!!,
-                            mSelectedQuickPlayCate!!
-                        )
+                        mSelectedQuickPlayCate?.let { quickPlayCate ->
+                            mLeagueOddListener?.onClickQuickCateTab(
+                                mMatchOdd!!,
+                                quickPlayCate
+                            )
+                        }
+
                         SpaceItemDecorationView.visibility = View.VISIBLE
                     }
                 }
