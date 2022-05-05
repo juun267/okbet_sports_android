@@ -16,8 +16,8 @@
 
     <ImageView
         android:id="@+id/highlight_iv_game_icon"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
         android:layout_marginStart="20dp"
         android:contentDescription="@null"
         android:src="@drawable/ic_soccer"
@@ -32,7 +32,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:gravity="center"
-        android:includeFontPadding="false"
         android:text="@string/soccer"
         android:textAllCaps="true"
         android:textColor="@color/colorBlackLight"
