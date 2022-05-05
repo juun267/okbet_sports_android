@@ -880,6 +880,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
      * 同賽事不能串關提示
      * @param show true:顯示, false:隱藏
      * @如果資料只有一筆，也不用顯示
+     * @反波膽也不能串關
      */
     private fun showHideCantParlayWarn(show: Boolean) {
         if (show && betListRefactorAdapter?.betList?.size ?: 0 > 1) {

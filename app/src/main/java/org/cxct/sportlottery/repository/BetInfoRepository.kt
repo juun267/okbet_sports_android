@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuota
 import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuotaComData
 import org.cxct.sportlottery.network.odds.MatchInfo
@@ -145,6 +146,9 @@ class BetInfoRepository(val androidContext: Context) {
         //先檢查有沒有冠軍類別, 若有則全部紅色標記
         val hasMatchType = betList.find { it.matchType == MatchType.OUTRIGHT } != null
 
+        //檢查有沒有反波膽
+        val hasLcsGameType = betList.find { it.matchOdd.playCode == PlayCate.LCS.name } != null
+
         //檢查是否有不同的球賽種類
         val gameType = GameType.getGameType(betList.getOrNull(0)?.matchOdd?.gameType)
 
@@ -156,7 +160,7 @@ class BetInfoRepository(val androidContext: Context) {
         }
 
         betList.forEach {
-            if (hasMatchType || gameType != GameType.getGameType(it.matchOdd.gameType) || matchIdList[it.matchOdd.matchId]?.size ?: 0 > 1) {
+            if (hasLcsGameType || hasMatchType || gameType != GameType.getGameType(it.matchOdd.gameType) || matchIdList[it.matchOdd.matchId]?.size ?: 0 > 1) {
                 hasPointMark = true
                 it.pointMarked = true
             } else {
