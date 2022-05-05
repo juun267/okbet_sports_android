@@ -30,39 +30,48 @@
         android:layout_width="67dp"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/item_bet_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_height="match_parent"
             android:background="@color/colorBlue"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_bet_count"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="24dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="-3dp"
+                android:gravity="center"
                 android:includeFontPadding="false"
                 android:text="0"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/textSize22sp"
-                android:layout_marginBottom="-3dp"/>
+                app:layout_constraintBottom_toTopOf="@id/tv_bet"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
 
             <TextView
+                android:id="@+id/tv_bet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="center_horizontal|bottom"
                 android:layout_marginBottom="5dp"
                 android:gravity="center"
-                android:includeFontPadding="false"
                 android:maxLines="1"
                 android:text="@string/bet_info_list_title"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/textSize11sp"
-                app:autoSizeTextType="uniform" />
-        </LinearLayout>
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_bet_count" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/laExplo"
