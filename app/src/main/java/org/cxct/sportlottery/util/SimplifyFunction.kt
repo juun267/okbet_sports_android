@@ -105,8 +105,8 @@ fun MutableMap<String, List<Odd?>?>.sortQuickPlayCate(playCate: String) {
  */
 fun TextView.setTitleLetterSpacing() {
     this.letterSpacing =
-        when (LanguageManager.getSelectLanguage(MultiLanguagesApplication.appContext)) {
-            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> 0.2F
+        when (LanguageManager.getSelectLanguage(context)) {
+            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> 0.1F
             else -> 0F
         }
 }
