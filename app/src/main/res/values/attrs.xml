@@ -17,6 +17,7 @@
         <attr name="cvEditable" format="boolean" />
         <attr name="cvCount" format="string" />
         <attr name="cvIcon" format="reference" />
+        <attr name="cvDividerColor" format="reference" />
         <attr name="cvHint" format="string" />
         <attr name="cvText" format="string" />
         <attr name="cvEms" format="integer" />
@@ -193,9 +194,21 @@
 
         <!--Texts-->
         <attr name="labelText" format="string" />
+        <attr name="labelTextStyle" format="enum">
+            <enum name="normal" value="0"/>
+            <enum name="bold" value="1"/>
+            <enum name="italic" value="2"/>
+            <enum name="bold_italic" value="3"/>
+        </attr>
         <attr name="subLabelText" format="string" />
         <attr name="hintText" format="string" />
         <attr name="singleText" format="string" />
+        <attr name="singleTextStyle" format="enum">
+            <enum name="normal" value="0"/>
+            <enum name="bold" value="1"/>
+            <enum name="italic" value="2"/>
+            <enum name="bold_italic" value="3"/>
+        </attr>
         <attr name="helperText" format="string" />
 
 

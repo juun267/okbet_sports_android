@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite1"
     android:orientation="vertical"
-    tools:context="org.cxct.sportlottery.ui.withdraw.BankCardFragment">
+    tools:context="org.cxct.sportlottery.ui.withdraw.BankCardFragment"
+    tools:ignore="ContentDescription, SpUsage">
 
     <LinearLayout
         android:id="@+id/ll_tab_layout"
@@ -17,10 +18,9 @@
         tools:context="org.cxct.sportlottery.ui.common.CustomTabLayout">
 
         <com.google.android.material.tabs.TabLayout
-            app:tabTextAppearance="@style/NoUppercaseTab"
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="43dp"
             app:tabIndicator="@drawable/custom_tab_indicator"
             app:tabIndicatorFullWidth="false"
             app:tabMode="fixed"
@@ -28,6 +28,7 @@
             app:tabPaddingStart="25dp"
             app:tabRippleColor="@null"
             app:tabSelectedTextColor="@color/colorBlackLight"
+            app:tabTextAppearance="@style/NoUppercaseTab"
             app:tabTextColor="@color/colorGray">
 
             <com.google.android.material.tabs.TabItem
@@ -78,7 +79,7 @@
                     android:id="@+id/item_bank_selector"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="8dp"
                     android:background="@drawable/bg_square_shape_4dp_white"
                     android:gravity="center"
                     android:orientation="horizontal"
@@ -96,7 +97,8 @@
 
                     <View
                         android:layout_width="1dp"
-                        android:layout_height="14dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="10dp"
                         android:layout_marginEnd="12dp"
                         android:background="@color/colorWhite6" />
 
@@ -105,6 +107,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_marginEnd="12dp"
+                        android:scaleType="fitXY"
                         android:src="@drawable/ic_bank_default" />
 
                     <TextView
@@ -119,13 +122,10 @@
 
                     <ImageView
                         android:id="@+id/imageView"
-                        android:layout_width="10dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="11dp"
-                        android:src="@drawable/ic_arrow_down_gray"
-                        app:layout_constraintBottom_toBottomOf="@+id/ll_start_date"
-                        app:layout_constraintEnd_toEndOf="@+id/ll_start_date"
-                        app:layout_constraintTop_toTopOf="@+id/ll_start_date" />
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginEnd="6dp"
+                        android:src="@drawable/ic_arrow_down_gray" />
 
                 </LinearLayout>
                 <!-- 開戶名 -->
@@ -133,9 +133,11 @@
                     android:id="@+id/et_create_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:cvDividerColor="@color/color_E2E2E2"
                     app:cvEnable="false"
                     app:cvHint="@string/hint_please_enter_create_name"
                     app:cvInputType="text"
+                    app:cvMarginBottom="8dp"
                     app:cvTitle="@string/create_name"
                     app:cvTitleTextStyle="bold" />
                 <!-- 銀行卡號 -->
@@ -143,8 +145,10 @@
                     android:id="@+id/et_bank_card_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:cvDividerColor="@color/color_E2E2E2"
                     app:cvHint="@string/please_enter_bank_card_rule"
                     app:cvInputType="number"
+                    app:cvMarginBottom="8dp"
                     app:cvTitle="@string/bank_card_number"
                     app:cvTitleTextStyle="bold" />
                 <!-- 開戶網點 -->
@@ -152,8 +156,10 @@
                     android:id="@+id/et_network_point"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:cvDividerColor="@color/color_E2E2E2"
                     app:cvHint="@string/please_enter_network_point"
                     app:cvInputType="text"
+                    app:cvMarginBottom="8dp"
                     app:cvTitle="@string/network_point"
                     app:cvTitleTextStyle="bold" />
                 <!-- 電話號碼 -->
@@ -161,8 +167,10 @@
                     android:id="@+id/et_phone_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:cvDividerColor="@color/color_E2E2E2"
                     app:cvHint="@string/please_enter_wallet_phone_number"
                     app:cvInputType="number"
+                    app:cvMarginBottom="8dp"
                     app:cvTitle="@string/wallet_phone_number"
                     app:cvTitleTextStyle="bold" />
             </LinearLayout>
@@ -178,7 +186,7 @@
                     android:id="@+id/item_protocol_selector"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="8dp"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="@null"
                     app:contentPaddingLeft="10dp">
@@ -223,8 +231,10 @@
                     android:id="@+id/et_wallet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:cvDividerColor="@color/color_E2E2E2"
                     app:cvHint="@string/please_enter_wallet_address"
                     app:cvInputType="text"
+                    app:cvMarginBottom="8dp"
                     app:cvTitle="@string/wallet_address"
                     app:cvTitleTextStyle="bold" />
             </LinearLayout>
@@ -233,8 +243,10 @@
                 android:id="@+id/et_withdrawal_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cvDividerColor="@color/color_E2E2E2"
                 app:cvHint="@string/hint_please_enter_withdraw_password"
                 app:cvInputType="textPassword"
+                app:cvMarginBottom="8dp"
                 app:cvTitle="@string/withdraw_password"
                 app:cvTitleTextStyle="bold" />
         </LinearLayout>
@@ -243,7 +255,8 @@
         <!--  按鈕  -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="44dp">
+            android:layout_height="44dp"
+            android:layout_marginTop="10dp">
 
             <TextView
                 android:id="@+id/btn_submit"

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zhy.adapter.recyclerview.CommonAdapter
 import com.zhy.adapter.recyclerview.base.ViewHolder
 import kotlinx.android.synthetic.main.home_game_highlight_title.view.*
-import kotlinx.android.synthetic.main.home_game_table_4.view.*
+import kotlinx.android.synthetic.main.home_highlight_item.view.*
 import kotlinx.android.synthetic.main.home_sport_table_4.view.*
 import kotlinx.android.synthetic.main.itemview_sport_type_list.view.*
 import org.cxct.sportlottery.R
@@ -38,6 +38,7 @@ import org.cxct.sportlottery.ui.game.home.recommend.OddBean
 import org.cxct.sportlottery.ui.game.home.recommend.RecommendGameEntity
 import org.cxct.sportlottery.ui.game.interfaces.UpdateHighLightInterface
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.GameConfigManager.getGameIcon
 import org.cxct.sportlottery.util.GameConfigManager.getTitleBarBackground
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
@@ -253,6 +254,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             ItemType.MATCHODD.ordinal -> {
                 val layout = LayoutInflater.from(parent.context)
                     .inflate(R.layout.home_highlight_item, parent, false)
+                layout.btn_chart.visibility = View.GONE
                 return ViewHolderHdpOu(layout)
             }
             ItemType.BOTTOM_NAVIGATION.ordinal -> {
@@ -610,7 +612,12 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun bind(data: HomeHighlightGameTitleItemData) {
             itemView.highlight_tv_game_name.text = getGameTypeString(itemView.context, data.highlightGameCode)
             itemView.highlight_iv_game_icon.setImageResource(data.highlightGameIcon)
-            itemView.highlight_titleBar.setBackgroundResource(data.highlightGameBackground)
+            itemView.highlight_titleBar.setImageResource(data.highlightGameBackground)
+
+            // 特殊情況: 種類為足球時，由於圖片問題，需讓背景球門符合 ImageView 高度，因此另做此設定
+            if (data.highlightGameBackground == R.drawable.img_home_title_soccer_background) {
+                itemView.highlight_titleBar.layoutParams.height = 90.dp
+            }
         }
     }
     inner class SportGridViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

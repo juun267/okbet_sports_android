@@ -115,6 +115,11 @@
                 android:name="matchType"
                 app:argType="org.cxct.sportlottery.network.common.MatchType" />
         </action>
+
+        <!--返回首頁-->
+        <action
+            android:id="@+id/action_gameOutrightMoreFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 
     <fragment
@@ -189,5 +194,10 @@
                 android:name="matchType"
                 app:argType="org.cxct.sportlottery.network.common.MatchType" />
         </action>
+
+        <!--返回首頁-->
+        <action
+            android:id="@+id/action_oddsDetailLiveFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 </navigation>

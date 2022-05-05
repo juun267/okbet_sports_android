@@ -2,11 +2,13 @@ package org.cxct.sportlottery.ui.profileCenter.versionUpdate
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.activity_version_update.*
+import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.view.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
@@ -47,6 +49,7 @@ class VersionUpdateActivity : BaseActivity<VersionUpdateViewModel>(VersionUpdate
 
     @SuppressLint("SetTextI18n")
     private fun initView() {
+        toolBar.tv_toolbar_title.typeface = Typeface.DEFAULT
         tv_version.text = "v${BuildConfig.VERSION_CODE}_${BuildConfig.VERSION_NAME}"
         btn_internal_download.visibility = View.GONE
         btn_external_download.visibility = View.GONE

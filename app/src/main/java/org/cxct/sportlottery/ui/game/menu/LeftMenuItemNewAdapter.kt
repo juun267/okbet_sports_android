@@ -177,7 +177,6 @@ class LeftMenuItemNewAdapter(
             listener: OnClickListener?
         ) {
             itemView.apply {
-                divider_login.isVisible = isLogin
                 tv_recharge.isVisible = isLogin
                 tv_withdraw.isVisible = isLogin
                 tv_member_level.isVisible = isLogin && isShowMemberLevel
