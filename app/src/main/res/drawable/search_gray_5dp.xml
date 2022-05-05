@@ -10,7 +10,7 @@
                     <padding android:bottom="12dp" android:right="12dp" android:top="12dp" />
                 </shape>
             </item>
-            <item android:width="20dp" android:height="20dp" android:drawable="@drawable/ic_search" android:gravity="end|center_vertical"></item>
+            <item android:width="16dp" android:height="16dp" android:drawable="@drawable/ic_search" android:gravity="end|center_vertical"></item>
         </layer-list>
     </item>
 </selector>
