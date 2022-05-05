@@ -100,7 +100,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                app:endIcon="@drawable/ic_eye_open"
+                app:endIcon="@drawable/ic_eye_close"
                 app:iconSignifier="@drawable/ic_login_password"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
