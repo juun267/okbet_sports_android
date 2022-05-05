@@ -1,12 +1,16 @@
 package org.cxct.sportlottery.ui.selflimit
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.InsetDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.dialog_self_limit_froze_important.*
 import androidx.fragment.app.DialogFragment
+import kotlinx.android.synthetic.main.dialog_self_limit_froze_important.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.util.DisplayUtil.dp
 
 /**
  * 常用提示對話框
@@ -36,6 +40,9 @@ class SelfLimitFrozeImportantDialog(private var isBet: Boolean): DialogFragment(
         btn_close.setOnClickListener{
             dismiss()
         }
+
+        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog?.window?.setBackgroundDrawable(InsetDrawable(ColorDrawable(Color.TRANSPARENT), 26.dp))
     }
 
     fun setCanceledOnTouchOutside(boolean: Boolean){
