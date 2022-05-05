@@ -15,17 +15,18 @@
         android:paddingEnd="16dp"
         android:paddingBottom="18dp">
 
-        <TextView
+        <!--20220505 被要求移除-->
+        <!--<TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/label_title_parlay"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/textSize14sp" />
+            android:textSize="@dimen/textSize14sp" />-->
 
         <TextView
             android:id="@+id/title_parlay_type"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/textSize14sp"
