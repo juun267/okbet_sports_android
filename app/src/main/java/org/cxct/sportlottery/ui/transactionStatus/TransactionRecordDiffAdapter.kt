@@ -113,7 +113,7 @@ class TransactionRecordDiffAdapter :
         fun bind(data: Row, status: Int) {
             val matchOdds = data.matchOdds[0]
             itemView.apply {
-                title_league_name.text = matchOdds.leagueName
+                title_league_name.text = matchOdds.leagueName.replace("\n","")
                 title_home_name.text = matchOdds.homeName
                 title_away_name.text = matchOdds.awayName
 
