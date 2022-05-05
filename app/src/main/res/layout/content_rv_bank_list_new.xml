@@ -4,10 +4,12 @@
     android:id="@+id/cv_add"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="5dp"
     android:clipToPadding="false"
-    app:cardElevation="6dp"
-    app:cardCornerRadius="4dp">
+    app:cardCornerRadius="4dp"
+    app:cardElevation="2dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -27,21 +29,21 @@
             android:id="@+id/iv_card"
             android:layout_width="50dp"
             android:layout_height="36dp"
-            android:layout_marginTop="26dp"
+            android:layout_marginTop="16dp"
             android:src="@drawable/ic_add_credit_card"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:paddingStart="25dp"
-            android:paddingEnd="25dp"
             android:id="@+id/tv_add_more_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:layout_marginBottom="26dp"
+            android:layout_marginBottom="16dp"
             android:gravity="center"
+            android:paddingStart="25dp"
+            android:paddingEnd="25dp"
             android:text="@string/add_new"
             android:textColor="@color/color_317FFF_0760D4"
             android:textSize="@dimen/textSize14sp"

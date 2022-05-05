@@ -144,8 +144,7 @@
                             android:textColor="@color/color_317FFF_0760D4"
                             android:textColorHint="@color/color_404040_cccccc"
                             android:textSize="@dimen/textSize16sp"
-                            android:letterSpacing="0.05"
-                            android:textStyle="bold" />
+                            android:letterSpacing="0.05" />
 
 <!--                        <View-->
 <!--                            android:id="@+id/et_container"-->

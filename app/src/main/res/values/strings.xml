@@ -549,7 +549,7 @@
     <string name="go_to_setting">To set up</string>
     <string name="message_withdraw_maintain">The withdrawal system is being upgraded，Please waiting</string>
     <string name="text_money_get_success">Withdrawal successful, please wait for customer service personnel check</string>
-    <string name="withdraw_setting">Withdrawals Setting</string>
+    <string name="withdraw_setting">Withdraw Setting</string>
     <string name="tail_number">End no</string>
     <string name="bind_start_time">Bind</string>
     <string name="bind_credit_card_not_yet">You do not have a bank card/crypto bound</string>
