@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.main.accountHistory.next
 
 import android.graphics.Paint
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +12,16 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.view_account_history_next_title_bar.view.*
 import kotlinx.android.synthetic.main.view_back_to_top.view.*
+import kotlinx.android.synthetic.main.view_status_selector.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.*
+import org.cxct.sportlottery.databinding.ItemAccountHistoryNextContentBinding
+import org.cxct.sportlottery.databinding.ItemAccountHistoryNextContentOutrightBinding
+import org.cxct.sportlottery.databinding.ItemAccountHistoryNextContentParlayBinding
+import org.cxct.sportlottery.databinding.ItemAccountHistoryNextTotalBinding
 import org.cxct.sportlottery.network.bet.settledDetailList.MatchOdd
 import org.cxct.sportlottery.network.bet.settledDetailList.Other
 import org.cxct.sportlottery.network.bet.settledDetailList.Row
@@ -26,6 +31,7 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil.getParlayShowName
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
 
@@ -375,6 +381,14 @@ class AccountHistoryNextAdapter(
                 iv_back.setOnClickListener {
                     backClickListener.onClick()
                 }
+
+                tv_title.setTextWithStrokeWidth(context?.getString(R.string.bet_num_and_bet_date) ?: "", 0.7f)
+
+                date_selector.cl_root.layoutParams.height = 40.dp
+                date_selector.tv_selected.gravity = Gravity.CENTER_VERTICAL or Gravity.START
+
+                sport_selector.cl_root.layoutParams.height = 40.dp
+                sport_selector.tv_selected.gravity = Gravity.CENTER_VERTICAL or Gravity.START
 
                 //sport
                 sport_selector.setCloseBtnText(context.getString(R.string.bottom_sheet_close))
