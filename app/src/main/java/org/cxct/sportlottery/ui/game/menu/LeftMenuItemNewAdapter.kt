@@ -13,6 +13,7 @@ import com.zhy.adapter.recyclerview.base.ViewHolder
 import kotlinx.android.synthetic.main.content_left_menu_item.view.*
 import kotlinx.android.synthetic.main.content_left_menu_item_footer.view.*
 import kotlinx.android.synthetic.main.content_left_menu_item_header.view.*
+import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
@@ -31,7 +32,7 @@ class LeftMenuItemNewAdapter(
     }
 
     var dataList: List<MenuItemData> = listOf()
-    var specialList:List<MenuItemData> = listOf()
+    var specialList: List<MenuItemData> = listOf()
     var listener: OnClickListener? = null
     var selectedNumber = 0
     var isLogin = false
@@ -57,7 +58,7 @@ class LeftMenuItemNewAdapter(
         notifyDataSetChanged()
     }
 
-    fun addSpecialEvent(newDataList: MutableList<MenuItemData>, listener: OnClickListener){
+    fun addSpecialEvent(newDataList: MutableList<MenuItemData>, listener: OnClickListener) {
         this.specialList = newDataList
         this.listener = listener
         notifyDataSetChanged()
@@ -82,7 +83,13 @@ class LeftMenuItemNewAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is HeaderViewHolder -> {
-                holder.bind(isShowMemberLevel, isLogin, headerSelectedListener, specialList, listener) // UninitializedPropertyAccessException: lateinit property listener has not been initialized
+                holder.bind(
+                    isShowMemberLevel,
+                    isLogin,
+                    headerSelectedListener,
+                    specialList,
+                    listener
+                ) // UninitializedPropertyAccessException: lateinit property listener has not been initialized
             }
 
             is FooterViewHolder -> {
@@ -206,7 +213,7 @@ class LeftMenuItemNewAdapter(
                 rv_left_special.layoutManager =
                     LinearLayoutManager(context, RecyclerView.VERTICAL, false)
                 rv_left_special.isNestedScrollingEnabled = false
-                if(specialList.isNotEmpty()){
+                if (specialList.isNotEmpty()) {
                     adapter = object : CommonAdapter<MenuItemData>(
                         context,
                         R.layout.item_left_special_item,
@@ -270,12 +277,15 @@ class LeftMenuItemNewAdapter(
         ) {
             itemView.apply {
 
+                //TODO for test
+                tv_appearance.visibility = if (BuildConfig.DEBUG) View.VISIBLE else View.GONE
+
 //                tv_appearance.isVisible = isLogin
-               // tv_appearance.isVisible = false //暫時隱藏
-                if (MultiLanguagesApplication.isNightMode){
-                    tv_appearance.text = context.getString(R.string.appearance)+": "+context.getString(R.string.night_mode)
-                }else{
-                    tv_appearance.text = context.getString(R.string.appearance)+": "+context.getString(R.string.day_mode)
+                // tv_appearance.isVisible = false //暫時隱藏
+                if (MultiLanguagesApplication.isNightMode) {
+                    tv_appearance.text = context.getString(R.string.appearance) + ": " + context.getString(R.string.night_mode)
+                } else {
+                    tv_appearance.text = context.getString(R.string.appearance) + ": " + context.getString(R.string.day_mode)
                 }
                 //盤口設定
                 tv_odds_type.setOnClickListener {
