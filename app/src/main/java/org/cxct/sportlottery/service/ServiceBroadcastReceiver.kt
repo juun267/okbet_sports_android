@@ -327,9 +327,10 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
         this.odds?.let { oddsMap ->
             oddsMap.forEach { (key, value) ->
                 value.odds?.forEach { odd ->
-                    odd?.odds = odd?.odds?.applyDiscount(discount)
-                    odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
-
+                    if(odd?.playCode != PlayCate.LCS.value){//反波膽不處理折扣
+                        odd?.odds = odd?.odds?.applyDiscount(discount)
+                        odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
+                    }
                     if (key == PlayCate.EPS.value) {
                         odd?.extInfo = odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
                     }
