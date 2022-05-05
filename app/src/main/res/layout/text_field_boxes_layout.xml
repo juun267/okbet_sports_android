@@ -123,8 +123,8 @@
                         android:id="@+id/text_field_boxes_editTextLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
                         android:layout_centerVertical="true"
+                        android:layout_gravity="bottom"
                         android:layout_marginBottom="0dp"
                         android:layout_toEndOf="@id/text_field_boxes_sub_label">
 
@@ -141,7 +141,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_gravity="bottom|end"
-                            android:layout_marginRight="4dp"
+                            android:layout_marginRight="15dp"
                             android:layout_marginBottom="0dp"
                             android:background="@android:color/transparent"
                             android:gravity="center"
@@ -164,8 +164,8 @@
                                 android:minWidth="@dimen/end_icon_min_width"
                                 android:minHeight="@dimen/end_icon_min_height"
                                 android:visibility="gone"
-                                tools:visibility="visible"
-                                tools:src="@drawable/ic_eye_close"/>
+                                tools:src="@drawable/ic_eye_close"
+                                tools:visibility="visible" />
 
                         </LinearLayout>
 

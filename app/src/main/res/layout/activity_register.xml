@@ -26,6 +26,8 @@
         android:layout_height="20dp"
         android:layout_marginStart="24dp"
         android:background="@null"
+        android:scaleX="0.9"
+        android:scaleY="0.9"
         android:contentDescription="@null"
         android:src="@drawable/ic_arrow_login"
         app:layout_constraintBottom_toBottomOf="@+id/ivLogo"
