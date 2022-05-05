@@ -134,6 +134,11 @@
             android:name="matchId"
             app:argType="string" />
 
+        <argument
+            android:name="liveVideo"
+            android:defaultValue="0"
+            app:argType="integer" />
+
         <action
             android:id="@+id/action_oddsDetailLiveFragment_self"
             app:destination="@id/oddsDetailLiveFragment"

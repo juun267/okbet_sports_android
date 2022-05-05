@@ -96,7 +96,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             }, {})
 
             leagueOddListener = LeagueOddListener(
-                clickListenerPlayType = { matchId, matchInfoList, gameMatchType ->
+                clickListenerPlayType = { matchId, matchInfoList, gameMatchType, liveVideo ->
                     if (gameMatchType == MatchType.IN_PLAY) {
                         matchId?.let {
                             navOddsDetailLive(matchId, gameMatchType)

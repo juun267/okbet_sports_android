@@ -424,6 +424,20 @@ class LiveViewToolbar @JvmOverloads constructor(
         releasePlayer()
     }
 
+    fun setUnLiveState() {
+        expand_layout.visibility = View.GONE
+        iv_play.visibility = View.GONE
+        iv_animation.visibility = View.GONE
+        iv_arrow.visibility = View.GONE
+    }
+
+    fun setLiveState() {
+        expand_layout.visibility = View.VISIBLE
+        iv_play.visibility = View.VISIBLE
+        iv_animation.visibility = View.VISIBLE
+        iv_arrow.visibility = View.VISIBLE
+    }
+
     //region 賽事動畫
     private fun openWebView() {
         iv_animation.isSelected = true
