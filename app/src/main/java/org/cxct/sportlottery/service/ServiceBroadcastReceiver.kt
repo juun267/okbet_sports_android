@@ -326,15 +326,17 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
     private fun MatchOddsChangeEvent.setupOddDiscount(discount: Float): MatchOddsChangeEvent {
         this.odds?.let { oddsMap ->
             oddsMap.forEach { (key, value) ->
-                value.odds?.forEach { odd ->
-                    if(odd?.playCode != PlayCate.LCS.value){//反波膽不處理折扣
+                if (key != PlayCate.LCS.value) {//反波膽不處理折扣
+                    value.odds?.forEach { odd ->
                         odd?.odds = odd?.odds?.applyDiscount(discount)
                         odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
                         odd?.malayOdds = odd?.hkOdds?.convertToMYOdds()
                         odd?.indoOdds = odd?.hkOdds?.convertToIndoOdds()
-                    }
-                    if (key == PlayCate.EPS.value) {
-                        odd?.extInfo = odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
+
+                        if (key == PlayCate.EPS.value) {
+                            odd?.extInfo =
+                                odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
+                        }
                     }
                 }
             }
