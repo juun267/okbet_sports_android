@@ -9,18 +9,17 @@
 
     <ImageView
         android:id="@+id/iv_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="156dp"
+        android:layout_height="63dp"
+        android:layout_marginTop="30dp"
         android:layout_weight="1"
         android:adjustViewBounds="true"
         android:contentDescription="@null"
-        android:scaleType="fitStart"
+        android:scaleType="fitCenter"
         android:src="@drawable/ic_logo"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.15" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView3"
@@ -30,7 +29,7 @@
         android:gravity="center"
         android:text="@string/sorry_website_is_now_maintenance"
         android:textColor="@color/colorBlackLight"
-        android:textSize="@dimen/textSize22sp"
+        android:textSize="@dimen/textSize16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/iv_logo"
         app:layout_constraintStart_toStartOf="@+id/iv_logo"
@@ -40,7 +39,7 @@
         android:id="@+id/tv_maintenance_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="15dp"
         android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintEnd_toEndOf="parent"
