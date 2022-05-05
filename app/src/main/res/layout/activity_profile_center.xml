@@ -52,13 +52,14 @@
             app:layout_constraintBottom_toTopOf="@id/label_user_id"
             app:layout_constraintStart_toEndOf="@id/iv_head"
             app:layout_constraintTop_toTopOf="@id/iv_head"
-            tools:text="Jason0921155" />
+            tools:text="Jason0921155"
+            android:textStyle="bold"/>
 
         <ImageButton
             android:id="@+id/btn_edit_nickname"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="1dp"
             android:background="@null"
             android:contentDescription="@null"
             android:scaleType="centerInside"
@@ -140,7 +141,8 @@
             android:gravity="center_vertical"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/textSize18sp"
-            tools:text="PHP" />
+            tools:text="PHP"
+            android:textStyle="bold"/>
 
         <ImageButton
             android:id="@+id/ivNotice"
@@ -150,9 +152,9 @@
             android:contentDescription="@null"
             android:padding="6dp"
             android:src="@drawable/ic_info_white_inside"
-            android:tint="@color/white"
             android:visibility="gone"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            app:tint="@color/white" />
 
         <ImageButton
             android:id="@+id/btn_refresh_money"
@@ -189,7 +191,8 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:minHeight="60dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:background="@color/colorWhite">
 
             <LinearLayout
                 android:id="@+id/btn_recharge"
@@ -202,8 +205,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
                     android:contentDescription="@null"
                     android:src="@drawable/ic_profile_center_recharge" />
 
@@ -213,15 +216,14 @@
                     android:layout_marginStart="15dp"
                     android:text="@string/recharge"
                     android:textColor="@color/colorGrayDark"
-                    android:textSize="@dimen/textSize16sp"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/textSize16sp"/>
 
             </LinearLayout>
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="25dp"
-                android:background="@color/colorWhite6" />
+                android:background="@color/color_E2E2E2" />
 
             <LinearLayout
                 android:id="@+id/btn_withdraw"
@@ -233,8 +235,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
                     android:contentDescription="@null"
                     android:src="@drawable/ic_profile_center_withdraw" />
 
@@ -244,8 +246,7 @@
                     android:layout_marginStart="15dp"
                     android:text="@string/withdraw"
                     android:textColor="@color/colorGrayDark"
-                    android:textSize="@dimen/textSize16sp"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/textSize16sp" />
 
             </LinearLayout>
 
@@ -313,7 +314,7 @@
                         android:contentDescription="@null"
                         android:rotationY="180"
                         android:src="@drawable/ic_icon_arrow_blue"
-                        app:tint="@color/color_E2E2E2" />
+                        app:tint="@color/colorSilverLight" />
 
                 </LinearLayout>
 
@@ -349,7 +350,7 @@
                         android:contentDescription="@null"
                         android:rotationY="180"
                         android:src="@drawable/ic_icon_arrow_blue"
-                        app:tint="@color/color_E2E2E2" />
+                        app:tint="@color/colorSilverLight" />
 
                 </LinearLayout>
 
@@ -385,7 +386,7 @@
                         android:contentDescription="@null"
                         android:rotationY="180"
                         android:src="@drawable/ic_icon_arrow_blue"
-                        app:tint="@color/color_E2E2E2" />
+                        app:tint="@color/colorSilverLight" />
 
                 </LinearLayout>
 
@@ -421,7 +422,7 @@
                         android:contentDescription="@null"
                         android:rotationY="180"
                         android:src="@drawable/ic_icon_arrow_blue"
-                        app:tint="@color/color_E2E2E2" />
+                        app:tint="@color/colorSilverLight" />
 
                 </LinearLayout>
 
@@ -491,7 +492,7 @@
                         android:contentDescription="@null"
                         android:rotationY="180"
                         android:src="@drawable/ic_icon_arrow_blue"
-                        app:tint="@color/color_E2E2E2" />
+                        app:tint="@color/colorSilverLight" />
 
                 </LinearLayout>
 
@@ -499,7 +500,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginVertical="2dp"
-                    android:background="@color/colorWhite6" />
+                    android:background="@color/colorGrayLight4" />
 
                 <LinearLayout
                     android:id="@+id/btn_news_center"
@@ -533,7 +534,7 @@
                         android:contentDescription="@null"
                         android:rotationY="180"
                         android:src="@drawable/ic_icon_arrow_blue"
-                        app:tint="@color/color_E2E2E2" />
+                        app:tint="@color/colorSilverLight" />
 
                 </LinearLayout>
 
@@ -569,7 +570,7 @@
                         android:contentDescription="@null"
                         android:rotationY="180"
                         android:src="@drawable/ic_icon_arrow_blue"
-                        app:tint="@color/color_E2E2E2" />
+                        app:tint="@color/colorSilverLight" />
 
                 </LinearLayout>
 
@@ -605,7 +606,7 @@
                         android:contentDescription="@null"
                         android:rotationY="180"
                         android:src="@drawable/ic_icon_arrow_blue"
-                        app:tint="@color/color_E2E2E2" />
+                        app:tint="@color/colorSilverLight" />
 
                 </LinearLayout>
 
@@ -648,7 +649,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginVertical="2dp"
-                    android:background="@color/colorWhite6" />
+                    android:background="@color/colorGrayLight4" />
 
                 <LinearLayout
                     android:id="@+id/btn_help_center"
@@ -683,7 +684,7 @@
                         android:contentDescription="@null"
                         android:rotationY="180"
                         android:src="@drawable/ic_icon_arrow_blue"
-                        app:tint="@color/color_E2E2E2" />
+                        app:tint="@color/colorSilverLight" />
 
                 </LinearLayout>
 
@@ -719,7 +720,7 @@
                         android:contentDescription="@null"
                         android:rotationY="180"
                         android:src="@drawable/ic_icon_arrow_blue"
-                        app:tint="@color/color_E2E2E2" />
+                        app:tint="@color/colorSilverLight" />
 
                 </LinearLayout>
 
@@ -730,13 +731,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="20dp"
-                    android:background="@drawable/bg_radius_20_button_white6"
-                    android:backgroundTint="@color/color_E2E2E2"
+                    android:background="@drawable/bg_radius_20_button_e2e2e2"
                     android:minHeight="42dp"
                     android:text="@string/sign_out"
                     android:textColor="@color/colorGray"
-                    android:textSize="@dimen/textSize14sp"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/textSize14sp" />
 
             </LinearLayout>
 
