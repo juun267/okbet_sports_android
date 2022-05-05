@@ -8,9 +8,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.infoCenter.InfoCenterData
 import org.cxct.sportlottery.network.money.MoneyPayWayData
-import org.cxct.sportlottery.ui.infoCenter.InfoCenterAdapter
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MoneyManager
 
@@ -21,6 +19,7 @@ class MoneyBankTypeAdapter(private val clickListener: ItemClickListener) :
 
     var data = mutableListOf<MoneyPayWayData>()
         set(value) {
+            mSelectedPosition = 0
             field = value
             notifyDataSetChanged()
         }
