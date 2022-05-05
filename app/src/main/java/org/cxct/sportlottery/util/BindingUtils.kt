@@ -402,7 +402,7 @@ fun TextView.setPlayContent(
     spread: String?,
     formatForOdd: String?
 ) {
-    val playNameStr = if (!playName.isNullOrEmpty()) "<font color=#333333>${playName} </font> " else ""
+    val playNameStr = if (!playName.isNullOrEmpty()) "<font color=#666666>${playName} </font> " else ""
     val spreadStr = if (!spread.isNullOrEmpty() && playName != spread) "<font color=#B73A20>$spread</font> " else ""
 
     text = HtmlCompat.fromHtml(
