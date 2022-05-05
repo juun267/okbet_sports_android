@@ -33,7 +33,6 @@
         android:id="@+id/guideline_h"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolBar"
         app:layout_constraintVertical_bias="0.3333" />
 
@@ -64,16 +63,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:textColor="@color/colorBlackLight"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="@dimen/textSize14sp"
-                android:textStyle="bold"
                 tools:text="v2.0.37" />
 
             <TextView
                 android:id="@+id/tv_version_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="有新的版本(v13_1.2.3)可更新" />

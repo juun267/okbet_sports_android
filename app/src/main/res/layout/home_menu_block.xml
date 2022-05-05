@@ -21,8 +21,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/card_first_game"
             android:layout_width="0dp"
-            android:layout_height="100dp"
-            android:layout_weight="0.538"
+            android:layout_height="match_parent"
+            android:layout_weight="0.602"
             android:background="@drawable/fillet_4dp_home_game_item_blue">
 
             <TextView
@@ -36,7 +36,7 @@
                 android:maxLines="1"
                 android:text="@string/goal_buster"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/textSize16sp"
+                android:textSize="@dimen/textSize15sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -62,7 +62,7 @@
                 android:includeFontPadding="false"
                 android:paddingTop="2dp"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/textSize16sp"
+                android:textSize="@dimen/textSize15sp"
                 android:textStyle="bold"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintBottom_toTopOf="@+id/tv_first_game_count"
@@ -79,7 +79,7 @@
                 android:layout_marginBottom="10dp"
                 android:includeFontPadding="false"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/textSize16sp"
+                android:textSize="@dimen/textSize15sp"
                 android:textStyle="bold"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -98,7 +98,7 @@
             android:id="@+id/card_second_game"
             android:layout_width="0dp"
             android:layout_height="100dp"
-            android:layout_weight="0.382"
+            android:layout_weight="0.398"
             android:background="@drawable/fillet_4dp_home_game_item_blue">
 
             <TextView
@@ -112,7 +112,7 @@
                 android:maxLines="1"
                 android:text="@string/top_games"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/textSize16sp"
+                android:textSize="@dimen/textSize15sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -139,7 +139,7 @@
                 android:includeFontPadding="false"
                 android:paddingTop="2dp"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/textSize16sp"
+                android:textSize="@dimen/textSize15sp"
                 android:textStyle="bold"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintBottom_toTopOf="@id/tv_second_game_count"
@@ -156,7 +156,7 @@
                 android:layout_marginBottom="10dp"
                 android:includeFontPadding="false"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/textSize16sp"
+                android:textSize="@dimen/textSize15sp"
                 android:textStyle="bold"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintBottom_toBottomOf="parent"

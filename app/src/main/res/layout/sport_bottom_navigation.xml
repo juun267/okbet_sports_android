@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:layout_height="wrap_content"
-    tools:layout_gravity="bottom"
     android:background="@drawable/bg_bottom_nav_bar"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    tools:layout_gravity="bottom"
+    tools:layout_height="wrap_content">
 
     <org.cxct.sportlottery.ui.game.bottomNavigation.BottomNavigationItem
         android:id="@+id/navigation_sport"
@@ -30,49 +30,53 @@
         android:layout_width="67dp"
         android:layout_height="match_parent">
 
-
         <LinearLayout
             android:id="@+id/item_bet_list"
-            android:layout_width="67dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:background="@color/colorBlue"
-            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_bet_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="6dp"
+                android:includeFontPadding="false"
                 android:text="0"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/textSize22sp"
                 android:layout_marginBottom="-3dp"/>
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:includeFontPadding="false"
                 android:maxLines="1"
-                android:gravity="center_horizontal"
                 android:text="@string/bet_info_list_title"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/textSize12sp"
+                android:textSize="@dimen/textSize11sp"
                 app:autoSizeTextType="uniform" />
         </LinearLayout>
+
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/laExplo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="top"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:alpha="0.3"
+            android:scaleX="2.0"
+            android:scaleY="2.0"
+            android:visibility="gone"
             app:lottie_autoPlay="false"
             app:lottie_imageAssetsFolder="lottie/"
             app:lottie_loop="false"
-            android:scaleX="2.0"
-            android:scaleY="2.0"
-            android:alpha="0.3"
-            android:layout_marginBottom="@dimen/margin_10"
-            android:visibility="gone"
             app:lottie_rawRes="@raw/ripple"
             app:lottie_speed="3.2" />
 

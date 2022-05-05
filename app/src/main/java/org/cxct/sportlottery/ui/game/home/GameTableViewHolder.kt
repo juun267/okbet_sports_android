@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.*
 import kotlinx.android.synthetic.main.home_game_table_4.view.*
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
@@ -21,6 +22,7 @@ import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.home.gameTable4.GameEntity
 import org.cxct.sportlottery.ui.game.home.gameTable4.Vp2GameTable4Adapter
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.HomePageStatusManager.atStartSelectedPage
 import org.cxct.sportlottery.util.HomePageStatusManager.inPlaySelectedPage
@@ -84,7 +86,13 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 iv_game_icon.setImageResource(it)
             }
             GameConfigManager.getTitleBarBackground(gameCode)?.let {
-                titleBar.setBackgroundResource(it)
+                if (it == R.drawable.img_home_title_soccer_background){
+                    // 特殊情況: 種類為足球時，由於圖片問題，需讓背景球門符合 ImageView 高度，因此另做此設定
+                    iv_title_bar_background.viewTreeObserver.addOnGlobalLayoutListener {
+                        iv_title_bar_background.layoutParams.height = 90.dp
+                    }
+                }
+                iv_title_bar_background.setImageResource(it)
             }
             titleBar.setOnClickListener {
                 onClickTotalMatchListener?.onClick(data)

@@ -5,19 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_account_history.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.common.DividerItemDecorator
-import org.cxct.sportlottery.ui.main.accountHistory.*
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryViewModel
 
 class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHistoryViewModel::class) {
 
@@ -90,7 +84,6 @@ class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHist
     private fun initRv() {
         rv_account_history.apply {
             adapter = rvAdapter
-            addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_gray)))
             addOnScrollListener(recyclerViewOnScrollListener)
         }
     }

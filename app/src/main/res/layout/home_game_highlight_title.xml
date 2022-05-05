@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/highlight_titleBar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="4dp"
-    android:gravity="center"
-    android:minHeight="48dp"
-    android:orientation="horizontal"
-    android:background="@drawable/img_home_title_soccer_background">
+    android:layout_height="48dp"
+    android:layout_marginBottom="4dp">
+
+    <ImageView
+        android:id="@+id/highlight_titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/img_home_title_soccer_background"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
     <ImageView
         android:id="@+id/highlight_iv_game_icon"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
         android:layout_marginStart="20dp"
         android:contentDescription="@null"
+        android:src="@drawable/ic_soccer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/colorGray"
-        android:src="@drawable/ic_soccer" />
+        app:tint="@color/colorGray" />
 
     <TextView
         android:id="@+id/highlight_tv_game_name"
@@ -28,10 +32,11 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:gravity="center"
+        android:includeFontPadding="false"
         android:text="@string/soccer"
         android:textAllCaps="true"
         android:textColor="@color/colorBlackLight"
-        android:textSize="@dimen/textSize16sp"
+        android:textSize="@dimen/textSize15sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
