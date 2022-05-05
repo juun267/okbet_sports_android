@@ -35,6 +35,7 @@ class CustomTopToolbar @JvmOverloads constructor(
 
     var titleText: String? = null
         set(value) {
+            tv_toolbar_title.setTitleLetterSpacing()
             field = value
             tv_toolbar_title.text = value
         }

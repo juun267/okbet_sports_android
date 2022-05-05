@@ -25,6 +25,7 @@ class WithdrawPassWordDialog(private val listener: WithdrawPasswordDialogListene
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
+        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
         initEvent()
         initView()
     }
@@ -104,11 +105,11 @@ class WithdrawPassWordDialog(private val listener: WithdrawPasswordDialogListene
         val showBackground: Drawable?
         val showColor: Int
         if (!isError) {
-            showBackground = ContextCompat.getDrawable(context ?: requireContext(), R.color.colorSilver)
-            showColor = ContextCompat.getColor(context ?: requireContext(), R.color.colorSilver)
+            showBackground = ContextCompat.getDrawable(context ?: requireContext(), R.color.color_666666_bcbcbc)
+            showColor = ContextCompat.getColor(context ?: requireContext(), R.color.color_666666_bcbcbc)
         } else {
-            showBackground = ContextCompat.getDrawable(context ?: requireContext(), R.color.colorRed)
-            showColor = ContextCompat.getColor(context ?: requireContext(), R.color.colorRed)
+            showBackground = ContextCompat.getDrawable(context ?: requireContext(), R.color.color_E44438_e44438)
+            showColor = ContextCompat.getColor(context ?: requireContext(), R.color.color_E44438_e44438)
         }
         cv_frame.setCardBackgroundColor(showColor)
         line1.background = showBackground

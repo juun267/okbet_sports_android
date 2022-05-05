@@ -223,18 +223,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                         is GameActivity -> (activity as GameActivity).showFastBetFragment(fastBetDataBean)
                         is GamePublicityActivity -> (activity as GamePublicityActivity).showFastBetFragment(fastBetDataBean)
                     }
-
-//                    viewModel.updateMatchBetList(
-//                        matchType = MatchType.IN_PLAY,
-//                        gameType = args.gameType,
-//                        playCateCode = oddsDetail?.gameType ?: "",
-//                        playCateName = oddsDetail?.name ?: "",
-//                        matchInfo = matchOdd.matchInfo,
-//                        odd = odd,
-//                        subscribeChannelType = ChannelType.EVENT,
-//                        betPlayCateNameMap = matchOdd.betPlayCateNameMap,
-//                        otherPlayCateName = scoPlayCateNameForBetInfo
-//                    )
                 }
             }
         ).apply {
@@ -284,7 +272,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                                 tv_status_left.setTextColor(
                                     ContextCompat.getColor(
                                         tv_status_left.context,
-                                        R.color.colorRedDark
+                                        R.color.color_F75452_b73a20
                                     )
                                 )
                                 tv_status_left.tag = GameStatus.POSTPONED.code
@@ -296,35 +284,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                         setupStartTime()
                         setupInitShowView(result.oddsDetailData?.matchOdd?.matchInfo)
                         setupLiveView(result.oddsDetailData?.matchOdd?.matchInfo?.liveVideo)
-
-
-                        if (args.matchType == MatchType.IN_PLAY) {
-                            tv_time_bottom?.setTextColor(
-                                ContextCompat.getColor(
-                                    tv_time_bottom.context,
-                                    R.color.colorWhite
-                                )
-                            )
-                            tv_time_top?.setTextColor(
-                                ContextCompat.getColor(
-                                    tv_time_bottom.context,
-                                    R.color.colorWhite
-                                )
-                            )
-                        } else {
-                            tv_time_bottom?.setTextColor(
-                                ContextCompat.getColor(
-                                    tv_time_bottom.context,
-                                    R.color.colorSilver
-                                )
-                            )
-                            tv_time_top?.setTextColor(
-                                ContextCompat.getColor(
-                                    tv_time_bottom.context,
-                                    R.color.colorSilver
-                                )
-                            )
-                        }
 
                         if (args.matchType == MatchType.IN_PLAY &&
                             (args.gameType == GameType.BK || args.gameType == GameType.TN || args.gameType == GameType.VB || args.gameType == GameType.TT)
@@ -732,7 +691,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         tv_status_left.setTextColor(
             ContextCompat.getColor(
                 tv_status_left.context,
-                R.color.colorSilver
+                R.color.color_666666_bcbcbc
             )
         )
 
@@ -781,33 +740,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         }
 
         tv_status_right.text = statusBuilder
-
-        if (tv_status_left.tag != GameStatus.POSTPONED.code) {
-            tv_status_left.setTextColor(
-                ContextCompat.getColor(
-                    tv_status_left.context,
-                    R.color.colorWhite8
-                )
-            )
-            tv_spt.setTextColor(
-                ContextCompat.getColor(
-                    tv_status_left.context,
-                    R.color.colorWhite8
-                )
-            )
-            val statusValue =
-                event.matchStatusCO?.statusNameI18n?.get(getSelectLanguage(context).key)
-                    ?: event.matchStatusCO?.statusName
-            tv_status_left.text = statusValue
-        } else {
-            tv_status_left.setTextColor(
-                ContextCompat.getColor(
-                    tv_status_left.context,
-                    R.color.colorSilver
-                )
-            )
-            tv_spt.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorSilver))
-        }
     }
 
     //作用於頁面轉場流暢性

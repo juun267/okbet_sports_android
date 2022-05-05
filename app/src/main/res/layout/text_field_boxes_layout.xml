@@ -64,7 +64,7 @@
                         android:layout_marginTop="@dimen/label_idle_margin_top"
                         android:gravity="center"
                         android:includeFontPadding="false"
-                        android:textColor="@color/colorGrayText"
+                        android:textColor="@color/color_CCCCCC_999999"
                         android:textSize="@dimen/textSize15sp"
                         tools:text="Label"
                         tools:textStyle="bold" />
@@ -78,7 +78,7 @@
                         android:layout_marginEnd="10dp"
                         android:gravity="center"
                         android:includeFontPadding="false"
-                        android:textColor="@color/colorBlackLight"
+                        android:textColor="@color/color_939393_333333"
                         android:textSize="@dimen/textSize12sp"
                         android:textStyle="bold"
                         tools:text="SubLabel" />
@@ -92,7 +92,7 @@
                         android:layout_toEndOf="@id/text_field_boxes_sub_label"
                         android:gravity="center"
                         android:includeFontPadding="false"
-                        android:textColor="@color/colorSilverLight"
+                        android:textColor="@color/color_404040_cccccc"
                         android:textSize="@dimen/textSize12sp"
                         tools:text="Label2" />
 
@@ -103,7 +103,7 @@
                         android:layout_centerVertical="true"
                         android:gravity="center"
                         android:includeFontPadding="false"
-                        android:textColor="@color/colorGrayText"
+                        android:textColor="@color/color_8F8F8F_999999"
                         android:textSize="@dimen/textSize14sp"
                         android:textStyle="bold"
                         tools:text="" />
@@ -180,7 +180,7 @@
                         android:layout_alignLeft="@+id/text_field_boxes_editTextLayout"
                         android:layout_alignEnd="@+id/text_field_boxes_editTextLayout"
                         android:layout_alignRight="@+id/text_field_boxes_editTextLayout"
-                        android:background="@color/colorRed"
+                        android:background="@color/color_E44438_e44438"
                         android:visibility="gone" />
 
                 </RelativeLayout>

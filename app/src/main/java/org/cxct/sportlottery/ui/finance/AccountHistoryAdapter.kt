@@ -74,7 +74,7 @@ class AccountHistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 itemView.rech_amont.setTextColor(
                     ContextCompat.getColor(
                         itemView.context,
-                        R.color.colorRed
+                        R.color.color_E44438_e44438
                     )
                 )
                 itemView.rech_amont.text =TextUtil.format(item.money)
@@ -82,7 +82,7 @@ class AccountHistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 itemView.rech_amont.setTextColor(
                     ContextCompat.getColor(
                         itemView.context,
-                        R.color.colorGreen
+                        R.color.color_08dc6e_08dc6e
                     )
                 )
                 itemView.rech_amont.text = "+"+TextUtil.format(item.money)

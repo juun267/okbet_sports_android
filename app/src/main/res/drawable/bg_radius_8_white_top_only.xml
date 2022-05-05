@@ -39,7 +39,7 @@
     <!-- Background -->
     <item>
         <shape>
-            <solid android:color="#F3F4F5" />
+            <solid android:color="@color/color_141414_F3F4F5" />
             <corners android:topLeftRadius="8dp" android:topRightRadius="8dp"
                 android:bottomLeftRadius="0dp" android:bottomRightRadius="0dp"/>
         </shape>

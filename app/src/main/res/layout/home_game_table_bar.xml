@@ -14,7 +14,7 @@
         android:layout_height="1dp"
         android:layout_marginEnd="10dp"
         android:layout_weight="1"
-        android:background="@color/colorSilverLight" />
+        android:background="@color/color_404040_cccccc" />
 
     <RadioButton
         android:id="@+id/rb_in_play"
@@ -47,6 +47,6 @@
         android:layout_height="1dp"
         android:layout_marginStart="10dp"
         android:layout_weight="1"
-        android:background="@color/colorSilverLight" />
+        android:background="@color/color_404040_cccccc" />
 
 </RadioGroup>

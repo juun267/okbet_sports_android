@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@color/colorWhite2"
+        android:background="@color/color_141414_f3f3f3"
         android:gravity="center"
         android:paddingStart="20dp"
         android:paddingEnd="20dp">
@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/select_bank"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:textAllCaps="true"
             android:text="@string/bottom_sheet_close"
-            android:textColor="@color/colorGrayLight"
+            android:textColor="@color/color_8F8F8F_999999"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

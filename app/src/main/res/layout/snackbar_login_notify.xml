@@ -9,10 +9,10 @@
         android:id="@+id/tv_notify"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/colorOrangeLight"
+        android:background="@color/color_FF9143_ff9200"
         android:gravity="center"
         android:text="@string/login_notify"
-        android:textColor="@color/colorWhite"
+        android:textColor="@color/color_191919_FCFCFC"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -22,7 +22,7 @@
         android:paddingTop="16dp"
         android:paddingEnd="20dp"
         android:paddingBottom="16dp"
-        android:textColor="@color/colorBlackLight"
+        android:textColor="@color/color_e5e5e5_333333"
         android:textSize="@dimen/textSize14sp"
         tools:text="@string/league" />
 

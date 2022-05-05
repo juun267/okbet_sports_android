@@ -46,7 +46,7 @@
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:text="@string/add_credit_or_virtual"
-            android:textColor="@color/colorBlue"
+            android:textColor="@color/color_317FFF_0760D4"
             android:textSize="@dimen/textSize18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
