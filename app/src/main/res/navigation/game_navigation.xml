@@ -221,6 +221,11 @@
                 android:name="matchOdd"
                 app:argType="org.cxct.sportlottery.network.outright.odds.MatchOdd" />
         </action>
+
+        <!--回到首頁-->
+        <action
+            android:id="@+id/action_gameV3Fragment_to_homeFragment"
+            app:destination="@id/homeFragment"/>
     </fragment>
 
     <fragment
@@ -300,6 +305,11 @@
                 android:name="matchType"
                 app:argType="org.cxct.sportlottery.network.common.MatchType" />
         </action>
+
+        <!--返回首頁-->
+        <action
+            android:id="@+id/action_gameLeagueFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 
     <fragment
@@ -335,6 +345,11 @@
                 android:name="matchOdd"
                 app:argType="org.cxct.sportlottery.network.outright.odds.MatchOdd" />
         </action>
+
+        <!--返回首頁-->
+        <action
+            android:id="@+id/action_gameOutrightFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 
     <fragment
@@ -402,6 +417,11 @@
                 android:name="matchType"
                 app:argType="org.cxct.sportlottery.network.common.MatchType" />
         </action>
+
+        <!--返回首頁-->
+        <action
+            android:id="@+id/action_oddsDetailFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 
     <fragment
@@ -473,6 +493,11 @@
                 android:name="matchType"
                 app:argType="org.cxct.sportlottery.network.common.MatchType" />
         </action>
+
+        <!--返回首頁-->
+        <action
+            android:id="@+id/action_oddsDetailLiveFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 
     <fragment
@@ -496,6 +521,11 @@
                 android:name="matchType"
                 app:argType="org.cxct.sportlottery.network.common.MatchType" />
         </action>
+
+        <!--返回首頁-->
+        <action
+            android:id="@+id/action_gameOutrightMoreFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 
     <fragment
@@ -519,6 +549,11 @@
                 android:name="matchType"
                 app:argType="org.cxct.sportlottery.network.common.MatchType" />
         </action>
+
+        <!--回到首頁-->
+        <action
+            android:id="@+id/action_leagueFilterFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 
 </navigation>

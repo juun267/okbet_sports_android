@@ -4,13 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="SpUsage,ContentDescription">
 
     <ImageView
         android:id="@+id/item_icon"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginTop="8dp"
+        android:scaleType="center"
         android:src="@drawable/ic_soccer"
         app:layout_constraintBottom_toTopOf="@+id/item_title"
         app:layout_constraintEnd_toEndOf="parent"

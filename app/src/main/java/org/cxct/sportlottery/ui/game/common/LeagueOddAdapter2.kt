@@ -149,6 +149,9 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             playSelectedCodeSelectionType: Int?,
             playSelectedCode: String?
         ) {
+
+            itemView.v_top.visibility = if (bindingAdapterPosition == 0) View.GONE else View.VISIBLE
+
             setUpVisibility(item, matchType)
             setupMatchInfo(item, matchType, matchInfoList, leagueOddListener)
             val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
