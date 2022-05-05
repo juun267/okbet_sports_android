@@ -95,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:textColor="@color/color_060F20"
+                android:textColor="@color/color_FFFFFF_060F20"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="293.000" />
 

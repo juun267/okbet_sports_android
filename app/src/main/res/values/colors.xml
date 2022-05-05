@@ -142,6 +142,7 @@
     <color name="color_FFFFFF_666666">@color/color_666666</color>
     <color name="color_e5e5e5_202020">@color/color_202020</color>
     <color name="color_e5e5e5_000000">@color/color_000000</color>
+    <color name="color_FFFFFF_060F20">@color/color_060F20</color>
 
     <!--region 特殊處理顏色-->
     <color name="home_card_top_text_color">#40FFFFFF</color>
