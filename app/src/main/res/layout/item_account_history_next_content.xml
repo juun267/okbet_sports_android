@@ -38,7 +38,7 @@
                 android:gravity="center"
                 android:text="@{matchOdd.leagueName}"
                 android:textColor="@color/color_191919_FCFCFC"
-                android:textSize="@dimen/textSize12sp"
+                android:textSize="@dimen/textSize14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/tv_team_home"
@@ -52,7 +52,7 @@
                 android:gravity="start"
                 android:text="@{matchOdd.homeName}"
                 android:textColor="@color/color_0C2040_a9bedf"
-                android:textSize="@dimen/textSize12sp"
+                android:textSize="@dimen/textSize14sp"
                 app:layout_constraintBottom_toTopOf="@id/text_view"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_playName"
@@ -66,7 +66,7 @@
                 android:gravity="center"
                 android:text="@string/verse"
                 android:textColor="@color/color_0C2040_a9bedf"
-                android:textSize="@dimen/textSize12sp"
+                android:textSize="@dimen/textSize14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_team_home" />
@@ -79,7 +79,7 @@
                 android:gravity="start"
                 android:text="@{matchOdd.awayName}"
                 android:textColor="@color/color_0C2040_a9bedf"
-                android:textSize="@dimen/textSize12sp"
+                android:textSize="@dimen/textSize14sp"
                 app:layout_constraintBottom_toBottomOf="@id/text_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
@@ -101,33 +101,23 @@
 
 
             <TextView
-                android:id="@+id/tv_game_type"
+                android:id="@+id/tv_game_type_play_cate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
-                android:gravity="center"
+                android:gravity="start"
                 android:textColor="@color/color_e5e5e5_333333"
                 android:textSize="@dimen/textSize14sp"
+                android:textStyle="bold"
                 app:gameType="@{row.gameType}"
-                app:layout_constraintEnd_toStartOf="@id/tv_play_name"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toStartOf="@id/list_score"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:playCateName="@{matchOdd.playCateName}"
                 tools:text="篮球" />
-
-            <TextView
-                android:id="@+id/tv_play_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:text="@{matchOdd.playCateName}"
-                android:textColor="@color/color_e5e5e5_333333"
-                android:textSize="@dimen/textSize14sp"
-                app:layout_constraintEnd_toStartOf="@+id/list_score"
-                app:layout_constraintStart_toEndOf="@id/tv_game_type"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="让球" />
 
             <TextView
                 android:id="@+id/tv_start_time"
@@ -141,7 +131,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/list_score"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_play_name"
+                app:layout_constraintTop_toBottomOf="@+id/tv_game_type_play_cate"
                 tools:text="2022-02-25 10:42" />
 
             <!--playName spread @ odd (oddsType)-->
