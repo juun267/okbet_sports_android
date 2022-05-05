@@ -31,7 +31,7 @@
             tools:ignore="SpUsage">
 
             <TextView
-                android:id="@+id/tv_game_type"
+                android:id="@+id/tv_game_type_play_cate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
@@ -40,27 +40,14 @@
                 android:textSize="@dimen/textSize12sp"
                 android:textStyle="bold"
                 app:gameType="@{gameType}"
-                app:layout_constraintEnd_toStartOf="@id/tv_play_cate_name"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toStartOf="@id/list_score"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:playCateName="@{matchOdd.playCateName}"
                 tools:text="篮球" />
-
-            <TextView
-                android:id="@+id/tv_play_cate_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{matchOdd.playCateName}"
-                android:textColor="@color/colorBlackLight"
-                android:textSize="@dimen/textSize12sp"
-                android:textStyle="bold"
-                app:layout_constrainedWidth="true"
-                app:layout_constraintEnd_toStartOf="@+id/list_score"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toEndOf="@id/tv_game_type"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="让球" />
 
             <TextView
                 android:id="@+id/tv_league_name"
@@ -73,7 +60,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/list_score"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_play_cate_name"
+                app:layout_constraintTop_toBottomOf="@+id/tv_game_type_play_cate"
                 tools:text="NBA季后赛" />
 
             <androidx.recyclerview.widget.RecyclerView
