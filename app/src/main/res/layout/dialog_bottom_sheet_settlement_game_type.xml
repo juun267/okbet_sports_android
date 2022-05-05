@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:divider="@null"
         android:dividerHeight="0dp"
+        android:nestedScrollingEnabled="true"
         tools:listitem="@layout/item_listview_settlement_game_type" />
 
 </LinearLayout>
