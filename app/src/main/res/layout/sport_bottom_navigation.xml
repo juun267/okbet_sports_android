@@ -33,7 +33,7 @@
 
         <LinearLayout
             android:id="@+id/item_bet_list"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="vertical">
@@ -53,12 +53,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:gravity="center_horizontal"
+                android:gravity="center"
                 android:maxLines="1"
+                android:layout_gravity="center_horizontal"
                 android:text="@string/bet_info_list_title"
                 android:includeFontPadding="false"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/textSize12sp"
+                app:autoSizeMaxTextSize="@dimen/textSize11sp"
+                app:autoSizeMinTextSize="@dimen/textSize7sp"
                 app:autoSizeTextType="uniform" />
         </LinearLayout>
 
