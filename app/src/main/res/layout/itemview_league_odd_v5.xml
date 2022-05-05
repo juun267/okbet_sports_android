@@ -63,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="166dp" />
+            app:layout_constraintGuide_end="60dp" />
 
         <LinearLayout
             android:id="@+id/linear_layout"
@@ -383,7 +383,7 @@
             android:id="@+id/league_odd_match_play_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawablePadding="6dp"
+            android:drawablePadding="5dp"
             android:gravity="center"
             android:textColor="@color/colorGray"
             android:textSize="@dimen/textSize12sp"
@@ -396,8 +396,8 @@
 
         <ImageView
             android:id="@+id/league_odd_match_chart"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:layout_marginEnd="5dp"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_chart"
