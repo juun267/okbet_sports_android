@@ -99,7 +99,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             })
 
             leagueOddListener = LeagueOddListener(
-                { matchId, matchInfoList, gameMatchType ->
+                { matchId, matchInfoList, gameMatchType, liveVideo ->
                     when (gameMatchType) {
                         MatchType.IN_PLAY -> {
                             matchId?.let {

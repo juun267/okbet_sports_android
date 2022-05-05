@@ -17,6 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemAccountHistoryNextContentBinding
 import org.cxct.sportlottery.databinding.ItemAccountHistoryNextContentOutrightBinding
@@ -167,7 +168,13 @@ class AccountHistoryNextAdapter(
 
             binding.apply {
                 matchOdd = row.matchOdds?.firstOrNull()
-                tvParlayType.text = getParlayShowName(itemView.context, row.parlayType)
+
+                row.parlayType?.let { parlayType ->
+                    ParlayType.getParlayStringRes(parlayType)?.let { parlayTypeStringResId ->
+                        tvParlayType.text = MultiLanguagesApplication.appContext.getString(parlayTypeStringResId)
+                    }
+                }
+
                 tvDetail.paint.flags = Paint.UNDERLINE_TEXT_FLAG
                 // 暫時隱藏，配合後端更新再開啟
                 tvDetail.isVisible = false//(row.parlayComsDetailVOs ?: emptyList()).isNotEmpty()

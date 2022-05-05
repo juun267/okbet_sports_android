@@ -221,11 +221,11 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
             })
             leagueOddListener = LeagueOddListener(
-                clickListenerPlayType = { matchId, matchInfoList, _ ->
+                clickListenerPlayType = { matchId, matchInfoList, _, liveVideo ->
                     when (args.matchType) {
                         MatchType.IN_PLAY -> {
                             matchId?.let {
-                                navOddsDetailLive(it)
+                                navOddsDetailLive(it, liveVideo)
                             }
                         }
                         MatchType.AT_START -> {
@@ -2011,7 +2011,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
     }
 
-    private fun navOddsDetailLive(matchId: String) {
+    private fun navOddsDetailLive(matchId: String, liveVideo: Int) {
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
 
@@ -2020,6 +2020,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 args.matchType,
                 gameType,
                 matchId,
+                liveVideo
             )
 
             findNavController().navigate(action)

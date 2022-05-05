@@ -172,6 +172,8 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         if ((Util.SDK_INT < 24) || live_view_tool_bar.getExoPlayer() == null) {
             live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null,isLogin)
         }
+
+        if(args.liveVideo == 0) live_view_tool_bar.setUnLiveState()
     }
 
     override fun onPause() {

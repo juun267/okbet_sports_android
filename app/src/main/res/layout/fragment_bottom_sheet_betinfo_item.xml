@@ -270,7 +270,7 @@
                                 android:layout_marginBottom="@dimen/margin_10"
                                 android:background="@drawable/effect_select_bet_radius_4_edit_text"
                                 android:hint="@string/bet_info_input_quota"
-                                android:inputType="number"
+                                android:inputType="numberDecimal"
                                 android:letterSpacing="0.05"
                                 android:maxLength="7"
                                 android:paddingStart="10dp"
