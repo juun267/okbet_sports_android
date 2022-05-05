@@ -128,15 +128,6 @@
                 app:cvIcon="@drawable/ic_setting"
                 app:arrowSymbolVisibility="visible"/>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginVertical="2dp"
-                android:background="@color/color_191919_EEEFF0"
-                app:layout_constraintBottom_toBottomOf="parent" />
-
             <org.cxct.sportlottery.ui.menu.MenuItem
                 android:id="@+id/menu_my_favorite"
                 android:layout_width="match_parent"

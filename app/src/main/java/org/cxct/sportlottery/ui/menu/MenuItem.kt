@@ -28,9 +28,12 @@ class MenuItem @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             .obtainStyledAttributes(attrs, R.styleable.CustomView, 0, 0)
         try {
             view.tv_title.text = typedArray.getText(R.styleable.CustomView_cvTitle)
-            view.tv_title.letterSpacing = 0.117f
             view.iv_icon.setImageResource(typedArray.getResourceId(R.styleable.CustomView_cvIcon, 0))
             view.iv_arrow.visibility = typedArray.getInt(R.styleable.CustomView_arrowSymbolVisibility, 0x00000008)
+            when (LanguageManager.getSelectLanguage(context)) {
+                LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> view.tv_title.letterSpacing = 0.08f
+                else -> view.tv_title.letterSpacing = 0f
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
