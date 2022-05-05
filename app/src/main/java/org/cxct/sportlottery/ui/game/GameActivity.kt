@@ -41,6 +41,7 @@ import org.cxct.sportlottery.ui.game.betList.FastBetFragment
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.game.filter.LeagueFilterFragmentDirections
 import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
+import org.cxct.sportlottery.ui.game.home.HomeFragment
 import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageFragment
@@ -115,13 +116,15 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 }
 
                 R.id.oddsDetailFragment -> {
-                    updateSelectTabState(arguments?.let {
+                    //20220504 跟進h5進賽事詳情時不切換至對應的賽事類別
+                    /*updateSelectTabState(arguments?.let {
                         it.get("matchType") as MatchType
-                    })
+                    })*/
                 }
 
                 R.id.oddsDetailLiveFragment -> {
-                    updateSelectTabState(MatchType.IN_PLAY)
+                    //20220504 跟進h5進賽事詳情時不切換至對應的賽事類別
+                    // updateSelectTabState(MatchType.IN_PLAY)
                 }
             }
         }
@@ -284,7 +287,15 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         sport_bottom_navigation.setNavigationItemClickListener {
             when (it) {
                 R.id.navigation_sport -> {
-                    //TODO navigate sport home
+                    if (tabLayout.selectedTabPosition != 0) {
+                        //賽事類別Tab不在主頁時, 切換至主頁
+                        tabLayout.selectTab(tabLayout.getTabAt(0))
+                    } else {
+                        if (mNavController.currentDestination?.id != R.id.homeFragment){
+                            //若當前不在HomeFragment, 切換至HomeFragment
+                            selectTab(0)
+                        }
+                    }
                     true
                 }
                 R.id.navigation_game -> {
@@ -469,7 +480,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         when (position) {
             0 -> {
                 viewModel.switchMainMatchType()
-                mNavController.popBackStack(R.id.homeFragment, false)
+                navHomeFragment()
             }
             1 -> {
                 viewModel.switchMatchType(MatchType.IN_PLAY)
@@ -565,6 +576,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     }
 
     private fun navGameFragment(matchType: MatchType) {
+        //TODO 確認有什麼情況下會是MatchType.MAIN的，若沒有的話可以濾掉
         when (mNavController.currentDestination?.id) {
             R.id.homeFragment -> {
                 val action = HomeFragmentDirections.actionHomeFragmentToGameFragment(matchType)
@@ -611,6 +623,54 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     OddsDetailLiveFragmentDirections.actionOddsDetailLiveFragmentToGameV3Fragment(
                         matchType
                     )
+                mNavController.navigate(action)
+            }
+        }
+    }
+
+    private fun navHomeFragment() {
+        //TODO 此處有個隱藏的Bug, 在進到這個fun前, currentDestination都已經因為觀察到curMatchType的變化進入navGameFragment()而移動至gameV3Fragment
+        when (mNavController.currentDestination?.id) {
+
+            R.id.homeFragment -> {
+            }
+            R.id.gameV3Fragment -> {
+                val action = GameV3FragmentDirections.actionGameV3FragmentToHomeFragment()
+                val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
+                mNavController.navigate(action, navOptions)
+            }
+            R.id.leagueFilterFragment -> {
+                val action =
+                    LeagueFilterFragmentDirections.actionLeagueFilterFragmentToHomeFragment()
+                mNavController.navigate(action)
+            }
+
+            R.id.gameLeagueFragment -> {
+                val action =
+                    GameLeagueFragmentDirections.actionGameLeagueFragmentToHomeFragment()
+                mNavController.navigate(action)
+            }
+
+            R.id.gameOutrightFragment -> {
+                val action =
+                    GameOutrightFragmentDirections.actionGameOutrightFragmentToHomeFragment()
+                mNavController.navigate(action)
+            }
+
+            R.id.gameOutrightMoreFragment -> {
+                val action =
+                    GameOutrightMoreFragmentDirections.actionGameOutrightMoreFragmentToHomeFragment()
+                mNavController.navigate(action)
+            }
+
+            R.id.oddsDetailFragment -> {
+                val action =
+                    OddsDetailFragmentDirections.actionGameOutrightMoreFragmentToHomeFragment()
+                mNavController.navigate(action)
+            }
+            R.id.oddsDetailLiveFragment -> {
+                val action =
+                    OddsDetailLiveFragmentDirections.actionOddsDetailLiveFragmentToHomeFragment()
                 mNavController.navigate(action)
             }
         }

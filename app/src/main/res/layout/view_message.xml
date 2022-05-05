@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/iv_broadcast_icon"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
         android:adjustViewBounds="true"
         android:contentDescription="@null"
         android:scaleType="centerCrop"

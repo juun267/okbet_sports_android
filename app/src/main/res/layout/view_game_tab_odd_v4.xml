@@ -17,6 +17,7 @@
         app:tabMode="fixed"
         app:tabRippleColor="@null"
         app:tabSelectedTextColor="@color/color_317FFF_0760D4"
+        app:tabIndicatorFullWidth="false"
         app:tabTextAppearance="@style/TabTextSize"
         app:tabTextColor="@color/color_A3A3A3_666666">
 

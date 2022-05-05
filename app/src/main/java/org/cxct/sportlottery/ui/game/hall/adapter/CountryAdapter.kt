@@ -17,6 +17,7 @@ import org.cxct.sportlottery.network.league.Row
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.util.SvgUtil
+import org.cxct.sportlottery.util.setTextWithStrokeWidth
 
 class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -146,7 +147,8 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun bind(item: Row, countryLeagueListener: CountryLeagueListener?) {
             itemView.apply {
 
-                country_text.text = item.name
+                //bold 700
+                country_text.setTextWithStrokeWidth(item.name, 1.0f)
 
                 if (item.icon.isNotEmpty()){
                     val countryIcon = SvgUtil.getSvgDrawable(context, item.icon)

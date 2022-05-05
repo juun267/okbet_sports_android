@@ -46,7 +46,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_8"
                 android:layout_marginBottom="@dimen/margin_8"
-                app:cardCornerRadius="@dimen/margin_8">
+                app:cardCornerRadius="@dimen/margin_8"
+                app:cardUseCompatPadding="true">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -268,7 +269,7 @@
                                 android:layout_marginStart="@dimen/margin_12"
                                 android:layout_marginTop="28dp"
                                 android:layout_marginBottom="@dimen/margin_10"
-                                android:background="@drawable/effect_select_bet_edit_text"
+                                android:background="@drawable/effect_select_bet_radius_4_edit_text"
                                 android:hint="@string/bet_info_input_quota"
                                 android:inputType="number"
                                 android:letterSpacing="0.05"
@@ -277,7 +278,6 @@
                                 android:textColor="@color/color_FFFFFF_0760D4"
                                 android:textColorHint="@color/color_cccccc"
                                 android:textSize="@dimen/textSize16sp"
-                                android:textStyle="bold"
                                 app:layout_constraintBottom_toTopOf="@+id/tv_error_message"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toStartOf="@+id/btnRecharge"

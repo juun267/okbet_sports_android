@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         tools:layout_width="100dp"
-        android:background="@drawable/selector_button_radius_0_bet"
+        android:background="@drawable/selector_button_radius_5_bet"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -69,7 +69,7 @@
         android:id="@+id/tv_accept_odds_change"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/selector_button_radius_0_bet"
+        android:background="@drawable/selector_button_radius_5_bet"
         android:gravity="center"
         android:text="@string/bet_info_accept_odds_change"
         android:textColor="@color/color_191919_FCFCFC"
@@ -81,7 +81,7 @@
         android:id="@+id/tv_login"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/button_radius_4_117ecd_1053af"
+        android:background="@drawable/button_radius_5_0760d4"
         android:gravity="center"
         android:text="@string/btn_login"
         android:textAllCaps="true"

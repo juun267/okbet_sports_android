@@ -45,7 +45,7 @@
     <org.cxct.sportlottery.ui.game.bottomNavigation.SportBottomNavigation
         android:id="@+id/sport_bottom_navigation"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="56dp"
         android:layout_alignParentBottom="true" />
 
 

@@ -3,7 +3,13 @@
     android:height="20dp"
     android:viewportWidth="20"
     android:viewportHeight="20">
-  <group>
+
+  <!-- Add padding -->
+  <group
+      android:scaleX="0.9"
+      android:scaleY="0.9"
+      android:pivotX="12"
+      android:pivotY="12">
     <clip-path
         android:pathData="M0,0H20V20H0z"/>
     <path

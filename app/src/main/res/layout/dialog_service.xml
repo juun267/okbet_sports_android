@@ -1,167 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg_rectangle_white_6dp">
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/bg_rectangle_white_6dp"
+    tools:ignore="ContentDescription">
 
-        <ImageView
-            android:id="@+id/iv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/bg_customer_service"
-            app:layout_constraintBottom_toTopOf="@id/frame_service1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
+    <ImageView
+        android:id="@+id/iv_title"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:src="@drawable/bg_customer_service"
+        app:layout_constraintDimensionRatio="360:92"
+        app:layout_constraintBottom_toTopOf="@id/frame_service1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
-        <ImageView
-            android:id="@+id/iv_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:layout_marginTop="2dp"
-            app:layout_constraintTop_toTopOf="@id/iv_title"
-            app:layout_constraintEnd_toEndOf="@id/iv_title"
-            android:src="@drawable/ic_close_gray2"/>
+    <ImageView
+        android:id="@+id/iv_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_close_gray2"
+        app:layout_constraintEnd_toEndOf="@id/iv_title"
+        app:layout_constraintTop_toTopOf="@id/iv_title" />
 
-        <View
-            android:id="@+id/frame_service1"
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/bg_frame_blue_16"
-            app:layout_constraintBottom_toTopOf="@id/frame_service2"
-            app:layout_constraintEnd_toEndOf="@id/iv_title"
-            app:layout_constraintStart_toStartOf="@id/iv_title"
-            app:layout_constraintTop_toBottomOf="@id/iv_title" />
+    <View
+        android:id="@+id/frame_service1"
+        android:layout_width="0dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/bg_frame_blue_16"
+        app:layout_constraintBottom_toTopOf="@id/frame_service2"
+        app:layout_constraintEnd_toEndOf="@id/iv_title"
+        app:layout_constraintStart_toStartOf="@id/iv_title"
+        app:layout_constraintTop_toBottomOf="@id/iv_title" />
 
-        <ImageView
-            android:id="@+id/iv_service1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/frame_service1"
-            app:layout_constraintStart_toStartOf="@id/frame_service1"
-            app:layout_constraintBottom_toBottomOf="@id/frame_service1"
-            android:layout_marginStart="12dp"
+    <ImageView
+        android:id="@+id/iv_service1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:src="@drawable/ic_service_inside_blue"
+        app:layout_constraintBottom_toBottomOf="@id/frame_service1"
+        app:layout_constraintStart_toStartOf="@id/frame_service1"
 
-            android:src="@drawable/ic_service_inside_blue"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/service_1"
-            android:layout_marginStart="8dp"
-            app:layout_constraintTop_toTopOf="@id/frame_service1"
-            app:layout_constraintBottom_toBottomOf="@id/frame_service1"
-            app:layout_constraintStart_toEndOf="@id/iv_service1"
-            android:textColor="@color/colorBlue2"
-            android:textSize="@dimen/textSize12sp"
-            />
+        app:layout_constraintTop_toTopOf="@id/frame_service1" />
 
-        <View
-            android:layout_width="76dp"
-            android:layout_height="24dp"
-            android:background="@drawable/bg_rectangle_gradient_blue"
-            android:layout_marginEnd="4dp"
-            app:layout_constraintTop_toTopOf="@id/frame_service1"
-            app:layout_constraintBottom_toBottomOf="@id/frame_service1"
-            app:layout_constraintEnd_toEndOf="@id/frame_service1"
-            />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/service_1"
+        android:textColor="@color/colorBlue"
+        android:textSize="@dimen/textSize12sp"
+        app:layout_constraintBottom_toBottomOf="@id/frame_service1"
+        app:layout_constraintStart_toEndOf="@id/iv_service1"
+        app:layout_constraintTop_toTopOf="@id/frame_service1" />
 
-        <ImageView
-            android:id="@+id/iv_service1_go"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            app:layout_constraintTop_toTopOf="@id/frame_service1"
-            app:layout_constraintBottom_toBottomOf="@id/frame_service1"
-            app:layout_constraintEnd_toEndOf="@id/frame_service1"
-            android:src="@drawable/ic_go"/>
+    <View
+        android:layout_width="76dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/bg_rectangle_gradient_blue"
+        app:layout_constraintBottom_toBottomOf="@id/frame_service1"
+        app:layout_constraintEnd_toEndOf="@id/frame_service1"
+        app:layout_constraintTop_toTopOf="@id/frame_service1" />
 
-        <TextView
-            android:id="@+id/tv_service1_go"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/service_connect"
-            android:layout_marginEnd="6dp"
-            app:layout_constraintTop_toTopOf="@id/frame_service1"
-            app:layout_constraintBottom_toBottomOf="@id/frame_service1"
-            app:layout_constraintEnd_toStartOf="@id/iv_service1_go"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/textSize12sp"
-            />
+    <ImageView
+        android:id="@+id/iv_service1_go"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:src="@drawable/ic_go"
+        app:layout_constraintBottom_toBottomOf="@id/frame_service1"
+        app:layout_constraintEnd_toEndOf="@id/frame_service1"
+        app:layout_constraintTop_toTopOf="@id/frame_service1" />
 
-        <View
-            android:id="@+id/frame_service2"
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="18dp"
-            android:background="@drawable/bg_frame_blue_16"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/iv_title"
-            app:layout_constraintStart_toStartOf="@id/iv_title"
-            app:layout_constraintTop_toBottomOf="@id/frame_service1" />
+    <TextView
+        android:id="@+id/tv_service1_go"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="6dp"
+        android:text="@string/service_connect"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/textSize12sp"
+        app:layout_constraintBottom_toBottomOf="@id/frame_service1"
+        app:layout_constraintEnd_toStartOf="@id/iv_service1_go"
+        app:layout_constraintTop_toTopOf="@id/frame_service1" />
 
-        <ImageView
-            android:id="@+id/iv_service2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/frame_service2"
-            app:layout_constraintStart_toStartOf="@id/frame_service2"
-            app:layout_constraintBottom_toBottomOf="@id/frame_service2"
-            android:layout_marginStart="12dp"
+    <View
+        android:id="@+id/frame_service2"
+        android:layout_width="0dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="18dp"
+        android:background="@drawable/bg_frame_blue_16"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/iv_title"
+        app:layout_constraintStart_toStartOf="@id/iv_title"
+        app:layout_constraintTop_toBottomOf="@id/frame_service1" />
 
-            android:src="@drawable/ic_service_inside_blue"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/service_2"
-            android:layout_marginStart="8dp"
-            app:layout_constraintTop_toTopOf="@id/frame_service2"
-            app:layout_constraintBottom_toBottomOf="@id/frame_service2"
-            app:layout_constraintStart_toEndOf="@id/iv_service2"
-            android:textColor="@color/colorBlue2"
-            android:textSize="@dimen/textSize12sp"
-            />
+    <ImageView
+        android:id="@+id/iv_service2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:src="@drawable/ic_service_inside_blue"
+        app:layout_constraintBottom_toBottomOf="@id/frame_service2"
+        app:layout_constraintStart_toStartOf="@id/frame_service2"
 
-        <View
-            android:layout_width="76dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="4dp"
-            android:background="@drawable/bg_rectangle_gradient_blue"
-            app:layout_constraintTop_toTopOf="@id/frame_service2"
-            app:layout_constraintBottom_toBottomOf="@id/frame_service2"
+        app:layout_constraintTop_toTopOf="@id/frame_service2" />
 
-            app:layout_constraintEnd_toEndOf="@id/frame_service2"
-            />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/service_2"
+        android:textColor="@color/colorBlue"
+        android:textSize="@dimen/textSize12sp"
+        app:layout_constraintBottom_toBottomOf="@id/frame_service2"
+        app:layout_constraintStart_toEndOf="@id/iv_service2"
+        app:layout_constraintTop_toTopOf="@id/frame_service2" />
 
-        <ImageView
-            android:id="@+id/iv_service2_go"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            app:layout_constraintTop_toTopOf="@id/frame_service2"
-            app:layout_constraintBottom_toBottomOf="@id/frame_service2"
-            app:layout_constraintEnd_toEndOf="@id/frame_service2"
-            android:src="@drawable/ic_go"/>
+    <View
+        android:layout_width="76dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/bg_rectangle_gradient_blue"
+        app:layout_constraintBottom_toBottomOf="@id/frame_service2"
+        app:layout_constraintEnd_toEndOf="@id/frame_service2"
 
-        <TextView
-            android:id="@+id/tv_service2_go"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/service_connect"
-            android:layout_marginEnd="6dp"
-            app:layout_constraintTop_toTopOf="@id/frame_service2"
-            app:layout_constraintBottom_toBottomOf="@id/frame_service2"
-            app:layout_constraintEnd_toStartOf="@id/iv_service1_go"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/textSize12sp"
-            />
+        app:layout_constraintTop_toTopOf="@id/frame_service2" />
+
+    <ImageView
+        android:id="@+id/iv_service2_go"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:src="@drawable/ic_go"
+        app:layout_constraintBottom_toBottomOf="@id/frame_service2"
+        app:layout_constraintEnd_toEndOf="@id/frame_service2"
+        app:layout_constraintTop_toTopOf="@id/frame_service2" />
+
+    <TextView
+        android:id="@+id/tv_service2_go"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="6dp"
+        android:text="@string/service_connect"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/textSize12sp"
+        app:layout_constraintBottom_toBottomOf="@id/frame_service2"
+        app:layout_constraintEnd_toStartOf="@id/iv_service1_go"
+        app:layout_constraintTop_toTopOf="@id/frame_service2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

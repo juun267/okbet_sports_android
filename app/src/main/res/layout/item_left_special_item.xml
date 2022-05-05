@@ -1,8 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layoutNotification"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/layoutNotification"
     android:orientation="vertical">
 
     <LinearLayout
@@ -31,7 +31,8 @@
             android:minHeight="48dp"
             android:paddingHorizontal="10dp"
             android:text="@string/match_type_row_in_play"
-            android:textColor="@color/color_e5e5e5_333333" />
+            android:textColor="@color/color_e5e5e5_333333"
+            android:textSize="@dimen/textSize14sp" />
 
     </LinearLayout>
 

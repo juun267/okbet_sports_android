@@ -27,7 +27,7 @@
             android:minHeight="28dp"
             android:text="@string/home_tab_today"
             android:textColor="@color/color_A3A3A3_666666"
-            android:textSize="@dimen/textSize12sp"
+            android:textSize="@dimen/textSize11sp"
             android:visibility="gone"
             tools:visibility="visible" />
 
@@ -78,7 +78,7 @@
             android:maxLines="2"
             android:minHeight="34dp"
             android:textColor="@color/color_FFFFFF_000000"
-            android:textSize="@dimen/textSize15sp"
+            android:textSize="@dimen/textSize13sp"
             tools:text="皇家馬德里" />
 
         <TextView
@@ -92,7 +92,7 @@
             android:maxLines="2"
             android:minHeight="34dp"
             android:textColor="@color/color_FFFFFF_000000"
-            android:textSize="@dimen/textSize15sp"
+            android:textSize="@dimen/textSize13sp"
             tools:text="利物浦" />
 
     </LinearLayout>
@@ -153,7 +153,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/color_A3A3A3_666666"
-            android:textSize="@dimen/textSize12sp"
+            android:textSize="@dimen/textSize11sp"
             app:layout_constraintBottom_toBottomOf="@id/match_row"
             app:layout_constraintStart_toEndOf="@id/match_status"
             app:layout_constraintTop_toTopOf="@id/match_row"
@@ -182,7 +182,7 @@
             android:layout_marginStart="10dp"
             android:drawablePadding="6dp"
             android:textColor="@color/color_A3A3A3_666666"
-            android:textSize="@dimen/textSize12sp"
+            android:textSize="@dimen/textSize11sp"
             android:textStyle="bold"
             app:drawableRightCompat="@drawable/ic_iconarrow"
             tools:text="54" />

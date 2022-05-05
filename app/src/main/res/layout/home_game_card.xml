@@ -6,7 +6,6 @@
     android:layout_width="wrap_content"
     android:layout_height="50dp"
     android:background="@drawable/fillet_4dp_home_game_item_blue"
-    android:minWidth="98dp"
     tools:context=".ui.game.home.HomeGameCard"
     tools:ignore="SpUsage">
 
@@ -16,6 +15,7 @@
         android:layout_height="50dp"
         android:contentDescription="@null"
         android:src="@drawable/ic_game_soon"
+        android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_title"
@@ -25,29 +25,27 @@
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="8dp"
         android:text="@string/basketball"
         android:textColor="@color/home_card_text_color"
-        android:textSize="@dimen/textSize12sp"
+        android:textSize="@dimen/textSize11sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/tv_count"
         app:layout_constraintEnd_toStartOf="@id/iv_icon"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/tv_count"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
         android:includeFontPadding="false"
         android:textColor="@color/home_card_text_color"
-        android:textSize="@dimen/textSize16sp"
+        android:textSize="@dimen/textSize15sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/tv_title"
         app:layout_constraintTop_toBottomOf="@id/tv_title"
         tools:text="13" />
 

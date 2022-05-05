@@ -89,11 +89,11 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         binding.eetPassword.setText(viewModel.password)
         binding.etPassword.endIconImageButton.setOnClickListener {
             if (binding.etPassword.endIconResourceId == R.drawable.ic_eye_open) {
-                binding.eetPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                binding.eetPassword.transformationMethod = PasswordTransformationMethod.getInstance()
                 binding.etPassword.setEndIcon(R.drawable.ic_eye_close)
             } else {
                 binding.etPassword.setEndIcon(R.drawable.ic_eye_open)
-                binding.eetPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                binding.eetPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
             }
             binding.eetPassword.setSelection(binding.eetPassword.text.toString().length)
         }

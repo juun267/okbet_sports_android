@@ -36,6 +36,7 @@
         android:maxLines="3"
         android:textColor="@color/color_e5e5e5_333333"
         android:textSize="@dimen/textSize14sp"
+        android:lineSpacingExtra="7dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/country_league_divider"
         app:layout_constraintStart_toEndOf="@id/country_league_choose"
