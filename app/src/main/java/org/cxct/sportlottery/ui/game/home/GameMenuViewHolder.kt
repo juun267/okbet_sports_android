@@ -4,7 +4,6 @@ import android.view.View
 import androidx.core.view.size
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.home_menu_block.view.*
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.sport.SportMenu
@@ -78,7 +77,7 @@ class GameMenuViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                             if (sportMenu.gameCount > 0) {
                                 block_game.addView(
                                     HomeGameCard(
-                                        MultiLanguagesApplication.appContext
+                                        itemView.context
                                     ).apply {
                                         setupHomeCard(this, sportMenu)
                                     })
@@ -110,7 +109,7 @@ class GameMenuViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             if (special_block_game.size != sportCouponMenuList.size) {
                 special_block_game.removeAllViews()
                 sportCouponMenuList.forEach { sportCouponMenuData ->
-                    special_block_game.addView(HomeGameCard(MultiLanguagesApplication.appContext).apply {
+                    special_block_game.addView(HomeGameCard(itemView.context).apply {
                         setupCouponCard(this, sportCouponMenuData)
                     })
                 }
