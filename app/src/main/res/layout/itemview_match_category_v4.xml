@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription"
-        app:tint="@color/colorGray" />
+        app:tint="@color/color_666666" />
 
     <TextView
         android:id="@+id/match_category_name"
