@@ -38,9 +38,10 @@
                 android:gravity="center"
                 android:text="@{matchOdd.leagueName}"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/textSize12sp"
+                android:textSize="@dimen/textSize14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tv_team_home"
                 tools:text="NBA季后赛" />
 
 
@@ -48,13 +49,13 @@
                 android:id="@+id/tv_team_home"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:gravity="start"
                 android:text="@{matchOdd.homeName}"
                 android:textColor="@color/blueLight"
-                android:textSize="@dimen/textSize12sp"
+                android:textSize="@dimen/textSize14sp"
+                app:layout_constraintBottom_toTopOf="@id/text_view"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_playName"
+                app:layout_constraintTop_toBottomOf="@id/tv_playName"
                 tools:text="菲尼克斯太阳" />
 
 
@@ -65,9 +66,10 @@
                 android:gravity="center"
                 android:text="@string/verse"
                 android:textColor="@color/blueLight"
-                android:textSize="@dimen/textSize12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_team_homeway"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:textSize="@dimen/textSize14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_team_home" />
 
             <TextView
                 android:id="@+id/tv_team_homeway"
@@ -77,12 +79,12 @@
                 android:gravity="start"
                 android:text="@{matchOdd.awayName}"
                 android:textColor="@color/blueLight"
-                android:textSize="@dimen/textSize12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:textSize="@dimen/textSize14sp"
+                app:layout_constraintBottom_toBottomOf="@id/text_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toEndOf="@+id/text_view"
-                app:layout_constraintTop_toBottomOf="@+id/tv_team_home"
+                app:layout_constraintStart_toEndOf="@id/text_view"
+                app:layout_constraintTop_toTopOf="@id/text_view"
                 tools:text="菲尼克斯太阳" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -99,49 +101,37 @@
 
 
             <TextView
-                android:id="@+id/tv_game_type"
+                android:id="@+id/tv_game_type_play_cate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:layout_marginEnd="4dp"
+                android:gravity="start"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize14sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@id/tv_play_name"
                 app:gameType="@{row.gameType}"
-                android:layout_marginEnd="4dp"
-                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toStartOf="@id/list_score"
                 app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:playCateName="@{matchOdd.playCateName}"
                 tools:text="篮球" />
-
-            <TextView
-                android:id="@+id/tv_play_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:text="@{matchOdd.playCateName}"
-                android:textColor="@color/colorBlackLight"
-                android:textSize="@dimen/textSize14sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/list_score"
-                app:layout_constraintStart_toEndOf="@id/tv_game_type"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="让球" />
 
             <TextView
                 android:id="@+id/tv_start_time"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
                 android:maxWidth="200dp"
                 android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp"
-                android:layout_marginEnd="4dp"
-                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintEnd_toStartOf="@+id/list_score"
+                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_play_name"
+                app:layout_constraintTop_toBottomOf="@+id/tv_game_type_play_cate"
                 tools:text="2022-02-25 10:42" />
 
             <!--playName spread @ odd (oddsType)-->
@@ -150,12 +140,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
                 android:maxWidth="200dp"
                 android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp"
-                android:layout_marginEnd="4dp"
-                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintEnd_toStartOf="@+id/list_score"
+                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_start_time"
                 tools:text="密尔沃基雄鹿 6.5 \@ 1.860 (印尼盘)" />
@@ -179,10 +169,11 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp"
-                app:layout_constraintVertical_bias="0"
+                android:layout_marginTop="4dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/list_score"
                 app:layout_constraintTop_toBottomOf="@id/list_score"
+                app:layout_constraintVertical_bias="0"
                 tools:text="(5-26)" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -245,9 +236,9 @@
                 android:textColor="@color/colorRed"
                 android:textSize="@dimen/textSize12sp"
                 app:betReceiptStatus="@{row.status}"
-                app:statusVisibility="@{row.status}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_bet"
+                app:statusVisibility="@{row.status}"
                 tools:text="下注失败"
                 tools:visibility="gone" />
 
@@ -258,9 +249,9 @@
                 android:gravity="center"
                 android:textSize="@dimen/textSize12sp"
                 android:textStyle="bold"
+                app:hideByStatus="@{row.status}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_bet"
-                app:hideByStatus="@{row.status}"
                 app:moneyColor="@{row.win}"
                 app:moneyFormat="@{row.win}"
                 tools:text="9,959,500.000" />

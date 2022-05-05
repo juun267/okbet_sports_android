@@ -46,29 +46,32 @@ fun TextView.setDateTimeNoYear(timeStamp: Long?) {
     text = TimeUtil.timeFormat(timeStamp, MD_HMS_FORMAT)
 }
 
-@BindingAdapter("gameType")
-fun TextView.setGameType(gameType: String?) {
+@SuppressLint("SetTextI18n")
+@BindingAdapter(value = ["bind:gameType", "bind:playCateName"], requireAll = true)
+fun TextView.setGameTypeWithPlayCate(gameType: String?, playCateName: String?) {
     if (gameType == null) {
         visibility = View.GONE
         return
     }
-    text = when (gameType) {
-        GameType.FT.key -> context.getString(GameType.FT.string)
-        GameType.BK.key -> context.getString(GameType.BK.string)
-        GameType.TN.key -> context.getString(GameType.TN.string)
-        GameType.VB.key -> context.getString(GameType.VB.string)
-        GameType.BM.key -> context.getString(GameType.BM.string)
-        GameType.TT.key -> context.getString(GameType.TT.string)
-        GameType.BX.key -> context.getString(GameType.BX.string)
-        GameType.CB.key -> context.getString(GameType.CB.string)
-        GameType.CK.key -> context.getString(GameType.CK.string)
-        GameType.BB.key -> context.getString(GameType.BB.string)
-        GameType.RB.key -> context.getString(GameType.RB.string)
-        GameType.AFT.key -> context.getString(GameType.AFT.string)
-        GameType.MR.key -> context.getString(GameType.MR.string)
-        GameType.GF.key -> context.getString(GameType.GF.string)
-        else -> ""
-    }
+    text = "${
+        when (gameType) {
+            GameType.FT.key -> context.getString(GameType.FT.string)
+            GameType.BK.key -> context.getString(GameType.BK.string)
+            GameType.TN.key -> context.getString(GameType.TN.string)
+            GameType.VB.key -> context.getString(GameType.VB.string)
+            GameType.BM.key -> context.getString(GameType.BM.string)
+            GameType.TT.key -> context.getString(GameType.TT.string)
+            GameType.BX.key -> context.getString(GameType.BX.string)
+            GameType.CB.key -> context.getString(GameType.CB.string)
+            GameType.CK.key -> context.getString(GameType.CK.string)
+            GameType.BB.key -> context.getString(GameType.BB.string)
+            GameType.RB.key -> context.getString(GameType.RB.string)
+            GameType.AFT.key -> context.getString(GameType.AFT.string)
+            GameType.MR.key -> context.getString(GameType.MR.string)
+            GameType.GF.key -> context.getString(GameType.GF.string)
+            else -> ""
+        }
+    } $playCateName"
 
 }
 
@@ -402,8 +405,8 @@ fun TextView.setPlayContent(
     spread: String?,
     formatForOdd: String?
 ) {
-    val playNameStr = if (!playName.isNullOrEmpty()) "<font color=#333333>${playName} </font> " else ""
-    val spreadStr = if (!spread.isNullOrEmpty()) "<font color=#B73A20>$spread</font> " else ""
+    val playNameStr = if (!playName.isNullOrEmpty()) "<font color=#666666>${playName} </font> " else ""
+    val spreadStr = if (!spread.isNullOrEmpty() && playName != spread) "<font color=#B73A20>$spread</font> " else ""
 
     text = HtmlCompat.fromHtml(
         playNameStr +

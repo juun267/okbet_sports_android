@@ -41,6 +41,7 @@ import org.cxct.sportlottery.ui.game.betList.FastBetFragment
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.game.filter.LeagueFilterFragmentDirections
 import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
+import org.cxct.sportlottery.ui.game.home.HomeFragment
 import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageFragment
@@ -62,13 +63,13 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.ui.odds.OddsDetailFragmentDirections
 import org.cxct.sportlottery.ui.odds.OddsDetailLiveFragmentDirections
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
-import org.cxct.sportlottery.util.HomePageStatusManager
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.MetricsUtil
-import org.cxct.sportlottery.util.phoneNumCheckDialog
 import org.parceler.Parcels
+
+
+
 
 
 class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) {
@@ -115,13 +116,15 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 }
 
                 R.id.oddsDetailFragment -> {
-                    updateSelectTabState(arguments?.let {
+                    //20220504 跟進h5進賽事詳情時不切換至對應的賽事類別
+                    /*updateSelectTabState(arguments?.let {
                         it.get("matchType") as MatchType
-                    })
+                    })*/
                 }
 
                 R.id.oddsDetailLiveFragment -> {
-                    updateSelectTabState(MatchType.IN_PLAY)
+                    //20220504 跟進h5進賽事詳情時不切換至對應的賽事類別
+                    // updateSelectTabState(MatchType.IN_PLAY)
                 }
             }
         }
@@ -284,7 +287,15 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         sport_bottom_navigation.setNavigationItemClickListener {
             when (it) {
                 R.id.navigation_sport -> {
-                    //TODO navigate sport home
+                    if (tabLayout.selectedTabPosition != 0) {
+                        //賽事類別Tab不在主頁時, 切換至主頁
+                        tabLayout.selectTab(tabLayout.getTabAt(0))
+                    } else {
+                        if (mNavController.currentDestination?.id != R.id.homeFragment){
+                            //若當前不在HomeFragment, 切換至HomeFragment
+                            selectTab(0)
+                        }
+                    }
                     true
                 }
                 R.id.navigation_game -> {
@@ -411,36 +422,41 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             val countEps =
                 sportMenuResult?.sportMenuData?.menu?.eps?.items?.sumBy { it.num } ?: 0
 
-            val tabAll = tabLayout.getTabAt(0)?.customView
-            tabAll?.tv_title?.setText(R.string.home_tan_main)
-            //2022/01/05 主頁數量規則從使用"串關數量"修改為"其他玩法的加總"
-            tabAll?.tv_number?.text =
-                countParlay.plus(countInPlay).plus(countAtStart).plus(countToday).plus(countEarly)
+            tabLayout.getTabAt(0)?.customView?.apply {
+                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tan_main), 0.7f)
+                tv_number?.text = countParlay.plus(countInPlay).plus(countAtStart).plus(countToday).plus(countEarly)
                     .plus(countOutright).plus(countEps).toString()
+            }
 
-            val tabInPlay = tabLayout.getTabAt(1)?.customView
-            tabInPlay?.tv_title?.setText(R.string.home_tab_in_play)
-            tabInPlay?.tv_number?.text = countInPlay.toString()
+            tabLayout.getTabAt(1)?.customView?.apply {
+                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_in_play), 0.7f)
+                tv_number?.text = countInPlay.toString()
+            }
 
-            val tabAtStart = tabLayout.getTabAt(2)?.customView
-            tabAtStart?.tv_title?.setText(R.string.home_tab_at_start)
-            tabAtStart?.tv_number?.text = countAtStart.toString()
+            tabLayout.getTabAt(2)?.customView?.apply {
+                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_at_start), 0.7f)
+                tv_number?.text = countAtStart.toString()
+            }
 
-            val tabToday = tabLayout.getTabAt(3)?.customView
-            tabToday?.tv_title?.setText(R.string.home_tab_today)
-            tabToday?.tv_number?.text = countToday.toString()
+            tabLayout.getTabAt(3)?.customView?.apply {
+                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_today), 0.7f)
+                tv_number?.text = countToday.toString()
+            }
 
-            val tabEarly = tabLayout.getTabAt(4)?.customView
-            tabEarly?.tv_title?.setText(R.string.home_tab_early)
-            tabEarly?.tv_number?.text = countEarly.toString()
+            tabLayout.getTabAt(4)?.customView?.apply {
+                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_early), 0.7f)
+                tv_number?.text = countEarly.toString()
+            }
 
-            val tabOutright = tabLayout.getTabAt(5)?.customView
-            tabOutright?.tv_title?.setText(R.string.home_tab_outright)
-            tabOutright?.tv_number?.text = countOutright.toString()
+            tabLayout.getTabAt(5)?.customView?.apply {
+                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_outright), 0.7f)
+                tv_number?.text = countOutright.toString()
+            }
 
-            val tabParlay = tabLayout.getTabAt(6)?.customView
-            tabParlay?.tv_title?.setText(R.string.home_tab_parlay)
-            tabParlay?.tv_number?.text = countParlay.toString()
+            tabLayout.getTabAt(6)?.customView?.apply {
+                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_parlay), 0.7f)
+                tv_number?.text = countParlay.toString()
+            }
 
             //0401需求先隱藏特優賠率
 //            val tabEps = tabLayout.getTabAt(7)?.customView
@@ -464,7 +480,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         when (position) {
             0 -> {
                 viewModel.switchMainMatchType()
-                mNavController.popBackStack(R.id.homeFragment, false)
+                navHomeFragment()
             }
             1 -> {
                 viewModel.switchMatchType(MatchType.IN_PLAY)
@@ -560,6 +576,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     }
 
     private fun navGameFragment(matchType: MatchType) {
+        //TODO 確認有什麼情況下會是MatchType.MAIN的，若沒有的話可以濾掉
         when (mNavController.currentDestination?.id) {
             R.id.homeFragment -> {
                 val action = HomeFragmentDirections.actionHomeFragmentToGameFragment(matchType)
@@ -606,6 +623,54 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     OddsDetailLiveFragmentDirections.actionOddsDetailLiveFragmentToGameV3Fragment(
                         matchType
                     )
+                mNavController.navigate(action)
+            }
+        }
+    }
+
+    private fun navHomeFragment() {
+        //TODO 此處有個隱藏的Bug, 在進到這個fun前, currentDestination都已經因為觀察到curMatchType的變化進入navGameFragment()而移動至gameV3Fragment
+        when (mNavController.currentDestination?.id) {
+
+            R.id.homeFragment -> {
+            }
+            R.id.gameV3Fragment -> {
+                val action = GameV3FragmentDirections.actionGameV3FragmentToHomeFragment()
+                val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
+                mNavController.navigate(action, navOptions)
+            }
+            R.id.leagueFilterFragment -> {
+                val action =
+                    LeagueFilterFragmentDirections.actionLeagueFilterFragmentToHomeFragment()
+                mNavController.navigate(action)
+            }
+
+            R.id.gameLeagueFragment -> {
+                val action =
+                    GameLeagueFragmentDirections.actionGameLeagueFragmentToHomeFragment()
+                mNavController.navigate(action)
+            }
+
+            R.id.gameOutrightFragment -> {
+                val action =
+                    GameOutrightFragmentDirections.actionGameOutrightFragmentToHomeFragment()
+                mNavController.navigate(action)
+            }
+
+            R.id.gameOutrightMoreFragment -> {
+                val action =
+                    GameOutrightMoreFragmentDirections.actionGameOutrightMoreFragmentToHomeFragment()
+                mNavController.navigate(action)
+            }
+
+            R.id.oddsDetailFragment -> {
+                val action =
+                    OddsDetailFragmentDirections.actionGameOutrightMoreFragmentToHomeFragment()
+                mNavController.navigate(action)
+            }
+            R.id.oddsDetailLiveFragment -> {
+                val action =
+                    OddsDetailLiveFragmentDirections.actionOddsDetailLiveFragmentToHomeFragment()
                 mNavController.navigate(action)
             }
         }

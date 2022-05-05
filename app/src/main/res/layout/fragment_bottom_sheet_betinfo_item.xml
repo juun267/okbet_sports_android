@@ -46,7 +46,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_8"
                 android:layout_marginBottom="@dimen/margin_8"
-                app:cardCornerRadius="@dimen/margin_8">
+                app:cardCornerRadius="@dimen/margin_8"
+                app:cardUseCompatPadding="true">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -256,7 +257,7 @@
                                 android:id="@+id/viewGrey"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
-                                android:background="@color/colorWhite6"
+                                android:background="@color/colorWhite10"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/tv_odd_content_changed" />
 
@@ -267,16 +268,15 @@
                                 android:layout_marginStart="@dimen/margin_12"
                                 android:layout_marginTop="28dp"
                                 android:layout_marginBottom="@dimen/margin_10"
-                                android:background="@drawable/effect_select_bet_edit_text"
+                                android:background="@drawable/effect_select_bet_radius_4_edit_text"
                                 android:hint="@string/bet_info_input_quota"
-                                android:inputType="number"
+                                android:inputType="numberDecimal"
                                 android:letterSpacing="0.05"
                                 android:maxLength="7"
                                 android:paddingStart="10dp"
                                 android:textColor="@color/colorBlue"
                                 android:textColorHint="@color/colorSilverLight"
                                 android:textSize="@dimen/textSize16sp"
-                                android:textStyle="bold"
                                 app:layout_constraintBottom_toTopOf="@+id/tv_error_message"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toStartOf="@+id/btnRecharge"
@@ -432,7 +432,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
-                android:background="@color/color_FFEEEFF0"
+                android:background="@color/colorWhite10"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="@dimen/margin_8"

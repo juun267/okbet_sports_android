@@ -38,8 +38,9 @@
         <androidx.drawerlayout.widget.DrawerLayout
             android:id="@+id/sub_drawer_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="68dp">
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/game_message">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -49,8 +50,8 @@
                 <!-- 遊戲類別列表 -->
                 <ImageView
                     android:id="@+id/btn_menu_left"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="14dp"
                     android:layout_marginBottom="14dp"
@@ -65,7 +66,7 @@
                 <include
                     layout="@layout/view_game_tab_match_type_v4"
                     android:layout_width="0dp"
-                    android:layout_height="56dp"
+                    android:layout_height="53dp"
                     android:layout_marginStart="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/btn_menu_left"
@@ -82,6 +83,7 @@
                     tools:layout="@layout/fragment_home" />
 
                 <Button
+                    android:layout_margin="8dp"
                     android:id="@+id/game_submit"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"

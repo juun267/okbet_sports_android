@@ -32,7 +32,7 @@
     <string name="please_input_password">(your login password)</string>
     <string name="login_password">Password</string>
     <string name="remember_password">Save this password</string>
-    <string name="forget_password_question">Forgot password？</string>
+    <string name="forget_password_question">Forgot password?</string>
     <string name="desc_forget_password">Please contact customer service</string>
     <string name="sign_up_know">sign up now</string>
     <string name="recommend_code">Invite Code</string>
@@ -115,7 +115,7 @@
     <string name="hint_security_code"><font size="12">(Please enter the verification code.)</font></string>
     <string name="dialog_security_need_phone">Your personal information is not complete, please contact customer service.</string>
     <string name="btn_agreement">Account Opening Agreement</string>
-    <string name="have_account">Already have an account？</string>
+    <string name="have_account">Already have an account?</string>
     <string name="btn_login">Login</string>
     <string name="btn_register">Sign Up</string>
     <string name="no_announcement">No announcement</string>
@@ -136,7 +136,7 @@
     <string name="home_tab_eps">PRICE BOOSTS</string>
     <string name="home_title_eps">PRICE BOOSTS</string>
     <string name="title_eps_more">High odds</string>
-    <string name="game_soon">SOON</string>
+    <string name="game_soon">Soon</string>
     <string name="label_in_play_games">Petanque</string>
     <string name="label_all">All</string>
     <string name="label_match_recommend">Match recommend</string>
@@ -207,7 +207,7 @@
     <string name="version_update">Update Version</string>
     <string name="odds_type">Handicap-%s</string>
     <string name="sign_out">Logout</string>
-    <string name="label_version">Version number Ver %s</string>
+    <string name="label_version">Version Ver %s</string>
     <string name="now_level">Current level</string>
     <string name="growth_requirement">The account to level up need：</string>
     <string name="no_value">Nope</string>
@@ -563,7 +563,7 @@
     <string name="hint_four_number_password">Withdrawal password</string>
     <string name="hint_please_enter_withdraw_password">withdrawal password</string>
     <string name="add_new">Add</string>
-    <string name="add_credit_card">Adding Bank card</string>
+    <string name="add_credit_card">Add Bank Card</string>
     <string name="add_crypto_card">Adding virtual coins</string>
     <string name="add_e_wallet">Adding eWallet</string>
     <string name="add_credit_or_virtual">add bank card / USDT / eWallet</string>
@@ -824,7 +824,7 @@
     <string name="myfavorite_notify_match_remove">Remove from My Events.</string>
     <string name="myfavorite_notify_detail_add">Added to My bets</string>
     <string name="myfavorite_notify_detail_remove">Remove from My bets</string>
-    <string name="statistics_title">statistics</string>
+    <string name="statistics_title">Data statistics</string>
     <string name="bet_info_list_minimum_limit_amount">The minimum single bet amount is %1$s %2$s</string>
     <string name="actual_bet">actual bet</string>
     <string name="bet_receipt_all_bet">Total stake</string>
@@ -1095,5 +1095,10 @@
     <string name="recommend_match">Thousand of match</string>
     <string name="recommend_best_odd">Best odds</string>
     <string name="recommend_safe">Safe betting</string>
+    <!--endregion-->
+
+    <!--region 我的賽事-->
+    <string name="my_favorite_empty_title">My Events</string>
+    <string name="my_favorite_empty_msg">Select the icon above，add to My Events.\nYou can group them and easily watch all the match that interest you.</string>
     <!--endregion-->
 </resources>

@@ -36,6 +36,7 @@
         android:maxLines="3"
         android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize14sp"
+        android:lineSpacingExtra="7dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/country_league_divider"
         app:layout_constraintStart_toEndOf="@id/country_league_choose"
@@ -47,7 +48,7 @@
         android:layout_width="1dp"
         android:layout_height="14dp"
         android:layout_marginEnd="55dp"
-        android:background="@color/colorGrayLight"
+        android:background="@color/colorSilverLight"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/country_league_pin"
         app:layout_constraintTop_toTopOf="parent" />

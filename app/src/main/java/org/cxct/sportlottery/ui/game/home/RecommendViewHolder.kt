@@ -1,22 +1,18 @@
 package org.cxct.sportlottery.ui.game.home
 
 import android.content.Context
-import android.os.Parcelable
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import kotlinx.android.synthetic.main.home_game_table_4.view.*
 import kotlinx.android.synthetic.main.home_recommend_item.view.*
 import kotlinx.android.synthetic.main.home_recommend_item.view.indicator_view
 import kotlinx.android.synthetic.main.home_recommend_item.view.view_pager
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.home.recommend.RecommendGameEntity
 import org.cxct.sportlottery.ui.game.home.recommend.VpRecommendAdapter
@@ -35,8 +31,7 @@ class RecommendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .dontTransform()
 
-    var saveInstanceState: Int = 0
-    private var mMatchOdd: MatchOdd? = null
+    var mMatchOdd: MatchOdd? = null
 
     // TODO binding
     var onClickMatchListener: OnSelectItemListener<RecommendGameEntity>? = null
@@ -134,9 +129,7 @@ class RecommendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     oddBean.playTypeCode == recommendSelectedOdd[matchId]
                 }.let { selectedIndex ->
                     if (selectedIndex >= 0) {
-                        view_pager.post {
-                            view_pager.setCurrentItem(selectedIndex, false)
-                        }
+                        view_pager.setCurrentItem(selectedIndex, false)
                     }
                 }
             }
@@ -169,7 +162,6 @@ class RecommendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 view_pager.registerOnPageChangeCallback(callback)
             }
         }
-        subscribeChannelHall(mMatchOdd?.matchInfo?.gameType, mMatchOdd?.matchInfo?.id)
     }
     private fun org.cxct.sportlottery.network.matchCategory.result.MatchInfo.getStartTime(context: Context): String {
         val dateFormat = "dd / MM"
@@ -180,17 +172,4 @@ class RecommendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         } ?: ""
     }
 
-    fun subscribeChannelHall(gameType: String?, eventId: String?) {
-        Log.d("Hewie45", "${eventId}(${gameType}) => subscribeChannelHall")
-        (itemView.context as BaseSocketActivity<*>).subscribeChannelHall(gameType, eventId)
-    }
-
-    fun unsubscribeHallChannel(gameType: String?, eventId: String?) {
-        Log.d("Hewie45", "${eventId}(${gameType}) => unsubscribeHallChannel")
-        (itemView.context as BaseSocketActivity<*>).unSubscribeChannelHall(gameType, eventId)
-    }
-
-    fun unsubscribeHallChannel() {
-        unsubscribeHallChannel(mMatchOdd?.matchInfo?.gameType, mMatchOdd?.matchInfo?.id)
-    }
 }

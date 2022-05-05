@@ -347,7 +347,7 @@ class Vp2GameTable4Adapter (
 
                 when (matchType) {
                     MatchType.IN_PLAY -> {
-                        tv_game_type.text = context.getString(R.string.home_tab_in_play)
+                        tv_game_type.text = context.getString(R.string.home_tab_in_play2)
 
                         when (gameType) {
                             GameType.TN.key -> {

@@ -11,9 +11,10 @@ import kotlinx.android.synthetic.main.content_parlay_match.view.*
 import kotlinx.android.synthetic.main.content_parlay_match.view.content_play
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.MatchOdd
+import org.cxct.sportlottery.ui.game.BetRecordType
 import org.cxct.sportlottery.util.*
 
-class ContentParlayMatchAdapter :
+class ContentParlayMatchAdapter(val status: Int) :
     ListAdapter<MatchOdd, RecyclerView.ViewHolder>(ContentDiffCallBack()) {
     var gameType: String = ""
     var betConfirmTime: Long? = 0
@@ -41,7 +42,7 @@ class ContentParlayMatchAdapter :
         val data = getItem(holder.adapterPosition)
         when (holder) {
             is ParlayMatchViewHolder -> {
-                holder.bind(gameType, data, position, betConfirmTime)
+                holder.bind(gameType, data, position, betConfirmTime, status)
             }
         }
     }
@@ -55,7 +56,7 @@ class ContentParlayMatchAdapter :
             }
         }
 
-        fun bind(gameTypeName: String, data: MatchOdd, position: Int, betConfirmTime: Long?) {
+        fun bind(gameTypeName: String, data: MatchOdd, position: Int, betConfirmTime: Long?, status: Int) {
             itemView.apply {
                 content_play.text = "$gameTypeName ${data.playCateName}"
 
@@ -91,7 +92,9 @@ class ContentParlayMatchAdapter :
                             override fun onFinish() {
                                 tv_count_down_parley.text =
                                     "0 ${context.getString(R.string.sec)}"
-//                                tv_count_down_parley.visibility = View.GONE
+                                if (status == BetRecordType.UNSETTLEMENT.code.firstOrNull()) {
+                                    tv_count_down_parley.visibility = View.GONE
+                                }
                             }
                         }.start()
                     }else{

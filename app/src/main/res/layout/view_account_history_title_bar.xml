@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorWhite"
+    android:background="@color/colorWhite1"
     android:orientation="vertical"
     tools:context="org.cxct.sportlottery.ui.main.accountHistory.next.AccountHistoryNextFragment"
     tools:ignore="SpUsage">
@@ -28,6 +28,7 @@
         app:tint="@color/colorBlackLight" />
 
     <TextView
+        android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:gravity="center"
@@ -43,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="8dp"
+        app:textGravity="start"
         app:backgroundFrame="@drawable/frame_color_silver_light_stroke"
         app:defaultStatusText="@string/all_sport"
         app:horizontalChainStyle="spread"
@@ -54,16 +56,16 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8"
         android:layout_marginEnd="@dimen/margin_10"
-        app:drawableStartCompat="@drawable/ic_info_white"
         android:drawablePadding="@dimen/margin_6"
-        app:drawableTint="@color/colorGray"
         android:text="@string/text_us_east_time"
         android:textColor="@color/colorGray"
         android:textSize="@dimen/textSize12sp"
+        app:drawableLeftCompat="@drawable/ic_info_white"
+        app:drawableStartCompat="@drawable/ic_info_white"
+        app:drawableTint="@color/colorGray"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/status_selector"
-        app:drawableLeftCompat="@drawable/ic_info_white" />
+        app:layout_constraintTop_toBottomOf="@+id/status_selector" />
 
     <LinearLayout
         android:id="@+id/linearLayout5"

@@ -149,6 +149,9 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             playSelectedCodeSelectionType: Int?,
             playSelectedCode: String?
         ) {
+
+            itemView.v_top.visibility = if (bindingAdapterPosition == 0) View.GONE else View.VISIBLE
+
             setUpVisibility(item, matchType)
             setupMatchInfo(item, matchType, matchInfoList, leagueOddListener)
             val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
@@ -244,7 +247,8 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                     leagueOddListener?.onClickPlayType(
                         item.matchInfo?.id,
                         matchInfoList,
-                        if (item.matchInfo?.isInPlay == true) MatchType.IN_PLAY else matchType
+                        if (item.matchInfo?.isInPlay == true) MatchType.IN_PLAY else matchType,
+                        item.matchInfo?.liveVideo ?: 0
                     )
                 }
             }
@@ -267,7 +271,8 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 leagueOddListener?.onClickPlayType(
                     item.matchInfo?.id,
                     matchInfoList,
-                    if (item.matchInfo?.isInPlay == true) MatchType.IN_PLAY else matchType
+                    if (item.matchInfo?.isInPlay == true) MatchType.IN_PLAY else matchType,
+                    item.matchInfo?.liveVideo ?: 0
                 )
             }
 

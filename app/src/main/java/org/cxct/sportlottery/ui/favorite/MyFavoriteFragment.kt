@@ -96,7 +96,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             }, {})
 
             leagueOddListener = LeagueOddListener(
-                clickListenerPlayType = { matchId, matchInfoList, gameMatchType ->
+                clickListenerPlayType = { matchId, matchInfoList, gameMatchType, liveVideo ->
                     if (gameMatchType == MatchType.IN_PLAY) {
                         matchId?.let {
                             navOddsDetailLive(matchId, gameMatchType)
@@ -490,10 +490,12 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 favorite_toolbar.visibility = View.VISIBLE
                 fl_no_game.visibility = View.VISIBLE
                 appbar_layout.visibility = View.GONE
+                favorite_game_list.visibility = View.GONE
             } else {
                 favorite_toolbar.visibility = View.GONE
                 fl_no_game.visibility = View.GONE
                 appbar_layout.visibility = View.VISIBLE
+                favorite_game_list.visibility = View.VISIBLE
             }
         }
 
