@@ -100,9 +100,9 @@ class OddsButton @JvmOverloads constructor(
             visibility =
                 if (odd?.spread.isNullOrEmpty() || odd?.playCode == PlayCate.DOUBLE_D_P.value || odd?.playCode == PlayCate.TRIPLE_D_P.value) View.GONE else View.VISIBLE
         }
-
-        if(isOddPercentage == true)
-            tv_odds?.text = TextUtil.formatForOddPercentage(getOdds(odd, oddsType)-1)
+        
+        if(isOddPercentage == true) //反波膽顯示 %
+            tv_odds?.text = TextUtil.formatForOddPercentage((getOdds(odd, oddsType) - 1))
         else
             tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
 
