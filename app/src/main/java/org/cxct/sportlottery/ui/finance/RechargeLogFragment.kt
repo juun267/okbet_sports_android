@@ -7,18 +7,21 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_recharge_log.*
 import kotlinx.android.synthetic.main.activity_recharge_log.view.*
+import kotlinx.android.synthetic.main.view_no_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.ui.finance.df.Status
+import org.cxct.sportlottery.util.DisplayUtil.dp
 
 class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
 
@@ -79,10 +82,20 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                 rvlist.smoothScrollToPosition(0)
             }
 
+            initNoRecordView(this)
             setupListColumn(this)
             setupRechargeLogList(this)
             setupSearch(this)
         }
+    }
+
+    private fun initNoRecordView(view: View) {
+        view.view_no_record.list_no_record_img?.apply {
+            viewTreeObserver.addOnGlobalLayoutListener {
+                (layoutParams as LinearLayout.LayoutParams).topMargin = 20.dp
+            }
+        }
+        view.view_no_record.setBackgroundColor(ContextCompat.getColor(view.context, R.color.colorWhite1))
     }
 
     private fun setupListColumn(view: View) {
