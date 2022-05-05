@@ -83,6 +83,7 @@
                     tools:layout="@layout/fragment_home" />
 
                 <Button
+                    android:layout_margin="8dp"
                     android:id="@+id/game_submit"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
