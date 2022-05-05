@@ -5,5 +5,5 @@
     <solid android:color="@color/selector_button_odd_bg_green" />
     <stroke
         android:width="1dp"
-        android:color="@color/colorWhite6" />
+        android:color="@color/color_191919_EEEFF0" />
 </shape>

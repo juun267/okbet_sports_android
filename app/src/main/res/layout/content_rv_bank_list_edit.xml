@@ -4,14 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="5dp"
     android:clipToPadding="false"
     app:cardCornerRadius="4dp"
-    app:cardElevation="6dp">
+    app:cardElevation="2dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="0dp"
@@ -61,7 +63,7 @@
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
                     android:maxLines="2"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -72,8 +74,8 @@
 
                 <ImageView
                     android:id="@+id/img_edit_bank"
-                    android:layout_width="18dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:src="@drawable/ic_edit_card_button"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -87,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
                 android:gravity="start|center_vertical"
-                android:textColor="@color/colorGray"
+                android:textColor="@color/color_A3A3A3_666666"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintStart_toEndOf="@+id/tv_colon1"
                 app:layout_constraintTop_toTopOf="@+id/tv_colon1"
@@ -96,7 +98,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="4dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -105,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:text="@string/tail_number"
-                    android:textColor="@color/colorGray"
+                    android:textColor="@color/color_A3A3A3_666666"
                     android:textSize="@dimen/textSize12sp" />
 
                 <TextView
@@ -113,7 +115,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textColor="@color/colorGray"
+                    android:textColor="@color/color_A3A3A3_666666"
                     android:textSize="@dimen/textSize12sp"
                     tools:text="1681" />
             </LinearLayout>
@@ -123,7 +125,7 @@
                 android:id="@+id/ll_bind_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="10dp"
                 android:gravity="top"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent">
@@ -134,7 +136,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:text="@string/bind_start_time"
-                    android:textColor="@color/colorGray"
+                    android:textColor="@color/color_A3A3A3_666666"
                     android:textSize="@dimen/textSize12sp" />
 
                 <TextView
@@ -142,7 +144,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="start|center_vertical"
-                    android:textColor="@color/colorGray"
+                    android:textColor="@color/color_A3A3A3_666666"
                     android:textSize="@dimen/textSize12sp"
                     tools:text="2020-12-12  23:08:43" />
             </LinearLayout>

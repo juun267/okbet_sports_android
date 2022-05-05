@@ -187,7 +187,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                     return@Runnable
 
                 mTokenPromptDialog = CustomAlertDialog(this@BaseActivity).apply {
-                    setTextColor(R.color.colorRed)
+                    setTextColor(R.color.color_E44438_e44438)
                     setTitle(this@BaseActivity.getString(R.string.prompt))
                     setMessage(errorMessage)
                     setPositiveButtonText(this@BaseActivity.getString(R.string.btn_determine))
@@ -307,8 +307,8 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
             itemClickListener.onChecked(true, dataList[options1])
         }
             .setItemVisibleCount(4)
-            .setBgColor(resources.getColor(R.color.colorSilver3))
-            .setCancelColor(resources.getColor(R.color.colorBlackLight))//取消按钮文字颜色
+            .setBgColor(resources.getColor(R.color.color_666666_bcbcbc))
+            .setCancelColor(resources.getColor(R.color.color_e5e5e5_333333))//取消按钮文字颜色
             .setSubmitText(resources.getString(R.string.complete))
             .setCancelText(resources.getString(R.string.btn_cancel))
             .build()

@@ -13,13 +13,13 @@
         android:id="@+id/checkbox"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@{item.isChecked ? @color/colorWhite6 : @color/colorWhite}"
+        android:background="@{item.isChecked ? @color/color_191919_EEEFF0 : @color/color_191919_FCFCFC}"
         android:button="@null"
         android:checked="@{item.isChecked}"
         android:gravity="center"
         android:paddingVertical="12dp"
         android:text="@{item.showName}"
-        android:textColor="@color/colorBlackLight"
+        android:textColor="@color/color_e5e5e5_333333"
         android:textSize="@dimen/textSize12sp"
         tools:text="未确认" />
 

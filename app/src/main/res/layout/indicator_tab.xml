@@ -5,5 +5,5 @@
     android:layout_height="4dp"
     android:layout_marginHorizontal="4dp"
     android:background="@drawable/effect_select_indicator_tab"
-    tools:background="@color/colorBlue"
+    tools:background="@color/color_317FFF_0760D4"
     tools:context="org.cxct.sportlottery.ui.common.IndicatorView" />

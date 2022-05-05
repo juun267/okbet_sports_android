@@ -117,9 +117,9 @@ class CreditRecordActivity :
                 setTextColor(
                     ContextCompat.getColor(
                         this@CreditRecordActivity, when {
-                            (it.reward != null && it.reward > 0) -> R.color.colorGreen
-                            (it.reward != null && it.reward < 0) -> R.color.colorRed
-                            else -> R.color.colorGray
+                            (it.reward != null && it.reward > 0) -> R.color.color_08dc6e_08dc6e
+                            (it.reward != null && it.reward < 0) -> R.color.color_E44438_e44438
+                            else -> R.color.color_A3A3A3_666666
                         }
                     )
                 )

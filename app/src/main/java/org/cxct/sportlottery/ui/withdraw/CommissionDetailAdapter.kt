@@ -45,30 +45,30 @@ class CommissionDetailAdapter: RecyclerView.Adapter<CommissionDetailAdapter.Item
 
                 tvRequiredValidBetsMoney.apply {
                     setMoneyFormat(data.validCheckAmount?.toLong()?.toDouble() ?: 0.0)
-                    setTextColor(ContextCompat.getColor(context, if(data.validCheckAmount ?: 0.0 < 0.0) R.color.colorRed else R.color.colorBlackLight))
+                    setTextColor(ContextCompat.getColor(context, if(data.validCheckAmount ?: 0.0 < 0.0) R.color.color_E44438_e44438 else R.color.color_e5e5e5_333333))
                 }
 
                 tvSuccessedBetsMoney.apply {
                     setMoneyFormat(data.finishValidAmount?.toLong()?.toDouble() ?: 0.0)
-                    setTextColor(ContextCompat.getColor(context, if(data.finishValidAmount ?: 0.0 < 0.0) R.color.colorRed else R.color.colorBlackLight))
+                    setTextColor(ContextCompat.getColor(context, if(data.finishValidAmount ?: 0.0 < 0.0) R.color.color_E44438_e44438 else R.color.color_e5e5e5_333333))
                 }
 
                 tvDeductMoney.apply {
                     setMoneyFormat(zero.minus(data.deductMoney ?: 0))
-                    setTextColor(ContextCompat.getColor(context, if(zero.minus(data.deductMoney ?: 0) < 0.0) R.color.colorRed else R.color.colorBlackLight))
+                    setTextColor(ContextCompat.getColor(context, if(zero.minus(data.deductMoney ?: 0) < 0.0) R.color.color_E44438_e44438 else R.color.color_e5e5e5_333333))
                 }
 
                 when(data.isPass){
                     1 ->{
                         tvCheckStatus.apply {
                             text = this.context.getString(R.string.commissiom_completed)
-                            setTextColor(ContextCompat.getColor(context, R.color.colorGreen))
+                            setTextColor(ContextCompat.getColor(context, R.color.color_08dc6e_08dc6e))
                         }
                     }
                     else ->{
                         tvCheckStatus.apply {
                             text = this.context.getString(R.string.commission_not_completed)
-                            setTextColor(ContextCompat.getColor(context, R.color.colorRed))
+                            setTextColor(ContextCompat.getColor(context, R.color.color_E44438_e44438))
                         }
                     }
                 }

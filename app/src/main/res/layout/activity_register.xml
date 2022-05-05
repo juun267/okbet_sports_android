@@ -68,7 +68,7 @@
                 android:layout_height="45dp"
                 android:layout_marginLeft="14dp"
                 android:text="@string/btn_register"
-                android:textColor="@color/colorBlackLight"
+                android:textColor="@color/color_e5e5e5_333333"
                 android:textSize="@dimen/textSize30sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/view"
@@ -94,7 +94,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp"
                     android:textStyle="bold" />
 
@@ -333,7 +333,7 @@
                         android:minHeight="32dp"
                         android:text="@string/get_verification_code"
                         android:textAllCaps="false"
-                        android:textColor="@color/colorWhite"
+                        android:textColor="@color/color_191919_FCFCFC"
                         android:textSize="@dimen/textSize14sp" />
 
                 </LinearLayout>
@@ -668,7 +668,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/register_please_read"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize13sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -678,7 +678,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/register_responsibilities"
-                    android:textColor="@color/colorBlue"
+                    android:textColor="@color/color_317FFF_0760D4"
                     android:textSize="@dimen/textSize13sp"
                     app:layout_constraintStart_toEndOf="@+id/tvDutyTitle"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -687,7 +687,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="。"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize13sp"
                     app:layout_constraintStart_toEndOf="@+id/tvDuty"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -699,7 +699,7 @@
                     android:button="@drawable/effect_login_select_checkbox"
                     android:checked="true"
                     android:paddingStart="6dp"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize13sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/tvPrivacy"
@@ -711,8 +711,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="13dp"
                     android:gravity="left"
-                    android:textColor="@color/colorBlackLight"
-                    android:textColorLink="@color/colorBlue"
+                    android:textColor="@color/color_e5e5e5_333333"
+                    android:textColorLink="@color/color_317FFF_0760D4"
                     android:textSize="@dimen/textSize13sp"
                     android:lineSpacingExtra="3dp"
                     app:layout_constraintEnd_toEndOf="@+id/clAgreement"
@@ -727,7 +727,7 @@
                     android:button="@drawable/effect_login_select_checkbox"
                     android:checked="true"
                     android:paddingStart="6dp"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize13sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/tvAgreement"
@@ -739,8 +739,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
                     android:gravity="left"
-                    android:textColor="@color/colorBlackLight"
-                    android:textColorLink="@color/colorBlue"
+                    android:textColor="@color/color_e5e5e5_333333"
+                    android:textColorLink="@color/color_317FFF_0760D4"
                     android:textSize="@dimen/textSize13sp"
                     android:lineSpacingExtra="3dp"
                     app:layout_constraintEnd_toEndOf="@+id/clAgreement"
@@ -769,7 +769,7 @@
             <!--                    android:button="@drawable/effect_select_checkbox"-->
             <!--                    android:paddingHorizontal="4dp"-->
             <!--                    android:text="@string/desc_agreement"-->
-            <!--                    android:textColor="@color/colorGray"-->
+            <!--                    android:textColor="@color/color_A3A3A3_666666"-->
             <!--                    android:textSize="@dimen/textSize12sp"-->
             <!--                    app:layout_constraintBottom_toTopOf="@id/btn_login"-->
             <!--                    app:layout_constraintStart_toStartOf="@id/btn_login" />-->
@@ -813,14 +813,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/have_account"
-                    android:textColor="@color/colorGray"
+                    android:textColor="@color/color_A3A3A3_666666"
                     android:textSize="@dimen/textSize13sp" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="12dp"
                     android:layout_marginHorizontal="4dp"
-                    android:background="@color/colorGray"
+                    android:background="@color/color_A3A3A3_666666"
                     android:visibility="gone" />
 
                 <TextView

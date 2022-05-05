@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:gravity="right"
             android:text="@string/bet_info_check_maximum_limit"
-            android:textColor="@color/colorBlue"
+            android:textColor="@color/color_317FFF_0760D4"
             android:textSize="@dimen/textSize12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 app:betMaximumLimit="@{parlayOdd.max}"
-                android:textColor="@color/colorGray"
+                android:textColor="@color/color_A3A3A3_666666"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="7900.000" />
 
@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/bet_info_bet_quota"
-                android:textColor="@color/colorBlue"
+                android:textColor="@color/color_317FFF_0760D4"
                 android:textSize="@dimen/textSize12sp" />
 
         </LinearLayout>
@@ -87,7 +87,7 @@
                 android:layout_weight="1"
                 android:gravity="left"
                 android:text="@string/bet_info_win_quota"
-                android:textColor="@color/colorBlackLight"
+                android:textColor="@color/color_e5e5e5_333333"
                 android:textSize="@dimen/textSize12sp" />
 
             <TextView
@@ -95,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:textColor="@color/color_060F20"
+                android:textColor="@color/color_FFFFFF_060F20"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="293.000"
                 android:textStyle="bold"/>

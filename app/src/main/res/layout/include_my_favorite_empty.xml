@@ -4,14 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    android:background="#F3F4F5">
+    android:background="@color/color_191919_FCFCFC">
 
     <!-- Title -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/my_favorite_empty_title"
-        android:textColor="#333333"
+        android:textColor="@color/color_e5e5e5_333333"
         android:textStyle="bold"
         android:textSize="16sp"
         android:layout_marginTop="25dp"/>
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/my_favorite_empty_msg"
-            android:textColor="#000000"
+            android:textColor="@color/color_e5e5e5_000000"
             android:textSize="12sp"
             android:layout_marginTop="35dp"
             android:layout_marginStart="10dp"

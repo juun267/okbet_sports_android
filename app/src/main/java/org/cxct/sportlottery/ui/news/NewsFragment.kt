@@ -31,7 +31,7 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
                     val tabTextView: TextView = it as TextView
                     with(tabTextView) {
                         setTypeface(null, Typeface.BOLD)
-                        setTextColor(ContextCompat.getColor(context, R.color.colorBlackLight))
+                        setTextColor(ContextCompat.getColor(context, R.color.color_e5e5e5_333333))
                     }
                 }
                 when (tab?.position) {
@@ -50,7 +50,7 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
                     val tabTextView: TextView = it as TextView
                     with(tabTextView) {
                         setTypeface(null, Typeface.NORMAL)
-                        setTextColor(ContextCompat.getColor(context, R.color.colorGray))
+                        setTextColor(ContextCompat.getColor(context, R.color.color_A3A3A3_666666))
                     }
                 }
             }
@@ -112,6 +112,7 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
                         width = ViewGroup.LayoutParams.WRAP_CONTENT
                         height = ViewGroup.LayoutParams.WRAP_CONTENT
                     }
+                    tabTextView.setTextColor(ContextCompat.getColor(context, R.color.color_A3A3A3_666666))
 
                     tabTextView.text = tab.text
                 }
@@ -125,7 +126,7 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
                 selectedTab.select()
                 with((selectedTab.customView as TextView)) {
                     setTypeface(null, Typeface.BOLD)
-                    setTextColor(ContextCompat.getColor(context, R.color.colorBlackLight))
+                    setTextColor(ContextCompat.getColor(context, R.color.color_e5e5e5_333333))
                 }
             }
             //endregion

@@ -259,7 +259,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                     tvLanguage.setTextColor(
                         ContextCompat.getColor(
                             MultiLanguagesApplication.appContext,
-                            R.color.color_FFFFFFFF
+                            R.color.color_FFFFFF_FFFFFF
                         )
                     )
                     //endregion
@@ -363,10 +363,10 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         fun bind() {
             with(binding) {
                 bottomNavigationView.setNowPage(Page.PUBLICITY)
-                ContextCompat.getDrawable(context, R.color.colorWhite1)?.let { background ->
+                ContextCompat.getDrawable(context, R.color.color_141414_F3F4F5)?.let { background ->
                     bottomNavigationView.setTopBackground(background)
                 }
-                ContextCompat.getDrawable(context, R.color.colorGrayDark3)?.let { background ->
+                ContextCompat.getDrawable(context, R.color.color_191919_EEEFF0)?.let { background ->
                     bottomNavigationView.setBottomBackground(background)
                 }
             }

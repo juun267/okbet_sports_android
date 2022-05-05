@@ -5,7 +5,7 @@
             <item android:id="@android:id/background">
                 <shape android:shape="rectangle">
                     <corners android:radius="4dp" />
-                    <solid android:color="@color/colorBlue" />
+                    <solid android:color="@color/color_317FFF_0760D4" />
                 </shape>
             </item>
         </ripple>
@@ -14,7 +14,7 @@
     <item android:state_enabled="false">
         <shape android:shape="rectangle">
             <corners android:radius="4dp" />
-            <solid android:color="@color/colorWhite6" />
+            <solid android:color="@color/color_191919_EEEFF0" />
         </shape>
     </item>
 </selector>

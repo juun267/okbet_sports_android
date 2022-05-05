@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite1"
+    android:background="@color/color_141414_F3F4F5"
     android:padding="14dp"
     android:scrollbars="none">
 
@@ -106,7 +106,7 @@
                 android:scaleType="centerCrop"
                 app:layout_constraintTop_toBottomOf="@id/img_id_card"
                 app:riv_corner_radius="10dp"
-                tools:src="@color/colorGrayLight" />
+                tools:src="@color/color_8F8F8F_999999" />
 
             <TextView
                 android:id="@+id/img_text"
@@ -116,7 +116,7 @@
                 android:gravity="center"
                 android:padding="2dp"
                 android:text="@string/front_side_result"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/color_191919_FCFCFC"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/img_big"
                 app:layout_constraintEnd_toEndOf="@+id/img_big"
@@ -199,7 +199,8 @@
             android:minHeight="0dp"
             android:padding="9dp"
             android:text="@string/submit"
-            android:textColor="@color/colorWhite" />
+            android:textColor="@color/color_FFFFFF_FFFFFF"
+            />
     </LinearLayout>
 
 </ScrollView>

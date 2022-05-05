@@ -56,7 +56,7 @@
     <string name="register_success">Register successfully</string>
     <string name="register_watch_first">Explore the game</string>
     <string name="register_jump">The page will be jumping to %s 5 sec later.</string>
-    <string name="register_recharge_now">Recharge now</string>
+    <string name="register_recharge_now">Deposit now</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="hint_confirm_password">Confirm Password</string>
     <string name="error_confirm_password">Password and confirm password don\'t match</string>
@@ -136,7 +136,7 @@
     <string name="home_tab_eps">PRICE BOOSTS</string>
     <string name="home_title_eps">PRICE BOOSTS</string>
     <string name="title_eps_more">High odds</string>
-    <string name="game_soon">Soon</string>
+    <string name="game_soon">SOON</string>
     <string name="label_in_play_games">Petanque</string>
     <string name="label_all">All</string>
     <string name="label_match_recommend">Match recommend</string>
@@ -271,6 +271,8 @@
     <string name="third">Three</string>
     <string name="fourth">Four</string>
     <string name="fifth">Five</string>
+    <string name="day_mode">Day mode</string>
+    <string name="night_mode">Night mode</string>
     <string name="add_time_first_plat">OT First period</string>
     <string name="add_time_second_plat">OT second period</string>
     <string name="first_session">Fist term</string>
@@ -282,13 +284,13 @@
     <string name="add_time_second_half_game">Overtime Second half</string>
     <string name="account_balance">Current Balance</string>
     <string name="user_id_colon">User ID：</string>
-    <string name="recharge">Recharge</string>
+    <string name="recharge">Deposit</string>
     <string name="more_service">More service</string>
     <string name="account_transfer">Transfer Limit</string>
     <string name="money_recycle_succeed">Recovery limit successfully</string>
     <string name="news_center">My Information</string>
     <string name="help_center">Help</string>
-    <string name="fund_detail">Fund Details</string>
+    <string name="fund_detail">Fund Detail</string>
     <string name="feedback">Feedback</string>
     <string name="promotion">Promotions</string>
     <string name="need_improve">Need to be completed</string>
@@ -321,7 +323,7 @@
     <string name="updatable">Can update</string>
     <string name="internal_download">Internal download</string>
     <string name="denied_read_memory_card">Memory Card Access Denied</string>
-    <string name="current_versionIs_the_latest_version">Your App is  the latest version</string>
+    <string name="current_versionIs_the_latest_version">Your app is new vesion</string>
     <string name="external_download">External download</string>
     <string name="update">Update</string>
     <string name="update_now">Update now</string>
@@ -498,9 +500,9 @@
     <string name="hint_feeback_rate">・Rebate rate：%1$s</string>
     <string name="hint_feeback_amount">・Rebate rate amount：%1$s %s</string>
     <string name="txv_recharge_money">・Top-up amount：%1$s %s</string>
-    <string name="title_recharge_account">USDT recharge account</string>
-    <string name="title_choose_recharge_account">Select recharge account</string>
-    <string name="title_recharge_address">USDT recharge address：</string>
+    <string name="title_recharge_account">USDT deposit account</string>
+    <string name="title_choose_recharge_account">Select deposit account</string>
+    <string name="title_recharge_address">USDT deposit address：</string>
     <string name="btn_recharge">Go top-up</string>
     <string name="title_upload_pic">Upload payment screenshot</string>
     <string name="title_upload_pic_plz">Please upload payment screenshot</string>
@@ -533,7 +535,7 @@
     <string name="select_crypto_card">Select address</string>
     <string name="selected_bank_card">%1$s (end no.%2$s)</string>
     <string name="error_withdraw_amount_bank">Incorrect withdrawal amount format or value</string>
-    <string name="error_withdraw_amount_crypto">The format or value of top-up number is incorrect</string>
+    <string name="error_withdraw_amount_crypto">The format or value of withdrawal amount is incorrect</string>
     <string name="error_withdraw_amount_bigger_than_balance">The withdrawal amount is higher than the account balance</string>
     <string name="please_setting_withdraw_password">Please set the withdrawal password</string>
     <string name="please_complete_profile_info">Complete personal Information</string>
@@ -547,7 +549,7 @@
     <string name="go_to_setting">To set up</string>
     <string name="message_withdraw_maintain">The withdrawal system is being upgraded，Please waiting</string>
     <string name="text_money_get_success">Withdrawal successful, please wait for customer service personnel check</string>
-    <string name="withdraw_setting">Withdrawals Setting</string>
+    <string name="withdraw_setting">Withdraw Setting</string>
     <string name="tail_number">End no</string>
     <string name="bind_start_time">Bind</string>
     <string name="bind_credit_card_not_yet">You do not have a bank card/crypto bound</string>
@@ -652,10 +654,10 @@
     <string name="already_bet_complete">You have been successful bets</string>
     <string name="complete">Completed</string>
     <string name="winnable_amount_colon">To Win：</string>
-    <string name="finance">Fund details</string>
-    <string name="record_recharge">Recharge Record</string>
-    <string name="record_withdrawal">Withdrawal Record</string>
-    <string name="record_conversion">Conversion Record</string>
+    <string name="finance">Fund Detail</string>
+    <string name="record_recharge">Deposit record</string>
+    <string name="record_withdrawal">Withdrawal record</string>
+    <string name="record_conversion">Conversion record</string>
     <string name="record_history">History</string>
     <string name="recharge_state_success">success</string>
     <string name="recharge_state_failed">Fail</string>
@@ -673,7 +675,7 @@
     <string name="recharge_channel_paymaya">PayMaya</string>
     <string name="recharge_channel_admin">System add money</string>
     <string name="recharge_log_order_time">Time</string>
-    <string name="recharge_log_recharge_amount">Recharge</string>
+    <string name="recharge_log_recharge_amount">Deposit</string>
     <string name="recharge_log_channel_type">Channel</string>
     <string name="recharge_log_order_state">Status</string>
     <string name="withdraw_log_withdraw_amount">Withdraw</string>
@@ -846,7 +848,7 @@
     <string name="bet_fail_btn">Bet unsuccessful</string>
     <string name="credit_record_deactivate">Credit function disabled</string>
     <string name="game_postponed">Game postponed</string>
-    <string name="money_recharge_hint1">Please transfer success before you submit recharge information.</string>
+    <string name="money_recharge_hint1">Please transfer success before you submit deposit information.</string>
     <string name="money_recharge_hint2">Please refresh the page every time into the, get the latest payment account, avoid into your overdue account, into the wrong not compensation.</string>
     <string name="no_setting">No set</string>
     <string name="service_1">Customer1</string>
@@ -913,7 +915,7 @@
     <string name="goal_buster">GOAL BUSTER</string>
     <string name="top_games">TOP GAMES</string>
     <string name="commission_detail">Details</string>
-    <string name="commission_desc_1">When the valid amount is not reached, we need to deduct a certain percentage of the recharge amount to be the withdrawal fee and avoid the abnormal deposit.</string>
+    <string name="commission_desc_1">When the valid amount is not reached, we need to deduct a certain percentage of the deposit amount to be the withdrawal fee and avoid the abnormal deposit.</string>
     <string name="commission_desc_2">When the valid amount is reached, then we won\'t charge the handing fee.</string>
     <string name="commission_check_time">Check time :</string>
     <string name="commission_deducted_amount">Deduction</string>
@@ -927,23 +929,23 @@
     <string name="commission_detail_title">Instruction</string>
     <string name="commission_detail_desc_1">The company avoids abnormal withdrawal, the user must reach the valid amount before withdrawal.</string>
     <string name="commission_detail_desc_2">When the valid amount is not reached, we need to deduct the amount to be the withdrawal fee. The calculation formula is valid amount multiply deduction ratio = deduction amount.</string>
-    <string name="commission_detail_desc_3">When the first recharge is not withdrawn, and the user recharges a second time, then the two "Request amounts” will add up. At this time, the user needs to complete the first and second valid amounts at the same time and the withdrawal will not result in the deduction of the amount.</string>
+    <string name="commission_detail_desc_3">When the first deposit is not withdrawn, and the user deposits a second time, then the two "Request amounts” will add up. At this time, the user needs to complete the first and second valid amounts at the same time and the withdrawal will not result in the deduction of the amount.</string>
     <string name="commission_detail_desc_4">The finished valid amount will recalculate when you withdraw.</string>
     <string name="commission_detail_desc_5">Situation 1</string>
     <string name="commission_detail_desc_6">The first trade is top up 1,000 and complete valid amount 2,000. ->  The user withdraws money now.</string>
     <string name="commission_detail_desc_7">The second trade is top up 2,000 and complete valid amount 1,000.  -> The user must complete a valid amount of 1,000 to no deduction.</string>
     <string name="commission_detail_desc_8">Because the first trade has withdrawn, it won\'t calculate, the system just calculates the second trade only.</string>
     <string name="commission_detail_desc_11">Situation 2</string>
-    <string name="commission_detail_desc_12">The first trade is top up 1,000 and complete valid amount 1,000. ->The user has not withdrawn and recharges the second trade.</string>
+    <string name="commission_detail_desc_12">The first trade is top up 1,000 and complete valid amount 1,000. ->The user has not withdrawn and deposits the second trade.</string>
     <string name="commission_detail_desc_13">The second trade is top up 2,000 and complete valid amount 1,000.  -> The user must complete a valid amount of 1,000 to no deduction.</string>
     <string name="commission_detail_desc_14">Although the first trade is completed the valid amount, the second trade is the unfinished valid amount, then calculated by formula follow as.  </string>
-    <string name="commission_detail_desc_15">Recharge amount (2,000) - finished valid amount (1,000) = 1,000</string>
+    <string name="commission_detail_desc_15">Deposit amount (2,000) - finished valid amount (1,000) = 1,000</string>
     <string name="commission_detail_desc_16">The second trade still needs to reach 1,000 to withdraw.</string>
     <string name="commission_detail_desc_17">Situation 3</string>
-    <string name="commission_detail_desc_18">The first trade is top up 1,000 and complete valid amount 500. ->The user has not withdrawn and recharges the second trade.</string>
+    <string name="commission_detail_desc_18">The first trade is top up 1,000 and complete valid amount 500. ->The user has not withdrawn and deposits the second trade.</string>
     <string name="commission_detail_desc_19">The second trade is top up 2,000 and complete valid amount 1,000.  -> The user must complete a valid amount of 1,500 to no deduction.</string>
     <string name="commission_detail_desc_20">Because two trades are unfinished both, so calculate by formula follow as</string>
-    <string name="commission_detail_desc_21">Recharge amount (1,000+2,000 ) - finished valid amount (500+1,000) = 1,500</string>
+    <string name="commission_detail_desc_21">Deposit amount (1,000+2,000) - finished valid amount (500+1,000) = 1,500</string>
     <string name="commission_detail_desc_22">The valid amount needs 1,500 to withdraw.</string>
     <string name="commissiom_completed">Finish</string>
     <string name="notice">Tips</string>
@@ -1022,7 +1024,11 @@
     <string name="live_chat">Live Chat</string>
     <string name="contact">Contact Us</string>
     <string name="btm_navigation_hint">%1$s is a Registered Trade Mark, Brand and Business Name Owned by Ekxinum Inc. Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR).</string>
+    <string name="btm_navigation_copyright">COPYRIGHT © 2022 %1$s ALL RIGHTS RESERVED</string>
     <string name="e_address">Address</string>
+    <string name="brackets">(%s)</string>
+    <string name="online_paypal">Paypal</string>
+    <string name="bank_list_e_wallet">eWallet</string>
     <string name="hint_e_address">Please enter a contact address</string>
     <string name="initial_withdrawal_needs_credited">First-time withdrawal money needs to deposit %1$s %2$s.</string>
     <string name="make_sure_valid_account">We will withhold %1$s %2$s when you withdraw money the first time to make sure you are a valid user. This money will return to you in 30 days later.</string>
@@ -1075,7 +1081,7 @@
     <string name="text_account_history_balance">Balance</string>
 
     <string name="text_account_history_bet">Bet</string>
-    <string name="text_account_history_recharge">Recharge</string>
+    <string name="text_account_history_recharge">Deposit</string>
     <string name="text_account_history_withdraw">Withdraw</string>
     <string name="text_account_history_activity">Activity</string>
     <string name="text_account_history_credit">Credit</string>
