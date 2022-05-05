@@ -33,7 +33,8 @@ abstract class BaseSocketViewModel(
     private val _settlementNotificationMsg = MutableLiveData<Event<SportBet>>()
 
     init {
-        if (!loginRepository.isCheckToken) {
+        /* gotConfigData 判斷：避免進 WebViewActivity crash */
+        if (!loginRepository.isCheckToken && gotConfigData) {
             viewModelScope.launch {
                 loginRepository.checkToken()
 
