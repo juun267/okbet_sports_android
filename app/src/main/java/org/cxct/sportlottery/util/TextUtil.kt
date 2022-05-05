@@ -61,7 +61,7 @@ object TextUtil : DecimalFormatUtil() {
     }
 
     fun formatForOddPercentage(any: Any): String {
-        return doNumberFormat(any, "#0.00 %")
+        return doNumberFormat(any, "###,###,###,###.00## %") { decimalFormat -> decimalFormat.roundingMode = RoundingMode.HALF_UP }
     }
 
     fun formatForBetHint(any: Any): String {
