@@ -283,7 +283,7 @@
                     android:id="@+id/tv_time_top"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/color_bcbcbc"
+                    android:textColor="@color/color_cccccc"
                     android:textSize="@dimen/textSize12sp"
                     tools:text="17 / 16" />
 
@@ -291,7 +291,7 @@
                     android:id="@+id/tv_time_bottom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/color_bcbcbc"
+                    android:textColor="@color/color_cccccc"
                     android:textSize="@dimen/textSize12sp"
                     android:text="@string/time_null" />
 
@@ -310,7 +310,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginBottom="10dp"
-                android:textColor="@color/color_bcbcbc"
+                android:textColor="@color/color_cccccc"
                 android:textSize="@dimen/textSize12sp"
                 android:visibility="gone"
                 app:layout_constrainedWidth="true"
@@ -327,7 +327,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:textColor="@color/color_666666_bcbcbc"
+                android:textColor="@color/color_cccccc"
                 android:textSize="@dimen/textSize12sp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -342,7 +342,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:textColor="@color/color_1F1F1F_e6e6e6"
+                android:textColor="@color/color_cccccc"
                 android:textSize="@dimen/textSize12sp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_status_left"

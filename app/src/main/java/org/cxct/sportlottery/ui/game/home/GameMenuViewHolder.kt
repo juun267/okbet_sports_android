@@ -4,6 +4,7 @@ import android.view.View
 import androidx.core.view.size
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.home_menu_block.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.sport.SportMenu
@@ -123,6 +124,7 @@ class GameMenuViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private fun setupFirstGame(sportMenu: SportMenu) {
         with(itemView) {
+            label_en_first_game.alpha = if (MultiLanguagesApplication.isNightMode) 0.1f else 0.25f
             label_en_first_game.text = context?.getString(R.string.goal_buster)
             label_first_game.text = sportMenu.sportName
             sportMenu.icon?.let { iv_first_game.setImageResource(sportMenu.icon) }
@@ -137,6 +139,7 @@ class GameMenuViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private fun setupSecondGame(sportMenu: SportMenu) {
         with(itemView) {
+            label_en_second_game.alpha = if (MultiLanguagesApplication.isNightMode) 0.1f else 0.25f
             label_en_second_game.text = context?.getString(R.string.top_games)
             label_second_game.text = sportMenu.sportName
             sportMenu.icon?.let { iv_second_game.setImageResource(sportMenu.icon) }
