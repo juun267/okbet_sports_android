@@ -330,6 +330,8 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
                     if(odd?.playCode != PlayCate.LCS.value){//反波膽不處理折扣
                         odd?.odds = odd?.odds?.applyDiscount(discount)
                         odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
+                        odd?.malayOdds = odd?.hkOdds?.convertToMYOdds()
+                        odd?.indoOdds = odd?.hkOdds?.convertToIndoOdds()
                     }
                     if (key == PlayCate.EPS.value) {
                         odd?.extInfo = odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
