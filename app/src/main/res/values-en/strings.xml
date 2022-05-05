@@ -207,7 +207,7 @@
     <string name="version_update">Update Version</string>
     <string name="odds_type">Handicap-%s</string>
     <string name="sign_out">Logout</string>
-    <string name="label_version">Version number Ver %s</string>
+    <string name="label_version">Version Ver %s</string>
     <string name="now_level">Current level</string>
     <string name="growth_requirement">The account to level up need：</string>
     <string name="no_value">Nope</string>
