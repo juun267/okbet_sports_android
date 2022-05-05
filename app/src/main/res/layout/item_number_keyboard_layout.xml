@@ -4,20 +4,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="98dp"
     android:background="@color/color_060F20"
     android:orientation="vertical"
-    android:paddingStart="@dimen/margin_6"
-    android:paddingEnd="@dimen/margin_6"
+    android:paddingStart="@dimen/margin_5"
+    android:paddingEnd="@dimen/margin_5"
     android:paddingTop="@dimen/margin_8"
-    android:paddingBottom="@dimen/margin_8"
-    android:padding="@dimen/margin_8">
+    android:paddingBottom="@dimen/margin_8">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:paddingVertical="@dimen/margin_2">
+        android:paddingVertical="@dimen/margin_3">
 
         <TextView
             android:id="@+id/tvPlus1"
@@ -27,8 +26,8 @@
             android:background="@drawable/bg_radius_4_button_white"
             android:gravity="center"
             android:text="+25"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
             android:visibility="gone"
             android:textColor="@color/color_060F20"
             android:textSize="@dimen/textSize14sp" />
@@ -37,8 +36,8 @@
             android:id="@+id/tvPlus2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
             android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_white"
             android:gravity="center"
@@ -51,8 +50,8 @@
             android:id="@+id/tvPlus3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
             android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_white"
             android:gravity="center"
@@ -65,8 +64,9 @@
             android:id="@+id/tvPlus4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"            android:layout_weight="1"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
+            android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_white"
             android:gravity="center"
             android:text="+100"
@@ -91,8 +91,8 @@
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
             android:text="1"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
             android:textColor="@color/white"
             android:textSize="@dimen/textSize14sp" />
         <TextView
@@ -102,8 +102,9 @@
             android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"            android:text="2"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
+            android:text="2"
             android:textColor="@color/white"
             android:textSize="@dimen/textSize14sp" />
         <TextView
@@ -113,8 +114,9 @@
             android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"            android:text="3"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
+            android:text="3"
             android:textColor="@color/white"
             android:textSize="@dimen/textSize14sp" />
         <TextView
@@ -124,8 +126,9 @@
             android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"            android:text="4"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
+            android:text="4"
             android:textColor="@color/white"
             android:textSize="@dimen/textSize14sp" />
         <TextView
@@ -135,8 +138,9 @@
             android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"            android:text="5"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
+            android:text="5"
             android:textColor="@color/white"
             android:textSize="@dimen/textSize14sp" />
         <TextView
@@ -146,8 +150,9 @@
             android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"            android:text="6"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
+            android:text="6"
             android:textColor="@color/white"
             android:textSize="@dimen/textSize14sp" />
         <TextView
@@ -157,8 +162,9 @@
             android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"            android:text="7"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
+            android:text="7"
             android:textColor="@color/white"
             android:textSize="@dimen/textSize14sp" />
         <TextView
@@ -168,8 +174,9 @@
             android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"            android:text="8"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
+            android:text="8"
             android:textColor="@color/white"
             android:textSize="@dimen/textSize14sp" />
         <TextView
@@ -179,8 +186,9 @@
             android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"            android:text="9"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
+            android:text="9"
             android:textColor="@color/white"
             android:textSize="@dimen/textSize14sp" />
 
@@ -201,8 +209,8 @@
             android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
             android:text="0"
             android:textColor="@color/white"
             android:textSize="@dimen/textSize14sp" />
@@ -211,8 +219,8 @@
             android:id="@+id/tvDot"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"            android:layout_weight="1"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"            android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
             android:text="."
@@ -223,8 +231,8 @@
             android:id="@+id/tvMax"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"            android:layout_weight="1"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"            android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
             android:text="@string/keyboard_max"
@@ -235,8 +243,8 @@
             android:id="@+id/tvDel"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"            android:layout_weight="1"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"            android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
             android:padding="@dimen/margin_6"

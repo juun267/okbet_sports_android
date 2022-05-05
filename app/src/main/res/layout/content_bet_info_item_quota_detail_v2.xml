@@ -97,7 +97,8 @@
                 android:gravity="right"
                 android:textColor="@color/color_060F20"
                 android:textSize="@dimen/textSize12sp"
-                tools:text="293.000" />
+                tools:text="293.000"
+                android:textStyle="bold"/>
 
         </LinearLayout>
 
