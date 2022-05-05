@@ -15,7 +15,7 @@ class LeagueOddListener(
     /**
      * matchType 專給串關使用, 主要辨別是否為滾球, 從串關跳轉至滾球賽事詳情
      */
-    val clickListenerPlayType: (matchId: String?, matchInfoList: List<MatchInfo>, gameMatchType: MatchType) -> Unit,
+    val clickListenerPlayType: (matchId: String?, matchInfoList: List<MatchInfo>, gameMatchType: MatchType, liveVideo: Int) -> Unit,
     val clickListenerBet: (matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?) -> Unit,
     val clickListenerQuickCateTab: (matchOdd: MatchOdd, quickPlayCate: QuickPlayCate) -> Unit,
     val clickListenerQuickCateClose: () -> Unit,
@@ -23,8 +23,8 @@ class LeagueOddListener(
     val clickListenerStatistics: (matchId: String?) -> Unit,
     val refreshListener: (leagueId: String) -> Unit,
 ) {
-    fun onClickPlayType(matchId: String?, matchInfoList: List<MatchInfo>, gameMatchType: MatchType) =
-        clickListenerPlayType(matchId, matchInfoList, gameMatchType)
+    fun onClickPlayType(matchId: String?, matchInfoList: List<MatchInfo>, gameMatchType: MatchType, liveVideo: Int = 0) =
+        clickListenerPlayType(matchId, matchInfoList, gameMatchType, liveVideo)
 
     fun onClickBet(
         matchInfo: MatchInfo?,

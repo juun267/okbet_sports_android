@@ -247,7 +247,8 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                     leagueOddListener?.onClickPlayType(
                         item.matchInfo?.id,
                         matchInfoList,
-                        if (item.matchInfo?.isInPlay == true) MatchType.IN_PLAY else matchType
+                        if (item.matchInfo?.isInPlay == true) MatchType.IN_PLAY else matchType,
+                        item.matchInfo?.liveVideo ?: 0
                     )
                 }
             }
@@ -270,7 +271,8 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 leagueOddListener?.onClickPlayType(
                     item.matchInfo?.id,
                     matchInfoList,
-                    if (item.matchInfo?.isInPlay == true) MatchType.IN_PLAY else matchType
+                    if (item.matchInfo?.isInPlay == true) MatchType.IN_PLAY else matchType,
+                    item.matchInfo?.liveVideo ?: 0
                 )
             }
 

@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.activity_splash.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.FLAG_OPEN
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.game.GameActivity
@@ -113,6 +114,10 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         }
 
         viewModel.skipHomePage.observe(this) {
+            if (sConfigData?.maintainStatus == FLAG_OPEN) {
+                goMaintenancePage()
+                return@observe
+            }
             when (it) {
                 true -> {
                     goGamePage()
@@ -124,15 +129,12 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         }
 
         viewModel.isLogin.observe(this) {
-            goGamePublicityPage()
-//            when (it) {
-//                true -> {
-//                    goGamePage()
-//                }
-//                false -> {
-//                    goGamePublicityPage()
-//                }
-//            }
+            if (sConfigData?.maintainStatus == FLAG_OPEN) {
+                goMaintenancePage()
+            }
+            else {
+                goGamePublicityPage()
+            }
         }
     }
 
