@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -46,6 +47,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
     private enum class ViewType { Bet, Parlay, ParlayFirst, Warn }
     enum class BetViewType { SINGLE, PARLAY, NULL }
+    private val attachedViewSet = HashSet<RecyclerView.ViewHolder>()
 
     var betList: MutableList<BetInfoListData>? = mutableListOf()
         set(value) {
@@ -234,6 +236,21 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         return size
     }
 
+    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        attachedViewSet.add(holder)
+    }
+
+    override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+        attachedViewSet.remove(holder)
+    }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        attachedViewSet.clear()
+    }
+
     //使用HasStabledIds需複寫回傳的position, 若仍使用super.getItemId(position), 數據刷新會錯亂.
     //https://blog.csdn.net/karsonNet/article/details/80598435
     override fun getItemId(position: Int): Long {
@@ -251,9 +268,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     }
 
     fun closeAllKeyboard() {
-        //betList?.forEachIndexed { index, betInfoListData -> notifyItemChanged(index) }
-        for (i in 0 until getListSize()) {
-            notifyItemChanged(i)
+        attachedViewSet.forEach {
+            it.itemView.findViewById<KeyboardView>(R.id.layoutKeyBoard)?.hideKeyboard()
         }
     }
 
@@ -640,7 +656,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     ll_win_quota_detail.visibility = View.VISIBLE
                     checkMinimumLimit(itemData)
                 } else {
-                    et_bet.setText("")
+                    //et_bet.setText("")
                     tv_check_maximum_limit.visibility = View.GONE
                     ll_bet_quota_detail.visibility = View.GONE
                     ll_win_quota_detail.visibility = View.VISIBLE
