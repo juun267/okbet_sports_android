@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite1"
+    android:background="@color/color_141414_F3F4F5"
     tools:context=".ui.profileCenter.sportRecord.SportBetRecordFragment">
 
     <org.cxct.sportlottery.ui.component.DateRangeSearchView
@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/colorWhite"
+        android:background="@color/color_191919_FCFCFC"
         app:layout_constraintTop_toBottomOf="@id/date_search_bar">
 
         <org.cxct.sportlottery.ui.component.StatusSelectorView
@@ -34,14 +34,14 @@
             android:layout_width="1dp"
             android:layout_height="14dp"
             android:layout_gravity="center_vertical"
-            android:background="@color/colorWhite6" />
+            android:background="@color/color_191919_EEEFF0" />
 
         <LinearLayout
             android:id="@+id/ll_champion"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/colorWhite"
+            android:background="@color/color_191919_FCFCFC"
             android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="@+id/btn_today"
@@ -60,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/champion_play"
-                android:textColor="@color/colorGrayDark" />
+                android:textColor="@color/color_E0E0E0_404040" />
 
         </LinearLayout>
 
@@ -70,7 +70,7 @@
         android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorWhite3"
+        android:background="@color/color_262626_edf4ff"
         android:orientation="horizontal"
         android:paddingVertical="4dp"
         app:layout_constraintBottom_toTopOf="@id/view_refresh"
@@ -84,7 +84,7 @@
             android:layout_weight="2"
             android:gravity="center"
             android:text="@string/order_number"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize12sp" />
 
         <TextView
@@ -93,7 +93,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/bet_type"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize12sp"/>
 
         <TextView
@@ -102,7 +102,7 @@
             android:layout_weight="2"
             android:gravity="center"
             android:text="@string/total_bet_money"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize12sp" />
 
         <TextView
@@ -111,7 +111,7 @@
             android:layout_weight="1.5"
             android:gravity="center"
             android:text="@string/status"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize12sp" />
     </LinearLayout>
 

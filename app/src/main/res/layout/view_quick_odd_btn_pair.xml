@@ -9,7 +9,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/colorWhite4"
         app:layout_constraintBottom_toBottomOf="@id/quick_odd_pair_list"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.content_match_record.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_eps.*
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
+import kotlinx.android.synthetic.main.fragment_my_favorite.*
 import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import kotlinx.android.synthetic.main.view_game_tab_odd_v4.*
 import kotlinx.android.synthetic.main.view_game_tab_odd_v4.view.*
@@ -32,6 +33,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
@@ -627,7 +629,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     val dialog = CustomAlertDialog(context)
                     dialog.setTitle(resources.getString(R.string.prompt))
                     dialog.setMessage(it)
-                    dialog.setTextColor(R.color.colorRed)
+                    dialog.setTextColor(R.color.color_E44438_e44438)
                     dialog.setNegativeButtonText(null)
                     dialog.setPositiveClickListener {
                         viewModel.resetErrorDialogMsg()
@@ -993,7 +995,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
             it.getContentIfNotHandled()?.let { outrightOddsListResult ->
                 if (outrightOddsListResult.success) {
-                    GameConfigManager.getTitleBarBackground(outrightOddsListResult.outrightOddsListData?.sport?.code)
+                    GameConfigManager.getTitleBarBackground(outrightOddsListResult.outrightOddsListData?.sport?.code,
+                        MultiLanguagesApplication.isNightMode)
                         ?.let { gameImg ->
                             game_toolbar_bg.setBackgroundResource(gameImg)
                         }
@@ -1832,122 +1835,132 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             game_bg_layer3.isVisible -> game_bg_layer3
             else -> null
         }?.let {
-            Glide.with(requireContext()).load(
-                when (sport?.code) {
-                    GameType.FT.key -> {
-                        when {
-                            game_bg_layer2.isVisible -> R.drawable.soccer108
-                            game_bg_layer3.isVisible -> R.drawable.soccer140
-                            else -> null
+            if(MultiLanguagesApplication.isNightMode){
+                Glide.with(requireContext()).load( when {
+                    game_bg_layer2.isVisible -> R.drawable.night_bg_300
+                    game_bg_layer3.isVisible -> R.drawable.night_bg_300
+                    else -> null
+                }).into(it)
+            }else{
+                Glide.with(requireContext()).load(
+                    when (sport?.code) {
+                        GameType.FT.key -> {
+                            when {
+                                game_bg_layer2.isVisible -> R.drawable.soccer108
+                                game_bg_layer3.isVisible -> R.drawable.soccer140
+                                else -> null
+                            }
+                        }
+                        GameType.BK.key -> {
+                            when {
+                                game_bg_layer2.isVisible -> R.drawable.basketball108
+                                game_bg_layer3.isVisible -> R.drawable.basketball140
+                                else -> null
+                            }
+                        }
+                        GameType.TN.key -> {
+                            when {
+                                game_bg_layer2.isVisible -> R.drawable.tennis108
+                                game_bg_layer3.isVisible -> R.drawable.tennis140
+                                else -> null
+                            }
+                        }
+                        GameType.VB.key -> {
+                            when {
+                                game_bg_layer2.isVisible -> R.drawable.volleyball108
+                                game_bg_layer3.isVisible -> R.drawable.volleyball140
+                                else -> null
+                            }
+                        }
+                        GameType.BM.key -> {
+                            when {
+                                game_bg_layer2.isVisible -> R.drawable.badminton_100
+                                game_bg_layer3.isVisible -> R.drawable.badminton_132
+                                else -> null
+                            }
+                        }
+                        GameType.TT.key -> {
+                            when {
+                                game_bg_layer2.isVisible -> R.drawable.pingpong_100
+                                game_bg_layer3.isVisible -> R.drawable.pingpong_140
+                                else -> null
+                            }
+                        }
+                        GameType.BX.key -> {
+                            when {
+                                game_bg_layer2.isVisible -> R.drawable.boxing_100
+                                game_bg_layer3.isVisible -> R.drawable.boxing_132
+                                else -> null
+                            }
+                        }
+                        GameType.CB.key -> {
+                            when {
+                                game_bg_layer2.isVisible -> R.drawable.snooker_100
+                                game_bg_layer3.isVisible -> R.drawable.snooker_140
+                                else -> null
+                            }
+                        }
+                        GameType.CK.key -> {
+                            when {
+                                game_bg_layer2.isVisible -> R.drawable.cricket_100
+                                game_bg_layer3.isVisible -> R.drawable.cricket_132
+                                else -> null
+                            }
+                        }
+                        GameType.BB.key -> {
+                            when {
+                                game_bg_layer2.isVisible -> R.drawable.baseball_100
+                                game_bg_layer3.isVisible -> R.drawable.baseball_132
+                                else -> null
+                            }
+                        }
+                        GameType.RB.key -> {
+                            when {
+                                game_bg_layer2.isVisible -> R.drawable.rugby_100
+                                game_bg_layer3.isVisible -> R.drawable.rugby_140
+                                else -> null
+                            }
+                        }
+                        GameType.AFT.key -> {
+                            when {
+                                game_bg_layer2.isVisible -> R.drawable.amfootball_100
+                                game_bg_layer3.isVisible -> R.drawable.amfootball_132
+                                else -> null
+                            }
+                        }
+                        GameType.MR.key -> {
+                            when {
+                                game_bg_layer2.isVisible -> R.drawable.rancing_100
+                                game_bg_layer3.isVisible -> R.drawable.rancing_140
+                                else -> null
+                            }
+                        }
+                        GameType.GF.key -> {
+                            when {
+                                game_bg_layer2.isVisible -> R.drawable.golf_108
+                                game_bg_layer3.isVisible -> R.drawable.golf_132
+                                else -> null
+                            }
+                        }
+                        GameType.IH.key -> {
+                            when {
+                                game_bg_layer2.isVisible -> R.drawable.icehockey_100
+                                game_bg_layer3.isVisible -> R.drawable.icehockey_140
+                                else -> null
+                            }
+                        }
+                        else -> {
+                            when {
+                                game_bg_layer2.isVisible -> R.drawable.soccer108
+                                game_bg_layer3.isVisible -> R.drawable.soccer140
+                                else -> null
+                            }
                         }
                     }
-                    GameType.BK.key -> {
-                        when {
-                            game_bg_layer2.isVisible -> R.drawable.basketball108
-                            game_bg_layer3.isVisible -> R.drawable.basketball140
-                            else -> null
-                        }
-                    }
-                    GameType.TN.key -> {
-                        when {
-                            game_bg_layer2.isVisible -> R.drawable.tennis108
-                            game_bg_layer3.isVisible -> R.drawable.tennis140
-                            else -> null
-                        }
-                    }
-                    GameType.VB.key -> {
-                        when {
-                            game_bg_layer2.isVisible -> R.drawable.volleyball108
-                            game_bg_layer3.isVisible -> R.drawable.volleyball140
-                            else -> null
-                        }
-                    }
-                    GameType.BM.key -> {
-                        when {
-                            game_bg_layer2.isVisible -> R.drawable.badminton_100
-                            game_bg_layer3.isVisible -> R.drawable.badminton_132
-                            else -> null
-                        }
-                    }
-                    GameType.TT.key -> {
-                        when {
-                            game_bg_layer2.isVisible -> R.drawable.pingpong_100
-                            game_bg_layer3.isVisible -> R.drawable.pingpong_140
-                            else -> null
-                        }
-                    }
-                    GameType.BX.key -> {
-                        when {
-                            game_bg_layer2.isVisible -> R.drawable.boxing_100
-                            game_bg_layer3.isVisible -> R.drawable.boxing_132
-                            else -> null
-                        }
-                    }
-                    GameType.CB.key -> {
-                        when {
-                            game_bg_layer2.isVisible -> R.drawable.snooker_100
-                            game_bg_layer3.isVisible -> R.drawable.snooker_140
-                            else -> null
-                        }
-                    }
-                    GameType.CK.key -> {
-                        when {
-                            game_bg_layer2.isVisible -> R.drawable.cricket_100
-                            game_bg_layer3.isVisible -> R.drawable.cricket_132
-                            else -> null
-                        }
-                    }
-                    GameType.BB.key -> {
-                        when {
-                            game_bg_layer2.isVisible -> R.drawable.baseball_100
-                            game_bg_layer3.isVisible -> R.drawable.baseball_132
-                            else -> null
-                        }
-                    }
-                    GameType.RB.key -> {
-                        when {
-                            game_bg_layer2.isVisible -> R.drawable.rugby_100
-                            game_bg_layer3.isVisible -> R.drawable.rugby_140
-                            else -> null
-                        }
-                    }
-                    GameType.AFT.key -> {
-                        when {
-                            game_bg_layer2.isVisible -> R.drawable.amfootball_100
-                            game_bg_layer3.isVisible -> R.drawable.amfootball_132
-                            else -> null
-                        }
-                    }
-                    GameType.MR.key -> {
-                        when {
-                            game_bg_layer2.isVisible -> R.drawable.rancing_100
-                            game_bg_layer3.isVisible -> R.drawable.rancing_140
-                            else -> null
-                        }
-                    }
-                    GameType.GF.key -> {
-                        when {
-                            game_bg_layer2.isVisible -> R.drawable.golf_108
-                            game_bg_layer3.isVisible -> R.drawable.golf_132
-                            else -> null
-                        }
-                    }
-                    GameType.IH.key -> {
-                        when {
-                            game_bg_layer2.isVisible -> R.drawable.icehockey_100
-                            game_bg_layer3.isVisible -> R.drawable.icehockey_140
-                            else -> null
-                        }
-                    }
-                    else -> {
-                        when {
-                            game_bg_layer2.isVisible -> R.drawable.soccer108
-                            game_bg_layer3.isVisible -> R.drawable.soccer140
-                            else -> null
-                        }
-                    }
-                }
-            ).into(it)
+                ).into(it)
+            }
+
+
         }
     }
 

@@ -156,7 +156,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
                     setTitle(resources.getString(R.string.prompt))
                     setMessage(cryptoResult.msg)
                     setNegativeButtonText(null)
-                    setTextColor(R.color.colorRed)
+                    setTextColor(R.color.color_E44438_e44438)
                 }.let {
                     customAlertDialog.show(supportFragmentManager, null)
                 }
@@ -320,7 +320,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
             GridItemDecoration(
                 10.dp,
                 7.dp,
-                ContextCompat.getColor(this, R.color.colorWhite),
+                ContextCompat.getColor(this, R.color.color_191919_FCFCFC),
                 false
             )
         )

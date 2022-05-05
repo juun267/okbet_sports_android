@@ -11,7 +11,7 @@
         android:id="@+id/block_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorWhite3"
+        android:background="@color/color_262626_edf4ff"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -37,7 +37,7 @@
                 android:ellipsize="end"
                 android:gravity="start|center_vertical"
                 android:maxLines="1"
-                android:textColor="@color/colorBlackLight"
+                android:textColor="@color/color_e5e5e5_333333"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="Miền Bắc" />
 
@@ -56,7 +56,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/first_half_game"
-                android:textColor="@color/colorBlackLight"
+                android:textColor="@color/color_e5e5e5_333333"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="@string/first_half_game" />
 
@@ -67,7 +67,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/second_half_game"
-                android:textColor="@color/colorBlackLight"
+                android:textColor="@color/color_e5e5e5_333333"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="@string/second_half_game" />
 
@@ -78,7 +78,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/full_game"
-                android:textColor="@color/colorBlackLight"
+                android:textColor="@color/color_e5e5e5_333333"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="@string/full_game" />
 
@@ -89,7 +89,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/game_result"
-                android:textColor="@color/colorBlackLight"
+                android:textColor="@color/color_e5e5e5_333333"
                 android:textSize="@dimen/textSize14sp" />
 
         </LinearLayout>

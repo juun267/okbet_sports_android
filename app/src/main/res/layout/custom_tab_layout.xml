@@ -5,7 +5,7 @@
     tools:context="org.cxct.sportlottery.ui.common.CustomTabLayout"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:background="@color/colorWhite1"
+    android:background="@color/color_141414_F3F4F5"
     android:layout_height="wrap_content">
 
     <com.google.android.material.tabs.TabLayout
@@ -19,8 +19,8 @@
         app:tabPaddingEnd="25dp"
         app:tabPaddingStart="25dp"
         app:tabRippleColor="@null"
-        app:tabSelectedTextColor="@color/colorBlackLight"
-        app:tabTextColor="@color/colorGray">
+        app:tabSelectedTextColor="@color/color_e5e5e5_333333"
+        app:tabTextColor="@color/color_A3A3A3_666666">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/first_tab"
@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="0dp"
-        android:background="@color/color_E2E2E2"
+        android:background="@color/color_2B2B2B_e2e2e2"
         />
 
 </LinearLayout>

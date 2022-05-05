@@ -252,7 +252,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 setTextColor(
                     ContextCompat.getColor(
                         context,
-                        if (zero.minus(it ?: 0.0) > 0) R.color.colorGreen else R.color.colorRed
+                        if (zero.minus(it ?: 0.0) > 0) R.color.color_08dc6e_08dc6e else R.color.color_E44438_e44438
                     )
                 )
             }
@@ -564,10 +564,10 @@ class WithdrawBankCardAdapter(
 
                 if (bankCard.isSelected) {
                     imgCheckBank.visibility = View.VISIBLE
-                    llSelectBankCard.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite6))
+                    llSelectBankCard.setBackgroundColor(ContextCompat.getColor(context, R.color.color_191919_EEEFF0))
                 } else {
                     imgCheckBank.visibility = View.GONE
-                    llSelectBankCard.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
+                    llSelectBankCard.setBackgroundColor(ContextCompat.getColor(context, R.color.color_191919_FCFCFC))
                 }
             }
         }

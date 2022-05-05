@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorWhite"
+    android:background="@color/color_191919_FCFCFC"
     android:orientation="vertical"
     tools:context=".ui.menu.ChangeLanguageDialog">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorWhite2"
+        android:background="@color/color_141414_f3f3f3"
         android:minHeight="40dp">
 
         <TextView
@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/language_setting"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -35,7 +35,7 @@
             android:gravity="center"
             android:padding="8dp"
             android:text="@string/bottom_sheet_close"
-            android:textColor="@color/colorGrayLight"
+            android:textColor="@color/color_8F8F8F_999999"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -52,7 +52,7 @@
         android:gravity="center"
         android:minHeight="48dp"
         android:text="@string/language_cn"
-        android:textColor="@color/colorBlackLight"
+        android:textColor="@color/color_e5e5e5_333333"
         android:textSize="@dimen/textSize14sp" />
 
     <TextView
@@ -63,7 +63,7 @@
         android:gravity="center"
         android:minHeight="48dp"
         android:text="@string/language_en"
-        android:textColor="@color/colorBlackLight"
+        android:textColor="@color/color_e5e5e5_333333"
         android:textSize="@dimen/textSize14sp" />
 
     <TextView
@@ -74,7 +74,7 @@
         android:gravity="center"
         android:minHeight="48dp"
         android:text="@string/language_vi"
-        android:textColor="@color/colorBlackLight"
+        android:textColor="@color/color_e5e5e5_333333"
         android:textSize="@dimen/textSize14sp" />
 
 </LinearLayout>

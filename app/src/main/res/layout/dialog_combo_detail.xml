@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_margin="20dp"
-    app:cardBackgroundColor="@color/colorWhite"
+    app:cardBackgroundColor="@color/color_191919_FCFCFC"
     app:cardCornerRadius="8dp"
     app:cardElevation="0dp"
     tools:context="org.cxct.sportlottery.ui.main.accountHistory.next.ComboDetailDialog">
@@ -27,7 +27,7 @@
             android:layout_marginBottom="11dp"
             android:gravity="center"
             android:text="@string/text_combo_title"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/color_FFFFFF_000000"
             android:textSize="@dimen/textSize16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"

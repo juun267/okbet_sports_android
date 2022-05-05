@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorWhite"
+    android:background="@color/color_191919_FCFCFC"
     android:layout_gravity="center"
     android:orientation="vertical">
 
@@ -16,7 +16,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/colorWhite6" />
+            android:background="@color/color_191919_EEEFF0" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,7 +34,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/first_half_game"
-                android:textColor="@color/colorGray"
+                android:textColor="@color/color_A3A3A3_666666"
                 android:textSize="@dimen/textSize12sp" />
 
             <TextView
@@ -43,7 +43,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/second_half_game"
-                android:textColor="@color/colorGray"
+                android:textColor="@color/color_A3A3A3_666666"
                 android:textSize="@dimen/textSize12sp" />
 
             <TextView
@@ -52,7 +52,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/total_score"
-                android:textColor="@color/colorGray"
+                android:textColor="@color/color_A3A3A3_666666"
                 android:textSize="@dimen/textSize12sp" />
 
         </LinearLayout>
@@ -63,7 +63,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorWhite6" />
+        android:background="@color/color_191919_EEEFF0" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -81,14 +81,14 @@
             android:paddingTop="6dp"
             android:paddingEnd="10dp"
             android:paddingBottom="6dp"
-            android:textColor="@color/colorGray"
+            android:textColor="@color/color_A3A3A3_666666"
             android:textSize="@dimen/textSize12sp"
             tools:text="BB模拟主队NE2201041646"/>
 
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/colorWhite6" />
+            android:background="@color/color_191919_EEEFF0" />
 
         <TextView
             android:id="@+id/bb_home_first"
@@ -98,14 +98,14 @@
             android:gravity="center"
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
-            android:textColor="@color/colorGrayLight"
+            android:textColor="@color/color_8F8F8F_999999"
             android:textSize="@dimen/textSize14sp"
             tools:text="0" />
 
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/colorWhite6" />
+            android:background="@color/color_191919_EEEFF0" />
 
         <TextView
             android:id="@+id/bb_home_second"
@@ -115,14 +115,14 @@
             android:gravity="center"
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
-            android:textColor="@color/colorGrayLight"
+            android:textColor="@color/color_8F8F8F_999999"
             android:textSize="@dimen/textSize14sp"
             tools:text="0" />
 
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/colorWhite6" />
+            android:background="@color/color_191919_EEEFF0" />
 
         <TextView
             android:id="@+id/bb_home_third"
@@ -132,21 +132,21 @@
             android:gravity="center"
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
-            android:textColor="@color/colorGrayLight"
+            android:textColor="@color/color_8F8F8F_999999"
             android:textSize="@dimen/textSize14sp"
             tools:text="0" />
 
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/colorWhite6" />
+            android:background="@color/color_191919_EEEFF0" />
 
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorWhite6" />
+        android:background="@color/color_191919_EEEFF0" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -164,14 +164,14 @@
             android:paddingTop="6dp"
             android:paddingEnd="10dp"
             android:paddingBottom="6dp"
-            android:textColor="@color/colorGray"
+            android:textColor="@color/color_A3A3A3_666666"
             android:textSize="@dimen/textSize12sp"
             tools:text="BB模拟客队NE2201041646"/>
 
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/colorWhite6" />
+            android:background="@color/color_191919_EEEFF0" />
 
         <TextView
             android:id="@+id/bb_away_first"
@@ -181,14 +181,14 @@
             android:gravity="center"
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
-            android:textColor="@color/colorGrayLight"
+            android:textColor="@color/color_8F8F8F_999999"
             android:textSize="@dimen/textSize14sp"
             tools:text="0" />
 
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/colorWhite6" />
+            android:background="@color/color_191919_EEEFF0" />
 
         <TextView
             android:id="@+id/bb_away_second"
@@ -198,14 +198,14 @@
             android:gravity="center"
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
-            android:textColor="@color/colorGrayLight"
+            android:textColor="@color/color_8F8F8F_999999"
             android:textSize="@dimen/textSize14sp"
             tools:text="0" />
 
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/colorWhite6" />
+            android:background="@color/color_191919_EEEFF0" />
 
         <TextView
             android:id="@+id/bb_away_third"
@@ -215,14 +215,14 @@
             android:gravity="center"
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
-            android:textColor="@color/colorGrayLight"
+            android:textColor="@color/color_8F8F8F_999999"
             android:textSize="@dimen/textSize14sp"
             tools:text="0" />
 
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/colorWhite6" />
+            android:background="@color/color_191919_EEEFF0" />
 
     </LinearLayout>
 
@@ -230,6 +230,6 @@
         android:id="@+id/bottom_line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorWhite6" />
+        android:background="@color/color_191919_EEEFF0" />
 
 </LinearLayout>

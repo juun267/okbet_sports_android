@@ -95,7 +95,7 @@ class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     itemView.rech_log_state.setTextColor(
                         ContextCompat.getColor(
                             itemView.context,
-                            R.color.colorGreen
+                            R.color.color_08dc6e_08dc6e
                         )
                     )
                 }
@@ -104,7 +104,7 @@ class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     itemView.rech_log_state.setTextColor(
                         ContextCompat.getColor(
                             itemView.context,
-                            R.color.colorRed
+                            R.color.color_E44438_e44438
                         )
                     )
                 }
@@ -113,7 +113,7 @@ class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     itemView.rech_log_state.setTextColor(
                         ContextCompat.getColor(
                             itemView.context,
-                            R.color.colorGray
+                            R.color.color_A3A3A3_666666
                         )
                     )
                 }

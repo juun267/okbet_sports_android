@@ -91,7 +91,7 @@ class TitleViewHolder private constructor(itemView: View) : RecyclerView.ViewHol
 
     fun bind(itemData: Debate) {
         itemView.apply {
-            ContextCompat.getColorStateList(context, R.color.colorWhite7).let {
+            ContextCompat.getColorStateList(context, R.color.color_191919_DFEAF8).let {
                 title_top_left.backgroundTintList = it
                 title_top_center.backgroundTintList = it
                 title_top_right.backgroundTintList = it
@@ -128,9 +128,9 @@ class ContentViewHolder private constructor(itemView: View) : RecyclerView.ViewH
 
             val backgroundColor =
                 if (itemData.levelIndex % 2 == 0) {
-                    ContextCompat.getColorStateList(context, R.color.colorWhite3)
+                    ContextCompat.getColorStateList(context, R.color.color_262626_edf4ff)
                 } else {
-                    ContextCompat.getColorStateList(context, R.color.colorWhite1)
+                    ContextCompat.getColorStateList(context, R.color.color_141414_F3F4F5)
                 }
 
             backgroundColor.let {
@@ -165,9 +165,9 @@ class LastContentViewHolder private constructor(itemView: View) : RecyclerView.V
 
             val backgroundColor =
                 if (itemData.levelIndex % 2 == 0) {
-                    R.color.colorWhite3
+                    R.color.color_262626_edf4ff
                 } else {
-                    R.color.colorWhite1
+                    R.color.color_141414_F3F4F5
                 }
 
             backgroundColor.let {

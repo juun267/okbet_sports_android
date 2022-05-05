@@ -4,7 +4,7 @@
     android:id="@+id/ll_content"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:background="@color/colorWhite"
+    android:background="@color/color_191919_FCFCFC"
     android:gravity="center"
     android:orientation="vertical"
     tools:ignore="SpUsage"
@@ -23,7 +23,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:paddingHorizontal="4dp"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize12sp"
             android:text="@string/not_reply_yet"
             tools:text="2020-12-12 19:58:00" />
@@ -37,7 +37,7 @@
             android:ellipsize="end"
             android:paddingHorizontal="4dp"
             android:gravity="center"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize12sp"
             tools:text="testasdfasdfadf" />
 
@@ -48,7 +48,7 @@
             android:layout_weight="1"
             android:paddingHorizontal="4dp"
             android:gravity="center"
-            android:textColor="@color/colorGray"
+            android:textColor="@color/color_A3A3A3_666666"
             android:textSize="@dimen/textSize12sp"
             tools:text="@string/status" />
 
@@ -57,7 +57,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/colorWhite6" />
+        android:background="@color/color_191919_EEEFF0" />
 
 
 </LinearLayout>

@@ -15,7 +15,7 @@
         android:id="@+id/ll_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorBlueLight"
+        android:background="@color/color_317FFF_1463cf"
         android:orientation="horizontal"
         android:paddingHorizontal="15dp"
         android:paddingVertical="8dp">

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite1"
+    android:background="@color/color_141414_F3F4F5"
     android:orientation="vertical"
     tools:context=".ui.profileCenter.profile.ProfileActivity">
 
@@ -18,7 +18,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorWhite"
+            android:background="@color/color_191919_FCFCFC"
             android:divider="@drawable/divider_straight"
             android:orientation="vertical"
             android:showDividers="middle|end">
@@ -45,7 +45,7 @@
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
                     android:text="@string/avatar"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
                 <com.makeramen.roundedimageview.RoundedImageView
@@ -55,7 +55,7 @@
                     android:layout_marginEnd="6dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/img_avatar_default"
-                    app:riv_border_color="@color/colorBlue"
+                    app:riv_border_color="@color/color_317FFF_0760D4"
                     app:riv_border_width="1dp"
                     app:riv_oval="true" />
 
@@ -89,7 +89,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:text="@string/nickname"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
                 <TextView
@@ -101,7 +101,7 @@
                     android:ellipsize="end"
                     android:gravity="end"
                     android:maxLines="1"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize12sp"
                     tools:text="ia***18" />
 
@@ -141,7 +141,7 @@
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
                     android:text="@string/password_setting"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
                 <ImageView
@@ -173,7 +173,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:text="@string/member_account"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
                 <TextView
@@ -185,7 +185,7 @@
                     android:ellipsize="end"
                     android:gravity="end"
                     android:maxLines="1"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize12sp"
                     tools:text="ianlee0518" />
 
@@ -211,7 +211,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:text="@string/id"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
                 <TextView
@@ -223,7 +223,7 @@
                     android:ellipsize="end"
                     android:gravity="end"
                     android:maxLines="1"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize12sp"
                     tools:text="235291" />
 
@@ -250,7 +250,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:text="@string/real_name"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
                 <TextView
@@ -262,7 +262,7 @@
                     android:ellipsize="end"
                     android:gravity="end"
                     android:maxLines="1"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize12sp"
                     tools:text="ianlee051**" />
 
@@ -301,7 +301,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:text="@string/qq_number"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
                 <TextView
@@ -313,7 +313,7 @@
                     android:ellipsize="end"
                     android:gravity="end"
                     android:maxLines="1"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize12sp"
                     tools:text="1022423383" />
 
@@ -352,7 +352,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:text="@string/e_mail"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
                 <TextView
@@ -364,7 +364,7 @@
                     android:ellipsize="end"
                     android:gravity="end"
                     android:maxLines="1"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize12sp"
                     tools:text="ianlee051＠gmail.com" />
 
@@ -403,7 +403,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:text="@string/phone_number"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
                 <TextView
@@ -415,7 +415,7 @@
                     android:ellipsize="end"
                     android:gravity="end"
                     android:maxLines="1"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize12sp"
                     tools:text="1022423383" />
 
@@ -454,7 +454,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:text="@string/we_chat"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
                 <TextView
@@ -466,7 +466,7 @@
                     android:ellipsize="end"
                     android:gravity="end"
                     android:maxLines="1"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize12sp"
                     tools:text="2443875459" />
 
@@ -504,7 +504,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
                     android:text="@string/identity"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
                 <TextView
@@ -516,7 +516,7 @@
                     android:text="@string/not_verify"
                     android:gravity="end"
                     android:textAlignment="textEnd"
-                    android:textColor="@color/colorRed"
+                    android:textColor="@color/color_E44438_e44438"
                     android:textSize="@dimen/textSize12sp" />
 
                 <ImageView

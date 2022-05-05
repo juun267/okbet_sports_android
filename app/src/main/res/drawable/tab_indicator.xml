@@ -6,7 +6,7 @@
             <size
                 android:height="32dp" />
             <corners android:radius="4dp" />
-            <solid android:color="@color/colorBlue" />
+            <solid android:color="@color/color_317FFF_0760D4" />
         </shape>
     </item>
 </layer-list>

@@ -58,7 +58,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="@dimen/margin_12"
             android:text="@string/login_phone_verify"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize30sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/view"
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_12"
             android:text="@string/login_phone_verify_content"
-            android:textColor="@color/colorGrayText"
+            android:textColor="@color/color_8F8F8F_999999"
             android:textSize="@dimen/textSize12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvVerifyTitle" />
@@ -136,7 +136,7 @@
                         android:minHeight="46dp"
                         android:text="@string/login_phone_verify_get_code"
                         android:textAllCaps="false"
-                        android:textColor="@color/colorWhite"
+                        android:textColor="@color/color_191919_FCFCFC"
                         android:textSize="@dimen/textSize14sp" />
 
                 </LinearLayout>

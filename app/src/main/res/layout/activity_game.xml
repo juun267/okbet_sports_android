@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorWhite1">
+        android:background="@color/color_141414_F3F4F5">
 
         <!-- toolBar -->
         <include
@@ -45,7 +45,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorWhite1">
+                android:background="@color/color_141414_F3F4F5">
 
                 <!-- 遊戲類別列表 -->
                 <ImageView
@@ -55,7 +55,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="14dp"
                     android:layout_marginBottom="14dp"
-                    android:background="@color/colorWhite1"
+                    android:background="@color/color_141414_F3F4F5"
                     android:contentDescription="@null"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_side_icon_v2"
@@ -88,9 +88,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_marginBottom="8dp"
-                    android:background="@color/colorOrangeLight"
+                    android:background="@color/color_FF9143_ff9200"
                     android:text="@string/button_league_submit"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/color_191919_FCFCFC"
                     android:textSize="@dimen/textSize14sp"
                     android:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@id/game_bottom_navigation"
