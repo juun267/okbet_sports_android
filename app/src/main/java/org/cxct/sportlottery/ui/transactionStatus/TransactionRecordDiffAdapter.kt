@@ -73,10 +73,10 @@ class TransactionRecordDiffAdapter :
         val rvData = getItem(holder.adapterPosition)
         when (holder) {
             is MatchRecordViewHolder -> {
-                holder.bind((rvData as DataItem.Item).row,status)
+                holder.bind((rvData as DataItem.Item).row, status)
             }
             is ParlayRecordViewHolder -> {
-                holder.bind((rvData as DataItem.Item).row)
+                holder.bind((rvData as DataItem.Item).row, status)
             }
             is OutrightRecordViewHolder -> {
                 holder.bind((rvData as DataItem.Item).row)
@@ -244,8 +244,8 @@ class TransactionRecordDiffAdapter :
             }
         }
 
-        fun bind(data: Row) {
-            val contentParlayMatchAdapter by lazy { ContentParlayMatchAdapter() }
+        fun bind(data: Row, status: Int) {
+            val contentParlayMatchAdapter by lazy { ContentParlayMatchAdapter(status) }
 
             itemView.apply {
                 title_parlay_type.text = getParlayShowName(context, data.parlayType)
