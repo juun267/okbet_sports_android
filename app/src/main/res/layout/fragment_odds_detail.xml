@@ -20,7 +20,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorWhite1"
+        android:background="@color/color_141414_F3F4F5"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:srlDragRate="0.3"
         app:srlEnableLoadMore="true"
@@ -39,7 +39,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorWhite">
+                    android:background="@color/color_191919_FCFCFC">
 
                     <include
                         android:id="@+id/v_toolbar"
@@ -59,7 +59,7 @@
                         android:id="@+id/v_divider"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/colorWhite8"
+                        android:background="@color/color_1F1F1F_e6e6e6"
                         app:layout_constraintTop_toBottomOf="@+id/live_view_tool_bar" />
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -67,7 +67,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:background="@color/colorWhite"
+                        android:background="@color/color_191919_FCFCFC"
                         android:orientation="horizontal"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="10dp"
@@ -86,14 +86,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true"
-            android:background="@color/colorWhite"
+            android:background="@color/color_191919_FCFCFC"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
+                android:background="@color/color_191919_FCFCFC"
                 android:overScrollMode="never"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:listitem="@layout/content_odds_detail_list_item" />

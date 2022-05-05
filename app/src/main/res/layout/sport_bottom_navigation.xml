@@ -34,7 +34,7 @@
             android:id="@+id/item_bet_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorBlue"
+            android:background="@color/color_317FFF_0760D4"
             android:orientation="vertical">
 
             <TextView

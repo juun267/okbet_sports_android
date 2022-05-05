@@ -78,7 +78,7 @@ class GameMenuViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                             if (sportMenu.gameCount > 0) {
                                 block_game.addView(
                                     HomeGameCard(
-                                        MultiLanguagesApplication.appContext
+                                        itemView.context
                                     ).apply {
                                         setupHomeCard(this, sportMenu)
                                     })
@@ -110,7 +110,7 @@ class GameMenuViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             if (special_block_game.size != sportCouponMenuList.size) {
                 special_block_game.removeAllViews()
                 sportCouponMenuList.forEach { sportCouponMenuData ->
-                    special_block_game.addView(HomeGameCard(MultiLanguagesApplication.appContext).apply {
+                    special_block_game.addView(HomeGameCard(itemView.context).apply {
                         setupCouponCard(this, sportCouponMenuData)
                     })
                 }
@@ -124,6 +124,7 @@ class GameMenuViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private fun setupFirstGame(sportMenu: SportMenu) {
         with(itemView) {
+            label_en_first_game.alpha = if (MultiLanguagesApplication.isNightMode) 0.1f else 0.25f
             label_en_first_game.text = context?.getString(R.string.goal_buster)
             label_first_game.text = sportMenu.sportName
             sportMenu.icon?.let { iv_first_game.setImageResource(sportMenu.icon) }
@@ -138,6 +139,7 @@ class GameMenuViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private fun setupSecondGame(sportMenu: SportMenu) {
         with(itemView) {
+            label_en_second_game.alpha = if (MultiLanguagesApplication.isNightMode) 0.1f else 0.25f
             label_en_second_game.text = context?.getString(R.string.top_games)
             label_second_game.text = sportMenu.sportName
             sportMenu.icon?.let { iv_second_game.setImageResource(sportMenu.icon) }

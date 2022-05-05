@@ -113,7 +113,7 @@ class VipActivity : BaseSocketActivity<VipViewModel>(VipViewModel::class) {
 
         //第三方遊戲反水選擇列
         sv_third_games.apply {
-            selectedTextColor = R.color.colorBlack
+            selectedTextColor = R.color.color_FFFFFF_000000
             setAdapter(thirdGameAdapter)
         }
 
@@ -333,7 +333,7 @@ class ThirdGameAdapter(private val selectedListener: OnSelectThirdGames) :
             itemView.apply {
                 checkbox_item.text = data.firmShowName
                 checkbox_item.background = if (itemChecked) ContextCompat.getDrawable(context,
-                    R.color.colorWhite6) else ContextCompat.getDrawable(context, android.R.color.white)
+                    R.color.color_191919_EEEFF0) else ContextCompat.getDrawable(context, android.R.color.white)
                 checkbox_item.setOnClickListener {
                     if (selectedPosition != position) {
                         selectedListener.onSelected(data)

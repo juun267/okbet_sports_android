@@ -65,13 +65,13 @@ class SwitchLanguageActivity : BaseActivity<LoginViewModel>(LoginViewModel::clas
         binding.ivLogo.setOnClickListener(this)
         when (LanguageManager.getSelectLanguage(applicationContext)) {
             LanguageManager.Language.ZH -> {
-                binding.tvChina.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorBlue))
+                binding.tvChina.setTextColor(ContextCompat.getColor(applicationContext, R.color.color_317FFF_0760D4))
             }
             LanguageManager.Language.EN -> {
-                binding.tvEnglish.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorBlue))
+                binding.tvEnglish.setTextColor(ContextCompat.getColor(applicationContext, R.color.color_317FFF_0760D4))
             }
             LanguageManager.Language.VI -> {
-                binding.tvVietnam.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorBlue))
+                binding.tvVietnam.setTextColor(ContextCompat.getColor(applicationContext, R.color.color_317FFF_0760D4))
             }
         }
     }

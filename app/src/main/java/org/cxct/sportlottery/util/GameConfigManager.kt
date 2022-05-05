@@ -22,7 +22,11 @@ object GameConfigManager {
      *  @param firmCode: 需轉換成小寫
      */
     fun getThirdGameHomeIcon(gameCategory: String?, firmCode: String?, language: String): String {
-        return Constants.getBaseUrl() + "/staticResource/img/game/${gameCategory?.toLowerCase(Locale.getDefault())}/${language}/home-vision__${firmCode?.toLowerCase(Locale.getDefault())}.png"
+        return Constants.getBaseUrl() + "/staticResource/img/game/${gameCategory?.toLowerCase(Locale.getDefault())}/${language}/home-vision__${
+            firmCode?.toLowerCase(
+                Locale.getDefault()
+            )
+        }.png"
     }
 
     /**
@@ -31,8 +35,16 @@ object GameConfigManager {
      *  @param gameCategory: 需轉換成小寫
      *  @param firmCode: 需轉換成小寫
      */
-    fun getThirdGameHallIconUrl(gameCategory: String?, firmCode: String?, language: String): String {
-        return Constants.getBaseUrl() + "/staticResource/img/game/${gameCategory?.toLowerCase(Locale.getDefault())}/${language}/game-hall-vision__${firmCode?.toLowerCase(Locale.getDefault())}.png"
+    fun getThirdGameHallIconUrl(
+        gameCategory: String?,
+        firmCode: String?,
+        language: String
+    ): String {
+        return Constants.getBaseUrl() + "/staticResource/img/game/${gameCategory?.toLowerCase(Locale.getDefault())}/${language}/game-hall-vision__${
+            firmCode?.toLowerCase(
+                Locale.getDefault()
+            )
+        }.png"
     }
 
     /**
@@ -41,8 +53,16 @@ object GameConfigManager {
      *  @param gameCategory: 需轉換成小寫
      *  @param firmCode: 需轉換成小寫
      */
-    fun getThirdGameHallDZIconUrl(gameCategory: String?, firmCode: String?, language: String): String {
-        return Constants.getBaseUrl() + "/staticResource/img/game/${gameCategory?.toLowerCase(Locale.getDefault())}/${language}/game-hall-vision__${firmCode?.toLowerCase(Locale.getDefault())}_active.png"
+    fun getThirdGameHallDZIconUrl(
+        gameCategory: String?,
+        firmCode: String?,
+        language: String
+    ): String {
+        return Constants.getBaseUrl() + "/staticResource/img/game/${gameCategory?.toLowerCase(Locale.getDefault())}/${language}/game-hall-vision__${
+            firmCode?.toLowerCase(
+                Locale.getDefault()
+            )
+        }_active.png"
     }
 
     /**
@@ -52,7 +72,11 @@ object GameConfigManager {
      *  @param firmCode: 需轉換成小寫
      */
     fun getThirdGameLogoIconUrl(gameCategory: String?, firmCode: String?): String {
-        return Constants.getBaseUrl() + "/staticResource/img/game/${gameCategory?.toLowerCase(Locale.getDefault())}/logo-${firmCode?.toLowerCase(Locale.getDefault())}.png"
+        return Constants.getBaseUrl() + "/staticResource/img/game/${gameCategory?.toLowerCase(Locale.getDefault())}/logo-${
+            firmCode?.toLowerCase(
+                Locale.getDefault()
+            )
+        }.png"
     }
 
     /**
@@ -61,7 +85,11 @@ object GameConfigManager {
      * @param gameCategory: 需轉換成小寫
      */
     fun getThirdGameIconUrl(gameCategory: String?, h5ImageName: String?): String {
-        return Constants.getBaseUrl() + "/staticResource/img/gameicons/${gameCategory?.toLowerCase(Locale.getDefault())}/newimg/$h5ImageName"
+        return Constants.getBaseUrl() + "/staticResource/img/gameicons/${
+            gameCategory?.toLowerCase(
+                Locale.getDefault()
+            )
+        }/newimg/$h5ImageName"
     }
 
 
@@ -91,25 +119,30 @@ object GameConfigManager {
     }
 
     @DrawableRes
-    fun getTitleBarBackground(code: String?): Int? {
-        return when (code) {
-            GameType.FT.key -> R.drawable.img_home_title_soccer_background
-            GameType.BK.key -> R.drawable.img_home_title_basketball_background
-            GameType.TN.key -> R.drawable.img_home_title_tennis_background
-            GameType.VB.key -> R.drawable.img_home_title_volleyball_background
-            GameType.BM.key -> R.drawable.img_home_title_bm_background
-            GameType.TT.key -> R.drawable.img_home_title_tt_background
-            GameType.IH.key -> R.drawable.img_home_title_ih_background
-            GameType.BX.key -> R.drawable.img_home_title_bx_background
-            GameType.CB.key -> R.drawable.img_home_title_cb_background
-            GameType.CK.key -> R.drawable.img_home_title_ck_background
-            GameType.BB.key -> R.drawable.img_home_title_bb_background
-            GameType.RB.key -> R.drawable.img_home_title_rb_background
-            GameType.AFT.key -> R.drawable.img_home_title_aft_background
-            GameType.MR.key -> R.drawable.img_home_title_mr_background
-            GameType.GF.key -> R.drawable.img_home_title_gf_background
-            else -> null
+    fun getTitleBarBackground(code: String?, nightMode: Boolean): Int? {
+        if (nightMode) {
+            return R.drawable.bg_transaction_record
+        } else {
+            return when (code) {
+                GameType.FT.key -> R.drawable.img_home_title_soccer_background
+                GameType.BK.key -> R.drawable.img_home_title_basketball_background
+                GameType.TN.key -> R.drawable.img_home_title_tennis_background
+                GameType.VB.key -> R.drawable.img_home_title_volleyball_background
+                GameType.BM.key -> R.drawable.img_home_title_bm_background
+                GameType.TT.key -> R.drawable.img_home_title_tt_background
+                GameType.IH.key -> R.drawable.img_home_title_ih_background
+                GameType.BX.key -> R.drawable.img_home_title_bx_background
+                GameType.CB.key -> R.drawable.img_home_title_cb_background
+                GameType.CK.key -> R.drawable.img_home_title_ck_background
+                GameType.BB.key -> R.drawable.img_home_title_bb_background
+                GameType.RB.key -> R.drawable.img_home_title_rb_background
+                GameType.AFT.key -> R.drawable.img_home_title_aft_background
+                GameType.MR.key -> R.drawable.img_home_title_mr_background
+                GameType.GF.key -> R.drawable.img_home_title_gf_background
+                else -> null
+            }
         }
     }
+
 
 }

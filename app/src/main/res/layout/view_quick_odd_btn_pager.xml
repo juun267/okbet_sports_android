@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/quick_view_horizontal_scroll_height"
     android:orientation="horizontal"
-    android:background="@color/colorWhite4"
     tools:ignore="spUsage,RtlSymmetry">
 
     <LinearLayout
@@ -23,7 +22,7 @@
             android:gravity="center_vertical"
             android:maxLines="2"
             android:paddingEnd="10dp"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize14sp"
             tools:text="俄罗斯俄罗斯俄罗斯俄罗斯俄罗斯俄罗斯" />
         <TextView
@@ -36,7 +35,7 @@
             android:gravity="center_vertical"
             android:maxLines="2"
             android:paddingEnd="10dp"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize14sp"
             tools:text="芬兰芬兰芬兰芬兰芬兰芬兰芬兰芬兰" />
     </LinearLayout>

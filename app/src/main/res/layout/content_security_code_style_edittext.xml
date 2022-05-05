@@ -59,8 +59,8 @@
                 android:maxLength="8"
                 android:scrollHorizontally="true"
                 android:singleLine="true"
-                android:textColor="@color/colorBlackLight"
-                android:textColorHint="@color/colorSilverLight"
+                android:textColor="@color/color_e5e5e5_333333"
+                android:textColorHint="@color/color_404040_cccccc"
                 android:textSize="@dimen/textSize12sp"
                 app:autoSizeMaxTextSize="@dimen/textSize12sp"
                 app:autoSizeMinTextSize="@dimen/textSize8sp"
@@ -89,7 +89,7 @@
                     android:minHeight="32dp"
                     android:text="@string/get_security_code"
                     android:textAllCaps="false"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/color_191919_FCFCFC"
                     android:textSize="@dimen/textSize14sp" />
 
             </LinearLayout>
@@ -117,7 +117,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
-        android:textColor="@color/colorRedDark"
+        android:textColor="@color/color_F75452_b73a20"
         android:textSize="12dp"
         android:visibility="gone"
         app:layout_constraintStart_toEndOf="@+id/ic_error"

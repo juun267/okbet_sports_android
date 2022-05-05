@@ -29,6 +29,7 @@ class SelfLimitFrozeErrorDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
     }
 
     private fun initView() {

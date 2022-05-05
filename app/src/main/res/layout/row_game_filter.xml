@@ -9,7 +9,7 @@
         android:id="@+id/game_filter_back_row"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/colorWhite"
+        android:background="@color/color_191919_FCFCFC"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton

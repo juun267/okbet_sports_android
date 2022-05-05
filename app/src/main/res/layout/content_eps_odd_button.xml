@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="1.067"
-        tools:textColor="@color/colorGrayLight" />
+        tools:textColor="@color/color_8F8F8F_999999" />
 
     <TextView
         android:id="@+id/txv_odds"
@@ -32,6 +32,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txv_extInfo"
         tools:text="1.067"
-        tools:textColor="@color/colorBlue" />
+        tools:textColor="@color/color_317FFF_0760D4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
