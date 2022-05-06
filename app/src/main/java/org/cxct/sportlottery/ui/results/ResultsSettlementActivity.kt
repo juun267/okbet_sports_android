@@ -331,7 +331,7 @@ class ResultsSettlementActivity :
             val day = calendar.get(Calendar.DAY_OF_MONTH)
             val week = calendar.get(Calendar.DAY_OF_WEEK)
             val weekName = mapOf<Int, String>(
-                1 to getString(R.string.sunday2),
+                1 to getString(R.string.sunday2_cn),
                 2 to getString(R.string.monday2),
                 3 to getString(R.string.tuesday2),
                 4 to getString(R.string.wednesday2),

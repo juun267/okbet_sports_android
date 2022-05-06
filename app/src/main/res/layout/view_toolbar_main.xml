@@ -42,7 +42,8 @@
         android:gravity="center"
         android:minWidth="48dp"
         android:text="@string/btn_login"
-        android:textColor="@color/color_e5e5e5_333333" />
+        android:textColor="@color/color_e5e5e5_333333"
+        android:textSize="@dimen/textSize14sp" />
 
     <View
         android:id="@+id/toolbar_divider"
@@ -61,7 +62,8 @@
         android:gravity="center"
         android:minWidth="48dp"
         android:text="@string/btn_register"
-        android:textColor="@color/color_e5e5e5_333333" />
+        android:textColor="@color/color_e5e5e5_333333"
+        android:textSize="@dimen/textSize14sp" />
 
     <ImageView
         android:id="@+id/iv_notice"

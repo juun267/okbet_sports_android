@@ -2056,7 +2056,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     private fun navStatistics(matchId: String?) {
-        StatisticsDialog.newInstance(matchId)
+        StatisticsDialog.newInstance(matchId, StatisticsDialog.StatisticsClickListener { clickMenu() })
             .show(childFragmentManager, StatisticsDialog::class.java.simpleName)
     }
 

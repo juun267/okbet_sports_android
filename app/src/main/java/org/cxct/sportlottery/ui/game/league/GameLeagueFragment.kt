@@ -692,7 +692,8 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     }
 
     private fun navStatistics(matchId: String?) {
-        StatisticsDialog.newInstance(matchId).show(childFragmentManager, StatisticsDialog::class.java.simpleName)
+        StatisticsDialog.newInstance(matchId, StatisticsDialog.StatisticsClickListener { clickMenu() })
+            .show(childFragmentManager, StatisticsDialog::class.java.simpleName)
     }
 
     private fun addOddsDialog(

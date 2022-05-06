@@ -12,6 +12,7 @@ import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.menu.ChangeLanguageDialog
 import org.cxct.sportlottery.util.JumpUtil
+import timber.log.Timber
 import kotlin.reflect.KClass
 
 abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KClass<T>) :
@@ -173,6 +174,15 @@ abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KCla
 
     class AfterAnimateListener(private val onAfterAnimate: () -> Unit) {
         fun onAfterAnimate() = onAfterAnimate.invoke()
+    }
+
+    fun clickMenu() {
+        when (activity) {
+            is BaseBottomNavActivity<*> -> {
+                (activity as BaseBottomNavActivity<*>).clickMenuEvent()
+            }
+            else -> Timber.i("$this 尚未實作關閉菜單方法")
+        }
     }
 
 }

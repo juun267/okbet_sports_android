@@ -389,8 +389,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/selector_star_v4"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:tint="@color/color_A3A3A3_666666" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
