@@ -148,7 +148,8 @@
     <color name="color_B3FFFFFF_99000000">@color/transparent_black_60</color>
     <color name="color_AEAEAE_545454">@color/color_AEAEAE</color>
     <color name="color_1E1E1E_FFFFFF">@color/color_FFFFFF</color>
-    <color name="color_383838_e5e5e5">@color/color_e5e5e5</color>
+    <color name="color_404040_e5e5e5">@color/color_e5e5e5</color>
+    <color name="color_404348_EDEDED">@color/color_EDEDED</color>
 
     <!--region 特殊處理顏色-->
     <color name="home_card_top_text_color">#40FFFFFF</color>
@@ -258,7 +259,7 @@
     <color name="color_AEAEAE">#AEAEAE</color>
     <color name="color_545454">#545454</color>
     <color name="color_1E1E1E">#1E1E1E</color>
-    <color name="color_383838">#383838</color>
+    <color name="color_EDEDED">#EDEDED</color>
 
     <!-- ======================================= -->
 

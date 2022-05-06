@@ -49,9 +49,9 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/margin_16"
+                android:layout_marginStart="@dimen/margin_12"
                 android:layout_marginTop="@dimen/margin_10"
-                android:layout_marginEnd="@dimen/margin_8"
+                android:layout_marginEnd="@dimen/margin_6"
                 android:layout_marginBottom="@dimen/margin_10"
                 android:layout_weight="1"
                 android:background="@drawable/bg_search_layout"
@@ -75,18 +75,18 @@
                     android:textColorHint="@color/color_939393_333333"
                     android:textColor="@color/color_939393_333333"
                     android:imeOptions="actionDone"
-                    android:textSize="@dimen/textSize12sp" />
+                    android:textSize="@dimen/textSize12sp"
+                    tools:text="fff"/>
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/btn_close"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
                 android:layout_gravity="center_vertical"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="16dp"
                 android:background="@null"
                 android:contentDescription="@null"
-                android:padding="8dp"
                 android:src="@drawable/ic_close_menu_v4" />
 
         </LinearLayout>
@@ -110,7 +110,8 @@
             android:layout_marginTop="@dimen/margin_20"
             android:paddingStart="@dimen/margin_12"
             android:paddingEnd="@dimen/margin_20"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

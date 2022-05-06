@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
 
 import org.cxct.sportlottery.R;
+import org.cxct.sportlottery.util.MetricsUtil;
 
 
 /**
@@ -1080,11 +1082,21 @@ public class TextFieldBoxes extends FrameLayout {
         this.subLabelText = subLabelText;
         this.floatingSubLabel.setText(this.subLabelText);
 
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) editTextLayout.getLayoutParams();
         if (subLabelText.isEmpty()) {
             this.floatingSubLabel.setVisibility(View.GONE);
+            layoutParams.removeRule(RelativeLayout.ALIGN_TOP);
+            layoutParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+            layoutParams.topMargin = 0;
         } else {
             this.floatingSubLabel.setVisibility(View.VISIBLE);
+            layoutParams.removeRule(RelativeLayout.CENTER_VERTICAL);
+            layoutParams.addRule(RelativeLayout.ALIGN_TOP, R.id.text_field_boxes_sub_label);
+            int topMargin = ((int) MetricsUtil.INSTANCE.convertDpToPixel(6, editTextLayout.getContext()));
+            layoutParams.topMargin = - (topMargin + inputLayout.getPaddingTop());
+            Log.d("jackson", "setSubLabelText: topmargin: " + topMargin + "inputLayout getPaddingTop: " + inputLayout.getPaddingTop());
         }
+        editTextLayout.setLayoutParams(layoutParams);
     }
 
     public void setHintText(String hintText) {

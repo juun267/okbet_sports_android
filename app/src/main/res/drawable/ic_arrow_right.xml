@@ -5,7 +5,7 @@
     android:viewportHeight="14">
     <group>
         <path
-            android:fillColor="#CCCCCC"
+            android:fillColor="@color/color_404040_cccccc"
             android:fillType="nonZero"
             android:pathData="M14,7C14,7.2151 13.916,7.4301 13.7483,7.5941L8.468,12.7538C8.1321,13.0821 7.5876,13.0821 7.2518,12.7538C6.9161,12.4257 6.9161,11.8937 7.2518,11.5654L11.924,7L7.252,2.4346C6.9162,2.1064 6.9162,1.5744 7.252,1.2463C7.5877,0.9179 8.1323,0.9179 8.4682,1.2463L13.7484,6.406C13.9162,6.57 14,6.785 14,7Z"
             android:strokeWidth="1"

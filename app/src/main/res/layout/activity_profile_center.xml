@@ -311,9 +311,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:contentDescription="@null"
-                        android:rotationY="180"
-                        android:src="@drawable/ic_icon_arrow_blue"
-                        app:tint="@color/color_cccccc" />
+                        android:src="@drawable/ic_arrow_right"/>
 
                 </LinearLayout>
 
@@ -347,9 +345,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:contentDescription="@null"
-                        android:rotationY="180"
-                        android:src="@drawable/ic_icon_arrow_blue"
-                        app:tint="@color/color_cccccc" />
+                        android:src="@drawable/ic_arrow_right" />
 
                 </LinearLayout>
 
@@ -383,9 +379,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:contentDescription="@null"
-                        android:rotationY="180"
-                        android:src="@drawable/ic_icon_arrow_blue"
-                        app:tint="@color/color_cccccc" />
+                        android:src="@drawable/ic_arrow_right" />
 
                 </LinearLayout>
 
@@ -419,9 +413,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:contentDescription="@null"
-                        android:rotationY="180"
-                        android:src="@drawable/ic_icon_arrow_blue"
-                        app:tint="@color/color_cccccc" />
+                        android:src="@drawable/ic_arrow_right" />
 
                 </LinearLayout>
 
@@ -489,9 +481,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:contentDescription="@null"
-                        android:rotationY="180"
-                        android:src="@drawable/ic_icon_arrow_blue"
-                        app:tint="@color/color_cccccc" />
+                        android:src="@drawable/ic_arrow_right"/>
 
                 </LinearLayout>
 
@@ -531,9 +521,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:contentDescription="@null"
-                        android:rotationY="180"
-                        android:src="@drawable/ic_icon_arrow_blue"
-                        app:tint="@color/color_cccccc" />
+                        android:src="@drawable/ic_arrow_right" />
 
                 </LinearLayout>
 
@@ -567,9 +555,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:contentDescription="@null"
-                        android:rotationY="180"
-                        android:src="@drawable/ic_icon_arrow_blue"
-                        app:tint="@color/color_cccccc" />
+                        android:src="@drawable/ic_arrow_right" />
 
                 </LinearLayout>
 
@@ -603,9 +589,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:contentDescription="@null"
-                        android:rotationY="180"
-                        android:src="@drawable/ic_icon_arrow_blue"
-                        app:tint="@color/color_cccccc" />
+                        android:src="@drawable/ic_arrow_right" />
 
                 </LinearLayout>
 
@@ -681,9 +665,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:contentDescription="@null"
-                        android:rotationY="180"
-                        android:src="@drawable/ic_icon_arrow_blue"
-                        app:tint="@color/color_cccccc" />
+                        android:src="@drawable/ic_arrow_right" />
 
                 </LinearLayout>
 
@@ -717,9 +699,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:contentDescription="@null"
-                        android:rotationY="180"
-                        android:src="@drawable/ic_icon_arrow_blue"
-                        app:tint="@color/color_cccccc" />
+                        android:src="@drawable/ic_arrow_right"/>
 
                 </LinearLayout>
 

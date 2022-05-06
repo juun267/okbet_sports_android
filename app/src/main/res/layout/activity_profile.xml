@@ -24,7 +24,7 @@
             android:background="@color/color_1E1E1E_FFFFFF"
             android:divider="@drawable/divider_straight"
             android:orientation="vertical"
-            android:showDividers="middle|end">
+            android:showDividers="middle">
 
             <LinearLayout
                 android:id="@+id/btn_head"
@@ -40,7 +40,8 @@
                     android:layout_marginStart="18dp"
                     android:layout_marginEnd="14dp"
                     android:contentDescription="@null"
-                    android:src="@drawable/ic_profile_head" />
+                    android:src="@drawable/ic_profile_head"
+                    app:tint="@color/color_666666_bcbcbc"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -83,7 +84,8 @@
                     android:layout_marginStart="18dp"
                     android:layout_marginEnd="14dp"
                     android:contentDescription="@null"
-                    android:src="@drawable/ic_profile_nickname" />
+                    android:src="@drawable/ic_profile_nickname"
+                    app:tint="@color/color_666666_bcbcbc" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -134,7 +136,8 @@
                     android:layout_marginStart="18dp"
                     android:layout_marginEnd="14dp"
                     android:contentDescription="@null"
-                    android:src="@drawable/ic_profile_pwd_setting" />
+                    android:src="@drawable/ic_profile_pwd_setting"
+                    app:tint="@color/color_666666_bcbcbc" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -167,7 +170,8 @@
                     android:layout_marginStart="18dp"
                     android:layout_marginEnd="14dp"
                     android:contentDescription="@null"
-                    android:src="@drawable/ic_profile_account" />
+                    android:src="@drawable/ic_profile_account"
+                    app:tint="@color/color_666666_bcbcbc" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -205,7 +209,8 @@
                     android:layout_marginStart="18dp"
                     android:layout_marginEnd="14dp"
                     android:contentDescription="@null"
-                    android:src="@drawable/ic_profile_id" />
+                    android:src="@drawable/ic_profile_id"
+                    app:tint="@color/color_666666_bcbcbc" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -244,7 +249,8 @@
                     android:layout_marginStart="18dp"
                     android:layout_marginEnd="14dp"
                     android:contentDescription="@null"
-                    android:src="@drawable/ic_profile_real_name" />
+                    android:src="@drawable/ic_profile_real_name"
+                    app:tint="@color/color_666666_bcbcbc" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -295,7 +301,8 @@
                     android:layout_marginStart="18dp"
                     android:layout_marginEnd="14dp"
                     android:contentDescription="@null"
-                    android:src="@drawable/ic_personal_info_qq" />
+                    android:src="@drawable/ic_personal_info_qq"
+                    app:tint="@color/color_666666_bcbcbc" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -346,7 +353,8 @@
                     android:layout_marginStart="18dp"
                     android:layout_marginEnd="14dp"
                     android:contentDescription="@null"
-                    android:src="@drawable/ic_personal_info_email" />
+                    android:src="@drawable/ic_personal_info_email"
+                    app:tint="@color/color_666666_bcbcbc" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -397,7 +405,8 @@
                     android:layout_marginStart="18dp"
                     android:layout_marginEnd="14dp"
                     android:contentDescription="@null"
-                    android:src="@drawable/ic_personal_info_mobile" />
+                    android:src="@drawable/ic_personal_info_mobile"
+                    app:tint="@color/color_666666_bcbcbc" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -448,7 +457,8 @@
                     android:layout_marginStart="18dp"
                     android:layout_marginEnd="14dp"
                     android:contentDescription="@null"
-                    android:src="@drawable/ic_personal_info_wechat" />
+                    android:src="@drawable/ic_personal_info_wechat"
+                    app:tint="@color/color_666666_bcbcbc" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -498,7 +508,8 @@
                     android:layout_marginStart="18dp"
                     android:layout_marginEnd="14dp"
                     android:contentDescription="@null"
-                    android:src="@drawable/ic_identity" />
+                    android:src="@drawable/ic_identity"
+                    app:tint="@color/color_666666_bcbcbc" />
 
                 <TextView
                     android:layout_width="wrap_content"
