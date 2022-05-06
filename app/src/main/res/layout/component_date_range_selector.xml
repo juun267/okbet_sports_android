@@ -99,7 +99,7 @@
     <TextView
         android:id="@+id/btn_search"
         android:layout_width="wrap_content"
-        android:layout_height="32dp"
+        android:layout_height="30dp"
         android:layout_marginStart="5dp"
         android:background="@drawable/bg_radius_4_button_dusk"
         android:ellipsize="end"
