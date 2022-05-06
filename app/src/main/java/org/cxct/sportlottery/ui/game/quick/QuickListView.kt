@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.game.quick
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RadioButton
@@ -207,6 +208,7 @@ class QuickListView @JvmOverloads constructor(
                 layoutParams = customLayoutParams
                 
                 text = it.nameMap?.get(LanguageManager.getSelectLanguage(MultiLanguagesApplication.appContext).key) ?: it.name
+                setTextSize(TypedValue.COMPLEX_UNIT_DIP,14f)
                 id = it.hashCode()
                 isChecked = it.isSelected
             })
