@@ -391,10 +391,7 @@ class AccountHistoryNextAdapter(
                 tv_title.setTextWithStrokeWidth(context?.getString(R.string.bet_num_and_bet_date) ?: "", 0.7f)
 
                 date_selector.cl_root.layoutParams.height = 40.dp
-                date_selector.tv_selected.gravity = Gravity.CENTER_VERTICAL or Gravity.START
-
                 sport_selector.cl_root.layoutParams.height = 40.dp
-                sport_selector.tv_selected.gravity = Gravity.CENTER_VERTICAL or Gravity.START
 
                 //sport
                 sport_selector.setCloseBtnText(context.getString(R.string.bottom_sheet_close))
