@@ -169,6 +169,7 @@
     <string name="friday2"> Fri</string>
     <string name="saturday2">Sat</string>
     <string name="sunday2">Sun</string>
+    <string name="sunday2_cn">Sun</string>
     <string name="january">January</string>
     <string name="february">February</string>
     <string name="march">March</string>
