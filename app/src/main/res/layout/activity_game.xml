@@ -91,7 +91,7 @@
                     android:layout_marginBottom="8dp"
                     android:background="@color/color_FF9143_ff9200"
                     android:text="@string/button_league_submit"
-                    android:textColor="@color/color_191919_FCFCFC"
+                    android:textColor="@color/color_FCFCFC"
                     android:textSize="@dimen/textSize14sp"
                     android:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@id/game_bottom_navigation"
