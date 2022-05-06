@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_transaction_status.*
 import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
+import kotlinx.android.synthetic.main.fragment_transaction_status.*
 import kotlinx.android.synthetic.main.sport_bottom_navigation.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import kotlinx.android.synthetic.main.view_message.*
@@ -35,6 +36,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
+import org.cxct.sportlottery.util.setTextWithStrokeWidth
 
 class TransactionStatusActivity :
     BaseBottomNavActivity<TransactionStatusViewModel>(TransactionStatusViewModel::class) {
@@ -73,6 +75,7 @@ class TransactionStatusActivity :
     }
 
     override fun initToolBar() {
+        tv_title.setTextWithStrokeWidth(getString(R.string.label_transaction_status), 0.7f)
         iv_logo.setImageResource(R.drawable.ic_logo)
         iv_logo.setOnClickListener {
             viewModel.navMainPage(ThirdGameCategory.MAIN)
