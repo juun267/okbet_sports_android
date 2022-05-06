@@ -316,7 +316,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun clickMenu() {
         when (activity) {
-            is GamePublicityActivity -> (activity as GamePublicityActivity).clickMenu()
+            is GamePublicityActivity -> (activity as GamePublicityActivity).clickMenuEvent()
         }
     }
 

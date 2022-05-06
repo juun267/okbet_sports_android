@@ -753,7 +753,13 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     }
 
     private fun navStatistics(matchId: String?) {
-        StatisticsDialog.newInstance(matchId).show(childFragmentManager, StatisticsDialog::class.java.simpleName)
+        StatisticsDialog.newInstance(matchId, clickListener = StatisticsDialog.StatisticsClickListener {
+            when (activity) {
+                is MyFavoriteActivity -> {
+                    (activity as MyFavoriteActivity).clickMenuEvent()
+                }
+            }
+        }).show(childFragmentManager, StatisticsDialog::class.java.simpleName)
     }
 
     private fun updateGameList(index: Int, leagueOdd: LeagueOdd) {

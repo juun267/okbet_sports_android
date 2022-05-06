@@ -153,7 +153,7 @@
     <string name="message_no_at_start">Now no Coming soon Matches</string>
     <string name="message_no_in_play">Now no Coming soon Matches</string>
     <string name="message_no_sport_game">There are currently no events for %1$s</string>
-    <string name="champion">OUTRIGHTS</string>
+    <string name="champion">OUTRIGHT</string>
     <string name="league">League</string>
     <string name="monday">Monday</string>
     <string name="tuesday">Tuesday</string>
@@ -162,6 +162,7 @@
     <string name="friday">Friday</string>
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
+    <string name="sunday2_cn">Sunday</string>
     <string name="monday2">Mon</string>
     <string name="tuesday2">Tue</string>
     <string name="wednesday2">Wed</string>

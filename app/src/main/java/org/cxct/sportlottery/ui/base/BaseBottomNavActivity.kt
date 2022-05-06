@@ -17,6 +17,8 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
 
     abstract fun initMenu()
 
+    abstract fun clickMenuEvent()
+
     abstract fun initBottomNavigation()
 
     abstract fun showBetListPage()

@@ -8,6 +8,16 @@
     tools:ignore="WebViewLayout,spUsage,RtlSymmetry"
     tools:layout_gravity="bottom">
 
+    <!-- toolBar -->
+    <include
+        android:id="@+id/game_toolbar"
+        layout="@layout/view_toolbar_main"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
         android:id="@+id/ll_content"
         android:layout_width="match_parent"

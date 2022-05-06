@@ -49,6 +49,8 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
 
         initObserver()
 
+        setupNoticeButton(iv_notice)
+
 //        initServiceButton()
     }
 
@@ -85,6 +87,14 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
             ChangeLanguageDialog(ChangeLanguageDialog.ClearBetListListener{
                 viewModel.betInfoRepository.clear()
             }).show(supportFragmentManager, null)
+        }
+    }
+
+    override fun clickMenuEvent() {
+        if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
+        else {
+            drawer_layout.openDrawer(nav_right)
+            viewModel.getMoney()
         }
     }
 

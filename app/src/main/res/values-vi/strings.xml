@@ -150,7 +150,7 @@
     <string name="conspire">Xiên</string>
     <string name="message_no_at_start">Hiện tại không có sự kiện sắp tới</string>
     <string name="message_no_in_play">Hiện tại không có kết quả phù hợp</string>
-    <string name="champion">Quán quân</string>
+    <string name="champion">CƯỢC CHUNG CUỘC</string>
     <string name="league">Giải đấu</string>
     <string name="monday">Thứ hai</string>
     <string name="tuesday">Thứ ba</string>
@@ -212,7 +212,7 @@
     <string name="select_cancel">Hủy lựa chọn</string>
     <string name="search">Tìm kiếm</string>
     <string name="game_type">Loại bóng</string>
-    <string name="winner">Thắng</string>
+    <string name="winner">Bên thắng</string>
     <string name="first_half_game">Hiệp 1</string>
     <string name="second_half_game">Hiệp 2</string>
     <string name="total_score">Tổng điểm</string>
@@ -849,6 +849,7 @@
     <string name="friday2">Thứ 6</string>
     <string name="saturday2">Thứ 7</string>
     <string name="sunday2">Chủ nhật</string>
+    <string name="sunday2_cn">CN</string>
     <string name="no_setting">Không có cài đặt</string>
     <string name="service_1">CSKH1</string>
     <string name="service_2">CSKH2</string>
