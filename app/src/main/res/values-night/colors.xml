@@ -68,7 +68,6 @@
     <color name="color_e5e5e5_202020">@color/color_e5e5e5</color>
     <color name="color_e5e5e5_000000">@color/color_e5e5e5</color>
     <color name="color_FFFFFF_060F20">@color/color_FFFFFF</color>
-    <color name="color_FFFFFF_DE000000">@color/color_FFFFFF</color>
 
     <color name="color_FFFFFF_DE000000">@color/color_FFFFFF</color>
     <color name="color_B3FFFFFF_99000000">@color/transparent_white_70</color>
