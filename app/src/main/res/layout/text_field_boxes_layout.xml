@@ -220,7 +220,7 @@
             android:visibility="gone"
             app:drawableStartCompat="@drawable/ic_error_tip"
             tools:text="12345567890asddfgghhjjkk"
-            tools:textColor="@color/colorRedDark"
+            tools:textColor="@color/color_F75452_b73a20"
             tools:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatTextView
