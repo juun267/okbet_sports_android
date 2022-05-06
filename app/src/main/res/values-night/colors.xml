@@ -38,6 +38,7 @@
     <color name="color_666666_bcbcbc">@color/color_666666</color>
     <color name="color_616161_b4b4b4">@color/color_616161</color>
     <color name="color_8F8F8F_999999">@color/color_8F8F8F</color>
+    <color name="color_A3A3A3_999999">@color/color_A3A3A3</color>
     <color name="color_A3A3A3_666666">@color/color_A3A3A3</color>
     <color name="color_ADADAD_444444">@color/color_ADADAD</color>
     <color name="color_E0E0E0_404040">@color/color_E0E0E0</color>
