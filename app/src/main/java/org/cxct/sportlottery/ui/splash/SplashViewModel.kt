@@ -74,6 +74,8 @@ class SplashViewModel(
                     result.configData?.let { setRandomSocketUrl(it.wsHost) }
                     getPlayQuotaCom()
                     return@launch
+                } else if (result?.success == false && result.code == 403){
+                    _configResult.postValue(result)
                 } else {
                     getHost()
                 }
@@ -161,6 +163,9 @@ class SplashViewModel(
                 setBaseUrl(baseUrl, retrofit)
                 result.configData?.let { setRandomSocketUrl(it.wsHost) }
                 getPlayQuotaCom()
+            } else if (result?.success == false && result.code == 403){
+                mIsGetFastHostDown = true
+                _configResult.postValue(result)
             } else {
                 Timber.e("==> Check host fail!!! baseUrl = $baseUrl")
                 val listSize = mAppUrlList?.size ?: 0
