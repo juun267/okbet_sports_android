@@ -30,7 +30,6 @@
         android:maxLines="1"
         android:textColor="@color/selector_blue_gray_light"
         android:textSize="@dimen/textSize11sp"
-        app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
