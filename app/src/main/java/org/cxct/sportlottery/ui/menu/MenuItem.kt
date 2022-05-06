@@ -5,13 +5,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.EditText
-import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.menu_item.view.*
 import kotlinx.android.synthetic.main.menu_item.view.tv_title
-import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.LanguageManager
 

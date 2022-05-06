@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.edittext_login.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
+import org.cxct.sportlottery.util.setTextWithStrokeWidth
 import java.util.*
 
 class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
@@ -23,6 +24,18 @@ class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: Att
     private val bottomSheetLayout by lazy { typedArray.getResourceId(R.styleable.CalendarBottomSheetStyle_calendarLayout, R.layout.dialog_bottom_sheet_calendar) }
     private val bottomSheetView by lazy { LayoutInflater.from(context).inflate(bottomSheetLayout, null) }
     private val calendarBottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(context) }
+
+    val startTime: Long?
+        get() = TimeUtil.dateToTimeStamp(tv_start_date.text.toString(), TimeUtil.TimeType.START_OF_DAY)
+
+    val endTime: Long?
+        get() = TimeUtil.dateToTimeStamp(tv_end_date.text.toString(), TimeUtil.TimeType.END_OF_DAY)
+
+    val startDate: String
+        get() = tv_start_date.text.toString()
+
+    val endDate: String
+        get() = tv_end_date.text.toString()
 
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.component_date_range_selector, this, false)
@@ -46,18 +59,6 @@ class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: Att
         tv_start_date.text = TimeUtil.getDefaultDate(7).startTime
         tv_end_date.text = TimeUtil.getDefaultDate().endTime
     }
-
-    val startTime: Long?
-        get() = TimeUtil.dateToTimeStamp(tv_start_date.text.toString(), TimeUtil.TimeType.START_OF_DAY)
-
-    val endTime: Long?
-        get() = TimeUtil.dateToTimeStamp(tv_end_date.text.toString(), TimeUtil.TimeType.END_OF_DAY)
-
-    val startDate: String
-        get() = tv_start_date.text.toString()
-
-    val endDate: String
-        get() = tv_end_date.text.toString()
 
     fun setOnClickSearchListener (search: () -> Unit) {
         btn_search.setOnClickListener {

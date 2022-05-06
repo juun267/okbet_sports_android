@@ -30,13 +30,6 @@
             app:defaultStatusText="@string/all_order_status"
             app:layout_constraintTop_toBottomOf="@id/date_range_selector" />
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
-            android:background="@color/color_191919_EEEFF0" />
-
         <org.cxct.sportlottery.ui.component.StatusSelectorView
             android:id="@+id/selector_method_status"
             android:layout_width="0dp"
@@ -67,8 +60,7 @@
             android:maxLines="1"
             android:text="@string/recharge_log_order_time"
             android:textColor="@color/color_e5e5e5_333333"
-            app:autoSizeMaxTextSize="@dimen/textSize12sp"
-            app:autoSizeMinTextSize="@dimen/textSize8sp" />
+            android:textSize="@dimen/textSize12sp"/>
 
         <TextView
             android:id="@+id/rech_log_recharge_amount"
@@ -80,8 +72,7 @@
             android:maxLines="1"
             android:text="@string/recharge_log_recharge_amount"
             android:textColor="@color/color_e5e5e5_333333"
-            app:autoSizeMaxTextSize="@dimen/textSize12sp"
-            app:autoSizeMinTextSize="@dimen/textSize8sp" />
+            android:textSize="@dimen/textSize12sp"/>
 
         <TextView
             android:id="@+id/recg_log_channel_type"
@@ -93,8 +84,7 @@
             android:maxLines="1"
             android:text="@string/recharge_log_channel_type"
             android:textColor="@color/color_e5e5e5_333333"
-            app:autoSizeMaxTextSize="@dimen/textSize12sp"
-            app:autoSizeMinTextSize="@dimen/textSize8sp" />
+            android:textSize="@dimen/textSize12sp"/>
 
         <TextView
             android:id="@+id/rech_log_order_state"
@@ -106,8 +96,7 @@
             android:maxLines="1"
             android:text="@string/recharge_log_order_state"
             android:textColor="@color/color_e5e5e5_333333"
-            app:autoSizeMaxTextSize="@dimen/textSize12sp"
-            app:autoSizeMinTextSize="@dimen/textSize8sp" />
+            android:textSize="@dimen/textSize12sp"/>
     </LinearLayout>
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
