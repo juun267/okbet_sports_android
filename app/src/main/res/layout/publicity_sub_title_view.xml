@@ -12,7 +12,7 @@
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="16dp"
         android:layout_marginStart="14dp"
         android:src="@drawable/ic_hot" />
 
@@ -44,5 +44,5 @@
         android:paddingTop="6dp"
         android:paddingEnd="14dp"
         android:paddingBottom="6dp"
-        android:src="@drawable/ic_arrow_right_black" />
+        android:src="@drawable/ic_arrow_right_a3a3a3_666666" />
 </LinearLayout>

@@ -84,8 +84,9 @@
                             android:id="@+id/iv_close"
                             android:layout_width="30dp"
                             android:layout_height="match_parent"
-                            android:padding="@dimen/margin_6"
+                            android:padding="@dimen/margin_7"
                             android:src="@drawable/ic_close"
+                            android:layout_marginEnd="4dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:tint="@color/white" />
@@ -246,7 +247,6 @@
                             android:textColor="@color/color_317FFF_0760D4"
                             android:textColorHint="@color/color_404040_cccccc"
                             android:textSize="@dimen/textSize16sp"
-                            android:textStyle="bold"
                             app:layout_constraintBottom_toTopOf="@+id/tv_error_message"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/btnRecharge"

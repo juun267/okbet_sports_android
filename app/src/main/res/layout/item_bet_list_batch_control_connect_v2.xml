@@ -142,7 +142,6 @@
                         android:textColor="@color/color_317FFF_0760D4"
                         android:textColorHint="@color/color_404040_cccccc"
                         android:textSize="@dimen/textSize16sp"
-                        android:textStyle="bold"
                         app:layout_constraintBottom_toTopOf="@+id/tv_error_message"
                         app:layout_constraintEnd_toStartOf="@+id/tv_symbol_count"
                         app:layout_constraintStart_toStartOf="parent"

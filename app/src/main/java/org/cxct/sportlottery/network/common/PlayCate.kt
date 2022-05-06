@@ -356,6 +356,34 @@ enum class PlayCate(val value: String) {
             }
         }
 
+        /**
+         * 判斷是否需要顯示當前角球資訊
+         */
+        fun needShowCurrentCorner(code: String?): Boolean {
+            return when (code) {
+                CORNER_1ST_HDP.value,
+                CORNER_1ST_OE.value,
+                CORNER_1ST_OU.value,
+                CORNER_2ST_OU.value,
+                CORNER_HDP.value,
+                CORNER_HDP_SEG1.value,
+                CORNER_HDP_SEG2.value,
+                CORNER_HDP_SEG3.value,
+                CORNER_HDP_SEG4.value,
+                CORNER_HDP_SEG5.value,
+                CORNER_HDP_SEG6.value,
+                CORNER_OE.value,//角球单/双
+                CORNER_OU.value,//角球大/小
+                CORNER_OU_SEG1.value,
+                CORNER_OU_SEG2.value,
+                CORNER_OU_SEG3.value,
+                CORNER_OU_SEG4.value,
+                CORNER_OU_SEG5.value,
+                CORNER_OU_SEG6.value -> true
+                else -> false
+            }
+        }
+
         fun getPlayCate(code: String?): PlayCate {
             return when (code) {
                 ADVANCE.value -> ADVANCE

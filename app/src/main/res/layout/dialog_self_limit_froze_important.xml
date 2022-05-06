@@ -17,6 +17,7 @@
         android:gravity="center"
         android:minWidth="300dp"
         android:orientation="vertical"
+        android:elevation="0dp"
         android:paddingTop="11dp">
 
         <TextView
@@ -49,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="11dp"
-            android:background="@color/color_191919_EEEFF0"
+            android:background="@color/color_E2E2E2"
             app:layout_constraintTop_toBottomOf="@+id/tv_title"
             app:layout_constraintVertical_bias="1" />
 

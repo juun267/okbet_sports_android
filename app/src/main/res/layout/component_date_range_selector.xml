@@ -96,7 +96,7 @@
         app:layout_constraintEnd_toEndOf="@+id/ll_end_date"
         app:layout_constraintTop_toTopOf="@+id/ll_end_date" />
 
-    <Button
+    <TextView
         android:id="@+id/btn_search"
         android:layout_width="wrap_content"
         android:layout_height="32dp"
@@ -104,13 +104,15 @@
         android:background="@drawable/bg_radius_4_button_dusk"
         android:ellipsize="end"
         android:maxLines="1"
-        android:minWidth="49dp"
+        android:minWidth="68dp"
         android:paddingHorizontal="2dp"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
         android:text="@string/inquire"
         android:textColor="@color/color_FFFFFF_FFFFFF"
         android:textAllCaps="true"
+        android:gravity="center"
+        android:textSize="@dimen/textSize14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/ll_end_date"
         app:layout_constraintTop_toTopOf="parent"

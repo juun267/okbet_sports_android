@@ -63,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="166dp" />
+            app:layout_constraintGuide_end="60dp" />
 
         <LinearLayout
             android:id="@+id/linear_layout"
@@ -356,12 +356,11 @@
             android:layout_height="wrap_content"
             android:paddingEnd="@dimen/margin_10"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_living"
+            android:src="@drawable/ic_living_ffffff_de000000"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/league_odd_match_price_boost"
             app:layout_constraintTop_toTopOf="@id/guide_game_bottom"
-            app:tint="@color/color_A3A3A3_666666"
             tools:ignore="ContentDescription"
             tools:visibility="visible" />
 
@@ -383,12 +382,12 @@
             android:id="@+id/league_odd_match_play_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawablePadding="6dp"
+            android:drawablePadding="5dp"
             android:gravity="center"
-            android:textColor="@color/color_A3A3A3_666666"
+            android:textColor="@color/color_FFFFFF_DE000000"
             android:textSize="@dimen/textSize12sp"
             android:textStyle="bold"
-            app:drawableEndCompat="@drawable/ic_arrow_dark_right_v4"
+            app:drawableEndCompat="@drawable/ic_arrow_dark_right_fffff_de000000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_animation"
             app:layout_constraintTop_toTopOf="@id/guide_game_bottom"
@@ -396,8 +395,8 @@
 
         <ImageView
             android:id="@+id/league_odd_match_chart"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:layout_marginEnd="5dp"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_chart"

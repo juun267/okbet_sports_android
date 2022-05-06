@@ -6,8 +6,11 @@
     android:layout_height="match_parent">
 
     <!-- 資金明細 -->
-    <include
-        layout="@layout/view_base_tool_bar_no_drawer"/>
+    <org.cxct.sportlottery.ui.common.CustomTopToolbar
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/custom_tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <fragment
         android:id="@+id/financeFragment"
@@ -16,7 +19,7 @@
         android:layout_height="0dp"
         app:defaultNavHost="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_bar_layout"
+        app:layout_constraintTop_toBottomOf="@+id/custom_tool_bar"
         app:navGraph="@navigation/finance_navigation" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
