@@ -255,7 +255,6 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             ItemType.MATCHODD.ordinal -> {
                 val layout = LayoutInflater.from(parent.context)
                     .inflate(R.layout.home_highlight_item, parent, false)
-                layout.btn_chart.visibility = View.GONE
                 return ViewHolderHdpOu(layout)
             }
             ItemType.BOTTOM_NAVIGATION.ordinal -> {
