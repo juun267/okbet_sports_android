@@ -88,6 +88,14 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
         }
     }
 
+    override fun clickMenuEvent() {
+        if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
+        else {
+            drawer_layout.openDrawer(nav_right)
+            viewModel.getMoney()
+        }
+    }
+
     override fun initMenu() {
         try {
             //關閉側邊欄滑動行為

@@ -54,6 +54,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 },
                 onMenuClickListener = {
                     clickMenu()
+                    clickMenu()
                 },
                 onItemClickListener = {
                     goLoginPage()
@@ -149,12 +150,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     private fun clickNotice() {
         when (activity) {
             is GamePublicityActivity -> (activity as GamePublicityActivity).fragmentClickNotice()
-        }
-    }
-
-    private fun clickMenu() {
-        when (activity) {
-            is GamePublicityActivity -> (activity as GamePublicityActivity).clickMenu()
         }
     }
 
@@ -459,7 +454,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     }
 
     private fun showStatistics(matchId: String?) {
-        StatisticsDialog.newInstance(matchId)
+        StatisticsDialog.newInstance(matchId, StatisticsDialog.StatisticsClickListener { clickMenu() })
             .show(childFragmentManager, StatisticsDialog::class.java.simpleName)
     }
 

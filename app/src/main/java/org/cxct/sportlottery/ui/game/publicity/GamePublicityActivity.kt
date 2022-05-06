@@ -277,7 +277,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         }
     }
 
-    fun clickMenu() {
+    override fun clickMenuEvent() {
         with(binding) {
             if (drawerLayout.isDrawerOpen(viewNavRight.navRight)) drawerLayout.closeDrawers()
             else {

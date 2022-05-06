@@ -126,7 +126,8 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
             }
 
             override fun showStatistics() {
-                StatisticsDialog.newInstance(matchId).show(childFragmentManager, StatisticsDialog::class.java.simpleName)
+                StatisticsDialog.newInstance(matchId, StatisticsDialog.StatisticsClickListener { clickMenu() })
+                    .show(childFragmentManager, StatisticsDialog::class.java.simpleName)
             }
         }
     }
