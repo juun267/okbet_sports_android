@@ -253,7 +253,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                             android.R.color.transparent
                         )
                     )
-                    ivLogo.setImageResource(R.drawable.ic_logo_white)
+                    ivLogo.setImageResource(R.drawable.ic_logo)
                     ivNotice.setImageResource(R.drawable.icon_bell_white)
                     ivMenu.setImageResource(R.drawable.ic_menu_gray)
                     tvLanguage.setTextColor(
