@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="14dp"
         android:gravity="end"
-        android:textColor="@color/color_616161_b4b4b4"
+        android:textColor="@color/color_B3FFFFFF_99000000"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintBottom_toTopOf="@+id/btn_submit"
         app:layout_constraintEnd_toEndOf="parent"

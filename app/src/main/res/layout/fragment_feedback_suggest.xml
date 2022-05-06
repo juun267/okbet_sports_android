@@ -9,11 +9,11 @@
     tools:context=".ui.feedback.suggest.FeedbackSuggestFragment">
 
     <androidx.cardview.widget.CardView
+        android:background="@color/color_191919_FCFCFC"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="14dp"
         android:layout_marginTop="14dp"
-        android:background="@color/color_191919_FCFCFC"
         app:cardCornerRadius="8dp"
         app:cardElevation="0dp">
 
@@ -32,6 +32,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@color/color_191919_FCFCFC"
                 android:orientation="vertical"
                 android:paddingHorizontal="14dp"
                 android:paddingTop="15dp"
@@ -49,19 +50,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:lineSpacingExtra="6dp"
                     android:text="@string/feedback_description"
                     android:textColor="@color/color_E0E0E0_404040"
-                    android:textSize="@dimen/textSize12sp"
-                    android:lineSpacingExtra="6dp" />
+                    android:textSize="@dimen/textSize12sp" />
 
                 <TextView
                     android:id="@+id/tv_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:lineSpacingExtra="6dp"
                     android:textColor="@color/color_E44438_e44438"
                     android:textSize="@dimen/textSize12sp"
-                    android:lineSpacingExtra="6dp"
                     tools:text="@string/feedback_description_money" />
 
                 <TextView

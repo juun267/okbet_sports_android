@@ -68,6 +68,8 @@
     <color name="color_e5e5e5_000000">@color/color_e5e5e5</color>
     <color name="color_FFFFFF_060F20">@color/color_FFFFFF</color>
     <color name="color_FFFFFF_DE000000">@color/color_FFFFFF</color>
+    <color name="color_B3FFFFFF_99000000">@color/transparent_white_70</color>
+    <color name="color_AEAEAE_545454">@color/color_545454</color>
 
     <!--region 特殊處理顏色-->
     <color name="home_card_top_text_color">#1AFFFFFF</color>
@@ -77,5 +79,6 @@
     <color name="play_category_solid_color">#317FFF</color>
     <color name="play_category_pop_bg_color">@color/color_1F1F1F</color>
     <!--endregion 特殊處理顏色-->
+
 
 </resources>
