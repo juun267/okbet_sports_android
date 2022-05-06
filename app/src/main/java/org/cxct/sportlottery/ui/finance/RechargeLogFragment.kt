@@ -92,7 +92,9 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     private fun initNoRecordView(view: View) {
         view.view_no_record.list_no_record_img?.apply {
             viewTreeObserver.addOnGlobalLayoutListener {
-                (layoutParams as LinearLayout.LayoutParams).topMargin = 20.dp
+                val lp = layoutParams as LinearLayout.LayoutParams
+                lp.topMargin = 20.dp
+                layoutParams = lp
             }
         }
         view.view_no_record.setBackgroundColor(ContextCompat.getColor(view.context, R.color.color_141414_F3F4F5))
