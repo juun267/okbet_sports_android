@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.statistics
 
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,10 +12,16 @@ import android.webkit.WebViewClient
 import android.widget.LinearLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_webview.*
+import kotlinx.android.synthetic.main.view_toolbar_main.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBottomSheetWebviewBinding
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomSheetFragment
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
+import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
+import org.cxct.sportlottery.ui.login.signIn.LoginActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
@@ -28,14 +35,20 @@ import org.cxct.sportlottery.util.MetricsUtil
 @SuppressLint("SetJavaScriptEnabled")
 class StatisticsDialog : BaseBottomSheetFragment<StatisticsViewModel>(StatisticsViewModel::class) {
 
+    class StatisticsClickListener(private val onMenuClickListener: () -> Unit) {
+        fun onMenuClickListener() = onMenuClickListener.invoke()
+    }
+
+    private var mClickListener: StatisticsClickListener? = null
 
     companion object {
         const val MATCH_ID = "match_id"
 
         @JvmStatic
-        fun newInstance(matchId: String?) = StatisticsDialog().apply {
+        fun newInstance(matchId: String?, clickListener: StatisticsClickListener) = StatisticsDialog().apply {
             arguments = Bundle().apply {
                 putString(MATCH_ID, matchId)
+                mClickListener = clickListener
             }
         }
     }
@@ -53,9 +66,10 @@ class StatisticsDialog : BaseBottomSheetFragment<StatisticsViewModel>(Statistics
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupTitle()
+        setupToolbar()
         setupListener()
-        setupContentHeight()
         setupWebView()
+        initObserver()
     }
 
 
@@ -64,15 +78,43 @@ class StatisticsDialog : BaseBottomSheetFragment<StatisticsViewModel>(Statistics
     }
 
 
+    private fun setupToolbar() {
+        vBinding.gameToolbar.toolBar.visibility = View.VISIBLE
+    }
+
+
     private fun setupListener() {
         vBinding.ivClose.setOnClickListener {
             dismiss()
         }
-    }
 
+        vBinding.gameToolbar.btnLogin.setOnClickListener {
+            dismiss()
+            startActivity(Intent(MultiLanguagesApplication.appContext, LoginActivity::class.java))
+        }
 
-    private fun setupContentHeight() {
-        (ll_content.layoutParams as LinearLayout.LayoutParams).setMargins(0, 50.dp, 0, 0)
+        vBinding.gameToolbar.btnRegister.setOnClickListener {
+            dismiss()
+            startActivity(Intent(MultiLanguagesApplication.appContext, RegisterActivity::class.java))
+        }
+
+        vBinding.gameToolbar.ivLogo.setOnClickListener {
+            dismiss()
+            GamePublicityActivity.reStart(MultiLanguagesApplication.appContext)
+        }
+
+        vBinding.gameToolbar.ivNotice.setOnClickListener {
+            dismiss()
+            startActivity(
+                Intent(MultiLanguagesApplication.appContext, InfoCenterActivity::class.java)
+                    .putExtra(InfoCenterActivity.KEY_READ_PAGE, InfoCenterActivity.YET_READ)
+            )
+        }
+
+        vBinding.gameToolbar.ivMenu.setOnClickListener {
+            dismiss()
+            mClickListener?.onMenuClickListener()
+        }
     }
 
 
@@ -99,5 +141,36 @@ class StatisticsDialog : BaseBottomSheetFragment<StatisticsViewModel>(Statistics
         }
     }
 
+    private fun initObserver() {
+        viewModel.isLogin.observe(viewLifecycleOwner, {
+            updateUiWithLogin(it)
+        })
+
+        viewModel.infoCenterRepository.unreadNoticeList.observe(viewLifecycleOwner, {
+            vBinding.gameToolbar.ivNotice.setImageResource(if (it.isNotEmpty()) R.drawable.icon_bell_with_red_dot else R.drawable.icon_bell)
+        })
+    }
+
+    private fun updateUiWithLogin(isLogin: Boolean) {
+        with(vBinding.gameToolbar) {
+            if (isLogin) {
+                btnLogin.visibility = View.GONE
+                ivMenu.visibility = View.VISIBLE
+                ivNotice.visibility = View.VISIBLE
+                btnRegister.visibility = View.GONE
+                toolbarDivider.visibility = View.GONE
+                ivHead.visibility = View.GONE
+                tvOddsType.visibility = View.GONE
+            } else {
+                btnLogin.visibility = View.VISIBLE
+                btnRegister.visibility = View.VISIBLE
+                toolbarDivider.visibility = View.VISIBLE
+                ivHead.visibility = View.GONE
+                tvOddsType.visibility = View.GONE
+                ivMenu.visibility = View.GONE
+                ivNotice.visibility = View.GONE
+            }
+        }
+    }
 
 }

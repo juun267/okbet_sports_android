@@ -83,7 +83,6 @@ class AccountHistoryNextAdapter(
 
             withContext(Dispatchers.Main) { //update in main ui thread
                 submitList(items)
-                scrollToTopListener.onClick()
             }
         }
     }
