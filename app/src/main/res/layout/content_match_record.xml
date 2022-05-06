@@ -79,7 +79,6 @@
                 android:layout_weight="1"
                 android:textColor="@color/color_e5e5e5_333333"
                 android:textSize="@dimen/textSize14sp"
-                android:textStyle="bold"
                 tools:text="篮球 让球" />
 
             <TextView
@@ -148,7 +147,6 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize13sp"
-                    android:textStyle="bold"
                     tools:text="50.000" />
             </LinearLayout>
 
@@ -169,7 +167,6 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorGreenSea"
                     android:textSize="@dimen/textSize13sp"
-                    android:textStyle="bold"
                     tools:text="9,999,999.000" />
             </LinearLayout>
         </LinearLayout>
