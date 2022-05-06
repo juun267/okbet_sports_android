@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="12dp"
                 android:src="@drawable/ic_menu_left_side" />
 
             <!--            <TextView-->
@@ -81,11 +81,12 @@
 
             <ImageView
                 android:id="@+id/btn_close"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:layout_gravity="center_vertical"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="8dp"
                 android:background="@null"
+                android:padding="8dp"
                 android:contentDescription="@null"
                 android:src="@drawable/ic_close_menu_v4" />
 
@@ -110,8 +111,7 @@
             android:layout_marginTop="@dimen/margin_20"
             android:paddingStart="@dimen/margin_12"
             android:paddingEnd="@dimen/margin_20"
-            android:visibility="gone"
-            tools:visibility="visible">
+            android:visibility="gone">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -125,9 +125,9 @@
 
                 <View
                     android:id="@+id/view1"
-                    android:layout_width="@dimen/margin_1"
+                    android:layout_width="@dimen/margin_2"
                     android:layout_height="@dimen/margin_14"
-                    android:background="@color/color_F08E29"
+                    android:background="@drawable/bg_search_title_left"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/tvHistoryTittle"
                     app:layout_constraintBottom_toBottomOf="@+id/tvHistoryTittle"/>
@@ -176,9 +176,9 @@
 
                 <View
                     android:id="@+id/view2"
-                    android:layout_width="@dimen/margin_1"
+                    android:layout_width="@dimen/margin_2"
                     android:layout_height="@dimen/margin_14"
-                    android:background="@color/color_F08E29"
+                    android:background="@drawable/bg_search_title_left"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/tvTopTittle"
                     app:layout_constraintBottom_toBottomOf="@+id/tvTopTittle"/>
@@ -224,14 +224,14 @@
             android:layout_height="match_parent"
             android:paddingStart="@dimen/margin_12"
             android:paddingEnd="@dimen/margin_20"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/rvSearchResult"
                 android:overScrollMode="never"
-                android:layout_marginStart="@dimen/margin_12"
                 android:layout_marginTop="@dimen/margin_20"
                 android:layout_marginBottom="@dimen/margin_16"
                 app:layout_constraintStart_toStartOf="parent"

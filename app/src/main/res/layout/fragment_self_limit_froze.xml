@@ -35,7 +35,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_1"
-                android:background="@color/color_2B2B2B_e2e2e2" />
+                android:background="@color/color_404040_e2e2e2" />
 
             <TextView
                 android:layout_width="match_parent"
