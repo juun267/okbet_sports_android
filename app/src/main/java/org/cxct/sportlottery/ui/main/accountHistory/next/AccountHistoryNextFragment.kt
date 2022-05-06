@@ -15,6 +15,8 @@ import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryViewModel
 
 class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(AccountHistoryViewModel::class) {
 
+    private var needScrollToTop = true //用來記錄是否需要滾動至最上方
+
     private val rvAdapter = AccountHistoryNextAdapter(ItemClickListener {
     }, BackClickListener {
         findNavController().navigateUp()
@@ -33,6 +35,7 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
                 val visibleItemCount: Int = it.childCount
                 val totalItemCount: Int = it.itemCount
                 val firstVisibleItemPosition: Int = (it as LinearLayoutManager).findFirstVisibleItemPosition()
+                needScrollToTop = false
                 viewModel.getDetailNextPage(visibleItemCount, firstVisibleItemPosition, totalItemCount)
             }
         }
@@ -74,6 +77,7 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
 
         viewModel.selectedDate.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.apply {
+                needScrollToTop = true
                 rvAdapter.nowSelectedDate = this
                 viewModel.searchDetail(date = this)
             }
@@ -82,6 +86,7 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
         viewModel.selectedSport.observe(viewLifecycleOwner) {
             rvAdapter.nowSelectedSport = it.peekContent()
             it.getContentIfNotHandled()?.apply {
+                needScrollToTop = true
                 viewModel.searchDetail(gameType = this)
             }
         }
@@ -96,22 +101,33 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
 
         rvAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() { //submitList 資料更改後，滑至頂
             override fun onChanged() {
-                rv_account_history.scrollToPosition(0)
+                if (needScrollToTop)
+                    rv_account_history.scrollToPosition(0)
             }
+
             override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
-                rv_account_history.scrollToPosition(0)
+                if (needScrollToTop)
+                    rv_account_history.scrollToPosition(0)
             }
+
             override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
-                rv_account_history.scrollToPosition(0)
+                if (needScrollToTop)
+                    rv_account_history.scrollToPosition(0)
             }
+
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                rv_account_history.scrollToPosition(0)
+                if (needScrollToTop)
+                    rv_account_history.scrollToPosition(0)
             }
+
             override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
-                rv_account_history.scrollToPosition(0)
+                if (needScrollToTop)
+                    rv_account_history.scrollToPosition(0)
             }
+
             override fun onItemRangeChanged(positionStart: Int, itemCount: Int, payload: Any?) {
-                rv_account_history.scrollToPosition(0)
+                if (needScrollToTop)
+                    rv_account_history.scrollToPosition(0)
             }
         })
     }
