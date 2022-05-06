@@ -31,6 +31,7 @@
         android:layout_height="wrap_content"
         android:background="@color/color_B3000000"
         android:minHeight="71dp"
+        android:paddingTop="4dp"
         app:layout_constraintBottom_toBottomOf="@+id/banner"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -45,6 +46,7 @@
 
             <!--視覺調整改為16dp-->
             <ImageView
+
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_gravity="center_horizontal"
