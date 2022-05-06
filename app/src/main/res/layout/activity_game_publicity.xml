@@ -61,7 +61,8 @@
             android:id="@+id/tvRegister"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="9dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="4dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/bg_gradient_orange3_orange_light_4dp"
@@ -79,11 +80,11 @@
             android:id="@+id/tvLogin"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="9dp"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="9dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/bg_gradient_blue3_blue4_4dp"
+            android:background="@drawable/bg_gradient_0068d6_0054ac"
             android:gravity="center"
             android:text="@string/btn_login"
             android:textAllCaps="true"
@@ -109,7 +110,7 @@
             layout="@layout/view_bottom_navigation_sport"
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            app:layout_constraintBottom_toBottomOf="@id/viewBottom" />
+            app:layout_constraintBottom_toBottomOf="@id/viewBottom"/>
 
         <!-- 投注單 -->
         <FrameLayout
