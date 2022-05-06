@@ -216,14 +216,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         //頭像 當 側邊欄 開/關
         iv_menu.setOnClickListener {
-            //若左側側邊欄為開啟狀態, 先將其關閉
-            closeLeftMenu()
-
-            if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
-            else {
-                drawer_layout.openDrawer(nav_right)
-                viewModel.getMoney()
-            }
+            clickMenuEvent()
         }
 
         btn_login.setOnClickListener {
@@ -244,6 +237,17 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             ChangeLanguageDialog(ChangeLanguageDialog.ClearBetListListener {
                 viewModel.betInfoRepository.clear()
             }).show(supportFragmentManager, null)
+        }
+    }
+
+    override fun clickMenuEvent() {
+        //若左側側邊欄為開啟狀態, 先將其關閉
+        closeLeftMenu()
+
+        if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
+        else {
+            drawer_layout.openDrawer(nav_right)
+            viewModel.getMoney()
         }
     }
 

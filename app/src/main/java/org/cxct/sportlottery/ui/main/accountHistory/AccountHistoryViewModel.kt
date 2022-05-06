@@ -93,9 +93,12 @@ class AccountHistoryViewModel(
     private var mBetDetailRequest: BetSettledDetailListRequest? = null
 
     val recordDataList = mutableListOf<Row?>()
-    private val accountHistoryTimeRangeParams = TimeUtil.getAccountHistoryTimeRangeParams()
+    //20220506 先還原, 等之後後端若有通知在看此處如何修正
+    /*private val accountHistoryTimeRangeParams = TimeUtil.getAccountHistoryTimeRangeParams()
     val startTime = accountHistoryTimeRangeParams.startTime
-    val endTime = accountHistoryTimeRangeParams.endTime
+    val endTime = accountHistoryTimeRangeParams.endTime*/
+    val startTime = TimeUtil.getDefaultTimeStamp(7).startTime
+    val endTime = TimeUtil.getDefaultTimeStamp(7).endTime
 
 
     fun getNextPage(visibleItemCount: Int, firstVisibleItemPosition: Int, totalItemCount: Int) {
@@ -129,8 +132,24 @@ class AccountHistoryViewModel(
                 OneBoSportApi.betService.getBetSettledList(betSettledListRequest)
             }?.let { result ->
                 hideLoading()
-                result.rows?.let { recordDataList.addAll(it) }
-                isLastPage = (recordDataList.size >= (result.total ?: 0))
+
+                //列出包含今日往前共八天的日期
+                val showDateList = mutableListOf<String>()
+                for (i in 0..7) {
+                    showDateList.add(TimeUtil.getMinusDate(i, TimeUtil.YMD_FORMAT))
+                }
+                //過濾資料僅顯示八日
+                val filteredSettledList = result.rows?.filter { showDateList.contains(it.statDate) }?.toMutableList()
+                filteredSettledList?.sortBy { it.statDate }
+                filteredSettledList?.let { row ->
+                    recordDataList.addAll(row)
+                }
+
+                //TODO 目前沒有分頁需求, 此處是配合後端先暫時過濾資料僅顯示八日, 後續有需要使用到分頁時需review
+                //將被過濾掉的資料數量加回去
+                val notInShowDateSize = result.rows?.filter { !showDateList.contains(it.statDate) }?.size ?: 0
+                isLastPage = (recordDataList.size + notInShowDateSize >= (result.total ?: 0))
+
                 _betSettledRecordResult.value = result
             }
         }

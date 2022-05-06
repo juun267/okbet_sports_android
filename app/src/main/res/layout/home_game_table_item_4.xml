@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:minHeight="148dp"
-    android:paddingEnd="12dp"
+    android:paddingEnd="10dp"
     tools:context=".ui.game.home.gameTable4.Vp2GameTable4Adapter"
     tools:ignore="spUsage,contentDescription"
     tools:maxHeight="148dp">
@@ -79,7 +79,6 @@
         android:layout_height="38dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="5dp"
-        app:layout_goneMarginEnd="0dp"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="2"
@@ -88,6 +87,7 @@
         app:layout_constraintEnd_toStartOf="@id/tv_game_total_score_home_center"
         app:layout_constraintStart_toEndOf="@id/tv_game_score_home"
         app:layout_constraintTop_toBottomOf="@id/tv_game_type"
+        app:layout_goneMarginEnd="0dp"
         tools:text="皇家馬德里皇家馬德里" />
 
     <TextView
@@ -157,7 +157,6 @@
         android:layout_width="0dp"
         android:layout_height="38dp"
         android:layout_marginEnd="5dp"
-        app:layout_goneMarginEnd="0dp"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="2"
@@ -166,6 +165,7 @@
         app:layout_constraintEnd_toStartOf="@id/tv_game_total_score_away_center"
         app:layout_constraintStart_toEndOf="@id/tv_game_score_away"
         app:layout_constraintTop_toBottomOf="@id/tv_game_name_home"
+        app:layout_goneMarginEnd="0dp"
         tools:text="皇家馬德里皇家馬德里" />
 
     <TextView
@@ -215,7 +215,8 @@
         android:id="@+id/btn_match_odd1"
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:layout_marginEnd="5dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="@id/tv_game_name_away"
         app:layout_constraintEnd_toStartOf="@id/btn_match_odd2"
         app:layout_constraintStart_toEndOf="@+id/guideline"
@@ -225,7 +226,7 @@
         android:id="@+id/btn_match_odd2"
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:layout_marginEnd="5dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="@id/tv_game_name_away"
         app:layout_constraintEnd_toStartOf="@+id/btn_match_odd3"
         app:layout_constraintStart_toEndOf="@+id/btn_match_odd1"
@@ -365,8 +366,9 @@
 
     <ImageView
         android:id="@+id/btn_chart"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:translationX="2dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:contentDescription="@null"
@@ -379,9 +381,10 @@
 
     <ImageView
         android:id="@+id/btn_star"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_marginBottom="8dp"
+        android:translationX="2dp"
         android:contentDescription="@null"
         android:scaleType="centerCrop"
         android:src="@drawable/selector_star_v4"

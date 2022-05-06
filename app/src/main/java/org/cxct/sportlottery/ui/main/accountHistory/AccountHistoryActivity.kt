@@ -286,11 +286,7 @@ class AccountHistoryActivity :
 
         //頭像 當 側邊欄 開/關
         iv_menu.setOnClickListener {
-            if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
-            else {
-                drawer_layout.openDrawer(nav_right)
-                viewModel.getMoney()
-            }
+            clickMenuEvent()
         }
 
         btn_login.setOnClickListener {
@@ -309,6 +305,14 @@ class AccountHistoryActivity :
             ChangeLanguageDialog(ChangeLanguageDialog.ClearBetListListener{
                 viewModel.betInfoRepository.clear()
             }).show(supportFragmentManager, null)
+        }
+    }
+
+    override fun clickMenuEvent() {
+        if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
+        else {
+            drawer_layout.openDrawer(nav_right)
+            viewModel.getMoney()
         }
     }
 

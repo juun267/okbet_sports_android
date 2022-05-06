@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/color_191919_FCFCFC"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="UseAppTint">
 
     <net.cachapa.expandablelayout.ExpandableLayout
         android:id="@+id/expand_layout"
@@ -67,10 +68,12 @@
 
         <ImageView
             android:id="@+id/iv_play"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:padding="2dp"
             android:layout_marginEnd="20dp"
             android:src="@drawable/selector_live_player"
+            android:tint="@color/color_A3A3A3_666666"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/iv_animation"
@@ -82,10 +85,12 @@
         <!--根據需求，先隱藏賽事動畫-->
         <ImageView
             android:id="@+id/iv_animation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginEnd="20dp"
+            android:padding="2dp"
             android:src="@drawable/selector_game_schedule"
+            android:tint="@color/color_A3A3A3_666666"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/iv_statistics"
@@ -95,8 +100,11 @@
 
         <ImageView
             android:id="@+id/iv_statistics"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            android:padding="2dp"
             android:src="@drawable/selector_icon_statistics"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -105,6 +105,7 @@
         <item name="android:textStyle">normal</item>
         <item name="textAllCaps">false</item>
         <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">@dimen/textSize14sp</item>
     </style>
 
 </resources>

@@ -19,6 +19,7 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.permission.GooglePermissionActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
+import org.cxct.sportlottery.util.JumpUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
@@ -102,6 +103,12 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                     goMaintenancePage()
                 }
                 it?.success == true -> checkAppMinVersion()
+
+                it?.success == false && it.code == 403 -> {
+                    JumpUtil.toInternalWeb(this, "https://okbet.com", "", false)
+                    finish()
+                }
+
                 else -> showErrorRetryDialog(getString(R.string.error_config_title), getString(R.string.error_config))
             }
         }
