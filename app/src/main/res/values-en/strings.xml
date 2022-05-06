@@ -425,7 +425,7 @@
     <string name="odds_detail_play_type_dc_12">1/2</string>
     <string name="odds_detail_play_type_ou_o">Over</string>
     <string name="odds_detail_play_type_ou_u">Under</string>
-    <string name="bottom_sheet_close">Close</string>
+    <string name="bottom_sheet_close">Cancel</string>
     <string name="bottom_sheet_title_play_type">Change playing method</string>
     <string name="message_recharge_maintain">Please wait while the top-up system is being upgraded</string>
     <string name="title_bank">Bank</string>
