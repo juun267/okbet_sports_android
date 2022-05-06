@@ -8,7 +8,10 @@
     android:orientation="vertical"
     tools:context=".ui.profileCenter.profile.ProfileActivity">
 
-    <include layout="@layout/view_base_tool_bar_no_drawer" />
+    <org.cxct.sportlottery.ui.common.CustomTopToolbar
+        android:id="@+id/custom_tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -18,7 +21,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/color_191919_FCFCFC"
+            android:background="@color/color_1E1E1E_FFFFFF"
             android:divider="@drawable/divider_straight"
             android:orientation="vertical"
             android:showDividers="middle|end">
@@ -55,8 +58,6 @@
                     android:layout_marginEnd="6dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/img_avatar_default"
-                    app:riv_border_color="@color/color_317FFF_0760D4"
-                    app:riv_border_width="1dp"
                     app:riv_oval="true" />
 
                 <ImageView
