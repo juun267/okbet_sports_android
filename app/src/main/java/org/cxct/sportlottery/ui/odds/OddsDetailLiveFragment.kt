@@ -36,6 +36,7 @@ import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
+import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.repository.FLAG_LIVE
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
@@ -418,6 +419,8 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                         curAwayScore = awayScore
                         curStatus = status
 
+                        updateCornerKicks()
+
                         setupStatusList(matchStatusChangeEvent)
                     }
             }
@@ -492,6 +495,35 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
             it?.let {
                 unSubscribeChannelEventAll()
                 subscribeChannelEvent(matchId)
+            }
+        }
+    }
+
+    /**
+     * 更新當前頁面的角球數
+     */
+    private fun MatchStatusCO.updateCornerKicks() {
+        //region 判斷需不需要更新資料 角球數都沒變的話就不更新
+        var cornerKicksChanged = false
+        if (homeCornerKicks != null && oddsDetailListAdapter?.homeCornerKicks != homeCornerKicks) {
+            oddsDetailListAdapter?.homeCornerKicks = homeCornerKicks
+            cornerKicksChanged = true
+        }
+
+        if (awayCornerKicks != null && oddsDetailListAdapter?.awayCornerKicks != awayCornerKicks) {
+            oddsDetailListAdapter?.awayCornerKicks = awayCornerKicks
+            cornerKicksChanged = true
+        }
+        //endregion
+
+        if (cornerKicksChanged) {
+            oddsDetailListAdapter?.oddsDetailDataList?.let { oddsDetailListDataList ->
+                oddsDetailListDataList.forEachIndexed { index, oddsDetailListData ->
+                    //需要顯示當前滾球的玩法標題需更新
+                    if (PlayCate.needShowCurrentCorner(oddsDetailListData.gameType)) {
+                        oddsDetailListAdapter?.notifyItemChanged(index)
+                    }
+                }
             }
         }
     }
