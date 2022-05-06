@@ -112,7 +112,7 @@
     <string name="dialog_security_hint">Welcome back to game. Please complete verification for account security.</string>
     <string name="dialog_security_title">Enter the verification code.</string>
     <string name="dialog_security_error">You have entered a wrong verification code.</string>
-    <string name="hint_security_code"><font size="12">(Please enter the verification code.)</font></string>
+    <string name="hint_security_code"><font size="12">Please enter the verification code.</font></string>
     <string name="dialog_security_need_phone">Your personal information is not complete, please contact customer service.</string>
     <string name="btn_agreement">Account Opening Agreement</string>
     <string name="have_account">Already have an account?</string>

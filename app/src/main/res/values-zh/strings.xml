@@ -112,7 +112,7 @@
     <string name="dialog_security_hint">欢迎再次回到游戏，为确保账号使用的安全性，请完成手机验证</string>
     <string name="dialog_security_title">输入验证码</string>
     <string name="dialog_security_error">验证码输入错误</string>
-    <string name="hint_security_code"><font size="12">(请输入验证码)</font></string>
+    <string name="hint_security_code"><font size="12">请输入验证码</font></string>
     <string name="dialog_security_need_phone">个人资料不完整，请联系客服</string>
     <string name="btn_agreement">开户协议</string>
     <string name="have_account">已有账号?</string>
