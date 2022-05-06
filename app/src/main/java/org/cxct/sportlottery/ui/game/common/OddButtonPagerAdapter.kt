@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import kotlinx.android.synthetic.main.itemview_odd_btn_2x2_v6.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.common.GameType
@@ -1186,18 +1187,21 @@ class OddButtonPagerViewHolder private constructor(
     }
 
     private fun String.updatePlayCateColor(): Spanned {
+        val color =  if (MultiLanguagesApplication.isNightMode) "#a3a3a3"
+        else "#666666"
+
         return Html.fromHtml(
             when {
                 (this.contains("\n")) -> {
                     val strSplit = this.split("\n")
-                    "<font color=#666666>${strSplit.first()}</font><br><font color=#b73a20>${
+                    "<font color=$color>${strSplit.first()}</font><br><font color=#b73a20>${
                         strSplit.getOrNull(
                             1
                         )
                     }</font>"
                 }
                 else -> {
-                    "<font color=#666666>${this}</font>"
+                    "<font color=$color>${this}</font>"
                 }
             }
         )
