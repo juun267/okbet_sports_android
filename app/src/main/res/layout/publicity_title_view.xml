@@ -47,13 +47,14 @@
                 android:layout_width="@dimen/margin_18"
                 android:layout_height="@dimen/margin_18"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="3dp"
                 android:src="@drawable/ic_icon_events" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
                 android:gravity="center"
                 android:text="@string/recommend_match"
                 android:textColor="@color/white"
@@ -74,13 +75,14 @@
                 android:layout_width="@dimen/margin_18"
                 android:layout_height="@dimen/margin_18"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="3dp"
                 android:src="@drawable/ic_icon_odds" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
                 android:gravity="center"
                 android:text="@string/recommend_best_odd"
                 android:textColor="@color/white"
@@ -100,13 +102,14 @@
                 android:layout_width="@dimen/margin_18"
                 android:layout_height="@dimen/margin_18"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="3dp"
                 android:src="@drawable/ic_icon_safe" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
                 android:gravity="center"
                 android:text="@string/recommend_safe"
                 android:textColor="@color/white"
