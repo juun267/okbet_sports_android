@@ -13,8 +13,8 @@
             android:id="@+id/scroll_view_rg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="14dp"
             android:layout_toLeftOf="@+id/league_odd_quick_cate_close"
             android:overScrollMode="never"
             android:scrollbars="none">
