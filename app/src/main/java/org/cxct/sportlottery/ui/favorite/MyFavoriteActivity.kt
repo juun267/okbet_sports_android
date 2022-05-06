@@ -49,6 +49,8 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
 
         initObserver()
 
+        setupNoticeButton(iv_notice)
+
 //        initServiceButton()
     }
 
