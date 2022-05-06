@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="68dp">
+    android:layout_height="60dp">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSportType"
-        android:layout_marginHorizontal="-8dp"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="-8dp"
         android:clipToPadding="false"
         android:orientation="horizontal"
         android:overScrollMode="never"
-        android:layout_centerHorizontal="true"
         android:paddingHorizontal="13dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
