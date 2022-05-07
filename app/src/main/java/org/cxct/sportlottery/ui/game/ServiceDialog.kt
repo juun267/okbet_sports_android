@@ -28,9 +28,6 @@ class ServiceDialog : DialogFragment() {
     }
 
     private fun initView() {
-        tv_customer1.setTextWithStrokeWidth(tv_customer1.text.toString(), 0.7f)
-        tv_customer2.setTextWithStrokeWidth(tv_customer1.text.toString(), 0.7f)
-
         iv_close.setOnClickListener {
             dismiss()
         }
