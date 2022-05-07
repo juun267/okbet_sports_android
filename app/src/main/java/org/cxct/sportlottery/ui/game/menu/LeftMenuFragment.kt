@@ -55,6 +55,9 @@ import org.cxct.sportlottery.widget.highLightTextView.HighlightTextView
 
 @SuppressLint("NotifyDataSetChanged")
 class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnClickListener {
+
+    private var mCurMatchType: MatchType? = null
+
     private var mCloseMenuListener: View.OnClickListener? = null
 
     private var newAdapter =
@@ -248,16 +251,14 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
     private fun initData(list: List<SportMenu>) {
         unselectedList.clear()
         var game = ""
-        val selectGame = viewModel.curMatchType.value
-        selectGame.let {
+        mCurMatchType.let {
             if (it != null) {
                 game = viewModel.getSportSelectedCode(it) ?: ""
             }
         }
         viewModel.getSearchResult()
         list.forEach {
-            val matchType = viewModel.sportMenuList.value?.peekContent()
-                ?.find { matchType -> matchType.gameType.key == it.gameType.key }?.entranceType
+            val matchType = it.entranceType
 
             when (it.gameType) {
                 GameType.VB -> {
@@ -528,6 +529,10 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
                 loading()
             else
                 hideLoading()
+        }
+
+        viewModel.curMatchType.observe(viewLifecycleOwner) {
+            updateCurMatchType(it)
         }
 
         viewModel.sportMenuList.observe(viewLifecycleOwner) {
@@ -849,6 +854,24 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
         }
         rvSearchResult.adapter = searchResultAdapter
         OverScrollDecoratorHelper.setUpOverScroll(rvSearchResult, OverScrollDecoratorHelper.ORIENTATION_VERTICAL)
+    }
+
+    private fun updateCurMatchType(matchType: MatchType?) {
+        mCurMatchType = matchType
+        updateCurMatchSelectedSport()
+    }
+
+    private fun updateCurMatchSelectedSport() {
+        val matchSelectedGameType = mCurMatchType?.let {
+            viewModel.getSportSelectedCode(it)
+        }
+        matchSelectedGameType?.let { selectedGameType ->
+            unselectedList.forEach {
+                it.isCurrentSportType = it.gameType == selectedGameType
+            }
+        }
+
+        newAdapter.addFooterAndSubmitList(unselectedList)
     }
 
     private fun updateMenuSport(favorSportTypeList: List<String>) {
