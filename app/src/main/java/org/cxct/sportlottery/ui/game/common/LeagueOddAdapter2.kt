@@ -288,9 +288,10 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
 
         private fun setupMatchScore(item: MatchOdd, matchType: MatchType) {
             when (item.matchInfo?.socketMatchStatus) {
-                GameMatchStatus.HIDE_SCORE.value -> {
+                //20220507 status:999 邏輯變更 隱藏分數 -> 賽事狀態變為滾球
+                /*GameMatchStatus.HIDE_SCORE.value -> {
                     hideMatchScoreText()
-                }
+                }*/
                 else -> {
                     when (item.matchInfo?.gameType) {
                         GameType.VB.key -> setVbScoreText(matchType, item)

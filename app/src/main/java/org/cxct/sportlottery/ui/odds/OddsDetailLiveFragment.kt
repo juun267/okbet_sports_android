@@ -633,14 +633,15 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
             GameMatchStatus.FINISH.value -> {
                 //donothing
             }
-            GameMatchStatus.HIDE_SCORE.value -> {
+            //20220507 status:999 邏輯變更 隱藏分數 -> 賽事狀態變為滾球
+            /*GameMatchStatus.HIDE_SCORE.value -> {
                 tv_home_score.visibility = View.GONE
                 tv_away_score.visibility = View.GONE
                 tv_home_score_total.visibility = View.GONE
                 tv_away_score_total.visibility = View.GONE
                 tv_home_score_live.visibility = View.GONE
                 tv_away_score_live.visibility = View.GONE
-            }
+            }*/
             else -> {
                 when (args.gameType) {
                     GameType.FT,
@@ -680,14 +681,15 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         //endregion
 
         //region setup game status
-        val showScore = event.matchStatusCO?.status != GameMatchStatus.HIDE_SCORE.value
+        //20220507 status:999 邏輯變更 隱藏分數 -> 賽事狀態變為滾球
+//        val showScore = event.matchStatusCO?.status != GameMatchStatus.HIDE_SCORE.value
         when (args.gameType) {
             GameType.BK -> {
                 setupStatusBk(event)
             }
             GameType.TN, GameType.VB, GameType.TT, GameType.BM -> {
                 showBackTimeBlock(false)
-                setupStatusTnVb(event, showScore)
+                setupStatusTnVb(event, true)
             }
             // Todo: 仍有其他球種待處理
             // 20220412 根據h5顯示的版面進行同步, MR, GF, FB, OTHER 無法模擬野佔無賽事可參考
