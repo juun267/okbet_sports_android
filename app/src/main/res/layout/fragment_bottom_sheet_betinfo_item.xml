@@ -296,7 +296,7 @@
                                 app:layout_constraintBottom_toTopOf="@+id/tv_error_message"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toStartOf="@+id/btnRecharge"
-                                android:layout_marginEnd="@dimen/margin_4"
+                                android:layout_marginEnd="@dimen/margin_8"
                                 app:layout_constraintTop_toBottomOf="@+id/tv_odd_content_changed" />
 
                             <TextView
@@ -314,6 +314,7 @@
                                 app:layout_constraintTop_toTopOf="@+id/et_bet"
                                 app:layout_constraintStart_toEndOf="@+id/et_bet"
                                 app:layout_constraintBottom_toBottomOf="@+id/et_bet"
+                                android:visibility="gone"
                                 />
 
                             <View
