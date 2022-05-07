@@ -854,7 +854,7 @@
     <string name="no_setting">No set</string>
     <string name="service_1">Customer1</string>
     <string name="service_2">Customer2</string>
-    <string name="service_connect">Connect</string>
+    <string name="service_connect">connect</string>
     <string name="top_game">World\'s top events</string>
     <string name="parlay_10_fold">10-Folds</string>
     <string name="parlay_10_block">Block (10)</string>
@@ -982,6 +982,8 @@
     <string name="text_bet_not_success4">Record.</string>
     <string name="text_security_money">Security deposit: %s</string>
     <string name="text_security_money2">%s days left</string>
+    <string name="customer_service_title">Customer</string>
+
     <!--自我禁制-->
     <string name="self_limit">Self-exclusion</string>
     <string name="self_limit_impotent">Attention</string>

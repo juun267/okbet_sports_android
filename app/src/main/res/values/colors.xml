@@ -152,6 +152,7 @@
     <color name="color_404040_e5e5e5">@color/color_e5e5e5</color>
     <color name="color_404348_EDEDED">@color/color_EDEDED</color>
     <color name="color_404040_e2e2e2">@color/color_E2E2E2</color>
+    <color name="color_1f1f1f_fcfcfc">@color/color_FCFCFC</color>
 
     <!--region 特殊處理顏色-->
     <color name="home_card_top_text_color">#40FFFFFF</color>
