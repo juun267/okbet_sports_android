@@ -98,6 +98,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     private val mNavController by lazy { findNavController(R.id.game_container) }
     private val navDestListener by lazy {
         NavController.OnDestinationChangedListener { _, destination, arguments ->
+            updateServiceButtonVisibility(destinationId = destination.id)
             when (destination.id) {
                 R.id.homeFragment -> {
                     updateSelectTabState(0)
@@ -130,6 +131,17 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         }
     }
     var isFromPublicity: Boolean = false
+
+    private fun updateServiceButtonVisibility(destinationId: Int) {
+        btn_floating_service.visibility = when (destinationId) {
+            R.id.homeFragment -> {
+                View.VISIBLE
+            }
+            else -> {
+                View.GONE
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -935,9 +947,15 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         return false
     }
 
+    /**
+     * 初始化客服按鈕
+     * 另外透過DestinationChangedListener控制客服按鈕出現或隱藏
+     * @see navDestListener
+     * @see updateServiceButtonVisibility
+     */
     private fun initServiceButton() {
         //2022/4/21需求：客服只在首頁和宣傳頁、維護頁出現
-        //btn_floating_service.setView(this)
+        btn_floating_service.setView(this)
     }
 
     override fun updateUiWithLogin(isLogin: Boolean) {

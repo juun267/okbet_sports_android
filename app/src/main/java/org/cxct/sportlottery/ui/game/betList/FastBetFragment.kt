@@ -594,6 +594,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         viewModel.betAddResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { result ->
+                hideLoading()
                 if (!result.success) {
                     showPromptDialog(
                         title = getString(R.string.prompt),
@@ -855,6 +856,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
 
     private fun addBetSingle() {
+        loading()
         if (matchOdd?.status == BetStatus.LOCKED.code || matchOdd?.status == BetStatus.DEACTIVATED.code) return
         val stake =
             if (binding.etBet.text.toString().isEmpty()) 0.0 else binding.etBet.text.toString()
