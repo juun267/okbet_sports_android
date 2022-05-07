@@ -41,7 +41,6 @@ class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(Maintenance
     }
 
     private fun initServiceButton() {
-        btn_floating_service.setView4Maintenance(this)
     }
 
     private fun initSocketObserver() {
