@@ -108,10 +108,34 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
             ),
             LeftMenuItemNewAdapter.FooterSelectedListener(
                 { //盤口設定
-                    ChangeOddsTypeFullScreenDialog().show(parentFragmentManager, null)
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(
+                            R.anim.pop_left_to_right_enter_opaque,
+                            0,
+                            0,
+                            R.anim.push_right_to_left_exit_opaque
+                        )
+                        .replace(
+                            R.id.fl_container,
+                            ChangeOddsTypeFullScreenDialog()
+                        )
+                        .addToBackStack(ChangeOddsTypeFullScreenDialog::class.java.simpleName)
+                        .commit()
                 },
                 { //外觀
-                    ChangeAppearanceDialog().show(parentFragmentManager, null)
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(
+                            R.anim.pop_left_to_right_enter_opaque,
+                            0,
+                            0,
+                            R.anim.push_right_to_left_exit_opaque
+                        )
+                        .replace(
+                            R.id.fl_container,
+                            ChangeAppearanceDialog()
+                        )
+                        .addToBackStack(ChangeAppearanceDialog::class.java.simpleName)
+                        .commit()
                 },
                 { //遊戲規則
                     JumpUtil.toInternalWeb(
@@ -782,39 +806,44 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
                 rvResultLeague.layoutManager =
                     LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
                 rvResultLeague.isNestedScrollingEnabled = false
-                val adapter = object : CommonAdapter<SearchResult.SearchResultLeague>(context, R.layout.item_search_result_league, t.searchResultLeague) {
-                    override fun convert(holder: ViewHolder, it: SearchResult.SearchResultLeague, position: Int) {
-                        val tvLeagueTittle = holder.getView<HighlightTextView>(R.id.tvLeagueTittle)
-                        tvLeagueTittle.setCustomText(it.league)
-                        tvLeagueTittle.highlight(etSearch.text.toString())
-                        val rvResultMatch = holder.getView<RecyclerView>(R.id.rvResultMatch)
-                        rvResultMatch.layoutManager =
-                            LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-                        rvResultMatch.isNestedScrollingEnabled = false
-                        val adapter = object :
-                            CommonAdapter<SearchResponse.Row.LeagueMatch.MatchInfo>(context, R.layout.item_search_result_match, t.searchResultLeague[position].leagueMatchList) {
-                            override fun convert(holder: ViewHolder, itt: SearchResponse.Row.LeagueMatch.MatchInfo, position: Int) {
-                                holder.setText(
-                                    R.id.tvTime,
-                                    TimeUtil.timeFormat(itt.startTime.toLong(), TimeUtil.MD_HM_FORMAT) + " ｜ "
-                                )
-                                val tvMatch = holder.getView<HighlightTextView>(R.id.tvMatch)
-                                tvMatch.setCustomText(itt.homeName + " v " + itt.awayName)
-                                tvMatch.highlight(etSearch.text.toString())
-                                tvMatch.setOnClickListener {
-                                    closeMenuFragment()
-                                    viewModel.navSpecialEntrance(
-                                        MatchType.DETAIL,
-                                        GameType.getGameType(t.gameType)!!,
-                                        itt.matchId,
-                                        if (itt.isInPlay) MatchType.IN_PLAY else null
+                val adapter =
+                    object : CommonAdapter<SearchResult.SearchResultLeague>(context, R.layout.item_search_result_league, t.searchResultLeague) {
+                        override fun convert(holder: ViewHolder, it: SearchResult.SearchResultLeague, position: Int) {
+                            val tvLeagueTittle = holder.getView<HighlightTextView>(R.id.tvLeagueTittle)
+                            tvLeagueTittle.setCustomText(it.league)
+                            tvLeagueTittle.highlight(etSearch.text.toString())
+                            val rvResultMatch = holder.getView<RecyclerView>(R.id.rvResultMatch)
+                            rvResultMatch.layoutManager =
+                                LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+                            rvResultMatch.isNestedScrollingEnabled = false
+                            val adapter = object :
+                                CommonAdapter<SearchResponse.Row.LeagueMatch.MatchInfo>(
+                                    context,
+                                    R.layout.item_search_result_match,
+                                    t.searchResultLeague[position].leagueMatchList
+                                ) {
+                                override fun convert(holder: ViewHolder, itt: SearchResponse.Row.LeagueMatch.MatchInfo, position: Int) {
+                                    holder.setText(
+                                        R.id.tvTime,
+                                        TimeUtil.timeFormat(itt.startTime.toLong(), TimeUtil.MD_HM_FORMAT) + " ｜ "
                                     )
+                                    val tvMatch = holder.getView<HighlightTextView>(R.id.tvMatch)
+                                    tvMatch.setCustomText(itt.homeName + " v " + itt.awayName)
+                                    tvMatch.highlight(etSearch.text.toString())
+                                    tvMatch.setOnClickListener {
+                                        closeMenuFragment()
+                                        viewModel.navSpecialEntrance(
+                                            MatchType.DETAIL,
+                                            GameType.getGameType(t.gameType)!!,
+                                            itt.matchId,
+                                            if (itt.isInPlay) MatchType.IN_PLAY else null
+                                        )
+                                    }
                                 }
                             }
+                            rvResultMatch.adapter = adapter
                         }
-                        rvResultMatch.adapter = adapter
                     }
-                }
                 rvResultLeague.adapter = adapter
             }
         }
