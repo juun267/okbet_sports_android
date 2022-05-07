@@ -636,8 +636,6 @@ class GameViewModel(
                     TimeUtil.getTodayStartTimeStamp().toString()
                 )
             }
-            postHomeCardCount(result)
-
             result?.let {
                 it.sportMenuData?.sortSport()
                 it.setupSportSelectState()
@@ -658,6 +656,8 @@ class GameViewModel(
             if (switchFirstTag) {
                 matchType?.let { switchFirstSportType(it) }
             }
+
+            postHomeCardCount(result)
         }
 
         _isLoading.postValue(false) // TODO IllegalStateException: Cannot invoke setValue on a background thread
