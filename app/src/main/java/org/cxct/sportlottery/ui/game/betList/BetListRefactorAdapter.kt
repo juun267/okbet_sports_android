@@ -45,7 +45,7 @@ import kotlin.math.min
 class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private enum class ViewType { Bet, Parlay, ParlayFirst, Warn }
+    private enum class ViewType { Bet, Parlay, ParlayFirst, Warn, Single }
     enum class BetViewType { SINGLE, PARLAY, NULL }
     private val attachedViewSet = HashSet<RecyclerView.ViewHolder>()
 
