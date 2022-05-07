@@ -13,6 +13,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.setTextWithStrokeWidth
 
 class ServiceDialog : DialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -27,6 +28,9 @@ class ServiceDialog : DialogFragment() {
     }
 
     private fun initView() {
+        tv_customer1.setTextWithStrokeWidth(tv_customer1.text.toString(), 0.7f)
+        tv_customer2.setTextWithStrokeWidth(tv_customer1.text.toString(), 0.7f)
+
         iv_close.setOnClickListener {
             dismiss()
         }
