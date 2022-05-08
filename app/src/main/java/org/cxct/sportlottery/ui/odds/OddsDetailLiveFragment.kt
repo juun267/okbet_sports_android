@@ -288,7 +288,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                         setupLiveView(result.oddsDetailData?.matchOdd?.matchInfo?.liveVideo)
 
                         if (args.matchType == MatchType.IN_PLAY &&
-                            (args.gameType == GameType.BK || args.gameType == GameType.TN || args.gameType == GameType.VB || args.gameType == GameType.TT)
+                            (args.gameType == GameType.TN || args.gameType == GameType.VB || args.gameType == GameType.TT)
 //                            && tv_status_left.isVisible
                             && (it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt != null)
                         ) {
@@ -723,6 +723,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
         tv_status_left.visibility = View.VISIBLE
         tv_spt.visibility = View.GONE
+        tv_status_right.visibility = View.GONE
         tv_status_left.setTextColor(
             ContextCompat.getColor(
                 tv_status_left.context,
@@ -733,7 +734,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         event.matchStatusList?.forEachIndexed { index, it ->
             val spanStatusName =
                 SpannableString(it.statusNameI18n?.get(getSelectLanguage(context).key))
-            val spanScore = SpannableString("${it.homeScore ?: 0}-${it.awayScore ?: 0}  ")
+            val spanScore = SpannableString(" ${it.homeScore ?: 0}-${it.awayScore ?: 0}  ")
 
             if (index == event.matchStatusList.lastIndex) {
                 spanStatusName.setSpan(
@@ -761,6 +762,8 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         val statusBuilder = SpannableStringBuilder()
 
         tv_status_left.visibility = View.VISIBLE
+        tv_status_left.text = event.matchStatusCO?.statusNameI18n?.get(getSelectLanguage(context).key) ?: ""
+
         tv_status_right.visibility = if (showScore) View.VISIBLE else View.GONE
 
         event.matchStatusList?.forEachIndexed { index, it ->
@@ -773,7 +776,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                 statusBuilder.append("  ")
             }
         }
-
         tv_status_right.text = statusBuilder
     }
 
