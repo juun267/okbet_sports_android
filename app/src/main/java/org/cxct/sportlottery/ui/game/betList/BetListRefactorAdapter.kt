@@ -1667,67 +1667,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             }
         }
 
-
-        private fun getAllWinnableAmount(
-            betAmount: Double,
-            currentOddsType: OddsType,
-            betList: MutableList<BetInfoListData>
-        ): Double {
-            var allWinnableAmount = 0.0
-            betList.forEach {
-                var realAmount = betAmount
-                var win = 0.0
-//                var currentOddsType = oddsType
-//                if (it.matchOdd.odds == it.matchOdd.malayOdds
-//                    || it.matchType == MatchType.OUTRIGHT
-//                    || it.matchType == MatchType.OTHER_OUTRIGHT
-//                ) {
-//                    currentOddsType = OddsType.EU
-//                }
-
-                when (currentOddsType) {
-                    OddsType.MYS -> {
-                        if (getOdds(it.matchOdd, currentOddsType) < 0) {
-                            realAmount = betAmount * Math.abs(
-                                getOdds(
-                                    it.matchOdd,
-                                    currentOddsType
-                                )
-                            )
-                            win = betAmount
-                        } else {
-                            win = betAmount * getOdds(it.matchOdd, currentOddsType)
-                        }
-
-                    }
-                    OddsType.IDN -> {
-                        if (getOdds(it.matchOdd, currentOddsType) < 0) {
-                            realAmount = betAmount * Math.abs(
-                                getOdds(
-                                    it.matchOdd,
-                                    currentOddsType
-                                )
-                            )
-                            win = betAmount
-                        } else {
-                            win = betAmount * getOdds(it.matchOdd, currentOddsType)
-                        }
-                    }
-                    OddsType.EU -> {
-                        win = betAmount * (getOdds(it.matchOdd, currentOddsType) - 1)
-
-                    }
-                    else -> {
-                        win = betAmount * (getOdds(it.matchOdd, currentOddsType))
-                    }
-                }
-
-
-                allWinnableAmount += win
-            }
-            return allWinnableAmount
-        }
-
         private fun setupClickMoreItem(
             btnShowMore: View,
             moreOptionCollapse: Boolean,
