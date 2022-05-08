@@ -1646,18 +1646,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             return allWinnableAmount
         }
 
-        private fun getAllSingleMinMaxHint(
-            context: Context,
-            maxAmount: Long,
-            minAmount: Long
-        ): String {
-            return String.format(
-                "${context.getString(R.string.edt_hint_deposit_money_new)}",
-                TextUtil.formatBetQuota(minAmount),
-                TextUtil.formatBetQuota(maxAmount)
-            )
-        }
-
         private fun getMaxOrMinAmount(
             isGetMax: Boolean,
             betList: MutableList<BetInfoListData>
