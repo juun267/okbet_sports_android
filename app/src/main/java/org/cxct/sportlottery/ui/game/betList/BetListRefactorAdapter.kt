@@ -223,7 +223,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             }
             is BatchSingleInMoreOptionViewHolder ->{
                 holder.bind(
-                    parlayList?.getOrNull(position - (betList?.size ?: 0)),
+                    parlayList?.getOrNull(0),
                     parlayList?.size ?: 0,
                     betList ?: mutableListOf(),
                     currentOddsType,
