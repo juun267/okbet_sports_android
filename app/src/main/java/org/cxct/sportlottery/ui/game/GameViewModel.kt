@@ -944,10 +944,12 @@ class GameViewModel(
                     )
                 )
             }?.let { result ->
-                result.t?.odds?.forEach { oddData ->
-                    oddData.sortOddsMap()
+                if(result.success){
+                    result.t?.odds?.forEach { oddData ->
+                        oddData.sortOddsMap()
+                    }
+                    _highlightMenuResult.postValue(Event(result))
                 }
-                _highlightMenuResult.postValue(Event(result))
             }
         }
     }
