@@ -1588,30 +1588,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     }
                     false
                 }
-//                et_container.setOnClickListener {
-//                    et_bet_single.isFocusable = true
-//                    et_bet_single.setSelection(et_bet_single.text.length)
-//                    layoutKeyBoard.showKeyboard(
-//                        et_bet_single,
-//                        position,
-//                        getMaxOrMinAmount(isGetMax = true, betList),
-//                        getMaxOrMinAmount(isGetMax = false, betList)
-//                    )
-//                    //onItemClickListener.onShowParlayKeyboard(et_bet_single, itemData, position, getMaxOrMinAmount(isGetMax = true, betList))
-//                    onSelectedPositionListener.onSelectChange(
-//                        bindingAdapterPosition,
-//                        BetViewType.SINGLE
-//                    )
-//                }
 
                 et_bet_single.setOnFocusChangeListener { v, hasFocus ->
                     if (!hasFocus) layoutKeyBoard?.hideKeyboard()
-                }
-
-                item_first_single.setOnClickListener {
-                    //layoutKeyBoard.hideKeyboard()
-                    onItemClickListener.onHideKeyBoard()
-                    clearFocus()
                 }
 
                 setupItemEnable(hasBetClosed)
