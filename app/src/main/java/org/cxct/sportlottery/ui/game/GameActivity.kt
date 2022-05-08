@@ -782,28 +782,28 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             if (it?.couponCode.isNullOrEmpty()) {
                 when (it?.entranceMatchType) {
                     MatchType.IN_PLAY -> {
-                        tabLayout.getTabAt(1)?.select()
+                        goTab(1)
                     }
                     MatchType.AT_START -> {
-                        tabLayout.getTabAt(2)?.select()
+                        goTab(2)
                     }
                     MatchType.TODAY -> {
-                        tabLayout.getTabAt(3)?.select()
+                        goTab(3)
                     }
                     MatchType.EARLY -> {
-                        tabLayout.getTabAt(4)?.select()
+                        goTab(4)
                     }
                     MatchType.OUTRIGHT -> {
-                        tabLayout.getTabAt(5)?.select()
+                        goTab(5)
                     }
                     MatchType.PARLAY -> {
-                        tabLayout.getTabAt(6)?.select()
+                        goTab(6)
                     }
                     MatchType.EPS -> {
-                        tabLayout.getTabAt(7)?.select()
+                        goTab(7)
                     }
                     MatchType.OTHER -> {
-                        tabLayout.getTabAt(3)?.select()
+                        goTab(3)
                     }
                     MatchType.DETAIL -> {
                         it.matchID?.let { matchId ->
@@ -865,6 +865,19 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         viewModel.navPublicityPage.observe(this) {
             GamePublicityActivity.reStart(this)
+        }
+    }
+
+    /**
+     * 前往指定的賽事種類
+     * @since 若已經在該賽事種類, 點擊Tab不會觸發OnTabSelectedListener
+     */
+    private fun goTab(tabPosition: Int) {
+        if (tabLayout.selectedTabPosition != tabPosition) {
+            //賽事類別Tab不在滾球時, 點擊滾球Tab
+            tabLayout.getTabAt(tabPosition)?.select()
+        } else {
+            selectTab(tabPosition)
         }
     }
 
@@ -1076,6 +1089,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     }
 
     private fun closeLeftMenu() {
+        val leftMenuFragment = supportFragmentManager.findFragmentById(R.id.fl_left_menu) as LeftMenuFragment
+        leftMenuFragment.clearLeftMenu()
         if (sub_drawer_layout.isDrawerOpen(nav_left)) sub_drawer_layout.closeDrawers()
     }
 

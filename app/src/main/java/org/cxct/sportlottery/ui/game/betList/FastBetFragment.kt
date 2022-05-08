@@ -199,7 +199,9 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 //            dialog = this@BetInfoCarDialog
         }.executePendingBindings()
         data = Parcels.unwrap(arguments?.getParcelable("data"))
-        if(viewModel.betInfoList.value?.peekContent()!!.isNotEmpty() || data.matchType == MatchType.PARLAY||!viewModel.getIsFastBetOpened()){
+        if (viewModel.betInfoList.value?.peekContent()!!
+                .isNotEmpty() || viewModel.curMatchType.value == MatchType.PARLAY || !viewModel.getIsFastBetOpened()
+        ) {
             initData()
             dismiss()
         }

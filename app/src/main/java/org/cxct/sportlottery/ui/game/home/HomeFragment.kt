@@ -1211,8 +1211,8 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     private fun refreshHighlightMenu(result: MatchCategoryResult) {
         val ary = result.t?.menu?.map { menu ->
             Item(menu.code ?: "", menu.name ?: "", 0, null, menu.sortNum ?: 0)
-        } as ArrayList<Item>
-        mHomeListAdapter.setDataSport(ary)
+        } as? ArrayList<Item>
+        mHomeListAdapter.setDataSport(ary ?: arrayListOf())
 
         if (mHomeListAdapter.getDataSport().isNotEmpty()) {
             if (selectedSportType != null) {
