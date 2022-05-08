@@ -256,12 +256,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             }
             position < betSize -> ViewType.Bet.ordinal
             position == betSize -> ViewType.ParlayFirst.ordinal
-            position == getListSize() && parlayList?.size ?: 0 > 1 && moreOptionCollapse->{
-                ViewType.Single.ordinal
-            }
-            else ->{
-                ViewType.Parlay.ordinal
-            }
+            position == getListSize() - 1 && parlayList?.size ?: 0 > 1 && moreOptionCollapse -> ViewType.Single.ordinal
+            else -> ViewType.Parlay.ordinal
         }
     }
 
