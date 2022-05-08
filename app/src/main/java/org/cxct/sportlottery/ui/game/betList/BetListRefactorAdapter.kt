@@ -224,19 +224,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             is BatchSingleInMoreOptionViewHolder ->{
                 holder.bind(
                     parlayList?.getOrNull(0),
-                    parlayList?.size ?: 0,
                     betList ?: mutableListOf(),
                     currentOddsType,
-                    hasBetClosed,
-                    hasParlayList,
-                    moreOptionCollapse,
                     onItemClickListener,
                     { notifyDataSetChanged() },
-                    {
-                        moreOptionCollapse = !moreOptionCollapse
-                        needScrollToBottom = true
-                        notifyDataSetChanged()
-                    },
                     mSelectedPosition,
                     mBetView,
                     onSelectedPositionListener,
@@ -1398,15 +1389,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         private var mUserMoney: Double = 0.0
         fun bind(
             itemData: ParlayOdd?,
-            parlayListSize: Int,
             betList: MutableList<BetInfoListData>,
             currentOddsType: OddsType,
-            hasBetClosed: Boolean,
-            hasParlayList: Boolean,
-            moreOptionCollapse: Boolean,
             onItemClickListener: OnItemClickListener,
             notifyAllBet: () -> Unit,
-            clickMoreOption: () -> Unit,
             mSelectedPosition: Int,
             mBetView: BetViewType,
             onSelectedPositionListener: OnSelectedPositionListener,
