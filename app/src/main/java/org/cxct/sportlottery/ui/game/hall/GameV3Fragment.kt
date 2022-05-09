@@ -78,12 +78,14 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private var isReload = true // 重新加載用
     private var mLeagueIsFiltered = false // 是否套用聯賽過濾
     private var mCalendarSelected = false //紀錄日期圖示選中狀態
+    private var isReloadPlayCate: Boolean? = null //是否重新加載玩法篩選Layout
 
     private val gameTypeAdapter by lazy {
         GameTypeAdapter().apply {
             gameTypeListener = GameTypeListener {
                 loading()
                 isReload = true
+                isReloadPlayCate = true
                 unSubscribeChannelHallAll()
                 viewModel.getSportMenu(args.matchType, onlyRefreshSportMenu = true)
                 if (args.matchType == MatchType.OTHER) {
@@ -539,10 +541,14 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     private fun setupPlayCategory(view: View) {
         view.game_play_category.apply {
-            this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            if (this.layoutManager == null || isReloadPlayCate != false) {
+                this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            }
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
 
-            this.adapter = playCategoryAdapter
+            if (this.adapter == null || isReloadPlayCate != false) {
+                this.adapter = playCategoryAdapter
+            }
             removeItemDecorations()
             addItemDecoration(
                 SpaceItemDecoration(
@@ -1196,14 +1202,25 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
         viewModel.playList.observe(this.viewLifecycleOwner) {
             playCategoryAdapter.data = it
+            if (isReloadPlayCate != false) {
+                mView?.let { notNullView ->
+                    setupPlayCategory(notNullView)
+                    isReloadPlayCate = false
+                }
+            }
         }
 
-        viewModel.playCate.observe(this.viewLifecycleOwner) {
-            playCategoryAdapter.apply {
-                data.find { it.isSelected }?.playCateList?.forEach { playCate ->
-                    playCate.isSelected = (playCate.code == it)
+        viewModel.playCate.observe(this.viewLifecycleOwner) { event ->
+            event?.getContentIfNotHandled()?.let {
+                playCategoryAdapter.apply {
+                    data.find { it.isSelected }?.playCateList?.forEachIndexed { index, playCate ->
+                        playCate.isSelected = (playCate.code == it)
+                    }
+
+                    for (index in data.indices) {
+                        notifyItemChanged(index)
+                    }
                 }
-                notifyDataSetChanged()
             }
         }
 
@@ -1348,7 +1365,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         viewModel.getGameHallList(
                             matchType = args.matchType,
                             isReloadDate = true,
-                            isReloadPlayCate = true,
+                            isReloadPlayCate = (isReloadPlayCate != false),
                             isLastSportType = true
                         )
                     }
@@ -2285,6 +2302,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     override fun onStop() {
+
         super.onStop()
         viewModel.clearSelectedLeague()
         game_list.adapter = null
@@ -2311,6 +2329,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     override fun onDestroyView() {
         super.onDestroyView()
         viewModel.clearSelectedLeague()
+        isReloadPlayCate = null
         game_list.adapter = null
         stopTimer()
         unSubscribeChannelHallAll()

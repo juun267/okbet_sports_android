@@ -262,12 +262,14 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             playCategoryAdapter.data = it
         }
 
-        viewModel.playCate.observe(this.viewLifecycleOwner) {
-            playCategoryAdapter.apply {
-                data.find { it.isSelected }?.playCateList?.forEach { playCate ->
-                    playCate.isSelected = (playCate.code == it)
+        viewModel.playCate.observe(this.viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let {
+                playCategoryAdapter.apply {
+                    data.find { it.isSelected }?.playCateList?.forEach { playCate ->
+                        playCate.isSelected = (playCate.code == it)
+                    }
+                    notifyDataSetChanged()
                 }
-                notifyDataSetChanged()
             }
         }
 

@@ -206,7 +206,7 @@ class GameViewModel(
     val playList: LiveData<List<Play>>
         get() = _playList
 
-    val playCate: LiveData<String?>
+    val playCate: LiveData<Event<String?>>
         get() = _playCate
     val searchResult: LiveData<Event<List<SearchResult>?>>
         get() = _searchResult
@@ -262,7 +262,7 @@ class GameViewModel(
     private val _leagueSubmitList = MutableLiveData<Event<List<League>>>()
     private val _leagueFilterList = MutableLiveData<List<League>>()
     private val _playList = MutableLiveData<List<Play>>()
-    private val _playCate = MutableLiveData<String?>()
+    private val _playCate = MutableLiveData<Event<String?>>()
     private val _searchResult = MutableLiveData<Event<List<SearchResult>?>>()
     private val _navDetail = MutableLiveData<Event<NavDirections>>()
 
@@ -1155,7 +1155,7 @@ class GameViewModel(
         _playList.value?.forEach {
             it.isSelected = (it == play)
         }
-        _playCate.value = playCateCode
+        _playCate.value = Event(playCateCode)
     }
 
     fun switchMatchDate(matchType: MatchType, date: Date) {
@@ -1367,7 +1367,7 @@ class GameViewModel(
         _playList.value?.forEach {
             it.isSelected = (it == play)
         }
-        _playCate.value = playCateCode
+        _playCate.value = Event(playCateCode)
 
 //        getLeagueOddsList(matchType, leagueIdList, matchIdList)
     }
@@ -1907,7 +1907,7 @@ class GameViewModel(
                     }
 
                     _playList.postValue(playList)
-                    _playCate.postValue(null)
+                    _playCate.postValue(Event(null))
                 }
             }
         } else {
@@ -1922,7 +1922,7 @@ class GameViewModel(
                     }
 
                     _playList.postValue(playList)
-                    _playCate.postValue(null)
+                    _playCate.postValue(Event(null))
                 }
             }
         }
@@ -2298,7 +2298,7 @@ class GameViewModel(
     private fun getPlayCateSelected(): Play? = _playList.value?.find { it.isSelected }
 
     private fun getPlayCateCodeList(): List<String>? {
-        _playCate.value?.let {
+        _playCate.value?.peekContent()?.let {
             return listOf(it)
         }
         return null
@@ -2478,7 +2478,7 @@ class GameViewModel(
 
         playList?.let {
             _playList.value = it
-            _playCate.value = (
+            _playCate.value = Event((
                     when (play.selectionType == SelectionType.SELECTABLE.code) {
                         true -> {
                             it.find { play ->
@@ -2491,7 +2491,7 @@ class GameViewModel(
                             null
                         }
                     }
-                    )
+                    ))
         }
     }
 
