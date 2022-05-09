@@ -62,7 +62,7 @@ class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
 
         with(itemView.btn_chart) {
             visibility =
-                if (data.matchInfo?.source == MatchSource.HIDE_STATISTICS.code) View.GONE else View.VISIBLE
+                if (data.matchInfo?.source == MatchSource.SHOW_STATISTICS.code) View.VISIBLE else View.GONE
 
             setOnClickListener {
                 onClickStatisticsListener?.onClickStatistics(data.matchInfo?.id)
@@ -90,7 +90,7 @@ class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
 
                 with(itemView.btn_chart) {
                     visibility =
-                        if (data.matchInfo?.source == MatchSource.HIDE_STATISTICS.code) View.GONE else View.VISIBLE
+                        if (data.matchInfo?.source == MatchSource.SHOW_STATISTICS.code) View.VISIBLE else View.GONE
 
                     setOnClickListener {
                         onClickStatisticsListener?.onClickStatistics(data.matchInfo?.id)

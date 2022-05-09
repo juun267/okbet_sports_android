@@ -368,7 +368,7 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     private fun setupLiveView() {
         with(live_view_tool_bar) {
             setupToolBarListener(liveToolBarListener)
-            setStatisticsState(matchOdd?.matchInfo?.source != MatchSource.HIDE_STATISTICS.code)
+            setStatisticsState(matchOdd?.matchInfo?.source == MatchSource.SHOW_STATISTICS.code)
             setupPlayerControl(false)
         }
     }
