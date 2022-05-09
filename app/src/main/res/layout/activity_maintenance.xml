@@ -75,16 +75,18 @@
         android:id="@+id/btn_service"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
-        android:background="@drawable/bg_radius_22_button_dusk"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/bg_radius_23_button_dusk"
         android:minWidth="100dp"
         android:minHeight="36dp"
-        android:text="@string/btn_service"
-        android:textAllCaps="false"
+        android:paddingStart="18dp"
+        android:paddingEnd="18dp"
+        android:text="@string/btn_service_maintain"
+        android:textAllCaps="true"
         android:textColor="@color/color_191919_FCFCFC"
         android:textSize="@dimen/textSize14sp"
-        app:layout_constraintTop_toBottomOf="@+id/tv_customer_service"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="15dp"/>
+        app:layout_constraintTop_toBottomOf="@+id/tv_customer_service" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
