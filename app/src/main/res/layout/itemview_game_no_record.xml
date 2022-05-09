@@ -12,7 +12,8 @@
         android:src="@drawable/ic_img_no_record"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/color_2a2a2a_dedede"/>
 
     <TextView
         android:id="@+id/list_no_record_text"
