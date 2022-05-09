@@ -219,6 +219,7 @@
                             android:textColor="@color/color_E44438_e44438"
                             android:textSize="@dimen/textSize12sp"
                             android:visibility="gone"
+                            tools:visibility="visible"
                             app:layout_constraintBottom_toTopOf="@+id/viewGrey"
                             app:layout_constraintTop_toBottomOf="@+id/tv_match" />
 

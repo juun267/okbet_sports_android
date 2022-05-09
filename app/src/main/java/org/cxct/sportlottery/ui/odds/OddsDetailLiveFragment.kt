@@ -288,7 +288,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                         setupLiveView(result.oddsDetailData?.matchOdd?.matchInfo?.liveVideo)
 
                         if (args.matchType == MatchType.IN_PLAY &&
-                            (args.gameType == GameType.BK || args.gameType == GameType.TN || args.gameType == GameType.VB || args.gameType == GameType.TT)
+                            (args.gameType == GameType.TN || args.gameType == GameType.VB || args.gameType == GameType.TT)
 //                            && tv_status_left.isVisible
                             && (it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt != null)
                         ) {
@@ -633,14 +633,15 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
             GameMatchStatus.FINISH.value -> {
                 //donothing
             }
-            GameMatchStatus.HIDE_SCORE.value -> {
+            //20220507 status:999 邏輯變更 隱藏分數 -> 賽事狀態變為滾球
+            /*GameMatchStatus.HIDE_SCORE.value -> {
                 tv_home_score.visibility = View.GONE
                 tv_away_score.visibility = View.GONE
                 tv_home_score_total.visibility = View.GONE
                 tv_away_score_total.visibility = View.GONE
                 tv_home_score_live.visibility = View.GONE
                 tv_away_score_live.visibility = View.GONE
-            }
+            }*/
             else -> {
                 when (args.gameType) {
                     GameType.FT,
@@ -680,14 +681,15 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         //endregion
 
         //region setup game status
-        val showScore = event.matchStatusCO?.status != GameMatchStatus.HIDE_SCORE.value
+        //20220507 status:999 邏輯變更 隱藏分數 -> 賽事狀態變為滾球
+//        val showScore = event.matchStatusCO?.status != GameMatchStatus.HIDE_SCORE.value
         when (args.gameType) {
             GameType.BK -> {
                 setupStatusBk(event)
             }
             GameType.TN, GameType.VB, GameType.TT, GameType.BM -> {
                 showBackTimeBlock(false)
-                setupStatusTnVb(event, showScore)
+                setupStatusTnVb(event, true)
             }
             // Todo: 仍有其他球種待處理
             // 20220412 根據h5顯示的版面進行同步, MR, GF, FB, OTHER 無法模擬野佔無賽事可參考
@@ -721,6 +723,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
         tv_status_left.visibility = View.VISIBLE
         tv_spt.visibility = View.GONE
+        tv_status_right.visibility = View.GONE
         tv_status_left.setTextColor(
             ContextCompat.getColor(
                 tv_status_left.context,
@@ -731,7 +734,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         event.matchStatusList?.forEachIndexed { index, it ->
             val spanStatusName =
                 SpannableString(it.statusNameI18n?.get(getSelectLanguage(context).key))
-            val spanScore = SpannableString("${it.homeScore ?: 0}-${it.awayScore ?: 0}  ")
+            val spanScore = SpannableString(" ${it.homeScore ?: 0}-${it.awayScore ?: 0}  ")
 
             if (index == event.matchStatusList.lastIndex) {
                 spanStatusName.setSpan(
@@ -759,6 +762,8 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         val statusBuilder = SpannableStringBuilder()
 
         tv_status_left.visibility = View.VISIBLE
+        tv_status_left.text = event.matchStatusCO?.statusNameI18n?.get(getSelectLanguage(context).key) ?: ""
+
         tv_status_right.visibility = if (showScore) View.VISIBLE else View.GONE
 
         event.matchStatusList?.forEachIndexed { index, it ->
@@ -771,7 +776,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                 statusBuilder.append("  ")
             }
         }
-
         tv_status_right.text = statusBuilder
     }
 

@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/dialog_security_hint"
                 android:textColor="@color/color_E0E0E0_404040"
-                android:textSize="@dimen/textSize14sp" />
+                android:textSize="@dimen/textSize12sp" />
 
         </LinearLayout>
 
@@ -53,9 +53,9 @@
             android:id="@+id/securityCodeStyleEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="18dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="18dp"
             android:gravity="center"
             app:scErrorText="@string/dialog_security_error"
             app:scHintText="@string/hint_security_code"
@@ -82,9 +82,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/bottom_sheet_close"
+                android:textAllCaps="true"
                 android:textColor="@color/color_317FFF_0760D4"
-                android:textSize="@dimen/textSize14sp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/textSize14sp" />
 
             <View
                 android:layout_width="1dp"
@@ -98,9 +98,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/submit"
+                android:textAllCaps="true"
                 android:textColor="@color/color_2B2B2B_e2e2e2"
-                android:textSize="@dimen/textSize14sp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/textSize14sp" />
 
         </LinearLayout>
 

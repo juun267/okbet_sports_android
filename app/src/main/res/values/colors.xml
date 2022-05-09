@@ -76,7 +76,6 @@
     <color name="color_EAF4FE">#EAF4FE</color>
     <color name="color_232628">#232628</color>
     <color name="color_202020">#202020</color>
-    <color name="color_DE000000">#DE000000</color>
 
 
     <!--以下部分，是系统中的白天的色值 -->
@@ -145,7 +144,15 @@
     <color name="color_e5e5e5_202020">@color/color_202020</color>
     <color name="color_e5e5e5_000000">@color/color_000000</color>
     <color name="color_FFFFFF_060F20">@color/color_060F20</color>
+
     <color name="color_FFFFFF_DE000000">@color/color_DE000000</color>
+    <color name="color_B3FFFFFF_99000000">@color/transparent_black_60</color>
+    <color name="color_AEAEAE_545454">@color/color_AEAEAE</color>
+    <color name="color_1E1E1E_FFFFFF">@color/color_FFFFFF</color>
+    <color name="color_404040_e5e5e5">@color/color_e5e5e5</color>
+    <color name="color_404348_EDEDED">@color/color_EDEDED</color>
+    <color name="color_404040_e2e2e2">@color/color_E2E2E2</color>
+    <color name="color_1f1f1f_fcfcfc">@color/color_FCFCFC</color>
 
     <!--region 特殊處理顏色-->
     <color name="home_card_top_text_color">#40FFFFFF</color>
@@ -236,6 +243,8 @@
     <color name="transparent_black_50">#80000000</color>
     <color name="transparent_black_60">#99000000</color>
 
+    <color name="transparent_white_70">#B3FFFFFF</color>
+
 <!--    <color name="color_fff3f3f3">#fff3f3f3</color>-->
 <!--    <color name="color_ffededed">#ffededed</color>-->
 <!--    <color name="color_888888">#888888</color>-->
@@ -249,6 +258,11 @@
     <color name="color_F9DDDE">#F9DDDE</color>
     <color name="color_FFE136">#FFE136</color>
     <color name="color_B3000000">#B3000000</color>
+    <color name="color_DE000000">#DE000000</color>
+    <color name="color_AEAEAE">#AEAEAE</color>
+    <color name="color_545454">#545454</color>
+    <color name="color_1E1E1E">#1E1E1E</color>
+    <color name="color_EDEDED">#EDEDED</color>
 
     <!-- ======================================= -->
 

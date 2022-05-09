@@ -4,6 +4,7 @@ import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -112,6 +113,13 @@ class LeftMenuItemNewAdapter(
                         tv_count.setTypeface(tv_count.typeface, Typeface.BOLD)
                         txv_price.isSelected = true
                         tv_count.isSelected = true
+                    } else {
+                        val typeface: Typeface? =
+                            ResourcesCompat.getFont(MultiLanguagesApplication.appContext, R.font.helvetica_normal)
+                        txv_price.setTypeface(typeface, Typeface.NORMAL)
+                        tv_count.setTypeface(typeface, Typeface.NORMAL)
+                        txv_price.isSelected = false
+                        tv_count.isSelected = false
                     }
 
                     cl_content.setOnClickListener {

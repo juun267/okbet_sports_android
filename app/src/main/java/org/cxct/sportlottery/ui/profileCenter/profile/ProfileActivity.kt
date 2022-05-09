@@ -105,7 +105,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     }
 
     private fun initView() {
-        tv_toolbar_title.text = getString(R.string.profile_info)
+        custom_tool_bar.titleText = getString(R.string.profile_info)
         sConfigData?.apply {
             ll_qq_number.visibility = if (enableWithdrawQQ == FLAG_OPEN) View.VISIBLE else View.GONE
             ll_e_mail.visibility = if (enableWithdrawEmail == FLAG_OPEN) View.VISIBLE else View.GONE
@@ -120,7 +120,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     }
 
     private fun initButton() {
-        btn_toolbar_back.setOnClickListener {
+        custom_tool_bar.setOnBackPressListener {
             finish()
         }
 
@@ -363,7 +363,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         tvInfo.apply {
             if (infoData.isNullOrEmpty()) {
                 text = getString(R.string.need_improve)
-                setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.color_317FFF_1F4780))
+                setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.color_317FFF_0760D4))
                 iconModify.visibility = View.VISIBLE
                 itemLayout.isEnabled = true
             } else {

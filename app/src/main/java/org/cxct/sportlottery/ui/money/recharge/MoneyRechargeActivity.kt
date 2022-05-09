@@ -318,8 +318,8 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
         rv_pay_type.adapter = bankTypeAdapter
         rv_pay_type.addItemDecoration(
             GridItemDecoration(
-                10.dp,
-                7.dp,
+                8.dp,
+                8.dp,
                 ContextCompat.getColor(this, R.color.color_191919_FCFCFC),
                 false
             )

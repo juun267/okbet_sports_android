@@ -545,6 +545,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             }
         }
 
+        var oddsId = ""
         var oldOdds = ""
         var handler = Handler()
 
@@ -566,7 +567,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 //                }
 
                 //setupOddsContent(itemData, oddsType = currentOddsType, tv_odds_content)
-                if (itemData.matchOdd.status == BetStatus.ACTIVATED.code && oldOdds != "" && oldOdds != TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))) {
+                if (oddsId == itemData.matchOdd.oddsId && itemData.matchOdd.status == BetStatus.ACTIVATED.code && oldOdds != "" && oldOdds != TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))) {
                     tv_odd_content_changed.visibility = if (handler != null) View.VISIBLE else View.GONE
                     handler?.postDelayed({
                         tv_odd_content_changed?.visibility = View.GONE
@@ -586,6 +587,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
                 tv_odds_content.text = itemData.matchOdd.playName
                 if (itemData.matchOdd.status == BetStatus.ACTIVATED.code && oldOdds != TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))) {
+                    oddsId = itemData.matchOdd.oddsId
                     oldOdds = TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))
                 }
                 tvOdds.text = if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) "@ " + TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType)) else "–"

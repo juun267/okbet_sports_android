@@ -18,7 +18,9 @@
         android:gravity="top"
         android:maxLength="500"
         android:padding="14dp"
-        android:hint="@string/can_input_1_to_500_word" />
+        android:hint="@string/can_input_1_to_500_word"
+        android:textColor="@color/color_e5e5e5_333333"
+        android:textColorHint="@color/color_AEAEAE_545454"/>
 
     <include
         layout="@layout/view_submit_with_text_count"/>
