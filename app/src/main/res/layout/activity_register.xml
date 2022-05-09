@@ -95,8 +95,7 @@
                     android:inputType="text"
                     android:maxLines="1"
                     android:textColor="@color/color_e5e5e5_333333"
-                    android:textSize="@dimen/textSize14sp"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
 
@@ -120,6 +119,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
@@ -144,6 +144,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="textPassword"
                     android:maxLines="1"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
@@ -168,6 +169,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="textPassword"
                     android:maxLines="1"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
@@ -191,6 +193,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
@@ -216,6 +219,7 @@
                     android:inputType="numberPassword"
                     android:maxLength="4"
                     android:maxLines="1"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
@@ -239,6 +243,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
@@ -263,6 +268,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="phone"
                     android:maxLines="1"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
@@ -298,6 +304,7 @@
                         android:imeOptions="actionNext"
                         android:inputType="text"
                         android:maxLines="1"
+                        android:textColor="@color/color_e5e5e5_333333"
                         android:textSize="@dimen/textSize14sp" />
 
                 </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
@@ -359,6 +366,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
@@ -382,6 +390,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
@@ -405,6 +414,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
@@ -428,6 +438,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
@@ -451,6 +462,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
@@ -474,6 +486,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
@@ -497,6 +510,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
@@ -520,6 +534,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
@@ -543,6 +558,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
@@ -566,6 +582,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
@@ -590,6 +607,7 @@
                     android:inputType="text"
                     android:maxLength="12"
                     android:maxLines="1"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
@@ -622,6 +640,7 @@
                         android:imeOptions="actionNext"
                         android:inputType="text"
                         android:maxLines="1"
+                        android:textColor="@color/color_e5e5e5_333333"
                         android:textSize="@dimen/textSize14sp" />
 
                 </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
@@ -697,7 +716,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:button="@drawable/effect_login_select_checkbox"
-                    android:checked="true"
+                    android:checked="false"
                     android:paddingStart="6dp"
                     android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize13sp"
@@ -725,7 +744,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:button="@drawable/effect_login_select_checkbox"
-                    android:checked="true"
+                    android:checked="false"
                     android:paddingStart="6dp"
                     android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize13sp"
@@ -746,6 +765,114 @@
                     app:layout_constraintEnd_toEndOf="@+id/clAgreement"
                     app:layout_constraintStart_toEndOf="@+id/cbAgreement"
                     app:layout_constraintTop_toBottomOf="@+id/cbPrivacy" />
+
+                <CheckBox
+                    android:id="@+id/cbNotPHOfficial"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/effect_login_select_checkbox"
+                    android:checked="false"
+                    android:paddingStart="6dp"
+                    android:textColor="@color/color_e5e5e5_333333"
+                    android:textSize="@dimen/textSize13sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tvNotPHOfficial"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvNotPHOfficial"/>
+
+                <TextView
+                    android:id="@+id/tvNotPHOfficial"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:gravity="left"
+                    android:textColor="@color/color_e5e5e5_333333"
+                    android:textColorLink="@color/color_317FFF_0760D4"
+                    android:textSize="@dimen/textSize13sp"
+                    android:lineSpacingExtra="3dp"
+                    app:layout_constraintEnd_toEndOf="@+id/clAgreement"
+                    app:layout_constraintStart_toEndOf="@+id/cbNotPHOfficial"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAgreement" />
+
+                <CheckBox
+                    android:id="@+id/cbNotPHSchool"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/effect_login_select_checkbox"
+                    android:checked="false"
+                    android:paddingStart="6dp"
+                    android:textColor="@color/color_e5e5e5_333333"
+                    android:textSize="@dimen/textSize13sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tvNotPHSchool"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvNotPHSchool"/>
+
+                <TextView
+                    android:id="@+id/tvNotPHSchool"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:gravity="left"
+                    android:textColor="@color/color_e5e5e5_333333"
+                    android:textColorLink="@color/color_317FFF_0760D4"
+                    android:textSize="@dimen/textSize13sp"
+                    android:lineSpacingExtra="3dp"
+                    app:layout_constraintEnd_toEndOf="@+id/clAgreement"
+                    app:layout_constraintStart_toEndOf="@+id/cbNotPHSchool"
+                    app:layout_constraintTop_toBottomOf="@+id/tvNotPHOfficial" />
+
+                <CheckBox
+                    android:id="@+id/cbRuleOkbet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/effect_login_select_checkbox"
+                    android:checked="false"
+                    android:paddingStart="6dp"
+                    android:textColor="@color/color_e5e5e5_333333"
+                    android:textSize="@dimen/textSize13sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tvRuleOkbet"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvRuleOkbet"/>
+
+                <TextView
+                    android:id="@+id/tvRuleOkbet"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:gravity="left"
+                    android:textColor="@color/color_e5e5e5_333333"
+                    android:textColorLink="@color/color_317FFF_0760D4"
+                    android:textSize="@dimen/textSize13sp"
+                    android:lineSpacingExtra="3dp"
+                    app:layout_constraintEnd_toEndOf="@+id/clAgreement"
+                    app:layout_constraintStart_toEndOf="@+id/cbRuleOkbet"
+                    app:layout_constraintTop_toBottomOf="@+id/tvNotPHSchool" />
+
+                <CheckBox
+                    android:id="@+id/cbAgreeAll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/effect_login_select_checkbox"
+                    android:checked="false"
+                    android:paddingStart="6dp"
+                    android:textColor="@color/color_e5e5e5_333333"
+                    android:textSize="@dimen/textSize13sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tvAgreeAll"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvAgreeAll"/>
+
+                <TextView
+                    android:id="@+id/tvAgreeAll"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:gravity="left"
+                    android:textColor="@color/color_e5e5e5_333333"
+                    android:textColorLink="@color/color_317FFF_0760D4"
+                    android:textSize="@dimen/textSize13sp"
+                    android:lineSpacingExtra="3dp"
+                    app:layout_constraintEnd_toEndOf="@+id/clAgreement"
+                    app:layout_constraintStart_toEndOf="@+id/cbAgreeAll"
+                    app:layout_constraintTop_toBottomOf="@+id/tvRuleOkbet" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

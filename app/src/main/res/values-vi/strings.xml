@@ -52,11 +52,15 @@
     <string name="register_privacy_policy">&#160;chính sách bảo mật</string>
     <string name="register_privacy_policy_promotions"></string>
     <string name="register_over_21">Tôi đã 21 tuổi, đã đọc và đồng ý với&#160;</string>
+    <string name="register_rules">&#160;luật &amp; điều khoản của</string>
+    <string name="register_not_ph_official">Tôi không phải là quan chức chính phủ và / hoặc nhân viên có liên hệ trực tiếp với hoạt động của chính phủ Philippines hoặc bất kỳ cơ quan nào của chính phủ.</string>
+    <string name="register_not_ph_school">Tôi không phải là sinh viên của bất kỳ trường học, cao đẳng hoặc đại học nào ở Philippines</string>
+    <string name="register_rule_okbet">Tôi hiểu rằng nếu thông tin tôi cung cấp bị phát hiện là không chính xác, OKBet có quyền áp dụng hình phạt đối với tài khoản của tôi theo Điều khoản và Điều kiện Phần 5.1 - 5.2.</string>
+    <string name="register_rule_agree_all">Tôi đồng ý với tất cả các điều khoản và điều kiện ở trên.</string>
     <string name="register_success">Đăng ký thành công</string>
     <string name="register_watch_first">Khám phá trò chơi</string>
     <string name="register_jump">Trang sẽ chuyển sang %s 5 giây sau đó.</string>
     <string name="register_recharge_now">Gửi tiền ngay bây giờ</string>
-    <string name="register_rules">&#160;luật &amp; điều khoản của</string>
     <string name="confirm_password">Xác nhận mật khẩu</string>
     <string name="hint_confirm_password">(Vui lòng nhập lại mật khẩu)</string>
     <string name="error_confirm_password">Mật khẩu đăng nhập 2 lần không đồng nhất</string>
