@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.itemview_league_odd_v5.view.*
 import kotlinx.android.synthetic.main.itemview_league_quick.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.enum.MatchSource
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
@@ -262,6 +263,8 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             }
 
             itemView.league_odd_match_chart.apply {
+                visibility = if (item.matchInfo?.source == MatchSource.HIDE_STATISTICS.code) View.GONE else View.VISIBLE
+
                 setOnClickListener {
                     leagueOddListener?.onClickStatistics(item.matchInfo?.id)
                 }
