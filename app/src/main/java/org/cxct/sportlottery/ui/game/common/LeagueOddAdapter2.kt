@@ -379,7 +379,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 when {
                     item.matchInfo.isInPlay == true -> { //除0以外顯示
                         itemView.league_odd_spt.visibility = if (it > 0) View.VISIBLE else View.GONE
-                        itemView.league_odd_spt.text = " / $it"
+                        itemView.league_odd_spt.text = "/ $it"
                     }
 
                     matchType == MatchType.EARLY || matchType == MatchType.PARLAY || matchType == MatchType.TODAY || matchType == MatchType.AT_START || (matchType == MatchType.MY_EVENT && item.matchInfo.isInPlay == false)

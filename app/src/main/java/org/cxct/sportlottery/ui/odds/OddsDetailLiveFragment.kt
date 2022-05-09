@@ -288,7 +288,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                         setupLiveView(result.oddsDetailData?.matchOdd?.matchInfo?.liveVideo)
 
                         if (args.matchType == MatchType.IN_PLAY &&
-                            (args.gameType == GameType.TN || args.gameType == GameType.VB || args.gameType == GameType.TT)
+                            (args.gameType == GameType.TN || args.gameType == GameType.VB || args.gameType == GameType.TT || args.gameType == GameType.BM)
 //                            && tv_status_left.isVisible
                             && (it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt != null)
                         ) {
