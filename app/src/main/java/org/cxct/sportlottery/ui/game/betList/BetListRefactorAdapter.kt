@@ -304,7 +304,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             betListSize == 2 || !moreOptionCollapse -> 1
             else -> (parlayList?.size ?: 0)
         }
-        return if (parlayList?.size ?: 0 > 0 && moreOptionCollapse)
+        return if (betList?.size ?: 0 > 1 && moreOptionCollapse)
             betListSize + parlayListSize + 1
         else
             betListSize + parlayListSize
