@@ -7,9 +7,11 @@ import androidx.fragment.app.FragmentPagerAdapter
 import kotlinx.android.synthetic.main.activity_self_limit.*
 import kotlinx.android.synthetic.main.custom_tab_layout.view.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
+import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivitySelfLimitBinding
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 class SelfLimitActivity : BaseSocketActivity<SelfLimitViewModel>(SelfLimitViewModel::class) {
 
@@ -26,6 +28,7 @@ class SelfLimitActivity : BaseSocketActivity<SelfLimitViewModel>(SelfLimitViewMo
     }
 
     private fun initToolbar() {
+        tv_toolbar_title.setTitleLetterSpacing()
         tv_toolbar_title.text = getString(R.string.self_limit)
         btn_toolbar_back.setOnClickListener {
             onBackPressed()
