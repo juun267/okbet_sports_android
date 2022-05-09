@@ -179,7 +179,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         if(args.liveVideo == 0) live_view_tool_bar.setUnLiveState()
 
         matchOdd?.matchInfo?.let { matchInfo ->
-            live_view_tool_bar.setStatisticsState(matchInfo.source != MatchSource.HIDE_STATISTICS.code)
+            live_view_tool_bar.setStatisticsState(matchInfo.source == MatchSource.SHOW_STATISTICS.code)
         }
     }
 
@@ -581,7 +581,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
     private fun setupLiveView(liveVideo: Int?) {
         live_view_tool_bar.setupToolBarListener(liveToolBarListener)
-        live_view_tool_bar.setStatisticsState(matchOdd?.matchInfo?.source != MatchSource.HIDE_STATISTICS.code)
+        live_view_tool_bar.setStatisticsState(matchOdd?.matchInfo?.source == MatchSource.SHOW_STATISTICS.code)
         live_view_tool_bar.setupPlayerControl(liveVideo.toString() == FLAG_LIVE)
         live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null,isLogin)
     }
