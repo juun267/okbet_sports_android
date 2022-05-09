@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.home_highlight_item.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.enum.MatchSource
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -59,8 +60,13 @@ class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
             onClickMatchListener?.onClick(data)
         }
 
-        itemView.btn_chart.setOnClickListener {
-            onClickStatisticsListener?.onClickStatistics(data.matchInfo?.id)
+        with(itemView.btn_chart) {
+            visibility =
+                if (data.matchInfo?.source == MatchSource.SHOW_STATISTICS.code) View.VISIBLE else View.GONE
+
+            setOnClickListener {
+                onClickStatisticsListener?.onClickStatistics(data.matchInfo?.id)
+            }
         }
 //        subscribeChannelHall(mMatchOdd?.matchInfo?.gameType, mMatchOdd?.matchInfo?.id)
     }
@@ -82,8 +88,13 @@ class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
                     onClickMatchListener?.onClick(data)
                 }
 
-                itemView.btn_chart.setOnClickListener {
-                    onClickStatisticsListener?.onClickStatistics(data.matchInfo?.id)
+                with(itemView.btn_chart) {
+                    visibility =
+                        if (data.matchInfo?.source == MatchSource.SHOW_STATISTICS.code) View.VISIBLE else View.GONE
+
+                    setOnClickListener {
+                        onClickStatisticsListener?.onClickStatistics(data.matchInfo?.id)
+                    }
                 }
             }
         }

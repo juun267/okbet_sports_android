@@ -28,6 +28,7 @@ import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
 import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailLiveBinding
+import org.cxct.sportlottery.enum.MatchSource
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.error.HttpError
@@ -176,6 +177,10 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         }
 
         if(args.liveVideo == 0) live_view_tool_bar.setUnLiveState()
+
+        matchOdd?.matchInfo?.let { matchInfo ->
+            live_view_tool_bar.setStatisticsState(matchInfo.source == MatchSource.SHOW_STATISTICS.code)
+        }
     }
 
     override fun onPause() {
@@ -288,7 +293,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                         setupLiveView(result.oddsDetailData?.matchOdd?.matchInfo?.liveVideo)
 
                         if (args.matchType == MatchType.IN_PLAY &&
-                            (args.gameType == GameType.TN || args.gameType == GameType.VB || args.gameType == GameType.TT)
+                            (args.gameType == GameType.TN || args.gameType == GameType.VB || args.gameType == GameType.TT || args.gameType == GameType.BM)
 //                            && tv_status_left.isVisible
                             && (it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt != null)
                         ) {
@@ -576,6 +581,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
     private fun setupLiveView(liveVideo: Int?) {
         live_view_tool_bar.setupToolBarListener(liveToolBarListener)
+        live_view_tool_bar.setStatisticsState(matchOdd?.matchInfo?.source == MatchSource.SHOW_STATISTICS.code)
         live_view_tool_bar.setupPlayerControl(liveVideo.toString() == FLAG_LIVE)
         live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null,isLogin)
     }

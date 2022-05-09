@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_odds_detail.rv_detail
 import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
+import org.cxct.sportlottery.enum.MatchSource
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.MatchType
@@ -367,6 +368,7 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     private fun setupLiveView() {
         with(live_view_tool_bar) {
             setupToolBarListener(liveToolBarListener)
+            setStatisticsState(matchOdd?.matchInfo?.source == MatchSource.SHOW_STATISTICS.code)
             setupPlayerControl(false)
         }
     }

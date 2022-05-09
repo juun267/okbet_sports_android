@@ -64,6 +64,8 @@ class LiveViewToolbar @JvmOverloads constructor(
         set(value) {
             field = value
             iv_animation.visibility = if (field.isNullOrEmpty()) View.GONE else View.VISIBLE
+
+            checkControlBarVisibility()
         }
     private var mTrackerUrl: String = ""
 
@@ -309,6 +311,8 @@ class LiveViewToolbar @JvmOverloads constructor(
 
         if (mLiveShowTag && lastLiveType == LiveType.LIVE)
             switchLiveView(show)
+
+        checkControlBarVisibility()
     }
 
     fun setupNotLogin(){
@@ -429,6 +433,8 @@ class LiveViewToolbar @JvmOverloads constructor(
         iv_play.visibility = View.GONE
         iv_animation.visibility = View.GONE
         iv_arrow.visibility = View.GONE
+
+        checkControlBarVisibility()
     }
 
     fun setLiveState() {
@@ -436,6 +442,17 @@ class LiveViewToolbar @JvmOverloads constructor(
         iv_play.visibility = View.VISIBLE
         iv_animation.visibility = View.VISIBLE
         iv_arrow.visibility = View.VISIBLE
+
+        checkControlBarVisibility()
+    }
+
+    /**
+     * 設置是否顯示數據統計圖示
+     */
+    fun setStatisticsState(open: Boolean) {
+        iv_statistics.isVisible = open
+
+        checkControlBarVisibility()
     }
 
     //region 賽事動畫
@@ -496,5 +513,15 @@ class LiveViewToolbar @JvmOverloads constructor(
             }
 
         }
+    }
+
+    /**
+     * 檢查直播、動畫、數據統計列是否需要顯示
+     * 若該列沒有任何圖示顯示則隱藏該列
+     */
+    private fun checkControlBarVisibility() {
+        Timber.e("Dean, iv_play = ${iv_play.isVisible}, iv_animation = ${iv_animation.isVisible}, iv_statistics = ${iv_statistics.isVisible}")
+        cl_control.visibility =
+            if (!iv_play.isVisible && !iv_animation.isVisible && !iv_statistics.isVisible) View.GONE else View.VISIBLE
     }
 }
