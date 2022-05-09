@@ -89,8 +89,7 @@
                     android:inputType="text"
                     android:maxLines="1"
                     android:textColor="@color/color_e5e5e5_333333"
-                    android:textSize="@dimen/textSize14sp"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
 
@@ -117,8 +116,7 @@
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:textColor="@color/color_e5e5e5_333333"
-                    android:textSize="@dimen/textSize14sp"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
 
