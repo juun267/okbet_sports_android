@@ -208,7 +208,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             }
             is BatchParlayConnectViewHolder -> {
                 holder.bind(
-                    parlayList?.getOrNull(position - (betList?.size ?: 0)),
+                    parlayList?.getOrNull(position - 1 - (betList?.size ?: 0)),
                     currentOddsType,
                     hasBetClosed,
                     onItemClickListener,
@@ -247,7 +247,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             }
             position < betSize -> ViewType.Bet.ordinal
             position == betSize -> ViewType.ParlayFirst.ordinal
-            position == getListSize() - 1 && parlayList?.size ?: 0 > 1 && moreOptionCollapse -> ViewType.Single.ordinal
+            position == betSize + 1 && parlayList?.size ?: 0 > 0 && moreOptionCollapse -> ViewType.Single.ordinal
             else -> ViewType.Parlay.ordinal
         }
     }
@@ -304,7 +304,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             betListSize == 2 || !moreOptionCollapse -> 1
             else -> (parlayList?.size ?: 0)
         }
-        return if (parlayList?.size ?: 0 > 1 && moreOptionCollapse)
+        return if (parlayList?.size ?: 0 > 0 && moreOptionCollapse)
             betListSize + parlayListSize + 1
         else
             betListSize + parlayListSize
