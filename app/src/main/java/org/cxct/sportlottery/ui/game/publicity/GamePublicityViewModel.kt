@@ -68,7 +68,7 @@ class GamePublicityViewModel(
                 if (result.success) {
                     result.result.recommendList.forEach { recommend ->
                         with(recommend) {
-                            recommend.matchInfo = MatchInfo(
+                            /*recommend.matchInfo = MatchInfo(
                                 gameType = gameType,
                                 awayName = awayName,
                                 homeName = homeName,
@@ -82,7 +82,7 @@ class GamePublicityViewModel(
                             ).apply {
                                 setupMatchType(this)
                                 setupMatchTime(this)
-                            }
+                            }*/
                         }
                     }
 
