@@ -28,6 +28,7 @@ import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
 import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailLiveBinding
+import org.cxct.sportlottery.enum.MatchSource
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.error.HttpError
@@ -176,6 +177,10 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         }
 
         if(args.liveVideo == 0) live_view_tool_bar.setUnLiveState()
+
+        matchOdd?.matchInfo?.let { matchInfo ->
+            live_view_tool_bar.setStatisticsState(matchInfo.source != MatchSource.HIDE_STATISTICS.code)
+        }
     }
 
     override fun onPause() {
@@ -288,7 +293,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                         setupLiveView(result.oddsDetailData?.matchOdd?.matchInfo?.liveVideo)
 
                         if (args.matchType == MatchType.IN_PLAY &&
-                            (args.gameType == GameType.BK || args.gameType == GameType.TN || args.gameType == GameType.VB || args.gameType == GameType.TT)
+                            (args.gameType == GameType.TN || args.gameType == GameType.VB || args.gameType == GameType.TT || args.gameType == GameType.BM)
 //                            && tv_status_left.isVisible
                             && (it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt != null)
                         ) {
@@ -576,6 +581,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
     private fun setupLiveView(liveVideo: Int?) {
         live_view_tool_bar.setupToolBarListener(liveToolBarListener)
+        live_view_tool_bar.setStatisticsState(matchOdd?.matchInfo?.source != MatchSource.HIDE_STATISTICS.code)
         live_view_tool_bar.setupPlayerControl(liveVideo.toString() == FLAG_LIVE)
         live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null,isLogin)
     }
@@ -723,6 +729,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
         tv_status_left.visibility = View.VISIBLE
         tv_spt.visibility = View.GONE
+        tv_status_right.visibility = View.GONE
         tv_status_left.setTextColor(
             ContextCompat.getColor(
                 tv_status_left.context,
@@ -733,7 +740,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         event.matchStatusList?.forEachIndexed { index, it ->
             val spanStatusName =
                 SpannableString(it.statusNameI18n?.get(getSelectLanguage(context).key))
-            val spanScore = SpannableString("${it.homeScore ?: 0}-${it.awayScore ?: 0}  ")
+            val spanScore = SpannableString(" ${it.homeScore ?: 0}-${it.awayScore ?: 0}  ")
 
             if (index == event.matchStatusList.lastIndex) {
                 spanStatusName.setSpan(
@@ -761,6 +768,8 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         val statusBuilder = SpannableStringBuilder()
 
         tv_status_left.visibility = View.VISIBLE
+        tv_status_left.text = event.matchStatusCO?.statusNameI18n?.get(getSelectLanguage(context).key) ?: ""
+
         tv_status_right.visibility = if (showScore) View.VISIBLE else View.GONE
 
         event.matchStatusList?.forEachIndexed { index, it ->
@@ -773,7 +782,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                 statusBuilder.append("  ")
             }
         }
-
         tv_status_right.text = statusBuilder
     }
 

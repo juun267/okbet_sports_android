@@ -94,8 +94,8 @@
                 android:layout_marginStart="@dimen/activity_vertical_margin"
                 android:layout_marginEnd="5dp"
                 android:ellipsize="end"
+                android:maxLines="2"
                 android:gravity="center_vertical"
-                android:singleLine="true"
                 android:text="@{gameViewModel.oddsDetailResult.peekContent().oddsDetailData.matchOdd.matchInfo.homeName}"
                 android:textColor="@color/color_FFFFFF_FFFFFF"
                 android:textSize="@dimen/textSize16sp"
@@ -179,7 +179,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/tv_home_name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_home_name"
-                app:layout_constraintVertical_bias="0.6"
+                app:layout_constraintVertical_bias="0.5"
                 tools:text="5"
                 tools:visibility="visible" />
 
@@ -196,7 +196,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/tv_away_name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_away_name"
-                app:layout_constraintVertical_bias="0.6"
+                app:layout_constraintVertical_bias="0.5"
                 tools:text="5"
                 tools:visibility="visible" />
 
@@ -220,11 +220,10 @@
                 android:id="@+id/tv_away_name"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
-
+                android:maxLines="2"
                 android:layout_marginEnd="5dp"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
-                android:singleLine="true"
                 android:text="@{gameViewModel.oddsDetailResult.peekContent().oddsDetailData.matchOdd.matchInfo.awayName}"
                 android:textColor="@color/color_FFFFFF_FFFFFF"
                 android:textSize="@dimen/textSize16sp"

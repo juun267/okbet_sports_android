@@ -1588,6 +1588,7 @@ class GameViewModel(
                             TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
 
                         matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
+                        Timber.e("Dean, matchInfo source = ${matchInfo.source}")
                     }
 
                     matchOdd.playCateMappingList = playCateMappingList
