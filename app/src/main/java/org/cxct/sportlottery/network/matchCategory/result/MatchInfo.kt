@@ -38,7 +38,9 @@ data class MatchInfo(
     @Json(name = "status")
     val status: Int?,
     @Json(name = "trackerId")
-    val trackerId: String?
+    val trackerId: String?,
+    @Json(name = "source")
+    val source: Int?
 ) : MatchInfo {
 
     override val gameType: String? = null

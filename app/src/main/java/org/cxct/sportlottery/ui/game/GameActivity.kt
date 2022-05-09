@@ -98,6 +98,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     private val mNavController by lazy { findNavController(R.id.game_container) }
     private val navDestListener by lazy {
         NavController.OnDestinationChangedListener { _, destination, arguments ->
+            updateServiceButtonVisibility(destinationId = destination.id)
             when (destination.id) {
                 R.id.homeFragment -> {
                     updateSelectTabState(0)
@@ -130,6 +131,17 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         }
     }
     var isFromPublicity: Boolean = false
+
+    private fun updateServiceButtonVisibility(destinationId: Int) {
+        btn_floating_service.visibility = when (destinationId) {
+            R.id.homeFragment -> {
+                View.VISIBLE
+            }
+            else -> {
+                View.GONE
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -770,28 +782,28 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             if (it?.couponCode.isNullOrEmpty()) {
                 when (it?.entranceMatchType) {
                     MatchType.IN_PLAY -> {
-                        tabLayout.getTabAt(1)?.select()
+                        goTab(1)
                     }
                     MatchType.AT_START -> {
-                        tabLayout.getTabAt(2)?.select()
+                        goTab(2)
                     }
                     MatchType.TODAY -> {
-                        tabLayout.getTabAt(3)?.select()
+                        goTab(3)
                     }
                     MatchType.EARLY -> {
-                        tabLayout.getTabAt(4)?.select()
+                        goTab(4)
                     }
                     MatchType.OUTRIGHT -> {
-                        tabLayout.getTabAt(5)?.select()
+                        goTab(5)
                     }
                     MatchType.PARLAY -> {
-                        tabLayout.getTabAt(6)?.select()
+                        goTab(6)
                     }
                     MatchType.EPS -> {
-                        tabLayout.getTabAt(7)?.select()
+                        goTab(7)
                     }
                     MatchType.OTHER -> {
-                        tabLayout.getTabAt(3)?.select()
+                        goTab(3)
                     }
                     MatchType.DETAIL -> {
                         it.matchID?.let { matchId ->
@@ -853,6 +865,19 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         viewModel.navPublicityPage.observe(this) {
             GamePublicityActivity.reStart(this)
+        }
+    }
+
+    /**
+     * 前往指定的賽事種類
+     * @since 若已經在該賽事種類, 點擊Tab不會觸發OnTabSelectedListener
+     */
+    private fun goTab(tabPosition: Int) {
+        if (tabLayout.selectedTabPosition != tabPosition) {
+            //賽事類別Tab不在滾球時, 點擊滾球Tab
+            tabLayout.getTabAt(tabPosition)?.select()
+        } else {
+            selectTab(tabPosition)
         }
     }
 
@@ -935,9 +960,15 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         return false
     }
 
+    /**
+     * 初始化客服按鈕
+     * 另外透過DestinationChangedListener控制客服按鈕出現或隱藏
+     * @see navDestListener
+     * @see updateServiceButtonVisibility
+     */
     private fun initServiceButton() {
         //2022/4/21需求：客服只在首頁和宣傳頁、維護頁出現
-        //btn_floating_service.setView(this)
+        btn_floating_service.setView(this)
     }
 
     override fun updateUiWithLogin(isLogin: Boolean) {
@@ -1058,6 +1089,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     }
 
     private fun closeLeftMenu() {
+        val leftMenuFragment = supportFragmentManager.findFragmentById(R.id.fl_left_menu) as LeftMenuFragment
+        leftMenuFragment.clearLeftMenu()
         if (sub_drawer_layout.isDrawerOpen(nav_left)) sub_drawer_layout.closeDrawers()
     }
 

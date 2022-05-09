@@ -38,14 +38,14 @@ class ChangeAppearanceDialog : BaseDialog<MainViewModel>(MainViewModel::class) {
             }
 
             img_back?.setOnClickListener {
-                dismiss()
+                parentFragmentManager.popBackStack()
             }
 
             img_close?.setOnClickListener {
                 parentFragmentManager.findFragmentByTag(LeftMenuFragment::class.java.simpleName)?.let {
                     (it as DialogFragment).dismiss()
                 }
-                dismiss()
+                parentFragmentManager.popBackStack()
             }
 
             rb_day_mode?.setOnClickListener {

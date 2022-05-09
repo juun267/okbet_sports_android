@@ -1019,6 +1019,8 @@
     <string name="text_bet_not_success4">ĐÃ CƯỢC.</string>
     <string name="text_security_money">Tiền đặt cọc: %s</string>
     <string name="text_security_money2">Còn %s ngày</string>
+    <string name="customer_service_title">CSKH</string>
+
     <!--自我禁制-->
     <string name="self_limit">Tự loại trừ</string>
     <string name="self_limit_impotent">Chú ý</string>
