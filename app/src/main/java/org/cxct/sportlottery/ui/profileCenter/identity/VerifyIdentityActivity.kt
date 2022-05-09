@@ -8,6 +8,7 @@ import org.cxct.sportlottery.network.index.config.VerifySwitchType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 class VerifyIdentityActivity :
     BaseSocketActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
@@ -39,6 +40,7 @@ class VerifyIdentityActivity :
     }
 
     private fun initToolbar() {
+        tv_toolbar_title.setTitleLetterSpacing()
         tv_toolbar_title.text = getString(R.string.select_id_type)
         btn_toolbar_back.setOnClickListener {
             onBackPressed()
