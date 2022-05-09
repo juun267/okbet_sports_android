@@ -48,6 +48,9 @@ class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(Maintenance
             val serviceUrl = sConfigData?.customerServiceUrl
             val serviceUrl2 = sConfigData?.customerServiceUrl2
             when {
+                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    JumpUtil.toExternalWeb(this@MaintenanceActivity, serviceUrl)
+                }
                 serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
                     JumpUtil.toExternalWeb(this@MaintenanceActivity, serviceUrl2)
                 }
