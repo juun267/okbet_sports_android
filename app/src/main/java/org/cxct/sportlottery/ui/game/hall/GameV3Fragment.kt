@@ -1200,12 +1200,13 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             }
         }
 
-        viewModel.playList.observe(this.viewLifecycleOwner) {
-            playCategoryAdapter.data = it
-            if (isReloadPlayCate != false) {
-                mView?.let { notNullView ->
-                    setupPlayCategory(notNullView)
-                    isReloadPlayCate = false
+        viewModel.playList.observe(this.viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let {
+                if (isReloadPlayCate != false) {
+                    mView?.let { notNullView ->
+                        setupPlayCategory(notNullView)
+                        isReloadPlayCate = false
+                    }
                 }
             }
         }
@@ -2361,12 +2362,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                 }
             }
-        }
-    }
-
-    fun <T : RecyclerView> T.removeItemDecorations() {
-        while (itemDecorationCount > 0) {
-            removeItemDecorationAt(0)
         }
     }
 

@@ -203,7 +203,7 @@ class GameViewModel(
     val leagueFilterList: LiveData<List<League>>
         get() = _leagueFilterList
 
-    val playList: LiveData<List<Play>>
+    val playList: LiveData<Event<List<Play>>>
         get() = _playList
 
     val playCate: LiveData<Event<String?>>
@@ -261,7 +261,7 @@ class GameViewModel(
     private val _leagueSelectedList = MutableLiveData<List<League>>()
     private val _leagueSubmitList = MutableLiveData<Event<List<League>>>()
     private val _leagueFilterList = MutableLiveData<List<League>>()
-    private val _playList = MutableLiveData<List<Play>>()
+    private val _playList = MutableLiveData<Event<List<Play>>>()
     private val _playCate = MutableLiveData<Event<String?>>()
     private val _searchResult = MutableLiveData<Event<List<SearchResult>?>>()
     private val _navDetail = MutableLiveData<Event<NavDirections>>()
@@ -1152,7 +1152,7 @@ class GameViewModel(
     }
 
     fun switchPlayCategory(matchType: MatchType, play: Play, playCateCode: String?) {
-        _playList.value?.forEach {
+        _playList.value?.peekContent()?.forEach {
             it.isSelected = (it == play)
         }
         _playCate.value = Event(playCateCode)
@@ -1364,7 +1364,7 @@ class GameViewModel(
         play: Play,
         playCateCode: String?
     ) {
-        _playList.value?.forEach {
+        _playList.value?.peekContent()?.forEach {
             it.isSelected = (it == play)
         }
         _playCate.value = Event(playCateCode)
@@ -1383,11 +1383,11 @@ class GameViewModel(
         isIncrement: Boolean = false
     ) {
 
+        val nowMatchType = curChildMatchType.value ?: matchType
+
         if (isReloadPlayCate && !isIncrement) {
             getLeaguePlayCategory(matchType, leagueIdList)
         }
-
-        val nowMatchType = curChildMatchType.value ?: matchType
 
         getSportSelected(nowMatchType)?.let { item ->
             getOddsList(
@@ -1906,7 +1906,8 @@ class GameViewModel(
                         it.isSelected = (it == playList.firstOrNull())
                     }
 
-                    _playList.postValue(playList)
+                    Timber.e("Dean, getPlayCategory matchType == OTHER")
+                    _playList.postValue(Event(playList))
                     _playCate.postValue(Event(null))
                 }
             }
@@ -1921,7 +1922,8 @@ class GameViewModel(
                         it.isSelected = (it == playList.firstOrNull())
                     }
 
-                    _playList.postValue(playList)
+                    Timber.e("Dean, getPlayCategory matchType != OTHER")
+                    _playList.postValue(Event(playList))
                     _playCate.postValue(Event(null))
                 }
             }
@@ -2295,7 +2297,7 @@ class GameViewModel(
     }
 
 
-    private fun getPlayCateSelected(): Play? = _playList.value?.find { it.isSelected }
+    private fun getPlayCateSelected(): Play? = _playList.value?.peekContent()?.find { it.isSelected }
 
     private fun getPlayCateCodeList(): List<String>? {
         _playCate.value?.peekContent()?.let {
@@ -2470,14 +2472,14 @@ class GameViewModel(
     }
 
     private fun updatePlaySelectedState(play: Play) {
-        val playList = _playList.value
+        val playList = _playList.value?.peekContent()
 
         playList?.forEach {
             it.isSelected = (it == play)
         }
 
         playList?.let {
-            _playList.value = it
+            _playList.value = Event(it)
             _playCate.value = Event((
                     when (play.selectionType == SelectionType.SELECTABLE.code) {
                         true -> {
