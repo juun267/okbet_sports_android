@@ -924,10 +924,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             mUserMoney = userMoney
 
             itemView.apply {
+                item_first_single.isVisible = false
+                ll_more_option.visibility = View.VISIBLE
                 when (parlayListSize) {
                     1 -> {
-                        item_first_single.isVisible = true
-                        ll_more_option.visibility = View.GONE
                         if (hasParlayList) {
                             item_first_connect.visibility = View.VISIBLE
                             itemData.let {
@@ -950,23 +950,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         } else {
                             item_first_connect.visibility = View.GONE
                         }
-                            setupSingleItem(
-                                betList,
-                                itemData,
-                                currentOddsType,
-                                onItemClickListener,
-                                notifyAllBet,
-                                mSelectedPosition,
-                                mBetView,
-                                onSelectedPositionListener,
-                                position,
-                                hasBetClosedForSingle
-                            )
                     }
                     else -> {
-                        item_first_single.isVisible = false
                         item_first_connect.visibility = View.VISIBLE
-                        ll_more_option.visibility = View.VISIBLE
                         itemData.let {
                             it?.max =
                                 if (GameConfigManager.maxParlayBetMoney?.toLong() ?: 0 > itemData?.max?.toLong() ?: 0) itemData?.max
@@ -985,13 +971,15 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             position,
                             userMoney
                         )
-
-                        setupClickMoreItem(
-                            itemView.ll_more_option,
-                            moreOptionCollapse,
-                            clickMoreOption
-                        )
                     }
+                }
+
+                if(betList.size > 1){
+                    setupClickMoreItem(
+                        itemView.ll_more_option,
+                        moreOptionCollapse,
+                        clickMoreOption
+                    )
                 }
             }
         }
