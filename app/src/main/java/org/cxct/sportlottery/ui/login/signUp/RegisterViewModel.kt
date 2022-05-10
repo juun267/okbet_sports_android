@@ -82,8 +82,24 @@ class RegisterViewModel(
     val loginForGuestResult: LiveData<LoginResult>
         get() = _loginForGuestResult
 
+
+    private val cbPrivacyChecked: LiveData<Boolean?>
+        get() = _cbPrivacyChecked
+
     private val agreementChecked: LiveData<Boolean?>
         get() = _agreementChecked
+
+    private val cbNotPHOfficialChecked: LiveData<Boolean?>
+        get() = _cbNotPHOfficialChecked
+
+    private val cbNotPHSchoolChecked: LiveData<Boolean?>
+        get() = _cbNotPHSchoolChecked
+
+    private val cbRuleOkbetChecked: LiveData<Boolean?>
+        get() = _cbRuleOkbetChecked
+
+    private val cbAgreeAllChecked: LiveData<Boolean?>
+        get() = _cbAgreeAllChecked
 
     private val _registerResult = MutableLiveData<LoginResult>()
     private val _inviteCodeMsg = MutableLiveData<String?>()
@@ -112,7 +128,13 @@ class RegisterViewModel(
     private val _validCodeResult = MutableLiveData<ValidCodeResult?>()
     private val _smsResult = MutableLiveData<SmsResult?>()
     private val _loginForGuestResult = MutableLiveData<LoginResult>()
+
+    private val _cbPrivacyChecked = MutableLiveData<Boolean?>()
     private val _agreementChecked = MutableLiveData<Boolean?>()
+    private val _cbNotPHOfficialChecked = MutableLiveData<Boolean?>()
+    private val _cbNotPHSchoolChecked = MutableLiveData<Boolean?>()
+    private val _cbRuleOkbetChecked = MutableLiveData<Boolean?>()
+    private val _cbAgreeAllChecked = MutableLiveData<Boolean?>()
 
     @Deprecated("沒在用")
     fun getAgreementContent(context: Context): Spanned {
@@ -345,13 +367,29 @@ class RegisterViewModel(
         }
     }
 
+    fun checkcbPrivacy(checked: Boolean?) {
+        _cbPrivacyChecked.value = if(checked == false) false else null
+    }
+
     fun checkAgreement(checked: Boolean?) {
-        if (checked == false) {
-            _agreementChecked.value = false
-        } else {
-            _agreementChecked.value = null
-        }
+        _agreementChecked.value = if(checked == false) false else null
         focusChangeCheckAllInputComplete()
+    }
+
+    fun checkcbNotPHOfficial(checked: Boolean?) {
+        _cbNotPHOfficialChecked.value = if(checked == false) false else null
+    }
+
+    fun checkcbNotPHSchool(checked: Boolean?) {
+        _cbNotPHSchoolChecked.value = if(checked == false) false else null
+    }
+
+    fun checkcbRuleOkbet(checked: Boolean?) {
+        _cbRuleOkbetChecked.value = if(checked == false) false else null
+    }
+
+    fun checkcbAgreeAll(checked: Boolean?) {
+        _cbAgreeAllChecked.value = if(checked == false) false else null
     }
 
     //檢查是否所有欄位都填寫完畢
@@ -377,7 +415,12 @@ class RegisterViewModel(
         securityPb: String,
         smsCode: String,
         validCode: String,
+        cbPrivacyChecked: Boolean,
         agreementChecked: Boolean,
+        cbNotPHOfficialChecked: Boolean,
+        cbNotPHSchoolChecked: Boolean,
+        cbRuleOkbetChecked: Boolean,
+        cbAgreeAllChecked: Boolean,
     ): Boolean {
         if (sConfigData?.enableInviteCode == FLAG_OPEN)
             checkInviteCode(inviteCode)
@@ -419,7 +462,12 @@ class RegisterViewModel(
         if (sConfigData?.enableRegValidCode == FLAG_OPEN)
             checkValidCode(validCode)
 
+        checkcbPrivacy(cbPrivacyChecked)
         checkAgreement(agreementChecked)
+        checkcbNotPHOfficial(cbNotPHOfficialChecked)
+        checkcbNotPHSchool(cbNotPHSchoolChecked)
+        checkcbRuleOkbet(cbRuleOkbetChecked)
+        checkcbAgreeAll(cbAgreeAllChecked)
 
         return checkAllInputComplete()
     }
@@ -466,7 +514,18 @@ class RegisterViewModel(
             return false
         if (sConfigData?.enableRegValidCode == FLAG_OPEN && validCodeMsg.value != null)
             return false
+
+        if (cbPrivacyChecked.value == false)
+            return false
         if (agreementChecked.value == false)
+            return false
+        if (cbNotPHOfficialChecked.value == false)
+            return false
+        if (cbNotPHSchoolChecked.value == false)
+            return false
+        if (cbRuleOkbetChecked.value == false)
+            return false
+        if (cbAgreeAllChecked.value == false)
             return false
 
         return true
@@ -514,7 +573,12 @@ class RegisterViewModel(
         securityPb: String,
         smsCode: String,
         validCode: String,
+        cbPrivacyChecked: Boolean,
         agreementChecked: Boolean,
+        cbNotPHOfficialChecked: Boolean,
+        cbNotPHSchoolChecked: Boolean,
+        cbRuleOkbetChecked: Boolean,
+        cbAgreeAllChecked: Boolean,
         deviceSn: String,
         deviceId: String
     ) {
@@ -540,7 +604,12 @@ class RegisterViewModel(
                 securityPb,
                 smsCode,
                 validCode,
-                agreementChecked
+                cbPrivacyChecked,
+                agreementChecked,
+                cbNotPHOfficialChecked,
+                cbNotPHSchoolChecked,
+                cbRuleOkbetChecked,
+                cbAgreeAllChecked,
             )) {
             register(
                 createRegisterRequest(

@@ -168,6 +168,11 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 )
             })
         )
+
+        binding.tvNotPHOfficial.text = getString(R.string.register_not_ph_official)
+        binding.tvNotPHSchool.text = getString(R.string.register_not_ph_school)
+        binding.tvRuleOkbet.text = getString(R.string.register_rule_okbet)
+        binding.tvAgreeAll.text = getString(R.string.register_rule_agree_all)
     }
 
     override fun onDestroy() {
@@ -279,8 +284,23 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun setupAgreement() {
+        binding.cbPrivacy.setOnClickListener {
+            viewModel.checkcbPrivacy(binding.cbPrivacy.isChecked)
+        }
         binding.cbAgreement.setOnClickListener {
             viewModel.checkAgreement(binding.cbAgreement.isChecked)
+        }
+        binding.cbNotPHOfficial.setOnClickListener {
+            viewModel.checkcbNotPHOfficial(binding.cbNotPHOfficial.isChecked)
+        }
+        binding.cbNotPHSchool.setOnClickListener {
+            viewModel.checkcbNotPHSchool(binding.cbNotPHSchool.isChecked)
+        }
+        binding.cbRuleOkbet.setOnClickListener {
+            viewModel.checkcbRuleOkbet(binding.cbRuleOkbet.isChecked)
+        }
+        binding.cbAgreeAll.setOnClickListener {
+            viewModel.checkcbAgreeAll(binding.cbAgreeAll.isChecked)
         }
     }
 
@@ -308,7 +328,12 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 eetSecurityPb.text.toString(),
                 eetSmsValidCode.text.toString(),
                 eetVerificationCode.text.toString(),
-                cbAgreement.isChecked
+                cbPrivacy.isChecked,
+                cbAgreement.isChecked,
+                cbNotPHOfficial.isChecked,
+                cbNotPHSchool.isChecked,
+                cbRuleOkbet.isChecked,
+                cbAgreeAll.isChecked
             )
         }
     }
@@ -426,9 +451,14 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     btnRegisterEnable()
                 }
             }
-            cbAgreement.setOnCheckedChangeListener { _, _ ->
-                btnRegisterEnable()
-            }
+
+            cbPrivacy.setOnCheckedChangeListener{ _, _ -> btnRegisterEnable() }
+            cbAgreement.setOnCheckedChangeListener { _, _ -> btnRegisterEnable() }
+            cbNotPHOfficial.setOnCheckedChangeListener{ _, _ -> btnRegisterEnable() }
+            cbNotPHSchool.setOnCheckedChangeListener{ _, _ -> btnRegisterEnable() }
+            cbRuleOkbet.setOnCheckedChangeListener{ _, _ -> btnRegisterEnable() }
+            cbAgreeAll.setOnCheckedChangeListener{ _, _ -> btnRegisterEnable() }
+
         }
 
         binding.btnRegister.setOnClickListener {
@@ -464,7 +494,12 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     eetSecurityPb.text.toString(),
                     eetSmsValidCode.text.toString(),
                     eetVerificationCode.text.toString(),
+                    cbPrivacy.isChecked,
                     cbAgreement.isChecked,
+                    cbNotPHOfficial.isChecked,
+                    cbNotPHSchool.isChecked,
+                    cbRuleOkbet.isChecked,
+                    cbAgreeAll.isChecked,
                     deviceSn,
                     deviceId
                 )
