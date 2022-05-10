@@ -3,15 +3,18 @@ package org.cxct.sportlottery.util
 import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageInfo
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES
 import androidx.core.content.FileProvider
 import timber.log.Timber
 import java.io.File
 import java.util.*
+
 
 /**
  * 更新版本 .apk 下載、安裝
@@ -94,12 +97,15 @@ object AppUpdateManager {
 
     fun install(context: Context?, fileUrl: String?) {
         try {
+
             val uri = Uri.parse(fileUrl)
             val path = uri.path
             ToastUtil.showToastInCenter(context, "下载至：$path")
 
             val intent = Intent(Intent.ACTION_VIEW)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) //4.0以上系统弹出安装成功打开界面
+
+
 
             //判断是否是Android N以及更高的版本(>=SDK 24) //SDK24以上要使用 FileProvider 提供 Uri 給外部 APP 使用
             val fileUri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -109,6 +115,16 @@ object AppUpdateManager {
 
             } else {
                 uri
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val hasInstallPermission = context?.packageManager?.canRequestPackageInstalls()
+                if (hasInstallPermission == false) {
+                    val uri = Uri.parse("package:${context?.packageName ?: ""}")
+                    val intentP = Intent(ACTION_MANAGE_UNKNOWN_APP_SOURCES, uri)
+                    context?.startActivity(intentP)
+                    return
+                }
             }
 
             intent.setDataAndType(fileUri, "application/vnd.android.package-archive")
