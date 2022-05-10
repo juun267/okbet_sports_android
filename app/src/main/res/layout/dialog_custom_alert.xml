@@ -99,7 +99,7 @@
                 android:minWidth="135dp"
                 android:minHeight="36dp"
                 android:text="@string/btn_cancel"
-                android:textColor="@color/color_317FFF_1F4780"
+                android:textColor="@color/color_317FFF_0760D4"
                 android:textSize="@dimen/textSize14sp"
                 android:textAllCaps="false"
                 android:textStyle="bold" />
@@ -121,7 +121,7 @@
                 android:minWidth="135dp"
                 android:minHeight="36dp"
                 android:text="@string/btn_determine"
-                android:textColor="@color/color_317FFF_1F4780"
+                android:textColor="@color/color_317FFF_0760D4"
                 android:textSize="@dimen/textSize14sp"
                 android:textStyle="bold" />
 
