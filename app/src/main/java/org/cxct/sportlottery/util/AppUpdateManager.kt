@@ -98,6 +98,16 @@ object AppUpdateManager {
     fun install(context: Context?, fileUrl: String?) {
         try {
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val hasInstallPermission = context?.packageManager?.canRequestPackageInstalls()
+                if (hasInstallPermission == false) {
+                    val uri = Uri.parse("package:${context?.packageName ?: ""}")
+                    val intentP = Intent(ACTION_MANAGE_UNKNOWN_APP_SOURCES, uri)
+                    context?.startActivity(intentP)
+                    return
+                }
+            }
+
             val uri = Uri.parse(fileUrl)
             val path = uri.path
             ToastUtil.showToastInCenter(context, "下载至：$path")
@@ -115,16 +125,6 @@ object AppUpdateManager {
 
             } else {
                 uri
-            }
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val hasInstallPermission = context?.packageManager?.canRequestPackageInstalls()
-                if (hasInstallPermission == false) {
-                    val uri = Uri.parse("package:${context?.packageName ?: ""}")
-                    val intentP = Intent(ACTION_MANAGE_UNKNOWN_APP_SOURCES, uri)
-                    context?.startActivity(intentP)
-                    return
-                }
             }
 
             intent.setDataAndType(fileUri, "application/vnd.android.package-archive")
