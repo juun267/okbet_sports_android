@@ -110,7 +110,6 @@
         android:paddingEnd="6dp"
         android:text="@string/inquire"
         android:textColor="@color/color_FFFFFF_FFFFFF"
-        android:textAllCaps="true"
         android:gravity="center"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintEnd_toEndOf="parent"
