@@ -1588,7 +1588,6 @@ class GameViewModel(
                             TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
 
                         matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
-                        Timber.e("Dean, matchInfo source = ${matchInfo.source}")
                     }
 
                     matchOdd.playCateMappingList = playCateMappingList
@@ -1906,7 +1905,6 @@ class GameViewModel(
                         it.isSelected = (it == playList.firstOrNull())
                     }
 
-                    Timber.e("Dean, getPlayCategory matchType == OTHER")
                     _playList.postValue(Event(playList))
                     _playCate.postValue(Event(null))
                 }
@@ -1922,7 +1920,6 @@ class GameViewModel(
                         it.isSelected = (it == playList.firstOrNull())
                     }
 
-                    Timber.e("Dean, getPlayCategory matchType != OTHER")
                     _playList.postValue(Event(playList))
                     _playCate.postValue(Event(null))
                 }
@@ -2135,14 +2132,12 @@ class GameViewModel(
                     //aaaaa
                     if (MultiLanguagesApplication.getInstance()?.getGameDetailAnimationNeedShow() == true) {
                         val animationTrackerId = result.oddsDetailData?.matchOdd?.matchInfo?.trackerId
-                        Timber.e("Dean, animationTrackerId = $animationTrackerId")
                         if (!animationTrackerId.isNullOrEmpty()) {
                             doNetwork(androidContext) {
                                 OneBoSportApi.matchService.getMatchTrackerUrl(animationTrackerId)
                             }?.let { result ->
                                 if (result.success) {
                                     _matchTrackerUrl.postValue(Event(result.matchTrackerUrl))
-                                    Timber.e("Dean, tracker url = ${result.matchTrackerUrl.h5Url}")
                                 }
                             }
                         }

@@ -1202,6 +1202,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
         viewModel.playList.observe(this.viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let {
+                playCategoryAdapter.data = it
                 if (isReloadPlayCate != false) {
                     mView?.let { notNullView ->
                         setupPlayCategory(notNullView)
