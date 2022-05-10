@@ -215,6 +215,7 @@
             android:text="@string/btn_submit"
             android:textColor="@color/color_191919_FCFCFC"
             android:textSize="@dimen/textSize16sp"
+            android:textStyle="bold"
             style="?android:attr/borderlessButtonStyle"/>
 
     </LinearLayout>
