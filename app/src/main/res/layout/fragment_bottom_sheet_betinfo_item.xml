@@ -72,10 +72,11 @@
 
                             <TextView
                                 android:id="@+id/tvInGame"
-                                android:layout_width="86dp"
+                                android:layout_width="82.5dp"
                                 android:layout_height="match_parent"
-                                android:background="@drawable/bg_half_orange_half_blue"
-                                android:gravity="center"
+                                android:paddingStart="8dp"
+                                android:background="@drawable/bg_half_orange"
+                                android:gravity="start|center_vertical"
                                 android:text="@string/home_tab_in_play2"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/margin_12"
@@ -83,16 +84,16 @@
                                 tools:visibility="visible"/>
 
                             <ImageView
-                                android:layout_marginStart="8dp"
                                 android:id="@+id/ivSportLogo"
                                 android:layout_width="@dimen/margin_12"
                                 android:layout_height="@dimen/margin_12"
+                                android:layout_marginStart="8dp"
                                 android:src="@drawable/ic_tennis_icon"
-                                app:tint="@color/white" />
+                                app:tint="@color/color_FFFFFF" />
 
                             <TextView
                                 android:id="@+id/tvLeagueName"
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/margin_4"
                                 android:layout_weight="1"
@@ -100,7 +101,7 @@
                                 android:gravity="center_vertical"
                                 android:lines="1"
                                 android:text="@string/home_tab_in_play2"
-                                android:textColor="@color/white"
+                                android:textColor="@color/color_FFFFFF"
                                 android:textSize="@dimen/margin_12" />
 
                             <ImageView
@@ -111,11 +112,8 @@
                                 android:src="@drawable/ic_close"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:tint="@color/white" />
-
+                                app:tint="@color/color_FFFFFF" />
                         </LinearLayout>
-
-
                     </LinearLayout>
 
                     <!--                    <include-->
@@ -296,7 +294,7 @@
                                 app:layout_constraintBottom_toTopOf="@+id/tv_error_message"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toStartOf="@+id/btnRecharge"
-                                android:layout_marginEnd="@dimen/margin_4"
+                                android:layout_marginEnd="@dimen/margin_8"
                                 app:layout_constraintTop_toBottomOf="@+id/tv_odd_content_changed" />
 
                             <TextView
@@ -314,6 +312,7 @@
                                 app:layout_constraintTop_toTopOf="@+id/et_bet"
                                 app:layout_constraintStart_toEndOf="@+id/et_bet"
                                 app:layout_constraintBottom_toBottomOf="@+id/et_bet"
+                                android:visibility="gone"
                                 />
 
                             <View
