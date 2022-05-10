@@ -324,6 +324,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 holder.onClickFavoriteListener = onHighLightClickFavoriteListener
                 holder.onClickStatisticsListener = onHighLightClickStatisticsListener
                 if (data is MatchOdd) {
+                    holder.removeHandler()
                     holder.bind(
                         data,
                         if (data.matchInfo?.isStartPosition == true) data else mDataList[position - 1] as MatchOdd,
@@ -367,6 +368,14 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun getItemCount(): Int = mDataList.size
+
+    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
+        when(holder) {
+            is ViewHolderHdpOu -> {
+                holder.removeHandler()
+            }
+        }
+    }
 
     fun setGameHighLightTitle(homeHighlightGameTitleItemData: HomeHighlightGameTitleItemData = HomeHighlightGameTitleItemData()) {
         removeDatas(homeHighlightGameTitleItemData)

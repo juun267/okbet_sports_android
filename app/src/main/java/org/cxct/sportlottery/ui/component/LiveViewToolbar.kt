@@ -520,7 +520,6 @@ class LiveViewToolbar @JvmOverloads constructor(
      * 若該列沒有任何圖示顯示則隱藏該列
      */
     private fun checkControlBarVisibility() {
-        Timber.e("Dean, iv_play = ${iv_play.isVisible}, iv_animation = ${iv_animation.isVisible}, iv_statistics = ${iv_statistics.isVisible}")
         cl_control.visibility =
             if (!iv_play.isVisible && !iv_animation.isVisible && !iv_statistics.isVisible) View.GONE else View.VISIBLE
     }
