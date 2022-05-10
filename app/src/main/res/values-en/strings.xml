@@ -146,8 +146,8 @@
     <string name="return_to_top">Back to top</string>
     <string name="versus">v</string>
     <string name="label_sport_game">Schedule</string>
-    <string name="label_account_history">Account</string>
-    <string name="label_transaction_status">Record</string>
+    <string name="label_account_history">Statement</string>
+    <string name="label_transaction_status">Bet List</string>
     <string name="label_title_parlay">Comprehensive pass</string>
     <string name="conspire">Parlay</string>
     <string name="message_no_at_start">Now no Coming soon Matches</string>
