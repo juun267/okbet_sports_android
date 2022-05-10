@@ -25,7 +25,6 @@ import org.cxct.sportlottery.util.setTextTypeFace
 class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
     private var oddList: MutableList<Odd?>? = null
 
-    private var matchType: MatchType = MatchType.TODAY
     var onClickOddListener: OnClickOddListener? = null
     var onClickMatchListener: OnSelectItemListener<MatchOdd>? = null //賽事畫面跳轉
     var onClickFavoriteListener: OnClickFavoriteListener? = null
@@ -45,9 +44,6 @@ class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
         setupMatchInfo(data)
         setupTime(data)
         setupOddButton(data, oddsType)
-
-        itemView.iv_match_in_play.visibility =
-            if (matchType == MatchType.AT_START) View.VISIBLE else View.GONE
 
         itemView.iv_match_price.visibility =
             if (data.matchInfo?.eps == 1) View.VISIBLE else View.GONE
@@ -75,7 +71,7 @@ class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
         return object: UpdateHighLightInterface {
             override fun doUpdate(data: MatchOdd, lastData: MatchOdd, oddsType: OddsType) {
                 itemView.iv_match_in_play.visibility =
-                    if (matchType == MatchType.AT_START) View.VISIBLE else View.GONE
+                    if (TimeUtil.isTimeAtStart(data.matchInfo?.startTime)) View.VISIBLE else View.GONE
 
                 itemView.iv_match_price.visibility =
                     if (data.matchInfo?.eps == 1) View.VISIBLE else View.GONE
@@ -190,9 +186,11 @@ class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
     @SuppressLint("SetTextI18n")
     private fun setupTime(data: MatchOdd) {
         itemView.apply {
-            if (matchType == MatchType.AT_START) {
-                data.matchInfo?.timeDisplay?.let { timeDisplay ->
-                    tv_match_time.text = String.format(itemView.context.resources.getString(R.string.at_start_remain_minute), timeDisplay)
+            var isAtStart = TimeUtil.isTimeAtStart(data.matchInfo?.startTime)
+            iv_match_in_play.visibility =  if (isAtStart) View.VISIBLE else View.GONE
+            if (isAtStart) {
+                data.matchInfo?.startTime?.minus(System.currentTimeMillis())?.let {
+                    tv_match_time.text = String.format(itemView.context.resources.getString(R.string.at_start_remain_minute), TimeUtil.longToMinute(it * 1000))
                 }
             } else {
                 tv_match_time.text = data.matchInfo?.startTimeDisplay ?: ""
