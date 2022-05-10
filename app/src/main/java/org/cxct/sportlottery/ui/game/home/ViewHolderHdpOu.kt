@@ -2,7 +2,8 @@ package org.cxct.sportlottery.ui.game.home
 
 import android.annotation.SuppressLint
 import android.graphics.Typeface
-import android.util.Log
+import android.os.Handler
+import android.os.Message
 import android.view.View
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.home_highlight_item.view.*
@@ -11,18 +12,22 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.MatchSource
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.game.interfaces.UpdateHighLightInterface
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setTextTypeFace
+import java.util.*
 
 class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
+    companion object{
+        private const val TAG = "ViewHolderHdpOu"
+
+        private const val TIMER_TASK = 1580
+    }
     private var oddList: MutableList<Odd?>? = null
 
     var onClickOddListener: OnClickOddListener? = null
@@ -35,6 +40,19 @@ class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
         }
     }
     var mMatchOdd: MatchOdd? = null
+
+    private val mHandler = @SuppressLint("HandlerLeak")
+    object : Handler() {
+        override fun handleMessage(msg: Message) {
+            when(msg.what) {
+                TIMER_TASK -> {
+                    if(msg.obj is MatchOdd) {
+                        setupTime(msg.obj as MatchOdd)
+                    }
+                }
+            }
+        }
+    }
 
     fun bind(data: MatchOdd, lastData: MatchOdd, oddsType: OddsType) {
         itemView.testId.text = "${data.matchInfo?.leagueId} - ${data.matchInfo?.id}"
@@ -188,14 +206,26 @@ class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
         itemView.apply {
             var isAtStart = TimeUtil.isTimeAtStart(data.matchInfo?.startTime)
             iv_match_in_play.visibility =  if (isAtStart) View.VISIBLE else View.GONE
+
             if (isAtStart) {
                 data.matchInfo?.startTime?.minus(System.currentTimeMillis())?.let {
-                    tv_match_time.text = String.format(itemView.context.resources.getString(R.string.at_start_remain_minute), TimeUtil.longToMinute(it * 1000))
+                    tv_match_time.text = String.format(itemView.context.resources.getString(R.string.at_start_remain_minute), TimeUtil.longToMinute(it))
                 }
             } else {
                 tv_match_time.text = data.matchInfo?.startTimeDisplay ?: ""
             }
         }
+
+        mHandler.removeMessages(TIMER_TASK)
+        val msg = Message().apply {
+            obj = data
+            what = TIMER_TASK
+        }
+        mHandler.sendMessageDelayed(msg, 1000)
+    }
+
+    fun removeHandler() {
+        mHandler.removeMessages(TIMER_TASK)
     }
 
     private fun setupOddButton(data: MatchOdd, oddsType: OddsType) {

@@ -131,3 +131,12 @@ fun View.setBackColorWithColorMode(lightModeColor: Int, darkModeColor: Int) {
         )
     )
 }
+
+/**
+ * 移除所有ItemDecorations
+ */
+fun <T : RecyclerView> T.removeItemDecorations() {
+    while (itemDecorationCount > 0) {
+        removeItemDecorationAt(0)
+    }
+}
