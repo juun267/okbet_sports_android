@@ -324,7 +324,7 @@
     <string name="updatable">Can update</string>
     <string name="internal_download">Internal download</string>
     <string name="denied_read_memory_card">Memory Card Access Denied</string>
-    <string name="current_versionIs_the_latest_version">Your app is new vesion</string>
+    <string name="current_versionIs_the_latest_version">Your App is the latest version</string>
     <string name="external_download">External download</string>
     <string name="update">Update</string>
     <string name="update_now">Update now</string>
@@ -787,7 +787,7 @@
     <string name="odds_id_not_allow_bet">This odds does not allow betting</string>
     <string name="odds_have_changed">The odds have changed, please re - bet</string>
     <string name="bet_info_content_has_been_changed">The odds or status of the game play you selected has changed, please place a bet again</string>
-    <string name="account_history_overview">Account history review</string>
+    <string name="account_history_overview">Statement</string>
     <string name="bet_num_and_bet_date">Betting order no. / Settled bets</string>
     <string name="date">Date</string>
     <string name="bet_amount">Bet</string>
