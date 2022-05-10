@@ -127,7 +127,6 @@ class VersionUpdateViewModel(
         val isNewVersionCode = if (result.check == FLAG_OPEN) judgeNewVersion(result) else judgeBigCodeVersion(result)
         val isShowUpdateDialog = after72Hours && isNewVersionCode
         val isForceUpdate = judgeForceUpdate(result)
-        Timber.e("Bee@@ $isNewVersionCode $isShowUpdateDialog $isForceUpdate ")
         _appMinVersionState.postValue(
             AppMinVersionState(
                 isShowUpdateDialog,
