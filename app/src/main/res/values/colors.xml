@@ -147,7 +147,6 @@
     <color name="color_e5e5e5_000000">@color/color_000000</color>
     <color name="color_FFFFFF_060F20">@color/color_060F20</color>
     <color name="color_2a2a2a_dedede">@color/color_dedede</color>
-    <color name="color_3131FF_0F53AF">@color/color_3131FF</color>
 
     <color name="color_FFFFFF_DE000000">@color/color_DE000000</color>
     <color name="color_B3FFFFFF_99000000">@color/transparent_black_60</color>
@@ -267,12 +266,6 @@
     <color name="color_545454">#545454</color>
     <color name="color_1E1E1E">#1E1E1E</color>
     <color name="color_EDEDED">#EDEDED</color>
-
-    <!-- register -->
-    <color name="color_0F53AF">#0F53AF</color>
-    <color name="color_3131FF">#3131FF</color>
-
-
     <!-- ======================================= -->
 
 
