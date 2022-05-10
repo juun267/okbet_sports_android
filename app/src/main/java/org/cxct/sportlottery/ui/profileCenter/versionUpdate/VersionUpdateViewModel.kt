@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.profileCenter.versionUpdate
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -12,6 +13,7 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import timber.log.Timber
 
 class VersionUpdateViewModel(
     private val androidContext: Context,
@@ -119,12 +121,13 @@ class VersionUpdateViewModel(
     }
 
     private fun compareMinVersion(result: CheckAppVersionResult) {
-        val after72Hours = System.currentTimeMillis() - lastShowUpdateTime > 24 * 60 * 60 * 1000
+        val after72Hours = (System.currentTimeMillis() - lastShowUpdateTime) > (24 * 60 * 60 * 1000)
 
         //當 check = 1 時，才比較全部版號，否則比較只比較大版號
         val isNewVersionCode = if (result.check == FLAG_OPEN) judgeNewVersion(result) else judgeBigCodeVersion(result)
         val isShowUpdateDialog = after72Hours && isNewVersionCode
         val isForceUpdate = judgeForceUpdate(result)
+        Timber.e("Bee@@ $isNewVersionCode $isShowUpdateDialog $isForceUpdate ")
         _appMinVersionState.postValue(
             AppMinVersionState(
                 isShowUpdateDialog,
@@ -135,25 +138,28 @@ class VersionUpdateViewModel(
     }
 
     private fun judgeForceUpdate(result: CheckAppVersionResult): Boolean {
-        val minVersionList: ArrayList<Int> = arrayListOf()
-        val minVersionCode = result.miniVersion?.split("_")?.get(0) ?: ""
-        val minVersionName = result.miniVersion?.split("_")?.get(1) ?: ""
-        minVersionList.add(if (minVersionCode.isBlank()) 0 else minVersionCode.toInt())
+        val minVersionList: ArrayList<String> = arrayListOf()
+        val miniVersion = result.miniVersion?.split("_")
+        val minVersionCode = miniVersion?.get(0) ?: ""
+        val minVersionName = miniVersion?.get(1) ?: ""
+        minVersionList.add(minVersionCode.ifBlank { "0" })
         minVersionName.split(".").forEach {
-            minVersionList.add(if (it.isBlank()) 0 else it.toInt())
+            minVersionList.add(it.ifBlank { "0" })
         }
 
-        val localVersionList: ArrayList<Int> = arrayListOf()
-        localVersionList.add(BuildConfig.VERSION_CODE)
+        val localVersionList: ArrayList<String> = arrayListOf()
+        localVersionList.add(BuildConfig.VERSION_CODE.toString())
         BuildConfig.VERSION_NAME.split(".").forEach {
-            localVersionList.add(if (it.isBlank()) 0 else it.toInt())
+            localVersionList.add(it.ifBlank { "0" })
         }
 
-        if (minVersionList.size == localVersionList.size) {
+        if (minVersionList.size <= localVersionList.size) {
             for (i in minVersionList.indices) {
-                if (minVersionList[i] > localVersionList[i]) {
+                val minVersion = minVersionList[i].toLongOrNull() ?: 0
+                val localVersion = localVersionList[i].toLongOrNull() ?: 0
+                if (minVersion > localVersion) {
                     return true
-                } else if (minVersionList[i] < localVersionList[i]) {
+                } else if (minVersion < localVersion) {
                     break
                 }
             }
@@ -163,25 +169,28 @@ class VersionUpdateViewModel(
     }
 
     private fun judgeNewVersion(result: CheckAppVersionResult): Boolean {
-        val versionList: ArrayList<Int> = arrayListOf()
-        val androidVersionCode = result.version?.split("_")?.get(0) ?: ""
-        val androidVersionName = result.version?.split("_")?.get(1) ?: ""
-        versionList.add(if (androidVersionCode.isBlank()) 0 else androidVersionCode.toInt())
+        val versionList: ArrayList<String> = arrayListOf()
+        val version = result.version?.split("_")
+        val androidVersionCode = version?.get(0) ?: ""
+        val androidVersionName = version?.get(1) ?: ""
+        versionList.add(androidVersionCode.ifBlank { "0" })
         androidVersionName.split(".").forEach {
-            versionList.add(if (it.isBlank()) 0 else it.toInt())
+            versionList.add(it.ifBlank { "0" })
         }
 
-        val localVersionList: ArrayList<Int> = arrayListOf()
-        localVersionList.add(BuildConfig.VERSION_CODE)
+        val localVersionList: ArrayList<String> = arrayListOf()
+        localVersionList.add(BuildConfig.VERSION_CODE.toString())
         BuildConfig.VERSION_NAME.split(".").forEach {
-            localVersionList.add(if (it.isBlank()) 0 else it.toInt())
+            localVersionList.add(it.ifBlank { "0" })
         }
 
-        if (versionList.size == localVersionList.size) {
+        if (versionList.size <= localVersionList.size) {
             for (i in versionList.indices) {
-                if (versionList[i] > localVersionList[i]) {
+                val version = versionList[i].toLongOrNull() ?: 0
+                val localVersion = localVersionList[i].toLongOrNull() ?: 0
+                if (version > localVersion) {
                     return true
-                } else if (versionList[i] < localVersionList[i]) {
+                } else if (version < localVersion) {
                     break
                 }
             }

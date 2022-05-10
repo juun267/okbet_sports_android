@@ -5,6 +5,7 @@ import kotlinx.android.synthetic.main.activity_withdraw.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 class WithdrawActivity : BaseSocketActivity<WithdrawViewModel>(WithdrawViewModel::class) {
 
@@ -17,6 +18,7 @@ class WithdrawActivity : BaseSocketActivity<WithdrawViewModel>(WithdrawViewModel
     }
 
     private fun initToolbar() {
+        tv_toolbar_title.setTitleLetterSpacing()
         tv_toolbar_title.text = getString(R.string.withdraw)
         btn_toolbar_back.setOnClickListener {
             finish()

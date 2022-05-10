@@ -97,6 +97,10 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
     }
 
     private fun initObserve() {
+        viewModel.errorResultIndex.observe(this) {
+            JumpUtil.toInternalWeb(this, it, "", false)
+        }
+
         viewModel.configResult.observe(this) {
             when {
                 it?.configData?.maintainStatus == FLAG_OPEN -> {
