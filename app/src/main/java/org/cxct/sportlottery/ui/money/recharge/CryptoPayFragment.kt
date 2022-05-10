@@ -35,10 +35,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.ui.profileCenter.profile.RechargePicSelectorDialog
-import org.cxct.sportlottery.util.ArithUtil
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.*
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
@@ -101,6 +98,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     private fun initButton() {
         //提交
+        btn_submit.setTitleLetterSpacing()
         btn_submit.setOnClickListener {
             createMoneyAddRequest().let {
                 viewModel.rechargeCryptoSubmit(
