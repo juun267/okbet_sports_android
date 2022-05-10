@@ -39,8 +39,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
             android:ellipsize="end"
-            android:maxLines="2"
+            android:maxLines="1"
             android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize14sp"
             android:textStyle="bold"
@@ -56,9 +57,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
             android:layout_marginTop="4dp"
             android:ellipsize="end"
-            android:maxLines="2"
+            android:maxLines="1"
             android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize14sp"
             android:textStyle="bold"
@@ -118,7 +120,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="04/15 \n 03:00" />
+            tools:text="04/15\n03:00" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

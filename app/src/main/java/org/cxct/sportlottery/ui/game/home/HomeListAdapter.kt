@@ -324,6 +324,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 holder.onClickFavoriteListener = onHighLightClickFavoriteListener
                 holder.onClickStatisticsListener = onHighLightClickStatisticsListener
                 if (data is MatchOdd) {
+                    holder.removeHandler()
                     holder.bind(
                         data,
                         if (data.matchInfo?.isStartPosition == true) data else mDataList[position - 1] as MatchOdd,
@@ -367,6 +368,14 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun getItemCount(): Int = mDataList.size
+
+    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
+        when(holder) {
+            is ViewHolderHdpOu -> {
+                holder.removeHandler()
+            }
+        }
+    }
 
     fun setGameHighLightTitle(homeHighlightGameTitleItemData: HomeHighlightGameTitleItemData = HomeHighlightGameTitleItemData()) {
         removeDatas(homeHighlightGameTitleItemData)
@@ -805,10 +814,10 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
      * 刷新精選賽事時間
      * 20220420 後端過濾資料，精選賽事不會有滾球賽事，故先計時精選賽事時間
      */
-    fun notifyHighLightTimeChanged(diff: Int) {
-        var isUpdate = false
+    fun notifyHighLightTimeChanged() {
         val list = getMatchOdd()
         list.forEach { odd ->
+            var isUpdate = false
             odd.matchInfo?.let {
                 it.isAtStart = TimeUtil.isTimeAtStart(it.startTime)
                 if (it.isAtStart == true) {
@@ -822,10 +831,9 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     }
                 }
             }
-        }
-        if (isUpdate) {
-            removeDatas(getMatchOdd().firstOrNull())
-            list.forEach { addDataWithSort(it) }
+            if (isUpdate) {
+                notifyHighLightItemChanged(odd)
+            }
         }
     }
 
