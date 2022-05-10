@@ -55,7 +55,7 @@ class QuickListView @JvmOverloads constructor(
         OddButtonEpsAdapter(mMatchOdd?.matchInfo)
 
     init {
-        addView(LayoutInflater.from(MultiLanguagesApplication.appContext).inflate(R.layout.view_quick_list, this, false).apply {
+        addView(LayoutInflater.from(context).inflate(R.layout.view_quick_list, this, false).apply {
             league_odd_quick_odd_btn_pair.setBackColorWithColorMode(
                 lightModeColor = R.color.color_ededed, darkModeColor = R.color.color_212121
             )
@@ -198,7 +198,7 @@ class QuickListView @JvmOverloads constructor(
         league_odd_quick_cate_tabs?.removeAllViews()
         mQuickPlayCateList.sortedBy { it.sort }.forEachIndexed { index, it ->
             val inflater =
-                MultiLanguagesApplication.appContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             val rb = inflater.inflate(R.layout.custom_radio_button, null) as RadioButton
             league_odd_quick_cate_tabs?.addView(rb.apply {
 

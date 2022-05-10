@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.hall.adapter
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,9 +16,20 @@ import org.cxct.sportlottery.network.sport.query.PlayCate
 
 class PlayCategoryAdapter : RecyclerView.Adapter<PlayCategoryAdapter.ViewHolderPlayCategory>() {
     var data = listOf<Play>()
+        @SuppressLint("NotifyDataSetChanged")
         set(value) {
+            var notifyAll = false
+            if (field.size != value.size) {
+                notifyAll = true
+            }
             field = value
-            notifyDataSetChanged()
+            if (notifyAll) {
+                notifyDataSetChanged()
+            } else {
+                field.forEachIndexed { index, _ ->
+                    notifyItemChanged(index)
+                }
+            }
         }
 
     var playCategoryListener: PlayCategoryListener? = null

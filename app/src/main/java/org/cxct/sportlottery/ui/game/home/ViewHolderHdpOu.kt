@@ -2,6 +2,8 @@ package org.cxct.sportlottery.ui.game.home
 
 import android.annotation.SuppressLint
 import android.graphics.Typeface
+import android.os.Handler
+import android.os.Message
 import android.view.View
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.home_highlight_item.view.*
@@ -12,8 +14,7 @@ import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.network.odds.list.TimeCounting
-import org.cxct.sportlottery.ui.game.common.ViewHolderTimer
+import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.game.interfaces.UpdateHighLightInterface
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
@@ -21,7 +22,12 @@ import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setTextTypeFace
 import java.util.*
 
-class ViewHolderHdpOu(itemView: View) : ViewHolderTimer(itemView) {
+class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
+    companion object{
+        private const val TAG = "ViewHolderHdpOu"
+
+        private const val TIMER_TASK = 1580
+    }
     private var oddList: MutableList<Odd?>? = null
 
     var onClickOddListener: OnClickOddListener? = null
@@ -34,6 +40,19 @@ class ViewHolderHdpOu(itemView: View) : ViewHolderTimer(itemView) {
         }
     }
     var mMatchOdd: MatchOdd? = null
+
+    private val mHandler = @SuppressLint("HandlerLeak")
+    object : Handler() {
+        override fun handleMessage(msg: Message) {
+            when(msg.what) {
+                TIMER_TASK -> {
+                    if(msg.obj is MatchOdd) {
+                        setupTime(msg.obj as MatchOdd)
+                    }
+                }
+            }
+        }
+    }
 
     fun bind(data: MatchOdd, lastData: MatchOdd, oddsType: OddsType) {
         itemView.testId.text = "${data.matchInfo?.leagueId} - ${data.matchInfo?.id}"
@@ -185,57 +204,28 @@ class ViewHolderHdpOu(itemView: View) : ViewHolderTimer(itemView) {
     @SuppressLint("SetTextI18n")
     private fun setupTime(data: MatchOdd) {
         itemView.apply {
-            val startTime = data.matchInfo?.startTime ?: 0
-
-            var isAtStart = TimeUtil.isTimeAtStart(startTime)
+            var isAtStart = TimeUtil.isTimeAtStart(data.matchInfo?.startTime)
             iv_match_in_play.visibility =  if (isAtStart) View.VISIBLE else View.GONE
+
             if (isAtStart) {
-
-
-                val isTimerEnable = true
-                val isTimerPause = data.matchInfo?.stopped == TimeCounting.STOP.value
-
-                val timeDisplay: Long = TimeUtil.getRemainTime(startTime)
-                data.matchInfo?.remainTime = timeDisplay
-                data.matchInfo?.timeDisplay = TimeUtil.longToMinute(timeDisplay)
-
-                data.matchInfo?.timeDisplay?.let { timeDisplay ->
-                    tv_match_time.text = String.format(
-                        itemView.context.resources.getString(R.string.at_start_remain_minute),
-                        timeDisplay
-                    )
-                    listener = object : TimerListener {
-                        override fun onTimerUpdate(timeMillis: Long) {
-                            if (timeMillis > 1000) {
-                                val min = TimeUtil.longToMinute(timeMillis)
-                                tv_match_time.text = String.format(
-                                    itemView.context.resources.getString(R.string.at_start_remain_minute),
-                                    min
-                                )
-                            } else {
-                                //等待Socket更新
-                                tv_match_time.text = String.format(
-                                    itemView.context.resources.getString(R.string.at_start_remain_minute),
-                                    0
-                                )
-                            }
-                            data.matchInfo.remainTime = timeMillis
-
-                        }
-                    }
-                    data.matchInfo.remainTime?.let { remainTime ->
-                        updateTimer(
-                            isTimerEnable,
-                            isTimerPause,
-                            (remainTime / 1000).toInt(),
-                            true
-                        )
-                    }
+                data.matchInfo?.startTime?.minus(System.currentTimeMillis())?.let {
+                    tv_match_time.text = String.format(itemView.context.resources.getString(R.string.at_start_remain_minute), TimeUtil.longToMinute(it))
                 }
             } else {
                 tv_match_time.text = data.matchInfo?.startTimeDisplay ?: ""
             }
         }
+
+        mHandler.removeMessages(TIMER_TASK)
+        val msg = Message().apply {
+            obj = data
+            what = TIMER_TASK
+        }
+        mHandler.sendMessageDelayed(msg, 1000)
+    }
+
+    fun removeHandler() {
+        mHandler.removeMessages(TIMER_TASK)
     }
 
     private fun setupOddButton(data: MatchOdd, oddsType: OddsType) {
