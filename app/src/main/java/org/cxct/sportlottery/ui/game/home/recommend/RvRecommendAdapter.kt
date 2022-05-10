@@ -35,8 +35,8 @@ import org.cxct.sportlottery.util.TimeUtil
 class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolder>() {
 
     private val mRequestOptions = RequestOptions()
-        .placeholder(R.drawable.ic_image_load)
-        .error(R.drawable.ic_image_broken)
+//        .placeholder(R.drawable.ic_image_load)
+//        .error(R.drawable.ic_image_broken)
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .dontTransform()
 

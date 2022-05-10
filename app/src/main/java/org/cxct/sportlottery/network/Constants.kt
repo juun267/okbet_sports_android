@@ -9,7 +9,7 @@ import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 
 object Constants {
-    val SERVER_URL_LIST = listOf("aioweiyaaaf.com", "app99app.vip", "app66app.vip", "app88app.vip")
+    val SERVER_URL_LIST = listOf("aoweifaaaii.com", "abweifoooyy.com", "abweouiiiuu.com", "acweifyyyff.com")
     var currentServerUrl: String? = null  //當前選擇的的 server url (後續 CheckAppUpdate API 會用到)
     private var mBaseUrl = ""
     private var mSocketUrl = ""
