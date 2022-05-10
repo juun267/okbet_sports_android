@@ -86,8 +86,8 @@ class PublicityRecommendViewHolder(
 
             //LeagueView
             with(leagueView) {
-                GameConfigManager.getTitleBarBackground(data.gameType,MultiLanguagesApplication.isNightMode)?.let { titleRes ->
-                    publicityLeagueBg.setBackgroundResource(titleRes)
+                GameConfigManager.getTitleBarBackgroundInPublicPage(data.gameType,MultiLanguagesApplication.isNightMode)?.let { titleRes ->
+                    publicityLeagueBg.setImageResource(titleRes)
                 }
                 tvLeagueName.text = data.leagueName
                 ivFlag.setImageDrawable(SvgUtil.getSvgDrawable(itemView.context, data.categoryIcon))
