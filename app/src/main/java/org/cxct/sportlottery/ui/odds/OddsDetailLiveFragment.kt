@@ -599,7 +599,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         val playCateTypeList = this.oddsDetailData?.matchOdd?.playCateTypeList
         if (playCateTypeList?.isNotEmpty() == true) {
             tabCateAdapter.dataList = playCateTypeList
-            tabCateAdapter.selectedPosition = 0
         } else {
             rv_cat.visibility = View.GONE
         }
