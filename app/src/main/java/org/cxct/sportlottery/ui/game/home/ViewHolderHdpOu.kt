@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.game.home
 
 import android.annotation.SuppressLint
 import android.graphics.Typeface
-import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.home_highlight_item.view.*
@@ -11,18 +10,18 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.MatchSource
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
+import org.cxct.sportlottery.network.odds.list.TimeCounting
+import org.cxct.sportlottery.ui.game.common.ViewHolderTimer
 import org.cxct.sportlottery.ui.game.interfaces.UpdateHighLightInterface
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setTextTypeFace
+import java.util.*
 
-class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
+class ViewHolderHdpOu(itemView: View) : ViewHolderTimer(itemView) {
     private var oddList: MutableList<Odd?>? = null
 
     var onClickOddListener: OnClickOddListener? = null
@@ -186,11 +185,52 @@ class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
     @SuppressLint("SetTextI18n")
     private fun setupTime(data: MatchOdd) {
         itemView.apply {
-            var isAtStart = TimeUtil.isTimeAtStart(data.matchInfo?.startTime)
+            val startTime = data.matchInfo?.startTime ?: 0
+
+            var isAtStart = TimeUtil.isTimeAtStart(startTime)
             iv_match_in_play.visibility =  if (isAtStart) View.VISIBLE else View.GONE
             if (isAtStart) {
-                data.matchInfo?.startTime?.minus(System.currentTimeMillis())?.let {
-                    tv_match_time.text = String.format(itemView.context.resources.getString(R.string.at_start_remain_minute), TimeUtil.longToMinute(it * 1000))
+
+
+                val isTimerEnable = true
+                val isTimerPause = data.matchInfo?.stopped == TimeCounting.STOP.value
+
+                val timeDisplay: Long = TimeUtil.getRemainTime(startTime)
+                data.matchInfo?.remainTime = timeDisplay
+                data.matchInfo?.timeDisplay = TimeUtil.longToMinute(timeDisplay)
+
+                data.matchInfo?.timeDisplay?.let { timeDisplay ->
+                    tv_match_time.text = String.format(
+                        itemView.context.resources.getString(R.string.at_start_remain_minute),
+                        timeDisplay
+                    )
+                    listener = object : TimerListener {
+                        override fun onTimerUpdate(timeMillis: Long) {
+                            if (timeMillis > 1000) {
+                                val min = TimeUtil.longToMinute(timeMillis)
+                                tv_match_time.text = String.format(
+                                    itemView.context.resources.getString(R.string.at_start_remain_minute),
+                                    min
+                                )
+                            } else {
+                                //等待Socket更新
+                                tv_match_time.text = String.format(
+                                    itemView.context.resources.getString(R.string.at_start_remain_minute),
+                                    0
+                                )
+                            }
+                            data.matchInfo.remainTime = timeMillis
+
+                        }
+                    }
+                    data.matchInfo.remainTime?.let { remainTime ->
+                        updateTimer(
+                            isTimerEnable,
+                            isTimerPause,
+                            (remainTime / 1000).toInt(),
+                            true
+                        )
+                    }
                 }
             } else {
                 tv_match_time.text = data.matchInfo?.startTimeDisplay ?: ""
