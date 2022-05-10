@@ -263,7 +263,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             }
 
             itemView.league_odd_match_chart.apply {
-                visibility = if (item.matchInfo?.source == MatchSource.HIDE_STATISTICS.code) View.GONE else View.VISIBLE
+                visibility = if (item.matchInfo?.source == MatchSource.SHOW_STATISTICS.code) View.VISIBLE else View.GONE
 
                 setOnClickListener {
                     leagueOddListener?.onClickStatistics(item.matchInfo?.id)
