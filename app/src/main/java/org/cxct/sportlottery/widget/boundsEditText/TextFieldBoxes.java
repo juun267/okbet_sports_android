@@ -1094,7 +1094,6 @@ public class TextFieldBoxes extends FrameLayout {
             layoutParams.addRule(RelativeLayout.ALIGN_TOP, R.id.text_field_boxes_sub_label);
             int topMargin = ((int) MetricsUtil.INSTANCE.convertDpToPixel(6, editTextLayout.getContext()));
             layoutParams.topMargin = - (topMargin + inputLayout.getPaddingTop());
-            Log.d("jackson", "setSubLabelText: topmargin: " + topMargin + "inputLayout getPaddingTop: " + inputLayout.getPaddingTop());
         }
         editTextLayout.setLayoutParams(layoutParams);
     }
