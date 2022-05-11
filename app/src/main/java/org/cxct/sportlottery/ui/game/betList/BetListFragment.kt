@@ -109,7 +109,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         message = spannableStringBuilder,
                         success = true
                     ) {
-                        viewModel.navTranStatus()
+//                        viewModel.navTranStatus()
+
                     }
                 }
             }
