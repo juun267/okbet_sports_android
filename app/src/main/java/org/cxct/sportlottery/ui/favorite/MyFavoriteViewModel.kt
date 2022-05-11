@@ -47,7 +47,7 @@ class MyFavoriteViewModel(
     val favoriteRepository = myFavoriteRepository
     val lastSportType = myFavoriteRepository.lastSportType
 
-    fun getSportQuery(getLastPick:Boolean? = false) {
+    fun getSportQuery(getLastPick: Boolean? = false, isReloadPlayCate: Boolean = false) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.sportService.getQuery(
@@ -62,24 +62,54 @@ class MyFavoriteViewModel(
 
 
 
-            result?.sportQueryData?.let { sportQueryData ->
-                _sportQueryData.postValue(Event(
-                    sportQueryData.apply {
-                        if (!sportQueryData.items?.filter { it.code == lastSportType.value?.code }.isNullOrEmpty() && getLastPick == true){
-                            sportQueryData.items?.find { it.code == lastSportType.value?.code }.apply {
-                                this?.isSelected = true
-                                this?.play?.firstOrNull()?.isSelected = true
-                            }
-                        }else{
-                            sportQueryData.items?.firstOrNull()?.apply {
+            result?.sportQueryData?.let { newSportQueryData ->
+                _sportQueryData.postValue(
+                    Event(
+                        newSportQueryData.apply {
+                            if (!newSportQueryData.items?.filter { it.code == lastSportType.value?.code }
+                                    .isNullOrEmpty() && getLastPick == true) {
+                                newSportQueryData.items?.find { it.code == lastSportType.value?.code }.apply {
+                                    this?.isSelected = true
+                                    if (isReloadPlayCate)
+                                        this?.play?.firstOrNull()?.isSelected = true
+                                    else {
+                                        //若不刷新玩法篩選狀態, 將舊的篩選更新至新獲取的資料中
+                                        val selectedPlayCate =
+                                            sportQueryData.value?.peekContent()?.items?.find { it.code == lastSportType.value?.code }
+                                        val selectedPlay =
+                                            selectedPlayCate?.play?.firstOrNull { play -> play.isSelected }
+                                        this?.play?.find {
+                                            it.code == selectedPlay?.code
+                                        }?.let { play ->
+                                            play.isSelected = true
+                                            play.playCateList?.forEach { playCate ->
+                                                playCate.isSelected =
+                                                    selectedPlay?.playCateList?.firstOrNull { it.code == playCate.code }?.isSelected
+                                                        ?: false
+                                            }
+                                        }
+                                    }
+                                }
+                            } else {
+                            newSportQueryData.items?.firstOrNull()?.apply NewSportData@{
+                                favoriteRepository.setLastSportType(Item(
+                                    code = code ?: "",
+                                    name = name ?: "",
+                                    num = num ?: 0,
+                                    play = null,
+                                    sortNum = sortNum ?: 0
+                                ).apply Item@{
+                                    this@Item.isSelected = this@NewSportData.isSelected
+                                })
                                 this.isSelected = true
-                                this.play?.firstOrNull()?.isSelected = true
+                                if (isReloadPlayCate)
+                                    this.play?.firstOrNull()?.isSelected = true
                             }
                         }
                     }
                 ))
 
-                val selectItem = sportQueryData.items?.find { it.isSelected }
+                val selectItem = newSportQueryData.items?.find { it.isSelected }
                 getFavoriteMatch(
                     selectItem?.code,
                     selectItem?.play?.firstOrNull()?.code
