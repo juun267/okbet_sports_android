@@ -3,7 +3,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/color_317FFF_0760D4</item>
-        <item name="colorPrimaryDark">@color/color_317FFF_1F4780</item>
+        <item name="colorPrimaryDark">@color/color_317FFF_0760D4</item>
         <item name="colorAccent">@color/color_317FFF_1463cf</item>
 
         <!-- 20210322 紀錄：拿掉按鈕預設 ripple 渲染效果-->
