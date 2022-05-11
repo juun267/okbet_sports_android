@@ -74,20 +74,7 @@ class MyFavoriteViewModel(
                                         this?.play?.firstOrNull()?.isSelected = true
                                     else {
                                         //若不刷新玩法篩選狀態, 將舊的篩選更新至新獲取的資料中
-                                        val selectedPlayCate =
-                                            sportQueryData.value?.peekContent()?.items?.find { it.code == lastSportType.value?.code }
-                                        val selectedPlay =
-                                            selectedPlayCate?.play?.firstOrNull { play -> play.isSelected }
-                                        this?.play?.find {
-                                            it.code == selectedPlay?.code
-                                        }?.let { play ->
-                                            play.isSelected = true
-                                            play.playCateList?.forEach { playCate ->
-                                                playCate.isSelected =
-                                                    selectedPlay?.playCateList?.firstOrNull { it.code == playCate.code }?.isSelected
-                                                        ?: false
-                                            }
-                                        }
+                                        setupPlayState()
                                     }
                                 }
                             } else {
@@ -114,6 +101,29 @@ class MyFavoriteViewModel(
                     selectItem?.code,
                     selectItem?.play?.firstOrNull()?.code
                 )
+            }
+        }
+    }
+
+    /**
+     * 將新資料配置原本玩法篩選的狀態
+     * @see org.cxct.sportlottery.network.sport.query.Play isSelected 選中狀態 isLocked 可下拉篩選是否有被點選過的狀態
+     * @see org.cxct.sportlottery.network.sport.query.PlayCate isSelected 可下拉篩選被選中的玩法
+     */
+    private fun org.cxct.sportlottery.network.sport.query.Item?.setupPlayState() {
+        val selectedPlayCate =
+            sportQueryData.value?.peekContent()?.items?.find { it.code == this?.code }
+        this?.play?.forEach { newSportPlay ->
+            val oldSportPlay = selectedPlayCate?.play?.find { oldSportPlay -> newSportPlay.code == oldSportPlay.code }
+            newSportPlay.isSelected = oldSportPlay?.isSelected ?: false
+            oldSportPlay?.let { oldPlay ->
+                newSportPlay.isLocked = oldPlay.isLocked
+            }
+
+            newSportPlay.playCateList?.forEach { newPlayCate ->
+                val oldPlayCate =
+                    oldSportPlay?.playCateList?.find { oldPlayCate -> oldPlayCate.code == newPlayCate.code }
+                newPlayCate.isSelected = oldPlayCate?.isSelected ?: false
             }
         }
     }
