@@ -27,6 +27,7 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
+import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueListener
@@ -41,11 +42,14 @@ import org.cxct.sportlottery.util.*
 @SuppressLint("LogNotTimber")
 class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteViewModel::class) {
 
+    private var isReloadPlayCate: Boolean? = null //是否重新加載玩法篩選Layout
+
     private val gameTypeAdapter by lazy {
         GameTypeAdapter().apply {
             gameTypeListener = GameTypeListener {
                 unSubscribeChannelHallAll()
                 viewModel.switchGameType(it)
+                isReloadPlayCate = true
             }
         }
     }
@@ -168,10 +172,17 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
     private fun setupPlayCategory(view: View) {
         view.favorite_play_category.apply {
-            this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            if (this.layoutManager == null || isReloadPlayCate != false) {
+                this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            }
 
-            this.adapter = playCategoryAdapter
+            edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
 
+            if (this.adapter == null || isReloadPlayCate != false) {
+                this.adapter = playCategoryAdapter
+            }
+
+            removeItemDecorations()
             addItemDecoration(
                 SpaceItemDecoration(
                     context,
@@ -399,7 +410,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
     override fun onStart() {
         super.onStart()
-        viewModel.getSportQuery(getLastPick = true)
+        viewModel.getSportQuery(getLastPick = true, isReloadPlayCate != false)
         viewModel.getSportMenuFilter()
     }
 
@@ -438,10 +449,19 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         viewModel.favorMatchOddList.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { leagueOddList ->
                 hideLoading()
-                leagueOddList.filterMenuPlayCate()
 
                 favorite_game_list.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-                leagueAdapter.data = leagueOddList.toMutableList()
+                val leagueData = leagueOddList.toMutableList()
+                leagueData.updateOddsSort()
+
+                //檢查是否有取得我的賽事資料, 對介面進行調整
+                if (leagueData.isNullOrEmpty()) {
+                    noFavoriteMatchViewState()
+                } else {
+                    showFavoriteMatchViewState()
+                }
+
+                leagueAdapter.data = leagueData
                 leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
                 try {
                     /*目前流程 需要先解除再綁定 socket流程下才會回傳內容*/
@@ -487,16 +507,10 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         }
 
         viewModel.favorMatchList.observe(this.viewLifecycleOwner) { favorMatchList ->
+
+            //若用戶的最愛清單無賽事id則隱藏相關的介面, 若有則等待後續我的賽事資料判斷需不需要顯示
             if (favorMatchList.isNullOrEmpty()) {
-                favorite_toolbar.visibility = View.VISIBLE
-                fl_no_game.visibility = View.VISIBLE
-                appbar_layout.visibility = View.GONE
-                favorite_game_list.visibility = View.GONE
-            } else {
-                favorite_toolbar.visibility = View.GONE
-                fl_no_game.visibility = View.GONE
-                appbar_layout.visibility = View.VISIBLE
-                favorite_game_list.visibility = View.VISIBLE
+                noFavoriteMatchViewState()
             }
         }
 
@@ -505,6 +519,26 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 leagueAdapter.oddsType = oddsType
             }
         }
+    }
+
+    /**
+     * 若我的賽事無資料時顯示的介面
+     */
+    private fun noFavoriteMatchViewState() {
+        favorite_toolbar.visibility = View.VISIBLE
+        fl_no_game.visibility = View.VISIBLE
+        appbar_layout.visibility = View.GONE
+        favorite_game_list.visibility = View.GONE
+    }
+
+    /**
+     * 若我的賽事有資料時顯示的介面
+     */
+    private fun showFavoriteMatchViewState() {
+        favorite_toolbar.visibility = View.GONE
+        fl_no_game.visibility = View.GONE
+        appbar_layout.visibility = View.VISIBLE
+        favorite_game_list.visibility = View.VISIBLE
     }
 
     private fun updateGameTypeList(items: List<Item>?) {
@@ -561,6 +595,11 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
     private fun updatePlayCategory(plays: List<Play>?) {
         playCategoryAdapter.data = plays ?: listOf()
+        if (isReloadPlayCate != false)
+            view?.let { notNullView ->
+                setupPlayCategory(notNullView)
+                isReloadPlayCate = false
+            }
     }
 
     private fun addOddsDialog(
@@ -706,16 +745,17 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     /**
      * 可以下拉的PlayCate, 進行oddsMap的篩選, 只留下選擇的玩法
      */
-    private fun List<LeagueOdd>.filterMenuPlayCate() {
+    private fun List<LeagueOdd>.filterMenuPlayCate(): List<LeagueOdd> {
         val playSelected = playCategoryAdapter.data.find { it.isSelected }
-        when (playSelected?.selectionType) {
+        return when (playSelected?.selectionType) {
             SelectionType.SELECTABLE.code -> {
-                this.forEach { leagueOdd ->
+                this.toMutableList().onEach { leagueOdd ->
                     leagueOdd.matchOdds.forEach { matchOdd ->
                         matchOdd.oddsMap?.entries?.retainAll { oddMap -> oddMap.key == getPlayCateMenuCode() }
                     }
-                }
+                }.toList()
             }
+            else -> this.toMutableList().toList()
         }
     }
 
@@ -800,5 +840,10 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 }
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        isReloadPlayCate = null
     }
 }

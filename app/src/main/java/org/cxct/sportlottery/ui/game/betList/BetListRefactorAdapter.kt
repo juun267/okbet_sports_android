@@ -196,6 +196,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     {
                         moreOptionCollapse = !moreOptionCollapse
                         needScrollToBottom = true
+                        onItemClickListener.onMoreOptionClick()
                         notifyDataSetChanged()
                     },
                     mSelectedPosition,
@@ -2079,6 +2080,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         fun saveOddsHasChanged(matchOdd: MatchOdd)
         fun refreshBetInfoTotal()
         fun showParlayRule(parlayType: String, parlayRule: String)
+        fun onMoreOptionClick()
     }
 
     interface OnSelectedPositionListener {

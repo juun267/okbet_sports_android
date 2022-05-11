@@ -47,7 +47,7 @@ class MyFavoriteViewModel(
     val favoriteRepository = myFavoriteRepository
     val lastSportType = myFavoriteRepository.lastSportType
 
-    fun getSportQuery(getLastPick:Boolean? = false) {
+    fun getSportQuery(getLastPick: Boolean? = false, isReloadPlayCate: Boolean = false) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.sportService.getQuery(
@@ -62,28 +62,68 @@ class MyFavoriteViewModel(
 
 
 
-            result?.sportQueryData?.let { sportQueryData ->
-                _sportQueryData.postValue(Event(
-                    sportQueryData.apply {
-                        if (!sportQueryData.items?.filter { it.code == lastSportType.value?.code }.isNullOrEmpty() && getLastPick == true){
-                            sportQueryData.items?.find { it.code == lastSportType.value?.code }.apply {
-                                this?.isSelected = true
-                                this?.play?.firstOrNull()?.isSelected = true
-                            }
-                        }else{
-                            sportQueryData.items?.firstOrNull()?.apply {
+            result?.sportQueryData?.let { newSportQueryData ->
+                _sportQueryData.postValue(
+                    Event(
+                        newSportQueryData.apply {
+                            if (!newSportQueryData.items?.filter { it.code == lastSportType.value?.code }
+                                    .isNullOrEmpty() && getLastPick == true) {
+                                newSportQueryData.items?.find { it.code == lastSportType.value?.code }.apply {
+                                    this?.isSelected = true
+                                    if (isReloadPlayCate)
+                                        this?.play?.firstOrNull()?.isSelected = true
+                                    else {
+                                        //若不刷新玩法篩選狀態, 將舊的篩選更新至新獲取的資料中
+                                        setupPlayState()
+                                    }
+                                }
+                            } else {
+                            newSportQueryData.items?.firstOrNull()?.apply NewSportData@{
+                                favoriteRepository.setLastSportType(Item(
+                                    code = code ?: "",
+                                    name = name ?: "",
+                                    num = num ?: 0,
+                                    play = null,
+                                    sortNum = sortNum ?: 0
+                                ).apply Item@{
+                                    this@Item.isSelected = this@NewSportData.isSelected
+                                })
                                 this.isSelected = true
-                                this.play?.firstOrNull()?.isSelected = true
+                                if (isReloadPlayCate)
+                                    this.play?.firstOrNull()?.isSelected = true
                             }
                         }
                     }
                 ))
 
-                val selectItem = sportQueryData.items?.find { it.isSelected }
+                val selectItem = newSportQueryData.items?.find { it.isSelected }
                 getFavoriteMatch(
                     selectItem?.code,
                     selectItem?.play?.firstOrNull()?.code
                 )
+            }
+        }
+    }
+
+    /**
+     * 將新資料配置原本玩法篩選的狀態
+     * @see org.cxct.sportlottery.network.sport.query.Play isSelected 選中狀態 isLocked 可下拉篩選是否有被點選過的狀態
+     * @see org.cxct.sportlottery.network.sport.query.PlayCate isSelected 可下拉篩選被選中的玩法
+     */
+    private fun org.cxct.sportlottery.network.sport.query.Item?.setupPlayState() {
+        val selectedPlayCate =
+            sportQueryData.value?.peekContent()?.items?.find { it.code == this?.code }
+        this?.play?.forEach { newSportPlay ->
+            val oldSportPlay = selectedPlayCate?.play?.find { oldSportPlay -> newSportPlay.code == oldSportPlay.code }
+            newSportPlay.isSelected = oldSportPlay?.isSelected ?: false
+            oldSportPlay?.let { oldPlay ->
+                newSportPlay.isLocked = oldPlay.isLocked
+            }
+
+            newSportPlay.playCateList?.forEach { newPlayCate ->
+                val oldPlayCate =
+                    oldSportPlay?.playCateList?.find { oldPlayCate -> oldPlayCate.code == newPlayCate.code }
+                newPlayCate.isSelected = oldPlayCate?.isSelected ?: false
             }
         }
     }
