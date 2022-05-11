@@ -441,7 +441,16 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 leagueOddList.filterMenuPlayCate()
 
                 favorite_game_list.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-                leagueAdapter.data = leagueOddList.toMutableList()
+                val leagueData = leagueOddList.toMutableList()
+
+                //檢查是否有取得我的賽事資料, 對介面進行調整
+                if (leagueData.isNullOrEmpty()) {
+                    noFavoriteMatchViewState()
+                } else {
+                    showFavoriteMatchViewState()
+                }
+
+                leagueAdapter.data = leagueData
                 leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
                 try {
                     /*目前流程 需要先解除再綁定 socket流程下才會回傳內容*/
@@ -487,16 +496,10 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         }
 
         viewModel.favorMatchList.observe(this.viewLifecycleOwner) { favorMatchList ->
+
+            //若用戶的最愛清單無賽事id則隱藏相關的介面, 若有則等待後續我的賽事資料判斷需不需要顯示
             if (favorMatchList.isNullOrEmpty()) {
-                favorite_toolbar.visibility = View.VISIBLE
-                fl_no_game.visibility = View.VISIBLE
-                appbar_layout.visibility = View.GONE
-                favorite_game_list.visibility = View.GONE
-            } else {
-                favorite_toolbar.visibility = View.GONE
-                fl_no_game.visibility = View.GONE
-                appbar_layout.visibility = View.VISIBLE
-                favorite_game_list.visibility = View.VISIBLE
+                noFavoriteMatchViewState()
             }
         }
 
@@ -505,6 +508,26 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 leagueAdapter.oddsType = oddsType
             }
         }
+    }
+
+    /**
+     * 若我的賽事無資料時顯示的介面
+     */
+    private fun noFavoriteMatchViewState() {
+        favorite_toolbar.visibility = View.VISIBLE
+        fl_no_game.visibility = View.VISIBLE
+        appbar_layout.visibility = View.GONE
+        favorite_game_list.visibility = View.GONE
+    }
+
+    /**
+     * 若我的賽事有資料時顯示的介面
+     */
+    private fun showFavoriteMatchViewState() {
+        favorite_toolbar.visibility = View.GONE
+        fl_no_game.visibility = View.GONE
+        appbar_layout.visibility = View.VISIBLE
+        favorite_game_list.visibility = View.VISIBLE
     }
 
     private fun updateGameTypeList(items: List<Item>?) {
