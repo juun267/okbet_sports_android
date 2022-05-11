@@ -374,6 +374,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 override fun showParlayRule(parlayType: String, parlayRule: String) {
                     showParlayDescription(parlayType, parlayRule)
                 }
+
+                override fun onMoreOptionClick() {
+                    betListRefactorAdapter?.itemCount?.let {
+                        rv_bet_list?.scrollToPosition(it - 1)
+                    }
+                }
             })
     }
 
