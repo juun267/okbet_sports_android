@@ -27,6 +27,7 @@
             android:minHeight="48dp"
             android:textColor="@color/color_e5e5e5_333333"
             android:textStyle="bold"
+            android:textSize="@dimen/textSize14sp"
             tools:text="让球" />
 
     </LinearLayout>

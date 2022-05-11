@@ -161,6 +161,7 @@
                         android:background="@drawable/bg_radius_4_button_e44438"
                         android:gravity="center"
                         android:text="@string/bet_list_delete_all"
+                        android:textSize="@dimen/textSize12sp"
                         android:textColor="@android:color/white" />
 
                     <ImageView

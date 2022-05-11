@@ -87,6 +87,7 @@ abstract class BaseFavoriteViewModel(
 
         if (gameType == null || playCateMenu == null) {
             mMyFavoriteLoading.postValue(Event(false))
+            mFavorMatchOddList.postValue(Event(listOf()))
             return
         }
 

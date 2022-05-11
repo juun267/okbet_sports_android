@@ -245,7 +245,6 @@
     <declare-styleable name="SecurityCodeStyleEditText">
 
         <!--Texts-->
-        <attr name="scLabelText" format="string" />
         <attr name="scHintText" format="string" />
         <attr name="scErrorText" format="string" />
 
