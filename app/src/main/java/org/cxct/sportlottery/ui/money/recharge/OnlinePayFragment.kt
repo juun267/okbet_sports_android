@@ -17,9 +17,7 @@ import org.cxct.sportlottery.network.money.OnlineType
 import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.util.ArithUtil
-import org.cxct.sportlottery.util.MoneyManager
-import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.*
 import kotlin.math.abs
 
 class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
@@ -88,6 +86,8 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
         setupTextChangeEvent()
         setupFocusEvent()
+
+        btn_submit.setTitleLetterSpacing()
     }
 
     private fun initButton() {

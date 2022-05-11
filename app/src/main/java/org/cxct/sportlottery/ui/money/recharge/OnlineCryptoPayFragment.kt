@@ -30,6 +30,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 import java.util.ArrayList
 import kotlin.math.abs
 
@@ -126,6 +127,7 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
     }
 
     private fun initButton() {
+        btn_submit.setTitleLetterSpacing()
         btn_submit.setOnClickListener {
             val depositMoney = if (et_recharge_account.getText().isNotEmpty()) {
                 et_recharge_account.getText()
