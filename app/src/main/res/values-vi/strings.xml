@@ -111,7 +111,7 @@
     <string name="dialog_security_hint">Chào mừng bạn trở lại trò chơi. Vui lòng hoàn tất xác minh để bảo mật tài khoản.</string>
     <string name="dialog_security_title">Nhập mã xác nhận.</string>
     <string name="dialog_security_error">Bạn đã nhập một mã xác minh sai.</string>
-    <string name="hint_security_code"><font size="12">Vui lòng nhập mã xác nhận.</font></string>
+    <string name="hint_security_code"><font size="12">Nhập mã</font></string>
     <string name="dialog_security_need_phone">Thông tin cá nhân của bạn chưa hoàn chỉnh, vui lòng liên hệ với bộ phận chăm sóc khách hàng.</string>
     <string name="btn_agreement">Thỏa thuận mở tài khoản</string>
     <string name="have_account">Bạn đã có tài khoản?</string>
