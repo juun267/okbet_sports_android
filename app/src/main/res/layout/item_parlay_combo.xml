@@ -23,6 +23,7 @@
             android:layout_weight="1"
             android:textColor="@color/color_FFFFFF_000000"
             android:textSize="@dimen/margin_14"
+            android:textStyle="bold"
             tools:text="項次 1" />
 
         <TextView
@@ -39,9 +40,10 @@
         android:id="@+id/rvComboDetailItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:overScrollMode="never"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutTitle"
         tools:itemCount="3"
-        tools:listitem="@layout/item_parlay_combo_detail"/>
+        tools:listitem="@layout/item_parlay_combo_detail" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

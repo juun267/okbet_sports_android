@@ -1065,7 +1065,7 @@
     <string name="text_search_try_another">Please try another keyword.</string>
     <!-- 搜尋 -->
     <string name="text_combo_title">Parlay</string>
-    <string name="text_combo_item">item</string>
+    <string name="text_combo_item">Item</string>
 
     <!-- 注單內球員玩法 -->
     <string name="sco_name_first">First Goalscorer</string>
