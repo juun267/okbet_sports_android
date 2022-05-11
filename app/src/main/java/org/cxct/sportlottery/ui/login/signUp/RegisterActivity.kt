@@ -29,10 +29,9 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
-import org.cxct.sportlottery.ui.login.afterTextChanged
+import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
-import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
 import org.cxct.sportlottery.util.BitmapUtil
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.ToastUtil
@@ -284,81 +283,27 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun setupAgreement() {
-        binding.cbPrivacy.setOnClickListener {
-            viewModel.checkcbPrivacy(binding.cbPrivacy.isChecked)
-        }
-        binding.cbAgreement.setOnClickListener {
-            viewModel.checkAgreement(binding.cbAgreement.isChecked)
-        }
-        binding.cbNotPHOfficial.setOnClickListener {
-            viewModel.checkcbNotPHOfficial(binding.cbNotPHOfficial.isChecked)
-        }
-        binding.cbNotPHSchool.setOnClickListener {
-            viewModel.checkcbNotPHSchool(binding.cbNotPHSchool.isChecked)
-        }
-        binding.cbRuleOkbet.setOnClickListener {
-            viewModel.checkcbRuleOkbet(binding.cbRuleOkbet.isChecked)
-        }
-        binding.cbAgreeAll.setOnClickListener {
-            viewModel.checkcbAgreeAll(binding.cbAgreeAll.isChecked)
-
-            if(binding.cbAgreeAll.isChecked) {
-                binding.cbPrivacy.isChecked = true
-                binding.cbAgreement.isChecked = true
-                binding.cbNotPHOfficial.isChecked = true
-                binding.cbNotPHSchool.isChecked = true
-                binding.cbRuleOkbet.isChecked = true
-
-                viewModel.checkcbPrivacy(binding.cbPrivacy.isChecked)
-                viewModel.checkAgreement(binding.cbAgreement.isChecked)
-                viewModel.checkcbNotPHOfficial(binding.cbNotPHOfficial.isChecked)
-                viewModel.checkcbNotPHSchool(binding.cbNotPHSchool.isChecked)
-                viewModel.checkcbRuleOkbet(binding.cbRuleOkbet.isChecked)
-            }
-        }
-    }
-
-    private fun btnRegisterEnable() {
         binding.apply {
-            btnRegister.isEnabled = viewModel.checkAllInput(
-                eetRecommendCode.text.toString(),
-                eetMemberAccount.text.toString(),
-                eetLoginPassword.text.toString(),
-                eetConfirmPassword.text.toString(),
-                eetFullName.text.toString(),
-                eetWithdrawalPwd.text.toString(),
-                eetQq.text.toString(),
-                eetPhone.text.toString(),
-                eetMail.text.toString(),
-                eetPostal.text.toString(),
-                eetProvince.text.toString(),
-                eetCity.text.toString(),
-                eetAddress.text.toString(),
-                eetWeChat.text.toString(),
-                eetZalo.text.toString(),
-                eetFacebook.text.toString(),
-                eetWhatsApp.text.toString(),
-                eetTelegram.text.toString(),
-                eetSecurityPb.text.toString(),
-                eetSmsValidCode.text.toString(),
-                eetVerificationCode.text.toString(),
-                cbPrivacy.isChecked,
-                cbAgreement.isChecked,
-                cbNotPHOfficial.isChecked,
-                cbNotPHSchool.isChecked,
-                cbRuleOkbet.isChecked,
-                cbAgreeAll.isChecked
-            )
-        }
-    }
+            cbPrivacy.setOnCheckedChangeListener { v, isChecked -> viewModel.checkCbPrivacy(isChecked) }
+            cbAgreement.setOnCheckedChangeListener { v, isChecked -> viewModel.checkCbAgreement(isChecked) }
+            cbNotPHOfficial.setOnCheckedChangeListener{ v, isChecked -> viewModel.checkCbNotPHOfficial(isChecked) }
+            cbNotPHSchool.setOnCheckedChangeListener{ v, isChecked -> viewModel.checkCbNotPHSchool(isChecked) }
+            cbRuleOkbet.setOnCheckedChangeListener{ v, isChecked -> viewModel.checkCbRuleOkbet(isChecked) }
+            cbAgreeAll.setOnCheckedChangeListener{ v, isChecked ->
+                viewModel.checkCbAgreeAll(isChecked)
+                if(cbAgreeAll.isChecked) {
+                    cbPrivacy.isChecked = true
+                    cbAgreement.isChecked = true
+                    cbNotPHOfficial.isChecked = true
+                    cbNotPHSchool.isChecked = true
+                    cbRuleOkbet.isChecked = true
 
-    private fun EditText.setActionListener(isRegisterEnable: Boolean) {
-        this.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId and EditorInfo.IME_MASK_ACTION != 0 && isRegisterEnable) {
-                binding.btnRegister.performClick()
-                true
-            } else {
-                false
+                    viewModel.checkCbPrivacy(cbPrivacy.isChecked)
+                    viewModel.checkCbAgreement(cbAgreement.isChecked)
+                    viewModel.checkCbNotPHOfficial(cbNotPHOfficial.isChecked)
+                    viewModel.checkCbNotPHSchool(cbNotPHSchool.isChecked)
+                    viewModel.checkCbRuleOkbet(cbRuleOkbet.isChecked)
+                }
             }
         }
     }
@@ -366,106 +311,68 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     private fun setupRegisterButton() {
         binding.apply {
             eetRecommendCode.apply {
-                this.afterTextChanged {
-                    btnRegisterEnable()
-                }
+                checkRegisterListener { viewModel.checkInviteCode(it) }
             }
             eetMemberAccount.apply {
-                this.afterTextChanged {
-                    btnRegisterEnable()
-                }
+                checkRegisterListener { viewModel.checkMemberAccount(it, false) }
+            }
+            eetLoginPassword.apply {
+                checkRegisterListener { viewModel.checkLoginPassword(it) }
             }
             eetConfirmPassword.apply {
-                this.afterTextChanged {
-                    btnRegisterEnable()
-                }
+                checkRegisterListener { viewModel.checkConfirmPassword(eetLoginPassword.text.toString(), it) }
             }
             eetFullName.apply {
-                this.afterTextChanged {
-                    btnRegisterEnable()
-                }
+                checkRegisterListener { viewModel.checkFullName(it) }
             }
             eetWithdrawalPwd.apply {
-                this.afterTextChanged {
-                    btnRegisterEnable()
-                }
+                checkRegisterListener { viewModel.checkFundPwd(it) }
             }
             eetQq.apply {
-                this.afterTextChanged {
-                    btnRegisterEnable()
-                }
+                checkRegisterListener { viewModel.checkQQ(it) }
             }
             eetPhone.apply {
-                this.afterTextChanged {
-                    btnRegisterEnable()
-                }
+                checkRegisterListener { viewModel.checkPhone(it) }
             }
             eetMail.apply {
-                this.afterTextChanged {
-                    btnRegisterEnable()
-                }
+                checkRegisterListener { viewModel.checkEmail(it) }
             }
             eetPostal.apply {
-                this.afterTextChanged {
-                    btnRegisterEnable()
-                }
+                checkRegisterListener { viewModel.checkPostal(it) }
             }
             eetProvince.apply {
-                this.afterTextChanged {
-                    btnRegisterEnable()
-                }
+                checkRegisterListener { viewModel.checkProvince(it) }
             }
             eetCity.apply {
-                this.afterTextChanged {
-                    btnRegisterEnable()
-                }
+                checkRegisterListener { viewModel.checkCity(it) }
             }
             eetAddress.apply {
-                this.afterTextChanged {
-                    btnRegisterEnable()
-                }
+                checkRegisterListener { viewModel.checkAddress(it) }
             }
             eetWeChat.apply {
-                this.afterTextChanged {
-                    btnRegisterEnable()
-                }
+                checkRegisterListener { viewModel.checkWeChat(it) }
             }
             eetZalo.apply {
-                this.afterTextChanged {
-                    btnRegisterEnable()
-                }
+                checkRegisterListener { viewModel.checkZalo(it) }
             }
             eetFacebook.apply {
-                this.afterTextChanged {
-                    btnRegisterEnable()
-                }
+                checkRegisterListener { viewModel.checkFacebook(it) }
             }
             eetWhatsApp.apply {
-                this.afterTextChanged {
-                    btnRegisterEnable()
-                }
+                checkRegisterListener { viewModel.checkWhatsApp(it) }
             }
             eetTelegram.apply {
-                this.afterTextChanged {
-                    btnRegisterEnable()
-                }
+                checkRegisterListener { viewModel.checkTelegram(it) }
             }
             eetSecurityPb.apply {
-                this.afterTextChanged {
-                    btnRegisterEnable()
-                }
+                checkRegisterListener { viewModel.checkSecurityPb(it) }
             }
             eetSmsValidCode.apply {
-                this.afterTextChanged {
-                    btnRegisterEnable()
-                }
+                checkRegisterListener { viewModel.checkSecurityCode(it) }
             }
             eetVerificationCode.apply {
-                this.afterTextChanged {
-                    btnRegisterEnable()
-                }
+                checkRegisterListener { viewModel.checkValidCode(it) }
             }
-
         }
 
         binding.btnRegister.setOnClickListener {
@@ -550,7 +457,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
         setEditTextIme(binding.btnRegister.isEnabled)
         viewModel.registerEnable.observe(this) {
-            Log.e(">>>", "registerEnable = $it")
+            binding.btnRegister.isEnabled = it
             setEditTextIme(it)
         }
 
@@ -582,51 +489,51 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             }
             memberAccountMsg.observe(this@RegisterActivity) {
                 binding.etMemberAccount.setError(
-                    it,
+                    it.first,
                     false
                 )
             }
             loginPasswordMsg.observe(this@RegisterActivity) {
                 binding.etLoginPassword.setError(
-                    it,
+                    it.first,
                     false
                 )
             }
             confirmPasswordMsg.observe(this@RegisterActivity) {
                 binding.etConfirmPassword.setError(
-                    it,
+                    it.first,
                     false
                 )
             }
-            fullNameMsg.observe(this@RegisterActivity) { binding.etFullName.setError(it, false) }
+            fullNameMsg.observe(this@RegisterActivity) { binding.etFullName.setError(it.first, false) }
             fundPwdMsg.observe(this@RegisterActivity) {
                 binding.etWithdrawalPwd.setError(
-                    it,
+                    it.first,
                     false
                 )
             }
-            qqMsg.observe(this@RegisterActivity) { binding.etQq.setError(it, false) }
-            phoneMsg.observe(this@RegisterActivity) { binding.etPhone.setError(it, false) }
-            emailMsg.observe(this@RegisterActivity) { binding.etMail.setError(it, false) }
-            postalMsg.observe(this@RegisterActivity) { binding.etPostal.setError(it, false) }
-            provinceMsg.observe(this@RegisterActivity) { binding.etProvince.setError(it, false) }
-            cityMsg.observe(this@RegisterActivity) { binding.etCity.setError(it, false) }
-            addressMsg.observe(this@RegisterActivity) { binding.etAddress.setError(it, false) }
-            weChatMsg.observe(this@RegisterActivity) { binding.etWeChat.setError(it, false) }
-            zaloMsg.observe(this@RegisterActivity) { binding.etZalo.setError(it, false) }
-            facebookMsg.observe(this@RegisterActivity) { binding.etFacebook.setError(it, false) }
-            whatsAppMsg.observe(this@RegisterActivity) { binding.etWhatsApp.setError(it, false) }
-            telegramMsg.observe(this@RegisterActivity) { binding.etTelegram.setError(it, false) }
-            securityPbMsg.observe(this@RegisterActivity) { binding.etSecurityPb.setError(it, false) }
+            qqMsg.observe(this@RegisterActivity) { binding.etQq.setError(it.first, false) }
+            phoneMsg.observe(this@RegisterActivity) { binding.etPhone.setError(it.first, false) }
+            emailMsg.observe(this@RegisterActivity) { binding.etMail.setError(it.first, false) }
+            postalMsg.observe(this@RegisterActivity) { binding.etPostal.setError(it.first, false) }
+            provinceMsg.observe(this@RegisterActivity) { binding.etProvince.setError(it.first, false) }
+            cityMsg.observe(this@RegisterActivity) { binding.etCity.setError(it.first, false) }
+            addressMsg.observe(this@RegisterActivity) { binding.etAddress.setError(it.first, false) }
+            weChatMsg.observe(this@RegisterActivity) { binding.etWeChat.setError(it.first, false) }
+            zaloMsg.observe(this@RegisterActivity) { binding.etZalo.setError(it.first, false) }
+            facebookMsg.observe(this@RegisterActivity) { binding.etFacebook.setError(it.first, false) }
+            whatsAppMsg.observe(this@RegisterActivity) { binding.etWhatsApp.setError(it.first, false) }
+            telegramMsg.observe(this@RegisterActivity) { binding.etTelegram.setError(it.first, false) }
+            securityPbMsg.observe(this@RegisterActivity) { binding.etSecurityPb.setError(it.first, false) }
             securityCodeMsg.observe(this@RegisterActivity) {
                 binding.etSmsValidCode.setError(
-                    it,
+                    it.first,
                     false
                 )
             }
             validCodeMsg.observe(this@RegisterActivity) {
                 binding.etSmsValidCode.setError(
-                    it,
+                    it.first,
                     false
                 )
             }
@@ -654,6 +561,17 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             eetSecurityPb.setActionListener(registerEnable)
             eetSmsValidCode.setActionListener(registerEnable)
             eetVerificationCode.setActionListener(registerEnable)
+        }
+    }
+
+    private fun EditText.setActionListener(isRegisterEnable: Boolean) {
+        this.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId and EditorInfo.IME_MASK_ACTION != 0 && isRegisterEnable) {
+                binding.btnRegister.performClick()
+                true
+            } else {
+                false
+            }
         }
     }
 
