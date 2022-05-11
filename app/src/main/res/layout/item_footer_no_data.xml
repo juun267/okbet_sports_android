@@ -3,6 +3,7 @@
     android:id="@+id/tv_no_data"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/color_191919_FCFCFC"
     android:gravity="center"
     android:paddingVertical="12dp"
     android:text="@string/no_data"
