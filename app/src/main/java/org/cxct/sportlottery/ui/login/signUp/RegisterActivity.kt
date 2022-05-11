@@ -301,6 +301,20 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         }
         binding.cbAgreeAll.setOnClickListener {
             viewModel.checkcbAgreeAll(binding.cbAgreeAll.isChecked)
+
+            if(binding.cbAgreeAll.isChecked) {
+                binding.cbPrivacy.isChecked = true
+                binding.cbAgreement.isChecked = true
+                binding.cbNotPHOfficial.isChecked = true
+                binding.cbNotPHSchool.isChecked = true
+                binding.cbRuleOkbet.isChecked = true
+
+                viewModel.checkcbPrivacy(binding.cbPrivacy.isChecked)
+                viewModel.checkAgreement(binding.cbAgreement.isChecked)
+                viewModel.checkcbNotPHOfficial(binding.cbNotPHOfficial.isChecked)
+                viewModel.checkcbNotPHSchool(binding.cbNotPHSchool.isChecked)
+                viewModel.checkcbRuleOkbet(binding.cbRuleOkbet.isChecked)
+            }
         }
     }
 
@@ -451,13 +465,6 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     btnRegisterEnable()
                 }
             }
-
-            cbPrivacy.setOnCheckedChangeListener{ _, _ -> btnRegisterEnable() }
-            cbAgreement.setOnCheckedChangeListener { _, _ -> btnRegisterEnable() }
-            cbNotPHOfficial.setOnCheckedChangeListener{ _, _ -> btnRegisterEnable() }
-            cbNotPHSchool.setOnCheckedChangeListener{ _, _ -> btnRegisterEnable() }
-            cbRuleOkbet.setOnCheckedChangeListener{ _, _ -> btnRegisterEnable() }
-            cbAgreeAll.setOnCheckedChangeListener{ _, _ -> btnRegisterEnable() }
 
         }
 
