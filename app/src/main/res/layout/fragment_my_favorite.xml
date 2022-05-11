@@ -32,7 +32,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:background="@color/color_191919_FCFCFC"
-                    android:visibility="invisible"
+                    android:visibility="gone"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:visibility="visible">
 
