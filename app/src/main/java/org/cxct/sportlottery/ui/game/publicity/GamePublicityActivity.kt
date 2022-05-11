@@ -95,6 +95,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     private fun initViews() {
         initToolBar()
         initServiceButton()
+        initRegionViewBtn()
         initOnClickListener()
     }
 
@@ -122,6 +123,12 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
 
     private fun initServiceButton() {
         binding.btnFloatingService.setView(this)
+    }
+
+    private fun initRegionViewBtn() {
+        //region view bottom
+        binding.tvRegister.letterSpacing = 0.0892957143f
+        binding.tvLogin.letterSpacing = 0.0892957143f
     }
 
     private fun initOnClickListener() {
@@ -270,7 +277,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         }
     }
 
-    fun clickMenu() {
+    override fun clickMenuEvent() {
         with(binding) {
             if (drawerLayout.isDrawerOpen(viewNavRight.navRight)) drawerLayout.closeDrawers()
             else {

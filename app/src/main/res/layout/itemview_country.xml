@@ -9,7 +9,7 @@
         android:id="@+id/country_border"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/colorWhite4"
+        android:background="@color/color_212121_ededed"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
@@ -62,7 +62,7 @@
     <View android:id="@+id/SpaceItemDecorationView"
         android:layout_width="match_parent"
         android:layout_height="8dp"
-        android:background="@color/colorWhite"
+        android:background="@color/color_191919_FCFCFC"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/country_border"/>
 

@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.home_game_highlight_title.view.*
 import kotlinx.android.synthetic.main.home_highlight_item.view.*
 import kotlinx.android.synthetic.main.home_sport_table_4.view.*
 import kotlinx.android.synthetic.main.itemview_sport_type_list.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeString
@@ -254,7 +255,6 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             ItemType.MATCHODD.ordinal -> {
                 val layout = LayoutInflater.from(parent.context)
                     .inflate(R.layout.home_highlight_item, parent, false)
-                layout.btn_chart.visibility = View.GONE
                 return ViewHolderHdpOu(layout)
             }
             ItemType.BOTTOM_NAVIGATION.ordinal -> {
@@ -324,6 +324,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 holder.onClickFavoriteListener = onHighLightClickFavoriteListener
                 holder.onClickStatisticsListener = onHighLightClickStatisticsListener
                 if (data is MatchOdd) {
+                    holder.removeHandler()
                     holder.bind(
                         data,
                         if (data.matchInfo?.isStartPosition == true) data else mDataList[position - 1] as MatchOdd,
@@ -368,6 +369,14 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemCount(): Int = mDataList.size
 
+    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
+        when(holder) {
+            is ViewHolderHdpOu -> {
+                holder.removeHandler()
+            }
+        }
+    }
+
     fun setGameHighLightTitle(homeHighlightGameTitleItemData: HomeHighlightGameTitleItemData = HomeHighlightGameTitleItemData()) {
         removeDatas(homeHighlightGameTitleItemData)
         addDataWithSort(homeHighlightGameTitleItemData)
@@ -376,7 +385,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val homeHighlightGameTitleItemData = HomeHighlightGameTitleItemData().apply {
             this.highlightGameCode = selectItem.code
             this.highlightGameIcon = getGameIcon(selectItem.code) ?: R.drawable.ic_soccer
-            this.highlightGameBackground = getTitleBarBackground(selectItem.code) ?: R.drawable.img_home_title_soccer_background
+            this.highlightGameBackground = getTitleBarBackground(selectItem.code, MultiLanguagesApplication.isNightMode) ?: R.drawable.img_home_title_soccer_background
         }
         removeDatas(homeHighlightGameTitleItemData)
         addDataWithSort(homeHighlightGameTitleItemData)
@@ -486,7 +495,8 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 spt = it.matchInfo?.spt,
                 liveVideo = it.matchInfo?.liveVideo,
                 status = it.matchInfo?.status ?: -1,
-                leagueName = it.matchInfo?.leagueName ?: ""
+                leagueName = it.matchInfo?.leagueName ?: "",
+                source = it.matchInfo?.source
             ).apply {
                 startDateDisplay = TimeUtil.timeFormat(this.startTime, "MM/dd")
                 startTimeDisplay = TimeUtil.timeFormat(this.startTime, "HH:mm")
@@ -804,10 +814,10 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
      * 刷新精選賽事時間
      * 20220420 後端過濾資料，精選賽事不會有滾球賽事，故先計時精選賽事時間
      */
-    fun notifyHighLightTimeChanged(diff: Int) {
-        var isUpdate = false
+    fun notifyHighLightTimeChanged() {
         val list = getMatchOdd()
         list.forEach { odd ->
+            var isUpdate = false
             odd.matchInfo?.let {
                 it.isAtStart = TimeUtil.isTimeAtStart(it.startTime)
                 if (it.isAtStart == true) {
@@ -821,10 +831,9 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     }
                 }
             }
-        }
-        if (isUpdate) {
-            removeDatas(getMatchOdd().firstOrNull())
-            list.forEach { addDataWithSort(it) }
+            if (isUpdate) {
+                notifyHighLightItemChanged(odd)
+            }
         }
     }
 

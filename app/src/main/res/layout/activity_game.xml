@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorWhite1">
+        android:background="@color/color_141414_F3F4F5">
 
         <!-- toolBar -->
         <include
@@ -45,32 +45,25 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorWhite1">
+                android:background="@color/color_141414_F3F4F5">
 
                 <!-- 遊戲類別列表 -->
                 <ImageView
                     android:id="@+id/btn_menu_left"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="14dp"
-                    android:layout_marginBottom="14dp"
-                    android:background="@color/colorWhite1"
+                    android:layout_width="58dp"
+                    android:layout_height="53dp"
+                    android:paddingStart="16dp"
+                    android:paddingTop="14dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="14dp"
+                    android:background="@color/color_141414_F3F4F5"
                     android:contentDescription="@null"
                     android:scaleType="centerCrop"
+                    android:elevation="1dp"
                     android:src="@drawable/ic_side_icon_v2"
                     app:layout_constraintBottom_toTopOf="@id/game_container"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <include
-                    layout="@layout/view_game_tab_match_type_v4"
-                    android:layout_width="0dp"
-                    android:layout_height="53dp"
-                    android:layout_marginStart="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/btn_menu_left"
-                    app:layout_constraintTop_toBottomOf="@id/view_notification" />
 
                 <androidx.fragment.app.FragmentContainerView
                     android:id="@+id/game_container"
@@ -82,15 +75,23 @@
                     app:navGraph="@navigation/game_navigation"
                     tools:layout="@layout/fragment_home" />
 
+                <include
+                    layout="@layout/view_game_tab_match_type_v4"
+                    android:layout_width="0dp"
+                    android:layout_height="53dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/btn_menu_left"
+                    app:layout_constraintTop_toBottomOf="@id/view_notification" />
+
                 <Button
                     android:layout_margin="8dp"
                     android:id="@+id/game_submit"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_marginBottom="8dp"
-                    android:background="@color/colorOrangeLight"
+                    android:background="@color/color_FF9143_ff9200"
                     android:text="@string/button_league_submit"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/color_FCFCFC"
                     android:textSize="@dimen/textSize14sp"
                     android:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@id/game_bottom_navigation"
@@ -106,7 +107,6 @@
                     android:layout_marginBottom="14dp"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@id/game_bottom_navigation" />
 
                 <include

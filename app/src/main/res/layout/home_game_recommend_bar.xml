@@ -13,7 +13,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_weight="1"
-        android:background="@color/colorSilverLight" />
+        android:background="@color/color_404040_cccccc" />
 
     <TextView
         android:id="@+id/tv_recommend"
@@ -23,14 +23,13 @@
         android:paddingHorizontal="16dp"
         android:text="@string/label_match_recommend"
         android:textAllCaps="true"
-        android:textColor="@color/colorBlue"
-        android:textSize="@dimen/textSize16sp"
-        android:textStyle="bold" />
+        android:textColor="@color/color_317FFF_0760D4"
+        android:textSize="@dimen/textSize16sp" />
 
     <View
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_weight="1"
-        android:background="@color/colorSilverLight" />
+        android:background="@color/color_404040_cccccc" />
 
 </LinearLayout>

@@ -34,7 +34,7 @@ class ChangeOddsTypeFullScreenDialog : BaseDialog<MainViewModel>(MainViewModel::
         rootView?.apply {
 
             img_back?.setOnClickListener {
-                dismiss()
+                parentFragmentManager.popBackStack()
             }
 
             img_close?.setOnClickListener {
@@ -42,7 +42,7 @@ class ChangeOddsTypeFullScreenDialog : BaseDialog<MainViewModel>(MainViewModel::
                     ?.let {
                         (it as DialogFragment).dismiss()
                     }
-                dismiss()
+                parentFragmentManager.popBackStack()
             }
 
             rb_eu?.setOnClickListener {

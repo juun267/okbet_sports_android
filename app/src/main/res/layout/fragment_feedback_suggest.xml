@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite1"
+    android:background="@color/color_141414_F3F4F5"
     android:orientation="vertical"
     tools:context=".ui.feedback.suggest.FeedbackSuggestFragment">
 
     <androidx.cardview.widget.CardView
+        android:background="@color/color_191919_FCFCFC"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/colorWhite"
-        android:layout_marginTop="14dp"
         android:layout_marginHorizontal="14dp"
+        android:layout_marginTop="14dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="0dp">
 
@@ -26,12 +26,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="164dp"
                 android:layout_gravity="center_horizontal"
-                android:scaleType="fitCenter"
+                android:scaleType="centerCrop"
                 android:src="@drawable/ic_feedback_banner" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@color/color_191919_FCFCFC"
                 android:orientation="vertical"
                 android:paddingHorizontal="14dp"
                 android:paddingTop="15dp"
@@ -41,7 +42,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/feedback"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp"
                     android:textStyle="bold" />
 
@@ -49,8 +50,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:lineSpacingExtra="6dp"
                     android:text="@string/feedback_description"
-                    android:textColor="@color/colorGrayDark"
+                    android:textColor="@color/color_E0E0E0_404040"
                     android:textSize="@dimen/textSize12sp" />
 
                 <TextView
@@ -58,20 +60,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    tools:text="@string/feedback_description_money"
-                    android:textColor="@color/colorRed"
-                    android:textSize="@dimen/textSize12sp" />
+                    android:lineSpacingExtra="6dp"
+                    android:textColor="@color/color_E44438_e44438"
+                    android:textSize="@dimen/textSize12sp"
+                    tools:text="@string/feedback_description_money" />
 
-                <Button
+                <TextView
                     android:id="@+id/btn_submit"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
                     android:layout_marginHorizontal="14dp"
                     android:layout_marginTop="20dp"
-                    android:background="@drawable/bg_radius_20_button_dusk"
+                    android:background="@drawable/bg_radius_22_button_dusk"
                     android:gravity="center"
                     android:text="@string/write_suggestion"
-                    android:textColor="@color/colorWhite"
+                    android:textAllCaps="true"
+                    android:textColor="@color/color_191919_FCFCFC"
                     android:textSize="@dimen/textSize16sp" />
 
 

@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorWhite"
+    android:background="@color/color_191919_FCFCFC"
     android:paddingTop="100dp">
 
     <View
         android:id="@+id/bg_top"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:background="#FAFAFA"
+        android:background="@color/color_191919_FCFCFC"
         app:layout_constraintBottom_toTopOf="@+id/bg_bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,8 +24,8 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:text="@string/other_link"
-        android:textColor="@color/color_333333"
-        android:textSize="12dp"
+        android:textColor="@color/color_e5e5e5_333333"
+        android:textSize="@dimen/textSize12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,8 +35,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="@string/about_us"
-        android:textColor="@color/color_999999"
-        android:textSize="14dp"
+        android:textColor="@color/color_8F8F8F_999999"
+        android:textSize="@dimen/textSize14sp"
         app:layout_constraintStart_toStartOf="@+id/txv_other"
         app:layout_constraintTop_toBottomOf="@+id/txv_other" />
 
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="@string/responsible"
-        android:textColor="@color/color_999999"
+        android:textColor="@color/color_8F8F8F_999999"
         android:textSize="14dp"
         app:layout_constraintStart_toStartOf="@+id/txv_about"
         app:layout_constraintTop_toBottomOf="@+id/txv_about" />
@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="@string/terms_conditions"
-        android:textColor="@color/color_999999"
+        android:textColor="@color/color_8F8F8F_999999"
         android:textSize="14dp"
         app:layout_constraintStart_toStartOf="@+id/txv_gaming"
         app:layout_constraintTop_toBottomOf="@+id/txv_gaming" />
@@ -67,7 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/privacy_policy"
-        android:textColor="@color/color_999999"
+        android:textColor="@color/color_8F8F8F_999999"
         android:textSize="14dp"
         app:layout_constraintStart_toStartOf="@+id/guideline_vrt"
         app:layout_constraintTop_toTopOf="@+id/txv_about" />
@@ -78,16 +78,16 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="@string/btm_navigation_language"
-        android:textColor="@color/color_999999"
+        android:textColor="@color/color_8F8F8F_999999"
         android:textSize="14dp"
         app:layout_constraintStart_toStartOf="@+id/guideline_vrt"
         app:layout_constraintTop_toBottomOf="@+id/txv_policy" />
 
     <ImageView
         android:id="@+id/img_flag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
+        android:layout_width="20dp"
+        android:layout_height="12dp"
+        android:layout_marginStart="5dp"
         android:src="@drawable/img_flag"
         app:layout_constraintBottom_toBottomOf="@+id/txv_language"
         app:layout_constraintStart_toEndOf="@+id/txv_language"
@@ -99,7 +99,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="22dp"
         android:text="@string/help"
-        android:textColor="@color/color_333333"
+        android:textColor="@color/color_e5e5e5_333333"
         android:textSize="12dp"
         app:layout_constraintStart_toStartOf="@+id/txv_other"
         app:layout_constraintTop_toBottomOf="@+id/txv_terms" />
@@ -110,7 +110,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="@string/faqs"
-        android:textColor="@color/color_999999"
+        android:textColor="@color/color_8F8F8F_999999"
         android:textSize="14dp"
         app:layout_constraintStart_toStartOf="@+id/txv_help"
         app:layout_constraintTop_toBottomOf="@+id/txv_help" />
@@ -121,7 +121,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="@string/live_chat"
-        android:textColor="@color/color_999999"
+        android:textColor="@color/color_8F8F8F_999999"
         android:textSize="14dp"
         app:layout_constraintStart_toStartOf="@+id/txv_faq"
         app:layout_constraintTop_toBottomOf="@+id/txv_faq" />
@@ -133,7 +133,7 @@
         android:layout_marginTop="4dp"
         android:paddingBottom="12dp"
         android:text="@string/contact"
-        android:textColor="@color/color_999999"
+        android:textColor="@color/color_8F8F8F_999999"
         android:textSize="14dp"
         app:layout_constraintStart_toStartOf="@+id/txv_chat"
         app:layout_constraintTop_toBottomOf="@+id/txv_chat" />
@@ -145,7 +145,7 @@
         android:id="@+id/bg_bottom"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:background="@color/colorWhite1"
+        android:background="@color/color_141414_F3F4F5"
         app:layout_constraintBottom_toBottomOf="@+id/txv_copyright"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -156,14 +156,15 @@
         android:id="@+id/txv_btm_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="38dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="38dp"
         android:gravity="center_horizontal"
         android:paddingTop="16dp"
         android:text="@string/btm_navigation_hint"
-        android:textColor="@color/color_999999"
+        android:textColor="@color/color_8F8F8F_999999"
         android:textSize="12dp"
+        android:lineSpacingExtra="6dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txv_contact"
@@ -184,11 +185,11 @@
         android:id="@+id/txv_copyright"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="24dp"
         android:gravity="center"
         android:paddingBottom="12dp"
         android:text="@string/btm_navigation_copyright"
-        android:textColor="@color/color_AAAAAA"
+        android:textColor="@color/color_8F8F8F_999999"
         android:textSize="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -199,6 +200,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.55" />
+        app:layout_constraintGuide_percent="0.5152" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

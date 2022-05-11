@@ -30,7 +30,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/color_B3000000"
-        android:minHeight="60dp"
+        android:minHeight="71dp"
+        android:paddingTop="4dp"
         app:layout_constraintBottom_toBottomOf="@+id/banner"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -43,11 +44,12 @@
             android:paddingStart="4dp"
             android:paddingEnd="4dp">
 
+            <!--視覺調整改為16dp-->
             <ImageView
-                android:layout_width="@dimen/margin_18"
-                android:layout_height="@dimen/margin_18"
+
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="3dp"
                 android:src="@drawable/ic_icon_events" />
 
             <TextView
@@ -71,11 +73,11 @@
             android:paddingStart="4dp"
             android:paddingEnd="4dp">
 
+            <!--視覺調整改為16dp-->
             <ImageView
-                android:layout_width="@dimen/margin_18"
-                android:layout_height="@dimen/margin_18"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="3dp"
                 android:src="@drawable/ic_icon_odds" />
 
             <TextView
@@ -98,11 +100,11 @@
             android:paddingStart="4dp"
             android:paddingEnd="4dp">
 
+            <!--視覺調整改為16dp-->
             <ImageView
-                android:layout_width="@dimen/margin_18"
-                android:layout_height="@dimen/margin_18"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="3dp"
                 android:src="@drawable/ic_icon_safe" />
 
             <TextView

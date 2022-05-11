@@ -24,7 +24,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        app:cardBackgroundColor="@color/colorWhite"
+        app:cardBackgroundColor="@color/color_191919_FCFCFC"
         app:cardCornerRadius="8dp"
         app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -43,7 +43,7 @@
                 android:gravity="center"
                 android:letterSpacing="0.2"
                 android:text="@string/btn_agreement"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/color_FFFFFF_000000"
                 android:textSize="@dimen/textSize16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -54,7 +54,7 @@
                 android:id="@+id/v_top"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/colorWhite6"
+                android:background="@color/color_191919_EEEFF0"
                 app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
             <ScrollView
@@ -77,7 +77,7 @@
                     android:paddingEnd="26dp"
                     android:paddingStart="26dp"
                     android:letterSpacing="0.05"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="協議內容" />
 
@@ -87,18 +87,18 @@
                 android:id="@+id/v_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/colorWhite6"
+                android:background="@color/color_191919_EEEFF0"
                 app:layout_constraintBottom_toTopOf="@+id/btn_confirm" />
 
             <TextView
                 android:id="@+id/btn_confirm"
                 android:layout_width="0dp"
                 android:layout_height="44dp"
-                android:background="@color/colorWhite"
+                android:background="@color/color_191919_FCFCFC"
                 android:gravity="center"
                 android:letterSpacing="0.2"
                 android:text="@string/btn_confirm"
-                android:textColor="@color/colorBlueDark"
+                android:textColor="@color/color_317FFF_1F4780"
                 android:textSize="@dimen/textSize14sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"

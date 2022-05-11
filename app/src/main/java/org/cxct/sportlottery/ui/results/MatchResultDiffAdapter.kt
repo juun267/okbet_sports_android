@@ -343,13 +343,13 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                     val fullGame = it.find { it.status == StatusType.OVER_TIME.code }
                         ?: it.find { it.status == StatusType.END_GAME.code }
                     tv_first_half_score.text =
-                        firstHalf?.let { filteredItem -> "${filteredItem.homeScore} - ${filteredItem.awayScore}" }
+                        firstHalf?.let { filteredItem -> "${filteredItem.homeScore}-${filteredItem.awayScore}" }
                     tv_second_half_score.text =
-                        secondHalf?.let { filteredItem -> "${filteredItem.homeScore} - ${filteredItem.awayScore}" }
+                        secondHalf?.let { filteredItem -> "${filteredItem.homeScore}-${filteredItem.awayScore}" }
                     tv_end_game_score.text =
-                        endGame?.let { filteredItem -> "${filteredItem.homeScore} - ${filteredItem.awayScore}" }
+                        endGame?.let { filteredItem -> "${filteredItem.homeScore}-${filteredItem.awayScore}" }
                     tv_full_game_score.text =
-                        fullGame?.let { filteredItem -> "${filteredItem.homeScore} - ${filteredItem.awayScore}" }
+                        fullGame?.let { filteredItem -> "${filteredItem.homeScore}-${filteredItem.awayScore}" }
                 }
             }
         }

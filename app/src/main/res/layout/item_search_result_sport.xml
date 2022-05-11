@@ -11,7 +11,7 @@
         android:id="@+id/view1"
         android:layout_width="@dimen/margin_2"
         android:layout_height="@dimen/margin_14"
-        android:background="@color/color_F08E29"
+        android:background="@drawable/bg_search_title_left"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvResultTittle"
         app:layout_constraintBottom_toBottomOf="@+id/tvResultTittle"/>
@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvResultTittle"
-        android:textColor="@color/color_222222"
+        android:textColor="@color/color_FCFCFC_191919"
         android:textSize="@dimen/margin_14"
         android:textStyle="bold"
         android:text="1234"

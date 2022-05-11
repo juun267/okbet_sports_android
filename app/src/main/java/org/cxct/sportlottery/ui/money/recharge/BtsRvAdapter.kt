@@ -43,11 +43,11 @@ class BtsRvAdapter(private val dataList: MutableList<SelectBank>, private val cl
         holder.bind(item)
 
         if (holder.adapterPosition == selectedPosition){
-            holder.itemView.ll_select_bank_card.setBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.colorWhite6))
+            holder.itemView.ll_select_bank_card.setBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.color_191919_EEEFF0))
             holder.itemView.img_tick.visibility = View.VISIBLE
         }
         else{
-            holder.itemView.ll_select_bank_card.setBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.colorWhite))
+            holder.itemView.ll_select_bank_card.setBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.color_191919_FCFCFC))
             holder.itemView.img_tick.visibility = View.INVISIBLE
         }
 

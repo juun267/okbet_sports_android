@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_my_favorite.*
 import kotlinx.android.synthetic.main.fragment_my_favorite.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
@@ -440,7 +441,16 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 leagueOddList.filterMenuPlayCate()
 
                 favorite_game_list.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-                leagueAdapter.data = leagueOddList.toMutableList()
+                val leagueData = leagueOddList.toMutableList()
+
+                //檢查是否有取得我的賽事資料, 對介面進行調整
+                if (leagueData.isNullOrEmpty()) {
+                    noFavoriteMatchViewState()
+                } else {
+                    showFavoriteMatchViewState()
+                }
+
+                leagueAdapter.data = leagueData
                 leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
                 try {
                     /*目前流程 需要先解除再綁定 socket流程下才會回傳內容*/
@@ -486,16 +496,10 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         }
 
         viewModel.favorMatchList.observe(this.viewLifecycleOwner) { favorMatchList ->
+
+            //若用戶的最愛清單無賽事id則隱藏相關的介面, 若有則等待後續我的賽事資料判斷需不需要顯示
             if (favorMatchList.isNullOrEmpty()) {
-                favorite_toolbar.visibility = View.VISIBLE
-                fl_no_game.visibility = View.VISIBLE
-                appbar_layout.visibility = View.GONE
-                favorite_game_list.visibility = View.GONE
-            } else {
-                favorite_toolbar.visibility = View.GONE
-                fl_no_game.visibility = View.GONE
-                appbar_layout.visibility = View.VISIBLE
-                favorite_game_list.visibility = View.VISIBLE
+                noFavoriteMatchViewState()
             }
         }
 
@@ -504,6 +508,26 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 leagueAdapter.oddsType = oddsType
             }
         }
+    }
+
+    /**
+     * 若我的賽事無資料時顯示的介面
+     */
+    private fun noFavoriteMatchViewState() {
+        favorite_toolbar.visibility = View.VISIBLE
+        fl_no_game.visibility = View.VISIBLE
+        appbar_layout.visibility = View.GONE
+        favorite_game_list.visibility = View.GONE
+    }
+
+    /**
+     * 若我的賽事有資料時顯示的介面
+     */
+    private fun showFavoriteMatchViewState() {
+        favorite_toolbar.visibility = View.GONE
+        fl_no_game.visibility = View.GONE
+        appbar_layout.visibility = View.VISIBLE
+        favorite_game_list.visibility = View.VISIBLE
     }
 
     private fun updateGameTypeList(items: List<Item>?) {
@@ -529,29 +553,33 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             GameType.GF.key -> getString(GameType.GF.string)
             else -> ""
         }
+        if(MultiLanguagesApplication.isNightMode){
+            Glide.with(this).load(R.drawable.night_bg_300).into(favorite_bg_layer2)
+        }else{
+            Glide.with(this).load(
+                when (items?.find {
+                    it.isSelected
+                }?.code) {
+                    GameType.FT.key -> R.drawable.soccer108
+                    GameType.BK.key -> R.drawable.basketball108
+                    GameType.TN.key -> R.drawable.tennis108
+                    GameType.VB.key -> R.drawable.volleyball108
+                    GameType.BM.key -> R.drawable.badminton_100
+                    GameType.TT.key -> R.drawable.pingpong_100
+                    GameType.BX.key -> R.drawable.boxing_100
+                    GameType.CB.key -> R.drawable.snooker_100
+                    GameType.CK.key -> R.drawable.cricket_100
+                    GameType.BB.key -> R.drawable.baseball_100
+                    GameType.RB.key -> R.drawable.rugby_100
+                    GameType.AFT.key -> R.drawable.amfootball_100
+                    GameType.IH.key -> R.drawable.icehockey_100
+                    GameType.MR.key -> R.drawable.rancing_100
+                    GameType.GF.key -> R.drawable.golf_108
+                    else -> null
+                }
+            ).into(favorite_bg_layer2)
+        }
 
-        Glide.with(this).load(
-            when (items?.find {
-                it.isSelected
-            }?.code) {
-                GameType.FT.key -> R.drawable.soccer108
-                GameType.BK.key -> R.drawable.basketball108
-                GameType.TN.key -> R.drawable.tennis108
-                GameType.VB.key -> R.drawable.volleyball108
-                GameType.BM.key -> R.drawable.badminton_100
-                GameType.TT.key -> R.drawable.pingpong_100
-                GameType.BX.key -> R.drawable.boxing_100
-                GameType.CB.key -> R.drawable.snooker_100
-                GameType.CK.key -> R.drawable.cricket_100
-                GameType.BB.key -> R.drawable.baseball_100
-                GameType.RB.key -> R.drawable.rugby_100
-                GameType.AFT.key -> R.drawable.amfootball_100
-                GameType.IH.key -> R.drawable.icehockey_100
-                GameType.MR.key -> R.drawable.rancing_100
-                GameType.GF.key -> R.drawable.golf_108
-                else -> null
-            }
-        ).into(favorite_bg_layer2)
     }
 
     private fun updatePlayCategory(plays: List<Play>?) {
@@ -748,7 +776,13 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     }
 
     private fun navStatistics(matchId: String?) {
-        StatisticsDialog.newInstance(matchId).show(childFragmentManager, StatisticsDialog::class.java.simpleName)
+        StatisticsDialog.newInstance(matchId, clickListener = StatisticsDialog.StatisticsClickListener {
+            when (activity) {
+                is MyFavoriteActivity -> {
+                    (activity as MyFavoriteActivity).clickMenuEvent()
+                }
+            }
+        }).show(childFragmentManager, StatisticsDialog::class.java.simpleName)
     }
 
     private fun updateGameList(index: Int, leagueOdd: LeagueOdd) {

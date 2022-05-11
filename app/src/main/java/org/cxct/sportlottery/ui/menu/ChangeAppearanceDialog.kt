@@ -3,8 +3,10 @@ package org.cxct.sportlottery.ui.menu
 
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_change_appearance.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.game.menu.LeftMenuFragment
@@ -27,24 +29,35 @@ class ChangeAppearanceDialog : BaseDialog<MainViewModel>(MainViewModel::class) {
 
     private fun initEvent(rootView: View?) {
         rootView?.apply {
+            if(MultiLanguagesApplication.isNightMode){
+                rb_night_mode.isChecked = true
+                rb_day_mode.isChecked = false
+            }else{
+                rb_night_mode.isChecked = false
+                rb_day_mode.isChecked = true
+            }
 
             img_back?.setOnClickListener {
-                dismiss()
+                parentFragmentManager.popBackStack()
             }
 
             img_close?.setOnClickListener {
                 parentFragmentManager.findFragmentByTag(LeftMenuFragment::class.java.simpleName)?.let {
                     (it as DialogFragment).dismiss()
                 }
-                dismiss()
+                parentFragmentManager.popBackStack()
             }
 
             rb_day_mode?.setOnClickListener {
-                //TODO Cheryl:添加日間模式
+                MultiLanguagesApplication.saveNightMode(false)
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                dismiss()
             }
 
             rb_night_mode?.setOnClickListener {
-                //TODO Cheryl:添加夜間模式
+                MultiLanguagesApplication.saveNightMode(true)
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                dismiss()
             }
         }
     }

@@ -358,7 +358,7 @@ class ProfileCenterActivity :
                     val remainDayStartIndex = daysLeftText.indexOf(remainDay)
                     remainDaySpannable.setSpan(
                         ForegroundColorSpan(
-                            ContextCompat.getColor(this, R.color.colorBlue)
+                            ContextCompat.getColor(this, R.color.color_317FFF_1053af)
                         ),
                         remainDayStartIndex,
                         remainDayStartIndex + remainDay.length, 0

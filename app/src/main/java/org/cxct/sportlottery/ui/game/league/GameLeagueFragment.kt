@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_game_league.*
 import kotlinx.android.synthetic.main.fragment_game_league.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
@@ -23,6 +24,7 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.OddsListData
+import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
@@ -43,6 +45,8 @@ import org.cxct.sportlottery.util.*
 class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class), Animation.AnimationListener {
 
     private val args: GameLeagueFragmentArgs by navArgs()
+
+    private var isReloadPlayCate: Boolean? = null //是否重新加載玩法篩選Layout
 
     private val playCategoryAdapter by lazy {
 
@@ -170,10 +174,16 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
     private fun setupPlayCategory(view: View) {
         view.game_league_play_category.apply {
-            this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            if (this.layoutManager == null || isReloadPlayCate != false) {
+                this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            }
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
-            this.adapter = playCategoryAdapter
 
+            if (this.adapter == null || isReloadPlayCate != false) {
+                this.adapter = playCategoryAdapter
+            }
+
+            removeItemDecorations()
             addItemDecoration(
                 SpaceItemDecoration(
                     context,
@@ -237,19 +247,10 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         }
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
 
-        subscribeSportChannelHall(args.gameType.key)
-
-        viewModel.getLeagueOddsList(
-            args.matchType,
-            args.leagueId.toList(),
-            args.matchId.toList(),
-            isReloadPlayCate = true
-        )
         viewModel.getSportMenuFilter()
-        loading()
     }
 
     private fun initObserve() {
@@ -257,16 +258,28 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             leagueAdapter.discount = it?.discount ?: 1.0F
         }
 
-        viewModel.playList.observe(this.viewLifecycleOwner) {
-            playCategoryAdapter.data = it
+        viewModel.playList.observe(this.viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let {
+                playCategoryAdapter.data = it
+                if (isReloadPlayCate != false) {
+                    view?.let { notNullView ->
+                        setupPlayCategory(notNullView)
+                        isReloadPlayCate = false
+                    }
+                }
+            }
         }
 
-        viewModel.playCate.observe(this.viewLifecycleOwner) {
-            playCategoryAdapter.apply {
-                data.find { it.isSelected }?.playCateList?.forEach { playCate ->
-                    playCate.isSelected = (playCate.code == it)
+        viewModel.playCate.observe(this.viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let {
+                playCategoryAdapter.apply {
+                    data.find { it.isSelected }?.playCateList?.forEach { playCate ->
+                        playCate.isSelected = (playCate.code == it)
+                    }
+                    for (index in data.indices) {
+                        notifyItemChanged(index)
+                    }
                 }
-                notifyDataSetChanged()
             }
         }
 
@@ -415,6 +428,20 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     }
 
     private fun initSocketObserver() {
+        receiver.serviceConnectStatus.observe(this.viewLifecycleOwner) { status ->
+            status?.let {
+                if (it == ServiceConnectStatus.CONNECTED) {
+                    loading()
+                    subscribeSportChannelHall(args.gameType.key)
+                    viewModel.getLeagueOddsList(
+                        args.matchType,
+                        args.leagueId.toList(),
+                        args.matchId.toList(),
+                        isReloadPlayCate = (isReloadPlayCate != false)
+                    )
+                }
+            }
+        }
         receiver.matchStatusChange.observe(this.viewLifecycleOwner) {
             it?.let { matchStatusChangeEvent ->
                 val leagueOdds = leagueAdapter.data
@@ -639,15 +666,22 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
 
     private fun updateSportBackground(sportCode: String?) {
-        Glide.with(requireContext()).load(
-            when (sportCode) {
-                GameType.FT.key -> R.drawable.soccer48
-                GameType.BK.key -> R.drawable.basketball48
-                GameType.TN.key -> R.drawable.tennis48
-                GameType.VB.key -> R.drawable.volleyball48
-                else -> null
-            }
-        ).into(game_league_toolbar_bg)
+        if(MultiLanguagesApplication.isNightMode){
+            Glide.with(requireContext()).load(
+              R.drawable.night_bg_300
+            ).into(game_league_toolbar_bg)
+        }else{
+            Glide.with(requireContext()).load(
+                when (sportCode) {
+                    GameType.FT.key -> R.drawable.soccer48
+                    GameType.BK.key -> R.drawable.basketball48
+                    GameType.TN.key -> R.drawable.tennis48
+                    GameType.VB.key -> R.drawable.volleyball48
+                    else -> null
+                }
+            ).into(game_league_toolbar_bg)
+        }
+
     }
 
     //更新isLocked狀態
@@ -684,7 +718,8 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     }
 
     private fun navStatistics(matchId: String?) {
-        StatisticsDialog.newInstance(matchId).show(childFragmentManager, StatisticsDialog::class.java.simpleName)
+        StatisticsDialog.newInstance(matchId, StatisticsDialog.StatisticsClickListener { clickMenu() })
+            .show(childFragmentManager, StatisticsDialog::class.java.simpleName)
     }
 
     private fun addOddsDialog(
@@ -827,6 +862,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     override fun onDestroyView() {
         super.onDestroyView()
 
+        isReloadPlayCate = null
         game_league_odd_list.adapter = null
     }
 }

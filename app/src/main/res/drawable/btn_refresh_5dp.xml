@@ -5,7 +5,7 @@
             <item>
                 <shape android:shape="rectangle">
                     <corners android:radius="5dp" />
-                    <solid android:color="@color/colorSilver" />
+                    <solid android:color="@color/color_666666_bcbcbc" />
                 </shape>
             </item>
             <item android:width="12dp" android:height="12dp" android:drawable="@drawable/ic_refresh" android:gravity="center" />

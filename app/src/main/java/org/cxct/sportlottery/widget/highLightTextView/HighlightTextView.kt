@@ -22,7 +22,7 @@ class HighlightTextView @JvmOverloads constructor(context: Context, attributeSet
 
     private var targetText: List<String> = emptyList()
 
-    private var highLightColor = context.getColor(R.color.colorBlue)
+    private var highLightColor = context.getColor(R.color.color_317FFF_0760D4)
 
     private var highlightWidth = NO_STROKE_WIDTH
 

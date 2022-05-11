@@ -253,13 +253,13 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                             android.R.color.transparent
                         )
                     )
-                    ivLogo.setImageResource(R.drawable.ic_logo_white)
+                    ivLogo.setImageResource(R.drawable.ic_logo)
                     ivNotice.setImageResource(R.drawable.icon_bell_white)
                     ivMenu.setImageResource(R.drawable.ic_menu_gray)
                     tvLanguage.setTextColor(
                         ContextCompat.getColor(
                             MultiLanguagesApplication.appContext,
-                            R.color.color_FFFFFFFF
+                            R.color.color_FFFFFF_FFFFFF
                         )
                     )
                     //endregion
@@ -363,10 +363,10 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         fun bind() {
             with(binding) {
                 bottomNavigationView.setNowPage(Page.PUBLICITY)
-                ContextCompat.getDrawable(context, R.color.colorWhite1)?.let { background ->
+                ContextCompat.getDrawable(context, R.color.color_141414_F3F4F5)?.let { background ->
                     bottomNavigationView.setTopBackground(background)
                 }
-                ContextCompat.getDrawable(context, R.color.colorGrayDark3)?.let { background ->
+                ContextCompat.getDrawable(context, R.color.color_191919_EEEFF0)?.let { background ->
                     bottomNavigationView.setBottomBackground(background)
                 }
             }

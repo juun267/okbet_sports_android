@@ -79,7 +79,7 @@ class SecurityCodeStyleEditText @JvmOverloads constructor(context: Context, attr
         val titleSpan = SpannableString(labelText).apply {
             setSpan(StyleSpan(Typeface.BOLD), 0, this.length , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             setSpan(AbsoluteSizeSpan(13,true), 0, this.length , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.colorBlackLight)), 0, this.length , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)  // 修改字體
+            setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.color_e5e5e5_333333)), 0, this.length , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)  // 修改字體
         }
         txv_title.text = titleContentBuilder.append(titleSpan)
     }
@@ -89,7 +89,7 @@ class SecurityCodeStyleEditText @JvmOverloads constructor(context: Context, attr
         val hintContentBuilder = SpannableStringBuilder()
         val detailSpan = SpannableString(hintText).apply {
             setSpan(StyleSpan(Typeface.NORMAL), 0, this.length , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.colorBlackLight)), 0, this.length , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)  // 修改字體
+            setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.color_e5e5e5_333333)), 0, this.length , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)  // 修改字體
         }
 
         edt_security_code.hint =  hintContentBuilder.append(detailSpan)

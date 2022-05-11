@@ -30,12 +30,9 @@ import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
-import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.MoneyManager.getBankAccountIcon
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.ToastUtil
 import java.util.*
 import kotlin.math.abs
 
@@ -84,6 +81,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
     private fun initButton() {
         //提交
+        btn_submit.setTitleLetterSpacing()
         btn_submit.setOnClickListener {
             createMoneyAddRequest()?.let {
                 viewModel.rechargeSubmit(
@@ -292,8 +290,11 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             .setTitleText(resources.getString(R.string.title_recharge_time))
             .setCancelText(" ")
             .setSubmitText(getString(R.string.picker_submit))
-            .setSubmitColor(ContextCompat.getColor(cv_recharge_time.context, R.color.colorGrayLight))
-            .setCancelColor(ContextCompat.getColor(cv_recharge_time.context, R.color.colorGrayLight))
+            .setTitleColor(ContextCompat.getColor(cv_recharge_time.context, R.color.color_FFFFFF_000000))
+            .setTitleBgColor(ContextCompat.getColor(cv_recharge_time.context, R.color.color_2B2B2B_e2e2e2))
+            .setBgColor(ContextCompat.getColor(cv_recharge_time.context, R.color.color_191919_FCFCFC))
+            .setSubmitColor(ContextCompat.getColor(cv_recharge_time.context, R.color.color_8F8F8F_999999))
+            .setCancelColor(ContextCompat.getColor(cv_recharge_time.context, R.color.color_8F8F8F_999999))
             .isDialog(true)
             .build() as TimePickerView
 

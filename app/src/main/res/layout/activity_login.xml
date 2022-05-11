@@ -62,7 +62,7 @@
                 android:layout_height="45dp"
                 android:layout_marginLeft="14dp"
                 android:text="@string/btn_login"
-                android:textColor="@color/colorBlackLight"
+                android:textColor="@color/color_e5e5e5_333333"
                 android:textSize="@dimen/textSize30sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/view"
@@ -88,9 +88,8 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:textColor="@color/colorBlackLight"
-                    android:textSize="@dimen/textSize14sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/color_e5e5e5_333333"
+                    android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
 
@@ -116,8 +115,8 @@
                     android:imeOptions="actionNext"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:textSize="@dimen/textSize14sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/color_e5e5e5_333333"
+                    android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
 
@@ -147,6 +146,7 @@
                         android:layout_height="wrap_content"
                         android:imeOptions="actionNext"
                         android:inputType="number"
+                        android:textColor="@color/color_e5e5e5_333333"
                         android:maxLines="1"
                         android:textSize="@dimen/textSize14sp" />
 
@@ -191,7 +191,7 @@
                 android:paddingStart="6dp"
                 android:button="@drawable/effect_login_select_checkbox"
                 android:text="@string/remember_password"
-                android:textColor="@color/colorBlackLight"
+                android:textColor="@color/color_e5e5e5_333333"
                 android:textSize="@dimen/textSize13sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/block_valid_code" />
@@ -207,7 +207,7 @@
                 android:focusable="true"
                 android:padding="4dp"
                 android:text="@string/forget_password_question"
-                android:textColor="@color/colorRedDark"
+                android:textColor="@color/color_F75452_b73a20"
                 android:textSize="@dimen/textSize13sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/block_valid_code" />
@@ -241,7 +241,7 @@
                     android:layout_height="wrap_content"
                     android:padding="4dp"
                     android:text="@string/visit_first"
-                    android:textColor="@color/colorGray"
+                    android:textColor="@color/color_A3A3A3_666666"
                     android:textSize="@dimen/textSize12sp"
                     android:visibility="gone" />
 
@@ -249,7 +249,7 @@
                     android:layout_width="1dp"
                     android:layout_height="12dp"
                     android:layout_marginHorizontal="4dp"
-                    android:background="@color/colorGray"
+                    android:background="@color/color_A3A3A3_666666"
                     android:visibility="gone" />
 
                 <TextView

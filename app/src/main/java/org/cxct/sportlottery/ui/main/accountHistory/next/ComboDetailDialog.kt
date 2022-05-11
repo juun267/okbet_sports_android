@@ -61,7 +61,7 @@ class ComboDetailDialog internal constructor(
 
                 when {
                     item.winMoney == null -> {
-                        tvResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorGray))
+                        tvResult.setTextColor(ContextCompat.getColor(mContext, R.color.color_A3A3A3_666666))
                         tvResult.text = mContext.getString(R.string.nothing)
                     }
 
@@ -71,12 +71,12 @@ class ComboDetailDialog internal constructor(
                     }
 
                     item.winMoney < 0.0 -> {
-                        tvResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorRed))
+                        tvResult.setTextColor(ContextCompat.getColor(mContext, R.color.color_E44438_e44438))
                         tvResult.text = "${mContext.getString(R.string.lose)} ${ArithUtil.toMoneyFormat(item.winMoney)}"
                     }
 
                     item.winMoney == 0.0 -> {
-                        tvResult.setTextColor(ContextCompat.getColor(mContext, R.color.colorGray))
+                        tvResult.setTextColor(ContextCompat.getColor(mContext, R.color.color_A3A3A3_666666))
                         tvResult.text = "${mContext.getString(R.string.draw)} ${ArithUtil.toMoneyFormat(item.winMoney)}"
                     }
                 }

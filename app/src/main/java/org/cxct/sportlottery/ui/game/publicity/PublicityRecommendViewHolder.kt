@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.databinding.ItemPublicityRecommendBinding
 import org.cxct.sportlottery.network.common.FoldState
 import org.cxct.sportlottery.network.common.GameType
@@ -85,8 +86,8 @@ class PublicityRecommendViewHolder(
 
             //LeagueView
             with(leagueView) {
-                GameConfigManager.getTitleBarBackground(data.gameType)?.let { titleRes ->
-                    root.setBackgroundResource(titleRes)
+                GameConfigManager.getTitleBarBackground(data.gameType,MultiLanguagesApplication.isNightMode)?.let { titleRes ->
+                    publicityLeagueBg.setBackgroundResource(titleRes)
                 }
                 tvLeagueName.text = data.leagueName
                 ivFlag.setImageDrawable(SvgUtil.getSvgDrawable(itemView.context, data.categoryIcon))

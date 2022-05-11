@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:textColor="@color/colorBlackLight"
+        android:textColor="@color/color_e5e5e5_333333"
         android:textSize="@dimen/textSize13sp"
         android:textStyle="bold"
         tools:text="VIP1 普通会员" />
@@ -30,7 +30,7 @@
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
             android:text="@string/daily_bet_range"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize12sp"
             android:textStyle="bold" />
 
@@ -44,12 +44,12 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/colorWhite7"
+            android:background="@color/color_191919_DFEAF8"
             android:gravity="center"
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
             android:text="@string/title_rebates_rate"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize12sp"
             android:textStyle="bold" />
 
@@ -68,7 +68,7 @@
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
             android:text="@string/daily_rebates"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize12sp"
             android:textStyle="bold" />
     </LinearLayout>

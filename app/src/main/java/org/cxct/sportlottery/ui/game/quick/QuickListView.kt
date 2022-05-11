@@ -3,9 +3,11 @@ package org.cxct.sportlottery.ui.game.quick
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.RelativeLayout
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
@@ -23,7 +25,9 @@ import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.network.odds.quick.QuickListData
 import org.cxct.sportlottery.ui.game.common.*
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.setBackColorWithColorMode
 
 class QuickListView @JvmOverloads constructor(
     context: Context,
@@ -51,7 +55,20 @@ class QuickListView @JvmOverloads constructor(
         OddButtonEpsAdapter(mMatchOdd?.matchInfo)
 
     init {
-        addView(LayoutInflater.from(MultiLanguagesApplication.appContext).inflate(R.layout.view_quick_list, this, false))
+        addView(LayoutInflater.from(context).inflate(R.layout.view_quick_list, this, false).apply {
+            league_odd_quick_odd_btn_pair.setBackColorWithColorMode(
+                lightModeColor = R.color.color_ededed, darkModeColor = R.color.color_212121
+            )
+            league_odd_quick_odd_btn_pager.setBackColorWithColorMode(
+                lightModeColor = R.color.color_ededed, darkModeColor = R.color.color_212121
+            )
+            league_odd_quick_odd_btn_eps.setBackColorWithColorMode(
+                lightModeColor = R.color.color_ededed, darkModeColor = R.color.color_212121
+            )
+            SpaceItemDecorationView.setBackColorWithColorMode(
+                lightModeColor = R.color.color_FCFCFC, darkModeColor = R.color.color_191919
+            )
+        })
     }
 
     override fun onAttachedToWindow() {
@@ -146,10 +163,13 @@ class QuickListView @JvmOverloads constructor(
                                 )
                             }
                         }
-                        mLeagueOddListener?.onClickQuickCateTab(
-                            mMatchOdd!!,
-                            mSelectedQuickPlayCate!!
-                        )
+                        mSelectedQuickPlayCate?.let { quickPlayCate ->
+                            mLeagueOddListener?.onClickQuickCateTab(
+                                mMatchOdd!!,
+                                quickPlayCate
+                            )
+                        }
+
                         SpaceItemDecorationView.visibility = View.VISIBLE
                     }
                 }
@@ -178,10 +198,17 @@ class QuickListView @JvmOverloads constructor(
         league_odd_quick_cate_tabs?.removeAllViews()
         mQuickPlayCateList.sortedBy { it.sort }.forEachIndexed { index, it ->
             val inflater =
-                MultiLanguagesApplication.appContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             val rb = inflater.inflate(R.layout.custom_radio_button, null) as RadioButton
             league_odd_quick_cate_tabs?.addView(rb.apply {
+
+                // Set margin between RadioButton
+                val customLayoutParams = RadioGroup.LayoutParams(context, null)
+                customLayoutParams.setMargins(0, 0, 8.dp, 0)
+                layoutParams = customLayoutParams
+                
                 text = it.nameMap?.get(LanguageManager.getSelectLanguage(MultiLanguagesApplication.appContext).key) ?: it.name
+                setTextSize(TypedValue.COMPLEX_UNIT_DIP,14f)
                 id = it.hashCode()
                 isChecked = it.isSelected
             })

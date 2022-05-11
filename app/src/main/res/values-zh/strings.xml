@@ -56,7 +56,7 @@
     <string name="register_success">注册成功</string>
     <string name="register_watch_first">来去逛逛</string>
     <string name="register_jump">将在5秒后跳转至%s...</string>
-    <string name="register_recharge_now">立即充值</string>
+    <string name="register_recharge_now">立即存款</string>
     <string name="confirm_password">确认密码</string>
     <string name="hint_confirm_password">(请再次输入密码)</string>
     <string name="error_confirm_password">两次密码输入不一致</string>
@@ -112,7 +112,7 @@
     <string name="dialog_security_hint">欢迎再次回到游戏，为确保账号使用的安全性，请完成手机验证</string>
     <string name="dialog_security_title">输入验证码</string>
     <string name="dialog_security_error">验证码输入错误</string>
-    <string name="hint_security_code"><font size="12">(请输入验证码)</font></string>
+    <string name="hint_security_code"><font size="12">请输入验证码</font></string>
     <string name="dialog_security_need_phone">个人资料不完整，请联系客服</string>
     <string name="btn_agreement">开户协议</string>
     <string name="have_account">已有账号?</string>
@@ -169,6 +169,7 @@
     <string name="friday2"> 周五</string>
     <string name="saturday2">周六</string>
     <string name="sunday2">周日</string>
+    <string name="sunday2_cn">周日</string>
     <string name="january">一月</string>
     <string name="february">二月</string>
     <string name="march">三月</string>
@@ -220,7 +221,7 @@
     <string name="daily_bet_range">每日有效打码区间值</string>
     <string name="title_rebates_rate">返水%数</string>
     <string name="daily_rebates">单日最大返水</string>
-    <string name="hint_recharge_growth">充值 %d %s可获得 %d 点成长值</string>
+    <string name="hint_recharge_growth">存款 %d %s可获得 %d 点成长值</string>
     <string name="hint_bet_growth">投注 %d %s可获得 %d 点成长值</string>
     <string name="contact_us">联络我们</string>
     <string name="game_rule">游戏规则</string>
@@ -271,7 +272,7 @@
     <string name="add_time_second_half_game">加时赛下半场</string>
     <string name="account_balance">账户余额</string>
     <string name="user_id_colon">用戶ID：</string>
-    <string name="recharge">充值</string>
+    <string name="recharge">存款</string>
     <string name="more_service">更多服务</string>
     <string name="account_transfer">额度转换</string>
     <string name="money_recycle_succeed">额度回收成功</string>
@@ -414,13 +415,13 @@
     <string name="odds_detail_play_type_ou_u">小</string>
     <string name="bottom_sheet_close">关闭</string>
     <string name="bottom_sheet_title_play_type">变更玩法</string>
-    <string name="message_recharge_maintain">充值相关系统升级中,请稍等</string>
+    <string name="message_recharge_maintain">存款相关系统升级中,请稍等</string>
     <string name="title_bank">选择银行</string>
     <string name="title_main_account">选择帐户</string>
     <string name="title_name">姓名：</string>
     <string name="title_account">账号：</string>
     <string name="title_address">地址：</string>
-    <string name="title_deposit_money">充值金额</string>
+    <string name="title_deposit_money">存款金额</string>
     <string name="title_payer">账号</string>
     <string name="edt_hint_deposit_money">限额 %1$s～%2$s</string>
     <string name="edt_hint_payer">请输入您的账号</string>
@@ -434,7 +435,7 @@
     <string name="edt_hint_wx_id">请输入微信号</string>
     <string name="title_bank_account">银行卡号</string>
     <string name="edt_hint_bank_account">请输入银行卡号</string>
-    <string name="title_recharge_time">充值时间</string>
+    <string name="title_recharge_time">存款时间</string>
     <string name="title_current_money">当前余额</string>
     <string name="btn_submit">提交</string>
     <string name="btn_copy">复制</string>
@@ -469,15 +470,15 @@
     <string name="txv_transfer_pay">转账支付</string>
     <string name="txv_online_pay">在线支付</string>
     <string name="txv_crypto_pay">虚拟币转账</string>
-    <string name="error_recharge_amount">充值金额格式或数值错误</string>
-    <string name="error_recharge_account">充值个数或数值错误</string>
+    <string name="error_recharge_amount">存款金额格式或数值错误</string>
+    <string name="error_recharge_account">存款个数或数值错误</string>
     <string name="error_bank_id">银行卡号格式有错误</string>
     <string name="error_hashcode">区块链交易ID格式错误</string>
     <string name="error_name">您输入的姓名不正确</string>
     <string name="text_money_copy_success">复制成功</string>
     <string name="title_currency">协议/币种</string>
     <string name="title_choose_currency">选择协议/币种</string>
-    <string name="txv_recharge_count">充值个数</string>
+    <string name="txv_recharge_count">存款个数</string>
     <string name="edt_hint_crypto_pay_count">限额 %1$s ~ %2$s 个</string>
     <string name="hint_rate">・汇率：%1$s</string>
     <string name="title_transaction_id">区块链交易ID</string>
@@ -486,11 +487,11 @@
     <string name="hint_fee_amount">・手续费金额：%1$s %s</string>
     <string name="hint_feeback_rate">・返利：%1$s</string>
     <string name="hint_feeback_amount">・返利金额：%1$s %s</string>
-    <string name="txv_recharge_money">・充值金额：%1$s %s</string>
-    <string name="title_recharge_account">充值账号</string>
-    <string name="title_choose_recharge_account">选择充值账号</string>
+    <string name="txv_recharge_money">・存款金额：%1$s %s</string>
+    <string name="title_recharge_account">存款账号</string>
+    <string name="title_choose_recharge_account">选择存款账号</string>
     <string name="title_recharge_address">充币地址:</string>
-    <string name="btn_recharge">去充值</string>
+    <string name="btn_recharge">去存款</string>
     <string name="title_upload_pic">上传支付截图</string>
     <string name="title_upload_pic_plz">请上传支付截图</string>
     <string name="title_reupload_pic">重新上传支付截图</string>
@@ -523,7 +524,7 @@
     <string name="select_crypto_card">选择地址</string>
     <string name="selected_bank_card">%1$s (尾号%2$s)</string>
     <string name="error_withdraw_amount_bank">提款金额格式或数值错误</string>
-    <string name="error_withdraw_amount_crypto">充值个数格式或数值错误</string>
+    <string name="error_withdraw_amount_crypto">提款个数格式或数值错误</string>
     <string name="error_withdraw_amount_bigger_than_balance">提款金额大于账号余额</string>
     <string name="please_setting_withdraw_password">请设置提款密码</string>
     <string name="please_complete_profile_info">完善个人资料</string>
@@ -643,7 +644,7 @@
     <string name="complete">完成</string>
     <string name="winnable_amount_colon">可赢额：</string>
     <string name="finance">资金明细</string>
-    <string name="record_recharge">充值记录</string>
+    <string name="record_recharge">存款记录</string>
     <string name="record_withdrawal">提款记录</string>
     <string name="record_conversion">转换记录</string>
     <string name="record_history">历史记录</string>
@@ -663,7 +664,7 @@
     <string name="recharge_channel_paymaya">PayMaya</string>
     <string name="recharge_channel_admin">系统加钱</string>
     <string name="recharge_log_order_time">订单时间</string>
-    <string name="recharge_log_recharge_amount">充值金额</string>
+    <string name="recharge_log_recharge_amount">存款金额</string>
     <string name="recharge_log_channel_type">渠道类型</string>
     <string name="recharge_log_order_state">订单状态</string>
     <string name="withdraw_log_withdraw_amount">提款金额</string>
@@ -835,7 +836,7 @@
     <string name="bet_fail_btn">投注不成功</string>
     <string name="credit_record_deactivate">信用功能停用中</string>
     <string name="game_postponed">比赛延期</string>
-    <string name="money_recharge_hint1"><font color="#ff4b2c">请先转账成功后再提交充值信息。</font></string>
+    <string name="money_recharge_hint1"><font color="#ff4b2c">请先转账成功后再提交存款信息。</font></string>
     <string name="money_recharge_hint2"><font color="#ff4b2c">每次入款请刷新页面，获取最新的收款账户，避免入款到过期账号，入错无法赔偿。</font></string>
     <string name="no_setting">无设定</string>
     <string name="service_1">客服1</string>
@@ -916,7 +917,7 @@
     <string name="goal_buster">GOAL BUSTER</string>
     <string name="top_games">TOP GAMES</string>
     <string name="commission_detail">详情</string>
-    <string name="commission_desc_1">当有效打码未达成时，为防止非常态性提款，需扣除一定比例的充值金额，做为提前提款手续费。</string>
+    <string name="commission_desc_1">当有效打码未达成时，为防止非常态性提款，需扣除一定比例的存款金额，做为提前提款手续费。</string>
     <string name="commission_desc_2">当达成有效打码后，则不另收手续费。</string>
     <string name="notice">提示说明</string>
     <string name="commission_check_time">检查时间 :</string>
@@ -930,24 +931,24 @@
     <string name="commission_deducted_amount_detail">扣除金额明细</string>
     <string name="commission_detail_title">详细说明</string>
     <string name="commission_detail_desc_1">本公司为防止非常态性提款，存款后须达成有效打码后方可正常提款</string>
-    <string name="commission_detail_desc_2">当未达有效打码时，提款将产生扣除金额，做为提前提款手续费，计算方式为：充值金额 x 扣除比例 = 扣除金额</string>
-    <string name="commission_detail_desc_3">当第一笔充值未提款前，充值第二笔，则两笔的「要求打码量」将会进行加总。此时需同时完成第一笔与第二笔的要求打码量，提款才不会产生扣除金额</string>
+    <string name="commission_detail_desc_2">当未达有效打码时，提款将产生扣除金额，做为提前提款手续费，计算方式为：存款金额 x 扣除比例 = 扣除金额</string>
+    <string name="commission_detail_desc_3">当第一笔存款未提款前，存款第二笔，则两笔的「要求打码量」将会进行加总。此时需同时完成第一笔与第二笔的要求打码量，提款才不会产生扣除金额</string>
     <string name="commission_detail_desc_4">提款后已完成打码量将重新计算，不可累计。 </string>
     <string name="commission_detail_desc_5">[情况一]</string>
-    <string name="commission_detail_desc_6">第一笔 充值1000 已完成打码2000 —> 此时进行提款</string>
-    <string name="commission_detail_desc_7">第二笔 充值2000 已完成打码1000 —> 此时尚需打码1000方可不产生提款扣除金额</string>
-    <string name="commission_detail_desc_8">因第一笔已提款，将不列入计算，只以第二笔充值2000计算扣除金额</string>
+    <string name="commission_detail_desc_6">第一笔 存款1000 已完成打码2000 —> 此时进行提款</string>
+    <string name="commission_detail_desc_7">第二笔 存款2000 已完成打码1000 —> 此时尚需打码1000方可不产生提款扣除金额</string>
+    <string name="commission_detail_desc_8">因第一笔已提款，将不列入计算，只以第二笔存款2000计算扣除金额</string>
     <string name="commission_detail_desc_11">[情况二]</string>
-    <string name="commission_detail_desc_12">第一笔 充值1000 已完成打码1000 —> 此时不提款，进行第二笔充值</string>
-    <string name="commission_detail_desc_13">第二笔 充值2000 已完成打码1000 —> 此时尚需打码1000方可不产生提款扣除金额</string>
+    <string name="commission_detail_desc_12">第一笔 存款1000 已完成打码1000 —> 此时不提款，进行第二笔存款</string>
+    <string name="commission_detail_desc_13">第二笔 存款2000 已完成打码1000 —> 此时尚需打码1000方可不产生提款扣除金额</string>
     <string name="commission_detail_desc_14">虽第一笔完成打码，但因第二笔未达成打码要求，所以依下列公式</string>
-    <string name="commission_detail_desc_15">充值2000-已完成打码1000=1000</string>
+    <string name="commission_detail_desc_15">存款2000-已完成打码1000=1000</string>
     <string name="commission_detail_desc_16">得出第二笔尚需达成1000打码后，方能进行提款</string>
     <string name="commission_detail_desc_17">[情况三]</string>
-    <string name="commission_detail_desc_18">第一笔 充值1000 已完成打码500 —> 此时不提款，进行第二笔充值</string>
-    <string name="commission_detail_desc_19">第二笔 充值2000 已完成打码1000 —> 此时尚需打码1500方可不产生提款扣除金额</string>
+    <string name="commission_detail_desc_18">第一笔 存款1000 已完成打码500 —> 此时不提款，进行第二笔存款</string>
+    <string name="commission_detail_desc_19">第二笔 存款2000 已完成打码1000 —> 此时尚需打码1500方可不产生提款扣除金额</string>
     <string name="commission_detail_desc_20">因两笔皆未完成打码，所以依下列公式</string>
-    <string name="commission_detail_desc_21">充值(1000+2000)-已完成打码(500+1000)=1500</string>
+    <string name="commission_detail_desc_21">存款(1000+2000)-已完成打码(500+1000)=1500</string>
     <string name="commission_detail_desc_22">得出尚需达成1500打码后，方能进行提款</string>
     <string name="commissiom_completed">完成</string>
     <string name="commission_example">范例</string>
@@ -983,6 +984,8 @@
     <string name="text_bet_not_success4">交易状况</string>
     <string name="text_security_money">押金：%s</string>
     <string name="text_security_money2">还有%s天</string>
+    <string name="customer_service_title">客服中心</string>
+
     <!--自我禁制-->
     <string name="self_limit">自我禁制</string>
     <string name="self_limit_impotent">重要事项</string>
@@ -1077,7 +1080,7 @@
     <string name="text_account_history_balance">余额</string>
 
     <string name="text_account_history_bet">注单</string>
-    <string name="text_account_history_recharge">充值</string>
+    <string name="text_account_history_recharge">存款</string>
     <string name="text_account_history_withdraw">提款</string>
     <string name="text_account_history_activity">活动金额</string>
     <string name="text_account_history_credit">信用账户金额</string>

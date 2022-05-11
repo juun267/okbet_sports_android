@@ -13,7 +13,7 @@
         android:orientation="vertical"
         android:textSize="14dp"
         android:textStyle="bold"
-        android:textColor="@color/colorBlue"
+        android:textColor="@color/color_317FFF_0760D4"
         android:paddingTop="6dp"
         android:paddingBottom="6dp">
     </TextView>

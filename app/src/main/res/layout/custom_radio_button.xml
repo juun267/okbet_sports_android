@@ -5,7 +5,7 @@
     android:button="@null"
     android:background="@drawable/selector_tab"
     android:textColor="@color/selector_tab_text_color"
-    android:paddingHorizontal="10dp"
+    android:paddingHorizontal="6dp"
     xmlns:tools="http://schemas.android.com/tools"
     tools:text="test">
 

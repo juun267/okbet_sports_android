@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:overScrollMode="never"
-    android:background="@color/colorWhite1"
+    android:background="@color/color_141414_F3F4F5"
     tools:context=".ui.money.recharge.OnlinePayFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#F3F4F5"
+        android:background="@color/color_141414_F3F4F5"
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
@@ -42,7 +42,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/colorWhite"
+            app:cardBackgroundColor="@color/color_191919_FCFCFC"
             app:cardCornerRadius="5dp"
             app:cardElevation="0dp">
 
@@ -59,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="@string/title_pay_gap"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/color_FFFFFF_000000"
                     android:textSize="@dimen/textSize13sp"
                     android:textStyle="bold" />
 
@@ -69,7 +69,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="15dp"
-                    android:background="@color/colorWhite6" />
+                    android:background="@color/color_191919_EEEFF0" />
 
                 <ImageView
                     android:id="@+id/iv_gap_icon"
@@ -85,7 +85,7 @@
                     android:layout_marginStart="9dp"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:gravity="center_vertical"
                     android:textSize="@dimen/textSize14sp" />
 
@@ -107,7 +107,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            app:cardBackgroundColor="@color/colorWhite"
+            app:cardBackgroundColor="@color/color_191919_FCFCFC"
             app:cardCornerRadius="5dp"
             app:cardElevation="0dp">
 
@@ -122,7 +122,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="@string/title_pay_bank"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/color_FFFFFF_000000"
                     android:textSize="@dimen/textSize13sp"
                     android:textStyle="bold" />
 
@@ -132,7 +132,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="15dp"
-                    android:background="@color/colorWhite6" />
+                    android:background="@color/color_191919_EEEFF0" />
                 
                 <ImageView
                     android:id="@+id/iv_bank_icon"
@@ -148,7 +148,7 @@
                     android:layout_marginStart="9dp"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/color_e5e5e5_333333"
                     android:gravity="center_vertical"
                     android:textSize="@dimen/textSize14sp" />
 
@@ -176,7 +176,7 @@
                 android:id="@+id/title_fee_rate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/color_E44438_e44438"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="@string/title_fee_rate" />
 
@@ -184,7 +184,7 @@
                 android:id="@+id/tv_fee_rate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/color_E44438_e44438"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="0.500" />
 
@@ -192,7 +192,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/percent"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/color_E44438_e44438"
                 android:textSize="@dimen/textSize12sp" />
         </LinearLayout>
 
@@ -206,7 +206,7 @@
                 android:id="@+id/title_fee_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/color_E44438_e44438"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="@string/title_fee_amount" />
 
@@ -214,7 +214,7 @@
                 android:id="@+id/tv_fee_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/color_E44438_e44438"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="12.000" />
 
@@ -223,7 +223,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/color_E44438_e44438"
                 tools:text="PHP"
                 android:textSize="@dimen/textSize12sp" />
         </LinearLayout>
@@ -238,7 +238,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_tips"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/color_E44438_e44438"
                 android:textSize="@dimen/textSize12sp" />
 
             <TextView
@@ -246,7 +246,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/money_recharge_hint1"
-                android:textColor="@color/colorRed"
+                android:textColor="@color/color_E44438_e44438"
                 android:textSize="@dimen/textSize12sp" />
         </LinearLayout>
 
@@ -259,8 +259,9 @@
             android:background="@drawable/bg_radius_20_button_dusk"
             android:gravity="center"
             android:text="@string/btn_submit"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/color_191919_FCFCFC"
             android:textSize="@dimen/textSize16sp"
+            android:textStyle="bold"
             style="?android:attr/borderlessButtonStyle"/>
 
     </LinearLayout>

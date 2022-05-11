@@ -5,7 +5,7 @@
     android:id="@+id/cl_item"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:background="@color/colorWhite4"
+    android:background="@color/color_212121_ededed"
     tools:ignore="SpUsage">
 
 
@@ -14,8 +14,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/textSize16sp"
+        android:textColor="@color/color_FFFFFF_000000"
+        android:textSize="@dimen/textSize14sp"
         android:gravity="center_vertical"
         android:textAllCaps="true"
         app:layout_constraintBottom_toBottomOf="parent"

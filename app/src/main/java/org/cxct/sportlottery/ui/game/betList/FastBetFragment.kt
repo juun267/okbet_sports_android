@@ -142,7 +142,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         ForegroundColorSpan(
                             ContextCompat.getColor(
                                 requireContext(),
-                                R.color.colorRedDark
+                                R.color.color_F75452_b73a20
                             )
                         )
                     text2.setSpan(foregroundSpan, 0, text2.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -152,7 +152,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         ForegroundColorSpan(
                             ContextCompat.getColor(
                                 requireContext(),
-                                R.color.colorRedDark
+                                R.color.color_F75452_b73a20
                             )
                         )
                     text4.setSpan(
@@ -199,7 +199,9 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 //            dialog = this@BetInfoCarDialog
         }.executePendingBindings()
         data = Parcels.unwrap(arguments?.getParcelable("data"))
-        if(viewModel.betInfoList.value?.peekContent()!!.isNotEmpty() || data.matchType == MatchType.PARLAY||!viewModel.getIsFastBetOpened()){
+        if (viewModel.betInfoList.value?.peekContent()!!
+                .isNotEmpty() || viewModel.curMatchType.value == MatchType.PARLAY || !viewModel.getIsFastBetOpened()
+        ) {
             initData()
             dismiss()
         }
@@ -594,6 +596,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         viewModel.betAddResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { result ->
+                hideLoading()
                 if (!result.success) {
                     showPromptDialog(
                         title = getString(R.string.prompt),
@@ -751,7 +754,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             binding.clItemBackground.setBackgroundColor(
                 ContextCompat.getColor(
                     requireContext(),
-                    R.color.colorWhite
+                    R.color.color_191919_FCFCFC
                 )
             )
             binding.ivBetLock.visibility = View.GONE
@@ -765,7 +768,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             binding.clItemBackground.setBackgroundColor(
                 ContextCompat.getColor(
                     requireContext(),
-                    R.color.colorWhite2
+                    R.color.color_141414_f3f3f3
                 )
             )
             binding.ivBetLock.visibility = View.VISIBLE
@@ -860,6 +863,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
 
     private fun addBetSingle() {
+        loading()
         if (matchOdd?.status == BetStatus.LOCKED.code || matchOdd?.status == BetStatus.DEACTIVATED.code) return
         val stake =
             if (binding.etBet.text.toString().isEmpty()) 0.0 else binding.etBet.text.toString()

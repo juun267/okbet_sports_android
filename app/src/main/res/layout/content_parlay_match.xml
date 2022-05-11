@@ -26,15 +26,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/colorBlackLight"
+                android:textColor="@color/color_e5e5e5_333333"
                 android:textSize="@dimen/textSize14sp"
-                android:textStyle="bold"
                 tools:text="篮球 让球" />
             <TextView
                 android:id="@+id/tv_count_down_parley"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:textColor="@color/colorBlue"
+                android:textColor="@color/color_317FFF_0760D4"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="30s" />
 
@@ -51,7 +50,7 @@
                 android:id="@+id/content_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorBlackLight"
+                android:textColor="@color/color_e5e5e5_333333"
                 android:textSize="@dimen/textSize13sp"
                 android:layout_marginEnd="4dp"
                 tools:text="06-22" />
@@ -65,7 +64,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorBlackLight"
+                android:textColor="@color/color_e5e5e5_333333"
                 android:textSize="@dimen/textSize13sp"
                 tools:text="NBA季后赛" />
 
@@ -73,7 +72,7 @@
                 android:id="@+id/tv_score_parlay"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:textColor="@color/colorGrayLight"
+                android:textColor="@color/color_8F8F8F_999999"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="(5-26)" />
 
@@ -85,7 +84,7 @@
             android:id="@+id/parlay_play_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorGray"
+            android:textColor="@color/color_A3A3A3_666666"
             android:layout_marginTop="4dp"
             android:textSize="@dimen/textSize13sp"
             tools:text="2022-02-25 10:42" />
@@ -101,7 +100,7 @@
                 android:id="@+id/content_home_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorGray"
+                android:textColor="@color/color_A3A3A3_666666"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="密尔沃基雄鹿" />
 
@@ -111,14 +110,14 @@
                 android:layout_marginStart="6dp"
                 android:layout_marginEnd="6dp"
                 android:text="@string/versus"
-                android:textColor="@color/colorGray"
+                android:textColor="@color/color_A3A3A3_666666"
                 android:textSize="@dimen/textSize14sp" />
 
             <TextView
                 android:id="@+id/content_away_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorGray"
+                android:textColor="@color/color_A3A3A3_666666"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="亚特兰大老鹰" />
         </LinearLayout>
@@ -127,7 +126,7 @@
             android:id="@+id/parlay_play_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorGray"
+            android:textColor="@color/color_A3A3A3_666666"
             android:layout_marginTop="4dp"
             android:textSize="@dimen/textSize13sp"
             tools:text="密尔沃基雄鹿 6.5 \@ 1.860" />

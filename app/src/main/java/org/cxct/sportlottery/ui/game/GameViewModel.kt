@@ -203,10 +203,10 @@ class GameViewModel(
     val leagueFilterList: LiveData<List<League>>
         get() = _leagueFilterList
 
-    val playList: LiveData<List<Play>>
+    val playList: LiveData<Event<List<Play>>>
         get() = _playList
 
-    val playCate: LiveData<String?>
+    val playCate: LiveData<Event<String?>>
         get() = _playCate
     val searchResult: LiveData<Event<List<SearchResult>?>>
         get() = _searchResult
@@ -261,8 +261,8 @@ class GameViewModel(
     private val _leagueSelectedList = MutableLiveData<List<League>>()
     private val _leagueSubmitList = MutableLiveData<Event<List<League>>>()
     private val _leagueFilterList = MutableLiveData<List<League>>()
-    private val _playList = MutableLiveData<List<Play>>()
-    private val _playCate = MutableLiveData<String?>()
+    private val _playList = MutableLiveData<Event<List<Play>>>()
+    private val _playCate = MutableLiveData<Event<String?>>()
     private val _searchResult = MutableLiveData<Event<List<SearchResult>?>>()
     private val _navDetail = MutableLiveData<Event<NavDirections>>()
 
@@ -636,14 +636,9 @@ class GameViewModel(
                     TimeUtil.getTodayStartTimeStamp().toString()
                 )
             }
-            postHomeCardCount(result)
-
             result?.let {
                 it.sportMenuData?.sortSport()
-                it.updateSportSelectState(
-                    matchType,
-                    lastSportTypeHashMap[matchType?.postValue]
-                )
+                it.setupSportSelectState()
             }
             //單純更新gameTypeAdapter就不需要更新當前MatchType，不然畫面會一直閃 by Bill
             if (!onlyRefreshSportMenu)
@@ -661,6 +656,8 @@ class GameViewModel(
             if (switchFirstTag) {
                 matchType?.let { switchFirstSportType(it) }
             }
+
+            postHomeCardCount(result)
         }
 
         _isLoading.postValue(false) // TODO IllegalStateException: Cannot invoke setValue on a background thread
@@ -947,10 +944,12 @@ class GameViewModel(
                     )
                 )
             }?.let { result ->
-                result.t?.odds?.forEach { oddData ->
-                    oddData.sortOddsMap()
+                if(result.success){
+                    result.t?.odds?.forEach { oddData ->
+                        oddData.sortOddsMap()
+                    }
+                    _highlightMenuResult.postValue(Event(result))
                 }
-                _highlightMenuResult.postValue(Event(result))
             }
         }
     }
@@ -1018,6 +1017,7 @@ class GameViewModel(
         }
     }
 
+    //TODO 與switchSportType(matchType: MatchType, gameType: String)功能相近但邏輯有些許不同, 不確定是不是邏輯沒同步到, 看能不能整併成一個
     fun switchSportType(matchType: MatchType, item: Item) {
         if (matchType == MatchType.OTHER) {
             specialMenuData?.updateSportSelectState(item.code)
@@ -1152,10 +1152,10 @@ class GameViewModel(
     }
 
     fun switchPlayCategory(matchType: MatchType, play: Play, playCateCode: String?) {
-        _playList.value?.forEach {
+        _playList.value?.peekContent()?.forEach {
             it.isSelected = (it == play)
         }
-        _playCate.value = playCateCode
+        _playCate.value = Event(playCateCode)
     }
 
     fun switchMatchDate(matchType: MatchType, date: Date) {
@@ -1364,10 +1364,10 @@ class GameViewModel(
         play: Play,
         playCateCode: String?
     ) {
-        _playList.value?.forEach {
+        _playList.value?.peekContent()?.forEach {
             it.isSelected = (it == play)
         }
-        _playCate.value = playCateCode
+        _playCate.value = Event(playCateCode)
 
 //        getLeagueOddsList(matchType, leagueIdList, matchIdList)
     }
@@ -1383,11 +1383,11 @@ class GameViewModel(
         isIncrement: Boolean = false
     ) {
 
+        val nowMatchType = curChildMatchType.value ?: matchType
+
         if (isReloadPlayCate && !isIncrement) {
             getLeaguePlayCategory(matchType, leagueIdList)
         }
-
-        val nowMatchType = curChildMatchType.value ?: matchType
 
         getSportSelected(nowMatchType)?.let { item ->
             getOddsList(
@@ -1905,8 +1905,8 @@ class GameViewModel(
                         it.isSelected = (it == playList.firstOrNull())
                     }
 
-                    _playList.postValue(playList)
-                    _playCate.postValue(null)
+                    _playList.postValue(Event(playList))
+                    _playCate.postValue(Event(null))
                 }
             }
         } else {
@@ -1920,8 +1920,8 @@ class GameViewModel(
                         it.isSelected = (it == playList.firstOrNull())
                     }
 
-                    _playList.postValue(playList)
-                    _playCate.postValue(null)
+                    _playList.postValue(Event(playList))
+                    _playCate.postValue(Event(null))
                 }
             }
         }
@@ -2132,14 +2132,12 @@ class GameViewModel(
                     //aaaaa
                     if (MultiLanguagesApplication.getInstance()?.getGameDetailAnimationNeedShow() == true) {
                         val animationTrackerId = result.oddsDetailData?.matchOdd?.matchInfo?.trackerId
-                        Timber.e("Dean, animationTrackerId = $animationTrackerId")
                         if (!animationTrackerId.isNullOrEmpty()) {
                             doNetwork(androidContext) {
                                 OneBoSportApi.matchService.getMatchTrackerUrl(animationTrackerId)
                             }?.let { result ->
                                 if (result.success) {
                                     _matchTrackerUrl.postValue(Event(result.matchTrackerUrl))
-                                    Timber.e("Dean, tracker url = ${result.matchTrackerUrl.h5Url}")
                                 }
                             }
                         }
@@ -2294,10 +2292,10 @@ class GameViewModel(
     }
 
 
-    private fun getPlayCateSelected(): Play? = _playList.value?.find { it.isSelected }
+    private fun getPlayCateSelected(): Play? = _playList.value?.peekContent()?.find { it.isSelected }
 
     private fun getPlayCateCodeList(): List<String>? {
-        _playCate.value?.let {
+        _playCate.value?.peekContent()?.let {
             return listOf(it)
         }
         return null
@@ -2319,81 +2317,134 @@ class GameViewModel(
         return this
     }
 
+    //20220507 原本除了matchType之外的玩法都會被調整至第一個球類, 調整為僅對matchType做選中球種更新
     private fun SportMenuData.updateSportSelectState(
         matchType: MatchType?,
         gameTypeCode: String?
     ): SportMenuData {
-        this.menu.inPlay.items.map { sport ->
-            sport.isSelected = when {
-                ((matchType == MatchType.IN_PLAY) && gameTypeCode != null && sport.num > 0) -> {
-                    sport.code == gameTypeCode
-                }
-                else -> {
-                    this.menu.inPlay.items.indexOf(sport) == 0
-                }
-            }
-        }
-        this.menu.today.items.map { sport ->
-            sport.isSelected = when {
-                ((matchType == MatchType.TODAY) && gameTypeCode != null && sport.num > 0) -> {
-                    sport.code == gameTypeCode
-                }
-                else -> {
-                    this.menu.today.items.indexOf(sport) == 0
+        when (matchType) {
+            MatchType.IN_PLAY -> this.menu.inPlay.items.map { sport ->
+                sport.isSelected = when {
+                    (gameTypeCode != null && sport.num > 0) -> {
+                        sport.code == gameTypeCode
+                    }
+                    else -> {
+                        this.menu.inPlay.items.indexOf(sport) == 0
+                    }
                 }
             }
-        }
-        this.menu.early.items.map { sport ->
-            sport.isSelected = when {
-                ((matchType == MatchType.EARLY) && gameTypeCode != null && sport.num > 0) -> {
-                    sport.code == gameTypeCode
-                }
-                else -> {
-                    this.menu.early.items.indexOf(sport) == 0
-                }
-            }
-        }
-        this.menu.parlay.items.map { sport ->
-            sport.isSelected = when {
-                ((matchType == MatchType.PARLAY) && gameTypeCode != null && sport.num > 0) -> {
-                    sport.code == gameTypeCode
-                }
-                else -> {
-                    this.menu.parlay.items.indexOf(sport) == 0
+            MatchType.TODAY -> this.menu.today.items.map { sport ->
+                sport.isSelected = when {
+                    (gameTypeCode != null && sport.num > 0) -> {
+                        sport.code == gameTypeCode
+                    }
+                    else -> {
+                        this.menu.today.items.indexOf(sport) == 0
+                    }
                 }
             }
-        }
-        this.menu.outright.items.map { sport ->
-            sport.isSelected = when {
-                ((matchType == MatchType.OUTRIGHT || matchType == MatchType.PARLAY) && gameTypeCode != null && sport.num > 0) -> {
-                    sport.code == gameTypeCode
-                }
-                else -> {
-                    this.menu.outright.items.indexOf(sport) == 0
-                }
-            }
-        }
-        this.atStart.items.map { sport ->
-            sport.isSelected = when {
-                ((matchType == MatchType.AT_START) && gameTypeCode != null && sport.num > 0) -> {
-                    sport.code == gameTypeCode
-                }
-                else -> {
-                    this.atStart.items.indexOf(sport) == 0
+            MatchType.EARLY -> this.menu.early.items.map { sport ->
+                sport.isSelected = when {
+                    (gameTypeCode != null && sport.num > 0) -> {
+                        sport.code == gameTypeCode
+                    }
+                    else -> {
+                        this.menu.early.items.indexOf(sport) == 0
+                    }
                 }
             }
-        }
-        this.menu.eps?.items?.map { sport ->
-            sport.isSelected = when {
-                ((matchType == MatchType.EPS) && gameTypeCode != null && sport.num > 0) -> {
-                    sport.code == gameTypeCode
+            MatchType.PARLAY -> this.menu.parlay.items.map { sport ->
+                sport.isSelected = when {
+                    (gameTypeCode != null && sport.num > 0) -> {
+                        sport.code == gameTypeCode
+                    }
+                    else -> {
+                        this.menu.parlay.items.indexOf(sport) == 0
+                    }
                 }
-                else -> {
-                    this.menu?.eps?.items.indexOf(sport) == 0
+            }
+            MatchType.OUTRIGHT -> this.menu.outright.items.map { sport ->
+                sport.isSelected = when {
+                    (gameTypeCode != null && sport.num > 0) -> {
+                        sport.code == gameTypeCode
+                    }
+                    else -> {
+                        this.menu.outright.items.indexOf(sport) == 0
+                    }
+                }
+            }
+            MatchType.AT_START -> this.atStart.items.map { sport ->
+                sport.isSelected = when {
+                    (gameTypeCode != null && sport.num > 0) -> {
+                        sport.code == gameTypeCode
+                    }
+                    else -> {
+                        this.atStart.items.indexOf(sport) == 0
+                    }
+                }
+            }
+            MatchType.EPS -> this.menu.eps?.items?.map { sport ->
+                sport.isSelected = when {
+                    (gameTypeCode != null && sport.num > 0) -> {
+                        sport.code == gameTypeCode
+                    }
+                    else -> {
+                        this.menu.eps.items.indexOf(sport) == 0
+                    }
                 }
             }
         }
         return this
+    }
+
+    /**
+     * 根據記錄的賽事種類選中球種更新至新獲取的SportMenuResult資料
+     * @see lastSportTypeHashMap
+     */
+    private fun SportMenuResult.setupSportSelectState() {
+        this.sportMenuData?.let { menuData ->
+            //滾球
+            setupMatchTypeSelectState(MatchType.IN_PLAY, menuData.menu.inPlay)
+
+            //今日
+            setupMatchTypeSelectState(MatchType.TODAY, menuData.menu.today)
+
+            //早盤
+            setupMatchTypeSelectState(MatchType.EARLY, menuData.menu.early)
+
+            //串關
+            setupMatchTypeSelectState(MatchType.PARLAY, menuData.menu.parlay)
+
+            //冠軍
+            setupMatchTypeSelectState(MatchType.OUTRIGHT, menuData.menu.outright)
+
+            //即將開賽
+            setupMatchTypeSelectState(MatchType.AT_START, menuData.atStart)
+
+            //特優賠率
+            menuData.menu.eps?.let { epsSport ->
+                setupMatchTypeSelectState(MatchType.EPS, epsSport)
+            }
+        }
+        _sportMenuResult.postValue(this)
+    }
+
+    /**
+     * 設置賽事種類選中球種狀態
+     * @see setupSportSelectState
+     */
+    private fun setupMatchTypeSelectState(matchType: MatchType, matchTypeSport: Sport) {
+        matchTypeSport.items.let { matchTypeItems ->
+            matchTypeItems.forEach { sport ->
+                sport.isSelected = when {
+                    ((lastSportTypeHashMap[matchType.postValue]) == sport.code && sport.num > 0) -> true
+                    else -> false
+                }
+            }
+            if (!matchTypeItems.any { it.isSelected }) {
+                matchTypeItems.firstOrNull { it.num > 0 }?.isSelected = true
+            }
+        }
     }
 
     private fun SportMenuResult.updateSportSelectState(
@@ -2416,15 +2467,15 @@ class GameViewModel(
     }
 
     private fun updatePlaySelectedState(play: Play) {
-        val playList = _playList.value
+        val playList = _playList.value?.peekContent()
 
         playList?.forEach {
             it.isSelected = (it == play)
         }
 
         playList?.let {
-            _playList.value = it
-            _playCate.value = (
+            _playList.value = Event(it)
+            _playCate.value = Event((
                     when (play.selectionType == SelectionType.SELECTABLE.code) {
                         true -> {
                             it.find { play ->
@@ -2437,7 +2488,7 @@ class GameViewModel(
                             null
                         }
                     }
-                    )
+                    ))
         }
     }
 
