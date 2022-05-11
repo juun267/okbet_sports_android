@@ -12,12 +12,13 @@ import timber.log.Timber
 
 object JumpUtil {
 
-    fun toInternalWeb(context: Context, href: String?, title: String?, toolbarVisibility: Boolean = true) {
+    fun toInternalWeb(context: Context, href: String?, title: String?, toolbarVisibility: Boolean = true, backEvent: Boolean = true) {
         context.startActivity(
             Intent(context, WebActivity::class.java)
                 .putExtra(WebActivity.KEY_URL, href)
                 .putExtra(WebActivity.KEY_TITLE, title)
                 .putExtra(WebActivity.KEY_TOOLBAR_VISIBILITY, toolbarVisibility)
+                .putExtra(WebActivity.KEY_BACK_EVENT, backEvent)
         )
     }
 

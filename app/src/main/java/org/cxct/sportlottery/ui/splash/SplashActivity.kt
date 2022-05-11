@@ -98,7 +98,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
     private fun initObserve() {
         viewModel.errorResultIndex.observe(this) {
-            JumpUtil.toInternalWeb(this, it, "", false)
+            JumpUtil.toInternalWeb(this, it, "", toolbarVisibility = false, backEvent = false)
         }
 
         viewModel.configResult.observe(this) {
@@ -107,11 +107,6 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                     goMaintenancePage()
                 }
                 it?.success == true -> checkAppMinVersion()
-
-                it?.success == false && it.code == 403 -> {
-                    JumpUtil.toInternalWeb(this, "https://okbet.com", "", false)
-                    finish()
-                }
 
                 else -> showErrorRetryDialog(getString(R.string.error_config_title), getString(R.string.error_config))
             }

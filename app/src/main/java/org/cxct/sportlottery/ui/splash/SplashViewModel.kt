@@ -70,12 +70,11 @@ class SplashViewModel(
                 }
                 if (result?.success == true) {
                     setConfig(result)
+                    gotConfigData = true
                     setBaseUrl(hostUrl, retrofit)
                     result.configData?.let { setRandomSocketUrl(it.wsHost) }
                     getPlayQuotaCom()
                     return@launch
-                } else if (result?.success == false && result.code == 403){
-                    _configResult.postValue(result)
                 } else {
                     getHost()
                 }
@@ -160,17 +159,16 @@ class SplashViewModel(
                 mIsGetFastHostDown = true
                 hostRepository.isNeedGetHost = false
                 setConfig(result)
+                gotConfigData = true
                 setBaseUrl(baseUrl, retrofit)
                 result.configData?.let { setRandomSocketUrl(it.wsHost) }
                 getPlayQuotaCom()
-            } else if (result?.success == false && result.code == 403){
-                mIsGetFastHostDown = true
-                _configResult.postValue(result)
             } else {
                 Timber.e("==> Check host fail!!! baseUrl = $baseUrl")
                 val listSize = mAppUrlList?.size ?: 0
                 if (++mCheckHostUrlCount >= listSize) { //當所有的 check request 都失敗才跳 error
                     setConfig(result)
+                    gotConfigData = false
                 }
             }
         }
@@ -180,7 +178,6 @@ class SplashViewModel(
         hostRepository.platformId = result?.configData?.platformId ?: -1
         sConfigData = result?.configData
         _configResult.postValue(result)
-        gotConfigData = true
     }
 
     private fun setBaseUrl(baseUrl: String, retrofit: Retrofit) {
@@ -190,7 +187,7 @@ class SplashViewModel(
         RequestManager.instance.retrofit = retrofit
     }
 
-    private fun setRandomSocketUrl(wsHost:String){
+    private fun setRandomSocketUrl(wsHost: String) {
         val wsList = wsHost.split(',')
         val randomIndex = Random.nextInt(wsList.size)
         Constants.setSocketUrl(wsList[randomIndex])
