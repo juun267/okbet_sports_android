@@ -13,7 +13,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.util.countTextAmount
-import org.cxct.sportlottery.util.setTextWithStrokeWidth
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 class FeedbackSubmitFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel::class) {
 
@@ -52,7 +52,7 @@ class FeedbackSubmitFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
                 tv_input_count.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_F75452_b73a20))
             }
         }
-        btn_submit.setTextWithStrokeWidth(getString(R.string.submit), 0.7f)
+        btn_submit.setTitleLetterSpacing()
     }
 
 }

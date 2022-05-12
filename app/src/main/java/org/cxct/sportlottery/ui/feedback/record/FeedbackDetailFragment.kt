@@ -14,7 +14,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.util.countTextAmount
-import org.cxct.sportlottery.util.setTextWithStrokeWidth
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 
 class FeedbackDetailFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel::class) {
@@ -60,7 +60,7 @@ class FeedbackDetailFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
                 tv_input_count.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_F75452_b73a20))
             }
         }
-        btn_submit.setTextWithStrokeWidth(getString(R.string.submit), 0.7f)
+        btn_submit.setTitleLetterSpacing()
     }
 
     private fun initRecyclerView() {
