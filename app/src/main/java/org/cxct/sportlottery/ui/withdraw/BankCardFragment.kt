@@ -120,6 +120,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             }
         }
         btn_submit.setTitleLetterSpacing()
+        btn_delete_bank.setTitleLetterSpacing()
 
     }
 
