@@ -129,23 +129,22 @@
                         android:background="@color/color_191919_FCFCFC"
                         app:layout_constraintTop_toBottomOf="@+id/layoutTitle">
 
-                        <ImageView
-                            android:id="@+id/iv_bet_lock"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:src="@drawable/ic_bet_lock"
-                            android:visibility="invisible"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent" />
-
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:id="@+id/iv_bet_lock"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:src="@drawable/ic_bet_lock"
+                                android:visibility="invisible"
+                                app:layout_constraintBottom_toTopOf="@+id/et_clickable"
+                                app:layout_constraintEnd_toEndOf="parent" />
 
 
                             <View
@@ -478,4 +477,5 @@
     </LinearLayout>
 
 </layout>
+
 

@@ -826,11 +826,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         isEnabled = true
                         isFocusable = true
                         isFocusableInTouchMode = true
-//                        hint = getLimitHint(
-//                            context,
-//                            itemData.parlayOdds?.min ?: 0,
-//                            itemData.parlayOdds?.max ?: 0
-//                        )
+                        setBackgroundResource(R.drawable.effect_select_bet_radius_4_edit_text)
                     }
                     et_clickable.isEnabled = true //EditText的click事件
                     cl_quota_detail.visibility = View.VISIBLE
@@ -847,6 +843,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         isEnabled = false
                         isFocusable = false
                         isFocusableInTouchMode = false
+                        setBackgroundResource(R.drawable.bg_square_shape_4dp_cccccc)
                     }
                     et_clickable.isEnabled = false //EditText的click事件
                     cl_quota_detail.visibility = View.VISIBLE
