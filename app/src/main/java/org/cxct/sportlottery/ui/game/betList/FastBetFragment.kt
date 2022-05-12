@@ -173,7 +173,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     ) {
                         dismiss()
                         //(activity as GameActivity).
-                        viewModel.navTranStatus()
+//                        viewModel.navTranStatus()
                     }
                 }
             }
