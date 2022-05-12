@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:gravity="start"
             android:text="@string/total"
-            android:textColor="@color/color_191919_FCFCFC"
+            android:textColor="@color/color_FFFFFF"
             android:textSize="@dimen/textSize14sp" />
 
         <TextView
@@ -43,7 +43,7 @@
             app:moneyColorWhite="@{other.win}"
             app:moneyFormat="@{other.win}"
             tools:text="9,999,587.000"
-            tools:textColor="@color/color_191919_FCFCFC" />
+            tools:textColor="@color/color_FFFFFF" />
 
         <TextView
             android:id="@+id/tv_currency_type"
@@ -55,7 +55,7 @@
             android:textSize="@dimen/textSize14sp"
             android:textStyle="bold"
             app:moneyColorWhite="@{other.win}"
-            tools:textColor="@color/color_191919_FCFCFC" />
+            tools:textColor="@color/color_FFFFFF" />
 
     </LinearLayout>
 </layout>
