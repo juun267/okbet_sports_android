@@ -79,6 +79,7 @@
         android:background="@drawable/bg_radius_4_button_odds_lock"
         android:gravity="center"
         android:textSize="@dimen/textSize12sp"
+        android:textColor="@color/color_A3A3A3_666666"
         android:text="@string/unknown_data"
         android:visibility="gone" />
 
