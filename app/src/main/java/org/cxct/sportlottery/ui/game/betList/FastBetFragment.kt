@@ -318,6 +318,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
             dismiss()
         }
+        binding.btnRecharge.setTitleLetterSpacing()
     }
 
 

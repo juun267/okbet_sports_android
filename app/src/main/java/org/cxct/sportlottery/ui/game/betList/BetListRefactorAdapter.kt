@@ -638,6 +638,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 btnRecharge.setOnClickListener {
                     onItemClickListener.onRechargeClick()
                 }
+                btnRecharge.setTitleLetterSpacing()
                 //隊伍名稱
                 tv_match.text = when {
                     itemData.matchType == MatchType.OUTRIGHT -> itemData.outrightMatchInfo?.name
