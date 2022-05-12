@@ -33,9 +33,7 @@ import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
-import org.cxct.sportlottery.util.BitmapUtil
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.*
 import java.util.*
 
 class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::class),
@@ -310,6 +308,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 eetVerificationCode.text.toString(),
                 cbAgreement.isChecked
             )
+            btnRegister.setTitleLetterSpacing()
         }
     }
 

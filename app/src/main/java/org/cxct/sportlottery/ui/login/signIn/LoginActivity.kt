@@ -28,9 +28,7 @@ import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
-import org.cxct.sportlottery.util.BitmapUtil
-import org.cxct.sportlottery.util.MD5Util
-import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.boundsEditText.SimpleTextChangedWatcher
 
 
@@ -157,6 +155,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 login()
             }
         }
+        binding.btnLogin.setTitleLetterSpacing()
     }
 
     private fun checkInputData(): Boolean {
