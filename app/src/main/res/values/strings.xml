@@ -429,7 +429,7 @@
     <string name="odds_detail_play_type_dc_12">1/2</string>
     <string name="odds_detail_play_type_ou_o">Over</string>
     <string name="odds_detail_play_type_ou_u">Under</string>
-    <string name="bottom_sheet_close">Cancel</string>
+    <string name="bottom_sheet_close">Close</string>
     <string name="bottom_sheet_title_play_type">Change playing method</string>
     <string name="message_recharge_maintain">Please wait while the top-up system is being upgraded</string>
     <string name="title_bank">Bank</string>
@@ -472,11 +472,11 @@
     <string name="paymaya_recharge_hint">Please log in the member to check whether the PayMaya account is used before each payment. The company is not responsible for failing to check the overdue account.</string>
     <string name="paypal_recharge_hint">Please log in the member to check whether the Paypal account is used before each payment. The company is not responsible for failing to check the overdue account.</string>
     <string name="title_pay_channel">Payment channels</string>
-    <string name="title_choose_pay_channel">Select payment channels</string>
+    <string name="title_choose_pay_channel">Payment channels</string>
     <string name="title_pay_gap">Payment account</string>
-    <string name="title_choose_pay_gap">Select payment account</string>
+    <string name="title_choose_pay_gap">Payment account</string>
     <string name="title_pay_bank">Payment bank</string>
-    <string name="title_choose_pay_bank">Select payment bank</string>
+    <string name="title_choose_pay_bank">Payment bank</string>
     <string name="title_pay_msg">Payment information</string>
     <string name="title_pay_way">Payment method:</string>
     <string name="title_pay_money">Payment Amount:</string>
