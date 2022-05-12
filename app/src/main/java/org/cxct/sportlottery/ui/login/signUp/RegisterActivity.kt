@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.login.signUp
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -75,6 +76,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
@@ -156,10 +158,12 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     )
                 })
         )
+        val appName = getString(R.string.app_name)
+        //中英appName在前半 越南文appName會在後半
         binding.tvAgreement.text =
-            getString(R.string.register_over_21) + getString(R.string.app_name) + getString(R.string.register_rules)
+            String.format(getString(R.string.register_over_21), appName) + String.format(getString(R.string.register_rules), appName)
         binding.tvAgreement.makeLinks(
-            Pair(applicationContext.getString(R.string.register_rules), View.OnClickListener {
+            Pair(String.format(getString(R.string.register_rules), appName), View.OnClickListener {
                 JumpUtil.toInternalWeb(
                     this,
                     Constants.getAgreementRuleUrl(this),

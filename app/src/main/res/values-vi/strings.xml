@@ -51,8 +51,8 @@
     <string name="register_privacy">Gửi cho tôi thông tin cập nhật và khuyến mãi theo</string>
     <string name="register_privacy_policy">&#160;chính sách bảo mật</string>
     <string name="register_privacy_policy_promotions"></string>
-    <string name="register_over_21">Tôi đã 21 tuổi, đã đọc và đồng ý với&#160;</string>
-    <string name="register_rules">&#160;luật &amp; điều khoản của</string>
+    <string name="register_over_21">Tôi trên 21 tuổi, đã đọc và đồng ý với&#160;</string>
+    <string name="register_rules">&#160;Điều khoản &amp; Điều kiện của %s</string>
     <string name="register_not_ph_official">Tôi không phải là quan chức chính phủ và / hoặc nhân viên có liên hệ trực tiếp với hoạt động của chính phủ Philippines hoặc bất kỳ cơ quan nào của chính phủ.</string>
     <string name="register_not_ph_school">Tôi không phải là sinh viên của bất kỳ trường học, cao đẳng hoặc đại học nào ở Philippines</string>
     <string name="register_rule_okbet">Tôi hiểu rằng nếu thông tin tôi cung cấp bị phát hiện là không chính xác, OkBet có quyền áp dụng hình phạt đối với tài khoản của tôi theo Điều khoản và Điều kiện Phần 5.1 - 5.2.</string>
