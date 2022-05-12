@@ -15,6 +15,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 class VerifyIdentityDetailFragment :
     BaseSocketFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
@@ -90,6 +91,7 @@ class VerifyIdentityDetailFragment :
     private fun initView() {
         setInfoInText()
         setFaceImg()
+        btn_submit.setTitleLetterSpacing()
     }
 
     private fun initOnclick() {

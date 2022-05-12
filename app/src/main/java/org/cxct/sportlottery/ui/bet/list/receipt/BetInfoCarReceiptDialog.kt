@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.view_match_receipt_bet.tv_bet_status
 import kotlinx.android.synthetic.main.view_match_receipt_bet.tv_order_number
 import kotlinx.android.synthetic.main.view_match_receipt_bet.tv_winnable_amount
 import kotlinx.android.synthetic.main.view_match_receipt_bet.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
 import org.cxct.sportlottery.network.common.MatchType
@@ -161,15 +162,18 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
         formatForOdd: String,
         oddsType: String
     ): Spanned {
+        val color_e5e5e5_333333 = MultiLanguagesApplication.getChangeModeColorCode("#333333", "#e5e5e5")
+        val color_F75452_b73a20 = MultiLanguagesApplication.getChangeModeColorCode("#B73A20", "#F75452")
+
         val playNameStr =
-            if (!playName.isNullOrEmpty()) "<font color=#333333>$playName</font> " else ""
+            if (!playName.isNullOrEmpty()) "<font color=$color_e5e5e5_333333>$playName</font> " else ""
         val spreadStr =
-            if (!spread.isNullOrEmpty() || isShowSpread) "<font color=#B73A20>$spread</font> " else ""
+            if (!spread.isNullOrEmpty() || isShowSpread) "<font color=$color_F75452_b73a20>$spread</font> " else ""
 
         return HtmlCompat.fromHtml(
             playNameStr +
                     spreadStr +
-                    "<font color=#333333>@ $formatForOdd</font> " , HtmlCompat.FROM_HTML_MODE_LEGACY
+                    "<font color=$color_e5e5e5_333333>@ $formatForOdd</font> " , HtmlCompat.FROM_HTML_MODE_LEGACY
         )
     }
 

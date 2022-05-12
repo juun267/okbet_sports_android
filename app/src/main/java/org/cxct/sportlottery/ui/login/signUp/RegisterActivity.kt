@@ -33,6 +33,8 @@ import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
+import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BitmapUtil
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.ToastUtil
@@ -139,6 +141,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 }
                 eetWithdrawalPwd.setSelection(eetWithdrawalPwd.text.toString().length)
             }
+            btnRegister.setTitleLetterSpacing()
         }
 
         binding.ivReturn.setOnClickListener(this)
@@ -309,6 +312,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     viewModel.checkCbRuleOkbet(cbRuleOkbet.isChecked)
                 }
             }
+            btnRegister.setTitleLetterSpacing()
         }
     }
 

@@ -154,7 +154,6 @@
             android:layout_weight="1"
             android:layout_marginTop="20dp"
             android:background="@drawable/bg_radius_20_button_dusk"
-            android:letterSpacing="0.2"
             android:minWidth="0dp"
             android:layout_marginRight="@dimen/margin_6"
             android:minHeight="0dp"
