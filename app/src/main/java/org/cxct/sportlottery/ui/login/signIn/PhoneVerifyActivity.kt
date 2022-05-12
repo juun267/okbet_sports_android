@@ -24,6 +24,7 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.util.setTextWithStrokeWidth
 import java.util.*
 
 
@@ -72,6 +73,7 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
         binding.btnSendSms.setOnClickListener(this)
         binding.btnBack.setOnClickListener(this)
         binding.btnSubmit.setOnClickListener(this)
+        binding.btnSubmit.setTextWithStrokeWidth(getString(R.string.btn_submit), 0.7f)
         binding.constraintLayout.setOnClickListener(this)
         binding.eetVerificationCode.addTextChangedListener {
             binding.btnSubmit.isEnabled = it?.length ?: 0 > 0

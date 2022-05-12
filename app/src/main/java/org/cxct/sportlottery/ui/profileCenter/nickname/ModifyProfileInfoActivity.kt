@@ -13,6 +13,7 @@ import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.login.LoginEditText
+import org.cxct.sportlottery.util.setTextWithStrokeWidth
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 class ModifyProfileInfoActivity :
@@ -105,6 +106,8 @@ class ModifyProfileInfoActivity :
         btn_confirm.setOnClickListener {
             checkInputData()
         }
+
+        btn_confirm.setTextWithStrokeWidth(getString(R.string.btn_confirm), 0.7f)
     }
 
     private fun checkInputData() {
