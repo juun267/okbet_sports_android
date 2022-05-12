@@ -4,21 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:ignore="SpUsage,ContentDescription,WebViewLayout">
+    tools:ignore="SpUsage,ContentDescription,WebViewLayout,UnusedAttribute">
 
     <TextView
         android:id="@+id/league_text"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/colorWhite4"
+        android:background="@color/color_212121_ededed"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="2"
+        android:lineHeight="20dp"
         android:paddingStart="16dp"
         android:paddingEnd="34dp"
         android:textAllCaps="true"
-        android:textColor="#202020"
-        android:textSize="@dimen/textSize16sp"
+        android:textColor="@color/color_e5e5e5_202020"
+        android:textSize="@dimen/textSize14sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="欧洲足球锦标赛2020" />
@@ -64,7 +65,7 @@
         android:id="@+id/SpaceItemDecorationView"
         android:layout_width="match_parent"
         android:layout_height="8dp"
-        android:background="@color/colorWhite"
+        android:background="@color/color_191919_FCFCFC"
         app:layout_constraintTop_toBottomOf="@+id/league_odd_list" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

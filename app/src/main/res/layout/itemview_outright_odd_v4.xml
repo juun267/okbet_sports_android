@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:paddingVertical="4dp"
     android:paddingHorizontal="@dimen/activity_vertical_margin"
-    android:background="@color/colorWhite">
+    android:background="@color/color_191919_FCFCFC">
 
     <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/outright_odd_btn"

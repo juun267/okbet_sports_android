@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorWhite1"
+        android:background="@color/color_141414_F3F4F5"
         tools:context=".ui.game.GameActivity"
         tools:ignore="SpUsage">
 
@@ -54,20 +54,22 @@
             android:id="@+id/viewBottom"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@color/colorWhite"
+            android:background="@color/color_191919_FCFCFC"
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <TextView
             android:id="@+id/tvRegister"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="9dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="4dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/bg_gradient_orange3_orange_light_4dp"
             android:gravity="center"
             android:text="@string/btn_register"
-            android:textColor="@color/color_FFFFFFFF"
+            android:textColor="@color/color_FFFFFF_FFFFFF"
+            android:textAllCaps="true"
             android:textSize="@dimen/textSize16sp"
             app:layout_constraintBottom_toBottomOf="@id/viewBottom"
             app:layout_constraintEnd_toStartOf="@id/tvLogin"
@@ -78,14 +80,15 @@
             android:id="@+id/tvLogin"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="9dp"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="9dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/bg_gradient_blue3_blue4_4dp"
+            android:background="@drawable/bg_gradient_0068d6_0054ac_4dp"
             android:gravity="center"
             android:text="@string/btn_login"
-            android:textColor="@color/color_FFFFFFFF"
+            android:textAllCaps="true"
+            android:textColor="@color/color_FFFFFF_FFFFFF"
             android:textSize="@dimen/textSize16sp"
             app:layout_constraintBottom_toBottomOf="@id/viewBottom"
             app:layout_constraintEnd_toEndOf="@id/viewBottom"
@@ -107,7 +110,7 @@
             layout="@layout/view_bottom_navigation_sport"
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            app:layout_constraintBottom_toBottomOf="@id/viewBottom" />
+            app:layout_constraintBottom_toBottomOf="@id/viewBottom"/>
 
         <!-- 投注單 -->
         <FrameLayout

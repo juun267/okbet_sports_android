@@ -4,11 +4,13 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import cn.jpush.android.api.JPushInterface
 import com.github.jokar.multilanguages.library.MultiLanguage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.android.synthetic.main.dialog_change_appearance.view.*
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.manager.NetworkStatusManager
 import org.cxct.sportlottery.network.manager.RequestManager
@@ -53,13 +55,9 @@ import timber.log.Timber
 import timber.log.Timber.DebugTree
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import org.cxct.sportlottery.ui.game.publicity.GamePublicityViewModel
 import org.cxct.sportlottery.ui.game.quick.TestViewModel
 import org.cxct.sportlottery.ui.news.NewsViewModel
 import org.cxct.sportlottery.ui.permission.GooglePermissionViewModel
-
-
-
 
 /**
  * App 內部切換語系
@@ -173,6 +171,8 @@ class MultiLanguagesApplication : Application() {
 
         initJPush()
 
+        setNightMode()
+
         //生成UUID作為設備識別碼
         setupDeviceCode()
     }
@@ -195,6 +195,14 @@ class MultiLanguagesApplication : Application() {
 //        JAnalyticsInterface.setDebugMode(false);
     }
 
+    private fun setNightMode() {
+        if (isNightMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+    }
+
     private fun setupDeviceCode() {
         val devicePreferences = getSharedPreferences(UUID_DEVICE_CODE, Context.MODE_PRIVATE)
         if (devicePreferences.getString(UUID, null).isNullOrEmpty())
@@ -204,25 +212,26 @@ class MultiLanguagesApplication : Application() {
                 .apply()
     }
 
-    fun saveUserInfo(userInfoData: UserInfo?){
+    fun saveUserInfo(userInfoData: UserInfo?) {
         _userInfo.value = userInfoData
     }
-    fun userInfo():UserInfo?{
+
+    fun userInfo(): UserInfo? {
         return _userInfo.value
     }
 
-    fun isNewsShow():Boolean{
+    fun isNewsShow(): Boolean {
         return isNewsShowed
     }
 
-    fun setIsNewsShow(show:Boolean){
+    fun setIsNewsShow(show: Boolean) {
         this.isNewsShowed = show
     }
 
-    fun getGameDetailAnimationNeedShow():Boolean{
-        return if(BuildConfig.CHANNEL_NAME == "spkx"){
+    fun getGameDetailAnimationNeedShow(): Boolean {
+        return if (BuildConfig.CHANNEL_NAME == "spkx") {
             isGameDetailAnimationNeedShow
-        }else{
+        } else {
             true
         }
     }
@@ -240,19 +249,35 @@ class MultiLanguagesApplication : Application() {
 
         var searchHistory: MutableList<String>?
             get() {
-                val searchHistoryJson =  myPref!!.getString("search_history", "")
+                val searchHistoryJson = myPref?.getString("search_history", "")
                 val gson = Gson()
                 val type = object : TypeToken<MutableList<String>?>() {}.type
-                var searchHistoryList: MutableList<String>?  = gson.fromJson(searchHistoryJson, type)
+                var searchHistoryList: MutableList<String>? = gson.fromJson(searchHistoryJson, type)
                 return searchHistoryList
             }
             set(searchHistoryList) {
                 val gson = Gson()
                 val searchHistoryJson = gson.toJson(searchHistoryList)
-                val editor = myPref!!.edit()
-                editor.putString("search_history", searchHistoryJson)
-                editor.apply()
+                val editor = myPref?.edit()
+                editor?.putString("search_history", searchHistoryJson)
+                editor?.apply()
             }
+
+        fun saveNightMode(nightMode: Boolean) {
+            isNightMode = nightMode
+        }
+
+        var isNightMode: Boolean
+            get() = myPref?.getBoolean("is_night_mode", false) ?: false
+            set(check) {
+                val editor = myPref?.edit()
+                editor?.putBoolean("is_night_mode", check)
+                editor?.apply()
+            }
+
+        fun getChangeModeColorCode(defaultColor: String, nightModeColor: String): String {
+            return if(isNightMode) nightModeColor else defaultColor
+        }
 
         fun getInstance(): MultiLanguagesApplication? {
             if (instance == null) throw IllegalStateException("Application not be created yet.")

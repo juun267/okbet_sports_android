@@ -1,12 +1,19 @@
 package org.cxct.sportlottery.util
 
 import android.graphics.Rect
+import android.text.SpannableString
+import android.text.Spanned
+import android.view.View
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_league_v5.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
+import org.cxct.sportlottery.widget.FakeBoldSpan
 
 /**
  * @author kevin
@@ -90,4 +97,46 @@ fun MutableMap<String, List<Odd?>?>.sortQuickPlayCate(playCate: String) {
 
     this.clear()
     this.putAll(sortedList)
+}
+
+/**
+ * 調整標題文字間距
+ * 中文之外無間距
+ */
+fun TextView.setTitleLetterSpacing() {
+    this.letterSpacing =
+        when (LanguageManager.getSelectLanguage(context)) {
+            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> 0.1F
+            else -> 0F
+        }
+}
+
+/**
+ * 目前需求有font weight 500 約等於0.7f
+ */
+fun TextView.setTextWithStrokeWidth(str: String, width: Float) {
+    val span = SpannableString(str)
+    span.setSpan(FakeBoldSpan(width), 0, span.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+    text = span
+}
+
+/**
+ * 特殊狀況需手動設定res(黑白模式)
+ */
+fun View.setBackColorWithColorMode(lightModeColor: Int, darkModeColor: Int) {
+    setBackgroundColor(
+        ContextCompat.getColor(
+            context,
+            if (MultiLanguagesApplication.isNightMode) darkModeColor else lightModeColor
+        )
+    )
+}
+
+/**
+ * 移除所有ItemDecorations
+ */
+fun <T : RecyclerView> T.removeItemDecorations() {
+    while (itemDecorationCount > 0) {
+        removeItemDecorationAt(0)
+    }
 }

@@ -9,7 +9,7 @@
         android:id="@+id/layoutTitle"
         android:layout_width="match_parent"
         android:layout_height="38dp"
-        android:background="@color/colorWhite1"
+        android:background="@color/color_141414_F3F4F5"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/margin_28"
         android:paddingRight="@dimen/margin_28"
@@ -21,8 +21,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/color_FFFFFF_000000"
             android:textSize="@dimen/margin_14"
+            android:textStyle="bold"
             tools:text="項次 1" />
 
         <TextView
@@ -39,9 +40,10 @@
         android:id="@+id/rvComboDetailItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:overScrollMode="never"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutTitle"
         tools:itemCount="3"
-        tools:listitem="@layout/item_parlay_combo_detail"/>
+        tools:listitem="@layout/item_parlay_combo_detail" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

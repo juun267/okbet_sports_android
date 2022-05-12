@@ -37,6 +37,14 @@ abstract class BaseFavoriteViewModel(
         get() = mNotifyLogin
     protected val mNotifyLogin = MutableLiveData<Boolean>()
 
+    val leftNotifyLogin: LiveData<Event<Boolean>>
+        get() = _leftNotifyLogin
+    private val _leftNotifyLogin = MutableLiveData<Event<Boolean>>()
+
+    val leftNotifyFavorite: LiveData<Event<Int?>>
+        get() = _leftNotifyFavorite
+    private val _leftNotifyFavorite = MutableLiveData<Event<Int?>>()
+
     val notifyMyFavorite = myFavoriteRepository.favorNotify
 
     val favorMatchOddList: LiveData<Event<List<LeagueOdd>>>
@@ -79,6 +87,7 @@ abstract class BaseFavoriteViewModel(
 
         if (gameType == null || playCateMenu == null) {
             mMyFavoriteLoading.postValue(Event(false))
+            mFavorMatchOddList.postValue(Event(listOf()))
             return
         }
 
@@ -231,6 +240,20 @@ abstract class BaseFavoriteViewModel(
                 }
             }
         }
+    }
+
+    fun leftPinFavorite(gameType: String?, addOrRemove: Int?) {
+        if (isLogin.value != true) {
+            _leftNotifyLogin.postValue(Event(true))
+            return
+        }
+
+        pinFavorite(
+            FavoriteType.SPORT,
+            gameType
+        )
+
+        _leftNotifyFavorite.postValue(Event(addOrRemove))
     }
 
     private fun List<LeagueOdd>.removeFavorMatchOdd(matchId: String): List<LeagueOdd> {

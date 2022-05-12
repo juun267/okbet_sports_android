@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
+    android:background="@color/color_191919_FCFCFC"
     android:orientation="vertical"
+    android:clickable="true"
+    android:focusable="true"
     tools:context=".ui.menu.ChangeLanguageDialog"
     tools:ignore="SpUsage,RtlSymmetry">
 
@@ -13,7 +15,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/colorWhite1">
+        android:background="@color/color_141414_F3F4F5">
 
         <ImageView
             android:id="@+id/img_back"
@@ -34,7 +36,7 @@
             android:gravity="center_vertical"
             android:singleLine="true"
             android:text="@string/appearance"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -67,7 +69,7 @@
         android:layout_marginStart="20dp"
         android:gravity="center"
         android:text="@string/appearance"
-        android:textColor="@color/colorBlackLight"
+        android:textColor="@color/color_e5e5e5_333333"
         android:textSize="@dimen/textSize14sp"
         android:textStyle="bold" />
 
@@ -89,7 +91,7 @@
             android:paddingStart="10dp"
             android:text="@string/day_mode"
             android:checked="true"
-            android:textColor="@color/colorGrayDark"
+            android:textColor="@color/color_E0E0E0_404040"
             android:textSize="@dimen/textSize14sp" />
 
         <RadioButton
@@ -101,7 +103,7 @@
             android:drawablePadding="10dp"
             android:paddingStart="10dp"
             android:text="@string/night_mode"
-            android:textColor="@color/colorGrayDark"
+            android:textColor="@color/color_E0E0E0_404040"
             android:textSize="@dimen/textSize14sp" />
 
     </RadioGroup>

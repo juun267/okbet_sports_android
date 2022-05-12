@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="3dp"
         android:text="@string/start"
-        android:textColor="@color/colorRedDark"
+        android:textColor="@color/color_F75452_b73a20"
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintBottom_toBottomOf="@id/block_editText"
         app:layout_constraintEnd_toStartOf="@id/block_editText"
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:maxLines="1"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize13sp"
             android:textStyle="bold"
             android:typeface="monospace"
@@ -50,10 +50,11 @@
             tools:text="@string/login_account" />
 
         <View
+            android:id="@+id/v_divider"
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
-            android:background="@color/colorWhite6" />
+            android:background="@color/color_191919_EEEFF0" />
 
         <EditText
             android:id="@+id/et_input"
@@ -67,8 +68,8 @@
             app:autoSizeMaxTextSize="@dimen/textSize12sp"
             app:autoSizeMinTextSize="@dimen/textSize8sp"
             android:inputType="text"
-            android:textColor="@color/colorBlackLight"
-            android:textColorHint="@color/colorSilverLight"
+            android:textColor="@color/color_e5e5e5_333333"
+            android:textColorHint="@color/color_404040_cccccc"
             android:textSize="@dimen/textSize12sp"
             android:ellipsize="end"
             tools:hint="@string/please_input_account" />
@@ -79,7 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/withdraw_all"
-            android:textColor="@color/colorBlueDark"
+            android:textColor="@color/color_317FFF_1F4780"
             android:textSize="@dimen/textSize13sp" />
 
         <ImageView
@@ -116,13 +117,14 @@
             <ProgressBar
                 android:id="@+id/pb_verification_code"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:indeterminateTint="@color/color_317FFF_0760D4" />
 
             <ImageView
                 android:id="@+id/iv_verification_code"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorSilverLight"
+                android:background="@color/color_404040_cccccc"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
                 android:visibility="gone" />
@@ -138,7 +140,7 @@
         android:layout_marginTop="10dp"
         android:drawablePadding="5dp"
         android:gravity="center_vertical"
-        android:textColor="@color/colorRedDark"
+        android:textColor="@color/color_F75452_b73a20"
         android:textSize="@dimen/textSize12sp"
         android:visibility="gone"
         app:drawableStartCompat="@drawable/ic_error_tip"

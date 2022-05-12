@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite1"
+    android:background="@color/color_141414_F3F4F5"
     tools:context=".ui.profileCenter.otherBetRecord.detail.OtherBetRecordDetailFragment">
 
     <LinearLayout
         android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorWhite3"
+        android:background="@color/color_262626_edf4ff"
         android:orientation="horizontal"
         android:paddingVertical="4dp"
         app:layout_constraintTop_toTopOf="parent">
@@ -23,7 +23,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/game_name"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize12sp"  />
 
         <TextView
@@ -33,7 +33,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/bet_money"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize12sp"  />
 
         <TextView
@@ -43,7 +43,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/profit_and_loss"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize12sp"  />
 
         <TextView
@@ -53,7 +53,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/log_detail_trans_num_sub2"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize12sp"  />
     </LinearLayout>
 

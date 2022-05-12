@@ -46,29 +46,32 @@ fun TextView.setDateTimeNoYear(timeStamp: Long?) {
     text = TimeUtil.timeFormat(timeStamp, MD_HMS_FORMAT)
 }
 
-@BindingAdapter("gameType")
-fun TextView.setGameType(gameType: String?) {
+@SuppressLint("SetTextI18n")
+@BindingAdapter(value = ["bind:gameType", "bind:playCateName"], requireAll = true)
+fun TextView.setGameTypeWithPlayCate(gameType: String?, playCateName: String?) {
     if (gameType == null) {
         visibility = View.GONE
         return
     }
-    text = when (gameType) {
-        GameType.FT.key -> context.getString(GameType.FT.string)
-        GameType.BK.key -> context.getString(GameType.BK.string)
-        GameType.TN.key -> context.getString(GameType.TN.string)
-        GameType.VB.key -> context.getString(GameType.VB.string)
-        GameType.BM.key -> context.getString(GameType.BM.string)
-        GameType.TT.key -> context.getString(GameType.TT.string)
-        GameType.BX.key -> context.getString(GameType.BX.string)
-        GameType.CB.key -> context.getString(GameType.CB.string)
-        GameType.CK.key -> context.getString(GameType.CK.string)
-        GameType.BB.key -> context.getString(GameType.BB.string)
-        GameType.RB.key -> context.getString(GameType.RB.string)
-        GameType.AFT.key -> context.getString(GameType.AFT.string)
-        GameType.MR.key -> context.getString(GameType.MR.string)
-        GameType.GF.key -> context.getString(GameType.GF.string)
-        else -> ""
-    }
+    text = "${
+        when (gameType) {
+            GameType.FT.key -> context.getString(GameType.FT.string)
+            GameType.BK.key -> context.getString(GameType.BK.string)
+            GameType.TN.key -> context.getString(GameType.TN.string)
+            GameType.VB.key -> context.getString(GameType.VB.string)
+            GameType.BM.key -> context.getString(GameType.BM.string)
+            GameType.TT.key -> context.getString(GameType.TT.string)
+            GameType.BX.key -> context.getString(GameType.BX.string)
+            GameType.CB.key -> context.getString(GameType.CB.string)
+            GameType.CK.key -> context.getString(GameType.CK.string)
+            GameType.BB.key -> context.getString(GameType.BB.string)
+            GameType.RB.key -> context.getString(GameType.RB.string)
+            GameType.AFT.key -> context.getString(GameType.AFT.string)
+            GameType.MR.key -> context.getString(GameType.MR.string)
+            GameType.GF.key -> context.getString(GameType.GF.string)
+            else -> ""
+        }
+    } $playCateName"
 
 }
 
@@ -112,8 +115,8 @@ fun TextView.setBetMaximumLimit(max: Int) {
 
 fun View.setBetReceiptBackground(status: Int?) {
     background = when (status) {
-        7 -> ContextCompat.getDrawable(context, R.color.colorWhite2)
-        else -> ContextCompat.getDrawable(context, R.color.colorWhite)
+        7 -> ContextCompat.getDrawable(context, R.color.color_141414_f3f3f3)
+        else -> ContextCompat.getDrawable(context, R.color.color_191919_FCFCFC)
     }
 }
 
@@ -171,8 +174,8 @@ fun TextView.setHideByStatus(status: Int?) {
 fun TextView.setReceiptStatusColor(status: Int?) {
     status?.let {
         val color = when (it) {
-            7 -> R.color.colorRed
-            else -> R.color.colorBlue
+            7 -> R.color.color_E44438_e44438
+            else -> R.color.color_317FFF_1053af
         }
         this.setTextColor(ContextCompat.getColor(context, color))
     }
@@ -188,8 +191,8 @@ fun TextView.setSingleReceiptStatusTips(status: Int?) {
 
         setTextColor(
             when (statusNotNull) {
-                7 -> ContextCompat.getColor(context, R.color.colorRed)
-                else -> ContextCompat.getColor(context, R.color.colorBlue)
+                7 -> ContextCompat.getColor(context, R.color.color_E44438_e44438)
+                else -> ContextCompat.getColor(context, R.color.color_317FFF_1053af)
             }
         )
     }
@@ -199,8 +202,8 @@ fun TextView.setSingleReceiptStatusTips(status: Int?) {
 fun TextView.setGameStatusColor(status: Int?) {
     status?.let {
         val color = when (it) {
-            0, 1, 2, 3 -> R.color.colorBlue
-            else -> R.color.colorRed
+            0, 1, 2, 3 -> R.color.color_317FFF_0760D4
+            else -> R.color.color_E44438_e44438
         }
         this.setTextColor(ContextCompat.getColor(context, color))
     }
@@ -236,9 +239,9 @@ fun TextView.setBetStatusMoney(status: Int?, money: Double?) {
         }
 
         val color = when (status) {
-            0, 1, 6, 7 -> R.color.colorGrayDark
-            2, 3 -> R.color.colorGreen
-            else -> R.color.colorRed
+            0, 1, 6, 7 -> R.color.color_E0E0E0_404040
+            2, 3 -> R.color.color_08dc6e_08dc6e
+            else -> R.color.color_E44438_e44438
         }
 
         this.setTextColor(ContextCompat.getColor(context, color))
@@ -262,10 +265,10 @@ fun TextView.setRecordStatus(status: Int?) {
 fun TextView.setRecordStatusColor(status: Int?) {
     status?.let {
         val color = when (it) {
-            1 -> R.color.colorGray
-            2 -> R.color.colorGreen
-            3 -> R.color.colorRed
-            else -> R.color.colorGray
+            1 -> R.color.color_A3A3A3_666666
+            2 -> R.color.color_08dc6e_08dc6e
+            3 -> R.color.color_E44438_e44438
+            else -> R.color.color_A3A3A3_666666
         }
         this.setTextColor(ContextCompat.getColor(context, color))
     }
@@ -336,10 +339,10 @@ fun TextView.setOddFormat(odd: Double?) {
 fun TextView.setMoneyColor(profit: Double = 0.0) {
 
     val color = when {
-        profit > 0.0 -> R.color.colorGreen
-        profit < 0.0 -> R.color.colorRed
-        profit == 0.0 -> R.color.colorGray
-        else -> R.color.colorGray
+        profit > 0.0 -> R.color.color_08dc6e_08dc6e
+        profit < 0.0 -> R.color.color_E44438_e44438
+        profit == 0.0 -> R.color.color_A3A3A3_666666
+        else -> R.color.color_A3A3A3_666666
     }
 
     this.setTextColor(ContextCompat.getColor(context, color))
@@ -350,9 +353,9 @@ fun TextView.setMoneyColor(profit: Double = 0.0) {
 fun TextView.setMoneyColorWhite(profit: Double = 0.0) {
 
     val color = when {
-        profit >= 0.0 -> R.color.colorWhite
+        profit >= 0.0 -> R.color.color_FFFFFF
         profit < 0.0 -> R.color.colorRedLight
-        else -> R.color.colorWhite
+        else -> R.color.color_FFFFFF
     }
 
     this.setTextColor(ContextCompat.getColor(context, color))
@@ -402,13 +405,20 @@ fun TextView.setPlayContent(
     spread: String?,
     formatForOdd: String?
 ) {
-    val playNameStr = if (!playName.isNullOrEmpty()) "<font color=#333333>${playName} </font> " else ""
-    val spreadStr = if (!spread.isNullOrEmpty()) "<font color=#B73A20>$spread</font> " else ""
+    var playNameStrColor : String = "#666666"
+    var spreadStrColor : String = "#B73A20"
+
+    if(MultiLanguagesApplication.isNightMode){
+        playNameStrColor = "#A3A3A3"
+    }
+
+    val playNameStr = if (!playName.isNullOrEmpty()) "<font color=$playNameStrColor>${playName} </font> " else ""
+    val spreadStr = if (!spread.isNullOrEmpty() && playName != spread) "<font color=#B73A20>$spread</font> " else ""
 
     text = HtmlCompat.fromHtml(
         playNameStr +
                 spreadStr +
-                "<font color=#666666>@ </font> " +
+                "<font color=$playNameStrColor>@ </font> " +
                 "<font color=#B73A20>$formatForOdd </font> "
         , HtmlCompat.FROM_HTML_MODE_LEGACY
     )

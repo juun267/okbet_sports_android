@@ -14,6 +14,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.infoCenter.InfoCenterData
 import org.cxct.sportlottery.repository.MsgType
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterViewModel::class) {
 
@@ -81,9 +82,11 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
         initLiveData()
         initRecyclerView()
         initButton()
+        initSelectTab()
     }
 
     private fun initToolbar() {
+        tv_toolbar_title.setTitleLetterSpacing()
         tv_toolbar_title.text = getString(R.string.news_center)
         btn_toolbar_back.setOnClickListener {
             finish()
@@ -99,18 +102,45 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
         custom_tab_layout.setCustomTabSelectedListener { position ->
             when(position) {
                 0 -> {
-                    adapter.data = mutableListOf()//清空資料
-                    viewModel.getMsgCount(MsgType.NOTICE_UNREAD)//未讀資料比數
-                    viewModel.getUserMsgList(dataType = InfoCenterViewModel.DataType.READ)//已讀
-                    currentPage = BEEN_READ
-                    iv_scroll_to_top.visibility = View.INVISIBLE
+                    selectReadTab()
                 }
                 1 -> {
-                    adapter.data = mutableListOf()//清空資料
-                    viewModel.getMsgCount(MsgType.NOTICE_READED)//已讀資料筆數
-                    viewModel.getUserMsgList(dataType = InfoCenterViewModel.DataType.UNREAD)//未讀
-                    currentPage = YET_READ
-                    iv_scroll_to_top.visibility = View.INVISIBLE
+                    selectUnReadTab()
+                }
+            }
+        }
+    }
+
+    private fun selectReadTab() {
+        adapter.data = mutableListOf()//清空資料
+        viewModel.getMsgCount(MsgType.NOTICE_UNREAD)//未讀資料比數
+        viewModel.getUserMsgList(dataType = InfoCenterViewModel.DataType.READ)//已讀
+        currentPage = BEEN_READ
+        iv_scroll_to_top.visibility = View.INVISIBLE
+    }
+
+    private fun selectUnReadTab() {
+        adapter.data = mutableListOf()//清空資料
+        viewModel.getMsgCount(MsgType.NOTICE_READED)//已讀資料筆數
+        viewModel.getUserMsgList(dataType = InfoCenterViewModel.DataType.UNREAD)//未讀
+        currentPage = YET_READ
+        iv_scroll_to_top.visibility = View.INVISIBLE
+    }
+
+    private fun initSelectTab() {
+        when (mDefaultShowPage) {
+            BEEN_READ -> {
+                if (custom_tab_layout.selectedTabPosition == BEEN_READ) {
+                    selectReadTab()
+                } else {
+                    custom_tab_layout.selectTab(BEEN_READ)
+                }
+            }
+            YET_READ -> {
+                if (custom_tab_layout.selectedTabPosition == YET_READ) {
+                    selectUnReadTab()
+                } else {
+                    custom_tab_layout.selectTab(YET_READ)
                 }
             }
         }

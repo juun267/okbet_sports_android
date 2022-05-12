@@ -16,7 +16,7 @@
         android:id="@+id/txv_tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorBlue"
+        android:textColor="@color/color_317FFF_0760D4"
         android:textSize="@dimen/textSize20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

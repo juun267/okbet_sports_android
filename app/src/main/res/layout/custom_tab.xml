@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:textSize="14dp"
     android:gravity="center"
-    android:textColor="@color/colorBlueLight"
+    android:textColor="@color/color_317FFF_1463cf"
     android:paddingTop="6dp"
     android:paddingBottom="6dp"
     tools:text="账号登入限制" />

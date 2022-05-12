@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:ellipsize="end"
-        android:textColor="@color/colorBlack"
+        android:textColor="@color/color_FFFFFF_000000"
         android:maxLines="2"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintBottom_toBottomOf="@id/quick_odd_eps_btn1"
@@ -23,7 +23,7 @@
 
     <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/quick_odd_eps_btn1"
-        android:layout_width="72dp"
+        android:layout_width="70dp"
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"

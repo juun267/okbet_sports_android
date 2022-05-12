@@ -11,6 +11,8 @@ import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
 import org.cxct.sportlottery.repository.FLAG_IS_NEED_UPDATE_PAY_PW
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.login.LoginEditText
+import org.cxct.sportlottery.util.setTextWithStrokeWidth
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 class SettingPasswordActivity :
     BaseSocketActivity<SettingPasswordViewModel>(SettingPasswordViewModel::class) {
@@ -36,6 +38,7 @@ class SettingPasswordActivity :
     }
 
     private fun initView() {
+        tv_toolbar_title.setTitleLetterSpacing()
         tv_toolbar_title.text = getString(R.string.setting_password)
     }
 
@@ -98,6 +101,7 @@ class SettingPasswordActivity :
         btn_confirm.setOnClickListener {
             checkInputData()
         }
+        btn_confirm.setTitleLetterSpacing()
     }
 
     private fun checkInputData() {

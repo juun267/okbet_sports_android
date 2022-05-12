@@ -14,6 +14,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.util.countTextAmount
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 
 class FeedbackDetailFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel::class) {
@@ -45,7 +46,7 @@ class FeedbackDetailFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
         et_content.countTextAmount {
             tv_input_count.text = String.format("%d / 500", it)
             ll_error.visibility = if (it > 0) View.GONE else View.VISIBLE
-            val textColor = if (it > 0) R.color.colorSilverDirk else R.color.colorRedDark
+            val textColor = if (it > 0) R.color.color_616161_b4b4b4 else R.color.color_F75452_b73a20
             tv_input_count.setTextColor(ContextCompat.getColor(tv_input_count.context, textColor))
         }
     }
@@ -56,9 +57,10 @@ class FeedbackDetailFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
                 viewModel.fbReply(et_content.text.toString())
             } else {
                 ll_error.visibility = View.VISIBLE
-                tv_input_count.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorRedDark))
+                tv_input_count.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_F75452_b73a20))
             }
         }
+        btn_submit.setTitleLetterSpacing()
     }
 
     private fun initRecyclerView() {

@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.activity_splash.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.FLAG_OPEN
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.game.GameActivity
@@ -18,6 +19,7 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.permission.GooglePermissionActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
+import org.cxct.sportlottery.util.JumpUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
@@ -95,12 +97,17 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
     }
 
     private fun initObserve() {
+        viewModel.errorResultIndex.observe(this) {
+            JumpUtil.toInternalWeb(this, it, "", toolbarVisibility = false, backEvent = false)
+        }
+
         viewModel.configResult.observe(this) {
             when {
                 it?.configData?.maintainStatus == FLAG_OPEN -> {
                     goMaintenancePage()
                 }
                 it?.success == true -> checkAppMinVersion()
+
                 else -> showErrorRetryDialog(getString(R.string.error_config_title), getString(R.string.error_config))
             }
         }
@@ -113,6 +120,10 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         }
 
         viewModel.skipHomePage.observe(this) {
+            if (sConfigData?.maintainStatus == FLAG_OPEN) {
+                goMaintenancePage()
+                return@observe
+            }
             when (it) {
                 true -> {
                     goGamePage()
@@ -124,15 +135,12 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         }
 
         viewModel.isLogin.observe(this) {
-            goGamePublicityPage()
-//            when (it) {
-//                true -> {
-//                    goGamePage()
-//                }
-//                false -> {
-//                    goGamePublicityPage()
-//                }
-//            }
+            if (sConfigData?.maintainStatus == FLAG_OPEN) {
+                goMaintenancePage()
+            }
+            else {
+                goGamePublicityPage()
+            }
         }
     }
 

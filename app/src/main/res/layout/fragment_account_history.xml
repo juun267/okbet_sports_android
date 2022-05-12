@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/color_191919_FCFCFC"
     tools:context="org.cxct.sportlottery.ui.main.accountHistory.first.AccountHistoryFragment"
     tools:ignore="SpUsage">
 
@@ -24,6 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="never"
+        android:background="@color/color_191919_FCFCFC"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="1"
         tools:listitem="@layout/view_account_history_title_bar" />

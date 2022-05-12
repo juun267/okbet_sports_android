@@ -1,105 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="98dp"
     android:background="@color/color_060F20"
     android:orientation="vertical"
-    android:paddingStart="@dimen/margin_6"
-    android:paddingEnd="@dimen/margin_6"
+    android:paddingStart="@dimen/margin_5"
     android:paddingTop="@dimen/margin_8"
-    android:paddingBottom="@dimen/margin_8"
-    android:padding="@dimen/margin_8">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_weight="1">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/tvLimit"
-            android:layout_weight="1"
-            android:layout_marginStart="@dimen/margin_4"
-            android:text="@string/edt_hint_deposit_money_new"
-            android:textColor="@color/white"
-            android:gravity="center_vertical"
-            android:visibility="invisible"/>
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_close"
-            android:padding="@dimen/margin_10"
-            app:tint="@color/colorSilverLight"
-            android:id="@+id/ivKeyboardClose"
-            />
-
-
-    </LinearLayout>
+    android:paddingEnd="@dimen/margin_5"
+    android:paddingBottom="@dimen/margin_8">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:paddingVertical="@dimen/margin_2">
+        android:paddingVertical="@dimen/margin_3">
 
         <TextView
             android:id="@+id/tvPlus1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
             android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_white"
             android:gravity="center"
             android:text="+25"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"
-            android:visibility="gone"
             android:textColor="@color/color_060F20"
-            android:textSize="@dimen/textSize14sp" />
+            android:textSize="@dimen/textSize14sp"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tvPlus2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
             android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_white"
             android:gravity="center"
             android:text="+50"
-            android:visibility="gone"
             android:textColor="@color/color_060F20"
-            android:textSize="@dimen/textSize14sp" />
+            android:textSize="@dimen/textSize14sp"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tvPlus3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
             android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_white"
             android:gravity="center"
             android:text="+75"
-            android:visibility="gone"
             android:textColor="@color/color_060F20"
-            android:textSize="@dimen/textSize14sp" />
+            android:textSize="@dimen/textSize14sp"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tvPlus4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"            android:layout_weight="1"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
+            android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_white"
             android:gravity="center"
             android:text="+100"
-            android:visibility="gone"
             android:textColor="@color/color_060F20"
-            android:textSize="@dimen/textSize14sp" />
+            android:textSize="@dimen/textSize14sp"
+            android:visibility="gone" />
 
 
     </LinearLayout>
@@ -108,106 +79,122 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:paddingVertical="@dimen/margin_4">
+        android:paddingVertical="@dimen/margin_3">
 
         <TextView
             android:id="@+id/tvNum1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
             android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
             android:text="1"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"
             android:textColor="@color/white"
             android:textSize="@dimen/textSize14sp" />
+
         <TextView
             android:id="@+id/tvNum2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
             android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"            android:text="2"
+            android:text="2"
             android:textColor="@color/white"
             android:textSize="@dimen/textSize14sp" />
+
         <TextView
             android:id="@+id/tvNum3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
             android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"            android:text="3"
+            android:text="3"
             android:textColor="@color/white"
             android:textSize="@dimen/textSize14sp" />
+
         <TextView
             android:id="@+id/tvNum4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
             android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"            android:text="4"
+            android:text="4"
             android:textColor="@color/white"
             android:textSize="@dimen/textSize14sp" />
+
         <TextView
             android:id="@+id/tvNum5"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
             android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"            android:text="5"
+            android:text="5"
             android:textColor="@color/white"
             android:textSize="@dimen/textSize14sp" />
+
         <TextView
             android:id="@+id/tvNum6"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
             android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"            android:text="6"
+            android:text="6"
             android:textColor="@color/white"
             android:textSize="@dimen/textSize14sp" />
+
         <TextView
             android:id="@+id/tvNum7"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
             android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"            android:text="7"
+            android:text="7"
             android:textColor="@color/white"
             android:textSize="@dimen/textSize14sp" />
+
         <TextView
             android:id="@+id/tvNum8"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
             android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"            android:text="8"
+            android:text="8"
             android:textColor="@color/white"
             android:textSize="@dimen/textSize14sp" />
+
         <TextView
             android:id="@+id/tvNum9"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
             android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"            android:text="9"
+            android:text="9"
             android:textColor="@color/white"
             android:textSize="@dimen/textSize14sp" />
 
@@ -218,18 +205,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:paddingVertical="@dimen/margin_4"
-        android:background="@color/color_060F20">
+        android:background="@color/color_060F20"
+        android:paddingVertical="@dimen/margin_3">
 
         <TextView
             android:id="@+id/tvNum0"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
             android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"
             android:text="0"
             android:textColor="@color/white"
             android:textSize="@dimen/textSize14sp" />
@@ -238,8 +225,9 @@
             android:id="@+id/tvDot"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"            android:layout_weight="1"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
+            android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
             android:text="."
@@ -250,11 +238,12 @@
             android:id="@+id/tvMax"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"            android:layout_weight="1"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
+            android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
-            android:text="Max"
+            android:text="@string/keyboard_max"
             android:textColor="@color/white"
             android:textSize="@dimen/textSize14sp" />
 
@@ -262,8 +251,9 @@
             android:id="@+id/tvDel"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/margin_2"
-            android:layout_marginEnd="@dimen/margin_2"            android:layout_weight="1"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
+            android:layout_weight="1"
             android:background="@drawable/bg_radius_4_button_7c7c7c"
             android:gravity="center"
             android:padding="@dimen/margin_6"

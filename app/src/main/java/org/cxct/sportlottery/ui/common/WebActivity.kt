@@ -7,6 +7,7 @@ import android.net.Uri
 import android.net.http.SslError
 import android.os.Bundle
 import android.os.Message
+import android.view.View
 import android.webkit.*
 import androidx.activity.result.contract.ActivityResultContracts
 import kotlinx.android.synthetic.main.activity_web.*
@@ -25,10 +26,14 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     companion object {
         const val KEY_URL = "key-url"
         const val KEY_TITLE = "key-title"
+        const val KEY_TOOLBAR_VISIBILITY = "key-toolbar-visibility"
+        const val KEY_BACK_EVENT = "key-back-event"
     }
 
     private val mTitle: String by lazy { intent?.getStringExtra(KEY_TITLE) ?: "" }
     private val mUrl: String by lazy { intent?.getStringExtra(KEY_URL) ?: "about:blank" }
+    private val mToolbarVisibility: Boolean by lazy { intent?.getBooleanExtra(KEY_TOOLBAR_VISIBILITY, true) ?: true }
+    private val mBackEvent: Boolean by lazy { intent?.getBooleanExtra(KEY_BACK_EVENT, true) ?: true }
     private var mUploadCallbackAboveL: ValueCallback<Array<Uri>>? = null
     private var mUploadMessage: ValueCallback<Uri?>? = null
 
@@ -39,7 +44,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     open fun init() {
         setContentView(R.layout.activity_web)
-        initToolBar()
+        if (!mToolbarVisibility) custom_tool_bar.visibility = View.GONE else initToolBar()
         setCookie()
         setupWebView(web_view)
         loadUrl(web_view)
@@ -142,9 +147,11 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                 //handler.proceed()
                 val builder: AlertDialog.Builder = AlertDialog.Builder(applicationContext)
                 builder.setMessage(android.R.string.httpErrorUnsupportedScheme)
-                builder.setPositiveButton("continue"
+                builder.setPositiveButton(
+                    "continue"
                 ) { dialog, which -> handler.proceed() }
-                builder.setNegativeButton("cancel"
+                builder.setNegativeButton(
+                    "cancel"
                 ) { dialog, which -> handler.cancel() }
                 val dialog: AlertDialog = builder.create()
                 dialog.show()
@@ -174,6 +181,13 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                 mUploadMessage = null
             }
         }.launch(arrayOf("image/*"))
+    }
+
+    override fun onBackPressed() {
+        when (mBackEvent) {
+            true -> super.onBackPressed()
+            else -> return
+        }
     }
 
 }

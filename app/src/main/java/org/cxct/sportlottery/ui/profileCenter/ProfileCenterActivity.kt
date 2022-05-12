@@ -177,7 +177,9 @@ class ProfileCenterActivity :
     }
 
     private fun setupLogout() {
+        btn_logout.setTitleLetterSpacing()
         btn_logout.setOnClickListener {
+            viewModel.doLogoutAPI()
             viewModel.doLogoutCleanUser {
                 run {
                     if (sConfigData?.thirdOpen == FLAG_OPEN)
@@ -304,11 +306,11 @@ class ProfileCenterActivity :
                     false
                 }
                 R.id.my_account_page -> {
-                    when (viewModel.userInfo.value?.testFlag) {
-                        TestFlag.NORMAL.index -> {
+                    when (viewModel.isLogin.value) {
+                        true -> { //登入
                             startActivity(Intent(this, ProfileCenterActivity::class.java))
                         }
-                        else -> { //遊客 //尚未登入
+                        else -> { //尚未登入
                             startActivity(Intent(this, RegisterActivity::class.java))
                         }
                     }
@@ -357,7 +359,7 @@ class ProfileCenterActivity :
                     val remainDayStartIndex = daysLeftText.indexOf(remainDay)
                     remainDaySpannable.setSpan(
                         ForegroundColorSpan(
-                            ContextCompat.getColor(this, R.color.colorBlue)
+                            ContextCompat.getColor(this, R.color.color_317FFF_1053af)
                         ),
                         remainDayStartIndex,
                         remainDayStartIndex + remainDay.length, 0

@@ -105,7 +105,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     }
 
     private fun initView() {
-        tv_toolbar_title.text = getString(R.string.profile_info)
+        custom_tool_bar.titleText = getString(R.string.profile_info)
         sConfigData?.apply {
             ll_qq_number.visibility = if (enableWithdrawQQ == FLAG_OPEN) View.VISIBLE else View.GONE
             ll_e_mail.visibility = if (enableWithdrawEmail == FLAG_OPEN) View.VISIBLE else View.GONE
@@ -120,7 +120,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     }
 
     private fun initButton() {
-        btn_toolbar_back.setOnClickListener {
+        custom_tool_bar.setOnBackPressListener {
             finish()
         }
 
@@ -136,7 +136,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         //真實姓名
         ll_real_name.setOnClickListener {
             securityCodeEnter = SecurityCodeEnterType.REALNAME
-            putExtraForProfileInfoActivity(ModifyType.RealName)
+            viewModel.checkNeedToShowSecurityDialog()//檢查有需不需要簡訊認證
         }
         //暱稱
         btn_nickname.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.NickName) }
@@ -210,7 +210,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                     tv_verified.setTextColor(
                         ContextCompat.getColor(
                             tv_verified.context,
-                            R.color.colorBlue
+                            R.color.color_317FFF_1053af
                         )
                     )
                     icon_identity.visibility = View.GONE
@@ -222,7 +222,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                     tv_verified.setTextColor(
                         ContextCompat.getColor(
                             tv_verified.context,
-                            R.color.colorRed
+                            R.color.color_E44438_e44438
                         )
                     )
                     icon_identity.visibility = View.VISIBLE
@@ -234,7 +234,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                     tv_verified.setTextColor(
                         ContextCompat.getColor(
                             tv_verified.context,
-                            R.color.colorRed
+                            R.color.color_E44438_e44438
                         )
                     )
                     icon_identity.visibility = View.GONE
@@ -246,7 +246,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                     tv_verified.setTextColor(
                         ContextCompat.getColor(
                             tv_verified.context,
-                            R.color.colorRed
+                            R.color.color_E44438_e44438
                         )
                     )
                     icon_identity.visibility = View.VISIBLE
@@ -266,7 +266,6 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
         //是否顯示簡訊驗證彈窗
         viewModel.showSecurityDialog.observe(this) {
-            val hasPhoneNumber = MultiLanguagesApplication.getInstance()?.userInfo()?.phone?.isNotEmpty()
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
                     customSecurityDialog = CustomSecurityDialog(this).apply {
@@ -280,7 +279,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                             }
                     }
                     customSecurityDialog?.show(supportFragmentManager, null)
-                } else if (hasPhoneNumber == true && !b) { //有手機號碼又不用驗證的狀態下
+                } else if (!b) { //有手機號碼又不用驗證的狀態下
                     when (securityCodeEnter) {
                         SecurityCodeEnterType.REALNAME -> {
                             putExtraForProfileInfoActivity(ModifyType.RealName)
@@ -364,12 +363,12 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         tvInfo.apply {
             if (infoData.isNullOrEmpty()) {
                 text = getString(R.string.need_improve)
-                setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.colorBlueDark))
+                setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.color_317FFF_0760D4))
                 iconModify.visibility = View.VISIBLE
                 itemLayout.isEnabled = true
             } else {
                 text = infoData
-                setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.colorGrayDark))
+                setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.color_E0E0E0_404040))
                 iconModify.visibility = View.GONE
                 itemLayout.isEnabled = false
             }

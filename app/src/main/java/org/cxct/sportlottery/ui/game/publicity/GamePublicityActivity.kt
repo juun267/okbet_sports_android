@@ -95,6 +95,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     private fun initViews() {
         initToolBar()
         initServiceButton()
+        initRegionViewBtn()
         initOnClickListener()
     }
 
@@ -124,6 +125,12 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         binding.btnFloatingService.setView(this)
     }
 
+    private fun initRegionViewBtn() {
+        //region view bottom
+        binding.tvRegister.letterSpacing = 0.0892957143f
+        binding.tvLogin.letterSpacing = 0.0892957143f
+    }
+
     private fun initOnClickListener() {
         //region view bottom
         binding.tvRegister.setOnClickListener(this)
@@ -143,6 +150,14 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     }
 
     private fun initObservers() {
+        viewModel.showBetUpperLimit.observe(this) {
+            if (it.getContentIfNotHandled() == true)
+                snackBarBetUpperLimitNotify.apply {
+                    setAnchorView(R.id.viewBottom)
+                    show()
+                }
+        }
+
         viewModel.showBetInfoSingle.observe(this) { event ->
             event?.getContentIfNotHandled()?.let {
                 if (it) {
@@ -262,7 +277,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         }
     }
 
-    fun clickMenu() {
+    override fun clickMenuEvent() {
         with(binding) {
             if (drawerLayout.isDrawerOpen(viewNavRight.navRight)) drawerLayout.closeDrawers()
             else {

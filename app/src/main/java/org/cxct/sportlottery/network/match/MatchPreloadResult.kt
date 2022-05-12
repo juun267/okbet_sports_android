@@ -17,3 +17,6 @@ data class MatchPreloadResult(
     @Json(name = "t")
     val matchPreloadData: MatchPreloadData?
 ) : BaseResult()
+{
+    var isSelected: Boolean = false
+}

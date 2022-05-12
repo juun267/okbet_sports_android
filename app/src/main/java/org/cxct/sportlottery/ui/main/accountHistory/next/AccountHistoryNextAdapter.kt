@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.main.accountHistory.next
 
 import android.graphics.Paint
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +12,17 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.view_account_history_next_title_bar.view.*
 import kotlinx.android.synthetic.main.view_back_to_top.view.*
+import kotlinx.android.synthetic.main.view_status_selector.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.*
+import org.cxct.sportlottery.databinding.ItemAccountHistoryNextContentBinding
+import org.cxct.sportlottery.databinding.ItemAccountHistoryNextContentOutrightBinding
+import org.cxct.sportlottery.databinding.ItemAccountHistoryNextContentParlayBinding
+import org.cxct.sportlottery.databinding.ItemAccountHistoryNextTotalBinding
 import org.cxct.sportlottery.network.bet.settledDetailList.MatchOdd
 import org.cxct.sportlottery.network.bet.settledDetailList.Other
 import org.cxct.sportlottery.network.bet.settledDetailList.Row
@@ -26,6 +32,7 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil.getParlayShowName
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
 
@@ -68,15 +75,12 @@ class AccountHistoryNextAdapter(
         adapterScope.launch {
             val items = listOf(DataItem.TitleBar) + when {
                 list.isNullOrEmpty() -> listOf(DataItem.NoData)
-                isLastPage -> list.map { DataItem.Item(it) } + listOf(DataItem.Footer) + listOf(
-                    DataItem.BackToTop
-                )
+                isLastPage -> list.map { DataItem.Item(it) } + listOf(DataItem.Footer) + listOf(DataItem.BackToTop)
                 else -> list.map { DataItem.Item(it) }
             }
 
             withContext(Dispatchers.Main) { //update in main ui thread
                 submitList(items)
-                scrollToTopListener.onClick()
             }
         }
     }
@@ -161,7 +165,13 @@ class AccountHistoryNextAdapter(
 
             binding.apply {
                 matchOdd = row.matchOdds?.firstOrNull()
-                tvParlayType.text = getParlayShowName(itemView.context, row.parlayType)
+
+                row.parlayType?.let { parlayType ->
+                    ParlayType.getParlayStringRes(parlayType)?.let { parlayTypeStringResId ->
+                        tvParlayType.text = MultiLanguagesApplication.appContext.getString(parlayTypeStringResId)
+                    }
+                }
+
                 tvDetail.paint.flags = Paint.UNDERLINE_TEXT_FLAG
                 tvDetail.isVisible = (row.parlayComsDetailVOs ?: emptyList()).isNotEmpty()
                 tvDetail.setOnClickListener {
@@ -215,7 +225,16 @@ class AccountHistoryNextAdapter(
                 }
                 binding.tvGameTypePlayCate.text = "${GameType.getGameTypeString(binding.tvGameTypePlayCate.context, row.gameType)} $playCateName"
 
-                binding.tvTeamNames.text = String.format(binding.tvTeamNames.context.getString(R.string.match_names_2), homeName, awayName)
+                if (!homeName.isNullOrEmpty() && !awayName.isNullOrEmpty()) {
+                    binding.tvTeamNames.text =
+                        String.format(binding.tvTeamNames.context.getString(R.string.match_names_2),
+                            homeName,
+                            awayName)
+                    binding.tvTeamNames.visibility = View.VISIBLE
+                }
+                else {
+                    binding.tvTeamNames.visibility = View.GONE
+                }
 
                 startTime?.let {
                     binding.tvStartTime.text = TimeUtil.timeFormat(it, TimeUtil.YMD_HM_FORMAT)
@@ -365,6 +384,11 @@ class AccountHistoryNextAdapter(
                 iv_back.setOnClickListener {
                     backClickListener.onClick()
                 }
+
+                tv_title.setTextWithStrokeWidth(context?.getString(R.string.bet_num_and_bet_date) ?: "", 0.7f)
+
+                date_selector.cl_root.layoutParams.height = 40.dp
+                sport_selector.cl_root.layoutParams.height = 40.dp
 
                 //sport
                 sport_selector.setCloseBtnText(context.getString(R.string.bottom_sheet_close))

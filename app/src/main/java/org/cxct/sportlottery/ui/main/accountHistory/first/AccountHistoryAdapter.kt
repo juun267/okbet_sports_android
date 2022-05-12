@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.main.accountHistory.first
 
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.view_account_history_title_bar.view.*
+import kotlinx.android.synthetic.main.view_status_selector.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,13 +18,14 @@ import org.cxct.sportlottery.databinding.ItemAccountHistoryBinding
 import org.cxct.sportlottery.network.bet.settledList.Row
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.setTextWithStrokeWidth
 
-class AccountHistoryAdapter(private val clickListener: ItemClickListener,
-                            private val backClickListener: BackClickListener,
-                            private val sportSelectListener: SportSelectListener
+class AccountHistoryAdapter(
+    private val clickListener: ItemClickListener,
+    private val backClickListener: BackClickListener,
+    private val sportSelectListener: SportSelectListener
 ) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     enum class ItemType {
@@ -63,7 +66,7 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener,
 
             is ItemViewHolder -> {
                 val data = getItem(position) as DataItem.Item
-                holder.bind(data.row, clickListener)
+                holder.bind(data.row, clickListener, position)
             }
 
             is FooterViewHolder -> {
@@ -84,7 +87,7 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener,
     }
 
     class ItemViewHolder private constructor(val binding: ItemAccountHistoryBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: Row?, clickListener: ItemClickListener) {
+        fun bind(data: Row?, clickListener: ItemClickListener, position: Int) {
             binding.row = data
             binding.textUtil = TextUtil
 
@@ -93,6 +96,7 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener,
                     clickListener.onClick(data)
                 }
             }
+            if (position % 2 == 0) itemView.setBackgroundResource(R.color.color_242424_f2f2f2)
             binding.executePendingBindings()
         }
 
@@ -124,18 +128,22 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener,
                     backClickListener.onClick()
                 }
 
+                tv_title.setTextWithStrokeWidth(context?.getString(R.string.account_history_overview) ?: "", 0.7f)
+
                 sportSelectListener.onSelect("")
+                status_selector.cl_root.layoutParams.height = 40.dp
+                status_selector.tv_selected.gravity = Gravity.CENTER_VERTICAL or Gravity.START
                 status_selector.setCloseBtnText(context?.getString(R.string.bottom_sheet_close))
                 status_selector.dataList = sportStatusList
                 status_selector.setOnItemSelectedListener {
                     sportSelectListener.onSelect(it.code)
                 }
-
             }
         }
 
         companion object {
-            fun from(parent: ViewGroup) = TitleBarViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_account_history_title_bar, parent, false))
+            fun from(parent: ViewGroup) =
+                TitleBarViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_account_history_title_bar, parent, false))
         }
     }
 

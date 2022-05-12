@@ -4,23 +4,24 @@ package org.cxct.sportlottery.ui.odds
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Typeface
+import android.os.Build
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
-import android.text.style.AbsoluteSizeSpan
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
+import android.text.style.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.text.getSpans
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.OddSpreadForSCO
 import org.cxct.sportlottery.network.common.GameType
@@ -30,15 +31,11 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.common.IndicatorView
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
-import org.cxct.sportlottery.ui.feedback.record.FeedbackListAdapter
-import org.cxct.sportlottery.ui.game.common.LeagueAdapter
-import org.cxct.sportlottery.ui.game.hall.adapter.CountryAdapter
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.updateEPSDiscount
-import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -103,6 +100,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
 
     var sportCode: GameType? = null
+
+    //隊伍角球數量
+    var homeCornerKicks: Int? = null
+    var awayCornerKicks: Int? = null
 
 
     private lateinit var code: String
@@ -481,7 +482,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                                     GridItemDecoration(
                                         context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_odds),
                                         context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_odds),
-                                        ContextCompat.getColor(context, R.color.colorWhite),
+                                        ContextCompat.getColor(context, R.color.color_191919_FCFCFC),
                                         false
                                     )
                                 )
@@ -567,6 +568,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
              * 排球：玩法有 -SEG("第N盤")
              * */
 
+            //有特別的玩法標題會需要調整, 避免View重用導致其他標題也被改動到特別樣式
+            tvGameName?.isAllCaps = true
+            tvGameName?.setLineSpacing(0f, 1f)
+
             when (sportCode) {
                 GameType.BK -> {
                     tvGameName?.text = when {
@@ -578,9 +583,28 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 }
                 GameType.FT -> {
                     tvGameName?.text = when {
+                        /*PlayCate.needShowCurrentCorner(oddsDetail.gameType) -> {
+                            getTotalCornerTitle(oddsDetail)
+                        }*/
                         oddsDetail.gameType.contains("-1ST") || oddsDetail.gameType.contains("-2ST")
-                        -> tvGameName?.context?.let { getTitle(it, oddsDetail) }
-                        else -> tvGameName?.context?.let { getTitleNormal(oddsDetail) }
+                        -> tvGameName?.context?.let {
+                            getTitle(it, oddsDetail).let { titleSpannableStringBuilder ->
+                                if (PlayCate.needShowCurrentCorner(oddsDetail.gameType)) {
+                                    getTotalCornerTitle(titleSpannableStringBuilder)
+                                } else {
+                                    titleSpannableStringBuilder
+                                }
+                            }
+                        }
+                        else -> tvGameName?.context?.let {
+                            getTitleNormal(oddsDetail).let { titleSpannableStringBuilder ->
+                                if (PlayCate.needShowCurrentCorner(oddsDetail.gameType)) {
+                                    getTotalCornerTitle(titleSpannableStringBuilder)
+                                } else {
+                                    titleSpannableStringBuilder
+                                }
+                            }
+                        }
                     }
                 }
                 GameType.TN -> {
@@ -907,14 +931,14 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             context: Context,
             oddsDetail: OddsDetailListData
         ): SpannableStringBuilder {
-            val textColor = ContextCompat.getColor(context, R.color.colorGray)
+            val textColor = ContextCompat.getColor(context, R.color.color_A3A3A3_666666)
             val gameTitleContentBuilder = SpannableStringBuilder()
             val statusWord =
                 oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)
-                    ?.split("-")
+                    ?.split("-", "–")
             val playName =
                 oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)
-                    ?.replace("-${statusWord?.last() ?: ""}", "")
+                    ?.replace("-${statusWord?.last() ?: ""}", "")?.replace("–${statusWord?.last() ?: ""}", "")
             val stWordSpan = SpannableString(statusWord?.last() ?: "")
             statusWord?.last()?.length?.let {
                 stWordSpan.setSpan(
@@ -964,6 +988,62 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             gameTitleContentBuilder.append(playNameSpan)
 
             return gameTitleContentBuilder
+        }
+
+        private fun getTotalCornerTitle(gameTitle: SpannableStringBuilder): SpannableStringBuilder {
+            tvGameName?.isAllCaps = false
+
+            //region 將PlayCateTitle的文字轉為大寫
+            val spans = gameTitle.getSpans<Any>(0, gameTitle.length)
+            val upperCaseSpannableString = SpannableString(gameTitle.toString().toUpperCase(Locale.getDefault()))
+            spans.forEach {
+                upperCaseSpannableString.setSpan(it, gameTitle.getSpanStart(it), gameTitle.getSpanEnd(it), 0)
+            }
+            //endregion
+
+            val cornerTitleContentBuilder = SpannableStringBuilder()
+            //region 當前總角球數 (角球副標題)
+            val totalCorner =
+                if (homeCornerKicks != null && awayCornerKicks != null) "$homeCornerKicks-$awayCornerKicks" else ""
+            val subCornerTitle = "Current Total: $totalCorner"
+            val subCornerTitleTextColor = ContextCompat.getColor(MultiLanguagesApplication.appContext, R.color.color_FF9143_cb7c2e)
+            val subCornerTitleSpan = SpannableString(subCornerTitle)
+
+            with(subCornerTitleSpan) {
+                subCornerTitle.length.let { endIndex ->
+                    //文字體
+                    setSpan(
+                        StyleSpan(Typeface.NORMAL),
+                        0,
+                        endIndex,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                    //文字顏色
+                    setSpan(
+                        ForegroundColorSpan(subCornerTitleTextColor),
+                        0,
+                        endIndex,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                    //文字大小
+                    setSpan(
+                        AbsoluteSizeSpan(12, true),
+                        0,
+                        endIndex,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                    //行高
+                    //TODO 低版本問題: 低於VERSION_CODES.Q無法使用LineHeightSpan, setLineSpacing會調整到每一行的距離, 有些本身Title就是兩行的也會跟著被調整
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        setSpan(LineHeightSpan.Standard(16.dp), 0, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    } else {
+                        tvGameName?.setLineSpacing(4f, 1f)
+                    }
+                }
+            }
+            //endregion
+
+            return cornerTitleContentBuilder.append(upperCaseSpannableString).append("\n").append(subCornerTitleSpan)
         }
 
         private val epsAdapter by lazy { TypeEPSAdapter() }

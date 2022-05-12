@@ -7,9 +7,9 @@
     <string name="unknown_error">unknown error</string>
     <string name="error_reading_file">Error reading from file</string>
     <string name="message_guest_no_permission">Guest account not be able to access, please register first</string>
-    <string name="message_socket_connect">Internet connections timed out please try again</string>
-    <string name="message_network_no_connect">Please check your internet connection and try again</string>
-    <string name="message_network_timeout">Internet connections timed out please try again</string>
+    <string name="message_socket_connect">The connection has timed out, please try again.</string>
+    <string name="message_network_no_connect">The connection has timed out, please try again.</string>
+    <string name="message_network_timeout">The connection has timed out, please try again.</string>
     <string name="error">Error</string>
     <string name="error_input_empty">This field is required</string>
     <string name="error_incompatible_format">The name that you entered is not valid</string>
@@ -32,18 +32,18 @@
     <string name="please_input_password">(your login password)</string>
     <string name="login_password">Password</string>
     <string name="remember_password">Save this password</string>
-    <string name="forget_password_question">Forgot password？</string>
+    <string name="forget_password_question">Forgot password?</string>
     <string name="desc_forget_password">Please contact customer service</string>
     <string name="sign_up_know">sign up now</string>
     <string name="recommend_code">Invite Code</string>
     <string name="hint_recommend_code">(Invite Code)</string>
     <string name="error_recommend_code">Invite code not available</string>
     <string name="member_account">Account</string>
-    <string name="hint_member_account"><![CDATA[4-16 characters (English & numbers)]]></string>
+    <string name="hint_member_account"><![CDATA[(4-16 characters (English & numbers))]]></string>
     <string name="error_member_account">Username must be 4–16 characters and contain letter and numbers</string>
     <string name="desc_register_checking_account">Checking account</string>
     <string name="error_register_id_exist">Username already exists</string>
-    <string name="hint_register_password"><![CDATA[6–20 (English & numbers)]]></string>
+    <string name="hint_register_password"><![CDATA[(6–20 (English & numbers))]]></string>
     <string name="error_register_password">Password must be 6–20 characters and contain letter and numbers</string>
     <string name="error_password_format">The password must be a combination of numbers, letters</string>
     <string name="register_please_read">Please read our</string>
@@ -51,26 +51,30 @@
     <string name="register_privacy">Send me updates and promotions in accordance with the</string>
     <string name="register_privacy_policy">&#160;Privacy Policy</string>
     <string name="register_privacy_policy_promotions"></string>
-    <string name="register_over_21">I am over 21 years of age and have read and agree to the&#160;</string>
-    <string name="register_rules">&#160;Rules and Terms</string>
+    <string name="register_over_21">I am over 21 years of age and have read and agree to the %s’s&#160;</string>
+    <string name="register_rules">&#160;Terms &amp; Conditions</string>
+    <string name="register_not_ph_official">I am not a government official and/or employee directly connected with the operation of the Philippine government or any of its agencies.</string>
+    <string name="register_not_ph_school">I am not a student of any school, college, or university in the Philippines.</string>
+    <string name="register_rule_okbet">I understand that should my provided information has been found incorrect, OkBet has the right to impose a penalty on my account subject to its Terms and Conditions Sections 5.1 - 5.2.</string>
+    <string name="register_rule_agree_all">I agree to all terms and conditions of the above.</string>
     <string name="register_success">Register successfully</string>
     <string name="register_watch_first">Explore the game</string>
     <string name="register_jump">The page will be jumping to %s 5 sec later.</string>
-    <string name="register_recharge_now">Recharge now</string>
+    <string name="register_recharge_now">Deposit now</string>
     <string name="confirm_password">Confirm Password</string>
-    <string name="hint_confirm_password">Confirm Password</string>
+    <string name="hint_confirm_password">(Confirm Password)</string>
     <string name="error_confirm_password">Password and confirm password don\'t match</string>
     <string name="withdrawal_pwd">Withdrawal password</string>
-    <string name="hint_withdrawal_pwd">4 digit password</string>
+    <string name="hint_withdrawal_pwd">(4 digit password)</string>
     <string name="error_withdrawal_pwd">The Password you entered is incorrect</string>
     <string name="phone_number">Phone No.</string>
-    <string name="hint_phone_number">Phone No.</string>
+    <string name="hint_phone_number">(Phone No.)</string>
     <string name="error_phone_number">Phone number formatted incorrectly</string>
     <string name="qq_number">QQ Number</string>
-    <string name="hint_qq_number">QQ Account</string>
+    <string name="hint_qq_number">(QQ Account)</string>
     <string name="error_qq_number">QQ account formatted incorrectly</string>
     <string name="e_mail">Email</string>
-    <string name="hint_e_mail">Email</string>
+    <string name="hint_e_mail">(Email)</string>
     <string name="error_e_mail">Email formatted incorrectly</string>
     <string name="postal_code">Postal code</string>
     <string name="hint_postal_code">(Please enter Postal code)</string>
@@ -80,29 +84,29 @@
     <string name="hint_city">(Please enter city)</string>
     <string name="we_chat">Wechat</string>
     <string name="identity">Verification Identity</string>
-    <string name="hint_we_chat_number">Wechat ID</string>
+    <string name="hint_we_chat_number">(Wechat ID)</string>
     <string name="error_we_chat_number">Wechat ID formatted incorrectly</string>
     <string name="zalo">Zalo</string>
-    <string name="hint_zalo">Zalo Account</string>
+    <string name="hint_zalo">(Zalo Account)</string>
     <string name="error_zalo">Zalo account formatted incorrectly</string>
     <string name="facebook">Facebook</string>
-    <string name="hint_facebook">Facebook Account</string>
+    <string name="hint_facebook">(Facebook Account)</string>
     <string name="error_facebook">Facebook account formatted incorrectly</string>
     <string name="whats_app">WhatsApp</string>
-    <string name="hint_whats_app">WhatsApp Account</string>
+    <string name="hint_whats_app">(WhatsApp Account)</string>
     <string name="error_whats_app">WhatsApp account formatted incorrectly</string>
     <string name="telegram">Telegram</string>
-    <string name="hint_telegram">Telegram Account</string>
+    <string name="hint_telegram">(Telegram Account)</string>
     <string name="error_telegram">Telegram account formatted incorrectly</string>
     <string name="security_pb">Security question</string>
     <string name="hint_security_pb">(Please enter the favorite country)</string>
     <string name="real_name">Full name</string>
-    <string name="hint_real_name">match the bank account name</string>
+    <string name="hint_real_name">(match the bank account name)</string>
     <string name="verification_code">Verification code</string>
     <string name="verification_code_by_sms">SMS verify code</string>
     <string name="hint_verification_code">Verify Code</string>
     <string name="error_verification_code">Verify code incorrectly</string>
-    <string name="hint_verification_code_by_sms">SMS</string>
+    <string name="hint_verification_code_by_sms">(SMS)</string>
     <string name="error_verification_code_by_sms">SMS verification code incorrectly</string>
     <string name="get_verification_code">SEND</string>
     <string name="send_timer">Sent</string>
@@ -112,10 +116,10 @@
     <string name="dialog_security_hint">Welcome back to game. Please complete verification for account security.</string>
     <string name="dialog_security_title">Enter the verification code.</string>
     <string name="dialog_security_error">You have entered a wrong verification code.</string>
-    <string name="hint_security_code"><font size="12">(Please enter the verification code.)</font></string>
+    <string name="hint_security_code"><font size="12">Enter Code</font></string>
     <string name="dialog_security_need_phone">Your personal information is not complete, please contact customer service.</string>
     <string name="btn_agreement">Account Opening Agreement</string>
-    <string name="have_account">Already have an account？</string>
+    <string name="have_account">Already have an account?</string>
     <string name="btn_login">Login</string>
     <string name="btn_register">Sign Up</string>
     <string name="no_announcement">No announcement</string>
@@ -136,7 +140,7 @@
     <string name="home_tab_eps">PRICE BOOSTS</string>
     <string name="home_title_eps">PRICE BOOSTS</string>
     <string name="title_eps_more">High odds</string>
-    <string name="game_soon">SOON</string>
+    <string name="game_soon">Soon</string>
     <string name="label_in_play_games">Petanque</string>
     <string name="label_all">All</string>
     <string name="label_match_recommend">Match recommend</string>
@@ -146,8 +150,8 @@
     <string name="return_to_top">Back to top</string>
     <string name="versus">v</string>
     <string name="label_sport_game">Schedule</string>
-    <string name="label_account_history">Account</string>
-    <string name="label_transaction_status">Record</string>
+    <string name="label_account_history">Statement</string>
+    <string name="label_transaction_status">Bet List</string>
     <string name="label_title_parlay">Comprehensive pass</string>
     <string name="conspire">Parlay</string>
     <string name="message_no_at_start">Now no Coming soon Matches</string>
@@ -155,20 +159,21 @@
     <string name="message_no_sport_game">There are currently no events for %1$s</string>
     <string name="champion">OUTRIGHTS</string>
     <string name="league">League</string>
-    <string name="monday">Mon</string>
-    <string name="tuesday">Tue</string>
-    <string name="wednesday">Wed</string>
-    <string name="thursday">Thu</string>
-    <string name="friday">Fri</string>
-    <string name="saturday">Sat</string>
-    <string name="sunday">Sun</string>
-    <string name="monday2">Monday</string>
-    <string name="tuesday2">Tuesday</string>
-    <string name="wednesday2">Wednesday</string>
-    <string name="thursday2">Thursday</string>
-    <string name="friday2"> Friday</string>
-    <string name="saturday2">Saturday</string>
-    <string name="sunday2">Sunday</string>
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
+    <string name="monday2">Mon</string>
+    <string name="tuesday2">Tue</string>
+    <string name="wednesday2">Wed</string>
+    <string name="thursday2">Thu</string>
+    <string name="friday2"> Fri</string>
+    <string name="saturday2">Sat</string>
+    <string name="sunday2">Sun</string>
+    <string name="sunday2_cn">Sun</string>
     <string name="january">January</string>
     <string name="february">February</string>
     <string name="march">March</string>
@@ -201,13 +206,13 @@
     <string name="infomation_center">Information</string>
     <string name="left_menu_odds_type_setting">Odds Setting</string>
     <string name="go_back_home_page">Back to main page</string>
-    <string name="profile_center">Your profile</string>
+    <string name="profile_center">Profile</string>
     <string name="member_level">Member level</string>
     <string name="game_settlement">Result</string>
-    <string name="version_update">Update version</string>
+    <string name="version_update">Update Version</string>
     <string name="odds_type">Handicap-%s</string>
     <string name="sign_out">Logout</string>
-    <string name="label_version">Version number Ver %s</string>
+    <string name="label_version">Version Ver %s</string>
     <string name="now_level">Current level</string>
     <string name="growth_requirement">The account to level up need：</string>
     <string name="no_value">Nope</string>
@@ -271,6 +276,8 @@
     <string name="third">Three</string>
     <string name="fourth">Four</string>
     <string name="fifth">Five</string>
+    <string name="day_mode">Day mode</string>
+    <string name="night_mode">Night mode</string>
     <string name="add_time_first_plat">OT First period</string>
     <string name="add_time_second_plat">OT second period</string>
     <string name="first_session">Fist term</string>
@@ -282,15 +289,15 @@
     <string name="add_time_second_half_game">Overtime Second half</string>
     <string name="account_balance">Current Balance</string>
     <string name="user_id_colon">User ID：</string>
-    <string name="recharge">Recharge</string>
+    <string name="recharge">Deposit</string>
     <string name="more_service">More service</string>
     <string name="account_transfer">Transfer Limit</string>
     <string name="money_recycle_succeed">Recovery limit successfully</string>
-    <string name="news_center">Message</string>
+    <string name="news_center">My Information</string>
     <string name="help_center">Help</string>
-    <string name="fund_detail">Fund Details</string>
+    <string name="fund_detail">Fund Detail</string>
     <string name="feedback">Feedback</string>
-    <string name="promotion">Promotion Activity</string>
+    <string name="promotion">Promotions</string>
     <string name="need_improve">Need to be completed</string>
     <string name="profile_info">Your Info</string>
     <string name="avatar">Profile photo</string>
@@ -321,13 +328,13 @@
     <string name="updatable">Can update</string>
     <string name="internal_download">Internal download</string>
     <string name="denied_read_memory_card">Memory Card Access Denied</string>
-    <string name="current_versionIs_the_latest_version">Your app is new vesion</string>
+    <string name="current_versionIs_the_latest_version">Your App is the latest version</string>
     <string name="external_download">External download</string>
     <string name="update">Update</string>
     <string name="update_now">Update now</string>
     <string name="install">Install</string>
     <string name="inbox">Inbox (%1$d)</string>
-    <string name="unread_letters">Unread email (%1$d)</string>
+    <string name="unread_letters">Unread (%1$d)</string>
     <string name="index">Numbers</string>
     <string name="title">Headline</string>
     <string name="time">Time</string>
@@ -383,7 +390,7 @@
     <string name="bet_item">Betting items -</string>
     <string name="match_type_row_in_play">IN-PLAY</string>
     <string name="match_type_row_at_start">SOON</string>
-    <string name="at_start_remain_minute">%s minutes</string>
+    <string name="at_start_remain_minute">%s Minute</string>
     <string name="match_type_row_btn_bs">Concede goals &amp; over/under</string>
     <string name="game_filter_row_search_hint">Please enter league name</string>
     <string name="game_filter_row_search_hint_league">Please enter team name</string>
@@ -401,8 +408,8 @@
     <string name="x12_x_play_name">Draw</string>
     <string name="no_history_content">Your current selection has nothing～</string>
     <string name="no_history_search">No data found for your search or filter</string>
-    <string name="odd_button_ou_o">Big</string>
-    <string name="odd_button_ou_u">Small</string>
+    <string name="odd_button_ou_o">Over</string>
+    <string name="odd_button_ou_u">Under</string>
     <string name="game_tab_league_odd">Match</string>
     <string name="game_tab_outright_odd">Outright</string>
     <string name="game_tab_price_boosts_odd">Price boosts</string>
@@ -420,8 +427,8 @@
     <string name="odds_detail_play_type_dc_1X">1/X</string>
     <string name="odds_detail_play_type_dc_2X">2/X</string>
     <string name="odds_detail_play_type_dc_12">1/2</string>
-    <string name="odds_detail_play_type_ou_o">Big</string>
-    <string name="odds_detail_play_type_ou_u">Small</string>
+    <string name="odds_detail_play_type_ou_o">Over</string>
+    <string name="odds_detail_play_type_ou_u">Under</string>
     <string name="bottom_sheet_close">Close</string>
     <string name="bottom_sheet_title_play_type">Change playing method</string>
     <string name="message_recharge_maintain">Please wait while the top-up system is being upgraded</string>
@@ -465,11 +472,11 @@
     <string name="paymaya_recharge_hint">Please log in the member to check whether the PayMaya account is used before each payment. The company is not responsible for failing to check the overdue account.</string>
     <string name="paypal_recharge_hint">Please log in the member to check whether the Paypal account is used before each payment. The company is not responsible for failing to check the overdue account.</string>
     <string name="title_pay_channel">Payment channels</string>
-    <string name="title_choose_pay_channel">Select payment channels</string>
+    <string name="title_choose_pay_channel">Payment channels</string>
     <string name="title_pay_gap">Payment account</string>
-    <string name="title_choose_pay_gap">Select payment account</string>
+    <string name="title_choose_pay_gap">Payment account</string>
     <string name="title_pay_bank">Payment bank</string>
-    <string name="title_choose_pay_bank">Select payment bank</string>
+    <string name="title_choose_pay_bank">Payment bank</string>
     <string name="title_pay_msg">Payment information</string>
     <string name="title_pay_way">Payment method:</string>
     <string name="title_pay_money">Payment Amount:</string>
@@ -498,9 +505,9 @@
     <string name="hint_feeback_rate">・Rebate rate：%1$s</string>
     <string name="hint_feeback_amount">・Rebate rate amount：%1$s %s</string>
     <string name="txv_recharge_money">・Top-up amount：%1$s %s</string>
-    <string name="title_recharge_account">USDT recharge account</string>
-    <string name="title_choose_recharge_account">Select recharge account</string>
-    <string name="title_recharge_address">USDT recharge address：</string>
+    <string name="title_recharge_account">USDT deposit account</string>
+    <string name="title_choose_recharge_account">Select deposit account</string>
+    <string name="title_recharge_address">USDT deposit address：</string>
     <string name="btn_recharge">Go top-up</string>
     <string name="title_upload_pic">Upload payment screenshot</string>
     <string name="title_upload_pic_plz">Please upload payment screenshot</string>
@@ -513,7 +520,7 @@
     <string name="online_bank">Banking</string>
     <string name="online_juan">JuanCash</string>
     <string name="online_dispenshing">Withdraw</string>
-    <string name="online_online_bank">網銀</string>
+    <string name="online_online_bank">Internet Banking</string>
     <string name="online_gcash">Gcash</string>
     <string name="online_grab">GrabPay</string>
     <string name="online_maya">PayMaya</string>
@@ -533,7 +540,7 @@
     <string name="select_crypto_card">Select address</string>
     <string name="selected_bank_card">%1$s (end no.%2$s)</string>
     <string name="error_withdraw_amount_bank">Incorrect withdrawal amount format or value</string>
-    <string name="error_withdraw_amount_crypto">The format or value of top-up number is incorrect</string>
+    <string name="error_withdraw_amount_crypto">The format or value of withdrawal amount is incorrect</string>
     <string name="error_withdraw_amount_bigger_than_balance">The withdrawal amount is higher than the account balance</string>
     <string name="please_setting_withdraw_password">Please set the withdrawal password</string>
     <string name="please_complete_profile_info">Complete personal Information</string>
@@ -547,7 +554,7 @@
     <string name="go_to_setting">To set up</string>
     <string name="message_withdraw_maintain">The withdrawal system is being upgraded，Please waiting</string>
     <string name="text_money_get_success">Withdrawal successful, please wait for customer service personnel check</string>
-    <string name="withdraw_setting">Withdrawals Setting</string>
+    <string name="withdraw_setting">Withdraw Setting</string>
     <string name="tail_number">End no</string>
     <string name="bind_start_time">Bind</string>
     <string name="bind_credit_card_not_yet">You do not have a bank card/crypto bound</string>
@@ -563,7 +570,7 @@
     <string name="hint_four_number_password">Withdrawal password</string>
     <string name="hint_please_enter_withdraw_password">withdrawal password</string>
     <string name="add_new">Add</string>
-    <string name="add_credit_card">Adding Bank card</string>
+    <string name="add_credit_card">Add Bank Card</string>
     <string name="add_crypto_card">Adding virtual coins</string>
     <string name="add_e_wallet">Adding eWallet</string>
     <string name="add_credit_or_virtual">add bank card / USDT / eWallet</string>
@@ -625,7 +632,7 @@
     <string name="bet_info_list_clean">Clear all</string>
     <string name="bet_info_bet_balance_insufficient">Balance is not enough</string>
     <string name="bet_info_different_game_type">Different ball species can not be linked for parlay</string>
-    <string name="bet_info_input_quota">Please enter the amount</string>
+    <string name="bet_info_input_quota">Enter Stake</string>
     <string name="bet_info_check_maximum_limit">MAX BET</string>
     <string name="bet_info_bet_quota">bet amount</string>
     <string name="bet_info_win_quota">To win</string>
@@ -652,11 +659,11 @@
     <string name="already_bet_complete">You have been successful bets</string>
     <string name="complete">Completed</string>
     <string name="winnable_amount_colon">To Win：</string>
-    <string name="finance">Fund details</string>
-    <string name="record_recharge">Recharge record</string>
-    <string name="record_withdrawal">Withdrawal record</string>
+    <string name="finance">Fund Detail</string>
+    <string name="record_recharge">Deposit Record</string>
+    <string name="record_withdrawal">Withdrawal Record</string>
     <string name="record_conversion">Conversion Record</string>
-    <string name="record_history">History</string>
+    <string name="record_history">Transaction History</string>
     <string name="recharge_state_success">success</string>
     <string name="recharge_state_failed">Fail</string>
     <string name="recharge_state_processing">Being processed</string>
@@ -673,7 +680,7 @@
     <string name="recharge_channel_paymaya">PayMaya</string>
     <string name="recharge_channel_admin">System add money</string>
     <string name="recharge_log_order_time">Time</string>
-    <string name="recharge_log_recharge_amount">Recharge</string>
+    <string name="recharge_log_recharge_amount">Deposit</string>
     <string name="recharge_log_channel_type">Channel</string>
     <string name="recharge_log_order_state">Status</string>
     <string name="withdraw_log_withdraw_amount">Withdraw</string>
@@ -767,8 +774,9 @@
     <string name="odd_type_title">Odds Setting</string>
     <string name="odd_type_eu">EU Odds</string>
     <string name="odd_type_hk">HK Odds</string>
-    <string name="odd_type_mys">MYS Odds</string>
-    <string name="odd_type_idn">IDN Odds</string>
+    <string name="odd_type_mys">MY Odds</string>
+    <string name="odd_type_idn">ID Odds</string>
+    <string name="withdraw_uw_check">Deduction</string>
     <string name="choose_method">Choose channel</string>
     <string name="choose_order">Select bets</string>
     <string name="submit_time">Submit time:</string>
@@ -783,11 +791,11 @@
     <string name="odds_id_not_allow_bet">This odds does not allow betting</string>
     <string name="odds_have_changed">The odds have changed, please re - bet</string>
     <string name="bet_info_content_has_been_changed">The odds or status of the game play you selected has changed, please place a bet again</string>
-    <string name="account_history_overview">Account history review</string>
+    <string name="account_history_overview">Statement</string>
     <string name="bet_num_and_bet_date">Betting order no. / Settled bets</string>
     <string name="date">Date</string>
-    <string name="bet_amount">Betting amount</string>
-    <string name="available_amount">Can use amount</string>
+    <string name="bet_amount">Turnover</string>
+    <string name="available_amount">Winable</string>
     <string name="win_lose">Win / Lose</string>
     <string name="win_lose_mark">Win / Lose: </string>
     <string name="all_sport">All sports</string>
@@ -814,16 +822,16 @@
     <string name="credit_record_status_unsettle">The settlement date has not yet been reached</string>
     <string name="parlay_rule_nc1_ex">When there are more options, %1$s string 1 can be combined into a double sequence, for example, %2$s matches can be combined into %2$s matches %1$s string 1</string>
     <string name="game_play_type">Game category</string>
-    <string name="spt_number_3_2">3set2win</string>
-    <string name="spt_number_5_3">5set3win</string>
+    <string name="spt_number_3_2">Best of 3</string>
+    <string name="spt_number_5_3">Best of 5</string>
     <string name="bet_notify_max_limit">Can add maximum 10 options to betslip</string>
-    <string name="myfavorite_notify_league_add">Added to My League</string>
-    <string name="myfavorite_notify_league_remove">Remove from My League</string>
-    <string name="myfavorite_notify_match_add">Added to My Matches</string>
-    <string name="myfavorite_notify_match_remove">Remove from My Matches</string>
+    <string name="myfavorite_notify_league_add">Added to My Competitions.</string>
+    <string name="myfavorite_notify_league_remove">Remove from My Competitions.</string>
+    <string name="myfavorite_notify_match_add">Added to My Events.</string>
+    <string name="myfavorite_notify_match_remove">Remove from My Events.</string>
     <string name="myfavorite_notify_detail_add">Added to My bets</string>
     <string name="myfavorite_notify_detail_remove">Remove from My bets</string>
-    <string name="statistics_title">statistics</string>
+    <string name="statistics_title">Data statistics</string>
     <string name="bet_info_list_minimum_limit_amount">The minimum single bet amount is %1$s %2$s</string>
     <string name="actual_bet">actual bet</string>
     <string name="bet_receipt_all_bet">Total stake</string>
@@ -845,12 +853,12 @@
     <string name="bet_fail_btn">Bet unsuccessful</string>
     <string name="credit_record_deactivate">Credit function disabled</string>
     <string name="game_postponed">Game postponed</string>
-    <string name="money_recharge_hint1">Please transfer success before you submit recharge information.</string>
+    <string name="money_recharge_hint1">Please transfer success before you submit deposit information.</string>
     <string name="money_recharge_hint2">Please refresh the page every time into the, get the latest payment account, avoid into your overdue account, into the wrong not compensation.</string>
     <string name="no_setting">No set</string>
     <string name="service_1">Customer1</string>
     <string name="service_2">Customer2</string>
-    <string name="service_connect">Connect</string>
+    <string name="service_connect">connect</string>
     <string name="top_game">World\'s top events</string>
     <string name="parlay_10_fold">10-Folds</string>
     <string name="parlay_10_block">Block (10)</string>
@@ -908,11 +916,11 @@
     <string name="identity_sex">Sex</string>
     <string name="identity_work">Occupation</string>
     <string name="message_source_change">The system receives the latest event data and will automatically return to the homepage immediately</string>
-    <string name="appearance">appearance</string>
+    <string name="appearance">Appearance</string>
     <string name="goal_buster">GOAL BUSTER</string>
     <string name="top_games">TOP GAMES</string>
     <string name="commission_detail">Details</string>
-    <string name="commission_desc_1">When the valid amount is not reached, we need to deduct a certain percentage of the recharge amount to be the withdrawal fee and avoid the abnormal deposit.</string>
+    <string name="commission_desc_1">When the valid amount is not reached, we need to deduct a certain percentage of the deposit amount to be the withdrawal fee and avoid the abnormal deposit.</string>
     <string name="commission_desc_2">When the valid amount is reached, then we won\'t charge the handing fee.</string>
     <string name="commission_check_time">Check time :</string>
     <string name="commission_deducted_amount">Deduction</string>
@@ -926,23 +934,23 @@
     <string name="commission_detail_title">Instruction</string>
     <string name="commission_detail_desc_1">The company avoids abnormal withdrawal, the user must reach the valid amount before withdrawal.</string>
     <string name="commission_detail_desc_2">When the valid amount is not reached, we need to deduct the amount to be the withdrawal fee. The calculation formula is valid amount multiply deduction ratio = deduction amount.</string>
-    <string name="commission_detail_desc_3">When the first recharge is not withdrawn, and the user recharges a second time, then the two "Request amounts” will add up. At this time, the user needs to complete the first and second valid amounts at the same time and the withdrawal will not result in the deduction of the amount.</string>
+    <string name="commission_detail_desc_3">When the first deposit is not withdrawn, and the user deposits a second time, then the two "Request amounts” will add up. At this time, the user needs to complete the first and second valid amounts at the same time and the withdrawal will not result in the deduction of the amount.</string>
     <string name="commission_detail_desc_4">The finished valid amount will recalculate when you withdraw.</string>
     <string name="commission_detail_desc_5">Situation 1</string>
     <string name="commission_detail_desc_6">The first trade is top up 1,000 and complete valid amount 2,000. ->  The user withdraws money now.</string>
     <string name="commission_detail_desc_7">The second trade is top up 2,000 and complete valid amount 1,000.  -> The user must complete a valid amount of 1,000 to no deduction.</string>
     <string name="commission_detail_desc_8">Because the first trade has withdrawn, it won\'t calculate, the system just calculates the second trade only.</string>
     <string name="commission_detail_desc_11">Situation 2</string>
-    <string name="commission_detail_desc_12">The first trade is top up 1,000 and complete valid amount 1,000. ->The user has not withdrawn and recharges the second trade.</string>
+    <string name="commission_detail_desc_12">The first trade is top up 1,000 and complete valid amount 1,000. ->The user has not withdrawn and deposits the second trade.</string>
     <string name="commission_detail_desc_13">The second trade is top up 2,000 and complete valid amount 1,000.  -> The user must complete a valid amount of 1,000 to no deduction.</string>
     <string name="commission_detail_desc_14">Although the first trade is completed the valid amount, the second trade is the unfinished valid amount, then calculated by formula follow as.  </string>
-    <string name="commission_detail_desc_15">Recharge amount (2,000) - finished valid amount (1,000) = 1,000</string>
+    <string name="commission_detail_desc_15">Deposit amount (2,000) - finished valid amount (1,000) = 1,000</string>
     <string name="commission_detail_desc_16">The second trade still needs to reach 1,000 to withdraw.</string>
     <string name="commission_detail_desc_17">Situation 3</string>
-    <string name="commission_detail_desc_18">The first trade is top up 1,000 and complete valid amount 500. ->The user has not withdrawn and recharges the second trade.</string>
+    <string name="commission_detail_desc_18">The first trade is top up 1,000 and complete valid amount 500. ->The user has not withdrawn and deposits the second trade.</string>
     <string name="commission_detail_desc_19">The second trade is top up 2,000 and complete valid amount 1,000.  -> The user must complete a valid amount of 1,500 to no deduction.</string>
     <string name="commission_detail_desc_20">Because two trades are unfinished both, so calculate by formula follow as</string>
-    <string name="commission_detail_desc_21">Recharge amount (1,000+2,000 ) - finished valid amount (500+1,000) = 1,500</string>
+    <string name="commission_detail_desc_21">Deposit amount (1,000+2,000) - finished valid amount (500+1,000) = 1,500</string>
     <string name="commission_detail_desc_22">The valid amount needs 1,500 to withdraw.</string>
     <string name="commissiom_completed">Finish</string>
     <string name="notice">Tips</string>
@@ -978,6 +986,8 @@
     <string name="text_bet_not_success4">Record.</string>
     <string name="text_security_money">Security deposit: %s</string>
     <string name="text_security_money2">%s days left</string>
+    <string name="customer_service_title">Customer</string>
+
     <!--自我禁制-->
     <string name="self_limit">Self-exclusion</string>
     <string name="self_limit_impotent">Attention</string>
@@ -999,7 +1009,7 @@
     <string name="self_limit_per_bet_limit_highest">Upper limit</string>
     <string name="self_limit_per_bet_limit_input_highest">Please enter numbers</string>
     <string name="self_limit_per_bet_limit_impotent">·You can modify your limit bet at any time. The modification will be active, after that sending the request. </string>
-    <string name="self_limit_per_bet_limit_user">‧Current limit Bet: %s</string>
+    <string name="self_limit_per_bet_limit_user">Current limit Bet: %s</string>
     <string name="self_limit_per_bet_limit_user_none">None</string>
     <string name="self_limit_per_bet_limit_user_limit"> (Maximum limited bet:%1$s %3$s-%2$s %3$s)</string>
     <string name="self_limit_error">The field format is incorrect, please enter an integer.</string>
@@ -1020,10 +1030,13 @@
     <string name="faqs">FAQs</string>
     <string name="live_chat">Live Chat</string>
     <string name="contact">Contact Us</string>
-    <string name="btm_navigation_hint">%1$s is a Registered Trade Mark, Brand and Business Name Owned by Ekxinum Inc.
-Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR).</string>
+    <string name="btm_navigation_hint">%1$s is a Registered Trade Mark, Brand and Business Name Owned by Ekxinum Inc. Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR).</string>
+    <string name="btm_navigation_copyright">COPYRIGHT © 2022 %1$s ALL RIGHTS RESERVED</string>
     <string name="e_address">Address</string>
-    <string name="hint_e_address">Please enter a contact address</string>
+    <string name="brackets">(%s)</string>
+    <string name="online_paypal">Paypal</string>
+    <string name="bank_list_e_wallet">eWallet</string>
+    <string name="hint_e_address">(Please enter a contact address)</string>
     <string name="initial_withdrawal_needs_credited">First-time withdrawal money needs to deposit %1$s %2$s.</string>
     <string name="make_sure_valid_account">We will withhold %1$s %2$s when you withdraw money the first time to make sure you are a valid user. This money will return to you in 30 days later.</string>
     <string name="front_side_result">Front side result</string>
@@ -1052,7 +1065,7 @@ Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAG
     <string name="text_search_try_another">Please try another keyword.</string>
     <!-- 搜尋 -->
     <string name="text_combo_title">Parlay</string>
-    <string name="text_combo_item">item</string>
+    <string name="text_combo_item">Item</string>
 
     <!-- 注單內球員玩法 -->
     <string name="sco_name_first">First Goalscorer</string>
@@ -1075,7 +1088,7 @@ Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAG
     <string name="text_account_history_balance">Balance</string>
 
     <string name="text_account_history_bet">Bet</string>
-    <string name="text_account_history_recharge">Recharge</string>
+    <string name="text_account_history_recharge">Deposit</string>
     <string name="text_account_history_withdraw">Withdraw</string>
     <string name="text_account_history_activity">Activity</string>
     <string name="text_account_history_credit">Credit</string>
@@ -1092,8 +1105,13 @@ Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAG
 
     <!--region 宣傳頁-->
     <string name="hot_recommend">Recommended</string>
-    <string name="recommend_match">Thousand of match</string>
-    <string name="recommend_best_odd">Best odds</string>
-    <string name="recommend_safe">Safe betting</string>
+    <string name="recommend_match">10,000 Live Games Monthly</string>
+    <string name="recommend_best_odd">Better Prices Better Service</string>
+    <string name="recommend_safe">Secure, Easy, Fast Process</string>
+    <!--endregion-->
+
+    <!--region 我的賽事-->
+    <string name="my_favorite_empty_title">My Events</string>
+    <string name="my_favorite_empty_msg">Select the icon above，add to My Events.\nYou can group them and easily watch all the match that interest you.</string>
     <!--endregion-->
 </resources>

@@ -2,9 +2,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorBlue</item>
-        <item name="colorPrimaryDark">@color/colorBlueDark</item>
-        <item name="colorAccent">@color/colorBlueLight</item>
+        <item name="colorPrimary">@color/color_317FFF_0760D4</item>
+        <item name="colorPrimaryDark">@color/color_317FFF_0760D4</item>
+        <item name="colorAccent">@color/color_317FFF_1463cf</item>
 
         <!-- 20210322 紀錄：拿掉按鈕預設 ripple 渲染效果-->
         <item name="android:colorControlHighlight">@android:color/transparent</item>
@@ -101,8 +101,10 @@
     </style>
 
     <style name="NoUppercaseTab" parent="TextAppearance.Design.Tab">
+        <item name="android:textStyle">normal</item>
         <item name="textAllCaps">false</item>
         <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">@dimen/textSize14sp</item>
     </style>
 
 </resources>

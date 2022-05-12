@@ -166,10 +166,9 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
     fun unSubscribeChannelHall(
         gameType: String?,
-        cateMenuCode: String?,
         eventId: String?
     ) {
-        backService?.unsubscribeHallChannel(gameType, cateMenuCode, eventId)
+        backService?.unsubscribeHallChannel(gameType, eventId)
     }
 
     fun unSubscribeChannelHall(

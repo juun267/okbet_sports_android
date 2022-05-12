@@ -93,12 +93,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     val text1 = SpannableString(getString(R.string.text_bet_not_success))
                     val text2 = SpannableString(getString(R.string.text_bet_not_success2))
                     val foregroundSpan =
-                        ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.colorRedDark))
+                        ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.color_F75452_b73a20))
                     text2.setSpan(foregroundSpan, 0, text2.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                     val text3 = SpannableString(getString(R.string.text_bet_not_success3))
                     val text4 = SpannableString(getString(R.string.text_bet_not_success4))
                     val foregroundSpan2 =
-                        ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.colorRedDark))
+                        ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.color_F75452_b73a20))
                     text4.setSpan(foregroundSpan2, 0, text4.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                     spannableStringBuilder.append(text1)
                     spannableStringBuilder.append(text2)
@@ -109,7 +109,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         message = spannableStringBuilder,
                         success = true
                     ) {
-                        viewModel.navTranStatus()
+//                        viewModel.navTranStatus()
+
                     }
                 }
             }
@@ -316,7 +317,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun clickMenu() {
         when (activity) {
-            is GamePublicityActivity -> (activity as GamePublicityActivity).clickMenu()
+            is GamePublicityActivity -> (activity as GamePublicityActivity).clickMenuEvent()
         }
     }
 
@@ -373,6 +374,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
                 override fun showParlayRule(parlayType: String, parlayRule: String) {
                     showParlayDescription(parlayType, parlayRule)
+                }
+
+                override fun onMoreOptionClick() {
+                    betListRefactorAdapter?.itemCount?.let {
+                        rv_bet_list?.scrollToPosition(it - 1)
+                    }
                 }
             })
     }
@@ -915,7 +922,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             if (listData.subscribeChannelType == ChannelType.HALL) {
                 unSubscribeChannelHall(
                     listData.matchOdd.gameType,
-                    listData.playCateMenuCode,
                     listData.matchOdd.matchId
                 )
             } else {

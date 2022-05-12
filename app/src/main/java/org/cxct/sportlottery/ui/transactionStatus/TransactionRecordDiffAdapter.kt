@@ -4,6 +4,7 @@ import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,11 +21,15 @@ import kotlinx.android.synthetic.main.content_outright_record.view.content_time_
 import kotlinx.android.synthetic.main.content_outright_record.view.content_winnable_amount
 import kotlinx.android.synthetic.main.content_outright_record.view.title_league_name
 import kotlinx.android.synthetic.main.content_parlay_record.view.*
+import kotlinx.android.synthetic.main.itemview_game_no_record.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TextUtil.getParlayShowName
 import org.cxct.sportlottery.util.TimeUtil
@@ -73,10 +78,10 @@ class TransactionRecordDiffAdapter :
         val rvData = getItem(holder.adapterPosition)
         when (holder) {
             is MatchRecordViewHolder -> {
-                holder.bind((rvData as DataItem.Item).row,status)
+                holder.bind((rvData as DataItem.Item).row, status)
             }
             is ParlayRecordViewHolder -> {
-                holder.bind((rvData as DataItem.Item).row)
+                holder.bind((rvData as DataItem.Item).row, status)
             }
             is OutrightRecordViewHolder -> {
                 holder.bind((rvData as DataItem.Item).row)
@@ -85,6 +90,7 @@ class TransactionRecordDiffAdapter :
                 holder.bind((rvData as DataItem.Total).totalAmount)
             }
             is NoDataViewHolder -> {
+                holder.bind()
             }
         }
     }
@@ -111,7 +117,7 @@ class TransactionRecordDiffAdapter :
         fun bind(data: Row, status: Int) {
             val matchOdds = data.matchOdds[0]
             itemView.apply {
-                title_league_name.text = matchOdds.leagueName
+                title_league_name.text = matchOdds.leagueName.replace("\n","")
                 title_home_name.text = matchOdds.homeName
                 title_away_name.text = matchOdds.awayName
 
@@ -244,11 +250,13 @@ class TransactionRecordDiffAdapter :
             }
         }
 
-        fun bind(data: Row) {
-            val contentParlayMatchAdapter by lazy { ContentParlayMatchAdapter() }
+        fun bind(data: Row, status: Int) {
+            val contentParlayMatchAdapter by lazy { ContentParlayMatchAdapter(status) }
 
             itemView.apply {
-                title_parlay_type.text = getParlayShowName(context, data.parlayType)
+                getParlayStringRes(data.parlayType)?.let { parlayTypeStringResId ->
+                    title_parlay_type.text = MultiLanguagesApplication.appContext.getString(parlayTypeStringResId)
+                }
                 rv_parlay_match.apply {
                     adapter = contentParlayMatchAdapter
                     layoutManager =
@@ -274,12 +282,32 @@ class TransactionRecordDiffAdapter :
     }
 
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
         companion object {
             fun from(parent: ViewGroup) =
                 NoDataViewHolder(
                     LayoutInflater.from(parent.context)
                         .inflate(R.layout.itemview_game_no_record, parent, false)
                 )
+        }
+
+        fun bind() {
+            itemView.apply {
+                list_no_record_img.apply {
+                    viewTreeObserver.addOnGlobalLayoutListener {
+                        val lp = layoutParams as ConstraintLayout.LayoutParams
+                        lp.topMargin = 30.dp
+                        layoutParams = lp
+                    }
+                }
+                list_no_record_text.apply {
+                    viewTreeObserver.addOnGlobalLayoutListener {
+                        val lp = layoutParams as ConstraintLayout.LayoutParams
+                        lp.topMargin = 45.dp
+                        layoutParams = lp
+                    }
+                }
+            }
         }
     }
 

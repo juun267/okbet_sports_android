@@ -36,6 +36,7 @@ import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
 import org.cxct.sportlottery.util.MoneyManager.getCryptoIconByCryptoName
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 
 class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel::class) {
@@ -201,6 +202,8 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             }
         }
 
+        btn_withdraw.setTitleLetterSpacing()
+
         et_withdrawal_amount.getAllButton {
             it.setText(viewModel.getWithdrawAmountLimit().max.toLong().toString())
             et_withdrawal_amount.et_input.apply { setSelection(this.length()) }
@@ -252,7 +255,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 setTextColor(
                     ContextCompat.getColor(
                         context,
-                        if (zero.minus(it ?: 0.0) > 0) R.color.colorGreen else R.color.colorRed
+                        if (zero.minus(it ?: 0.0) > 0) R.color.color_08dc6e_08dc6e else R.color.color_E44438_e44438
                     )
                 )
             }
@@ -564,10 +567,10 @@ class WithdrawBankCardAdapter(
 
                 if (bankCard.isSelected) {
                     imgCheckBank.visibility = View.VISIBLE
-                    llSelectBankCard.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite6))
+                    llSelectBankCard.setBackgroundColor(ContextCompat.getColor(context, R.color.color_191919_EEEFF0))
                 } else {
                     imgCheckBank.visibility = View.GONE
-                    llSelectBankCard.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
+                    llSelectBankCard.setBackgroundColor(ContextCompat.getColor(context, R.color.color_191919_FCFCFC))
                 }
             }
         }

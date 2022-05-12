@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
+    android:background="@color/color_191919_FCFCFC"
     android:orientation="vertical"
     tools:context="org.cxct.sportlottery.ui.main.accountHistory.next.AccountHistoryNextFragment"
     tools:ignore="SpUsage">
@@ -28,6 +28,7 @@
             android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="1"
+            android:background="@color/color_141414_F3F4F5"
             tools:listitem="@layout/view_account_history_next_title_bar" />
 
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>

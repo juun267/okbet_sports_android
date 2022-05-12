@@ -5,7 +5,7 @@
     android:id="@+id/cl_root"
     android:layout_width="match_parent"
     android:layout_height="20dp"
-    android:background="@color/colorBlue"
+    android:background="@color/color_317FFF_0760D4"
     android:paddingStart="14dp"
     android:paddingEnd="14dp">
 
@@ -28,8 +28,6 @@
         android:textSize="@dimen/textSize12sp"
         android:layout_marginStart="6dp"
         android:textColor="@android:color/white"
-        tools:text="恭喜您 注單尾碼:xxxx 中獎:xxx,xxx.000"
-        android:text="恭喜您 注單尾碼:xxxx 中獎:xxx,xxx.000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_broadcast_icon"

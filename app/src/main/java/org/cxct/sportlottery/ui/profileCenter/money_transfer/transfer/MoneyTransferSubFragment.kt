@@ -18,6 +18,7 @@ import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 
 class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
@@ -46,6 +47,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         layout_balance.tv_currency_type.text = sConfigData?.systemCurrency
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.OUT_PLAT, gameDataArg.gameData.showName)
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.IN_PLAT, getString(R.string.plat_money))
+        btn_transfer.setTitleLetterSpacing()
     }
 
     private fun initOnclick() {
@@ -103,7 +105,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
                     setTitle(getString(R.string.prompt))
                     setMessage(if (it.success) getString(R.string.transfer_money_succeed) else it.msg)
                     setNegativeButtonText(null)
-                    setTextColor(if (it.success) R.color.colorGray else R.color.colorRedDark)
+                    setTextColor(if (it.success) R.color.color_A3A3A3_666666 else R.color.color_F75452_b73a20)
                 }
                 dialog.show(childFragmentManager, null)
 

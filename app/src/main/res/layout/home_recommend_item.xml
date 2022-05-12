@@ -4,16 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorWhite"
+    android:background="@color/color_191919_FCFCFC"
     android:orientation="vertical"
     tools:context=".ui.game.home.recommend.RvRecommendAdapter"
     tools:ignore="spUsage">
+
+    <TextView
+        android:id="@+id/testId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorRedLight"
+        android:gravity="center"
+        android:textSize="@dimen/margin_36"
+        android:visibility="gone"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/block_match_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorGrayGallery"
+        android:background="@color/color_212121_eeeeee"
         android:minHeight="64dp">
 
         <ImageView
@@ -30,9 +39,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
             android:ellipsize="end"
-            android:maxLines="2"
-            android:textColor="@color/colorBlackLight"
+            android:maxLines="1"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/tv_game_name_away"
@@ -47,10 +57,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
             android:layout_marginTop="4dp"
             android:ellipsize="end"
-            android:maxLines="2"
-            android:textColor="@color/colorBlackLight"
+            android:maxLines="1"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -67,7 +78,7 @@
             android:ellipsize="end"
             android:includeFontPadding="false"
             android:maxLines="2"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/rec_outright_league"
@@ -87,7 +98,7 @@
             android:ellipsize="end"
             android:includeFontPadding="false"
             android:maxLines="2"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -103,12 +114,13 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="18dp"
             android:gravity="center"
-            android:textColor="@color/colorGray"
+            android:lineSpacingExtra="8dp"
+            android:textColor="@color/color_A3A3A3_666666"
             android:textSize="@dimen/textSize12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="04/15 \n 03:00" />
+            tools:text="04/15\n03:00" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

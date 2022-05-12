@@ -61,11 +61,11 @@ class FinanceActivity : BaseSocketActivity<FinanceViewModel>(FinanceViewModel::c
     }
 
     private fun setupToolbarTitle(title: String) {
-        tv_toolbar_title.text = title
+        custom_tool_bar.titleText = title
     }
 
     private fun setupToolbarBack() {
-        btn_toolbar_back.setOnClickListener {
+        custom_tool_bar.setOnBackPressListener {
             if (financeFragment.childFragmentManager.backStackEntryCount > 0) {
                 navController.navigateUp()
                 if (!financeFragment.isHidden) setupToolbarTitle(getString(R.string.finance))

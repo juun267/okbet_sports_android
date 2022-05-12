@@ -35,10 +35,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.ui.profileCenter.profile.RechargePicSelectorDialog
-import org.cxct.sportlottery.util.ArithUtil
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.*
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
@@ -101,6 +98,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     private fun initButton() {
         //提交
+        btn_submit.setTitleLetterSpacing()
         btn_submit.setOnClickListener {
             createMoneyAddRequest().let {
                 viewModel.rechargeCryptoSubmit(
@@ -196,11 +194,11 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 if (url.isNotEmpty()) {
                     cv_upload.isActivated = true
                     tv_upload.text = url
-                    tv_upload.setTextColor(ContextCompat.getColor(tv_upload.context,R.color.colorRedDark))
+                    tv_upload.setTextColor(ContextCompat.getColor(tv_upload.context,R.color.color_F75452_b73a20))
                 } else {
                     cv_upload.isActivated = false
                     tv_upload.text = resources.getString(R.string.title_reupload_pic)
-                    tv_upload.setTextColor(ContextCompat.getColor(tv_upload.context,R.color.colorBlackLight))
+                    tv_upload.setTextColor(ContextCompat.getColor(tv_upload.context,R.color.color_e5e5e5_333333))
                 }
             }
         })
@@ -240,8 +238,8 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             .setTitleText(resources.getString(R.string.title_recharge_time))
             .setCancelText(" ")
             .setSubmitText(getString(R.string.picker_submit))
-            .setSubmitColor(ContextCompat.getColor(txv_recharge_time.context,R.color.colorGrayLight))
-            .setCancelColor(ContextCompat.getColor(txv_recharge_time.context,R.color.colorGrayLight))
+            .setSubmitColor(ContextCompat.getColor(txv_recharge_time.context,R.color.color_8F8F8F_999999))
+            .setCancelColor(ContextCompat.getColor(txv_recharge_time.context,R.color.color_8F8F8F_999999))
             .isDialog(true)
             .build() as TimePickerView
 
@@ -265,11 +263,11 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         if (url.isNotEmpty()) {
             cv_upload.isActivated = false
             tv_upload.text = resources.getString(R.string.title_reupload_pic)
-            tv_upload.setTextColor(ContextCompat.getColor(tv_upload.context,R.color.colorBlackLight))
+            tv_upload.setTextColor(ContextCompat.getColor(tv_upload.context,R.color.color_e5e5e5_333333))
         } else {
             cv_upload.isActivated = true
             tv_upload.text = resources.getString(R.string.title_upload_pic_plz)
-            tv_upload.setTextColor(ContextCompat.getColor(tv_upload.context,R.color.colorRedDark))
+            tv_upload.setTextColor(ContextCompat.getColor(tv_upload.context,R.color.color_F75452_b73a20))
         }
     }
 

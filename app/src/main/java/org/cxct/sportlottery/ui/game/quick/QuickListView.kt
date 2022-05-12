@@ -3,10 +3,11 @@ package org.cxct.sportlottery.ui.game.quick
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.RelativeLayout
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
@@ -24,7 +25,9 @@ import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.network.odds.quick.QuickListData
 import org.cxct.sportlottery.ui.game.common.*
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.setBackColorWithColorMode
 
 class QuickListView @JvmOverloads constructor(
     context: Context,
@@ -44,6 +47,7 @@ class QuickListView @JvmOverloads constructor(
     private var mPlaySelectedCodeSelectionType: Int? = null
     private var mPlaySelectedCode: String? = null
     private var quickOdds1: MutableMap<String, List<Odd?>?> = mutableMapOf()
+    private var quickOddsSort: String? = null
     private var mOddButtonPairAdapter: OddButtonPairAdapter =
         OddButtonPairAdapter(mMatchOdd?.matchInfo)
     private var mQuickOddButtonPagerAdapter: OddButtonPagerAdapter = OddButtonPagerAdapter()
@@ -51,7 +55,20 @@ class QuickListView @JvmOverloads constructor(
         OddButtonEpsAdapter(mMatchOdd?.matchInfo)
 
     init {
-        addView(LayoutInflater.from(MultiLanguagesApplication.appContext).inflate(R.layout.view_quick_list, this, false))
+        addView(LayoutInflater.from(context).inflate(R.layout.view_quick_list, this, false).apply {
+            league_odd_quick_odd_btn_pair.setBackColorWithColorMode(
+                lightModeColor = R.color.color_ededed, darkModeColor = R.color.color_212121
+            )
+            league_odd_quick_odd_btn_pager.setBackColorWithColorMode(
+                lightModeColor = R.color.color_ededed, darkModeColor = R.color.color_212121
+            )
+            league_odd_quick_odd_btn_eps.setBackColorWithColorMode(
+                lightModeColor = R.color.color_ededed, darkModeColor = R.color.color_212121
+            )
+            SpaceItemDecorationView.setBackColorWithColorMode(
+                lightModeColor = R.color.color_FCFCFC, darkModeColor = R.color.color_191919
+            )
+        })
     }
 
     override fun onAttachedToWindow() {
@@ -117,6 +134,7 @@ class QuickListView @JvmOverloads constructor(
                         quickOdds1 =
                             quickListResult.quickListData?.quickOdds?.get(selectedQuickPlayCateCode)
                                 ?: mutableMapOf()
+                        quickOddsSort = quickListResult.quickListData?.oddsSortMap?.get(selectedQuickPlayCateCode)
                         when (selectedQuickPlayCateCode) {
                             org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_OU.value, org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_HDP.value, org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_ADVANCE.value -> {
                                 setupQuickOddButtonPair(
@@ -130,6 +148,7 @@ class QuickListView @JvmOverloads constructor(
                             org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_CORNERS.value, org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_PENALTY.value -> {
                                 setupQuickOddButtonPager(
                                     quickOdds1,
+                                    quickOddsSort,
                                     mOddsType,
                                     mLeagueOddListener,
                                     quickListResult.quickListData,
@@ -144,10 +163,13 @@ class QuickListView @JvmOverloads constructor(
                                 )
                             }
                         }
-                        mLeagueOddListener?.onClickQuickCateTab(
-                            mMatchOdd!!,
-                            mSelectedQuickPlayCate!!
-                        )
+                        mSelectedQuickPlayCate?.let { quickPlayCate ->
+                            mLeagueOddListener?.onClickQuickCateTab(
+                                mMatchOdd!!,
+                                quickPlayCate
+                            )
+                        }
+
                         SpaceItemDecorationView.visibility = View.VISIBLE
                     }
                 }
@@ -176,10 +198,17 @@ class QuickListView @JvmOverloads constructor(
         league_odd_quick_cate_tabs?.removeAllViews()
         mQuickPlayCateList.sortedBy { it.sort }.forEachIndexed { index, it ->
             val inflater =
-                MultiLanguagesApplication.appContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             val rb = inflater.inflate(R.layout.custom_radio_button, null) as RadioButton
             league_odd_quick_cate_tabs?.addView(rb.apply {
+
+                // Set margin between RadioButton
+                val customLayoutParams = RadioGroup.LayoutParams(context, null)
+                customLayoutParams.setMargins(0, 0, 8.dp, 0)
+                layoutParams = customLayoutParams
+                
                 text = it.nameMap?.get(LanguageManager.getSelectLanguage(MultiLanguagesApplication.appContext).key) ?: it.name
+                setTextSize(TypedValue.COMPLEX_UNIT_DIP,14f)
                 id = it.hashCode()
                 isChecked = it.isSelected
             })
@@ -208,7 +237,7 @@ class QuickListView @JvmOverloads constructor(
                     leagueOddListener?.onClickBet(
                         matchInfo,
                         odd,
-                        playCateCode,
+                        getQuickPairPlayCateCode(playCateCode),
                         selectedQuickPlayCate.name ?: playCateName,
                         mMatchOdd?.betPlayCateNameMap
                     )
@@ -283,8 +312,37 @@ class QuickListView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * 從使用Piar排版的快捷玩法中尋找對應的playCateCode
+     *
+     * @see org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_OU
+     * @see org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_HDP
+     * @see org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_ADVANCE
+     */
+    private fun getQuickPairPlayCateCode(quickPlayCateCode: String): String {
+        return when {
+            quickPlayCateCode.contains(PlayCate.HDP_1ST.value) -> {
+                PlayCate.HDP_1ST.value
+            }
+            quickPlayCateCode.contains(PlayCate.HDP.value) -> {
+                PlayCate.HDP.value
+            }
+            quickPlayCateCode.contains(PlayCate.OU_1ST.value) -> {
+                PlayCate.OU_1ST.value
+            }
+            quickPlayCateCode.contains(PlayCate.OU.value) -> {
+                PlayCate.OU.value
+            }
+            quickPlayCateCode.contains(PlayCate.ADVANCE.value) -> {
+                PlayCate.ADVANCE.value
+            }
+            else -> ""
+        }
+    }
+
     private fun setupQuickOddButtonPager(
         quickOdds: MutableMap<String, List<Odd?>?>,
+        oddsSort: String?,
         oddsType: OddsType,
         leagueOddListener: LeagueOddListener?,
         quickListData: QuickListData?,
@@ -296,7 +354,7 @@ class QuickListView @JvmOverloads constructor(
             mQuickOddButtonPagerAdapter = OddButtonPagerAdapter()
             mQuickOddButtonPagerAdapter.setData(
                 mMatchOdd?.matchInfo,
-                null,
+                oddsSort,
                 quickListData?.playCateNameMap,
                 quickListData?.betPlayCateNameMap,
                 mPlaySelectedCodeSelectionType

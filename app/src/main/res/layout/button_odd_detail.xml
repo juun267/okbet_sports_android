@@ -4,9 +4,6 @@
     android:id="@+id/button_odd_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:layout_width="wrap_content"
-    tools:layout_height="wrap_content"
-    tools:layout_gravity="center"
     android:background="@drawable/selector_button_radius_4_odds"
     tools:ignore="SpUsage,ContentDescription">
 
@@ -30,14 +27,14 @@
                 android:id="@+id/tv_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:ellipsize="end"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:maxLines="1"
                 android:textColor="@color/selector_button_odd_top_text2"
                 android:textSize="@dimen/textSize13sp"
                 tools:text="义大利"
-                tools:textColor="@color/colorGrayLight" />
+                tools:textColor="@color/color_8F8F8F_999999" />
 
             <TextView
                 android:id="@+id/tv_spread"
@@ -48,7 +45,7 @@
                 android:textColor="@color/selector_button_odd_top_text"
                 android:textSize="@dimen/textSize13sp"
                 tools:text="-0.5/1"
-                tools:textColor="@color/colorRedDark" />
+                tools:textColor="@color/color_F75452_b73a20" />
 
         </LinearLayout>
 
@@ -56,11 +53,12 @@
             android:id="@+id/tv_odds"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
+            android:layout_marginTop="2dp"
             android:textColor="@color/selector_button_odd_bottom_text"
             android:textSize="@dimen/textSize15sp"
             android:textStyle="bold"
-            tools:text="1.067" />
+            tools:text="1.067"
+            android:includeFontPadding="false" />
 
     </LinearLayout>
 
@@ -80,6 +78,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/bg_radius_4_button_odds_lock"
         android:gravity="center"
+        android:textSize="@dimen/textSize12sp"
         android:text="@string/unknown_data"
         android:visibility="gone" />
 

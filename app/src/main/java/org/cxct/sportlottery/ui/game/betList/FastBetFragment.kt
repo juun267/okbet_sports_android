@@ -142,7 +142,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         ForegroundColorSpan(
                             ContextCompat.getColor(
                                 requireContext(),
-                                R.color.colorRedDark
+                                R.color.color_F75452_b73a20
                             )
                         )
                     text2.setSpan(foregroundSpan, 0, text2.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -152,7 +152,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         ForegroundColorSpan(
                             ContextCompat.getColor(
                                 requireContext(),
-                                R.color.colorRedDark
+                                R.color.color_F75452_b73a20
                             )
                         )
                     text4.setSpan(
@@ -168,11 +168,12 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     showPromptDialog(
                         title = getString(R.string.prompt),
                         message = spannableStringBuilder,
-                        success = true
+                        success = true,
+                        isOutsideCancelable = true
                     ) {
                         dismiss()
                         //(activity as GameActivity).
-                        viewModel.navTranStatus()
+//                        viewModel.navTranStatus()
                     }
                 }
             }
@@ -198,7 +199,9 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 //            dialog = this@BetInfoCarDialog
         }.executePendingBindings()
         data = Parcels.unwrap(arguments?.getParcelable("data"))
-        if(viewModel.betInfoList.value?.peekContent()!!.isNotEmpty() || data.matchType == MatchType.PARLAY||!viewModel.getIsFastBetOpened()){
+        if (viewModel.betInfoList.value?.peekContent()!!
+                .isNotEmpty() || viewModel.curMatchType.value == MatchType.PARLAY || !viewModel.getIsFastBetOpened()
+        ) {
             initData()
             dismiss()
         }
@@ -315,6 +318,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
             dismiss()
         }
+        binding.btnRecharge.setTitleLetterSpacing()
     }
 
 
@@ -593,6 +597,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         viewModel.betAddResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { result ->
+                hideLoading()
                 if (!result.success) {
                     showPromptDialog(
                         title = getString(R.string.prompt),
@@ -603,13 +608,12 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         dismiss()
                     }
                 } else {
+                    showBottomSheetDialog(result)
                     if (result.receipt?.singleBets?.any { singleBet -> singleBet.status == 0 } == true || result.receipt?.parlayBets?.any { parlayBet -> parlayBet.status == 0 } == true) {
                         mHandler.removeMessages(BET_CONFIRM_TIPS)
                         mHandler.sendMessage(Message().apply {
                             what = BET_CONFIRM_TIPS
                         })
-                    } else {
-                        showBottomSheetDialog(result)
                     }
                 }
             }
@@ -751,13 +755,16 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             binding.clItemBackground.setBackgroundColor(
                 ContextCompat.getColor(
                     requireContext(),
-                    R.color.colorWhite
+                    R.color.color_191919_FCFCFC
                 )
             )
+            binding.llOddsChanged.visibility = View.VISIBLE
             binding.ivBetLock.visibility = View.GONE
             binding.viewGrey.visibility = View.VISIBLE
+            binding.etBet.isEnabled = true
             binding.etBet.isFocusable = true
             binding.etBet.isFocusableInTouchMode = true
+            binding.etBet.setBackgroundResource(R.drawable.effect_select_bet_radius_4_edit_text)
             binding.etClickable.isEnabled = true
             cl_quota_detail.visibility = View.VISIBLE
             cl_close_waring.visibility = View.GONE
@@ -765,13 +772,16 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             binding.clItemBackground.setBackgroundColor(
                 ContextCompat.getColor(
                     requireContext(),
-                    R.color.colorWhite2
+                    R.color.color_141414_f3f3f3
                 )
             )
+            binding.llOddsChanged.visibility = View.GONE
             binding.ivBetLock.visibility = View.VISIBLE
             binding.viewGrey.visibility = View.INVISIBLE
+            binding.etBet.isEnabled = false
             binding.etBet.isFocusable = false
             binding.etBet.isFocusableInTouchMode = false
+            binding.etBet.setBackgroundResource(R.drawable.bg_square_shape_4dp_cccccc)
             binding.etClickable.isEnabled = false
             binding.layoutKeyBoard.hideKeyboard()
             cl_quota_detail.visibility = View.GONE
@@ -791,6 +801,10 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     oldOdds,
                     TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
                 )
+                
+                //若賠率有變更過就要一直存在
+                tv_odds_changed.text = getString(R.string.bet_info_odd_content_changed)
+                tv_odds_changed.visibility = View.VISIBLE
             }
         }
 
@@ -855,6 +869,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
 
     private fun addBetSingle() {
+        loading()
         if (matchOdd?.status == BetStatus.LOCKED.code || matchOdd?.status == BetStatus.DEACTIVATED.code) return
         val stake =
             if (binding.etBet.text.toString().isEmpty()) 0.0 else binding.etBet.text.toString()

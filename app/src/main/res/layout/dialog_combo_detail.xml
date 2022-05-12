@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_margin="20dp"
-    app:cardBackgroundColor="@color/colorWhite"
+    app:cardBackgroundColor="@color/color_191919_FCFCFC"
     app:cardCornerRadius="8dp"
     app:cardElevation="0dp"
     tools:context="org.cxct.sportlottery.ui.main.accountHistory.next.ComboDetailDialog">
@@ -27,7 +27,7 @@
             android:layout_marginBottom="11dp"
             android:gravity="center"
             android:text="@string/text_combo_title"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/color_FFFFFF_000000"
             android:textSize="@dimen/textSize16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -50,13 +50,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="11dp"
             android:minHeight="@dimen/margin_36"
+            android:overScrollMode="never"
             app:layout_constrainedHeight="true"
             app:layout_constraintBottom_toTopOf="@+id/bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title"
             tools:itemCount="2"
-            tools:listitem="@layout/item_parlay_combo"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+            tools:listitem="@layout/item_parlay_combo" />
 
         <View
             android:id="@+id/bottom"

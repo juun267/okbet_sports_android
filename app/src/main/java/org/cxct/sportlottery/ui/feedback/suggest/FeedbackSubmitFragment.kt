@@ -13,6 +13,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.util.countTextAmount
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 class FeedbackSubmitFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel::class) {
 
@@ -29,7 +30,6 @@ class FeedbackSubmitFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
         super.onViewCreated(view, savedInstanceState)
         initView()
         initButton()
-        initDataLive()
     }
 
     private fun initView() {
@@ -38,7 +38,7 @@ class FeedbackSubmitFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
             tv_input_count.text = String.format("%d / 500", it)
 
             ll_error.visibility = if (it > 0) View.GONE else View.VISIBLE
-            val textColor = if (it > 0) R.color.colorSilverDirk else R.color.colorRedDark
+            val textColor = if (it > 0) R.color.color_616161_b4b4b4 else R.color.color_F75452_b73a20
             tv_input_count.setTextColor(ContextCompat.getColor(tv_input_count.context, textColor))
         }
     }
@@ -49,25 +49,10 @@ class FeedbackSubmitFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
                 viewModel.fbSave(et_content.text.toString())
             } else {
                 ll_error.visibility = View.VISIBLE
-                tv_input_count.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorRedDark))
+                tv_input_count.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_F75452_b73a20))
             }
         }
-    }
-
-    private fun initDataLive() {
-        //2/5問了 說直接跳回第一頁 沒給彈窗UI也沒說要跳提示
-        viewModel.feedBackBaseResult.observe(viewLifecycleOwner, {
-            it?.getContentIfNotHandled()?.let { result ->
-                val msgContent = if (result.success) getString(R.string.feedback_submit_succeed) else result.msg
-                val dialog = CustomAlertDialog(requireActivity()).apply {
-                    setTitle(getString(R.string.prompt))
-                    setMessage(msgContent)
-                    setNegativeButtonText(null)
-                }
-                dialog.show(childFragmentManager, null)
-                view?.findNavController()?.navigate(R.id.action_feedbackSubmitFragment_to_feedbackSuggestFragment)
-            }
-        })
+        btn_submit.setTitleLetterSpacing()
     }
 
 }

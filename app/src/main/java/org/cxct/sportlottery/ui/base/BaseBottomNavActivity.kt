@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
 import kotlin.reflect.KClass
@@ -15,6 +16,8 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
     abstract fun initToolBar()
 
     abstract fun initMenu()
+
+    abstract fun clickMenuEvent()
 
     abstract fun initBottomNavigation()
 
@@ -49,7 +52,11 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
 
         viewModel.intentClass.observe(this) {
             it.getContentIfNotHandled()?.let { clazz ->
-                startActivity(Intent(this, clazz))
+                if (clazz == GameActivity::class.java) {
+                    GameActivity.reStart(this)
+                } else {
+                    startActivity(Intent(this, clazz))
+                }
             }
         }
 

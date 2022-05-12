@@ -63,7 +63,7 @@ class SportBottomNavigation @JvmOverloads constructor(
     }
 
     private fun selectItem(item: BottomNavigationItem) {
-        if (selectedItem != item) {
+        if (selectedItem != item || item == navigation_sport) {
             selectedItem?.checked = false
             item.checked = true
             selectedItem = item
@@ -79,12 +79,13 @@ class SportBottomNavigation @JvmOverloads constructor(
         }
     }
 
-    fun setBetCount(betCount: Int){
-        if(betCount != 0){
+    fun setBetCount(betCount: Int) {
+        val betCountStr = betCount.toString()
+        if(tv_bet_count.text != betCountStr) {
             laExplo.visibility = VISIBLE
             laExplo.playAnimation()
+            tv_bet_count.text = betCountStr
         }
-        tv_bet_count.text = betCount.toString()
     }
 
     /**

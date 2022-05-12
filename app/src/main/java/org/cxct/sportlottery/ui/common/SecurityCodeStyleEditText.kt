@@ -28,12 +28,10 @@ class SecurityCodeStyleEditText @JvmOverloads constructor(context: Context, attr
     private fun initView() {
         try {
             inflate(context, R.layout.content_security_code_style_edittext, this).apply {
-                val labelText = typedArray.getText(R.styleable.SecurityCodeStyleEditText_scLabelText) ?: ""
                 val hintText = typedArray.getText(R.styleable.SecurityCodeStyleEditText_scHintText) ?: ""
                 val errorText = typedArray.getText(R.styleable.SecurityCodeStyleEditText_scErrorText) ?: ""
                 val icon = typedArray.getResourceId(R.styleable.SecurityCodeStyleEditText_scIcon, -1)
 
-                setTitle(labelText)
                 setHint(hintText)
                 setView(errorText)
                 setEdittext()
@@ -74,22 +72,12 @@ class SecurityCodeStyleEditText @JvmOverloads constructor(context: Context, attr
         txv_error_code.text = errorText
     }
 
-    fun setTitle(labelText: CharSequence){
-        val titleContentBuilder = SpannableStringBuilder()
-        val titleSpan = SpannableString(labelText).apply {
-            setSpan(StyleSpan(Typeface.BOLD), 0, this.length , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            setSpan(AbsoluteSizeSpan(13,true), 0, this.length , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.colorBlackLight)), 0, this.length , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)  // 修改字體
-        }
-        txv_title.text = titleContentBuilder.append(titleSpan)
-    }
-
     private fun setHint( hintText: CharSequence) {
 
         val hintContentBuilder = SpannableStringBuilder()
         val detailSpan = SpannableString(hintText).apply {
             setSpan(StyleSpan(Typeface.NORMAL), 0, this.length , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.colorBlackLight)), 0, this.length , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)  // 修改字體
+            setSpan(ForegroundColorSpan(ContextCompat.getColor(context,R.color.color_404040_cccccc)), 0, this.length , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)  // 修改字體
         }
 
         edt_security_code.hint =  hintContentBuilder.append(detailSpan)

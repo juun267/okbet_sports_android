@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.news
 
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +32,8 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
                     val tabTextView: TextView = it as TextView
                     with(tabTextView) {
                         setTypeface(null, Typeface.BOLD)
-                        setTextColor(ContextCompat.getColor(context, R.color.colorBlackLight))
+                        setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14f)
+                        setTextColor(ContextCompat.getColor(context, R.color.color_e5e5e5_333333))
                     }
                 }
                 when (tab?.position) {
@@ -50,7 +52,8 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
                     val tabTextView: TextView = it as TextView
                     with(tabTextView) {
                         setTypeface(null, Typeface.NORMAL)
-                        setTextColor(ContextCompat.getColor(context, R.color.colorGray))
+                        setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14f)
+                        setTextColor(ContextCompat.getColor(context, R.color.color_A3A3A3_666666))
                     }
                 }
             }
@@ -112,7 +115,8 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
                         width = ViewGroup.LayoutParams.WRAP_CONTENT
                         height = ViewGroup.LayoutParams.WRAP_CONTENT
                     }
-
+                    tabTextView.setTextColor(ContextCompat.getColor(context, R.color.color_A3A3A3_666666))
+                    tabTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14f)
                     tabTextView.text = tab.text
                 }
             }
@@ -125,7 +129,8 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
                 selectedTab.select()
                 with((selectedTab.customView as TextView)) {
                     setTypeface(null, Typeface.BOLD)
-                    setTextColor(ContextCompat.getColor(context, R.color.colorBlackLight))
+                    setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14f)
+                    setTextColor(ContextCompat.getColor(context, R.color.color_e5e5e5_333333))
                 }
             }
             //endregion

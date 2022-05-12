@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.base
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.content.res.Resources
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -21,6 +22,7 @@ import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import kotlinx.coroutines.*
+import me.jessyan.autosize.AutoSizeCompat
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.HttpError
@@ -185,7 +187,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                     return@Runnable
 
                 mTokenPromptDialog = CustomAlertDialog(this@BaseActivity).apply {
-                    setTextColor(R.color.colorRed)
+                    setTextColor(R.color.color_E44438_e44438)
                     setTitle(this@BaseActivity.getString(R.string.prompt))
                     setMessage(errorMessage)
                     setPositiveButtonText(this@BaseActivity.getString(R.string.btn_determine))
@@ -223,6 +225,15 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     fun showPromptDialog(
         title: String? = getString(R.string.prompt),
+        message: Spanned,
+        isOutsideCancelable: Boolean,
+        positiveClickListener: () -> Unit?
+    ) {
+        showPromptDialog(title, message, null, positiveClickListener, false, isOutsideCancelable = isOutsideCancelable)
+    }
+
+    fun showPromptDialog(
+        title: String? = getString(R.string.prompt),
         message: String,
         buttonText: String?,
         isShowDivider: Boolean,
@@ -245,7 +256,8 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         buttonText: String?,
         positiveClickListener: () -> Unit?,
         isError: Boolean,
-        isShowDivider: Boolean? = false
+        isShowDivider: Boolean? = false,
+        isOutsideCancelable: Boolean = false
     ) {
         commonCheckDialog(
             context = this,
@@ -255,7 +267,8 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
             title = title,
             errorMessageSpan = errorMessageSpan,
             buttonText = buttonText,
-            positiveClickListener = positiveClickListener
+            positiveClickListener = positiveClickListener,
+            isOutsideCancelable = isOutsideCancelable
         )
     }
 
@@ -294,8 +307,8 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
             itemClickListener.onChecked(true, dataList[options1])
         }
             .setItemVisibleCount(4)
-            .setBgColor(resources.getColor(R.color.colorSilver3))
-            .setCancelColor(resources.getColor(R.color.colorBlackLight))//取消按钮文字颜色
+            .setBgColor(resources.getColor(R.color.color_666666_bcbcbc))
+            .setCancelColor(resources.getColor(R.color.color_e5e5e5_333333))//取消按钮文字颜色
             .setSubmitText(resources.getString(R.string.complete))
             .setCancelText(resources.getString(R.string.btn_cancel))
             .build()
@@ -359,4 +372,16 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     private fun stopRunnable() {
         mRunnable = null
     }
+
+    /**
+     * 修正 auto size 偶發失效問題
+     * */
+    override fun getResources(): Resources {
+
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            AutoSizeCompat.autoConvertDensityOfGlobal(super.getResources())
+        }
+        return super.getResources()
+    }
+
 }

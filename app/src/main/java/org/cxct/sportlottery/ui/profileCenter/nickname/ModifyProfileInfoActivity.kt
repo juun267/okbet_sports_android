@@ -13,6 +13,7 @@ import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.login.LoginEditText
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 class ModifyProfileInfoActivity :
     BaseSocketActivity<ModifyProfileInfoViewModel>(ModifyProfileInfoViewModel::class) {
@@ -41,6 +42,7 @@ class ModifyProfileInfoActivity :
         val allEditText = ll_root.children
         allEditText.forEach { if (it is LinearLayout) it.visibility = View.GONE }
 
+        tv_toolbar_title.setTitleLetterSpacing()
         //根據傳入的ModifyType當前編輯的欄位做顯示
         when (modifyType) {
             ModifyType.RealName -> {
@@ -103,6 +105,8 @@ class ModifyProfileInfoActivity :
         btn_confirm.setOnClickListener {
             checkInputData()
         }
+
+        btn_confirm.setTitleLetterSpacing()
     }
 
     private fun checkInputData() {

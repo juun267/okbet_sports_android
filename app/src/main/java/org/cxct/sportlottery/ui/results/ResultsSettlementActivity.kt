@@ -157,6 +157,10 @@ class ResultsSettlementActivity :
                     outrightResultDiffAdapter.submitList(it)
                 }
             })
+
+            matchResultPlayListResult.observe(this@ResultsSettlementActivity) {
+                showErrorPromptDialog(message = it.msg) {}
+            }
         }
     }
 
@@ -331,13 +335,13 @@ class ResultsSettlementActivity :
             val day = calendar.get(Calendar.DAY_OF_MONTH)
             val week = calendar.get(Calendar.DAY_OF_WEEK)
             val weekName = mapOf<Int, String>(
-                1 to getString(R.string.sunday),
-                2 to getString(R.string.monday),
-                3 to getString(R.string.tuesday),
-                4 to getString(R.string.wednesday),
-                5 to getString(R.string.thursday),
-                6 to getString(R.string.friday),
-                7 to getString(R.string.saturday)
+                1 to getString(R.string.sunday2_cn),
+                2 to getString(R.string.monday2),
+                3 to getString(R.string.tuesday2),
+                4 to getString(R.string.wednesday2),
+                5 to getString(R.string.thursday2),
+                6 to getString(R.string.friday2),
+                7 to getString(R.string.saturday2)
             ) //1:星期日, 2:星期一, ...
             weekList.add("${weekName[week]}\n${String.format("%02d", month)}-${String.format("%02d", day)}")
         }
@@ -394,9 +398,9 @@ class SettlementLeagueAdapter(private val context: Context, private val dataList
             checkbox.text = data.name
             checkbox.isChecked = data.isSelected
             if (data.isSelected)
-                ll_game_league_item.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite6))
+                ll_game_league_item.setBackgroundColor(ContextCompat.getColor(context, R.color.color_191919_EEEFF0))
             else
-                ll_game_league_item.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
+                ll_game_league_item.setBackgroundColor(ContextCompat.getColor(context, R.color.color_191919_FCFCFC))
             checkbox.setOnCheckedChangeListener { _, isChecked ->
                 data.isSelected = isChecked
                 ll_game_league_item.isSelected = isChecked
@@ -438,9 +442,9 @@ class SettlementGameTypeAdapter(private val context: Context, private val dataLi
         view.apply {
             tv_game_type.text = data.name
             if (position == selectedPosition)
-                ll_game_type_item.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite6))
+                ll_game_type_item.setBackgroundColor(ContextCompat.getColor(context, R.color.color_191919_EEEFF0))
             else
-                ll_game_type_item.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
+                ll_game_type_item.setBackgroundColor(ContextCompat.getColor(context, R.color.color_191919_FCFCFC))
             ll_game_type_item.setOnClickListener {
                 if (selectedPosition != position) {
                     //                data.isSelected = !data.isSelected

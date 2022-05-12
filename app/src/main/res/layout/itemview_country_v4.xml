@@ -9,7 +9,7 @@
         android:id="@+id/country_border"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/colorWhite4"
+        android:background="@color/color_212121_ededed"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
@@ -20,8 +20,9 @@
         android:layout_marginEnd="12dp"
         android:ellipsize="end"
         android:singleLine="true"
+        android:textAllCaps="true"
         android:textColor="#202020"
-        android:textSize="@dimen/textSize16sp"
+        android:textSize="@dimen/textSize14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/country_border"
         app:layout_constraintEnd_toStartOf="@id/iv_country"
@@ -61,7 +62,7 @@
     <View android:id="@+id/SpaceItemDecorationView"
         android:layout_width="match_parent"
         android:layout_height="8dp"
-        android:background="@color/colorWhite"
+        android:background="@color/color_191919_FCFCFC"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/country_border"/>
 

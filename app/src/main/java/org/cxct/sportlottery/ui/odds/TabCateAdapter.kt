@@ -23,12 +23,12 @@ class TabCateAdapter(private val onItemSelectedListener: OnItemSelectedListener)
             notifyDataSetChanged()
         }
 
-    var oldPosition: Int? = null
+    private var oldPosition: Int = 0
 
     var selectedPosition: Int = 0
         set(value) {
             field = value
-            oldPosition?.let { notifyItemChanged(it) }
+            notifyItemChanged(oldPosition)
             notifyItemChanged(value)
             oldPosition = value
         }

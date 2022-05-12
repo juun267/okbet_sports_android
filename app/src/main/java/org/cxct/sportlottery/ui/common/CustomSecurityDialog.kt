@@ -94,9 +94,9 @@ class CustomSecurityDialog(context: Context) : DialogFragment() {
         val hasInput = securityCodeStyleEditText.edt_security_code.text.toString().isNotEmpty()
         isPstBtnClickable = isClickable && hasInput
         if(isPstBtnClickable)
-            btn_positive.setTextColor(ContextCompat.getColor(mContext,R.color.colorBlue))
+            btn_positive.setTextColor(ContextCompat.getColor(mContext,R.color.color_317FFF_0760D4))
         else
-            btn_positive.setTextColor(ContextCompat.getColor(mContext,R.color.color_E2E2E2))
+            btn_positive.setTextColor(ContextCompat.getColor(mContext,R.color.color_2B2B2B_e2e2e2))
     }
 
     fun showErrorStatus(b:Boolean){

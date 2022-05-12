@@ -84,26 +84,31 @@ class NotificationView @JvmOverloads constructor(context: Context, attrs: Attrib
         try {
             when (notification?.status) {
                 Status.WIN.code, Status.WIN_HALF.code -> {
-                    rootLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.colorBlue))
+                    rootLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.color_317FFF_1053af))
                     ivIcon.setImageResource(R.drawable.ic_good_news)
                     tvMessage.text = String.format(context.getString(R.string.congratulation_win), tailOrderNo, ArithUtil.toMoneyFormat(notification.grossWin))
                     this.requestLayout()
+                    showAnimation()
                 }
                 Status.CANCEL.code -> {
-                    rootLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.colorRed))
+                    rootLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.color_E44438_e44438))
                     ivIcon.setImageResource(R.drawable.ic_warnning_news)
                     tvMessage.text = String.format(context.getString(R.string.warning_cancel), tailOrderNo)
                     this.requestLayout()
+                    showAnimation()
+                }
+                else -> {
+                    hideAnimation()
                 }
             }
         } catch (e: Exception) {
             e.printStackTrace()
+            hideAnimation()
         }
-
-        showAnimation()
     }
 
     fun addNotification(messageData: SportBet) {
+        if (messageData.status != Status.WIN.code && messageData.status != Status.WIN_HALF.code && messageData.status != Status.CANCEL.code) return
         notificationList.add(NotificationData(messageData.orderNo, messageData.grossWin, messageData.status))
         if (!handlerRunning)
             notificationRunnable.run()
@@ -119,6 +124,5 @@ class NotificationView @JvmOverloads constructor(context: Context, attrs: Attrib
         val exitAnimation = AnimationUtils.loadAnimation(context, R.anim.push_bottom_to_top_exit).apply { duration = ANIMATION_DURATION }
         exitAnimation.setAnimationListener(animationEndListener)
         rootLayout.startAnimation(exitAnimation)
-
     }
 }

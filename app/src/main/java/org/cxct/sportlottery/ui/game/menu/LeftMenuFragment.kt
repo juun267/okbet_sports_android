@@ -16,7 +16,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.zhy.adapter.recyclerview.CommonAdapter
 import com.zhy.adapter.recyclerview.base.ViewHolder
 import kotlinx.android.synthetic.main.fragment_left_menu.*
-import kotlinx.android.synthetic.main.fragment_left_menu.btn_close
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import kotlinx.android.synthetic.main.snackbar_my_favorite_notify.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
@@ -31,14 +30,11 @@ import org.cxct.sportlottery.network.sport.SearchResult
 import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.FLAG_OPEN
-import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
-import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.menu.ChangeAppearanceDialog
@@ -59,6 +55,9 @@ import org.cxct.sportlottery.widget.highLightTextView.HighlightTextView
 
 @SuppressLint("NotifyDataSetChanged")
 class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnClickListener {
+
+    private var mCurMatchType: MatchType? = null
+
     private var mCloseMenuListener: View.OnClickListener? = null
 
     private var newAdapter =
@@ -107,26 +106,39 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
                     navSportEntrance(sportType)
                 },
                 { gameType, addOrRemove -> //圖釘
-                    when (viewModel.userInfo.value?.testFlag) {
-                        TestFlag.NORMAL.index -> {
-                            viewModel.pinFavorite(
-                                FavoriteType.SPORT,
-                                gameType
-                            )
-                            setSnackBarMyFavoriteNotify(myFavoriteNotifyType = addOrRemove)
-                        }
-                        else -> { //遊客 //尚未登入
-                            setSnackBarMyFavoriteNotify(isLogin = false)
-                        }
-                    }
+                    viewModel.leftPinFavorite(gameType, addOrRemove)
                 }
             ),
             LeftMenuItemNewAdapter.FooterSelectedListener(
                 { //盤口設定
-                    ChangeOddsTypeFullScreenDialog().show(parentFragmentManager, null)
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(
+                            R.anim.pop_left_to_right_enter_opaque,
+                            0,
+                            0,
+                            R.anim.push_right_to_left_exit_opaque
+                        )
+                        .replace(
+                            R.id.fl_container,
+                            ChangeOddsTypeFullScreenDialog()
+                        )
+                        .addToBackStack(ChangeOddsTypeFullScreenDialog::class.java.simpleName)
+                        .commit()
                 },
                 { //外觀
-                    ChangeAppearanceDialog().show(parentFragmentManager, null)
+                    parentFragmentManager.beginTransaction()
+                        .setCustomAnimations(
+                            R.anim.pop_left_to_right_enter_opaque,
+                            0,
+                            0,
+                            R.anim.push_right_to_left_exit_opaque
+                        )
+                        .replace(
+                            R.id.fl_container,
+                            ChangeAppearanceDialog()
+                        )
+                        .addToBackStack(ChangeAppearanceDialog::class.java.simpleName)
+                        .commit()
                 },
                 { //遊戲規則
                     JumpUtil.toInternalWeb(
@@ -239,16 +251,14 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
     private fun initData(list: List<SportMenu>) {
         unselectedList.clear()
         var game = ""
-        val selectGame = viewModel.curMatchType.value
-        selectGame.let {
+        mCurMatchType.let {
             if (it != null) {
                 game = viewModel.getSportSelectedCode(it) ?: ""
             }
         }
         viewModel.getSearchResult()
         list.forEach {
-            val matchType = viewModel.sportMenuList.value?.peekContent()
-                ?.find { matchType -> matchType.gameType.key == it.gameType.key }?.entranceType
+            val matchType = it.entranceType
 
             when (it.gameType) {
                 GameType.VB -> {
@@ -521,6 +531,10 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
                 hideLoading()
         }
 
+        viewModel.curMatchType.observe(viewLifecycleOwner) {
+            updateCurMatchType(it)
+        }
+
         viewModel.sportMenuList.observe(viewLifecycleOwner) {
             initData(it.peekContent())
         }
@@ -720,6 +734,18 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
 
         }
 
+        viewModel.leftNotifyLogin.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let {
+                setSnackBarMyFavoriteNotify(isLogin = false)
+            }
+        }
+
+        viewModel.leftNotifyFavorite.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let {
+                setSnackBarMyFavoriteNotify(myFavoriteNotifyType = it)
+            }
+        }
+
     }
 
     var searchResult: MutableList<SearchResult> = ArrayList()
@@ -785,44 +811,67 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
                 rvResultLeague.layoutManager =
                     LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
                 rvResultLeague.isNestedScrollingEnabled = false
-                val adapter = object : CommonAdapter<SearchResult.SearchResultLeague>(context, R.layout.item_search_result_league, t.searchResultLeague) {
-                    override fun convert(holder: ViewHolder, it: SearchResult.SearchResultLeague, position: Int) {
-                        val tvLeagueTittle = holder.getView<HighlightTextView>(R.id.tvLeagueTittle)
-                        tvLeagueTittle.setCustomText(it.league)
-                        tvLeagueTittle.highlight(etSearch.text.toString())
-                        val rvResultMatch = holder.getView<RecyclerView>(R.id.rvResultMatch)
-                        rvResultMatch.layoutManager =
-                            LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-                        rvResultMatch.isNestedScrollingEnabled = false
-                        val adapter = object :
-                            CommonAdapter<SearchResponse.Row.LeagueMatch.MatchInfo>(context, R.layout.item_search_result_match, t.searchResultLeague[position].leagueMatchList) {
-                            override fun convert(holder: ViewHolder, itt: SearchResponse.Row.LeagueMatch.MatchInfo, position: Int) {
-                                holder.setText(
-                                    R.id.tvTime,
-                                    TimeUtil.timeFormat(itt.startTime.toLong(), TimeUtil.MD_HM_FORMAT) + " ｜ "
-                                )
-                                val tvMatch = holder.getView<HighlightTextView>(R.id.tvMatch)
-                                tvMatch.setCustomText(itt.homeName + " v " + itt.awayName)
-                                tvMatch.highlight(etSearch.text.toString())
-                                tvMatch.setOnClickListener {
-                                    closeMenuFragment()
-                                    viewModel.navSpecialEntrance(
-                                        MatchType.DETAIL,
-                                        GameType.getGameType(t.gameType)!!,
-                                        itt.matchId,
-                                        if (itt.isInPlay) MatchType.IN_PLAY else null
+                val adapter =
+                    object : CommonAdapter<SearchResult.SearchResultLeague>(context, R.layout.item_search_result_league, t.searchResultLeague) {
+                        override fun convert(holder: ViewHolder, it: SearchResult.SearchResultLeague, position: Int) {
+                            val tvLeagueTittle = holder.getView<HighlightTextView>(R.id.tvLeagueTittle)
+                            tvLeagueTittle.setCustomText(it.league)
+                            tvLeagueTittle.highlight(etSearch.text.toString())
+                            val rvResultMatch = holder.getView<RecyclerView>(R.id.rvResultMatch)
+                            rvResultMatch.layoutManager =
+                                LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+                            rvResultMatch.isNestedScrollingEnabled = false
+                            val adapter = object :
+                                CommonAdapter<SearchResponse.Row.LeagueMatch.MatchInfo>(
+                                    context,
+                                    R.layout.item_search_result_match,
+                                    t.searchResultLeague[position].leagueMatchList
+                                ) {
+                                override fun convert(holder: ViewHolder, itt: SearchResponse.Row.LeagueMatch.MatchInfo, position: Int) {
+                                    holder.setText(
+                                        R.id.tvTime,
+                                        TimeUtil.timeFormat(itt.startTime.toLong(), TimeUtil.MD_HM_FORMAT) + " ｜ "
                                     )
+                                    val tvMatch = holder.getView<HighlightTextView>(R.id.tvMatch)
+                                    tvMatch.setCustomText(itt.homeName + " v " + itt.awayName)
+                                    tvMatch.highlight(etSearch.text.toString())
+                                    tvMatch.setOnClickListener {
+                                        closeMenuFragment()
+                                        viewModel.navSpecialEntrance(
+                                            MatchType.DETAIL,
+                                            GameType.getGameType(t.gameType)!!,
+                                            itt.matchId,
+                                            if (itt.isInPlay) MatchType.IN_PLAY else null
+                                        )
+                                    }
                                 }
                             }
+                            rvResultMatch.adapter = adapter
                         }
-                        rvResultMatch.adapter = adapter
                     }
-                }
                 rvResultLeague.adapter = adapter
             }
         }
         rvSearchResult.adapter = searchResultAdapter
         OverScrollDecoratorHelper.setUpOverScroll(rvSearchResult, OverScrollDecoratorHelper.ORIENTATION_VERTICAL)
+    }
+
+    private fun updateCurMatchType(matchType: MatchType?) {
+        mCurMatchType = matchType
+        updateCurMatchSelectedSport()
+    }
+
+    private fun updateCurMatchSelectedSport() {
+        val matchSelectedGameType = mCurMatchType?.let {
+            viewModel.getSportSelectedCode(it)
+        }
+        matchSelectedGameType?.let { selectedGameType ->
+            unselectedList.forEach {
+                it.isCurrentSportType = it.gameType == selectedGameType
+            }
+        }
+
+        newAdapter.addFooterAndSubmitList(unselectedList)
     }
 
     private fun updateMenuSport(favorSportTypeList: List<String>) {
@@ -960,6 +1009,11 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
 
     private fun closeMenuFragment() {
         mCloseMenuListener?.onClick(null)
+        clearLeftMenu()
+    }
+
+    fun clearLeftMenu() {
+        if (parentFragmentManager.backStackEntryCount > 0) parentFragmentManager.popBackStack()
         etSearch.setText("")
     }
 

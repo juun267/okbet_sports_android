@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +28,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
 
 import org.cxct.sportlottery.R;
+import org.cxct.sportlottery.util.MetricsUtil;
 
 
 /**
@@ -56,6 +59,11 @@ public class TextFieldBoxes extends FrameLayout {
     protected String labelText;
 
     /**
+     * labelText text style
+     */
+    protected int labelTextStyle;
+
+    /**
      * subLabelText text at the top.
      */
     protected String subLabelText;
@@ -69,6 +77,11 @@ public class TextFieldBoxes extends FrameLayout {
      * singleText text at the top.
      */
     protected String singleText;
+
+    /**
+     * singleText text style
+     */
+    protected int singleTextStyle;
 
     /**
      * helper Label text at the bottom.
@@ -231,7 +244,7 @@ public class TextFieldBoxes extends FrameLayout {
         TypedArray themeArray;
 
         /* Get Default Error Color From Theme */
-        DEFAULT_ERROR_COLOR = ContextCompat.getColor(getContext(), R.color.colorRedDark);
+        DEFAULT_ERROR_COLOR = ContextCompat.getColor(getContext(), R.color.color_F75452_b73a20);
 
         /* Get Default Background Color From Theme */
         themeArray = theme.obtainStyledAttributes(new int[]{android.R.attr.colorForeground});
@@ -380,8 +393,7 @@ public class TextFieldBoxes extends FrameLayout {
 
         this.editText = findEditTextChild();
         if (editText == null) return;
-        this.addView(LayoutInflater.from(getContext()).inflate(R.layout.text_field_boxes_layout,
-                this, false));
+        this.addView(LayoutInflater.from(getContext()).inflate(R.layout.text_field_boxes_layout,this, false));
         removeView(this.editText);
 
         this.editText.setBackgroundColor(Color.TRANSPARENT);
@@ -531,12 +543,14 @@ public class TextFieldBoxes extends FrameLayout {
             /* Texts */
             this.labelText = styledAttrs.getString(R.styleable.TextFieldBoxes_labelText)
                     == null ? "" : styledAttrs.getString(R.styleable.TextFieldBoxes_labelText);
+            this.labelTextStyle = styledAttrs.getInt(R.styleable.TextFieldBoxes_labelTextStyle, Typeface.BOLD);
             this.subLabelText = styledAttrs.getString(R.styleable.TextFieldBoxes_subLabelText)
                     == null ? "" : styledAttrs.getString(R.styleable.TextFieldBoxes_subLabelText);
             this.hintText = styledAttrs.getString(R.styleable.TextFieldBoxes_hintText)
                     == null ? "" : styledAttrs.getString(R.styleable.TextFieldBoxes_hintText);
             this.singleText = styledAttrs.getString(R.styleable.TextFieldBoxes_singleText)
                     == null ? "" : styledAttrs.getString(R.styleable.TextFieldBoxes_singleText);
+            this.singleTextStyle = styledAttrs.getInt(R.styleable.TextFieldBoxes_singleTextStyle, Typeface.BOLD);
 
             this.helperText = styledAttrs.getString(R.styleable.TextFieldBoxes_helperText)
                     == null ? "" : styledAttrs.getString(R.styleable.TextFieldBoxes_helperText);
@@ -1010,10 +1024,12 @@ public class TextFieldBoxes extends FrameLayout {
 
         /* Texts */
         setLabelText(this.labelText);
+        setLableTextStyle(this.labelTextStyle);
         setSubLabelText(this.subLabelText);
         setHelperText(this.helperText);
         setHintText(this.hintText);
         setSingleText(this.singleText);
+        setSingleTextStyle(this.singleTextStyle);
         /* Colors */
         setHelperTextColor(this.helperTextColor);
         setmCounterTextColor(this.mCounterTextColor);
@@ -1056,16 +1072,30 @@ public class TextFieldBoxes extends FrameLayout {
         }
     }
 
+    public void setLableTextStyle(int textStyle) {
+        this.labelTextStyle = textStyle;
+        this.floatingLabel.setTypeface(this.floatingLabel.getTypeface(), this.labelTextStyle);
+    }
+
     public void setSubLabelText(String subLabelText) {
 
         this.subLabelText = subLabelText;
         this.floatingSubLabel.setText(this.subLabelText);
 
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) editTextLayout.getLayoutParams();
         if (subLabelText.isEmpty()) {
             this.floatingSubLabel.setVisibility(View.GONE);
+            layoutParams.removeRule(RelativeLayout.ALIGN_TOP);
+            layoutParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+            layoutParams.topMargin = 0;
         } else {
             this.floatingSubLabel.setVisibility(View.VISIBLE);
+            layoutParams.removeRule(RelativeLayout.CENTER_VERTICAL);
+            layoutParams.addRule(RelativeLayout.ALIGN_TOP, R.id.text_field_boxes_sub_label);
+            int topMargin = ((int) MetricsUtil.INSTANCE.convertDpToPixel(6, editTextLayout.getContext()));
+            layoutParams.topMargin = - (topMargin + inputLayout.getPaddingTop());
         }
+        editTextLayout.setLayoutParams(layoutParams);
     }
 
     public void setHintText(String hintText) {
@@ -1090,6 +1120,11 @@ public class TextFieldBoxes extends FrameLayout {
         } else {
             this.floatingSingle.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void setSingleTextStyle(int textStyle) {
+        this.singleTextStyle = textStyle;
+        this.floatingSingle.setTypeface(this.floatingSingle.getTypeface(), this.singleTextStyle);
     }
 
     public void setHelperText(String helperText) {
@@ -1172,6 +1207,7 @@ public class TextFieldBoxes extends FrameLayout {
             this.editText.setEnabled(true);
             this.editText.setFocusableInTouchMode(true);
             this.editText.setFocusable(true);
+            this.bottomPart.setVisibility(View.VISIBLE);
             this.helperLabel.setVisibility(View.VISIBLE);
             this.counterLabel.setVisibility(View.GONE);
             this.panel.setEnabled(true);
@@ -1188,6 +1224,7 @@ public class TextFieldBoxes extends FrameLayout {
             this.editText.setFocusable(false);
             this.iconImageButton.setClickable(false);
             this.iconImageButton.setEnabled(false);
+            this.bottomPart.setVisibility(View.INVISIBLE);
             this.helperLabel.setVisibility(View.INVISIBLE);
             this.counterLabel.setVisibility(View.GONE);
             this.panel.setEnabled(false);

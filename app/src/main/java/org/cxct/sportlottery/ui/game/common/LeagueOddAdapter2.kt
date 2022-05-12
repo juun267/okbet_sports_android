@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.itemview_league_odd_v5.view.*
 import kotlinx.android.synthetic.main.itemview_league_quick.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.enum.MatchSource
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
@@ -149,6 +150,9 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             playSelectedCodeSelectionType: Int?,
             playSelectedCode: String?
         ) {
+
+            itemView.v_top.visibility = if (bindingAdapterPosition == 0) View.GONE else View.VISIBLE
+
             setUpVisibility(item, matchType)
             setupMatchInfo(item, matchType, matchInfoList, leagueOddListener)
             val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
@@ -244,7 +248,8 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                     leagueOddListener?.onClickPlayType(
                         item.matchInfo?.id,
                         matchInfoList,
-                        if (item.matchInfo?.isInPlay == true) MatchType.IN_PLAY else matchType
+                        if (item.matchInfo?.isInPlay == true) MatchType.IN_PLAY else matchType,
+                        item.matchInfo?.liveVideo ?: 0
                     )
                 }
             }
@@ -258,6 +263,8 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             }
 
             itemView.league_odd_match_chart.apply {
+                visibility = if (item.matchInfo?.source == MatchSource.SHOW_STATISTICS.code) View.VISIBLE else View.GONE
+
                 setOnClickListener {
                     leagueOddListener?.onClickStatistics(item.matchInfo?.id)
                 }
@@ -267,7 +274,8 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 leagueOddListener?.onClickPlayType(
                     item.matchInfo?.id,
                     matchInfoList,
-                    if (item.matchInfo?.isInPlay == true) MatchType.IN_PLAY else matchType
+                    if (item.matchInfo?.isInPlay == true) MatchType.IN_PLAY else matchType,
+                    item.matchInfo?.liveVideo ?: 0
                 )
             }
 
@@ -283,9 +291,10 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
 
         private fun setupMatchScore(item: MatchOdd, matchType: MatchType) {
             when (item.matchInfo?.socketMatchStatus) {
-                GameMatchStatus.HIDE_SCORE.value -> {
+                //20220507 status:999 邏輯變更 隱藏分數 -> 賽事狀態變為滾球
+                /*GameMatchStatus.HIDE_SCORE.value -> {
                     hideMatchScoreText()
-                }
+                }*/
                 else -> {
                     when (item.matchInfo?.gameType) {
                         GameType.VB.key -> setVbScoreText(matchType, item)
@@ -358,7 +367,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
         //時間的色值同步#000000 即將開賽的Icon不改顏色，和Ian確認過
         private fun setStatusTextColor(item: MatchOdd) {
             val color =
-                if (item.matchInfo?.isInPlay == true) R.color.colorBlack else R.color.colorBlack
+                if (item.matchInfo?.isInPlay == true) R.color.color_FFFFFF_000000 else R.color.color_A3A3A3_666666
             itemView.apply {
                 league_odd_match_status.setTextColor(ContextCompat.getColor(this.context, color))
                 league_odd_spt.setTextColor(ContextCompat.getColor(this.context, color))
@@ -373,7 +382,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 when {
                     item.matchInfo.isInPlay == true -> { //除0以外顯示
                         itemView.league_odd_spt.visibility = if (it > 0) View.VISIBLE else View.GONE
-                        itemView.league_odd_spt.text = " / $it"
+                        itemView.league_odd_spt.text = "/ $it"
                     }
 
                     matchType == MatchType.EARLY || matchType == MatchType.PARLAY || matchType == MatchType.TODAY || matchType == MatchType.AT_START || (matchType == MatchType.MY_EVENT && item.matchInfo.isInPlay == false)
@@ -505,6 +514,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 else
                     Typeface.NORMAL
 
+                //隊伍名稱粗體
                 league_odd_match_score_home.apply { setTypeface(this.typeface, homeStrongType) }
                 league_odd_match_name_home.apply { setTypeface(this.typeface, homeStrongType) }
 

@@ -13,6 +13,7 @@
         android:src="@drawable/icon_choosefast"
         android:layout_width="@dimen/textSize16sp"
         android:layout_height="@dimen/textSize16sp"
+        app:tint="@color/color_666666"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"

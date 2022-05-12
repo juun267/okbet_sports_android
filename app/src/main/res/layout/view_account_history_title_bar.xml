@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorWhite"
+    android:background="@color/color_191919_FCFCFC"
     android:orientation="vertical"
     tools:context="org.cxct.sportlottery.ui.main.accountHistory.next.AccountHistoryNextFragment"
     tools:ignore="SpUsage">
@@ -13,7 +13,7 @@
         android:id="@+id/iv_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/soccer_account"
+        android:src="@drawable/bg_transaction_record"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -25,14 +25,15 @@
         app:layout_constraintBottom_toBottomOf="@id/iv_bg"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/colorBlackLight" />
+        app:tint="@color/color_e5e5e5_333333" />
 
     <TextView
+        android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:gravity="center"
         android:text="@string/account_history_overview"
-        android:textColor="@color/colorBlackLight"
+        android:textColor="@color/color_e5e5e5_333333"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintBottom_toBottomOf="@id/iv_bg"
         app:layout_constraintTop_toTopOf="parent" />
@@ -43,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="8dp"
+        app:textGravity="start"
         app:backgroundFrame="@drawable/frame_color_silver_light_stroke"
         app:defaultStatusText="@string/all_sport"
         app:horizontalChainStyle="spread"
@@ -54,23 +56,23 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8"
         android:layout_marginEnd="@dimen/margin_10"
-        app:drawableStartCompat="@drawable/ic_info_white"
         android:drawablePadding="@dimen/margin_6"
-        app:drawableTint="@color/colorGray"
+        app:drawableTint="@color/color_A3A3A3_666666"
         android:text="@string/text_us_east_time"
-        android:textColor="@color/colorGray"
-        android:textSize="@dimen/textSize14sp"
+        android:textColor="@color/color_A3A3A3_666666"
+        android:textSize="@dimen/textSize12sp"
+        app:drawableLeftCompat="@drawable/ic_info_white"
+        app:drawableStartCompat="@drawable/ic_info_white"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/status_selector"
-        app:drawableLeftCompat="@drawable/ic_info_white" />
+        app:layout_constraintTop_toBottomOf="@+id/status_selector" />
 
     <LinearLayout
         android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginTop="10dp"
-        android:background="@color/colorBlue"
+        android:background="@color/color_1D4C99_0760D4"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -83,7 +85,7 @@
             android:layout_weight="1.5"
             android:gravity="center"
             android:text="@string/date"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/color_FFFFFF_FFFFFF"
             android:textSize="@dimen/textSize12sp" />
 
         <TextView
@@ -92,7 +94,7 @@
             android:layout_weight="2"
             android:gravity="center"
             android:text="@string/bet_amount"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/color_FFFFFF_FFFFFF"
             android:textSize="@dimen/textSize12sp" />
 
         <TextView
@@ -101,7 +103,7 @@
             android:layout_weight="2"
             android:gravity="center"
             android:text="@string/available_amount"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/color_FFFFFF_FFFFFF"
             android:textSize="@dimen/textSize12sp" />
 
         <TextView
@@ -110,7 +112,7 @@
             android:layout_weight="2"
             android:gravity="center"
             android:text="@string/win_lose"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/color_FFFFFF_FFFFFF"
             android:textSize="@dimen/textSize12sp" />
     </LinearLayout>
 

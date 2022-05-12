@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp"
+    android:background="@drawable/fillet_5dp_white"
+    android:orientation="vertical"
+    android:paddingHorizontal="6dp"
+    android:paddingTop="6dp"
+    android:paddingBottom="2dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/card_first_game"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.602"
+            android:background="@drawable/fillet_4dp_home_game_item_blue">
+
+            <TextView
+                android:id="@+id/label_en_first_game"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:alpha="0.25"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:text="@string/goal_buster"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/textSize16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_first_game"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:contentDescription="@null"
+                android:translationX="6dp"
+                android:translationY="6dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_game_football" />
+
+            <!--paddingTop是為解決includeFontPadding造成的字體裁切問題-->
+            <TextView
+                android:id="@+id/label_first_game"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:includeFontPadding="false"
+                android:paddingTop="2dp"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/textSize16sp"
+                android:textStyle="bold"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toTopOf="@+id/tv_first_game_count"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="足球" />
+
+            <TextView
+                android:id="@+id/tv_first_game_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginBottom="10dp"
+                android:includeFontPadding="false"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/textSize15sp"
+                android:textStyle="bold"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="644" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="6dp"
+            android:layout_height="match_parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/card_second_game"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="0.398"
+            android:background="@drawable/fillet_4dp_home_game_item_blue">
+
+            <TextView
+                android:id="@+id/label_en_second_game"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:alpha="0.25"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:text="@string/top_games"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/textSize16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_second_game"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:contentDescription="@null"
+                android:translationX="6dp"
+                android:translationY="6dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_game_basketball" />
+
+            <!--paddingTop是為解決includeFontPadding造成的字體裁切問題-->
+            <TextView
+                android:id="@+id/label_second_game"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:paddingTop="2dp"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/textSize16sp"
+                android:textStyle="bold"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toTopOf="@id/tv_second_game_count"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="@id/tv_second_game_count"
+                tools:text="籃球" />
+
+            <TextView
+                android:id="@+id/tv_second_game_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginBottom="10dp"
+                android:includeFontPadding="false"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/textSize15sp"
+                android:textStyle="bold"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="48" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:scrollbars="none"
+        app:layout_constraintTop_toBottomOf="@id/card_second_game">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/special_block_game"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:divider="@drawable/divider_horizontal_6dp"
+                android:orientation="horizontal"
+                android:showDividers="middle|end" />
+
+            <org.cxct.sportlottery.ui.game.home.HomeGameCard
+                android:id="@+id/card_game_soon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                app:cvCount="@{gameViewModel.asStartCount.toString()}"
+                app:cvIcon="@drawable/ic_game_soon"
+                app:cvTitle="@string/game_soon" />
+
+            <LinearLayout
+                android:id="@+id/block_game"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:divider="@drawable/divider_horizontal_6dp"
+                android:orientation="horizontal"
+                android:showDividers="beginning|middle">
+
+            </LinearLayout>
+
+            <org.cxct.sportlottery.ui.game.home.HomeGameCard
+                android:id="@+id/card_lottery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                app:cvIcon="@drawable/ic_game_lottery"
+                app:cvTitle="@string/lottery" />
+
+            <org.cxct.sportlottery.ui.game.home.HomeGameCard
+                android:id="@+id/card_live"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                app:cvIcon="@drawable/ic_game_live"
+                app:cvTitle="@string/live" />
+
+            <org.cxct.sportlottery.ui.game.home.HomeGameCard
+                android:id="@+id/card_poker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                app:cvIcon="@drawable/ic_game_poker"
+                app:cvTitle="@string/poker" />
+
+            <org.cxct.sportlottery.ui.game.home.HomeGameCard
+                android:id="@+id/card_slot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                app:cvIcon="@drawable/ic_game_slot"
+                app:cvTitle="@string/slot" />
+
+            <org.cxct.sportlottery.ui.game.home.HomeGameCard
+                android:id="@+id/card_fishing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                app:cvIcon="@drawable/ic_game_fishing"
+                app:cvTitle="@string/fishing" />
+
+            <org.cxct.sportlottery.ui.game.home.HomeGameCard
+                android:id="@+id/card_game_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                app:cvIcon="@drawable/ic_game_match_result"
+                app:cvTitle="@string/game_result" />
+
+            <org.cxct.sportlottery.ui.game.home.HomeGameCard
+                android:id="@+id/card_update"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                app:cvIcon="@drawable/ic_game_update"
+                app:cvTitle="@string/version_update" />
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+</LinearLayout>

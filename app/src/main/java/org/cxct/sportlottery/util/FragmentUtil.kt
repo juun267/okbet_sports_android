@@ -23,7 +23,8 @@ fun commonCheckDialog(
     title: String?,
     errorMessageSpan: Spanned,
     buttonText: String?,
-    positiveClickListener: () -> Unit?
+    positiveClickListener: () -> Unit?,
+    isOutsideCancelable: Boolean = false
 ) {
     if (checkDialogIsShowing(fm, errorMessageSpan.toString())) {
         return
@@ -31,7 +32,7 @@ fun commonCheckDialog(
 
     CustomAlertDialog(context).apply {
         if (isError) {
-            setTextColor(R.color.colorRed)
+            setTextColor(R.color.color_E44438_e44438)
         }
         setShowDivider(isShowDivider)
         setTitle(title)
@@ -43,8 +44,8 @@ fun commonCheckDialog(
             this.dismiss()
         }
 
-        setCanceledOnTouchOutside(false)
-        isCancelable = false //不能用系統 BACK 按鈕關閉 dialog
+        setCanceledOnTouchOutside(isOutsideCancelable)
+        isCancelable = isOutsideCancelable //不能用系統 BACK 按鈕關閉 dialog
     }.show(fm, errorMessageSpan.toString())
 }
 
@@ -65,7 +66,7 @@ fun commonCheckDialog(
 
     CustomAlertDialog(context).apply {
         if (isError) {
-            setTextColor(R.color.colorRed)
+            setTextColor(R.color.color_E44438_e44438)
         }
         setShowDivider(isShowDivider)
         setTitle(title)
@@ -89,6 +90,7 @@ fun phoneNumCheckDialog(context: Context, fm: FragmentManager) {
         return
     }
     CustomAlertDialog(context).apply {
+        setTitle(context.getString(R.string.prompt))
         setMessage(errorMsg)
         setNegativeButtonText(null)
         setCanceledOnTouchOutside(false)

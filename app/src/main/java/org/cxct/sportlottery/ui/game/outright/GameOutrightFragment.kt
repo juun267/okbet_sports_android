@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game_outright.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -29,7 +31,7 @@ import org.cxct.sportlottery.util.SocketUpdateUtil
 import java.util.*
 
 
-class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class) {
+class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class), Animation.AnimationListener {
 
     private val args: GameOutrightFragmentArgs by navArgs()
 
@@ -131,7 +133,8 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
 //                            )
 //                        }
 
-                    GameConfigManager.getTitleBarBackground(outrightOddsListResult.outrightOddsListData?.sport?.code)
+                    GameConfigManager.getTitleBarBackground(outrightOddsListResult.outrightOddsListData?.sport?.code,
+                        MultiLanguagesApplication.isNightMode)
                         ?.let { gameImg ->
                             game_toolbar_bg.setBackgroundResource(gameImg)
                         }
@@ -273,7 +276,6 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
             false -> {
                 unSubscribeChannelHall(
                     args.gameType.key,
-                    PlayCate.OUTRIGHT.value,
                     matchOdd.matchInfo?.id
                 )
             }
@@ -289,7 +291,7 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
             matchType = MatchType.OUTRIGHT,
             gameType = args.gameType,
             playCateCode = playCateCode,
-            playCateName =  "",
+            playCateName = "",
             matchInfo = matchOdd.matchInfo!!,
             matchOdd = matchOdd,
             odd = odd,

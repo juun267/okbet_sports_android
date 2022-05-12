@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite1"
+    android:background="@color/color_141414_F3F4F5"
     tools:context=".ui.profileCenter.creditrecord.CreditRecordActivity"
     tools:ignore="spUsage">
 
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:text="@string/credit_record_remain"
-        android:textColor="@color/colorBlackLight"
+        android:textColor="@color/color_e5e5e5_333333"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintBottom_toBottomOf="@id/credit_record_remain_border"
         app:layout_constraintStart_toStartOf="@id/credit_record_remain_border"
@@ -44,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:textColor="@color/colorBlue"
+        android:textColor="@color/color_317FFF_0760D4"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/credit_record_remain_border"
         app:layout_constraintStart_toEndOf="@id/credit_record_remain"
@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:text="@string/credit_record_deactivate"
-        android:textColor="@color/colorRedDark"
+        android:textColor="@color/color_F75452_b73a20"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintBottom_toBottomOf="@id/credit_record_remain_border"
         app:layout_constraintStart_toStartOf="@id/credit_record_remain_border"
@@ -67,7 +67,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorWhite4"
+        android:background="@color/color_212121_ededed"
         app:layout_constraintTop_toTopOf="@id/credit_record_quota_border" />
 
     <TextView
@@ -83,7 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="14dp"
-        android:textColor="@color/colorGreen"
+        android:textColor="@color/color_08dc6e_08dc6e"
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintBottom_toBottomOf="@id/credit_record_quota_border"
         app:layout_constraintEnd_toEndOf="@id/credit_record_quota_border"

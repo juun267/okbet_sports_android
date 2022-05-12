@@ -9,7 +9,7 @@
     <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/quick_odd_btn_pair_one_1"
         android:layout_width="0dp"
-        android:layout_height="56dp"
+        android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toStartOf="@id/quick_odd_btn_pair_one_2"
@@ -19,7 +19,7 @@
     <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/quick_odd_btn_pair_one_2"
         android:layout_width="0dp"
-        android:layout_height="56dp"
+        android:layout_height="48dp"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/quick_odd_btn_pair_one_1"

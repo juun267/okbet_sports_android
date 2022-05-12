@@ -10,9 +10,9 @@
         android:id="@+id/txv_title"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/colorBlue"
+        android:background="@color/color_317FFF_0760D4"
         android:gravity="center"
-        android:textColor="@color/colorWhite"
+        android:textColor="@color/color_FCFCFC"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/myfavorite_notify_league_add" />

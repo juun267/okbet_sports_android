@@ -30,7 +30,6 @@
         android:singleLine="true"
         android:textColor="@color/selector_text_effect_pay_type_main_light_color"
         android:textSize="@dimen/textSize14sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ic_bank"

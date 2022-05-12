@@ -24,6 +24,7 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 import java.util.*
 
 
@@ -72,6 +73,7 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
         binding.btnSendSms.setOnClickListener(this)
         binding.btnBack.setOnClickListener(this)
         binding.btnSubmit.setOnClickListener(this)
+        binding.btnSubmit.setTitleLetterSpacing()
         binding.constraintLayout.setOnClickListener(this)
         binding.eetVerificationCode.addTextChangedListener {
             binding.btnSubmit.isEnabled = it?.length ?: 0 > 0
@@ -130,7 +132,7 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
                             binding.btnSendSms.setTextColor(
                                 ContextCompat.getColor(
                                     this@PhoneVerifyActivity,
-                                    R.color.colorGrayDark
+                                    R.color.color_E0E0E0_404040
                                 )
                             )
                         } else {

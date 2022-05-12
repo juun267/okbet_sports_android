@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 /**
  * 客製化 TabLayout
@@ -34,6 +35,7 @@ class CustomTopToolbar @JvmOverloads constructor(
 
     var titleText: String? = null
         set(value) {
+            tv_toolbar_title.setTitleLetterSpacing()
             field = value
             tv_toolbar_title.text = value
         }
@@ -46,6 +48,7 @@ class CustomTopToolbar @JvmOverloads constructor(
 
     private fun initView(view: View) {
         view.apply {
+            tv_toolbar_title.setTitleLetterSpacing()
             tv_toolbar_title.text = typedArray.getString(R.styleable.CustomTopToolbar_topTitleText) ?:""
             btn_toolbar_back.setOnClickListener {
                 backPressListener?.invoke()

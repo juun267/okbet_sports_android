@@ -11,25 +11,25 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorWhite"
+        android:background="@color/color_191919_FCFCFC"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/txv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorWhite"
+            android:background="@color/color_191919_FCFCFC"
             android:gravity="center"
             android:minHeight="44dp"
             android:text="@string/title_pay_msg"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/color_FFFFFF_000000"
             android:textSize="@dimen/textSize16sp"
             android:textStyle="bold" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/colorWhite6" />
+            android:background="@color/color_191919_EEEFF0" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_pay_way"
-                android:textColor="@color/colorGrayDark"
+                android:textColor="@color/color_E0E0E0_404040"
                 android:textSize="@dimen/textSize14sp" />
 
             <TextView
@@ -50,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="5dp"
-                android:textColor="@color/colorBlackLight"
+                android:textColor="@color/color_e5e5e5_333333"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="在线支付" />
 
@@ -67,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_pay_money"
-                android:textColor="@color/colorGrayDark"
+                android:textColor="@color/color_E0E0E0_404040"
                 android:textSize="@dimen/textSize14sp" />
 
             <TextView
@@ -75,7 +75,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="5dp"
-                android:textColor="@color/colorBlackLight"
+                android:textColor="@color/color_e5e5e5_333333"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="100 RMB" />
 
@@ -88,7 +88,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="5dp"
             android:text="@string/hint_pay1"
-            android:textColor="@color/colorGray"
+            android:textColor="@color/color_A3A3A3_666666"
             android:textSize="@dimen/textSize12sp" />
 
         <TextView
@@ -98,14 +98,14 @@
             android:layout_marginTop="3dp"
             android:layout_marginEnd="5dp"
             android:text="@string/hint_pay2"
-            android:textColor="@color/colorGray"
+            android:textColor="@color/color_A3A3A3_666666"
             android:textSize="@dimen/textSize12sp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="14dp"
-            android:background="@color/colorWhite6" />
+            android:background="@color/color_191919_EEEFF0" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -121,14 +121,14 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/btn_look_for"
-                android:textColor="@color/colorBlue"
+                android:textColor="@color/color_317FFF_0760D4"
                 android:textSize="@dimen/textSize14sp"
                 android:textStyle="bold" />
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/colorWhite6" />
+                android:background="@color/color_191919_EEEFF0" />
 
             <TextView
                 android:id="@+id/tv_service"
@@ -137,7 +137,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/btn_service"
-                android:textColor="@color/colorBlue"
+                android:textColor="@color/color_317FFF_0760D4"
                 android:textSize="@dimen/textSize14sp"
                 android:textStyle="bold" />
 

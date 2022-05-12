@@ -82,11 +82,7 @@ class TransactionStatusActivity :
 
         //頭像 當 側邊欄 開/關
         iv_menu.setOnClickListener {
-            if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
-            else {
-                drawer_layout.openDrawer(nav_right)
-                viewModel.getMoney()
-            }
+            clickMenuEvent()
         }
 
         btn_login.setOnClickListener {
@@ -121,6 +117,14 @@ class TransactionStatusActivity :
 
         } catch (e: Exception) {
             e.printStackTrace()
+        }
+    }
+
+    override fun clickMenuEvent() {
+        if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
+        else {
+            drawer_layout.openDrawer(nav_right)
+            viewModel.getMoney()
         }
     }
 

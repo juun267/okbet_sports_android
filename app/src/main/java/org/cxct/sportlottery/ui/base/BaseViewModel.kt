@@ -11,10 +11,11 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.exception.DoNoConnectException
+import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.Constants.httpFormat
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.ErrorUtils
 import org.cxct.sportlottery.network.error.HttpError
-import org.cxct.sportlottery.network.index.checktoken.CheckTokenResult
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
@@ -38,6 +39,9 @@ abstract class BaseViewModel(
         loginRepository.kickedOut
     }
 
+    val errorResultIndex: LiveData<String>
+        get() = _errorResultIndex
+
     val errorResultToken: LiveData<BaseResult>
         get() = _errorResultToken
 
@@ -50,6 +54,7 @@ abstract class BaseViewModel(
     val networkExceptionUnknown: LiveData<String>
         get() = _networkExceptionUnknown
 
+    private val _errorResultIndex = MutableLiveData<String>()
     private val _errorResultToken = MutableLiveData<BaseResult>()
     private val _networkExceptionUnavailable = MutableLiveData<String>()
     private val _networkExceptionTimeout = MutableLiveData<String>()
@@ -91,6 +96,13 @@ abstract class BaseViewModel(
     }
 
     private fun <T : BaseResult> doResponseError(response: Response<T>): T? {
+        /*特殊處理 需採用判斷 response code */
+        val url = response.raw().request.url.toString()
+        if(response.code() == HttpError.GO_TO_SERVICE_PAGE.code && url.contains(Constants.INDEX_CONFIG)){
+            _errorResultIndex.postValue(response.raw().request.url.host.httpFormat())
+            return null
+        }
+
         val errorResult = ErrorUtils.parseError(response)
         if (response.code() == HttpError.UNAUTHORIZED.code || response.code() == HttpError.KICK_OUT_USER.code ) {
             errorResult?.let {
@@ -111,6 +123,12 @@ abstract class BaseViewModel(
             else -> {
                 _networkExceptionUnknown.postValue(context.getString(R.string.message_network_no_connect))
             }
+        }
+    }
+
+    fun doLogoutAPI() {
+        viewModelScope.launch {
+            loginRepository.logoutAPI()
         }
     }
 

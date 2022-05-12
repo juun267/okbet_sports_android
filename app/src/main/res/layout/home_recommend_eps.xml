@@ -12,8 +12,9 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:minHeight="48dp"
-        android:textColor="@color/colorBlue"
+        android:textColor="@color/color_317FFF_0760D4"
         android:textStyle="bold"
+        android:textSize="@dimen/textSize14sp"
         tools:text="让球" />
 
     <LinearLayout
@@ -28,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_weight="1"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/color_e5e5e5_333333"
             android:textStyle="bold"
             tools:text="法国会赢 4-0" />
 

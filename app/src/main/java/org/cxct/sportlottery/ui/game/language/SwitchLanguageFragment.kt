@@ -103,13 +103,13 @@ class SwitchLanguageFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         binding.llVietnam.setOnClickListener(this)
         when (LanguageManager.getSelectLanguage(context)) {
             LanguageManager.Language.ZH -> {
-                binding.tvChina.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBlue))
+                binding.tvChina.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_317FFF_0760D4))
             }
             LanguageManager.Language.EN -> {
-                binding.tvEnglish.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBlue))
+                binding.tvEnglish.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_317FFF_0760D4))
             }
             LanguageManager.Language.VI -> {
-                binding.tvVietnam.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorBlue))
+                binding.tvVietnam.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_317FFF_0760D4))
             }
         }
         if(sConfigData?.supportLanguage!!.contains("zh")){

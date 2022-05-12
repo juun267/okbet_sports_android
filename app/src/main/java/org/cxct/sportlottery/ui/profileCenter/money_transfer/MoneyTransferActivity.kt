@@ -9,6 +9,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.record.MoneyTransferRecordFragmentDirections
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer.MoneyTransferFragmentDirections
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 class MoneyTransferActivity :
     BaseSocketActivity<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
@@ -29,11 +30,13 @@ class MoneyTransferActivity :
     }
 
     private fun initToolbar() {
+        tv_toolbar_title.setTitleLetterSpacing()
         tv_toolbar_title.text = getString(R.string.account_transfer)
         btn_toolbar_back.setOnClickListener {
             //因需求 轉換信息點擊左上角返回鍵要回到額度轉換 故採用同android 虛擬返回鍵
             onBackPressed()
         }
+
     }
 
     private fun initObserver() {

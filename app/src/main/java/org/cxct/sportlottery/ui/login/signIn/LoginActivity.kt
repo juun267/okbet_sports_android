@@ -28,9 +28,7 @@ import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
-import org.cxct.sportlottery.util.BitmapUtil
-import org.cxct.sportlottery.util.MD5Util
-import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.boundsEditText.SimpleTextChangedWatcher
 
 
@@ -89,11 +87,11 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         binding.eetPassword.setText(viewModel.password)
         binding.etPassword.endIconImageButton.setOnClickListener {
             if (binding.etPassword.endIconResourceId == R.drawable.ic_eye_open) {
-                binding.eetPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                binding.eetPassword.transformationMethod = PasswordTransformationMethod.getInstance()
                 binding.etPassword.setEndIcon(R.drawable.ic_eye_close)
             } else {
                 binding.etPassword.setEndIcon(R.drawable.ic_eye_open)
-                binding.eetPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                binding.eetPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
             }
             binding.eetPassword.setSelection(binding.eetPassword.text.toString().length)
         }
@@ -116,6 +114,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
             }
         })
+        binding.btnLogin.requestFocus()
 //        et_password.eyeVisibility = View.GONE
 //        et_password.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
 //            if (hasFocus && et_password.eyeVisibility == View.GONE) {
@@ -156,6 +155,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 login()
             }
         }
+        binding.btnLogin.setTitleLetterSpacing()
     }
 
     private fun checkInputData(): Boolean {

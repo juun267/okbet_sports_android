@@ -8,13 +8,18 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_finance.view.*
+import kotlinx.android.synthetic.main.fragment_money_transfer_sub.*
 import kotlinx.android.synthetic.main.view_account_balance.*
 import kotlinx.android.synthetic.main.view_account_balance.view.*
+import kotlinx.android.synthetic.main.view_account_balance.view.btn_refresh
+import kotlinx.android.synthetic.main.view_account_balance.view.tv_currency_type
+import kotlinx.android.synthetic.main.view_account_balance_2.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.TextUtil
 
 
 class FinanceFragment : BaseSocketFragment<FinanceViewModel>(FinanceViewModel::class) {
@@ -68,7 +73,9 @@ class FinanceFragment : BaseSocketFragment<FinanceViewModel>(FinanceViewModel::c
 
         viewModel.userMoney.observe(this.viewLifecycleOwner, Observer {
             hideLoading()
-            tv_balance.text = ArithUtil.toMoneyFormat(it)
+            it?.apply {
+                tv_balance.text = TextUtil.format(it)
+            }
         })
     }
 

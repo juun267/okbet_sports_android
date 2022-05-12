@@ -19,6 +19,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
+import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
@@ -52,6 +53,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                     clickNotice()
                 },
                 onMenuClickListener = {
+                    clickMenu()
                     clickMenu()
                 },
                 onItemClickListener = {
@@ -91,6 +93,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        getConfigData()
         initOnClickListener()
         initRecommendView()
         initTitle()
@@ -117,6 +120,10 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         receiver.matchOddsLock.removeObservers(viewLifecycleOwner)
         receiver.globalStop.removeObservers(viewLifecycleOwner)
         receiver.producerUp.removeObservers(viewLifecycleOwner)
+    }
+
+    private fun getConfigData() {
+        viewModel.getConfigData()
     }
 
     private fun initOnClickListener() {
@@ -146,12 +153,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         }
     }
 
-    private fun clickMenu() {
-        when (activity) {
-            is GamePublicityActivity -> (activity as GamePublicityActivity).clickMenu()
-        }
-    }
-
     private fun goSwitchLanguagePage() {
         when (activity) {
             is GamePublicityActivity -> (activity as GamePublicityActivity).goSwitchLanguagePage()
@@ -162,7 +163,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         with(binding.rvPublicity) {
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = mPublicityAdapter
-            itemAnimator = null
         }
     }
 
@@ -241,6 +241,14 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 }
             }
         }
+
+        viewModel.gotConfig.observe(viewLifecycleOwner) { event ->
+            event?.getContentIfNotHandled()?.let { isReload ->
+                if (isReload) {
+                    mPublicityAdapter.updateToolbarBannerImage()
+                }
+            }
+        }
     }
 
     // TODO subscribe leagueChange: 此處尚無需實作邏輯, 看之後有沒有相關需求
@@ -295,6 +303,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         receiver.oddsChange.observe(viewLifecycleOwner, { event ->
             event?.let { oddsChangeEvent ->
                 SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
+                oddsChangeEvent.sortOddsMap()
                 val targetList = getNewestRecommendData()
                 targetList.forEachIndexed { index, recommend ->
                     if (recommend.id == oddsChangeEvent.eventId) {
@@ -373,6 +382,19 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     }
 
     /**
+     * 賠率排序
+     */
+    private fun OddsChangeEvent.sortOddsMap() {
+        this.odds.forEach { (_, value) ->
+            if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
+                value?.sortBy {
+                    it?.marketSort
+                }
+            }
+        }
+    }
+
+    /**
      * 篩選玩法
      * 更新翻譯、排序
      * */
@@ -432,7 +454,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     }
 
     private fun showStatistics(matchId: String?) {
-        StatisticsDialog.newInstance(matchId)
+        StatisticsDialog.newInstance(matchId, StatisticsDialog.StatisticsClickListener { clickMenu() })
             .show(childFragmentManager, StatisticsDialog::class.java.simpleName)
     }
 

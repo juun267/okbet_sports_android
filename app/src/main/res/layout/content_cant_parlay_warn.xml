@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_above="@+id/cl_total_info"
-    android:background="@color/colorWhite"
+    android:background="@color/color_191919_FCFCFC"
     android:divider="@drawable/divider_color_white8"
     android:orientation="vertical"
     android:showDividers="end">
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/bet_list_cant_parlay_warn"
-            android:textColor="@color/colorRed"
+            android:textColor="@color/color_E44438_e44438"
             android:textSize="@dimen/textSize12sp" />
     </LinearLayout>
 

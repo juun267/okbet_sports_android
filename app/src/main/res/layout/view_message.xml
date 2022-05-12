@@ -6,12 +6,12 @@
     android:layout_height="20dp"
     android:paddingStart="14dp"
     android:paddingEnd="14dp"
-    android:background="@color/colorWhite">
+    android:background="@color/color_191919_FCFCFC">
 
     <ImageView
         android:id="@+id/iv_broadcast_icon"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
         android:adjustViewBounds="true"
         android:contentDescription="@null"
         android:scaleType="centerCrop"

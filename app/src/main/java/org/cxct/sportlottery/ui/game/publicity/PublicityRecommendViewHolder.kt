@@ -1,9 +1,12 @@
 package org.cxct.sportlottery.ui.game.publicity
 
 import android.annotation.SuppressLint
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.databinding.ItemPublicityRecommendBinding
+import org.cxct.sportlottery.network.common.FoldState
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeString
 import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeWhiteIcon
@@ -14,6 +17,7 @@ import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.common.LeagueOddAdapter2
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
 import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.SvgUtil
 
@@ -24,12 +28,12 @@ class PublicityRecommendViewHolder(
     private var leagueOddAdapter: LeagueOddAdapter2? = null
 
     @SuppressLint("SetTextI18n")
-    fun bind(data: Recommend, oddsType: OddsType) {
+    fun bind(data: Recommend, oddsType: OddsType, notifySelf: () -> Unit) {
         leagueOddAdapter = LeagueOddAdapter2(data.matchType ?: MatchType.EARLY).apply {
             isTimerEnable =
                 (data.gameType == GameType.FT.key || data.gameType == GameType.BK.key || data.matchType == MatchType.PARLAY || data.matchType == MatchType.AT_START || data.matchType == MatchType.MY_EVENT)
             leagueOddListener = LeagueOddListener(
-                clickListenerPlayType = { matchId, matchInfoList, _ ->
+                clickListenerPlayType = { matchId, matchInfoList, _, _ ->
                     publicityAdapterListener.onClickPlayTypeListener(
                         gameType = data.gameType,
                         matchType = data.matchType,
@@ -82,16 +86,30 @@ class PublicityRecommendViewHolder(
 
             //LeagueView
             with(leagueView) {
-                GameConfigManager.getTitleBarBackground(data.gameType)?.let { titleRes ->
-                    root.setBackgroundResource(titleRes)
+                GameConfigManager.getTitleBarBackgroundInPublicPage(data.gameType,MultiLanguagesApplication.isNightMode)?.let { titleRes ->
+                    publicityLeagueBg.setImageResource(titleRes)
                 }
                 tvLeagueName.text = data.leagueName
                 ivFlag.setImageDrawable(SvgUtil.getSvgDrawable(itemView.context, data.categoryIcon))
+
+                root.setOnClickListener {
+                    data.unfold = if (data.unfold == FoldState.UNFOLD.code) {
+                        expandCheckList[data.leagueId] = false
+                        FoldState.FOLD.code
+                    } else {
+                        expandCheckList[data.leagueId] = true
+                        FoldState.UNFOLD.code
+                    }
+
+                    notifySelf()
+                }
             }
 
             //region 測試 - 資料結構與其他處不同
             val matchOddList = transferMatchOddList(data)
             //endregion
+
+            setupFold(data)
 
             with(rvLeagueList) {
                 layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
@@ -102,7 +120,24 @@ class PublicityRecommendViewHolder(
         }
     }
 
-    fun updateLeagueOddList(recommend: Recommend, oddsType: OddsType) {
+    fun update(recommend: Recommend, oddsType: OddsType) {
+        setupFold(recommend)
+
+        updateLeagueOddList(recommend, oddsType)
+    }
+
+    private fun setupFold(data: Recommend) {
+
+        expandCheckList[data.leagueId].apply {
+            if (this != null) {
+                data.unfold = if (this == true) FoldState.UNFOLD.code else FoldState.FOLD.code
+            }
+        }
+
+        binding.rvLeagueList.visibility = if (data.unfold == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
+    }
+
+    private fun updateLeagueOddList(recommend: Recommend, oddsType: OddsType) {
         leagueOddAdapter?.oddsType = oddsType
         val leagueOddData = leagueOddAdapter?.data
         if (leagueOddData?.isNullOrEmpty() == true) {

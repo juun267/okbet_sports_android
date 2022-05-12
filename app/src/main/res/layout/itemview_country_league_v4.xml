@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="56dp"
-    android:background="@color/colorWhite">
+    android:background="@color/color_191919_FCFCFC">
 
     <androidx.legacy.widget.Space
         android:id="@+id/space"
@@ -33,9 +33,10 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="12dp"
         android:ellipsize="end"
-        android:singleLine="true"
-        android:textColor="@color/colorBlackLight"
+        android:maxLines="3"
+        android:textColor="@color/color_e5e5e5_333333"
         android:textSize="@dimen/textSize14sp"
+        android:lineSpacingExtra="7dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/country_league_divider"
         app:layout_constraintStart_toEndOf="@id/country_league_choose"
@@ -47,7 +48,7 @@
         android:layout_width="1dp"
         android:layout_height="14dp"
         android:layout_marginEnd="55dp"
-        android:background="@color/colorGrayLight"
+        android:background="@color/color_8F8F8F_999999"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/country_league_pin"
         app:layout_constraintTop_toTopOf="parent" />
@@ -57,10 +58,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginEnd="18dp"
+        android:layout_marginEnd="5dp"
         android:ellipsize="end"
         android:singleLine="true"
-        android:textColor="@color/colorBlue"
+        android:textColor="@color/color_317FFF_0760D4"
         android:textSize="@dimen/textSize14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

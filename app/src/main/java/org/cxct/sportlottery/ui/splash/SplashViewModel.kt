@@ -70,6 +70,7 @@ class SplashViewModel(
                 }
                 if (result?.success == true) {
                     setConfig(result)
+                    gotConfigData = true
                     setBaseUrl(hostUrl, retrofit)
                     result.configData?.let { setRandomSocketUrl(it.wsHost) }
                     getPlayQuotaCom()
@@ -158,6 +159,7 @@ class SplashViewModel(
                 mIsGetFastHostDown = true
                 hostRepository.isNeedGetHost = false
                 setConfig(result)
+                gotConfigData = true
                 setBaseUrl(baseUrl, retrofit)
                 result.configData?.let { setRandomSocketUrl(it.wsHost) }
                 getPlayQuotaCom()
@@ -166,6 +168,7 @@ class SplashViewModel(
                 val listSize = mAppUrlList?.size ?: 0
                 if (++mCheckHostUrlCount >= listSize) { //當所有的 check request 都失敗才跳 error
                     setConfig(result)
+                    gotConfigData = false
                 }
             }
         }
@@ -184,7 +187,7 @@ class SplashViewModel(
         RequestManager.instance.retrofit = retrofit
     }
 
-    private fun setRandomSocketUrl(wsHost:String){
+    private fun setRandomSocketUrl(wsHost: String) {
         val wsList = wsHost.split(',')
         val randomIndex = Random.nextInt(wsList.size)
         Constants.setSocketUrl(wsList[randomIndex])

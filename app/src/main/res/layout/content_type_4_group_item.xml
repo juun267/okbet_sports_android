@@ -25,7 +25,7 @@
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/color_FFFFFF_000000"
             android:textSize="@dimen/textSize14sp"
             tools:text="皇家马德里" />
 
@@ -36,7 +36,7 @@
             android:layout_marginStart="8dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/color_FFFFFF_000000"
             android:textSize="@dimen/textSize14sp"
             tools:text="利物浦" />
 

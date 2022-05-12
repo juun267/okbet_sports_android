@@ -33,7 +33,7 @@
                 android:id="@+id/ll_control_connect"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorWhite"
+                android:background="@color/color_191919_FCFCFC"
                 app:layout_constraintHeight_default="wrap">
 
                 <ImageView
@@ -59,7 +59,7 @@
                         android:layout_width="@dimen/margin_2"
                         android:layout_height="@dimen/margin_12"
                         android:layout_marginStart="16dp"
-                        android:background="@color/colorBlue"
+                        android:background="@color/color_317FFF_0760D4"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_parlay_type"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@id/tv_parlay_type" />
@@ -69,7 +69,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_marginTop="@dimen/margin_10"
-                        android:background="@color/colorWhite6"
+                        android:background="@color/color_191919_EEEFF0"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_parlay_type" />
 
@@ -78,7 +78,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:textColor="@color/colorBlackLight"
+                        android:textColor="@color/color_e5e5e5_333333"
                         android:textSize="@dimen/textSize15sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="@+id/view"
@@ -93,7 +93,7 @@
                         android:layout_marginEnd="4dp"
                         android:gravity="center"
                         android:text="\@"
-                        android:textColor="@color/colorBlackLight"
+                        android:textColor="@color/color_e5e5e5_333333"
                         android:textSize="@dimen/textSize15sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toEndOf="@+id/tv_parlay_type"
@@ -105,7 +105,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="start"
-                        android:textColor="@color/colorBlackLight"
+                        android:textColor="@color/color_e5e5e5_333333"
                         android:textSize="@dimen/textSize15sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toEndOf="@+id/tv_symbol_odd"
@@ -139,10 +139,9 @@
                         android:letterSpacing="0.05"
                         android:maxLength="7"
                         android:paddingStart="10dp"
-                        android:textColor="@color/colorBlue"
-                        android:textColorHint="@color/colorSilverLight"
+                        android:textColor="@color/color_317FFF_0760D4"
+                        android:textColorHint="@color/color_404040_cccccc"
                         android:textSize="@dimen/textSize16sp"
-                        android:textStyle="bold"
                         app:layout_constraintBottom_toTopOf="@+id/tv_error_message"
                         app:layout_constraintEnd_toStartOf="@+id/tv_symbol_count"
                         app:layout_constraintStart_toStartOf="parent"
@@ -168,7 +167,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="@dimen/margin_4"
                         android:text="X"
-                        android:textColor="@color/colorBlackLight"
+                        android:textColor="@color/color_e5e5e5_333333"
                         android:textSize="@dimen/textSize14sp"
                         app:layout_constraintBottom_toBottomOf="@+id/et_bet"
                         app:layout_constraintEnd_toStartOf="@+id/tv_com_count"
@@ -179,7 +178,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/margin_12"
-                        android:textColor="@color/colorBlackLight"
+                        android:textColor="@color/color_e5e5e5_333333"
                         android:textSize="@dimen/textSize14sp"
                         app:layout_constraintBottom_toBottomOf="@id/et_bet"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -229,7 +228,7 @@
                             android:layout_height="match_parent"
                             android:gravity="end|center_vertical"
                             android:text="@string/bet_info_check_maximum_limit"
-                            android:textColor="@color/colorBlue"
+                            android:textColor="@color/color_317FFF_0760D4"
                             android:textSize="@dimen/textSize12sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -246,14 +245,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/bet_info_win_quota"
-                                android:textColor="@color/colorGray"
+                                android:textColor="@color/color_A3A3A3_666666"
                                 android:textSize="@dimen/textSize12sp" />
 
                             <TextView
                                 android:id="@+id/tv_winnable_amount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/colorBlue"
+                                android:textColor="@color/color_317FFF_0760D4"
                                 android:textSize="@dimen/textSize12sp"
                                 tools:text="9.720" />
 
@@ -270,7 +269,7 @@
                                 android:id="@+id/tv_max_bet_amount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/colorGray"
+                                android:textColor="@color/color_A3A3A3_666666"
                                 android:textSize="@dimen/textSize12sp"
                                 tools:text="9.720" />
 
@@ -278,7 +277,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/bet_info_bet_quota"
-                                android:textColor="@color/colorBlue"
+                                android:textColor="@color/color_317FFF_0760D4"
                                 android:textSize="@dimen/textSize12sp" />
 
 
@@ -293,7 +292,7 @@
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="@dimen/margin_4"
                         android:layout_marginBottom="@dimen/margin_4"
-                        android:textColor="@color/colorRed"
+                        android:textColor="@color/color_E44438_e44438"
                         android:textSize="@dimen/textSize13sp"
                         android:visibility="gone"
                         app:layout_constraintBottom_toTopOf="@+id/layoutKeyBoard"
@@ -305,7 +304,7 @@
                     <org.cxct.sportlottery.util.KeyboardView
                         android:id="@+id/layoutKeyBoard"
                         android:layout_width="match_parent"
-                        android:layout_height="150dp"
+                        android:layout_height="120dp"
                         android:visibility="gone"
                         app:layout_constraintTop_toBottomOf="@+id/tv_error_message" />
 
