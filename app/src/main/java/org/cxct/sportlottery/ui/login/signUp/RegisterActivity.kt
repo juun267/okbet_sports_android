@@ -136,6 +136,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 }
                 eetWithdrawalPwd.setSelection(eetWithdrawalPwd.text.toString().length)
             }
+            btnRegister.setTitleLetterSpacing()
         }
 
         binding.ivReturn.setOnClickListener(this)
