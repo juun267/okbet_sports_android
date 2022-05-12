@@ -75,9 +75,7 @@ class AccountHistoryNextAdapter(
         adapterScope.launch {
             val items = listOf(DataItem.TitleBar) + when {
                 list.isNullOrEmpty() -> listOf(DataItem.NoData)
-                isLastPage -> list.map { DataItem.Item(it) } + listOf(DataItem.Footer) + listOf(
-                    DataItem.BackToTop
-                )
+                isLastPage -> list.map { DataItem.Item(it) } + listOf(DataItem.Footer) + listOf(DataItem.BackToTop)
                 else -> list.map { DataItem.Item(it) }
             }
 

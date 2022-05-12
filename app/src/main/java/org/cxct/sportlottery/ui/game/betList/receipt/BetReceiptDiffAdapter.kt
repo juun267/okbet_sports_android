@@ -19,6 +19,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -247,13 +248,16 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
             formatForOdd: String,
             oddsType: String
         ): Spanned {
-            val playNameStr = if (!playName.isNullOrEmpty()) "<font color=#333333>$playName</font> " else ""
-            val spreadStr = if (!spread.isNullOrEmpty() || isShowSpread) "<font color=#B73A20>$spread</font> " else ""
+            val color_e5e5e5_333333 = MultiLanguagesApplication.getChangeModeColorCode("#333333", "#e5e5e5")
+            val color_F75452_b73a20 = MultiLanguagesApplication.getChangeModeColorCode("#B73A20", "#F75452")
+
+            val playNameStr = if (!playName.isNullOrEmpty()) "<font color=$color_e5e5e5_333333>$playName</font> " else ""
+            val spreadStr = if (!spread.isNullOrEmpty() || isShowSpread) "<font color=$color_F75452_b73a20>$spread</font> " else ""
 
             return HtmlCompat.fromHtml(
                 playNameStr +
                         spreadStr +
-                        "<font color=#333333>@ $formatForOdd</font> ", HtmlCompat.FROM_HTML_MODE_LEGACY
+                        "<font color=$color_e5e5e5_333333>@ $formatForOdd</font> ", HtmlCompat.FROM_HTML_MODE_LEGACY
             )
         }
     }
