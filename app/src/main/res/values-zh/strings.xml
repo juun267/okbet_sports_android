@@ -51,8 +51,12 @@
     <string name="register_privacy">按照</string>
     <string name="register_privacy_policy">隐私权政策</string>
     <string name="register_privacy_policy_promotions">向我发送更新和促销信息</string>
-    <string name="register_over_21">我已满21岁并且已阅读及同意</string>
+    <string name="register_over_21">我已满21岁并且已阅读及同意%s</string>
     <string name="register_rules">规则与条款</string>
+    <string name="register_not_ph_official">我不是菲律宾政府或与其相关机构的政府官员或雇员。</string>
+    <string name="register_not_ph_school">我不是菲律宾任何学校、学院或大学的学生。</string>
+    <string name="register_rule_okbet">我明白，如果我提供的信息被发现不正确，OkBet 有权根据其条款和条件第 5.1 - 5.2 条对我的帐户进行处罚。</string>
+    <string name="register_rule_agree_all">我同意上述所有条款和条件。</string>
     <string name="register_success">注册成功</string>
     <string name="register_watch_first">来去逛逛</string>
     <string name="register_jump">将在5秒后跳转至%s...</string>
@@ -372,7 +376,7 @@
     <string name="match_names_3">主 %s V.S %s 客</string>
     <string name="brackets">(%s)</string>
     <string name="bet_item">投注项目 -</string>
-    <string name="match_type_row_in_play">滚球</string>
+    <string name="match_type_row_in_play">滚球赛事</string>
     <string name="match_type_row_at_start">即将开赛</string>
     <string name="at_start_remain_minute">%s分钟</string>
     <string name="match_type_row_btn_bs">让球 ＆ 大小</string>
@@ -1099,7 +1103,7 @@
     <string name="hot_recommend">热门推荐</string>
     <string name="recommend_match">月均10,000\n滚球赛事</string>
     <string name="recommend_best_odd">最佳赔率\n最优服务</string>
-    <string name="recommend_safe">安全, 簡單,\n快速處理</string>
+    <string name="recommend_safe">安全, 简单,\n快速处理</string>
 <!--endregion-->
 
     <!--region 我的賽事-->

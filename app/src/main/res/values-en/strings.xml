@@ -51,8 +51,12 @@
     <string name="register_privacy">Send me updates and promotions in accordance with the</string>
     <string name="register_privacy_policy">&#160;Privacy Policy</string>
     <string name="register_privacy_policy_promotions"></string>
-    <string name="register_over_21">I am over 21 years of age and have read and agree to the&#160;</string>
-    <string name="register_rules">&#160;Rules and Terms</string>
+    <string name="register_over_21">I am over 21 years of age and have read and agree to the %s’s&#160;</string>
+    <string name="register_rules">&#160;Terms &amp; Conditions</string>
+    <string name="register_not_ph_official">I am not a government official and/or employee directly connected with the operation of the Philippine government or any of its agencies.</string>
+    <string name="register_not_ph_school">I am not a student of any school, college, or university in the Philippines.</string>
+    <string name="register_rule_okbet">I understand that should my provided information has been found incorrect, OkBet has the right to impose a penalty on my account subject to its Terms and Conditions Sections 5.1 - 5.2.</string>
+    <string name="register_rule_agree_all">I agree to all terms and conditions of the above.</string>
     <string name="register_success">Register successfully</string>
     <string name="register_watch_first">Explore the game</string>
     <string name="register_jump">The page will be jumping to %s 5 sec later.</string>
@@ -425,7 +429,7 @@
     <string name="odds_detail_play_type_dc_12">1/2</string>
     <string name="odds_detail_play_type_ou_o">Over</string>
     <string name="odds_detail_play_type_ou_u">Under</string>
-    <string name="bottom_sheet_close">Cancel</string>
+    <string name="bottom_sheet_close">Close</string>
     <string name="bottom_sheet_title_play_type">Change playing method</string>
     <string name="message_recharge_maintain">Please wait while the top-up system is being upgraded</string>
     <string name="title_bank">Bank</string>
@@ -468,11 +472,11 @@
     <string name="paymaya_recharge_hint">Please log in the member to check whether the PayMaya account is used before each payment. The company is not responsible for failing to check the overdue account.</string>
     <string name="paypal_recharge_hint">Please log in the member to check whether the Paypal account is used before each payment. The company is not responsible for failing to check the overdue account.</string>
     <string name="title_pay_channel">Payment channels</string>
-    <string name="title_choose_pay_channel">Select payment channels</string>
+    <string name="title_choose_pay_channel">Payment channels</string>
     <string name="title_pay_gap">Payment account</string>
-    <string name="title_choose_pay_gap">Select payment account</string>
+    <string name="title_choose_pay_gap">Payment account</string>
     <string name="title_pay_bank">Payment bank</string>
-    <string name="title_choose_pay_bank">Select payment bank</string>
+    <string name="title_choose_pay_bank">Payment bank</string>
     <string name="title_pay_msg">Payment information</string>
     <string name="title_pay_way">Payment method:</string>
     <string name="title_pay_money">Payment Amount:</string>
@@ -628,7 +632,7 @@
     <string name="bet_info_list_clean">Clear all</string>
     <string name="bet_info_bet_balance_insufficient">Balance is not enough</string>
     <string name="bet_info_different_game_type">Different ball species can not be linked for parlay</string>
-    <string name="bet_info_input_quota">Enter the amount</string>
+    <string name="bet_info_input_quota">Enter Stake</string>
     <string name="bet_info_check_maximum_limit">MAX BET</string>
     <string name="bet_info_bet_quota">bet amount</string>
     <string name="bet_info_win_quota">To win</string>
@@ -1061,7 +1065,7 @@
     <string name="text_search_try_another">Please try another keyword.</string>
     <!-- 搜尋 -->
     <string name="text_combo_title">Parlay</string>
-    <string name="text_combo_item">item</string>
+    <string name="text_combo_item">Item</string>
 
     <!-- 注單內球員玩法 -->
     <string name="sco_name_first">First Goalscorer</string>

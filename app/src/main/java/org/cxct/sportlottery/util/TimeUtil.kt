@@ -2,6 +2,7 @@ package org.cxct.sportlottery.util
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import timber.log.Timber
@@ -578,6 +579,20 @@ object TimeUtil {
         }
         return day
     }
+    fun getRemainMinute(timeStamp: Long?): Int {
+        var remainTime = 0L
+        var minute = 0
+        try {
+            timeStamp?.apply {
+                remainTime = timeStamp - System.currentTimeMillis()
+                minute = (remainTime / (1000*60)).toInt()
+            }
+        } catch (e: Exception) {
+            Timber.e("時間計算失敗!!! \n$e")
+            e.printStackTrace()
+        }
+        return minute
+    }
 
     /**
      * return: 時間是否為今日
@@ -590,6 +605,10 @@ object TimeUtil {
 
     fun isTimeAtStart(timeStamp: Long?): Boolean {
         return (getRemainTime(timeStamp) < 60 * 60 * 1000L) && getRemainTime(timeStamp) > 0
+    }
+
+    fun isLastHour(timeStamp: Long?): Boolean {
+        return (getRemainMinute(timeStamp) <= 60) && getRemainMinute(timeStamp) > 0
     }
 
     fun stampToDateHM(time: Long): String {

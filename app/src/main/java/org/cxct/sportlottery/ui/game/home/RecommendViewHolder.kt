@@ -50,7 +50,16 @@ class RecommendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 onClickMatchListener?.onClick(data)
             }
 
-            Glide.with(context).load(data.matchInfo?.img).apply(mRequestOptions).into(iv_match_image)
+            if (data.matchInfo?.img.isNullOrEmpty()) {
+                iv_match_image.setImageResource(R.drawable.bg_recommend_game_default)
+            } else {
+                Glide.with(context)
+                    .load(data.matchInfo?.img)
+                    .apply(mRequestOptions)
+                    .fallback(R.drawable.bg_recommend_game_default)
+                    .error(R.drawable.bg_recommend_game_default)
+                    .into(iv_match_image)
+            }
 
             tv_game_name_home.apply {
                 visibility = if (data.isOutright == 0) {

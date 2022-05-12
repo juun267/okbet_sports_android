@@ -173,7 +173,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     ) {
                         dismiss()
                         //(activity as GameActivity).
-                        viewModel.navTranStatus()
+//                        viewModel.navTranStatus()
                     }
                 }
             }
@@ -318,6 +318,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
             dismiss()
         }
+        binding.btnRecharge.setTitleLetterSpacing()
     }
 
 
@@ -757,10 +758,13 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     R.color.color_191919_FCFCFC
                 )
             )
+            binding.llOddsChanged.visibility = View.VISIBLE
             binding.ivBetLock.visibility = View.GONE
             binding.viewGrey.visibility = View.VISIBLE
+            binding.etBet.isEnabled = true
             binding.etBet.isFocusable = true
             binding.etBet.isFocusableInTouchMode = true
+            binding.etBet.setBackgroundResource(R.drawable.effect_select_bet_radius_4_edit_text)
             binding.etClickable.isEnabled = true
             cl_quota_detail.visibility = View.VISIBLE
             cl_close_waring.visibility = View.GONE
@@ -771,10 +775,13 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     R.color.color_141414_f3f3f3
                 )
             )
+            binding.llOddsChanged.visibility = View.GONE
             binding.ivBetLock.visibility = View.VISIBLE
             binding.viewGrey.visibility = View.INVISIBLE
+            binding.etBet.isEnabled = false
             binding.etBet.isFocusable = false
             binding.etBet.isFocusableInTouchMode = false
+            binding.etBet.setBackgroundResource(R.drawable.bg_square_shape_4dp_cccccc)
             binding.etClickable.isEnabled = false
             binding.layoutKeyBoard.hideKeyboard()
             cl_quota_detail.visibility = View.GONE
@@ -794,6 +801,10 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     oldOdds,
                     TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
                 )
+                
+                //若賠率有變更過就要一直存在
+                tv_odds_changed.text = getString(R.string.bet_info_odd_content_changed)
+                tv_odds_changed.visibility = View.VISIBLE
             }
         }
 

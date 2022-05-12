@@ -75,9 +75,7 @@ class AccountHistoryNextAdapter(
         adapterScope.launch {
             val items = listOf(DataItem.TitleBar) + when {
                 list.isNullOrEmpty() -> listOf(DataItem.NoData)
-                isLastPage -> list.map { DataItem.Item(it) } + listOf(DataItem.Footer) + listOf(
-                    DataItem.BackToTop
-                )
+                isLastPage -> list.map { DataItem.Item(it) } + listOf(DataItem.Footer) + listOf(DataItem.BackToTop)
                 else -> list.map { DataItem.Item(it) }
             }
 
@@ -175,8 +173,7 @@ class AccountHistoryNextAdapter(
                 }
 
                 tvDetail.paint.flags = Paint.UNDERLINE_TEXT_FLAG
-                // 暫時隱藏，配合後端更新再開啟
-                tvDetail.isVisible = false//(row.parlayComsDetailVOs ?: emptyList()).isNotEmpty()
+                tvDetail.isVisible = (row.parlayComsDetailVOs ?: emptyList()).isNotEmpty()
                 tvDetail.setOnClickListener {
                     val dialog = row.parlayComsDetailVOs?.let { list ->
                         ComboDetailDialog(it.context, list)

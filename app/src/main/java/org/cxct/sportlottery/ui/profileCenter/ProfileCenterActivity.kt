@@ -177,6 +177,7 @@ class ProfileCenterActivity :
     }
 
     private fun setupLogout() {
+        btn_logout.setTitleLetterSpacing()
         btn_logout.setOnClickListener {
             viewModel.doLogoutAPI()
             viewModel.doLogoutCleanUser {

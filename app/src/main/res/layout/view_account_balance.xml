@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:textColor="@color/color_317FFF_1F4780"
+        android:textColor="@color/color_317FFF_0760D4"
         android:textSize="@dimen/textSize20sp"
         android:textStyle="bold"
         tools:text="87,547,000.000"
@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:textColor="@color/color_317FFF_1F4780"
+        android:textColor="@color/color_317FFF_0760D4"
         tools:text="PHP"
         android:textSize="@dimen/textSize16sp" />
 

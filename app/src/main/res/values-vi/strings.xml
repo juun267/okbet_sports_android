@@ -51,12 +51,16 @@
     <string name="register_privacy">Gửi cho tôi thông tin cập nhật và khuyến mãi theo</string>
     <string name="register_privacy_policy">&#160;chính sách bảo mật</string>
     <string name="register_privacy_policy_promotions"></string>
-    <string name="register_over_21">Tôi đã 21 tuổi, đã đọc và đồng ý với&#160;</string>
+    <string name="register_over_21">Tôi trên 21 tuổi, đã đọc và đồng ý với&#160;</string>
+    <string name="register_rules">&#160;Điều khoản &amp; Điều kiện của %s</string>
+    <string name="register_not_ph_official">Tôi không phải là quan chức chính phủ và / hoặc nhân viên có liên hệ trực tiếp với hoạt động của chính phủ Philippines hoặc bất kỳ cơ quan nào của chính phủ.</string>
+    <string name="register_not_ph_school">Tôi không phải là sinh viên của bất kỳ trường học, cao đẳng hoặc đại học nào ở Philippines</string>
+    <string name="register_rule_okbet">Tôi hiểu rằng nếu thông tin tôi cung cấp bị phát hiện là không chính xác, OkBet có quyền áp dụng hình phạt đối với tài khoản của tôi theo Điều khoản và Điều kiện Phần 5.1 - 5.2.</string>
+    <string name="register_rule_agree_all">Tôi đồng ý với tất cả các điều khoản và điều kiện ở trên.</string>
     <string name="register_success">Đăng ký thành công</string>
     <string name="register_watch_first">Khám phá trò chơi</string>
     <string name="register_jump">Trang sẽ chuyển sang %s 5 giây sau đó.</string>
     <string name="register_recharge_now">Gửi tiền ngay bây giờ</string>
-    <string name="register_rules">&#160;luật &amp; điều khoản của</string>
     <string name="confirm_password">Xác nhận mật khẩu</string>
     <string name="hint_confirm_password">(Vui lòng nhập lại mật khẩu)</string>
     <string name="error_confirm_password">Mật khẩu đăng nhập 2 lần không đồng nhất</string>
@@ -1067,7 +1071,7 @@
     <string name="btm_navigation_hint">%1$s is a Registered Trade Mark, Brand and Business Name Owned by Ekxinum Inc. Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR).</string>
     <string name="front_side_result">Kết quả phía trước</string>
     <string name="reverse_side_result">Kết quả ngược lại</string>
-    <string name="btm_navigation_language">Việt Nam</string>
+    <string name="btm_navigation_language">Tiếng Việt</string>
     <string name="expire_date">Thời gian hết hạn chứng chỉ</string>
     <string name="self_limit_froze_impotent_1">Tự loại trừ có hiệu lực ngay sau khi thiết lập</string>
     <string name="self_limit_froze_impotent_2">Chúng tôi sẽ giữ số dư của bạn trong khoảng thời gian tự loại trừ đã định.</string>
