@@ -1009,7 +1009,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             if (showSubCornerTitle) {
                 //region 當前總角球數 (角球副標題)
                 val totalCorner = "$homeCornerKicks-$awayCornerKicks"
-                val subCornerTitle = "Current Total: $totalCorner"
+                val subCornerTitle = "${itemView.context.getString(R.string.current_corner)} $totalCorner"
                 val subCornerTitleTextColor =
                     ContextCompat.getColor(MultiLanguagesApplication.appContext, R.color.color_FF9143_cb7c2e)
                 val subCornerTitleSpan = SpannableString(subCornerTitle)
