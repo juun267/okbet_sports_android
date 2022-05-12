@@ -514,12 +514,12 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 else
                     Typeface.NORMAL
 
-                //隊伍名稱粗體隱藏
-                /*league_odd_match_score_home.apply { setTypeface(this.typeface, homeStrongType) }
+                //隊伍名稱粗體
+                league_odd_match_score_home.apply { setTypeface(this.typeface, homeStrongType) }
                 league_odd_match_name_home.apply { setTypeface(this.typeface, homeStrongType) }
 
                 league_odd_match_score_away.apply { setTypeface(this.typeface, awayStrongType) }
-                league_odd_match_name_away.apply { setTypeface(this.typeface, awayStrongType) }*/
+                league_odd_match_name_away.apply { setTypeface(this.typeface, awayStrongType) }
             }
         }
 
