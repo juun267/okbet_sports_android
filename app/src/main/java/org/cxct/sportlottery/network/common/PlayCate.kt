@@ -361,25 +361,19 @@ enum class PlayCate(val value: String) {
          */
         fun needShowCurrentCorner(code: String?): Boolean {
             return when (code) {
-                CORNER_1ST_HDP.value,
-                CORNER_1ST_OE.value,
-                CORNER_1ST_OU.value,
-                CORNER_2ST_OU.value,
-                CORNER_HDP.value,
-                CORNER_HDP_SEG1.value,
-                CORNER_HDP_SEG2.value,
-                CORNER_HDP_SEG3.value,
-                CORNER_HDP_SEG4.value,
-                CORNER_HDP_SEG5.value,
-                CORNER_HDP_SEG6.value,
-                CORNER_OE.value,//角球单/双
-                CORNER_OU.value,//角球大/小
-                CORNER_OU_SEG1.value,
-                CORNER_OU_SEG2.value,
-                CORNER_OU_SEG3.value,
-                CORNER_OU_SEG4.value,
-                CORNER_OU_SEG5.value,
-                CORNER_OU_SEG6.value -> true
+                CORNER_OE.value,//角球: 单 / 双
+                CORNER_HDP.value,//角球: 让球
+                CORNER_OU.value,//角球: 大 / 小
+                CORNER_SINGLE.value,//角球: 独赢
+                CORNER_1ST_HDP.value,//角球:让球-上半场
+                CORNER_1ST_SINGLE.value,//角球:独赢-上半场
+                CORNER_1ST_OE.value,//角球:单/双-上半场
+                CORNER_DC.value,//角球:双重机会
+                N_CORNER_GOAL.value,//角球:第{S}个角球
+                CORNER_FIRST.value,//最先角球
+                CORNER_LAST.value,//最后角球
+                CORNER_1ST_OU.value//角球大/小-上半场
+                -> true
                 else -> false
             }
         }
