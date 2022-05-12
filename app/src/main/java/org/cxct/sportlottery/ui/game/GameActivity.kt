@@ -496,7 +496,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         when (position) {
             0 -> {
                 viewModel.switchMainMatchType()
-                navHomeFragment()
             }
             1 -> {
                 viewModel.switchMatchType(MatchType.IN_PLAY)
@@ -814,15 +813,16 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             } else if (it?.entranceMatchType == MatchType.DETAIL) {
 
             } else {
-//                viewModel.getAllPlayCategoryBySpecialMatchType(it?.couponCode ?: "")
                 navGameFragment(it!!.entranceMatchType)
             }
         }
 
-
         viewModel.curMatchType.observe(this) {
             it?.let {
-                navGameFragment(it)
+                when(it){
+                    MatchType.MAIN -> navHomeFragment()
+                    else -> navGameFragment(it)
+                }
             }
         }
 
@@ -1069,7 +1069,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         tab?.let {
             clearSelectTabState()
-
+            tabLayout.getTabAt(position)?.select()
             it.tv_title?.isSelected = true
             it.tv_number?.isSelected = true
         }
