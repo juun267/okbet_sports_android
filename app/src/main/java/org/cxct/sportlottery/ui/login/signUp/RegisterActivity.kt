@@ -36,6 +36,7 @@ import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
 import org.cxct.sportlottery.util.BitmapUtil
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.setTextWithStrokeWidth
 import java.util.*
 
 class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::class),
@@ -310,6 +311,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 eetVerificationCode.text.toString(),
                 cbAgreement.isChecked
             )
+            btnRegister.setTextWithStrokeWidth(getString(R.string.btn_register), 0.7f)
         }
     }
 
