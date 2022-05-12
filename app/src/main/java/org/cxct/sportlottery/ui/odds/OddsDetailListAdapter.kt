@@ -1002,48 +1002,56 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             //endregion
 
             val cornerTitleContentBuilder = SpannableStringBuilder()
-            //region 當前總角球數 (角球副標題)
-            val totalCorner =
-                if (homeCornerKicks != null && awayCornerKicks != null) "$homeCornerKicks-$awayCornerKicks" else ""
-            val subCornerTitle = "Current Total: $totalCorner"
-            val subCornerTitleTextColor = ContextCompat.getColor(MultiLanguagesApplication.appContext, R.color.color_FF9143_cb7c2e)
-            val subCornerTitleSpan = SpannableString(subCornerTitle)
 
-            with(subCornerTitleSpan) {
-                subCornerTitle.length.let { endIndex ->
-                    //文字體
-                    setSpan(
-                        StyleSpan(Typeface.NORMAL),
-                        0,
-                        endIndex,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                    //文字顏色
-                    setSpan(
-                        ForegroundColorSpan(subCornerTitleTextColor),
-                        0,
-                        endIndex,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                    //文字大小
-                    setSpan(
-                        AbsoluteSizeSpan(12, true),
-                        0,
-                        endIndex,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                    //行高
-                    //TODO 低版本問題: 低於VERSION_CODES.Q無法使用LineHeightSpan, setLineSpacing會調整到每一行的距離, 有些本身Title就是兩行的也會跟著被調整
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        setSpan(LineHeightSpan.Standard(16.dp), 0, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                    } else {
-                        tvGameName?.setLineSpacing(4f, 1f)
+            //若沒有角球資料或為null時不需顯示當前總角球列
+            val showSubCornerTitle = homeCornerKicks != null && awayCornerKicks != null
+
+            if (showSubCornerTitle) {
+                //region 當前總角球數 (角球副標題)
+                val totalCorner = "$homeCornerKicks-$awayCornerKicks"
+                val subCornerTitle = "Current Total: $totalCorner"
+                val subCornerTitleTextColor =
+                    ContextCompat.getColor(MultiLanguagesApplication.appContext, R.color.color_FF9143_cb7c2e)
+                val subCornerTitleSpan = SpannableString(subCornerTitle)
+
+                with(subCornerTitleSpan) {
+                    subCornerTitle.length.let { endIndex ->
+                        //文字體
+                        setSpan(
+                            StyleSpan(Typeface.NORMAL),
+                            0,
+                            endIndex,
+                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                        //文字顏色
+                        setSpan(
+                            ForegroundColorSpan(subCornerTitleTextColor),
+                            0,
+                            endIndex,
+                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                        //文字大小
+                        setSpan(
+                            AbsoluteSizeSpan(12, true),
+                            0,
+                            endIndex,
+                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                        //行高
+                        //TODO 低版本問題: 低於VERSION_CODES.Q無法使用LineHeightSpan, setLineSpacing會調整到每一行的距離, 有些本身Title就是兩行的也會跟著被調整
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            setSpan(LineHeightSpan.Standard(16.dp), 0, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                        } else {
+                            tvGameName?.setLineSpacing(4f, 1f)
+                        }
                     }
                 }
+                //endregion
+                return cornerTitleContentBuilder.append(upperCaseSpannableString).append("\n")
+                    .append(subCornerTitleSpan)
+            } else {
+                return cornerTitleContentBuilder.append(upperCaseSpannableString)
             }
-            //endregion
-
-            return cornerTitleContentBuilder.append(upperCaseSpannableString).append("\n").append(subCornerTitleSpan)
         }
 
         private val epsAdapter by lazy { TypeEPSAdapter() }
