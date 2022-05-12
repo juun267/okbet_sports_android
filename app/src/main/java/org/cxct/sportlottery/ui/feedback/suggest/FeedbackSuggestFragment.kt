@@ -10,6 +10,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
+import org.cxct.sportlottery.util.setTextWithStrokeWidth
 
 class FeedbackSuggestFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel::class) {
 
@@ -36,6 +37,7 @@ class FeedbackSuggestFragment : BaseFragment<FeedbackViewModel>(FeedbackViewMode
         btn_submit.setOnClickListener {
             view?.findNavController()?.navigate(R.id.action_feedbackSuggestFragment_to_feedbackSubmitFragment)
         }
+        btn_submit.setTextWithStrokeWidth(getString(R.string.write_suggestion), 0.7f)
     }
 
 }
