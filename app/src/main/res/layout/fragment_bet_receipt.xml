@@ -98,6 +98,7 @@
             android:id="@+id/rv_bet_receipt"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:overScrollMode="never"
             app:layout_constraintBottom_toTopOf="@+id/cl_total_info"
             app:layout_constraintTop_toBottomOf="@+id/cl_title"
             tools:listitem="@layout/item_match_receipt" />

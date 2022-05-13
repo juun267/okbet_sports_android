@@ -215,6 +215,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         //initData()
         initView()
         initQuota()
+        initButton()
         initEditText()
         initObserve()
         initSocketObserver()
@@ -321,7 +322,11 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         binding.btnRecharge.setTitleLetterSpacing()
     }
 
-
+    private fun initButton() {
+        cl_close_waring.setOnClickListener {
+            removeClosedPlat()
+        }
+    }
 
     private fun dismiss() {
         activity?.onBackPressed()
@@ -768,6 +773,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             binding.etClickable.isEnabled = true
             cl_quota_detail.visibility = View.VISIBLE
             cl_close_waring.visibility = View.GONE
+            tv_remove.visibility = View.GONE
         } else {
             binding.clItemBackground.setBackgroundColor(
                 ContextCompat.getColor(
@@ -786,6 +792,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             binding.layoutKeyBoard.hideKeyboard()
             cl_quota_detail.visibility = View.GONE
             cl_close_waring.visibility = View.VISIBLE
+            tv_remove.visibility = View.VISIBLE
         }
 
         if (matchOdd.spreadState != SpreadState.SAME.state || matchOdd.oddState != OddState.SAME.state) {
@@ -960,6 +967,15 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         } else {
             mUserMoney.toLong()
         }
+    }
+
+    /**
+     * 移除盤口關閉的投注選項
+     */
+    private fun removeClosedPlat() {
+        viewModel.removeClosedPlatBetInfo()
+        viewModel.removeBetInfoSingle()
+        dismiss()
     }
 
 }

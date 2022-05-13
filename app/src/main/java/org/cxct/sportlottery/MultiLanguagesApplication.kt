@@ -265,7 +265,10 @@ class MultiLanguagesApplication : Application() {
 
         fun saveNightMode(nightMode: Boolean) {
             isNightMode = nightMode
+            colorModeChanging = true
         }
+
+        var colorModeChanging: Boolean = false
 
         var isNightMode: Boolean
             get() = myPref?.getBoolean("is_night_mode", false) ?: false
