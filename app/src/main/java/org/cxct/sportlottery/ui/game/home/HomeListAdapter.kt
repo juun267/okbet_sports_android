@@ -78,7 +78,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     )
 
     // 接收任何型別
-    private var mDataList = CopyOnWriteArrayList<Any>()
+    var mDataList = CopyOnWriteArrayList<Any>()
 
     private var mUpdateHighLightInterfaceListener = HashMap<Int, UpdateHighLightInterface>()
 
