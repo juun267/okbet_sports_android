@@ -1870,26 +1870,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                 if (it.isNullOrEmpty() || mUserMoney == 0.0) 0.0 else it.toString()
                                     .toDouble()
 
-                            if(it.isNullOrEmpty()){
-                                if (!ignore) {
-                                    ignore = true
-                                    setText("")
-                                    setSelection(text.length)
-                                    ignore = false
-                                }
-                                return
-                            }
-
-                            if (inputValue == 0.0) {
-                                if (!ignore) {
-                                    ignore = true
-                                    setText("0")
-                                    setSelection(text.length)
-                                    ignore = false
-                                }
-                                return
-                            }
-
                             if (inputValue > inputMaxMoney) {
                                 val maxValue = TextUtil.formatInputMoney(data.max)
                                 if (!ignore) {
@@ -1946,6 +1926,33 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             data.betAmount = TextUtil.formatInputMoney(inputValue).toDouble()
                             data.inputBetAmountStr = it.toString()
                             onItemClickListener.refreshBetInfoTotal()
+
+
+                            if(it.isNullOrEmpty()){
+                                if (!ignore) {
+                                    ignore = true
+                                    setText("")
+                                    setSelection(text.length)
+                                    ignore = false
+                                }
+                                itemView.apply {
+                                    tv_check_maximum_limit.visibility = View.GONE
+                                    ll_bet_quota_detail.visibility = View.GONE
+                                    ll_win_quota_detail.visibility = View.VISIBLE
+                                    checkMinimumLimit(data)
+                                }
+                                return
+                            }
+
+                            if (inputValue == 0.0) {
+                                if (!ignore) {
+                                    ignore = true
+                                    setText("0")
+                                    setSelection(text.length)
+                                    ignore = false
+                                }
+                                return
+                            }
                         }
 
                         override fun beforeTextChanged(
