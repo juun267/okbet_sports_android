@@ -226,13 +226,9 @@ class AccountHistoryNextAdapter(
                 binding.tvGameTypePlayCate.text = "${GameType.getGameTypeString(binding.tvGameTypePlayCate.context, row.gameType)} $playCateName"
 
                 if (!homeName.isNullOrEmpty() && !awayName.isNullOrEmpty()) {
-                    binding.tvTeamNames.text =
-                        String.format(binding.tvTeamNames.context.getString(R.string.match_names_2),
-                            homeName,
-                            awayName)
+                    binding.tvTeamNames.setTeamNames(15, homeName, awayName)
                     binding.tvTeamNames.visibility = View.VISIBLE
-                }
-                else {
+                } else {
                     binding.tvTeamNames.visibility = View.GONE
                 }
 

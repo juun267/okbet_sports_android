@@ -58,9 +58,7 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
             result.receipt?.singleBets?.firstOrNull()?.apply {
                 matchOdds?.firstOrNull()?.apply {
                     view.tvLeague.text = leagueName
-                    val teamNamesStr =
-                        if (homeName?.length ?: 0 > 15) "$homeName v\n$awayName" else "$homeName v $awayName"
-                    view.tv_team_names.text = teamNamesStr
+                    view.tv_team_names.setTeamNames(15, homeName, awayName)
                     view.tv_match_type.tranByPlayCode(playCode, playCateName)
                 }
 
