@@ -387,7 +387,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 setupOddInfo(itemData, currentOddsType, betListSize, onItemClickListener)
                 setupMinimumLimitMessage(itemData)
-                onItemClickListener.refreshBetInfoTotal()
 
                 val parlayMaxBet = itemData.parlayOdds?.max?.toLong() ?: 0
                 val inputMaxMoney = if (parlayMaxBet > 0) {
@@ -412,6 +411,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             ll_bet_quota_detail.visibility = View.GONE
                             ll_win_quota_detail.visibility = View.VISIBLE
                             checkMinimumLimit(itemData)
+                            itemData.realAmount = 0.0
+                            tv_win_quota.text = TextUtil.format(0.0)
                         } else {
 
                             //輸入時 直接顯示可贏額
@@ -1860,7 +1861,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                     setupOddInfo(data, currentOddsType)
                     setupMinimumLimitMessage(data)
-                    onItemClickListener.refreshBetInfoTotal()
                     /* set listener */
                     val tw: TextWatcher?
                     var ignore = false
@@ -1869,16 +1869,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             val inputValue =
                                 if (it.isNullOrEmpty() || mUserMoney == 0.0) 0.0 else it.toString()
                                     .toDouble()
-
-                            if (inputValue == 0.0) {
-                                if (!ignore) {
-                                    ignore = true
-                                    setText("0")
-                                    setSelection(text.length)
-                                    ignore = false
-                                }
-                                return
-                            }
 
                             if (inputValue > inputMaxMoney) {
                                 val maxValue = TextUtil.formatInputMoney(data.max)
@@ -1901,6 +1891,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                     ll_win_quota_detail.visibility = View.VISIBLE
                                     checkMinimumLimit(data)
                                 }
+
+                                itemView.tv_win_quota.text = TextUtil.format(0)
                             } else {
 
                                 //輸入時 直接顯示可贏額
@@ -1936,6 +1928,33 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             data.betAmount = TextUtil.formatInputMoney(inputValue).toDouble()
                             data.inputBetAmountStr = it.toString()
                             onItemClickListener.refreshBetInfoTotal()
+
+
+                            if(it.isNullOrEmpty()){
+                                if (!ignore) {
+                                    ignore = true
+                                    setText("")
+                                    setSelection(text.length)
+                                    ignore = false
+                                }
+                                itemView.apply {
+                                    tv_check_maximum_limit.visibility = View.GONE
+                                    ll_bet_quota_detail.visibility = View.GONE
+                                    ll_win_quota_detail.visibility = View.VISIBLE
+                                    checkMinimumLimit(data)
+                                }
+                                return
+                            }
+
+                            if (inputValue == 0.0) {
+                                if (!ignore) {
+                                    ignore = true
+                                    setText("0")
+                                    setSelection(text.length)
+                                    ignore = false
+                                }
+                                return
+                            }
                         }
 
                         override fun beforeTextChanged(
