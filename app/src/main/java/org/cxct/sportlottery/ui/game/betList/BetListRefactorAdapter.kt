@@ -1826,6 +1826,16 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                 if (it.isNullOrEmpty() || mUserMoney == 0.0) 0.0 else it.toString()
                                     .toDouble()
 
+                            if(it.isNullOrEmpty()){
+                                if (!ignore) {
+                                    ignore = true
+                                    setText("")
+                                    setSelection(text.length)
+                                    ignore = false
+                                }
+                                return
+                            }
+
                             if (inputValue == 0.0) {
                                 if (!ignore) {
                                     ignore = true
