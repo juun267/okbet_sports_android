@@ -90,10 +90,10 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     private var isSoonResult = false
 
     //TODO 檢查 mSubscribeInPlayGameID、mSubscribeAtStartGameID 與tableInPlayMap、tableSoonMap 的功用
-    private var mSubscribeInPlayGameID : MutableList<String> = mutableListOf()
-    private var mSubscribeAtStartGameID : MutableList<String> = mutableListOf()
-    private var mSubscribeRecommendGameID : MutableList<String> = mutableListOf()
-    private var mSubscribeHighlightGameID : MutableList<String> = mutableListOf()
+    private var mSubscribeInPlayGameID: MutableList<String> = mutableListOf()
+    private var mSubscribeAtStartGameID: MutableList<String> = mutableListOf()
+    private var mSubscribeRecommendGameID: MutableList<String> = mutableListOf()
+    private var mSubscribeHighlightGameID: MutableList<String> = mutableListOf()
 
     private val mOnClickOddListener = object : OnClickOddListener {
         override fun onClickBet(
@@ -196,52 +196,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     when (newState) {
                         //停止
                         RecyclerView.SCROLL_STATE_IDLE -> {
-                            getVisibleRangePosition().forEach { itemPosition ->
-                                val viewByPosition = layoutManager?.findViewByPosition(itemPosition)
-                                viewByPosition?.let {
-                                    when (getChildViewHolder(it)) {
-                                        is ViewHolderHdpOu -> {
-                                            val viewHolder = getChildViewHolder(it) as ViewHolderHdpOu
-                                            subscribeChannelHall(
-                                                viewHolder.mMatchOdd?.matchInfo?.gameType,
-                                                viewHolder.mMatchOdd?.matchInfo?.id
-                                            )
-                                            Log.d(
-                                                "[subscribe]",
-                                                "訂閱 " +
-                                                        "${viewHolder.mMatchOdd?.matchInfo?.homeName} vs " +
-                                                        "${viewHolder.mMatchOdd?.matchInfo?.awayName}"
-                                            )
-                                        }
-                                        is RecommendViewHolder -> {
-                                            val viewHolder = getChildViewHolder(it) as RecommendViewHolder
-                                            subscribeChannelHall(
-                                                viewHolder.mMatchOdd?.matchInfo?.gameType,
-                                                viewHolder.mMatchOdd?.matchInfo?.id
-                                            )
-                                            Log.d(
-                                                "[subscribe]",
-                                                "訂閱 " +
-                                                        "${viewHolder.mMatchOdd?.matchInfo?.homeName} vs " +
-                                                        "${viewHolder.mMatchOdd?.matchInfo?.awayName}"
-                                            )
-                                        }
-                                        is GameTableViewHolder -> {
-                                            val viewHolder = getChildViewHolder(it) as GameTableViewHolder
-                                            subscribeChannelHall(
-                                                viewHolder.mMatchOdd?.matchInfo?.gameType,
-                                                viewHolder.mMatchOdd?.matchInfo?.id
-                                            )
-                                            Log.d(
-                                                "[subscribe]",
-                                                "訂閱 " +
-                                                        "${viewHolder.mMatchOdd?.matchInfo?.homeName} vs " +
-                                                        "${viewHolder.mMatchOdd?.matchInfo?.awayName}"
-                                            )
-                                        }
-                                    }
-                                }
-                            }
+                            subscribeLogic()
                         }
 
                         //手指滾動
@@ -349,8 +304,10 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
     private fun initTable() {
         mHomeListAdapter.onClickOddListener = object : OnClickOddListener {
-            override fun onClickBet(matchOdd: MatchOdd, odd: Odd, playCateCode: String, playCateName: String?,
-                                    betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?) {
+            override fun onClickBet(
+                matchOdd: MatchOdd, odd: Odd, playCateCode: String, playCateName: String?,
+                betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
+            ) {
                 addOddsDialog(matchOdd, odd, playCateCode, playCateName, betPlayCateNameMap)
             }
         }
@@ -747,54 +704,52 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         }
 
         //第三方遊戲清單
-        with(viewModel) {
-            gameCateDataList.observe(viewLifecycleOwner) {
-                updateInPlayUI(it)
-            }
+        viewModel.gameCateDataList.observe(viewLifecycleOwner) {
+            updateInPlayUI(it)
+        }
 
-            matchPreloadInPlay.observe(viewLifecycleOwner) {
-                it.getContentIfNotHandled()?.let { result ->
-                    mHomeGameTableBarItemData.inPlayResult = result
-                    isInPlayResult = true
+        viewModel.matchPreloadInPlay.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { result ->
+                mHomeGameTableBarItemData.inPlayResult = result
+                isInPlayResult = true
 
-                    //若選擇滾球或初始化時
-                    if (mSelectMatchType == MatchType.IN_PLAY || mSelectMatchType == MatchType.MAIN && (mHomeGameTableBarItemData.inPlayResult?.matchPreloadData?.num
-                            ?: 0) > 0
-                    ) {
-                        //滾球有資料時
+                //若選擇滾球或初始化時
+                if (mSelectMatchType == MatchType.IN_PLAY || mSelectMatchType == MatchType.MAIN && (mHomeGameTableBarItemData.inPlayResult?.matchPreloadData?.num
+                        ?: 0) > 0
+                ) {
+                    //滾球有資料時
 
-                        //初始化時
-                        if (mSelectMatchType == MatchType.MAIN) {
-                            mSelectMatchType = MatchType.IN_PLAY
-                        }
-
-                        refreshTable(mHomeGameTableBarItemData.inPlayResult)
-                    } else if (mSelectMatchType == MatchType.MAIN) {
-                        //滾球沒資料且初始化時
-                        mSelectMatchType = MatchType.AT_START
-                        if (isSoonResult) {
-                            //若即將開賽已經取得資料
-                            refreshTable(mHomeGameTableBarItemData.atStartResult)
-                        }
+                    //初始化時
+                    if (mSelectMatchType == MatchType.MAIN) {
+                        mSelectMatchType = MatchType.IN_PLAY
                     }
 
-                    setupTableSelected()
-                    setGameTableBar()
-                }
-            }
-
-            matchPreloadAtStart.observe(viewLifecycleOwner) {
-                it.getContentIfNotHandled()?.let { result ->
-                    mHomeGameTableBarItemData.atStartResult = result
-                    isSoonResult = true
-                    if (mSelectMatchType == MatchType.AT_START && (mHomeGameTableBarItemData.atStartResult?.matchPreloadData?.num
-                            ?: 0) > 0
-                    ) {
+                    refreshTable(mHomeGameTableBarItemData.inPlayResult)
+                } else if (mSelectMatchType == MatchType.MAIN) {
+                    //滾球沒資料且初始化時
+                    mSelectMatchType = MatchType.AT_START
+                    if (isSoonResult) {
+                        //若即將開賽已經取得資料
                         refreshTable(mHomeGameTableBarItemData.atStartResult)
                     }
-                    setupTableSelected()
-                    setGameTableBar()
                 }
+
+                setupTableSelected()
+                setGameTableBar()
+            }
+        }
+
+        viewModel.matchPreloadAtStart.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { result ->
+                mHomeGameTableBarItemData.atStartResult = result
+                isSoonResult = true
+                if (mSelectMatchType == MatchType.AT_START && (mHomeGameTableBarItemData.atStartResult?.matchPreloadData?.num
+                        ?: 0) > 0
+                ) {
+                    refreshTable(mHomeGameTableBarItemData.atStartResult)
+                }
+                setupTableSelected()
+                setGameTableBar()
             }
         }
 
@@ -876,6 +831,59 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     private fun setGameTableBar() {
         if (!isInPlayResult || !isSoonResult) return
         mHomeListAdapter.setGameTableBar(mHomeGameTableBarItemData)
+        unSubscribeChannelHallAll()
+        rvList.post {
+            rvList.subscribeLogic()
+        }
+    }
+
+    private fun RecyclerView.subscribeLogic() {
+        getVisibleRangePosition().forEach { itemPosition ->
+            val viewByPosition = layoutManager?.findViewByPosition(itemPosition)
+            viewByPosition?.let {
+                when (getChildViewHolder(it)) {
+                    is ViewHolderHdpOu -> {
+                        val viewHolder = getChildViewHolder(it) as ViewHolderHdpOu
+                        subscribeChannelHall(
+                            viewHolder.mMatchOdd?.matchInfo?.gameType,
+                            viewHolder.mMatchOdd?.matchInfo?.id
+                        )
+                        Log.d(
+                            "[subscribe]",
+                            "訂閱 " +
+                                    "${viewHolder.mMatchOdd?.matchInfo?.homeName} vs " +
+                                    "${viewHolder.mMatchOdd?.matchInfo?.awayName}"
+                        )
+                    }
+                    is RecommendViewHolder -> {
+                        val viewHolder = getChildViewHolder(it) as RecommendViewHolder
+                        subscribeChannelHall(
+                            viewHolder.mMatchOdd?.matchInfo?.gameType,
+                            viewHolder.mMatchOdd?.matchInfo?.id
+                        )
+                        Log.d(
+                            "[subscribe]",
+                            "訂閱 " +
+                                    "${viewHolder.mMatchOdd?.matchInfo?.homeName} vs " +
+                                    "${viewHolder.mMatchOdd?.matchInfo?.awayName}"
+                        )
+                    }
+                    is GameTableViewHolder -> {
+                        val viewHolder = getChildViewHolder(it) as GameTableViewHolder
+                        subscribeChannelHall(
+                            viewHolder.mMatchOdd?.matchInfo?.gameType,
+                            viewHolder.mMatchOdd?.matchInfo?.id
+                        )
+                        Log.d(
+                            "[subscribe]",
+                            "訂閱 " +
+                                    "${viewHolder.mMatchOdd?.matchInfo?.homeName} vs " +
+                                    "${viewHolder.mMatchOdd?.matchInfo?.awayName}"
+                        )
+                    }
+                }
+            }
+        }
     }
 
     private fun initSocketObserver() {
@@ -1219,8 +1227,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 selectedSportType?.let {
                     mHomeListAdapter.gameTypeListener?.onClick(it)
                 }
-            }
-            else {
+            } else {
                 //default 選擇第一個
                 mHomeListAdapter.getDataSport().firstOrNull()?.let {
                     mHomeListAdapter.gameTypeListener?.onClick(it)
