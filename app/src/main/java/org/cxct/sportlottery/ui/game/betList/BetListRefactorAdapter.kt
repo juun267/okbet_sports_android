@@ -1891,6 +1891,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                     ll_win_quota_detail.visibility = View.VISIBLE
                                     checkMinimumLimit(data)
                                 }
+
+                                itemView.tv_win_quota.text = TextUtil.format(0)
                             } else {
 
                                 //輸入時 直接顯示可贏額
