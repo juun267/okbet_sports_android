@@ -387,7 +387,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 setupOddInfo(itemData, currentOddsType, betListSize, onItemClickListener)
                 setupMinimumLimitMessage(itemData)
-                onItemClickListener.refreshBetInfoTotal()
 
                 val parlayMaxBet = itemData.parlayOdds?.max?.toLong() ?: 0
                 val inputMaxMoney = if (parlayMaxBet > 0) {
@@ -1860,7 +1859,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                     setupOddInfo(data, currentOddsType)
                     setupMinimumLimitMessage(data)
-                    onItemClickListener.refreshBetInfoTotal()
                     /* set listener */
                     val tw: TextWatcher?
                     var ignore = false
