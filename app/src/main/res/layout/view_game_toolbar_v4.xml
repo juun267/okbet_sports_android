@@ -19,7 +19,7 @@
     <ImageButton
         android:id="@+id/game_toolbar_back"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:background="@color/transparent_black_0"
         android:paddingHorizontal="16dp"
         android:src="@drawable/ic_arrowleft"

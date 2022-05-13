@@ -53,6 +53,7 @@
     <string name="register_privacy_policy_promotions"></string>
     <string name="register_over_21">I am over 21 years of age and have read and agree to the %s’s&#160;</string>
     <string name="register_rules">&#160;Terms &amp; Conditions</string>
+    <string name="register_rules_2nd_half"></string>
     <string name="register_not_ph_official">I am not a government official and/or employee directly connected with the operation of the Philippine government or any of its agencies.</string>
     <string name="register_not_ph_school">I am not a student of any school, college, or university in the Philippines.</string>
     <string name="register_rule_okbet">I understand that should my provided information has been found incorrect, OkBet has the right to impose a penalty on my account subject to its Terms and Conditions Sections 5.1 - 5.2.</string>
@@ -1105,13 +1106,15 @@
 
     <!--region 宣傳頁-->
     <string name="hot_recommend">Recommended</string>
-    <string name="recommend_match">10,000 Live Games Monthly</string>
-    <string name="recommend_best_odd">Better Prices Better Service</string>
-    <string name="recommend_safe">Secure, Easy, Fast Process</string>
+    <string name="recommend_match">10,000 Live Games\nMonthly</string>
+    <string name="recommend_best_odd">Better Prices\nBetter Service</string>
+    <string name="recommend_safe">Secure, Easy\nFast Process</string>
     <!--endregion-->
 
     <!--region 我的賽事-->
     <string name="my_favorite_empty_title">My Events</string>
     <string name="my_favorite_empty_msg">Select the icon above，add to My Events.\nYou can group them and easily watch all the match that interest you.</string>
     <!--endregion-->
+
+    <string name="current_corner">Current Total:</string>
 </resources>

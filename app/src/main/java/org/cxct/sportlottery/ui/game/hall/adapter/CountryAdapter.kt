@@ -147,8 +147,7 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun bind(item: Row, countryLeagueListener: CountryLeagueListener?) {
             itemView.apply {
 
-                //bold 700
-                country_text.setTextWithStrokeWidth(item.name, 1.0f)
+                country_text.text = item.name
 
                 if (item.icon.isNotEmpty()){
                     val countryIcon = SvgUtil.getSvgDrawable(context, item.icon)

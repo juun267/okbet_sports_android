@@ -163,10 +163,13 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         )
         val appName = getString(R.string.app_name)
         //中英appName在前半 越南文appName會在後半
-        binding.tvAgreement.text =
-            String.format(getString(R.string.register_over_21), appName) + String.format(getString(R.string.register_rules), appName)
+        binding.tvAgreement.text = when (LanguageManager.getSelectLanguage(this@RegisterActivity)) {
+            LanguageManager.Language.VI -> String.format(getString(R.string.register_over_21), appName) + getString(R.string.register_rules) + String.format(getString(R.string.register_rules_2nd_half), appName)
+            else -> String.format(getString(R.string.register_over_21), appName) + getString(R.string.register_rules)
+        }
+
         binding.tvAgreement.makeLinks(
-            Pair(String.format(getString(R.string.register_rules), appName), View.OnClickListener {
+            Pair(getString(R.string.register_rules), View.OnClickListener {
                 JumpUtil.toInternalWeb(
                     this,
                     Constants.getAgreementRuleUrl(this),
@@ -322,7 +325,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 checkRegisterListener { viewModel.checkInviteCode(it) }
             }
             eetMemberAccount.apply {
-                checkRegisterListener { viewModel.checkMemberAccount(it, false) }
+                checkRegisterListener { viewModel.checkAccountExist(it) }
             }
             eetLoginPassword.apply {
                 checkRegisterListener { viewModel.checkLoginPassword(it) }

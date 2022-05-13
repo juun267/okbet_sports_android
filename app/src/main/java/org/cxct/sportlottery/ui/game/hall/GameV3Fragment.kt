@@ -178,12 +178,21 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                 },
                 { oddsKey, matchOdd ->
-                    val action =
-                        GameV3FragmentDirections.actionGameV3FragmentToGameOutrightMoreFragment(
-                            oddsKey,
-                            matchOdd
-                        )
-                    findNavController().navigate(action)
+//                    val action =
+//                        GameV3FragmentDirections.actionGameV3FragmentToGameOutrightMoreFragment(
+//                            oddsKey,
+//                            matchOdd
+//                        )
+//                    findNavController().navigate(action)
+                    // TODO Set matchOdd and refresh
+                    this.data.find { it == matchOdd }?.oddsMap?.get(oddsKey)?.forEachIndexed { index, odd ->
+                        if(index >= 4) {
+                            odd?.isExpand?.let { isExpand ->
+                                odd.isExpand = !isExpand
+                            }
+                        }
+                    }
+                    this.notifyItemChanged(this.data.indexOf(matchOdd))
                 },
                 { matchOdd, oddsKey ->
 
@@ -389,16 +398,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         viewModel.resetOtherSeelectedGameType()
         mView = inflater.inflate(R.layout.fragment_game_v3, container, false)
         return mView
-//            .apply {
-//            setupSportTypeList(this)
-//            setupToolbar(this)
-//            setupOddTab(this)
-//            setupSportBackground(this)
-//            setupMatchCategoryPager(this)
-//            setupPlayCategory(this)
-//            setupGameRow(this)
-//            setupGameListView(this)
-//        }
     }
 
     private fun setupSportTypeList(view: View) {
@@ -1007,8 +1006,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                     outrightLeagueOddDataList.forEachIndexed { _, matchOdd ->
                         matchOdd?.oddsMap?.forEach { oddsMap ->
-                            oddsMap.value?.filterNotNull()?.forEach { odd ->
-                                odd.isExpand = true
+                            oddsMap.value?.filterNotNull()?.forEachIndexed { index, odd ->
+                                if(index < 4)  odd.isExpand = true
                             }
                         }
                     }
@@ -1364,7 +1363,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         receiver.serviceConnectStatus.observe(this.viewLifecycleOwner) {
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
-                    loading()
                     if (args.matchType == MatchType.OTHER) {
                         viewModel.getAllPlayCategoryBySpecialMatchType(isReload = true)
                     } else {
@@ -2329,6 +2327,13 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             setupGameRow(it)
             setupGameListView(it)
         }
+
+        if(MultiLanguagesApplication.colorModeChanging){
+            initObserve()
+            initSocketObserver()
+            MultiLanguagesApplication.colorModeChanging = false
+        }
+
         viewModel.getSportMenuFilter()
     }
 

@@ -75,6 +75,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 app:iconSignifier="@drawable/ic_login_account"
+                app:isResponsiveIconColor="false"
+                app:primaryColor="@color/color_AFAFB1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/label_register"
                 app:labelText="@string/member_account"
@@ -88,7 +90,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:textColor="@color/color_e5e5e5_333333"
+                    android:textColor="@color/color_FFFFFF_DE000000"
                     android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
@@ -101,6 +103,8 @@
                 android:layout_marginTop="4dp"
                 app:endIcon="@drawable/ic_eye_close"
                 app:iconSignifier="@drawable/ic_login_password"
+                app:isResponsiveIconColor="false"
+                app:primaryColor="@color/color_AFAFB1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_account"
@@ -115,7 +119,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:textColor="@color/color_e5e5e5_333333"
+                    android:textColor="@color/color_FFFFFF_DE000000"
                     android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
@@ -136,6 +140,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:iconSignifier="@drawable/ic_login_verify"
+                    app:isResponsiveIconColor="false"
+                    app:primaryColor="@color/color_AFAFB1"
                     app:hideSelectedTitle="true"
                     app:singleText="@string/verification_code"
                     app:singleTextStyle="normal">
@@ -146,7 +152,7 @@
                         android:layout_height="wrap_content"
                         android:imeOptions="actionNext"
                         android:inputType="number"
-                        android:textColor="@color/color_e5e5e5_333333"
+                        android:textColor="@color/color_FFFFFF_DE000000"
                         android:maxLines="1"
                         android:textSize="@dimen/textSize14sp" />
 
