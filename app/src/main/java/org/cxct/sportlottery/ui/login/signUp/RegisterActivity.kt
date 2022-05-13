@@ -322,7 +322,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 checkRegisterListener { viewModel.checkInviteCode(it) }
             }
             eetMemberAccount.apply {
-                checkRegisterListener { viewModel.checkMemberAccount(it, false) }
+                checkRegisterListener { viewModel.checkAccountExist(it) }
             }
             eetLoginPassword.apply {
                 checkRegisterListener { viewModel.checkLoginPassword(it) }
