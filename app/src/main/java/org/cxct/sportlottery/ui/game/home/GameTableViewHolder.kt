@@ -139,18 +139,6 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 onPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
                     override fun onPageSelected(position: Int) {
                         super.onPageSelected(position)
-                        if (position < 0 || position >= it.size || it.isNullOrEmpty()) return
-                        mMatchOdd = it[position]
-                        mPagerPosition = position
-                        subscribeChannelHall(mMatchOdd?.matchInfo?.gameType, mMatchOdd?.matchInfo?.id)
-                        mMatchOdd?.matchInfo?.gameType?.let { gameType ->
-                            mMatchOdd?.matchInfo?.id?.let { matchId ->
-                                when (mMatchType) {
-                                    MatchType.AT_START -> atStartSelectedPage
-                                    else -> inPlaySelectedPage
-                                }[gameType] = matchId
-                            }
-                        }
                     }
 
                     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
@@ -164,7 +152,21 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                             SCROLL_STATE_SETTLING -> {
                                 unsubscribeHallChannel(matchOdd.matchInfo?.gameType, matchOdd.matchInfo?.id)
                             }
-                            SCROLL_STATE_IDLE -> { }
+                            SCROLL_STATE_IDLE -> {
+                                val curPosition = view_pager.currentItem
+                                if (curPosition < 0 || curPosition >= it.size || it.isNullOrEmpty()) return
+                                mMatchOdd = it[curPosition]
+                                mPagerPosition = curPosition
+                                subscribeChannelHall(mMatchOdd?.matchInfo?.gameType, mMatchOdd?.matchInfo?.id)
+                                mMatchOdd?.matchInfo?.gameType?.let { gameType ->
+                                    mMatchOdd?.matchInfo?.id?.let { matchId ->
+                                        when (mMatchType) {
+                                            MatchType.AT_START -> atStartSelectedPage
+                                            else -> inPlaySelectedPage
+                                        }[gameType] = matchId
+                                    }
+                                }
+                            }
                         }
                     }
                 }
