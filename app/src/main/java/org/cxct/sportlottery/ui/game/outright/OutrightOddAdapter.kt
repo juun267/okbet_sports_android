@@ -3,12 +3,15 @@ package org.cxct.sportlottery.ui.game.outright
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import kotlinx.android.synthetic.main.itemview_outright_odd_more_v4.view.*
 import kotlinx.android.synthetic.main.itemview_outright_odd_subtitle_v4.view.*
 import kotlinx.android.synthetic.main.itemview_outright_odd_v4.view.*
+import kotlinx.android.synthetic.main.view_toolbar_live.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.outright.odds.DynamicMarket
@@ -34,13 +37,12 @@ class OutrightOddAdapter :
 
                         list.addAll(
                             it.value?.filterNotNull()
-                                ?.filterIndexed { index, _ -> index < 4 }
-                                ?.map { odd ->
+                                //?.filterIndexed { index, _ -> index < 4 }
+                                ?.mapIndexed { index, odd ->
                                     odd.outrightCateKey = it.key
                                     odd
                                 } ?: listOf()
                         )
-
 
                         if (it.value?.filterNotNull()?.size ?: 0 > 4) {
                             list.add(it.key to matchOdd)
@@ -89,7 +91,7 @@ class OutrightOddAdapter :
         return when (viewType) {
             ItemType.SUB_TITLE.ordinal -> SubTitleViewHolder.from(parent)
             ItemType.ODD.ordinal -> OddViewHolder.from(parent, oddStateRefreshListener)
-            else -> MoreViewHolder.from(parent)
+            else -> MoreViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.itemview_outright_odd_more_v4, parent, false))
         }
     }
 
@@ -196,28 +198,48 @@ class OutrightOddAdapter :
         }
     }
 
-    class MoreViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    fun getOddIsExpand(position: Int): Boolean {
+        val item = data[position] as Pair<*, *>
+        return data.filterIsInstance<Odd>().first { it.outrightCateKey == item.first as String }.isExpand
+    }
 
-        fun bind(oddsKey: String, matchOdd: MatchOdd,isExpand:Boolean, outrightOddListener: OutrightOddListener?) {
+    inner class MoreViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        private val tvMore = itemView.findViewById<TextView>(R.id.tvMore)
+        private val ivMoreIcon = itemView.findViewById<ImageView>(R.id.ivMoreIcon)
+
+        fun bind(oddsKey: String, matchOdd: MatchOdd, isExpand:Boolean, outrightOddListener: OutrightOddListener?) {
             itemView.setOnClickListener {
                 outrightOddListener?.onClickMore(oddsKey, matchOdd)
+                val item = data[adapterPosition] as Pair<*, *>
+                data.filterIsInstance<Odd>().first { it.outrightCateKey == item.first as String }.isExpand = !data.filterIsInstance<Odd>().first { it.outrightCateKey == item.first as String }.isExpand
+
             }
-            itemView.ll_more_content.visibility = if (isExpand) View.VISIBLE else View.GONE
-            itemView.layoutParams = if (isExpand) LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                (itemView.context.resources.displayMetrics.density * 64).toInt()
-            ) else LinearLayout.LayoutParams(0, 0)
+            when(isExpand) {
+                true -> {
+                    tvMore.text = itemView.context.getString(R.string.odds_detail_more)
+                    ivMoreIcon.animate().rotation(0f).setDuration(100).start()
+                }
+                false -> {
+                    tvMore.text = itemView.context.getString(R.string.odds_detail_less)
+                    ivMoreIcon.animate().rotation(180f).setDuration(100).start()
+                }
+            }
+//            itemView.ll_more_content.visibility = if (isExpand) View.VISIBLE else View.GONE
+//            itemView.layoutParams = if (isExpand) LinearLayout.LayoutParams(
+//                LinearLayout.LayoutParams.MATCH_PARENT,
+//                (itemView.context.resources.displayMetrics.density * 64).toInt()
+//            ) else LinearLayout.LayoutParams(0, 0)
         }
 
-        companion object {
-            fun from(parent: ViewGroup): MoreViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater
-                    .inflate(R.layout.itemview_outright_odd_more_v4, parent, false)
-
-                return MoreViewHolder(view)
-            }
-        }
+//        companion object {
+//            fun from(parent: ViewGroup): MoreViewHolder {
+//                val layoutInflater = LayoutInflater.from(parent.context)
+//                val view = layoutInflater.inflate(R.layout.itemview_outright_odd_more_v4, parent, false)
+//
+//                return MoreViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.itemview_outright_odd_more_v4, parent, false))
+//            }
+//        }
     }
 }
 

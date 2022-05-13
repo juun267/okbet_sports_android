@@ -42,13 +42,18 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private var onClickTotalMatchListener: OnSelectItemListener<GameEntity>? = null
     private var onClickMatchListener: OnSelectItemListener<MatchInfo>? = null
     private var onClickOddListener: OnClickOddListener? = object : OnClickOddListener {
-        override fun onClickBet(matchOdd: MatchOdd, odd: Odd, playCateCode: String, playCateName: String?,
-                                betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?) {
+        override fun onClickBet(
+            matchOdd: MatchOdd, odd: Odd, playCateCode: String, playCateName: String?,
+            betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
+        ) {
             addOddsDialog(matchOdd, odd, playCateCode, playCateName, betPlayCateNameMap)
         }
     }
     private var onClickFavoriteListener: OnClickFavoriteListener? = null
     private var onClickStatisticsListener: OnClickStatisticsListener? = null
+
+    //初始化載入資料判別
+    private var initTag = false
 
     init {
         itemView.apply {
@@ -56,21 +61,25 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
     }
 
-    fun setParams(matchType: MatchType = MatchType.IN_PLAY,
-                  selectedOdds: MutableList<String> = mutableListOf(),
-                  oddsType: OddsType = OddsType.EU,
-                  isLogin: Boolean? = false) {
+    fun setParams(
+        matchType: MatchType = MatchType.IN_PLAY,
+        selectedOdds: MutableList<String> = mutableListOf(),
+        oddsType: OddsType = OddsType.EU,
+        isLogin: Boolean? = false
+    ) {
         this.mMatchType = matchType
         this.selectedOdds = selectedOdds
         this.oddsType = oddsType
         this.isLogin = isLogin
     }
 
-    fun setListeners(onClickTotalMatchListener: OnSelectItemListener<GameEntity>? = null,
-                     onClickMatchListener: OnSelectItemListener<MatchInfo>? = null,
-                     onClickOddListener: OnClickOddListener? = null,
-                     onClickFavoriteListener: OnClickFavoriteListener? = null,
-                     onClickStatisticsListener: OnClickStatisticsListener? = null, ) {
+    fun setListeners(
+        onClickTotalMatchListener: OnSelectItemListener<GameEntity>? = null,
+        onClickMatchListener: OnSelectItemListener<MatchInfo>? = null,
+        onClickOddListener: OnClickOddListener? = null,
+        onClickFavoriteListener: OnClickFavoriteListener? = null,
+        onClickStatisticsListener: OnClickStatisticsListener? = null,
+    ) {
         this.onClickTotalMatchListener = onClickTotalMatchListener
         this.onClickMatchListener = onClickMatchListener
         this.onClickOddListener = onClickOddListener
@@ -87,7 +96,7 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 iv_game_icon.setImageResource(it)
             }
             GameConfigManager.getTitleBarBackground(gameCode, MultiLanguagesApplication.isNightMode)?.let {
-                if (it == R.drawable.img_home_title_soccer_background){
+                if (it == R.drawable.img_home_title_soccer_background) {
                     // 特殊情況: 種類為足球時，由於圖片問題，需讓背景球門符合 ImageView 高度，因此另做此設定
                     iv_title_bar_background.viewTreeObserver.addOnGlobalLayoutListener {
                         iv_title_bar_background.layoutParams.height = 90.dp
@@ -139,6 +148,22 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 onPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
                     override fun onPageSelected(position: Int) {
                         super.onPageSelected(position)
+                        //僅第一次載入資料 使用這裡邏輯
+                        if (!initTag) {
+                            if (position < 0 || position >= it.size || it.isNullOrEmpty()) return
+                            mMatchOdd = it[position]
+                            mPagerPosition = position
+                            subscribeChannelHall(mMatchOdd?.matchInfo?.gameType, mMatchOdd?.matchInfo?.id)
+                            mMatchOdd?.matchInfo?.gameType?.let { gameType ->
+                                mMatchOdd?.matchInfo?.id?.let { matchId ->
+                                    when (mMatchType) {
+                                        MatchType.AT_START -> atStartSelectedPage
+                                        else -> inPlaySelectedPage
+                                    }[gameType] = matchId
+                                }
+                            }
+                            initTag = true
+                        }
                     }
 
                     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
@@ -147,23 +172,27 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
                     override fun onPageScrollStateChanged(state: Int) {
                         super.onPageScrollStateChanged(state)
+                        //為解決滾動殘像 更新資料處理採用這裡方式
+                        if (mPagerPosition < 0 || mPagerPosition >= it.size) return
                         val matchOdd = it[mPagerPosition]
-                        when(state) {
+                        when (state) {
                             SCROLL_STATE_SETTLING -> {
                                 unsubscribeHallChannel(matchOdd.matchInfo?.gameType, matchOdd.matchInfo?.id)
                             }
                             SCROLL_STATE_IDLE -> {
-                                val curPosition = view_pager.currentItem
-                                if (curPosition < 0 || curPosition >= it.size || it.isNullOrEmpty()) return
-                                mMatchOdd = it[curPosition]
-                                mPagerPosition = curPosition
-                                subscribeChannelHall(mMatchOdd?.matchInfo?.gameType, mMatchOdd?.matchInfo?.id)
-                                mMatchOdd?.matchInfo?.gameType?.let { gameType ->
-                                    mMatchOdd?.matchInfo?.id?.let { matchId ->
-                                        when (mMatchType) {
-                                            MatchType.AT_START -> atStartSelectedPage
-                                            else -> inPlaySelectedPage
-                                        }[gameType] = matchId
+                                if (initTag) {
+                                    val curPosition = view_pager.currentItem
+                                    if (curPosition < 0 || curPosition >= it.size || it.isNullOrEmpty()) return
+                                    mMatchOdd = it[curPosition]
+                                    mPagerPosition = curPosition
+                                    subscribeChannelHall(mMatchOdd?.matchInfo?.gameType, mMatchOdd?.matchInfo?.id)
+                                    mMatchOdd?.matchInfo?.gameType?.let { gameType ->
+                                        mMatchOdd?.matchInfo?.id?.let { matchId ->
+                                            when (mMatchType) {
+                                                MatchType.AT_START -> atStartSelectedPage
+                                                else -> inPlaySelectedPage
+                                            }[gameType] = matchId
+                                        }
                                     }
                                 }
                             }
