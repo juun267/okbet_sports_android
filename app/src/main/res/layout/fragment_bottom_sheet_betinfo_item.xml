@@ -433,7 +433,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/color_232628_EAF4FE"
                     android:gravity="center"
-                    android:paddingVertical="6dp"
+                    android:paddingVertical="3dp"
                     android:paddingHorizontal="2dp"
                     android:text="@string/bet_info_odd_content_changed"
                     android:textColor="@color/color_E44438_e44438"
