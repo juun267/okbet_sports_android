@@ -97,7 +97,7 @@ class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeS
             insertDot()
         }
         tvMax.setOnClickListener {
-            plusAll(maxBetMoney ?: 0.0)
+            plusAll(maxBetMoney)
         }
     }
 
@@ -113,12 +113,12 @@ class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeS
     }
 
     private lateinit var mEditText: EditText
-    private var maxBetMoney: Double? = 0.0
+    private var maxBetMoney: String = "0"
     private var isShow = false
 
     fun showKeyboard(editText: EditText, position: Int?, maxBetMoney: Double, minBetMoney: Long) {
         this.mEditText = editText
-        this.maxBetMoney = TextUtil.formatInputMoney(maxBetMoney).toDouble()
+        this.maxBetMoney = TextUtil.formatInputMoney(maxBetMoney)
         //InputType.TYPE_NULL 禁止彈出系統鍵盤
         mEditText.apply {
             //inputType = InputType.TYPE_NULL
@@ -134,7 +134,7 @@ class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeS
     }
 
     fun setMaxBetMoney(maxBetMoney: Double) {
-        this.maxBetMoney = TextUtil.formatInputMoney(maxBetMoney).toDouble()
+        this.maxBetMoney = TextUtil.formatInputMoney(maxBetMoney)
     }
 
     private fun disableKeyboard(){
@@ -166,8 +166,8 @@ class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeS
         mEditText.setText(tran.toLong().toString())
         mEditText.setSelection(mEditText.text.length)
     }
-    private fun plusAll(all: Double) {
-        mEditText.setText(all.toString())
+    private fun plusAll(all: String) {
+        mEditText.setText(all)
         mEditText.setSelection(mEditText.text.length)
 
     }
