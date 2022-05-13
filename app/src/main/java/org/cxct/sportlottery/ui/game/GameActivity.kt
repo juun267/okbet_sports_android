@@ -499,31 +499,24 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             }
             1 -> {
                 viewModel.switchMatchType(MatchType.IN_PLAY)
-                loading()
             }
             2 -> {
                 viewModel.switchMatchType(MatchType.AT_START)
-                loading()
             }
             3 -> {
                 viewModel.switchMatchType(MatchType.TODAY)
-                loading()
             }
             4 -> {
                 viewModel.switchMatchType(MatchType.EARLY)
-                loading()
             }
             5 -> {
                 viewModel.switchMatchType(MatchType.OUTRIGHT)
-                loading()
             }
             6 -> {
                 viewModel.switchMatchType(MatchType.PARLAY)
-                loading()
             }
             7 -> {
                 viewModel.switchMatchType(MatchType.EPS)
-                loading()
             }
         }
     }
