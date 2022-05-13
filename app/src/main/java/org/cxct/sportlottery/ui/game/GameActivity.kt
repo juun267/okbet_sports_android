@@ -161,7 +161,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         initTabLayout()
         initObserve()
         initServiceButton()
-        setFontTheme()
         try {
             val flag = intent.getStringExtra(ARGS_SWITCH_LANGUAGE)
             if (flag == "true") {
@@ -171,20 +170,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             e.printStackTrace()
         }
         queryData()
-    }
-
-    private fun setFontTheme() {
-        when (LanguageManager.getSelectLanguage(this)) {
-            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
-                setTheme(R.style.ChineseTheme)
-            }
-            LanguageManager.Language.VI -> {
-                setTheme(R.style.VietnamTheme)
-            }
-            else -> {
-                setTheme(R.style.EnglishTheme)
-            }
-        }
     }
 
     override fun onStart() {
