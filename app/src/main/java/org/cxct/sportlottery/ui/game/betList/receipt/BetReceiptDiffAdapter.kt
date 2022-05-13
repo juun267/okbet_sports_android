@@ -216,8 +216,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                         )
 
                         tv_league.text = leagueName
-                        val teamNamesStr = if (homeName?.length ?: 0 > 15) "$homeName v\n$awayName" else "$homeName v $awayName"
-                        tv_team_names.text = teamNamesStr
+                        tv_team_names.setTeamNames(15, homeName, awayName)
                         tv_match_type.tranByPlayCode(playCode, playCateName)
                     }
 

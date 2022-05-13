@@ -105,7 +105,7 @@ class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(D
                             )
                     }
                 }
-                binding.tvTeamNames.text = "$homeName v $awayName"
+                binding.tvTeamNames.setTeamNames(15, homeName, awayName)
                 val scoreList = mutableListOf<String>()
                 playCateMatchResultList?.map { scoreData ->
                     scoreList.add(
