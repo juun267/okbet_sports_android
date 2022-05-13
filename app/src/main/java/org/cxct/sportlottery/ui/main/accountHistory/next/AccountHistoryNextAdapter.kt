@@ -158,9 +158,9 @@ class AccountHistoryNextAdapter(
     class ParlayItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentParlayBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        private val parlayAdapter by lazy { ParlayItemAdapter() }
-
         fun bind(row: Row, oddsType: OddsType) {
+            val parlayAdapter by lazy { ParlayItemAdapter() }
+
             binding.row = row
 
             binding.apply {
@@ -257,10 +257,10 @@ class AccountHistoryNextAdapter(
     class ItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        private val roundAdapter by lazy { RoundAdapter() }
-
         fun bind(row: Row, oddsType: OddsType) {
             val first = row.matchOdds?.firstOrNull()
+
+            val roundAdapter by lazy { RoundAdapter() }
 
             binding.row = row
             binding.matchOdd = first
