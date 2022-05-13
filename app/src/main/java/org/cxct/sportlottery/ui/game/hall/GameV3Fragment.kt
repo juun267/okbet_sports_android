@@ -1354,7 +1354,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         receiver.serviceConnectStatus.observe(this.viewLifecycleOwner) {
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
-                    loading()
                     if (args.matchType == MatchType.OTHER) {
                         viewModel.getAllPlayCategoryBySpecialMatchType(isReload = true)
                     } else {
