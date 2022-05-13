@@ -380,6 +380,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         removeTextChangedListener(tag as TextWatcher)
                     }
                     filters = arrayOf(MoneyInputFilter())
+
+                    setText(if (itemData.betAmount > 0.0) itemData.inputBetAmountStr else "")
                 }
                 onFocusChangeListener = null
 
