@@ -243,7 +243,7 @@
                             android:letterSpacing="0.05"
                             android:maxLength="7"
                             android:paddingStart="10dp"
-                            android:textColor="@color/color_317FFF_0760D4"
+                            android:textColor="@color/color_FFFFFF_060F20"
                             android:textColorHint="@color/color_404040_cccccc"
                             android:textSize="@dimen/textSize16sp"
                             app:layout_constraintBottom_toTopOf="@+id/tv_error_message"
