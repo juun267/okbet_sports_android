@@ -178,12 +178,21 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                 },
                 { oddsKey, matchOdd ->
-                    val action =
-                        GameV3FragmentDirections.actionGameV3FragmentToGameOutrightMoreFragment(
-                            oddsKey,
-                            matchOdd
-                        )
-                    findNavController().navigate(action)
+//                    val action =
+//                        GameV3FragmentDirections.actionGameV3FragmentToGameOutrightMoreFragment(
+//                            oddsKey,
+//                            matchOdd
+//                        )
+//                    findNavController().navigate(action)
+                    // TODO Set matchOdd and refresh
+                    this.data.find { it == matchOdd }?.oddsMap?.get(oddsKey)?.forEachIndexed { index, odd ->
+                        if(index >= 4) {
+                            odd?.isExpand?.let { isExpand ->
+                                odd.isExpand = !isExpand
+                            }
+                        }
+                    }
+                    this.notifyItemChanged(this.data.indexOf(matchOdd))
                 },
                 { matchOdd, oddsKey ->
 
@@ -1007,8 +1016,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                     outrightLeagueOddDataList.forEachIndexed { _, matchOdd ->
                         matchOdd?.oddsMap?.forEach { oddsMap ->
-                            oddsMap.value?.filterNotNull()?.forEach { odd ->
-                                odd.isExpand = true
+                            oddsMap.value?.filterNotNull()?.forEachIndexed { index, odd ->
+                                if(index < 4)  odd.isExpand = true
                             }
                         }
                     }
