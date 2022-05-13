@@ -215,6 +215,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         //initData()
         initView()
         initQuota()
+        initButton()
         initEditText()
         initObserve()
         initSocketObserver()
@@ -321,7 +322,11 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         binding.btnRecharge.setTitleLetterSpacing()
     }
 
-
+    private fun initButton() {
+        cl_close_waring.setOnClickListener {
+            removeClosedPlat()
+        }
+    }
 
     private fun dismiss() {
         activity?.onBackPressed()
@@ -962,6 +967,15 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         } else {
             mUserMoney.toLong()
         }
+    }
+
+    /**
+     * 移除盤口關閉的投注選項
+     */
+    private fun removeClosedPlat() {
+        viewModel.removeClosedPlatBetInfo()
+        viewModel.removeBetInfoSingle()
+        dismiss()
     }
 
 }
