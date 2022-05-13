@@ -147,6 +147,7 @@
     <color name="color_e5e5e5_000000">@color/color_000000</color>
     <color name="color_FFFFFF_060F20">@color/color_060F20</color>
     <color name="color_2a2a2a_dedede">@color/color_dedede</color>
+    <color name="color_939393_cccccc">@color/color_cccccc</color>
 
     <color name="color_FFFFFF_DE000000">@color/color_DE000000</color>
     <color name="color_B3FFFFFF_99000000">@color/transparent_black_60</color>

@@ -115,7 +115,8 @@
                         android:maxLength="15"
                         android:maxLines="1"
                         android:ellipsize="end"
-                        android:textSize="@dimen/textSize14sp" />
+                        android:textSize="@dimen/textSize14sp"
+                        android:textColor="@color/color_FFFFFF_DE000000"/>
 
                 </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
 
