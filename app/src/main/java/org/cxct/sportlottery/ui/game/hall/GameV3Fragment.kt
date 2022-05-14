@@ -628,7 +628,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     dialog.setNegativeButtonText(null)
                     dialog.setPositiveClickListener {
                         viewModel.resetErrorDialogMsg()
-                        dialog.dismiss()
+                        dialog?.dismiss()
                         back()
                     }
                     dialog.setCanceledOnTouchOutside(false)

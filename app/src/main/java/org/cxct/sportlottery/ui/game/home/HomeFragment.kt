@@ -833,7 +833,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         mHomeListAdapter.setGameTableBar(mHomeGameTableBarItemData)
         unSubscribeChannelHallAll()
         rvList.post {
-            rvList.subscribeLogic()
+            rvList?.subscribeLogic()
         }
     }
 
