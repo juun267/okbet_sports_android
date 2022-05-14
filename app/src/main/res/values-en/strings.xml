@@ -451,8 +451,8 @@
     <string name="edt_hint_nick_name"><![CDATA[Please enter your nickname]]></string>
     <string name="title_wx_id">Wechat ID</string>
     <string name="edt_hint_wx_id">Please enter Wechat ID</string>
-    <string name="title_bank_account">Bank card number</string>
-    <string name="edt_hint_bank_account">Enter the bank card number</string>
+    <string name="title_bank_account">Bank account number</string>
+    <string name="edt_hint_bank_account">Enter the bank account number</string>
     <string name="title_recharge_time">Top-up time</string>
     <string name="title_current_money">Current balance</string>
     <string name="btn_submit">Submit</string>
@@ -490,7 +490,7 @@
     <string name="txv_crypto_pay">Virtual currency transfer</string>
     <string name="error_recharge_amount">Incorrect format or value of top-up amount</string>
     <string name="error_recharge_account">Incorrect number or value of top-up amount</string>
-    <string name="error_bank_id">There is an error in the format of the bank card number</string>
+    <string name="error_bank_id">There is an error in the format of the bank account number</string>
     <string name="error_hashcode">Block chain trading ID format error</string>
     <string name="error_name">The name that you entered is not valid</string>
     <string name="text_money_copy_success">Copy successful</string>
@@ -582,9 +582,9 @@
     <string name="edit_bank_card">Edit bank card</string>
     <string name="edit_crypto_card">Edit virtual</string>
     <string name="edit_e_wallet">Edit eWallet</string>
-    <string name="bank_card_number">Card number</string>
+    <string name="bank_card_number">Account number</string>
     <string name="wallet_address">The wallet address</string>
-    <string name="please_enter_bank_card_rule">your bank card number</string>
+    <string name="please_enter_bank_card_rule">your bank account number</string>
     <string name="please_enter_wallet_address">the wallet address</string>
     <string name="network_point">Bank branch</string>
     <string name="please_enter_network_point">your opening bank branch</string>
@@ -595,7 +595,7 @@
     <string name="delete_e_wallet">Delete</string>
     <string name="select_currency_protocol">Select agreement/currency</string>
     <string name="error_create_name">Name must be between 2–20 characters long and contain Chinese letter</string>
-    <string name="error_bank_card_number">There is an error in the format of the bank card number</string>
+    <string name="error_bank_card_number">There is an error in the format of the bank account number</string>
     <string name="error_network_point">The format of opening bank branch you entered is incorrect</string>
     <string name="error_withdraw_password">The Password you entered is incorrect</string>
     <string name="error_wallet_address">The format of the address you entered is incorrect</string>
