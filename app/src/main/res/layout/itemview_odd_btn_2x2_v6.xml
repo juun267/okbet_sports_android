@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="70dp"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:layout_marginEnd="8dp"
     tools:ignore="spUsage">
 
     <TextView
         android:id="@+id/odd_btn_row1_type"
         android:layout_width="match_parent"
-        android:layout_height="47dp"
+        android:layout_height="45dp"
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="3"
@@ -19,70 +20,32 @@
         app:autoSizeMaxTextSize="@dimen/textSize12sp"
         app:autoSizeMinTextSize="@dimen/textSize8sp"
         app:autoSizeTextType="uniform"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/guideline1"
         tools:text="独赢" />
 
-    <TextView
-        android:id="@+id/odd_btn_row1_half"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="@dimen/textSize12sp"
-        app:layout_constraintTop_toBottomOf="@id/odd_btn_row1_type"
-        tools:text="1st half"
-        tools:visibility="gone" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="45dp"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="105dp"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="165dp"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="225dp"/>
 
     <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/odd_btn_row1_home"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        app:layout_constraintTop_toBottomOf="@id/guideline1"
-        app:layout_constraintBottom_toTopOf="@id/guideline2"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
         app:ob_hide_item_flag="true" />
 
     <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/odd_btn_row1_away"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        app:layout_constraintTop_toBottomOf="@id/guideline2"
-        app:layout_constraintBottom_toTopOf="@id/guideline3"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
         app:ob_hide_item_flag="true" />
 
     <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/odd_btn_row1_draw"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        app:layout_constraintTop_toBottomOf="@id/guideline3"
-        app:layout_constraintBottom_toTopOf="@id/guideline4"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
         app:ob_hide_item_flag="true" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

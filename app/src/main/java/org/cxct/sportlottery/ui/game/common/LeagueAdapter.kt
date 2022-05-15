@@ -277,9 +277,9 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
 
 //            itemView.iv_refresh.isVisible = matchType != MatchType.MY_EVENT
 
-            itemView.iv_refresh.setOnClickListener {
-                leagueListener?.onRefresh(item)
-            }
+//            itemView.iv_refresh.setOnClickListener {
+//                leagueListener?.onRefresh(item)
+//            }
 
             itemView.setOnClickListener {
                 if (adapterPosition > data.size - 1) return@setOnClickListener
