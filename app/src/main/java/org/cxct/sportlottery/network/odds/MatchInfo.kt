@@ -81,6 +81,8 @@ data class MatchInfo(
     //FT
     override var homeCards: Int? = null
     override var awayCards: Int? = null
+    override var homeCornerKicks: Int? = null
+    override var awayCornerKicks: Int? = null
 
     //999
     var scoreStatus:Int? = 0

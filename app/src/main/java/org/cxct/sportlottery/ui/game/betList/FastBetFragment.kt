@@ -731,24 +731,58 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             betPlayCateNameMap.isNullOrEmpty() -> {
                 binding.tvName.text =
                     if (inPlay && betInfoListData?.matchType != MatchType.OUTRIGHT && matchOdd.gameType == GameType.FT.key) {
-                        getString(
-                            R.string.bet_info_in_play_score,
-                            nameOneLine(matchOdd.playCateName),
-                            matchOdd.homeScore.toString(),
-                            matchOdd.awayScore.toString()
-                        )
+                        when {
+                            matchOdd.homeCornerKicks == null || matchOdd.awayCornerKicks == null || PlayCate.isIntervalCornerPlayCate(
+                                matchOdd.playCode
+                            ) -> {
+                                nameOneLine(matchOdd.playCateName)
+                            }
+                            PlayCate.needShowCurrentCorner(matchOdd.playCode) -> {
+                                getString(
+                                    R.string.bet_info_in_play_score,
+                                    nameOneLine(matchOdd.playCateName),
+                                    matchOdd.homeCornerKicks.toString(),
+                                    matchOdd.awayCornerKicks.toString()
+                                )
+                            }
+                            else -> {
+                                getString(
+                                    R.string.bet_info_in_play_score,
+                                    nameOneLine(matchOdd.playCateName),
+                                    matchOdd.homeScore.toString(),
+                                    matchOdd.awayScore.toString()
+                                )
+                            }
+                        }
                     } else nameOneLine(matchOdd.playCateName)
             }
             else -> {
                 binding.tvName.text =
                     if (inPlay && betInfoListData?.matchType != MatchType.OUTRIGHT && matchOdd.gameType == GameType.FT.key) {
-                        getString(
-                            R.string.bet_info_in_play_score,
-                            betPlayCateNameMap.getNameMap(matchOdd.gameType, matchOdd.playCode)
-                                ?.get(LanguageManager.getSelectLanguage(context).key) ?: "",
-                            matchOdd.homeScore.toString(),
-                            matchOdd.awayScore.toString()
-                        )
+                        when {
+                            matchOdd.homeCornerKicks == null || matchOdd.awayCornerKicks == null || PlayCate.isIntervalCornerPlayCate(
+                                matchOdd.playCode
+                            ) -> {
+                                nameOneLine(matchOdd.playCateName)
+                            }
+                            PlayCate.needShowCurrentCorner(matchOdd.playCode) -> {
+                                getString(
+                                    R.string.bet_info_in_play_score,
+                                    nameOneLine(matchOdd.playCateName),
+                                    matchOdd.homeCornerKicks.toString(),
+                                    matchOdd.awayCornerKicks.toString()
+                                )
+                            }
+                            else -> {
+                                getString(
+                                    R.string.bet_info_in_play_score,
+                                    betPlayCateNameMap.getNameMap(matchOdd.gameType, matchOdd.playCode)
+                                        ?.get(LanguageManager.getSelectLanguage(context).key) ?: "",
+                                    matchOdd.homeScore.toString(),
+                                    matchOdd.awayScore.toString()
+                                )
+                            }
+                        }
                     } else nameOneLine(
                         betPlayCateNameMap.getNameMap(matchOdd.gameType, matchOdd.playCode)
                             ?.get(LanguageManager.getSelectLanguage(context).key) ?: ""

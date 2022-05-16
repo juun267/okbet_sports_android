@@ -63,5 +63,7 @@ data class MatchOdd(
     var spreadState: Int = SpreadState.SAME.state
     var extInfo: String? = null //球員名稱
     var isOnlyEUType: Boolean = false
+    var homeCornerKicks: Int? = null
+    var awayCornerKicks: Int? = null
 }
 
