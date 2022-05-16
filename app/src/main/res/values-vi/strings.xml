@@ -551,10 +551,10 @@
     <string name="withdraw_amount">Số tiền rút</string>
     <string name="withdraw_password">Mật khẩu rút tiền</string>
     <string name="withdraw_all">TẤT CẢ CÁC</string>
-    <string name="withdraw_handling_fee_hint">・Tỷ lệ phí xử lý ：%1$s%% Phí xử lý phải trả：%2$s</string>
-    <string name="withdraw_crypto_exchange_rate_hint">・Tỷ giá：%1$s</string>
-    <string name="withdraw_crypto_amount_hint">・Số tiền rút：%1$s %s</string>
-    <string name="withdraw_crypto_fee_hint">・Phí rút tiền：%1$s %s</string>
+    <string name="withdraw_handling_fee_hint">· Tỷ lệ phí xử lý ：%1$s%% Phí xử lý phải trả：%2$s</string>
+    <string name="withdraw_crypto_exchange_rate_hint">· Tỷ giá：%1$s</string>
+    <string name="withdraw_crypto_amount_hint">· Số tiền rút：%1$s %s</string>
+    <string name="withdraw_crypto_fee_hint">· Phí rút tiền：%1$s %s</string>
     <string name="hint_please_enter_withdraw_amount">số tiền giới hạn %1$s~%2$s</string>
     <string name="hint_four_number_password">Vui lòng nhập mật khẩu rút tiền</string>
     <string name="hint_please_enter_withdraw_password">Mật khẩu rút tiền</string>
