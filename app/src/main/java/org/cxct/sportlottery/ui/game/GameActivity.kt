@@ -662,7 +662,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
             R.id.oddsDetailFragment -> {
                 val action =
-                    OddsDetailFragmentDirections.actionGameOutrightMoreFragmentToHomeFragment()
+                    OddsDetailFragmentDirections.actionOddsDetailFragmentToHomeFragment()
                 mNavController.navigate(action)
             }
             R.id.oddsDetailLiveFragment -> {

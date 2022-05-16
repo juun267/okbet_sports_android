@@ -48,7 +48,7 @@ import java.util.*
 class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class) {
 
     private val args: OddsDetailFragmentArgs by navArgs()
-    private val mStartTimer = Timer()
+    private var mStartTimer: Timer? = Timer()
     private val mStartTimeTask = object: TimerTask() {
         override fun run() {
 
@@ -120,9 +120,10 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         getData()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        mStartTimer.cancel()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mStartTimer?.cancel()
+        mStartTimer = null
     }
 
     private fun initUI() {
@@ -380,7 +381,7 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     }
 
     private fun checkStartTime(startTime: Long?) {
-        mStartTimer.schedule(object: TimerTask() {
+        mStartTimer?.schedule(object: TimerTask() {
             override fun run() {
                 lifecycleScope.launch {
                     if (TimeUtil.isLastHour(startTime)) {
