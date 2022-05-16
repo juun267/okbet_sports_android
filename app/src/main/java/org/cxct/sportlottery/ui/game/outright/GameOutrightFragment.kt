@@ -43,7 +43,10 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
             outrightOddListener = OutrightOddListener(
                 { matchOdd, odd, playCateCode ->
                     matchOdd?.let {
-                        addOddsDialog(matchOdd, odd, playCateCode)
+                        if(mIsEnabled) {
+                            avoidFastDoubleClick()
+                            addOddsDialog(matchOdd, odd, playCateCode)
+                        }
                     }
                 },
                 { oddsKey, matchOdd ->

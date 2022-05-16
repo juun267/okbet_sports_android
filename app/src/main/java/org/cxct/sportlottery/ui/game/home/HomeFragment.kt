@@ -104,7 +104,10 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             playCateName: String?,
             betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
         ) {
-            addOddsDialog(matchOdd, odd, playCateCode, playCateName, betPlayCateNameMap)
+            if(mIsEnabled) {
+                avoidFastDoubleClick()
+                addOddsDialog(matchOdd, odd, playCateCode, playCateName, betPlayCateNameMap)
+            }
         }
     }
 
@@ -309,7 +312,10 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 matchOdd: MatchOdd, odd: Odd, playCateCode: String, playCateName: String?,
                 betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
             ) {
-                addOddsDialog(matchOdd, odd, playCateCode, playCateName, betPlayCateNameMap)
+                if(mIsEnabled) {
+                    avoidFastDoubleClick()
+                    addOddsDialog(matchOdd, odd, playCateCode, playCateName, betPlayCateNameMap)
+                }
             }
         }
 
