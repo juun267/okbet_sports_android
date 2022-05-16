@@ -21,7 +21,9 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.CheckStatus
 import org.cxct.sportlottery.ui.finance.df.UWType
 
-
+/**
+ * @app_destination 提款記錄
+ */
 class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {

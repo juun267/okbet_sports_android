@@ -61,7 +61,9 @@ import org.cxct.sportlottery.util.BetPlayCateFunction.getNameMap
 import org.parceler.Parcels
 import kotlin.math.min
 
-
+/**
+ * @app_destination 注單(單注，點擊賠率下方彈出)
+ */
 const val INPLAY: Int = 1
 
 class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {

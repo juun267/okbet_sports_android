@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.odds
 
-
 import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.os.Bundle
@@ -57,7 +56,9 @@ import org.cxct.sportlottery.util.TimeUtil.DM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import java.util.*
 
-
+/**
+ * @app_destination 全部玩法(包含直播)
+ */
 @Suppress("DEPRECATION", "SetTextI18n")
 class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class), TimerManager, Animation.AnimationListener {
 

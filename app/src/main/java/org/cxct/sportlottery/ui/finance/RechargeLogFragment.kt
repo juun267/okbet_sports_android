@@ -23,6 +23,9 @@ import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.ui.finance.df.Status
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
+/**
+ * @app_destination 存款記錄
+ */
 class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {

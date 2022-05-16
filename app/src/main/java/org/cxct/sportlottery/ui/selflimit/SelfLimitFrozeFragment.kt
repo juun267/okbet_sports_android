@@ -16,6 +16,9 @@ import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.main.MainActivity
 
+/**
+ * @app_destination 自我禁制-帳號登入限制
+ */
 @SuppressLint("SetTextI18n")
 class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel::class),
     View.OnClickListener {

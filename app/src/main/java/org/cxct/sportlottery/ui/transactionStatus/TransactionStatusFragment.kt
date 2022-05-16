@@ -17,6 +17,9 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.setTextWithStrokeWidth
 
+/**
+ * @app_destination 交易狀況
+ */
 class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(TransactionStatusViewModel::class) {
     private val recordDiffAdapter by lazy { TransactionRecordDiffAdapter() }
     private val nestedScrollViewListener =

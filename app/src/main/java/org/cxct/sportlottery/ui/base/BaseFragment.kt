@@ -2,8 +2,10 @@ package org.cxct.sportlottery.ui.base
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Bundle
 import android.os.Handler
 import android.text.Spanned
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -206,6 +208,12 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
     fun avoidFastDoubleClick(){
         mIsEnabled = false
         Handler().postDelayed({ mIsEnabled = true }, 300)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.e("[kkk]", "${this::class.java.simpleName}")
+
     }
 
 }

@@ -679,7 +679,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             itemView.league_odd_match_remain_time_icon.apply {
                 visibility = when {
                     item.matchInfo?.isAtStart == true -> View.VISIBLE
-                    matchType == MatchType.TODAY -> View.VISIBLE
+                    matchType == MatchType.AT_START -> View.VISIBLE
                     else -> View.INVISIBLE
                 }
             }
@@ -711,10 +711,6 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                                 "${itemView.context.getString(TimeUtil.setupDayOfWeekAndToday(item.matchInfo?.startTime))} ${item.matchInfo?.startDateDisplay}"
                         }
                     }
-                }
-
-                matchType == MatchType.TODAY -> {
-                    itemView.context.getString(TimeUtil.setupDayOfWeekAndToday(item.matchInfo?.startTime))
                 }
 
                 else -> {

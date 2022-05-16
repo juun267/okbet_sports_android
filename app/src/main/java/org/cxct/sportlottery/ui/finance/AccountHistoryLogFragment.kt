@@ -15,6 +15,9 @@ import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.AccountHistory
 
+/**
+ * @app_destination 歷史紀錄
+ */
 class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {

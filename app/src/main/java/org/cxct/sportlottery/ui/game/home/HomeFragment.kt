@@ -66,6 +66,7 @@ import java.util.*
  * 2. 賽事精選: icon 顯示 review
  * 3. 賽事推薦 - 冠軍樣式
  * 4. 賽事推薦 投注
+ * @app_destination 主頁
  */
 @SuppressLint("LogNotTimber")
 class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class) {

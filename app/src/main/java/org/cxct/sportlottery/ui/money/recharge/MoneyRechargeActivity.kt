@@ -22,6 +22,9 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.GridItemDecoration
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
+/**
+ * @app_destination 存款
+ */
 class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechViewModel::class) {
 
     companion object {
