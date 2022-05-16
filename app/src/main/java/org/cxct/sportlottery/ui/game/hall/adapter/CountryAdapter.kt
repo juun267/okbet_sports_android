@@ -18,8 +18,11 @@ import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.util.SvgUtil
 import org.cxct.sportlottery.util.setTextWithStrokeWidth
+import timber.log.Timber
 
 class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private val itemPinPosition = 0
 
     enum class ItemType {
         ITEM_PIN, ITEM, NO_DATA, BOTTOM_NAVIGATION
@@ -34,6 +37,8 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var datePin = listOf<League>()
         set(value) {
             field = value
+            if (data.isNotEmpty())
+                notifyItemChanged(itemPinPosition)
             //notifyDataSetChanged()
         }
 
@@ -45,10 +50,19 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var countryLeagueListener: CountryLeagueListener? = null
 
+    fun notifyCountryItem(dataPosition: Int) {
+        if (data.isNotEmpty()) {
+            val notifyPosition = dataPosition + 1
+            if (notifyPosition <= itemCount) {
+                notifyItemChanged(dataPosition + 1)
+            }
+        }
+    }
+
     override fun getItemViewType(position: Int): Int {
         return when {
             data.isEmpty() -> ItemType.NO_DATA.ordinal
-            (position == 0) -> ItemType.ITEM_PIN.ordinal
+            (position == itemPinPosition) -> ItemType.ITEM_PIN.ordinal
             position == data.size + 1 -> ItemType.BOTTOM_NAVIGATION.ordinal
             else -> ItemType.ITEM.ordinal
         }
