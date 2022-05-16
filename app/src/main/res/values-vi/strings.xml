@@ -783,7 +783,7 @@
     <string name="account_history_overview">Tổng quan lịch sử tài khoản</string>
     <string name="bet_num_and_bet_date">Số đơn cược / ngày thanh toán</string>
     <string name="date">Ngày tháng</string>
-    <string name="bet_amount">Số tiền đặt cược</string>
+    <string name="bet_amount">Cổ phần</string>
     <string name="available_amount">Số tiền hợp lệ</string>
     <string name="win_lose">Thắng hay thua</string>
     <string name="win_lose_mark">Thắng hay thua : </string>
@@ -1017,7 +1017,7 @@
     <string name="scan_tool_bar">Quét kết quả</string>
     <string name="text_us_east_time">Thời gian được báo cáo theo múi giờ UTC-4.</string>
     <string name="verify_failed_please_retry">Lỗi xảy ra trong quá trình xác thực. Xin thử lại lần nữa</string>
-    <string name="text_cant_play">Bạn đang trong khu vực không thể chơi</string>
+    <string name="text_cant_play">Đã xảy ra lỗi. Vui lòng thử lại sau.</string>
     <string name="text_bet_not_success">Trạng thái phiếu cược đang&#160;</string>
     <string name="text_bet_not_success2">Chờ</string>
     <string name="text_bet_not_success3">&#160;Phiếu cược của bạn đang được xử lý, vui lòng kiểm tra&#160;</string>
@@ -1147,4 +1147,6 @@
     <!--endregion-->
 
     <string name="current_corner">Tổng Số Hiện Tại:</string>
+    <string name="cancel_auto">Từ chối</string>
+    <string name="cancel_manual">Vô hiệu</string>
 </resources>
