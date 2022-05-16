@@ -3,23 +3,24 @@ package org.cxct.sportlottery.ui.finance
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_recharge_log.*
 import kotlinx.android.synthetic.main.activity_recharge_log.view.*
 import kotlinx.android.synthetic.main.component_date_range_selector.view.*
+import kotlinx.android.synthetic.main.view_no_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.CheckStatus
 import org.cxct.sportlottery.ui.finance.df.UWType
+import org.cxct.sportlottery.util.DisplayUtil.dp
 
 /**
  * @app_destination 提款記錄
@@ -86,6 +87,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             setupWithdrawLogList(this)
             setupSearch(this)
             initOnclick(this)
+            initNoRecordView(this)
         }
     }
 
@@ -104,6 +106,15 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         }
     }
 
+    private fun initNoRecordView(view: View) {
+        view.view_no_record.list_no_record_img?.apply {
+            viewTreeObserver.addOnGlobalLayoutListener {
+                val lp = layoutParams as LinearLayout.LayoutParams
+                lp.topMargin = 20.dp
+                layoutParams = lp
+            }
+        }
+    }
 
     private fun setupListColumn(view: View) {
         view.rech_log_recharge_amount.text = getString(R.string.withdraw_log_withdraw_amount)
