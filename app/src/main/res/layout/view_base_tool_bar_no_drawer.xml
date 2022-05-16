@@ -26,7 +26,7 @@
         android:contentDescription="@null"
         android:paddingHorizontal="20dp"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_icon_arrow_blue" />
+        android:src="@drawable/ic_icon_arrow_white" />
 
 </FrameLayout>
 
