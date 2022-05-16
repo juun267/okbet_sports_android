@@ -173,8 +173,11 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             outrightOddListener = OutrightOddListener(
                 { matchOdd, odd, playCateCode ->
                     matchOdd?.let {
-                        addOutRightOddsDialog(matchOdd, odd, playCateCode)
-                        //addOddsDialog(matchOdd.matchInfo, odd, playCateCode,"",null)
+                        if(mIsEnabled) {
+                            avoidFastDoubleClick()
+                            addOutRightOddsDialog(matchOdd, odd, playCateCode)
+                            //addOddsDialog(matchOdd.matchInfo, odd, playCateCode,"",null)
+                        }
                     }
                 },
                 { oddsKey, matchOdd ->
@@ -253,7 +256,16 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                 },
                 clickListenerBet = { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
-                    addOddsDialog(matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap)
+                    if(mIsEnabled) {
+                        avoidFastDoubleClick()
+                        addOddsDialog(
+                            matchInfo,
+                            odd,
+                            playCateCode,
+                            playCateName,
+                            betPlayCateNameMap
+                        )
+                    }
                 },
                 clickListenerQuickCateTab = { matchOdd, quickPlayCate ->
                     matchOdd.matchInfo?.let {
