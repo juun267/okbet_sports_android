@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.dialog_register_success.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 class RegisterSuccessDialog(context: Context) : DialogFragment() {
 
@@ -63,6 +64,7 @@ class RegisterSuccessDialog(context: Context) : DialogFragment() {
         }
         tvJump.text = getString(R.string.register_jump,getString(R.string.app_name))
         btnRecharge.setOnClickListener (mNegativeClickListener)
+        btnRecharge.setTitleLetterSpacing()
     }
     fun setNegativeClickListener(negativeClickListener: View.OnClickListener) {
         mNegativeClickListener = negativeClickListener

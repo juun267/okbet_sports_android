@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -41,6 +40,7 @@ import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlay
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.getNameMap
+import kotlin.math.abs
 import kotlin.math.min
 
 class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListener) :
@@ -380,6 +380,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         removeTextChangedListener(tag as TextWatcher)
                     }
                     filters = arrayOf(MoneyInputFilter())
+
+                    setText(if (itemData.betAmount > 0.0) itemData.inputBetAmountStr else "")
                 }
                 onFocusChangeListener = null
 
@@ -638,6 +640,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 btnRecharge.setOnClickListener {
                     onItemClickListener.onRechargeClick()
                 }
+                btnRecharge.setTitleLetterSpacing()
                 //隊伍名稱
                 tv_match.text = when {
                     itemData.matchType == MatchType.OUTRIGHT -> itemData.outrightMatchInfo?.name
@@ -826,11 +829,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         isEnabled = true
                         isFocusable = true
                         isFocusableInTouchMode = true
-//                        hint = getLimitHint(
-//                            context,
-//                            itemData.parlayOdds?.min ?: 0,
-//                            itemData.parlayOdds?.max ?: 0
-//                        )
+                        setBackgroundResource(R.drawable.effect_select_bet_radius_4_edit_text)
                     }
                     et_clickable.isEnabled = true //EditText的click事件
                     cl_quota_detail.visibility = View.VISIBLE
@@ -847,6 +846,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         isEnabled = false
                         isFocusable = false
                         isFocusableInTouchMode = false
+                        setBackgroundResource(R.drawable.bg_square_shape_4dp_cccccc)
                     }
                     et_clickable.isEnabled = false //EditText的click事件
                     cl_quota_detail.visibility = View.VISIBLE
@@ -1507,6 +1507,48 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                     data.betAmount = (data.parlayOdds?.max ?: 0).toDouble()
                                     data.inputBetAmountStr = (data.parlayOdds?.max ?: 0).toString()
                                 }
+
+                                var dataOddsType = currentOddsType
+                                data.apply {
+                                    if (matchOdd.isOnlyEUType
+                                        || matchOdd.odds == matchOdd.malayOdds
+                                        || matchType == MatchType.OUTRIGHT
+                                        || matchType == MatchType.OTHER_OUTRIGHT
+                                    ) {
+                                        dataOddsType = OddsType.EU
+                                    }
+                                }
+
+                                //region 設置realAmount
+                                var realAmount = data.betAmount
+                                when (dataOddsType) {
+                                    OddsType.MYS -> {
+                                        if (getOdds(data.matchOdd, dataOddsType) < 0) {
+                                            realAmount = data.betAmount * abs(
+                                                getOdds(
+                                                    data.matchOdd,
+                                                    dataOddsType
+                                                )
+                                            )
+                                        }
+                                    }
+                                    OddsType.IDN -> {
+                                        if (getOdds(data.matchOdd, dataOddsType) < 0) {
+                                            realAmount = data.betAmount * abs(
+                                                getOdds(
+                                                    data.matchOdd,
+                                                    dataOddsType
+                                                )
+                                            )
+                                        }
+                                    }
+                                    else -> {
+                                        //do nothing
+                                    }
+                                }
+
+                                data.realAmount = realAmount
+                                //endregion
                             }
                             notifyAllBet()
                             onItemClickListener.refreshBetInfoTotal()
@@ -1827,6 +1869,16 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             val inputValue =
                                 if (it.isNullOrEmpty() || mUserMoney == 0.0) 0.0 else it.toString()
                                     .toDouble()
+
+                            if(it.isNullOrEmpty()){
+                                if (!ignore) {
+                                    ignore = true
+                                    setText("")
+                                    setSelection(text.length)
+                                    ignore = false
+                                }
+                                return
+                            }
 
                             if (inputValue == 0.0) {
                                 if (!ignore) {

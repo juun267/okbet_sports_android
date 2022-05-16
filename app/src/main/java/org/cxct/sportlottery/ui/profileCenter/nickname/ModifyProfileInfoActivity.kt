@@ -105,6 +105,8 @@ class ModifyProfileInfoActivity :
         btn_confirm.setOnClickListener {
             checkInputData()
         }
+
+        btn_confirm.setTitleLetterSpacing()
     }
 
     private fun checkInputData() {

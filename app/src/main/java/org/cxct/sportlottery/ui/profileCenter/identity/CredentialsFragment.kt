@@ -19,6 +19,7 @@ import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.RechargePicSelectorDialog
 import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
@@ -190,6 +191,7 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
                 }
             }
         }
+        btn_submit.setTitleLetterSpacing()
 
         btn_reset.setOnClickListener {
             clearMediaFile()
@@ -197,6 +199,8 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
             view_identity_photo.imgUploaded(false)
             checkSubmitStatus()
         }
+
+        btn_reset.setTitleLetterSpacing()
     }
 
     private fun setupUploadView() {

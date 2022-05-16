@@ -24,9 +24,10 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="164dp"
+                android:layout_height="148dp"
                 android:layout_gravity="center_horizontal"
                 android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
                 android:src="@drawable/ic_feedback_banner" />
 
             <LinearLayout

@@ -353,9 +353,9 @@ fun TextView.setMoneyColor(profit: Double = 0.0) {
 fun TextView.setMoneyColorWhite(profit: Double = 0.0) {
 
     val color = when {
-        profit >= 0.0 -> R.color.color_191919_FCFCFC
+        profit >= 0.0 -> R.color.color_FFFFFF
         profit < 0.0 -> R.color.colorRedLight
-        else -> R.color.color_191919_FCFCFC
+        else -> R.color.color_FFFFFF
     }
 
     this.setTextColor(ContextCompat.getColor(context, color))

@@ -18,6 +18,7 @@ import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 
 class VerifyIdentityFragment :
@@ -67,6 +68,7 @@ class VerifyIdentityFragment :
 
     private fun initView() {
         tv_select_bank_card.text = idTypeList[0].showName
+        btn_take_photo.setTitleLetterSpacing()
     }
 
     private fun initOnClick() {

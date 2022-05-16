@@ -265,7 +265,10 @@ class MultiLanguagesApplication : Application() {
 
         fun saveNightMode(nightMode: Boolean) {
             isNightMode = nightMode
+            colorModeChanging = true
         }
+
+        var colorModeChanging: Boolean = false
 
         var isNightMode: Boolean
             get() = myPref?.getBoolean("is_night_mode", false) ?: false
@@ -274,6 +277,10 @@ class MultiLanguagesApplication : Application() {
                 editor?.putBoolean("is_night_mode", check)
                 editor?.apply()
             }
+
+        fun getChangeModeColorCode(defaultColor: String, nightModeColor: String): String {
+            return if(isNightMode) nightModeColor else defaultColor
+        }
 
         fun getInstance(): MultiLanguagesApplication? {
             if (instance == null) throw IllegalStateException("Application not be created yet.")

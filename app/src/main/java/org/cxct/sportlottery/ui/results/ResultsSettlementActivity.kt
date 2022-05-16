@@ -157,6 +157,10 @@ class ResultsSettlementActivity :
                     outrightResultDiffAdapter.submitList(it)
                 }
             })
+
+            matchResultPlayListResult.observe(this@ResultsSettlementActivity) {
+                showErrorPromptDialog(message = it.msg) {}
+            }
         }
     }
 

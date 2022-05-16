@@ -3,9 +3,11 @@ package org.cxct.sportlottery.ui.odds
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_odds_detail.*
 import kotlinx.android.synthetic.main.fragment_odds_detail.rv_cat
 import kotlinx.android.synthetic.main.fragment_odds_detail.rv_detail
 import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
 import org.cxct.sportlottery.enum.MatchSource
@@ -38,14 +41,19 @@ import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
+import java.util.*
 
 
 @Suppress("DEPRECATION")
 class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class) {
 
-
     private val args: OddsDetailFragmentArgs by navArgs()
+    private val mStartTimer = Timer()
+    private val mStartTimeTask = object: TimerTask() {
+        override fun run() {
 
+        }
+    }
 
     var matchId: String? = null
     private var matchOdd: MatchOdd? = null
@@ -110,6 +118,11 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
         //TODO if args.matchInfoList is empty than need to get match list to find same league match for more button used.
         getData()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mStartTimer.cancel()
     }
 
     private fun initUI() {
@@ -359,10 +372,26 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     startTime,
                     TimeUtil.DM_FORMAT
                 )
-            tv_time_bottom.text = TimeUtil.timeFormat(startTime, TimeUtil.HM_FORMAT)
+            if(!TimeUtil.isLastHour(startTime)) {
+                tv_time_bottom.text = TimeUtil.timeFormat(startTime, TimeUtil.HM_FORMAT)
+            }
+            checkStartTime(startTime)
         }
     }
 
+    private fun checkStartTime(startTime: Long?) {
+        mStartTimer.schedule(object: TimerTask() {
+            override fun run() {
+                lifecycleScope.launch {
+                    if (TimeUtil.isLastHour(startTime)) {
+                        tv_time_bottom.text = String.format(getString(R.string.at_start_remain_minute), TimeUtil.getRemainMinute(startTime))
+                    } else {
+                        tv_time_bottom.text = TimeUtil.timeFormat(startTime, TimeUtil.HM_FORMAT)
+                    }
+                }
+            }
+        }, 0, 1000)
+    }
 
     private fun setupLiveView() {
         with(live_view_tool_bar) {

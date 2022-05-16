@@ -21,7 +21,7 @@
             android:id="@+id/title_league_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/color_191919_FCFCFC"
+            android:textColor="@color/color_FFFFFF"
             android:textSize="@dimen/textSize14sp"
             tools:text="德国甲组联赛2021/2022 - 冠军" />
 
