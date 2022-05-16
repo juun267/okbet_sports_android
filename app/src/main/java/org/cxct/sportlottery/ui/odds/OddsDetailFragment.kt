@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.odds
 
-
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
@@ -43,7 +42,9 @@ import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
 
-
+/**
+ * @app_destination 全部玩法
+ */
 @Suppress("DEPRECATION")
 class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class) {
 

@@ -41,7 +41,9 @@ import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
 
-
+/**
+ * @app_destination 聯賽列表(今日、早盤、串關點擊某項聯賽)
+ */
 class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class), Animation.AnimationListener {
 
     private val args: GameLeagueFragmentArgs by navArgs()

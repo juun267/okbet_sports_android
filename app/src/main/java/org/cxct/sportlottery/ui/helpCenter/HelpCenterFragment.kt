@@ -10,6 +10,9 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.util.JumpUtil
 
+/**
+ * @app_destination 幫助中心
+ */
 class HelpCenterFragment : BaseFragment<HelpCenterViewModel>(HelpCenterViewModel::class) {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

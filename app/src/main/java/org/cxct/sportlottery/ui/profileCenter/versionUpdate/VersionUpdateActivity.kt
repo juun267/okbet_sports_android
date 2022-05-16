@@ -16,7 +16,9 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.util.*
 
-
+/**
+ * @app_destination 版本更新
+ */
 class VersionUpdateActivity : BaseActivity<VersionUpdateViewModel>(VersionUpdateViewModel::class) {
 
     private val mRxPermissions = RxPermissions(this)

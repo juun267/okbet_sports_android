@@ -68,6 +68,9 @@ import org.cxct.sportlottery.util.*
 import java.util.*
 import kotlin.collections.HashMap
 
+/**
+ * @app_destination 滾球、即將、今日、早盤、冠軍、串關
+ */
 @SuppressLint("NotifyDataSetChanged", "LogNotTimber")
 @RequiresApi(Build.VERSION_CODES.M)
 class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class), Animation.AnimationListener {
