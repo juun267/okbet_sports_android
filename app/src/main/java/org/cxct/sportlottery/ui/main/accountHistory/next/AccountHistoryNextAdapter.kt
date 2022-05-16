@@ -290,7 +290,7 @@ class AccountHistoryNextAdapter(
                 }
 
                 when (row.gameType) {
-                    GameType.FT.key, GameType.BK.key -> {
+                    GameType.FT.key -> {
                         if (it.rtScore?.isNotEmpty() == true)
                             binding.tvScore.text = String.format(
                                 binding.tvScore.context.getString(R.string.brackets),

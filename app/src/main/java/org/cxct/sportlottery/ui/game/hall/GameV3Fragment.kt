@@ -65,9 +65,13 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
+import timber.log.Timber
 import java.util.*
 import kotlin.collections.HashMap
 
+/**
+ * @app_destination 滾球、即將、今日、早盤、冠軍、串關
+ */
 @SuppressLint("NotifyDataSetChanged", "LogNotTimber")
 @RequiresApi(Build.VERSION_CODES.M)
 class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class), Animation.AnimationListener {
@@ -173,8 +177,11 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             outrightOddListener = OutrightOddListener(
                 { matchOdd, odd, playCateCode ->
                     matchOdd?.let {
-                        addOutRightOddsDialog(matchOdd, odd, playCateCode)
-                        //addOddsDialog(matchOdd.matchInfo, odd, playCateCode,"",null)
+                        if(mIsEnabled) {
+                            avoidFastDoubleClick()
+                            addOutRightOddsDialog(matchOdd, odd, playCateCode)
+                            //addOddsDialog(matchOdd.matchInfo, odd, playCateCode,"",null)
+                        }
                     }
                 },
                 { oddsKey, matchOdd ->
@@ -253,7 +260,16 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                 },
                 clickListenerBet = { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
-                    addOddsDialog(matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap)
+                    if(mIsEnabled) {
+                        avoidFastDoubleClick()
+                        addOddsDialog(
+                            matchInfo,
+                            odd,
+                            playCateCode,
+                            playCateName,
+                            betPlayCateNameMap
+                        )
+                    }
                 },
                 clickListenerQuickCateTab = { matchOdd, quickPlayCate ->
                     matchOdd.matchInfo?.let {
@@ -289,13 +305,16 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 subscribeChannelHall(it)
             },
             { odd, betMatchInfo, betPlayCateNameMap ->
-                addOddsDialog(
-                    betMatchInfo,
-                    odd,
-                    PlayCate.EPS.value,
-                    getString(R.string.game_tab_price_boosts_odd),
-                    betPlayCateNameMap
-                )
+                if(mIsEnabled) {
+                    avoidFastDoubleClick()
+                    addOddsDialog(
+                        betMatchInfo,
+                        odd,
+                        PlayCate.EPS.value,
+                        getString(R.string.game_tab_price_boosts_odd),
+                        betPlayCateNameMap
+                    )
+                }
             }) { matchInfo ->
             setEpsBottomSheet(matchInfo)
         }
@@ -1213,6 +1232,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
 
         viewModel.favorLeagueList.observe(this.viewLifecycleOwner) {
+            Timber.e("Dean, favorLeagueList = $it")
             updateLeaguePin(it)
             updateLeaguePinOutright(it)
         }
@@ -1320,14 +1340,22 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private fun updateLeaguePin(leagueListPin: List<String>) {
         val leaguePinList = mutableListOf<League>()
 
-        countryAdapter.data.forEach { row ->
+        countryAdapter.data.forEachIndexed { index, row ->
             val pinLeague = row.list.filter { league ->
                 leagueListPin.contains(league.id)
             }
 
+            var needUpdate = false
+
             row.list.forEach { league ->
-                league.isPin = leagueListPin.contains(league.id)
+                if (league.isPin != leagueListPin.contains(league.id)) {
+                    league.isPin = leagueListPin.contains(league.id)
+                    needUpdate = true
+                }
             }
+
+            if (needUpdate)
+                countryAdapter.notifyCountryItem(index)
 
             leaguePinList.addAll(pinLeague)
         }

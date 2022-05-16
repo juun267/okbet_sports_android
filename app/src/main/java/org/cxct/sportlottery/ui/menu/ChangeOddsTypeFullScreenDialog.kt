@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.menu
 
-
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
@@ -10,6 +9,9 @@ import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.game.menu.LeftMenuFragment
 import org.cxct.sportlottery.ui.main.MainViewModel
 
+/**
+ * @app_destination 盤口設定
+ */
 class ChangeOddsTypeFullScreenDialog : BaseDialog<MainViewModel>(MainViewModel::class) {
 
     override fun onCreateView(

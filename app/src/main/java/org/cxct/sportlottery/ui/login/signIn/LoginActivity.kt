@@ -31,10 +31,9 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.boundsEditText.SimpleTextChangedWatcher
 
-
-
-
-
+/**
+ * @app_destination 登入
+ */
 class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private val loginScope = CoroutineScope(Dispatchers.Main)

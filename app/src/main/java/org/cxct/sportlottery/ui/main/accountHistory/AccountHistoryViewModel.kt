@@ -197,7 +197,7 @@ class AccountHistoryViewModel(
                         startTime = it.startTime,
                         endTime = it.endTime,
                         statDate = selectedDate.value?.peekContent(),
-                        page = it.page?.plus(1),
+                        page = it.page,
                         pageSize = PAGE_SIZE)
                     getDetailList(mBetDetailRequest!!)
                 }
@@ -219,9 +219,12 @@ class AccountHistoryViewModel(
                 OneBoSportApi.betService.getBetSettledDetailList(betDetailRequest)
             }?.let { result ->
                 hideLoading()
-                result.rows?.let { detailDataList.addAll(it) }
-                isDetailLastPage = (detailDataList.size >= (result.total ?: 0))
-                _betDetailResult.value = result
+                if (result.success) {
+                    mBetDetailRequest?.page = mBetDetailRequest?.page?.plus(1)
+                    result.rows?.let { detailDataList.addAll(it) }
+                    isDetailLastPage = (detailDataList.size >= (result.total ?: 0))
+                    _betDetailResult.value = result
+                }
             }
         }
 

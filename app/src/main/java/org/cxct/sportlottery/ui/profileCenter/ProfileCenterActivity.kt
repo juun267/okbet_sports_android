@@ -53,6 +53,9 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.util.*
 
+/**
+ * @app_destination 個人中心
+ */
 class ProfileCenterActivity :
     BaseSocketActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
     //簡訊驗證彈窗

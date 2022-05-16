@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.odds
 
-
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
@@ -43,12 +42,14 @@ import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
 
-
+/**
+ * @app_destination 全部玩法
+ */
 @Suppress("DEPRECATION")
 class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class) {
 
     private val args: OddsDetailFragmentArgs by navArgs()
-    private val mStartTimer = Timer()
+    private var mStartTimer: Timer? = Timer()
     private val mStartTimeTask = object: TimerTask() {
         override fun run() {
 
@@ -120,31 +121,38 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         getData()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        mStartTimer.cancel()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mStartTimer?.cancel()
+        mStartTimer = null
     }
 
     private fun initUI() {
         oddsDetailListAdapter = OddsDetailListAdapter(
             OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
                 matchOdd?.let { matchOdd ->
-                    val fastBetDataBean = FastBetDataBean(
-                        matchType = MatchType.TODAY,
-                        gameType = args.gameType,
-                        playCateCode = oddsDetail?.gameType ?: "",
-                        playCateName = oddsDetail?.name ?: "",
-                        matchInfo = matchOdd.matchInfo,
-                        matchOdd = null,
-                        odd = odd,
-                        subscribeChannelType = ChannelType.EVENT,
-                        betPlayCateNameMap = matchOdd.betPlayCateNameMap,
-                        otherPlayCateName = scoPlayCateNameForBetInfo
-                    )
-                    when (activity) {
-                        is GameActivity -> (activity as GameActivity).showFastBetFragment(fastBetDataBean)
-                        is GamePublicityActivity -> (activity as GamePublicityActivity).showFastBetFragment(fastBetDataBean)
-                    }
+                    if (mIsEnabled) {
+                        avoidFastDoubleClick()
+                        val fastBetDataBean = FastBetDataBean(
+                            matchType = MatchType.TODAY,
+                            gameType = args.gameType,
+                            playCateCode = oddsDetail?.gameType ?: "",
+                            playCateName = oddsDetail?.name ?: "",
+                            matchInfo = matchOdd.matchInfo,
+                            matchOdd = null,
+                            odd = odd,
+                            subscribeChannelType = ChannelType.EVENT,
+                            betPlayCateNameMap = matchOdd.betPlayCateNameMap,
+                            otherPlayCateName = scoPlayCateNameForBetInfo
+                        )
+                        when (activity) {
+                            is GameActivity -> (activity as GameActivity).showFastBetFragment(
+                                fastBetDataBean
+                            )
+                            is GamePublicityActivity -> (activity as GamePublicityActivity).showFastBetFragment(
+                                fastBetDataBean
+                            )
+                        }
 
 //                    viewModel.updateMatchBetList(
 //                        matchType = MatchType.TODAY,
@@ -157,6 +165,7 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 //                        betPlayCateNameMap = matchOdd.betPlayCateNameMap,
 //                        otherPlayCateName = scoPlayCateNameForBetInfo
 //                    )
+                    }
                 }
             }
         ).apply {
@@ -380,7 +389,7 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     }
 
     private fun checkStartTime(startTime: Long?) {
-        mStartTimer.schedule(object: TimerTask() {
+        mStartTimer?.schedule(object: TimerTask() {
             override fun run() {
                 lifecycleScope.launch {
                     if (TimeUtil.isLastHour(startTime)) {

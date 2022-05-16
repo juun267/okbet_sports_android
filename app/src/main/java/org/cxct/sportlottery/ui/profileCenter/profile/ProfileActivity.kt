@@ -37,6 +37,9 @@ import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
 
+/**
+ * @app_destination 個人資訊
+ */
 class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
     //簡訊驗證彈窗
