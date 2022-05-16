@@ -417,7 +417,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     }
 
     private fun goGamePage() {
-        GameActivity.reStart(MultiLanguagesApplication.appContext)
+        GameActivity.reStart(activity?:requireActivity())
         activity?.finish()
     }
 
