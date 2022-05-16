@@ -32,6 +32,7 @@
     <color name="color_212121_eeeeee">@color/color_212121</color>
     <color name="color_212121_ededed">@color/color_212121</color>
     <color name="color_1F1F1F_e6e6e6">@color/color_1F1F1F</color>
+    <color name="color_1F1F1F_E2E2E2">@color/color_1F1F1F</color>
     <color name="color_2B2B2B_e2e2e2">@color/color_2B2B2B</color>
     <color name="color_303030_dddddd">@color/color_303030</color>
     <color name="color_404040_cccccc">@color/color_404040</color>

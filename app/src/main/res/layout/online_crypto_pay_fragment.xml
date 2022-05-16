@@ -47,11 +47,11 @@
 
                 <View
                     android:layout_width="1dp"
-                    android:layout_height="14dp"
+                    android:layout_height="20dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@color/color_191919_EEEFF0" />
+                    android:background="@color/color_666666_bcbcbc" />
 
                 <TextView
                     android:id="@+id/txv_currency"
@@ -104,11 +104,11 @@
 
                 <View
                     android:layout_width="1dp"
-                    android:layout_height="14dp"
+                    android:layout_height="20dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@color/color_191919_EEEFF0" />
+                    android:background="@color/color_666666_bcbcbc" />
 
                 <TextView
                     android:id="@+id/txv_account"
