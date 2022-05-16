@@ -8,6 +8,9 @@ import org.cxct.sportlottery.databinding.ActivityNewsBinding
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 
+/**
+ * @app_destination 最新消息
+ */
 class NewsActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
     private lateinit var binding: ActivityNewsBinding
 

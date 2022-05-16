@@ -16,6 +16,9 @@ import org.cxct.sportlottery.repository.MsgType
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
+/**
+ * @app_destination 消息中心
+ */
 class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterViewModel::class) {
 
     companion object {

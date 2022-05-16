@@ -32,6 +32,9 @@ import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
 import org.cxct.sportlottery.util.SocketUpdateUtil
 
+/**
+ * @app_destination 宣傳頁
+ */
 class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class), View.OnClickListener {
     // This property is only valid between onCreateView and onDestroyView.
     private var _binding: FragmentPublicityBinding? = null

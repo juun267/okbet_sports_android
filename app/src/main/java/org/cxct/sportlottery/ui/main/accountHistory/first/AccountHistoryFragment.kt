@@ -13,6 +13,9 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryViewModel
 
+/**
+ * @app_destination 帳戶歷史
+ */
 class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHistoryViewModel::class) {
 
     private var isFirstTime = true //避免重複call兩次api

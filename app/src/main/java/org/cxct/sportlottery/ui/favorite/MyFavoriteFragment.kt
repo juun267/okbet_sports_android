@@ -39,6 +39,9 @@ import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
 
+/**
+ * @app_destination 我的賽事
+ */
 @SuppressLint("LogNotTimber")
 class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteViewModel::class) {
 
