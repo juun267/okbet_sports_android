@@ -272,7 +272,6 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
 
 
             itemView.league_odd_list.visibility = if (data[adapterPosition].unfold == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
-            checkSpaceItemDecoration()
             updateTimer(matchType, item.gameType)
 
 //            itemView.iv_refresh.isVisible = matchType != MatchType.MY_EVENT
@@ -301,15 +300,6 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         private fun updateTimer(matchType: MatchType, gameType: GameType?) {
             leagueOddAdapter.isTimerEnable =
                 itemView.league_odd_list.visibility == View.VISIBLE && (gameType == GameType.FT || gameType == GameType.BK || gameType == GameType.RB || gameType == GameType.AFT || matchType == MatchType.PARLAY || matchType == MatchType.AT_START || matchType == MatchType.MY_EVENT)
-        }
-
-        private fun checkSpaceItemDecoration() {
-            itemView.SpaceItemDecorationView.visibility = when (itemView.league_odd_list.visibility) {
-                View.VISIBLE -> View.GONE
-                View.GONE -> View.VISIBLE
-                else -> View.VISIBLE
-            }
-            //itemView.SpaceItemDecorationView.visibility = if(itemView.league_odd_list.isShown) View.GONE else View.VISIBLE
         }
     }
 
