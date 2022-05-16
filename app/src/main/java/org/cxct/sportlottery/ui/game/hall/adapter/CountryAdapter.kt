@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.game.hall.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,17 +7,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_country.view.*
 import kotlinx.android.synthetic.main.itemview_country_v4.view.*
-import kotlinx.android.synthetic.main.itemview_country_v4.view.SpaceItemDecorationView
-import kotlinx.android.synthetic.main.itemview_country_v4.view.country_border
 import kotlinx.android.synthetic.main.itemview_country_v4.view.iv_country
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.league.Row
 import org.cxct.sportlottery.ui.common.SocketLinearManager
-import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.util.SvgUtil
-import org.cxct.sportlottery.util.setTextWithStrokeWidth
-import timber.log.Timber
 
 class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -191,12 +185,6 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.setOnClickListener {
                 item.isExpand = !item.isExpand
                 itemView.country_expand.setExpanded(item.isExpand, true)
-
-                if(item.isExpand) {
-                    itemView.SpaceItemDecorationView.visibility = View.GONE
-                } else {
-                    itemView.SpaceItemDecorationView.visibility = View.VISIBLE
-                }
             }
         }
 
