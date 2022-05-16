@@ -15,8 +15,10 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         app:srlDragRate="0.3"
         app:srlEnableLoadMore="true"
         app:srlEnablePureScrollMode="true">
@@ -25,10 +27,10 @@
             android:id="@+id/rv_account_history"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/color_141414_F3F4F5"
             android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="1"
-            android:background="@color/color_141414_F3F4F5"
             tools:listitem="@layout/view_account_history_next_title_bar" />
 
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
