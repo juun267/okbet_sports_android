@@ -732,18 +732,20 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 binding.tvName.text =
                     if (inPlay && betInfoListData?.matchType != MatchType.OUTRIGHT && matchOdd.gameType == GameType.FT.key) {
                         when {
-                            matchOdd.homeCornerKicks == null || matchOdd.awayCornerKicks == null || PlayCate.isIntervalCornerPlayCate(
-                                matchOdd.playCode
-                            ) -> {
+                            PlayCate.isIntervalCornerPlayCate(matchOdd.playCode) -> {
                                 nameOneLine(matchOdd.playCateName)
                             }
                             PlayCate.needShowCurrentCorner(matchOdd.playCode) -> {
-                                getString(
-                                    R.string.bet_info_in_play_score,
-                                    nameOneLine(matchOdd.playCateName),
-                                    matchOdd.homeCornerKicks.toString(),
-                                    matchOdd.awayCornerKicks.toString()
-                                )
+                                if (matchOdd.homeCornerKicks == null || matchOdd.awayCornerKicks == null) {
+                                    nameOneLine(matchOdd.playCateName)
+                                } else {
+                                    getString(
+                                        R.string.bet_info_in_play_score,
+                                        nameOneLine(matchOdd.playCateName),
+                                        matchOdd.homeCornerKicks.toString(),
+                                        matchOdd.awayCornerKicks.toString()
+                                    )
+                                }
                             }
                             else -> {
                                 getString(
@@ -760,18 +762,20 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 binding.tvName.text =
                     if (inPlay && betInfoListData?.matchType != MatchType.OUTRIGHT && matchOdd.gameType == GameType.FT.key) {
                         when {
-                            matchOdd.homeCornerKicks == null || matchOdd.awayCornerKicks == null || PlayCate.isIntervalCornerPlayCate(
-                                matchOdd.playCode
-                            ) -> {
+                            PlayCate.isIntervalCornerPlayCate(matchOdd.playCode) -> {
                                 nameOneLine(matchOdd.playCateName)
                             }
                             PlayCate.needShowCurrentCorner(matchOdd.playCode) -> {
-                                getString(
-                                    R.string.bet_info_in_play_score,
-                                    nameOneLine(matchOdd.playCateName),
-                                    matchOdd.homeCornerKicks.toString(),
-                                    matchOdd.awayCornerKicks.toString()
-                                )
+                                if (matchOdd.homeCornerKicks == null || matchOdd.awayCornerKicks == null) {
+                                    nameOneLine(matchOdd.playCateName)
+                                } else {
+                                    getString(
+                                        R.string.bet_info_in_play_score,
+                                        nameOneLine(matchOdd.playCateName),
+                                        matchOdd.homeCornerKicks.toString(),
+                                        matchOdd.awayCornerKicks.toString()
+                                    )
+                                }
                             }
                             else -> {
                                 getString(
