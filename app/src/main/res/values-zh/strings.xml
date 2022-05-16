@@ -982,7 +982,7 @@
     <string name="select_id_type">选择身份证件类型</string>
     <string name="scan_tool_bar">扫描结果</string>
     <string name="text_us_east_time">以美东(UTC-4)时间计算</string>
-    <string name="text_cant_play">您所在的区域无法播放</string>
+    <string name="text_cant_play">发生错误,请稍后再试。</string>
     <string name="text_bet_not_success">滚球投注注单状态&#160;</string>
     <string name="text_bet_not_success2">待成立注单</string>
     <string name="text_bet_not_success3">&#160;您的注单正在处理中请检查您的&#160;</string>
@@ -1113,4 +1113,6 @@
     <!--endregion-->
 
     <string name="current_corner">当前总数:</string>
+    <string name="cancel_auto">注單未成立</string>
+    <string name="cancel_manual">退款</string>
 </resources>

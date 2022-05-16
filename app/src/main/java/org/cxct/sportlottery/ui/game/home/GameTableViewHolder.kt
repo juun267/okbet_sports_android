@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.home
 
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
@@ -36,6 +37,7 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private var isLogin: Boolean? = false
     private var mPagerPosition = 0
     var mMatchOdd: MatchOdd? = null
+    protected var mIsEnabled = true
 
     private var onPageChangeCallback: OnPageChangeCallback? = null
 
@@ -46,7 +48,10 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             matchOdd: MatchOdd, odd: Odd, playCateCode: String, playCateName: String?,
             betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
         ) {
-            addOddsDialog(matchOdd, odd, playCateCode, playCateName, betPlayCateNameMap)
+            if (mIsEnabled){
+                avoidFastDoubleClick()
+                addOddsDialog(matchOdd, odd, playCateCode, playCateName, betPlayCateNameMap)
+            }
         }
     }
     private var onClickFavoriteListener: OnClickFavoriteListener? = null
@@ -245,5 +250,10 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 (itemView.context as GameActivity).showFastBetFragment(fastBetDataBean)
             }
         }
+    }
+
+    fun avoidFastDoubleClick() {
+        mIsEnabled = false
+        Handler().postDelayed({ mIsEnabled = true }, 500)
     }
 }
