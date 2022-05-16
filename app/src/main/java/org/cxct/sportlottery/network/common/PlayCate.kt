@@ -369,12 +369,14 @@ enum class PlayCate(val value: String) {
                 CORNER_1ST_SINGLE.value,//角球:独赢-上半场
                 CORNER_1ST_OE.value,//角球:单/双-上半场
                 CORNER_DC.value,//角球:双重机会
-                N_CORNER_GOAL.value,//角球:第{S}个角球
                 CORNER_FIRST.value,//最先角球
                 CORNER_LAST.value,//最后角球
                 CORNER_1ST_OU.value//角球大/小-上半场
                 -> true
-                else -> false
+                else -> {
+                    //角球:第{S}个角球
+                    code?.contains(N_CORNER_GOAL.value) ?: false
+                }
             }
         }
 
