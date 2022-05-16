@@ -106,7 +106,7 @@
                 <TextView
                     android:id="@+id/tv_count_down"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:textAlignment="viewEnd"
                     android:textColor="@color/color_317FFF_0760D4"
                     android:textSize="@dimen/textSize14sp"
