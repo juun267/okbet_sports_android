@@ -12,6 +12,9 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
+/**
+ * @app_destination 建議反饋-問題與建議
+ */
 class FeedbackSuggestFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel::class) {
 
     override fun onCreateView(

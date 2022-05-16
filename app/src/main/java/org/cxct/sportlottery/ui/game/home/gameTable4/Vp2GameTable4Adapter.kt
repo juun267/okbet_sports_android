@@ -266,7 +266,7 @@ class Vp2GameTable4Adapter (
             itemView.iv_match_price.visibility =
                 if (data.matchInfo?.eps == 1) View.VISIBLE else View.GONE
 
-            itemView.iv_play.isVisible = (data.matchInfo?.liveVideo == 1)
+            itemView.iv_play.isVisible = (data.matchInfo?.liveVideo == 1) && (matchType == MatchType.IN_PLAY)
             itemView.iv_animation.isVisible = !(data.matchInfo?.trackerId.isNullOrEmpty())
 
             itemView.table_match_info_border.setOnClickListener {

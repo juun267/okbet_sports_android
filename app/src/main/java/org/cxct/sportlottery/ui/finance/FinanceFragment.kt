@@ -21,7 +21,9 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.TextUtil
 
-
+/**
+ * @app_destination 資金明細
+ */
 class FinanceFragment : BaseSocketFragment<FinanceViewModel>(FinanceViewModel::class) {
     private val recordAdapter by lazy {
         FinanceRecordAdapter().apply {

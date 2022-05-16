@@ -9,6 +9,9 @@ import org.cxct.sportlottery.databinding.FragmentNewsDeatilBinding
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 
+/**
+ * @app_destination 最新消息-詳情
+ */
 class NewsDetailFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
     private var _binding: FragmentNewsDeatilBinding? = null
 

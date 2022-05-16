@@ -65,9 +65,13 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
+import timber.log.Timber
 import java.util.*
 import kotlin.collections.HashMap
 
+/**
+ * @app_destination 滾球、即將、今日、早盤、冠軍、串關
+ */
 @SuppressLint("NotifyDataSetChanged", "LogNotTimber")
 @RequiresApi(Build.VERSION_CODES.M)
 class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class), Animation.AnimationListener {
@@ -628,7 +632,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     dialog.setNegativeButtonText(null)
                     dialog.setPositiveClickListener {
                         viewModel.resetErrorDialogMsg()
-                        dialog.dismiss()
+                        dialog?.dismiss()
                         back()
                     }
                     dialog.setCanceledOnTouchOutside(false)
@@ -1213,6 +1217,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
 
         viewModel.favorLeagueList.observe(this.viewLifecycleOwner) {
+            Timber.e("Dean, favorLeagueList = $it")
             updateLeaguePin(it)
             updateLeaguePinOutright(it)
         }
@@ -1320,14 +1325,22 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private fun updateLeaguePin(leagueListPin: List<String>) {
         val leaguePinList = mutableListOf<League>()
 
-        countryAdapter.data.forEach { row ->
+        countryAdapter.data.forEachIndexed { index, row ->
             val pinLeague = row.list.filter { league ->
                 leagueListPin.contains(league.id)
             }
 
+            var needUpdate = false
+
             row.list.forEach { league ->
-                league.isPin = leagueListPin.contains(league.id)
+                if (league.isPin != leagueListPin.contains(league.id)) {
+                    league.isPin = leagueListPin.contains(league.id)
+                    needUpdate = true
+                }
             }
+
+            if (needUpdate)
+                countryAdapter.notifyCountryItem(index)
 
             leaguePinList.addAll(pinLeague)
         }

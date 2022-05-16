@@ -61,7 +61,9 @@ import org.cxct.sportlottery.util.BetPlayCateFunction.getNameMap
 import org.parceler.Parcels
 import kotlin.math.min
 
-
+/**
+ * @app_destination 注單(單注，點擊賠率下方彈出)
+ */
 const val INPLAY: Int = 1
 
 class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
@@ -278,8 +280,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 binding.layoutKeyBoard.showKeyboard(
                     view as EditText,
                     null,
-                    getMaxBetMoney()
-                        ?: GameConfigManager.maxBetMoney?.toLong() ?: 0,
+                    getMaxBetMoney(),
                     betInfoListData?.parlayOdds?.min?.toLong() ?: 0
                 )
             }
@@ -350,8 +351,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
             binding.layoutKeyBoard.showKeyboard(
                 binding.etBet, null,
-                betInfoListData?.parlayOdds?.max?.toLong()
-                    ?: GameConfigManager.maxBetMoney?.toLong() ?: 0,
+                getMaxBetMoney(),
                 betInfoListData?.parlayOdds?.min?.toLong() ?: 0
             )
             //keyboard.showKeyboard(binding.etBet, null, betInfoListData?.parlayOdds?.max?.toLong() ?: GameConfigManager.maxBetMoney?.toLong() ?: 0)
@@ -960,12 +960,12 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         snackBarNotify?.show()
     }
 
-    private fun getMaxBetMoney(): Long {
+    private fun getMaxBetMoney(): Double {
         val parlayMaxBet = betInfoListData?.parlayOdds?.max ?: 0
         return if (parlayMaxBet > 0) {
-            min(parlayMaxBet.toLong(), mUserMoney.toLong())
+            min(parlayMaxBet.toDouble(), mUserMoney)
         } else {
-            mUserMoney.toLong()
+            mUserMoney
         }
     }
 

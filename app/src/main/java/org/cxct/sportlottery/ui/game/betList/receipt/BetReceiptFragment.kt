@@ -18,9 +18,7 @@ import org.cxct.sportlottery.util.TextUtil
 
 
 /**
- * A simple [Fragment] subclass.
- * Use the [BetReceiptFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * @app_destination 注單收據
  */
 class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
