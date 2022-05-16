@@ -63,16 +63,19 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                     goGamePage()
                 },
                 onClickBetListener = { gameType, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
-                    addOddsDialog(
-                        gameType,
-                        matchType,
-                        matchInfo,
-                        odd,
-                        playCateCode,
-                        playCateName,
-                        betPlayCateNameMap,
-                        playCateMenuCode
-                    )
+                    if(mIsEnabled){
+                        avoidFastDoubleClick()
+                        addOddsDialog(
+                            gameType,
+                            matchType,
+                            matchInfo,
+                            odd,
+                            playCateCode,
+                            playCateName,
+                            betPlayCateNameMap,
+                            playCateMenuCode
+                        )
+                    }
                 },
                 onClickFavoriteListener = {
                     viewModel.pinFavorite(FavoriteType.MATCH, it)
