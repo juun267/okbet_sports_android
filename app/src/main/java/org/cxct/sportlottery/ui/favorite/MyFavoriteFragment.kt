@@ -116,7 +116,16 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                     }
                 },
                 clickListenerBet = { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
-                    addOddsDialog(matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap)
+                    if(mIsEnabled) {
+                        avoidFastDoubleClick()
+                        addOddsDialog(
+                            matchInfo,
+                            odd,
+                            playCateCode,
+                            playCateName,
+                            betPlayCateNameMap
+                        )
+                    }
                 },
                 clickListenerQuickCateTab = { matchOdd, quickPlayCate ->
                     setQuickPlayCateSelected(matchOdd, quickPlayCate)

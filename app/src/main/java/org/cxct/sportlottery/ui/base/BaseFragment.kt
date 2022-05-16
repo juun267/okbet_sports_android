@@ -21,7 +21,7 @@ import kotlin.reflect.KClass
 open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
 
     val viewModel: T by sharedViewModel(clazz = clazz)
-    private var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一個
+    var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一個
 
     /*弹出加载界面*/
     open fun loading() {
@@ -207,7 +207,7 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
 
     fun avoidFastDoubleClick(){
         mIsEnabled = false
-        Handler().postDelayed({ mIsEnabled = true }, 500)
+        Handler().postDelayed({ mIsEnabled = true }, 300)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
