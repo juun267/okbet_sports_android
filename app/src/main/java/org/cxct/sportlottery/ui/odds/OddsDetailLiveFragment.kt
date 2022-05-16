@@ -210,25 +210,32 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 //        live_view_tool_bar.gameType = args.gameType //賽事動畫icon用，之後用不到可刪
         oddsDetailListAdapter = OddsDetailListAdapter(
             OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
-                matchOdd?.let { matchOdd ->
-                    matchOdd.matchInfo.homeScore = "$curHomeScore"
-                    matchOdd.matchInfo.awayScore = "$curAwayScore"
+                if(mIsEnabled) {
+                    avoidFastDoubleClick()
+                    matchOdd?.let { matchOdd ->
+                        matchOdd.matchInfo.homeScore = "$curHomeScore"
+                        matchOdd.matchInfo.awayScore = "$curAwayScore"
 
-                    val fastBetDataBean = FastBetDataBean(
-                        matchType = MatchType.IN_PLAY,
-                        gameType = args.gameType,
-                        playCateCode = oddsDetail?.gameType ?: "",
-                        playCateName = oddsDetail?.name ?: "",
-                        matchInfo = matchOdd.matchInfo,
-                        matchOdd = null,
-                        odd = odd,
-                        subscribeChannelType = ChannelType.EVENT,
-                        betPlayCateNameMap = matchOdd.betPlayCateNameMap,
-                        otherPlayCateName = scoPlayCateNameForBetInfo
-                    )
-                    when (activity) {
-                        is GameActivity -> (activity as GameActivity).showFastBetFragment(fastBetDataBean)
-                        is GamePublicityActivity -> (activity as GamePublicityActivity).showFastBetFragment(fastBetDataBean)
+                        val fastBetDataBean = FastBetDataBean(
+                            matchType = MatchType.IN_PLAY,
+                            gameType = args.gameType,
+                            playCateCode = oddsDetail?.gameType ?: "",
+                            playCateName = oddsDetail?.name ?: "",
+                            matchInfo = matchOdd.matchInfo,
+                            matchOdd = null,
+                            odd = odd,
+                            subscribeChannelType = ChannelType.EVENT,
+                            betPlayCateNameMap = matchOdd.betPlayCateNameMap,
+                            otherPlayCateName = scoPlayCateNameForBetInfo
+                        )
+                        when (activity) {
+                            is GameActivity -> (activity as GameActivity).showFastBetFragment(
+                                fastBetDataBean
+                            )
+                            is GamePublicityActivity -> (activity as GamePublicityActivity).showFastBetFragment(
+                                fastBetDataBean
+                            )
+                        }
                     }
                 }
             }

@@ -129,22 +129,28 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         oddsDetailListAdapter = OddsDetailListAdapter(
             OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
                 matchOdd?.let { matchOdd ->
-                    val fastBetDataBean = FastBetDataBean(
-                        matchType = MatchType.TODAY,
-                        gameType = args.gameType,
-                        playCateCode = oddsDetail?.gameType ?: "",
-                        playCateName = oddsDetail?.name ?: "",
-                        matchInfo = matchOdd.matchInfo,
-                        matchOdd = null,
-                        odd = odd,
-                        subscribeChannelType = ChannelType.EVENT,
-                        betPlayCateNameMap = matchOdd.betPlayCateNameMap,
-                        otherPlayCateName = scoPlayCateNameForBetInfo
-                    )
-                    when (activity) {
-                        is GameActivity -> (activity as GameActivity).showFastBetFragment(fastBetDataBean)
-                        is GamePublicityActivity -> (activity as GamePublicityActivity).showFastBetFragment(fastBetDataBean)
-                    }
+                    if (mIsEnabled) {
+                        avoidFastDoubleClick()
+                        val fastBetDataBean = FastBetDataBean(
+                            matchType = MatchType.TODAY,
+                            gameType = args.gameType,
+                            playCateCode = oddsDetail?.gameType ?: "",
+                            playCateName = oddsDetail?.name ?: "",
+                            matchInfo = matchOdd.matchInfo,
+                            matchOdd = null,
+                            odd = odd,
+                            subscribeChannelType = ChannelType.EVENT,
+                            betPlayCateNameMap = matchOdd.betPlayCateNameMap,
+                            otherPlayCateName = scoPlayCateNameForBetInfo
+                        )
+                        when (activity) {
+                            is GameActivity -> (activity as GameActivity).showFastBetFragment(
+                                fastBetDataBean
+                            )
+                            is GamePublicityActivity -> (activity as GamePublicityActivity).showFastBetFragment(
+                                fastBetDataBean
+                            )
+                        }
 
 //                    viewModel.updateMatchBetList(
 //                        matchType = MatchType.TODAY,
@@ -157,6 +163,7 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 //                        betPlayCateNameMap = matchOdd.betPlayCateNameMap,
 //                        otherPlayCateName = scoPlayCateNameForBetInfo
 //                    )
+                    }
                 }
             }
         ).apply {
