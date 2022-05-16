@@ -301,13 +301,16 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 subscribeChannelHall(it)
             },
             { odd, betMatchInfo, betPlayCateNameMap ->
-                addOddsDialog(
-                    betMatchInfo,
-                    odd,
-                    PlayCate.EPS.value,
-                    getString(R.string.game_tab_price_boosts_odd),
-                    betPlayCateNameMap
-                )
+                if(mIsEnabled) {
+                    avoidFastDoubleClick()
+                    addOddsDialog(
+                        betMatchInfo,
+                        odd,
+                        PlayCate.EPS.value,
+                        getString(R.string.game_tab_price_boosts_odd),
+                        betPlayCateNameMap
+                    )
+                }
             }) { matchInfo ->
             setEpsBottomSheet(matchInfo)
         }
