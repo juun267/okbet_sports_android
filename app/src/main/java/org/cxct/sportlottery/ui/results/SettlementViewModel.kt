@@ -12,6 +12,7 @@ import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.matchresult.list.MatchInfo
 import org.cxct.sportlottery.network.matchresult.list.MatchResultList
 import org.cxct.sportlottery.network.matchresult.playlist.MatchResultPlayList
+import org.cxct.sportlottery.network.matchresult.playlist.MatchResultPlayListResult
 import org.cxct.sportlottery.network.outright.OutrightResultListResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
@@ -33,6 +34,10 @@ class SettlementViewModel(
     infoCenterRepository,
     favoriteRepository
 ) {
+
+    private val _matchResultPlayListResult = MutableLiveData<MatchResultPlayListResult>()
+    val matchResultPlayListResult: LiveData<MatchResultPlayListResult>
+        get() = _matchResultPlayListResult
 
     private var matchResultReformatted = mutableListOf<MatchResultData>() //重構後的資料結構
     private val _showMatchResultData = MutableLiveData<List<MatchResultData>>() //過濾後的資料
@@ -163,7 +168,8 @@ class SettlementViewModel(
                         showData.add(it)
                     }
                 }
-                else -> {}
+                else -> {
+                }
             }
         }
         _showOutrightData.value = showData
@@ -218,7 +224,9 @@ class SettlementViewModel(
             doNetwork(androidContext) {
                 settlementRepository.resultPlayList(matchId)
             }?.let { result ->
-                makeUpMatchDetailData(result.matchResultPlayList, clickedItem, gameType)
+                if (result.success)
+                    makeUpMatchDetailData(result.matchResultPlayList, clickedItem, gameType)
+                else _matchResultPlayListResult.postValue(result)
             }
             requestListener.requestIng(false)
         }

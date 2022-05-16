@@ -161,6 +161,7 @@
                         android:background="@drawable/bg_radius_4_button_e44438"
                         android:gravity="center"
                         android:text="@string/bet_list_delete_all"
+                        android:textSize="@dimen/textSize12sp"
                         android:textColor="@android:color/white" />
 
                     <ImageView
@@ -378,9 +379,9 @@
                 android:background="@color/color_232628_EAF4FE"
                 android:gravity="center"
                 android:paddingStart="@dimen/margin_8"
-                android:paddingTop="9dp"
+                android:paddingTop="3dp"
                 android:paddingEnd="@dimen/margin_8"
-                android:paddingBottom="10dp"
+                android:paddingBottom="3dp"
                 android:text="@string/bet_info_odd_content_changed"
                 android:textColor="@color/color_E44438_e44438"
                 android:textSize="@dimen/textSize12sp"
@@ -429,16 +430,20 @@
 
                 <TextView
                     android:id="@+id/tv_odds_closed_changed"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="3dp"
                     android:text="@string/bet_info_odd_content_changed"
+                    android:textAlignment="center"
                     android:textColor="@color/color_E44438_e44438"
                     android:textSize="@dimen/textSize12sp" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="3dp"
                     android:text="@string/bet_info_odd_content_close"
+                    android:textAlignment="center"
                     android:textColor="@color/color_E44438_e44438"
                     android:textSize="@dimen/textSize12sp" />
 

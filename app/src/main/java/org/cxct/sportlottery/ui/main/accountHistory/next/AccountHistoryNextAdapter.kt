@@ -75,9 +75,7 @@ class AccountHistoryNextAdapter(
         adapterScope.launch {
             val items = listOf(DataItem.TitleBar) + when {
                 list.isNullOrEmpty() -> listOf(DataItem.NoData)
-                isLastPage -> list.map { DataItem.Item(it) } + listOf(DataItem.Footer) + listOf(
-                    DataItem.BackToTop
-                )
+                isLastPage -> list.map { DataItem.Item(it) } + listOf(DataItem.Footer) + listOf(DataItem.BackToTop)
                 else -> list.map { DataItem.Item(it) }
             }
 
@@ -160,9 +158,9 @@ class AccountHistoryNextAdapter(
     class ParlayItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentParlayBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        private val parlayAdapter by lazy { ParlayItemAdapter() }
-
         fun bind(row: Row, oddsType: OddsType) {
+            val parlayAdapter by lazy { ParlayItemAdapter() }
+
             binding.row = row
 
             binding.apply {
@@ -175,8 +173,7 @@ class AccountHistoryNextAdapter(
                 }
 
                 tvDetail.paint.flags = Paint.UNDERLINE_TEXT_FLAG
-                // 暫時隱藏，配合後端更新再開啟
-                tvDetail.isVisible = false//(row.parlayComsDetailVOs ?: emptyList()).isNotEmpty()
+                tvDetail.isVisible = (row.parlayComsDetailVOs ?: emptyList()).isNotEmpty()
                 tvDetail.setOnClickListener {
                     val dialog = row.parlayComsDetailVOs?.let { list ->
                         ComboDetailDialog(it.context, list)
@@ -229,13 +226,9 @@ class AccountHistoryNextAdapter(
                 binding.tvGameTypePlayCate.text = "${GameType.getGameTypeString(binding.tvGameTypePlayCate.context, row.gameType)} $playCateName"
 
                 if (!homeName.isNullOrEmpty() && !awayName.isNullOrEmpty()) {
-                    binding.tvTeamNames.text =
-                        String.format(binding.tvTeamNames.context.getString(R.string.match_names_2),
-                            homeName,
-                            awayName)
+                    binding.tvTeamNames.setTeamNames(15, homeName, awayName)
                     binding.tvTeamNames.visibility = View.VISIBLE
-                }
-                else {
+                } else {
                     binding.tvTeamNames.visibility = View.GONE
                 }
 
@@ -264,10 +257,10 @@ class AccountHistoryNextAdapter(
     class ItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        private val roundAdapter by lazy { RoundAdapter() }
-
         fun bind(row: Row, oddsType: OddsType) {
             val first = row.matchOdds?.firstOrNull()
+
+            val roundAdapter by lazy { RoundAdapter() }
 
             binding.row = row
             binding.matchOdd = first
@@ -296,7 +289,7 @@ class AccountHistoryNextAdapter(
                 }
 
                 when (row.gameType) {
-                    GameType.FT.key, GameType.BK.key -> {
+                    GameType.FT.key -> {
                         if (it.rtScore?.isNotEmpty() == true)
                             binding.tvScore.text = String.format(
                                 binding.tvScore.context.getString(R.string.brackets),

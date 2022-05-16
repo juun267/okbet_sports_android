@@ -17,11 +17,12 @@ import org.cxct.sportlottery.network.money.OnlineType
 import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.util.ArithUtil
-import org.cxct.sportlottery.util.MoneyManager
-import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.*
 import kotlin.math.abs
 
+/**
+ * @app_destination 在線支付
+ */
 class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
 
     private var mMoneyPayWay: MoneyPayWayData? = null //支付類型
@@ -88,6 +89,8 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
         setupTextChangeEvent()
         setupFocusEvent()
+
+        btn_submit.setTitleLetterSpacing()
     }
 
     private fun initButton() {
@@ -145,6 +148,8 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         cv_pay_bank.visibility = if (mSelectRechCfgs?.banks != null) View.VISIBLE else View.GONE
         tv_pay_gap_subtitle.text =
             if (mSelectRechCfgs?.banks != null) getString(R.string.title_pay_channel) else getString(R.string.title_pay_gap)
+        payGapBottomSheet.tv_game_type_title.text =
+            if (mSelectRechCfgs?.banks != null) getString(R.string.title_choose_pay_channel) else getString(R.string.title_choose_pay_gap)
 
         //反利、手續費
         setupRebateFee()
@@ -327,7 +332,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             rechCfgsList.forEach { it ->
                 val selectBank =
                     BtsRvAdapter.SelectBank(
-                        viewModel.getOnlinePayTypeName(it.onlineType) + count++,
+                        "${viewModel.getOnlinePayTypeName(it.onlineType)} ${count++}",
                         typeIcon
                     )
                 payRoadSpannerList.add(selectBank)
@@ -336,7 +341,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             rechCfgsList.forEach { it ->
                 val selectBank =
                     BtsRvAdapter.SelectBank(
-                        viewModel.getOnlinePayTypeName(it.onlineType) + count,
+                        "${viewModel.getOnlinePayTypeName(it.onlineType)} $count",
                         typeIcon
                     )
                 payRoadSpannerList.add(selectBank)

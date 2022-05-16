@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -80,6 +81,9 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             val intent = Intent(context, GameActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
+            if(context is Activity){
+                context.overridePendingTransition(R.anim.push_right_to_left_enter, R.anim.push_right_to_left_exit)
+            }
         }
 
         fun reStartWithSwitchLanguage(context: Context) {
@@ -157,7 +161,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         initTabLayout()
         initObserve()
         initServiceButton()
-        setFontTheme()
         try {
             val flag = intent.getStringExtra(ARGS_SWITCH_LANGUAGE)
             if (flag == "true") {
@@ -167,20 +170,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             e.printStackTrace()
         }
         queryData()
-    }
-
-    private fun setFontTheme() {
-        when (LanguageManager.getSelectLanguage(this)) {
-            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
-                setTheme(R.style.ChineseTheme)
-            }
-            LanguageManager.Language.VI -> {
-                setTheme(R.style.VietnamTheme)
-            }
-            else -> {
-                setTheme(R.style.EnglishTheme)
-            }
-        }
     }
 
     override fun onStart() {
@@ -496,35 +485,27 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         when (position) {
             0 -> {
                 viewModel.switchMainMatchType()
-                navHomeFragment()
             }
             1 -> {
                 viewModel.switchMatchType(MatchType.IN_PLAY)
-                loading()
             }
             2 -> {
                 viewModel.switchMatchType(MatchType.AT_START)
-                loading()
             }
             3 -> {
                 viewModel.switchMatchType(MatchType.TODAY)
-                loading()
             }
             4 -> {
                 viewModel.switchMatchType(MatchType.EARLY)
-                loading()
             }
             5 -> {
                 viewModel.switchMatchType(MatchType.OUTRIGHT)
-                loading()
             }
             6 -> {
                 viewModel.switchMatchType(MatchType.PARLAY)
-                loading()
             }
             7 -> {
                 viewModel.switchMatchType(MatchType.EPS)
-                loading()
             }
         }
     }
@@ -681,7 +662,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
             R.id.oddsDetailFragment -> {
                 val action =
-                    OddsDetailFragmentDirections.actionGameOutrightMoreFragmentToHomeFragment()
+                    OddsDetailFragmentDirections.actionOddsDetailFragmentToHomeFragment()
                 mNavController.navigate(action)
             }
             R.id.oddsDetailLiveFragment -> {
@@ -814,15 +795,16 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             } else if (it?.entranceMatchType == MatchType.DETAIL) {
 
             } else {
-//                viewModel.getAllPlayCategoryBySpecialMatchType(it?.couponCode ?: "")
                 navGameFragment(it!!.entranceMatchType)
             }
         }
 
-
         viewModel.curMatchType.observe(this) {
             it?.let {
-                navGameFragment(it)
+                when(it){
+                    MatchType.MAIN -> navHomeFragment()
+                    else -> navGameFragment(it)
+                }
             }
         }
 
@@ -1069,7 +1051,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         tab?.let {
             clearSelectTabState()
-
+            tabLayout.getTabAt(position)?.select()
             it.tv_title?.isSelected = true
             it.tv_number?.isSelected = true
         }

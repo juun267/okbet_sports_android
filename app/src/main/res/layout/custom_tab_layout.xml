@@ -16,8 +16,8 @@
         app:tabIndicator="@drawable/custom_tab_indicator"
         app:tabIndicatorFullWidth="false"
         app:tabMode="fixed"
-        app:tabPaddingEnd="25dp"
-        app:tabPaddingStart="25dp"
+        app:tabPaddingEnd="0dp"
+        app:tabPaddingStart="0dp"
         app:tabRippleColor="@null"
         app:tabSelectedTextColor="@color/color_e5e5e5_333333"
         app:tabTextColor="@color/color_A3A3A3_666666">
@@ -26,13 +26,13 @@
             android:id="@+id/first_tab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/login_password" />
+            android:text="@string/login_password"/>
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/second_tab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/withdrawal_password" />
+            android:text="@string/withdrawal_password"/>
 
     </com.google.android.material.tabs.TabLayout>
 

@@ -30,16 +30,15 @@ import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
-import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.MoneyManager.getBankAccountIcon
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.ToastUtil
 import java.util.*
 import kotlin.math.abs
 
-
+/**
+ * @app_destination 轉帳支付
+ */
 class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
 
     private var mMoneyPayWay: MoneyPayWayData? = null //支付類型
@@ -84,6 +83,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
     private fun initButton() {
         //提交
+        btn_submit.setTitleLetterSpacing()
         btn_submit.setOnClickListener {
             createMoneyAddRequest()?.let {
                 viewModel.rechargeSubmit(

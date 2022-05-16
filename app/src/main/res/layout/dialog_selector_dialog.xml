@@ -92,7 +92,7 @@
                 android:minHeight="36dp"
                 android:text="@string/btn_cancel"
                 android:textAllCaps="false"
-                android:textColor="@color/colorBlue7"
+                android:textColor="@color/color_317FFF_0760D4"
                 android:textSize="@dimen/textSize14sp"
                 android:textStyle="bold" />
 
@@ -113,7 +113,7 @@
                 android:minHeight="36dp"
                 android:text="@string/btn_determine"
                 android:textAllCaps="false"
-                android:textColor="@color/colorBlue7"
+                android:textColor="@color/color_317FFF_0760D4"
                 android:textSize="@dimen/textSize14sp"
                 android:textStyle="bold" />
 

@@ -27,6 +27,9 @@ import org.cxct.sportlottery.ui.login.afterTextChanged
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * @app_destination 賽果結算
+ */
 class ResultsSettlementActivity :
     BaseSocketActivity<SettlementViewModel>(SettlementViewModel::class) {
     lateinit var settlementLeagueBottomSheet: BottomSheetDialog
@@ -157,6 +160,10 @@ class ResultsSettlementActivity :
                     outrightResultDiffAdapter.submitList(it)
                 }
             })
+
+            matchResultPlayListResult.observe(this@ResultsSettlementActivity) {
+                showErrorPromptDialog(message = it.msg) {}
+            }
         }
     }
 

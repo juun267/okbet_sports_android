@@ -13,6 +13,9 @@ import org.cxct.sportlottery.databinding.ActivitySelfLimitBinding
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
+/**
+ * @app_destination 自我禁制
+ */
 class SelfLimitActivity : BaseSocketActivity<SelfLimitViewModel>(SelfLimitViewModel::class) {
 
     private lateinit var binding: ActivitySelfLimitBinding

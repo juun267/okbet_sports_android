@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:minHeight="48dp"
+        android:textSize="@dimen/textSize14sp"
         android:textColor="@color/color_e5e5e5_333333"
         android:textStyle="bold"
         tools:text="让球" />

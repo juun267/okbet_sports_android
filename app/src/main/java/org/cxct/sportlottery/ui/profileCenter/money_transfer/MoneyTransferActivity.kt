@@ -36,6 +36,7 @@ class MoneyTransferActivity :
             //因需求 轉換信息點擊左上角返回鍵要回到額度轉換 故採用同android 虛擬返回鍵
             onBackPressed()
         }
+
     }
 
     private fun initObserver() {

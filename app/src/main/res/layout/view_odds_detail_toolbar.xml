@@ -22,9 +22,11 @@
         <ImageView
             android:id="@+id/iv_title_bar"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="0dp"
+            android:minHeight="48dp"
             android:scaleType="centerCrop"
             android:src="@drawable/img_odd_detail_title_bg_white"
+            app:layout_constraintBottom_toBottomOf="@id/tv_game_title"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
@@ -42,17 +44,16 @@
         <TextView
             android:id="@+id/tv_game_title"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
             android:layout_marginHorizontal="48dp"
-            android:ellipsize="end"
             android:gravity="center"
-            android:singleLine="true"
             android:text="@{gameViewModel.oddsDetailResult.peekContent().oddsDetailData.league.name}"
             android:textColor="@color/color_e5e5e5_333333"
             android:textSize="@dimen/textSize16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/iv_title_bar"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/tv_game_title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="欧洲足球锦标赛2020" />

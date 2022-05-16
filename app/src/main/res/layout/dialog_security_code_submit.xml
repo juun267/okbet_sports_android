@@ -59,7 +59,6 @@
             android:gravity="center"
             app:scErrorText="@string/dialog_security_error"
             app:scHintText="@string/hint_security_code"
-            app:scLabelText="@string/verification_code"
             app:scIcon="@drawable/ic_login_verify"/>
 
         <View

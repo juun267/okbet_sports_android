@@ -203,10 +203,10 @@ class GameViewModel(
     val leagueFilterList: LiveData<List<League>>
         get() = _leagueFilterList
 
-    val playList: LiveData<List<Play>>
+    val playList: LiveData<Event<List<Play>>>
         get() = _playList
 
-    val playCate: LiveData<String?>
+    val playCate: LiveData<Event<String?>>
         get() = _playCate
     val searchResult: LiveData<Event<List<SearchResult>?>>
         get() = _searchResult
@@ -261,8 +261,8 @@ class GameViewModel(
     private val _leagueSelectedList = MutableLiveData<List<League>>()
     private val _leagueSubmitList = MutableLiveData<Event<List<League>>>()
     private val _leagueFilterList = MutableLiveData<List<League>>()
-    private val _playList = MutableLiveData<List<Play>>()
-    private val _playCate = MutableLiveData<String?>()
+    private val _playList = MutableLiveData<Event<List<Play>>>()
+    private val _playCate = MutableLiveData<Event<String?>>()
     private val _searchResult = MutableLiveData<Event<List<SearchResult>?>>()
     private val _navDetail = MutableLiveData<Event<NavDirections>>()
 
@@ -1024,6 +1024,8 @@ class GameViewModel(
         } else {
             _sportMenuResult.value?.updateSportSelectState(matchType, item.code)
         }
+        _playList.value = Event(listOf())
+        _playCate.value = Event(null)
         _curChildMatchType.value = null
         _oddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
@@ -1152,10 +1154,10 @@ class GameViewModel(
     }
 
     fun switchPlayCategory(matchType: MatchType, play: Play, playCateCode: String?) {
-        _playList.value?.forEach {
+        _playList.value?.peekContent()?.forEach {
             it.isSelected = (it == play)
         }
-        _playCate.value = playCateCode
+        _playCate.value = Event(playCateCode)
     }
 
     fun switchMatchDate(matchType: MatchType, date: Date) {
@@ -1364,10 +1366,10 @@ class GameViewModel(
         play: Play,
         playCateCode: String?
     ) {
-        _playList.value?.forEach {
+        _playList.value?.peekContent()?.forEach {
             it.isSelected = (it == play)
         }
-        _playCate.value = playCateCode
+        _playCate.value = Event(playCateCode)
 
 //        getLeagueOddsList(matchType, leagueIdList, matchIdList)
     }
@@ -1383,11 +1385,11 @@ class GameViewModel(
         isIncrement: Boolean = false
     ) {
 
+        val nowMatchType = curChildMatchType.value ?: matchType
+
         if (isReloadPlayCate && !isIncrement) {
             getLeaguePlayCategory(matchType, leagueIdList)
         }
-
-        val nowMatchType = curChildMatchType.value ?: matchType
 
         getSportSelected(nowMatchType)?.let { item ->
             getOddsList(
@@ -1588,7 +1590,6 @@ class GameViewModel(
                             TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
 
                         matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
-                        Timber.e("Dean, matchInfo source = ${matchInfo.source}")
                     }
 
                     matchOdd.playCateMappingList = playCateMappingList
@@ -1906,8 +1907,8 @@ class GameViewModel(
                         it.isSelected = (it == playList.firstOrNull())
                     }
 
-                    _playList.postValue(playList)
-                    _playCate.postValue(null)
+                    _playList.postValue(Event(playList))
+                    _playCate.postValue(Event(null))
                 }
             }
         } else {
@@ -1921,8 +1922,8 @@ class GameViewModel(
                         it.isSelected = (it == playList.firstOrNull())
                     }
 
-                    _playList.postValue(playList)
-                    _playCate.postValue(null)
+                    _playList.postValue(Event(playList))
+                    _playCate.postValue(Event(null))
                 }
             }
         }
@@ -2133,14 +2134,12 @@ class GameViewModel(
                     //aaaaa
                     if (MultiLanguagesApplication.getInstance()?.getGameDetailAnimationNeedShow() == true) {
                         val animationTrackerId = result.oddsDetailData?.matchOdd?.matchInfo?.trackerId
-                        Timber.e("Dean, animationTrackerId = $animationTrackerId")
                         if (!animationTrackerId.isNullOrEmpty()) {
                             doNetwork(androidContext) {
                                 OneBoSportApi.matchService.getMatchTrackerUrl(animationTrackerId)
                             }?.let { result ->
                                 if (result.success) {
                                     _matchTrackerUrl.postValue(Event(result.matchTrackerUrl))
-                                    Timber.e("Dean, tracker url = ${result.matchTrackerUrl.h5Url}")
                                 }
                             }
                         }
@@ -2295,10 +2294,10 @@ class GameViewModel(
     }
 
 
-    private fun getPlayCateSelected(): Play? = _playList.value?.find { it.isSelected }
+    private fun getPlayCateSelected(): Play? = _playList.value?.peekContent()?.find { it.isSelected }
 
     private fun getPlayCateCodeList(): List<String>? {
-        _playCate.value?.let {
+        _playCate.value?.peekContent()?.let {
             return listOf(it)
         }
         return null
@@ -2470,15 +2469,15 @@ class GameViewModel(
     }
 
     private fun updatePlaySelectedState(play: Play) {
-        val playList = _playList.value
+        val playList = _playList.value?.peekContent()
 
         playList?.forEach {
             it.isSelected = (it == play)
         }
 
         playList?.let {
-            _playList.value = it
-            _playCate.value = (
+            _playList.value = Event(it)
+            _playCate.value = Event((
                     when (play.selectionType == SelectionType.SELECTABLE.code) {
                         true -> {
                             it.find { play ->
@@ -2491,7 +2490,7 @@ class GameViewModel(
                             null
                         }
                     }
-                    )
+                    ))
         }
     }
 

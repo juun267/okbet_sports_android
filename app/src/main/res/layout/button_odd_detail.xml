@@ -27,15 +27,14 @@
                 android:id="@+id/tv_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:ellipsize="end"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:maxLines="1"
                 android:textColor="@color/selector_button_odd_top_text2"
                 android:textSize="@dimen/textSize13sp"
                 tools:text="义大利"
-                tools:textColor="@color/color_8F8F8F_999999"
-                android:includeFontPadding="false" />
+                tools:textColor="@color/color_8F8F8F_999999" />
 
             <TextView
                 android:id="@+id/tv_spread"
@@ -46,8 +45,7 @@
                 android:textColor="@color/selector_button_odd_top_text"
                 android:textSize="@dimen/textSize13sp"
                 tools:text="-0.5/1"
-                tools:textColor="@color/color_F75452_b73a20"
-                android:includeFontPadding="false"/>
+                tools:textColor="@color/color_F75452_b73a20" />
 
         </LinearLayout>
 
@@ -55,7 +53,7 @@
             android:id="@+id/tv_odds"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="2dp"
             android:textColor="@color/selector_button_odd_bottom_text"
             android:textSize="@dimen/textSize15sp"
             android:textStyle="bold"

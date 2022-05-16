@@ -36,14 +36,14 @@
     <string name="desc_forget_password">vui lòng liên hệ chăm sóc khách hàng</string>
     <string name="sign_up_know">Đăng ký ngay</string>
     <string name="recommend_code">Mã giới thiệu</string>
-    <string name="hint_recommend_code">(Vui lòng nhập mã giới thiệu)</string>
+    <string name="hint_recommend_code">(Vui lòng nhập Mã giới thiệu)</string>
     <string name="error_recommend_code">Mã giới thiệu không tồn tại</string>
-    <string name="member_account">Tài khoản hội viên</string>
+    <string name="member_account">Đăng nhập tài khoản</string>
     <string name="hint_member_account">(Độ dài từ 4-16 ký tự bao gồm cả chữ và số)</string>
     <string name="error_member_account">Tài khoản từ 4-16 ký tự bao gồm chữ và số</string>
     <string name="desc_register_checking_account">Đang kiểm tra tài khoản</string>
     <string name="error_register_id_exist">Tên tài khoản đã tồn tại</string>
-    <string name="hint_register_password">(4–16 ký tự gồm chữ cái và số)</string>
+    <string name="hint_register_password">(Độ dài từ 4-16 ký tự bao gồm chữ cái và số)</string>
     <string name="error_register_password">Mật khẩu từ 4-16 ký tự bao gồm chữ và số</string>
     <string name="error_password_format">Mật khẩu cần phải chữ và số</string>
     <string name="register_please_read">Hãy đọc kỹ</string>
@@ -51,12 +51,17 @@
     <string name="register_privacy">Gửi cho tôi thông tin cập nhật và khuyến mãi theo</string>
     <string name="register_privacy_policy">&#160;chính sách bảo mật</string>
     <string name="register_privacy_policy_promotions"></string>
-    <string name="register_over_21">Tôi đã 21 tuổi, đã đọc và đồng ý với&#160;</string>
+    <string name="register_over_21">Tôi trên 21 tuổi, đã đọc và đồng ý với&#160;</string>
+    <string name="register_rules">&#160;Điều khoản &amp; Điều kiện</string>
+    <string name="register_rules_2nd_half">&#160;của %s</string>
+    <string name="register_not_ph_official">Tôi không phải là quan chức chính phủ và / hoặc nhân viên có liên hệ trực tiếp với hoạt động của chính phủ Philippines hoặc bất kỳ cơ quan nào của chính phủ.</string>
+    <string name="register_not_ph_school">Tôi không phải là sinh viên của bất kỳ trường học, cao đẳng hoặc đại học nào ở Philippines</string>
+    <string name="register_rule_okbet">Tôi hiểu rằng nếu thông tin tôi cung cấp bị phát hiện là không chính xác, OkBet có quyền áp dụng hình phạt đối với tài khoản của tôi theo Điều khoản và Điều kiện Phần 5.1 - 5.2.</string>
+    <string name="register_rule_agree_all">Tôi đồng ý với tất cả các điều khoản và điều kiện ở trên.</string>
     <string name="register_success">Đăng ký thành công</string>
     <string name="register_watch_first">Khám phá trò chơi</string>
     <string name="register_jump">Trang sẽ chuyển sang %s 5 giây sau đó.</string>
     <string name="register_recharge_now">Gửi tiền ngay bây giờ</string>
-    <string name="register_rules">&#160;luật &amp; điều khoản của</string>
     <string name="confirm_password">Xác nhận mật khẩu</string>
     <string name="hint_confirm_password">(Vui lòng nhập lại mật khẩu)</string>
     <string name="error_confirm_password">Mật khẩu đăng nhập 2 lần không đồng nhất</string>
@@ -111,7 +116,7 @@
     <string name="dialog_security_hint">Chào mừng bạn trở lại trò chơi. Vui lòng hoàn tất xác minh để bảo mật tài khoản.</string>
     <string name="dialog_security_title">Nhập mã xác nhận.</string>
     <string name="dialog_security_error">Bạn đã nhập một mã xác minh sai.</string>
-    <string name="hint_security_code"><font size="12">Vui lòng nhập mã xác nhận.</font></string>
+    <string name="hint_security_code"><font size="12">Nhập mã</font></string>
     <string name="dialog_security_need_phone">Thông tin cá nhân của bạn chưa hoàn chỉnh, vui lòng liên hệ với bộ phận chăm sóc khách hàng.</string>
     <string name="btn_agreement">Thỏa thuận mở tài khoản</string>
     <string name="have_account">Bạn đã có tài khoản?</string>
@@ -936,7 +941,7 @@
     <string name="parlay_10_fold_rule">1 xiên 10 là một cược đơn bao gồm 10 lựa chọn, cần phải thắng tất cả các mục chọn để được hoàn tiền, không cùng loại bóng và cách chơi của giải vô địch không thể tiến hành cá cược xiên</string>
     <string name="parlay_10_block_rule">10 xâu 1013 là kết hợp 10 đơn cược từ các sự kiện khác nhau, 45 xâu 2x1, 120 xâu 3x1, 210 xâu 4x1, 252 xâu 5x1, 210 xâu 6x1, 120 xâu 7x1, 45 xâu 8x1, 10 xâu 9x1 và 1 xâu 10x1. Cần có ít nhất 2 lựa chọn thắng cược để đảm bảo tiền thưởng, không cùng loại bóng và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
     <string name="message_source_change">Hệ thống nhận dữ liệu sự kiện mới nhất và sẽ tự động quay lại trang chủ ngay lập tức</string>
-    <string name="appearance">ngoại hình</string>
+    <string name="appearance">Ngoại hình</string>
     <string name="goal_buster">GOAL BUSTER</string>
     <string name="top_games">TOP GAMES</string>
     <string name="withdraw_uw_check">Số dư khấu trừ</string>
@@ -1068,7 +1073,7 @@
     <string name="btm_navigation_hint">%1$s is a Registered Trade Mark, Brand and Business Name Owned by Ekxinum Inc. Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR).</string>
     <string name="front_side_result">Kết quả phía trước</string>
     <string name="reverse_side_result">Kết quả ngược lại</string>
-    <string name="btm_navigation_language">Việt Nam</string>
+    <string name="btm_navigation_language">Tiếng Việt</string>
     <string name="expire_date">Thời gian hết hạn chứng chỉ</string>
     <string name="self_limit_froze_impotent_1">Tự loại trừ có hiệu lực ngay sau khi thiết lập</string>
     <string name="self_limit_froze_impotent_2">Chúng tôi sẽ giữ số dư của bạn trong khoảng thời gian tự loại trừ đã định.</string>
@@ -1079,8 +1084,8 @@
     <string name="self_limit_bet_impotent">Bạn có thể sửa đổi giới hạn đặt cược của mình bất cứ lúc nào. Sửa đổi sẽ có hiệu lực sau khi gửi yêu cầu.</string>
     <string name="text_chose_language">Chọn ngôn ngữ của bạn</string>
     <!-- 複式串關詳情 -->
-    <string name="password_hint"><font size="12">(Vui lòng nhập tài khoản hội viên của bạn)</font></string>
-    <string name="account_hint"><font size="12">(Vui lòng nhập mật khẩu đăng nhập của bạn)</font></string>
+    <string name="password_hint"><font size="12">(Vui lòng nhập mật khẩu đăng nhập của bạn)</font></string>
+    <string name="account_hint"><font size="12">(Vui lòng nhập tài khoản hội viên của bạn)</font></string>
     <string name="submit_success">gửi thành công</string>
     <!-- 搜尋 -->
     <string name="text_search">Tìm kiếm</string>
@@ -1141,4 +1146,6 @@
     <string name="my_favorite_empty_title">Sự kiện của tôi</string>
     <string name="my_favorite_empty_msg">Chọn biểu tượng ở trên để thêm nó vào "Sự kiện của tôi".\nBạn có thể chia nhóm chúng và dễ dàng truy cập vào tất cả các sự kiện mà bạn quan tâm.</string>
     <!--endregion-->
+
+    <string name="current_corner">Tổng Số Hiện Tại:</string>
 </resources>

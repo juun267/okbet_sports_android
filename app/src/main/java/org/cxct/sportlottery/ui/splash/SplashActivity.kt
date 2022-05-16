@@ -22,6 +22,9 @@ import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewMod
 import org.cxct.sportlottery.util.JumpUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+/**
+ * @app_destination 啟動頁
+ */
 class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
     private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
@@ -97,17 +100,16 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
     }
 
     private fun initObserve() {
+        viewModel.errorResultIndex.observe(this) {
+            JumpUtil.toInternalWeb(this, it, "", toolbarVisibility = false, backEvent = false)
+        }
+
         viewModel.configResult.observe(this) {
             when {
                 it?.configData?.maintainStatus == FLAG_OPEN -> {
                     goMaintenancePage()
                 }
                 it?.success == true -> checkAppMinVersion()
-
-                it?.success == false && it.code == 403 -> {
-                    JumpUtil.toInternalWeb(this, "https://okbet.com", "", false)
-                    finish()
-                }
 
                 else -> showErrorRetryDialog(getString(R.string.error_config_title), getString(R.string.error_config))
             }

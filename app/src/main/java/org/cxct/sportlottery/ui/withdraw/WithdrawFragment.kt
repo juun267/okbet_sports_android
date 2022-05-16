@@ -36,8 +36,11 @@ import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
 import org.cxct.sportlottery.util.MoneyManager.getCryptoIconByCryptoName
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 
-
+/**
+ * @app_destination 提款
+ */
 class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel::class) {
 
     private lateinit var bankCardBottomSheet: BottomSheetDialog
@@ -200,6 +203,8 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 )
             }
         }
+
+        btn_withdraw.setTitleLetterSpacing()
 
         et_withdrawal_amount.getAllButton {
             it.setText(viewModel.getWithdrawAmountLimit().max.toLong().toString())

@@ -131,3 +131,22 @@ fun View.setBackColorWithColorMode(lightModeColor: Int, darkModeColor: Int) {
         )
     )
 }
+
+/**
+ * 移除所有ItemDecorations
+ */
+fun <T : RecyclerView> T.removeItemDecorations() {
+    while (itemDecorationCount > 0) {
+        removeItemDecorationAt(0)
+    }
+}
+
+/**
+ * 隊伍名稱過長處理 teamA v teamB
+ * @param countCheck 數量超過時，後面隊伍換行
+ */
+fun TextView.setTeamNames(countCheck: Int, homeName: String?, awayName: String?) {
+    text =
+        if (homeName?.length ?: 0 > countCheck) "$homeName  v\n$awayName"
+        else "$homeName  v  $awayName"
+}

@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.odds
 
-
 import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.os.Bundle
@@ -57,7 +56,9 @@ import org.cxct.sportlottery.util.TimeUtil.DM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import java.util.*
 
-
+/**
+ * @app_destination 全部玩法(包含直播)
+ */
 @Suppress("DEPRECATION", "SetTextI18n")
 class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class), TimerManager, Animation.AnimationListener {
 
@@ -210,25 +211,32 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 //        live_view_tool_bar.gameType = args.gameType //賽事動畫icon用，之後用不到可刪
         oddsDetailListAdapter = OddsDetailListAdapter(
             OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
-                matchOdd?.let { matchOdd ->
-                    matchOdd.matchInfo.homeScore = "$curHomeScore"
-                    matchOdd.matchInfo.awayScore = "$curAwayScore"
+                if(mIsEnabled) {
+                    avoidFastDoubleClick()
+                    matchOdd?.let { matchOdd ->
+                        matchOdd.matchInfo.homeScore = "$curHomeScore"
+                        matchOdd.matchInfo.awayScore = "$curAwayScore"
 
-                    val fastBetDataBean = FastBetDataBean(
-                        matchType = MatchType.IN_PLAY,
-                        gameType = args.gameType,
-                        playCateCode = oddsDetail?.gameType ?: "",
-                        playCateName = oddsDetail?.name ?: "",
-                        matchInfo = matchOdd.matchInfo,
-                        matchOdd = null,
-                        odd = odd,
-                        subscribeChannelType = ChannelType.EVENT,
-                        betPlayCateNameMap = matchOdd.betPlayCateNameMap,
-                        otherPlayCateName = scoPlayCateNameForBetInfo
-                    )
-                    when (activity) {
-                        is GameActivity -> (activity as GameActivity).showFastBetFragment(fastBetDataBean)
-                        is GamePublicityActivity -> (activity as GamePublicityActivity).showFastBetFragment(fastBetDataBean)
+                        val fastBetDataBean = FastBetDataBean(
+                            matchType = MatchType.IN_PLAY,
+                            gameType = args.gameType,
+                            playCateCode = oddsDetail?.gameType ?: "",
+                            playCateName = oddsDetail?.name ?: "",
+                            matchInfo = matchOdd.matchInfo,
+                            matchOdd = null,
+                            odd = odd,
+                            subscribeChannelType = ChannelType.EVENT,
+                            betPlayCateNameMap = matchOdd.betPlayCateNameMap,
+                            otherPlayCateName = scoPlayCateNameForBetInfo
+                        )
+                        when (activity) {
+                            is GameActivity -> (activity as GameActivity).showFastBetFragment(
+                                fastBetDataBean
+                            )
+                            is GamePublicityActivity -> (activity as GamePublicityActivity).showFastBetFragment(
+                                fastBetDataBean
+                            )
+                        }
                     }
                 }
             }
@@ -599,7 +607,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         val playCateTypeList = this.oddsDetailData?.matchOdd?.playCateTypeList
         if (playCateTypeList?.isNotEmpty() == true) {
             tabCateAdapter.dataList = playCateTypeList
-            tabCateAdapter.selectedPosition = 0
         } else {
             rv_cat.visibility = View.GONE
         }

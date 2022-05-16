@@ -24,11 +24,11 @@ import org.cxct.sportlottery.network.money.config.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.login.LoginEditText
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.MoneyManager
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.*
 
+/**
+ * @app_destination 新增銀行卡
+ */
 class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
     private var transferType: TransferType = TransferType.BANK
 
@@ -122,6 +122,8 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 getString(R.string.delete_e_wallet)
             }
         }
+        btn_submit.setTitleLetterSpacing()
+        btn_delete_bank.setTitleLetterSpacing()
 
     }
 
