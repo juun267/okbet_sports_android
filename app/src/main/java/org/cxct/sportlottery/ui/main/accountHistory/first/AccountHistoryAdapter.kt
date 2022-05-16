@@ -97,6 +97,7 @@ class AccountHistoryAdapter(
                 }
             }
             if (position % 2 == 0) itemView.setBackgroundResource(R.color.color_242424_f2f2f2)
+            else itemView.setBackgroundResource(R.color.color_191919_FCFCFC)
             binding.executePendingBindings()
         }
 
