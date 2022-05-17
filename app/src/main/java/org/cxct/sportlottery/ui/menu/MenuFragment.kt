@@ -37,7 +37,7 @@ import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.*
 
 /**
- * 遊戲右側功能選單
+ * @app_destination 右上選單
  */
 @SuppressLint("SetTextI18n")
 class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {

@@ -10,7 +10,11 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 
+/**
+ * @app_destination 建議反饋-問題與建議
+ */
 class FeedbackSuggestFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel::class) {
 
     override fun onCreateView(
@@ -36,6 +40,7 @@ class FeedbackSuggestFragment : BaseFragment<FeedbackViewModel>(FeedbackViewMode
         btn_submit.setOnClickListener {
             view?.findNavController()?.navigate(R.id.action_feedbackSuggestFragment_to_feedbackSubmitFragment)
         }
+        btn_submit.setTitleLetterSpacing()
     }
 
 }

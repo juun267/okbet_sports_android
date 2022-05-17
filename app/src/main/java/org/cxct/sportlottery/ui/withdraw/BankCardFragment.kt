@@ -26,6 +26,9 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.*
 
+/**
+ * @app_destination 新增銀行卡
+ */
 class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
     private var transferType: TransferType = TransferType.BANK
 
@@ -120,6 +123,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             }
         }
         btn_submit.setTitleLetterSpacing()
+        btn_delete_bank.setTitleLetterSpacing()
 
     }
 

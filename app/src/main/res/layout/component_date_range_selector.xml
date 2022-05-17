@@ -25,7 +25,7 @@
         android:id="@+id/tv_start_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="10dp"
         android:hint="@string/start_date"
         android:textColor="@color/color_e5e5e5_333333"
         android:textColorHint="@color/color_E0E0E0_404040"
@@ -44,7 +44,8 @@
         android:src="@drawable/ic_arrow_down_gray"
         app:layout_constraintBottom_toBottomOf="@+id/ll_start_date"
         app:layout_constraintEnd_toEndOf="@+id/ll_start_date"
-        app:layout_constraintTop_toTopOf="@+id/ll_start_date" />
+        app:layout_constraintTop_toTopOf="@+id/ll_start_date"
+        app:tint="@color/color_8F8F8F_999999" />
 
     <TextView
         android:id="@+id/date_selector_until"
@@ -53,7 +54,7 @@
         android:layout_marginStart="9dp"
         android:layout_marginEnd="9dp"
         android:text="@string/finance_log_selector_until"
-        android:textColor="@color/color_e5e5e5_333333"
+        android:textColor="@color/color_A3A3A3_666666"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintBaseline_toBaselineOf="@id/tv_start_date"
         app:layout_constraintEnd_toStartOf="@id/ll_end_date"
@@ -75,7 +76,7 @@
         android:id="@+id/tv_end_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="10dp"
         android:hint="@string/end_date"
         android:textColor="@color/color_e5e5e5_333333"
         android:textColorHint="@color/color_E0E0E0_404040"
@@ -94,7 +95,8 @@
         android:src="@drawable/ic_arrow_down_gray"
         app:layout_constraintBottom_toBottomOf="@+id/ll_end_date"
         app:layout_constraintEnd_toEndOf="@+id/ll_end_date"
-        app:layout_constraintTop_toTopOf="@+id/ll_end_date" />
+        app:layout_constraintTop_toTopOf="@+id/ll_end_date"
+        app:tint="@color/color_8F8F8F_999999" />
 
     <TextView
         android:id="@+id/btn_search"
@@ -110,7 +112,6 @@
         android:paddingEnd="6dp"
         android:text="@string/inquire"
         android:textColor="@color/color_FFFFFF_FFFFFF"
-        android:textAllCaps="true"
         android:gravity="center"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintEnd_toEndOf="parent"

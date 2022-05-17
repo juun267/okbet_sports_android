@@ -15,6 +15,9 @@ import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
+/**
+ * @app_destination 修改暱稱
+ */
 class ModifyProfileInfoActivity :
     BaseSocketActivity<ModifyProfileInfoViewModel>(ModifyProfileInfoViewModel::class) {
     private val modifyType by lazy { intent.getSerializableExtra(MODIFY_INFO) }
@@ -105,6 +108,8 @@ class ModifyProfileInfoActivity :
         btn_confirm.setOnClickListener {
             checkInputData()
         }
+
+        btn_confirm.setTitleLetterSpacing()
     }
 
     private fun checkInputData() {

@@ -4,17 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_account_history_log.*
 import kotlinx.android.synthetic.main.activity_account_history_log.view.*
+import kotlinx.android.synthetic.main.view_no_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.AccountHistory
+import org.cxct.sportlottery.util.DisplayUtil.dp
 
+/**
+ * @app_destination 歷史紀錄
+ */
 class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
@@ -49,12 +55,23 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
             //setupListColumn(this)
             setupRechargeLogList(this)
             setupSearch(this)
+            initNoRecordView(this)
         }
     }
 
 //    private fun setupListColumn(view: View) {
 //        view.rech_log_recharge_amount.text = getString(R.string.recharge_log_recharge_amount)
 //    }
+
+    private fun initNoRecordView(view: View) {
+        view.view_no_record.list_no_record_img?.apply {
+            viewTreeObserver.addOnGlobalLayoutListener {
+                val lp = layoutParams as LinearLayout.LayoutParams
+                lp.topMargin = 20.dp
+                layoutParams = lp
+            }
+        }
+    }
 
     private fun setupRechargeLogList(view: View) {
         view.rvlist.apply {

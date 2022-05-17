@@ -14,11 +14,11 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.util.AppUpdateManager
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.*
 
-
+/**
+ * @app_destination 版本更新
+ */
 class VersionUpdateActivity : BaseActivity<VersionUpdateViewModel>(VersionUpdateViewModel::class) {
 
     private val mRxPermissions = RxPermissions(this)
@@ -54,6 +54,10 @@ class VersionUpdateActivity : BaseActivity<VersionUpdateViewModel>(VersionUpdate
         btn_internal_download.visibility = View.GONE
         btn_external_download.visibility = View.GONE
         pb_update.visibility = View.GONE
+
+        btn_internal_download.setTitleLetterSpacing()
+        btn_external_download.setTitleLetterSpacing()
+
     }
 
     private fun initButton() {

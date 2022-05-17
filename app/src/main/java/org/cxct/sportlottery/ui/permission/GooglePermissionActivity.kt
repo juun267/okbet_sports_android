@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_google_permission.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 class GooglePermissionActivity : BaseActivity<GooglePermissionViewModel>(GooglePermissionViewModel::class) {
 
@@ -83,5 +84,6 @@ class GooglePermissionActivity : BaseActivity<GooglePermissionViewModel>(GoogleP
         btn_allow_permission.setOnClickListener {
             requestLocationPermission()
         }
+        btn_allow_permission.setTitleLetterSpacing()
     }
 }

@@ -144,5 +144,31 @@ object GameConfigManager {
         }
     }
 
+    @DrawableRes
+    fun getTitleBarBackgroundInPublicPage(code: String?, nightMode: Boolean): Int? {
+        if (nightMode) {
+            return R.drawable.bg_transaction_record
+        } else {
+            return when (code) {
+                GameType.FT.key -> R.drawable.soccer48
+                GameType.BK.key -> R.drawable.basketball48
+                GameType.TN.key -> R.drawable.tennis48
+                GameType.VB.key -> R.drawable.volleyball48
+                GameType.BM.key -> R.drawable.badminton_100
+                GameType.TT.key -> R.drawable.pingpong_100
+                GameType.IH.key -> R.drawable.icehockey_100
+                GameType.BX.key -> R.drawable.boxing_100
+                GameType.CB.key -> R.drawable.snooker_100
+                GameType.CK.key -> R.drawable.cricket_100
+                GameType.BB.key -> R.drawable.baseball_100
+                GameType.RB.key -> R.drawable.rugby_100
+                GameType.AFT.key -> R.drawable.amfootball_100
+                GameType.MR.key -> R.drawable.rancing_100
+                GameType.GF.key -> R.drawable.golf_108
+                else -> null
+            }
+        }
+    }
+
 
 }

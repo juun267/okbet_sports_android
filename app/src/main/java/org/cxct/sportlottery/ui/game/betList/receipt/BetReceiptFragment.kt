@@ -18,9 +18,7 @@ import org.cxct.sportlottery.util.TextUtil
 
 
 /**
- * A simple [Fragment] subclass.
- * Use the [BetReceiptFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * @app_destination 注單收據
  */
 class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
@@ -67,6 +65,41 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         viewModel.oddsType.observe(viewLifecycleOwner) {
             betReceiptDiffAdapter?.oddsType = it
+        }
+
+        viewModel.settlementNotificationMsg.observe(viewLifecycleOwner) { event ->
+            //TODO 此處若使用getContentIfNotHandled(), 於GameActivity時此處會一直取得null
+            event.peekContent().let { sportBet ->
+                var needUpdate = false
+
+                //單注單
+                betResultData?.singleBets?.find { betResult ->
+                    betResult.orderNo == sportBet.orderNo
+                }?.let { targetBetResult ->
+                    if (targetBetResult.status != sportBet.status) {
+                        needUpdate = true
+                        targetBetResult.status = sportBet.status
+                    }
+                }
+
+                //串關單
+                betResultData?.parlayBets?.find { parlayBetResult ->
+                    parlayBetResult.orderNo == sportBet.orderNo
+                }?.let { targetParlayBetResult ->
+                    if (targetParlayBetResult.status != sportBet.status) {
+                        needUpdate = true
+                        targetParlayBetResult.status = sportBet.status
+                    }
+                }
+
+                if (needUpdate)
+                    betReceiptDiffAdapter?.submit(
+                        betResultData?.singleBets ?: listOf(),
+                        betResultData?.parlayBets ?: listOf(),
+                        this@BetReceiptFragment.betParlayList ?: listOf(),
+                        betResultData?.betConfirmTime ?: 0
+                    )
+            }
         }
         
     }

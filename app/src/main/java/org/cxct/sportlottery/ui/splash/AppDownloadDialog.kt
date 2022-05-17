@@ -14,6 +14,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.util.AppUpdateManager
 import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 class AppDownloadDialog(
     val activity: FragmentActivity,
@@ -57,6 +58,9 @@ class AppDownloadDialog(
         label_new_version.text = String.format(context.getString(R.string.version_name), mLastVersion)
         tv_current_version.text = "v${BuildConfig.VERSION_NAME}"
         tv_new_version.text = "v$mLastVersion"
+
+        btn_download.setTitleLetterSpacing()
+        btn_cancel.setTitleLetterSpacing()
     }
 
     //內部下載

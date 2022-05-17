@@ -1024,6 +1024,8 @@ class GameViewModel(
         } else {
             _sportMenuResult.value?.updateSportSelectState(matchType, item.code)
         }
+        _playList.value = Event(listOf())
+        _playCate.value = Event(null)
         _curChildMatchType.value = null
         _oddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)

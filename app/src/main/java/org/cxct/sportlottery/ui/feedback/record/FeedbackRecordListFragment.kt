@@ -23,6 +23,9 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import java.util.*
 
+/**
+ * @app_destination 建議反饋-反饋紀錄
+ */
 class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel::class) {
 
     private val statusList by lazy {

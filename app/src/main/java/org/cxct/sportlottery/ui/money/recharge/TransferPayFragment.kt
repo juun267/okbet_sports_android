@@ -36,7 +36,9 @@ import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
 import java.util.*
 import kotlin.math.abs
 
-
+/**
+ * @app_destination 轉帳支付
+ */
 class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
 
     private var mMoneyPayWay: MoneyPayWayData? = null //支付類型

@@ -117,7 +117,7 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             setMarginBottom(itemMarginBottom)
 
             //分割線顏色
-            val dividerColor: Int = typedArray.getResourceId(R.styleable.CustomView_cvIcon, 0)
+            val dividerColor: Int = typedArray.getResourceId(R.styleable.CustomView_cvDividerColor, 0)
             if (dividerColor != 0) {
                 view.v_divider.setBackgroundResource(dividerColor)
             }
@@ -283,4 +283,18 @@ fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
 
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
     })
+}
+
+/**
+ *Extension function to simplify setting an onFocusChange action to EditText components.
+ */
+fun EditText.onFocusChange(onFocusChange: (String) -> Unit) {
+    this.onFocusChangeListener = OnFocusChangeListener { v, hasFocus ->
+        onFocusChange.invoke(this.text.toString())
+    }
+}
+
+fun EditText.checkRegisterListener(onCheck: (String) -> Unit) {
+    this.afterTextChanged { onCheck(it) }
+    this.onFocusChange { onCheck(it) }
 }

@@ -514,12 +514,12 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 else
                     Typeface.NORMAL
 
-                //隊伍名稱粗體隱藏
-                /*league_odd_match_score_home.apply { setTypeface(this.typeface, homeStrongType) }
+                //隊伍名稱粗體
+                league_odd_match_score_home.apply { setTypeface(this.typeface, homeStrongType) }
                 league_odd_match_name_home.apply { setTypeface(this.typeface, homeStrongType) }
 
                 league_odd_match_score_away.apply { setTypeface(this.typeface, awayStrongType) }
-                league_odd_match_name_away.apply { setTypeface(this.typeface, awayStrongType) }*/
+                league_odd_match_name_away.apply { setTypeface(this.typeface, awayStrongType) }
             }
         }
 
@@ -679,7 +679,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             itemView.league_odd_match_remain_time_icon.apply {
                 visibility = when {
                     item.matchInfo?.isAtStart == true -> View.VISIBLE
-                    matchType == MatchType.TODAY -> View.VISIBLE
+                    matchType == MatchType.AT_START -> View.VISIBLE
                     else -> View.INVISIBLE
                 }
             }
@@ -711,10 +711,6 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                                 "${itemView.context.getString(TimeUtil.setupDayOfWeekAndToday(item.matchInfo?.startTime))} ${item.matchInfo?.startDateDisplay}"
                         }
                     }
-                }
-
-                matchType == MatchType.TODAY -> {
-                    itemView.context.getString(TimeUtil.setupDayOfWeekAndToday(item.matchInfo?.startTime))
                 }
 
                 else -> {

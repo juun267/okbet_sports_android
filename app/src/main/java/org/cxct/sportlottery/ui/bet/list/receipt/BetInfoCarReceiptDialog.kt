@@ -4,27 +4,20 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Spanned
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item_receipt.*
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item_receipt.tv_match_type
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item_receipt.tv_play_content
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item_receipt.tv_receipt_status
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item_receipt.tv_team_names
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item_receipt.view.*
 import kotlinx.android.synthetic.main.view_match_receipt_bet.*
-import kotlinx.android.synthetic.main.view_match_receipt_bet.tv_bet_status
-import kotlinx.android.synthetic.main.view_match_receipt_bet.tv_order_number
-import kotlinx.android.synthetic.main.view_match_receipt_bet.tv_winnable_amount
 import kotlinx.android.synthetic.main.view_match_receipt_bet.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
+import org.cxct.sportlottery.network.service.order_settlement.Status
 import org.cxct.sportlottery.ui.base.BaseSocketBottomSheetFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -36,6 +29,7 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
 
     val mHandler = Handler(Looper.getMainLooper())
     var timer = Timer()
+    private var mOrderNo: String? = null
 
     init {
         setStyle(STYLE_NORMAL, R.style.LightBackgroundBottomSheet)
@@ -57,15 +51,14 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
             result.receipt?.singleBets?.firstOrNull()?.apply {
                 matchOdds?.firstOrNull()?.apply {
                     view.tvLeague.text = leagueName
-                    val teamNamesStr =
-                        if (homeName?.length ?: 0 > 15) "$homeName v\n$awayName" else "$homeName v $awayName"
-                    view.tv_team_names.text = teamNamesStr
+                    view.tv_team_names.setTeamNames(15, homeName, awayName)
                     view.tv_match_type.tranByPlayCode(playCode, playCateName)
                 }
 
                 //view.view_match_receipt.setBetReceiptBackground(status)
                 view.tv_bet_amount.text = TextUtil.formatMoney(stake ?: 0.0)
                 view.tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
+                mOrderNo = orderNo
                 view.tv_winnable_amount.text = TextUtil.formatMoney(winnable ?: 0.0)
                 view.tv_bet_status.setBetReceiptStatus(status)
                 if(status == 0){
@@ -152,6 +145,22 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
             }
         }
 
+        viewModel.settlementNotificationMsg.observe(this.viewLifecycleOwner) { event ->
+            //TODO 使用getContentIfNotHandled()時, 在GameActivity會一直是null
+            event.peekContent().let { message ->
+                if (message.orderNo == mOrderNo) {
+                    message.status?.let { orderStatus ->
+                        if (orderStatus != Status.UN_CHECK.code) {
+                            stopTimer()
+                        }
+                        with(tv_bet_status) {
+                            setBetReceiptStatus(orderStatus)
+                            setReceiptStatusColor(orderStatus)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun setPlayContent(
@@ -161,15 +170,18 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
         formatForOdd: String,
         oddsType: String
     ): Spanned {
+        val color_e5e5e5_333333 = MultiLanguagesApplication.getChangeModeColorCode("#333333", "#e5e5e5")
+        val color_F75452_b73a20 = MultiLanguagesApplication.getChangeModeColorCode("#B73A20", "#F75452")
+
         val playNameStr =
-            if (!playName.isNullOrEmpty()) "<font color=#333333>$playName</font> " else ""
+            if (!playName.isNullOrEmpty()) "<font color=$color_e5e5e5_333333>$playName</font> " else ""
         val spreadStr =
-            if (!spread.isNullOrEmpty() || isShowSpread) "<font color=#B73A20>$spread</font> " else ""
+            if (!spread.isNullOrEmpty() || isShowSpread) "<font color=$color_F75452_b73a20>$spread</font> " else ""
 
         return HtmlCompat.fromHtml(
             playNameStr +
                     spreadStr +
-                    "<font color=#333333>@ $formatForOdd</font> " , HtmlCompat.FROM_HTML_MODE_LEGACY
+                    "<font color=$color_e5e5e5_333333>@ $formatForOdd</font> " , HtmlCompat.FROM_HTML_MODE_LEGACY
         )
     }
 

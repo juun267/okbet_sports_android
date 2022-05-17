@@ -690,7 +690,8 @@ class BetInfoRepository(val androidContext: Context) {
         return gameFastBetOpenedSharedPreferences.getBoolean("isOpen", true)
     }
 
-    fun updateBetAmount(input: String){
+    fun updateBetAmount(input: String) {
+        if ((_betInfoList.value?.peekContent()?.size ?: 0) == 0) return
         _betInfoList.value?.peekContent()?.first()?.inputBetAmountStr = input
     }
 

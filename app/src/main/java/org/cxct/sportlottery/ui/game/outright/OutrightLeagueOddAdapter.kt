@@ -8,10 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_outright_league_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
-import org.cxct.sportlottery.ui.game.common.LeagueAdapter
-import org.cxct.sportlottery.ui.game.hall.adapter.CountryAdapter
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.ui.results.OutrightResultDiffAdapter
 import org.cxct.sportlottery.ui.results.OutrightType
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 

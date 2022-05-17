@@ -15,6 +15,7 @@
         android:layout_marginHorizontal="14dp"
         android:layout_marginTop="14dp"
         app:cardCornerRadius="8dp"
+        app:cardBackgroundColor="@color/transparent_black_0"
         app:cardElevation="0dp">
 
         <LinearLayout
@@ -24,9 +25,10 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="164dp"
+                android:layout_height="148dp"
                 android:layout_gravity="center_horizontal"
                 android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
                 android:src="@drawable/ic_feedback_banner" />
 
             <LinearLayout
@@ -75,7 +77,7 @@
                     android:gravity="center"
                     android:text="@string/write_suggestion"
                     android:textAllCaps="true"
-                    android:textColor="@color/color_191919_FCFCFC"
+                    android:textColor="@color/color_FCFCFC"
                     android:textSize="@dimen/textSize16sp" />
 
 

@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.game.hall.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,18 +7,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_country.view.*
 import kotlinx.android.synthetic.main.itemview_country_v4.view.*
-import kotlinx.android.synthetic.main.itemview_country_v4.view.SpaceItemDecorationView
-import kotlinx.android.synthetic.main.itemview_country_v4.view.country_border
 import kotlinx.android.synthetic.main.itemview_country_v4.view.iv_country
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.league.Row
 import org.cxct.sportlottery.ui.common.SocketLinearManager
-import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.util.SvgUtil
-import org.cxct.sportlottery.util.setTextWithStrokeWidth
 
 class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private val itemPinPosition = 0
 
     enum class ItemType {
         ITEM_PIN, ITEM, NO_DATA, BOTTOM_NAVIGATION
@@ -34,6 +31,8 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var datePin = listOf<League>()
         set(value) {
             field = value
+            if (data.isNotEmpty())
+                notifyItemChanged(itemPinPosition)
             //notifyDataSetChanged()
         }
 
@@ -45,10 +44,19 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var countryLeagueListener: CountryLeagueListener? = null
 
+    fun notifyCountryItem(dataPosition: Int) {
+        if (data.isNotEmpty()) {
+            val notifyPosition = dataPosition + 1
+            if (notifyPosition <= itemCount) {
+                notifyItemChanged(dataPosition + 1)
+            }
+        }
+    }
+
     override fun getItemViewType(position: Int): Int {
         return when {
             data.isEmpty() -> ItemType.NO_DATA.ordinal
-            (position == 0) -> ItemType.ITEM_PIN.ordinal
+            (position == itemPinPosition) -> ItemType.ITEM_PIN.ordinal
             position == data.size + 1 -> ItemType.BOTTOM_NAVIGATION.ordinal
             else -> ItemType.ITEM.ordinal
         }
@@ -147,8 +155,7 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun bind(item: Row, countryLeagueListener: CountryLeagueListener?) {
             itemView.apply {
 
-                //bold 700
-                country_text.setTextWithStrokeWidth(item.name, 1.0f)
+                country_text.text = item.name
 
                 if (item.icon.isNotEmpty()){
                     val countryIcon = SvgUtil.getSvgDrawable(context, item.icon)
@@ -178,12 +185,6 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.setOnClickListener {
                 item.isExpand = !item.isExpand
                 itemView.country_expand.setExpanded(item.isExpand, true)
-
-                if(item.isExpand) {
-                    itemView.SpaceItemDecorationView.visibility = View.GONE
-                } else {
-                    itemView.SpaceItemDecorationView.visibility = View.VISIBLE
-                }
             }
         }
 

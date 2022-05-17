@@ -7,7 +7,9 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 
-
+/**
+ * @app_destination 提款設置
+ */
 class BankActivity : BaseSocketActivity<WithdrawViewModel>(WithdrawViewModel::class) {
 
     companion object {
