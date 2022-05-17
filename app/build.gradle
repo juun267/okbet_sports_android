@@ -56,6 +56,7 @@ android {
     lintOptions {
         disable 'MissingTranslation'
         checkReleaseBuilds false
+        abortOnError false
     }
 
     flavorDimensions "single"
@@ -189,7 +190,7 @@ android {
 
             //強制改寫 apk 輸出路徑, ex: ..\app\build/outputs/releaseAPK
             //方便不同平台的 apk 可以在同一層級的資料夾整理
-            variant.getPackageApplication().outputDirectory = new File(project.buildDir.absolutePath + "/outputs/releaseAPK")
+//            variant.getPackageApplication().outputDirectory = new File(project.buildDir.absolutePath + "/outputs/releaseAPK")
         }
     }
 

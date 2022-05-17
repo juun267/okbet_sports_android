@@ -100,7 +100,7 @@
                         android:layout_height="20dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="12dp"
-                        android:background="@color/color_191919_EEEFF0" />
+                        android:background="@color/color_666666_bcbcbc" />
 
                     <ImageView
                         android:id="@+id/iv_bank_icon"
@@ -133,7 +133,6 @@
                     android:id="@+id/et_create_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cvDividerColor="@color/color_E2E2E2"
                     app:cvEnable="false"
                     app:cvHint="@string/hint_please_enter_create_name"
                     app:cvInputType="text"
@@ -145,7 +144,6 @@
                     android:id="@+id/et_bank_card_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cvDividerColor="@color/color_E2E2E2"
                     app:cvHint="@string/please_enter_bank_card_rule"
                     app:cvInputType="number"
                     app:cvMarginBottom="8dp"
@@ -156,7 +154,6 @@
                     android:id="@+id/et_network_point"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cvDividerColor="@color/color_E2E2E2"
                     app:cvHint="@string/please_enter_network_point"
                     app:cvInputType="text"
                     app:cvMarginBottom="8dp"
@@ -167,7 +164,6 @@
                     android:id="@+id/et_phone_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cvDividerColor="@color/color_E2E2E2"
                     app:cvHint="@string/please_enter_wallet_phone_number"
                     app:cvInputType="number"
                     app:cvMarginBottom="8dp"
@@ -212,14 +208,14 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginTop="12dp"
                             android:layout_marginBottom="12dp"
-                            android:background="@color/color_191919_EEEFF0" />
+                            android:background="@color/color_666666_bcbcbc" />
 
                         <org.cxct.sportlottery.ui.component.StatusSelectorView
                             android:id="@+id/sv_protocol"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
+                            app:textGravity="start|center_vertical"
                             app:defaultBottomSheetTitleText="@string/select_currency_protocol"
                             app:horizontalChainStyle="spread_inside" />
 
@@ -232,7 +228,6 @@
                     android:id="@+id/et_wallet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cvDividerColor="@color/color_E2E2E2"
                     app:cvHint="@string/please_enter_wallet_address"
                     app:cvInputType="text"
                     app:cvMarginBottom="8dp"
@@ -244,7 +239,6 @@
                 android:id="@+id/et_withdrawal_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cvDividerColor="@color/color_E2E2E2"
                 app:cvHint="@string/hint_please_enter_withdraw_password"
                 app:cvInputType="textPassword"
                 app:cvMarginBottom="8dp"

@@ -551,10 +551,10 @@
     <string name="withdraw_amount">Số tiền rút</string>
     <string name="withdraw_password">Mật khẩu rút tiền</string>
     <string name="withdraw_all">TẤT CẢ CÁC</string>
-    <string name="withdraw_handling_fee_hint">・Tỷ lệ phí xử lý ：%1$s%% Phí xử lý phải trả：%2$s</string>
-    <string name="withdraw_crypto_exchange_rate_hint">・Tỷ giá：%1$s</string>
-    <string name="withdraw_crypto_amount_hint">・Số tiền rút：%1$s %s</string>
-    <string name="withdraw_crypto_fee_hint">・Phí rút tiền：%1$s %s</string>
+    <string name="withdraw_handling_fee_hint">· Tỷ lệ phí xử lý ：%1$s%% Phí xử lý phải trả：%2$s</string>
+    <string name="withdraw_crypto_exchange_rate_hint">· Tỷ giá：%1$s</string>
+    <string name="withdraw_crypto_amount_hint">· Số tiền rút：%1$s %s</string>
+    <string name="withdraw_crypto_fee_hint">· Phí rút tiền：%1$s %s</string>
     <string name="hint_please_enter_withdraw_amount">số tiền giới hạn %1$s~%2$s</string>
     <string name="hint_four_number_password">Vui lòng nhập mật khẩu rút tiền</string>
     <string name="hint_please_enter_withdraw_password">Mật khẩu rút tiền</string>
@@ -783,7 +783,7 @@
     <string name="account_history_overview">Tổng quan lịch sử tài khoản</string>
     <string name="bet_num_and_bet_date">Số đơn cược / ngày thanh toán</string>
     <string name="date">Ngày tháng</string>
-    <string name="bet_amount">Số tiền đặt cược</string>
+    <string name="bet_amount">Cổ phần</string>
     <string name="available_amount">Số tiền hợp lệ</string>
     <string name="win_lose">Thắng hay thua</string>
     <string name="win_lose_mark">Thắng hay thua : </string>
@@ -1017,7 +1017,7 @@
     <string name="scan_tool_bar">Quét kết quả</string>
     <string name="text_us_east_time">Thời gian được báo cáo theo múi giờ UTC-4.</string>
     <string name="verify_failed_please_retry">Lỗi xảy ra trong quá trình xác thực. Xin thử lại lần nữa</string>
-    <string name="text_cant_play">Bạn đang trong khu vực không thể chơi</string>
+    <string name="text_cant_play">Đã xảy ra lỗi. Vui lòng thử lại sau.</string>
     <string name="text_bet_not_success">Trạng thái phiếu cược đang&#160;</string>
     <string name="text_bet_not_success2">Chờ</string>
     <string name="text_bet_not_success3">&#160;Phiếu cược của bạn đang được xử lý, vui lòng kiểm tra&#160;</string>
@@ -1147,4 +1147,6 @@
     <!--endregion-->
 
     <string name="current_corner">Tổng Số Hiện Tại:</string>
+    <string name="cancel_auto">Từ chối</string>
+    <string name="cancel_manual">Vô hiệu</string>
 </resources>

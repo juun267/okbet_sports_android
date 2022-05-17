@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail_v2.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.*
@@ -1386,7 +1387,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             mUserMoney = userMoney
 
             itemView.apply {
-                setupSingleItem2(
+                setupSingleItem(
                     betList,
                     itemData,
                     currentOddsType,
@@ -1402,7 +1403,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         }
 
         @SuppressLint("ClickableViewAccessibility")
-        private fun setupSingleItem2(
+        private fun setupSingleItem(
             betList: MutableList<BetInfoListData>,
             itemData: ParlayOdd?,
             currentOddsType: OddsType,
@@ -1728,6 +1729,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 setupItemEnable(hasBetClosed)
 
+                val initValue =
+                    if (!(itemData?.inputBetAmountStr.isNullOrEmpty())) itemData?.inputBetAmountStr else ""
+                et_bet_parlay.apply {
+                    setText(initValue)
+                    et_bet_parlay.setSelection(et_bet_parlay.text.length)
+                }
 
                 itemData?.let { data ->
                     tv_parlay_type.text = getParlayName(data.parlayType)
@@ -1794,7 +1801,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 btn_rule.visibility = if (hasBetClosed) View.GONE else View.VISIBLE
 
-                et_bet.apply {
+                et_bet_parlay.apply {
                     isEnabled = !hasBetClosed
                     isFocusable = !hasBetClosed
                     isFocusableInTouchMode = !hasBetClosed
@@ -1815,7 +1822,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         checkMinimumLimit(data)
                     }
                 } else {
-                    et_bet.setText("")
+                    et_bet_parlay.setText("")
                     itemView.apply {
                         tv_check_maximum_limit.visibility = View.GONE
                         ll_bet_quota_detail.visibility = View.GONE
@@ -1824,7 +1831,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     }
                 }
 
-                et_bet.setSelection(et_bet.text.length)
+                et_bet_parlay.setSelection(et_bet_parlay.text.length)
 
                 val quota = data.betAmount
                 //比照以往計算
@@ -1847,7 +1854,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             position: Int
         ) {
             itemView.apply {
-                et_bet.apply {
+                et_bet_parlay.apply {
                     if (tag is TextWatcher) {
                         removeTextChangedListener(tag as TextWatcher)
                     }
@@ -1971,16 +1978,16 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     addTextChangedListener(tw)
                     tag = tw
                 }
-                et_bet.isSelected =
+                et_bet_parlay.isSelected =
                     mSelectedPosition == bindingAdapterPosition && mBetView == BetViewType.PARLAY
 
-                if (et_bet.isFocusable) layoutKeyBoard.setMaxBetMoney(inputMaxMoney)
+                if (et_bet_parlay.isFocusable) layoutKeyBoard.setMaxBetMoney(inputMaxMoney)
 
-                et_bet.setOnTouchListener { view, event ->
+                et_bet_parlay.setOnTouchListener { view, event ->
                     if (event.action == MotionEvent.ACTION_UP) {
-                        et_bet.isFocusable = true
+                        et_bet_parlay.isFocusable = true
                         layoutKeyBoard.showKeyboard(
-                            et_bet,
+                            et_bet_parlay,
                             position,
                             inputMaxMoney,
                             data.min.toLong()
@@ -1994,7 +2001,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     false
                 }
 
-                et_bet.setOnFocusChangeListener { v, hasFocus ->
+                et_bet_parlay.setOnFocusChangeListener { v, hasFocus ->
                     if (!hasFocus) layoutKeyBoard?.hideKeyboard()
                 }
 
@@ -2067,17 +2074,17 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     ll_bet_quota_detail.visibility = View.GONE
                 }
 
-                et_bet.isSelected =
+                et_bet_parlay.isSelected =
                     mSelectedPosition == bindingAdapterPosition && mBetView == BetViewType.PARLAY
 
                 ll_bet_quota_detail.setOnClickListener {
-                    et_bet.apply {
+                    et_bet_parlay.apply {
                         setText(itemData.max.toString())
                         isFocusable = true
                         setSelection(text.length)
                     }
                     layoutKeyBoard.showKeyboard(
-                        et_bet,
+                        et_bet_parlay,
                         position,
                         inputMaxMoney,
                         itemData.min.toLong()
