@@ -423,13 +423,13 @@ fun TextView.setPlayContent(
     }
 
     val playNameStr = if (!playName.isNullOrEmpty()) "<font color=$playNameStrColor>${playName} </font> " else ""
-    val spreadStr = if (!spread.isNullOrEmpty() && playName != spread) "<font color=#B73A20>$spread</font> " else ""
+    val spreadStr = if (!spread.isNullOrEmpty() && playName != spread) "<font color=#B73A20><b>$spread</b></font> " else ""
 
     text = HtmlCompat.fromHtml(
         playNameStr +
                 spreadStr +
                 "<font color=$playNameStrColor>@ </font> " +
-                "<font color=#B73A20>$formatForOdd </font> "
+                "<font color=#B73A20><b>$formatForOdd </b></font> "
         , HtmlCompat.FROM_HTML_MODE_LEGACY
     )
 }

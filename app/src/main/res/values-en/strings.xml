@@ -793,7 +793,7 @@
     <string name="odds_have_changed">The odds have changed, please re - bet</string>
     <string name="bet_info_content_has_been_changed">The odds or status of the game play you selected has changed, please place a bet again</string>
     <string name="account_history_overview">Statement</string>
-    <string name="bet_num_and_bet_date">Betting order no. / Settled bets</string>
+    <string name="bet_num_and_bet_date">Bet slip No / Settled bets</string>
     <string name="date">Date</string>
     <string name="bet_amount">Stake</string>
     <string name="available_amount">Winable</string>
