@@ -824,6 +824,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
      */
     private fun removeClosedPlat() {
         viewModel.removeClosedPlatBetInfo()
+        isAutoCloseWhenNoData = true
     }
 
     private fun queryData() {
