@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail_v2.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.*
@@ -1728,6 +1729,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 setupItemEnable(hasBetClosed)
 
+                val initValue =
+                    if (!(itemData?.inputBetAmountStr.isNullOrEmpty())) itemData?.inputBetAmountStr else ""
+                et_bet_parlay.apply {
+                    setText(initValue)
+                    et_bet_parlay.setSelection(et_bet_parlay.text.length)
+                }
 
                 itemData?.let { data ->
                     tv_parlay_type.text = getParlayName(data.parlayType)
