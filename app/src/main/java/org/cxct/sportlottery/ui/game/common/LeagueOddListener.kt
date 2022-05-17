@@ -26,13 +26,18 @@ class LeagueOddListener(
     fun onClickPlayType(matchId: String?, matchInfoList: List<MatchInfo>, gameMatchType: MatchType, liveVideo: Int = 0) =
         clickListenerPlayType(matchId, matchInfoList, gameMatchType, liveVideo)
 
+    var clickOdd: Odd? = null
+
     fun onClickBet(
         matchInfo: MatchInfo?,
         odd: Odd,
         playCateCode: String,
         playCateName: String = "",
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
-    ) = clickListenerBet(matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap)
+    ) {
+        clickOdd = odd
+        clickListenerBet(matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap)
+    }
 
     fun onClickQuickCateTab(matchOdd: MatchOdd, quickPlayCate: QuickPlayCate) = clickListenerQuickCateTab(matchOdd, quickPlayCate)
 

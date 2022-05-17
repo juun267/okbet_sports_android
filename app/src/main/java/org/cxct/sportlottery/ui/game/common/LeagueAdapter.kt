@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.common.FoldState
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
@@ -22,8 +23,77 @@ import org.cxct.sportlottery.util.SvgUtil
 import org.cxct.sportlottery.util.SvgUtil.defaultIconPath
 import java.util.*
 
+const val BET_INFO: String = "bet-info"
+
 class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelectionType: Int?, var playSelectedCode: String?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private fun refreshByBetInfo() {
+        data.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                matchOdd.oddsMap?.values?.forEach { oddList ->
+                    oddList?.forEach { odd ->
+                        odd?.isSelected = betInfoList.any { betInfoListData ->
+                            betInfoListData.matchOdd.oddsId == odd?.id
+                        }
+                    }
+                }
+                matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                    quickPlayCate.quickOdds.forEach { map ->
+                        map.value?.forEach { odd ->
+                            odd?.isSelected = betInfoList.any { betInfoListData ->
+                                betInfoListData.matchOdd.oddsId == odd?.id
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        data.forEachIndexed { index, leagueOdd -> updateLeague(index, leagueOdd) }
+    }
+
+    var betInfoList: MutableList<BetInfoListData> = mutableListOf()
+        set(value) {
+            field = value
+            if (leagueOddListener?.clickOdd == null) {
+                refreshByBetInfo()
+                return
+            }
+
+            var isInMatch = false
+            var isInQuick = false
+            data.forEachIndexed { index, leagueOdd ->
+                leagueOdd.matchOdds.forEach { matchOdd ->
+                    matchOdd.oddsMap?.values?.forEach { oddList ->
+                        oddList?.forEach { odd ->
+                            odd?.isSelected = field.any { betInfoListData ->
+                                betInfoListData.matchOdd.oddsId == odd?.id
+                            }
+                            if (leagueOddListener?.clickOdd == odd) {
+                                isInMatch = true
+                            }
+                        }
+                    }
+                    matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                        quickPlayCate.quickOdds.forEach { map ->
+                            map.value?.forEach { odd ->
+                                odd?.isSelected = field.any { betInfoListData ->
+                                    betInfoListData.matchOdd.oddsId == odd?.id
+                                }
+                                if (leagueOddListener?.clickOdd == odd) {
+                                    isInQuick = true
+                                }
+                            }
+                        }
+                    }
+                    if (isInMatch || isInQuick) {
+                        updateLeagueByBetInfo(index, BET_INFO)
+                        isInMatch = false
+                        isInQuick = false
+                    }
+                }
+            }
+        }
 
     enum class ItemType {
         ITEM, NO_DATA, BOTTOM_NAVIGATION
@@ -97,6 +167,10 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         notifyItemChanged(position, payload)
     }
 
+    private fun updateLeagueByBetInfo(position: Int, payload: String) {
+        notifyItemChanged(position, payload)
+    }
+
     // 限制全列表更新頻率
     fun limitRefresh() {
         if (isLock) {
@@ -117,9 +191,17 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
             //if(holder is ItemViewHolder) holder.update(data[position], matchType, oddsType)
         } else {
             // Update with payload
-            val leagueOdd = payloads.first() as LeagueOdd
-            Log.d("Hewie", "更新：聯賽：($position) => ${leagueOdd.league.name}")
-            (holder as ItemViewHolder).update(leagueOdd, matchType, oddsType)
+            when (payloads.first()) {
+                is LeagueOdd -> {
+                    val leagueOdd = payloads.first() as LeagueOdd
+                    Log.d("Hewie", "更新：聯賽：($position) => ${leagueOdd.league.name}")
+                    (holder as ItemViewHolder).update(leagueOdd, matchType, oddsType)
+                }
+                is String -> {
+                    (holder as ItemViewHolder).updateByBetInfo()
+                }
+            }
+
         }
     }
     // endregion
@@ -204,7 +286,11 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
 
         }
 
-        fun updateLeagueOddList(item: LeagueOdd, oddsType: OddsType) {
+        fun updateByBetInfo() {
+            updateLeagueOddListByBetInfo()
+        }
+
+        private fun updateLeagueOddList(item: LeagueOdd, oddsType: OddsType) {
             leagueOddAdapter.data = if (item.searchMatchOdds.isNotEmpty()) {
                 item.searchMatchOdds
             } else {
@@ -220,7 +306,11 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
             }
         }
 
-        fun updateLeagueExpand(item: LeagueOdd, matchType: MatchType) {
+        private fun updateLeagueOddListByBetInfo() {
+            leagueOddAdapter.updateByBetInfo(leagueOddListener?.clickOdd)
+        }
+
+        private fun updateLeagueExpand(item: LeagueOdd, matchType: MatchType) {
             //itemView.league_expand.setExpanded(item.unfold == FoldState.UNFOLD.code, false)
             //itemView.league_odd_list.visibility = if(item.unfold == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
             updateTimer(matchType, item.gameType)
