@@ -52,6 +52,7 @@
                     android:text="@string/label_transaction_status"
                     android:textColor="@color/color_e5e5e5_333333"
                     android:textSize="@dimen/textSize14sp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
