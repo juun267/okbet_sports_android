@@ -304,23 +304,6 @@ class AccountHistoryNextAdapter(
                     adapter = roundAdapter
                 }
                 roundAdapter.submitList(scoreList)
-                //7 是取消注单
-                if (row.status==7){
-                    binding.tvWinLose.visibility = View.GONE
-                    binding.tvWinLoseMoney.visibility = View.GONE
-                    binding.tvCancel.visibility = View.VISIBLE
-                    if (row.cancelledBy.equals("0")){
-                        binding.tvCancel.text = itemView.context.getString(R.string.cancel_auto)
-                    }else if(row.cancelledBy.equals("1")){
-                        binding.tvCancel.text = itemView.context.getString(R.string.cancel_manual)
-                    }else{
-                        binding.tvCancel.text = null
-                    }
-                }else{
-                    binding.tvWinLose.visibility = View.VISIBLE
-                    binding.tvWinLose.visibility = View.VISIBLE
-                    binding.tvCancel.visibility = View.GONE
-                }
 
             }
 

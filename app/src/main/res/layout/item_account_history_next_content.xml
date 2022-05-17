@@ -239,6 +239,7 @@
                 android:textColor="@color/color_E44438_e44438"
                 android:textSize="@dimen/textSize12sp"
                 app:betReceiptStatus="@{row.status}"
+                app:betResultCancelBy="@{row.cancelledBy}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_bet"
                 app:statusVisibility="@{row.status}"
