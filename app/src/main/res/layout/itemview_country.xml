@@ -16,7 +16,6 @@
         android:maxLines="2"
         android:paddingStart="16dp"
         android:paddingEnd="34dp"
-        android:textAllCaps="true"
         android:textColor="@color/color_e5e5e5_202020"
         android:textSize="@dimen/textSize16sp"
         android:textStyle="bold"

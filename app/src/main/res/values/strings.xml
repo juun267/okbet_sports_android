@@ -564,9 +564,9 @@
     <string name="withdraw_password">Withdraw Password</string>
     <string name="withdraw_all">EXTRACT ALL</string>
     <string name="withdraw_handling_fee_hint">· Service fee: %1$S %% Service fee to be paid: %2$s</string>
-    <string name="withdraw_crypto_exchange_rate_hint">・Exchange rate：%1$s</string>
-    <string name="withdraw_crypto_amount_hint">・Withdraw：%1$s %s</string>
-    <string name="withdraw_crypto_fee_hint">・Withdraw service fee：%1$s %s</string>
+    <string name="withdraw_crypto_exchange_rate_hint">· Exchange rate：%1$s</string>
+    <string name="withdraw_crypto_amount_hint">· Withdraw：%1$s %s</string>
+    <string name="withdraw_crypto_fee_hint">· Withdraw service fee：%1$s %s</string>
     <string name="hint_please_enter_withdraw_amount">Limit%1$s~%2$s</string>
     <string name="hint_four_number_password">Withdrawal password</string>
     <string name="hint_please_enter_withdraw_password">withdrawal password</string>
@@ -980,7 +980,7 @@
     <string name="scan_tool_bar">Scan results</string>
     <string name="text_us_east_time">The time is reported in UTC-4 time zone.</string>
     <string name="verify_failed_please_retry">Verification failed, please try again</string>
-    <string name="text_cant_play">An error occured. Please try again later.</string>
+    <string name="text_cant_play">An error occurred. Please try again later.</string>
     <string name="text_bet_not_success">Bet slip status is&#160;</string>
     <string name="text_bet_not_success2">waiting</string>
     <string name="text_bet_not_success3">&#160;Your bet slip is processing, please check &#160;</string>

@@ -100,7 +100,6 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                 layoutParams = lp
             }
         }
-        view.view_no_record.setBackgroundColor(ContextCompat.getColor(view.context, R.color.color_141414_F3F4F5))
     }
 
     private fun setupListColumn(view: View) {
