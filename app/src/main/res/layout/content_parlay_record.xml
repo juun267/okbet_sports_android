@@ -92,7 +92,7 @@
                     android:id="@+id/content_parlay_winnable_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorGreenSea"
+                    android:textColor="@color/color_08dc6e_08dc6e"
                     android:textSize="@dimen/textSize13sp"
                     android:textStyle="bold"
                     tools:text="9,999,999.000" />
