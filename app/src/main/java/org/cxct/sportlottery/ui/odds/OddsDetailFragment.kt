@@ -394,8 +394,10 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 lifecycleScope.launch {
                     if (TimeUtil.isLastHour(startTime)) {
                         tv_time_bottom.text = String.format(getString(R.string.at_start_remain_minute), TimeUtil.getRemainMinute(startTime))
+                        tv_time_top.visibility = View.GONE
                     } else {
                         tv_time_bottom.text = TimeUtil.timeFormat(startTime, TimeUtil.HM_FORMAT)
+                        tv_time_top.visibility = View.VISIBLE
                     }
                 }
             }
