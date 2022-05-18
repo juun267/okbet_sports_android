@@ -852,8 +852,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     Log.d("Hewie", "observe => OddsListGameHallResult")
                     isReload = true
 
-                    game_list.post {
-                        game_list.getVisibleRangePosition().forEach { leaguePosition ->
+                    game_list?.post {
+                        game_list?.getVisibleRangePosition()?.forEach { leaguePosition ->
                             val viewByPosition = game_list.layoutManager?.findViewByPosition(leaguePosition)
                             viewByPosition?.let { view ->
                                 if (game_list.getChildViewHolder(view) is LeagueAdapter.ItemViewHolder) {

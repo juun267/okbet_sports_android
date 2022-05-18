@@ -45,9 +45,6 @@ class CountryLeagueAdapter : RecyclerView.Adapter<CountryLeagueAdapter.ViewHolde
 
             itemView.country_league_pin.setOnClickListener {
                 countryLeagueListener?.onClickPin(item)
-                with(itemView.country_league_pin) {
-                    isActivated = !isActivated
-                }
             }
             itemView.country_league_choose.setOnClickListener {
                 countryLeagueListener?.onClickSelect(item)
