@@ -472,6 +472,7 @@
     <string name="hint_pay2">2. 长时间无反应，请联系客服。</string>
     <string name="btn_look_for">查看交易</string>
     <string name="btn_service">联系客服</string>
+    <string name="btn_service_maintain">Customer service</string>
     <string name="txv_transfer_pay">转账支付</string>
     <string name="txv_online_pay">在线支付</string>
     <string name="txv_crypto_pay">虚拟币转账</string>

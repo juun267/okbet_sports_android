@@ -473,6 +473,7 @@
     <string name="hint_pay2">2. Không có phản hồi trong một thời gian dài, Vui lòng Liên hệ CSKH.</string>
     <string name="btn_look_for">Xem giao dịch</string>
     <string name="btn_service">Liên hệ CSKH</string>
+    <string name="btn_service_maintain">Customer service</string>
     <string name="txv_transfer_pay">Thanh toán chuyển khoản</string>
     <string name="txv_online_pay">Thanh toán trực tuyến</string>
     <string name="txv_crypto_pay">Chuyển khoản tiền ảo</string>

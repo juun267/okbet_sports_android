@@ -485,6 +485,7 @@
     <string name="hint_pay2">2. If there is no response for a long time, please contact customer service.</string>
     <string name="btn_look_for">Check trade</string>
     <string name="btn_service">Contact customer service</string>
+    <string name="btn_service_maintain">Customer service</string>
     <string name="txv_transfer_pay">Transfer</string>
     <string name="txv_online_pay">Top Up Online</string>
     <string name="txv_crypto_pay">Virtual currency transfer</string>
