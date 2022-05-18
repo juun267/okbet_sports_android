@@ -353,7 +353,7 @@
     <string name="ended">已结束</string>
     <string name="suspend">延期</string>
     <string name="uncheck">未确认</string>
-    <string name="undone">未结算</string>
+    <string name="undone">進行中</string>
     <string name="settled">已结算</string>
     <string name="win">赢</string>
     <string name="win_half">赢半</string>
