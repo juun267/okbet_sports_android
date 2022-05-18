@@ -632,7 +632,7 @@
     <string name="bet_info_odd_content_changed2">赔率已变更，从 %s 至 %s 。</string>
     <string name="bet_info_all_bet">所有投注</string>
     <string name="bet_list_delete_all">全删除</string>
-    <string name="bet_list_single_warn">(可用相同的投注额填充所有单项选择)</string>
+    <string name="bet_list_single_warn">可用相同的投注额填充所有单项选择</string>
     <string name="bet_list_single">单注</string>
     <string name="bet_list_view_more_options">查看所有多个选项</string>
     <string name="bet_list_cant_parlay_warn">提醒若同一赛事, 不同球种, 冠军等投注项目不可进行串关</string>
