@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.outright
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,7 +45,7 @@ class OutrightOddAdapter :
                                 } ?: listOf()
                         )
 
-                        if (it.value?.filterNotNull()?.size ?: 0 > 4) {
+                        if (it.value?.filterNotNull()?.size ?: 0 > 5) {
                             list.add(it.key to matchOdd)
                         }
                     }
@@ -196,11 +197,6 @@ class OutrightOddAdapter :
                 return SubTitleViewHolder(view)
             }
         }
-    }
-
-    fun getOddIsExpand(position: Int): Boolean {
-        val item = data[position] as Pair<*, *>
-        return data.filterIsInstance<Odd>().first { it.outrightCateKey == item.first as String }.isExpand
     }
 
     inner class MoreViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
