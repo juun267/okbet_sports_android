@@ -824,9 +824,30 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         viewModel.curMatchType.observe(this) {
             it?.let {
-                when(it){
-                    MatchType.MAIN -> navHomeFragment()
-                    else -> navGameFragment(it)
+                val tabSelectedPosition = tabLayout.selectedTabPosition
+                when (it) {
+                    MatchType.MAIN -> {
+                        if (tabSelectedPosition == getMatchTypeTabPosition(MatchType.MAIN))
+                            navHomeFragment()
+                    }
+                    else -> {
+                        //僅有要切換的MatchType與當前選中的Tab相同時才繼續進行後續的切頁行為, 避免快速切頁導致切頁邏輯進入無窮迴圈
+                        when {
+                            it == MatchType.IN_PLAY && tabSelectedPosition == getMatchTypeTabPosition(MatchType.IN_PLAY) ||
+                                    it == MatchType.AT_START && tabSelectedPosition == getMatchTypeTabPosition(MatchType.AT_START) ||
+                                    it == MatchType.TODAY && tabSelectedPosition == getMatchTypeTabPosition(MatchType.TODAY) ||
+                                    it == MatchType.EARLY && tabSelectedPosition == getMatchTypeTabPosition(MatchType.EARLY) ||
+                                    it == MatchType.OUTRIGHT && tabSelectedPosition == getMatchTypeTabPosition(MatchType.OUTRIGHT) ||
+                                    it == MatchType.PARLAY && tabSelectedPosition == getMatchTypeTabPosition(MatchType.PARLAY)
+                            -> {
+                                navGameFragment(it)
+                            }
+                            else -> {
+                                //do nothing
+                            }
+                        }
+
+                    }
                 }
             }
         }
