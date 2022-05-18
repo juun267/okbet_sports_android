@@ -69,7 +69,7 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
                             odd?.isSelected = field.any { betInfoListData ->
                                 betInfoListData.matchOdd.oddsId == odd?.id
                             }
-                            if (leagueOddListener?.clickOdd == odd) {
+                            if (leagueOddListener?.clickOdd?.id == odd?.id) {
                                 isInMatch = true
                             }
                         }
@@ -80,7 +80,7 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
                                 odd?.isSelected = field.any { betInfoListData ->
                                     betInfoListData.matchOdd.oddsId == odd?.id
                                 }
-                                if (leagueOddListener?.clickOdd == odd) {
+                                if (leagueOddListener?.clickOdd?.id == odd?.id) {
                                     isInQuick = true
                                 }
                             }
