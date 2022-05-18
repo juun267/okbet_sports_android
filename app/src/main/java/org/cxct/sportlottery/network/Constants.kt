@@ -2,6 +2,7 @@ package org.cxct.sportlottery.network
 
 import android.content.Context
 import org.cxct.sportlottery.BuildConfig
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
@@ -190,7 +191,13 @@ object Constants {
             null
         }
     }
-
+    //web页面增加夜间模式参数
+    fun appendMode(url:String?):String?{
+        if (url.isNullOrEmpty()||url.contains("mode=")){
+            return url
+        }
+        return url+(if(url.contains("?")) "&" else "?")+"mode="+(if(MultiLanguagesApplication.isNightMode) "night" else "day")
+    }
 
     //獲取檢查APP是否有更新版本的URL //輪詢 SERVER_URL_LIST 成功的那組 serverUrl 用來 download .apk
     fun getCheckAppUpdateUrl(serverUrl: String?): String {
