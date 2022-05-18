@@ -207,11 +207,8 @@ class OutrightOddAdapter :
         fun bind(oddsKey: String, matchOdd: MatchOdd, isExpand:Boolean, outrightOddListener: OutrightOddListener?) {
             itemView.setOnClickListener {
                 outrightOddListener?.onClickMore(oddsKey, matchOdd)
-                val item = data[adapterPosition] as Pair<*, *>
-                data.filterIsInstance<Odd>().first { it.outrightCateKey == item.first as String }.isExpand = !data.filterIsInstance<Odd>().first { it.outrightCateKey == item.first as String }.isExpand
-
             }
-            when(isExpand) {
+            when(!data.filterIsInstance<Odd>().last().isExpand) {
                 true -> {
                     tvMore.text = itemView.context.getString(R.string.odds_detail_more)
                     ivMoreIcon.animate().rotation(0f).setDuration(100).start()

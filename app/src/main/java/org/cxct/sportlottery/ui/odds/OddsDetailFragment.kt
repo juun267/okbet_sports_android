@@ -50,15 +50,8 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
     private val args: OddsDetailFragmentArgs by navArgs()
     private var mStartTimer: Timer? = Timer()
-    private val mStartTimeTask = object: TimerTask() {
-        override fun run() {
-
-        }
-    }
-
     var matchId: String? = null
     private var matchOdd: MatchOdd? = null
-
 
     private var oddsDetailListAdapter: OddsDetailListAdapter? = null
 
