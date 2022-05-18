@@ -47,7 +47,7 @@ fun TextView.setDateTimeNoYear(timeStamp: Long?) {
 }
 
 @SuppressLint("SetTextI18n")
-@BindingAdapter(value = ["bind:gameType", "bind:playCateName"], requireAll = true)
+@BindingAdapter(value = ["gameType", "playCateName"], requireAll = true)
 fun TextView.setGameTypeWithPlayCate(gameType: String?, playCateName: String?) {
     if (gameType == null) {
         visibility = View.GONE
@@ -280,7 +280,7 @@ fun TextView.setMoneyFormat(money: Double?) {
 }
 
 
-@BindingAdapter(value = ["bind:profitFormat", "bind:profitTotal"], requireAll = false)
+@BindingAdapter(value = ["profitFormat", "profitTotal"], requireAll = false)
 fun TextView.setProfitFormat(money: Double?, isTotal: Boolean? = false) {
     money?.let {
         text = if (it > 0.0) {

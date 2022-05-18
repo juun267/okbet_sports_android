@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="@dimen/margin_4"
+        app:cardBackgroundColor="@color/transparent_black_0"
         app:cardElevation="0dp">
 
         <LinearLayout
@@ -84,6 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_10"
         app:cardCornerRadius="@dimen/margin_4"
+        app:cardBackgroundColor="@color/transparent_black_0"
         app:cardElevation="0dp">
 
         <LinearLayout
