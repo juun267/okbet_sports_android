@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_odds_detail.rv_cat
 import kotlinx.android.synthetic.main.fragment_odds_detail.rv_detail
 import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
 import org.cxct.sportlottery.enum.MatchSource
@@ -37,6 +38,7 @@ import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
+import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
@@ -103,6 +105,9 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         gameViewModel = this@OddsDetailFragment.viewModel
         lifecycleOwner = this@OddsDetailFragment.viewLifecycleOwner
         executePendingBindings()
+        vToolbar.ivTitleBar.setImageResource(
+            GameConfigManager.getTitleBarBackground(args.gameType.key, MultiLanguagesApplication.isNightMode) ?: R.drawable.img_home_title_soccer_background
+        )
     }.root
 
 
