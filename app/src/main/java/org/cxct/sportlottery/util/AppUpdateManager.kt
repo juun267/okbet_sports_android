@@ -42,6 +42,13 @@ object AppUpdateManager {
     }
 
     fun downloadApk(context: Context?, downloadUrl: String, onDownloadListener: OnDownloadListener?) {
+        Timber.i("==> 刪除原apk")
+        val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).path + "/OkBet.apk")
+        if (file.exists()) {
+            Timber.i("==> 原apk存在 執行刪除")
+            file.delete()
+        }
+
         Timber.i("==> 下載 apk: $downloadUrl")
         val downloadManager = context?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 
