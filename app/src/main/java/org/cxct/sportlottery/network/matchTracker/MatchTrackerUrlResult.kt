@@ -11,7 +11,8 @@ data class MatchTrackerUrlResult(
     @Json(name = "msg")
     override val msg: String,
     @Json(name = "success")
-    override val success: Boolean,
+    override val success: Boolean
+): BaseResult(){
     @Json(name = "t")
-    val matchTrackerUrl: MatchTrackerUrl
-): BaseResult()
+    val matchTrackerUrl: MatchTrackerUrl? = null
+}

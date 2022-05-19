@@ -40,7 +40,7 @@ import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setTextTypeFace
 import java.util.*
 
-class Vp2GameTable4Adapter (
+class Vp2GameTable4Adapter(
     val matchType: MatchType,
 ) :
     RecyclerView.Adapter<Vp2GameTable4Adapter.ViewHolderHdpOu>() {
@@ -58,6 +58,7 @@ class Vp2GameTable4Adapter (
     private var gameType: String = GameType.FT.key
     private var selectedOdds = mutableListOf<String>()
     private var dataList: List<MatchOdd> = listOf()
+
     //主頁的翻譯要取外層的playCateNameMap，odds為{}時內層的playCateNameMap會是空的
     private var playCateNameMap: MutableMap<String?, Map<String?, String?>?>? = mutableMapOf()
     private var timeMap = mutableMapOf<String, Long>()
@@ -65,12 +66,14 @@ class Vp2GameTable4Adapter (
 
     private val mOddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
-            override fun refreshOddButton(odd: Odd) { }
+            override fun refreshOddButton(odd: Odd) {}
         }
     }
 
-    fun setData(gameType: String, dataList: List<MatchOdd>, isLogin: Boolean, oddsType: OddsType,
-                playCateNameMap: MutableMap<String?, Map<String?, String?>?>?, selectedOdds: MutableList<String>) {
+    fun setData(
+        gameType: String, dataList: List<MatchOdd>, isLogin: Boolean, oddsType: OddsType,
+        playCateNameMap: MutableMap<String?, Map<String?, String?>?>?, selectedOdds: MutableList<String>
+    ) {
         this.dataList = dataList
         this.gameType = gameType
         when (matchType) {
@@ -141,8 +144,7 @@ class Vp2GameTable4Adapter (
     fun notifyMatchStatusChanged(matchStatusCO: MatchStatusCO, statusValue: String?) {
         if (matchStatusCO.status == 100) {
 
-        }
-        else {
+        } else {
             dataList.forEachIndexed { index, matchOdd ->
                 if (matchOdd.matchInfo?.id == matchStatusCO.matchId) {
                     matchOdd.matchInfo?.homeTotalScore = matchStatusCO.homeTotalScore
@@ -176,7 +178,7 @@ class Vp2GameTable4Adapter (
                                 timeMap[id] = it
                             }
                         }
-                        GameType.BK.key,GameType.RB.key,GameType.AFT.key  -> {
+                        GameType.BK.key, GameType.RB.key, GameType.AFT.key -> {
                             matchClockCO.remainingTimeInPeriod?.let {
                                 timeMap[id] = it
                             }
@@ -352,7 +354,7 @@ class Vp2GameTable4Adapter (
 
                 when (matchType) {
                     MatchType.IN_PLAY -> {
-                        tv_game_type.text = context.getString(R.string.home_tab_in_play2)
+                        tv_game_type.text = context.getString(R.string.home_tab_in_play)
 
                         when (gameType) {
                             GameType.TN.key -> {
@@ -429,20 +431,20 @@ class Vp2GameTable4Adapter (
                                 tv_game_score_away.text = "$awayScore"
                             }
                         }
-                        if(data?.scoreStatus == 999){
-                            tv_game_score_home.visibility = View.GONE
-                            tv_game_score_away.visibility = View.GONE
-                            tv_game_total_score_home_center.visibility = View.INVISIBLE
-                            tv_game_score_home_center.visibility = View.INVISIBLE
-                            tv_game_total_score_away_center.visibility = View.INVISIBLE
-                            tv_game_score_away_center.visibility = View.INVISIBLE
-                        }
+//                        if(data?.scoreStatus == 999){
+//                            tv_game_score_home.visibility = View.GONE
+//                            tv_game_score_away.visibility = View.GONE
+//                            tv_game_total_score_home_center.visibility = View.INVISIBLE
+//                            tv_game_score_home_center.visibility = View.INVISIBLE
+//                            tv_game_total_score_away_center.visibility = View.INVISIBLE
+//                            tv_game_score_away_center.visibility = View.INVISIBLE
+//                        }
                     }
                     MatchType.AT_START -> {
                         tv_game_type.text = context.getString(R.string.home_tab_today)
                         data?.startTime?.let {
                             val date = Date(it)
-                            tv_game_type.text = context.getString(R.string.home_tab_today) + " " + TimeUtil.dateToDateFormat(date,TimeUtil.HM_FORMAT)
+                            tv_game_type.text = context.getString(R.string.home_tab_today) + " " + TimeUtil.dateToDateFormat(date, TimeUtil.HM_FORMAT)
                         }
 
                         tv_game_score_home.visibility = View.GONE
@@ -484,26 +486,32 @@ class Vp2GameTable4Adapter (
             itemView.apply {
                 when (matchType) {
                     MatchType.IN_PLAY -> {
-                        if (time == -1L) tv_match_time.text = null
+                        if (time == -1L) tv_match_time.text = dataList[bindingAdapterPosition].runningTime
                         else {
                             when (gameType) {
                                 GameType.FT.key, GameType.BK.key -> { //足球
                                     val timeMillisAbs = if (time > 0) time else 0
                                     val timeStr = TimeUtil.longToMmSs(timeMillisAbs * 1000)
                                     tv_match_time.text = timeStr
+                                    dataList[bindingAdapterPosition].runningTime = timeStr
                                 }
-                                else -> tv_match_time.text = null
+                                else -> {
+                                    tv_match_time.text = null
+                                }
                             }
                         }
                     }
                     MatchType.AT_START -> {
-                        if (time == -1L) tv_match_time.text = null
-                        else {
+                        if (time == -1L) {
+                            tv_match_time.text = dataList[bindingAdapterPosition].runningTime
+                            tv_match_time.setTextColor(ContextCompat.getColor(context, R.color.color_A3A3A3_666666))
+                        } else {
                             val statusName =
                                 if (data?.startDateDisplay.isNullOrEmpty()) "" else data?.startDateDisplay + " "
                             val timeMillisAbs = if (time > 0) time else 0
                             val timeStr = statusName + String.format(itemView.context.resources.getString(R.string.at_start_remain_minute), TimeUtil.longToMinute(timeMillisAbs))
                             tv_match_time.text = timeStr
+                            dataList[bindingAdapterPosition].runningTime = timeStr
                             tv_match_time.setTextColor(ContextCompat.getColor(context, R.color.color_A3A3A3_666666))
                         }
                     }
@@ -515,7 +523,8 @@ class Vp2GameTable4Adapter (
         }
 
         private fun setupOddButton(data: MatchOdd) {
-            itemView.apply { this
+            itemView.apply {
+                this
                 //要取 datas 的matchOdds 下面的 oddsSort 去抓排序裡第一個的翻譯顯示 2022/01/11 與後端Ｍax確認 by Bill
                 val playCateName =
                     if (data.oddsSort?.split(",")?.size ?: 0 > 0) data.oddsSort?.split(",")
@@ -530,8 +539,7 @@ class Vp2GameTable4Adapter (
                         // 沒有第一個按鈕
                         //isSelected = false
                         betStatus = BetStatus.DEACTIVATED.code
-                    }
-                    else {
+                    } else {
 
                         // 有第一個按鈕
                         val oddFirst = oddList?.getOrNull(0)
@@ -545,7 +553,7 @@ class Vp2GameTable4Adapter (
 
                         setupOdd(oddFirst, oddsType)
 
-                        setupOddName4Home("1" , playCateName)
+                        setupOddName4Home("1", playCateName)
 
                         setOnClickListener {
                             oddFirst?.let { odd ->
@@ -562,8 +570,7 @@ class Vp2GameTable4Adapter (
                         // 沒有第二個按鈕
                         isSelected = false
                         betStatus = BetStatus.DEACTIVATED.code
-                    }
-                    else {
+                    } else {
                         // 有第二個按鈕
                         val oddSecond = oddList?.getOrNull(1)
                         isSelected = oddSecond?.isSelected ?: false
@@ -576,16 +583,16 @@ class Vp2GameTable4Adapter (
 
                         setupOdd(oddSecond, oddsType)
 
-                        if(gameType == GameType.CK.key)
-                            setupOddName4Home("X" , playCateName)
+                        if (gameType == GameType.CK.key)
+                            setupOddName4Home("X", playCateName)
                         else
-                            setupOddName4Home("2" , playCateName)
+                            setupOddName4Home("2", playCateName)
 
                         setOnClickListener {
                             oddSecond?.let { odd ->
                                 it.isSelected = !it.isSelected
                                 data.matchInfo?.gameType = gameType
-                                onClickOddListener?.onClickBet( data, odd, playCateName.toString(), itemView.tv_play_type.text.toString(), data.betPlayCateNameMap )
+                                onClickOddListener?.onClickBet(data, odd, playCateName.toString(), itemView.tv_play_type.text.toString(), data.betPlayCateNameMap)
                             }
                         }
                     }
@@ -596,8 +603,7 @@ class Vp2GameTable4Adapter (
                         // 沒有第三個按鈕
                         isSelected = false
                         betStatus = BetStatus.DEACTIVATED.code
-                    }
-                    else {
+                    } else {
                         // 有第三個按鈕
                         val oddThird = oddList?.getOrNull(2)
                         isSelected = oddThird?.isSelected ?: false
@@ -610,13 +616,13 @@ class Vp2GameTable4Adapter (
 
                         setupOdd(oddThird, oddsType)
 
-                        setupOddName4Home("2" , playCateName)
+                        setupOddName4Home("2", playCateName)
 
                         setOnClickListener {
                             oddThird?.let { odd ->
                                 it.isSelected = !it.isSelected
                                 data.matchInfo?.gameType = gameType
-                                onClickOddListener?.onClickBet( data, odd, playCateName.toString(), itemView.tv_play_type.text.toString(), data.betPlayCateNameMap )
+                                onClickOddListener?.onClickBet(data, odd, playCateName.toString(), itemView.tv_play_type.text.toString(), data.betPlayCateNameMap)
                             }
                         }
                     }
