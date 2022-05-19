@@ -353,7 +353,7 @@
     <string name="ended">已结束</string>
     <string name="suspend">延期</string>
     <string name="uncheck">未确认</string>
-    <string name="undone">未结算</string>
+    <string name="undone">进行中</string>
     <string name="settled">已结算</string>
     <string name="win">赢</string>
     <string name="win_half">赢半</string>
@@ -472,6 +472,7 @@
     <string name="hint_pay2">2. 长时间无反应，请联系客服。</string>
     <string name="btn_look_for">查看交易</string>
     <string name="btn_service">联系客服</string>
+    <string name="btn_service_maintain">联系客服</string>
     <string name="txv_transfer_pay">转账支付</string>
     <string name="txv_online_pay">在线支付</string>
     <string name="txv_crypto_pay">虚拟币转账</string>
@@ -552,10 +553,10 @@
     <string name="withdraw_password">提款密码</string>
     <string name="withdraw_uw_check">扣除金额</string>
     <string name="withdraw_all">全部提取</string>
-    <string name="withdraw_handling_fee_hint">・手续费率：%1$s%% 须支付手续费：%2$s</string>
-    <string name="withdraw_crypto_exchange_rate_hint">・汇率：%1$s</string>
-    <string name="withdraw_crypto_amount_hint">・提款金额：%1$s %s</string>
-    <string name="withdraw_crypto_fee_hint">・提款手续费：%1$s %s</string>
+    <string name="withdraw_handling_fee_hint">· 手续费率：%1$s%% 须支付手续费：%2$s</string>
+    <string name="withdraw_crypto_exchange_rate_hint">· 汇率：%1$s</string>
+    <string name="withdraw_crypto_amount_hint">· 提款金额：%1$s %s</string>
+    <string name="withdraw_crypto_fee_hint">· 提款手续费：%1$s %s</string>
     <string name="hint_please_enter_withdraw_amount">限额%1$s~%2$s</string>
     <string name="hint_four_number_password">请输入提款密码</string>
     <string name="hint_please_enter_withdraw_password">请输入提款密码</string>
@@ -632,7 +633,7 @@
     <string name="bet_info_odd_content_changed2">赔率已变更，从 %s 至 %s 。</string>
     <string name="bet_info_all_bet">所有投注</string>
     <string name="bet_list_delete_all">全删除</string>
-    <string name="bet_list_single_warn">(可用相同的投注额填充所有单项选择)</string>
+    <string name="bet_list_single_warn">可用相同的投注额填充所有单项选择</string>
     <string name="bet_list_single">单注</string>
     <string name="bet_list_view_more_options">查看所有多个选项</string>
     <string name="bet_list_cant_parlay_warn">提醒若同一赛事, 不同球种, 冠军等投注项目不可进行串关</string>
@@ -982,7 +983,7 @@
     <string name="select_id_type">选择身份证件类型</string>
     <string name="scan_tool_bar">扫描结果</string>
     <string name="text_us_east_time">以美东(UTC-4)时间计算</string>
-    <string name="text_cant_play">您所在的区域无法播放</string>
+    <string name="text_cant_play">发生错误,请稍后再试。</string>
     <string name="text_bet_not_success">滚球投注注单状态&#160;</string>
     <string name="text_bet_not_success2">待成立注单</string>
     <string name="text_bet_not_success3">&#160;您的注单正在处理中请检查您的&#160;</string>
@@ -1113,4 +1114,6 @@
     <!--endregion-->
 
     <string name="current_corner">当前总数:</string>
+    <string name="cancel_auto">注單未成立</string>
+    <string name="cancel_manual">退款</string>
 </resources>

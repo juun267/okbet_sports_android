@@ -1092,7 +1092,7 @@ public class TextFieldBoxes extends FrameLayout {
             this.floatingSubLabel.setVisibility(View.VISIBLE);
             layoutParams.removeRule(RelativeLayout.CENTER_VERTICAL);
             layoutParams.addRule(RelativeLayout.ALIGN_TOP, R.id.text_field_boxes_sub_label);
-            int topMargin = ((int) MetricsUtil.INSTANCE.convertDpToPixel(6, editTextLayout.getContext()));
+            int topMargin = ((int) MetricsUtil.INSTANCE.convertDpToPixel(2, editTextLayout.getContext()));
             layoutParams.topMargin = - (topMargin + inputLayout.getPaddingTop());
         }
         editTextLayout.setLayoutParams(layoutParams);

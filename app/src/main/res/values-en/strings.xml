@@ -356,7 +356,7 @@
     <string name="remark_by_own_source">Because the mechanism audit is not established</string>
     <string name="select_all">Select all</string>
     <string name="all_order">All bets</string>
-    <string name="not_settled_order">Unsettlement bets</string>
+    <string name="not_settled_order">Unsettled</string>
     <string name="settled_order">Settled bets</string>
     <string name="start_date">Start date</string>
     <string name="end_date">Date closed</string>
@@ -366,7 +366,7 @@
     <string name="ended">Finished</string>
     <string name="suspend">Delay</string>
     <string name="uncheck">Unconfirmed</string>
-    <string name="undone">Unsettlement</string>
+    <string name="undone">Running</string>
     <string name="settled">Settled bets</string>
     <string name="win">Win</string>
     <string name="win_half">Win a half</string>
@@ -438,7 +438,7 @@
     <string name="title_name">Full Name：</string>
     <string name="title_account">Account：</string>
     <string name="title_address">Address：</string>
-    <string name="title_deposit_money">Top-up amount</string>
+    <string name="title_deposit_money">Deposit Amount</string>
     <string name="title_payer">Account</string>
 <!--    <string name="edt_hint_deposit_money">Limit %1$s～%2$s RMB</string>-->
     <string name="edt_hint_deposit_money">Limit %1$s～%2$s</string>
@@ -451,16 +451,16 @@
     <string name="edt_hint_nick_name"><![CDATA[Please enter your nickname]]></string>
     <string name="title_wx_id">Wechat ID</string>
     <string name="edt_hint_wx_id">Please enter Wechat ID</string>
-    <string name="title_bank_account">Bank card number</string>
-    <string name="edt_hint_bank_account">Enter the bank card number</string>
+    <string name="title_bank_account">Bank account number</string>
+    <string name="edt_hint_bank_account">Enter the bank account number</string>
     <string name="title_recharge_time">Top-up time</string>
     <string name="title_current_money">Current balance</string>
     <string name="btn_submit">Submit</string>
     <string name="btn_copy">Copy</string>
     <string name="title_qr_pay">Scan to pay：</string>
     <string name="title_hint_qr_pay">Scan to pay, if you have any questions please contact customer service!</string>
-    <string name="title_fee_rate">・Service fee：</string>
-    <string name="title_fee_amount">・Service fee amount：</string>
+    <string name="title_fee_rate">・Transaction Fee：</string>
+    <string name="title_fee_amount">・Transaction Fee Amount：</string>
     <string name="title_rebate_rate">・Rebate：</string>
     <string name="title_rebate_amount">・Rebate amount：</string>
     <string name="title_remark">Remark：</string>
@@ -474,8 +474,8 @@
     <string name="paypal_recharge_hint">Please log in the member to check whether the Paypal account is used before each payment. The company is not responsible for failing to check the overdue account.</string>
     <string name="title_pay_channel">Payment channels</string>
     <string name="title_choose_pay_channel">Payment channels</string>
-    <string name="title_pay_gap">Payment account</string>
-    <string name="title_choose_pay_gap">Payment account</string>
+    <string name="title_pay_gap">Payment Account</string>
+    <string name="title_choose_pay_gap">Payment Account</string>
     <string name="title_pay_bank">Payment bank</string>
     <string name="title_choose_pay_bank">Payment bank</string>
     <string name="title_pay_msg">Payment information</string>
@@ -485,18 +485,19 @@
     <string name="hint_pay2">2. If there is no response for a long time, please contact customer service.</string>
     <string name="btn_look_for">Check trade</string>
     <string name="btn_service">Contact customer service</string>
+    <string name="btn_service_maintain">Customer service</string>
     <string name="txv_transfer_pay">Transfer</string>
     <string name="txv_online_pay">Top Up Online</string>
     <string name="txv_crypto_pay">Virtual currency transfer</string>
-    <string name="error_recharge_amount">Incorrect format or value of top-up amount</string>
-    <string name="error_recharge_account">Incorrect number or value of top-up amount</string>
-    <string name="error_bank_id">There is an error in the format of the bank card number</string>
+    <string name="error_recharge_amount">Incorrect format or value of deposit amount</string>
+    <string name="error_recharge_account">Incorrect number or value of deposit amount</string>
+    <string name="error_bank_id">There is an error in the format of the bank account number</string>
     <string name="error_hashcode">Block chain trading ID format error</string>
     <string name="error_name">The name that you entered is not valid</string>
     <string name="text_money_copy_success">Copy successful</string>
     <string name="title_currency">USDT channel</string>
     <string name="title_choose_currency">Select agreement/currency</string>
-    <string name="txv_recharge_count">Top-up amount</string>
+    <string name="txv_recharge_count">Deposit Amount</string>
     <string name="edt_hint_crypto_pay_count">Limit %1$s ~ %2$s</string>
     <string name="hint_rate">・Exchange rate：%1$s</string>
     <string name="title_transaction_id">Block chain trading ID</string>
@@ -505,7 +506,7 @@
     <string name="hint_fee_amount">・Service charge：%1$s %s</string>
     <string name="hint_feeback_rate">・Rebate rate：%1$s</string>
     <string name="hint_feeback_amount">・Rebate rate amount：%1$s %s</string>
-    <string name="txv_recharge_money">・Top-up amount：%1$s %s</string>
+    <string name="txv_recharge_money">・Deposit Amount：%1$s %s</string>
     <string name="title_recharge_account">USDT deposit account</string>
     <string name="title_choose_recharge_account">Select deposit account</string>
     <string name="title_recharge_address">USDT deposit address：</string>
@@ -563,10 +564,10 @@
     <string name="withdraw_amount">Withdraw</string>
     <string name="withdraw_password">Withdraw Password</string>
     <string name="withdraw_all">EXTRACT ALL</string>
-    <string name="withdraw_handling_fee_hint">· Service fee: %1$S %% Service fee to be paid: %2$s</string>
-    <string name="withdraw_crypto_exchange_rate_hint">・Exchange rate：%1$s</string>
-    <string name="withdraw_crypto_amount_hint">・Withdraw：%1$s %s</string>
-    <string name="withdraw_crypto_fee_hint">・Withdraw service fee：%1$s %s</string>
+    <string name="withdraw_handling_fee_hint">· Transaction Fee: %1$S %% Transaction Fee to be paid: %2$s</string>
+    <string name="withdraw_crypto_exchange_rate_hint">· Exchange rate：%1$s</string>
+    <string name="withdraw_crypto_amount_hint">· Withdraw：%1$s %s</string>
+    <string name="withdraw_crypto_fee_hint">· Withdraw Transaction Fee：%1$s %s</string>
     <string name="hint_please_enter_withdraw_amount">Limit%1$s~%2$s</string>
     <string name="hint_four_number_password">Withdrawal password</string>
     <string name="hint_please_enter_withdraw_password">withdrawal password</string>
@@ -582,9 +583,9 @@
     <string name="edit_bank_card">Edit bank card</string>
     <string name="edit_crypto_card">Edit virtual</string>
     <string name="edit_e_wallet">Edit eWallet</string>
-    <string name="bank_card_number">Card number</string>
+    <string name="bank_card_number">Account number</string>
     <string name="wallet_address">The wallet address</string>
-    <string name="please_enter_bank_card_rule">your bank card number</string>
+    <string name="please_enter_bank_card_rule">your bank account number</string>
     <string name="please_enter_wallet_address">the wallet address</string>
     <string name="network_point">Bank branch</string>
     <string name="please_enter_network_point">your opening bank branch</string>
@@ -595,7 +596,7 @@
     <string name="delete_e_wallet">Delete</string>
     <string name="select_currency_protocol">Select agreement/currency</string>
     <string name="error_create_name">Name must be between 2–20 characters long and contain Chinese letter</string>
-    <string name="error_bank_card_number">There is an error in the format of the bank card number</string>
+    <string name="error_bank_card_number">There is an error in the format of the bank account number</string>
     <string name="error_network_point">The format of opening bank branch you entered is incorrect</string>
     <string name="error_withdraw_password">The Password you entered is incorrect</string>
     <string name="error_wallet_address">The format of the address you entered is incorrect</string>
@@ -667,9 +668,9 @@
     <string name="record_history">Transaction History</string>
     <string name="recharge_state_success">success</string>
     <string name="recharge_state_failed">Fail</string>
-    <string name="recharge_state_processing">Being processed</string>
-    <string name="all_order_status">All bets status</string>
-    <string name="recharge_channel_all">All channel types</string>
+    <string name="recharge_state_processing">Processing</string>
+    <string name="all_order_status">All Status</string>
+    <string name="recharge_channel_all">All Method</string>
     <string name="recharge_channel_online">Top Up Online</string>
     <string name="recharge_channel_bank">Bank card transfer</string>
     <string name="recharge_channel_alipay">Alipay transfer</string>
@@ -682,13 +683,13 @@
     <string name="recharge_channel_admin">System add money</string>
     <string name="recharge_log_order_time">Time</string>
     <string name="recharge_log_recharge_amount">Deposit</string>
-    <string name="recharge_log_channel_type">Channel</string>
+    <string name="recharge_log_channel_type">Method</string>
     <string name="recharge_log_order_state">Status</string>
     <string name="withdraw_log_withdraw_amount">Withdraw</string>
-    <string name="withdraw_log_state_processing">Being processed</string>
-    <string name="withdraw_log_state_pass">Pass</string>
-    <string name="withdraw_log_state_un_pass">Not pass</string>
-    <string name="withdraw_log_type_all">All channel types</string>
+    <string name="withdraw_log_state_processing">Processing</string>
+    <string name="withdraw_log_state_pass">Completed</string>
+    <string name="withdraw_log_state_un_pass">Failed</string>
+    <string name="withdraw_log_type_all">All Method</string>
     <string name="withdraw_log_type_bank_trans">Bank withdraw</string>
     <string name="withdraw_log_type_admin">Back-end deduct money</string>
     <string name="withdraw_log_crypto_transfer">USDT withdraw</string>
@@ -711,7 +712,7 @@
     <string name="feedback_description">If you have a good suggestion for the game or platform or find a Bug to submit, the official customer service will reply within 48 hours. We will timely fix bugs or refer to your feedback to continuously optimize our products and services. (If there are many people who give feedback on the same suggestion or Bug, the bonus will be given to the first person who gives feedback. Remember to give feedback as soon as you find any problem.)</string>
     <string name="feedback_description_money">If the suggestion is adopted or the Bug is verified, the maximum reward is 3000 %s (or other equivalent currency).</string>
     <string name="feedback_submit_succeed">Feedback submitted successfully</string>
-    <string name="all_status">All status</string>
+    <string name="all_status">All Status</string>
     <string name="feedback_last_reply_time">Time</string>
     <string name="feedback_content_description">Description</string>
     <string name="feedback_replied">Has feedback</string>
@@ -793,9 +794,9 @@
     <string name="odds_have_changed">The odds have changed, please re - bet</string>
     <string name="bet_info_content_has_been_changed">The odds or status of the game play you selected has changed, please place a bet again</string>
     <string name="account_history_overview">Statement</string>
-    <string name="bet_num_and_bet_date">Betting order no. / Settled bets</string>
+    <string name="bet_num_and_bet_date">Bet slip No / Settled bets</string>
     <string name="date">Date</string>
-    <string name="bet_amount">Turnover</string>
+    <string name="bet_amount">Stake</string>
     <string name="available_amount">Winable</string>
     <string name="win_lose">Win / Lose</string>
     <string name="win_lose_mark">Win / Lose: </string>
@@ -980,7 +981,7 @@
     <string name="scan_tool_bar">Scan results</string>
     <string name="text_us_east_time">The time is reported in UTC-4 time zone.</string>
     <string name="verify_failed_please_retry">Verification failed, please try again</string>
-    <string name="text_cant_play">Unable to play in your area</string>
+    <string name="text_cant_play">An error occurred. Please try again later.</string>
     <string name="text_bet_not_success">Bet slip status is&#160;</string>
     <string name="text_bet_not_success2">waiting</string>
     <string name="text_bet_not_success3">&#160;Your bet slip is processing, please check &#160;</string>
@@ -1107,7 +1108,7 @@
     <!--region 宣傳頁-->
     <string name="hot_recommend">Recommended</string>
     <string name="recommend_match">10,000 Live Games\nMonthly</string>
-    <string name="recommend_best_odd">Better Prices\nBetter Service</string>
+    <string name="recommend_best_odd">Better Price\nBetter Services</string>
     <string name="recommend_safe">Secure, Easy\nFast Process</string>
     <!--endregion-->
 
@@ -1117,4 +1118,6 @@
     <!--endregion-->
 
     <string name="current_corner">Current Total:</string>
+    <string name="cancel_auto">Rejected</string>
+    <string name="cancel_manual">Void</string>
 </resources>

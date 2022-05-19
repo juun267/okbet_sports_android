@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.menu
 
-
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatDelegate
@@ -12,6 +11,9 @@ import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.game.menu.LeftMenuFragment
 import org.cxct.sportlottery.ui.main.MainViewModel
 
+/**
+ * @app_destination 外觀(日間/夜間)切換
+ */
 class ChangeAppearanceDialog : BaseDialog<MainViewModel>(MainViewModel::class) {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

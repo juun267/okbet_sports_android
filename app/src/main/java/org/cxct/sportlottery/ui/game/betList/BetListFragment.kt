@@ -56,9 +56,7 @@ import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlay
 import org.cxct.sportlottery.util.*
 
 /**
- * A simple [Fragment] subclass.
- * Use the [BetListFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * @app_destination 注單列表
  */
 class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private lateinit var binding: FragmentBetListBinding
@@ -826,6 +824,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
      */
     private fun removeClosedPlat() {
         viewModel.removeClosedPlatBetInfo()
+        isAutoCloseWhenNoData = true
     }
 
     private fun queryData() {

@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.odds
 
-
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
@@ -17,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_odds_detail.rv_cat
 import kotlinx.android.synthetic.main.fragment_odds_detail.rv_detail
 import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
 import org.cxct.sportlottery.enum.MatchSource
@@ -38,26 +38,22 @@ import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
+import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
 
-
+/**
+ * @app_destination 全部玩法
+ */
 @Suppress("DEPRECATION")
 class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class) {
 
     private val args: OddsDetailFragmentArgs by navArgs()
-    private val mStartTimer = Timer()
-    private val mStartTimeTask = object: TimerTask() {
-        override fun run() {
-
-        }
-    }
-
+    private var mStartTimer: Timer? = Timer()
     var matchId: String? = null
     private var matchOdd: MatchOdd? = null
-
 
     private var oddsDetailListAdapter: OddsDetailListAdapter? = null
 
@@ -102,6 +98,9 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         gameViewModel = this@OddsDetailFragment.viewModel
         lifecycleOwner = this@OddsDetailFragment.viewLifecycleOwner
         executePendingBindings()
+        vToolbar.ivTitleBar.setImageResource(
+            GameConfigManager.getTitleBarBackground(args.gameType.key, MultiLanguagesApplication.isNightMode) ?: R.drawable.img_home_title_soccer_background
+        )
     }.root
 
 
@@ -120,31 +119,38 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         getData()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        mStartTimer.cancel()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mStartTimer?.cancel()
+        mStartTimer = null
     }
 
     private fun initUI() {
         oddsDetailListAdapter = OddsDetailListAdapter(
             OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
                 matchOdd?.let { matchOdd ->
-                    val fastBetDataBean = FastBetDataBean(
-                        matchType = MatchType.TODAY,
-                        gameType = args.gameType,
-                        playCateCode = oddsDetail?.gameType ?: "",
-                        playCateName = oddsDetail?.name ?: "",
-                        matchInfo = matchOdd.matchInfo,
-                        matchOdd = null,
-                        odd = odd,
-                        subscribeChannelType = ChannelType.EVENT,
-                        betPlayCateNameMap = matchOdd.betPlayCateNameMap,
-                        otherPlayCateName = scoPlayCateNameForBetInfo
-                    )
-                    when (activity) {
-                        is GameActivity -> (activity as GameActivity).showFastBetFragment(fastBetDataBean)
-                        is GamePublicityActivity -> (activity as GamePublicityActivity).showFastBetFragment(fastBetDataBean)
-                    }
+                    if (mIsEnabled) {
+                        avoidFastDoubleClick()
+                        val fastBetDataBean = FastBetDataBean(
+                            matchType = MatchType.TODAY,
+                            gameType = args.gameType,
+                            playCateCode = oddsDetail?.gameType ?: "",
+                            playCateName = oddsDetail?.name ?: "",
+                            matchInfo = matchOdd.matchInfo,
+                            matchOdd = null,
+                            odd = odd,
+                            subscribeChannelType = ChannelType.EVENT,
+                            betPlayCateNameMap = matchOdd.betPlayCateNameMap,
+                            otherPlayCateName = scoPlayCateNameForBetInfo
+                        )
+                        when (activity) {
+                            is GameActivity -> (activity as GameActivity).showFastBetFragment(
+                                fastBetDataBean
+                            )
+                            is GamePublicityActivity -> (activity as GamePublicityActivity).showFastBetFragment(
+                                fastBetDataBean
+                            )
+                        }
 
 //                    viewModel.updateMatchBetList(
 //                        matchType = MatchType.TODAY,
@@ -157,6 +163,7 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 //                        betPlayCateNameMap = matchOdd.betPlayCateNameMap,
 //                        otherPlayCateName = scoPlayCateNameForBetInfo
 //                    )
+                    }
                 }
             }
         ).apply {
@@ -380,13 +387,15 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     }
 
     private fun checkStartTime(startTime: Long?) {
-        mStartTimer.schedule(object: TimerTask() {
+        mStartTimer?.schedule(object: TimerTask() {
             override fun run() {
                 lifecycleScope.launch {
                     if (TimeUtil.isLastHour(startTime)) {
                         tv_time_bottom.text = String.format(getString(R.string.at_start_remain_minute), TimeUtil.getRemainMinute(startTime))
+                        tv_time_top.visibility = View.GONE
                     } else {
                         tv_time_bottom.text = TimeUtil.timeFormat(startTime, TimeUtil.HM_FORMAT)
+                        tv_time_top.visibility = View.VISIBLE
                     }
                 }
             }

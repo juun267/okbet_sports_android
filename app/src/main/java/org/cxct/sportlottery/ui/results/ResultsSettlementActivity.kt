@@ -27,6 +27,9 @@ import org.cxct.sportlottery.ui.login.afterTextChanged
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * @app_destination 賽果結算
+ */
 class ResultsSettlementActivity :
     BaseSocketActivity<SettlementViewModel>(SettlementViewModel::class) {
     lateinit var settlementLeagueBottomSheet: BottomSheetDialog
@@ -213,7 +216,9 @@ class ResultsSettlementActivity :
         settlementGameTypeBottomSheet.apply {
             setContentView(gameTypeBottomSheetView)
             val gameTypeItem = mutableListOf<GameTypeItemData>()
-            GameType.values().forEach { gameType -> gameTypeItem.add(GameTypeItemData(null, getString(gameType.string))) }
+            GameType.values().forEach { gameType ->
+                if (gameType != GameType.OTHER) gameTypeItem.add(GameTypeItemData(null, getString(gameType.string)))
+            }
             settlementGameTypeAdapter = SettlementGameTypeAdapter(lv_game_type.context, gameTypeItem)
             lv_game_type.adapter = settlementGameTypeAdapter
             settlementGameTypeAdapter.setOnItemCheckedListener(object :

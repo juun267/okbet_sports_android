@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.content_parlay_record.view.*
 import kotlinx.android.synthetic.main.view_account_history_next_title_bar.view.*
 import kotlinx.android.synthetic.main.view_back_to_top.view.*
 import kotlinx.android.synthetic.main.view_status_selector.view.*
@@ -289,12 +290,20 @@ class AccountHistoryNextAdapter(
                 }
 
                 when (row.gameType) {
-                    GameType.FT.key, GameType.BK.key -> {
-                        if (it.rtScore?.isNotEmpty() == true)
+                    GameType.FT.key -> {
+                        if (it.rtScore?.isNotEmpty() == true) {
                             binding.tvScore.text = String.format(
                                 binding.tvScore.context.getString(R.string.brackets),
                                 it.rtScore
                             )
+                            binding.tvScore.visibility = View.VISIBLE
+                        }
+                        else {
+                            binding.tvScore.visibility = View.GONE
+                        }
+                    }
+                    else -> {
+                        binding.tvScore.visibility = View.GONE
                     }
                 }
                 binding.listScore.apply {

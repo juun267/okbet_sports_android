@@ -473,6 +473,7 @@
     <string name="hint_pay2">2. Không có phản hồi trong một thời gian dài, Vui lòng Liên hệ CSKH.</string>
     <string name="btn_look_for">Xem giao dịch</string>
     <string name="btn_service">Liên hệ CSKH</string>
+    <string name="btn_service_maintain">Liên hệ CSKH</string>
     <string name="txv_transfer_pay">Thanh toán chuyển khoản</string>
     <string name="txv_online_pay">Thanh toán trực tuyến</string>
     <string name="txv_crypto_pay">Chuyển khoản tiền ảo</string>
@@ -551,10 +552,10 @@
     <string name="withdraw_amount">Số tiền rút</string>
     <string name="withdraw_password">Mật khẩu rút tiền</string>
     <string name="withdraw_all">TẤT CẢ CÁC</string>
-    <string name="withdraw_handling_fee_hint">・Tỷ lệ phí xử lý ：%1$s%% Phí xử lý phải trả：%2$s</string>
-    <string name="withdraw_crypto_exchange_rate_hint">・Tỷ giá：%1$s</string>
-    <string name="withdraw_crypto_amount_hint">・Số tiền rút：%1$s %s</string>
-    <string name="withdraw_crypto_fee_hint">・Phí rút tiền：%1$s %s</string>
+    <string name="withdraw_handling_fee_hint">· Tỷ lệ phí xử lý ：%1$s%% Phí xử lý phải trả：%2$s</string>
+    <string name="withdraw_crypto_exchange_rate_hint">· Tỷ giá：%1$s</string>
+    <string name="withdraw_crypto_amount_hint">· Số tiền rút：%1$s %s</string>
+    <string name="withdraw_crypto_fee_hint">· Phí rút tiền：%1$s %s</string>
     <string name="hint_please_enter_withdraw_amount">số tiền giới hạn %1$s~%2$s</string>
     <string name="hint_four_number_password">Vui lòng nhập mật khẩu rút tiền</string>
     <string name="hint_please_enter_withdraw_password">Mật khẩu rút tiền</string>
@@ -741,7 +742,7 @@
     <string name="live">Live</string>
     <string name="lottery_description">Có hơn trăm cách chơi xổ số để bạn trúng thưởng! Chúng tôi cung cấp cho người chơi nhiều nội dung trò chơi phong phú khác nhau, \ n cam kết tạo ra một môi trường trò chơi giải trí chất lượng cao, mang lại kết quả công bằng và mở thưởng công khai minh bạch nhất</string>
     <string name="sport_bet_record">lịch sử đặt cược thể thao</string>
-    <string name="my_favorite">Sự kiện của tôi</string>
+    <string name="my_favorite">Ưu thích</string>
     <string name="other_bet_record">lịch sử đặt cược khác</string>
     <string name="credit_bet_record">Lịch sử chu kỳ</string>
     <string name="all_plat_type">Tất cả các loại nền tảng</string>
@@ -783,7 +784,7 @@
     <string name="account_history_overview">Tổng quan lịch sử tài khoản</string>
     <string name="bet_num_and_bet_date">Số đơn cược / ngày thanh toán</string>
     <string name="date">Ngày tháng</string>
-    <string name="bet_amount">Số tiền đặt cược</string>
+    <string name="bet_amount">Cổ phần</string>
     <string name="available_amount">Số tiền hợp lệ</string>
     <string name="win_lose">Thắng hay thua</string>
     <string name="win_lose_mark">Thắng hay thua : </string>
@@ -860,23 +861,23 @@
     <string name="service_2">CSKH2</string>
     <string name="service_connect">Liên hệ</string>
     <string name="top_game">Sự kiện hàng đầu thế giới</string>
-    <string name="parlay_10_fold">10 xiên 1</string>
-    <string name="parlay_10_block">10 xiên 1013</string>
-    <string name="parlay_2_fold">2 xiên 1</string>
-    <string name="parlay_3_fold">3 xiên 1</string>
-    <string name="parlay_3_block">3 xiên 4</string>
-    <string name="parlay_4_fold">4 xiên 1</string>
-    <string name="parlay_4_block">4 xiên 11</string>
-    <string name="parlay_5_fold">5 xiên 1</string>
-    <string name="parlay_5_block">5 xiên 26</string>
-    <string name="parlay_6_fold">6 xiên 1</string>
-    <string name="parlay_6_block">6 xiên 57</string>
-    <string name="parlay_7_fold">7 xiên 1</string>
-    <string name="parlay_7_block">7 xiên 120</string>
-    <string name="parlay_8_fold">8 xiên 1</string>
-    <string name="parlay_8_block">8 xiên 247</string>
-    <string name="parlay_9_fold">9 xiên 1</string>
-    <string name="parlay_9_block">9 xiên 502</string>
+    <string name="parlay_10_fold">Xâu 10</string>
+    <string name="parlay_10_block">Liên Hoàn (10)</string>
+    <string name="parlay_2_fold">Xâu 2</string>
+    <string name="parlay_3_fold">Xâu 3</string>
+    <string name="parlay_3_block">Liên Hoàn 3</string>
+    <string name="parlay_4_fold">Xâu 4</string>
+    <string name="parlay_4_block">Liên Hoàn 4</string>
+    <string name="parlay_5_fold">Xâu 5</string>
+    <string name="parlay_5_block">Liên Hoàn 5</string>
+    <string name="parlay_6_fold">Xâu 6</string>
+    <string name="parlay_6_block">Liên Hoàn 6</string>
+    <string name="parlay_7_fold">Xâu 7</string>
+    <string name="parlay_7_block">Liên Hoàn 7</string>
+    <string name="parlay_8_fold">Xâu 8</string>
+    <string name="parlay_8_block">Liên Hoàn 8</string>
+    <string name="parlay_9_fold">Xâu 9</string>
+    <string name="parlay_9_block">Liên Hoàn (9)</string>
     <string name="parlay_2_fold_rule">Xâu 2 là sự kết hợp của hai lựa chọn trên các sự kiện riêng biệt.
     Cược trả về khi có tất cả cược đều thắng.
     Trường hợp nhiều trận đấu đang diễn ra, Xâu 2 có thể kết hợp. Ví dụ Xâu 2 (x3) từ 3 lựa chọn.
@@ -1017,7 +1018,7 @@
     <string name="scan_tool_bar">Quét kết quả</string>
     <string name="text_us_east_time">Thời gian được báo cáo theo múi giờ UTC-4.</string>
     <string name="verify_failed_please_retry">Lỗi xảy ra trong quá trình xác thực. Xin thử lại lần nữa</string>
-    <string name="text_cant_play">Bạn đang trong khu vực không thể chơi</string>
+    <string name="text_cant_play">Đã xảy ra lỗi. Vui lòng thử lại sau.</string>
     <string name="text_bet_not_success">Trạng thái phiếu cược đang&#160;</string>
     <string name="text_bet_not_success2">Chờ</string>
     <string name="text_bet_not_success3">&#160;Phiếu cược của bạn đang được xử lý, vui lòng kiểm tra&#160;</string>
@@ -1147,4 +1148,6 @@
     <!--endregion-->
 
     <string name="current_corner">Tổng Số Hiện Tại:</string>
+    <string name="cancel_auto">Từ chối</string>
+    <string name="cancel_manual">Vô hiệu</string>
 </resources>

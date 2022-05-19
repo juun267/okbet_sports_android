@@ -8,6 +8,6 @@ data class BetSettledDetailListRequest(
     val statDate: String? = null,
     override val startTime: String? = null,
     override val endTime: String? = null,
-    override val page: Int? = null,
+    override var page: Int? = null,
     override val pageSize: Int? = null,
 ) : TimeRangeParams, PagingParams

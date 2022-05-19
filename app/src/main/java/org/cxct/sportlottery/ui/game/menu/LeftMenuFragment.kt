@@ -53,6 +53,9 @@ import org.cxct.sportlottery.util.listener.OnClickListener
 import org.cxct.sportlottery.util.phoneNumCheckDialog
 import org.cxct.sportlottery.widget.highLightTextView.HighlightTextView
 
+/**
+ * @app_destination 左邊選單
+ */
 @SuppressLint("NotifyDataSetChanged")
 class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnClickListener {
 

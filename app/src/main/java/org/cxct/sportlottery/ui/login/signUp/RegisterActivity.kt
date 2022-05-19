@@ -40,6 +40,9 @@ import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.ToastUtil
 import java.util.*
 
+/**
+ * @app_destination 註冊
+ */
 class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::class),
     View.OnClickListener {
 

@@ -43,7 +43,10 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
             outrightOddListener = OutrightOddListener(
                 { matchOdd, odd, playCateCode ->
                     matchOdd?.let {
-                        addOddsDialog(matchOdd, odd, playCateCode)
+                        if(mIsEnabled) {
+                            avoidFastDoubleClick()
+                            addOddsDialog(matchOdd, odd, playCateCode)
+                        }
                     }
                 },
                 { oddsKey, matchOdd ->
@@ -58,7 +61,7 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
 
                     // TODO Set matchOdd and refresh
                     this.data.find { it == matchOdd }?.oddsMap?.get(oddsKey)?.forEachIndexed { index, odd ->
-                        if(index >= 4) {
+                        if(index >= 5) {
                             odd?.isExpand?.let { isExpand ->
                                 odd.isExpand = !isExpand
                             }
