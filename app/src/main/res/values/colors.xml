@@ -163,6 +163,8 @@
     <color name="color_1f1f1f_fcfcfc">@color/color_FCFCFC</color>
     <color name="color_33303030_33DDDDDD">@color/color_33DDDDDD</color>
     <color name="color_F75452_000000">@color/color_000000</color>
+    <color name="color_BCBCBC_CCCCCC">@color/color_cccccc</color>
+    <color name="color_404348_404040">@color/color_404040</color>
 
     <!--region 特殊處理顏色-->
     <color name="home_card_top_text_color">#40FFFFFF</color>
