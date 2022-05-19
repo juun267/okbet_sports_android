@@ -2,17 +2,24 @@ package org.cxct.sportlottery.widget.highLightTextView
 
 import android.content.Context
 import android.graphics.*
+import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
+import android.text.style.BackgroundColorSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.util.AttributeSet
-import android.util.Log
 import androidx.annotation.ColorRes
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
 import org.cxct.sportlottery.R
 
+class HighlightTextView @JvmOverloads constructor(
+    context: Context,
+    attributeSet: AttributeSet? = null,
+    defStyleAttr: Int = android.R.attr.textViewStyle
+) : AppCompatTextView(context, attributeSet, defStyleAttr) {
 
-class HighlightTextView @JvmOverloads constructor(context: Context, attributeSet: AttributeSet? = null, defStyleAttr: Int = android.R.attr.textViewStyle) : androidx.appcompat.widget.AppCompatTextView(context, attributeSet, defStyleAttr) {
     private val isHighlighting
         get() = targetText.isNotEmpty()
 
@@ -22,7 +29,10 @@ class HighlightTextView @JvmOverloads constructor(context: Context, attributeSet
 
     private var targetText: List<String> = emptyList()
 
-    private var highLightColor = context.getColor(R.color.color_317FFF_0760D4)
+    private var highLightColor = ContextCompat.getColor(context, R.color.color_317FFF_0760D4)
+    private val highlightColorSpan: BackgroundColorSpan by lazy {
+        BackgroundColorSpan(highLightColor)
+    }
 
     private var highlightWidth = NO_STROKE_WIDTH
 
@@ -46,8 +56,13 @@ class HighlightTextView @JvmOverloads constructor(context: Context, attributeSet
             }
         }
 
+    private var divider = ""
+    private var textWithoutHighlight: SpannableString = SpannableString("")
+    private val spannableText: SpannableString by lazy {
+        SpannableString(text)
+    }
     private val stringBuilder: SpannableStringBuilder by lazy {
-        SpannableStringBuilder(text.toString())
+        SpannableStringBuilder("")
     }
 
     fun highlight(text: String) {
@@ -70,7 +85,7 @@ class HighlightTextView @JvmOverloads constructor(context: Context, attributeSet
     }
 
     fun setColor(@ColorRes color: Int) {
-        highLightColor = context.getColor(color)
+        highLightColor = ContextCompat.getColor(context, color)
 
         mPaint.color = highLightColor
         invalidate()
@@ -91,76 +106,49 @@ class HighlightTextView @JvmOverloads constructor(context: Context, attributeSet
     }
 
     private fun setupAttributes(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
-        val typedArray =
-                context.obtainStyledAttributes(attrs, R.styleable.HighlightTextView, defStyleAttr, 0)
+        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.HighlightTextView, defStyleAttr, 0)
+        highLightColor = typedArray.getInt(R.styleable.HighlightTextView_highlightColor, highLightColor)
+        highlightWidth = typedArray.getDimension(R.styleable.HighlightTextView_highlightWidth, NO_STROKE_WIDTH)
+        highlightRadius = typedArray.getDimension(R.styleable.HighlightTextView_highlightRadius, highlightRadius)
+        highlightBoldFlag = typedArray.getBoolean(R.styleable.HighlightTextView_highlightBold, highlightBoldFlag)
+        highlightTextColor = typedArray.getInt(R.styleable.HighlightTextView_highlightTextColor, highlightTextColor)
 
-        highLightColor =
-                typedArray.getInt(R.styleable.HighlightTextView_highlightColor, highLightColor)
-
-        val inputTargets =
-                typedArray.getString(R.styleable.HighlightTextView_highlightText)
-
+        val inputTargets = typedArray.getString(R.styleable.HighlightTextView_highlightText)
         targetText = inputTargets?.split(",") ?: emptyList()
-
-        highlightWidth =
-                typedArray.getDimension(R.styleable.HighlightTextView_highlightWidth, NO_STROKE_WIDTH)
-
-        highlightRadius =
-                typedArray.getDimension(R.styleable.HighlightTextView_highlightRadius, highlightRadius)
-
-        highlightBoldFlag =
-                typedArray.getBoolean(R.styleable.HighlightTextView_highlightBold, highlightBoldFlag)
-
-        highlightTextColor =
-                typedArray.getInt(R.styleable.HighlightTextView_highlightTextColor, highlightTextColor)
 
         typedArray.recycle()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        if (isHighlighting) {
-            mRectF = targetText.mapNotNull(::measureTargetTextRect)
+        stringBuilder.clear()
+        stringBuilder.append(textWithoutHighlight)
+        stringBuilder.append(divider)
+
+        getSortedTargetTexts(targetText).forEach {
+            val start = it.first
+            val end = it.first + it.second
+
+            spannableText.setSpan(
+                highlightColorSpan,
+                start,
+                end,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
         }
-
-        text = when {
-            highlightTextStyles.isNotEmpty() -> {
-                getSortedTargetTexts(targetText).forEach {
-                    val start = it.first
-                    val end = it.first + it.second
-
-                    stringBuilder.setSpan(
-                            highlightTextStyles,
-                            start,
-                            end
-                    )
-                }
-
-                stringBuilder
-            }
-            else -> text.toString()
-        }
+        stringBuilder.append(spannableText)
+        text = stringBuilder
 
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
     }
 
-    private fun SpannableStringBuilder.setSpan(styles: List<Any>, position: Int, length: Int) {
-        styles.forEach { style ->
-            setSpan(
-                    style,
-                    position,
-                    length,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-        }
-    }
-
     private fun measureTargetTextRect(target: String): RectF? {
         val bounds = Rect()
-        val startIndex = text.indexOf(target,0,true)
+        val startIndex = text.indexOf(target, textWithoutHighlight.length + divider.length, true)
         if (startIndex == -1) {
             return null
         }
-        val targetText = text.subSequence(startIndex,startIndex+target.length)
+
+        val targetText = text.subSequence(startIndex, startIndex + target.length)
         paint.getTextBounds(text.toString(), startIndex, startIndex + target.length, bounds)
 
         if (highlightWidth == NO_STROKE_WIDTH) {
@@ -174,16 +162,15 @@ class HighlightTextView @JvmOverloads constructor(context: Context, attributeSet
         // TODO: support multiline.
         //  val positionOfLine = measureLineOfText(startIndex)
         val positionOfLine = 1
-
         val heightUntilUnderline = positionOfLine * lineHeight
 
         // TODO: check gravity
 
         return RectF(
-                preWidth.toFloat() + paddingStart,
-                heightUntilUnderline - (highlightWidth * (positionOfLine - 1))+20,
-                preWidth + targetWidth + paddingStart,
-                heightUntilUnderline - (highlightWidth * positionOfLine) -30
+            preWidth.toFloat() + paddingStart,
+            heightUntilUnderline - (highlightWidth * (positionOfLine - 1)) + 20,
+            preWidth + targetWidth + paddingStart,
+            heightUntilUnderline - (highlightWidth * positionOfLine) - 30
         )
     }
 
@@ -212,28 +199,35 @@ class HighlightTextView @JvmOverloads constructor(context: Context, attributeSet
     }
 
     private fun getSortedTargetTexts(targets: List<String>) = targets
-            .filter {
-                text.indexOf(it,0,true) != -1 }
-            .map {
-                val length = it.length
-                val position = text.indexOf(it,0,true)
+        .filter {
+            spannableText.indexOf(it, 0, true) != -1
+        }.map {
+            val length = it.length
+            val position = spannableText.indexOf(it, 0, true)
 
-                position to length
-            }
-            .sortedBy { it.second }
+            position to length
+        }.sortedBy { it.second }
 
     override fun onDraw(canvas: Canvas?) {
-        if (isHighlighting) {
-            mRectF.forEach {
-                canvas?.drawRoundRect(it, highlightRadius, highlightRadius, mPaint)
-            }
-        }
+//        if (isHighlighting) {
+//            mRectF.forEach {
+//                canvas?.drawRoundRect(it, highlightRadius, highlightRadius, mPaint)
+//            }
+//        }
 
         super.onDraw(canvas)
     }
 
     fun setCustomText(text: CharSequence?) {
         this.text = text
+    }
+
+    fun setSpannableTextWithoutHighlight(text: SpannableString) {
+        this.textWithoutHighlight = text
+    }
+
+    fun needDivider(needDivider: Boolean) {
+        if (needDivider) divider = "  |  "
     }
 
     companion object {

@@ -1,40 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/margin_14"
-        android:text="16/02 03:00AM "
-        android:textColor="@color/color_A3A3A3_666666"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvMatch"
-        app:layout_constraintBottom_toBottomOf="@+id/tvMatch"/>
-
     <org.cxct.sportlottery.widget.highLightTextView.HighlightTextView
-        android:layout_width="0dp"
+        android:id="@+id/tv_time_and_match"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tvMatch"
-        android:textColor="@color/color_FCFCFC_191919"
-        android:textSize="@dimen/margin_14"
-        android:textStyle="bold"
-        app:highlightText="UFC"
+        android:gravity="start"
         android:text="Lorem ipsum UFC dolor sit amet,"
-        app:highlightRadius="0dp"
-        android:gravity="left"
-        android:ellipsize="end"
-        android:lines="1"
+        android:textColor="@color/color_FFFFFF_DE000000"
+        android:textSize="@dimen/margin_14"
+        app:highlightBold="false"
         app:highlightColor="@color/color_317FFF_0760D4"
-        app:highlightTextColor="@color/color_FCFCFC_191919"
-        app:layout_constraintStart_toEndOf="@+id/tvTime"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        app:highlightRadius="0dp"
+        app:highlightText="UFC"
+        app:highlightTextColor="@color/color_FFFFFF" />
+</FrameLayout>
