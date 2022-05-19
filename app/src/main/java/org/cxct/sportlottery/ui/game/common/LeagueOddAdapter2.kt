@@ -204,6 +204,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             itemView.league_odd_match_play_count.text = item.matchInfo?.playCateNum.toString()
             itemView.league_odd_match_favorite.isSelected = item.matchInfo?.isFavorite ?: false
             itemView.league_odd_match_price_boost.isVisible = item.matchInfo?.eps == 1
+            itemView.league_neutral.isSelected = item.matchInfo?.neutral == 1
             //itemView.space2.isVisible = (item.matchInfo?.eps == 1 || item.matchInfo?.liveVideo == 1)
             itemView.iv_play.isVisible =
                 item.matchInfo?.liveVideo == 1 && (matchType == MatchType.IN_PLAY || (matchType == MatchType.PARLAY && item.matchInfo.isInPlay == true) || matchType == MatchType.MY_EVENT && item.matchInfo.isInPlay == true)
