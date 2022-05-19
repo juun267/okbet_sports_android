@@ -431,14 +431,14 @@ class Vp2GameTable4Adapter(
                                 tv_game_score_away.text = "$awayScore"
                             }
                         }
-                        if (data?.scoreStatus == 999) {
-                            tv_game_score_home.visibility = View.GONE
-                            tv_game_score_away.visibility = View.GONE
-                            tv_game_total_score_home_center.visibility = View.INVISIBLE
-                            tv_game_score_home_center.visibility = View.INVISIBLE
-                            tv_game_total_score_away_center.visibility = View.INVISIBLE
-                            tv_game_score_away_center.visibility = View.INVISIBLE
-                        }
+//                        if(data?.scoreStatus == 999){
+//                            tv_game_score_home.visibility = View.GONE
+//                            tv_game_score_away.visibility = View.GONE
+//                            tv_game_total_score_home_center.visibility = View.INVISIBLE
+//                            tv_game_score_home_center.visibility = View.INVISIBLE
+//                            tv_game_total_score_away_center.visibility = View.INVISIBLE
+//                            tv_game_score_away_center.visibility = View.INVISIBLE
+//                        }
                     }
                     MatchType.AT_START -> {
                         tv_game_type.text = context.getString(R.string.home_tab_today)

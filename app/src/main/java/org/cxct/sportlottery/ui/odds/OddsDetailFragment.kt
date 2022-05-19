@@ -52,15 +52,8 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
     private val args: OddsDetailFragmentArgs by navArgs()
     private var mStartTimer: Timer? = Timer()
-    private val mStartTimeTask = object: TimerTask() {
-        override fun run() {
-
-        }
-    }
-
     var matchId: String? = null
     private var matchOdd: MatchOdd? = null
-
 
     private var oddsDetailListAdapter: OddsDetailListAdapter? = null
 
@@ -399,8 +392,10 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 lifecycleScope.launch {
                     if (TimeUtil.isLastHour(startTime)) {
                         tv_time_bottom.text = String.format(getString(R.string.at_start_remain_minute), TimeUtil.getRemainMinute(startTime))
+                        tv_time_top.visibility = View.GONE
                     } else {
                         tv_time_bottom.text = TimeUtil.timeFormat(startTime, TimeUtil.HM_FORMAT)
+                        tv_time_top.visibility = View.VISIBLE
                     }
                 }
             }
