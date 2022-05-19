@@ -359,7 +359,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/ic_game_schedule"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/league_odd_quick_cate_divider"
         app:layout_constraintStart_toEndOf="@+id/iv_play"
         app:layout_constraintTop_toTopOf="@id/guide_game_bottom"
         tools:ignore="ContentDescription"
