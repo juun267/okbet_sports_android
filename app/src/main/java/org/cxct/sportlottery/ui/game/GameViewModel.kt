@@ -309,8 +309,8 @@ class GameViewModel(
         get() = _matchLiveInfo
 
     //賽事動畫網址
-    private val _matchTrackerUrl = MutableLiveData<Event<MatchTrackerUrl>>()
-    val matchTrackerUrl: LiveData<Event<MatchTrackerUrl>>
+    private val _matchTrackerUrl = MutableLiveData<Event<MatchTrackerUrl?>>()
+    val matchTrackerUrl: LiveData<Event<MatchTrackerUrl?>>
         get() = _matchTrackerUrl
 
     //Loading

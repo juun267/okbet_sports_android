@@ -77,6 +77,17 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
     }
     // endregion
 
+    fun updateByBetInfo(clickOdd: Odd?) {
+        data.forEachIndexed { index, matchOdd ->
+            matchOdd.oddsMap?.values?.forEach { oddList ->
+                if (oddList?.any { it?.id == clickOdd?.id } == true) {
+                    notifyItemChanged(index, Pair(BET_INFO, matchOdd))
+                    leagueOddListener?.clickOdd = null
+                }
+            }
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ViewHolderHdpOu.from(parent, oddStateRefreshListener)
     }
@@ -112,16 +123,34 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             //(holder as ViewHolderHdpOu).update(matchType, data[position], leagueOddListener, isTimerEnable, oddsType, playSelectedCodeSelectionType)
         } else {
             Log.d("Hewie", "更新：賽事($position)")
-            val matchOdd = payloads.first() as MatchOdd
-            (holder as ViewHolderHdpOu).update(
-                matchType,
-                matchOdd,
-                leagueOddListener,
-                isTimerEnable,
-                oddsType,
-                playSelectedCodeSelectionType,
-                playSelectedCode
-            )
+
+            when (payloads.first()) {
+                is MatchOdd -> {
+                    val matchOdd = payloads.first() as MatchOdd
+                    (holder as ViewHolderHdpOu).update(
+                        matchType,
+                        matchOdd,
+                        leagueOddListener,
+                        isTimerEnable,
+                        oddsType,
+                        playSelectedCodeSelectionType,
+                        playSelectedCode
+                    )
+                }
+
+                is Pair<*, *> -> {
+                    val matchOdd = payloads.first() as Pair<*, *>
+                    (holder as ViewHolderHdpOu).updateByBetInfo(
+                        item = matchOdd.second as MatchOdd,
+                        leagueOddListener = leagueOddListener,
+                        oddsType = oddsType,
+                        playSelectedCodeSelectionType = playSelectedCodeSelectionType,
+                        playSelectedCode = playSelectedCode
+                    )
+                }
+            }
+
+
         }
     }
 
@@ -153,7 +182,6 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
 
             itemView.v_top.visibility = if (bindingAdapterPosition == 0) View.GONE else View.VISIBLE
 
-            setUpVisibility(item, matchType)
             setupMatchInfo(item, matchType, matchInfoList, leagueOddListener)
             val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
             setupMatchTimeAndStatus(item, matchType, isTimerEnable, isTimerPause, leagueOddListener)
@@ -182,7 +210,6 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             playSelectedCodeSelectionType: Int?,
             playSelectedCode: String?
         ) {
-            setUpVisibility(item, matchType)
             updateMatchInfo(item, matchType)
             val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
             setupMatchTimeAndStatus(item, matchType, isTimerEnable, isTimerPause, leagueOddListener)
@@ -191,8 +218,19 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             itemView.quickListView?.setDatas(item, oddsType, leagueOddListener, playSelectedCodeSelectionType, playSelectedCode)
             itemView.quickListView?.refreshTab()
             itemView.quickListView?.updateQuickSelected()
-            //setupQuickCategory(item, oddsType, leagueOddListener)
-            //updateQuickCategory(item, oddsType, leagueOddListener)
+        }
+
+        fun updateByBetInfo(
+            item: MatchOdd,
+            oddsType: OddsType,
+            leagueOddListener: LeagueOddListener?,
+            playSelectedCodeSelectionType: Int?,
+            playSelectedCode: String?
+        ) {
+            updateOddsButtonByBetInfo(item)
+            itemView.quickListView?.setDatas(item, oddsType, leagueOddListener, playSelectedCodeSelectionType, playSelectedCode)
+            itemView.quickListView?.refreshTab()
+            itemView.quickListView?.updateQuickSelected()
         }
 
         private fun updateMatchInfo(item: MatchOdd, matchType: MatchType) {
@@ -214,18 +252,6 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             itemView.iv_animation.isVisible =
                 item.matchInfo?.isInPlay == true && !(item.matchInfo.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
                     ?.getGameDetailAnimationNeedShow() == true
-        }
-
-        // endregion
-
-        private fun setUpVisibility(item: MatchOdd, matchType: MatchType) {
-
-            /*val socketStatus = item.matchInfo?.socketMatchStatus
-
-            if (matchType == MatchType.AT_START && socketStatus != null) { //有status事件代表遊戲已開始，不會歸類在'即將'
-                itemView.visibility = View.GONE
-            }*/
-
         }
 
         private fun setupMatchInfo(
@@ -851,6 +877,10 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 }
                 Log.d("Hewie4", "更新(${item.matchInfo?.homeName})：item.oddsMap.size => ${item.oddsMap?.size}")
             }
+        }
+
+        private fun updateOddsButtonByBetInfo(item: MatchOdd) {
+            oddButtonPagerAdapter.odds = item.oddsMap ?: mutableMapOf()
         }
 
         companion object {

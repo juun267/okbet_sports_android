@@ -210,10 +210,4 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
         Handler().postDelayed({ mIsEnabled = true }, 300)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.e("[kkk]", "${this::class.java.simpleName}")
-
-    }
-
 }
