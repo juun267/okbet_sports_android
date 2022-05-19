@@ -125,7 +125,7 @@
 
 
                     <EditText
-                        android:id="@+id/et_bet"
+                        android:id="@+id/et_bet_parlay"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
                         android:layout_marginStart="@dimen/margin_12"
@@ -169,9 +169,9 @@
                         android:text="X"
                         android:textColor="@color/color_e5e5e5_333333"
                         android:textSize="@dimen/textSize14sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/et_bet"
+                        app:layout_constraintBottom_toBottomOf="@+id/et_bet_parlay"
                         app:layout_constraintEnd_toStartOf="@+id/tv_com_count"
-                        app:layout_constraintTop_toTopOf="@+id/et_bet" />
+                        app:layout_constraintTop_toTopOf="@+id/et_bet_parlay" />
 
                     <TextView
                         android:id="@+id/tv_com_count"
@@ -180,9 +180,9 @@
                         android:layout_marginEnd="@dimen/margin_12"
                         android:textColor="@color/color_e5e5e5_333333"
                         android:textSize="@dimen/textSize14sp"
-                        app:layout_constraintBottom_toBottomOf="@id/et_bet"
+                        app:layout_constraintBottom_toBottomOf="@id/et_bet_parlay"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/et_bet"
+                        app:layout_constraintTop_toTopOf="@+id/et_bet_parlay"
                         tools:text="1" />
 
                     <androidx.constraintlayout.widget.Guideline
@@ -201,7 +201,7 @@
                         android:layout_marginTop="@dimen/margin_8"
                         android:layout_marginEnd="@dimen/margin_12"
                         android:layout_marginBottom="@dimen/margin_8"
-                        app:layout_constraintBottom_toTopOf="@+id/et_bet"
+                        app:layout_constraintBottom_toTopOf="@+id/et_bet_parlay"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/viewGrey2"
@@ -217,10 +217,10 @@
                         android:paddingEnd="16dp"
                         android:paddingBottom="3dp"
                         android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="@+id/et_bet"
+                        app:layout_constraintBottom_toBottomOf="@+id/et_bet_parlay"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/gl_fifty_percent"
-                        app:layout_constraintTop_toTopOf="@+id/et_bet">
+                        app:layout_constraintTop_toTopOf="@+id/et_bet_parlay">
 
                         <TextView
                             android:id="@+id/btn_maximum_limit"
@@ -297,7 +297,7 @@
                         android:visibility="gone"
                         app:layout_constraintBottom_toTopOf="@+id/layoutKeyBoard"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/et_bet"
+                        app:layout_constraintTop_toBottomOf="@+id/et_bet_parlay"
                         tools:text="@string/bet_info_list_minimum_limit_amount"
                         tools:visibility="visible" />
 

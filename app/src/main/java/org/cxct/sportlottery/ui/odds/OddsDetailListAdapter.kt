@@ -24,6 +24,7 @@ import androidx.viewpager2.widget.ViewPager2
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.OddSpreadForSCO
+import org.cxct.sportlottery.network.common.ComparePlayCate
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
@@ -135,7 +136,17 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         return when {
             oddsDetailDataList.isEmpty() -> PlayCate.getPlayCate("NO_DATA").ordinal
             position == oddsDetailDataList.size  -> PlayCate.getPlayCate("BOTTOM_NAVIGATION").ordinal
-            else -> PlayCate.getPlayCate(oddsDetailDataList[position].gameType).ordinal
+            else -> {
+                val playCateCode = oddsDetailDataList[position].gameType
+                PlayCate.getPlayCate(playCateCode).let { playCate ->
+                    when (playCate) {
+                        PlayCate.UNCHECK -> {
+                            ComparePlayCate.comparePlayCateCode(sportCode, playCateCode).ordinal
+                        }
+                        else -> playCate.ordinal
+                    }
+                }
+            }
         }
     }
 

@@ -67,7 +67,6 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
             adapter = recordDiffAdapter
         }
         scroll_view.setOnScrollChangeListener(nestedScrollViewListener)
-        tvUsTime.visibility = View.GONE
     }
 
     private fun initFilter() {
@@ -110,7 +109,6 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
             recordDiffAdapter.setupBetList(it, viewModel.statusList?.get(0) ?:0)
             btn_back_to_top.visibility = if (it.row.isEmpty()) View.GONE else View.VISIBLE
             divider.visibility = if (it.row.isEmpty()) View.GONE else View.VISIBLE
-            tvUsTime.visibility = if(it.row.isEmpty()) View.GONE else View.VISIBLE
         }
 
         viewModel.responseFailed.observe(viewLifecycleOwner) {

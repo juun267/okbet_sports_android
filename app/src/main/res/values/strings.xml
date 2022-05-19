@@ -485,6 +485,7 @@
     <string name="hint_pay2">2. If there is no response for a long time, please contact customer service.</string>
     <string name="btn_look_for">Check trade</string>
     <string name="btn_service">Contact customer service</string>
+    <string name="btn_service_maintain">Customer service</string>
     <string name="txv_transfer_pay">Transfer</string>
     <string name="txv_online_pay">Top Up Online</string>
     <string name="txv_crypto_pay">Virtual currency transfer</string>
@@ -793,7 +794,7 @@
     <string name="odds_have_changed">The odds have changed, please re - bet</string>
     <string name="bet_info_content_has_been_changed">The odds or status of the game play you selected has changed, please place a bet again</string>
     <string name="account_history_overview">Statement</string>
-    <string name="bet_num_and_bet_date">Betting order no. / Settled bets</string>
+    <string name="bet_num_and_bet_date">Bet slip No / Settled bets</string>
     <string name="date">Date</string>
     <string name="bet_amount">Stake</string>
     <string name="available_amount">Winable</string>
@@ -980,7 +981,7 @@
     <string name="scan_tool_bar">Scan results</string>
     <string name="text_us_east_time">The time is reported in UTC-4 time zone.</string>
     <string name="verify_failed_please_retry">Verification failed, please try again</string>
-    <string name="text_cant_play">An error occured. Please try again later.</string>
+    <string name="text_cant_play">An error occurred. Please try again later.</string>
     <string name="text_bet_not_success">Bet slip status is&#160;</string>
     <string name="text_bet_not_success2">waiting</string>
     <string name="text_bet_not_success3">&#160;Your bet slip is processing, please check &#160;</string>

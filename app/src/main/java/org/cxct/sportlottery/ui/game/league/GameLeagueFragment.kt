@@ -121,7 +121,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 },
                 { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
                     mSelectedMatchInfo = matchInfo
-                    if(mIsEnabled) {
+                    if (mIsEnabled) {
                         avoidFastDoubleClick()
                         addOddsDialog(
                             matchInfo,
@@ -360,32 +360,9 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         }
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner) {
-            it.peekContent().let {
-                val leagueOdds = leagueAdapter.data
+            it.peekContent().let { betInfoList ->
 
-                leagueOdds.forEach { leagueOdd ->
-                    leagueOdd.matchOdds.forEach { matchOdd ->
-                        matchOdd.oddsMap?.values?.forEach { oddList ->
-                            oddList?.forEach { odd ->
-                                odd?.isSelected = it.any { betInfoListData ->
-                                    betInfoListData.matchOdd.oddsId == odd?.id
-                                }
-                            }
-                        }
-
-                        matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
-                            quickPlayCate.quickOdds?.forEach { map ->
-                                map.value?.forEach { odd ->
-                                    odd?.isSelected = it.any { betInfoListData ->
-                                        betInfoListData.matchOdd.oddsId == odd?.id
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                updateAllGameList()
+                leagueAdapter.betInfoList = betInfoList
 
                 //leagueAdapter.notifyDataSetChanged()
                 leagueAdapter.data.forEachIndexed { index, leagueOdd ->
@@ -393,7 +370,6 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         if (matchOdd.matchInfo?.id == mSelectedMatchInfo?.id) {
                             leagueAdapter.updateLeague(index, leagueOdd)
                             mSelectedMatchInfo = null
-                            return@forEach
                         }
                     }
                 }
@@ -601,12 +577,6 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         }
     }
 
-    private fun updateAllGameList() {
-        if (game_league_odd_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !game_league_odd_list.isComputingLayout) {
-            leagueAdapter.data.forEachIndexed { index, leagueOdd -> leagueAdapter.updateLeague(index, leagueOdd) }
-        }
-    }
-
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
         this.odds?.let { oddTypeSocketMap ->
             oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
@@ -677,11 +647,11 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
 
     private fun updateSportBackground(sportCode: String?) {
-        if(MultiLanguagesApplication.isNightMode){
+        if (MultiLanguagesApplication.isNightMode) {
             Glide.with(requireContext()).load(
-              R.drawable.night_bg_300
+                R.drawable.night_bg_300
             ).into(game_league_toolbar_bg)
-        }else{
+        } else {
             Glide.with(requireContext()).load(
                 when (sportCode) {
                     GameType.FT.key -> R.drawable.soccer48

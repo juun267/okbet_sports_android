@@ -177,7 +177,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             outrightOddListener = OutrightOddListener(
                 { matchOdd, odd, playCateCode ->
                     matchOdd?.let {
-                        if(mIsEnabled) {
+                        if (mIsEnabled) {
                             avoidFastDoubleClick()
                             addOutRightOddsDialog(matchOdd, odd, playCateCode)
                             //addOddsDialog(matchOdd.matchInfo, odd, playCateCode,"",null)
@@ -260,7 +260,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                 },
                 clickListenerBet = { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
-                    if(mIsEnabled) {
+                    if (mIsEnabled) {
                         avoidFastDoubleClick()
                         addOddsDialog(
                             matchInfo,
@@ -305,7 +305,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 subscribeChannelHall(it)
             },
             { odd, betMatchInfo, betPlayCateNameMap ->
-                if(mIsEnabled) {
+                if (mIsEnabled) {
                     avoidFastDoubleClick()
                     addOddsDialog(
                         betMatchInfo,
@@ -852,8 +852,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     Log.d("Hewie", "observe => OddsListGameHallResult")
                     isReload = true
 
-                    game_list.post {
-                        game_list.getVisibleRangePosition().forEach { leaguePosition ->
+                    game_list?.post {
+                        game_list?.getVisibleRangePosition()?.forEach { leaguePosition ->
                             val viewByPosition = game_list.layoutManager?.findViewByPosition(leaguePosition)
                             viewByPosition?.let { view ->
                                 if (game_list.getChildViewHolder(view) is LeagueAdapter.ItemViewHolder) {
@@ -1129,38 +1129,16 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner) {
-            it.peekContent().let {
+            it.peekContent().let { betInfoList ->
 
-                val leagueOdds = leagueAdapter.data
-                leagueOdds.forEach { leagueOdd ->
-                    leagueOdd.matchOdds.forEach { matchOdd ->
-                        matchOdd.oddsMap?.values?.forEach { oddList ->
-                            oddList?.forEach { odd ->
-                                odd?.isSelected = it.any { betInfoListData ->
-                                    betInfoListData.matchOdd.oddsId == odd?.id
-                                }
-                            }
-                        }
-                        matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
-                            quickPlayCate.quickOdds.forEach { map ->
-                                map.value?.forEach { odd ->
-                                    odd?.isSelected = it.any { betInfoListData ->
-                                        betInfoListData.matchOdd.oddsId == odd?.id
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                updateAllGameList()
+                leagueAdapter.betInfoList = betInfoList
 
                 val epsOdds = epsListAdapter.dataList
 
                 epsOdds.forEach { epsLeagueOddsItem ->
                     epsLeagueOddsItem.leagueOdds?.matchOdds?.forEach { matchOddsItem ->
                         matchOddsItem.oddsEps?.eps?.forEach { odd ->
-                            odd?.isSelected = it.any { betInfoListData ->
+                            odd?.isSelected = betInfoList.any { betInfoListData ->
                                 betInfoListData.matchOdd.oddsId == odd?.id
                             }
                         }
@@ -1177,7 +1155,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
 
                 odds.forEach { odd ->
-                    odd.isSelected = it.any { betInfoListData ->
+                    odd.isSelected = betInfoList.any { betInfoListData ->
                         betInfoListData.matchOdd.oddsId == odd.id
                     }
                 }
@@ -2356,7 +2334,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             setupGameListView(it)
         }
 
-        if(MultiLanguagesApplication.colorModeChanging){
+        if (MultiLanguagesApplication.colorModeChanging) {
             initObserve()
             initSocketObserver()
             MultiLanguagesApplication.colorModeChanging = false
