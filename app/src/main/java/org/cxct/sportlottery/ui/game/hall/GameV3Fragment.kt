@@ -193,7 +193,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 //                    findNavController().navigate(action)
                     // TODO Set matchOdd and refresh
                     this.data.find { it == matchOdd }?.oddsMap?.get(oddsKey)?.forEachIndexed { index, odd ->
-                        if (index >= 4) {
+                        if(index >= 5) {
                             odd?.isExpand?.let { isExpand ->
                                 odd.isExpand = !isExpand
                             }
@@ -1026,7 +1026,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     outrightLeagueOddDataList.forEachIndexed { _, matchOdd ->
                         matchOdd?.oddsMap?.forEach { oddsMap ->
                             oddsMap.value?.filterNotNull()?.forEachIndexed { index, odd ->
-                                if (index < 4) odd.isExpand = true
+                                if(index < 5)  odd.isExpand = true
                             }
                         }
                     }

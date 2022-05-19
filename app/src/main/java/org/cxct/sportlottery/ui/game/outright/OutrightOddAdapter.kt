@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.outright
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,7 +45,7 @@ class OutrightOddAdapter :
                                 } ?: listOf()
                         )
 
-                        if (it.value?.filterNotNull()?.size ?: 0 > 4) {
+                        if (it.value?.filterNotNull()?.size ?: 0 > 5) {
                             list.add(it.key to matchOdd)
                         }
                     }
@@ -198,11 +199,6 @@ class OutrightOddAdapter :
         }
     }
 
-    fun getOddIsExpand(position: Int): Boolean {
-        val item = data[position] as Pair<*, *>
-        return data.filterIsInstance<Odd>().first { it.outrightCateKey == item.first as String }.isExpand
-    }
-
     inner class MoreViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val tvMore = itemView.findViewById<TextView>(R.id.tvMore)
@@ -211,11 +207,8 @@ class OutrightOddAdapter :
         fun bind(oddsKey: String, matchOdd: MatchOdd, isExpand:Boolean, outrightOddListener: OutrightOddListener?) {
             itemView.setOnClickListener {
                 outrightOddListener?.onClickMore(oddsKey, matchOdd)
-                val item = data[adapterPosition] as Pair<*, *>
-                data.filterIsInstance<Odd>().first { it.outrightCateKey == item.first as String }.isExpand = !data.filterIsInstance<Odd>().first { it.outrightCateKey == item.first as String }.isExpand
-
             }
-            when(isExpand) {
+            when(!data.filterIsInstance<Odd>().last().isExpand) {
                 true -> {
                     tvMore.text = itemView.context.getString(R.string.odds_detail_more)
                     ivMoreIcon.animate().rotation(0f).setDuration(100).start()
