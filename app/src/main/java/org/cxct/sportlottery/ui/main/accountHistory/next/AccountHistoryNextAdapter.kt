@@ -291,11 +291,19 @@ class AccountHistoryNextAdapter(
 
                 when (row.gameType) {
                     GameType.FT.key -> {
-                        if (it.rtScore?.isNotEmpty() == true)
+                        if (it.rtScore?.isNotEmpty() == true) {
                             binding.tvScore.text = String.format(
                                 binding.tvScore.context.getString(R.string.brackets),
                                 it.rtScore
                             )
+                            binding.tvScore.visibility = View.VISIBLE
+                        }
+                        else {
+                            binding.tvScore.visibility = View.GONE
+                        }
+                    }
+                    else -> {
+                        binding.tvScore.visibility = View.GONE
                     }
                 }
                 binding.listScore.apply {

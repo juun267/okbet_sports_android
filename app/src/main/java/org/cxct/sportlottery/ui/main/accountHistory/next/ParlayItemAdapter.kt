@@ -97,12 +97,20 @@ class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(D
                 )
 
                 when (gameType) {
-                    GameType.FT.key, GameType.BK.key -> {
-                        if (rtScore?.isNotEmpty() == true)
+                    GameType.FT.key -> {
+                        if (rtScore?.isNotEmpty() == true) {
                             binding.tvScore.text = String.format(
                                 binding.tvScore.context.getString(R.string.brackets),
                                 rtScore
                             )
+                            binding.tvScore.visibility = View.VISIBLE
+                        }
+                        else {
+                            binding.tvScore.visibility = View.GONE
+                        }
+                    }
+                    else -> {
+                        binding.tvScore.visibility = View.GONE
                     }
                 }
                 binding.tvTeamNames.setTeamNames(15, homeName, awayName)
