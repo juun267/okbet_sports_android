@@ -9,8 +9,10 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.util.JumpUtil
 
 class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(MaintenanceViewModel::class) {
 
@@ -41,7 +43,22 @@ class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(Maintenance
     }
 
     private fun initServiceButton() {
-        btn_floating_service.setView4Maintenance(this)
+//        btn_floating_service.setView4Maintenance(this)
+        btn_service.setOnClickListener {
+            val serviceUrl = sConfigData?.customerServiceUrl
+            val serviceUrl2 = sConfigData?.customerServiceUrl2
+            when {
+                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    JumpUtil.toExternalWeb(this@MaintenanceActivity, serviceUrl)
+                }
+                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    JumpUtil.toExternalWeb(this@MaintenanceActivity, serviceUrl2)
+                }
+                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
+                    JumpUtil.toExternalWeb(this@MaintenanceActivity, serviceUrl)
+                }
+            }
+        }
     }
 
     private fun initSocketObserver() {

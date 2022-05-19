@@ -25,6 +25,7 @@ import com.google.android.exoplayer2.util.Util
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
 import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailLiveBinding
 import org.cxct.sportlottery.enum.MatchSource
@@ -148,6 +149,9 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         gameViewModel = this@OddsDetailLiveFragment.viewModel
         lifecycleOwner = this@OddsDetailLiveFragment.viewLifecycleOwner
         executePendingBindings()
+        vToolbar.ivTitleBar.setImageResource(
+            GameConfigManager.getTitleBarBackground(args.gameType.key, MultiLanguagesApplication.isNightMode) ?: R.drawable.img_home_title_soccer_background
+        )
     }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
