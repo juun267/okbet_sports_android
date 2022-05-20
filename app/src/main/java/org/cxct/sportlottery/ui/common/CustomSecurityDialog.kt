@@ -96,7 +96,7 @@ class CustomSecurityDialog(context: Context) : DialogFragment() {
         if(isPstBtnClickable)
             btn_positive.setTextColor(ContextCompat.getColor(mContext,R.color.color_317FFF_0760D4))
         else
-            btn_positive.setTextColor(ContextCompat.getColor(mContext,R.color.color_2B2B2B_e2e2e2))
+            btn_positive.setTextColor(ContextCompat.getColor(mContext,R.color.color_cccccc_e2e2e2))
     }
 
     fun showErrorStatus(b:Boolean){
