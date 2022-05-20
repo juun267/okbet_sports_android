@@ -91,7 +91,8 @@
             <TextView
                 android:id="@+id/tv_home_name"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
+                android:minHeight="40dp"
                 android:layout_marginStart="@dimen/activity_vertical_margin"
                 android:layout_marginEnd="5dp"
                 android:ellipsize="end"
@@ -220,7 +221,8 @@
             <TextView
                 android:id="@+id/tv_away_name"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
+                android:minHeight="40dp"
                 android:maxLines="2"
                 android:layout_marginEnd="5dp"
                 android:ellipsize="end"
@@ -286,7 +288,7 @@
                     android:id="@+id/tv_time_top"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/color_cccccc"
+                    android:textColor="@color/color_FFFFFF"
                     android:textSize="@dimen/textSize12sp"
                     tools:text="17 / 16" />
 
@@ -295,7 +297,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/time_null"
-                    android:textColor="@color/color_cccccc"
+                    android:textColor="@color/color_FFFFFF"
                     android:textSize="@dimen/textSize12sp" />
 
             </LinearLayout>
@@ -313,7 +315,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginBottom="10dp"
-                android:textColor="@color/color_cccccc"
+                android:textColor="@color/color_FFFFFF"
                 android:textSize="@dimen/textSize12sp"
                 android:visibility="gone"
                 app:layout_constrainedWidth="true"
@@ -330,7 +332,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:textColor="@color/color_cccccc"
+                android:textColor="@color/color_FFFFFF"
                 android:textSize="@dimen/textSize12sp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -345,7 +347,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:textColor="@color/color_cccccc"
+                android:textColor="@color/color_FFFFFF"
                 android:textSize="@dimen/textSize12sp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_status_left"
