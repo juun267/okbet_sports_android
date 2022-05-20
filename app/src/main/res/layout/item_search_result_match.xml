@@ -14,6 +14,7 @@
         android:text="Lorem ipsum UFC dolor sit amet,"
         android:textColor="@color/color_FFFFFF_DE000000"
         android:textSize="@dimen/margin_14"
+        android:lineSpacingExtra="4dp"
         app:highlightBold="false"
         app:highlightColor="@color/color_317FFF_0760D4"
         app:highlightRadius="0dp"
