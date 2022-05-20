@@ -708,9 +708,8 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 visibility = when {
                     item.matchInfo?.isAtStart == true -> View.VISIBLE
                     matchType == MatchType.AT_START -> View.VISIBLE
-                    else -> {
-                        if (TimeUtil.isTimeToday(item.matchInfo?.startTime)) View.VISIBLE else View.INVISIBLE
-                    }
+                    matchType == MatchType.TODAY -> View.VISIBLE
+                    else -> View.INVISIBLE
                 }
             }
         }
