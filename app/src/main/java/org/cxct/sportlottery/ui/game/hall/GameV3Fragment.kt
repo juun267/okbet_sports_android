@@ -87,6 +87,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private val gameTypeAdapter by lazy {
         GameTypeAdapter().apply {
             gameTypeListener = GameTypeListener {
+                if (!it.isSelected) {
+                    //切換球種，清除日期記憶
+                    viewModel.tempDatePosition = 0
+                    //日期圖示選取狀態下，切換球種要重置UI狀態
+                    if (game_toolbar_calendar.isSelected) game_toolbar_calendar.performClick()
+                }
                 loading()
                 isReload = true
                 isReloadPlayCate = true
@@ -600,7 +606,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
 
         view.game_filter_type_list.visibility =
-            if (args.matchType == MatchType.EARLY && view.game_toolbar_calendar.isSelected) {
+            if (args.matchType == MatchType.EARLY && mCalendarSelected) {
                 View.VISIBLE
             } else {
                 View.GONE
@@ -743,9 +749,13 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
 
         viewModel.curDatePosition.observe(this.viewLifecycleOwner) {
-            (game_filter_type_list.layoutManager as LinearLayoutManager?)?.scrollToPositionWithOffset(
-                it, game_filter_type_list.width / 2
-            )
+            val position = viewModel.tempDatePosition
+            if (position != 0)
+                (game_filter_type_list.layoutManager as LinearLayoutManager?)?.scrollToPosition(position)
+            else
+                (game_filter_type_list.layoutManager as LinearLayoutManager?)?.scrollToPositionWithOffset(
+                    it, game_filter_type_list.width / 2
+                )
         }
 
         viewModel.curChildMatchType.observe(this.viewLifecycleOwner) {

@@ -179,6 +179,7 @@ class GameViewModel(
 
     val curDatePosition: LiveData<Int>
         get() = _curDatePosition
+    var tempDatePosition: Int = 0 //早盤的日期選擇切頁後要記憶的問題，切換球種要清除記憶
 
     val isNoHistory: LiveData<Boolean>
         get() = _isNoHistory
@@ -1932,25 +1933,34 @@ class GameViewModel(
     private fun getDateRow(matchType: MatchType): List<Date>? {
         val dateRow = when (matchType) {
             MatchType.TODAY -> {
+                tempDatePosition = 0 //切換賽盤清除記憶
                 listOf(Date("", getTodayTimeRangeParams()))
             }
             MatchType.EARLY -> {
                 getDateRowEarly()
             }
             MatchType.PARLAY -> {
+                tempDatePosition = 0
                 getDateRowParlay()
             }
             MatchType.AT_START -> {
+                tempDatePosition = 0
                 listOf(Date("", TimeUtil.getAtStartTimeRangeParams()))
             }
             else -> {
+                tempDatePosition = 0
                 listOf()
             }
         }
 
-        return dateRow.firstOrNull()?.let {
-            dateRow.updateDateSelectedState(it)
-        }
+        return if (tempDatePosition != 0) {
+            dateRow[tempDatePosition].let {
+                dateRow.updateDateSelectedState(it)
+            }
+        } else
+            dateRow.firstOrNull()?.let {
+                dateRow.updateDateSelectedState(it)
+            }
     }
 
     private fun getDateRowEarly(): List<Date> {
@@ -2459,8 +2469,11 @@ class GameViewModel(
 
 
     private fun List<Date>.updateDateSelectedState(date: Date): List<Date> {
-        this.forEach {
-            it.isSelected = (it == date)
+        this.forEachIndexed { index, value ->
+            run {
+                value.isSelected = (value == date)
+                if (value.isSelected) tempDatePosition = index
+            }
         }
 
         _curDate.postValue(this)
