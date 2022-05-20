@@ -598,10 +598,15 @@ object TimeUtil {
     /**
      * return: 時間是否為今日
      */
+
     fun isTimeToday(timeMillis: Long?): Boolean {
         val todayTimeMillis = Calendar.getInstance().timeInMillis
 
         return timeFormat(timeMillis ?: 0, YMD_FORMAT) == timeFormat(todayTimeMillis, YMD_FORMAT)
+    }
+
+    fun isTimeInPlay(timeStamp: Long?): Boolean {
+        return getRemainTime(timeStamp) <= 0
     }
 
     fun isTimeAtStart(timeStamp: Long?): Boolean {
