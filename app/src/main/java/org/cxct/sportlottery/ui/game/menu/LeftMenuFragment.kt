@@ -4,11 +4,15 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
+import android.text.Spannable
+import android.text.SpannableString
 import android.text.TextWatcher
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -831,14 +835,16 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
                                     t.searchResultLeague[position].leagueMatchList
                                 ) {
                                 override fun convert(holder: ViewHolder, itt: SearchResponse.Row.LeagueMatch.MatchInfo, position: Int) {
-                                    holder.setText(
-                                        R.id.tvTime,
-                                        TimeUtil.timeFormat(itt.startTime.toLong(), TimeUtil.MD_HM_FORMAT) + " ｜ "
-                                    )
-                                    val tvMatch = holder.getView<HighlightTextView>(R.id.tvMatch)
-                                    tvMatch.setCustomText(itt.homeName + " v " + itt.awayName)
-                                    tvMatch.highlight(etSearch.text.toString())
-                                    tvMatch.setOnClickListener {
+                                    val time = SpannableString(TimeUtil.timeFormat(itt.startTime.toLong(), TimeUtil.DM_HM_FORMAT))
+                                    time.setSpan(ForegroundColorSpan(ContextCompat.getColor(holder.convertView.context, R.color.color_A3A3A3_666666)),
+                                        0, time.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+                                    val tvTimeAndMatch = holder.getView<HighlightTextView>(R.id.tv_time_and_match)
+                                    tvTimeAndMatch.setCustomText(itt.homeName + " v " + itt.awayName)
+                                    tvTimeAndMatch.setSpannableTextWithoutHighlight(time)
+                                    tvTimeAndMatch.needDivider(true)
+                                    tvTimeAndMatch.highlight(etSearch.text.toString())
+                                    tvTimeAndMatch.setOnClickListener {
                                         closeMenuFragment()
                                         viewModel.navSpecialEntrance(
                                             MatchType.DETAIL,

@@ -618,7 +618,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
 
                     item.matchInfo.remainTime?.let { remainTime ->
                         updateTimer(
-                            isTimerEnable,
+                            true,
                             isTimerPause,
                             (remainTime / 1000).toInt(),
                             true
@@ -708,7 +708,9 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 visibility = when {
                     item.matchInfo?.isAtStart == true -> View.VISIBLE
                     matchType == MatchType.AT_START -> View.VISIBLE
-                    else -> View.INVISIBLE
+                    else -> {
+                        if (TimeUtil.isTimeToday(item.matchInfo?.startTime)) View.VISIBLE else View.INVISIBLE
+                    }
                 }
             }
         }
@@ -742,7 +744,10 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 }
 
                 else -> {
-                    "${itemView.context.getString(TimeUtil.setupDayOfWeekAndToday(item.matchInfo?.startTime))} ${item.matchInfo?.startDateDisplay}"
+                    if (TimeUtil.isTimeToday(item.matchInfo?.startTime))
+                        itemView.context.getString(TimeUtil.setupDayOfWeekAndToday(item.matchInfo?.startTime))
+                    else
+                        "${itemView.context.getString(TimeUtil.setupDayOfWeekAndToday(item.matchInfo?.startTime))} ${item.matchInfo?.startDateDisplay}"
                 }
             }
         }
