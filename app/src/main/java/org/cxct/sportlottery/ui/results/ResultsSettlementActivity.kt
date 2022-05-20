@@ -216,7 +216,9 @@ class ResultsSettlementActivity :
         settlementGameTypeBottomSheet.apply {
             setContentView(gameTypeBottomSheetView)
             val gameTypeItem = mutableListOf<GameTypeItemData>()
-            GameType.values().forEach { gameType -> gameTypeItem.add(GameTypeItemData(null, getString(gameType.string))) }
+            GameType.values().forEach { gameType ->
+                if (gameType != GameType.OTHER) gameTypeItem.add(GameTypeItemData(null, getString(gameType.string)))
+            }
             settlementGameTypeAdapter = SettlementGameTypeAdapter(lv_game_type.context, gameTypeItem)
             lv_game_type.adapter = settlementGameTypeAdapter
             settlementGameTypeAdapter.setOnItemCheckedListener(object :

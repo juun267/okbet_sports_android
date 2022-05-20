@@ -370,6 +370,8 @@ object SocketUpdateUtil {
     ): ArrayList<OddsDetailListData>? {
         //若有新玩法的話需要重新setData
         var addedNewOdds = false
+        //若有舊玩法被移除的話
+        var removedOldOdds = false
 
         val newOddsDetailDataList: ArrayList<OddsDetailListData> = ArrayList()
         newOddsDetailDataList.addAll(oddsDetailDataList)
@@ -402,6 +404,26 @@ object SocketUpdateUtil {
             }
         }
 
+        matchOddsChangeEvent.odds?.filter { socketOddsMap ->
+            socketOddsMap.value.odds?.all { it?.status == 2 } ?: false
+        }?.forEach { lostOddsMap ->
+            val needRemoveOddsList = newOddsDetailDataList.find { oddsMap -> oddsMap.gameType == lostOddsMap.key }
+            if (needRemoveOddsList != null) {
+                newOddsDetailDataList.remove(needRemoveOddsList)
+                removedOldOdds = true
+            }
+        }
+
+        /**
+         * 若有移除玩法的話, 重新配置原index
+         * @see OddsDetailListData.originPosition
+         */
+        if (removedOldOdds) {
+            newOddsDetailDataList.forEachIndexed { index, oddsDetailListData ->
+                oddsDetailListData.originPosition = index
+            }
+        }
+
         //新玩法
         val newPlay = matchOddsChangeEvent.odds?.filter { socketOdds ->
             oddsDetailDataList.find { it.gameType == socketOdds.key } == null
@@ -423,7 +445,9 @@ object SocketUpdateUtil {
                     filteredOddList,
                     value.nameMap,
                     value.rowSort
-                )
+                ).apply {
+                    originPosition = newOddsDetailDataList.size
+                }
             )
             addedNewOdds = true
         }
@@ -434,7 +458,6 @@ object SocketUpdateUtil {
                     updateMatchOdds(oddsDetailListData, matchOddsChangeEvent)
                 }
             }
-            sortBy { it.rowSort }
             //因UI需求 特優賠率移到第一項
             find { it.gameType == PlayCate.EPS.value }?.also { oddsDetailListData ->
                 add(0, removeAt(indexOf(oddsDetailListData)))
@@ -442,7 +465,7 @@ object SocketUpdateUtil {
             setupPinList(playCate)
         }
 
-        return if (addedNewOdds) newOddsDetailDataList else null
+        return if (addedNewOdds || removedOldOdds) newOddsDetailDataList else null
     }
 
     /**
@@ -464,7 +487,6 @@ object SocketUpdateUtil {
             it.gameType == PlayCate.EPS.value
         }[true]?.size ?: 0
 
-        this.sortBy { it.originPosition }
         this.forEach { it.isPin = false }
 
         pinList.forEach { pinOddsDetailData ->

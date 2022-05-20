@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Spanned
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -33,6 +34,7 @@ import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.util.commonCheckDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -48,7 +50,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     private var mPickerView: OptionsPickerView<String>? = null
     private var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一個
     private val mHandler = Handler(Looper.getMainLooper())
-    private var mRunnable:Runnable? = null
+    private var mRunnable: Runnable? = null
 
 
     val viewModel: T by viewModel(clazz = clazz)
@@ -74,6 +76,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     private fun onTokenStateChanged() {
         viewModel.errorResultToken.observe(this) {
+            if (this.javaClass.simpleName == MaintenanceActivity::class.java.simpleName) return@observe
             if (it.code != HttpError.KICK_OUT_USER.code)
                 showDialogLogout(it)
         }
@@ -215,6 +218,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     ) {
         showPromptDialog(title, message, null, positiveClickListener, false)
     }
+
     fun showPromptDialog(
         title: String? = getString(R.string.prompt),
         message: Spanned,
@@ -338,15 +342,15 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         }
     }
 
-    fun avoidFastDoubleClick(){
+    fun avoidFastDoubleClick() {
         mIsEnabled = false
         Handler().postDelayed({ mIsEnabled = true }, 500)
     }
 
     private fun startCheckToken() {
         try {
-            if(viewModel.loginRepository.isLogin.value == true){
-                if(mRunnable==null){
+            if (viewModel.loginRepository.isLogin.value == true) {
+                if (mRunnable == null) {
                     mRunnable = getRunnable()
                     mRunnable?.let {
                         mHandler.post(it)
@@ -364,7 +368,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                 viewModel.checkIsUserAlive()
             }
             mRunnable?.let {
-                mHandler.postDelayed( it , 30000)
+                mHandler.postDelayed(it, 30000)
             }
         }
     }
