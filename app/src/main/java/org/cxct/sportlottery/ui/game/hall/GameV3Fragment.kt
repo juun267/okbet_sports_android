@@ -852,30 +852,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     Log.d("Hewie", "observe => OddsListGameHallResult")
                     isReload = true
 
-                    game_list?.post {
-                        game_list?.getVisibleRangePosition()?.forEach { leaguePosition ->
-                            val viewByPosition = game_list.layoutManager?.findViewByPosition(leaguePosition)
-                            viewByPosition?.let { view ->
-                                if (game_list.getChildViewHolder(view) is LeagueAdapter.ItemViewHolder) {
-                                    val viewHolder = game_list.getChildViewHolder(view) as LeagueAdapter.ItemViewHolder
-                                    viewHolder.itemView.league_odd_list.getVisibleRangePosition().forEach { matchPosition ->
-                                        if (leagueAdapter.data.isNotEmpty()) {
-                                            Log.d(
-                                                "[subscribe]",
-                                                "訂閱 ${leagueAdapter.data[leaguePosition].league.name} -> " +
-                                                        "${leagueAdapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.homeName} vs " +
-                                                        "${leagueAdapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.awayName}"
-                                            )
-                                            subscribeChannelHall(
-                                                leagueAdapter.data[leaguePosition].gameType?.key,
-                                                leagueAdapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.id
-                                            )
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    game_list?.firstVisibleRange(leagueAdapter, activity?:requireActivity())
+
                 }
                 refreshToolBarUI(this.view)
             }

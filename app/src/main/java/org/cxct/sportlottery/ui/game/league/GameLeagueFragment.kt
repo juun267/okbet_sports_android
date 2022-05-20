@@ -314,10 +314,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         }
                     }
 
-                    leagueOdds.forEach { leagueOdd ->
-                        if (leagueOdd.unfold == FoldState.UNFOLD.code)
-                            subscribeChannelHall(leagueOdd)
-                    }
+                    game_league_odd_list?.firstVisibleRange(leagueAdapter, activity?:requireActivity())
                 }
             }
         }
