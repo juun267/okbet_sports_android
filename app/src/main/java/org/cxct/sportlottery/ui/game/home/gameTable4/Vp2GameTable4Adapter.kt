@@ -380,7 +380,7 @@ class Vp2GameTable4Adapter(
                                 val awayPoint = data?.awayPoints ?: 0
                                 tv_point.text = "$homePoint–$awayPoint"
                             }
-                            GameType.VB.key, GameType.TT.key -> {
+                            GameType.VB.key, GameType.TT.key, GameType.BM.key -> {
                                 tv_game_total_score_home_center.visibility = View.VISIBLE
                                 tv_game_score_home_center.visibility = View.VISIBLE
                                 tv_game_total_score_away_center.visibility = View.VISIBLE
