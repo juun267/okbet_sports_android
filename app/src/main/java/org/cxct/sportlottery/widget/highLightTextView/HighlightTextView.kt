@@ -40,7 +40,10 @@ class HighlightTextView @JvmOverloads constructor(
 
     private var highlightBoldFlag = false
 
-    private var highlightTextColor = currentTextColor
+    private var highlightTextColor = ContextCompat.getColor(context, R.color.color_FFFFFF)
+    private val highlightTextColorSpan: ForegroundColorSpan by lazy {
+        ForegroundColorSpan(highlightTextColor)
+    }
 
     private val isChangeSelectedTextColor: Boolean
         get() = highlightTextColor != currentTextColor
@@ -130,6 +133,12 @@ class HighlightTextView @JvmOverloads constructor(
 
             spannableText.setSpan(
                 highlightColorSpan,
+                start,
+                end,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            spannableText.setSpan(
+                highlightTextColorSpan,
                 start,
                 end,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
