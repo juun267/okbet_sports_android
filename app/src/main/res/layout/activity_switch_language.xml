@@ -19,7 +19,7 @@
             android:id="@+id/ivLogo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_16"
+            android:layout_marginStart="@dimen/margin_14"
             android:layout_marginTop="@dimen/margin_4"
             android:layout_marginBottom="@dimen/margin_4"
             android:adjustViewBounds="true"
@@ -51,7 +51,7 @@
             android:layout_height="@dimen/margin_48"
             android:background="@color/color_212121_ededed"
             android:gravity="center_vertical"
-            android:paddingHorizontal="@dimen/margin_8">
+            android:paddingHorizontal="@dimen/margin_12">
 
             <ImageView
                 android:id="@+id/ivBack"
@@ -64,6 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/text_chose_language"
+                android:layout_marginStart="2dp"
                 android:textColor="@color/color_e5e5e5_333333" />
 
             <ImageView
@@ -107,7 +108,7 @@
                 android:id="@+id/line1"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_1"
-                android:background="@color/color_212121_ededed" />
+                android:background="@color/color_1F1F1F_e6e6e6" />
 
             <LinearLayout
                 android:id="@+id/llEnglish"
@@ -138,7 +139,7 @@
                 android:id="@+id/line2"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_1"
-                android:background="@color/color_212121_ededed" />
+                android:background="@color/color_1F1F1F_e6e6e6" />
 
             <LinearLayout
                 android:id="@+id/llVietnam"
@@ -168,12 +169,11 @@
                 android:id="@+id/line3"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_1"
-                android:background="@color/color_212121_ededed" />
+                android:background="@color/color_1F1F1F_e6e6e6" />
 
         </LinearLayout>
 
     </LinearLayout>
-
 </LinearLayout>
 
 

@@ -403,7 +403,7 @@ class SettlementLeagueAdapter(private val context: Context, private val dataList
             checkbox.text = data.name
             checkbox.isChecked = data.isSelected
             if (data.isSelected)
-                ll_game_league_item.setBackgroundColor(ContextCompat.getColor(context, R.color.color_191919_EEEFF0))
+                ll_game_league_item.setBackgroundColor(ContextCompat.getColor(context, R.color.color_505050_E2E2E2))
             else
                 ll_game_league_item.setBackgroundColor(ContextCompat.getColor(context, R.color.color_191919_FCFCFC))
             checkbox.setOnCheckedChangeListener { _, isChecked ->
