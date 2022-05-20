@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.webkit.URLUtil
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
 import timber.log.Timber
@@ -15,7 +16,7 @@ object JumpUtil {
     fun toInternalWeb(context: Context, href: String?, title: String?, toolbarVisibility: Boolean = true, backEvent: Boolean = true) {
         context.startActivity(
             Intent(context, WebActivity::class.java)
-                .putExtra(WebActivity.KEY_URL, href)
+                .putExtra(WebActivity.KEY_URL, Constants.appendMode(href))
                 .putExtra(WebActivity.KEY_TITLE, title)
                 .putExtra(WebActivity.KEY_TOOLBAR_VISIBILITY, toolbarVisibility)
                 .putExtra(WebActivity.KEY_BACK_EVENT, backEvent)

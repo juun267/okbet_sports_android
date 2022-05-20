@@ -35,20 +35,13 @@ object AppUpdateManager {
         request.setMimeType("application/vnd.android.package-archive")
 
         context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) //创建下載目录
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "OkBet.apk") //设置文件存放路径
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "OkBet_${System.currentTimeMillis()}.apk") //设置文件存放路径
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
 
         return request
     }
 
     fun downloadApk(context: Context?, downloadUrl: String, onDownloadListener: OnDownloadListener?) {
-        Timber.i("==> 刪除原apk")
-        val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).path + "/OkBet.apk")
-        if (file.exists()) {
-            Timber.i("==> 原apk存在 執行刪除")
-            file.delete()
-        }
-
         Timber.i("==> 下載 apk: $downloadUrl")
         val downloadManager = context?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 
@@ -121,7 +114,6 @@ object AppUpdateManager {
 
             val intent = Intent(Intent.ACTION_VIEW)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) //4.0以上系统弹出安装成功打开界面
-
 
 
             //判断是否是Android N以及更高的版本(>=SDK 24) //SDK24以上要使用 FileProvider 提供 Uri 給外部 APP 使用
