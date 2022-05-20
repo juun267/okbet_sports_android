@@ -1005,14 +1005,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
             it.getContentIfNotHandled()?.let { outrightOddsListResult ->
                 if (outrightOddsListResult.success) {
-                    GameConfigManager.getTitleBarBackground(
-                        outrightOddsListResult.outrightOddsListData?.sport?.code,
-                        MultiLanguagesApplication.isNightMode
-                    )
-                        ?.let { gameImg ->
-                            game_toolbar_bg.setBackgroundResource(gameImg)
-                        }
-
                     val outrightLeagueOddDataList: MutableList<org.cxct.sportlottery.network.outright.odds.MatchOdd?> = mutableListOf()
                     outrightOddsListResult.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds
                         ?: listOf()
