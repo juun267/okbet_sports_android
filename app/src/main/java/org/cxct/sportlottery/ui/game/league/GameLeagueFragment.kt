@@ -314,10 +314,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         }
                     }
 
-                    leagueOdds.forEach { leagueOdd ->
-                        if (leagueOdd.unfold == FoldState.UNFOLD.code)
-                            subscribeChannelHall(leagueOdd)
-                    }
+                    game_league_odd_list?.firstVisibleRange(leagueAdapter, activity?:requireActivity())
                 }
             }
         }
@@ -647,22 +644,9 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
 
     private fun updateSportBackground(sportCode: String?) {
-        if (MultiLanguagesApplication.isNightMode) {
-            Glide.with(requireContext()).load(
-                R.drawable.night_bg_300
-            ).into(game_league_toolbar_bg)
-        } else {
-            Glide.with(requireContext()).load(
-                when (sportCode) {
-                    GameType.FT.key -> R.drawable.soccer48
-                    GameType.BK.key -> R.drawable.basketball48
-                    GameType.TN.key -> R.drawable.tennis48
-                    GameType.VB.key -> R.drawable.volleyball48
-                    else -> null
-                }
-            ).into(game_league_toolbar_bg)
+        GameConfigManager.getTitleBarBackgroundInPublicPage(sportCode ,MultiLanguagesApplication.isNightMode)?.let { titleRes ->
+            game_league_toolbar_bg.setImageResource(titleRes)
         }
-
     }
 
     //更新isLocked狀態
