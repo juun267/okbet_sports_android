@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.game.language
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
+import kotlinx.android.synthetic.main.activity_switch_language.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivitySwitchLanguageBinding
 import org.cxct.sportlottery.repository.FLAG_OPEN
@@ -15,6 +16,7 @@ import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.SPUtil
+import java.security.AccessController.getContext
 
 
 class SwitchLanguageActivity : BaseActivity<LoginViewModel>(LoginViewModel::class), View.OnClickListener {
@@ -58,6 +60,23 @@ class SwitchLanguageActivity : BaseActivity<LoginViewModel>(LoginViewModel::clas
     }
 
     private fun initView(){
+        val lngeList = sConfigData?.supportLanguage?.split(",")
+
+        binding.llLanguageList.removeAllViews()
+
+        lngeList?.forEachIndexed { index, value ->
+            when (value) {
+                LanguageManager.Language.EN.key -> binding.llLanguageList.addView(binding.llEnglish)
+                LanguageManager.Language.VI.key -> binding.llLanguageList.addView(binding.llVietnam)
+                else -> binding.llLanguageList.addView(binding.llChina)
+            }
+            when (index) {
+                1 -> binding.llLanguageList.addView(binding.line2)
+                2 -> binding.llLanguageList.addView(binding.line3)
+                else -> binding.llLanguageList.addView(binding.line1)
+            }
+        }
+
         binding.ivBack.setOnClickListener(this)
         binding.llEnglish.setOnClickListener(this)
         binding.llChina.setOnClickListener(this)
