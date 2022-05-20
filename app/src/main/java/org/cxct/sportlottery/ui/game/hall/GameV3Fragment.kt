@@ -28,6 +28,7 @@ import kotlinx.android.synthetic.main.view_game_tab_odd_v4.*
 import kotlinx.android.synthetic.main.view_game_tab_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
+import kotlinx.android.synthetic.main.view_match_category_v4.*
 import kotlinx.android.synthetic.main.view_match_category_v4.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -93,6 +94,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     //日期圖示選取狀態下，切換球種要重置UI狀態
                     if (game_toolbar_calendar.isSelected) game_toolbar_calendar.performClick()
                 }
+                //切換球種後要重置位置
+                initMatchCategoryPagerPosition()
                 loading()
                 isReload = true
                 isReloadPlayCate = true
@@ -362,6 +365,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         override fun onTabSelected(tab: TabLayout.Tab?) {
             game_list.adapter = null
             isReload = true
+            //切換tab要重置位置
+            initMatchCategoryPagerPosition()
             when (tab?.text.toString()) { //固定寫死
                 getString(R.string.game_tab_league_odd) -> { //賽事
                     game_toolbar_calendar.visibility = if (args.matchType == MatchType.EARLY) View.VISIBLE else View.GONE
@@ -560,7 +565,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL
         )
         view.match_category_indicator.setupWithViewPager2(view.match_category_pager)
-        setMatchCategoryPagerVisibility(matchCategoryPagerAdapter.itemCount > 0)
+        setMatchCategoryPagerVisibility(matchCategoryPagerAdapter.itemCount)
     }
 
     private fun setupPlayCategory(view: View) {
@@ -738,7 +743,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
         viewModel.matchCategoryQueryResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.rows?.let { resultList ->
-                setMatchCategoryPagerVisibility(resultList.isNotEmpty())
+                setMatchCategoryPagerVisibility(resultList.size)
                 // TODO view_space_first.isVisible = !isCateShow
                 matchCategoryPagerAdapter.data = resultList
             }
@@ -1830,7 +1835,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 else -> View.GONE
             }
 
-            setMatchCategoryPagerVisibility(matchCategoryPagerAdapter.itemCount > 0)
+            setMatchCategoryPagerVisibility(matchCategoryPagerAdapter.itemCount)
 
             game_play_category.visibility = if (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START ||
                 (args.matchType == MatchType.OTHER && childMatchType == MatchType.OTHER)
@@ -2342,6 +2347,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             setupPlayCategory(it)
             setupGameRow(it)
             setupGameListView(it)
+            //從內頁返回後要重置位置
+            initMatchCategoryPagerPosition()
         }
 
         if (MultiLanguagesApplication.colorModeChanging) {
@@ -2392,18 +2399,29 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     /**
-     * @param condition 固定為 match category 數量是否大於0
+     * @param itemCount 固定為 match category 數量
      **/
-    private fun setMatchCategoryPagerVisibility(condition: Boolean) {
+    private fun setMatchCategoryPagerVisibility(itemCount: Int) {
         game_match_category_pager.visibility =
             if ((args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) &&
-                condition &&
+                itemCount > 0 &&
                 game_tabs.selectedTabPosition == 0
             ) {
                 View.VISIBLE
             } else {
                 View.GONE
             }
+        //賽事選單，一個不要顯示，多個要顯示。
+        match_category_indicator.visibility = if (itemCount > 1) View.VISIBLE else View.GONE
+    }
+
+    /**
+     *  1. 切換球種後要重置位置
+     *  2. 切換tab要重置位置
+     *  3. 從內頁返回後要重置位置
+     */
+    private fun initMatchCategoryPagerPosition() {
+        match_category_pager.currentItem = 0
     }
     // endregion
 }
