@@ -89,7 +89,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/color_191919_EEEFF0" />
+            android:background="@color/color_1F1F1F_E2E2E2" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -113,7 +113,7 @@
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/color_191919_EEEFF0" />
+                android:background="@color/color_1F1F1F_E2E2E2" />
 
             <TextView
                 android:id="@+id/tv_home_first"
@@ -130,7 +130,7 @@
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/color_191919_EEEFF0" />
+                android:background="@color/color_1F1F1F_E2E2E2" />
 
             <TextView
                 android:id="@+id/tv_home_second"
@@ -147,7 +147,7 @@
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/color_191919_EEEFF0" />
+                android:background="@color/color_1F1F1F_E2E2E2" />
 
             <TextView
                 android:id="@+id/tv_home_third"
@@ -164,7 +164,7 @@
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/color_191919_EEEFF0" />
+                android:background="@color/color_1F1F1F_E2E2E2" />
 
             <TextView
                 android:id="@+id/tv_home_over_time"
@@ -184,7 +184,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/color_191919_EEEFF0" />
+            android:background="@color/color_1F1F1F_E2E2E2" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -208,7 +208,7 @@
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/color_191919_EEEFF0" />
+                android:background="@color/color_1F1F1F_E2E2E2" />
 
             <TextView
                 android:id="@+id/tv_away_first"
@@ -225,7 +225,7 @@
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/color_191919_EEEFF0" />
+                android:background="@color/color_1F1F1F_E2E2E2" />
 
             <TextView
                 android:id="@+id/tv_away_second"
@@ -242,7 +242,7 @@
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/color_191919_EEEFF0" />
+                android:background="@color/color_1F1F1F_E2E2E2" />
 
             <TextView
                 android:id="@+id/tv_away_third"
@@ -259,7 +259,7 @@
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/color_191919_EEEFF0" />
+                android:background="@color/color_1F1F1F_E2E2E2" />
 
             <TextView
                 android:id="@+id/tv_away_over_time"
@@ -279,7 +279,7 @@
             android:id="@+id/bottom_line"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/color_191919_EEEFF0" />
+            android:background="@color/color_1F1F1F_E2E2E2" />
 
     </LinearLayout>
 </LinearLayout>
