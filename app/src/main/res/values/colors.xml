@@ -171,6 +171,8 @@
     <color name="color_2B2B2B_EEEFF0">@color/color_EEEFF0</color>
     <color name="color_191919_FDFDFD">@color/color_FDFDFD</color>
     <color name="color_cccccc_e2e2e2">@color/color_E2E2E2</color>
+    <color name="color_1F1F1F_EEEFF0">@color/color_EEEFF0</color>
+    <color name="color_404040_BCBCBC">@color/color_bcbcbc</color>
 
     <!--region 特殊處理顏色-->
     <color name="home_card_top_text_color">#40FFFFFF</color>
