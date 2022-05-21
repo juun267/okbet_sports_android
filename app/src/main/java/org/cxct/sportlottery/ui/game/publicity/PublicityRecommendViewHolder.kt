@@ -31,7 +31,7 @@ class PublicityRecommendViewHolder(
     fun bind(data: Recommend, oddsType: OddsType, notifySelf: () -> Unit) {
         leagueOddAdapter = LeagueOddAdapter2(data.matchType ?: MatchType.EARLY).apply {
             isTimerEnable =
-                (data.gameType == GameType.FT.key || data.gameType == GameType.BK.key || data.matchType == MatchType.PARLAY || data.matchType == MatchType.AT_START || data.matchType == MatchType.MY_EVENT)
+                (data.gameType == GameType.FT.key || data.gameType == GameType.BK.key || data.gameType == GameType.RB.key || data.gameType == GameType.AFT.key || data.matchType == MatchType.PARLAY || data.matchType == MatchType.AT_START || data.matchType == MatchType.MY_EVENT)
             leagueOddListener = LeagueOddListener(
                 clickListenerPlayType = { matchId, matchInfoList, _, _ ->
                     publicityAdapterListener.onClickPlayTypeListener(
