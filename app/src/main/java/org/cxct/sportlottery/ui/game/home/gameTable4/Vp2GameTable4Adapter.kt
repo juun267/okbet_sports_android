@@ -691,7 +691,7 @@ class Vp2GameTable4Adapter(
             itemView.apply {
                 tv_game_odd_match_cards_home.apply {
                     visibility = when {
-                        (matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && data?.isInPlay ?: false)) && (data?.homeCards ?: 0 > 0) -> View.VISIBLE
+                        TimeUtil.isTimeInPlay(data?.startTime) && (data?.homeCards ?: 0 > 0) -> View.VISIBLE
                         else -> View.GONE
                     }
                     text = (data?.homeCards ?: 0).toString()
@@ -699,7 +699,7 @@ class Vp2GameTable4Adapter(
 
                 tv_game_odd_match_cards_away.apply {
                     visibility = when {
-                        (matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && data?.isInPlay ?: false)) && (data?.awayCards ?: 0 > 0) -> View.VISIBLE
+                        TimeUtil.isTimeInPlay(data?.startTime) && (data?.awayCards ?: 0 > 0) -> View.VISIBLE
                         else -> View.GONE
                     }
                     text = (data?.awayCards ?: 0).toString()
