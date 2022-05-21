@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,10 +41,15 @@ import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setTextTypeFace
 import java.util.*
 
+@SuppressLint("SetTextI18n")
 class Vp2GameTable4Adapter(
     val matchType: MatchType,
 ) :
     RecyclerView.Adapter<Vp2GameTable4Adapter.ViewHolderHdpOu>() {
+
+    enum class GameTablePayload {
+        PAYLOAD_MATCH_STATUS
+    }
 
     var onClickOddListener: OnClickOddListener? = null
 
@@ -111,6 +117,18 @@ class Vp2GameTable4Adapter(
         }
     }
 
+    override fun onBindViewHolder(holder: ViewHolderHdpOu, position: Int, payloads: MutableList<Any>) {
+        if (payloads.isNotEmpty()) {
+            when (payloads.first()) {
+                GameTablePayload.PAYLOAD_MATCH_STATUS -> {
+                    holder.updateMatchStatus(dataList[position].matchInfo)
+                }
+            }
+        } else {
+            onBindViewHolder(holder, position)
+        }
+    }
+
     override fun getItemCount(): Int = dataList.size
 
     fun notifySelectedOddsChanged(selectedOdds: MutableList<String>) {
@@ -158,7 +176,7 @@ class Vp2GameTable4Adapter(
                     matchOdd.matchInfo?.awayCards = matchStatusCO.awayCards
                     matchOdd.matchInfo?.scoreStatus = matchStatusCO.status
                     Handler(Looper.getMainLooper()).post {
-                        notifyItemChanged(index, null)
+                        notifyItemChanged(index, GameTablePayload.PAYLOAD_MATCH_STATUS)
                     }
                 }
             }
@@ -296,6 +314,117 @@ class Vp2GameTable4Adapter(
             }
         }
 
+        fun updateMatchStatus(data: MatchInfo?) {
+            itemView.apply {
+                when (matchType) {
+                    MatchType.IN_PLAY -> {
+                        when (gameType) {
+                            GameType.TN.key -> {
+                                tv_match_status.visibility = View.GONE
+
+                                //盤比分
+                                tv_game_score_home.apply {
+                                    text = "${data?.homeTotalScore ?: 0}"
+                                    visibility = View.VISIBLE
+                                }
+                                tv_game_score_away.apply {
+                                    text = "${data?.awayTotalScore ?: 0}"
+                                    visibility = View.VISIBLE
+                                }
+
+                                //局比分
+                                tv_score.apply {
+                                    text = "${data?.homeScore ?: 0}–${data?.awayScore ?: 0}"
+                                    visibility = View.VISIBLE
+                                }
+
+                                //點比分
+                                tv_point.apply {
+                                    text = "${data?.homePoints ?: 0}–${data?.awayPoints ?: 0}"
+                                    visibility = View.VISIBLE
+                                }
+                            }
+                            GameType.VB.key, GameType.TT.key, GameType.BM.key -> {
+                                tv_game_score_home.visibility = View.GONE
+                                tv_game_score_away.visibility = View.GONE
+                                tv_score.visibility = View.GONE
+                                tv_point.visibility = View.GONE
+
+                                tv_match_status.apply {
+                                    text = "${data?.statusName18n ?: ""} / ${data?.spt ?: ""}"
+                                    visibility = View.VISIBLE
+                                }
+
+                                //盤比分
+                                tv_game_total_score_home_center.apply {
+                                    text = "${data?.homeTotalScore ?: 0}"
+                                    visibility = View.VISIBLE
+                                }
+                                tv_game_total_score_away_center.apply {
+                                    text = "${data?.awayTotalScore ?: 0}"
+                                    visibility = View.VISIBLE
+                                }
+
+                                //點比分
+                                tv_game_score_home_center.apply {
+                                    text = "${data?.homeScore ?: 0}"
+                                    visibility = View.VISIBLE
+                                }
+                                tv_game_score_away_center.apply {
+                                    text = "${data?.awayScore ?: 0}"
+                                    visibility = View.VISIBLE
+                                }
+
+                            }
+                            GameType.CK.key -> {
+                                tv_match_status.apply {
+                                    text = data?.statusName18n ?: ""
+                                    visibility = View.VISIBLE
+                                }
+
+                                tv_game_score_home.apply {
+                                    text = "${data?.homeTotalScore ?: 0}"
+                                    visibility = View.VISIBLE
+                                }
+                                tv_game_score_away.apply {
+                                    text = "${data?.awayTotalScore ?: 0}"
+                                    visibility = View.VISIBLE
+                                }
+                            }
+                            else -> {
+                                tv_match_status.apply {
+                                    text = data?.statusName18n ?: ""
+                                    visibility = View.VISIBLE
+                                }
+
+                                tv_game_score_home.apply {
+                                    text = "${data?.homeScore ?: 0}"
+                                    visibility = View.VISIBLE
+                                }
+                                tv_game_score_away.apply {
+                                    text = "${data?.awayScore ?: 0}"
+                                    visibility = View.VISIBLE
+                                }
+                            }
+                        }
+                    }
+                    MatchType.AT_START -> {
+                        tv_game_type.text = context.getString(R.string.home_tab_today)
+                        data?.startTime?.let {
+                            val date = Date(it)
+                            tv_game_type.text = context.getString(R.string.home_tab_today) + " " + TimeUtil.dateToDateFormat(date, TimeUtil.HM_FORMAT)
+                        }
+
+                        tv_game_score_home.visibility = View.GONE
+                        tv_game_score_away.visibility = View.GONE
+
+                        tv_score.visibility = View.GONE
+                        tv_point.visibility = View.GONE
+                    }
+                }
+            }
+        }
+
         /* 目前不會用，先留著，以防之後說要改回來。
                 private fun ImageView.setLiveImg() {
                     when (gameType) {
@@ -350,95 +479,9 @@ class Vp2GameTable4Adapter(
                     }
                 }
 
-                test_match_id.text = "${data?.leagueId} - ${data?.id}"
-
                 when (matchType) {
                     MatchType.IN_PLAY -> {
                         tv_game_type.text = context.getString(R.string.home_tab_in_play)
-
-                        when (gameType) {
-                            GameType.TN.key -> {
-                                tv_match_status.visibility = View.GONE
-
-                                //盤比分
-                                tv_game_score_home.visibility = View.VISIBLE
-                                tv_game_score_away.visibility = View.VISIBLE
-                                val homeTotalScore = data?.homeTotalScore ?: 0
-                                val awayTotalScore = data?.awayTotalScore ?: 0
-                                tv_game_score_home.text = "$homeTotalScore"
-                                tv_game_score_away.text = "$awayTotalScore"
-
-                                //局比分
-                                tv_score.visibility = View.VISIBLE
-                                val homeScore = data?.homeScore ?: 0
-                                val awayScore = data?.awayScore ?: 0
-                                tv_score.text = "$homeScore–$awayScore"
-
-                                //點比分
-                                tv_point.visibility = View.VISIBLE
-                                val homePoint = data?.homePoints ?: 0
-                                val awayPoint = data?.awayPoints ?: 0
-                                tv_point.text = "$homePoint–$awayPoint"
-                            }
-                            GameType.VB.key, GameType.TT.key, GameType.BM.key -> {
-                                tv_game_total_score_home_center.visibility = View.VISIBLE
-                                tv_game_score_home_center.visibility = View.VISIBLE
-                                tv_game_total_score_away_center.visibility = View.VISIBLE
-                                tv_game_score_away_center.visibility = View.VISIBLE
-
-                                tv_match_status.visibility = View.VISIBLE
-
-                                tv_match_status.text = "${data?.statusName18n ?: ""} / ${data?.spt ?: ""}" ?: ""
-
-                                tv_game_score_home.visibility = View.GONE
-                                tv_game_score_away.visibility = View.GONE
-
-                                //盤比分
-                                val homeTotalScore = data?.homeTotalScore ?: 0
-                                val awayTotalScore = data?.awayTotalScore ?: 0
-                                tv_game_total_score_home_center.text = "$homeTotalScore"
-                                tv_game_total_score_away_center.text = "$awayTotalScore"
-
-                                //點比分
-                                val homeScore = data?.homeScore ?: 0
-                                val awayScore = data?.awayScore ?: 0
-                                tv_game_score_home_center.text = "$homeScore"
-                                tv_game_score_away_center.text = "$awayScore"
-
-                                tv_score.visibility = View.GONE
-                                tv_point.visibility = View.GONE
-                            }
-                            GameType.CK.key -> {
-                                tv_match_status.visibility = View.VISIBLE
-                                tv_match_status.text = data?.statusName18n ?: ""
-
-                                tv_game_score_home.visibility = View.VISIBLE
-                                tv_game_score_away.visibility = View.VISIBLE
-                                val homeScore = data?.homeTotalScore ?: 0
-                                val awayScore = data?.awayTotalScore ?: 0
-                                tv_game_score_home.text = "$homeScore"
-                                tv_game_score_away.text = "$awayScore"
-                            }
-                            else -> {
-                                tv_match_status.visibility = View.VISIBLE
-                                tv_match_status.text = data?.statusName18n ?: ""
-
-                                tv_game_score_home.visibility = View.VISIBLE
-                                tv_game_score_away.visibility = View.VISIBLE
-                                val homeScore = data?.homeScore ?: 0
-                                val awayScore = data?.awayScore ?: 0
-                                tv_game_score_home.text = "$homeScore"
-                                tv_game_score_away.text = "$awayScore"
-                            }
-                        }
-//                        if(data?.scoreStatus == 999){
-//                            tv_game_score_home.visibility = View.GONE
-//                            tv_game_score_away.visibility = View.GONE
-//                            tv_game_total_score_home_center.visibility = View.INVISIBLE
-//                            tv_game_score_home_center.visibility = View.INVISIBLE
-//                            tv_game_total_score_away_center.visibility = View.INVISIBLE
-//                            tv_game_score_away_center.visibility = View.INVISIBLE
-//                        }
                     }
                     MatchType.AT_START -> {
                         tv_game_type.text = context.getString(R.string.home_tab_today)
@@ -446,17 +489,10 @@ class Vp2GameTable4Adapter(
                             val date = Date(it)
                             tv_game_type.text = context.getString(R.string.home_tab_today) + " " + TimeUtil.dateToDateFormat(date, TimeUtil.HM_FORMAT)
                         }
-
-                        tv_game_score_home.visibility = View.GONE
-                        tv_game_score_away.visibility = View.GONE
-
-//                        tv_game_name_home.setTextTypeFace(Typeface.NORMAL)
-//                        tv_game_name_away.setTextTypeFace(Typeface.NORMAL)
-
-                        tv_score.visibility = View.GONE
-                        tv_point.visibility = View.GONE
                     }
+                    else -> {}
                 }
+                updateMatchStatus(data)
             }
         }
 
@@ -509,7 +545,10 @@ class Vp2GameTable4Adapter(
                             val statusName =
                                 if (data?.startDateDisplay.isNullOrEmpty()) "" else data?.startDateDisplay + " "
                             val timeMillisAbs = if (time > 0) time else 0
-                            val timeStr = statusName + String.format(itemView.context.resources.getString(R.string.at_start_remain_minute), TimeUtil.longToMinute(timeMillisAbs))
+                            val timeStr = statusName + String.format(
+                                itemView.context.resources.getString(R.string.at_start_remain_minute),
+                                TimeUtil.longToMinute(timeMillisAbs)
+                            )
                             tv_match_time.text = timeStr
                             dataList[bindingAdapterPosition].runningTime = timeStr
                             tv_match_time.setTextColor(ContextCompat.getColor(context, R.color.color_A3A3A3_666666))
@@ -559,7 +598,13 @@ class Vp2GameTable4Adapter(
                             oddFirst?.let { odd ->
                                 it.isSelected = !it.isSelected
                                 data.matchInfo?.gameType = gameType
-                                onClickOddListener?.onClickBet(data, odd, playCateName.toString(), itemView.tv_play_type.text.toString(), data.betPlayCateNameMap)
+                                onClickOddListener?.onClickBet(
+                                    data,
+                                    odd,
+                                    playCateName.toString(),
+                                    itemView.tv_play_type.text.toString(),
+                                    data.betPlayCateNameMap
+                                )
                             }
                         }
                     }
@@ -592,7 +637,13 @@ class Vp2GameTable4Adapter(
                             oddSecond?.let { odd ->
                                 it.isSelected = !it.isSelected
                                 data.matchInfo?.gameType = gameType
-                                onClickOddListener?.onClickBet(data, odd, playCateName.toString(), itemView.tv_play_type.text.toString(), data.betPlayCateNameMap)
+                                onClickOddListener?.onClickBet(
+                                    data,
+                                    odd,
+                                    playCateName.toString(),
+                                    itemView.tv_play_type.text.toString(),
+                                    data.betPlayCateNameMap
+                                )
                             }
                         }
                     }
@@ -622,7 +673,13 @@ class Vp2GameTable4Adapter(
                             oddThird?.let { odd ->
                                 it.isSelected = !it.isSelected
                                 data.matchInfo?.gameType = gameType
-                                onClickOddListener?.onClickBet(data, odd, playCateName.toString(), itemView.tv_play_type.text.toString(), data.betPlayCateNameMap)
+                                onClickOddListener?.onClickBet(
+                                    data,
+                                    odd,
+                                    playCateName.toString(),
+                                    itemView.tv_play_type.text.toString(),
+                                    data.betPlayCateNameMap
+                                )
                             }
                         }
                     }
@@ -634,7 +691,7 @@ class Vp2GameTable4Adapter(
             itemView.apply {
                 tv_game_odd_match_cards_home.apply {
                     visibility = when {
-                        (matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && data?.isInPlay ?: false)) && (data?.homeCards ?: 0 > 0) -> View.VISIBLE
+                        TimeUtil.isTimeInPlay(data?.startTime) && (data?.homeCards ?: 0 > 0) -> View.VISIBLE
                         else -> View.GONE
                     }
                     text = (data?.homeCards ?: 0).toString()
@@ -642,7 +699,7 @@ class Vp2GameTable4Adapter(
 
                 tv_game_odd_match_cards_away.apply {
                     visibility = when {
-                        (matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && data?.isInPlay ?: false)) && (data?.awayCards ?: 0 > 0) -> View.VISIBLE
+                        TimeUtil.isTimeInPlay(data?.startTime) && (data?.awayCards ?: 0 > 0) -> View.VISIBLE
                         else -> View.GONE
                     }
                     text = (data?.awayCards ?: 0).toString()
