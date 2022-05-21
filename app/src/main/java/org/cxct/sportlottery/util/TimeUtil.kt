@@ -23,6 +23,7 @@ object TimeUtil {
     const val HM_FORMAT = "HH:mm"
     const val MD_HMS_FORMAT = "MM-dd HH:mm:ss"
     const val MD_HM_FORMAT = "MM/dd HH:mm"
+    const val DM_HM_FORMAT = "dd/MM HH:mm"
     private const val YMDE_FORMAT = "yyyy-MMMM-d-EEE"
     private const val YMDE_HMS_FORMAT = "yyyy-MMMM-d-EEE HH:mm:ss"
     private const val DMY_HM_FORMAT = "MM-dd-yyyy HH:mm"
@@ -597,10 +598,15 @@ object TimeUtil {
     /**
      * return: 時間是否為今日
      */
+
     fun isTimeToday(timeMillis: Long?): Boolean {
         val todayTimeMillis = Calendar.getInstance().timeInMillis
 
         return timeFormat(timeMillis ?: 0, YMD_FORMAT) == timeFormat(todayTimeMillis, YMD_FORMAT)
+    }
+
+    fun isTimeInPlay(timeStamp: Long?): Boolean {
+        return getRemainTime(timeStamp) <= 0
     }
 
     fun isTimeAtStart(timeStamp: Long?): Boolean {
