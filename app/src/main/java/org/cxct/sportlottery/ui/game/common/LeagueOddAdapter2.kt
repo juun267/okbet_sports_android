@@ -588,6 +588,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                     } else {
                         itemView.league_odd_match_time.visibility = View.GONE
                     }
+                    itemView.league_odd_match_remain_time_icon.visibility = View.GONE
                 }
 
                 TimeUtil.isTimeAtStart(item.matchInfo?.startTime) -> {
@@ -607,7 +608,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                                 )
                             }
                             item.matchInfo?.remainTime = timeMillis
-
+                            itemView.league_odd_match_remain_time_icon.visibility = View.VISIBLE
                         }
                     }
 
@@ -622,15 +623,12 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 }
                 else -> {
                     itemView.league_odd_match_time.text = TimeUtil.timeFormat(item.matchInfo?.startTime, "HH:mm")
+                    itemView.league_odd_match_remain_time_icon.visibility = View.GONE
                 }
             }
 
             setStatusText(item, matchType)
             setTextViewStatus(item, matchType)
-
-            itemView.league_odd_match_remain_time_icon.apply {
-                visibility = if (TimeUtil.isTimeAtStart(item.matchInfo?.startTime)) View.VISIBLE else View.INVISIBLE
-            }
         }
 
         private fun setStatusText(item: MatchOdd, matchType: MatchType) {
