@@ -170,6 +170,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="8dp"
+        android:layout_marginBottom="4dp"
         android:background="@color/color_141414_F3F4F5"
         app:layout_constraintTop_toBottomOf="@id/block_amount" />
 
@@ -178,7 +179,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:background="@color/color_191919_FCFCFC"
         android:paddingHorizontal="16dp"
         app:cardCornerRadius="6dp"

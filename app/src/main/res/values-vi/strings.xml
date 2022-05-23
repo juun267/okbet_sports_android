@@ -121,6 +121,7 @@
     <string name="btn_agreement">Thỏa thuận mở tài khoản</string>
     <string name="have_account">Bạn đã có tài khoản?</string>
     <string name="btn_login">Đăng nhập</string>
+    <string name="btn_login_by_credit_system">Đăng nhập ngay</string>
     <string name="btn_register">Đăng ký</string>
     <string name="no_announcement">Không có thông báo</string>
     <string name="lottery">Xổ số</string>

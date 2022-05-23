@@ -75,10 +75,6 @@ data class UserInfoData(
     val zalo: String?,
     @Json(name = "growth")
     val growth: Long?,
-    @Json(name = "creditAccount")
-    val creditAccount: Int?,
-    @Json(name = "creditStatus")
-    val creditStatus: Int?,
     @Json(name = "maxBetMoney")
     val maxBetMoney: Int?,
     @Json(name = "maxCpBetMoney")

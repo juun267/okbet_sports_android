@@ -32,6 +32,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
+import org.cxct.sportlottery.util.setVisibilityByCreditSystem
 import org.parceler.Parcels
 
 class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class),
@@ -51,7 +52,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
             val intent = Intent(context, GamePublicityActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
-            if(context is Activity){
+            if (context is Activity) {
                 context.overridePendingTransition(R.anim.push_right_to_left_enter, R.anim.push_right_to_left_exit)
             }
         }
@@ -133,6 +134,8 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         //region view bottom
         binding.tvRegister.letterSpacing = 0.0892957143f
         binding.tvLogin.letterSpacing = 0.0892957143f
+
+        binding.tvRegister.setVisibilityByCreditSystem()
     }
 
     private fun initOnClickListener() {

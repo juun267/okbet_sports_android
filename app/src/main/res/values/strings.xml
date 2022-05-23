@@ -122,6 +122,7 @@
     <string name="btn_agreement">Account Opening Agreement</string>
     <string name="have_account">Already have an account?</string>
     <string name="btn_login">Login</string>
+    <string name="btn_login_by_credit_system">Login Now</string>
     <string name="btn_register">Sign Up</string>
     <string name="no_announcement">No announcement</string>
     <string name="lottery">Lottery</string>

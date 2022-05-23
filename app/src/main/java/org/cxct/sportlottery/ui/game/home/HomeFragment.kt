@@ -117,7 +117,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     private var pokerCount = 0
     private var slotCount = 0
     private var fishingCount = 0
-    private var isCreditAccount = false
     private var selectedSportType: Item? = null
     private var mTimer: Timer? = null
 
@@ -852,11 +851,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             }
         }
 
-        viewModel.isCreditAccount.observe(viewLifecycleOwner) {
-            isCreditAccount = it
-            updateThirdGameCard()
-        }
-
         viewModel.isLogin.observe(viewLifecycleOwner) {
             mHomeListAdapter.isLogin = it
         }
@@ -1188,11 +1182,11 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
     private fun updateThirdGameCard() {
         mHomeListAdapter.updateThirdGameCard(
-            lotteryVisible = isShowThirdGame && lotteryCount > 0 && !isCreditAccount,
-            liveVisible = isShowThirdGame && liveCount > 0 && !isCreditAccount,
-            pokerVisible = isShowThirdGame && pokerCount > 0 && !isCreditAccount,
-            slotVisible = isShowThirdGame && slotCount > 0 && !isCreditAccount,
-            fishingVisible = isShowThirdGame && fishingCount > 0 && !isCreditAccount
+            lotteryVisible = isShowThirdGame && lotteryCount > 0,
+            liveVisible = isShowThirdGame && liveCount > 0 ,
+            pokerVisible = isShowThirdGame && pokerCount > 0 ,
+            slotVisible = isShowThirdGame && slotCount > 0 ,
+            fishingVisible = isShowThirdGame && fishingCount > 0
         )
     }
 

@@ -111,9 +111,10 @@ class ProfileCenterActivity :
         setupLogout()
         setupMoreButtons()
         initBottomNav()
-//        initServiceButton()
         getUserInfo()
         initObserve()
+        updateThirdOpenUI()
+        updateCreditAccountUI()
     }
 
     private fun initView() {
@@ -560,10 +561,6 @@ class ProfileCenterActivity :
             else
                 iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(msg) {} }
         }
-
-        viewModel.isCreditAccount.observe(this) {
-            updateCreditAccountUI(it)
-        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -599,56 +596,17 @@ class ProfileCenterActivity :
         viewModel.uploadImage(uploadImgRequest)
     }
 
-    private fun updateCreditAccountUI(isCreditAccount: Boolean) {
+    private fun updateThirdOpenUI(){
         val thirdOpen = sConfigData?.thirdOpen == FLAG_OPEN
+        profile_center_back.visibility = if (!thirdOpen) View.VISIBLE else View.GONE
+        btn_account_transfer.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
+        btn_other_bet_record.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
+        bottom_nav_view.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
+    }
 
-        profile_center_back.visibility =
-            if (isCreditAccount || sConfigData?.thirdOpen != FLAG_OPEN) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
-
-        block_card.visibility = if (isCreditAccount) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
-
-        btn_credit_bet_record.visibility = if (isCreditAccount) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-
-        btn_account_transfer.visibility = if (isCreditAccount || !thirdOpen) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
-
-        btn_withdrawal_setting.visibility = if (isCreditAccount) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
-
-        btn_other_bet_record.visibility = if (isCreditAccount || !thirdOpen) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
-
-        btn_fund_detail.visibility = if (isCreditAccount) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
-
-        bottom_nav_view.visibility = if (isCreditAccount || sConfigData?.thirdOpen != FLAG_OPEN) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
+    private fun updateCreditAccountUI() {
+        block_card.setVisibilityByCreditSystem()
+        btn_withdrawal_setting.setVisibilityByCreditSystem()
+        btn_promotion.setVisibilityByCreditSystem()
     }
 }

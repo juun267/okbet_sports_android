@@ -55,8 +55,6 @@ class MainViewModel(
         get() = _navActivity
     private val _navActivity = MutableLiveData<Event<Class<*>>>()
 
-    val isCreditAccount: LiveData<Boolean> = loginRepository.isCreditAccount
-
     private val _promoteNoticeResult = MutableLiveData<Event<MessageListResult>>()
     val promoteNoticeResult: LiveData<Event<MessageListResult>>
         get() = _promoteNoticeResult

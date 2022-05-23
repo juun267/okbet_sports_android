@@ -29,8 +29,6 @@ abstract class BaseBottomNavViewModel(
     infoCenterRepository,
     favoriteRepository
 ) {
-    val isCreditAccount: LiveData<Boolean> = loginRepository.isCreditAccount
-
     val thirdGameCategory: LiveData<Event<ThirdGameCategory?>>
         get() = _thirdGameCategory
 
@@ -61,7 +59,7 @@ abstract class BaseBottomNavViewModel(
     fun navMainPage(thirdGameCategory: ThirdGameCategory) {
         _thirdGameCategory.postValue(
             Event(
-                if (isCreditAccount.value == true || sConfigData?.thirdOpen != FLAG_OPEN) {
+                if (sConfigData?.thirdOpen != FLAG_OPEN) {
                     _navPublicityPage.postValue(Event(true))
                     null
                 } else {

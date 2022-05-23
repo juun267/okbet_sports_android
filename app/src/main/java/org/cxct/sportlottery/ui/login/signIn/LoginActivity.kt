@@ -24,7 +24,6 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.SelfLimitFrozeErrorDialog
-import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -39,6 +38,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     private val loginScope = CoroutineScope(Dispatchers.Main)
 
     private lateinit var binding: ActivityLoginBinding
+
     companion object {
         private const val SELF_LIMIT = 1130
     }
@@ -95,35 +95,21 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             binding.eetPassword.setSelection(binding.eetPassword.text.toString().length)
         }
         //避免自動記住密碼被人看到，把顯示密碼按鈕功能隱藏，直到密碼被重新編輯才顯示
-        if(binding.eetPassword.text.toString().isNotEmpty()) {
+        if (binding.eetPassword.text.toString().isNotEmpty()) {
             binding.etPassword.endIconImageButton.visibility = View.GONE
-        }else{
+        } else {
             binding.etPassword.endIconImageButton.visibility = View.VISIBLE
         }
-//        binding.etPassword.setOnFocusChangeListener { v, hasFocus ->
-//            if (!hasFocus)
-//                checkInputData()
-//        }
         binding.etPassword.setSimpleTextChangeWatcher(object : SimpleTextChangedWatcher {
             override fun onTextChanged(theNewText: String?, isError: Boolean) {
-                    if (binding.etPassword.endIconImageButton.visibility == View.GONE) {
-                        binding.etPassword.endIconImageButton.visibility = View.VISIBLE
-                        binding.eetPassword.setText(null)
-                    }
+                if (binding.etPassword.endIconImageButton.visibility == View.GONE) {
+                    binding.etPassword.endIconImageButton.visibility = View.VISIBLE
+                    binding.eetPassword.setText(null)
+                }
 
             }
         })
         binding.btnLogin.requestFocus()
-//        et_password.eyeVisibility = View.GONE
-//        et_password.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
-//            if (hasFocus && et_password.eyeVisibility == View.GONE) {
-//                et_password.eyeVisibility = View.VISIBLE
-//                et_password.setText(null)
-//            }
-//
-//            if (!hasFocus)
-//                checkInputData()
-//        }
     }
 
     private fun setupValidCode() {
@@ -134,18 +120,6 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             binding.blockValidCode.visibility = View.GONE
         }
         binding.ivReturn.setOnClickListener { updateValidCode() }
-//        binding.eetVerificationCode.setOnFocusChangeListener { v, hasFocus ->
-//            if (!hasFocus)
-//                checkInputData()
-//        }
-//        binding.ivReturn.setVerificationCodeBtnOnClickListener(View.OnClickListener {
-//            updateValidCode()
-//        })
-
-//        et_verification_code.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
-//            if (!hasFocus)
-//                checkInputData()
-//        }
     }
 
     private fun setupLoginButton() {
@@ -217,6 +191,8 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun setupRegisterButton() {
+        binding.btnSignUp.setVisibilityByCreditSystem()
+
         binding.btnSignUp.setOnClickListener {
             startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
             finish()
@@ -258,9 +234,9 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             }
         } else {
             updateValidCode()
-            if(loginResult.code == SELF_LIMIT){
+            if (loginResult.code == SELF_LIMIT) {
                 showSelfLimitFrozeErrorDialog(loginResult.msg)
-            }else{
+            } else {
                 showErrorDialog(loginResult.msg)
             }
         }

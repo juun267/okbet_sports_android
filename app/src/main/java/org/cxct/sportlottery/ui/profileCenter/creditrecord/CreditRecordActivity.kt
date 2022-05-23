@@ -2,15 +2,12 @@ package org.cxct.sportlottery.ui.profileCenter.creditrecord
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_credit_record.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.util.SpaceItemDecoration
-
 
 class CreditRecordActivity :
     BaseSocketActivity<CreditRecordViewModel>(CreditRecordViewModel::class) {
@@ -82,23 +79,6 @@ class CreditRecordActivity :
                 loading()
             } else {
                 hideLoading()
-            }
-        }
-
-        viewModel.userInfo.observe(this) {
-            credit_record_remain.visibility = when (it?.creditStatus) {
-                1 -> View.VISIBLE
-                else -> View.GONE
-            }
-
-            credit_record_remain_day.visibility = when (it?.creditStatus) {
-                1 -> View.VISIBLE
-                else -> View.GONE
-            }
-
-            credit_record_deactivate.visibility = when (it?.creditStatus) {
-                1 -> View.GONE
-                else -> View.VISIBLE
             }
         }
 
