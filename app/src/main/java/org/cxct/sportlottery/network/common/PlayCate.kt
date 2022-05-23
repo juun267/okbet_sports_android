@@ -374,8 +374,11 @@ enum class PlayCate(val value: String) {
                 CORNER_1ST_OU.value//角球大/小-上半场
                 -> true
                 else -> {
-                    //角球:第{S}个角球
-                    code?.contains(N_CORNER_GOAL.value) ?: false
+                    when {
+                        //角球:第{S}个角球
+                        code?.contains(ComparePlayCate.N_CORNER_GOAL.compareCode) == true -> true
+                        else -> false
+                    }
                 }
             }
         }
