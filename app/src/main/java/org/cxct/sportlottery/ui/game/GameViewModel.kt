@@ -11,6 +11,7 @@ import com.bekawestberg.loopinglayout.library.addViewsAtAnchorEdge
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -65,6 +66,7 @@ import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.data.SpecialEntrance
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.px
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.TimeUtil.DMY_FORMAT
@@ -310,8 +312,12 @@ class GameViewModel(
         get() = _matchLiveInfo
 
     //賽事動畫網址
-    private val _matchTrackerUrl = MutableLiveData<Event<MatchTrackerUrl?>>()
+    /*private val _matchTrackerUrl = MutableLiveData<Event<MatchTrackerUrl?>>()
     val matchTrackerUrl: LiveData<Event<MatchTrackerUrl?>>
+        get() = _matchTrackerUrl*/
+
+    private val _matchTrackerUrl = MutableLiveData<Event<String?>>()
+    val matchTrackerUrl: LiveData<Event<String?>>
         get() = _matchTrackerUrl
 
     //Loading
@@ -2141,8 +2147,8 @@ class GameViewModel(
                     }
 
                     _oddsDetailList.postValue(Event(list))
-                    //aaaaa
-                    if (MultiLanguagesApplication.getInstance()?.getGameDetailAnimationNeedShow() == true) {
+                    //舊 動畫獲取url
+                    /*if (MultiLanguagesApplication.getInstance()?.getGameDetailAnimationNeedShow() == true) {
                         val animationTrackerId = result.oddsDetailData?.matchOdd?.matchInfo?.trackerId
                         if (!animationTrackerId.isNullOrEmpty()) {
                             doNetwork(androidContext) {
@@ -2153,7 +2159,19 @@ class GameViewModel(
                                 }
                             }
                         }
-                    }
+                    }*/
+
+                    //賽事動畫網址
+                    val eventId = result.oddsDetailData?.matchOdd?.matchInfo?.trackerId
+                    val screenWidth = MetricsUtil.getScreenWidth().toFloat().px
+                    val animationHeight = (LiveUtil.getAnimationHeightFromWidth(screenWidth))
+                    val languageParams = LanguageManager.getLanguageString(MultiLanguagesApplication.appContext)
+
+                    val trackerUrl = "${Constants.getBaseUrl()}animation/?eventId=${eventId}&width=${screenWidth}&height=${animationHeight}&lang=${languageParams}&mode=widget"
+                    //測試用eventId=4385309
+//                    val trackerUrl = "${Constants.getBaseUrl()}animation/?eventId=4385309&width=${screenWidth}&height=${animationHeight}&lang=${languageParams}&mode=widget"
+
+                    _matchTrackerUrl.postValue(Event(trackerUrl))
                     notifyFavorite(FavoriteType.PLAY_CATE)
                 }
             }

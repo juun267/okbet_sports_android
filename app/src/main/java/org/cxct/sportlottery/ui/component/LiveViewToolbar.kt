@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.component
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Bitmap
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import com.google.android.exoplayer2.*
@@ -22,6 +24,7 @@ import kotlinx.android.synthetic.main.view_toolbar_live.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.LiveUtil
 import timber.log.Timber
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -68,6 +71,13 @@ class LiveViewToolbar @JvmOverloads constructor(
             checkControlBarVisibility()
         }
     private var mTrackerUrl: String = ""
+        set(value) {
+            if (field != value) {
+                field = value
+                if (iv_animation.isSelected)
+                    openWebView()
+            }
+        }
 
     private var mLiveShowTag = true
 
@@ -262,6 +272,11 @@ class LiveViewToolbar @JvmOverloads constructor(
                 mLiveShowTag = true
                 iv_play.isSelected = true
                 lastLiveType = LiveType.LIVE
+                //動畫高度
+                web_view_layout.layoutParams = FrameLayout.LayoutParams(
+                    web_view_layout.width,
+                    resources.getDimensionPixelSize(R.dimen.live_player_height)
+                )
                 checkExpandLayoutStatus()
                 liveToolBarListener?.getLiveInfo()
                 if (!mStreamUrl.isNullOrEmpty()) {
@@ -479,15 +494,22 @@ class LiveViewToolbar @JvmOverloads constructor(
                 return true
             }
 
+            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                super.onPageStarted(view, url, favicon)
+                setWebViewHeight()
+            }
+
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
                 animationLoadFinish = true
             }
         }
-        if (!animationLoadFinish)
+        if (!animationLoadFinish) {
             web_view.loadUrl(mTrackerUrl)
-        else
+        } else {
             web_view.onResume()
+            setWebViewHeight()
+        }
         checkExpandLayoutStatus()
     }
 
@@ -498,16 +520,26 @@ class LiveViewToolbar @JvmOverloads constructor(
         checkExpandLayoutStatus()
 //        setAnimationImgIcon(false)
     }
+
+    /**
+     * 設置WebView高度
+     */
+    private fun setWebViewHeight() {
+        web_view_layout.layoutParams = FrameLayout.LayoutParams(
+            web_view_layout.width,
+            LiveUtil.getAnimationHeightFromWidth(web_view_layout.width).toInt()
+        )
+    }
     //endregion
 
 
     fun initLiveType(hasStream: Boolean, hasAnimation: Boolean) {
         if (lastLiveType != null) return
         when {
-            hasStream -> {
+            /*hasStream -> {
                 lastLiveType = LiveType.LIVE
-            }
-            hasAnimation -> {
+            }*/
+            true -> {
                 lastLiveType = LiveType.ANIMATION
                 iv_animation.performClick()
             }
