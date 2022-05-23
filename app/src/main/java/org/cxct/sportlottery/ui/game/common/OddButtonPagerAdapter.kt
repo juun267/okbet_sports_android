@@ -555,7 +555,7 @@ class OddButtonPagerViewHolder private constructor(
 
         var playCateName =
             playCateNameMap[odds.first].getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
-                .replace(": ", " ").replace("||", "\n").replace("{S}", replaceScore)
+                .replace(": ", " ").replace("||", "\n").replace("{S}", replaceScore).replace("{H}","${matchInfo.homeName}")?.replace("{C}","${matchInfo.awayName}")
 
         odds.second?.firstOrNull()?.replaceScore?.let { playCateName.replace("{S}", it) }
 
