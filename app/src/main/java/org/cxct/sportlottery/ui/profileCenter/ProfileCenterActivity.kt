@@ -561,10 +561,6 @@ class ProfileCenterActivity :
             else
                 iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(msg) {} }
         }
-
-        viewModel.isCreditAccount.observe(this) {
-//            updateCreditAccountUI(it)
-        }
     }
 
     @SuppressLint("SetTextI18n")
