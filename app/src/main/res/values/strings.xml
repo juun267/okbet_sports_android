@@ -438,7 +438,7 @@
     <string name="title_name">Full Name：</string>
     <string name="title_account">Account：</string>
     <string name="title_address">Address：</string>
-    <string name="title_deposit_money">Top-up amount</string>
+    <string name="title_deposit_money">Deposit Amount</string>
     <string name="title_payer">Account</string>
 <!--    <string name="edt_hint_deposit_money">Limit %1$s～%2$s RMB</string>-->
     <string name="edt_hint_deposit_money">Limit %1$s～%2$s</string>
@@ -453,7 +453,7 @@
     <string name="edt_hint_wx_id">Please enter Wechat ID</string>
     <string name="title_bank_account">Bank account number</string>
     <string name="edt_hint_bank_account">Enter the bank account number</string>
-    <string name="title_recharge_time">Top-up time</string>
+    <string name="title_recharge_time">Deposit Time</string>
     <string name="title_current_money">Current balance</string>
     <string name="btn_submit">Submit</string>
     <string name="btn_copy">Copy</string>
@@ -662,7 +662,7 @@
     <string name="complete">Completed</string>
     <string name="winnable_amount_colon">To Win：</string>
     <string name="finance">Fund Detail</string>
-    <string name="record_recharge">Deposit Record</string>
+    <string name="record_recharge">Deposit Records</string>
     <string name="record_withdrawal">Withdrawal Record</string>
     <string name="record_conversion">Conversion Record</string>
     <string name="record_history">Transaction History</string>

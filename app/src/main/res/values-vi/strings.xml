@@ -427,7 +427,7 @@
     <string name="title_name">Họ tên：</string>
     <string name="title_account">Tài khoản：</string>
     <string name="title_address">Địa chỉ：</string>
-    <string name="title_deposit_money">Số tiền nạp</string>
+    <string name="title_deposit_money">Số tiền đặt cọc</string>
     <string name="title_payer">Tài khoản</string>
     <string name="edt_hint_deposit_money">Giới hạn %1$s～%2$s</string>
     <string name="edt_hint_payer">Vui lòng nhập số tài khoản của bạn</string>
@@ -649,7 +649,7 @@
     <string name="complete">Hoàn thành</string>
     <string name="winnable_amount_colon">Số tiền có thể thắng : </string>
     <string name="finance">Chi tiết quỹ</string>
-    <string name="record_recharge">Lịch sử gửi tiền</string>
+    <string name="record_recharge">Hồ sơ tiền gửi</string>
     <string name="record_withdrawal">Lịch sử rút tiền</string>
     <string name="record_conversion">Lịch sử chuyển đổi</string>
     <string name="record_history">Lịch sử</string>
