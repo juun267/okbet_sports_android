@@ -115,7 +115,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="@dimen/margin_10"
                 android:layout_marginBottom="@dimen/margin_10"
-                android:background="@color/color_2B2B2B_e2e2e2" />
+                android:background="@color/color_cccccc_e2e2e2" />
 
             <EditText
                 android:id="@+id/etFrozeDay"
@@ -125,7 +125,7 @@
                 android:layout_marginLeft="@dimen/margin_8"
                 android:layout_weight="1"
                 android:backgroundTint="@color/transparent"
-                android:textColor="@color/color_404040_cccccc"
+                android:textColor="@color/color_e5e5e5_333333"
                 android:textColorHint="@color/color_404040_cccccc"
                 android:hint="@string/self_limit_froze_input_days"
                 android:inputType="number"
