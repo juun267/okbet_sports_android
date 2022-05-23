@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.itemview_league_quick.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.MatchSource
+import org.cxct.sportlottery.enum.PayLoadEnum
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
@@ -81,11 +82,17 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
         data.forEachIndexed { index, matchOdd ->
             matchOdd.oddsMap?.values?.forEach { oddList ->
                 if (oddList?.any { it?.id == clickOdd?.id } == true) {
-                    notifyItemChanged(index, Pair(BET_INFO, matchOdd))
+                    notifyItemChanged(index, Pair(PayLoadEnum.PAYLOAD_BET_INFO, matchOdd))
                     leagueOddListener?.clickOdd = null
                 }
             }
         }
+    }
+
+    fun updateByPlayCate(){
+       data.forEachIndexed { index, matchOdd ->
+           notifyItemChanged(index, Pair(PayLoadEnum.PAYLOAD_PLAYCATE, matchOdd))
+       }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -139,18 +146,30 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 }
 
                 is Pair<*, *> -> {
-                    val matchOdd = payloads.first() as Pair<*, *>
-                    (holder as ViewHolderHdpOu).updateByBetInfo(
-                        item = matchOdd.second as MatchOdd,
-                        leagueOddListener = leagueOddListener,
-                        oddsType = oddsType,
-                        playSelectedCodeSelectionType = playSelectedCodeSelectionType,
-                        playSelectedCode = playSelectedCode
-                    )
+                    (payloads.first() as Pair<*, *>).apply {
+                        when(first){
+                            PayLoadEnum.PAYLOAD_BET_INFO -> {
+                                (holder as ViewHolderHdpOu).updateByBetInfo(
+                                    item = second as MatchOdd,
+                                    leagueOddListener = leagueOddListener,
+                                    oddsType = oddsType,
+                                    playSelectedCodeSelectionType = playSelectedCodeSelectionType,
+                                    playSelectedCode = playSelectedCode
+                                )
+                            }
+
+                            PayLoadEnum.PAYLOAD_PLAYCATE -> {
+                                (holder as ViewHolderHdpOu).updateByPlayCate(
+                                    item = second as MatchOdd,
+                                    leagueOddListener = leagueOddListener,
+                                    oddsType = oddsType,
+                                    playSelectedCodeSelectionType = playSelectedCodeSelectionType,
+                                )
+                            }
+                        }
+                    }
                 }
             }
-
-
         }
     }
 
@@ -231,6 +250,15 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             itemView.quickListView?.setDatas(item, oddsType, leagueOddListener, playSelectedCodeSelectionType, playSelectedCode)
             itemView.quickListView?.refreshTab()
             itemView.quickListView?.updateQuickSelected()
+        }
+
+        fun updateByPlayCate(
+            item: MatchOdd,
+            oddsType: OddsType,
+            leagueOddListener: LeagueOddListener?,
+            playSelectedCodeSelectionType: Int?,
+        ){
+            setupOddsButton(item, oddsType, leagueOddListener, playSelectedCodeSelectionType)
         }
 
         private fun updateMatchInfo(item: MatchOdd, matchType: MatchType) {
@@ -377,20 +405,6 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 setAllScoreTextAtBottom(matchType, item)
                 setScoreText(matchType, item)
                 setSptText(item, matchType)
-            }
-        }
-
-        private fun hideMatchScoreText() {
-            with(itemView) {
-                league_odd_match_score_home.visibility = View.GONE
-                league_odd_match_score_away.visibility = View.GONE
-
-                league_odd_match_total_score_home_bottom.visibility = View.GONE
-                league_odd_match_total_score_away_bottom.visibility = View.GONE
-                league_odd_match_score_home_bottom.visibility = View.GONE
-                league_odd_match_score_away_bottom.visibility = View.GONE
-                league_odd_match_point_home_bottom.visibility = View.GONE
-                league_odd_match_point_away_bottom.visibility = View.GONE
             }
         }
 
