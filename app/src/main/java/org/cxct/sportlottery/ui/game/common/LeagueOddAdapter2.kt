@@ -637,7 +637,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 }
                 else -> {
                     itemView.league_odd_match_time.text = TimeUtil.timeFormat(item.matchInfo?.startTime, "HH:mm")
-                    itemView.league_odd_match_remain_time_icon.visibility = View.GONE
+                    itemView.league_odd_match_remain_time_icon.visibility = if (TimeUtil.isTimeToday(item.matchInfo?.startTime)) View.VISIBLE else View.GONE
                 }
             }
 
