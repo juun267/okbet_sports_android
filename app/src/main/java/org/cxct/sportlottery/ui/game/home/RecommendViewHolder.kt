@@ -119,7 +119,8 @@ class RecommendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     data.toMatchOdd(),
                     data.dynamicMarkets,
                     data.playCateNameMap,
-                    data.betPlayCateNameMap
+                    data.betPlayCateNameMap,
+                    data.matchInfo
                 )
 
             data.vpRecommendAdapter?.oddsType = oddsType

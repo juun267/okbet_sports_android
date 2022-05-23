@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.home_recommend_vp.view.*
 import kotlinx.android.synthetic.main.home_recommend_vp.view.tv_play_type
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.matchCategory.result.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.outright.odds.DynamicMarket
@@ -35,7 +36,8 @@ class VpRecommendAdapter(
     val matchOdd: MatchOdd,
     val dynamicMarkets: Map<String, DynamicMarket>?,
     var playCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
-    var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
+    var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
+    var matchInfo: MatchInfo?
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class ItemType {
@@ -86,7 +88,7 @@ class VpRecommendAdapter(
             when (holder) {
                 is ViewHolderHdpOu -> {
                     val data = dataList.filterPlayCateSpanned(sportCode)[position]
-                    holder.bind(data, playCateNameMap)
+                    holder.bind(data, playCateNameMap, matchInfo)
                 }
                 is ViewHolderEPS -> {
                     val data = dataList.filterPlayCateSpanned(sportCode)[position]
@@ -142,7 +144,11 @@ class VpRecommendAdapter(
         override val oddStateChangeListener: OddStateChangeListener = mOddStateRefreshListener
     ) : OddStateViewHolder(itemView) {
 
-        fun bind(data: OddBean, playCateNameMap: MutableMap<String?, Map<String?, String?>?>?) {
+        fun bind(
+            data: OddBean,
+            playCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
+            matchInfo: MatchInfo?
+        ) {
             when (data.playTypeCode) {
                 PlayCate.EPS.value -> {
                     itemView.apply {
@@ -155,7 +161,7 @@ class VpRecommendAdapter(
                 else -> {
                     itemView.apply {
 
-                        tv_play_type.text = playCateNameMap?.get(data.playTypeCode)?.get(LanguageManager.getSelectLanguage(context).key)
+                        tv_play_type.text = playCateNameMap?.get(data.playTypeCode)?.get(LanguageManager.getSelectLanguage(context).key)?.replace("||", "\n")?.replace("{H}","${matchInfo?.homeName}")?.replace("{C}","${matchInfo?.awayName}")
 
                         if (data.oddList.isNotEmpty()) {
                             odd_btn_home.visibility = View.VISIBLE
