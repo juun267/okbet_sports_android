@@ -16,6 +16,9 @@ enum class ComparePlayCate(private val compareCode: String, private val mainPlay
     //1X2 獨贏
     PENALTY_SINGLE_SEG("PENALTY-1X2-SEG", PlayCate.PENALTY_SINGLE_SEG1),
     CORNER_SINGLE_SEG("CORNER-1X2-SEG", PlayCate.CORNER_SINGLE_SEG1),
+
+    //CORNER 角球
+    N_CORNER_GOAL("N-CORNER-GOAL", PlayCate.N_CORNER_GOAL),
     //endregion
 
     //region BK 籃球
@@ -46,6 +49,7 @@ enum class ComparePlayCate(private val compareCode: String, private val mainPlay
             playCateCode.contains(CORNER_HDP_SEG.compareCode) -> CORNER_HDP_SEG.mainPlayCate
             playCateCode.contains(PENALTY_SINGLE_SEG.compareCode) -> PENALTY_SINGLE_SEG.mainPlayCate
             playCateCode.contains(CORNER_SINGLE_SEG.compareCode) -> CORNER_SINGLE_SEG.mainPlayCate
+            playCateCode.contains(N_CORNER_GOAL.compareCode) -> N_CORNER_GOAL.mainPlayCate
             else -> compareCommonCateCode(playCateCode)
         }
 
