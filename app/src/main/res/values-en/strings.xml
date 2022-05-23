@@ -666,7 +666,7 @@
     <string name="record_withdrawal">Withdrawal Record</string>
     <string name="record_conversion">Conversion Record</string>
     <string name="record_history">Transaction History</string>
-    <string name="recharge_state_success">success</string>
+    <string name="recharge_state_success">Success</string>
     <string name="recharge_state_failed">Fail</string>
     <string name="recharge_state_processing">Processing</string>
     <string name="all_order_status">All Status</string>
