@@ -36,14 +36,14 @@
     <string name="desc_forget_password">vui lòng liên hệ chăm sóc khách hàng</string>
     <string name="sign_up_know">Đăng ký ngay</string>
     <string name="recommend_code">Mã giới thiệu</string>
-    <string name="hint_recommend_code">(Vui lòng nhập mã giới thiệu)</string>
+    <string name="hint_recommend_code">(Vui lòng nhập Mã giới thiệu)</string>
     <string name="error_recommend_code">Mã giới thiệu không tồn tại</string>
-    <string name="member_account">Tài khoản hội viên</string>
+    <string name="member_account">Đăng nhập tài khoản</string>
     <string name="hint_member_account">(Độ dài từ 4-16 ký tự bao gồm cả chữ và số)</string>
     <string name="error_member_account">Tài khoản từ 4-16 ký tự bao gồm chữ và số</string>
     <string name="desc_register_checking_account">Đang kiểm tra tài khoản</string>
     <string name="error_register_id_exist">Tên tài khoản đã tồn tại</string>
-    <string name="hint_register_password">(4–16 ký tự gồm chữ cái và số)</string>
+    <string name="hint_register_password">(Độ dài từ 4-16 ký tự bao gồm chữ cái và số)</string>
     <string name="error_register_password">Mật khẩu từ 4-16 ký tự bao gồm chữ và số</string>
     <string name="error_password_format">Mật khẩu cần phải chữ và số</string>
     <string name="register_please_read">Hãy đọc kỹ</string>
@@ -52,7 +52,8 @@
     <string name="register_privacy_policy">&#160;chính sách bảo mật</string>
     <string name="register_privacy_policy_promotions"></string>
     <string name="register_over_21">Tôi trên 21 tuổi, đã đọc và đồng ý với&#160;</string>
-    <string name="register_rules">&#160;Điều khoản &amp; Điều kiện của %s</string>
+    <string name="register_rules">&#160;Điều khoản &amp; Điều kiện</string>
+    <string name="register_rules_2nd_half">&#160;của %s</string>
     <string name="register_not_ph_official">Tôi không phải là quan chức chính phủ và / hoặc nhân viên có liên hệ trực tiếp với hoạt động của chính phủ Philippines hoặc bất kỳ cơ quan nào của chính phủ.</string>
     <string name="register_not_ph_school">Tôi không phải là sinh viên của bất kỳ trường học, cao đẳng hoặc đại học nào ở Philippines</string>
     <string name="register_rule_okbet">Tôi hiểu rằng nếu thông tin tôi cung cấp bị phát hiện là không chính xác, OkBet có quyền áp dụng hình phạt đối với tài khoản của tôi theo Điều khoản và Điều kiện Phần 5.1 - 5.2.</string>
@@ -472,6 +473,7 @@
     <string name="hint_pay2">2. Không có phản hồi trong một thời gian dài, Vui lòng Liên hệ CSKH.</string>
     <string name="btn_look_for">Xem giao dịch</string>
     <string name="btn_service">Liên hệ CSKH</string>
+    <string name="btn_service_maintain">Liên hệ CSKH</string>
     <string name="txv_transfer_pay">Thanh toán chuyển khoản</string>
     <string name="txv_online_pay">Thanh toán trực tuyến</string>
     <string name="txv_crypto_pay">Chuyển khoản tiền ảo</string>
@@ -550,10 +552,10 @@
     <string name="withdraw_amount">Số tiền rút</string>
     <string name="withdraw_password">Mật khẩu rút tiền</string>
     <string name="withdraw_all">TẤT CẢ CÁC</string>
-    <string name="withdraw_handling_fee_hint">・Tỷ lệ phí xử lý ：%1$s%% Phí xử lý phải trả：%2$s</string>
-    <string name="withdraw_crypto_exchange_rate_hint">・Tỷ giá：%1$s</string>
-    <string name="withdraw_crypto_amount_hint">・Số tiền rút：%1$s %s</string>
-    <string name="withdraw_crypto_fee_hint">・Phí rút tiền：%1$s %s</string>
+    <string name="withdraw_handling_fee_hint">· Tỷ lệ phí xử lý ：%1$s%% Phí xử lý phải trả：%2$s</string>
+    <string name="withdraw_crypto_exchange_rate_hint">· Tỷ giá：%1$s</string>
+    <string name="withdraw_crypto_amount_hint">· Số tiền rút：%1$s %s</string>
+    <string name="withdraw_crypto_fee_hint">· Phí rút tiền：%1$s %s</string>
     <string name="hint_please_enter_withdraw_amount">số tiền giới hạn %1$s~%2$s</string>
     <string name="hint_four_number_password">Vui lòng nhập mật khẩu rút tiền</string>
     <string name="hint_please_enter_withdraw_password">Mật khẩu rút tiền</string>
@@ -740,7 +742,7 @@
     <string name="live">Live</string>
     <string name="lottery_description">Có hơn trăm cách chơi xổ số để bạn trúng thưởng! Chúng tôi cung cấp cho người chơi nhiều nội dung trò chơi phong phú khác nhau, \ n cam kết tạo ra một môi trường trò chơi giải trí chất lượng cao, mang lại kết quả công bằng và mở thưởng công khai minh bạch nhất</string>
     <string name="sport_bet_record">lịch sử đặt cược thể thao</string>
-    <string name="my_favorite">Sự kiện của tôi</string>
+    <string name="my_favorite">Ưu thích</string>
     <string name="other_bet_record">lịch sử đặt cược khác</string>
     <string name="credit_bet_record">Lịch sử chu kỳ</string>
     <string name="all_plat_type">Tất cả các loại nền tảng</string>
@@ -782,7 +784,7 @@
     <string name="account_history_overview">Tổng quan lịch sử tài khoản</string>
     <string name="bet_num_and_bet_date">Số đơn cược / ngày thanh toán</string>
     <string name="date">Ngày tháng</string>
-    <string name="bet_amount">Số tiền đặt cược</string>
+    <string name="bet_amount">Cổ phần</string>
     <string name="available_amount">Số tiền hợp lệ</string>
     <string name="win_lose">Thắng hay thua</string>
     <string name="win_lose_mark">Thắng hay thua : </string>
@@ -859,23 +861,23 @@
     <string name="service_2">CSKH2</string>
     <string name="service_connect">Liên hệ</string>
     <string name="top_game">Sự kiện hàng đầu thế giới</string>
-    <string name="parlay_10_fold">10 xiên 1</string>
-    <string name="parlay_10_block">10 xiên 1013</string>
-    <string name="parlay_2_fold">2 xiên 1</string>
-    <string name="parlay_3_fold">3 xiên 1</string>
-    <string name="parlay_3_block">3 xiên 4</string>
-    <string name="parlay_4_fold">4 xiên 1</string>
-    <string name="parlay_4_block">4 xiên 11</string>
-    <string name="parlay_5_fold">5 xiên 1</string>
-    <string name="parlay_5_block">5 xiên 26</string>
-    <string name="parlay_6_fold">6 xiên 1</string>
-    <string name="parlay_6_block">6 xiên 57</string>
-    <string name="parlay_7_fold">7 xiên 1</string>
-    <string name="parlay_7_block">7 xiên 120</string>
-    <string name="parlay_8_fold">8 xiên 1</string>
-    <string name="parlay_8_block">8 xiên 247</string>
-    <string name="parlay_9_fold">9 xiên 1</string>
-    <string name="parlay_9_block">9 xiên 502</string>
+    <string name="parlay_10_fold">Xâu 10</string>
+    <string name="parlay_10_block">Liên Hoàn (10)</string>
+    <string name="parlay_2_fold">Xâu 2</string>
+    <string name="parlay_3_fold">Xâu 3</string>
+    <string name="parlay_3_block">Liên Hoàn 3</string>
+    <string name="parlay_4_fold">Xâu 4</string>
+    <string name="parlay_4_block">Liên Hoàn 4</string>
+    <string name="parlay_5_fold">Xâu 5</string>
+    <string name="parlay_5_block">Liên Hoàn 5</string>
+    <string name="parlay_6_fold">Xâu 6</string>
+    <string name="parlay_6_block">Liên Hoàn 6</string>
+    <string name="parlay_7_fold">Xâu 7</string>
+    <string name="parlay_7_block">Liên Hoàn 7</string>
+    <string name="parlay_8_fold">Xâu 8</string>
+    <string name="parlay_8_block">Liên Hoàn 8</string>
+    <string name="parlay_9_fold">Xâu 9</string>
+    <string name="parlay_9_block">Liên Hoàn (9)</string>
     <string name="parlay_2_fold_rule">Xâu 2 là sự kết hợp của hai lựa chọn trên các sự kiện riêng biệt.
     Cược trả về khi có tất cả cược đều thắng.
     Trường hợp nhiều trận đấu đang diễn ra, Xâu 2 có thể kết hợp. Ví dụ Xâu 2 (x3) từ 3 lựa chọn.
@@ -939,7 +941,7 @@
     <string name="parlay_10_fold_rule">1 xiên 10 là một cược đơn bao gồm 10 lựa chọn, cần phải thắng tất cả các mục chọn để được hoàn tiền, không cùng loại bóng và cách chơi của giải vô địch không thể tiến hành cá cược xiên</string>
     <string name="parlay_10_block_rule">10 xâu 1013 là kết hợp 10 đơn cược từ các sự kiện khác nhau, 45 xâu 2x1, 120 xâu 3x1, 210 xâu 4x1, 252 xâu 5x1, 210 xâu 6x1, 120 xâu 7x1, 45 xâu 8x1, 10 xâu 9x1 và 1 xâu 10x1. Cần có ít nhất 2 lựa chọn thắng cược để đảm bảo tiền thưởng, không cùng loại bóng và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
     <string name="message_source_change">Hệ thống nhận dữ liệu sự kiện mới nhất và sẽ tự động quay lại trang chủ ngay lập tức</string>
-    <string name="appearance">ngoại hình</string>
+    <string name="appearance">Ngoại hình</string>
     <string name="goal_buster">GOAL BUSTER</string>
     <string name="top_games">TOP GAMES</string>
     <string name="withdraw_uw_check">Số dư khấu trừ</string>
@@ -1016,7 +1018,7 @@
     <string name="scan_tool_bar">Quét kết quả</string>
     <string name="text_us_east_time">Thời gian được báo cáo theo múi giờ UTC-4.</string>
     <string name="verify_failed_please_retry">Lỗi xảy ra trong quá trình xác thực. Xin thử lại lần nữa</string>
-    <string name="text_cant_play">Bạn đang trong khu vực không thể chơi</string>
+    <string name="text_cant_play">Đã xảy ra lỗi. Vui lòng thử lại sau.</string>
     <string name="text_bet_not_success">Trạng thái phiếu cược đang&#160;</string>
     <string name="text_bet_not_success2">Chờ</string>
     <string name="text_bet_not_success3">&#160;Phiếu cược của bạn đang được xử lý, vui lòng kiểm tra&#160;</string>
@@ -1082,8 +1084,8 @@
     <string name="self_limit_bet_impotent">Bạn có thể sửa đổi giới hạn đặt cược của mình bất cứ lúc nào. Sửa đổi sẽ có hiệu lực sau khi gửi yêu cầu.</string>
     <string name="text_chose_language">Chọn ngôn ngữ của bạn</string>
     <!-- 複式串關詳情 -->
-    <string name="password_hint"><font size="12">(Vui lòng nhập tài khoản hội viên của bạn)</font></string>
-    <string name="account_hint"><font size="12">(Vui lòng nhập mật khẩu đăng nhập của bạn)</font></string>
+    <string name="password_hint"><font size="12">(Vui lòng nhập mật khẩu đăng nhập của bạn)</font></string>
+    <string name="account_hint"><font size="12">(Vui lòng nhập tài khoản hội viên của bạn)</font></string>
     <string name="submit_success">gửi thành công</string>
     <!-- 搜尋 -->
     <string name="text_search">Tìm kiếm</string>
@@ -1144,4 +1146,8 @@
     <string name="my_favorite_empty_title">Sự kiện của tôi</string>
     <string name="my_favorite_empty_msg">Chọn biểu tượng ở trên để thêm nó vào "Sự kiện của tôi".\nBạn có thể chia nhóm chúng và dễ dàng truy cập vào tất cả các sự kiện mà bạn quan tâm.</string>
     <!--endregion-->
+
+    <string name="current_corner">Tổng Số Hiện Tại:</string>
+    <string name="cancel_auto">Từ chối</string>
+    <string name="cancel_manual">Vô hiệu</string>
 </resources>

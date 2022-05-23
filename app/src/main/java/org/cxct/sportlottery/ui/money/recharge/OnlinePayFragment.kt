@@ -20,6 +20,9 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.util.*
 import kotlin.math.abs
 
+/**
+ * @app_destination 在線支付
+ */
 class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
 
     private var mMoneyPayWay: MoneyPayWayData? = null //支付類型

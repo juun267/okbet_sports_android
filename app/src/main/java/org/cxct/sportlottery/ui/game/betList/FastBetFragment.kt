@@ -61,7 +61,9 @@ import org.cxct.sportlottery.util.BetPlayCateFunction.getNameMap
 import org.parceler.Parcels
 import kotlin.math.min
 
-
+/**
+ * @app_destination 注單(單注，點擊賠率下方彈出)
+ */
 const val INPLAY: Int = 1
 
 class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
@@ -215,6 +217,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         //initData()
         initView()
         initQuota()
+        initButton()
         initEditText()
         initObserve()
         initSocketObserver()
@@ -277,8 +280,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 binding.layoutKeyBoard.showKeyboard(
                     view as EditText,
                     null,
-                    getMaxBetMoney()
-                        ?: GameConfigManager.maxBetMoney?.toLong() ?: 0,
+                    getMaxBetMoney(),
                     betInfoListData?.parlayOdds?.min?.toLong() ?: 0
                 )
             }
@@ -321,7 +323,11 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         binding.btnRecharge.setTitleLetterSpacing()
     }
 
-
+    private fun initButton() {
+        cl_close_waring.setOnClickListener {
+            removeClosedPlat()
+        }
+    }
 
     private fun dismiss() {
         activity?.onBackPressed()
@@ -345,8 +351,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
             binding.layoutKeyBoard.showKeyboard(
                 binding.etBet, null,
-                betInfoListData?.parlayOdds?.max?.toLong()
-                    ?: GameConfigManager.maxBetMoney?.toLong() ?: 0,
+                getMaxBetMoney(),
                 betInfoListData?.parlayOdds?.min?.toLong() ?: 0
             )
             //keyboard.showKeyboard(binding.etBet, null, betInfoListData?.parlayOdds?.max?.toLong() ?: GameConfigManager.maxBetMoney?.toLong() ?: 0)
@@ -768,6 +773,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             binding.etClickable.isEnabled = true
             cl_quota_detail.visibility = View.VISIBLE
             cl_close_waring.visibility = View.GONE
+            tv_remove.visibility = View.GONE
         } else {
             binding.clItemBackground.setBackgroundColor(
                 ContextCompat.getColor(
@@ -786,6 +792,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             binding.layoutKeyBoard.hideKeyboard()
             cl_quota_detail.visibility = View.GONE
             cl_close_waring.visibility = View.VISIBLE
+            tv_remove.visibility = View.VISIBLE
         }
 
         if (matchOdd.spreadState != SpreadState.SAME.state || matchOdd.oddState != OddState.SAME.state) {
@@ -953,13 +960,22 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         snackBarNotify?.show()
     }
 
-    private fun getMaxBetMoney(): Long {
+    private fun getMaxBetMoney(): Double {
         val parlayMaxBet = betInfoListData?.parlayOdds?.max ?: 0
         return if (parlayMaxBet > 0) {
-            min(parlayMaxBet.toLong(), mUserMoney.toLong())
+            min(parlayMaxBet.toDouble(), mUserMoney)
         } else {
-            mUserMoney.toLong()
+            mUserMoney
         }
+    }
+
+    /**
+     * 移除盤口關閉的投注選項
+     */
+    private fun removeClosedPlat() {
+        viewModel.removeClosedPlatBetInfo()
+        viewModel.removeBetInfoSingle()
+        dismiss()
     }
 
 }

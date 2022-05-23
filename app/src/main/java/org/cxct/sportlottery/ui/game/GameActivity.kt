@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -67,9 +68,7 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
 import org.parceler.Parcels
-
-
-
+import timber.log.Timber
 
 
 class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) {
@@ -80,6 +79,9 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             val intent = Intent(context, GameActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
+            if(context is Activity){
+                context.overridePendingTransition(R.anim.push_right_to_left_enter, R.anim.push_right_to_left_exit)
+            }
         }
 
         fun reStartWithSwitchLanguage(context: Context) {
@@ -157,7 +159,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         initTabLayout()
         initObserve()
         initServiceButton()
-        setFontTheme()
         try {
             val flag = intent.getStringExtra(ARGS_SWITCH_LANGUAGE)
             if (flag == "true") {
@@ -167,20 +168,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             e.printStackTrace()
         }
         queryData()
-    }
-
-    private fun setFontTheme() {
-        when (LanguageManager.getSelectLanguage(this)) {
-            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
-                setTheme(R.style.ChineseTheme)
-            }
-            LanguageManager.Language.VI -> {
-                setTheme(R.style.VietnamTheme)
-            }
-            else -> {
-                setTheme(R.style.EnglishTheme)
-            }
-        }
     }
 
     override fun onStart() {
@@ -303,13 +290,15 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         sport_bottom_navigation.setNavigationItemClickListener {
             when (it) {
                 R.id.navigation_sport -> {
-                    if (tabLayout.selectedTabPosition != 0) {
-                        //賽事類別Tab不在主頁時, 切換至主頁
-                        tabLayout.selectTab(tabLayout.getTabAt(0))
+                    if (tabLayout.selectedTabPosition != getMatchTypeTabPosition(MatchType.MAIN)) {
+                        getMatchTypeTabPosition(MatchType.MAIN)?.let { mainMatchTypePosition ->
+                            //賽事類別Tab不在主頁時, 切換至主頁
+                            tabLayout.selectTab(tabLayout.getTabAt(mainMatchTypePosition))
+                        }
                     } else {
-                        if (mNavController.currentDestination?.id != R.id.homeFragment){
+                        if (mNavController.currentDestination?.id != R.id.homeFragment) {
                             //若當前不在HomeFragment, 切換至HomeFragment
-                            selectTab(0)
+                            selectTab(getMatchTypeTabPosition(MatchType.MAIN))
                         }
                     }
                     true
@@ -438,38 +427,38 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             val countEps =
                 sportMenuResult?.sportMenuData?.menu?.eps?.items?.sumBy { it.num } ?: 0
 
-            tabLayout.getTabAt(0)?.customView?.apply {
+            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.MAIN) ?: 0)?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tan_main), 0.7f)
                 tv_number?.text = countParlay.plus(countInPlay).plus(countAtStart).plus(countToday).plus(countEarly)
                     .plus(countOutright).plus(countEps).toString()
             }
 
-            tabLayout.getTabAt(1)?.customView?.apply {
+            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.IN_PLAY) ?: 1)?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_in_play), 0.7f)
                 tv_number?.text = countInPlay.toString()
             }
 
-            tabLayout.getTabAt(2)?.customView?.apply {
+            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.AT_START) ?: 2)?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_at_start), 0.7f)
                 tv_number?.text = countAtStart.toString()
             }
 
-            tabLayout.getTabAt(3)?.customView?.apply {
+            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.TODAY) ?: 3)?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_today), 0.7f)
                 tv_number?.text = countToday.toString()
             }
 
-            tabLayout.getTabAt(4)?.customView?.apply {
+            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.EARLY) ?: 4)?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_early), 0.7f)
                 tv_number?.text = countEarly.toString()
             }
 
-            tabLayout.getTabAt(5)?.customView?.apply {
+            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.OUTRIGHT) ?: 5)?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_outright), 0.7f)
                 tv_number?.text = countOutright.toString()
             }
 
-            tabLayout.getTabAt(6)?.customView?.apply {
+            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.PARLAY) ?: 6)?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_parlay), 0.7f)
                 tv_number?.text = countParlay.toString()
             }
@@ -492,38 +481,67 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         }
     }
 
+    private val MatchTypeTabPositionMap = mapOf<MatchType, Int>(
+        MatchType.MAIN to 0,
+        MatchType.IN_PLAY to 1,
+        MatchType.AT_START to 2,
+        MatchType.TODAY to 3,
+        MatchType.EARLY to 4,
+        MatchType.OUTRIGHT to 5,
+        MatchType.PARLAY to 6,
+        MatchType.EPS to 7
+    )
+
+    /**
+     * 根據MatchTypeTabPositionMap獲取MatchType的tab position
+     *
+     * @see MatchTypeTabPositionMap
+     */
+    private fun getMatchTypeTabPosition(matchType: MatchType?): Int? = when (matchType) {
+        null -> {
+            Timber.e("Unable to get $matchType tab position")
+            null
+        }
+        else -> {
+            when (val tabPosition = MatchTypeTabPositionMap[matchType]) {
+                null -> {
+                    Timber.e("There is not tab position of $matchType")
+                    null
+                }
+                else -> {
+                    tabPosition
+                }
+            }
+        }
+    }
+
     private fun selectTab(position: Int?) {
+        if (position == null) return
+
         when (position) {
-            0 -> {
+            getMatchTypeTabPosition(MatchType.MAIN) -> {
                 viewModel.switchMainMatchType()
             }
-            1 -> {
+            getMatchTypeTabPosition(MatchType.IN_PLAY) -> {
                 viewModel.switchMatchType(MatchType.IN_PLAY)
-                loading()
             }
-            2 -> {
+            getMatchTypeTabPosition(MatchType.AT_START) -> {
                 viewModel.switchMatchType(MatchType.AT_START)
-                loading()
             }
-            3 -> {
+            getMatchTypeTabPosition(MatchType.TODAY) -> {
                 viewModel.switchMatchType(MatchType.TODAY)
-                loading()
             }
-            4 -> {
+            getMatchTypeTabPosition(MatchType.EARLY) -> {
                 viewModel.switchMatchType(MatchType.EARLY)
-                loading()
             }
-            5 -> {
+            getMatchTypeTabPosition(MatchType.OUTRIGHT) -> {
                 viewModel.switchMatchType(MatchType.OUTRIGHT)
-                loading()
             }
-            6 -> {
+            getMatchTypeTabPosition(MatchType.PARLAY) -> {
                 viewModel.switchMatchType(MatchType.PARLAY)
-                loading()
             }
-            7 -> {
+            getMatchTypeTabPosition(MatchType.EPS) -> {
                 viewModel.switchMatchType(MatchType.EPS)
-                loading()
             }
         }
     }
@@ -680,7 +698,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
             R.id.oddsDetailFragment -> {
                 val action =
-                    OddsDetailFragmentDirections.actionGameOutrightMoreFragmentToHomeFragment()
+                    OddsDetailFragmentDirections.actionOddsDetailFragmentToHomeFragment()
                 mNavController.navigate(action)
             }
             R.id.oddsDetailLiveFragment -> {
@@ -780,26 +798,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             hideLoading()
             if (it?.couponCode.isNullOrEmpty()) {
                 when (it?.entranceMatchType) {
-                    MatchType.IN_PLAY -> {
-                        goTab(1)
-                    }
-                    MatchType.AT_START -> {
-                        goTab(2)
-                    }
-                    MatchType.TODAY -> {
-                        goTab(3)
-                    }
-                    MatchType.EARLY -> {
-                        goTab(4)
-                    }
-                    MatchType.OUTRIGHT -> {
-                        goTab(5)
-                    }
-                    MatchType.PARLAY -> {
-                        goTab(6)
-                    }
-                    MatchType.EPS -> {
-                        goTab(7)
+                    MatchType.MAIN -> {
+                        //do nothing
                     }
                     MatchType.OTHER -> {
                         goTab(3)
@@ -807,6 +807,11 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     MatchType.DETAIL -> {
                         it.matchID?.let { matchId ->
                             navDeatilFragment(matchId, it.gameType ?: GameType.OTHER, it.gameMatchType)
+                        }
+                    }
+                    else -> {
+                        getMatchTypeTabPosition(it?.entranceMatchType)?.let { matchTypePosition ->
+                            goTab(matchTypePosition)
                         }
                     }
                 }
@@ -819,9 +824,30 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         viewModel.curMatchType.observe(this) {
             it?.let {
-                when(it){
-                    MatchType.MAIN -> navHomeFragment()
-                    else -> navGameFragment(it)
+                val tabSelectedPosition = tabLayout.selectedTabPosition
+                when (it) {
+                    MatchType.MAIN -> {
+                        if (tabSelectedPosition == getMatchTypeTabPosition(MatchType.MAIN))
+                            navHomeFragment()
+                    }
+                    else -> {
+                        //僅有要切換的MatchType與當前選中的Tab相同時才繼續進行後續的切頁行為, 避免快速切頁導致切頁邏輯進入無窮迴圈
+                        when {
+                            it == MatchType.IN_PLAY && tabSelectedPosition == getMatchTypeTabPosition(MatchType.IN_PLAY) ||
+                                    it == MatchType.AT_START && tabSelectedPosition == getMatchTypeTabPosition(MatchType.AT_START) ||
+                                    it == MatchType.TODAY && tabSelectedPosition == getMatchTypeTabPosition(MatchType.TODAY) ||
+                                    it == MatchType.EARLY && tabSelectedPosition == getMatchTypeTabPosition(MatchType.EARLY) ||
+                                    it == MatchType.OUTRIGHT && tabSelectedPosition == getMatchTypeTabPosition(MatchType.OUTRIGHT) ||
+                                    it == MatchType.PARLAY && tabSelectedPosition == getMatchTypeTabPosition(MatchType.PARLAY)
+                            -> {
+                                navGameFragment(it)
+                            }
+                            else -> {
+                                //do nothing
+                            }
+                        }
+
+                    }
                 }
             }
         }

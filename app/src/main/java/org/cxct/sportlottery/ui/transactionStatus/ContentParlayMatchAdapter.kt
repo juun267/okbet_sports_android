@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_parlay_match.view.*
 import kotlinx.android.synthetic.main.content_parlay_match.view.content_play
+import kotlinx.android.synthetic.main.content_parlay_match.view.tv_team_names
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.MatchOdd
 import org.cxct.sportlottery.ui.game.BetRecordType
@@ -60,12 +61,7 @@ class ContentParlayMatchAdapter(val status: Int) :
             itemView.apply {
                 content_play.text = "$gameTypeName ${data.playCateName}"
 
-//                val oddsTypeStr = when (data.oddsType) {
-//                    OddsType.HK.code -> "(" + context.getString(OddsType.HK.res) + ")"
-//                    OddsType.MYS.code -> "(" + context.getString(OddsType.MYS.res) + ")"
-//                    OddsType.IDN.code -> "(" + context.getString(OddsType.IDN.res) + ")"
-//                    else -> "(" + context.getString(OddsType.EU.res) + ")"
-//                }
+                tv_team_names.setTeamNames(15, data.homeName, data.awayName)
 
                 parlay_play_content.setPlayContent(
                     data.playName,
@@ -75,9 +71,6 @@ class ContentParlayMatchAdapter(val status: Int) :
 
                 parlay_play_time.text = TimeUtil.timeFormat(data.startTime, TimeUtil.YMD_HM_FORMAT)
                 content_league.text = data.leagueName
-                content_home_name.text = data.homeName
-                content_away_name.text = data.awayName
-//                content_date.setDateNoYear(data.startTime)
                 content_date.visibility = View.GONE
                 if (position == 0) {
                     if(betConfirmTime?.toInt() != 0){

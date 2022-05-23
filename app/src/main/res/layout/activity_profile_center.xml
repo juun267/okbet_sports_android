@@ -22,7 +22,7 @@
             android:layout_height="0dp"
             android:paddingStart="20dp"
             android:paddingEnd="10dp"
-            android:src="@drawable/ic_icon_arrow"
+            android:src="@drawable/ic_icon_arrow_blue"
             app:layout_constraintBottom_toBottomOf="@id/iv_head"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/iv_head" />
@@ -489,7 +489,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginVertical="2dp"
-                    android:background="@color/color_191919_EEEFF0" />
+                    android:background="@color/color_1F1F1F_E2E2E2" />
 
                 <LinearLayout
                     android:id="@+id/btn_news_center"
@@ -632,7 +632,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginVertical="2dp"
-                    android:background="@color/color_191919_EEEFF0" />
+                    android:background="@color/color_1F1F1F_E2E2E2" />
 
                 <LinearLayout
                     android:id="@+id/btn_help_center"

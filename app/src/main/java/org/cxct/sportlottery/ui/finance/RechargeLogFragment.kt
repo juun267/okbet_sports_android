@@ -23,6 +23,9 @@ import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.ui.finance.df.Status
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
+/**
+ * @app_destination 存款記錄
+ */
 class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
@@ -97,7 +100,6 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                 layoutParams = lp
             }
         }
-        view.view_no_record.setBackgroundColor(ContextCompat.getColor(view.context, R.color.color_141414_F3F4F5))
     }
 
     private fun setupListColumn(view: View) {

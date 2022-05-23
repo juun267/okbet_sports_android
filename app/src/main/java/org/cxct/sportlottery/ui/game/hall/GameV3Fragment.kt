@@ -28,6 +28,7 @@ import kotlinx.android.synthetic.main.view_game_tab_odd_v4.*
 import kotlinx.android.synthetic.main.view_game_tab_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
+import kotlinx.android.synthetic.main.view_match_category_v4.*
 import kotlinx.android.synthetic.main.view_match_category_v4.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -65,9 +66,13 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
+import timber.log.Timber
 import java.util.*
 import kotlin.collections.HashMap
 
+/**
+ * @app_destination 滾球、即將、今日、早盤、冠軍、串關
+ */
 @SuppressLint("NotifyDataSetChanged", "LogNotTimber")
 @RequiresApi(Build.VERSION_CODES.M)
 class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class), Animation.AnimationListener {
@@ -83,6 +88,14 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private val gameTypeAdapter by lazy {
         GameTypeAdapter().apply {
             gameTypeListener = GameTypeListener {
+                if (!it.isSelected) {
+                    //切換球種，清除日期記憶
+                    viewModel.tempDatePosition = 0
+                    //日期圖示選取狀態下，切換球種要重置UI狀態
+                    if (game_toolbar_calendar.isSelected) game_toolbar_calendar.performClick()
+                }
+                //切換球種後要重置位置
+                initMatchCategoryPagerPosition()
                 loading()
                 isReload = true
                 isReloadPlayCate = true
@@ -173,17 +186,29 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             outrightOddListener = OutrightOddListener(
                 { matchOdd, odd, playCateCode ->
                     matchOdd?.let {
-                        addOutRightOddsDialog(matchOdd, odd, playCateCode)
-                        //addOddsDialog(matchOdd.matchInfo, odd, playCateCode,"",null)
+                        if (mIsEnabled) {
+                            avoidFastDoubleClick()
+                            addOutRightOddsDialog(matchOdd, odd, playCateCode)
+                            //addOddsDialog(matchOdd.matchInfo, odd, playCateCode,"",null)
+                        }
                     }
                 },
                 { oddsKey, matchOdd ->
-                    val action =
-                        GameV3FragmentDirections.actionGameV3FragmentToGameOutrightMoreFragment(
-                            oddsKey,
-                            matchOdd
-                        )
-                    findNavController().navigate(action)
+//                    val action =
+//                        GameV3FragmentDirections.actionGameV3FragmentToGameOutrightMoreFragment(
+//                            oddsKey,
+//                            matchOdd
+//                        )
+//                    findNavController().navigate(action)
+                    // TODO Set matchOdd and refresh
+                    this.data.find { it == matchOdd }?.oddsMap?.get(oddsKey)?.forEachIndexed { index, odd ->
+                        if(index >= 5) {
+                            odd?.isExpand?.let { isExpand ->
+                                odd.isExpand = !isExpand
+                            }
+                        }
+                    }
+                    this.notifyItemChanged(this.data.indexOf(matchOdd))
                 },
                 { matchOdd, oddsKey ->
 
@@ -244,7 +269,16 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                 },
                 clickListenerBet = { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
-                    addOddsDialog(matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap)
+                    if (mIsEnabled) {
+                        avoidFastDoubleClick()
+                        addOddsDialog(
+                            matchInfo,
+                            odd,
+                            playCateCode,
+                            playCateName,
+                            betPlayCateNameMap
+                        )
+                    }
                 },
                 clickListenerQuickCateTab = { matchOdd, quickPlayCate ->
                     matchOdd.matchInfo?.let {
@@ -280,13 +314,16 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 subscribeChannelHall(it)
             },
             { odd, betMatchInfo, betPlayCateNameMap ->
-                addOddsDialog(
-                    betMatchInfo,
-                    odd,
-                    PlayCate.EPS.value,
-                    getString(R.string.game_tab_price_boosts_odd),
-                    betPlayCateNameMap
-                )
+                if (mIsEnabled) {
+                    avoidFastDoubleClick()
+                    addOddsDialog(
+                        betMatchInfo,
+                        odd,
+                        PlayCate.EPS.value,
+                        getString(R.string.game_tab_price_boosts_odd),
+                        betPlayCateNameMap
+                    )
+                }
             }) { matchInfo ->
             setEpsBottomSheet(matchInfo)
         }
@@ -328,6 +365,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         override fun onTabSelected(tab: TabLayout.Tab?) {
             game_list.adapter = null
             isReload = true
+            //切換tab要重置位置
+            initMatchCategoryPagerPosition()
             when (tab?.text.toString()) { //固定寫死
                 getString(R.string.game_tab_league_odd) -> { //賽事
                     game_toolbar_calendar.visibility = if (args.matchType == MatchType.EARLY) View.VISIBLE else View.GONE
@@ -526,7 +565,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL
         )
         view.match_category_indicator.setupWithViewPager2(view.match_category_pager)
-        setMatchCategoryPagerVisibility(matchCategoryPagerAdapter.itemCount > 0)
+        setMatchCategoryPagerVisibility(matchCategoryPagerAdapter.itemCount)
     }
 
     private fun setupPlayCategory(view: View) {
@@ -572,7 +611,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
 
         view.game_filter_type_list.visibility =
-            if (args.matchType == MatchType.EARLY && view.game_toolbar_calendar.isSelected) {
+            if (args.matchType == MatchType.EARLY && mCalendarSelected) {
                 View.VISIBLE
             } else {
                 View.GONE
@@ -619,7 +658,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     dialog.setNegativeButtonText(null)
                     dialog.setPositiveClickListener {
                         viewModel.resetErrorDialogMsg()
-                        dialog.dismiss()
+                        dialog?.dismiss()
                         back()
                     }
                     dialog.setCanceledOnTouchOutside(false)
@@ -704,7 +743,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
         viewModel.matchCategoryQueryResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.rows?.let { resultList ->
-                setMatchCategoryPagerVisibility(resultList.isNotEmpty())
+                setMatchCategoryPagerVisibility(resultList.size)
                 // TODO view_space_first.isVisible = !isCateShow
                 matchCategoryPagerAdapter.data = resultList
             }
@@ -715,9 +754,13 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
 
         viewModel.curDatePosition.observe(this.viewLifecycleOwner) {
-            (game_filter_type_list.layoutManager as LinearLayoutManager?)?.scrollToPositionWithOffset(
-                it, game_filter_type_list.width / 2
-            )
+            val position = viewModel.tempDatePosition
+            if (position != 0)
+                (game_filter_type_list.layoutManager as LinearLayoutManager?)?.scrollToPosition(position)
+            else
+                (game_filter_type_list.layoutManager as LinearLayoutManager?)?.scrollToPositionWithOffset(
+                    it, game_filter_type_list.width / 2
+                )
         }
 
         viewModel.curChildMatchType.observe(this.viewLifecycleOwner) {
@@ -824,30 +867,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     Log.d("Hewie", "observe => OddsListGameHallResult")
                     isReload = true
 
-                    game_list.post {
-                        game_list.getVisibleRangePosition().forEach { leaguePosition ->
-                            val viewByPosition = game_list.layoutManager?.findViewByPosition(leaguePosition)
-                            viewByPosition?.let { view ->
-                                if (game_list.getChildViewHolder(view) is LeagueAdapter.ItemViewHolder) {
-                                    val viewHolder = game_list.getChildViewHolder(view) as LeagueAdapter.ItemViewHolder
-                                    viewHolder.itemView.league_odd_list.getVisibleRangePosition().forEach { matchPosition ->
-                                        if (leagueAdapter.data.isNotEmpty()) {
-                                            Log.d(
-                                                "[subscribe]",
-                                                "訂閱 ${leagueAdapter.data[leaguePosition].league.name} -> " +
-                                                        "${leagueAdapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.homeName} vs " +
-                                                        "${leagueAdapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.awayName}"
-                                            )
-                                            subscribeChannelHall(
-                                                leagueAdapter.data[leaguePosition].gameType?.key,
-                                                leagueAdapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.id
-                                            )
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    game_list?.firstVisibleRange(leagueAdapter, activity?:requireActivity())
+
                 }
                 refreshToolBarUI(this.view)
             }
@@ -977,14 +998,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
             it.getContentIfNotHandled()?.let { outrightOddsListResult ->
                 if (outrightOddsListResult.success) {
-                    GameConfigManager.getTitleBarBackground(
-                        outrightOddsListResult.outrightOddsListData?.sport?.code,
-                        MultiLanguagesApplication.isNightMode
-                    )
-                        ?.let { gameImg ->
-                            game_toolbar_bg.setBackgroundResource(gameImg)
-                        }
-
                     val outrightLeagueOddDataList: MutableList<org.cxct.sportlottery.network.outright.odds.MatchOdd?> = mutableListOf()
                     outrightOddsListResult.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds
                         ?: listOf()
@@ -997,8 +1010,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                     outrightLeagueOddDataList.forEachIndexed { _, matchOdd ->
                         matchOdd?.oddsMap?.forEach { oddsMap ->
-                            oddsMap.value?.filterNotNull()?.forEach { odd ->
-                                odd.isExpand = true
+                            oddsMap.value?.filterNotNull()?.forEachIndexed { index, odd ->
+                                if(index < 5)  odd.isExpand = true
                             }
                         }
                     }
@@ -1101,38 +1114,16 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner) {
-            it.peekContent().let {
+            it.peekContent().let { betInfoList ->
 
-                val leagueOdds = leagueAdapter.data
-                leagueOdds.forEach { leagueOdd ->
-                    leagueOdd.matchOdds.forEach { matchOdd ->
-                        matchOdd.oddsMap?.values?.forEach { oddList ->
-                            oddList?.forEach { odd ->
-                                odd?.isSelected = it.any { betInfoListData ->
-                                    betInfoListData.matchOdd.oddsId == odd?.id
-                                }
-                            }
-                        }
-                        matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
-                            quickPlayCate.quickOdds.forEach { map ->
-                                map.value?.forEach { odd ->
-                                    odd?.isSelected = it.any { betInfoListData ->
-                                        betInfoListData.matchOdd.oddsId == odd?.id
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                updateAllGameList()
+                leagueAdapter.betInfoList = betInfoList
 
                 val epsOdds = epsListAdapter.dataList
 
                 epsOdds.forEach { epsLeagueOddsItem ->
                     epsLeagueOddsItem.leagueOdds?.matchOdds?.forEach { matchOddsItem ->
                         matchOddsItem.oddsEps?.eps?.forEach { odd ->
-                            odd?.isSelected = it.any { betInfoListData ->
+                            odd?.isSelected = betInfoList.any { betInfoListData ->
                                 betInfoListData.matchOdd.oddsId == odd?.id
                             }
                         }
@@ -1149,7 +1140,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
 
                 odds.forEach { odd ->
-                    odd.isSelected = it.any { betInfoListData ->
+                    odd.isSelected = betInfoList.any { betInfoListData ->
                         betInfoListData.matchOdd.oddsId == odd.id
                     }
                 }
@@ -1204,6 +1195,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
 
         viewModel.favorLeagueList.observe(this.viewLifecycleOwner) {
+            Timber.e("Dean, favorLeagueList = $it")
             updateLeaguePin(it)
             updateLeaguePinOutright(it)
         }
@@ -1311,14 +1303,22 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private fun updateLeaguePin(leagueListPin: List<String>) {
         val leaguePinList = mutableListOf<League>()
 
-        countryAdapter.data.forEach { row ->
+        countryAdapter.data.forEachIndexed { index, row ->
             val pinLeague = row.list.filter { league ->
                 leagueListPin.contains(league.id)
             }
 
+            var needUpdate = false
+
             row.list.forEach { league ->
-                league.isPin = leagueListPin.contains(league.id)
+                if (league.isPin != leagueListPin.contains(league.id)) {
+                    league.isPin = leagueListPin.contains(league.id)
+                    needUpdate = true
+                }
             }
+
+            if (needUpdate)
+                countryAdapter.notifyCountryItem(index)
 
             leaguePinList.addAll(pinLeague)
         }
@@ -1354,7 +1354,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         receiver.serviceConnectStatus.observe(this.viewLifecycleOwner) {
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
-                    loading()
                     if (args.matchType == MatchType.OTHER) {
                         viewModel.getAllPlayCategoryBySpecialMatchType(isReload = true)
                     } else {
@@ -1806,7 +1805,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 else -> View.GONE
             }
 
-            setMatchCategoryPagerVisibility(matchCategoryPagerAdapter.itemCount > 0)
+            setMatchCategoryPagerVisibility(matchCategoryPagerAdapter.itemCount)
 
             game_play_category.visibility = if (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START ||
                 (args.matchType == MatchType.OTHER && childMatchType == MatchType.OTHER)
@@ -2318,9 +2317,11 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             setupPlayCategory(it)
             setupGameRow(it)
             setupGameListView(it)
+            //從內頁返回後要重置位置
+            initMatchCategoryPagerPosition()
         }
 
-        if(MultiLanguagesApplication.colorModeChanging){
+        if (MultiLanguagesApplication.colorModeChanging) {
             initObserve()
             initSocketObserver()
             MultiLanguagesApplication.colorModeChanging = false
@@ -2368,18 +2369,29 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     /**
-     * @param condition 固定為 match category 數量是否大於0
+     * @param itemCount 固定為 match category 數量
      **/
-    private fun setMatchCategoryPagerVisibility(condition: Boolean) {
+    private fun setMatchCategoryPagerVisibility(itemCount: Int) {
         game_match_category_pager.visibility =
             if ((args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) &&
-                condition &&
+                itemCount > 0 &&
                 game_tabs.selectedTabPosition == 0
             ) {
                 View.VISIBLE
             } else {
                 View.GONE
             }
+        //賽事選單，一個不要顯示，多個要顯示。
+        match_category_indicator.visibility = if (itemCount > 1) View.VISIBLE else View.GONE
+    }
+
+    /**
+     *  1. 切換球種後要重置位置
+     *  2. 切換tab要重置位置
+     *  3. 從內頁返回後要重置位置
+     */
+    private fun initMatchCategoryPagerPosition() {
+        match_category_pager.currentItem = 0
     }
     // endregion
 }

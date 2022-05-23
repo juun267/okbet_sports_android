@@ -56,9 +56,7 @@ import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlay
 import org.cxct.sportlottery.util.*
 
 /**
- * A simple [Fragment] subclass.
- * Use the [BetListFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * @app_destination 注單列表
  */
 class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private lateinit var binding: FragmentBetListBinding
@@ -826,6 +824,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
      */
     private fun removeClosedPlat() {
         viewModel.removeClosedPlatBetInfo()
+        isAutoCloseWhenNoData = true
     }
 
     private fun queryData() {
@@ -861,12 +860,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
      */
     private fun showHideWarn() {
         when {
-            showPlatCloseWarn && showOddChangeWarn -> {
+            //有盤口關閉就不顯示賠率更動提示
+            /*showPlatCloseWarn && showOddChangeWarn -> {
                 //盤口關閉且賠率更動
                 ll_odds_close_warn.visibility = View.VISIBLE
-                tv_odds_closed_changed.visibility = View.VISIBLE
+                tv_odds_closed_changed.visibility = View.GONE
                 tv_warn_odds_change.visibility = View.GONE
-            }
+            }*/
             showPlatCloseWarn -> {
                 ll_odds_close_warn.visibility = View.VISIBLE
                 tv_odds_closed_changed.visibility = View.GONE

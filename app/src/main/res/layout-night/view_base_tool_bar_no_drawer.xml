@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/color_191919"
+    android:background="@drawable/bg_gradient_0068d6_0054ac"
     tools:context="org.cxct.sportlottery.ui.common.CustomTopToolbar"
     android:orientation="horizontal">
 
@@ -16,7 +15,6 @@
         android:gravity="center"
         android:letterSpacing="0.2"
         android:textColor="@color/color_FFFFFF_FFFFFF"
-        android:textStyle="bold"
         android:textSize="@dimen/textSize16sp"
         tools:text="@string/title" />
 
@@ -24,16 +22,10 @@
         android:id="@+id/btn_toolbar_back"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="start|center_vertical"
+        android:layout_gravity="start"
         android:contentDescription="@null"
-        android:paddingHorizontal="14dp"
+        android:paddingHorizontal="20dp"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_icon_arrow_blue" />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/margin_1"
-        android:background="@color/color_2B2B2B"
-        android:layout_gravity="bottom"/>
-
+        android:src="@drawable/ic_icon_arrow_white" />
 </FrameLayout>
 

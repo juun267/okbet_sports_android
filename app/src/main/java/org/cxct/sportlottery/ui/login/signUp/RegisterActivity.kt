@@ -38,13 +38,21 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BitmapUtil
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.ToastUtil
+import timber.log.Timber
 import java.util.*
 
+/**
+ * @app_destination 註冊
+ */
 class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::class),
     View.OnClickListener {
 
     private var mSmsTimer: Timer? = null
     private lateinit var binding: ActivityRegisterBinding
+
+    companion object {
+        const val CHECKBOX_SUM = 5
+    }
 
     override fun onClick(v: View?) {
         when (v) {
@@ -163,10 +171,13 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         )
         val appName = getString(R.string.app_name)
         //中英appName在前半 越南文appName會在後半
-        binding.tvAgreement.text =
-            String.format(getString(R.string.register_over_21), appName) + String.format(getString(R.string.register_rules), appName)
+        binding.tvAgreement.text = when (LanguageManager.getSelectLanguage(this@RegisterActivity)) {
+            LanguageManager.Language.VI -> String.format(getString(R.string.register_over_21), appName) + getString(R.string.register_rules) + String.format(getString(R.string.register_rules_2nd_half), appName)
+            else -> String.format(getString(R.string.register_over_21), appName) + getString(R.string.register_rules)
+        }
+
         binding.tvAgreement.makeLinks(
-            Pair(String.format(getString(R.string.register_rules), appName), View.OnClickListener {
+            Pair(getString(R.string.register_rules), View.OnClickListener {
                 JumpUtil.toInternalWeb(
                     this,
                     Constants.getAgreementRuleUrl(this),
@@ -291,28 +302,67 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
     private fun setupAgreement() {
         binding.apply {
-            cbPrivacy.setOnCheckedChangeListener { v, isChecked -> viewModel.checkCbPrivacy(isChecked) }
-            cbAgreement.setOnCheckedChangeListener { v, isChecked -> viewModel.checkCbAgreement(isChecked) }
-            cbNotPHOfficial.setOnCheckedChangeListener{ v, isChecked -> viewModel.checkCbNotPHOfficial(isChecked) }
-            cbNotPHSchool.setOnCheckedChangeListener{ v, isChecked -> viewModel.checkCbNotPHSchool(isChecked) }
-            cbRuleOkbet.setOnCheckedChangeListener{ v, isChecked -> viewModel.checkCbRuleOkbet(isChecked) }
-            cbAgreeAll.setOnCheckedChangeListener{ v, isChecked ->
-                viewModel.checkCbAgreeAll(isChecked)
-                if(cbAgreeAll.isChecked) {
-                    cbPrivacy.isChecked = true
-                    cbAgreement.isChecked = true
-                    cbNotPHOfficial.isChecked = true
-                    cbNotPHSchool.isChecked = true
-                    cbRuleOkbet.isChecked = true
-
-                    viewModel.checkCbPrivacy(cbPrivacy.isChecked)
-                    viewModel.checkCbAgreement(cbAgreement.isChecked)
-                    viewModel.checkCbNotPHOfficial(cbNotPHOfficial.isChecked)
-                    viewModel.checkCbNotPHSchool(cbNotPHSchool.isChecked)
-                    viewModel.checkCbRuleOkbet(cbRuleOkbet.isChecked)
+            cbPrivacy.setOnCheckedChangeListener { _, isChecked ->
+                run {
+                    updateCbCheckedCounts(isChecked)
+                    viewModel.checkCbPrivacy(isChecked)
+                }
+            }
+            cbAgreement.setOnCheckedChangeListener { _, isChecked ->
+                run {
+                    updateCbCheckedCounts(isChecked)
+                    viewModel.checkCbAgreement(isChecked)
+                }
+            }
+            cbNotPHOfficial.setOnCheckedChangeListener{ _, isChecked ->
+                run {
+                    updateCbCheckedCounts(isChecked)
+                    viewModel.checkCbNotPHOfficial(isChecked)
+                }
+            }
+            cbNotPHSchool.setOnCheckedChangeListener{ _, isChecked ->
+                run {
+                    updateCbCheckedCounts(isChecked)
+                    viewModel.checkCbNotPHSchool(isChecked)
+                }
+            }
+            cbRuleOkbet.setOnCheckedChangeListener{ _, isChecked ->
+                run {
+                    updateCbCheckedCounts(isChecked)
+                    viewModel.checkCbRuleOkbet(isChecked)
+                }
+            }
+            cbAgreeAll.setOnClickListener {
+                viewModel.apply {
+                    checkCbAgreeAll(cbCheckedCounts != CHECKBOX_SUM)
+                    setupAllCbCheckedStatus(cbCheckedCounts != CHECKBOX_SUM)
                 }
             }
             btnRegister.setTitleLetterSpacing()
+        }
+    }
+
+    private fun updateCbCheckedCounts(isChecked: Boolean) {
+        viewModel.apply {
+            if (isChecked) cbCheckedCounts += 1 else cbCheckedCounts -= 1
+            binding.cbAgreeAll.isChecked = cbCheckedCounts == CHECKBOX_SUM
+//            Timber.d("cbCheckedCounts:$cbCheckedCounts")
+        }
+    }
+
+    private fun setupAllCbCheckedStatus(isChecked: Boolean) {
+        binding.apply {
+            cbPrivacy.isChecked = isChecked
+            cbAgreement.isChecked = isChecked
+            cbNotPHOfficial.isChecked = isChecked
+            cbNotPHSchool.isChecked = isChecked
+            cbRuleOkbet.isChecked = isChecked
+
+            viewModel.checkCbPrivacy(cbPrivacy.isChecked)
+            viewModel.checkCbAgreement(cbAgreement.isChecked)
+            viewModel.checkCbNotPHOfficial(cbNotPHOfficial.isChecked)
+            viewModel.checkCbNotPHSchool(cbNotPHSchool.isChecked)
+            viewModel.checkCbRuleOkbet(cbRuleOkbet.isChecked)
         }
     }
 
@@ -322,7 +372,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 checkRegisterListener { viewModel.checkInviteCode(it) }
             }
             eetMemberAccount.apply {
-                checkRegisterListener { viewModel.checkMemberAccount(it, false) }
+                checkRegisterListener { viewModel.checkAccountExist(it) }
             }
             eetLoginPassword.apply {
                 checkRegisterListener { viewModel.checkLoginPassword(it) }

@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.game.outright
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,18 +43,31 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
             outrightOddListener = OutrightOddListener(
                 { matchOdd, odd, playCateCode ->
                     matchOdd?.let {
-                        addOddsDialog(matchOdd, odd, playCateCode)
+                        if(mIsEnabled) {
+                            avoidFastDoubleClick()
+                            addOddsDialog(matchOdd, odd, playCateCode)
+                        }
                     }
                 },
                 { oddsKey, matchOdd ->
-                    val action =
-                        GameOutrightFragmentDirections.actionGameOutrightFragmentToGameOutrightMoreFragment(
-                            oddsKey,
-                            matchOdd.apply {
-                                this.matchInfo?.gameType = args.gameType.key
+//                    val action =
+//                        GameOutrightFragmentDirections.actionGameOutrightFragmentToGameOutrightMoreFragment(
+//                            oddsKey,
+//                            matchOdd.apply {
+//                                this.matchInfo?.gameType = args.gameType.key
+//                            }
+//                        )
+//                    findNavController().navigate(action)
+
+                    // TODO Set matchOdd and refresh
+                    this.data.find { it == matchOdd }?.oddsMap?.get(oddsKey)?.forEachIndexed { index, odd ->
+                        if(index >= 5) {
+                            odd?.isExpand?.let { isExpand ->
+                                odd.isExpand = !isExpand
                             }
-                        )
-                    findNavController().navigate(action)
+                        }
+                    }
+                    this.notifyItemChanged(this.data.indexOf(matchOdd))
                 },
                 { matchOdd, oddsKey ->
 

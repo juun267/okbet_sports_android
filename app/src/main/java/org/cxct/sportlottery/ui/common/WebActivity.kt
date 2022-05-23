@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.common
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.net.http.SslError
 import android.os.Bundle
@@ -126,6 +127,17 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
 
         webView.webViewClient = object : WebViewClient() {
+
+            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                super.onPageStarted(view, url, favicon)
+                loading()
+            }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                hideLoading()
+            }
+
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 if (!url.startsWith("http")) {
                     try {

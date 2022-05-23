@@ -38,7 +38,9 @@ import org.cxct.sportlottery.util.MoneyManager.getCryptoIconByCryptoName
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
-
+/**
+ * @app_destination 提款
+ */
 class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel::class) {
 
     private lateinit var bankCardBottomSheet: BottomSheetDialog

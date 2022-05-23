@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_country.view.*
-import kotlinx.android.synthetic.main.itemview_country.view.country_border
 import kotlinx.android.synthetic.main.itemview_country.view.iv_country
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.outright.season.Row
@@ -101,7 +100,6 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             datePin: List<Season>,
             outrightCountryLeagueListener: OutrightCountryLeagueListener?
         ) {
-            itemView.country_border.visibility = View.GONE
             itemView.country_name.visibility = View.GONE
             itemView.iv_country.visibility = View.GONE
             itemView.country_league_expand.setExpanded(true, false)

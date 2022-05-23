@@ -100,7 +100,7 @@
                 android:minHeight="36dp"
                 android:text="@string/internal_download"
                 android:textAllCaps="false"
-                android:textColor="@color/color_191919_FCFCFC"
+                android:textColor="@color/color_FFFFFF"
                 android:textSize="@dimen/textSize14sp" />
 
             <Button

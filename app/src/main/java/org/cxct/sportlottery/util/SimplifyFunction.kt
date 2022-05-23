@@ -1,8 +1,11 @@
 package org.cxct.sportlottery.util
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.graphics.Rect
 import android.text.SpannableString
 import android.text.Spanned
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -12,6 +15,7 @@ import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.widget.FakeBoldSpan
 
@@ -66,6 +70,37 @@ fun RecyclerView.getVisibleRangePosition(): List<Int> {
                 val isVisible = v.getGlobalVisibleRect(r)
                 if (isVisible) {
                     this.add(i)
+                }
+            }
+        }
+    }
+}
+
+/**
+ * 初次獲取資料訂閱可視範圍內賽事(GameV3Fragment、GameLeagueFragment、MyFavoriteFragment)
+ */
+@SuppressLint("LogNotTimber")
+fun RecyclerView.firstVisibleRange(leagueAdapter: LeagueAdapter, activity: Activity) {
+    post {
+        getVisibleRangePosition().forEach { leaguePosition ->
+            val viewByPosition = layoutManager?.findViewByPosition(leaguePosition)
+            viewByPosition?.let { view ->
+                if (getChildViewHolder(view) is LeagueAdapter.ItemViewHolder) {
+                    val viewHolder = getChildViewHolder(view) as LeagueAdapter.ItemViewHolder
+                    viewHolder.itemView.league_odd_list.getVisibleRangePosition().forEach { matchPosition ->
+                        if (leagueAdapter.data.isNotEmpty()) {
+                            Log.d(
+                                "[subscribe]",
+                                "訂閱 ${leagueAdapter.data[leaguePosition].league.name} -> " +
+                                        "${leagueAdapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.homeName} vs " +
+                                        "${leagueAdapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.awayName}"
+                            )
+                            (activity as BaseSocketActivity<*>).subscribeChannelHall(
+                                leagueAdapter.data[leaguePosition].gameType?.key,
+                                leagueAdapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.id
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -139,4 +174,14 @@ fun <T : RecyclerView> T.removeItemDecorations() {
     while (itemDecorationCount > 0) {
         removeItemDecorationAt(0)
     }
+}
+
+/**
+ * 隊伍名稱過長處理 teamA v teamB
+ * @param countCheck 數量超過時，後面隊伍換行
+ */
+fun TextView.setTeamNames(countCheck: Int, homeName: String?, awayName: String?) {
+    text =
+        if (homeName?.length ?: 0 > countCheck) "$homeName  v\n$awayName"
+        else "$homeName  v  $awayName"
 }

@@ -41,7 +41,9 @@ import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
 
-
+/**
+ * @app_destination 聯賽列表(今日、早盤、串關點擊某項聯賽)
+ */
 class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class), Animation.AnimationListener {
 
     private val args: GameLeagueFragmentArgs by navArgs()
@@ -119,7 +121,16 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 },
                 { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
                     mSelectedMatchInfo = matchInfo
-                    addOddsDialog(matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap)
+                    if (mIsEnabled) {
+                        avoidFastDoubleClick()
+                        addOddsDialog(
+                            matchInfo,
+                            odd,
+                            playCateCode,
+                            playCateName,
+                            betPlayCateNameMap
+                        )
+                    }
                     hideKeyboard()
                 },
                 { matchOdd, quickPlayCate ->
@@ -303,10 +314,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         }
                     }
 
-                    leagueOdds.forEach { leagueOdd ->
-                        if (leagueOdd.unfold == FoldState.UNFOLD.code)
-                            subscribeChannelHall(leagueOdd)
-                    }
+                    game_league_odd_list?.firstVisibleRange(leagueAdapter, activity?:requireActivity())
                 }
             }
         }
@@ -349,32 +357,9 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         }
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner) {
-            it.peekContent().let {
-                val leagueOdds = leagueAdapter.data
+            it.peekContent().let { betInfoList ->
 
-                leagueOdds.forEach { leagueOdd ->
-                    leagueOdd.matchOdds.forEach { matchOdd ->
-                        matchOdd.oddsMap?.values?.forEach { oddList ->
-                            oddList?.forEach { odd ->
-                                odd?.isSelected = it.any { betInfoListData ->
-                                    betInfoListData.matchOdd.oddsId == odd?.id
-                                }
-                            }
-                        }
-
-                        matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
-                            quickPlayCate.quickOdds?.forEach { map ->
-                                map.value?.forEach { odd ->
-                                    odd?.isSelected = it.any { betInfoListData ->
-                                        betInfoListData.matchOdd.oddsId == odd?.id
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                updateAllGameList()
+                leagueAdapter.betInfoList = betInfoList
 
                 //leagueAdapter.notifyDataSetChanged()
                 leagueAdapter.data.forEachIndexed { index, leagueOdd ->
@@ -382,7 +367,6 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         if (matchOdd.matchInfo?.id == mSelectedMatchInfo?.id) {
                             leagueAdapter.updateLeague(index, leagueOdd)
                             mSelectedMatchInfo = null
-                            return@forEach
                         }
                     }
                 }
@@ -590,12 +574,6 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         }
     }
 
-    private fun updateAllGameList() {
-        if (game_league_odd_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !game_league_odd_list.isComputingLayout) {
-            leagueAdapter.data.forEachIndexed { index, leagueOdd -> leagueAdapter.updateLeague(index, leagueOdd) }
-        }
-    }
-
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
         this.odds?.let { oddTypeSocketMap ->
             oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
@@ -666,22 +644,9 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
 
     private fun updateSportBackground(sportCode: String?) {
-        if(MultiLanguagesApplication.isNightMode){
-            Glide.with(requireContext()).load(
-              R.drawable.night_bg_300
-            ).into(game_league_toolbar_bg)
-        }else{
-            Glide.with(requireContext()).load(
-                when (sportCode) {
-                    GameType.FT.key -> R.drawable.soccer48
-                    GameType.BK.key -> R.drawable.basketball48
-                    GameType.TN.key -> R.drawable.tennis48
-                    GameType.VB.key -> R.drawable.volleyball48
-                    else -> null
-                }
-            ).into(game_league_toolbar_bg)
+        GameConfigManager.getTitleBarBackgroundInPublicPage(sportCode ,MultiLanguagesApplication.isNightMode)?.let { titleRes ->
+            game_league_toolbar_bg.setImageResource(titleRes)
         }
-
     }
 
     //更新isLocked狀態

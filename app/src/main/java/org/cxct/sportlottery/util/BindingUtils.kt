@@ -47,7 +47,7 @@ fun TextView.setDateTimeNoYear(timeStamp: Long?) {
 }
 
 @SuppressLint("SetTextI18n")
-@BindingAdapter(value = ["bind:gameType", "bind:playCateName"], requireAll = true)
+@BindingAdapter(value = ["gameType", "playCateName"], requireAll = true)
 fun TextView.setGameTypeWithPlayCate(gameType: String?, playCateName: String?) {
     if (gameType == null) {
         visibility = View.GONE
@@ -138,8 +138,12 @@ fun TextView.setBetParlayReceiptAmount(itemData: BetResult, parlayNum: Int?) {
     }
 }
 
-@BindingAdapter("betReceiptStatus") //状态 0：未开始，1：比赛中，2：已结束，3：延期，4：已取消
-fun TextView.setBetReceiptStatus(status: Int?) {
+/**
+ * 根據注單狀態顯示文字
+ * @param cancelBy 取消触发来源 0: 自动, 1: 手动
+ */
+@BindingAdapter(value = ["betReceiptStatus", "betResultCancelBy"], requireAll = false) //状态 0：未开始，1：比赛中，2：已结束，3：延期，4：已取消
+fun TextView.setBetReceiptStatus(status: Int?, cancelBy: String? = null) {
     text = when (status) {
         0 -> String.format(context.getString(R.string.pending), " ")
         1 -> context.getString(R.string.undone)
@@ -148,7 +152,13 @@ fun TextView.setBetReceiptStatus(status: Int?) {
         4 -> context.getString(R.string.lose)
         5 -> context.getString(R.string.lose_half)
         6 -> context.getString(R.string.settled)
-        7 -> context.getString(R.string.odds_change)
+        7 -> {
+            when (cancelBy) {
+                "0" -> context.getString(R.string.cancel_auto)
+                "1" -> context.getString(R.string.cancel_manual)
+                else -> context.getString(R.string.odds_change)
+            }
+        }
         else -> context.getString(R.string.confirmed)
     }
 }
@@ -280,7 +290,7 @@ fun TextView.setMoneyFormat(money: Double?) {
 }
 
 
-@BindingAdapter(value = ["bind:profitFormat", "bind:profitTotal"], requireAll = false)
+@BindingAdapter(value = ["profitFormat", "profitTotal"], requireAll = false)
 fun TextView.setProfitFormat(money: Double?, isTotal: Boolean? = false) {
     money?.let {
         text = if (it > 0.0) {
@@ -413,13 +423,13 @@ fun TextView.setPlayContent(
     }
 
     val playNameStr = if (!playName.isNullOrEmpty()) "<font color=$playNameStrColor>${playName} </font> " else ""
-    val spreadStr = if (!spread.isNullOrEmpty() && playName != spread) "<font color=#B73A20>$spread</font> " else ""
+    val spreadStr = if (!spread.isNullOrEmpty() && playName != spread) "<font color=#B73A20><b>$spread</b></font> " else ""
 
     text = HtmlCompat.fromHtml(
         playNameStr +
                 spreadStr +
                 "<font color=$playNameStrColor>@ </font> " +
-                "<font color=#B73A20>$formatForOdd </font> "
+                "<font color=#B73A20><b>$formatForOdd </b></font> "
         , HtmlCompat.FROM_HTML_MODE_LEGACY
     )
 }

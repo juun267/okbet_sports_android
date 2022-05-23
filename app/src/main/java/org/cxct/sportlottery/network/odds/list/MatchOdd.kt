@@ -41,8 +41,8 @@ data class MatchOdd(
 
     var isExpand = false
     var leagueTime: Int? = null
-    var leagueName:String = ""
-    var stopped:Int? = 0
+    var leagueName: String = ""
+    var stopped: Int? = 0
 
     var positionButtonPage = 0
 
@@ -57,6 +57,8 @@ data class MatchOdd(
             }
         }
     }
+
+    var runningTime: String = ""
 }
 
 enum class TimeCounting(val value: Int) {

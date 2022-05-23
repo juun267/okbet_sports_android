@@ -143,7 +143,7 @@
                                 android:layout_height="match_parent"
                                 android:background="@drawable/effect_select_bet_edit_text_fill_color_white"
                                 android:hint="@string/bet_info_input_quota"
-                                android:inputType="number"
+                                android:inputType="numberDecimal"
                                 android:maxLength="7"
                                 android:paddingStart="10dp"
                                 android:textColor="@color/color_317FFF_0760D4"

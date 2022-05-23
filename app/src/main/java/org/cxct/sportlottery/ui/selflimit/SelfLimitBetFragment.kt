@@ -14,6 +14,9 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.util.TextUtil
 
+/**
+ * @app_destination 自我禁制-每次投注上限
+ */
 @SuppressLint("SetTextI18n")
 class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel::class),
     View.OnClickListener {

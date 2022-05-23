@@ -179,7 +179,7 @@ class BetInfoRepository(val androidContext: Context) {
                     _parlayList.value?.forEachIndexed { index, parlayOdd ->
                         newParlayList[index].apply {
                             betAmount = parlayOdd.betAmount
-                            inputBetAmountStr = parlayOdd.betAmount.toString()
+                            inputBetAmountStr = parlayOdd.inputBetAmountStr
                             allSingleInput = parlayOdd.allSingleInput
                             amountError = parlayOdd.amountError
                         }
@@ -519,12 +519,12 @@ class BetInfoRepository(val androidContext: Context) {
                     }
                 }
                 //TODO 問Martin, 這一段的用意
-            /*else if(oddsType == OddsType.IDN) {
-                    if (matchOddList[0].indoOdds < 0 && oddsList.size <= 1) {
-                        val indoMax = (((playQuota?.max?.toDouble()?.plus(abs(matchOddList[0].indoOdds))) ?: 0).toInt()) - 1
-                        maxBet = if (maxBetMoney < indoMax) maxBetMoney else indoMax
-                    }
-                }*/
+                /*else if(oddsType == OddsType.IDN) {
+                        if (matchOddList[0].indoOdds < 0 && oddsList.size <= 1) {
+                            val indoMax = (((playQuota?.max?.toDouble()?.plus(abs(matchOddList[0].indoOdds))) ?: 0).toInt()) - 1
+                            maxBet = if (maxBetMoney < indoMax) maxBetMoney else indoMax
+                        }
+                    }*/
             }
 
             ParlayOdd(
@@ -686,7 +686,8 @@ class BetInfoRepository(val androidContext: Context) {
         return gameFastBetOpenedSharedPreferences.getBoolean("isOpen", true)
     }
 
-    fun updateBetAmount(input: String){
+    fun updateBetAmount(input: String) {
+        if ((_betInfoList.value?.peekContent()?.size ?: 0) == 0) return
         _betInfoList.value?.peekContent()?.first()?.inputBetAmountStr = input
     }
 

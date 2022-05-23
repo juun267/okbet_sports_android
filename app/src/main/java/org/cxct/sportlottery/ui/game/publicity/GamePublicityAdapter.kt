@@ -78,6 +78,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
          */
         var reloadConfig: Boolean = false
     }
+
     class PublicitySubTitleImageData
     class BottomNavigationItem
     // endregion
@@ -87,22 +88,22 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
 
     //region addData Function
     fun addTitle() {
-        removeDatas(PublicityTitleImageData())
+        removeData(PublicityTitleImageData())
         addDataWithSort(PublicityTitleImageData())
     }
 
     fun addSubTitle() {
-        removeDatas(PublicitySubTitleImageData())
+        removeData(PublicitySubTitleImageData())
         addDataWithSort(PublicitySubTitleImageData())
     }
 
     fun addRecommend(recommendList: List<Recommend>) {
-        removeDatas(recommendList.firstOrNull())
+        removeData(recommendList.firstOrNull())
         recommendList.forEach { addDataWithSort(it) }
     }
 
     fun addBottomView() {
-        removeDatas(BottomNavigationItem())
+        removeData(BottomNavigationItem())
         addDataWithSort(BottomNavigationItem())
     }
     //endregion
@@ -115,7 +116,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
     }
 
     fun updateToolbarBannerImage() {
-        removeDatas(PublicityTitleImageData())
+        removeData(PublicityTitleImageData())
         addDataWithSort(PublicityTitleImageData().apply {
             this.reloadConfig = true
         })
@@ -216,7 +217,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                 }
             }
             is PublicityTitleViewHolder -> {
-                if (data is PublicityTitleImageData){
+                if (data is PublicityTitleImageData) {
                     holder.bind(data)
                 }
             }
@@ -236,8 +237,8 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
 
     // region ItemViewHolder
     inner class PublicityTitleViewHolder(val binding: PublicityTitleViewBinding) :
-        //BaseItemListenerViewHolder(binding.root, publicityAdapterListener){
-    RecyclerView.ViewHolder(binding.root) {
+    //BaseItemListenerViewHolder(binding.root, publicityAdapterListener){
+        RecyclerView.ViewHolder(binding.root) {
         val context: Context = binding.root.context
         fun bind(data: PublicityTitleImageData) {
             with(binding) {
@@ -254,7 +255,13 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                         )
                     )
                     ivLogo.setImageResource(R.drawable.ic_logo)
-                    ivNotice.setImageResource(R.drawable.icon_bell_white)
+                    ivNotice.setImageResource(
+                        if (hasNotice) {
+                            R.drawable.icon_bell_white_red_dot
+                        } else {
+                            R.drawable.icon_bell_white
+                        }
+                    )
                     ivMenu.setImageResource(R.drawable.ic_menu_gray)
                     tvLanguage.setTextColor(
                         ContextCompat.getColor(
@@ -386,7 +393,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
 
     // region private functions
     // 依照傳入參數刪除同一個類別的資料
-    private fun removeDatas(src: Any?) {
+    private fun removeData(src: Any?) {
         src?.let {
             val iterator = mDataList.iterator()
             while (iterator.hasNext()) {

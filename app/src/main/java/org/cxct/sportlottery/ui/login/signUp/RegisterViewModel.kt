@@ -104,6 +104,8 @@ class RegisterViewModel(
     private val cbAgreeAllChecked: LiveData<Boolean?>
         get() = _cbAgreeAllChecked
 
+    var cbCheckedCounts = 0 //checkbox勾選數量
+
     private val _registerResult = MutableLiveData<LoginResult>()
     private val _inviteCodeMsg = MutableLiveData<String?>()
     private val _memberAccountMsg = MutableLiveData<Pair<String?, Boolean>>()
@@ -578,13 +580,19 @@ class RegisterViewModel(
     }
 
     fun checkAccountExist(account: String) {
-        val msg = androidContext.getString(R.string.desc_register_checking_account)
-        _memberAccountMsg.value = Pair(msg, false)//TODO 如此fun要使用在虛給定boolean值
+        //舊 檢查中字樣 (不過會有消不掉的疑慮 h5沒有此)
+//        val msg = androidContext.getString(R.string.desc_register_checking_account)
+//        _memberAccountMsg.value = Pair(msg, false)
         viewModelScope.launch {
-            val result = doNetwork(androidContext) {
+            doNetwork(androidContext) {
                 OneBoSportApi.indexService.checkAccountExist(account)
+            }.let {
+                if(it?.success == true) {
+                    checkMemberAccount(account, it.isExist ?: false)
+                }else {
+                    checkMemberAccount(account, false)
+                }
             }
-            checkMemberAccount(account, result?.isExist ?: false)
         }
     }
 

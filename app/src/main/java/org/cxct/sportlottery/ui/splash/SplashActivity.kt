@@ -22,6 +22,9 @@ import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewMod
 import org.cxct.sportlottery.util.JumpUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+/**
+ * @app_destination 啟動頁
+ */
 class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
     private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()

@@ -28,7 +28,6 @@
         android:layout_marginStart="14dp"
         android:layout_marginEnd="8dp"
         android:layout_weight="1"
-        android:textAllCaps="true"
         android:textColor="@color/color_e5e5e5_333333"
         android:textSize="@dimen/textSize14sp"
         android:textStyle="bold"

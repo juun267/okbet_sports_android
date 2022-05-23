@@ -2,8 +2,10 @@ package org.cxct.sportlottery.ui.base
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Bundle
 import android.os.Handler
 import android.text.Spanned
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -19,7 +21,7 @@ import kotlin.reflect.KClass
 open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
 
     val viewModel: T by sharedViewModel(clazz = clazz)
-    private var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一個
+    var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一個
 
     /*弹出加载界面*/
     open fun loading() {
@@ -205,7 +207,7 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
 
     fun avoidFastDoubleClick(){
         mIsEnabled = false
-        Handler().postDelayed({ mIsEnabled = true }, 500)
+        Handler().postDelayed({ mIsEnabled = true }, 300)
     }
 
 }

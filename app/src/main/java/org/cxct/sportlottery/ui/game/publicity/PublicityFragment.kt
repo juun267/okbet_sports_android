@@ -32,6 +32,9 @@ import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
 import org.cxct.sportlottery.util.SocketUpdateUtil
 
+/**
+ * @app_destination 宣傳頁
+ */
 class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class), View.OnClickListener {
     // This property is only valid between onCreateView and onDestroyView.
     private var _binding: FragmentPublicityBinding? = null
@@ -63,16 +66,19 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                     goGamePage()
                 },
                 onClickBetListener = { gameType, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
-                    addOddsDialog(
-                        gameType,
-                        matchType,
-                        matchInfo,
-                        odd,
-                        playCateCode,
-                        playCateName,
-                        betPlayCateNameMap,
-                        playCateMenuCode
-                    )
+                    if(mIsEnabled){
+                        avoidFastDoubleClick()
+                        addOddsDialog(
+                            gameType,
+                            matchType,
+                            matchInfo,
+                            odd,
+                            playCateCode,
+                            playCateName,
+                            betPlayCateNameMap,
+                            playCateMenuCode
+                        )
+                    }
                 },
                 onClickFavoriteListener = {
                     viewModel.pinFavorite(FavoriteType.MATCH, it)
@@ -417,7 +423,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     }
 
     private fun goGamePage() {
-        GameActivity.reStart(MultiLanguagesApplication.appContext)
+        GameActivity.reStart(activity?:requireActivity())
         activity?.finish()
     }
 

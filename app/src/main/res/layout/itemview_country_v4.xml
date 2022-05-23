@@ -20,7 +20,6 @@
         android:layout_marginEnd="12dp"
         android:ellipsize="end"
         android:singleLine="true"
-        android:textAllCaps="true"
         android:textColor="#202020"
         android:textSize="@dimen/textSize14sp"
         android:textStyle="bold"
@@ -59,11 +58,10 @@
     </net.cachapa.expandablelayout.ExpandableLayout>
 
     <!-- 間隔 -->
-    <View android:id="@+id/SpaceItemDecorationView"
+    <View
         android:layout_width="match_parent"
         android:layout_height="8dp"
         android:background="@color/color_191919_FCFCFC"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/country_border"/>
+        app:layout_constraintTop_toBottomOf="@+id/country_expand"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

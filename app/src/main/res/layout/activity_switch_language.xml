@@ -19,7 +19,7 @@
             android:id="@+id/ivLogo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_16"
+            android:layout_marginStart="@dimen/margin_14"
             android:layout_marginTop="@dimen/margin_4"
             android:layout_marginBottom="@dimen/margin_4"
             android:adjustViewBounds="true"
@@ -51,7 +51,7 @@
             android:layout_height="@dimen/margin_48"
             android:background="@color/color_212121_ededed"
             android:gravity="center_vertical"
-            android:paddingHorizontal="@dimen/margin_8">
+            android:paddingHorizontal="@dimen/margin_12">
 
             <ImageView
                 android:id="@+id/ivBack"
@@ -64,6 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/text_chose_language"
+                android:layout_marginStart="2dp"
                 android:textColor="@color/color_e5e5e5_333333" />
 
             <ImageView
@@ -74,95 +75,105 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/llEnglish"
+            android:id="@+id/llLanguageList"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_54"
-            android:background="@color/color_191919_FCFCFC"
-            android:gravity="center_vertical"
-            android:paddingStart="@dimen/margin_20"
-            android:paddingEnd="@dimen/margin_16">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/llChina"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_54"
+                android:background="@color/color_191919_FCFCFC"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/margin_20"
+                android:paddingEnd="@dimen/margin_16">
+
+                <TextView
+                    android:id="@+id/tvChina"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/color_e5e5e5_333333"
+                    android:text="@string/language_cn"
+                    android:textSize="@dimen/textSize14sp" />
+
+                <ImageView
+                    android:layout_width="@dimen/margin_40"
+                    android:layout_height="@dimen/margin_26"
+                    android:src="@drawable/ic_flat_cn" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/line1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_1"
+                android:background="@color/color_1F1F1F_e6e6e6" />
+
+            <LinearLayout
+                android:id="@+id/llEnglish"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_54"
+                android:background="@color/color_191919_FCFCFC"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/margin_20"
+                android:paddingEnd="@dimen/margin_16">
 
 
-            <TextView
-                android:id="@+id/tvEnglish"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/language_en"
-                android:textColor="@color/color_e5e5e5_333333"
-                android:textSize="@dimen/textSize14sp" />
+                <TextView
+                    android:id="@+id/tvEnglish"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/language_en"
+                    android:textColor="@color/color_e5e5e5_333333"
+                    android:textSize="@dimen/textSize14sp" />
 
-            <ImageView
-                android:layout_width="@dimen/margin_40"
-                android:layout_height="@dimen/margin_26"
-                android:src="@drawable/ic_flat_en" />
+                <ImageView
+                    android:layout_width="@dimen/margin_40"
+                    android:layout_height="@dimen/margin_26"
+                    android:src="@drawable/ic_flat_en" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/line2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_1"
+                android:background="@color/color_1F1F1F_e6e6e6" />
+
+            <LinearLayout
+                android:id="@+id/llVietnam"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_54"
+                android:background="@color/color_191919_FCFCFC"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/margin_20"
+                android:paddingEnd="@dimen/margin_16">
+
+                <TextView
+                    android:id="@+id/tvVietnam"
+                    android:layout_width="0dp"
+                    android:textColor="@color/color_e5e5e5_333333"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/language_vi"
+                    android:textSize="@dimen/textSize14sp" />
+
+                <ImageView
+                    android:layout_width="@dimen/margin_40"
+                    android:layout_height="@dimen/margin_26"
+                    android:src="@drawable/ic_flat_vn" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/line3"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_1"
+                android:background="@color/color_1F1F1F_e6e6e6" />
+
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_1"
-            android:background="@color/color_212121_ededed" />
-
-        <LinearLayout
-            android:id="@+id/llChina"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_54"
-            android:background="@color/color_191919_FCFCFC"
-            android:gravity="center_vertical"
-            android:paddingStart="@dimen/margin_20"
-            android:paddingEnd="@dimen/margin_16">
-
-            <TextView
-                android:id="@+id/tvChina"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/color_e5e5e5_333333"
-                android:text="@string/language_cn"
-                android:textSize="@dimen/textSize14sp" />
-
-            <ImageView
-                android:layout_width="@dimen/margin_40"
-                android:layout_height="@dimen/margin_26"
-                android:src="@drawable/ic_flat_cn" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_1"
-            android:background="@color/color_212121_ededed" />
-
-        <LinearLayout
-            android:id="@+id/llVietnam"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_54"
-            android:background="@color/color_191919_FCFCFC"
-            android:gravity="center_vertical"
-            android:paddingStart="@dimen/margin_20"
-            android:paddingEnd="@dimen/margin_16">
-
-            <TextView
-                android:id="@+id/tvVietnam"
-                android:layout_width="0dp"
-                android:textColor="@color/color_e5e5e5_333333"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/language_vi"
-                android:textSize="@dimen/textSize14sp" />
-
-            <ImageView
-                android:layout_width="@dimen/margin_40"
-                android:layout_height="@dimen/margin_26"
-                android:src="@drawable/ic_flat_vn" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_1"
-            android:background="@color/color_212121_ededed" />
 
     </LinearLayout>
-
 </LinearLayout>
 
 

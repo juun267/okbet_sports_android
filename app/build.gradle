@@ -21,7 +21,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 5
-        versionName "1.0.110"
+        versionName "1.0.122"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -56,6 +56,7 @@ android {
     lintOptions {
         disable 'MissingTranslation'
         checkReleaseBuilds false
+        abortOnError false
     }
 
     flavorDimensions "single"
@@ -189,7 +190,7 @@ android {
 
             //強制改寫 apk 輸出路徑, ex: ..\app\build/outputs/releaseAPK
             //方便不同平台的 apk 可以在同一層級的資料夾整理
-            variant.getPackageApplication().outputDirectory = new File(project.buildDir.absolutePath + "/outputs/releaseAPK")
+//            variant.getPackageApplication().outputDirectory = new File(project.buildDir.absolutePath + "/outputs/releaseAPK")
         }
     }
 
@@ -223,7 +224,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.drawerlayout:drawerlayout:1.1.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha02'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'androidx.preference:preference:1.1.1'
@@ -269,7 +270,7 @@ dependencies {
     implementation "org.koin:koin-android:$koin_version"
 
     //timber
-    implementation 'com.jakewharton.timber:timber:4.7.1'
+    implementation 'com.jakewharton.timber:timber:5.0.1'
 
     //calendar of date range picker
     implementation project(':awesome-calendar')
@@ -297,8 +298,8 @@ dependencies {
 
 
     //極光推送sdk
-    implementation 'cn.jiguang.sdk:jpush-google:4.5.0'
-    implementation 'cn.jiguang.sdk:jcore-google:3.1.2'
+    implementation 'cn.jiguang.sdk:jpush-google:4.6.6'
+    implementation 'cn.jiguang.sdk:jcore-google:3.2.4'
     //implementation 'cn.jiguang.sdk:janalytics:2.1.4'
 
     //room

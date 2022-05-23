@@ -216,8 +216,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                         )
 
                         tv_league.text = leagueName
-                        val teamNamesStr = if (homeName?.length ?: 0 > 15) "$homeName v\n$awayName" else "$homeName v $awayName"
-                        tv_team_names.text = teamNamesStr
+                        tv_team_names.setTeamNames(15, homeName, awayName)
                         tv_match_type.tranByPlayCode(playCode, playCateName)
                     }
 
@@ -341,7 +340,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
 class BetReceiptCallback : DiffUtil.ItemCallback<DataItem>() {
     override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
-        return oldItem.orderNo == newItem.orderNo
+        return oldItem.orderNo == newItem.orderNo && oldItem.status == newItem.status
     }
 
     override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
@@ -352,17 +351,21 @@ class BetReceiptCallback : DiffUtil.ItemCallback<DataItem>() {
 sealed class DataItem {
 
     abstract val orderNo: String?
+    abstract val status: Int?
 
     data class SingleData(val result: BetResult) : DataItem() {
         override val orderNo = result.orderNo
+        override val status = result.status
     }
 
     data class ParlayData(val result: BetResult, val firstItem: Boolean = false) : DataItem() {
         override val orderNo = result.orderNo
+        override val status = result.status
     }
 
     object ParlayTitle : DataItem() {
         override val orderNo: String = ""
+        override val status: Int? = null
     }
 
 }
