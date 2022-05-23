@@ -316,14 +316,20 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         }
 
         //充值
-        tv_recharge.setOnClickListener {
-            viewModel.checkRechargeSystem()
+        tv_recharge.apply {
+            setVisibilityByCreditSystem()
+            setOnClickListener {
+                viewModel.checkRechargeSystem()
+            }
         }
 
         //提款
-        tv_withdraw.setOnClickListener {
-            avoidFastDoubleClick()
-            viewModel.checkWithdrawSystem()
+        tv_withdraw.apply {
+            setVisibilityByCreditSystem()
+            setOnClickListener {
+                avoidFastDoubleClick()
+                viewModel.checkWithdrawSystem()
+            }
         }
 
         //我的賽事

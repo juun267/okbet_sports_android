@@ -46,6 +46,11 @@
         <item>@string/text_account_history_credit</item>
     </string-array>
 
+    <string-array name="account_history_state_by_credit_array">
+        <item>@string/text_account_history_bet</item>
+        <item>@string/text_account_history_credit</item>
+    </string-array>
+
     <string-array name="recharge_channel_array">
         <item>@string/recharge_channel_all</item>
         <item>@string/recharge_channel_online</item>

@@ -1014,6 +1014,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             tv_odds_type.visibility = View.GONE
             iv_menu.visibility = View.GONE
             iv_notice.visibility = View.GONE
+            btn_register.setVisibilityByCreditSystem()
+            toolbar_divider.setVisibilityByCreditSystem()
         }
     }
 
