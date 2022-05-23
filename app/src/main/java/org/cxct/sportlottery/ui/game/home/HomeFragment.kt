@@ -104,7 +104,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             playCateName: String?,
             betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
         ) {
-            if(mIsEnabled) {
+            if (mIsEnabled) {
                 avoidFastDoubleClick()
                 addOddsDialog(matchOdd, odd, playCateCode, playCateName, betPlayCateNameMap)
             }
@@ -312,7 +312,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 matchOdd: MatchOdd, odd: Odd, playCateCode: String, playCateName: String?,
                 betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
             ) {
-                if(mIsEnabled) {
+                if (mIsEnabled) {
                     avoidFastDoubleClick()
                     addOddsDialog(matchOdd, odd, playCateCode, playCateName, betPlayCateNameMap)
                 }
@@ -482,6 +482,33 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         val otherMatchList: MutableList<OtherMatch> = mutableListOf()
         result?.matchPreloadData?.datas?.forEach { data ->
             if (data.matchOdds.isNotEmpty()) {
+
+                mHomeListAdapter.mDataList.forEach { any ->
+                    when (any) {
+                        is GameEntity -> {
+
+                            //刷新前將原資料放入新取得的物件內
+                            any.matchOdds.forEach { curMatchOdd ->
+                                data.matchOdds.find {
+                                    it.matchInfo?.id == curMatchOdd.matchInfo?.id
+                                }?.apply {
+                                    matchInfo?.homeTotalScore = curMatchOdd.matchInfo?.homeTotalScore
+                                    matchInfo?.awayTotalScore = curMatchOdd.matchInfo?.awayTotalScore
+                                    matchInfo?.homeScore = curMatchOdd.matchInfo?.homeScore
+                                    matchInfo?.awayScore = curMatchOdd.matchInfo?.awayScore
+                                    matchInfo?.homePoints = curMatchOdd.matchInfo?.homePoints
+                                    matchInfo?.awayPoints = curMatchOdd.matchInfo?.awayPoints
+                                    matchInfo?.statusName18n = curMatchOdd.matchInfo?.statusName18n
+                                    matchInfo?.homeCards = curMatchOdd.matchInfo?.homeCards
+                                    matchInfo?.awayCards = curMatchOdd.matchInfo?.awayCards
+                                    matchInfo?.scoreStatus = curMatchOdd.matchInfo?.status
+                                    runningTime = curMatchOdd.runningTime
+                                }
+                            }
+                        }
+                    }
+                }
+
                 val gameEntity = GameEntity(
                     data.code,
                     data.name,

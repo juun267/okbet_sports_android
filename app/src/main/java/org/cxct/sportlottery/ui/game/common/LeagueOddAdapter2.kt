@@ -77,6 +77,17 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
     }
     // endregion
 
+    fun updateByBetInfo(clickOdd: Odd?) {
+        data.forEachIndexed { index, matchOdd ->
+            matchOdd.oddsMap?.values?.forEach { oddList ->
+                if (oddList?.any { it?.id == clickOdd?.id } == true) {
+                    notifyItemChanged(index, Pair(BET_INFO, matchOdd))
+                    leagueOddListener?.clickOdd = null
+                }
+            }
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ViewHolderHdpOu.from(parent, oddStateRefreshListener)
     }
@@ -112,16 +123,34 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             //(holder as ViewHolderHdpOu).update(matchType, data[position], leagueOddListener, isTimerEnable, oddsType, playSelectedCodeSelectionType)
         } else {
             Log.d("Hewie", "更新：賽事($position)")
-            val matchOdd = payloads.first() as MatchOdd
-            (holder as ViewHolderHdpOu).update(
-                matchType,
-                matchOdd,
-                leagueOddListener,
-                isTimerEnable,
-                oddsType,
-                playSelectedCodeSelectionType,
-                playSelectedCode
-            )
+
+            when (payloads.first()) {
+                is MatchOdd -> {
+                    val matchOdd = payloads.first() as MatchOdd
+                    (holder as ViewHolderHdpOu).update(
+                        matchType,
+                        matchOdd,
+                        leagueOddListener,
+                        isTimerEnable,
+                        oddsType,
+                        playSelectedCodeSelectionType,
+                        playSelectedCode
+                    )
+                }
+
+                is Pair<*, *> -> {
+                    val matchOdd = payloads.first() as Pair<*, *>
+                    (holder as ViewHolderHdpOu).updateByBetInfo(
+                        item = matchOdd.second as MatchOdd,
+                        leagueOddListener = leagueOddListener,
+                        oddsType = oddsType,
+                        playSelectedCodeSelectionType = playSelectedCodeSelectionType,
+                        playSelectedCode = playSelectedCode
+                    )
+                }
+            }
+
+
         }
     }
 
@@ -153,7 +182,6 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
 
             itemView.v_top.visibility = if (bindingAdapterPosition == 0) View.GONE else View.VISIBLE
 
-            setUpVisibility(item, matchType)
             setupMatchInfo(item, matchType, matchInfoList, leagueOddListener)
             val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
             setupMatchTimeAndStatus(item, matchType, isTimerEnable, isTimerPause, leagueOddListener)
@@ -182,7 +210,6 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             playSelectedCodeSelectionType: Int?,
             playSelectedCode: String?
         ) {
-            setUpVisibility(item, matchType)
             updateMatchInfo(item, matchType)
             val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
             setupMatchTimeAndStatus(item, matchType, isTimerEnable, isTimerPause, leagueOddListener)
@@ -191,8 +218,19 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             itemView.quickListView?.setDatas(item, oddsType, leagueOddListener, playSelectedCodeSelectionType, playSelectedCode)
             itemView.quickListView?.refreshTab()
             itemView.quickListView?.updateQuickSelected()
-            //setupQuickCategory(item, oddsType, leagueOddListener)
-            //updateQuickCategory(item, oddsType, leagueOddListener)
+        }
+
+        fun updateByBetInfo(
+            item: MatchOdd,
+            oddsType: OddsType,
+            leagueOddListener: LeagueOddListener?,
+            playSelectedCodeSelectionType: Int?,
+            playSelectedCode: String?
+        ) {
+            updateOddsButtonByBetInfo(item)
+            itemView.quickListView?.setDatas(item, oddsType, leagueOddListener, playSelectedCodeSelectionType, playSelectedCode)
+            itemView.quickListView?.refreshTab()
+            itemView.quickListView?.updateQuickSelected()
         }
 
         private fun updateMatchInfo(item: MatchOdd, matchType: MatchType) {
@@ -204,24 +242,16 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             itemView.league_odd_match_play_count.text = item.matchInfo?.playCateNum.toString()
             itemView.league_odd_match_favorite.isSelected = item.matchInfo?.isFavorite ?: false
             itemView.league_odd_match_price_boost.isVisible = item.matchInfo?.eps == 1
+            itemView.league_neutral.apply {
+                isSelected = item.matchInfo?.neutral == 1
+                isVisible = item.matchInfo?.neutral == 1
+            }
             //itemView.space2.isVisible = (item.matchInfo?.eps == 1 || item.matchInfo?.liveVideo == 1)
             itemView.iv_play.isVisible =
-                item.matchInfo?.liveVideo == 1 && (matchType == MatchType.IN_PLAY || (matchType == MatchType.PARLAY && item.matchInfo.isInPlay == true) || matchType == MatchType.MY_EVENT && item.matchInfo.isInPlay == true)
+                item.matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(item.matchInfo?.startTime))
             itemView.iv_animation.isVisible =
-                item.matchInfo?.isInPlay == true && !(item.matchInfo.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
+                TimeUtil.isTimeInPlay(item.matchInfo?.startTime) && !(item.matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
                     ?.getGameDetailAnimationNeedShow() == true
-        }
-
-        // endregion
-
-        private fun setUpVisibility(item: MatchOdd, matchType: MatchType) {
-
-            /*val socketStatus = item.matchInfo?.socketMatchStatus
-
-            if (matchType == MatchType.AT_START && socketStatus != null) { //有status事件代表遊戲已開始，不會歸類在'即將'
-                itemView.visibility = View.GONE
-            }*/
-
         }
 
         private fun setupMatchInfo(
@@ -248,7 +278,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                     leagueOddListener?.onClickPlayType(
                         item.matchInfo?.id,
                         matchInfoList,
-                        if (item.matchInfo?.isInPlay == true) MatchType.IN_PLAY else matchType,
+                        if (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)) MatchType.IN_PLAY else matchType,
                         item.matchInfo?.liveVideo ?: 0
                     )
                 }
@@ -274,7 +304,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 leagueOddListener?.onClickPlayType(
                     item.matchInfo?.id,
                     matchInfoList,
-                    if (item.matchInfo?.isInPlay == true) MatchType.IN_PLAY else matchType,
+                    if (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)) MatchType.IN_PLAY else matchType,
                     item.matchInfo?.liveVideo ?: 0
                 )
             }
@@ -282,9 +312,9 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             itemView.league_odd_match_price_boost.isVisible = item.matchInfo?.eps == 1
             //itemView.space2.isVisible = (item.matchInfo?.eps == 1 || item.matchInfo?.liveVideo == 1)
             itemView.iv_play.isVisible =
-                item.matchInfo?.liveVideo == 1 && (matchType == MatchType.IN_PLAY || (matchType == MatchType.PARLAY && item.matchInfo.isInPlay == true) || matchType == MatchType.MY_EVENT && item.matchInfo.isInPlay == true)
+                item.matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(item.matchInfo?.startTime))
             itemView.iv_animation.isVisible =
-                item.matchInfo?.isInPlay == true && !(item.matchInfo.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
+                TimeUtil.isTimeInPlay(item.matchInfo?.startTime) && !(item.matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
                     ?.getGameDetailAnimationNeedShow() == true
 
         }
@@ -367,7 +397,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
         //時間的色值同步#000000 即將開賽的Icon不改顏色，和Ian確認過
         private fun setStatusTextColor(item: MatchOdd) {
             val color =
-                if (item.matchInfo?.isInPlay == true) R.color.color_FFFFFF_000000 else R.color.color_A3A3A3_666666
+                if (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)) R.color.color_FFFFFF_000000 else R.color.color_A3A3A3_666666
             itemView.apply {
                 league_odd_match_status.setTextColor(ContextCompat.getColor(this.context, color))
                 league_odd_spt.setTextColor(ContextCompat.getColor(this.context, color))
@@ -380,13 +410,11 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
         private fun setSptText(item: MatchOdd, matchType: MatchType) {
             item.matchInfo?.spt?.let {
                 when {
-                    item.matchInfo.isInPlay == true -> { //除0以外顯示
+                    TimeUtil.isTimeInPlay(item.matchInfo?.startTime) -> { //除0以外顯示
                         itemView.league_odd_spt.visibility = if (it > 0) View.VISIBLE else View.GONE
                         itemView.league_odd_spt.text = "/ $it"
                     }
-
-                    matchType == MatchType.EARLY || matchType == MatchType.PARLAY || matchType == MatchType.TODAY || matchType == MatchType.AT_START || (matchType == MatchType.MY_EVENT && item.matchInfo.isInPlay == false)
-                    -> {
+                    else -> {
                         if (it == 3 || it == 5) {//除3、5以外不顯示
                             itemView.league_spt.visibility = View.VISIBLE
                             itemView.league_spt.text = when (it) {
@@ -398,9 +426,6 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                             itemView.league_spt.visibility = View.GONE
                         }
                     }
-
-                    else -> {
-                    }
                 }
             }
         }
@@ -408,7 +433,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
         private fun View.setCardText(matchType: MatchType, item: MatchOdd) {
             league_odd_match_cards_home.apply {
                 visibility = when {
-                    (matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false))
+                    TimeUtil.isTimeInPlay(item.matchInfo?.startTime)
                             && (item.matchInfo?.homeCards ?: 0 > 0) -> View.VISIBLE
                     else -> View.GONE
                 }
@@ -417,7 +442,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
 
             league_odd_match_cards_away.apply {
                 visibility = when {
-                    (matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false))
+                    TimeUtil.isTimeInPlay(item.matchInfo?.startTime)
                             && (item.matchInfo?.awayCards ?: 0 > 0) -> View.VISIBLE
                     else -> View.GONE
                 }
@@ -427,7 +452,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
 
         private fun View.setScoreTextAtFront(item: MatchOdd) {
             league_odd_match_score_home.apply {
-                visibility = when (item.matchInfo?.isInPlay) {
+                visibility = when (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)) {
                     true -> View.VISIBLE
                     else -> View.GONE
                 }
@@ -435,7 +460,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             }
 
             league_odd_match_score_away.apply {
-                visibility = when (item.matchInfo?.isInPlay) {
+                visibility = when (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)) {
                     true -> View.VISIBLE
                     else -> View.GONE
                 }
@@ -444,7 +469,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
         }
 
         private val isScoreTextVisible = { _: MatchType, item: MatchOdd ->
-            when (item.matchInfo?.isInPlay) {
+            when (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)) {
                 true -> View.VISIBLE
                 else -> View.GONE
             }
@@ -515,10 +540,8 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                     Typeface.NORMAL
 
                 //隊伍名稱粗體
-                league_odd_match_score_home.apply { setTypeface(this.typeface, homeStrongType) }
                 league_odd_match_name_home.apply { setTypeface(this.typeface, homeStrongType) }
 
-                league_odd_match_score_away.apply { setTypeface(this.typeface, awayStrongType) }
                 league_odd_match_name_away.apply { setTypeface(this.typeface, awayStrongType) }
             }
         }
@@ -535,8 +558,8 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 此處倒數計時前須先設置時間及狀態，可解決控件短暫空白。(賽事狀態已於 BaseFavoriteViewModel #1 處調整過)*/
 
             when {
-                item.matchInfo?.isInPlay == true -> {
-                    val socketValue = item.matchInfo.socketMatchStatus
+                TimeUtil.isTimeInPlay(item.matchInfo?.startTime) -> {
+                    val socketValue = item.matchInfo?.socketMatchStatus
 
                     if (needCountStatus(socketValue)) {
                         itemView.league_odd_match_time.visibility = View.VISIBLE
@@ -549,25 +572,26 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                                     itemView.league_odd_match_time.text =
                                         itemView.context.getString(R.string.time_up)
                                 }
-                                item.matchInfo.leagueTime = (timeMillis / 1000).toInt()
+                                item.matchInfo?.leagueTime = (timeMillis / 1000).toInt()
                             }
                         }
 
                         updateTimer(
                             isTimerEnable,
                             isTimerPause,
-                            item.matchInfo.leagueTime ?: 0,
-                            (item.matchInfo.gameType == GameType.BK.key ||
-                                    item.matchInfo.gameType == GameType.RB.key ||
-                                    item.matchInfo.gameType == GameType.AFT.key)
+                            item.matchInfo?.leagueTime ?: 0,
+                            (item.matchInfo?.gameType == GameType.BK.key ||
+                                    item.matchInfo?.gameType == GameType.RB.key ||
+                                    item.matchInfo?.gameType == GameType.AFT.key)
                         )
 
                     } else {
                         itemView.league_odd_match_time.visibility = View.GONE
                     }
+                    itemView.league_odd_match_remain_time_icon.visibility = View.GONE
                 }
 
-                item.matchInfo?.isAtStart == true -> {
+                TimeUtil.isTimeAtStart(item.matchInfo?.startTime) -> {
                     listener = object : TimerListener {
                         override fun onTimerUpdate(timeMillis: Long) {
                             if (timeMillis > 1000) {
@@ -583,178 +607,72 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                                     0
                                 )
                             }
-                            item.matchInfo.remainTime = timeMillis
-
+                            item.matchInfo?.remainTime = timeMillis
+                            itemView.league_odd_match_remain_time_icon.visibility = View.VISIBLE
                         }
                     }
 
-                    item.matchInfo.remainTime?.let { remainTime ->
+                    item.matchInfo?.remainTime?.let { remainTime ->
                         updateTimer(
-                            isTimerEnable,
+                            true,
                             isTimerPause,
                             (remainTime / 1000).toInt(),
                             true
                         )
                     }
                 }
-
-                matchType == MatchType.MY_EVENT -> {
-                    when {
-                        item.matchInfo?.isInPlay ?: false -> {
-                            item.matchInfo?.isAtStart = false
-                            if (item.matchInfo?.gameType == GameType.FT.name || item.matchInfo?.gameType == GameType.BK.name) {
-                                listener = object : TimerListener {
-                                    override fun onTimerUpdate(timeMillis: Long) {
-                                        if (timeMillis > 1000) {
-                                            itemView.league_odd_match_time.text =
-                                                TimeUtil.longToMmSs(timeMillis)
-                                            item.matchInfo.leagueTime = (timeMillis / 1000).toInt()
-                                        } else {
-                                            itemView.league_odd_match_time.text =
-                                                itemView.context.getString(R.string.time_up)
-                                        }
-                                    }
-                                }
-
-                                updateTimer(
-                                    isTimerEnable,
-                                    isTimerPause,
-                                    item.matchInfo.leagueTime ?: 0,
-                                    item.matchInfo.gameType == GameType.BK.key
-                                )
-                            }
-                        }
-
-                        item.matchInfo?.isAtStart ?: false -> {
-                            item.matchInfo.apply {
-                                this?.isAtStart = true
-                                this?.remainTime = TimeUtil.getRemainTime(this?.startTime)
-                            }
-                            listener = object : TimerListener {
-                                override fun onTimerUpdate(timeMillis: Long) {
-                                    if (timeMillis > 1000) {
-                                        val min = TimeUtil.longToMinute(timeMillis)
-                                        itemView.league_odd_match_time.text = String.format(
-                                            itemView.context.resources.getString(R.string.at_start_remain_minute),
-                                            min
-                                        )
-                                    } else {
-                                        //等待Socket更新
-                                        itemView.league_odd_match_time.text = String.format(
-                                            itemView.context.resources.getString(R.string.at_start_remain_minute),
-                                            0
-                                        )
-                                    }
-                                    item.matchInfo?.remainTime = timeMillis
-                                }
-                            }
-
-                            item.matchInfo?.remainTime?.let { remainTime ->
-                                updateTimer(
-                                    isTimerEnable,
-                                    isTimerPause,
-                                    (remainTime / 1000).toInt(),
-                                    true
-                                )
-                            }
-                        }
-
-                        else -> {
-                            //今日、早盤、串關
-                            itemView.league_odd_match_time.text =
-                                TimeUtil.timeFormat(item.matchInfo?.startTime, "HH:mm")
-                        }
-                    }
-                }
-
                 else -> {
-                    itemView.league_odd_match_time.text = item.matchInfo?.startTimeDisplay
-
+                    itemView.league_odd_match_time.text = TimeUtil.timeFormat(item.matchInfo?.startTime, "HH:mm")
+                    itemView.league_odd_match_remain_time_icon.visibility = View.GONE
                 }
             }
 
             setStatusText(item, matchType)
             setTextViewStatus(item, matchType)
-
-            itemView.league_odd_match_remain_time_icon.apply {
-                visibility = when {
-                    item.matchInfo?.isAtStart == true -> View.VISIBLE
-                    matchType == MatchType.AT_START -> View.VISIBLE
-                    else -> View.INVISIBLE
-                }
-            }
         }
 
         private fun setStatusText(item: MatchOdd, matchType: MatchType) {
             itemView.league_odd_match_status.text = when {
-                (matchType == MatchType.IN_PLAY
+                (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)
                         && item.matchInfo?.status == GameStatus.POSTPONED.code
                         && (item.matchInfo.gameType == GameType.FT.name || item.matchInfo.gameType == GameType.BK.name || item.matchInfo.gameType == GameType.TN.name)) -> {
                     itemView.context.getString(R.string.game_postponed)
                 }
-
-                matchType == MatchType.IN_PLAY || System.currentTimeMillis() > item.matchInfo?.startTime ?: 0 -> {
+                TimeUtil.isTimeInPlay(item.matchInfo?.startTime) -> {
                     if (item.matchInfo?.statusName18n != null) {
                         item.matchInfo.statusName18n
                     } else {
-                        return
+                        ""
                     }
                 }
-
-                matchType == MatchType.MY_EVENT -> {
-                    when (item.matchInfo?.isInPlay) {
-                        true -> item.matchInfo.statusName18n
-                        else -> {
-                            if (TimeUtil.isTimeToday(item.matchInfo?.startTime))
-                                itemView.context.getString(TimeUtil.setupDayOfWeekAndToday(item.matchInfo?.startTime))
-                            else
-                                "${itemView.context.getString(TimeUtil.setupDayOfWeekAndToday(item.matchInfo?.startTime))} ${item.matchInfo?.startDateDisplay}"
-                        }
-                    }
-                }
-
                 else -> {
-                    "${itemView.context.getString(TimeUtil.setupDayOfWeekAndToday(item.matchInfo?.startTime))} ${item.matchInfo?.startDateDisplay}"
+                    if (TimeUtil.isTimeToday(item.matchInfo?.startTime))
+                        itemView.context.getString(TimeUtil.setupDayOfWeekAndToday(item.matchInfo?.startTime))
+                    else
+                        "${itemView.context.getString(TimeUtil.setupDayOfWeekAndToday(item.matchInfo?.startTime))} ${item.matchInfo?.startDateDisplay}"
                 }
             }
         }
 
         private fun setTextViewStatus(item: MatchOdd, matchType: MatchType) {
             when {
-                (matchType == MatchType.IN_PLAY && item.matchInfo?.status == GameStatus.POSTPONED.code && (item.matchInfo.gameType == GameType.FT.name || item.matchInfo.gameType == GameType.BK.name || item.matchInfo.gameType == GameType.TN.name)) -> {
+                (TimeUtil.isTimeInPlay(item.matchInfo?.startTime) && item.matchInfo?.status == GameStatus.POSTPONED.code && (item.matchInfo.gameType == GameType.FT.name || item.matchInfo.gameType == GameType.BK.name || item.matchInfo.gameType == GameType.TN.name)) -> {
                     itemView.league_odd_spt.visibility = View.GONE
                     itemView.league_odd_match_time.visibility = View.GONE
                 }
 
-                matchType == MatchType.IN_PLAY || System.currentTimeMillis() > item.matchInfo?.startTime ?: 0 -> {
+                TimeUtil.isTimeInPlay(item.matchInfo?.startTime) -> {
                     if (item.matchInfo?.statusName18n != null) {
                         itemView.league_odd_match_status.visibility = View.VISIBLE
-                        (itemView.league_odd_match_status.layoutParams as LinearLayout.LayoutParams).marginEnd =
-                            6
+                        (itemView.league_odd_match_status.layoutParams as LinearLayout.LayoutParams).marginEnd = 6
                     } else {
-                        (itemView.league_odd_match_status.layoutParams as LinearLayout.LayoutParams).marginEnd =
-                            0
+                        (itemView.league_odd_match_status.layoutParams as LinearLayout.LayoutParams).marginEnd = 0
                     }
                 }
-
-                matchType == MatchType.MY_EVENT -> {
-                    when (item.matchInfo?.isInPlay) {
-                        true -> item.matchInfo.statusName18n
-                        else -> {
-                            if (TimeUtil.isTimeToday(item.matchInfo?.startTime))
-                                itemView.context.getString(TimeUtil.setupDayOfWeekAndToday(item.matchInfo?.startTime))
-                            else
-                                "${itemView.context.getString(TimeUtil.setupDayOfWeekAndToday(item.matchInfo?.startTime))} ${item.matchInfo?.startDateDisplay}"
-                        }
-                    }
-                    when (item.matchInfo?.isAtStart) {
-                        true -> itemView.league_odd_match_status.visibility = View.GONE
-                    }
-                }
-
-                item.matchInfo?.isAtStart == true -> {
+                TimeUtil.isTimeAtStart(item.matchInfo?.startTime) -> {
                     itemView.league_odd_match_status.visibility = View.GONE
                 }
+
             }
         }
 
@@ -849,6 +767,10 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 }
                 Log.d("Hewie4", "更新(${item.matchInfo?.homeName})：item.oddsMap.size => ${item.oddsMap?.size}")
             }
+        }
+
+        private fun updateOddsButtonByBetInfo(item: MatchOdd) {
+            oddButtonPagerAdapter.odds = item.oddsMap ?: mutableMapOf()
         }
 
         companion object {

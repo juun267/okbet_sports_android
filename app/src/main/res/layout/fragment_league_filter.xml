@@ -46,7 +46,7 @@
                 android:layout_marginStart="16dp"
                 android:gravity="center"
                 android:text="@string/league_filter_all"
-                android:textColor="@color/color_191919_FCFCFC"
+                android:textColor="@color/color_FCFCFC"
                 android:textSize="@dimen/textSize16sp"
                 app:layout_constraintBottom_toBottomOf="@id/league_filter_all_view"
                 app:layout_constraintEnd_toStartOf="@id/icon_remain_time_1x2"
@@ -65,7 +65,7 @@
                 app:layout_constraintEnd_toEndOf="@id/league_filter_all_view"
                 app:layout_constraintStart_toEndOf="@+id/league_filter_all"
                 app:layout_constraintTop_toTopOf="@id/league_filter_all"
-                app:tint="@color/color_191919_FCFCFC" />
+                app:tint="@color/color_FCFCFC" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/league_filter_country_list"

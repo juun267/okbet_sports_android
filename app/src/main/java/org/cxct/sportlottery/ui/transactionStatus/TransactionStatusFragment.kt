@@ -14,6 +14,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.results.GameTypeItemData
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.setTextWithStrokeWidth
 
@@ -30,7 +31,7 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
                 viewModel.getBetList()
             }
 
-            if (!scrollView.canScrollVertically(-1)){
+            if (!scrollView.canScrollVertically(-1)) {
                 view_back_to_top.visibility = View.GONE
             } else {
                 view_back_to_top.visibility = View.VISIBLE
@@ -67,7 +68,6 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
             adapter = recordDiffAdapter
         }
         scroll_view.setOnScrollChangeListener(nestedScrollViewListener)
-        tvUsTime.visibility = View.GONE
     }
 
     private fun initFilter() {
@@ -78,12 +78,12 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
             mutableListOf<StatusSheetData>().apply {
                 add(StatusSheetData(null, getString(R.string.all_sport)))
                 GameType.values().toList().forEach { gameType ->
-                    add(StatusSheetData(gameType.key, getString(gameType.string)))
+                    if (gameType != GameType.OTHER) add(StatusSheetData(gameType.key, getString(gameType.string)))
                 }
             }
 
         bet_type_selector.apply {
-            dataList = listOf(StatusSheetData("0", context.getString(R.string.waiting)),StatusSheetData("1", context.getString(R.string.not_settled_order)))
+            dataList = listOf(StatusSheetData("0", context.getString(R.string.waiting)), StatusSheetData("1", context.getString(R.string.not_settled_order)))
             itemSelectedListener = { statusSheetData ->
                 statusSheetData.code.let { selectedCode ->
                     selectedCode?.let {
@@ -106,15 +106,14 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
     private val handler by lazy { Handler() }
     private fun initObserve() {
         viewModel.betListData.observe(viewLifecycleOwner) {
-            Log.e("Martin","123321="+viewModel.statusList)
-            recordDiffAdapter.setupBetList(it, viewModel.statusList?.get(0) ?:0)
+            Log.e("Martin", "123321=" + viewModel.statusList)
+            recordDiffAdapter.setupBetList(it, viewModel.statusList?.get(0) ?: 0)
             btn_back_to_top.visibility = if (it.row.isEmpty()) View.GONE else View.VISIBLE
             divider.visibility = if (it.row.isEmpty()) View.GONE else View.VISIBLE
-            tvUsTime.visibility = if(it.row.isEmpty()) View.GONE else View.VISIBLE
         }
 
         viewModel.responseFailed.observe(viewLifecycleOwner) {
-            if (it==true) {
+            if (it == true) {
                 handler.postDelayed({
                     viewModel.getBetList(true)
                 }, 1000)
@@ -132,5 +131,5 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
             scroll_view.smoothScrollTo(0, 0)
         }
     }
-    
+
 }

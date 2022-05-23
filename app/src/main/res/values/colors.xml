@@ -78,6 +78,8 @@
     <color name="color_202020">#202020</color>
     <color name="color_dedede">#dedede</color>
     <color name="color_2a2a2a">#2a2a2a</color>
+    <color name="color_505050">#505050</color>
+    <color name="color_2654A9">#2654A9</color>
     <color name="color_33303030">#33303030</color>
     <color name="color_33DDDDDD">#33DDDDDD</color>
 
@@ -127,6 +129,7 @@
     <color name="color_666666_bcbcbc">@color/color_bcbcbc</color>
     <color name="color_616161_b4b4b4">@color/color_b4b4b4</color>
     <color name="color_8F8F8F_999999">@color/color_999999</color>
+    <color name="color_505050_E2E2E2">@color/color_E2E2E2</color>
     <color name="color_A3A3A3_999999">@color/color_999999</color>
     <color name="color_A3A3A3_666666">@color/color_666666</color>
     <color name="color_ADADAD_444444">@color/color_444444</color>
@@ -162,6 +165,14 @@
     <color name="color_404040_e2e2e2">@color/color_E2E2E2</color>
     <color name="color_1f1f1f_fcfcfc">@color/color_FCFCFC</color>
     <color name="color_33303030_33DDDDDD">@color/color_33DDDDDD</color>
+    <color name="color_F75452_000000">@color/color_000000</color>
+    <color name="color_BCBCBC_CCCCCC">@color/color_cccccc</color>
+    <color name="color_404348_404040">@color/color_404040</color>
+    <color name="color_2B2B2B_EEEFF0">@color/color_EEEFF0</color>
+    <color name="color_191919_FDFDFD">@color/color_FDFDFD</color>
+    <color name="color_cccccc_e2e2e2">@color/color_E2E2E2</color>
+    <color name="color_1F1F1F_EEEFF0">@color/color_EEEFF0</color>
+    <color name="color_404040_BCBCBC">@color/color_bcbcbc</color>
 
     <!--region 特殊處理顏色-->
     <color name="home_card_top_text_color">#40FFFFFF</color>

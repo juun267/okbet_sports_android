@@ -88,22 +88,22 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
 
     //region addData Function
     fun addTitle() {
-        removeDatas(PublicityTitleImageData())
+        removeData(PublicityTitleImageData())
         addDataWithSort(PublicityTitleImageData())
     }
 
     fun addSubTitle() {
-        removeDatas(PublicitySubTitleImageData())
+        removeData(PublicitySubTitleImageData())
         addDataWithSort(PublicitySubTitleImageData())
     }
 
     fun addRecommend(recommendList: List<Recommend>) {
-        removeDatas(recommendList.firstOrNull())
+        removeData(recommendList.firstOrNull())
         recommendList.forEach { addDataWithSort(it) }
     }
 
     fun addBottomView() {
-        removeDatas(BottomNavigationItem())
+        removeData(BottomNavigationItem())
         addDataWithSort(BottomNavigationItem())
     }
     //endregion
@@ -116,7 +116,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
     }
 
     fun updateToolbarBannerImage() {
-        removeDatas(PublicityTitleImageData())
+        removeData(PublicityTitleImageData())
         addDataWithSort(PublicityTitleImageData().apply {
             this.reloadConfig = true
         })
@@ -393,7 +393,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
 
     // region private functions
     // 依照傳入參數刪除同一個類別的資料
-    private fun removeDatas(src: Any?) {
+    private fun removeData(src: Any?) {
         src?.let {
             val iterator = mDataList.iterator()
             while (iterator.hasNext()) {

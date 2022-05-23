@@ -216,7 +216,9 @@ class ResultsSettlementActivity :
         settlementGameTypeBottomSheet.apply {
             setContentView(gameTypeBottomSheetView)
             val gameTypeItem = mutableListOf<GameTypeItemData>()
-            GameType.values().forEach { gameType -> gameTypeItem.add(GameTypeItemData(null, getString(gameType.string))) }
+            GameType.values().forEach { gameType ->
+                if (gameType != GameType.OTHER) gameTypeItem.add(GameTypeItemData(null, getString(gameType.string)))
+            }
             settlementGameTypeAdapter = SettlementGameTypeAdapter(lv_game_type.context, gameTypeItem)
             lv_game_type.adapter = settlementGameTypeAdapter
             settlementGameTypeAdapter.setOnItemCheckedListener(object :
@@ -401,7 +403,7 @@ class SettlementLeagueAdapter(private val context: Context, private val dataList
             checkbox.text = data.name
             checkbox.isChecked = data.isSelected
             if (data.isSelected)
-                ll_game_league_item.setBackgroundColor(ContextCompat.getColor(context, R.color.color_191919_EEEFF0))
+                ll_game_league_item.setBackgroundColor(ContextCompat.getColor(context, R.color.color_505050_E2E2E2))
             else
                 ll_game_league_item.setBackgroundColor(ContextCompat.getColor(context, R.color.color_191919_FCFCFC))
             checkbox.setOnCheckedChangeListener { _, isChecked ->

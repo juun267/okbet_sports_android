@@ -41,7 +41,7 @@
         android:layout_height="1dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@color/color_2B2B2B_e2e2e2" />
+        android:background="@color/color_1F1F1F_E2E2E2" />
 
     <LinearLayout
         android:id="@+id/tv_recharge"
@@ -169,7 +169,7 @@
         android:layout_height="1dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@color/color_2B2B2B_e2e2e2" />
+        android:background="@color/color_1F1F1F_E2E2E2" />
 
     <LinearLayout
         android:id="@+id/ct_inplay"
@@ -246,6 +246,6 @@
         android:layout_height="1dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@color/color_2B2B2B_e2e2e2" />
+        android:background="@color/color_1F1F1F_E2E2E2" />
 
 </LinearLayout>

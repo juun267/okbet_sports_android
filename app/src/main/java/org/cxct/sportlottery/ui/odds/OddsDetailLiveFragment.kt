@@ -25,6 +25,7 @@ import com.google.android.exoplayer2.util.Util
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
 import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailLiveBinding
 import org.cxct.sportlottery.enum.MatchSource
@@ -148,6 +149,9 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         gameViewModel = this@OddsDetailLiveFragment.viewModel
         lifecycleOwner = this@OddsDetailLiveFragment.viewLifecycleOwner
         executePendingBindings()
+        vToolbar.ivTitleBar.setImageResource(
+            GameConfigManager.getTitleBarBackground(args.gameType.key, MultiLanguagesApplication.isNightMode) ?: R.drawable.img_home_title_soccer_background
+        )
     }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -287,7 +291,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                                 tv_status_left.setTextColor(
                                     ContextCompat.getColor(
                                         tv_status_left.context,
-                                        R.color.color_F75452_b73a20
+                                        R.color.color_FFFFFF
                                     )
                                 )
                                 tv_status_left.tag = GameStatus.POSTPONED.code
@@ -302,7 +306,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
                         if (args.matchType == MatchType.IN_PLAY &&
                             (args.gameType == GameType.TN || args.gameType == GameType.VB || args.gameType == GameType.TT || args.gameType == GameType.BM)
-//                            && tv_status_left.isVisible
                             && (it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt != null)
                         ) {
                             tv_spt.visibility = View.VISIBLE
@@ -740,7 +743,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         tv_status_left.setTextColor(
             ContextCompat.getColor(
                 tv_status_left.context,
-                R.color.color_666666_bcbcbc
+                R.color.color_FFFFFF
             )
         )
 
