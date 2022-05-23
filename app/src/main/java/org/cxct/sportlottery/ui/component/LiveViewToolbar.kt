@@ -536,10 +536,10 @@ class LiveViewToolbar @JvmOverloads constructor(
     fun initLiveType(hasStream: Boolean, hasAnimation: Boolean) {
         if (lastLiveType != null) return
         when {
-            /*hasStream -> {
+            hasStream -> {
                 lastLiveType = LiveType.LIVE
-            }*/
-            true -> {
+            }
+            hasAnimation -> {
                 lastLiveType = LiveType.ANIMATION
                 iv_animation.performClick()
             }
