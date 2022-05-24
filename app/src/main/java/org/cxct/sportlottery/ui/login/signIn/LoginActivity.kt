@@ -47,7 +47,6 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setupBackButton()
         setupAccount()
         setupPassword()
@@ -58,6 +57,12 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         setupRegisterButton()
         setUpLoginForGuestButton()
         initObserve()
+        setLetterSpace()
+    }
+    private fun setLetterSpace(){
+        if (LanguageManager.getSelectLanguage(this)==LanguageManager.Language.ZH) {
+            binding.btnLogin.letterSpacing = 0.6f
+        }
     }
 
     private fun setUpLoginForGuestButton() {

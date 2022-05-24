@@ -23,7 +23,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/color_317FFF_0760D4"
+            android:background="@color/color_1D4C99_0760D4"
             android:gravity="center"
             android:minHeight="76dp"
             android:orientation="horizontal"

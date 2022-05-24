@@ -190,8 +190,13 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         binding.tvNotPHSchool.text = getString(R.string.register_not_ph_school)
         binding.tvRuleOkbet.text = getString(R.string.register_rule_okbet)
         binding.tvAgreeAll.text = getString(R.string.register_rule_agree_all)
+        setLetterSpace()
     }
-
+    private fun setLetterSpace(){
+        if (LanguageManager.getSelectLanguage(this)==LanguageManager.Language.ZH) {
+            binding.btnRegister.letterSpacing = 0.6f
+        }
+    }
     override fun onDestroy() {
         super.onDestroy()
         stopSmeTimer()

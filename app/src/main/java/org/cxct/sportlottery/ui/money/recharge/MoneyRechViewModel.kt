@@ -22,12 +22,9 @@ import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.MoneyRepository
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.util.ArithUtil
-import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.JumpUtil.toExternalWeb
-import org.cxct.sportlottery.util.MoneyManager
 import org.cxct.sportlottery.util.QueryUtil.toUrlParamsFormat
-import org.cxct.sportlottery.util.VerifyConstUtil
 
 class MoneyRechViewModel(
     androidContext: Application,
@@ -450,6 +447,8 @@ class MoneyRechViewModel(
             userName.isEmpty() -> {
                 androidContext.getString(R.string.error_input_empty)
             }
+            !VerifyConstUtil.verifyFullName(androidContext,userName) -> String.format(androidContext.getString(R.string.error_input_has_blank),
+                LanguageManager.getLanguageStringResource(androidContext))
             else -> {
                 ""
             }

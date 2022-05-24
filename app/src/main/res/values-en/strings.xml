@@ -1120,4 +1120,5 @@
     <string name="current_corner">Current Total:</string>
     <string name="cancel_auto">Rejected</string>
     <string name="cancel_manual">Void</string>
+    <string name="error_input_has_blank">Incorrect input. Use %s only, don\'t enter the continuous space.</string>
 </resources>

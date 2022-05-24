@@ -67,6 +67,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         initViews()
         initBaseFun()
         initObservers()
+        setLetterSpace()
     }
 
     override fun onResume() {
@@ -80,7 +81,12 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
 
         initDestination()
     }
-
+    private fun setLetterSpace(){
+        if (LanguageManager.getSelectLanguage(this)==LanguageManager.Language.ZH) {
+            binding.tvRegister.letterSpacing = 0.6f
+            binding.tvLogin.letterSpacing = 0.6f
+        }
+    }
     private fun initDestination() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
