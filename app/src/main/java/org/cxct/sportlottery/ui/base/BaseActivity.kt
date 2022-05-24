@@ -82,15 +82,11 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         }
     }
 
-    enum class FailType(val code: Int) {
-        MAINTENANCE(2611)
-    }
-
     private fun toMaintenanceOrShowDialog(result: BaseResult) {
         when (result.code) {
-            4003 -> {
+            HttpError.DO_NOT_HANDLE.code -> {
             }
-            FailType.MAINTENANCE.code -> {
+            HttpError.MAINTENANCE.code -> {
                 startActivity(Intent(this, MaintenanceActivity::class.java))
                 finish()
             }
