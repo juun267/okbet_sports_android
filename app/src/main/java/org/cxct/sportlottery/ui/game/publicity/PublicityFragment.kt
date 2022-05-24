@@ -330,7 +330,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                         //endregion
 
                         if (SocketUpdateUtil.updateMatchOdds(context, recommend, oddsChangeEvent)) {
-                            recommend.sortOddsByMenu()
                             updateRecommendList(index, recommend)
                         }
 
