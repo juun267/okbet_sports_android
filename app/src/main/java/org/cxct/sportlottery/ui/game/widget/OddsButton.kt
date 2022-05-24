@@ -86,14 +86,19 @@ class OddsButton @JvmOverloads constructor(
         tv_name.apply {
             val extInfoStr =
                 odd?.extInfoMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.extInfo
-            text =
-                if (extInfoStr.isNullOrEmpty())
-                    "${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
-                else
-                    "$extInfoStr ${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
+
+            val nameText = if (extInfoStr.isNullOrEmpty())
+                "${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
+            else
+                "$extInfoStr ${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
 
             visibility =
                 if (odd?.name.isNullOrEmpty() || gameType == "disable") View.GONE else View.VISIBLE
+
+            if (text != nameText) {
+                text = nameText
+                requestLayout()
+            }
         }
 
         tv_spread.apply {
