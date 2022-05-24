@@ -203,6 +203,10 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 hideLoading()
                 isNewestDataFromApi = true
                 mRecommendList = result.recommendList
+                val oddsSort = viewModel.sportMenuFilterList.value?.getContentIfNotHandled()?.get(mRecommendList.firstOrNull()?.gameType)?.get("MAIN")?.oddsSort
+                mRecommendList.forEach {
+                    it.oddsSort = oddsSort
+                }
                 mPublicityAdapter.addRecommend(result.recommendList)
                 //先解除全部賽事訂閱
                 unSubscribeChannelHallAll()
@@ -227,6 +231,8 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                         }
                     }
                     if (needUpdate) {
+                        val oddsSort = viewModel.sportMenuFilterList.value?.getContentIfNotHandled()?.get(recommend.gameType)?.get("MAIN")?.oddsSort
+                        recommend.oddsSort = oddsSort
                         mPublicityAdapter.updateRecommendData(index, recommend)
                     }
                 }
@@ -243,6 +249,8 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                     needUpdate = true
                 }
                 if (needUpdate) {
+                    val oddsSort = viewModel.sportMenuFilterList.value?.getContentIfNotHandled()?.get(recommend.gameType)?.get("MAIN")?.oddsSort
+                    recommend.oddsSort = oddsSort
                     mPublicityAdapter.updateRecommendData(index, recommend)
                 }
             }
@@ -255,18 +263,14 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 }
             }
         }
+
+        viewModel.sportMenuFilterList.observe(viewLifecycleOwner){
+            queryData()
+        }
     }
 
     // TODO subscribe leagueChange: 此處尚無需實作邏輯, 看之後有沒有相關需求
     private fun initSocketObservers() {
-        receiver.serviceConnectStatus.observe(viewLifecycleOwner) {
-            it?.let {
-                if (it == ServiceConnectStatus.CONNECTED) {
-                    loading()
-                    queryData()
-                }
-            }
-        }
 
         receiver.matchStatusChange.observe(viewLifecycleOwner, { event ->
             event?.let { matchStatusChangeEvent ->
@@ -326,7 +330,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                         //endregion
 
                         if (SocketUpdateUtil.updateMatchOdds(context, recommend, oddsChangeEvent)) {
-                            recommend.sortOddsByMenu()
                             updateRecommendList(index, recommend)
                         }
 
@@ -521,6 +524,8 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     private fun updateRecommendList(index: Int, recommend: Recommend) {
         with(binding) {
             if (rvPublicity.scrollState == RecyclerView.SCROLL_STATE_IDLE && !rvPublicity.isComputingLayout) {
+                val oddsSort = viewModel.sportMenuFilterList.value?.peekContent()?.get(recommend.gameType)?.get("MAIN")?.oddsSort
+                recommend.oddsSort = oddsSort
                 mPublicityAdapter.updateRecommendData(index, recommend)
             }
         }

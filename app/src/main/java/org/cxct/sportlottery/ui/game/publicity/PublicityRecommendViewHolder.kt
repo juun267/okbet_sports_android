@@ -146,6 +146,7 @@ class PublicityRecommendViewHolder(
         } else {
             //更新現有的oddsMap
             with(leagueOddData.first()) {
+                oddsSort = recommend.oddsSort
                 oddsMap = recommend.oddsMap
                 playCateNameMap = recommend.playCateNameMap
                 betPlayCateNameMap = recommend.betPlayCateNameMap
@@ -165,7 +166,8 @@ class PublicityRecommendViewHolder(
                     matchInfo = matchInfo,
                     oddsMap = oddsMap,
                     playCateNameMap = playCateNameMap,
-                    betPlayCateNameMap = betPlayCateNameMap
+                    betPlayCateNameMap = betPlayCateNameMap,
+                    oddsSort = oddsSort
                 )
             )
         }
