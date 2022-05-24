@@ -10,8 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
 import android.widget.LinearLayout
+import androidx.webkit.WebSettingsCompat
+import androidx.webkit.WebViewFeature
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_webview.*
+import kotlinx.android.synthetic.main.view_toolbar_live.view.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -138,6 +141,11 @@ class StatisticsDialog : BaseBottomSheetFragment<StatisticsViewModel>(Statistics
                 ?.replace("{eventId}", arguments?.getString(MATCH_ID) ?: "")?.let {
                     loadUrl(it)
                 }
+            if (MultiLanguagesApplication.isNightMode){
+                if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
+                    WebSettingsCompat.setForceDark(settings, WebSettingsCompat.FORCE_DARK_ON);
+                }
+            }
         }
     }
 

@@ -15,6 +15,8 @@ import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.widget.FakeBoldSpan
@@ -184,4 +186,11 @@ fun TextView.setTeamNames(countCheck: Int, homeName: String?, awayName: String?)
     text =
         if (homeName?.length ?: 0 > countCheck) "$homeName  v\n$awayName"
         else "$homeName  v  $awayName"
+}
+
+/**
+ * 依 config -> creditSystem 參數顯示
+ */
+fun View.setVisibilityByCreditSystem(){
+    visibility = if (sConfigData?.creditSystem == FLAG_CREDIT_OPEN) View.GONE else View.VISIBLE
 }

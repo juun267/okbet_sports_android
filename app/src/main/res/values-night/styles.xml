@@ -1,0 +1,21 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/color_317FFF_0760D4</item>
+        <item name="colorPrimaryDark">@color/color_317FFF_0760D4</item>
+        <item name="colorAccent">@color/color_317FFF_1463cf</item>
+        <item name="fontFamily">@font/helvetica</item>
+        <!-- 20210322 紀錄：拿掉按鈕預設 ripple 渲染效果-->
+        <item name="android:colorControlHighlight">@android:color/transparent</item>
+
+        <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:navigationBarColor">@color/color_191919</item>
+        <item name="android:statusBarColor">@color/color_191919</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+
+
+</resources>

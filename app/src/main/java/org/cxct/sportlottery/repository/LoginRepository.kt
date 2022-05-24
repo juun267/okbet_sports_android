@@ -58,15 +58,9 @@ class LoginRepository(private val androidContext: Context) {
     val transNum: LiveData<Int?> //交易狀況數量
         get() = _transNum
 
-    val isCreditAccount: LiveData<Boolean>
-        get() = _isCreditAccount
-
     val _isLogin = MutableLiveData<Boolean>()
     val _kickedOut = MutableLiveData<Event<String?>>()
     private val _transNum = MutableLiveData<Int?>()
-    private val _isCreditAccount = MutableLiveData<Boolean>().apply {
-        value = sharedPref.getBoolean(KEY_IS_CREDIT_ACCOUNT, false)
-    }
 
     var platformId
         get() = sharedPref.getLong(KEY_PLATFORM_ID, -1)
@@ -262,8 +256,6 @@ class LoginRepository(private val androidContext: Context) {
 
             isCheckToken = false
             _isLogin.value = false
-            _isCreditAccount.postValue(false)
-
             clear()
         }
 
@@ -276,7 +268,6 @@ class LoginRepository(private val androidContext: Context) {
 
     suspend fun logoutAPI(): Response<LogoutResult> {
         _isLogin.value = false
-        _isCreditAccount.value = false
         val emptyList = mutableListOf<String>()
         MultiLanguagesApplication.saveSearchHistory(emptyList)
         return OneBoSportApi.indexService.logout(LogoutRequest()).apply {
@@ -286,7 +277,6 @@ class LoginRepository(private val androidContext: Context) {
 
     suspend fun logout() {
         _isLogin.value = false
-        _isCreditAccount.value = false
         val emptyList = mutableListOf<String>()
         MultiLanguagesApplication.saveSearchHistory(emptyList)
         clear()
@@ -294,7 +284,6 @@ class LoginRepository(private val androidContext: Context) {
 
     private fun updateLoginData(loginData: LoginData?) {
         _isLogin.postValue(loginData != null)
-        _isCreditAccount.postValue(loginData?.creditAccount == 1)
 
         GameConfigManager.maxBetMoney = loginData?.maxBetMoney ?: 9999999
         GameConfigManager.maxCpBetMoney = loginData?.maxCpBetMoney ?: 9999
@@ -305,7 +294,6 @@ class LoginRepository(private val androidContext: Context) {
             putString(KEY_TOKEN, loginData?.token)
             putLong(KEY_USER_ID, loginData?.userId ?: -1)
             putLong(KEY_PLATFORM_ID, loginData?.platformId ?: -1)
-            putBoolean(KEY_IS_CREDIT_ACCOUNT, loginData?.creditAccount == 1)
             putFloat(KEY_DISCOUNT, loginData?.discount ?: 1f)
             apply()
         }
@@ -355,8 +343,6 @@ class LoginRepository(private val androidContext: Context) {
             userName = loginData.userName,
             userType = loginData.userType,
             userRebateList = loginData.userRebateList,
-            creditAccount = loginData.creditAccount,
-            creditStatus = loginData.creditStatus,
             discount = loginData.discount,
             verified = loginData.verified
         )

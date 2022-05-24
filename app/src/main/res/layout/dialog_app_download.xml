@@ -143,7 +143,7 @@
             android:paddingTop="9dp"
             android:paddingBottom="9dp"
             android:text="@string/update"
-            android:textColor="@color/color_191919_FCFCFC"
+            android:textColor="@color/color_FCFCFC"
             android:textSize="@dimen/textSize16sp"
             android:textStyle="bold" />
 

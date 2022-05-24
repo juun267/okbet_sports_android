@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="165dp"
     android:orientation="vertical"
+    android:background="@color/color_191919_FCFCFC"
     tools:context=".ui.game.hall.adapter.EpsMoreInfoAdapter">
 
     <androidx.constraintlayout.widget.ConstraintLayout

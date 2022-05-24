@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/tvJump"
             android:text="@string/register_jump"
-            android:textColor="@color/color_333333"
+            android:textColor="@color/color_939393_333333"
             android:textSize="@dimen/textSize12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

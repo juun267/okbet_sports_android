@@ -121,6 +121,7 @@
     <string name="btn_agreement">Thỏa thuận mở tài khoản</string>
     <string name="have_account">Bạn đã có tài khoản?</string>
     <string name="btn_login">Đăng nhập</string>
+    <string name="btn_login_by_credit_system">Đăng nhập ngay</string>
     <string name="btn_register">Đăng ký</string>
     <string name="no_announcement">Không có thông báo</string>
     <string name="lottery">Xổ số</string>
@@ -1150,4 +1151,5 @@
     <string name="current_corner">Tổng Số Hiện Tại:</string>
     <string name="cancel_auto">Từ chối</string>
     <string name="cancel_manual">Vô hiệu</string>
+    <string name="error_input_has_blank"> Đầu vào không chính xác. Chỉ sử dụng tiếng %s, không nhập khoảng trắng liên tục. </string>
 </resources>

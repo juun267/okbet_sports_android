@@ -102,7 +102,7 @@ class SplashViewModel(
     }
 
     fun goNextPage() {
-        if (loginRepository.isCreditAccount.value == true || sConfigData?.thirdOpen != FLAG_OPEN)
+        if (sConfigData?.thirdOpen != FLAG_OPEN)
             viewModelScope.launch {
                 loginRepository.checkToken()
 

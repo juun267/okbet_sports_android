@@ -11,8 +11,8 @@ import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
 import org.cxct.sportlottery.repository.FLAG_IS_NEED_UPDATE_PAY_PW
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.login.LoginEditText
-import org.cxct.sportlottery.util.setTextWithStrokeWidth
 import org.cxct.sportlottery.util.setTitleLetterSpacing
+import org.cxct.sportlottery.util.setVisibilityByCreditSystem
 
 /**
  * @app_destination 密碼設置
@@ -67,12 +67,14 @@ class SettingPasswordActivity :
                 }
             }
         }
-        
+
         //初始顯示哪個 tab 頁面
         when (intent.getSerializableExtra(PWD_PAGE)) {
             PwdPage.BANK_PWD -> custom_tab_layout.selectTab(1)
             else -> custom_tab_layout.selectTab(0)
         }
+
+        custom_tab_layout.setVisibilityByCreditSystem()
     }
 
     private fun setupEditText() {
