@@ -78,7 +78,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         viewModel.errorResultToken.observe(this) {
             if (this.javaClass.simpleName == MaintenanceActivity::class.java.simpleName) return@observe
             if (it.code != HttpError.KICK_OUT_USER.code)
-                showDialogLogout(it)
+                toMaintenanceOrShowDialog(it)
         }
     }
 
@@ -86,14 +86,22 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         MAINTENANCE(2611)
     }
 
-    private fun showDialogLogout(result: BaseResult) {
-        showTokenPromptDialog(result.msg) {
-            viewModel.doLogoutCleanUser {
-                if (result.code != FailType.MAINTENANCE.code) {
-                    if (sConfigData?.thirdOpen == FLAG_OPEN)
-                        MainActivity.reStart(this)
-                    else
-                        GamePublicityActivity.reStart(this)
+    private fun toMaintenanceOrShowDialog(result: BaseResult) {
+        when (result.code) {
+            4003 -> {
+            }
+            FailType.MAINTENANCE.code -> {
+                startActivity(Intent(this, MaintenanceActivity::class.java))
+                finish()
+            }
+            else -> {
+                showTokenPromptDialog(result.msg) {
+                    viewModel.doLogoutCleanUser {
+                        if (sConfigData?.thirdOpen == FLAG_OPEN)
+                            MainActivity.reStart(this)
+                        else
+                            GamePublicityActivity.reStart(this)
+                    }
                 }
             }
         }
