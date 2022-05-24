@@ -298,7 +298,7 @@ class LeftMenuItemNewAdapter(
             itemView.apply {
 
                 //TODO for test
-                tv_appearance.visibility = if (BuildConfig.DEBUG) View.VISIBLE else View.GONE
+                tv_appearance.visibility = if (BuildConfig.CHANNEL_NAME == "spkx" && !BuildConfig.DEBUG) View.GONE else View.VISIBLE
 
 //                tv_appearance.isVisible = isLogin
                 // tv_appearance.isVisible = false //暫時隱藏
