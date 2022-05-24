@@ -78,22 +78,27 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         viewModel.errorResultToken.observe(this) {
             if (this.javaClass.simpleName == MaintenanceActivity::class.java.simpleName) return@observe
             if (it.code != HttpError.KICK_OUT_USER.code)
-                showDialogLogout(it)
+                toMaintenanceOrShowDialog(it)
         }
     }
 
-    enum class FailType(val code: Int) {
-        MAINTENANCE(2611)
-    }
-
-    private fun showDialogLogout(result: BaseResult) {
-        showTokenPromptDialog(result.msg) {
-            viewModel.doLogoutCleanUser {
-                if (result.code != FailType.MAINTENANCE.code) {
-                    if (sConfigData?.thirdOpen == FLAG_OPEN)
-                        MainActivity.reStart(this)
-                    else
-                        GamePublicityActivity.reStart(this)
+    private fun toMaintenanceOrShowDialog(result: BaseResult) {
+        when (result.code) {
+            HttpError.DO_NOT_HANDLE.code -> {
+            }
+            HttpError.MAINTENANCE.code -> {
+                startActivity(Intent(this, MaintenanceActivity::class.java))
+                finish()
+            }
+            else -> {
+                if (this.javaClass.simpleName == MaintenanceActivity::class.java.simpleName) return
+                showTokenPromptDialog(result.msg) {
+                    viewModel.doLogoutCleanUser {
+                        if (sConfigData?.thirdOpen == FLAG_OPEN)
+                            MainActivity.reStart(this)
+                        else
+                            GamePublicityActivity.reStart(this)
+                    }
                 }
             }
         }
@@ -118,6 +123,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         viewModel.isKickedOut.observe(this) {
             hideLoading()
             it.getContentIfNotHandled()?.let { msg ->
+                if (this.javaClass.simpleName == MaintenanceActivity::class.java.simpleName) return@observe
                 showTokenPromptDialog(msg) {
                     viewModel.loginRepository._isLogin.postValue(false)
                     val intent = Intent(this@BaseActivity, GamePublicityActivity::class.java)
