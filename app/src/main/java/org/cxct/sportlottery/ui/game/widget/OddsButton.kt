@@ -200,7 +200,10 @@ class OddsButton @JvmOverloads constructor(
         img_odd_unknown.apply {
             background = ContextCompat.getDrawable(
                 context,
-                if (mFillet) R.drawable.bg_radius_4_button_odds_lock else R.drawable.bg_radius_0_button_odds_lock
+                if (mFillet) {
+                    if (MultiLanguagesApplication.isNightMode) R.drawable.bg_radius_4_button_odds_lock_dark
+                    else R.drawable.bg_radius_4_button_odds_lock
+                } else R.drawable.bg_radius_0_button_odds_lock
             )
 
             visibility =

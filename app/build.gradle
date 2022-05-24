@@ -133,6 +133,20 @@ android {
                     NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
             ]
         }
+        credit {
+            buildConfigField "String", "CHANNEL_NAME", "\"cdplat1\""
+            resValue "string", "app_name", "OkBet"
+            applicationId "com.okbet.cdplat1"
+            buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
+            buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
+            buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
+            manifestPlaceholders = [
+                    JPUSH_PKGNAME          : applicationId,
+                    JPUSH_APPKEY           : "0ef3e0b1b397bd252f23b2ac", //JPush上注册的包名对应的appkey.
+                    JPUSH_CHANNEL          : "developer-default", //暂时填写默认值即可.
+                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
+            ]
+        }
     }
 
     sourceSets {
@@ -141,7 +155,7 @@ android {
         OkbetPH.res.srcDirs = ['src/okbet_ph/res']
         WinbetCN.res.srcDirs = ['src/winbet_cn/res']
         spnew1.res.srcDirs = ['src/okbet_ph/res']
-        
+        credit.res.srcDirs = ['src/okbet_ph/res']
         main {
             jniLibs.srcDirs = ['src/main/libs']
         }
