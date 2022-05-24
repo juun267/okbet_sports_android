@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.util
 
+import android.content.Context
 import java.util.regex.Pattern
 
 object VerifyConstUtil {
@@ -13,7 +14,7 @@ object VerifyConstUtil {
     private const val CRYPTO_COMMON_WALLET_ADDRESS_REGEX = "^(?=.*[$ENGLISH_WORD])(?=.*[$NUMBER])[$ENGLISH_WORD$NUMBER]+$"
 
     //是否為越南文文字
-    private fun isValidVietnamWord(inputStr: CharSequence): Boolean {
+    fun isValidVietnamWord(inputStr: CharSequence): Boolean {
         return Pattern.matches("[${ENGLISH_WORD}${VIETNAM_WORD}\\s]+", inputStr)
     }
 
@@ -26,10 +27,13 @@ object VerifyConstUtil {
     }
 
     //是否為中文文字
-    private fun isValidChineseWord(inputStr: CharSequence): Boolean {
-        return Pattern.matches("[$CHINESE_WORD]", inputStr)
+     fun isValidChineseWord(inputStr: CharSequence): Boolean {
+        return Pattern.matches("[$CHINESE_WORD]{1,50}", inputStr)
     }
-
+    //是否為英文文字
+    fun isValidEnglishWord(inputStr: CharSequence): Boolean {
+        return Pattern.matches("[$ENGLISH_WORD]{1,50}", inputStr)
+    }
     fun verifyInviteCode(inviteCode: CharSequence): Boolean {
         return Pattern.matches("[$NUMBER]{8}", inviteCode)
     }
@@ -56,9 +60,17 @@ object VerifyConstUtil {
 
     //真實姓名 //中文2-20,英文2-50 可空格 可點
     //20210205判斷文件只容許中文2-20
-    fun verifyFullName(fullName: CharSequence): Boolean {
-        return Pattern.matches("[$CHINESE_WORD]{2,20}", fullName)
-//                || Pattern.matches("[\\s.$ENGLISH_WORD]{2,50}", fullName)
+    //20220523根据语言环境，使用不同的正则判断
+    fun verifyFullName(context:Context,fullName: CharSequence): Boolean {
+        if (fullName.startsWith(" ")||fullName.endsWith(" ")){
+            return false
+        }
+        when(LanguageManager.getSelectLanguage(context)) {
+            LanguageManager.Language.ZH -> return VerifyConstUtil.isValidChineseWord(fullName)
+            LanguageManager.Language.EN -> return VerifyConstUtil.isValidEnglishWord(fullName)
+            LanguageManager.Language.VI -> return VerifyConstUtil.isValidVietnamWord(fullName)
+            else -> return false
+        }
     }
 
     //提款密碼 //數字4
@@ -143,4 +155,5 @@ object VerifyConstUtil {
     fun verifyHashCode(hashCode: CharSequence): Boolean {
         return Pattern.matches("[$ENGLISH_WORD$NUMBER]{6,256}", hashCode)
     }
+
 }

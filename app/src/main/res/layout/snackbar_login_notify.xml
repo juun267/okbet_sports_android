@@ -12,7 +12,7 @@
         android:background="@color/color_FF9143_ff9200"
         android:gravity="center"
         android:text="@string/login_notify"
-        android:textColor="@color/color_191919_FCFCFC"
+        android:textColor="@color/color_FCFCFC"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintTop_toTopOf="parent" />
 

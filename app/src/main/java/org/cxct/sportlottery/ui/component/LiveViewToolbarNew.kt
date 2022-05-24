@@ -13,6 +13,8 @@ import android.webkit.WebViewClient
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
+import androidx.webkit.WebSettingsCompat
+import androidx.webkit.WebViewFeature
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.upstream.HttpDataSource
 import com.google.android.exoplayer2.util.MimeTypes
@@ -21,6 +23,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_webview.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_webview.view.*
 import kotlinx.android.synthetic.main.view_toolbar_live.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.repository.sConfigData
@@ -322,6 +325,11 @@ class LiveViewToolbarNew @JvmOverloads constructor(
             displayZoomControls = false
         }
         web_view.setInitialScale(25)
+        if (MultiLanguagesApplication.isNightMode){
+            if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
+                WebSettingsCompat.setForceDark(web_view.settings, WebSettingsCompat.FORCE_DARK_ON);
+            }
+        }
         web_view.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(
                 view: WebView?,

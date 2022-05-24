@@ -161,7 +161,7 @@
             android:paddingBottom="9dp"
             android:text="@string/take_id_photo"
             android:textAllCaps="true"
-            android:textColor="@color/color_191919_FCFCFC"
+            android:textColor="@color/color_FCFCFC"
             android:textSize="@dimen/textSize16sp"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/ll_description" />

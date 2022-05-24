@@ -1151,4 +1151,5 @@
     <string name="current_corner">Tổng Số Hiện Tại:</string>
     <string name="cancel_auto">Từ chối</string>
     <string name="cancel_manual">Vô hiệu</string>
+    <string name="error_input_has_blank"> Đầu vào không chính xác. Chỉ sử dụng tiếng %s, không nhập khoảng trắng liên tục. </string>
 </resources>
