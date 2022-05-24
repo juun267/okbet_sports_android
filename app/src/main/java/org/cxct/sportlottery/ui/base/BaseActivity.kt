@@ -91,6 +91,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                 finish()
             }
             else -> {
+                if (this.javaClass.simpleName == MaintenanceActivity::class.java.simpleName) return
                 showTokenPromptDialog(result.msg) {
                     viewModel.doLogoutCleanUser {
                         if (sConfigData?.thirdOpen == FLAG_OPEN)
@@ -122,6 +123,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         viewModel.isKickedOut.observe(this) {
             hideLoading()
             it.getContentIfNotHandled()?.let { msg ->
+                if (this.javaClass.simpleName == MaintenanceActivity::class.java.simpleName) return@observe
                 showTokenPromptDialog(msg) {
                     viewModel.loginRepository._isLogin.postValue(false)
                     val intent = Intent(this@BaseActivity, GamePublicityActivity::class.java)
