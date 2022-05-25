@@ -146,19 +146,19 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     @SuppressLint("InflateParams")
     open fun loading(message: String?) {
-//        if (loadingView == null) {
-//            loadingView = layoutInflater.inflate(R.layout.layout_loading, null)
-//            val params = RelativeLayout.LayoutParams(
-//                RelativeLayout.LayoutParams.MATCH_PARENT,
-//                RelativeLayout.LayoutParams.MATCH_PARENT
-//            )
-//            addContentView(loadingView, params)
-//        } else {
-//            loadingView?.rl_loading?.visibility = View.VISIBLE
-//            loadingView?.rl_loading?.isClickable = true
-//        }
-//
-//        loadingView?.pb_message?.text = message ?: getString(R.string.loading)
+        if (loadingView == null) {
+            loadingView = layoutInflater.inflate(R.layout.layout_loading, null)
+            val params = RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.MATCH_PARENT
+            )
+            addContentView(loadingView, params)
+        } else {
+            loadingView?.rl_loading?.visibility = View.VISIBLE
+            loadingView?.rl_loading?.isClickable = true
+        }
+
+        loadingView?.pb_message?.text = message ?: getString(R.string.loading)
     }
 
     /*关闭加载界面*/
