@@ -58,11 +58,12 @@ object VerifyConstUtil {
         return Pattern.matches("(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+){6,20}", pwd)
     }
 
-    //真實姓名 //中文2-20,英文2-50 可空格 可點
-    //20210205判斷文件只容許中文2-20
-    //20220523根据语言环境，使用不同的正则判断
+    //真實姓名 只允许英文和空格，不允许前后空格和连续空格
     fun verifyFullName(context:Context,fullName: CharSequence): Boolean {
         if (fullName.startsWith(" ")||fullName.endsWith(" ")){
+            return false
+        }
+        if (fullName.contains("  ")){
             return false
         }
         return isValidEnglishWord(fullName)
