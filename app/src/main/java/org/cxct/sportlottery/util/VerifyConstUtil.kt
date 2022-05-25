@@ -66,7 +66,7 @@ object VerifyConstUtil {
         if (fullName.contains("  ")){
             return false
         }
-        return isValidEnglishWord(fullName)
+        return Pattern.matches("[a-zA-Z\\s]{1,50}", fullName)
     }
 
     //提款密碼 //數字4
