@@ -71,12 +71,6 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         setLetterSpace()
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        getSportMenuFilter()
-    }
-
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 

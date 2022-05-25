@@ -56,6 +56,12 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         return inflater.inflate(R.layout.online_pay_fragment, container, false)
     }
 
+    override fun onStart() {
+        super.onStart()
+        //獲取最新的使用者資料
+        viewModel.getUserInfo()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initButton()

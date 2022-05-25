@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.util
 
 import android.content.Context
+import org.cxct.sportlottery.repository.sConfigData
 import java.util.regex.Pattern
 
 object VerifyConstUtil {
@@ -90,6 +91,15 @@ object VerifyConstUtil {
     //充值金額
     fun verifyRechargeAmount(withdrawAmount: CharSequence, minAmount: Long, maxAmount: Long?): Boolean {
         return (withdrawAmount.toString().toLong().let { it in minAmount until (maxAmount?.plus(1) ?: it + 1) })
+    }
+
+    fun verifyFirstRechargeAmount(rechargeAmount: CharSequence): Boolean {
+        val firstRechLessAmountLimit = sConfigData?.firstRechLessAmountLimit
+        return when {
+            //首充額度限制若為null,""或0則不限制
+            firstRechLessAmountLimit.isNullOrEmpty() || firstRechLessAmountLimit.toDouble() <= 0.0 -> true
+            else -> rechargeAmount.toString().toDouble() >= firstRechLessAmountLimit.toDouble()
+        }
     }
 
     //暱稱 //中英文組合長度2–50字

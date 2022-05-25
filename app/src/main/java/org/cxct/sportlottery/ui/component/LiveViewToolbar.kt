@@ -27,6 +27,7 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LiveUtil
+import org.cxct.sportlottery.util.MetricsUtil
 import timber.log.Timber
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -276,7 +277,7 @@ class LiveViewToolbar @JvmOverloads constructor(
                 lastLiveType = LiveType.LIVE
                 //動畫高度
                 web_view_layout.layoutParams = FrameLayout.LayoutParams(
-                    web_view_layout.width,
+                    MetricsUtil.getScreenWidth(),
                     resources.getDimensionPixelSize(R.dimen.live_player_height)
                 )
                 checkExpandLayoutStatus()
@@ -532,9 +533,10 @@ class LiveViewToolbar @JvmOverloads constructor(
      * 設置WebView高度
      */
     private fun setWebViewHeight() {
+        val screenWidth = MetricsUtil.getScreenWidth()
         web_view_layout.layoutParams = FrameLayout.LayoutParams(
-            web_view_layout.width,
-            LiveUtil.getAnimationHeightFromWidth(web_view_layout.width).toInt()
+            screenWidth,
+            LiveUtil.getAnimationHeightFromWidth(screenWidth).toInt()
         )
     }
     //endregion

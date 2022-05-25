@@ -72,7 +72,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
                     showErrorPromptDialog(getString(R.string.message_socket_connect)) { backService?.doReconnect() }
                 }
                 ServiceConnectStatus.CONNECTING -> {
-                    loading()
+//                    loading()
                 }
                 ServiceConnectStatus.CONNECTED -> {
                     hideLoading()

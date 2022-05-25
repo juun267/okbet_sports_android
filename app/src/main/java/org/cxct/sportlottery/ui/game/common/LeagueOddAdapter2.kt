@@ -207,16 +207,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             setupOddsButton(item, oddsType, leagueOddListener, playSelectedCodeSelectionType)
 
             //setupQuickCategory(item, oddsType, leagueOddListener)
-            if (item.quickPlayCateList.isNullOrEmpty()) {
-                itemView.quickListView?.visibility = View.GONE
-                itemView.league_odd_quick_cate_divider.visibility = View.GONE
-            } else {
-                itemView.vs_league_quick?.visibility = View.VISIBLE
-                itemView.quickListView?.visibility = View.VISIBLE
-                itemView.league_odd_quick_cate_divider.visibility = View.VISIBLE
-                itemView.quickListView?.setDatas(item, oddsType, leagueOddListener, playSelectedCodeSelectionType, playSelectedCode)
-                itemView.quickListView?.refreshTab()
-            }
+            setQuickListView(item, leagueOddListener, oddsType, playSelectedCodeSelectionType, playSelectedCode)
         }
 
         // region update functions
@@ -234,9 +225,30 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             setupMatchTimeAndStatus(item, matchType, isTimerEnable, isTimerPause, leagueOddListener)
             updateOddsButton(item, oddsType, playSelectedCodeSelectionType)
 
-            itemView.quickListView?.setDatas(item, oddsType, leagueOddListener, playSelectedCodeSelectionType, playSelectedCode)
-            itemView.quickListView?.refreshTab()
-            itemView.quickListView?.updateQuickSelected()
+            setQuickListView(item, leagueOddListener, oddsType, playSelectedCodeSelectionType, playSelectedCode, updateSelected = true)
+        }
+
+        private fun setQuickListView(
+            item: MatchOdd,
+            leagueOddListener: LeagueOddListener?,
+            oddsType: OddsType,
+            playSelectedCodeSelectionType: Int?,
+            playSelectedCode: String?,
+            updateSelected: Boolean = false
+        ) {
+            if (item.quickPlayCateList.isNullOrEmpty()) {
+                itemView.quickListView?.visibility = View.GONE
+                itemView.league_odd_quick_cate_divider.visibility = View.GONE
+            } else {
+                itemView.vs_league_quick?.visibility = View.VISIBLE
+                itemView.quickListView?.visibility = View.VISIBLE
+                itemView.league_odd_quick_cate_divider.visibility = View.VISIBLE
+                itemView.quickListView?.setDatas(item, oddsType, leagueOddListener, playSelectedCodeSelectionType, playSelectedCode)
+                itemView.quickListView?.refreshTab()
+
+                if (updateSelected)
+                    itemView.quickListView?.updateQuickSelected()
+            }
         }
 
         fun updateByBetInfo(
