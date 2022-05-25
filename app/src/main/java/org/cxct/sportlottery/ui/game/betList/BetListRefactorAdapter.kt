@@ -1703,6 +1703,17 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 clickEvent()
             }
         }
+
+        private fun checkSingleMinimumLimit(
+            itemData: BetInfoListData,
+            betAmount: Double? = itemData.betAmount
+        ) {
+            itemView.apply {
+                itemData.parlayOdds?.min?.let { min ->
+                    itemData.amountError = betAmount != 0.0 && betAmount ?: 0.0 < min
+                }
+            }
+        }
     }
 
     abstract class BatchParlayViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
