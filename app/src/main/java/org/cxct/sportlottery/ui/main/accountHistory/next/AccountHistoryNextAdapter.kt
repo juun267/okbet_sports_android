@@ -357,7 +357,7 @@ class AccountHistoryNextAdapter(
 
             val itemList = GameType.values()
             itemList.forEach { gameType ->
-                this.add(StatusSheetData(gameType.key, GameType.getGameTypeString(itemView.context, gameType.key)))
+                if (gameType != GameType.OTHER) this.add(StatusSheetData(gameType.key, GameType.getGameTypeString(itemView.context, gameType.key)))
             }
         }
 

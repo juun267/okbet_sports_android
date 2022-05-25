@@ -11,10 +11,10 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 class StatusSpinnerAdapter(dataItems: MutableList<StatusSheetData> = mutableListOf()) : BaseAdapter() {
 
     //加一項作為預設項目
-    private val itemList = dataItems.apply { add(StatusSheetData("-99", "Default")) }
+    private val itemList = dataItems
 
     //最後一項為預設項目，不顯示
-    override fun getCount(): Int = itemList.size - 1
+    override fun getCount(): Int = itemList.size
 
     override fun getItem(position: Int): Any = itemList[position]
 

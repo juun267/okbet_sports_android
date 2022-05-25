@@ -11,14 +11,11 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="7dp"
-        android:layout_marginBottom="6dp"
-        android:paddingStart="7dp"
-        android:paddingTop="6dp"
-        android:paddingEnd="7dp"
-        android:paddingBottom="6dp">
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="5dp"
+        android:padding="5dp">
 
         <ImageView
             android:id="@+id/ivTick"
@@ -33,14 +30,14 @@
             android:layout_marginStart="12dp"
             android:layout_weight="1"
             android:textColor="@color/color_e5e5e5_333333"
-            android:textSize="@dimen/textSize14sp"
+            android:textSize="@dimen/textSize13sp"
             tools:text="Goals O/U" />
     </LinearLayout>
 
     <View
         android:id="@+id/viewDivider"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.5dp"
         android:background="@color/color_404040_e2e2e2" />
 
 </LinearLayout>
