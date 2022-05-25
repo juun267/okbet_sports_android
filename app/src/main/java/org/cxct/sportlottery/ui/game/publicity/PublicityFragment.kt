@@ -274,7 +274,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         receiver.serviceConnectStatus.observe(viewLifecycleOwner) {
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
-                    loading()
+//                    loading()
                     viewModel.getSportMenuFilter()
                 }
             }

@@ -1068,7 +1068,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     }
 
     private fun queryData() {
-        loading()
+//        loading()
         getSportList()
     }
 

@@ -479,6 +479,7 @@
     <string name="txv_online_pay">Thanh toán trực tuyến</string>
     <string name="txv_crypto_pay">Chuyển khoản tiền ảo</string>
     <string name="error_recharge_amount">Định dạng hoặc giá trị số tiền nạp không đúng</string>
+    <string name="error_first_recharge_amount">Lần nạp đầu tiên không được nhỏ hơn %s</string>
     <string name="error_recharge_account">số tiền nạp bị lỗi</string>
     <string name="error_bank_id">Số thẻ khoản ngân hàng không đúng</string>
     <string name="error_hashcode">Lỗi định dạng khu chuỗi ID giao dịch</string>

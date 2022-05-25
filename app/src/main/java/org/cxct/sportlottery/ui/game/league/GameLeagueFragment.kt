@@ -415,7 +415,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         receiver.serviceConnectStatus.observe(this.viewLifecycleOwner) { status ->
             status?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
-                    loading()
+//                    loading()
                     subscribeSportChannelHall()
                     viewModel.getLeagueOddsList(
                         args.matchType,
