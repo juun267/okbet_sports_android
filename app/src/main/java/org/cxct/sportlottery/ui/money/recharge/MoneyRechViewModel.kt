@@ -391,7 +391,10 @@ class MoneyRechViewModel(
                 androidContext.getString(R.string.error_input_empty)
             }
             checkFirstRecharge() && !VerifyConstUtil.verifyFirstRechargeAmount(rechargeAmount) -> {
-                androidContext.getString(R.string.error_first_recharge_amount, sConfigData?.firstRechLessAmountLimit)
+                androidContext.getString(
+                    R.string.error_first_recharge_amount,
+                    TextUtil.format(sConfigData?.firstRechLessAmountLimit ?: 0)
+                )
             }
             !VerifyConstUtil.verifyRechargeAmount(
                 rechargeAmount,
