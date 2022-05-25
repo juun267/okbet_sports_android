@@ -27,7 +27,7 @@
         tools:text="@string/all_order_status" />
 
     <ImageView
-        android:id="@+id/img_arrow"
+        android:id="@+id/iv_arrow"
         android:layout_width="10dp"
         android:layout_height="10dp"
         android:layout_marginHorizontal="10dp"

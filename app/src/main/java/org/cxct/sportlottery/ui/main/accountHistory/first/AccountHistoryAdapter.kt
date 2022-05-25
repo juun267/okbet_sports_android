@@ -132,11 +132,11 @@ class AccountHistoryAdapter(
                 tv_title.setTextWithStrokeWidth(context?.getString(R.string.account_history_overview) ?: "", 0.7f)
 
                 sportSelectListener.onSelect("")
-                status_selector.cl_root.layoutParams.height = 40.dp
-                status_selector.tv_selected.gravity = Gravity.CENTER_VERTICAL or Gravity.START
-                status_selector.setCloseBtnText(context?.getString(R.string.bottom_sheet_close))
-                status_selector.dataList = sportStatusList
-                status_selector.setOnItemSelectedListener {
+                status_selector1.cl_root.layoutParams.height = 40.dp
+                status_selector1.tv_selected.gravity = Gravity.CENTER_VERTICAL or Gravity.START
+//                status_selector1.setCloseBtnText(context?.getString(R.string.bottom_sheet_close))
+                status_selector1.dataList = sportStatusList
+                status_selector1.setOnItemSelectedListener {
                     sportSelectListener.onSelect(it.code)
                 }
             }
