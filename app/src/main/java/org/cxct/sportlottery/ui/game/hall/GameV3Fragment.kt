@@ -343,7 +343,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     override fun loading() {
-        super.loading()
+//        super.loading()
         stopTimer()
     }
 
