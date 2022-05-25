@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.util
 
 import android.content.Context
+import org.cxct.sportlottery.repository.sConfigData
 import java.util.regex.Pattern
 
 object VerifyConstUtil {
@@ -58,19 +59,15 @@ object VerifyConstUtil {
         return Pattern.matches("(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+){6,20}", pwd)
     }
 
-    //真實姓名 //中文2-20,英文2-50 可空格 可點
-    //20210205判斷文件只容許中文2-20
-    //20220523根据语言环境，使用不同的正则判断
+    //真實姓名 只允许英文和空格，不允许前后空格和连续空格
     fun verifyFullName(context:Context,fullName: CharSequence): Boolean {
         if (fullName.startsWith(" ")||fullName.endsWith(" ")){
             return false
         }
-        when(LanguageManager.getSelectLanguage(context)) {
-            LanguageManager.Language.ZH -> return VerifyConstUtil.isValidChineseWord(fullName)
-            LanguageManager.Language.EN -> return VerifyConstUtil.isValidEnglishWord(fullName)
-            LanguageManager.Language.VI -> return VerifyConstUtil.isValidVietnamWord(fullName)
-            else -> return false
+        if (fullName.contains("  ")){
+            return false
         }
+        return Pattern.matches("[a-zA-Z\\s]{1,50}", fullName)
     }
 
     //提款密碼 //數字4
@@ -94,6 +91,15 @@ object VerifyConstUtil {
     //充值金額
     fun verifyRechargeAmount(withdrawAmount: CharSequence, minAmount: Long, maxAmount: Long?): Boolean {
         return (withdrawAmount.toString().toLong().let { it in minAmount until (maxAmount?.plus(1) ?: it + 1) })
+    }
+
+    fun verifyFirstRechargeAmount(rechargeAmount: CharSequence): Boolean {
+        val firstRechLessAmountLimit = sConfigData?.firstRechLessAmountLimit
+        return when {
+            //首充額度限制若為null,""或0則不限制
+            firstRechLessAmountLimit.isNullOrEmpty() || firstRechLessAmountLimit.toDouble() <= 0.0 -> true
+            else -> rechargeAmount.toString().toDouble() >= firstRechLessAmountLimit.toDouble()
+        }
     }
 
     //暱稱 //中英文組合長度2–50字

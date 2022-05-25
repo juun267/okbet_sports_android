@@ -98,7 +98,8 @@ data class ConfigData(
     val enableKYCVerify: String? = "1", //KYC认证开关(1：开启，0：关闭)
     val supportLanguage: String = "",
     val wsHost: String = "",
-    val creditSystem: Int? = null
+    val creditSystem: Int? = null,
+    val firstRechLessAmountLimit: String?
 ) {
     var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter
     var hasGetTwoFactorResult: Boolean? = false //判斷是不是已經成功發送過簡訊認證碼 (關掉彈窗要重新設置為false)

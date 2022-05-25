@@ -1210,7 +1210,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             itemView.apply {
 //                iv_bet_lock_single.visibility = if (hasBetClosed) View.VISIBLE else View.GONE
 
-                ll_winnable.visibility = if (hasBetClosed) View.GONE else View.VISIBLE
+                ll_winnable.visibility = if (hasBetClosed) View.INVISIBLE else View.VISIBLE
 
                 et_bet_single.apply {
                     isEnabled = !hasBetClosed
@@ -1531,6 +1531,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                 ) {
                                     data.betAmount = inputValue
                                     data.inputBetAmountStr = it.toString()
+                                    checkSingleMinimumLimit(data)
                                 } else {
                                     data.betAmount = (data.parlayOdds?.max ?: 0).toDouble()
                                     data.inputBetAmountStr = (data.parlayOdds?.max ?: 0).toString()
@@ -1653,7 +1654,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             itemView.apply {
 //                iv_bet_lock_single.visibility = if (hasBetClosed) View.VISIBLE else View.GONE
 
-                ll_winnable.visibility = if (hasBetClosed) View.GONE else View.VISIBLE
+                ll_winnable.visibility = if (hasBetClosed) View.INVISIBLE else View.VISIBLE
 
                 et_bet_single.apply {
                     isEnabled = !hasBetClosed
@@ -1734,6 +1735,17 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             itemView.iv_arrow.setImageResource(if (moreOptionCollapse) R.drawable.ic_arrow_gray_top else R.drawable.ic_arrow_gray_down)
             btnShowMore.setOnClickListener {
                 clickEvent()
+            }
+        }
+
+        private fun checkSingleMinimumLimit(
+            itemData: BetInfoListData,
+            betAmount: Double? = itemData.betAmount
+        ) {
+            itemView.apply {
+                itemData.parlayOdds?.min?.let { min ->
+                    itemData.amountError = betAmount != 0.0 && betAmount ?: 0.0 < min
+                }
             }
         }
     }

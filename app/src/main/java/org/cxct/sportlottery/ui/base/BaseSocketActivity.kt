@@ -72,7 +72,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
                     showErrorPromptDialog(getString(R.string.message_socket_connect)) { backService?.doReconnect() }
                 }
                 ServiceConnectStatus.CONNECTING -> {
-                    loading()
+//                    loading()
                 }
                 ServiceConnectStatus.CONNECTED -> {
                     hideLoading()
@@ -147,8 +147,8 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         }
     }
 
-    fun subscribeSportChannelHall(gameTypeCode: String ?= null){
-        backService?.subscribeSportChannelHall(gameTypeCode)
+    fun subscribeSportChannelHall(){
+        backService?.subscribeSportChannelHall()
     }
 
     fun subscribeChannelHall(

@@ -65,6 +65,7 @@
                     android:lineSpacingExtra="6dp"
                     android:textColor="@color/color_E44438_e44438"
                     android:textSize="@dimen/textSize12sp"
+                    android:visibility="gone"
                     tools:text="@string/feedback_description_money" />
 
                 <TextView
