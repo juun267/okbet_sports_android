@@ -133,6 +133,15 @@ class MoneyRechViewModel(
     //上傳支付截圖
     val voucherUrlResult: LiveData<Event<String>> = avatarRepository.voucherUrlResult
 
+    //更新使用者資料
+    fun getUserInfo() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                userInfoRepository.getUserInfo()
+            }
+        }
+    }
+
     //獲取充值的基礎配置
     fun getRechCfg() {
         Log.e(">>>", "getRechCfg")
