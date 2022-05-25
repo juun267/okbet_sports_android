@@ -4,6 +4,7 @@ import android.content.Context
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.repository.HostRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
@@ -37,7 +38,7 @@ object Constants {
     fun String.httpFormat(): String {
         val regex = "^http[s]?://.+".toRegex()
         return this.let {
-            if (it.isEmpty()) "https://default/" else it
+            if (it.isEmpty()) HostRepository(MultiLanguagesApplication.appContext).hostUrl else it
         }.let {
             if (it.contains(regex)) it else "https://$it"
         }.let {
