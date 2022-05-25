@@ -1498,6 +1498,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                 ) {
                                     data.betAmount = inputValue
                                     data.inputBetAmountStr = it.toString()
+                                    checkSingleMinimumLimit(data)
                                 } else {
                                     data.betAmount = (data.parlayOdds?.max ?: 0).toDouble()
                                     data.inputBetAmountStr = (data.parlayOdds?.max ?: 0).toString()
