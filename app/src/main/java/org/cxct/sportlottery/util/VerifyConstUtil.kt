@@ -65,12 +65,7 @@ object VerifyConstUtil {
         if (fullName.startsWith(" ")||fullName.endsWith(" ")){
             return false
         }
-        when(LanguageManager.getSelectLanguage(context)) {
-            LanguageManager.Language.ZH -> return VerifyConstUtil.isValidChineseWord(fullName)
-            LanguageManager.Language.EN -> return VerifyConstUtil.isValidEnglishWord(fullName)
-            LanguageManager.Language.VI -> return VerifyConstUtil.isValidVietnamWord(fullName)
-            else -> return false
-        }
+        return isValidEnglishWord(fullName)
     }
 
     //提款密碼 //數字4
