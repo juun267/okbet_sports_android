@@ -22,7 +22,7 @@
         app:autoSizeMaxTextSize="@dimen/textSize14sp"
         app:autoSizeMinTextSize="@dimen/textSize8sp"
         app:autoSizeTextType="uniform"
-        app:layout_constraintEnd_toStartOf="@id/img_arrow"
+        app:layout_constraintEnd_toStartOf="@id/iv_arrow"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="@string/all_order_status" />
 

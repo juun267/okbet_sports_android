@@ -21,7 +21,7 @@
         android:background="@color/color_191919_FCFCFC"
         app:layout_constraintTop_toBottomOf="@id/date_range_selector">
 
-        <org.cxct.sportlottery.ui.component.StatusSelectorView
+        <org.cxct.sportlottery.ui.component.StatusSpinnerView
             android:id="@+id/selector_order_status"
             android:layout_width="0dp"
             android:layout_height="44dp"

@@ -14,6 +14,8 @@ import kotlinx.android.synthetic.main.content_parlay_record.view.*
 import kotlinx.android.synthetic.main.view_account_history_next_title_bar.view.*
 import kotlinx.android.synthetic.main.view_back_to_top.view.*
 import kotlinx.android.synthetic.main.view_status_selector.view.*
+import kotlinx.android.synthetic.main.view_status_selector.view.cl_root
+import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -396,24 +398,18 @@ class AccountHistoryNextAdapter(
                 sport_selector.cl_root.layoutParams.height = 40.dp
 
                 //sport
-                sport_selector.setCloseBtnText(context.getString(R.string.bottom_sheet_close))
-                sport_selector.dataList = sportStatusList
+                sport_selector.setItemData(sportStatusList)
 
-                sport_selector.selectedText =
-                    sportStatusList.find { it.code == nowSelectedSport }?.showName
-                sport_selector.selectedTag = nowSelectedSport
+                sport_selector.setSelectCode(nowSelectedSport)
 
                 sport_selector.setOnItemSelectedListener {
                     sportSelectListener.onSelect(it.code)
                 }
 
                 //date
-                date_selector.setCloseBtnText(context.getString(R.string.bottom_sheet_close))
-                date_selector.dataList = dateStatusList
+                date_selector.setItemData(dateStatusList)
 
-                date_selector.selectedText =
-                    dateStatusList.find { it.code == nowSelectedDate }?.showName
-                date_selector.selectedTag = nowSelectedDate
+                date_selector.setSelectCode(nowSelectedDate)
 
                 date_selector.setOnItemSelectedListener {
                     dateSelectListener.onSelect(it.code)

@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:background="@color/play_category_pop_bg_color"
         android:orientation="horizontal"
         android:layout_marginStart="7dp"
         android:layout_marginTop="6dp"
@@ -41,7 +40,7 @@
     <View
         android:id="@+id/viewDivider"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@drawable/divider_gray_light_3_1dp" />
+        android:layout_height="1dp"
+        android:background="@color/color_404040_e2e2e2" />
 
 </LinearLayout>

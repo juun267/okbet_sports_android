@@ -17,7 +17,7 @@
         android:id="@+id/linear_layout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_317FFF_0760D4"
+        android:background="@color/color_1D4C99_0760D4"
         android:orientation="horizontal"
         android:paddingHorizontal="16dp"
         android:paddingVertical="14dp"

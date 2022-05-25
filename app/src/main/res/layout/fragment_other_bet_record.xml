@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <org.cxct.sportlottery.ui.component.StatusSelectorView
+    <org.cxct.sportlottery.ui.component.StatusSpinnerView
         android:id="@+id/status_selector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
