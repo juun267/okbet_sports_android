@@ -6,10 +6,7 @@ import kotlinx.android.synthetic.main.activity_maintenance.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.ui.game.GameActivity
-import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.util.JumpUtil
@@ -24,16 +21,28 @@ class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(Maintenance
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maintenance)
 
+        viewModel.getConfig()
         initObserver()
         initSocketObserver()
         initServiceButton()
     }
 
     private fun initObserver() {
-        viewModel.getConfig()
-
         viewModel.configResult.observe(this) {
-            tv_maintenance_time.text = it?.configData?.maintainInfo
+            //確認當前平台是否維護中
+            when (it?.configData?.maintainStatus) {
+                FLAG_OPEN -> {
+                    //仍然維護中則更新該平台目前的維護資訊
+                    tv_maintenance_time.text = it.configData.maintainInfo
+                }
+                else -> {
+                    if (sConfigData?.thirdOpen == FLAG_OPEN)
+                        MainActivity.reStart(this)
+                    else
+                        GamePublicityActivity.reStart(this)
+                    finish()
+                }
+            }
             //改為右下角客服按鈕
 //            tv_customer_service.text = String.format(
 //                getString(R.string.if_there_is_any_question_please_consult),
@@ -63,17 +72,8 @@ class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(Maintenance
 
     private fun initSocketObserver() {
         receiver.sysMaintenance.observe(this) {
-            it?.let { item ->
-                if (item.status == MaintainType.NORMAL.value) {
-                    if (sConfigData?.thirdOpen == FLAG_OPEN)
-                        MainActivity.reStart(this)
-                    else
-                        GamePublicityActivity.reStart(this)
-                    finish()
-                } else {
-                    //do nothing
-                }
-            }
+            //接收到系統維護狀態變化時, 請求config確認當前平台是否維護中
+            viewModel.getConfig()
         }
     }
 
