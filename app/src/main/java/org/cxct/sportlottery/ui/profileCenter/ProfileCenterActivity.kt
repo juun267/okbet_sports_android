@@ -197,10 +197,6 @@ class ProfileCenterActivity :
     }
 
     private fun setupMoreButtons() {
-        btn_credit_bet_record.setOnClickListener {
-            startActivity(Intent(this, CreditRecordActivity::class.java))
-        }
-
         //個人資訊
         btn_profile.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))

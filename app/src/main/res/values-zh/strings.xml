@@ -1117,5 +1117,5 @@
     <string name="current_corner">当前总数:</string>
     <string name="cancel_auto">注單未成立</string>
     <string name="cancel_manual">退款</string>
-    <string name="error_input_has_blank">输入错误，仅限输入%s，请勿输入连续空格。</string>
+    <string name="error_input_has_blank">输入错误，仅限输入英文，请勿输入连续空格。</string>
 </resources>
