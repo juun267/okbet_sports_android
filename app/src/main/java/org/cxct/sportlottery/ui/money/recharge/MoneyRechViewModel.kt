@@ -447,8 +447,7 @@ class MoneyRechViewModel(
             userName.isEmpty() -> {
                 androidContext.getString(R.string.error_input_empty)
             }
-            !VerifyConstUtil.verifyFullName(androidContext,userName) -> String.format(androidContext.getString(R.string.error_input_has_blank),
-                LanguageManager.getLanguageStringResource(androidContext))
+            !VerifyConstUtil.verifyFullName(androidContext,userName) ->androidContext.getString(R.string.error_input_has_blank)
             else -> {
                 ""
             }

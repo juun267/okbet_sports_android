@@ -440,7 +440,7 @@ class WithdrawViewModel(
     fun checkCreateName(createName: String) {
         _createNameErrorMsg.value = when {
             createName.isEmpty() -> androidContext.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyFullName(androidContext,createName) -> String.format(androidContext.getString(R.string.error_input_has_blank),LanguageManager.getLanguageStringResource(androidContext))
+            !VerifyConstUtil.verifyFullName(androidContext,createName) -> androidContext.getString(R.string.error_input_has_blank)
             else -> ""
         }
     }
