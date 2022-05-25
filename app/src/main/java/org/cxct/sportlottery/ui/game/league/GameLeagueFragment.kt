@@ -416,7 +416,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             status?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
                     loading()
-                    subscribeSportChannelHall(args.gameType.key)
+                    subscribeSportChannelHall()
                     viewModel.getLeagueOddsList(
                         args.matchType,
                         args.leagueId.toList(),

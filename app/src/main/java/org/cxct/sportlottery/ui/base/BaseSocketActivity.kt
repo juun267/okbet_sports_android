@@ -147,8 +147,8 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         }
     }
 
-    fun subscribeSportChannelHall(gameTypeCode: String ?= null){
-        backService?.subscribeSportChannelHall(gameTypeCode)
+    fun subscribeSportChannelHall(){
+        backService?.subscribeSportChannelHall()
     }
 
     fun subscribeChannelHall(

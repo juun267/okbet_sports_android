@@ -1284,7 +1284,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         )
                     }
                     viewModel.getMatchCategoryQuery(args.matchType)
-                    subscribeSportChannelHall(args.matchType.name)
+                    subscribeSportChannelHall()
                 } else {
                     stopTimer()
                 }
