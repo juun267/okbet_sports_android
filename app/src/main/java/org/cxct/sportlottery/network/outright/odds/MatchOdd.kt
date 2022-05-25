@@ -25,7 +25,7 @@ data class MatchOdd(
     @Json(name = "oddsList")
     val oddsList: @RawValue List<String?>? = listOf(), //TODO Cheryl : 目前回傳都是null, 待測試
     @Json(name = "quickPlayCateList")
-    override val quickPlayCateList: @RawValue MutableList<QuickPlayCate>? = mutableListOf(), //(新)赛事可玩的快捷玩法列表
+    override var quickPlayCateList: @RawValue MutableList<QuickPlayCate>? = mutableListOf(), //(新)赛事可玩的快捷玩法列表
     @Json(name = "oddsSort")
     override val oddsSort: String? = null,
     @Json(name = "betPlayCateNameMap")
