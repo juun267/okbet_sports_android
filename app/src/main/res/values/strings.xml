@@ -491,6 +491,7 @@
     <string name="txv_online_pay">Top Up Online</string>
     <string name="txv_crypto_pay">Virtual currency transfer</string>
     <string name="error_recharge_amount">Incorrect format or value of top-up amount</string>
+    <string name="error_first_recharge_amount">The first recharge amount cannot be less than %s</string>
     <string name="error_recharge_account">Incorrect number or value of top-up amount</string>
     <string name="error_bank_id">There is an error in the format of the bank account number</string>
     <string name="error_hashcode">Block chain trading ID format error</string>

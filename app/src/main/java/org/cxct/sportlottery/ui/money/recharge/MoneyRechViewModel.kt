@@ -381,6 +381,9 @@ class MoneyRechViewModel(
             rechargeAmount.isEmpty() -> {
                 androidContext.getString(R.string.error_input_empty)
             }
+            checkFirstRecharge() && !VerifyConstUtil.verifyFirstRechargeAmount(rechargeAmount) -> {
+                androidContext.getString(R.string.error_first_recharge_amount, sConfigData?.firstRechLessAmountLimit)
+            }
             !VerifyConstUtil.verifyRechargeAmount(
                 rechargeAmount,
                 channelMinMoney,
@@ -392,6 +395,14 @@ class MoneyRechViewModel(
                 ""
             }
         }
+    }
+
+    /**
+     * 判斷是否為首次充值
+     * @return true: 首次, false: 非首次
+     */
+    private fun checkFirstRecharge(): Boolean {
+        return userInfo.value?.firstRechTime == null
     }
 
     fun checkRcgNormalOnlineAccount(rechargeAccount: String) {
