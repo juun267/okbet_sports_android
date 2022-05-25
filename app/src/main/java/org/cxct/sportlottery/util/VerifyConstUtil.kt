@@ -94,7 +94,12 @@ object VerifyConstUtil {
     }
 
     fun verifyFirstRechargeAmount(rechargeAmount: CharSequence): Boolean {
-        return rechargeAmount.toString().toDouble() >= (sConfigData?.firstRechLessAmountLimit ?: "0").toDouble()
+        val firstRechLessAmountLimit = sConfigData?.firstRechLessAmountLimit
+        return when {
+            //首充額度限制若為null,""或0則不限制
+            firstRechLessAmountLimit.isNullOrEmpty() || firstRechLessAmountLimit.toDouble() <= 0.0 -> true
+            else -> rechargeAmount.toString().toDouble() >= firstRechLessAmountLimit.toDouble()
+        }
     }
 
     //暱稱 //中英文組合長度2–50字

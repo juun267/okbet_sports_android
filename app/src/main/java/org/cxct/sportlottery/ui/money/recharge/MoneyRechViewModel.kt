@@ -402,7 +402,7 @@ class MoneyRechViewModel(
      * @return true: 首次, false: 非首次
      */
     private fun checkFirstRecharge(): Boolean {
-        return userInfo.value?.firstRechTime == null
+        return userInfo.value?.firstRechTime.isNullOrEmpty()
     }
 
     fun checkRcgNormalOnlineAccount(rechargeAccount: String) {
