@@ -183,7 +183,7 @@ class ModifyProfileInfoViewModel(
     private fun checkFullName(context: Context, fullName: String?) {
         _fullNameErrorMsg.value = when {
             fullName.isNullOrBlank() -> context.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyFullName(context,fullName) -> String.format(context.getString(R.string.error_input_has_blank),LanguageManager.getLanguageStringResource(context))
+            !VerifyConstUtil.verifyFullName(context,fullName) -> androidContext.getString(R.string.error_input_has_blank)
             else -> ""
         }
     }
