@@ -271,6 +271,14 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
 
     // TODO subscribe leagueChange: 此處尚無需實作邏輯, 看之後有沒有相關需求
     private fun initSocketObservers() {
+        receiver.serviceConnectStatus.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it == ServiceConnectStatus.CONNECTED) {
+                    loading()
+                    viewModel.getSportMenuFilter()
+                }
+            }
+        }
 
         receiver.matchStatusChange.observe(viewLifecycleOwner, { event ->
             event?.let { matchStatusChangeEvent ->
