@@ -31,13 +31,11 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
 
         override fun afterTextChanged(s: Editable?) {
             s.toString().let {
-                var min = sConfigData?.perBetMinAmount ?: "0"
-                if (min.isNullOrEmpty()) {min = "0"}
-                var max = sConfigData?.perBetMaxAmount ?: "0"
-                if (max.isNullOrEmpty()) {max = "0"}
+                val perBetMinAmount = if (sConfigData?.perBetMinAmount.isNullOrEmpty()) 0.0 else sConfigData?.perBetMinAmount?.toDouble() ?: 0.0
+                val perBetMaxAmount = if (sConfigData?.perBetMaxAmount.isNullOrEmpty()) 0.0 else sConfigData?.perBetMaxAmount?.toDouble() ?: 0.0
                 when {
                     it.isNullOrEmpty() -> viewModel.setBetEditTextError(true)
-                    it.toLong() in (min.toLong())..(max.toLong()) -> viewModel.setBetEditTextError(false)
+                    it.toDouble() in (perBetMinAmount)..(perBetMaxAmount) -> viewModel.setBetEditTextError(false)
                     else -> viewModel.setBetEditTextError(true)
                 }
             }
