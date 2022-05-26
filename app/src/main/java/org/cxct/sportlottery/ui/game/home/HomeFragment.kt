@@ -1021,17 +1021,27 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
         receiver.leagueChange.observe(this.viewLifecycleOwner) {
             it?.let { leagueChangeEvent ->
-                unSubscribeChannelHallAll()
-                leagueChangeEvent.leagueIdList?.let { leagueIdList ->
-                    //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
-                    viewModel.getLeagueOddsList(
-                        mSelectMatchType,
-                        leagueIdList,
-                        listOf(),
-                        isIncrement = true
-                    )
+//                unSubscribeChannelHallAll()
+//                leagueChangeEvent.leagueIdList?.let { leagueIdList ->
+//                    //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
+//                    viewModel.getLeagueOddsList(
+//                        mSelectMatchType,
+//                        leagueIdList,
+//                        listOf(),
+//                        isIncrement = true
+//                    )
+//                }
+//                queryData(leagueChangeEvent.gameType ?: "", leagueChangeEvent.leagueIdList)
+                if (mSelectMatchType == MatchType.IN_PLAY) {
+                    tableInPlayMap.clear()
+                    //滾球盤
+                    viewModel.getMatchPreloadInPlay()
                 }
-                queryData(leagueChangeEvent.gameType ?: "", leagueChangeEvent.leagueIdList)
+                else {
+                    tableSoonMap.clear()
+                    //即將開賽盤
+                    viewModel.getMatchPreloadAtStart()
+                }
             }
         }
 
@@ -1150,6 +1160,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
         //滾球盤、即將開賽盤
         viewModel.getMatchPreloadInPlay()
+        tableSoonMap.clear()
         viewModel.getMatchPreloadAtStart()
 
         //推薦賽事
