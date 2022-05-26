@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail_v2.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.*
@@ -20,7 +19,7 @@ import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.et_bet
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.et_clickable
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.iv_bet_lock
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.layoutKeyBoard
-import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.tv_error_message
+import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.tvErrorMessage
 import kotlinx.android.synthetic.main.content_bet_list_batch_control.view.*
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v2.view.*
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_v2.view.*
@@ -805,7 +804,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         private fun setupMinimumLimitMessage(itemData: BetInfoListData) {
             itemView.apply {
                 itemData.parlayOdds?.min?.let { min ->
-                    tv_error_message.text = context.getString(R.string.bet_info_list_minimum_limit_amount)
+                    tvErrorMessage.text = context.getString(R.string.bet_info_list_minimum_limit_amount)
                 }
             }
         }
@@ -816,7 +815,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         ) {
             itemView.apply {
                 itemData.parlayOdds?.min?.let { min ->
-                    tv_error_message.visibility = if (betAmount != 0.0 && betAmount < min) {
+                    tvErrorMessage.visibility = if (betAmount != 0.0 && betAmount < min) {
                         itemData.amountError = true
                         View.VISIBLE
                     } else {
@@ -2071,7 +2070,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
         private fun setupMinimumLimitMessage(itemData: ParlayOdd) {
             itemView.apply {
-                tv_error_message.text = context.getString(R.string.bet_info_list_minimum_limit_amount)
+                tvErrorMessage.text = context.getString(R.string.bet_info_list_minimum_limit_amount)
                 et_bet.apply {
 //                    hint = getLimitHint(
 //                        context,
@@ -2085,7 +2084,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         private fun checkMinimumLimit(itemData: ParlayOdd, betAmount: Double = itemData.betAmount) {
             itemView.apply {
                 itemData.min.let { min ->
-                    tv_error_message.visibility = if (betAmount != 0.0 && betAmount < min) {
+                    tvErrorMessage.visibility = if (betAmount != 0.0 && betAmount < min) {
                         itemData.amountError = true
                         View.VISIBLE
                     } else {
