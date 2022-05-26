@@ -89,6 +89,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
     private var isInPlayResult = false
     private var isSoonResult = false
+    private var changeTime = System.currentTimeMillis()
 
     //TODO 檢查 mSubscribeInPlayGameID、mSubscribeAtStartGameID 與tableInPlayMap、tableSoonMap 的功用
     private var mSubscribeInPlayGameID: MutableList<String> = mutableListOf()
@@ -1021,6 +1022,11 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
         receiver.leagueChange.observe(this.viewLifecycleOwner) {
             it?.let { leagueChangeEvent ->
+                if (System.currentTimeMillis() - changeTime < 1000) {
+                    return@observe
+                }
+
+                changeTime = System.currentTimeMillis()
                 unSubscribeChannelHallAll()
 //                leagueChangeEvent.leagueIdList?.let { leagueIdList ->
 //                    //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
@@ -1154,6 +1160,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     }
 
     private fun queryData(gameType: String = "", leagueIdList: List<String>? = null) {
+        changeTime = System.currentTimeMillis()
         tableInPlayMap.clear()
         tableSoonMap.clear()
         viewModel.getSportMenu()
