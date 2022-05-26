@@ -343,6 +343,8 @@ dependencies {
     implementation 'org.parceler:parceler-api:1.1.12'
     implementation 'com.airbnb.android:lottie:5.0.3'
 
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
 }
 
 repositories {
