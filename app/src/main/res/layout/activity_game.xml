@@ -44,7 +44,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@color/color_141414_F3F4F5">
 
                 <!-- 遊戲類別列表 -->
@@ -52,14 +52,14 @@
                     android:id="@+id/btn_menu_left"
                     android:layout_width="58dp"
                     android:layout_height="53dp"
+                    android:background="@color/color_141414_F3F4F5"
+                    android:contentDescription="@null"
+                    android:elevation="1dp"
                     android:paddingStart="16dp"
                     android:paddingTop="14dp"
                     android:paddingEnd="16dp"
                     android:paddingBottom="14dp"
-                    android:background="@color/color_141414_F3F4F5"
-                    android:contentDescription="@null"
                     android:scaleType="centerCrop"
-                    android:elevation="1dp"
                     android:src="@drawable/ic_side_icon_v2"
                     app:layout_constraintBottom_toTopOf="@id/game_container"
                     app:layout_constraintStart_toStartOf="parent"
@@ -84,10 +84,10 @@
                     app:layout_constraintTop_toBottomOf="@id/view_notification" />
 
                 <Button
-                    android:layout_margin="8dp"
                     android:id="@+id/game_submit"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
+                    android:layout_margin="8dp"
                     android:layout_marginBottom="8dp"
                     android:background="@color/color_FF9143_ff9200"
                     android:text="@string/button_league_submit"
@@ -116,7 +116,14 @@
                     android:layout_height="55dp"
                     app:layout_constraintBottom_toBottomOf="parent" />
 
-
+                <!-- 快捷投注單 -->
+                <!-- 因左邊選單需在快捷注單上層 故在此將快捷注單獨立顯示-->
+                <FrameLayout
+                    android:id="@+id/fl_fast_bet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    tools:visibility="gone" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -137,7 +144,7 @@
 
         </androidx.drawerlayout.widget.DrawerLayout>
 
-        <!-- 投注單 -->
+        <!-- 投注單列表 -->
         <FrameLayout
             android:id="@+id/fl_bet_list"
             android:layout_width="match_parent"

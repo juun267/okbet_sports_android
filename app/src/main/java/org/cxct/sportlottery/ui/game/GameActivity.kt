@@ -84,13 +84,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             }
         }
 
-        fun reStartWithSwitchLanguage(context: Context) {
-            //val intent = Intent(context, GameActivity::class.java)
-            //    .putExtra(ARGS_SWITCH_LANGUAGE, "true")
-            //intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            //context.startActivity(intent)
-        }
-
         const val ARGS_SWITCH_LANGUAGE = "switch_language"
     }
 
@@ -916,51 +909,14 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 R.anim.pop_bottom_to_top_exit
             )
 
-        val betListFragment = FastBetFragment()
+        val fastBetFragment = FastBetFragment()
         val bundle = Bundle()
         bundle.putParcelable("data",  Parcels.wrap(fastBetDataBean));
-        betListFragment.arguments = bundle;
+        fastBetFragment.arguments = bundle;
 
         transaction
-            .add(R.id.fl_bet_list, betListFragment)
-            .addToBackStack(BetListFragment::class.java.simpleName)
-            .commit()
-    }
-
-    fun showFastBetFragmentForOutRight(fastBetDataBean: FastBetDataBean) {
-        val transaction = supportFragmentManager.beginTransaction()
-            .setCustomAnimations(
-                R.anim.push_bottom_to_top_enter,
-                R.anim.pop_bottom_to_top_exit,
-                R.anim.push_bottom_to_top_enter,
-                R.anim.pop_bottom_to_top_exit
-            )
-
-        val betListFragment = FastBetFragment()
-        val bundle = Bundle()
-        bundle.putParcelable("data",  Parcels.wrap(fastBetDataBean));
-        betListFragment.arguments = bundle;
-
-        transaction
-            .add(R.id.fl_bet_list, betListFragment)
-            .addToBackStack(BetListFragment::class.java.simpleName)
-            .commit()
-    }
-
-    fun showFastBetFragment() {
-        val transaction = supportFragmentManager.beginTransaction()
-            .setCustomAnimations(
-                R.anim.push_bottom_to_top_enter,
-                R.anim.pop_bottom_to_top_exit,
-                R.anim.push_bottom_to_top_enter,
-                R.anim.pop_bottom_to_top_exit
-            )
-
-        val betListFragment = FastBetFragment()
-
-        transaction
-            .add(R.id.fl_bet_list, betListFragment)
-            .addToBackStack(BetListFragment::class.java.simpleName)
+            .add(R.id.fl_fast_bet, fastBetFragment)
+            .addToBackStack(FastBetFragment::class.java.simpleName)
             .commit()
     }
 
