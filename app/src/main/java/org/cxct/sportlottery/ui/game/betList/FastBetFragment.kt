@@ -892,10 +892,10 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 .toDouble()
 
         if (stake > currentMoney ?: 0.0) {
-            showErrorPromptDialog(
-                getString(R.string.prompt),
-                getString(R.string.bet_info_bet_balance_insufficient)
-            ) {}
+//            showErrorPromptDialog(
+//                getString(R.string.prompt),
+//                getString(R.string.bet_info_bet_balance_insufficient)
+//            ) {}
             return
         }
 
