@@ -467,10 +467,7 @@ class MoneyRechViewModel(
     //姓名認證
     fun checkUserName(moneyType: String, userName: String) {
         _nameErrorMsg.value = when {
-            userName.isEmpty() -> {
-                androidContext.getString(R.string.error_input_empty)
-            }
-            !VerifyConstUtil.verifyFullName(androidContext,userName) ->androidContext.getString(R.string.error_input_has_blank)
+            !VerifyConstUtil.verifyFullName(userName) ->androidContext.getString(R.string.error_input_has_blank)
             else -> {
                 ""
             }

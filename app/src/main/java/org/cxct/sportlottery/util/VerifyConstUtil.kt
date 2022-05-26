@@ -60,7 +60,10 @@ object VerifyConstUtil {
     }
 
     //真實姓名 只允许英文和空格，不允许前后空格和连续空格
-    fun verifyFullName(context:Context,fullName: CharSequence): Boolean {
+    fun verifyFullName(fullName: CharSequence?): Boolean {
+        if (fullName.isNullOrBlank()||fullName.startsWith(" ")||fullName.endsWith(" ")){
+            return false
+        }
         if (fullName.startsWith(" ")||fullName.endsWith(" ")){
             return false
         }
