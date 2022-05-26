@@ -1022,7 +1022,7 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
     }
 
     fun clearLeftMenu() {
-        if (parentFragmentManager.backStackEntryCount > 0) parentFragmentManager.popBackStack()
+        if (childFragmentManager.backStackEntryCount > 0) childFragmentManager.popBackStack()
         etSearch.setText("")
     }
 
