@@ -357,10 +357,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         private fun setupInputMaxMoney(itemData: BetInfoListData, userMoney: Double) {
             mUserMoney = userMoney
             parlayMaxBet = itemData.parlayOdds?.max?.toLong() ?: 0
-            inputMaxMoney = if (parlayMaxBet > 0) {
+            inputMaxMoney = if (userMoney > 0) {
                 min(parlayMaxBet.toDouble(), userMoney)
             } else {
-                userMoney
+                parlayMaxBet.toDouble() //未登入使用 parlayMaxBet 當最大輸入金額 (比照pc版)
             }
         }
 
