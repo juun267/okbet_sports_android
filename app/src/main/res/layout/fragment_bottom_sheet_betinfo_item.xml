@@ -296,7 +296,7 @@
                                 android:textColorHint="@color/color_939393_cccccc"
                                 android:textSize="@dimen/textSize16sp"
                                 tools:text="100"
-                                app:layout_constraintBottom_toTopOf="@+id/tv_error_message"
+                                app:layout_constraintBottom_toTopOf="@+id/tvErrorMessage"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toStartOf="@+id/btnRecharge"
                                 android:layout_marginEnd="@dimen/margin_8"
@@ -359,7 +359,7 @@
 
 
                             <TextView
-                                android:id="@+id/tv_error_message"
+                                android:id="@+id/tvErrorMessage"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
@@ -379,7 +379,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="10dp"
                                 android:background="@color/transparent"
-                                app:layout_constraintTop_toBottomOf="@+id/tv_error_message"/>
+                                app:layout_constraintTop_toBottomOf="@+id/tvErrorMessage"/>
 
                             <org.cxct.sportlottery.util.KeyboardView
                                 android:id="@+id/layoutKeyBoard"
@@ -388,7 +388,7 @@
                                 android:layout_marginTop="@dimen/margin_10"
                                 android:visibility="gone"
                                 tools:visibility="visible"
-                                app:layout_constraintTop_toBottomOf="@+id/tv_error_message" />
+                                app:layout_constraintTop_toBottomOf="@+id/tvErrorMessage" />
 
                             <!--                            <LinearLayout-->
                             <!--                                android:id="@+id/ll_keyboard_bg"-->
