@@ -327,6 +327,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                         } &&
                         leagueOdd.unfold == FoldState.UNFOLD.code
                     ) {
+                        updateBetInfo(leagueOdd, oddsChangeEvent)
                         updateGameList(index, leagueOdd)
                     }
                 }
@@ -387,6 +388,26 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 if (nowGameType == it.gameType) //收到的gameType与用户当前页面所选球种相同, 则需额外调用/myFavorite/match/query
                     viewModel.getFavoriteMatch()
                 loading()
+            }
+        }
+    }
+
+    /**
+     * 若投注單處於未開啟狀態且有加入注單的賠率項資訊有變動時, 更新投注單內資訊
+     */
+    private fun updateBetInfo(leagueOdd: LeagueOdd, oddsChangeEvent: OddsChangeEvent) {
+        if (!getBetListPageVisible()) {
+            //尋找是否有加入注單的賠率項
+            if (leagueOdd.matchOdds.filter { matchOdd ->
+                    matchOdd.matchInfo?.id == oddsChangeEvent.eventId
+                }.any { matchOdd ->
+                    matchOdd.oddsMap?.values?.any { oddList ->
+                        oddList?.any { odd ->
+                            odd?.isSelected == true
+                        } == true
+                    } == true
+                }) {
+                viewModel.updateMatchOdd(oddsChangeEvent)
             }
         }
     }
