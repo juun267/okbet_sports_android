@@ -11,7 +11,7 @@
         android:id="@+id/tv_calendar_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_141414_f3f3f3"
+        android:background="@color/color_2B2B2B_e2e2e2"
         android:gravity="center"
         android:minHeight="40dp"
         android:paddingVertical="4dp"
@@ -24,6 +24,7 @@
         android:id="@+id/calendar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/color_191919_FCFCFC"
         custom:date_selection_mode="free_range"
         custom:default_date_color="@color/color_E0E0E0_404040"
         custom:disable_date_color="@color/color_8F8F8F_999999"
@@ -37,6 +38,8 @@
         custom:text_size_title="16dp"
         custom:title_color="@color/color_E0E0E0_404040"
         custom:week_color="@color/color_A3A3A3_666666"
-        custom:week_offset="0" />
+        custom:week_offset="0"
+        custom:header_bg="@color/color_191919_FCFCFC"
+        />
 
 </LinearLayout>

@@ -91,7 +91,7 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        selector_order_status.dataList = accountHistoryStateList
+        selector_order_status.setItemData(accountHistoryStateList as MutableList<StatusSheetData>)
 
         viewModel.isLoading.observe(this.viewLifecycleOwner, {
             if (it) {

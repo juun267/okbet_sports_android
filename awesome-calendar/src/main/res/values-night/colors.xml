@@ -2,7 +2,6 @@
 
 <resources>
 
-    <color name="background">@color/default_date_color</color>
-
+    <color name="background">#191919</color>
 
 </resources>

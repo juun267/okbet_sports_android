@@ -13,16 +13,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_results_settlement.*
+import kotlinx.android.synthetic.main.activity_results_settlement.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_settlement_game_type.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_settlement_league_type.*
 import kotlinx.android.synthetic.main.item_listview_settlement_game_type.view.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league.view.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league_all.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league_all.view.*
+import kotlinx.android.synthetic.main.view_status_spinner.*
+import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import java.text.SimpleDateFormat
 import java.util.*
@@ -34,8 +38,6 @@ class ResultsSettlementActivity :
     BaseSocketActivity<SettlementViewModel>(SettlementViewModel::class) {
     lateinit var settlementLeagueBottomSheet: BottomSheetDialog
     private lateinit var settlementLeagueAdapter: SettlementLeagueAdapter
-    lateinit var settlementGameTypeBottomSheet: BottomSheetDialog
-    private lateinit var settlementGameTypeAdapter: SettlementGameTypeAdapter
     private var bottomSheetLeagueItemDataList = mutableListOf<LeagueItemData>()
 
     private val settlementDateRvAdapter by lazy {
@@ -108,9 +110,6 @@ class ResultsSettlementActivity :
             settlementLeagueBottomSheet.show()
         }
 
-        ll_game_type.setOnClickListener {
-            settlementGameTypeBottomSheet.show()
-        }
 
         et_key_word.afterTextChanged {
             viewModel.setKeyWordFilter(it)
@@ -205,39 +204,28 @@ class ResultsSettlementActivity :
     }
 
     private fun initSettleGameTypeBottomSheet() {
-        tv_game_type.text = getString(GameType.values()[0].string)
+        status_game_type.tv_name.text = getString(GameType.values()[0].string)
         gameType = GameType.values()[0].key
         viewModel.getMatchResultList(gameType, null, timeRangeParams)
     }
-
     private fun setupSettleGameTypeBottomSheet() {
-        val gameTypeBottomSheetView = layoutInflater.inflate(R.layout.dialog_bottom_sheet_settlement_game_type, null)
-        settlementGameTypeBottomSheet = BottomSheetDialog(this@ResultsSettlementActivity)
-        settlementGameTypeBottomSheet.apply {
-            setContentView(gameTypeBottomSheetView)
-            val gameTypeItem = mutableListOf<GameTypeItemData>()
-            GameType.values().forEach { gameType ->
-                if (gameType != GameType.OTHER) gameTypeItem.add(GameTypeItemData(null, getString(gameType.string)))
-            }
-            settlementGameTypeAdapter = SettlementGameTypeAdapter(lv_game_type.context, gameTypeItem)
-            lv_game_type.adapter = settlementGameTypeAdapter
-            settlementGameTypeAdapter.setOnItemCheckedListener(object :
-                OnSelectItemWithPositionListener<GameTypeItemData> {
-                override fun onClick(select: GameTypeItemData, position: Int) {
-                    gameType = GameType.values()[position].key
-                    this@ResultsSettlementActivity.tv_game_type.text = select.name
-                    when (settleType) {
-                        SettleType.MATCH -> {
-                            viewModel.getMatchResultList(gameType, null, timeRangeParams)
-                        }
-                        SettleType.OUTRIGHT -> {
-                            viewModel.getOutrightResultList(gameType)
-                        }
-                    }
-                    settlementGameTypeBottomSheet.dismiss()
-                }
 
-            })
+        val gameTypeItem = mutableListOf<StatusSheetData>()
+        GameType.values().forEach { gameType ->
+            if (gameType != GameType.OTHER) gameTypeItem.add(StatusSheetData(gameType.key, getString(gameType.string)))
+        }
+        status_game_type.setItemData(gameTypeItem)
+        status_game_type.setOnItemSelectedListener {
+            gameType = it.code!!
+            this@ResultsSettlementActivity.tv_name.text = it.showName
+            when (settleType) {
+                SettleType.MATCH -> {
+                    viewModel.getMatchResultList(gameType, null, timeRangeParams)
+                }
+                SettleType.OUTRIGHT -> {
+                    viewModel.getOutrightResultList(gameType)
+                }
+            }
         }
     }
 
@@ -431,48 +419,4 @@ class SettlementLeagueAdapter(private val context: Context, private val dataList
 
 }
 
-class SettlementGameTypeAdapter(private val context: Context, private val dataList: MutableList<GameTypeItemData>) : BaseAdapter() {
 
-    private var mOnSelectItemListener: OnSelectItemWithPositionListener<GameTypeItemData>? = null
-    private var selectedPosition = 0
-
-    fun setOnItemCheckedListener(onSelectItemListener: OnSelectItemWithPositionListener<GameTypeItemData>) {
-        this.mOnSelectItemListener = onSelectItemListener
-    }
-
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val view = LayoutInflater.from(context).inflate(R.layout.item_listview_settlement_game_type, parent, false)
-        val data = dataList[position]
-
-        view.apply {
-            tv_game_type.text = data.name
-            if (position == selectedPosition)
-                ll_game_type_item.setBackgroundColor(ContextCompat.getColor(context, R.color.color_191919_EEEFF0))
-            else
-                ll_game_type_item.setBackgroundColor(ContextCompat.getColor(context, R.color.color_191919_FCFCFC))
-            ll_game_type_item.setOnClickListener {
-                if (selectedPosition != position) {
-                    //                data.isSelected = !data.isSelected
-                    selectedPosition = position
-                    notifyDataSetChanged()
-                    mOnSelectItemListener?.onClick(data, position)
-                }
-            }
-        }
-
-        return view
-    }
-
-    override fun getCount(): Int {
-        return dataList.size
-    }
-
-    override fun getItem(position: Int): Any? {
-        return null
-    }
-
-    override fun getItemId(position: Int): Long {
-        return 0
-    }
-
-}
