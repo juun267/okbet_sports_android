@@ -5,7 +5,6 @@
     android:id="@+id/cl_root"
     android:layout_width="match_parent"
     android:layout_height="44dp"
-    android:background="@color/color_191919_FCFCFC"
     tools:context=".ui.component.StatusSelectorView"
     tools:background="@drawable/frame_color_silver_light_stroke">
 
@@ -19,9 +18,6 @@
         android:textColor="@color/color_E0E0E0_404040"
         android:textSize="@dimen/textSize14sp"
         android:paddingHorizontal="14dp"
-        app:autoSizeMaxTextSize="@dimen/textSize14sp"
-        app:autoSizeMinTextSize="@dimen/textSize8sp"
-        app:autoSizeTextType="uniform"
         app:layout_constraintEnd_toStartOf="@id/iv_arrow"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="@string/all_order_status" />
@@ -37,14 +33,5 @@
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@id/tv_name"
         app:layout_constraintTop_toTopOf="@id/tv_name" />
-    <androidx.appcompat.widget.AppCompatSpinner
-        android:id="@+id/sp_status"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:popupBackground="@drawable/bg_play_category_pop"
-        android:popupElevation="6dp"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
