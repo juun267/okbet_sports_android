@@ -499,6 +499,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         } &&
                         leagueOdd.unfold == FoldState.UNFOLD.code
                     ) {
+                        updateBetInfo(leagueOdd, oddsChangeEvent)
                         updateGameList(index, leagueOdd)
                     }
                 }
@@ -563,6 +564,24 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     unSubscribeChannelHall(args.gameType.key, leagueChangeEvent.matchIdList?.firstOrNull())
                     subscribeChannelHall(args.gameType.key, leagueChangeEvent.matchIdList?.firstOrNull())
                 }
+            }
+        }
+    }
+
+    /**
+     * 若投注單處於未開啟狀態且有加入注單的賠率項資訊有變動時, 更新投注單內資訊
+     */
+    private fun updateBetInfo(leagueOdd: LeagueOdd, oddsChangeEvent: OddsChangeEvent) {
+        if (!getBetListPageVisible()) {
+            //尋找是否有加入注單的賠率項
+            if (leagueOdd.matchOdds.any { matchOdd ->
+                    matchOdd.oddsMap?.values?.any { oddList ->
+                        oddList?.any { odd ->
+                            odd?.isSelected == true
+                        } == true
+                    } == true
+                }) {
+                viewModel.updateMatchOdd(oddsChangeEvent)
             }
         }
     }
