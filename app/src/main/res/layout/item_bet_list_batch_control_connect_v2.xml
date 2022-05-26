@@ -142,7 +142,7 @@
                         android:textColor="@color/color_FFFFFF_000000"
                         android:textColorHint="@color/color_939393_cccccc"
                         android:textSize="@dimen/textSize16sp"
-                        app:layout_constraintBottom_toTopOf="@+id/tv_error_message"
+                        app:layout_constraintBottom_toTopOf="@+id/tvErrorMessage"
                         app:layout_constraintEnd_toStartOf="@+id/tv_symbol_count"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@id/viewGrey2" />
@@ -286,7 +286,7 @@
                     </RelativeLayout>
 
                     <TextView
-                        android:id="@+id/tv_error_message"
+                        android:id="@+id/tvErrorMessage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
@@ -306,7 +306,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="120dp"
                         android:visibility="gone"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_error_message" />
+                        app:layout_constraintTop_toBottomOf="@+id/tvErrorMessage" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
