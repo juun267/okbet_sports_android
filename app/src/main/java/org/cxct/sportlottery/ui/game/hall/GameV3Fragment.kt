@@ -1539,7 +1539,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private fun updateBetInfo(leagueOdd: LeagueOdd, oddsChangeEvent: OddsChangeEvent) {
         if (!getBetListPageVisible()) {
             //尋找是否有加入注單的賠率項
-            if (leagueOdd.matchOdds.any { matchOdd ->
+            if (leagueOdd.matchOdds.filter { matchOdd ->
+                    matchOdd.matchInfo?.id == oddsChangeEvent.eventId
+                }.any { matchOdd ->
                     matchOdd.oddsMap?.values?.any { oddList ->
                         oddList?.any { odd ->
                             odd?.isSelected == true
@@ -1554,13 +1556,14 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private fun updateBetInfo(epsLeagueOddsItem: EpsLeagueOddsItem, oddsChangeEvent: OddsChangeEvent) {
         if (!getBetListPageVisible()) {
             //尋找是否有加入注單的賠率項
-            if (epsLeagueOddsItem.leagueOdds?.matchOdds?.any { matchOdd ->
-                    matchOdd.oddsMap?.values?.any { oddList ->
-                        oddList?.any { odd ->
-                            odd?.isSelected == true
+            if (epsLeagueOddsItem.leagueOdds?.matchOdds?.filter { matchOddsItem -> matchOddsItem.matchInfo?.id == oddsChangeEvent.eventId }
+                    ?.any { matchOdd ->
+                        matchOdd.oddsMap?.values?.any { oddList ->
+                            oddList?.any { odd ->
+                                odd?.isSelected == true
+                            } == true
                         } == true
-                    } == true
-                } == true) {
+                    } == true) {
                 viewModel.updateMatchOdd(oddsChangeEvent)
             }
         }

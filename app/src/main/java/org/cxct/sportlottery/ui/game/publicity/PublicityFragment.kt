@@ -391,7 +391,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     private fun updateBetInfo(recommend: Recommend, oddsChangeEvent: OddsChangeEvent) {
         if (!getBetListPageVisible()) {
             //尋找是否有加入注單的賠率項
-            if (recommend.oddsMap?.values?.any { oddList ->
+            if (recommend.matchInfo?.id == oddsChangeEvent.eventId && recommend.oddsMap?.values?.any { oddList ->
                     oddList?.any { odd ->
                         odd?.isSelected == true
                     } == true

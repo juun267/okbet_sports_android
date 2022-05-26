@@ -264,7 +264,7 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
     private fun updateBetInfo(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent) {
         if (!getBetListPageVisible()) {
             //尋找是否有加入注單的賠率項
-            if (matchOdd.oddsMap?.values?.any { oddList ->
+            if (matchOdd.matchInfo?.id == oddsChangeEvent.eventId && matchOdd.oddsMap?.values?.any { oddList ->
                     oddList?.any { odd ->
                         odd?.isSelected == true
                     } == true

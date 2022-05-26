@@ -981,7 +981,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                             updateMatchOddNonNull.filterMenuPlayCate(playCateCode)
 
                             //判斷是否有加入注單的賠率項
-                            if (updateMatchOddNonNull.oddsMap?.values?.any { oddList ->
+                            if (updateMatchOddNonNull.matchInfo?.id == oddsChangeEvent.eventId && updateMatchOddNonNull.oddsMap?.values?.any { oddList ->
                                     oddList?.any { odd ->
                                         odd?.isSelected == true
                                     } == true
@@ -1029,7 +1029,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                             updateMatchOdd.highlightFilterMenuPlayCate(playCateCode)
 
                             //判斷是否有加入注單的賠率項
-                            if (updateMatchOdd.oddsMap?.values?.any { oddList ->
+                            if (updateMatchOdd.matchInfo?.id == oddsChangeEvent.eventId && updateMatchOdd.oddsMap?.values?.any { oddList ->
                                     oddList?.any { odd ->
                                         odd?.isSelected == true
                                     } == true
