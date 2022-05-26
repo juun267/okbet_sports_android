@@ -2164,7 +2164,7 @@ class GameViewModel(
                     //賽事動畫網址
                     val eventId = result.oddsDetailData?.matchOdd?.matchInfo?.trackerId
                     val screenWidth = MetricsUtil.getScreenWidth().toFloat().px
-                    val animationHeight = (LiveUtil.getAnimationHeightFromWidth(screenWidth))
+                    val animationHeight = (LiveUtil.getAnimationHeightFromWidth(screenWidth)).px
                     val languageParams = LanguageManager.getLanguageString(MultiLanguagesApplication.appContext)
 
                     val trackerUrl = "${Constants.getBaseUrl()}animation/?eventId=${eventId}&width=${screenWidth}&height=${animationHeight}&lang=${languageParams}&mode=widget"
