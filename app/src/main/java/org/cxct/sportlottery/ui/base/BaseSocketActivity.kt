@@ -59,9 +59,11 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
         receiver.sysMaintenance.observe(this, Observer {
             if ((it?.status ?: 0) == MaintenanceActivity.MaintainType.FIXING.value) {
-                startActivity(Intent(this, MaintenanceActivity::class.java).apply {
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                })
+                when (this) {
+                    !is MaintenanceActivity -> startActivity(Intent(this, MaintenanceActivity::class.java).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    })
+                }
             }
         })
 
@@ -72,7 +74,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
                     showErrorPromptDialog(getString(R.string.message_socket_connect)) { backService?.doReconnect() }
                 }
                 ServiceConnectStatus.CONNECTING -> {
-                    loading()
+//                    loading()
                 }
                 ServiceConnectStatus.CONNECTED -> {
                     hideLoading()
@@ -147,8 +149,8 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         }
     }
 
-    fun subscribeSportChannelHall(gameTypeCode: String ?= null){
-        backService?.subscribeSportChannelHall(gameTypeCode)
+    fun subscribeSportChannelHall(){
+        backService?.subscribeSportChannelHall()
     }
 
     fun subscribeChannelHall(

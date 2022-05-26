@@ -2,12 +2,14 @@ package org.cxct.sportlottery.ui.profileCenter.identity
 
 import android.os.Bundle
 import android.os.Handler
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.ap.zoloz.hummer.api.*
 import kotlinx.android.synthetic.main.fragment_verify_identity_new.*
+import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.credential.CredentialCompleteData
 import org.cxct.sportlottery.network.credential.DocType
@@ -67,22 +69,18 @@ class VerifyIdentityFragment :
     }
 
     private fun initView() {
-        tv_select_bank_card.text = idTypeList[0].showName
+        status_type.tv_name.text = idTypeList[0].showName
         btn_take_photo.setTitleLetterSpacing()
     }
 
     private fun initOnClick() {
-
-        ll_select_credential.setOnClickListener {
-            showBottomSheetDialog(
-                null,
-                idTypeList,
-                idTypeList.find { it.code == nowSelectCode } ?: idTypeList[0],
-                StatusSheetAdapter.ItemCheckedListener { _, data ->
-                    tv_select_bank_card.text = data.showName
-                    nowSelectCode = data.code
-                    data.isChecked = true
-                })
+        status_type.tv_name.gravity=Gravity.START or Gravity.CENTER_VERTICAL
+        status_type.setItemData(idTypeList as MutableList<StatusSheetData>)
+        status_type.setSelectCode(nowSelectCode)
+        status_type.setOnItemSelectedListener {
+            status_type.tv_name.text = it.showName
+            nowSelectCode = it.code
+            it.isChecked = true
         }
         btn_take_photo.setOnClickListener {
             if (metaInfo.isEmpty()) {

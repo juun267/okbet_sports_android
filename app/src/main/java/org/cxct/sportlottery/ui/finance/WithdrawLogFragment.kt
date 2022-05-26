@@ -81,8 +81,8 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_recharge_log, container, false).apply {
-            this.selector_order_status.dataList = withdrawStateList
-            this.selector_method_status.dataList = withdrawTypeList
+            this.selector_order_status.setItemData(withdrawStateList as MutableList<StatusSheetData>)
+            this.selector_method_status.setItemData(withdrawTypeList as MutableList<StatusSheetData>)
             setupListColumn(this)
             setupWithdrawLogList(this)
             setupSearch(this)

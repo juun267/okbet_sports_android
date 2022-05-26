@@ -2,6 +2,8 @@ package org.cxct.sportlottery.util
 
 import android.content.Context
 import org.cxct.sportlottery.R
+import timber.log.Timber
+import java.lang.Exception
 import java.math.RoundingMode
 
 /**
@@ -16,8 +18,18 @@ object TextUtil : DecimalFormatUtil() {
         return str.split(",").toMutableList()
     }
 
-    fun format(any: Any): String {
-        return doNumberFormat(any, "###,###,###,##0.000")
+    fun format(any: Any): String? {
+        try {
+            var target = any
+
+            if (any !is Number)
+                target = target.toString().toDouble()
+
+            return doNumberFormat(target, "###,###,###,##0.000")
+        } catch (e: Exception) {
+            Timber.e("$e")
+        }
+        return null
     }
 
     fun formatInputMoney(any: Any): String {

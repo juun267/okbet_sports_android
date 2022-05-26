@@ -4,6 +4,7 @@ import android.content.Context
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
 import java.io.UnsupportedEncodingException
@@ -179,11 +180,11 @@ object Constants {
         return try {
             when (getSelectLanguage(context)) {
                 LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/contact-us?platform="+context.getString(
-                    R.string.app_name)
+                    R.string.app_name) + "&service=" + URLEncoder.encode(sConfigData?.customerServiceUrl ?: "", "utf-8")
                 LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/contact-us?platform="+context.getString(
-                    R.string.app_name)
+                    R.string.app_name) + "&service=" + URLEncoder.encode(sConfigData?.customerServiceUrl ?: "", "utf-8")
                 else -> getBaseUrl()+"sports-rule/#/us/contact-us?platform="+context.getString(
-                    R.string.app_name)
+                    R.string.app_name) + "&service=" + URLEncoder.encode(sConfigData?.customerServiceUrl ?: "", "utf-8")
             }
 
         } catch (e: UnsupportedEncodingException) {

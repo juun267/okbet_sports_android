@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/button_odd_detail"
     android:layout_width="match_parent"
@@ -79,7 +79,8 @@
         android:background="@drawable/bg_radius_4_button_odds_lock"
         android:gravity="center"
         android:textSize="@dimen/textSize12sp"
+        android:textColor="@color/color_8F8F8F_999999"
         android:text="@string/unknown_data"
         android:visibility="gone" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

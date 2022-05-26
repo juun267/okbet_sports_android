@@ -64,6 +64,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         setupVersion()
         getOddsType()
         updateLanguageItem()
+        updateUIVisibility()
     }
 
     private fun updateLanguageItem() {
@@ -105,10 +106,6 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         viewModel.isLogin.observe(viewLifecycleOwner) {
             if (it)
                 getMoney()
-        }
-
-        viewModel.isCreditAccount.observe(viewLifecycleOwner) {
-            updateUIVisibility(it)
         }
 
         viewModel.userMoney.observe(viewLifecycleOwner) { money ->
@@ -316,14 +313,20 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         }
 
         //充值
-        tv_recharge.setOnClickListener {
-            viewModel.checkRechargeSystem()
+        tv_recharge.apply {
+            setVisibilityByCreditSystem()
+            setOnClickListener {
+                viewModel.checkRechargeSystem()
+            }
         }
 
         //提款
-        tv_withdraw.setOnClickListener {
-            avoidFastDoubleClick()
-            viewModel.checkWithdrawSystem()
+        tv_withdraw.apply {
+            setVisibilityByCreditSystem()
+            setOnClickListener {
+                avoidFastDoubleClick()
+                viewModel.checkWithdrawSystem()
+            }
         }
 
         //我的賽事
@@ -444,10 +447,10 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         viewModel.getOddsType()
     }
 
-    private fun updateUIVisibility(isCreditAccount: Boolean) {
+    private fun updateUIVisibility() {
         //其他投注記錄 信用盤 或 第三方關閉 隱藏
         menu_other_bet_record.visibility =
-            if (isCreditAccount || sConfigData?.thirdOpen != FLAG_OPEN) {
+            if (sConfigData?.thirdOpen != FLAG_OPEN) {
                 View.GONE
             } else {
                 View.VISIBLE

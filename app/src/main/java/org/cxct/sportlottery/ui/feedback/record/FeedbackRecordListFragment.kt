@@ -90,7 +90,7 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
     }
 
     private fun initView() {
-        status_selector.dataList = statusList
+        status_selector.setItemData(statusList as MutableList<StatusSheetData>)
     }
 
     private fun initButton() {

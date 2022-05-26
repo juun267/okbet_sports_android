@@ -119,12 +119,12 @@
                 android:inputType="number"
                 android:maxLength="7"
                 android:paddingStart="10dp"
-                android:textColor="@color/color_317FFF_0760D4"
-                android:textColorHint="@color/color_404040_cccccc"
+                android:textColor="@color/color_FFFFFF_000000"
+                android:textColorHint="@color/color_939393_cccccc"
                 android:textSize="@dimen/textSize16sp"
                 android:letterSpacing="0.05"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/tv_error_message"
+                app:layout_constraintBottom_toTopOf="@+id/tvErrorMessage"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_match"
                 app:layout_constraintWidth_percent="0.442" />
@@ -168,7 +168,7 @@
 
 
             <TextView
-                android:id="@+id/tv_error_message"
+                android:id="@+id/tvErrorMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"

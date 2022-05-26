@@ -91,6 +91,7 @@ class OddsButton @JvmOverloads constructor(
                     "${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
                 else
                     "$extInfoStr ${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
+            requestLayout()
 
             visibility =
                 if (odd?.name.isNullOrEmpty() || gameType == "disable") View.GONE else View.VISIBLE
@@ -98,6 +99,7 @@ class OddsButton @JvmOverloads constructor(
 
         tv_spread.apply {
             text = odd?.spread
+            requestLayout()
             visibility =
                 if (odd?.spread.isNullOrEmpty() || odd?.playCode == PlayCate.DOUBLE_D_P.value || odd?.playCode == PlayCate.TRIPLE_D_P.value) View.GONE else View.VISIBLE
         }
@@ -186,10 +188,7 @@ class OddsButton @JvmOverloads constructor(
         img_odd_lock.apply {
             background = ContextCompat.getDrawable(
                 context,
-                if (mFillet) {
-                    if (MultiLanguagesApplication.isNightMode) R.drawable.bg_radius_4_button_odds_lock_dark
-                    else R.drawable.bg_radius_4_button_odds_lock
-                } else R.drawable.bg_radius_0_button_odds_lock
+                if (mFillet) R.drawable.bg_radius_4_button_odds_lock else R.drawable.bg_radius_0_button_odds_lock
             )
 
             visibility =

@@ -291,7 +291,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                                 tv_status_left.setTextColor(
                                     ContextCompat.getColor(
                                         tv_status_left.context,
-                                        R.color.color_F75452_b73a20
+                                        R.color.color_FFFFFF
                                     )
                                 )
                                 tv_status_left.tag = GameStatus.POSTPONED.code
@@ -306,7 +306,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
                         if (args.matchType == MatchType.IN_PLAY &&
                             (args.gameType == GameType.TN || args.gameType == GameType.VB || args.gameType == GameType.TT || args.gameType == GameType.BM)
-//                            && tv_status_left.isVisible
                             && (it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt != null)
                         ) {
                             tv_spt.visibility = View.VISIBLE
@@ -409,7 +408,8 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
         viewModel.matchTrackerUrl.observe(viewLifecycleOwner) { event ->
             event?.getContentIfNotHandled()?.let { matchTrackerUrl ->
-                live_view_tool_bar.setupTrackerUrl(matchTrackerUrl.h5Url)
+//                live_view_tool_bar.setupTrackerUrl(matchTrackerUrl.h5Url)
+                live_view_tool_bar.setupTrackerUrl(matchTrackerUrl)
             }
         }
     }
@@ -744,7 +744,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         tv_status_left.setTextColor(
             ContextCompat.getColor(
                 tv_status_left.context,
-                R.color.color_BCBCBC_CCCCCC
+                R.color.color_FFFFFF
             )
         )
 

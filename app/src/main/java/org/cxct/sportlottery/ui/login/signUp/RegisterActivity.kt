@@ -38,6 +38,7 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BitmapUtil
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.ToastUtil
+import timber.log.Timber
 import java.util.*
 
 /**
@@ -48,6 +49,10 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
     private var mSmsTimer: Timer? = null
     private lateinit var binding: ActivityRegisterBinding
+
+    companion object {
+        const val CHECKBOX_SUM = 5
+    }
 
     override fun onClick(v: View?) {
         when (v) {
@@ -185,8 +190,13 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         binding.tvNotPHSchool.text = getString(R.string.register_not_ph_school)
         binding.tvRuleOkbet.text = getString(R.string.register_rule_okbet)
         binding.tvAgreeAll.text = getString(R.string.register_rule_agree_all)
+        setLetterSpace()
     }
-
+    private fun setLetterSpace(){
+        if (LanguageManager.getSelectLanguage(this)==LanguageManager.Language.ZH) {
+            binding.btnRegister.letterSpacing = 0.6f
+        }
+    }
     override fun onDestroy() {
         super.onDestroy()
         stopSmeTimer()
@@ -297,28 +307,67 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
     private fun setupAgreement() {
         binding.apply {
-            cbPrivacy.setOnCheckedChangeListener { v, isChecked -> viewModel.checkCbPrivacy(isChecked) }
-            cbAgreement.setOnCheckedChangeListener { v, isChecked -> viewModel.checkCbAgreement(isChecked) }
-            cbNotPHOfficial.setOnCheckedChangeListener{ v, isChecked -> viewModel.checkCbNotPHOfficial(isChecked) }
-            cbNotPHSchool.setOnCheckedChangeListener{ v, isChecked -> viewModel.checkCbNotPHSchool(isChecked) }
-            cbRuleOkbet.setOnCheckedChangeListener{ v, isChecked -> viewModel.checkCbRuleOkbet(isChecked) }
-            cbAgreeAll.setOnCheckedChangeListener{ v, isChecked ->
-                viewModel.checkCbAgreeAll(isChecked)
-                if(cbAgreeAll.isChecked) {
-                    cbPrivacy.isChecked = true
-                    cbAgreement.isChecked = true
-                    cbNotPHOfficial.isChecked = true
-                    cbNotPHSchool.isChecked = true
-                    cbRuleOkbet.isChecked = true
-
-                    viewModel.checkCbPrivacy(cbPrivacy.isChecked)
-                    viewModel.checkCbAgreement(cbAgreement.isChecked)
-                    viewModel.checkCbNotPHOfficial(cbNotPHOfficial.isChecked)
-                    viewModel.checkCbNotPHSchool(cbNotPHSchool.isChecked)
-                    viewModel.checkCbRuleOkbet(cbRuleOkbet.isChecked)
+            cbPrivacy.setOnCheckedChangeListener { _, isChecked ->
+                run {
+                    updateCbCheckedCounts(isChecked)
+                    viewModel.checkCbPrivacy(isChecked)
+                }
+            }
+            cbAgreement.setOnCheckedChangeListener { _, isChecked ->
+                run {
+                    updateCbCheckedCounts(isChecked)
+                    viewModel.checkCbAgreement(isChecked)
+                }
+            }
+            cbNotPHOfficial.setOnCheckedChangeListener{ _, isChecked ->
+                run {
+                    updateCbCheckedCounts(isChecked)
+                    viewModel.checkCbNotPHOfficial(isChecked)
+                }
+            }
+            cbNotPHSchool.setOnCheckedChangeListener{ _, isChecked ->
+                run {
+                    updateCbCheckedCounts(isChecked)
+                    viewModel.checkCbNotPHSchool(isChecked)
+                }
+            }
+            cbRuleOkbet.setOnCheckedChangeListener{ _, isChecked ->
+                run {
+                    updateCbCheckedCounts(isChecked)
+                    viewModel.checkCbRuleOkbet(isChecked)
+                }
+            }
+            cbAgreeAll.setOnClickListener {
+                viewModel.apply {
+                    checkCbAgreeAll(cbCheckedCounts != CHECKBOX_SUM)
+                    setupAllCbCheckedStatus(cbCheckedCounts != CHECKBOX_SUM)
                 }
             }
             btnRegister.setTitleLetterSpacing()
+        }
+    }
+
+    private fun updateCbCheckedCounts(isChecked: Boolean) {
+        viewModel.apply {
+            if (isChecked) cbCheckedCounts += 1 else cbCheckedCounts -= 1
+            binding.cbAgreeAll.isChecked = cbCheckedCounts == CHECKBOX_SUM
+//            Timber.d("cbCheckedCounts:$cbCheckedCounts")
+        }
+    }
+
+    private fun setupAllCbCheckedStatus(isChecked: Boolean) {
+        binding.apply {
+            cbPrivacy.isChecked = isChecked
+            cbAgreement.isChecked = isChecked
+            cbNotPHOfficial.isChecked = isChecked
+            cbNotPHSchool.isChecked = isChecked
+            cbRuleOkbet.isChecked = isChecked
+
+            viewModel.checkCbPrivacy(cbPrivacy.isChecked)
+            viewModel.checkCbAgreement(cbAgreement.isChecked)
+            viewModel.checkCbNotPHOfficial(cbNotPHOfficial.isChecked)
+            viewModel.checkCbNotPHSchool(cbNotPHSchool.isChecked)
+            viewModel.checkCbRuleOkbet(cbRuleOkbet.isChecked)
         }
     }
 

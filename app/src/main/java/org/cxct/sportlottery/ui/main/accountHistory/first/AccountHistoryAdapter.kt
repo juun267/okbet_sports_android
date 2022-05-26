@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.view_account_history_title_bar.view.*
 import kotlinx.android.synthetic.main.view_status_selector.view.*
+import kotlinx.android.synthetic.main.view_status_selector.view.cl_root
+import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -121,7 +123,7 @@ class AccountHistoryAdapter(
 
                     val itemList = GameType.values()
                     itemList.forEach { gameType ->
-                        this.add(StatusSheetData(gameType.key, GameType.getGameTypeString(context, gameType.key)))
+                        if (gameType != GameType.OTHER) this.add(StatusSheetData(gameType.key, GameType.getGameTypeString(context, gameType.key)))
                     }
                 }
 
@@ -132,11 +134,10 @@ class AccountHistoryAdapter(
                 tv_title.setTextWithStrokeWidth(context?.getString(R.string.account_history_overview) ?: "", 0.7f)
 
                 sportSelectListener.onSelect("")
-                status_selector.cl_root.layoutParams.height = 40.dp
-                status_selector.tv_selected.gravity = Gravity.CENTER_VERTICAL or Gravity.START
-                status_selector.setCloseBtnText(context?.getString(R.string.bottom_sheet_close))
-                status_selector.dataList = sportStatusList
-                status_selector.setOnItemSelectedListener {
+                status_spinner.cl_root.layoutParams.height = 40.dp
+                status_spinner.tv_name.gravity = Gravity.CENTER_VERTICAL or Gravity.START
+                status_spinner.setItemData(sportStatusList)
+                status_spinner.setOnItemSelectedListener {
                     sportSelectListener.onSelect(it.code)
                 }
             }

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.enum.PayLoadEnum
 import org.cxct.sportlottery.network.common.FoldState
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -22,8 +23,6 @@ import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 import org.cxct.sportlottery.util.SvgUtil
 import org.cxct.sportlottery.util.SvgUtil.defaultIconPath
 import java.util.*
-
-const val BET_INFO: String = "bet-info"
 
 class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelectionType: Int?, var playSelectedCode: String?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -87,7 +86,7 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
                         }
                     }
                     if (isInMatch || isInQuick) {
-                        updateLeagueByBetInfo(index, BET_INFO)
+                        updateLeagueByBetInfo(index)
                         isInMatch = false
                         isInQuick = false
                     }
@@ -167,8 +166,14 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         notifyItemChanged(position, payload)
     }
 
-    private fun updateLeagueByBetInfo(position: Int, payload: String) {
-        notifyItemChanged(position, payload)
+    private fun updateLeagueByBetInfo(position: Int) {
+        notifyItemChanged(position, PayLoadEnum.PAYLOAD_BET_INFO)
+    }
+
+    fun updateLeagueByPlayCate() {
+        data.forEachIndexed { index, _ ->
+            notifyItemChanged(index, PayLoadEnum.PAYLOAD_PLAYCATE)
+        }
     }
 
     // 限制全列表更新頻率
@@ -197,11 +202,20 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
                     Log.d("Hewie", "更新：聯賽：($position) => ${leagueOdd.league.name}")
                     (holder as ItemViewHolder).update(leagueOdd, matchType, oddsType)
                 }
-                is String -> {
-                    (holder as ItemViewHolder).updateByBetInfo()
+
+                is PayLoadEnum -> {
+                    (payloads.first() as PayLoadEnum).apply {
+                        when (this) {
+                            PayLoadEnum.PAYLOAD_BET_INFO -> {
+                                (holder as ItemViewHolder).updateByBetInfo()
+                            }
+                            PayLoadEnum.PAYLOAD_PLAYCATE -> {
+                                (holder as ItemViewHolder).updateByPlayCate()
+                            }
+                        }
+                    }
                 }
             }
-
         }
     }
     // endregion
@@ -287,7 +301,11 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         }
 
         fun updateByBetInfo() {
-            updateLeagueOddListByBetInfo()
+            leagueOddAdapter.updateByBetInfo(leagueOddListener?.clickOdd)
+        }
+
+        fun updateByPlayCate() {
+            leagueOddAdapter.updateByPlayCate()
         }
 
         private fun updateLeagueOddList(item: LeagueOdd, oddsType: OddsType) {
@@ -304,10 +322,6 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
             if (itemView.league_odd_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !itemView.league_odd_list.isComputingLayout) {
                 leagueOddAdapter.update()
             }
-        }
-
-        private fun updateLeagueOddListByBetInfo() {
-            leagueOddAdapter.updateByBetInfo(leagueOddListener?.clickOdd)
         }
 
         private fun updateLeagueExpand(item: LeagueOdd, matchType: MatchType) {

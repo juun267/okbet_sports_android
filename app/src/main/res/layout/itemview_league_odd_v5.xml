@@ -127,7 +127,7 @@
         android:layout_height="wrap_content"
         android:background="@color/color_F75452_b73a20"
         android:paddingHorizontal="1dp"
-        android:textColor="@color/color_191919_FCFCFC"
+        android:textColor="@color/color_FCFCFC"
         android:textSize="@dimen/textSize12sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@id/league_odd_match_name_home"
@@ -140,16 +140,16 @@
 
     <TextView
         android:id="@+id/league_odd_match_score_home"
-        android:layout_width="wrap_content"
+        android:layout_width="30dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="2dp"
         android:textColor="@color/color_F75452_b73a20"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintBottom_toBottomOf="@id/league_odd_match_name_home"
         app:layout_constraintEnd_toStartOf="@+id/league_odd_match_name_home"
         app:layout_constraintStart_toStartOf="@id/guide_game_start"
         app:layout_constraintTop_toTopOf="@id/league_odd_match_name_home"
-        tools:text="1" />
+        tools:text="999" />
 
     <TextView
         android:id="@+id/league_odd_match_score_set_home"
@@ -228,7 +228,7 @@
         android:layout_height="wrap_content"
         android:background="@color/color_F75452_b73a20"
         android:paddingHorizontal="1dp"
-        android:textColor="@color/color_191919_FCFCFC"
+        android:textColor="@color/color_FCFCFC"
         android:textSize="@dimen/textSize12sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@id/league_odd_match_name_away"
@@ -241,16 +241,16 @@
 
     <TextView
         android:id="@+id/league_odd_match_score_away"
-        android:layout_width="wrap_content"
+        android:layout_width="30dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="2dp"
         android:textColor="@color/color_F75452_b73a20"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintBottom_toBottomOf="@id/league_odd_match_name_away"
         app:layout_constraintEnd_toStartOf="@+id/league_odd_match_name_away"
         app:layout_constraintStart_toStartOf="@id/guide_game_start"
         app:layout_constraintTop_toTopOf="@id/league_odd_match_name_away"
-        tools:text="0" />
+        tools:text="999" />
 
     <TextView
         android:id="@+id/league_odd_match_score_set_away"

@@ -345,7 +345,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             ll_win_quota_detail.visibility = View.VISIBLE
 
             binding.etBet.apply {
-                setText(parlayOdd?.max.toString())
+                setText(TextUtil.formatInputMoney(parlayOdd?.max.toString()))
                 isFocusable = true
                 setSelection(text.length)
             }
@@ -385,10 +385,19 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 val quota = it.toDouble()
 
                 betInfoListData?.parlayOdds?.max?.let { max ->
-                    if (quota > max) {
-                        binding.etBet.setText(max.toString())
-                        binding.etBet.setSelection(max.toString().length)
-                        return@afterTextChanged
+                    when{
+                        isLogin == true && (quota > max || quota > mUserMoney) -> {
+                            val realMaxMoney = min(mUserMoney, max.toDouble())
+                            binding.etBet.setText(TextUtil.formatInputMoney(realMaxMoney))
+                            binding.etBet.setSelection(TextUtil.formatInputMoney(realMaxMoney).length)
+                            return@afterTextChanged
+                        }
+                        isLogin == false && (quota > max)  -> {
+                            binding.etBet.setText(TextUtil.formatInputMoney(max))
+                            binding.etBet.setSelection(TextUtil.formatInputMoney(max).length)
+                            return@afterTextChanged
+                        }
+                        else -> ""
                     }
                 }
 
@@ -883,10 +892,10 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 .toDouble()
 
         if (stake > currentMoney ?: 0.0) {
-            showErrorPromptDialog(
-                getString(R.string.prompt),
-                getString(R.string.bet_info_bet_balance_insufficient)
-            ) {}
+//            showErrorPromptDialog(
+//                getString(R.string.prompt),
+//                getString(R.string.bet_info_bet_balance_insufficient)
+//            ) {}
             return
         }
 
@@ -962,10 +971,10 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun getMaxBetMoney(): Double {
         val parlayMaxBet = betInfoListData?.parlayOdds?.max ?: 0
-        return if (parlayMaxBet > 0) {
-            min(parlayMaxBet.toDouble(), mUserMoney)
-        } else {
-            mUserMoney
+        return when {
+            isLogin == false -> parlayMaxBet.toDouble()
+            mUserMoney > 0.0  && parlayMaxBet > 0 -> min(parlayMaxBet.toDouble(), mUserMoney)
+            else -> min(parlayMaxBet.toDouble(), mUserMoney)
         }
     }
 

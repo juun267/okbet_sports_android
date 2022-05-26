@@ -116,7 +116,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                     }
                 },
                 clickListenerBet = { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
-                    if(mIsEnabled) {
+                    if (mIsEnabled) {
                         avoidFastDoubleClick()
                         addOddsDialog(
                             matchInfo,
@@ -479,8 +479,10 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                     /*目前流程 需要先解除再綁定 socket流程下才會回傳內容*/
                     leagueAdapter.data.forEach { leagueOdd ->
                         unSubscribeChannelHall(leagueOdd)
-                        subscribeChannelHall(leagueOdd)
                     }
+
+                    favorite_game_list?.firstVisibleRange(leagueAdapter, activity ?: requireActivity())
+
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -576,9 +578,9 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             GameType.GF.key -> getString(GameType.GF.string)
             else -> ""
         }
-        if(MultiLanguagesApplication.isNightMode){
+        if (MultiLanguagesApplication.isNightMode) {
             Glide.with(this).load(R.drawable.night_bg_300).into(favorite_bg_layer2)
-        }else{
+        } else {
             Glide.with(this).load(
                 when (items?.find {
                     it.isSelected

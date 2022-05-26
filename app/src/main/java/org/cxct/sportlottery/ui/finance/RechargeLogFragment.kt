@@ -129,8 +129,8 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        selector_method_status.dataList = rechargeChannelList
-        selector_order_status.dataList = rechargeStateList
+        selector_method_status.setItemData(rechargeChannelList as MutableList<StatusSheetData>)
+        selector_order_status.setItemData(rechargeStateList as MutableList<StatusSheetData>)
 
         viewModel.isLoading.observe(this.viewLifecycleOwner, {
             if (it) {

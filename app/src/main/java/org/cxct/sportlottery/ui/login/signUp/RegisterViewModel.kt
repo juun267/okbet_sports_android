@@ -104,6 +104,8 @@ class RegisterViewModel(
     private val cbAgreeAllChecked: LiveData<Boolean?>
         get() = _cbAgreeAllChecked
 
+    var cbCheckedCounts = 0 //checkbox勾選數量
+
     private val _registerResult = MutableLiveData<LoginResult>()
     private val _inviteCodeMsg = MutableLiveData<String?>()
     private val _memberAccountMsg = MutableLiveData<Pair<String?, Boolean>>()
@@ -211,7 +213,7 @@ class RegisterViewModel(
 
     fun checkFullName(fullName: String?) {
         val msg = when {
-            fullName.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyFullName(fullName) -> androidContext.getString(R.string.error_input_has_blank)
             else -> null
         }
         _fullNameMsg.value = Pair(msg, msg == null)

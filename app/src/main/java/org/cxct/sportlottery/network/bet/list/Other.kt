@@ -11,5 +11,5 @@ data class Other (
     @Json(name = "win")
     val win: Double?,
     @Json(name = "valueBetAmount")
-    val valueBetAmount:Int?
+    val valueBetAmount:Double?
 )

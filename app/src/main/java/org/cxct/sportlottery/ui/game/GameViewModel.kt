@@ -11,6 +11,7 @@ import com.bekawestberg.loopinglayout.library.addViewsAtAnchorEdge
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -65,6 +66,7 @@ import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.data.SpecialEntrance
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.px
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.TimeUtil.DMY_FORMAT
@@ -179,6 +181,7 @@ class GameViewModel(
 
     val curDatePosition: LiveData<Int>
         get() = _curDatePosition
+    var tempDatePosition: Int = 0 //早盤的日期選擇切頁後要記憶的問題，切換球種要清除記憶
 
     val isNoHistory: LiveData<Boolean>
         get() = _isNoHistory
@@ -309,8 +312,12 @@ class GameViewModel(
         get() = _matchLiveInfo
 
     //賽事動畫網址
-    private val _matchTrackerUrl = MutableLiveData<Event<MatchTrackerUrl?>>()
+    /*private val _matchTrackerUrl = MutableLiveData<Event<MatchTrackerUrl?>>()
     val matchTrackerUrl: LiveData<Event<MatchTrackerUrl?>>
+        get() = _matchTrackerUrl*/
+
+    private val _matchTrackerUrl = MutableLiveData<Event<String?>>()
+    val matchTrackerUrl: LiveData<Event<String?>>
         get() = _matchTrackerUrl
 
     //Loading
@@ -1932,25 +1939,34 @@ class GameViewModel(
     private fun getDateRow(matchType: MatchType): List<Date>? {
         val dateRow = when (matchType) {
             MatchType.TODAY -> {
+                tempDatePosition = 0 //切換賽盤清除記憶
                 listOf(Date("", getTodayTimeRangeParams()))
             }
             MatchType.EARLY -> {
                 getDateRowEarly()
             }
             MatchType.PARLAY -> {
+                tempDatePosition = 0
                 getDateRowParlay()
             }
             MatchType.AT_START -> {
+                tempDatePosition = 0
                 listOf(Date("", TimeUtil.getAtStartTimeRangeParams()))
             }
             else -> {
+                tempDatePosition = 0
                 listOf()
             }
         }
 
-        return dateRow.firstOrNull()?.let {
-            dateRow.updateDateSelectedState(it)
-        }
+        return if (tempDatePosition != 0) {
+            dateRow[tempDatePosition].let {
+                dateRow.updateDateSelectedState(it)
+            }
+        } else
+            dateRow.firstOrNull()?.let {
+                dateRow.updateDateSelectedState(it)
+            }
     }
 
     private fun getDateRowEarly(): List<Date> {
@@ -2131,8 +2147,8 @@ class GameViewModel(
                     }
 
                     _oddsDetailList.postValue(Event(list))
-                    //aaaaa
-                    if (MultiLanguagesApplication.getInstance()?.getGameDetailAnimationNeedShow() == true) {
+                    //舊 動畫獲取url
+                    /*if (MultiLanguagesApplication.getInstance()?.getGameDetailAnimationNeedShow() == true) {
                         val animationTrackerId = result.oddsDetailData?.matchOdd?.matchInfo?.trackerId
                         if (!animationTrackerId.isNullOrEmpty()) {
                             doNetwork(androidContext) {
@@ -2143,7 +2159,19 @@ class GameViewModel(
                                 }
                             }
                         }
-                    }
+                    }*/
+
+                    //賽事動畫網址
+                    val eventId = result.oddsDetailData?.matchOdd?.matchInfo?.trackerId
+                    val screenWidth = MetricsUtil.getScreenWidth().toFloat().px
+                    val animationHeight = (LiveUtil.getAnimationHeightFromWidth(screenWidth))
+                    val languageParams = LanguageManager.getLanguageString(MultiLanguagesApplication.appContext)
+
+                    val trackerUrl = "${Constants.getBaseUrl()}animation/?eventId=${eventId}&width=${screenWidth}&height=${animationHeight}&lang=${languageParams}&mode=widget"
+                    //測試用eventId=4385309
+//                    val trackerUrl = "${Constants.getBaseUrl()}animation/?eventId=4385309&width=${screenWidth}&height=${animationHeight}&lang=${languageParams}&mode=widget"
+
+                    _matchTrackerUrl.postValue(Event(trackerUrl))
                     notifyFavorite(FavoriteType.PLAY_CATE)
                 }
             }
@@ -2459,8 +2487,11 @@ class GameViewModel(
 
 
     private fun List<Date>.updateDateSelectedState(date: Date): List<Date> {
-        this.forEach {
-            it.isSelected = (it == date)
+        this.forEachIndexed { index, value ->
+            run {
+                value.isSelected = (value == date)
+                if (value.isSelected) tempDatePosition = index
+            }
         }
 
         _curDate.postValue(this)

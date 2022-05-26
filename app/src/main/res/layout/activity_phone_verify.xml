@@ -158,7 +158,7 @@
             android:enabled="false"
             android:text="@string/btn_submit"
             android:textAllCaps="false"
-            android:textColor="@android:color/white"
+            android:textColor="@color/color_FCFCFC"
             android:textSize="@dimen/textSize16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/scrollView" />
