@@ -46,9 +46,8 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.error.BetAddErrorParser
-import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.*
 import org.cxct.sportlottery.ui.bet.list.receipt.BetInfoCarReceiptDialog
 import org.cxct.sportlottery.ui.game.GameViewModel
@@ -330,6 +329,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun dismiss() {
+        fastBetPageUnSubscribeEvent()
         activity?.onBackPressed()
         OddSpannableString.clearHandler()
     }
@@ -508,7 +508,14 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 if (list.isNotEmpty()) {
                     betInfoListData = list.getOrNull(0)
                     if (list.size > 1) {
+                        fastBetPageUnSubscribeEvent()
                         dismiss()
+                    } else {
+                        if (betInfoListData?.subscribeChannelType == ChannelType.HALL) {
+                            fastBetPageSubscribeHallEvent(betInfoListData?.matchOdd?.gameType, betInfoListData?.matchOdd?.matchId)
+                        } else {
+                            fastBetPageSubscribeEvent(betInfoListData?.matchOdd?.matchId)
+                        }
                     }
                     matchOdd?.let { matchOdd ->
                         //並不是每筆資料都有滾球的Booleam可以判斷 所以改用時間

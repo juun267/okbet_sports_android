@@ -60,6 +60,18 @@ abstract class BaseSocketFragment<T : BaseSocketViewModel>(clazz: KClass<T>) :
         (activity as BaseSocketActivity<*>).betListPageUnSubScribeEvent()
     }
 
+    protected fun fastBetPageSubscribeHallEvent(gameType: String?, eventId: String?) {
+        (activity as BaseSocketActivity<*>).fastBetPageSubscribeHallEvent(gameType, eventId)
+    }
+
+    protected fun fastBetPageSubscribeEvent(eventId: String?) {
+        (activity as BaseSocketActivity<*>).fastBetPageSubscribeEvent(eventId)
+    }
+
+    protected fun fastBetPageUnSubscribeEvent() {
+        (activity as BaseSocketActivity<*>).fastBetPageUnSubscribeEvent()
+    }
+
     protected fun getBetListPageVisible(): Boolean {
         return when (val thisActivity = activity) {
             is BaseBottomNavActivity<*> -> thisActivity.getBetListPageVisible()
