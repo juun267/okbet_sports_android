@@ -1021,7 +1021,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
         receiver.leagueChange.observe(this.viewLifecycleOwner) {
             it?.let { leagueChangeEvent ->
-//                unSubscribeChannelHallAll()
+                unSubscribeChannelHallAll()
 //                leagueChangeEvent.leagueIdList?.let { leagueIdList ->
 //                    //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
 //                    viewModel.getLeagueOddsList(
