@@ -919,6 +919,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
                     queryData()
+                    subscribeSportChannelHall()
                 }
             }
         }

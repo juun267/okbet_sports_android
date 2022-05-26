@@ -91,5 +91,6 @@ data class UserInfoData(
     val uwEnableTime: Long? = 0,
     @Json(name = "maxPayout")
     val maxPayout: Double? = 0.0,
-
+    @Json(name = "firstRechTime")
+    val firstRechTime: String?
 )

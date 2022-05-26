@@ -180,11 +180,11 @@ object Constants {
         return try {
             when (getSelectLanguage(context)) {
                 LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/contact-us?platform="+context.getString(
-                    R.string.app_name) + "&service=" + sConfigData?.customerServiceUrl
+                    R.string.app_name) + "&service=" + URLEncoder.encode(sConfigData?.customerServiceUrl ?: "", "utf-8")
                 LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/contact-us?platform="+context.getString(
-                    R.string.app_name) + "&service=" + sConfigData?.customerServiceUrl
+                    R.string.app_name) + "&service=" + URLEncoder.encode(sConfigData?.customerServiceUrl ?: "", "utf-8")
                 else -> getBaseUrl()+"sports-rule/#/us/contact-us?platform="+context.getString(
-                    R.string.app_name) + "&service=" + sConfigData?.customerServiceUrl
+                    R.string.app_name) + "&service=" + URLEncoder.encode(sConfigData?.customerServiceUrl ?: "", "utf-8")
             }
 
         } catch (e: UnsupportedEncodingException) {

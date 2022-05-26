@@ -133,6 +133,15 @@ class MoneyRechViewModel(
     //上傳支付截圖
     val voucherUrlResult: LiveData<Event<String>> = avatarRepository.voucherUrlResult
 
+    //更新使用者資料
+    fun getUserInfo() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                userInfoRepository.getUserInfo()
+            }
+        }
+    }
+
     //獲取充值的基礎配置
     fun getRechCfg() {
         Log.e(">>>", "getRechCfg")
@@ -381,6 +390,12 @@ class MoneyRechViewModel(
             rechargeAmount.isEmpty() -> {
                 androidContext.getString(R.string.error_input_empty)
             }
+            checkFirstRecharge() && !VerifyConstUtil.verifyFirstRechargeAmount(rechargeAmount) -> {
+                androidContext.getString(
+                    R.string.error_first_recharge_amount,
+                    TextUtil.format(sConfigData?.firstRechLessAmountLimit ?: 0)
+                )
+            }
             !VerifyConstUtil.verifyRechargeAmount(
                 rechargeAmount,
                 channelMinMoney,
@@ -392,6 +407,14 @@ class MoneyRechViewModel(
                 ""
             }
         }
+    }
+
+    /**
+     * 判斷是否為首次充值
+     * @return true: 首次, false: 非首次
+     */
+    private fun checkFirstRecharge(): Boolean {
+        return userInfo.value?.firstRechTime.isNullOrEmpty()
     }
 
     fun checkRcgNormalOnlineAccount(rechargeAccount: String) {
