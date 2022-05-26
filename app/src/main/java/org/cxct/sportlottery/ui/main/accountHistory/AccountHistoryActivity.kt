@@ -44,6 +44,8 @@ class AccountHistoryActivity :
     private val navController by lazy { findNavController(R.id.account_history_container) }
     private val mMarqueeAdapter by lazy { MarqueeAdapter() }
 
+    private var betListFragment = BetListFragment()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account_history)
@@ -92,7 +94,7 @@ class AccountHistoryActivity :
     }
 
     override fun showBetListPage() {
-        val betListFragment =
+        betListFragment =
             BetListFragment.newInstance(object : BetListFragment.BetResultListener {
                 override fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>) {
                     supportFragmentManager.beginTransaction()
@@ -122,6 +124,10 @@ class AccountHistoryActivity :
             .add(R.id.fl_bet_list, betListFragment)
             .addToBackStack(BetListFragment::class.java.simpleName)
             .commit()
+    }
+
+    override fun getBetListPageVisible(): Boolean {
+        return betListFragment.isVisible
     }
 
     override fun updateBetListCount(num: Int) {

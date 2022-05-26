@@ -353,6 +353,10 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
     }
 
+    override fun getBetListPageVisible(): Boolean {
+        return betListFragment.isVisible
+    }
+
     override fun updateBetListCount(num: Int) {
         sport_bottom_navigation.setBetCount(num)
     }

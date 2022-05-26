@@ -59,4 +59,11 @@ abstract class BaseSocketFragment<T : BaseSocketViewModel>(clazz: KClass<T>) :
     protected fun betListPageUnSubScribeEvent() {
         (activity as BaseSocketActivity<*>).betListPageUnSubScribeEvent()
     }
+
+    protected fun getBetListPageVisible(): Boolean {
+        return when (val thisActivity = activity) {
+            is BaseBottomNavActivity<*> -> thisActivity.getBetListPageVisible()
+            else -> false
+        }
+    }
 }
