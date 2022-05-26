@@ -345,7 +345,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             ll_win_quota_detail.visibility = View.VISIBLE
 
             binding.etBet.apply {
-                setText(parlayOdd?.max.toString())
+                setText(TextUtil.formatInputMoney(parlayOdd?.max.toString()))
                 isFocusable = true
                 setSelection(text.length)
             }
@@ -388,13 +388,13 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     when{
                         isLogin == true && (quota > max || quota > mUserMoney) -> {
                             val realMaxMoney = min(mUserMoney, max.toDouble())
-                            binding.etBet.setText(realMaxMoney.toString())
-                            binding.etBet.setSelection(realMaxMoney.toString().length)
+                            binding.etBet.setText(TextUtil.formatInputMoney(realMaxMoney))
+                            binding.etBet.setSelection(TextUtil.formatInputMoney(realMaxMoney).length)
                             return@afterTextChanged
                         }
                         isLogin == false && (quota > max)  -> {
-                            binding.etBet.setText(max.toString())
-                            binding.etBet.setSelection(max.toString().length)
+                            binding.etBet.setText(TextUtil.formatInputMoney(max))
+                            binding.etBet.setSelection(TextUtil.formatInputMoney(max).length)
                             return@afterTextChanged
                         }
                         else -> ""
