@@ -457,6 +457,7 @@
             android:id="@+id/ll_root"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clickable="true"
             android:orientation="vertical">
 
 
