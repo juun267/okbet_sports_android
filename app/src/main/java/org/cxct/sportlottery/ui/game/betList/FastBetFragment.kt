@@ -971,10 +971,10 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun getMaxBetMoney(): Double {
         val parlayMaxBet = betInfoListData?.parlayOdds?.max ?: 0
-        return if (parlayMaxBet > 0) {
-            min(parlayMaxBet.toDouble(), mUserMoney)
-        } else {
-            mUserMoney
+        return when {
+            isLogin == false -> parlayMaxBet.toDouble()
+            mUserMoney > 0.0  && parlayMaxBet > 0 -> min(parlayMaxBet.toDouble(), mUserMoney)
+            else -> min(parlayMaxBet.toDouble(), mUserMoney)
         }
     }
 
