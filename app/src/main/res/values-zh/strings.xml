@@ -823,7 +823,7 @@
     <string name="myfavorite_notify_detail_add">已添加至我的盘口</string>
     <string name="myfavorite_notify_detail_remove">从我的盘口中移除</string>
     <string name="statistics_title">数据统计</string>
-    <string name="bet_info_list_minimum_limit_amount">最小单笔投注金额为 %1$s %2$s</string>
+    <string name="bet_info_list_minimum_limit_amount">投注额小于最低限额</string>
     <string name="actual_bet">实际下注</string>
     <string name="bet_receipt_all_bet">下注总额</string>
     <string name="third_game_vncp">CG越南彩票</string>

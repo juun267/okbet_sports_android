@@ -466,12 +466,8 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun checkMinQuota(quota: Double) {
         betInfoListData?.parlayOdds?.min?.let { min ->
             if (quota < min) {
-                binding.tvErrorMessage.text = String.format(
-                    (context
-                        ?: requireContext()).getString(R.string.bet_info_list_minimum_limit_amount),
-                    min,
-                    sConfigData?.systemCurrency
-                )
+                binding.tvErrorMessage.text = (context
+                    ?: requireContext()).getString(R.string.bet_info_list_minimum_limit_amount)
                 binding.tvErrorMessage.visibility = View.VISIBLE
                 button_bet.amountCanBet = false
             } else {

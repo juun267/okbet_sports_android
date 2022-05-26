@@ -805,11 +805,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         private fun setupMinimumLimitMessage(itemData: BetInfoListData) {
             itemView.apply {
                 itemData.parlayOdds?.min?.let { min ->
-                    tv_error_message.text = String.format(
-                        context.getString(R.string.bet_info_list_minimum_limit_amount),
-                        min,
-                        sConfigData?.systemCurrency
-                    )
+                    tv_error_message.text = context.getString(R.string.bet_info_list_minimum_limit_amount)
                 }
             }
         }
@@ -2075,11 +2071,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
         private fun setupMinimumLimitMessage(itemData: ParlayOdd) {
             itemView.apply {
-                tv_error_message.text = String.format(
-                    context.getString(R.string.bet_info_list_minimum_limit_amount),
-                    itemData.min,
-                    sConfigData?.systemCurrency
-                )
+                tv_error_message.text = context.getString(R.string.bet_info_list_minimum_limit_amount)
                 et_bet.apply {
 //                    hint = getLimitHint(
 //                        context,
