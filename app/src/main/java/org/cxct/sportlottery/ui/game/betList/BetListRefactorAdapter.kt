@@ -91,6 +91,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             }
         }
 
+    var userLogin: Boolean = false
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
     var userMoney: Double = 0.0
         set(value) {
             field = value
@@ -179,7 +185,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     mSelectedPosition,
                     onSelectedPositionListener,
                     position,
-                    userMoney
+                    userMoney,
+                    userLogin
                 )
             }
             is BatchSingleViewHolder -> {
@@ -325,11 +332,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             mSelectedPosition: Int,
             onSelectedPositionListener: OnSelectedPositionListener,
             position: Int,
-            userMoney: Double
+            userMoney: Double,
+            userLogin: Boolean
         ) {
 
             //設置輸入投注上限額
-            setupInputMaxMoney(itemData, userMoney)
+            setupInputMaxMoney(itemData, userMoney, userLogin)
 
             itemView.apply {
                 setupBetAmountInput(
@@ -353,10 +361,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             }
         }
 
-        private fun setupInputMaxMoney(itemData: BetInfoListData, userMoney: Double) {
+        private fun setupInputMaxMoney(itemData: BetInfoListData, userMoney: Double, userLogin: Boolean) {
             mUserMoney = userMoney
             parlayMaxBet = itemData.parlayOdds?.max?.toLong() ?: 0
-            inputMaxMoney = if (userMoney > 0) {
+            inputMaxMoney = if (userLogin) {
                 min(parlayMaxBet.toDouble(), userMoney)
             } else {
                 parlayMaxBet.toDouble() //未登入使用 parlayMaxBet 當最大輸入金額 (比照pc版)

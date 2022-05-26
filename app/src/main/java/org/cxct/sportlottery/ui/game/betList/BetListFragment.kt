@@ -544,6 +544,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             setupBetButtonType(it)
             initKeyBoard(it)
             updateCommonToolbarLoginStatus(it)
+            betListRefactorAdapter?.userLogin = it
         }
 
         viewModel.infoCenterRepository.unreadNoticeList.observe(viewLifecycleOwner, {
