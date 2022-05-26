@@ -1418,6 +1418,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                         context, matchOdd, oddsChangeEvent
                                     )
                                 } == true && !leagueOdd.isClose) {
+                                updateBetInfo(leagueOdd, oddsChangeEvent)
                                 epsListAdapter.notifyItemChanged(index)
                             }
                         }
@@ -1545,6 +1546,21 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         } == true
                     } == true
                 }) {
+                viewModel.updateMatchOdd(oddsChangeEvent)
+            }
+        }
+    }
+
+    private fun updateBetInfo(epsLeagueOddsItem: EpsLeagueOddsItem, oddsChangeEvent: OddsChangeEvent) {
+        if (!getBetListPageVisible()) {
+            //尋找是否有加入注單的賠率項
+            if (epsLeagueOddsItem.leagueOdds?.matchOdds?.any { matchOdd ->
+                    matchOdd.oddsMap?.values?.any { oddList ->
+                        oddList?.any { odd ->
+                            odd?.isSelected == true
+                        } == true
+                    } == true
+                } == true) {
                 viewModel.updateMatchOdd(oddsChangeEvent)
             }
         }
