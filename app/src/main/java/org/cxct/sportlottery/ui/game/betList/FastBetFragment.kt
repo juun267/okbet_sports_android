@@ -385,10 +385,19 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 val quota = it.toDouble()
 
                 betInfoListData?.parlayOdds?.max?.let { max ->
-                    if (quota > max) {
-                        binding.etBet.setText(max.toString())
-                        binding.etBet.setSelection(max.toString().length)
-                        return@afterTextChanged
+                    when{
+                        isLogin == true && (quota > max || quota > mUserMoney) -> {
+                            val realMaxMoney = min(mUserMoney, max.toDouble())
+                            binding.etBet.setText(realMaxMoney.toString())
+                            binding.etBet.setSelection(realMaxMoney.toString().length)
+                            return@afterTextChanged
+                        }
+                        isLogin == false && (quota > max)  -> {
+                            binding.etBet.setText(max.toString())
+                            binding.etBet.setSelection(max.toString().length)
+                            return@afterTextChanged
+                        }
+                        else -> ""
                     }
                 }
 
