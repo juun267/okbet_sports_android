@@ -53,8 +53,6 @@ class VipViewModel(
         get() = _getThirdGamesFirmMap
     private val _getThirdGamesFirmMap = MutableLiveData<List<GameFirmValues>>()
 
-    val isCreditAccount: LiveData<Boolean> = loginRepository.isCreditAccount
-
     private fun getUserInfo() {
         _loadingResult.value = _loadingResult.value?.apply { userInfoLoading = true }
         viewModelScope.launch {

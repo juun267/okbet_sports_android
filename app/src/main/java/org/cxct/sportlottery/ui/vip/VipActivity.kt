@@ -58,14 +58,11 @@ class VipActivity : BaseSocketActivity<VipViewModel>(VipViewModel::class) {
         initView()
         initObserve()
         initEvent()
+        updateThirdUI()
     }
 
     private fun initObserve() {
         viewModel.apply {
-            isCreditAccount.observe(this@VipActivity, {
-                updateThirdUI(it)
-            })
-
             //讀取資料
             loadingResult.observe(this@VipActivity, Observer {
                 it.apply {
@@ -99,9 +96,8 @@ class VipActivity : BaseSocketActivity<VipViewModel>(VipViewModel::class) {
         }
     }
 
-    private fun updateThirdUI(isCreditAccount: Boolean) {
-        ll_third_table.visibility =
-            if (isCreditAccount || sConfigData?.thirdOpen != FLAG_OPEN) View.GONE else View.VISIBLE
+    private fun updateThirdUI() {
+        ll_third_table.visibility = if (sConfigData?.thirdOpen != FLAG_OPEN) View.GONE else View.VISIBLE
     }
 
     private fun initView() {

@@ -20,6 +20,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
 import org.cxct.sportlottery.util.SvgUtil
 import org.cxct.sportlottery.util.listener.OnClickListener
+import org.cxct.sportlottery.util.setVisibilityByCreditSystem
 
 class LeftMenuItemNewAdapter(
     private val isShowMemberLevel: Boolean,
@@ -264,6 +265,17 @@ class LeftMenuItemNewAdapter(
                     })
                 }
 
+                tv_recharge.setVisibilityByCreditSystem()
+                tv_withdraw.setVisibilityByCreditSystem()
+                tv_promotion.setVisibilityByCreditSystem()
+
+                if (tv_recharge.visibility == View.GONE &&
+                    tv_withdraw.visibility == View.GONE &&
+                    tv_member_level.visibility == View.GONE &&
+                    tv_promotion.visibility == View.GONE
+                ) {
+                    divider_login.visibility = View.GONE
+                }
             }
         }
     }
@@ -286,7 +298,7 @@ class LeftMenuItemNewAdapter(
             itemView.apply {
 
                 //TODO for test
-                tv_appearance.visibility = if (BuildConfig.DEBUG) View.VISIBLE else View.GONE
+                tv_appearance.visibility = if (BuildConfig.CHANNEL_NAME == "spkx" && !BuildConfig.DEBUG) View.GONE else View.VISIBLE
 
 //                tv_appearance.isVisible = isLogin
                 // tv_appearance.isVisible = false //暫時隱藏

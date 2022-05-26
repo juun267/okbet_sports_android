@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.itemview_league_quick.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.MatchSource
+import org.cxct.sportlottery.enum.PayLoadEnum
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
@@ -81,11 +82,17 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
         data.forEachIndexed { index, matchOdd ->
             matchOdd.oddsMap?.values?.forEach { oddList ->
                 if (oddList?.any { it?.id == clickOdd?.id } == true) {
-                    notifyItemChanged(index, Pair(BET_INFO, matchOdd))
+                    notifyItemChanged(index, Pair(PayLoadEnum.PAYLOAD_BET_INFO, matchOdd))
                     leagueOddListener?.clickOdd = null
                 }
             }
         }
+    }
+
+    fun updateByPlayCate(){
+       data.forEachIndexed { index, matchOdd ->
+           notifyItemChanged(index, Pair(PayLoadEnum.PAYLOAD_PLAYCATE, matchOdd))
+       }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -139,18 +146,30 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 }
 
                 is Pair<*, *> -> {
-                    val matchOdd = payloads.first() as Pair<*, *>
-                    (holder as ViewHolderHdpOu).updateByBetInfo(
-                        item = matchOdd.second as MatchOdd,
-                        leagueOddListener = leagueOddListener,
-                        oddsType = oddsType,
-                        playSelectedCodeSelectionType = playSelectedCodeSelectionType,
-                        playSelectedCode = playSelectedCode
-                    )
+                    (payloads.first() as Pair<*, *>).apply {
+                        when(first){
+                            PayLoadEnum.PAYLOAD_BET_INFO -> {
+                                (holder as ViewHolderHdpOu).updateByBetInfo(
+                                    item = second as MatchOdd,
+                                    leagueOddListener = leagueOddListener,
+                                    oddsType = oddsType,
+                                    playSelectedCodeSelectionType = playSelectedCodeSelectionType,
+                                    playSelectedCode = playSelectedCode
+                                )
+                            }
+
+                            PayLoadEnum.PAYLOAD_PLAYCATE -> {
+                                (holder as ViewHolderHdpOu).updateByPlayCate(
+                                    item = second as MatchOdd,
+                                    leagueOddListener = leagueOddListener,
+                                    oddsType = oddsType,
+                                    playSelectedCodeSelectionType = playSelectedCodeSelectionType,
+                                )
+                            }
+                        }
+                    }
                 }
             }
-
-
         }
     }
 
@@ -188,16 +207,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             setupOddsButton(item, oddsType, leagueOddListener, playSelectedCodeSelectionType)
 
             //setupQuickCategory(item, oddsType, leagueOddListener)
-            if (item.quickPlayCateList.isNullOrEmpty()) {
-                itemView.quickListView?.visibility = View.GONE
-                itemView.league_odd_quick_cate_divider.visibility = View.GONE
-            } else {
-                itemView.vs_league_quick?.visibility = View.VISIBLE
-                itemView.quickListView?.visibility = View.VISIBLE
-                itemView.league_odd_quick_cate_divider.visibility = View.VISIBLE
-                itemView.quickListView?.setDatas(item, oddsType, leagueOddListener, playSelectedCodeSelectionType, playSelectedCode)
-                itemView.quickListView?.refreshTab()
-            }
+            setQuickListView(item, leagueOddListener, oddsType, playSelectedCodeSelectionType, playSelectedCode)
         }
 
         // region update functions
@@ -215,9 +225,30 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             setupMatchTimeAndStatus(item, matchType, isTimerEnable, isTimerPause, leagueOddListener)
             updateOddsButton(item, oddsType, playSelectedCodeSelectionType)
 
-            itemView.quickListView?.setDatas(item, oddsType, leagueOddListener, playSelectedCodeSelectionType, playSelectedCode)
-            itemView.quickListView?.refreshTab()
-            itemView.quickListView?.updateQuickSelected()
+            setQuickListView(item, leagueOddListener, oddsType, playSelectedCodeSelectionType, playSelectedCode, updateSelected = true)
+        }
+
+        private fun setQuickListView(
+            item: MatchOdd,
+            leagueOddListener: LeagueOddListener?,
+            oddsType: OddsType,
+            playSelectedCodeSelectionType: Int?,
+            playSelectedCode: String?,
+            updateSelected: Boolean = false
+        ) {
+            if (item.quickPlayCateList.isNullOrEmpty()) {
+                itemView.quickListView?.visibility = View.GONE
+                itemView.league_odd_quick_cate_divider.visibility = View.GONE
+            } else {
+                itemView.vs_league_quick?.visibility = View.VISIBLE
+                itemView.quickListView?.visibility = View.VISIBLE
+                itemView.league_odd_quick_cate_divider.visibility = View.VISIBLE
+                itemView.quickListView?.setDatas(item, oddsType, leagueOddListener, playSelectedCodeSelectionType, playSelectedCode)
+                itemView.quickListView?.refreshTab()
+
+                if (updateSelected)
+                    itemView.quickListView?.updateQuickSelected()
+            }
         }
 
         fun updateByBetInfo(
@@ -231,6 +262,15 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             itemView.quickListView?.setDatas(item, oddsType, leagueOddListener, playSelectedCodeSelectionType, playSelectedCode)
             itemView.quickListView?.refreshTab()
             itemView.quickListView?.updateQuickSelected()
+        }
+
+        fun updateByPlayCate(
+            item: MatchOdd,
+            oddsType: OddsType,
+            leagueOddListener: LeagueOddListener?,
+            playSelectedCodeSelectionType: Int?,
+        ){
+            setupOddsButton(item, oddsType, leagueOddListener, playSelectedCodeSelectionType)
         }
 
         private fun updateMatchInfo(item: MatchOdd, matchType: MatchType) {
@@ -377,20 +417,6 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 setAllScoreTextAtBottom(matchType, item)
                 setScoreText(matchType, item)
                 setSptText(item, matchType)
-            }
-        }
-
-        private fun hideMatchScoreText() {
-            with(itemView) {
-                league_odd_match_score_home.visibility = View.GONE
-                league_odd_match_score_away.visibility = View.GONE
-
-                league_odd_match_total_score_home_bottom.visibility = View.GONE
-                league_odd_match_total_score_away_bottom.visibility = View.GONE
-                league_odd_match_score_home_bottom.visibility = View.GONE
-                league_odd_match_score_away_bottom.visibility = View.GONE
-                league_odd_match_point_home_bottom.visibility = View.GONE
-                league_odd_match_point_away_bottom.visibility = View.GONE
             }
         }
 
@@ -623,7 +649,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 }
                 else -> {
                     itemView.league_odd_match_time.text = TimeUtil.timeFormat(item.matchInfo?.startTime, "HH:mm")
-                    itemView.league_odd_match_remain_time_icon.visibility = View.GONE
+                    itemView.league_odd_match_remain_time_icon.visibility = if (TimeUtil.isTimeToday(item.matchInfo?.startTime)) View.VISIBLE else View.GONE
                 }
             }
 

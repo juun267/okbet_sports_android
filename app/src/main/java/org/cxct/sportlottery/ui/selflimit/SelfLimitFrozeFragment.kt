@@ -69,7 +69,7 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
         binding.etFrozeDay.apply {
             afterTextChanged {
                 when {
-                    it.isBlank() -> viewModel.setFrozeEditTextError(true)
+                    it.isNullOrEmpty() -> viewModel.setFrozeEditTextError(true)
                     it.toLong() in 1..999 -> viewModel.setFrozeEditTextError(false)
                     else -> viewModel.setFrozeEditTextError(true)
                 }

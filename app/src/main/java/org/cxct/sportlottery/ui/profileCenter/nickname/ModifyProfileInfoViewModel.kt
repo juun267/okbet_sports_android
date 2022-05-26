@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.user.setWithdrawInfo.WithdrawInfoRequest
 import org.cxct.sportlottery.network.user.setWithdrawInfo.WithdrawInfoResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.VerifyConstUtil
 
 class ModifyProfileInfoViewModel(
@@ -179,9 +180,10 @@ class ModifyProfileInfoViewModel(
         }
     }
 
-    private fun checkFullName(context: Context, fullName: String?) {
+     fun checkFullName(context: Context, fullName: String?) {
         _fullNameErrorMsg.value = when {
             fullName.isNullOrBlank() -> context.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyFullName(context,fullName) -> androidContext.getString(R.string.error_input_has_blank)
             else -> ""
         }
     }

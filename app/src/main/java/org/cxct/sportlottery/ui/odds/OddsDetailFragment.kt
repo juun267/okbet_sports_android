@@ -356,7 +356,11 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
 
     private fun navGameInPlay() {
-        findNavController().navigate(OddsDetailFragmentDirections.actionOddsDetailFragmentToGameV3Fragment(MatchType.IN_PLAY))
+        //TODO 需跟iOS確認此處邏輯是否有必要
+        //先迴避可能會造成crash
+        when (activity) {
+            is GameActivity -> findNavController().navigate(OddsDetailFragmentDirections.actionOddsDetailFragmentToGameV3Fragment(MatchType.IN_PLAY))
+        }
     }
 
 

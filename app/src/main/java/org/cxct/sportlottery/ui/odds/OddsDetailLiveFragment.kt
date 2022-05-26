@@ -408,7 +408,8 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
         viewModel.matchTrackerUrl.observe(viewLifecycleOwner) { event ->
             event?.getContentIfNotHandled()?.let { matchTrackerUrl ->
-                live_view_tool_bar.setupTrackerUrl(matchTrackerUrl.h5Url)
+//                live_view_tool_bar.setupTrackerUrl(matchTrackerUrl.h5Url)
+                live_view_tool_bar.setupTrackerUrl(matchTrackerUrl)
             }
         }
     }

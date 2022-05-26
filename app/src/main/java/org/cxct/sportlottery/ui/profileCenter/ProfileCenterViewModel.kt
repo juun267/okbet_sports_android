@@ -67,8 +67,6 @@ class ProfileCenterViewModel(
 
     val editIconUrlResult: LiveData<Event<IconUrlResult?>> = avatarRepository.editIconUrlResult
 
-    val isCreditAccount: LiveData<Boolean> = loginRepository.isCreditAccount
-
     val docUrlResult: LiveData<Event<UploadImgResult>>
         get() = _docUrlResult
     private val _docUrlResult = MutableLiveData<Event<UploadImgResult>>()

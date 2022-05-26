@@ -209,10 +209,10 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 }
             }
 
-            OverScrollDecoratorHelper.setUpOverScroll(
-                view_pager.getChildAt(0) as RecyclerView,
-                OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL
-            )
+//            OverScrollDecoratorHelper.setUpOverScroll(
+//                view_pager.getChildAt(0) as RecyclerView,
+//                OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL
+//            )
         }
     }
 

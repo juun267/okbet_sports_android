@@ -58,8 +58,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             field = value
             oddsDetailDataList.forEachIndexed { index, data ->
                 data.oddArrayList.forEach { odd ->
-                    odd?.isSelected = betInfoList.any { it.matchOdd.oddsId == odd?.id }
-                    if (onOddClickListener.clickOdd == odd) {
+                    val oddSelected = betInfoList.any { it.matchOdd.oddsId == odd?.id }
+                    if (odd?.isSelected != oddSelected) {
+                        odd?.isSelected = oddSelected
                         notifyItemChanged(index)
                     }
                 }

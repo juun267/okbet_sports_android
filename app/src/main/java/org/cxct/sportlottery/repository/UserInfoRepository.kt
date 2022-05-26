@@ -197,8 +197,6 @@ class UserInfoRepository(private val androidContext: Context) {
             updatePayPw = userInfoData.updatePayPw,
             setted = userInfoData.setted,
             userRebateList = userInfoData.userRebateList,
-            creditAccount = userInfoData.creditAccount,
-            creditStatus = userInfoData.creditStatus,
             maxBetMoney = userInfoData.maxBetMoney,
             maxCpBetMoney = userInfoData.maxCpBetMoney,
             maxParlayBetMoney = userInfoData.maxParlayBetMoney,
@@ -206,7 +204,8 @@ class UserInfoRepository(private val androidContext: Context) {
             verified = userInfoData.verified,
             perBetLimit = userInfoData.perBetLimit,
             uwEnableTime = userInfoData.uwEnableTime,
-            maxPayout = userInfoData.maxPayout
+            maxPayout = userInfoData.maxPayout,
+            firstRechTime = userInfoData.firstRechTime
         )
 
 }

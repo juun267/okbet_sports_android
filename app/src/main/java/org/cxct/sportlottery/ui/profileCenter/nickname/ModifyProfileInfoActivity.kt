@@ -13,6 +13,7 @@ import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.login.LoginEditText
+import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 /**
@@ -108,7 +109,9 @@ class ModifyProfileInfoActivity :
         btn_confirm.setOnClickListener {
             checkInputData()
         }
-
+        et_real_name.afterTextChanged {
+            viewModel.checkFullName(applicationContext,it)
+        }
         btn_confirm.setTitleLetterSpacing()
     }
 

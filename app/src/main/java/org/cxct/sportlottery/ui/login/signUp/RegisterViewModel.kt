@@ -214,6 +214,7 @@ class RegisterViewModel(
     fun checkFullName(fullName: String?) {
         val msg = when {
             fullName.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyFullName(androidContext,fullName) -> androidContext.getString(R.string.error_input_has_blank)
             else -> null
         }
         _fullNameMsg.value = Pair(msg, msg == null)

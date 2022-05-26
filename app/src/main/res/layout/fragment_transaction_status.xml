@@ -65,33 +65,30 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <org.cxct.sportlottery.ui.component.StatusSelectorView
+                <org.cxct.sportlottery.ui.component.StatusSpinnerView
                     android:id="@+id/bet_type_selector"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginVertical="8dp"
                     android:layout_weight="1"
+                    android:background="@drawable/frame_color_silver_light_stroke"
                     app:arrowSrc="@drawable/ic_arrow_color_gray"
-                    app:backgroundFrame="@drawable/frame_color_silver_light_stroke"
-                    app:defaultBottomSheetTitleText="@string/choose_bet_state"
                     app:defaultStatusText="@string/waiting"
                     app:horizontalChainStyle="spread"
-                    app:textGravity="start|center_vertical" />
+                    app:textGravity="start|center_vertical"/>
 
-                <org.cxct.sportlottery.ui.component.StatusSelectorView
+                <org.cxct.sportlottery.ui.component.StatusSpinnerView
                     android:id="@+id/game_type_selector"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:layout_marginVertical="8dp"
                     android:layout_weight="1"
-                    app:arrowSrc="@drawable/ic_arrow_color_gray"
-                    app:backgroundFrame="@drawable/frame_color_silver_light_stroke"
-                    app:defaultBottomSheetTitleText="@string/choose_bet_state"
+                    android:background="@drawable/frame_color_silver_light_stroke"
                     app:defaultStatusText="@string/all_sport"
                     app:horizontalChainStyle="spread"
-                    app:textGravity="start|center_vertical" />
+                    app:textGravity="start|center_vertical"/>
 
             </LinearLayout>
 

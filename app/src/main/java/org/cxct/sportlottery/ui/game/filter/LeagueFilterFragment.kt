@@ -67,7 +67,7 @@ class LeagueFilterFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         super.onStart()
 
         viewModel.getLeagueList(args.gameType.key, args.matchType.postValue, null)
-        loading()
+//        loading()
     }
 
     private fun setupToolbar() {

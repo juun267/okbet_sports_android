@@ -615,7 +615,11 @@ object SocketUpdateUtil {
     }
 
     private fun insertPlayCate(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent): Boolean {
-        matchOdd.quickPlayCateList?.addAll(oddsChangeEvent.quickPlayCateList ?: listOf())
+        if (matchOdd.quickPlayCateList == null) {
+            matchOdd.quickPlayCateList = oddsChangeEvent.quickPlayCateList?.toMutableList()
+        } else {
+            matchOdd.quickPlayCateList?.addAll(oddsChangeEvent.quickPlayCateList ?: listOf())
+        }
         return oddsChangeEvent.quickPlayCateList?.isNotEmpty() ?: false
     }
 

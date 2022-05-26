@@ -343,7 +343,7 @@ class BackService : Service() {
         }
     }
 
-    fun subscribeSportChannelHall(gameType: String?) {
+    fun subscribeSportChannelHall() {
         val url = "$URL_HALL/encrypted" //推送频道从原本的/notify/hall/{platformId}/{gameType}调整为/notify/hall,移除平台id与gameType,
         //val url = "$URL_HALL"
         subscribeChannel(url)

@@ -143,4 +143,6 @@
 
     <dimen name="quick_view_horizontal_scroll_height">224dp</dimen>
 
+    <dimen name="live_player_height">232dp</dimen>
+
 </resources>

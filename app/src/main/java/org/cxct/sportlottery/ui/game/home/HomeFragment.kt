@@ -117,7 +117,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     private var pokerCount = 0
     private var slotCount = 0
     private var fishingCount = 0
-    private var isCreditAccount = false
     private var selectedSportType: Item? = null
     private var mTimer: Timer? = null
 
@@ -852,11 +851,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             }
         }
 
-        viewModel.isCreditAccount.observe(viewLifecycleOwner) {
-            isCreditAccount = it
-            updateThirdGameCard()
-        }
-
         viewModel.isLogin.observe(viewLifecycleOwner) {
             mHomeListAdapter.isLogin = it
         }
@@ -925,6 +919,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
                     queryData()
+                    subscribeSportChannelHall()
                 }
             }
         }
@@ -1027,16 +1022,26 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         receiver.leagueChange.observe(this.viewLifecycleOwner) {
             it?.let { leagueChangeEvent ->
                 unSubscribeChannelHallAll()
-                leagueChangeEvent.leagueIdList?.let { leagueIdList ->
-                    //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
-                    viewModel.getLeagueOddsList(
-                        mSelectMatchType,
-                        leagueIdList,
-                        listOf(),
-                        isIncrement = true
-                    )
+//                leagueChangeEvent.leagueIdList?.let { leagueIdList ->
+//                    //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
+//                    viewModel.getLeagueOddsList(
+//                        mSelectMatchType,
+//                        leagueIdList,
+//                        listOf(),
+//                        isIncrement = true
+//                    )
+//                }
+//                queryData(leagueChangeEvent.gameType ?: "", leagueChangeEvent.leagueIdList)
+                if (mSelectMatchType == MatchType.IN_PLAY) {
+                    tableInPlayMap.clear()
+                    //滾球盤
+                    viewModel.getMatchPreloadInPlay()
                 }
-                queryData(leagueChangeEvent.gameType ?: "", leagueChangeEvent.leagueIdList)
+                else {
+                    tableSoonMap.clear()
+                    //即將開賽盤
+                    viewModel.getMatchPreloadAtStart()
+                }
             }
         }
 
@@ -1155,6 +1160,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
         //滾球盤、即將開賽盤
         viewModel.getMatchPreloadInPlay()
+        tableSoonMap.clear()
         viewModel.getMatchPreloadAtStart()
 
         //推薦賽事
@@ -1188,11 +1194,11 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
     private fun updateThirdGameCard() {
         mHomeListAdapter.updateThirdGameCard(
-            lotteryVisible = isShowThirdGame && lotteryCount > 0 && !isCreditAccount,
-            liveVisible = isShowThirdGame && liveCount > 0 && !isCreditAccount,
-            pokerVisible = isShowThirdGame && pokerCount > 0 && !isCreditAccount,
-            slotVisible = isShowThirdGame && slotCount > 0 && !isCreditAccount,
-            fishingVisible = isShowThirdGame && fishingCount > 0 && !isCreditAccount
+            lotteryVisible = isShowThirdGame && lotteryCount > 0,
+            liveVisible = isShowThirdGame && liveCount > 0 ,
+            pokerVisible = isShowThirdGame && pokerCount > 0 ,
+            slotVisible = isShowThirdGame && slotCount > 0 ,
+            fishingVisible = isShowThirdGame && fishingCount > 0
         )
     }
 

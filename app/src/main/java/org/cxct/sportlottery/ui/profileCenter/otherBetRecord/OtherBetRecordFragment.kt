@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.fragment_other_bet_record.*
 import kotlinx.android.synthetic.main.view_total_record.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setMoneyColor
 import org.cxct.sportlottery.util.setProfitFormat
@@ -109,7 +110,7 @@ class OtherBetRecordFragment : BaseSocketFragment<OtherBetRecordViewModel>(Other
         }
 
         viewModel.thirdGamesResult.observe(viewLifecycleOwner) {
-            status_selector.dataList = it ?: listOf()
+            status_selector.setItemData((it ?: listOf()) as MutableList<StatusSheetData>)
         }
 
         viewModel.recordResult.observe(viewLifecycleOwner) {

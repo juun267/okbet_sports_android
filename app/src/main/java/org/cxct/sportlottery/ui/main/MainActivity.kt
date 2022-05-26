@@ -222,13 +222,6 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
             }
         }
 
-        viewModel.isCreditAccount.observe(this) {
-            if (it) {
-                startActivity(Intent(this, GameActivity::class.java))
-                finish()
-            }
-        }
-
         viewModel.userInfo.observe(this) {
             updateAvatar(it?.iconUrl)
         }

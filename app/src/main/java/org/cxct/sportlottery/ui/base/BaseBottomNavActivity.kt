@@ -61,7 +61,7 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
         }
 
         viewModel.showShoppingCart.observe(this) {
-            if (it) {
+            it.getContentIfNotHandled()?.let {
                 showBetListPage()
             }
         }

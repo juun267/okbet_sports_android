@@ -61,7 +61,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     it
                 )
                 leagueAdapter.data.updateOddsSort()
-                leagueAdapter.notifyDataSetChanged()
+                leagueAdapter.updateLeagueByPlayCate()
             },
                 onClickNotSelectableListener = {
                     viewModel.switchPlay(
@@ -72,7 +72,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     )
                     upDateSelectPlay(it)
                     leagueAdapter.data.updateOddsSort()
-                    leagueAdapter.notifyDataSetChanged()
+                    leagueAdapter.updateLeagueByPlayCate()
                 },
                 onSelectPlayCateListener = { play, playCate ->
                     viewModel.switchPlayCategory(
@@ -84,7 +84,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     )
                     upDateSelectPlay(play)
                     leagueAdapter.data.updateOddsSort()
-                    leagueAdapter.notifyDataSetChanged()
+                    leagueAdapter.updateLeagueByPlayCate()
                 })
         }
     }
@@ -415,8 +415,8 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         receiver.serviceConnectStatus.observe(this.viewLifecycleOwner) { status ->
             status?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
-                    loading()
-                    subscribeSportChannelHall(args.gameType.key)
+//                    loading()
+                    subscribeSportChannelHall()
                     viewModel.getLeagueOddsList(
                         args.matchType,
                         args.leagueId.toList(),

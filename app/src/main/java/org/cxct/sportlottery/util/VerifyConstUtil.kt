@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.util
 
+import android.content.Context
+import org.cxct.sportlottery.repository.sConfigData
 import java.util.regex.Pattern
 
 object VerifyConstUtil {
@@ -13,7 +15,7 @@ object VerifyConstUtil {
     private const val CRYPTO_COMMON_WALLET_ADDRESS_REGEX = "^(?=.*[$ENGLISH_WORD])(?=.*[$NUMBER])[$ENGLISH_WORD$NUMBER]+$"
 
     //是否為越南文文字
-    private fun isValidVietnamWord(inputStr: CharSequence): Boolean {
+    fun isValidVietnamWord(inputStr: CharSequence): Boolean {
         return Pattern.matches("[${ENGLISH_WORD}${VIETNAM_WORD}\\s]+", inputStr)
     }
 
@@ -26,10 +28,13 @@ object VerifyConstUtil {
     }
 
     //是否為中文文字
-    private fun isValidChineseWord(inputStr: CharSequence): Boolean {
-        return Pattern.matches("[$CHINESE_WORD]", inputStr)
+     fun isValidChineseWord(inputStr: CharSequence): Boolean {
+        return Pattern.matches("[$CHINESE_WORD]{1,50}", inputStr)
     }
-
+    //是否為英文文字
+    fun isValidEnglishWord(inputStr: CharSequence): Boolean {
+        return Pattern.matches("[$ENGLISH_WORD]{1,50}", inputStr)
+    }
     fun verifyInviteCode(inviteCode: CharSequence): Boolean {
         return Pattern.matches("[$NUMBER]{8}", inviteCode)
     }
@@ -54,11 +59,15 @@ object VerifyConstUtil {
         return Pattern.matches("(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+){6,20}", pwd)
     }
 
-    //真實姓名 //中文2-20,英文2-50 可空格 可點
-    //20210205判斷文件只容許中文2-20
-    fun verifyFullName(fullName: CharSequence): Boolean {
-        return Pattern.matches("[$CHINESE_WORD]{2,20}", fullName)
-//                || Pattern.matches("[\\s.$ENGLISH_WORD]{2,50}", fullName)
+    //真實姓名 只允许英文和空格，不允许前后空格和连续空格
+    fun verifyFullName(context:Context,fullName: CharSequence): Boolean {
+        if (fullName.startsWith(" ")||fullName.endsWith(" ")){
+            return false
+        }
+        if (fullName.contains("  ")){
+            return false
+        }
+        return Pattern.matches("[a-zA-Z\\s]{1,50}", fullName)
     }
 
     //提款密碼 //數字4
@@ -82,6 +91,15 @@ object VerifyConstUtil {
     //充值金額
     fun verifyRechargeAmount(withdrawAmount: CharSequence, minAmount: Long, maxAmount: Long?): Boolean {
         return (withdrawAmount.toString().toLong().let { it in minAmount until (maxAmount?.plus(1) ?: it + 1) })
+    }
+
+    fun verifyFirstRechargeAmount(rechargeAmount: CharSequence): Boolean {
+        val firstRechLessAmountLimit = sConfigData?.firstRechLessAmountLimit
+        return when {
+            //首充額度限制若為null,""或0則不限制
+            firstRechLessAmountLimit.isNullOrEmpty() || firstRechLessAmountLimit.toDouble() <= 0.0 -> true
+            else -> rechargeAmount.toString().toDouble() >= firstRechLessAmountLimit.toDouble()
+        }
     }
 
     //暱稱 //中英文組合長度2–50字
@@ -143,4 +161,5 @@ object VerifyConstUtil {
     fun verifyHashCode(hashCode: CharSequence): Boolean {
         return Pattern.matches("[$ENGLISH_WORD$NUMBER]{6,256}", hashCode)
     }
+
 }

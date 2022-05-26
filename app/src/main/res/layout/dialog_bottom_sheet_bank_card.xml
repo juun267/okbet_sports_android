@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/color_191919_FCFCFC">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

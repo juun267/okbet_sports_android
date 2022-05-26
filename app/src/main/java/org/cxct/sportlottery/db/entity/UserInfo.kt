@@ -60,12 +60,6 @@ data class UserInfo(
     @ColumnInfo(name = "user_rebate_list")
     var userRebateList: List<UserRebate>? = null,
 
-    @ColumnInfo(name = "credit_account")
-    var creditAccount: Int? = null,
-
-    @ColumnInfo(name = "credit_status")
-    var creditStatus: Int? = null,
-
     @ColumnInfo(name = "maxBetMoney")//会员对应vip层级的单注最大下注额
     var maxBetMoney: Int? = null,
 
@@ -86,5 +80,7 @@ data class UserInfo(
 
     val uwEnableTime: Long? = 0,
 
-    val maxPayout:Double? = 0.0
+    val maxPayout:Double? = 0.0,
+
+    val firstRechTime: String? = null //首充时间
 )

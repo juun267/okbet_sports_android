@@ -122,6 +122,7 @@
     <string name="btn_agreement">Account Opening Agreement</string>
     <string name="have_account">Already have an account?</string>
     <string name="btn_login">Login</string>
+    <string name="btn_login_by_credit_system">Login Now</string>
     <string name="btn_register">Sign Up</string>
     <string name="no_announcement">No announcement</string>
     <string name="lottery">Lottery</string>
@@ -453,7 +454,7 @@
     <string name="edt_hint_wx_id">Please enter Wechat ID</string>
     <string name="title_bank_account">Bank account number</string>
     <string name="edt_hint_bank_account">Enter the bank account number</string>
-    <string name="title_recharge_time">Top-up time</string>
+    <string name="title_recharge_time">Deposit Time</string>
     <string name="title_current_money">Current balance</string>
     <string name="btn_submit">Submit</string>
     <string name="btn_copy">Copy</string>
@@ -490,6 +491,7 @@
     <string name="txv_online_pay">Top Up Online</string>
     <string name="txv_crypto_pay">Virtual currency transfer</string>
     <string name="error_recharge_amount">Incorrect format or value of deposit amount</string>
+    <string name="error_first_recharge_amount">The first recharge amount cannot be less than %s</string>
     <string name="error_recharge_account">Incorrect number or value of deposit amount</string>
     <string name="error_bank_id">There is an error in the format of the bank account number</string>
     <string name="error_hashcode">Block chain trading ID format error</string>
@@ -662,11 +664,11 @@
     <string name="complete">Completed</string>
     <string name="winnable_amount_colon">To Win：</string>
     <string name="finance">Fund Detail</string>
-    <string name="record_recharge">Deposit Record</string>
+    <string name="record_recharge">Deposit Records</string>
     <string name="record_withdrawal">Withdrawal Record</string>
     <string name="record_conversion">Conversion Record</string>
     <string name="record_history">Transaction History</string>
-    <string name="recharge_state_success">success</string>
+    <string name="recharge_state_success">Success</string>
     <string name="recharge_state_failed">Fail</string>
     <string name="recharge_state_processing">Processing</string>
     <string name="all_order_status">All Status</string>
@@ -682,7 +684,7 @@
     <string name="recharge_channel_paymaya">PayMaya</string>
     <string name="recharge_channel_admin">System add money</string>
     <string name="recharge_log_order_time">Time</string>
-    <string name="recharge_log_recharge_amount">Deposit</string>
+    <string name="recharge_log_recharge_amount">Deposit Amount</string>
     <string name="recharge_log_channel_type">Method</string>
     <string name="recharge_log_order_state">Status</string>
     <string name="withdraw_log_withdraw_amount">Withdraw</string>
@@ -1120,4 +1122,5 @@
     <string name="current_corner">Current Total:</string>
     <string name="cancel_auto">Rejected</string>
     <string name="cancel_manual">Void</string>
+    <string name="error_input_has_blank">Incorrect input. Use english only, don\'t enter the continuous space.</string>
 </resources>
