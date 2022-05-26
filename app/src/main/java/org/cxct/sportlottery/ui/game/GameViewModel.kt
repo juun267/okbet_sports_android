@@ -1157,10 +1157,10 @@ class GameViewModel(
     }
 
     fun switchPlay(matchType: MatchType, play: Play) {
-        updatePlaySelectedState(play)
+        updatePlaySelectedState(matchType, play)
     }
 
-    fun switchPlayCategory(matchType: MatchType, play: Play, playCateCode: String?) {
+    fun switchPlayCategory(play: Play, playCateCode: String?) {
         _playList.value?.peekContent()?.forEach {
             it.isSelected = (it == play)
         }
@@ -1361,24 +1361,8 @@ class GameViewModel(
         matchIdList: List<String>,
         play: Play
     ) {
-        updatePlaySelectedState(play)
-
-//        getLeagueOddsList(matchType, leagueIdList, matchIdList)
-    }
-
-    fun switchPlayCategory(
-        matchType: MatchType,
-        leagueIdList: List<String>,
-        matchIdList: List<String>,
-        play: Play,
-        playCateCode: String?
-    ) {
-        _playList.value?.peekContent()?.forEach {
-            it.isSelected = (it == play)
-        }
-        _playCate.value = Event(playCateCode)
-
-//        getLeagueOddsList(matchType, leagueIdList, matchIdList)
+        updatePlaySelectedState(matchType, play)
+        getLeagueOddsList(matchType, leagueIdList, matchIdList)
     }
 
     /**
@@ -2499,7 +2483,7 @@ class GameViewModel(
         return this
     }
 
-    private fun updatePlaySelectedState(play: Play) {
+    private fun updatePlaySelectedState(matchType: MatchType, play: Play) {
         val playList = _playList.value?.peekContent()
 
         playList?.forEach {
@@ -2523,6 +2507,13 @@ class GameViewModel(
                     }
                     ))
         }
+
+        getGameHallList(
+            matchType = matchType,
+            isReloadDate = false,
+            isReloadPlayCate = false,
+            isLastSportType = true
+        )
     }
 
     /**

@@ -54,16 +54,16 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
         PlayCategoryAdapter().apply {
             playCategoryListener = PlayCategoryListener(onClickSetItemListener = {
+                unSubscribeChannelHallAll()
                 viewModel.switchPlay(
                     args.matchType,
                     args.leagueId.toList(),
                     args.matchId.toList(),
                     it
                 )
-                leagueAdapter.data.updateOddsSort()
-                leagueAdapter.updateLeagueByPlayCate()
             },
                 onClickNotSelectableListener = {
+                    unSubscribeChannelHallAll()
                     viewModel.switchPlay(
                         args.matchType,
                         args.leagueId.toList(),
@@ -71,18 +71,11 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         it
                     )
                     upDateSelectPlay(it)
-                    leagueAdapter.data.updateOddsSort()
-                    leagueAdapter.updateLeagueByPlayCate()
                 },
                 onSelectPlayCateListener = { play, playCate ->
-                    viewModel.switchPlayCategory(
-                        args.matchType,
-                        args.leagueId.toList(),
-                        args.matchId.toList(),
-                        play,
-                        playCate.code
-                    )
+                    viewModel.switchPlayCategory(play, playCate.code)
                     upDateSelectPlay(play)
+                    //下拉選單不用重新要資料
                     leagueAdapter.data.updateOddsSort()
                     leagueAdapter.updateLeagueByPlayCate()
                 })

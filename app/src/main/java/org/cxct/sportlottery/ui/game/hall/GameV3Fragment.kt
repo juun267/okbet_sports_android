@@ -133,16 +133,13 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             playCategoryListener = PlayCategoryListener(
                 onClickSetItemListener = {
                     viewModel.switchPlay(args.matchType, it)
-                    leagueAdapter.data.updateOddsSort()
-                    leagueAdapter.updateLeagueByPlayCate()
                 }, onClickNotSelectableListener = {
                     viewModel.switchPlay(args.matchType, it)
                     upDateSelectPlay(it)
-                    leagueAdapter.data.updateOddsSort()
-                    leagueAdapter.updateLeagueByPlayCate()
                 }, onSelectPlayCateListener = { play, playCate ->
-                    viewModel.switchPlayCategory(args.matchType, play, playCate.code)
+                    viewModel.switchPlayCategory(play, playCate.code)
                     upDateSelectPlay(play)
+                    //下拉選單不用重新要資料
                     leagueAdapter.data.updateOddsSort()
                     leagueAdapter.updateLeagueByPlayCate()
                 })
