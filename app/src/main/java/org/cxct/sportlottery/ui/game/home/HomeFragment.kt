@@ -950,6 +950,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
+                var needUpdateBetInfo = false
                 SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
                 //滾球盤、即將開賽盤
                 val filterCode = when (mSelectMatchType) {
@@ -978,6 +979,15 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                                 filterCode
                             )//之後建enum class
                             updateMatchOddNonNull.filterMenuPlayCate(playCateCode)
+
+                            //判斷是否有加入注單的賠率項
+                            if (updateMatchOddNonNull.matchInfo?.id == oddsChangeEvent.eventId && updateMatchOddNonNull.oddsMap?.values?.any { oddList ->
+                                    oddList?.any { odd ->
+                                        odd?.isSelected == true
+                                    } == true
+                                } == true) {
+                                needUpdateBetInfo = true
+                            }
                             mHomeListAdapter.notifySubItemChanged(
                                 index,
                                 gameEntity.matchOdds.indexOf(updateMatchOdd)
@@ -994,6 +1004,12 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     if (entity.matchInfo?.id != it.eventId) return@forEach
                     entity.oddBeans.forEachIndexed { oddIndex, oddBean ->
                         if (SocketUpdateUtil.updateMatchOdds(oddBean, oddsChangeEvent)) {
+                            //判斷是否有加入注單的賠率項
+                            if (oddBean.oddList.any { odd ->
+                                    odd?.isSelected == true
+                                }) {
+                                needUpdateBetInfo = true
+                            }
                             mHomeListAdapter.notifyRecommendSubItemChanged(entity, oddIndex)
                         }
                     }
@@ -1012,10 +1028,23 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                             )//之後建enum class
                             updateMatchOdd.highlightFilterMenuPlayCate(playCateCode)
 
+                            //判斷是否有加入注單的賠率項
+                            if (updateMatchOdd.matchInfo?.id == oddsChangeEvent.eventId && updateMatchOdd.oddsMap?.values?.any { oddList ->
+                                    oddList?.any { odd ->
+                                        odd?.isSelected == true
+                                    } == true
+                                } == true) {
+                                needUpdateBetInfo = true
+                            }
                             mHomeListAdapter.notifyHighLightItemChanged(updateMatchOdd)
                         }
                         isUpdate = true
                     }
+                }
+
+                //投注單處於未開啟狀態時才需要透過此處去更新投注單內資訊
+                if (needUpdateBetInfo && !getBetListPageVisible()) {
+                    viewModel.updateMatchOdd(oddsChangeEvent)
                 }
             }
         }

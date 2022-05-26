@@ -23,6 +23,8 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
 
     abstract fun showBetListPage()
 
+    abstract fun getBetListPageVisible(): Boolean
+
     abstract fun updateUiWithLogin(isLogin: Boolean)
 
     abstract fun updateOddsType(oddsType: OddsType)

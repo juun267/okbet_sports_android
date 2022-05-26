@@ -305,6 +305,7 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         )
                         && oddsDetailListData.isExpand
                     ) {
+                        updateBetInfo(oddsDetailListData, matchOddsChangeEvent)
                         oddsDetailListAdapter?.notifyItemChanged(index)
                     }
                 }
@@ -329,6 +330,21 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             it?.let {
                 unSubscribeChannelEventAll()
                 subscribeChannelEvent(matchId)
+            }
+        }
+    }
+
+
+    /**
+     * 若投注單處於未開啟狀態且有加入注單的賠率項資訊有變動時, 更新投注單內資訊
+     */
+    private fun updateBetInfo(oddsDetailListData: OddsDetailListData, matchOddsChangeEvent: MatchOddsChangeEvent) {
+        if (!getBetListPageVisible()) {
+            //尋找是否有加入注單的賠率項
+            if (oddsDetailListData.oddArrayList.any { odd ->
+                    odd?.isSelected == true
+                }) {
+                viewModel.updateMatchOdd(matchOddsChangeEvent)
             }
         }
     }
