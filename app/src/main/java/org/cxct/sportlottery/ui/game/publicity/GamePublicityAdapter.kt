@@ -254,7 +254,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                             android.R.color.transparent
                         )
                     )
-                    ivLogo.setImageResource(R.drawable.ic_logo)
+                    ivLogo.setImageResource(R.drawable.ic_logo_for_day_mode)
                     ivNotice.setImageResource(
                         if (hasNotice) {
                             R.drawable.icon_bell_white_red_dot

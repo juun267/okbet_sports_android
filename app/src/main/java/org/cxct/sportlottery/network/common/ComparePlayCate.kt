@@ -3,7 +3,7 @@ package org.cxct.sportlottery.network.common
 /**
  * 用來比對多局(盤)數
  */
-enum class ComparePlayCate(private val compareCode: String, private val mainPlayCate: PlayCate) {
+enum class ComparePlayCate(val compareCode: String, val mainPlayCate: PlayCate) {
     //region FT 足球
     //O/U 大小
     PENALTY_OU_SEG("PENALTY-O/U-SEG", PlayCate.PENALTY_OU_SEG1),

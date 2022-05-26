@@ -665,40 +665,73 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         tv_name.text =
                             when (inPlay && itemData.matchType != MatchType.OUTRIGHT && itemData.matchOdd.gameType == GameType.FT.key) {
                                 true -> {
-                                    context.getString(
-                                        R.string.bet_info_in_play_score,
-                                        itemData.matchOdd.playCateName,
-                                        itemData.matchOdd.homeScore.toString(),
-                                        itemData.matchOdd.awayScore.toString()
-                                    )
+                                    when {
+                                        PlayCate.isIntervalCornerPlayCate(itemData.matchOdd.playCode) -> {
+                                            itemData.matchOdd.playCateName
+                                        }
+                                        PlayCate.needShowCurrentCorner(itemData.matchOdd.playCode) -> {
+                                            if (itemData.matchOdd.homeCornerKicks == null || itemData.matchOdd.awayCornerKicks == null) {
+                                                itemData.matchOdd.playCateName
+                                            } else {
+                                                context.getString(
+                                                    R.string.bet_info_in_play_score,
+                                                    itemData.matchOdd.playCateName,
+                                                    itemData.matchOdd.homeCornerKicks.toString(),
+                                                    itemData.matchOdd.awayCornerKicks.toString()
+                                                )
+                                            }
+                                        }
+                                        else -> {
+                                            context.getString(
+                                                R.string.bet_info_in_play_score,
+                                                itemData.matchOdd.playCateName,
+                                                itemData.matchOdd.homeScore.toString(),
+                                                itemData.matchOdd.awayScore.toString()
+                                            )
+                                        }
+                                    }
                                 }
                                 else -> itemData.matchOdd.playCateName
                             }
                     }
 
                     else -> {
+                        val playCateName = itemData.betPlayCateNameMap?.getNameMap(
+                            itemData.matchOdd.gameType,
+                            itemData.matchOdd.playCode
+                        )
+                            ?.get(LanguageManager.getSelectLanguage(context).key)
+                            ?: ""
                         tv_name.text =
                             when (inPlay && itemData.matchType != MatchType.OUTRIGHT && itemData.matchOdd.gameType == GameType.FT.key) {
                                 true -> {
-                                    context.getString(
-                                        R.string.bet_info_in_play_score,
-                                        itemData.betPlayCateNameMap?.getNameMap(
-                                            itemData.matchOdd.gameType,
-                                            itemData.matchOdd.playCode
-                                        )
-                                            ?.get(LanguageManager.getSelectLanguage(context).key)
-                                            ?: "",
-                                        itemData.matchOdd.homeScore.toString(),
-                                        itemData.matchOdd.awayScore.toString()
-                                    )
+                                    when {
+                                        PlayCate.isIntervalCornerPlayCate(itemData.matchOdd.playCode) -> {
+                                            nameOneLine(playCateName)
+                                        }
+                                        PlayCate.needShowCurrentCorner(itemData.matchOdd.playCode) -> {
+                                            if (itemData.matchOdd.homeCornerKicks == null || itemData.matchOdd.awayCornerKicks == null) {
+                                                nameOneLine(playCateName)
+                                            } else {
+                                                context.getString(
+                                                    R.string.bet_info_in_play_score,
+                                                    playCateName,
+                                                    itemData.matchOdd.homeCornerKicks.toString(),
+                                                    itemData.matchOdd.awayCornerKicks.toString()
+                                                )
+                                            }
+                                        }
+                                        else -> {
+                                            context.getString(
+                                                R.string.bet_info_in_play_score,
+                                                playCateName,
+                                                itemData.matchOdd.homeScore.toString(),
+                                                itemData.matchOdd.awayScore.toString()
+                                            )
+                                        }
+                                    }
                                 }
-                                else -> nameOneLine(
-                                    itemData.betPlayCateNameMap?.getNameMap(
-                                        itemData.matchOdd.gameType,
-                                        itemData.matchOdd.playCode
-                                    )
-                                        ?.get(LanguageManager.getSelectLanguage(context).key) ?: ""
-                                )
+                                else -> nameOneLine(playCateName)
                             }
                     }
                 }
@@ -779,11 +812,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         private fun setupMinimumLimitMessage(itemData: BetInfoListData) {
             itemView.apply {
                 itemData.parlayOdds?.min?.let { min ->
-                    tvErrorMessage.text = String.format(
-                        context.getString(R.string.bet_info_list_minimum_limit_amount),
-                        min,
-                        sConfigData?.systemCurrency
-                    )
+                    tvErrorMessage.text = context.getString(R.string.bet_info_list_minimum_limit_amount)
                 }
             }
         }
@@ -2049,11 +2078,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
         private fun setupMinimumLimitMessage(itemData: ParlayOdd) {
             itemView.apply {
-                tvErrorMessage.text = String.format(
-                    context.getString(R.string.bet_info_list_minimum_limit_amount),
-                    itemData.min,
-                    sConfigData?.systemCurrency
-                )
+                tvErrorMessage.text = context.getString(R.string.bet_info_list_minimum_limit_amount)
                 et_bet.apply {
 //                    hint = getLimitHint(
 //                        context,

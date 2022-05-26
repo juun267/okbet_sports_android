@@ -84,6 +84,9 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     private var curHomeScore: Int? = null
     private var curAwayScore: Int? = null
 
+    private var curHomeCornerKicks: Int? = null
+    private var curAwayCornerKicks: Int? = null
+
     private var curStatus: Int? = null
 
     private var isGamePause = false
@@ -220,6 +223,9 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                     matchOdd?.let { matchOdd ->
                         matchOdd.matchInfo.homeScore = "$curHomeScore"
                         matchOdd.matchInfo.awayScore = "$curAwayScore"
+
+                        matchOdd.matchInfo.homeCornerKicks = curHomeCornerKicks
+                        matchOdd.matchInfo.awayCornerKicks = curAwayCornerKicks
 
                         val fastBetDataBean = FastBetDataBean(
                             matchType = MatchType.IN_PLAY,
@@ -523,12 +529,14 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     private fun MatchStatusCO.updateCornerKicks() {
         //region 判斷需不需要更新資料 角球數都沒變的話就不更新
         var cornerKicksChanged = false
-        if (homeCornerKicks != null && oddsDetailListAdapter?.homeCornerKicks != homeCornerKicks) {
+        if (homeCornerKicks != null && curHomeCornerKicks != homeCornerKicks) {
+            curHomeCornerKicks = homeCornerKicks
             oddsDetailListAdapter?.homeCornerKicks = homeCornerKicks
             cornerKicksChanged = true
         }
 
-        if (awayCornerKicks != null && oddsDetailListAdapter?.awayCornerKicks != awayCornerKicks) {
+        if (awayCornerKicks != null && curAwayCornerKicks != awayCornerKicks) {
+            curAwayCornerKicks = awayCornerKicks
             oddsDetailListAdapter?.awayCornerKicks = awayCornerKicks
             cornerKicksChanged = true
         }
