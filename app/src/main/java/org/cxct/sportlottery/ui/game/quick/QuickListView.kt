@@ -81,7 +81,7 @@ class QuickListView @JvmOverloads constructor(
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         lifecycleOwner?.let {
-            mViewModel._quickOddsListGameHallResult.removeObservers(it)
+            mViewModel.mQuickOddsListGameHallResult.removeObservers(it)
         }
     }
 
@@ -125,7 +125,7 @@ class QuickListView @JvmOverloads constructor(
     @SuppressLint("NotifyDataSetChanged")
     private fun initObserver() {
         lifecycleOwner?.let { lifecycleOwner ->
-            mViewModel._quickOddsListGameHallResult.observe(lifecycleOwner) {
+            mViewModel.mQuickOddsListGameHallResult.observe(lifecycleOwner) {
                 it.getContentIfNotHandled()?.let { quickListResult ->
                     if (quickListResult.success) {
                         league_odd_quick_cate_close.visibility = View.VISIBLE

@@ -8,21 +8,18 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.StyleSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.webkit.*
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.exoplayer2.util.Util
-import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
 import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
 import org.cxct.sportlottery.MultiLanguagesApplication
@@ -41,7 +38,6 @@ import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.repository.FLAG_LIVE
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
-import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
 import org.cxct.sportlottery.ui.common.SocketLinearManager
@@ -83,6 +79,9 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
     private var curHomeScore: Int? = null
     private var curAwayScore: Int? = null
+
+    private var curHomeCornerKicks: Int? = null
+    private var curAwayCornerKicks: Int? = null
 
     private var curStatus: Int? = null
 
@@ -220,6 +219,9 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                     matchOdd?.let { matchOdd ->
                         matchOdd.matchInfo.homeScore = "$curHomeScore"
                         matchOdd.matchInfo.awayScore = "$curAwayScore"
+
+                        matchOdd.matchInfo.homeCornerKicks = curHomeCornerKicks
+                        matchOdd.matchInfo.awayCornerKicks = curAwayCornerKicks
 
                         val fastBetDataBean = FastBetDataBean(
                             matchType = MatchType.IN_PLAY,
@@ -487,6 +489,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                                 )
                                 && oddsDetailListData.isExpand
                             ) {
+                                updateBetInfo(oddsDetailListData, matchOddsChangeEvent)
                                 oddsDetailListAdapter?.notifyItemChanged(index)
                             }
                         }
@@ -518,17 +521,33 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     }
 
     /**
+     * 若投注單處於未開啟狀態且有加入注單的賠率項資訊有變動時, 更新投注單內資訊
+     */
+    private fun updateBetInfo(oddsDetailListData: OddsDetailListData, matchOddsChangeEvent: MatchOddsChangeEvent) {
+        if (!getBetListPageVisible()) {
+            //尋找是否有加入注單的賠率項
+            if (oddsDetailListData.oddArrayList.any { odd ->
+                    odd?.isSelected == true
+                }) {
+                viewModel.updateMatchOdd(matchOddsChangeEvent)
+            }
+        }
+    }
+
+    /**
      * 更新當前頁面的角球數
      */
     private fun MatchStatusCO.updateCornerKicks() {
         //region 判斷需不需要更新資料 角球數都沒變的話就不更新
         var cornerKicksChanged = false
-        if (homeCornerKicks != null && oddsDetailListAdapter?.homeCornerKicks != homeCornerKicks) {
+        if (homeCornerKicks != null && curHomeCornerKicks != homeCornerKicks) {
+            curHomeCornerKicks = homeCornerKicks
             oddsDetailListAdapter?.homeCornerKicks = homeCornerKicks
             cornerKicksChanged = true
         }
 
-        if (awayCornerKicks != null && oddsDetailListAdapter?.awayCornerKicks != awayCornerKicks) {
+        if (awayCornerKicks != null && curAwayCornerKicks != awayCornerKicks) {
+            curAwayCornerKicks = awayCornerKicks
             oddsDetailListAdapter?.awayCornerKicks = awayCornerKicks
             cornerKicksChanged = true
         }

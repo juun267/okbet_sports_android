@@ -50,6 +50,8 @@ object MatchOddUtil {
                         ).apply {
                             extInfo = odd.extInfo
                             isOnlyEUType = odd.isOnlyEUType
+                            homeCornerKicks = matchInfo.homeCornerKicks
+                            awayCornerKicks = matchInfo.awayCornerKicks
                         }
 
                     }

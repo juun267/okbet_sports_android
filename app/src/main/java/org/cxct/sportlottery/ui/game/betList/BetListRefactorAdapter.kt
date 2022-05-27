@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail_v2.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.*
@@ -20,7 +19,7 @@ import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.et_bet
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.et_clickable
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.iv_bet_lock
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.layoutKeyBoard
-import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.tv_error_message
+import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.tvErrorMessage
 import kotlinx.android.synthetic.main.content_bet_list_batch_control.view.*
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v2.view.*
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_v2.view.*
@@ -90,6 +89,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     notifyDataSetChanged()
                 }
             }
+        }
+
+    var userLogin: Boolean = false
+        set(value) {
+            field = value
+            notifyDataSetChanged()
         }
 
     var userMoney: Double = 0.0
@@ -180,7 +185,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     mSelectedPosition,
                     onSelectedPositionListener,
                     position,
-                    userMoney
+                    userMoney,
+                    userLogin
                 )
             }
             is BatchSingleViewHolder -> {
@@ -326,11 +332,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             mSelectedPosition: Int,
             onSelectedPositionListener: OnSelectedPositionListener,
             position: Int,
-            userMoney: Double
+            userMoney: Double,
+            userLogin: Boolean
         ) {
 
             //設置輸入投注上限額
-            setupInputMaxMoney(itemData, userMoney)
+            setupInputMaxMoney(itemData, userMoney, userLogin)
 
             itemView.apply {
                 setupBetAmountInput(
@@ -354,13 +361,13 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             }
         }
 
-        private fun setupInputMaxMoney(itemData: BetInfoListData, userMoney: Double) {
+        private fun setupInputMaxMoney(itemData: BetInfoListData, userMoney: Double, userLogin: Boolean) {
             mUserMoney = userMoney
             parlayMaxBet = itemData.parlayOdds?.max?.toLong() ?: 0
-            inputMaxMoney = if (parlayMaxBet > 0) {
+            inputMaxMoney = if (userLogin) {
                 min(parlayMaxBet.toDouble(), userMoney)
             } else {
-                userMoney
+                parlayMaxBet.toDouble() //未登入使用 parlayMaxBet 當最大輸入金額 (比照pc版)
             }
         }
 
@@ -658,40 +665,73 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         tv_name.text =
                             when (inPlay && itemData.matchType != MatchType.OUTRIGHT && itemData.matchOdd.gameType == GameType.FT.key) {
                                 true -> {
-                                    context.getString(
-                                        R.string.bet_info_in_play_score,
-                                        itemData.matchOdd.playCateName,
-                                        itemData.matchOdd.homeScore.toString(),
-                                        itemData.matchOdd.awayScore.toString()
-                                    )
+                                    when {
+                                        PlayCate.isIntervalCornerPlayCate(itemData.matchOdd.playCode) -> {
+                                            itemData.matchOdd.playCateName
+                                        }
+                                        PlayCate.needShowCurrentCorner(itemData.matchOdd.playCode) -> {
+                                            if (itemData.matchOdd.homeCornerKicks == null || itemData.matchOdd.awayCornerKicks == null) {
+                                                itemData.matchOdd.playCateName
+                                            } else {
+                                                context.getString(
+                                                    R.string.bet_info_in_play_score,
+                                                    itemData.matchOdd.playCateName,
+                                                    itemData.matchOdd.homeCornerKicks.toString(),
+                                                    itemData.matchOdd.awayCornerKicks.toString()
+                                                )
+                                            }
+                                        }
+                                        else -> {
+                                            context.getString(
+                                                R.string.bet_info_in_play_score,
+                                                itemData.matchOdd.playCateName,
+                                                itemData.matchOdd.homeScore.toString(),
+                                                itemData.matchOdd.awayScore.toString()
+                                            )
+                                        }
+                                    }
                                 }
                                 else -> itemData.matchOdd.playCateName
                             }
                     }
 
                     else -> {
+                        val playCateName = itemData.betPlayCateNameMap?.getNameMap(
+                            itemData.matchOdd.gameType,
+                            itemData.matchOdd.playCode
+                        )
+                            ?.get(LanguageManager.getSelectLanguage(context).key)
+                            ?: ""
                         tv_name.text =
                             when (inPlay && itemData.matchType != MatchType.OUTRIGHT && itemData.matchOdd.gameType == GameType.FT.key) {
                                 true -> {
-                                    context.getString(
-                                        R.string.bet_info_in_play_score,
-                                        itemData.betPlayCateNameMap?.getNameMap(
-                                            itemData.matchOdd.gameType,
-                                            itemData.matchOdd.playCode
-                                        )
-                                            ?.get(LanguageManager.getSelectLanguage(context).key)
-                                            ?: "",
-                                        itemData.matchOdd.homeScore.toString(),
-                                        itemData.matchOdd.awayScore.toString()
-                                    )
+                                    when {
+                                        PlayCate.isIntervalCornerPlayCate(itemData.matchOdd.playCode) -> {
+                                            nameOneLine(playCateName)
+                                        }
+                                        PlayCate.needShowCurrentCorner(itemData.matchOdd.playCode) -> {
+                                            if (itemData.matchOdd.homeCornerKicks == null || itemData.matchOdd.awayCornerKicks == null) {
+                                                nameOneLine(playCateName)
+                                            } else {
+                                                context.getString(
+                                                    R.string.bet_info_in_play_score,
+                                                    playCateName,
+                                                    itemData.matchOdd.homeCornerKicks.toString(),
+                                                    itemData.matchOdd.awayCornerKicks.toString()
+                                                )
+                                            }
+                                        }
+                                        else -> {
+                                            context.getString(
+                                                R.string.bet_info_in_play_score,
+                                                playCateName,
+                                                itemData.matchOdd.homeScore.toString(),
+                                                itemData.matchOdd.awayScore.toString()
+                                            )
+                                        }
+                                    }
                                 }
-                                else -> nameOneLine(
-                                    itemData.betPlayCateNameMap?.getNameMap(
-                                        itemData.matchOdd.gameType,
-                                        itemData.matchOdd.playCode
-                                    )
-                                        ?.get(LanguageManager.getSelectLanguage(context).key) ?: ""
-                                )
+                                else -> nameOneLine(playCateName)
                             }
                     }
                 }
@@ -772,11 +812,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         private fun setupMinimumLimitMessage(itemData: BetInfoListData) {
             itemView.apply {
                 itemData.parlayOdds?.min?.let { min ->
-                    tv_error_message.text = String.format(
-                        context.getString(R.string.bet_info_list_minimum_limit_amount),
-                        min,
-                        sConfigData?.systemCurrency
-                    )
+                    tvErrorMessage.text = context.getString(R.string.bet_info_list_minimum_limit_amount)
                 }
             }
         }
@@ -787,7 +823,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         ) {
             itemView.apply {
                 itemData.parlayOdds?.min?.let { min ->
-                    tv_error_message.visibility = if (betAmount != 0.0 && betAmount < min) {
+                    tvErrorMessage.visibility = if (betAmount != 0.0 && betAmount < min) {
                         itemData.amountError = true
                         View.VISIBLE
                     } else {
@@ -2042,11 +2078,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
         private fun setupMinimumLimitMessage(itemData: ParlayOdd) {
             itemView.apply {
-                tv_error_message.text = String.format(
-                    context.getString(R.string.bet_info_list_minimum_limit_amount),
-                    itemData.min,
-                    sConfigData?.systemCurrency
-                )
+                tvErrorMessage.text = context.getString(R.string.bet_info_list_minimum_limit_amount)
                 et_bet.apply {
 //                    hint = getLimitHint(
 //                        context,
@@ -2060,7 +2092,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         private fun checkMinimumLimit(itemData: ParlayOdd, betAmount: Double = itemData.betAmount) {
             itemView.apply {
                 itemData.min.let { min ->
-                    tv_error_message.visibility = if (betAmount != 0.0 && betAmount < min) {
+                    tvErrorMessage.visibility = if (betAmount != 0.0 && betAmount < min) {
                         itemData.amountError = true
                         View.VISIBLE
                     } else {
