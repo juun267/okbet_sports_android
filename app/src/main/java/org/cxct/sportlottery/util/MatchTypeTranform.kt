@@ -39,7 +39,7 @@ fun tranByPlayCode(
             ""
         }
         //角球非區間型玩法需顯示當前角球數
-        rtScore != null && PlayCate.needShowCurrentCorner(playCateCode) -> {
+        !rtScore.isNullOrEmpty() && PlayCate.needShowCurrentCorner(playCateCode) -> {
             if (default != null) {
                 "$default ($rtScore)"
             } else {

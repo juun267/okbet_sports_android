@@ -61,24 +61,24 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         PlayCategoryAdapter().apply {
             playCategoryListener = PlayCategoryListener(
                 onClickSetItemListener = {
+                    unSubscribeChannelHallAll()
                     viewModel.switchPlay(it)
-                    leagueAdapter.data.updateOddsSort()
-                    //leagueAdapter.notifyDataSetChanged()
-                    updateAllGameList()
                 },
                 onClickNotSelectableListener = {
+                    unSubscribeChannelHallAll()
                     viewModel.switchPlay(it)
                     upDateSelectPlay(it)
-                    leagueAdapter.data.updateOddsSort()
-                    //leagueAdapter.notifyDataSetChanged()
-                    updateAllGameList()
                 },
-                onSelectPlayCateListener = { play, playCate ->
-                    viewModel.switchPlayCategory(play, playCate.code)
+                onSelectPlayCateListener = { play, playCate, hasItemSelect ->
+                    if (!hasItemSelect) {
+                        unSubscribeChannelHallAll()
+                    }
+                    viewModel.switchPlayCategory(play, playCate.code, hasItemSelect)
                     upDateSelectPlay(play)
-                    leagueAdapter.data.updateOddsSort()
-                    //leagueAdapter.notifyDataSetChanged()
-                    updateAllGameList()
+                    if (hasItemSelect) {
+                        leagueAdapter.data.updateOddsSort()
+                        leagueAdapter.updateLeagueByPlayCate()
+                    }
                 }
             )
         }
@@ -135,7 +135,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 },
                 clickListenerFavorite = { matchId ->
                     viewModel.pinFavorite(FavoriteType.MATCH, matchId)
-                    loading()
                 },
                 clickListenerStatistics = { matchId ->
                     navStatistics(matchId)
@@ -161,7 +160,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
     private fun setupToolbar(view: View) {
         (activity as AppCompatActivity).setSupportActionBar(view.favorite_toolbar)
-
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
@@ -240,10 +238,8 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         }
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initObserver()
         initSocketObserver()
     }
@@ -284,9 +280,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                             )
                         } &&
                         leagueOdd.unfold == FoldState.UNFOLD.code) {
-
-                        //leagueAdapter.notifyItemChanged(index)
-//                        updateGameList(index, leagueOdd)
                     }
                 }
             }
@@ -344,8 +337,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                         } &&
                         leagueOdd.unfold == FoldState.UNFOLD.code
                     ) {
-                        //leagueAdapter.notifyItemChanged(index)
-//                        updateGameList(index, leagueOdd)
                     }
                 }
             }
@@ -364,8 +355,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                         } &&
                         leagueOdd.unfold == FoldState.UNFOLD.code
                     ) {
-                        //leagueAdapter.notifyItemChanged(index)
-//                        updateGameList(index, leagueOdd)
                     }
                 }
             }
@@ -387,7 +376,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 val nowGameType = gameTypeAdapter.dataSport.find { gameType -> gameType.isSelected }?.code
                 if (nowGameType == it.gameType) //收到的gameType与用户当前页面所选球种相同, 则需额外调用/myFavorite/match/query
                     viewModel.getFavoriteMatch()
-                loading()
             }
         }
     }
@@ -450,12 +438,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     private fun initObserver() {
         viewModel.userInfo.observe(this.viewLifecycleOwner) {
             leagueAdapter.discount = it?.discount ?: 1.0F
-        }
-
-        viewModel.myFavoriteLoading.observe(this.viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { show ->
-                if (show) loading() else hideLoading()
-            }
         }
 
         viewModel.sportQueryData.observe(this.viewLifecycleOwner) {

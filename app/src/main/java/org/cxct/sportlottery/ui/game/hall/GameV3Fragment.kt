@@ -133,18 +133,19 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             playCategoryListener = PlayCategoryListener(
                 onClickSetItemListener = {
                     viewModel.switchPlay(args.matchType, it)
-                    leagueAdapter.data.updateOddsSort()
-                    leagueAdapter.updateLeagueByPlayCate()
-                }, onClickNotSelectableListener = {
+                },
+                onClickNotSelectableListener = {
                     viewModel.switchPlay(args.matchType, it)
                     upDateSelectPlay(it)
-                    leagueAdapter.data.updateOddsSort()
-                    leagueAdapter.updateLeagueByPlayCate()
-                }, onSelectPlayCateListener = { play, playCate ->
-                    viewModel.switchPlayCategory(args.matchType, play, playCate.code)
+                },
+                onSelectPlayCateListener = { play, playCate, hasItemSelect ->
+                    viewModel.switchPlayCategory(play, playCate.code, hasItemSelect, args.matchType)
                     upDateSelectPlay(play)
-                    leagueAdapter.data.updateOddsSort()
-                    leagueAdapter.updateLeagueByPlayCate()
+                    //當前已選中下拉選單不用重新要資料
+                    if (hasItemSelect) {
+                        leagueAdapter.data.updateOddsSort()
+                        leagueAdapter.updateLeagueByPlayCate()
+                    }
                 })
         }
     }
@@ -832,7 +833,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     // TODO 這裡要確認是否有其他地方重複呼叫
                     Log.d("Hewie", "observe => OddsListGameHallResult")
 
-                    game_list?.firstVisibleRange(leagueAdapter, activity?:requireActivity())
+                    game_list?.firstVisibleRange(leagueAdapter, activity ?: requireActivity())
 
                 }
                 refreshToolBarUI(this.view)

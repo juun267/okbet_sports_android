@@ -67,6 +67,7 @@ import org.cxct.sportlottery.ui.game.data.SpecialEntrance
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.px
+import org.cxct.sportlottery.util.DisplayUtil.pxToDp
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.TimeUtil.DMY_FORMAT
@@ -951,7 +952,7 @@ class GameViewModel(
                     )
                 )
             }?.let { result ->
-                if(result.success){
+                if (result.success) {
                     result.t?.odds?.forEach { oddData ->
                         oddData.sortOddsMap()
                     }
@@ -1157,14 +1158,22 @@ class GameViewModel(
     }
 
     fun switchPlay(matchType: MatchType, play: Play) {
-        updatePlaySelectedState(play)
+        updatePlaySelectedState(matchType, play)
     }
 
-    fun switchPlayCategory(matchType: MatchType, play: Play, playCateCode: String?) {
+    fun switchPlayCategory(play: Play, playCateCode: String?, hasItemSelect: Boolean, matchType: MatchType) {
         _playList.value?.peekContent()?.forEach {
             it.isSelected = (it == play)
         }
         _playCate.value = Event(playCateCode)
+        if (!hasItemSelect) {
+            getGameHallList(
+                matchType = matchType,
+                isReloadDate = false,
+                isReloadPlayCate = false,
+                isLastSportType = true
+            )
+        }
     }
 
     fun switchMatchDate(matchType: MatchType, date: Date) {
@@ -1355,30 +1364,27 @@ class GameViewModel(
         _isNoHistory.postValue(sportCode == null)
     }
 
-    fun switchPlay(
-        matchType: MatchType,
-        leagueIdList: List<String>,
-        matchIdList: List<String>,
-        play: Play
-    ) {
-        updatePlaySelectedState(play)
-
-//        getLeagueOddsList(matchType, leagueIdList, matchIdList)
+    //用於GameLeagueFragment
+    fun switchPlay(matchType: MatchType, leagueIdList: List<String>, matchIdList: List<String>, play: Play) {
+        updatePlaySelectedState(matchType, play)
+        getLeagueOddsList(matchType, leagueIdList, matchIdList)
     }
 
+    //用於GameLeagueFragment
     fun switchPlayCategory(
         matchType: MatchType,
         leagueIdList: List<String>,
         matchIdList: List<String>,
         play: Play,
-        playCateCode: String?
+        playCateCode: String?,
+        hasItemSelect: Boolean
     ) {
         _playList.value?.peekContent()?.forEach {
             it.isSelected = (it == play)
         }
         _playCate.value = Event(playCateCode)
 
-//        getLeagueOddsList(matchType, leagueIdList, matchIdList)
+        if (!hasItemSelect) getLeagueOddsList(matchType, leagueIdList, matchIdList)
     }
 
     /**
@@ -2163,13 +2169,13 @@ class GameViewModel(
 
                     //賽事動畫網址
                     val eventId = result.oddsDetailData?.matchOdd?.matchInfo?.trackerId
-                    val screenWidth = MetricsUtil.getScreenWidth().toFloat().px
+                    val screenWidth = MetricsUtil.getScreenWidth()
                     val animationHeight = (LiveUtil.getAnimationHeightFromWidth(screenWidth)).px
                     val languageParams = LanguageManager.getLanguageString(MultiLanguagesApplication.appContext)
 
-                    val trackerUrl = "${Constants.getBaseUrl()}animation/?eventId=${eventId}&width=${screenWidth}&height=${animationHeight}&lang=${languageParams}&mode=widget"
-                    //測試用eventId=4385309
-//                    val trackerUrl = "${Constants.getBaseUrl()}animation/?eventId=4385309&width=${screenWidth}&height=${animationHeight}&lang=${languageParams}&mode=widget"
+                    val trackerUrl = "${Constants.getBaseUrl()}animation/?eventId=${eventId}&width=${screenWidth.pxToDp}&height=${animationHeight}&lang=${languageParams}&mode=widget"
+                    //測試用eventId=4385309, 4477265
+//                    val trackerUrl = "${Constants.getBaseUrl()}animation/?eventId=4477265&width=${screenWidth.px}&height=${animationHeight}&lang=${languageParams}&mode=widget"
 
                     _matchTrackerUrl.postValue(Event(trackerUrl))
                     notifyFavorite(FavoriteType.PLAY_CATE)
@@ -2499,7 +2505,7 @@ class GameViewModel(
         return this
     }
 
-    private fun updatePlaySelectedState(play: Play) {
+    private fun updatePlaySelectedState(matchType: MatchType, play: Play) {
         val playList = _playList.value?.peekContent()
 
         playList?.forEach {
@@ -2521,8 +2527,16 @@ class GameViewModel(
                             null
                         }
                     }
-                    ))
+                    )
+            )
         }
+
+        getGameHallList(
+            matchType = matchType,
+            isReloadDate = false,
+            isReloadPlayCate = false,
+            isLastSportType = true
+        )
     }
 
     /**
@@ -2914,7 +2928,7 @@ class GameViewModel(
             doNetwork(androidContext) {
                 OneBoSportApi.indexService.getConfig()
             }?.let { configResult ->
-                if (configResult.success){
+                if (configResult.success) {
                     sConfigData = configResult.configData
                     _gotConfig.postValue(Event(true))
                 }

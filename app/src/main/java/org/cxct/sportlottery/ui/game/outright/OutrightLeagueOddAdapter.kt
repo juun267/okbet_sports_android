@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.game.outright
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.results.OutrightType
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 
 class OutrightLeagueOddAdapter :
@@ -55,9 +55,6 @@ class OutrightLeagueOddAdapter :
         }
     }
 
-//    override fun onBindViewHolder(holder: LeagueOddViewHolder, position: Int) {
-//        holder.bind(data[position], oddsType, outrightOddListener)
-//    }
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is LeagueOddViewHolder -> {
@@ -69,19 +66,19 @@ class OutrightLeagueOddAdapter :
     override fun getItemCount(): Int = if (data.isEmpty()) {
         2
     } else {
-        data.size+1
+        data.size + 1
     }
 
     override fun getItemViewType(position: Int): Int {
         return when {
             data.isEmpty() -> {
-                if(position == 0 ){
+                if (position == 0) {
                     OutrightType.NO_DATA.ordinal
-                }else{
+                } else {
                     OutrightType.BOTTOM_NAVIGATION.ordinal
                 }
             }
-            position == (data.size) ->{
+            position == (data.size) -> {
                 OutrightType.BOTTOM_NAVIGATION.ordinal
             }
             else -> {
@@ -102,6 +99,10 @@ class OutrightLeagueOddAdapter :
             oddsType: OddsType,
             outrightOddListener: OutrightOddListener?
         ) {
+            if (bindingAdapterPosition == 0) {
+                val lp = itemView.layoutParams as RecyclerView.LayoutParams
+                lp.setMargins(0, 10.dp, 0, 0)
+            }
 
             itemView.outright_league_name.text = matchOdd?.matchInfo?.name
 
@@ -129,6 +130,7 @@ class OutrightLeagueOddAdapter :
             }
         }
     }
+
     class NoDataViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         companion object {
             fun from(parent: ViewGroup): NoDataViewHolder {
@@ -140,6 +142,7 @@ class OutrightLeagueOddAdapter :
             }
         }
     }
+
     class BottomNavigationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
 
