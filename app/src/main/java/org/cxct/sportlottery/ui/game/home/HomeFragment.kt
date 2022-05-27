@@ -89,6 +89,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
     private var isInPlayResult = false
     private var isSoonResult = false
+    private var changeTime = System.currentTimeMillis()
 
     //TODO 檢查 mSubscribeInPlayGameID、mSubscribeAtStartGameID 與tableInPlayMap、tableSoonMap 的功用
     private var mSubscribeInPlayGameID: MutableList<String> = mutableListOf()
@@ -949,6 +950,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
+                var needUpdateBetInfo = false
                 SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
                 //滾球盤、即將開賽盤
                 val filterCode = when (mSelectMatchType) {
@@ -977,6 +979,15 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                                 filterCode
                             )//之後建enum class
                             updateMatchOddNonNull.filterMenuPlayCate(playCateCode)
+
+                            //判斷是否有加入注單的賠率項
+                            if (updateMatchOddNonNull.matchInfo?.id == oddsChangeEvent.eventId && updateMatchOddNonNull.oddsMap?.values?.any { oddList ->
+                                    oddList?.any { odd ->
+                                        odd?.isSelected == true
+                                    } == true
+                                } == true) {
+                                needUpdateBetInfo = true
+                            }
                             mHomeListAdapter.notifySubItemChanged(
                                 index,
                                 gameEntity.matchOdds.indexOf(updateMatchOdd)
@@ -993,6 +1004,12 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     if (entity.matchInfo?.id != it.eventId) return@forEach
                     entity.oddBeans.forEachIndexed { oddIndex, oddBean ->
                         if (SocketUpdateUtil.updateMatchOdds(oddBean, oddsChangeEvent)) {
+                            //判斷是否有加入注單的賠率項
+                            if (oddBean.oddList.any { odd ->
+                                    odd?.isSelected == true
+                                }) {
+                                needUpdateBetInfo = true
+                            }
                             mHomeListAdapter.notifyRecommendSubItemChanged(entity, oddIndex)
                         }
                     }
@@ -1011,27 +1028,55 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                             )//之後建enum class
                             updateMatchOdd.highlightFilterMenuPlayCate(playCateCode)
 
+                            //判斷是否有加入注單的賠率項
+                            if (updateMatchOdd.matchInfo?.id == oddsChangeEvent.eventId && updateMatchOdd.oddsMap?.values?.any { oddList ->
+                                    oddList?.any { odd ->
+                                        odd?.isSelected == true
+                                    } == true
+                                } == true) {
+                                needUpdateBetInfo = true
+                            }
                             mHomeListAdapter.notifyHighLightItemChanged(updateMatchOdd)
                         }
                         isUpdate = true
                     }
+                }
+
+                //投注單處於未開啟狀態時才需要透過此處去更新投注單內資訊
+                if (needUpdateBetInfo && !getBetListPageVisible()) {
+                    viewModel.updateMatchOdd(oddsChangeEvent)
                 }
             }
         }
 
         receiver.leagueChange.observe(this.viewLifecycleOwner) {
             it?.let { leagueChangeEvent ->
-                unSubscribeChannelHallAll()
-                leagueChangeEvent.leagueIdList?.let { leagueIdList ->
-                    //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
-                    viewModel.getLeagueOddsList(
-                        mSelectMatchType,
-                        leagueIdList,
-                        listOf(),
-                        isIncrement = true
-                    )
+                if (System.currentTimeMillis() - changeTime < 1000) {
+                    return@observe
                 }
-                queryData(leagueChangeEvent.gameType ?: "", leagueChangeEvent.leagueIdList)
+
+                changeTime = System.currentTimeMillis()
+                unSubscribeChannelHallAll()
+//                leagueChangeEvent.leagueIdList?.let { leagueIdList ->
+//                    //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
+//                    viewModel.getLeagueOddsList(
+//                        mSelectMatchType,
+//                        leagueIdList,
+//                        listOf(),
+//                        isIncrement = true
+//                    )
+//                }
+//                queryData(leagueChangeEvent.gameType ?: "", leagueChangeEvent.leagueIdList)
+                if (mSelectMatchType == MatchType.IN_PLAY) {
+                    tableInPlayMap.clear()
+                    //滾球盤
+                    viewModel.getMatchPreloadInPlay()
+                }
+                else {
+                    tableSoonMap.clear()
+                    //即將開賽盤
+                    viewModel.getMatchPreloadAtStart()
+                }
             }
         }
 
@@ -1144,12 +1189,14 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     }
 
     private fun queryData(gameType: String = "", leagueIdList: List<String>? = null) {
+        changeTime = System.currentTimeMillis()
         tableInPlayMap.clear()
         tableSoonMap.clear()
         viewModel.getSportMenu()
 
         //滾球盤、即將開賽盤
         viewModel.getMatchPreloadInPlay()
+        tableSoonMap.clear()
         viewModel.getMatchPreloadAtStart()
 
         //推薦賽事

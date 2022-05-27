@@ -46,9 +46,8 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.error.BetAddErrorParser
-import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.*
 import org.cxct.sportlottery.ui.bet.list.receipt.BetInfoCarReceiptDialog
 import org.cxct.sportlottery.ui.game.GameViewModel
@@ -330,6 +329,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun dismiss() {
+        fastBetPageUnSubscribeEvent()
         activity?.onBackPressed()
         OddSpannableString.clearHandler()
     }
@@ -345,7 +345,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             ll_win_quota_detail.visibility = View.VISIBLE
 
             binding.etBet.apply {
-                setText(parlayOdd?.max.toString())
+                setText(TextUtil.formatInputMoney(parlayOdd?.max.toString()))
                 isFocusable = true
                 setSelection(text.length)
             }
@@ -385,10 +385,19 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 val quota = it.toDouble()
 
                 betInfoListData?.parlayOdds?.max?.let { max ->
-                    if (quota > max) {
-                        binding.etBet.setText(max.toString())
-                        binding.etBet.setSelection(max.toString().length)
-                        return@afterTextChanged
+                    when{
+                        isLogin == true && (quota > max || quota > mUserMoney) -> {
+                            val realMaxMoney = min(mUserMoney, max.toDouble())
+                            binding.etBet.setText(TextUtil.formatInputMoney(realMaxMoney))
+                            binding.etBet.setSelection(TextUtil.formatInputMoney(realMaxMoney).length)
+                            return@afterTextChanged
+                        }
+                        isLogin == false && (quota > max)  -> {
+                            binding.etBet.setText(TextUtil.formatInputMoney(max))
+                            binding.etBet.setSelection(TextUtil.formatInputMoney(max).length)
+                            return@afterTextChanged
+                        }
+                        else -> ""
                     }
                 }
 
@@ -466,12 +475,8 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun checkMinQuota(quota: Double) {
         betInfoListData?.parlayOdds?.min?.let { min ->
             if (quota < min) {
-                binding.tvErrorMessage.text = String.format(
-                    (context
-                        ?: requireContext()).getString(R.string.bet_info_list_minimum_limit_amount),
-                    min,
-                    sConfigData?.systemCurrency
-                )
+                binding.tvErrorMessage.text = (context
+                    ?: requireContext()).getString(R.string.bet_info_list_minimum_limit_amount)
                 binding.tvErrorMessage.visibility = View.VISIBLE
                 button_bet.amountCanBet = false
             } else {
@@ -503,7 +508,14 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 if (list.isNotEmpty()) {
                     betInfoListData = list.getOrNull(0)
                     if (list.size > 1) {
+                        fastBetPageUnSubscribeEvent()
                         dismiss()
+                    } else {
+                        if (betInfoListData?.subscribeChannelType == ChannelType.HALL) {
+                            fastBetPageSubscribeHallEvent(betInfoListData?.matchOdd?.gameType, betInfoListData?.matchOdd?.matchId)
+                        } else {
+                            fastBetPageSubscribeEvent(betInfoListData?.matchOdd?.matchId)
+                        }
                     }
                     matchOdd?.let { matchOdd ->
                         //並不是每筆資料都有滾球的Booleam可以判斷 所以改用時間
@@ -731,24 +743,62 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             betPlayCateNameMap.isNullOrEmpty() -> {
                 binding.tvName.text =
                     if (inPlay && betInfoListData?.matchType != MatchType.OUTRIGHT && matchOdd.gameType == GameType.FT.key) {
-                        getString(
-                            R.string.bet_info_in_play_score,
-                            nameOneLine(matchOdd.playCateName),
-                            matchOdd.homeScore.toString(),
-                            matchOdd.awayScore.toString()
-                        )
+                        when {
+                            PlayCate.isIntervalCornerPlayCate(matchOdd.playCode) -> {
+                                nameOneLine(matchOdd.playCateName)
+                            }
+                            PlayCate.needShowCurrentCorner(matchOdd.playCode) -> {
+                                if (matchOdd.homeCornerKicks == null || matchOdd.awayCornerKicks == null) {
+                                    nameOneLine(matchOdd.playCateName)
+                                } else {
+                                    getString(
+                                        R.string.bet_info_in_play_score,
+                                        nameOneLine(matchOdd.playCateName),
+                                        matchOdd.homeCornerKicks.toString(),
+                                        matchOdd.awayCornerKicks.toString()
+                                    )
+                                }
+                            }
+                            else -> {
+                                getString(
+                                    R.string.bet_info_in_play_score,
+                                    nameOneLine(matchOdd.playCateName),
+                                    matchOdd.homeScore.toString(),
+                                    matchOdd.awayScore.toString()
+                                )
+                            }
+                        }
                     } else nameOneLine(matchOdd.playCateName)
             }
             else -> {
                 binding.tvName.text =
                     if (inPlay && betInfoListData?.matchType != MatchType.OUTRIGHT && matchOdd.gameType == GameType.FT.key) {
-                        getString(
-                            R.string.bet_info_in_play_score,
-                            betPlayCateNameMap.getNameMap(matchOdd.gameType, matchOdd.playCode)
-                                ?.get(LanguageManager.getSelectLanguage(context).key) ?: "",
-                            matchOdd.homeScore.toString(),
-                            matchOdd.awayScore.toString()
-                        )
+                        when {
+                            PlayCate.isIntervalCornerPlayCate(matchOdd.playCode) -> {
+                                nameOneLine(matchOdd.playCateName)
+                            }
+                            PlayCate.needShowCurrentCorner(matchOdd.playCode) -> {
+                                if (matchOdd.homeCornerKicks == null || matchOdd.awayCornerKicks == null) {
+                                    nameOneLine(matchOdd.playCateName)
+                                } else {
+                                    getString(
+                                        R.string.bet_info_in_play_score,
+                                        nameOneLine(matchOdd.playCateName),
+                                        matchOdd.homeCornerKicks.toString(),
+                                        matchOdd.awayCornerKicks.toString()
+                                    )
+                                }
+                            }
+                            else -> {
+                                getString(
+                                    R.string.bet_info_in_play_score,
+                                    betPlayCateNameMap.getNameMap(matchOdd.gameType, matchOdd.playCode)
+                                        ?.get(LanguageManager.getSelectLanguage(context).key) ?: "",
+                                    matchOdd.homeScore.toString(),
+                                    matchOdd.awayScore.toString()
+                                )
+                            }
+                        }
                     } else nameOneLine(
                         betPlayCateNameMap.getNameMap(matchOdd.gameType, matchOdd.playCode)
                             ?.get(LanguageManager.getSelectLanguage(context).key) ?: ""
@@ -883,10 +933,10 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 .toDouble()
 
         if (stake > currentMoney ?: 0.0) {
-            showErrorPromptDialog(
-                getString(R.string.prompt),
-                getString(R.string.bet_info_bet_balance_insufficient)
-            ) {}
+//            showErrorPromptDialog(
+//                getString(R.string.prompt),
+//                getString(R.string.bet_info_bet_balance_insufficient)
+//            ) {}
             return
         }
 
@@ -962,10 +1012,10 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun getMaxBetMoney(): Double {
         val parlayMaxBet = betInfoListData?.parlayOdds?.max ?: 0
-        return if (parlayMaxBet > 0) {
-            min(parlayMaxBet.toDouble(), mUserMoney)
-        } else {
-            mUserMoney
+        return when {
+            isLogin == false -> parlayMaxBet.toDouble()
+            mUserMoney > 0.0  && parlayMaxBet > 0 -> min(parlayMaxBet.toDouble(), mUserMoney)
+            else -> min(parlayMaxBet.toDouble(), mUserMoney)
         }
     }
 

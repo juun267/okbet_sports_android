@@ -70,6 +70,8 @@ object SocketUpdateUtil {
                         }
                     }
 
+                    matchOdd.matchInfo?.homeCornerKicks = matchStatusCO.homeCornerKicks
+                    matchOdd.matchInfo?.awayCornerKicks = matchStatusCO.awayCornerKicks
 
                     if (needUpdateTotalScore(gameType) && matchStatusCO.homeTotalScore != null && matchStatusCO.homeTotalScore != matchOdd.matchInfo?.homeTotalScore) {
                         matchOdd.matchInfo?.homeTotalScore = matchStatusCO.homeTotalScore

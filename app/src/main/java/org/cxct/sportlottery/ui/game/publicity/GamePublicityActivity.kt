@@ -250,6 +250,10 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
 
     }
 
+    override fun getBetListPageVisible(): Boolean {
+        return betListFragment.isVisible
+    }
+
     fun removeBetListFragment() {
         supportFragmentManager.beginTransaction().remove(betListFragment).commit()
     }
