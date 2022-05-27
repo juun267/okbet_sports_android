@@ -86,6 +86,13 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         viewModel.onlinePayResult.observe(this.viewLifecycleOwner, {
             resetEvent()
         })
+
+        //在線充值首充提示
+        viewModel.onlinePayFirstRechargeTips.observe(viewLifecycleOwner, { event ->
+            event?.getContentIfNotHandled()?.let { tipString ->
+                showPromptDialog(getString(R.string.prompt), tipString) {}
+            }
+        })
     }
 
     private fun initView() {
