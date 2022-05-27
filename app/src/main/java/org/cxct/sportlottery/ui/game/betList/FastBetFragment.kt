@@ -280,7 +280,8 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     view as EditText,
                     null,
                     getMaxBetMoney(),
-                    betInfoListData?.parlayOdds?.min?.toLong() ?: 0
+                    betInfoListData?.parlayOdds?.min?.toLong() ?: 0,
+                    isLogin == true
                 )
             }
             false
@@ -352,7 +353,8 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             binding.layoutKeyBoard.showKeyboard(
                 binding.etBet, null,
                 getMaxBetMoney(),
-                betInfoListData?.parlayOdds?.min?.toLong() ?: 0
+                betInfoListData?.parlayOdds?.min?.toLong() ?: 0,
+                isLogin == true
             )
             //keyboard.showKeyboard(binding.etBet, null, betInfoListData?.parlayOdds?.max?.toLong() ?: GameConfigManager.maxBetMoney?.toLong() ?: 0)
         }

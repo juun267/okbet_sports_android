@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.util
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.text.InputType
 import android.util.AttributeSet
@@ -7,7 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.TextView
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.item_number_keyboard_layout.view.*
+import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
 import java.lang.reflect.Method
@@ -27,6 +32,7 @@ class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeS
         initView()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initView() {
         sConfigData?.presetBetAmount?.let {
             it.forEachIndexed { index, i ->
@@ -97,7 +103,11 @@ class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeS
             insertDot()
         }
         tvMax.setOnClickListener {
-            plusAll(maxBetMoney)
+            if (mIsLogin) {
+                plusAll(maxBetMoney)
+            } else {
+                setSnackBarNotify()
+            }
         }
     }
 
@@ -115,8 +125,12 @@ class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeS
     private lateinit var mEditText: EditText
     private var maxBetMoney: String = "0"
     private var isShow = false
+    //是否登入
+    private var mIsLogin = false
+    //提示未登入
+    private var snackBarNotify: Snackbar? = null
 
-    fun showKeyboard(editText: EditText, position: Int?, maxBetMoney: Double, minBetMoney: Long) {
+    fun showKeyboard(editText: EditText, position: Int?, maxBetMoney: Double, minBetMoney: Long, isLogin: Boolean) {
         this.mEditText = editText
         this.maxBetMoney = TextUtil.formatInputMoney(maxBetMoney)
         //InputType.TYPE_NULL 禁止彈出系統鍵盤
@@ -129,8 +143,39 @@ class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeS
         this.visibility = View.VISIBLE
         //parent?.visibility = View.VISIBLE
         isShow = true
-
+        mIsLogin = isLogin
         //keyBoardViewListener.showOrHideKeyBoardBackground(true, position)
+    }
+
+    //提示未登入
+    private fun setSnackBarNotify() {
+        val title = context.getString(R.string.login_notify)
+
+        val layout = R.layout.snackbar_login_notify
+
+        snackBarNotify =
+            Snackbar.make(
+                mEditText,
+                title,
+                Snackbar.LENGTH_LONG
+            ).apply {
+                val snackView: View = (context as Activity).layoutInflater.inflate(
+                    layout,
+                    (context as Activity).findViewById(android.R.id.content),
+                    false
+                )
+                snackView.tv_notify.text = title
+
+                (this.view as Snackbar.SnackbarLayout).apply {
+                    findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
+                        visibility = View.INVISIBLE
+                    }
+                    background.alpha = 0
+                    addView(snackView, 0)
+                    setPadding(0, 0, 0, 0)
+                }
+            }
+        snackBarNotify?.show()
     }
 
     fun setMaxBetMoney(maxBetMoney: Double) {
