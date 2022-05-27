@@ -332,6 +332,11 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 }
             }
 
+            itemView.league_neutral.apply {
+                isSelected = item.matchInfo?.neutral == 1
+                isVisible = item.matchInfo?.neutral == 1
+            }
+
             itemView.league_odd_match_chart.apply {
                 visibility = if (item.matchInfo?.source == MatchSource.SHOW_STATISTICS.code) View.VISIBLE else View.GONE
 
