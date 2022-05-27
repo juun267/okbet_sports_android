@@ -344,11 +344,13 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     override fun loading() {
 //        super.loading()
+        listLoading()
         stopTimer()
     }
 
     override fun hideLoading() {
         super.hideLoading()
+        hideListLoading()
         if (timer == null) startTimer()
     }
 
@@ -2176,6 +2178,16 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         stopTimer()
         unSubscribeChannelHallAll()
         unSubscribeChannelHallSport()
+    }
+
+    fun listLoading() {
+        listLoadingView.visibility = View.VISIBLE
+        game_list.visibility = View.GONE
+    }
+
+    fun hideListLoading() {
+        listLoadingView.visibility = View.GONE
+        game_list.visibility = View.VISIBLE
     }
 
     // region handle LeagueOdd data
