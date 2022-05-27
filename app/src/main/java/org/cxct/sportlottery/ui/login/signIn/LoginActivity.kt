@@ -77,6 +77,9 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private fun setupAccount() {
         binding.eetAccount.setText(viewModel.account)
+        binding.etAccount.endIconImageButton.setOnClickListener {
+            binding.eetAccount.text=null
+        }
 //        binding.eetAccount.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
 //            if (!hasFocus)
 //                checkInputData()
@@ -100,7 +103,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             binding.eetPassword.setSelection(binding.eetPassword.text.toString().length)
         }
         //避免自動記住密碼被人看到，把顯示密碼按鈕功能隱藏，直到密碼被重新編輯才顯示
-        if (binding.eetPassword.text.toString().isNotEmpty()) {
+        if (binding.eetPassword.text.toString().isEmpty()) {
             binding.etPassword.endIconImageButton.visibility = View.GONE
         } else {
             binding.etPassword.endIconImageButton.visibility = View.VISIBLE

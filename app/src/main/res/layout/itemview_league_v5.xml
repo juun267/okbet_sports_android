@@ -36,9 +36,9 @@
         android:id="@+id/league_odd_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/league_text"
         android:nestedScrollingEnabled="false"
         android:overScrollMode="never"
-        android:layout_below="@id/league_text"
         tools:itemCount="1"
         tools:listitem="@layout/itemview_league_odd_v5" />
 

@@ -423,7 +423,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
         //時間的色值同步#000000 即將開賽的Icon不改顏色，和Ian確認過
         private fun setStatusTextColor(item: MatchOdd) {
             val color =
-                if (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)) R.color.color_FFFFFF_000000 else R.color.color_A3A3A3_666666
+                if (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)) R.color.color_FFFFFF_000000 else R.color.color_BCBCBC_666666
             itemView.apply {
                 league_odd_match_status.setTextColor(ContextCompat.getColor(this.context, color))
                 league_odd_spt.setTextColor(ContextCompat.getColor(this.context, color))
