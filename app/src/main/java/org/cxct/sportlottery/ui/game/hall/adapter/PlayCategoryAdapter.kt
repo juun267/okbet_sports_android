@@ -85,7 +85,7 @@ class PlayCategoryAdapter : RecyclerView.Adapter<PlayCategoryAdapter.ViewHolderP
                                 //不是在設置初始值或Spinner初始化才回傳選擇項目
                                 if (!initSpinnerAdapter && !initialSetItem) {
                                     playList.getOrNull(position)?.let { playCate ->
-                                        playCategoryListener?.onSelectPlayCateListener(item, playCate)
+                                        playCategoryListener?.onSelectPlayCateListener(item, playCate, playList.any { it.isSelected })
                                         itemView.play_name.text = playCate.name
                                     }
                                 }
@@ -143,9 +143,9 @@ class PlayCategoryAdapter : RecyclerView.Adapter<PlayCategoryAdapter.ViewHolderP
 class PlayCategoryListener(
     private val onClickSetItemListener: (item: Play) -> Unit,
     private val onClickNotSelectableListener: (item: Play) -> Unit,
-    private val onSelectPlayCateListener: (item: Play, selectItem: PlayCate) -> Unit
+    private val onSelectPlayCateListener: (item: Play, selectItem: PlayCate, hasItemSelect: Boolean) -> Unit
 ) {
     fun onClickSetItemListener(item: Play) = onClickSetItemListener.invoke(item)
     fun onClickNotSelectableListener(item: Play) = onClickNotSelectableListener.invoke(item)
-    fun onSelectPlayCateListener(item: Play, selectItem: PlayCate) = onSelectPlayCateListener.invoke(item, selectItem)
+    fun onSelectPlayCateListener(item: Play, selectItem: PlayCate, hasItemSelect: Boolean) = onSelectPlayCateListener.invoke(item, selectItem, hasItemSelect)
 }

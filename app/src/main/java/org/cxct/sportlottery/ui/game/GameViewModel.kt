@@ -951,7 +951,7 @@ class GameViewModel(
                     )
                 )
             }?.let { result ->
-                if(result.success){
+                if (result.success) {
                     result.t?.odds?.forEach { oddData ->
                         oddData.sortOddsMap()
                     }
@@ -1160,11 +1160,19 @@ class GameViewModel(
         updatePlaySelectedState(matchType, play)
     }
 
-    fun switchPlayCategory(play: Play, playCateCode: String?) {
+    fun switchPlayCategory(play: Play, playCateCode: String?, hasItemSelect: Boolean, matchType: MatchType) {
         _playList.value?.peekContent()?.forEach {
             it.isSelected = (it == play)
         }
         _playCate.value = Event(playCateCode)
+        if (!hasItemSelect) {
+            getGameHallList(
+                matchType = matchType,
+                isReloadDate = false,
+                isReloadPlayCate = false,
+                isLastSportType = true
+            )
+        }
     }
 
     fun switchMatchDate(matchType: MatchType, date: Date) {
@@ -1355,14 +1363,27 @@ class GameViewModel(
         _isNoHistory.postValue(sportCode == null)
     }
 
-    fun switchPlay(
+    //用於GameLeagueFragment
+    fun switchPlay(matchType: MatchType, leagueIdList: List<String>, matchIdList: List<String>, play: Play) {
+        updatePlaySelectedState(matchType, play)
+        getLeagueOddsList(matchType, leagueIdList, matchIdList)
+    }
+
+    //用於GameLeagueFragment
+    fun switchPlayCategory(
         matchType: MatchType,
         leagueIdList: List<String>,
         matchIdList: List<String>,
-        play: Play
+        play: Play,
+        playCateCode: String?,
+        hasItemSelect: Boolean
     ) {
-        updatePlaySelectedState(matchType, play)
-        getLeagueOddsList(matchType, leagueIdList, matchIdList)
+        _playList.value?.peekContent()?.forEach {
+            it.isSelected = (it == play)
+        }
+        _playCate.value = Event(playCateCode)
+
+        if (!hasItemSelect) getLeagueOddsList(matchType, leagueIdList, matchIdList)
     }
 
     /**
@@ -2505,7 +2526,8 @@ class GameViewModel(
                             null
                         }
                     }
-                    ))
+                    )
+            )
         }
 
         getGameHallList(
@@ -2905,7 +2927,7 @@ class GameViewModel(
             doNetwork(androidContext) {
                 OneBoSportApi.indexService.getConfig()
             }?.let { configResult ->
-                if (configResult.success){
+                if (configResult.success) {
                     sConfigData = configResult.configData
                     _gotConfig.postValue(Event(true))
                 }

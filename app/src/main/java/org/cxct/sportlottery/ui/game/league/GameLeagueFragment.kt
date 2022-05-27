@@ -72,12 +72,25 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     )
                     upDateSelectPlay(it)
                 },
-                onSelectPlayCateListener = { play, playCate ->
-                    viewModel.switchPlayCategory(play, playCate.code)
+                onSelectPlayCateListener = { play, playCate, hasItemSelect ->
+                    if (!hasItemSelect) {
+                        unSubscribeChannelHallAll()
+                    }
+                    viewModel.switchPlayCategory(
+                        args.matchType,
+                        args.leagueId.toList(),
+                        args.matchId.toList(),
+                        play,
+                        playCate.code,
+                        hasItemSelect
+                    )
+
                     upDateSelectPlay(play)
-                    //下拉選單不用重新要資料
-                    leagueAdapter.data.updateOddsSort()
-                    leagueAdapter.updateLeagueByPlayCate()
+                    //當前已選中下拉選單不用重新要資料
+                    if (hasItemSelect) {
+                        leagueAdapter.data.updateOddsSort()
+                        leagueAdapter.updateLeagueByPlayCate()
+                    }
                 })
         }
     }
@@ -307,7 +320,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         }
                     }
 
-                    game_league_odd_list?.firstVisibleRange(leagueAdapter, activity?:requireActivity())
+                    game_league_odd_list?.firstVisibleRange(leagueAdapter, activity ?: requireActivity())
                 }
             }
         }
@@ -637,7 +650,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
 
     private fun updateSportBackground(sportCode: String?) {
-        GameConfigManager.getTitleBarBackgroundInPublicPage(sportCode ,MultiLanguagesApplication.isNightMode)?.let { titleRes ->
+        GameConfigManager.getTitleBarBackgroundInPublicPage(sportCode, MultiLanguagesApplication.isNightMode)?.let { titleRes ->
             game_league_toolbar_bg.setImageResource(titleRes)
         }
     }
