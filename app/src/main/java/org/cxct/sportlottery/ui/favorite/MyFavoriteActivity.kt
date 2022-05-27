@@ -36,6 +36,8 @@ import org.parceler.Parcels
 
 class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavoriteViewModel::class) {
 
+    private var betListFragment = BetListFragment()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -170,7 +172,7 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
     }
 
     override fun showBetListPage() {
-        val betListFragment =
+        betListFragment =
             BetListFragment.newInstance(object : BetListFragment.BetResultListener {
                 override fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>) {
                     supportFragmentManager.beginTransaction()
@@ -200,6 +202,10 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
             .add(R.id.fl_bet_list, betListFragment)
             .addToBackStack(BetListFragment::class.java.simpleName)
             .commit()
+    }
+
+    override fun getBetListPageVisible(): Boolean {
+        return betListFragment.isVisible
     }
 
     fun showFastBetFragment(fastBetDataBean: FastBetDataBean) {

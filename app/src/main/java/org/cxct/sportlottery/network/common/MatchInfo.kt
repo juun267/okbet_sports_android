@@ -19,6 +19,8 @@ interface MatchInfo {
     //FT
     var homeCards: Int?
     var awayCards: Int?
+    var homeCornerKicks: Int?
+    var awayCornerKicks: Int?
 
     var stopped: Int? //是否计时停止 1:是 ，0：否
 }

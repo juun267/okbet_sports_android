@@ -52,7 +52,7 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
                 matchOdds?.firstOrNull()?.apply {
                     view.tvLeague.text = leagueName
                     view.tv_team_names.setTeamNames(15, homeName, awayName)
-                    view.tv_match_type.tranByPlayCode(playCode, playCateName)
+                    view.tv_match_type.tranByPlayCode(playCode, playCateCode, playCateName, rtScore)
                 }
 
                 //view.view_match_receipt.setBetReceiptBackground(status)

@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail_v2.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.*
@@ -20,7 +19,7 @@ import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.et_bet
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.et_clickable
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.iv_bet_lock
 import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.layoutKeyBoard
-import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.tv_error_message
+import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.tvErrorMessage
 import kotlinx.android.synthetic.main.content_bet_list_batch_control.view.*
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v2.view.*
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_v2.view.*
@@ -41,6 +40,7 @@ import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlay
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.getNameMap
+import timber.log.Timber
 import kotlin.math.abs
 import kotlin.math.min
 
@@ -90,6 +90,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     notifyDataSetChanged()
                 }
             }
+        }
+
+    var userLogin: Boolean = false
+        set(value) {
+            field = value
+            notifyDataSetChanged()
         }
 
     var userMoney: Double = 0.0
@@ -180,7 +186,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     mSelectedPosition,
                     onSelectedPositionListener,
                     position,
-                    userMoney
+                    userMoney,
+                    userLogin
                 )
             }
             is BatchSingleViewHolder -> {
@@ -205,7 +212,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     onSelectedPositionListener,
                     position,
                     hasBetClosedForSingle,
-                    userMoney
+                    userMoney,
+                    userLogin
                 )
             }
             is BatchParlayConnectViewHolder -> {
@@ -218,7 +226,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     mBetView,
                     onSelectedPositionListener,
                     position,
-                    userMoney
+                    userMoney,
+                    userLogin
                 )
             }
             is CantParlayWarnViewHolder -> {
@@ -235,7 +244,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     onSelectedPositionListener,
                     position,
                     hasBetClosedForSingle,
-                    userMoney
+                    userMoney,
+                    userLogin
                 )
             }
         }
@@ -326,11 +336,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             mSelectedPosition: Int,
             onSelectedPositionListener: OnSelectedPositionListener,
             position: Int,
-            userMoney: Double
+            userMoney: Double,
+            userLogin: Boolean
         ) {
 
             //設置輸入投注上限額
-            setupInputMaxMoney(itemData, userMoney)
+            setupInputMaxMoney(itemData, userMoney, userLogin)
 
             itemView.apply {
                 setupBetAmountInput(
@@ -341,7 +352,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     mSelectedPosition,
                     onSelectedPositionListener,
                     position,
-                    userMoney
+                    userMoney,
+                    userLogin
                 )
 
                 setupOddStatus(itemData)
@@ -354,13 +366,13 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             }
         }
 
-        private fun setupInputMaxMoney(itemData: BetInfoListData, userMoney: Double) {
+        private fun setupInputMaxMoney(itemData: BetInfoListData, userMoney: Double, userLogin: Boolean) {
             mUserMoney = userMoney
             parlayMaxBet = itemData.parlayOdds?.max?.toLong() ?: 0
-            inputMaxMoney = if (parlayMaxBet > 0) {
+            inputMaxMoney = if (userLogin) {
                 min(parlayMaxBet.toDouble(), userMoney)
             } else {
-                userMoney
+                parlayMaxBet.toDouble() //未登入使用 parlayMaxBet 當最大輸入金額 (比照pc版)
             }
         }
 
@@ -373,7 +385,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             mSelectedPosition: Int,
             onSelectedPositionListener: OnSelectedPositionListener,
             position: Int,
-            userMoney: Double
+            userMoney: Double,
+            userLogin: Boolean
         ) {
             itemView.apply {
                 et_bet.apply {
@@ -533,7 +546,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                 et_bet,
                                 position,
                                 inputMaxMoney,
-                                itemData.parlayOdds?.min?.toLong() ?: 0
+                                itemData.parlayOdds?.min?.toLong() ?: 0,
+                                userLogin
                             )
                             onSelectedPositionListener.onSelectChange(
                                 bindingAdapterPosition,
@@ -661,40 +675,73 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         tv_name.text =
                             when (inPlay && itemData.matchType != MatchType.OUTRIGHT && itemData.matchOdd.gameType == GameType.FT.key) {
                                 true -> {
-                                    context.getString(
-                                        R.string.bet_info_in_play_score,
-                                        itemData.matchOdd.playCateName,
-                                        itemData.matchOdd.homeScore.toString(),
-                                        itemData.matchOdd.awayScore.toString()
-                                    )
+                                    when {
+                                        PlayCate.isIntervalCornerPlayCate(itemData.matchOdd.playCode) -> {
+                                            itemData.matchOdd.playCateName
+                                        }
+                                        PlayCate.needShowCurrentCorner(itemData.matchOdd.playCode) -> {
+                                            if (itemData.matchOdd.homeCornerKicks == null || itemData.matchOdd.awayCornerKicks == null) {
+                                                itemData.matchOdd.playCateName
+                                            } else {
+                                                context.getString(
+                                                    R.string.bet_info_in_play_score,
+                                                    itemData.matchOdd.playCateName,
+                                                    itemData.matchOdd.homeCornerKicks.toString(),
+                                                    itemData.matchOdd.awayCornerKicks.toString()
+                                                )
+                                            }
+                                        }
+                                        else -> {
+                                            context.getString(
+                                                R.string.bet_info_in_play_score,
+                                                itemData.matchOdd.playCateName,
+                                                itemData.matchOdd.homeScore.toString(),
+                                                itemData.matchOdd.awayScore.toString()
+                                            )
+                                        }
+                                    }
                                 }
                                 else -> itemData.matchOdd.playCateName
                             }
                     }
 
                     else -> {
+                        val playCateName = itemData.betPlayCateNameMap?.getNameMap(
+                            itemData.matchOdd.gameType,
+                            itemData.matchOdd.playCode
+                        )
+                            ?.get(LanguageManager.getSelectLanguage(context).key)
+                            ?: ""
                         tv_name.text =
                             when (inPlay && itemData.matchType != MatchType.OUTRIGHT && itemData.matchOdd.gameType == GameType.FT.key) {
                                 true -> {
-                                    context.getString(
-                                        R.string.bet_info_in_play_score,
-                                        itemData.betPlayCateNameMap?.getNameMap(
-                                            itemData.matchOdd.gameType,
-                                            itemData.matchOdd.playCode
-                                        )
-                                            ?.get(LanguageManager.getSelectLanguage(context).key)
-                                            ?: "",
-                                        itemData.matchOdd.homeScore.toString(),
-                                        itemData.matchOdd.awayScore.toString()
-                                    )
+                                    when {
+                                        PlayCate.isIntervalCornerPlayCate(itemData.matchOdd.playCode) -> {
+                                            nameOneLine(playCateName)
+                                        }
+                                        PlayCate.needShowCurrentCorner(itemData.matchOdd.playCode) -> {
+                                            if (itemData.matchOdd.homeCornerKicks == null || itemData.matchOdd.awayCornerKicks == null) {
+                                                nameOneLine(playCateName)
+                                            } else {
+                                                context.getString(
+                                                    R.string.bet_info_in_play_score,
+                                                    playCateName,
+                                                    itemData.matchOdd.homeCornerKicks.toString(),
+                                                    itemData.matchOdd.awayCornerKicks.toString()
+                                                )
+                                            }
+                                        }
+                                        else -> {
+                                            context.getString(
+                                                R.string.bet_info_in_play_score,
+                                                playCateName,
+                                                itemData.matchOdd.homeScore.toString(),
+                                                itemData.matchOdd.awayScore.toString()
+                                            )
+                                        }
+                                    }
                                 }
-                                else -> nameOneLine(
-                                    itemData.betPlayCateNameMap?.getNameMap(
-                                        itemData.matchOdd.gameType,
-                                        itemData.matchOdd.playCode
-                                    )
-                                        ?.get(LanguageManager.getSelectLanguage(context).key) ?: ""
-                                )
+                                else -> nameOneLine(playCateName)
                             }
                     }
                 }
@@ -775,11 +822,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         private fun setupMinimumLimitMessage(itemData: BetInfoListData) {
             itemView.apply {
                 itemData.parlayOdds?.min?.let { min ->
-                    tv_error_message.text = String.format(
-                        context.getString(R.string.bet_info_list_minimum_limit_amount),
-                        min,
-                        sConfigData?.systemCurrency
-                    )
+                    tvErrorMessage.text = context.getString(R.string.bet_info_list_minimum_limit_amount)
                 }
             }
         }
@@ -790,7 +833,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         ) {
             itemView.apply {
                 itemData.parlayOdds?.min?.let { min ->
-                    tv_error_message.visibility = if (betAmount != 0.0 && betAmount < min) {
+                    tvErrorMessage.visibility = if (betAmount != 0.0 && betAmount < min) {
                         itemData.amountError = true
                         View.VISIBLE
                     } else {
@@ -918,7 +961,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             onSelectedPositionListener: OnSelectedPositionListener,
             position: Int,
             hasBetClosedForSingle: Boolean,
-            userMoney: Double
+            userMoney: Double,
+            userLogin: Boolean
         ) {
             mUserMoney = userMoney
 
@@ -944,7 +988,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                 mBetView,
                                 onSelectedPositionListener,
                                 position,
-                                userMoney
+                                userMoney,
+                                userLogin
                             )
                         } else {
                             item_first_connect.visibility = View.GONE
@@ -968,7 +1013,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             mBetView,
                             onSelectedPositionListener,
                             position,
-                            userMoney
+                            userMoney,
+                            userLogin
                         )
                     }
                 }
@@ -1120,25 +1166,25 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     ).toDouble()
                 )
 
-                et_bet_single.setOnTouchListener { view, event ->
-                    if (event.action == MotionEvent.ACTION_UP) {
-                        et_bet_single.isFocusable = true
-                        layoutKeyBoard.showKeyboard(
-                            et_bet_single,
-                            position,
-                            getMaxOrMinAmount(isGetMax = true, betList).toDouble(),
-                            getMaxOrMinAmount(isGetMax = false, betList)
-                        )
-                        //onItemClickListener.onShowParlayKeyboard(et_bet_single, itemData, position, getMaxOrMinAmount(isGetMax = true, betList))
-                        onSelectedPositionListener.onSelectChange(
-                            bindingAdapterPosition,
-                            BetViewType.SINGLE
-                        )
-
-
-                    }
-                    false
-                }
+//                et_bet_single.setOnTouchListener { view, event ->
+//                    if (event.action == MotionEvent.ACTION_UP) {
+//                        et_bet_single.isFocusable = true
+//                        layoutKeyBoard.showKeyboard(
+//                            et_bet_single,
+//                            position,
+//                            getMaxOrMinAmount(isGetMax = true, betList).toDouble(),
+//                            getMaxOrMinAmount(isGetMax = false, betList)
+//                        )
+//                        //onItemClickListener.onShowParlayKeyboard(et_bet_single, itemData, position, getMaxOrMinAmount(isGetMax = true, betList))
+//                        onSelectedPositionListener.onSelectChange(
+//                            bindingAdapterPosition,
+//                            BetViewType.SINGLE
+//                        )
+//
+//
+//                    }
+//                    false
+//                }
 //                et_container.setOnClickListener {
 //                    et_bet_single.isFocusable = true
 //                    et_bet_single.setSelection(et_bet_single.text.length)
@@ -1349,7 +1395,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             mBetView: BetViewType,
             onSelectedPositionListener: OnSelectedPositionListener,
             position: Int,
-            userMoney: Double
+            userMoney: Double,
+            userLogin: Boolean
         ) {
             itemData.let {
                 it?.max =
@@ -1366,7 +1413,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 mBetView,
                 onSelectedPositionListener,
                 position,
-                userMoney
+                userMoney,
+                userLogin
             )
         }
     }
@@ -1385,7 +1433,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             onSelectedPositionListener: OnSelectedPositionListener,
             position: Int,
             hasBetClosedForSingle: Boolean,
-            userMoney: Double
+            userMoney: Double,
+            userLogin: Boolean
         ) {
             mUserMoney = userMoney
 
@@ -1400,7 +1449,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     mBetView,
                     onSelectedPositionListener,
                     position,
-                    hasBetClosedForSingle
+                    hasBetClosedForSingle,
+                    userLogin
                 )
             }
         }
@@ -1417,6 +1467,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             onSelectedPositionListener: OnSelectedPositionListener,
             position: Int,
             hasBetClosed: Boolean,
+            userLogin: Boolean
         ) {
             itemView.apply {
 
@@ -1446,10 +1497,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     )
                 )
                 et_bet_single.apply {
-                    //init bet amount value
-                    val maxAmount = getMaxOrMinAmount(isGetMax = true, betList)
-                    val minAmount = getMaxOrMinAmount(isGetMax = false, betList)
-                    //hint = getAllSingleMinMaxHint(context, maxAmount, minAmount)
 
                     setText(initValue)
                     et_bet_single.setSelection(et_bet_single.text.length)
@@ -1465,7 +1512,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             val allWinnableAmount =
                                 getAllSingleWinnableAmount(inputValue, currentOddsType, betList)
 
-                            val maxAmount = getMaxOrMinAmount(isGetMax = true, betList)
+                            val maxAmount = getMaxOrMinAmount(isGetMax = true, betList, userLogin)
 
                             maxAmount.let { max ->
                                 if (inputValue > max) {
@@ -1581,8 +1628,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 if (et_bet_single.isFocusable) layoutKeyBoard.setMaxBetMoney(
                     getMaxOrMinAmount(
                         isGetMax = true,
-                        betList
-                    ).toDouble()
+                        betList,
+                        userLogin
+                    )
                 )
 
                 et_bet_single.setOnTouchListener { view, event ->
@@ -1591,8 +1639,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         layoutKeyBoard.showKeyboard(
                             et_bet_single,
                             position,
-                            getMaxOrMinAmount(isGetMax = true, betList).toDouble(),
-                            getMaxOrMinAmount(isGetMax = false, betList).toLong()
+                            getMaxOrMinAmount(isGetMax = true, betList, userLogin),
+                            getMaxOrMinAmount(isGetMax = false, betList, userLogin).toLong(),
+                            userLogin
                         )
                         //onItemClickListener.onShowParlayKeyboard(et_bet_single, itemData, position, getMaxOrMinAmount(isGetMax = true, betList))
                         onSelectedPositionListener.onSelectChange(
@@ -1678,7 +1727,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
         private fun getMaxOrMinAmount(
             isGetMax: Boolean,
-            betList: MutableList<BetInfoListData>
+            betList: MutableList<BetInfoListData>,
+            userLogin: Boolean
         ): Double {
             var min = betList.first().parlayOdds?.min ?: 0
             var max = betList.first().parlayOdds?.max ?: 99999999
@@ -1692,7 +1742,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             }
 
             return when (isGetMax) {
-                true -> min(max.toDouble(), mUserMoney)
+                true -> if (userLogin) min(max.toDouble(), mUserMoney) else max.toDouble()
                 else -> min.toDouble()
             }
         }
@@ -1733,10 +1783,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             mBetView: BetViewType,
             onSelectedPositionListener: OnSelectedPositionListener,
             position: Int,
-            userMoney: Double
+            userMoney: Double,
+            userLogin: Boolean
         ) {
             //設置投注輸入上限額
-            setupInputMoney(itemData, userMoney)
+            setupInputMoney(itemData, userMoney, userLogin)
 
             itemView.apply {
                 ll_winnable.visibility = View.VISIBLE
@@ -1774,7 +1825,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         mSelectedPosition,
                         mBetView,
                         onSelectedPositionListener,
-                        position
+                        position,
+                        userLogin
                     )
 
                     setupMaximumLimitView(
@@ -1783,7 +1835,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         mSelectedPosition,
                         mBetView,
                         onSelectedPositionListener,
-                        position
+                        position,
+                        userLogin
                     )
 
                     setupParlayRuleButton(data, onItemClickListener)
@@ -1792,13 +1845,13 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             }
         }
 
-        private fun setupInputMoney(itemData: ParlayOdd?, userMoney: Double) {
+        private fun setupInputMoney(itemData: ParlayOdd?, userMoney: Double, userLogin: Boolean) {
             mUserMoney = userMoney
             val parlayMaxBet = itemData?.max ?: 0
-            inputMaxMoney = if (parlayMaxBet > 0) {
+            inputMaxMoney = if (userLogin) {
                 min(parlayMaxBet.toDouble(), mUserMoney)
             } else {
-                mUserMoney
+                parlayMaxBet.toDouble()
             }
         }
 
@@ -1866,7 +1919,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             mSelectedPosition: Int,
             mBetView: BetViewType,
             onSelectedPositionListener: OnSelectedPositionListener,
-            position: Int
+            position: Int,
+            userLogin: Boolean
         ) {
             itemView.apply {
                 et_bet_parlay.apply {
@@ -1881,9 +1935,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     var ignore = false
                     tw = object : TextWatcher {
                         override fun afterTextChanged(it: Editable?) {
-                            val inputValue =
-                                if (it.isNullOrEmpty() || mUserMoney == 0.0) 0.0 else it.toString()
-                                    .toDouble()
+                            val inputValue = if (it.isNullOrEmpty()) 0.0 else it.toString().toDouble()
 
                             if (inputValue > inputMaxMoney) {
                                 val maxValue = TextUtil.formatInputMoney(inputMaxMoney)
@@ -2005,7 +2057,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             et_bet_parlay,
                             position,
                             inputMaxMoney,
-                            data.min.toLong()
+                            data.min.toLong(),
+                            userLogin
                         )
                         onSelectedPositionListener.onSelectChange(
                             bindingAdapterPosition,
@@ -2045,11 +2098,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
         private fun setupMinimumLimitMessage(itemData: ParlayOdd) {
             itemView.apply {
-                tv_error_message.text = String.format(
-                    context.getString(R.string.bet_info_list_minimum_limit_amount),
-                    itemData.min,
-                    sConfigData?.systemCurrency
-                )
+                tvErrorMessage.text = context.getString(R.string.bet_info_list_minimum_limit_amount)
                 et_bet.apply {
 //                    hint = getLimitHint(
 //                        context,
@@ -2063,7 +2112,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         private fun checkMinimumLimit(itemData: ParlayOdd, betAmount: Double = itemData.betAmount) {
             itemView.apply {
                 itemData.min.let { min ->
-                    tv_error_message.visibility = if (betAmount != 0.0 && betAmount < min) {
+                    tvErrorMessage.visibility = if (betAmount != 0.0 && betAmount < min) {
                         itemData.amountError = true
                         View.VISIBLE
                     } else {
@@ -2080,7 +2129,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             mSelectedPosition: Int,
             mBetView: BetViewType,
             onSelectedPositionListener: OnSelectedPositionListener,
-            position: Int
+            position: Int,
+            userLogin: Boolean
         ) {
             itemView.apply {
                 tv_bet_maximum_limit.text = TextUtil.formatBetQuota(itemData.max)
@@ -2102,7 +2152,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         et_bet_parlay,
                         position,
                         inputMaxMoney,
-                        itemData.min.toLong()
+                        itemData.min.toLong(),
+                        userLogin
                     )
                     //onItemClickListener.onShowParlayKeyboard(et_bet, itemData, position, itemData.max.toLong())
                     onSelectedPositionListener.onSelectChange(

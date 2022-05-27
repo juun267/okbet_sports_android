@@ -20,6 +20,7 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
@@ -213,6 +214,7 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
 
                 matchOdds.filterNotNull().forEachIndexed { index, matchOdd ->
                     if (SocketUpdateUtil.updateMatchOdds(context, matchOdd, oddsChangeEvent)) {
+                        updateBetInfo(matchOdd, oddsChangeEvent)
                         outrightLeagueOddAdapter.notifyItemChanged(index)
                     }
                 }
@@ -252,6 +254,23 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
 
             outrightLeagueOddAdapter.data.forEach { matchOdd ->
                 subscribeChannelHall(matchOdd)
+            }
+        }
+    }
+
+    /**
+     * 若投注單處於未開啟狀態且有加入注單的賠率項資訊有變動時, 更新投注單內資訊
+     */
+    private fun updateBetInfo(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent) {
+        if (!getBetListPageVisible()) {
+            //尋找是否有加入注單的賠率項
+            if (matchOdd.matchInfo?.id == oddsChangeEvent.eventId && matchOdd.oddsMap?.values?.any { oddList ->
+                    oddList?.any { odd ->
+                        odd?.isSelected == true
+                    } == true
+                } == true
+            ) {
+                viewModel.updateMatchOdd(oddsChangeEvent)
             }
         }
     }

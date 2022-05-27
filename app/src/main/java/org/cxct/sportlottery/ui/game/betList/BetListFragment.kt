@@ -544,6 +544,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             setupBetButtonType(it)
             initKeyBoard(it)
             updateCommonToolbarLoginStatus(it)
+            betListRefactorAdapter?.userLogin = it
         }
 
         viewModel.infoCenterRepository.unreadNoticeList.observe(viewLifecycleOwner, {
@@ -724,6 +725,18 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             tempParlayList.add(it.copy())
         }
         betParlayList = tempParlayList
+
+        val totalBetAmount =
+            betListFilter.sumByDouble { it.realAmount } + (parlayList.sumByDouble { it.betAmount * it.num })
+        //下注總金額大於用戶餘額，提示餘額不足
+        if (totalBetAmount > (viewModel.userMoney.value ?: 0.0)) {
+            hideLoading()
+            showErrorPromptDialog(
+                getString(R.string.prompt),
+                getString(R.string.bet_info_bet_balance_insufficient)
+            ) {}
+            return
+        }
 
         viewModel.addBetList(
             getCurrentBetList(),
@@ -920,16 +933,18 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun unsubscribeChannel(list: MutableList<BetInfoListData>) {
         val unsubscribedList: MutableList<String> = mutableListOf()
         list.forEach { listData ->
-            if (listData.subscribeChannelType == ChannelType.HALL) {
-                unSubscribeChannelHall(
-                    listData.matchOdd.gameType,
-                    listData.matchOdd.matchId
-                )
-            } else {
-                val unsubscribeMatchId = listData.matchOdd.matchId
-                if (!unsubscribedList.contains(unsubscribeMatchId)) {
-                    unsubscribedList.add(unsubscribeMatchId)
-                    unSubscribeChannelEvent(unsubscribeMatchId)
+            val unsubscribeMatchId = listData.matchOdd.matchId
+            if (!unsubscribedList.contains(unsubscribeMatchId)) {
+                unsubscribedList.add(unsubscribeMatchId)
+                if (listData.subscribeChannelType == ChannelType.HALL) {
+                    unSubscribeChannelHall(
+                        listData.matchOdd.gameType,
+                        unsubscribeMatchId
+                    )
+                } else {
+                    if (!unsubscribedList.contains(unsubscribeMatchId)) {
+                        unSubscribeChannelEvent(unsubscribeMatchId)
+                    }
                 }
             }
         }

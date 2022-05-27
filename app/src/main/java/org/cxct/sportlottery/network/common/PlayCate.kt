@@ -370,11 +370,40 @@ enum class PlayCate(val value: String) {
                 CORNER_1ST_SINGLE.value,//角球:独赢-上半场
                 CORNER_1ST_OE.value,//角球:单/双-上半场
                 CORNER_DC.value,//角球:双重机会
-                N_CORNER_GOAL.value,//角球:第{S}个角球
                 CORNER_FIRST.value,//最先角球
                 CORNER_LAST.value,//最后角球
                 CORNER_1ST_OU.value//角球大/小-上半场
                 -> true
+                else -> {
+                    when {
+                        //角球:第{S}个角球
+                        code?.contains(ComparePlayCate.N_CORNER_GOAL.compareCode) == true -> true
+                        else -> false
+                    }
+                }
+            }
+        }
+
+        fun isIntervalCornerPlayCate(code: String?): Boolean {
+            return when (code) {
+                CORNER_HDP_SEG1.value,
+                CORNER_HDP_SEG2.value,
+                CORNER_HDP_SEG3.value,
+                CORNER_HDP_SEG4.value,
+                CORNER_HDP_SEG5.value,
+                CORNER_HDP_SEG6.value,
+                CORNER_OU_SEG1.value,
+                CORNER_OU_SEG2.value,
+                CORNER_OU_SEG3.value,
+                CORNER_OU_SEG4.value,
+                CORNER_OU_SEG5.value,
+                CORNER_OU_SEG6.value,
+                CORNER_SINGLE_SEG1.value,
+                CORNER_SINGLE_SEG2.value,
+                CORNER_SINGLE_SEG3.value,
+                CORNER_SINGLE_SEG4.value,
+                CORNER_SINGLE_SEG5.value,
+                CORNER_SINGLE_SEG6.value -> true
                 else -> false
             }
         }
