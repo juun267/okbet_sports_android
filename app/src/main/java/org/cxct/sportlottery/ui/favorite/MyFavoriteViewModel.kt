@@ -60,8 +60,6 @@ class MyFavoriteViewModel(
                 )
             }
 
-
-
             result?.sportQueryData?.let { newSportQueryData ->
                 _sportQueryData.postValue(
                     Event(
@@ -78,23 +76,23 @@ class MyFavoriteViewModel(
                                     }
                                 }
                             } else {
-                            newSportQueryData.items?.firstOrNull()?.apply NewSportData@{
-                                favoriteRepository.setLastSportType(Item(
-                                    code = code ?: "",
-                                    name = name ?: "",
-                                    num = num ?: 0,
-                                    play = null,
-                                    sortNum = sortNum ?: 0
-                                ).apply Item@{
-                                    this@Item.isSelected = this@NewSportData.isSelected
-                                })
-                                this.isSelected = true
-                                if (isReloadPlayCate)
-                                    this.play?.firstOrNull()?.isSelected = true
+                                newSportQueryData.items?.firstOrNull()?.apply NewSportData@{
+                                    favoriteRepository.setLastSportType(Item(
+                                        code = code ?: "",
+                                        name = name ?: "",
+                                        num = num ?: 0,
+                                        play = null,
+                                        sortNum = sortNum ?: 0
+                                    ).apply Item@{
+                                        this@Item.isSelected = this@NewSportData.isSelected
+                                    })
+                                    this.isSelected = true
+                                    if (isReloadPlayCate)
+                                        this.play?.firstOrNull()?.isSelected = true
+                                }
                             }
                         }
-                    }
-                ))
+                    ))
 
                 val selectItem = newSportQueryData.items?.find { it.isSelected }
                 getFavoriteMatch(
@@ -167,7 +165,7 @@ class MyFavoriteViewModel(
                 }
 
                 val list = mFavorMatchOddList.value?.peekContent()?.updatePlayCate(matchId, quickListData, quickListData.playCateNameMap)
-                mFavorMatchOddList.postValue(Event(list?: listOf()))
+                mFavorMatchOddList.postValue(Event(list ?: listOf()))
             }
         }
     }
@@ -203,7 +201,6 @@ class MyFavoriteViewModel(
     }
 
     fun switchPlay(play: Play) {
-
         if (play.selectionType == SelectionType.SELECTABLE.code) {
             _sportQueryData.postValue(
                 Event(
@@ -213,7 +210,7 @@ class MyFavoriteViewModel(
             val playCateCode =
                 sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.play?.find { it.isSelected }?.playCateList?.find { it.isSelected }?.code
 
-            switchPlayCategory(play,playCateCode)
+            switchPlayCategory(play, playCateCode)
         } else {
             _sportQueryData.postValue(
                 Event(
@@ -230,14 +227,17 @@ class MyFavoriteViewModel(
                 )
             )
         }
+
+        getSportQuery(getLastPick = true)
     }
 
-    fun switchPlayCategory(play: Play,playCateCode: String?) {
+    fun switchPlayCategory(play: Play, playCateCode: String?, hasItemSelect: Boolean = false) {
         _sportQueryData.postValue(
             Event(
                 _sportQueryData.value?.peekContent()?.updatePlaySelected(play)?.updatePlayCateSelected(playCateCode)
             )
         )
+        if (!hasItemSelect) getSportQuery(getLastPick = true)
     }
 
     private fun SportQueryData.updateGameTypeSelected(item: Item): SportQueryData {

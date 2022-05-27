@@ -185,6 +185,12 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         matchOdd?.matchInfo?.let { matchInfo ->
             live_view_tool_bar.setStatisticsState(matchInfo.source == MatchSource.SHOW_STATISTICS.code)
         }
+
+        if (MultiLanguagesApplication.colorModeChanging) {
+            initObserve()
+            initSocketObserver()
+            MultiLanguagesApplication.colorModeChanging = false
+        }
     }
 
     override fun onPause() {
@@ -269,7 +275,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     }
 
     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
-    private fun observeData() {
+    private fun initObserve() {
         viewModel.oddsDetailResult.observe(this.viewLifecycleOwner) {
             it?.getContentIfNotHandled()?.let { result ->
                 when (result.success) {
@@ -829,7 +835,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     override fun onAnimationStart(animation: Animation?) {}
 
     override fun onAnimationEnd(animation: Animation?) {
-        observeData()
+        initObserve()
         initSocketObserver()
     }
 

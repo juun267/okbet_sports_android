@@ -952,7 +952,7 @@ class GameViewModel(
                     )
                 )
             }?.let { result ->
-                if(result.success){
+                if (result.success) {
                     result.t?.odds?.forEach { oddData ->
                         oddData.sortOddsMap()
                     }
@@ -1158,14 +1158,22 @@ class GameViewModel(
     }
 
     fun switchPlay(matchType: MatchType, play: Play) {
-        updatePlaySelectedState(play)
+        updatePlaySelectedState(matchType, play)
     }
 
-    fun switchPlayCategory(matchType: MatchType, play: Play, playCateCode: String?) {
+    fun switchPlayCategory(play: Play, playCateCode: String?, hasItemSelect: Boolean, matchType: MatchType) {
         _playList.value?.peekContent()?.forEach {
             it.isSelected = (it == play)
         }
         _playCate.value = Event(playCateCode)
+        if (!hasItemSelect) {
+            getGameHallList(
+                matchType = matchType,
+                isReloadDate = false,
+                isReloadPlayCate = false,
+                isLastSportType = true
+            )
+        }
     }
 
     fun switchMatchDate(matchType: MatchType, date: Date) {
@@ -1356,30 +1364,27 @@ class GameViewModel(
         _isNoHistory.postValue(sportCode == null)
     }
 
-    fun switchPlay(
-        matchType: MatchType,
-        leagueIdList: List<String>,
-        matchIdList: List<String>,
-        play: Play
-    ) {
-        updatePlaySelectedState(play)
-
-//        getLeagueOddsList(matchType, leagueIdList, matchIdList)
+    //用於GameLeagueFragment
+    fun switchPlay(matchType: MatchType, leagueIdList: List<String>, matchIdList: List<String>, play: Play) {
+        updatePlaySelectedState(matchType, play)
+        getLeagueOddsList(matchType, leagueIdList, matchIdList)
     }
 
+    //用於GameLeagueFragment
     fun switchPlayCategory(
         matchType: MatchType,
         leagueIdList: List<String>,
         matchIdList: List<String>,
         play: Play,
-        playCateCode: String?
+        playCateCode: String?,
+        hasItemSelect: Boolean
     ) {
         _playList.value?.peekContent()?.forEach {
             it.isSelected = (it == play)
         }
         _playCate.value = Event(playCateCode)
 
-//        getLeagueOddsList(matchType, leagueIdList, matchIdList)
+        if (!hasItemSelect) getLeagueOddsList(matchType, leagueIdList, matchIdList)
     }
 
     /**
@@ -2500,7 +2505,7 @@ class GameViewModel(
         return this
     }
 
-    private fun updatePlaySelectedState(play: Play) {
+    private fun updatePlaySelectedState(matchType: MatchType, play: Play) {
         val playList = _playList.value?.peekContent()
 
         playList?.forEach {
@@ -2522,8 +2527,16 @@ class GameViewModel(
                             null
                         }
                     }
-                    ))
+                    )
+            )
         }
+
+        getGameHallList(
+            matchType = matchType,
+            isReloadDate = false,
+            isReloadPlayCate = false,
+            isLastSportType = true
+        )
     }
 
     /**
@@ -2915,7 +2928,7 @@ class GameViewModel(
             doNetwork(androidContext) {
                 OneBoSportApi.indexService.getConfig()
             }?.let { configResult ->
-                if (configResult.success){
+                if (configResult.success) {
                     sConfigData = configResult.configData
                     _gotConfig.postValue(Event(true))
                 }
