@@ -67,6 +67,7 @@ import org.cxct.sportlottery.ui.game.data.SpecialEntrance
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.px
+import org.cxct.sportlottery.util.DisplayUtil.pxToDp
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.TimeUtil.DMY_FORMAT
@@ -2163,13 +2164,13 @@ class GameViewModel(
 
                     //賽事動畫網址
                     val eventId = result.oddsDetailData?.matchOdd?.matchInfo?.trackerId
-                    val screenWidth = MetricsUtil.getScreenWidth().toFloat().px
+                    val screenWidth = MetricsUtil.getScreenWidth()
                     val animationHeight = (LiveUtil.getAnimationHeightFromWidth(screenWidth)).px
                     val languageParams = LanguageManager.getLanguageString(MultiLanguagesApplication.appContext)
 
-                    val trackerUrl = "${Constants.getBaseUrl()}animation/?eventId=${eventId}&width=${screenWidth}&height=${animationHeight}&lang=${languageParams}&mode=widget"
-                    //測試用eventId=4385309
-//                    val trackerUrl = "${Constants.getBaseUrl()}animation/?eventId=4385309&width=${screenWidth}&height=${animationHeight}&lang=${languageParams}&mode=widget"
+                    val trackerUrl = "${Constants.getBaseUrl()}animation/?eventId=${eventId}&width=${screenWidth.pxToDp}&height=${animationHeight}&lang=${languageParams}&mode=widget"
+                    //測試用eventId=4385309, 4477265
+//                    val trackerUrl = "${Constants.getBaseUrl()}animation/?eventId=4477265&width=${screenWidth.px}&height=${animationHeight}&lang=${languageParams}&mode=widget"
 
                     _matchTrackerUrl.postValue(Event(trackerUrl))
                     notifyFavorite(FavoriteType.PLAY_CATE)

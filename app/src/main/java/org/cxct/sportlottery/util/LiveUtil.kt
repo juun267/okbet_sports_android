@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.util
 
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.DisplayUtil.px
+import org.cxct.sportlottery.util.DisplayUtil.dpToPx
 
 object LiveUtil {
     /**
@@ -9,10 +9,17 @@ object LiveUtil {
      * 175 + width / 16 * 9
      */
     fun getAnimationHeightFromWidth(width: Number): Float {
+        val widthDP = width.toFloat().px
         return when {
-            width.toFloat().px < 460 -> (200+160).dp.toFloat()
-            width.toFloat().px < 720 -> (200+180).dp.toFloat()
-            else -> (200+195).dp.toFloat()
+            widthDP < 460 -> ((widthDP*0.699)+160).toFloat().dpToPx
+            widthDP < 720 -> ((widthDP*0.699)+180).toFloat().dpToPx
+            else -> ((widthDP*0.699)+195).toFloat().dpToPx
         }
+
+//        return when {
+//            widthPX < 460 -> (200+160).dp.toFloat()
+//            widthPX < 720 -> (200+180).dp.toFloat()
+//            else -> (200+195).dp.toFloat()
+//        }
     }
 }
