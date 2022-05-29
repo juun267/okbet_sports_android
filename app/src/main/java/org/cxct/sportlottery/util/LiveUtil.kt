@@ -11,9 +11,9 @@ object LiveUtil {
     fun getAnimationHeightFromWidth(width: Number): Float {
         val widthDP = width.toFloat().px
         return when {
-            widthDP < 460 -> ((widthDP*0.699)+160).toFloat().dpToPx
-            widthDP < 720 -> ((widthDP*0.699)+180).toFloat().dpToPx
-            else -> ((widthDP*0.699)+195).toFloat().dpToPx
+            widthDP < 460 -> ((widthDP*0.699)+115).toFloat().dpToPx
+            widthDP < 720 -> ((widthDP*0.699)+135).toFloat().dpToPx
+            else -> ((widthDP*0.699)+145).toFloat().dpToPx
         }
 
 //        return when {
