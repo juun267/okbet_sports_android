@@ -83,7 +83,9 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
             }
 
         bet_type_selector.apply {
-            setItemData(mutableListOf(StatusSheetData("0,1", context.getString(R.string.all)),StatusSheetData("0", context.getString(R.string.waiting)), StatusSheetData("1", context.getString(R.string.not_settled_order))))
+            var betTypeStatusSheetData= mutableListOf(StatusSheetData("0,1", context.getString(R.string.label_all)),StatusSheetData("0", context.getString(R.string.waiting)), StatusSheetData("1", context.getString(R.string.not_settled_order)))
+            setItemData(betTypeStatusSheetData)
+            setSelectCode(betTypeStatusSheetData[0].code)
             itemSelectedListener = { statusSheetData ->
                 statusSheetData.code.let { selectedCode ->
                     selectedCode?.let {
@@ -99,6 +101,7 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
 
         game_type_selector.apply {
             setItemData(gameTypeStatusSheetData)
+            setSelectCode(gameTypeStatusSheetData.get(0).code)
             itemSelectedListener = { statusSheetData ->
                 statusSheetData.code.let { selectedCode ->
                     viewModel.gameType = GameType.values().find { gameType -> gameType.key == selectedCode }?.key

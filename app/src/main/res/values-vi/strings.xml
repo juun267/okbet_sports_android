@@ -1153,5 +1153,4 @@
     <string name="cancel_auto">Từ chối</string>
     <string name="cancel_manual">Vô hiệu</string>
     <string name="error_input_has_blank"> Đầu vào không chính xác. Chỉ sử dụng tiếng Anh, không nhập khoảng trắng liên tục.</string>
-    <string name="all">Tất cả các</string>
 </resources>
