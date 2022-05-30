@@ -133,18 +133,19 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             playCategoryListener = PlayCategoryListener(
                 onClickSetItemListener = {
                     viewModel.switchPlay(args.matchType, it)
-                    leagueAdapter.data.updateOddsSort()
-                    leagueAdapter.updateLeagueByPlayCate()
-                }, onClickNotSelectableListener = {
+                },
+                onClickNotSelectableListener = {
                     viewModel.switchPlay(args.matchType, it)
                     upDateSelectPlay(it)
-                    leagueAdapter.data.updateOddsSort()
-                    leagueAdapter.updateLeagueByPlayCate()
-                }, onSelectPlayCateListener = { play, playCate ->
-                    viewModel.switchPlayCategory(args.matchType, play, playCate.code)
+                },
+                onSelectPlayCateListener = { play, playCate, hasItemSelect ->
+                    viewModel.switchPlayCategory(play, playCate.code, hasItemSelect, args.matchType)
                     upDateSelectPlay(play)
-                    leagueAdapter.data.updateOddsSort()
-                    leagueAdapter.updateLeagueByPlayCate()
+                    //當前已選中下拉選單不用重新要資料
+                    if (hasItemSelect) {
+                        leagueAdapter.data.updateOddsSort()
+                        leagueAdapter.updateLeagueByPlayCate()
+                    }
                 })
         }
     }
@@ -834,7 +835,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     // TODO 這裡要確認是否有其他地方重複呼叫
                     Log.d("Hewie", "observe => OddsListGameHallResult")
 
-                    game_list?.firstVisibleRange(leagueAdapter, activity?:requireActivity())
+                    game_list?.firstVisibleRange(leagueAdapter, activity ?: requireActivity())
 
                 }
                 refreshToolBarUI(this.view)
@@ -1404,6 +1405,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             ) {
                                 leagueOddMap[leagueOdd.league.id] = leagueOdd
                                 updateGameList(index, leagueOdd)
+                                updateBetInfo(leagueOdd, oddsChangeEvent)
                             } else {
                                 updateGameList(index, leagueOdd)
                             }
@@ -1419,6 +1421,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                         context, matchOdd, oddsChangeEvent
                                     )
                                 } == true && !leagueOdd.isClose) {
+                                updateBetInfo(leagueOdd, oddsChangeEvent)
                                 epsListAdapter.notifyItemChanged(index)
                             }
                         }
@@ -1530,6 +1533,42 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         leagueAdapter.data[index] = leagueOdd
         if (game_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !game_list.isComputingLayout) {
             leagueAdapter.updateLeague(index, leagueOdd)
+        }
+    }
+
+    /**
+     * 若投注單處於未開啟狀態且有加入注單的賠率項資訊有變動時, 更新投注單內資訊
+     */
+    private fun updateBetInfo(leagueOdd: LeagueOdd, oddsChangeEvent: OddsChangeEvent) {
+        if (!getBetListPageVisible()) {
+            //尋找是否有加入注單的賠率項
+            if (leagueOdd.matchOdds.filter { matchOdd ->
+                    matchOdd.matchInfo?.id == oddsChangeEvent.eventId
+                }.any { matchOdd ->
+                    matchOdd.oddsMap?.values?.any { oddList ->
+                        oddList?.any { odd ->
+                            odd?.isSelected == true
+                        } == true
+                    } == true
+                }) {
+                viewModel.updateMatchOdd(oddsChangeEvent)
+            }
+        }
+    }
+
+    private fun updateBetInfo(epsLeagueOddsItem: EpsLeagueOddsItem, oddsChangeEvent: OddsChangeEvent) {
+        if (!getBetListPageVisible()) {
+            //尋找是否有加入注單的賠率項
+            if (epsLeagueOddsItem.leagueOdds?.matchOdds?.filter { matchOddsItem -> matchOddsItem.matchInfo?.id == oddsChangeEvent.eventId }
+                    ?.any { matchOdd ->
+                        matchOdd.oddsMap?.values?.any { oddList ->
+                            oddList?.any { odd ->
+                                odd?.isSelected == true
+                            } == true
+                        } == true
+                    } == true) {
+                viewModel.updateMatchOdd(oddsChangeEvent)
+            }
         }
     }
 

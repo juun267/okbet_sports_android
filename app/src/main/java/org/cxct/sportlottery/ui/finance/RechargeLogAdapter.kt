@@ -8,9 +8,14 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.view_item_recharge_log.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.list.Row
+import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.ui.finance.df.Status
+import org.cxct.sportlottery.ui.results.StatusType
+import org.cxct.sportlottery.util.BindingUtil
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.setRecordStatus
+import org.cxct.sportlottery.util.setStatus
 
 class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -81,7 +86,7 @@ class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 RechType.PAYMAYA.type -> itemView.context.getString(R.string.recharge_channel_paymaya)
                 else -> ""
             }
-            itemView.rech_log_state.text = item.rechState
+            itemView.rech_log_state.setRecordStatus(item.status)
             itemView.setOnClickListener {
                 rechargeLogListener?.onClick(Event(item))
             }

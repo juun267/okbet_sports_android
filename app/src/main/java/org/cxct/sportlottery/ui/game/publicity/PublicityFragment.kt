@@ -5,12 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import org.cxct.sportlottery.MultiLanguagesApplication
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentPublicityBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.FavoriteType
@@ -26,7 +23,6 @@ import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
-import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
@@ -124,6 +120,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         receiver.matchClock.removeObservers(viewLifecycleOwner)
         receiver.oddsChange.removeObservers(viewLifecycleOwner)
         receiver.matchOddsLock.removeObservers(viewLifecycleOwner)
+        receiver.leagueChange.removeObservers(viewLifecycleOwner)
         receiver.globalStop.removeObservers(viewLifecycleOwner)
         receiver.producerUp.removeObservers(viewLifecycleOwner)
     }
@@ -276,6 +273,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 if (it == ServiceConnectStatus.CONNECTED) {
 //                    loading()
                     viewModel.getSportMenuFilter()
+                    subscribeSportChannelHall()
                 }
             }
         }
@@ -338,6 +336,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                         //endregion
 
                         if (SocketUpdateUtil.updateMatchOdds(context, recommend, oddsChangeEvent)) {
+                            updateBetInfo(recommend, oddsChangeEvent)
                             updateRecommendList(index, recommend)
                         }
 
@@ -359,6 +358,12 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                         //TODO 更新邏輯待補，跟進GameV3Fragment
                     }
                 }
+            }
+        })
+
+        receiver.leagueChange.observe(viewLifecycleOwner, {
+            it?.let { leagueChangeEvent ->
+                viewModel.publicityLeagueChange(leagueChangeEvent)
             }
         })
 
@@ -386,6 +391,23 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 subscribeQueryData(mPublicityAdapter.getRecommendData())
             }
         })
+    }
+
+    /**
+     * 若投注單處於未開啟狀態且有加入注單的賠率項資訊有變動時, 更新投注單內資訊
+     */
+    private fun updateBetInfo(recommend: Recommend, oddsChangeEvent: OddsChangeEvent) {
+        if (!getBetListPageVisible()) {
+            //尋找是否有加入注單的賠率項
+            if (recommend.matchInfo?.id == oddsChangeEvent.eventId && recommend.oddsMap?.values?.any { oddList ->
+                    oddList?.any { odd ->
+                        odd?.isSelected == true
+                    } == true
+                } == true
+            ) {
+                viewModel.updateMatchOdd(oddsChangeEvent)
+            }
+        }
     }
 
     private fun Recommend.sortOddsMap() {

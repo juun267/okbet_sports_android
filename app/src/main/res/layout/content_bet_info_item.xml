@@ -120,10 +120,11 @@
                 android:maxLength="7"
                 android:paddingStart="10dp"
                 android:textColor="@color/color_FFFFFF_000000"
-                android:textColorHint="@color/color_939393_cccccc"
+                android:textColorHint="@color/color_404040_cccccc"
                 android:textSize="@dimen/textSize16sp"
                 android:letterSpacing="0.05"
                 android:textStyle="bold"
+                android:text=""
                 app:layout_constraintBottom_toTopOf="@+id/tvErrorMessage"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_match"
@@ -185,7 +186,11 @@
 
             <include
                 layout="@layout/content_bet_info_item_quota_detail"
-                app:parlayOdd="@{parlayOdd}" />
+                android:layout_width="47dp"
+                android:layout_height="36dp"
+                app:parlayOdd="@{parlayOdd}"
+                tools:layout_editor_absoluteX="349dp"
+                tools:layout_editor_absoluteY="86dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -932,16 +932,18 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun unsubscribeChannel(list: MutableList<BetInfoListData>) {
         val unsubscribedList: MutableList<String> = mutableListOf()
         list.forEach { listData ->
-            if (listData.subscribeChannelType == ChannelType.HALL) {
-                unSubscribeChannelHall(
-                    listData.matchOdd.gameType,
-                    listData.matchOdd.matchId
-                )
-            } else {
-                val unsubscribeMatchId = listData.matchOdd.matchId
-                if (!unsubscribedList.contains(unsubscribeMatchId)) {
-                    unsubscribedList.add(unsubscribeMatchId)
-                    unSubscribeChannelEvent(unsubscribeMatchId)
+            val unsubscribeMatchId = listData.matchOdd.matchId
+            if (!unsubscribedList.contains(unsubscribeMatchId)) {
+                unsubscribedList.add(unsubscribeMatchId)
+                if (listData.subscribeChannelType == ChannelType.HALL) {
+                    unSubscribeChannelHall(
+                        listData.matchOdd.gameType,
+                        unsubscribeMatchId
+                    )
+                } else {
+                    if (!unsubscribedList.contains(unsubscribeMatchId)) {
+                        unSubscribeChannelEvent(unsubscribeMatchId)
+                    }
                 }
             }
         }

@@ -54,16 +54,16 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
         PlayCategoryAdapter().apply {
             playCategoryListener = PlayCategoryListener(onClickSetItemListener = {
+                unSubscribeChannelHallAll()
                 viewModel.switchPlay(
                     args.matchType,
                     args.leagueId.toList(),
                     args.matchId.toList(),
                     it
                 )
-                leagueAdapter.data.updateOddsSort()
-                leagueAdapter.updateLeagueByPlayCate()
             },
                 onClickNotSelectableListener = {
+                    unSubscribeChannelHallAll()
                     viewModel.switchPlay(
                         args.matchType,
                         args.leagueId.toList(),
@@ -71,20 +71,26 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         it
                     )
                     upDateSelectPlay(it)
-                    leagueAdapter.data.updateOddsSort()
-                    leagueAdapter.updateLeagueByPlayCate()
                 },
-                onSelectPlayCateListener = { play, playCate ->
+                onSelectPlayCateListener = { play, playCate, hasItemSelect ->
+                    if (!hasItemSelect) {
+                        unSubscribeChannelHallAll()
+                    }
                     viewModel.switchPlayCategory(
                         args.matchType,
                         args.leagueId.toList(),
                         args.matchId.toList(),
                         play,
-                        playCate.code
+                        playCate.code,
+                        hasItemSelect
                     )
+
                     upDateSelectPlay(play)
-                    leagueAdapter.data.updateOddsSort()
-                    leagueAdapter.updateLeagueByPlayCate()
+                    //當前已選中下拉選單不用重新要資料
+                    if (hasItemSelect) {
+                        leagueAdapter.data.updateOddsSort()
+                        leagueAdapter.updateLeagueByPlayCate()
+                    }
                 })
         }
     }
@@ -314,7 +320,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         }
                     }
 
-                    game_league_odd_list?.firstVisibleRange(leagueAdapter, activity?:requireActivity())
+                    game_league_odd_list?.firstVisibleRange(leagueAdapter, activity ?: requireActivity())
                 }
             }
         }
@@ -499,6 +505,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         } &&
                         leagueOdd.unfold == FoldState.UNFOLD.code
                     ) {
+                        updateBetInfo(leagueOdd, oddsChangeEvent)
                         updateGameList(index, leagueOdd)
                     }
                 }
@@ -563,6 +570,26 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     unSubscribeChannelHall(args.gameType.key, leagueChangeEvent.matchIdList?.firstOrNull())
                     subscribeChannelHall(args.gameType.key, leagueChangeEvent.matchIdList?.firstOrNull())
                 }
+            }
+        }
+    }
+
+    /**
+     * 若投注單處於未開啟狀態且有加入注單的賠率項資訊有變動時, 更新投注單內資訊
+     */
+    private fun updateBetInfo(leagueOdd: LeagueOdd, oddsChangeEvent: OddsChangeEvent) {
+        if (!getBetListPageVisible()) {
+            //尋找是否有加入注單的賠率項
+            if (leagueOdd.matchOdds.filter { matchOdd ->
+                    matchOdd.matchInfo?.id == oddsChangeEvent.eventId
+                }.any { matchOdd ->
+                    matchOdd.oddsMap?.values?.any { oddList ->
+                        oddList?.any { odd ->
+                            odd?.isSelected == true
+                        } == true
+                    } == true
+                }) {
+                viewModel.updateMatchOdd(oddsChangeEvent)
             }
         }
     }
@@ -644,7 +671,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
 
     private fun updateSportBackground(sportCode: String?) {
-        GameConfigManager.getTitleBarBackgroundInPublicPage(sportCode ,MultiLanguagesApplication.isNightMode)?.let { titleRes ->
+        GameConfigManager.getTitleBarBackgroundInPublicPage(sportCode, MultiLanguagesApplication.isNightMode)?.let { titleRes ->
             game_league_toolbar_bg.setImageResource(titleRes)
         }
     }

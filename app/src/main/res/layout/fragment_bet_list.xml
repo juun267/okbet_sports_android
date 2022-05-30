@@ -145,7 +145,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="44dp"
                     android:animateLayoutChanges="true"
-                    android:background="@color/color_191919_FCFCFC"
+                    android:background="@color/color_2B2B2B_FCFCFC"
                     android:clickable="true"
                     android:focusable="true"
                     android:visibility="gone"
@@ -168,7 +168,7 @@
                         android:id="@+id/btn_delete_all_cancel"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:background="@color/color_191919_FCFCFC"
+                        android:background="@color/color_2B2B2B_FCFCFC"
                         android:padding="16dp"
                         android:src="@drawable/ic_close_gray" />
                 </LinearLayout>
