@@ -511,7 +511,7 @@
     <string name="online_bank">在线网银</string>
     <string name="online_juan">JuanCash</string>
     <string name="online_dispenshing">出款</string>
-    <string name="online_online_bank">网银线上</string>
+    <string name="online_online_bank">GCash / 其他</string>
     <string name="online_gcash">Gcash</string>
     <string name="online_grab">GrabPay</string>
     <string name="online_maya">PayMaya</string>
@@ -734,7 +734,7 @@
     <string name="transfer_state">转换状态：</string>
     <string name="remark">备注：</string>
     <string name="transfer_info">转换信息</string>
-    <string name="sorry_website_is_now_maintenance">很抱歉，目前网站维护中</string>
+    <string name="sorry_website_is_now_maintenance">目前网站维护中</string>
     <string name="if_there_is_any_question_please_consult">若有疑问请咨询%1$s</string>
     <string name="bottom_nav_home">首页</string>
     <string name="bottom_nav_game">赛事</string>

@@ -408,8 +408,8 @@
 
     <ImageView
         android:id="@+id/league_neutral"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:padding="4.5dp"
         android:scaleType="centerCrop"
         android:src="@drawable/selector_neutral_v5"
