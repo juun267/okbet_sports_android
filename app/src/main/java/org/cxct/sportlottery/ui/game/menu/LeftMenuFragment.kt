@@ -493,6 +493,31 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
                         )
                     }
                 }
+                //coming soon
+                GameType.BB_COMING_SOON -> {
+                    unselectedList.add(
+                        MenuItemData(
+                            R.drawable.img_baseball,
+                            getString(R.string.baseball),
+                            GameType.BB_COMING_SOON.key,
+                            0,
+                            -1,
+                            false
+                        )
+                    )
+                }
+                GameType.ES_COMING_SOON -> {
+                    unselectedList.add(
+                        MenuItemData(
+                            R.drawable.img_esports,
+                            getString(R.string.esports),
+                            GameType.ES_COMING_SOON.key,
+                            0,
+                            -1,
+                            false
+                        )
+                    )
+                }
                 else -> {
                 }
             }
@@ -543,6 +568,7 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
         }
 
         viewModel.sportMenuList.observe(viewLifecycleOwner) {
+
             initData(it.peekContent())
         }
 

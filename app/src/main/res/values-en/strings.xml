@@ -1123,4 +1123,6 @@
     <string name="cancel_auto">Rejected</string>
     <string name="cancel_manual">Void</string>
     <string name="error_input_has_blank">Incorrect input. Use english only, don\'t enter the continuous space.</string>
+    <string name="coming_soon">Coming Soon</string>
+    <string name="esports">eSports</string>
 </resources>

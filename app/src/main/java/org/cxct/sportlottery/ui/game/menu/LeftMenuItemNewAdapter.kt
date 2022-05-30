@@ -105,7 +105,16 @@ class LeftMenuItemNewAdapter(
                     img_price.setImageResource(item.imgId)
                     txv_price.text = item.title
 
-                    tv_count.text = item.gameCount.toString()
+                    //暫時利用gameCount當判斷是否為coming soon
+                    if (item.gameCount == -1) {
+                        tv_count.text = context.getString(R.string.coming_soon)
+                        isEnabled = false
+                        btn_select.isEnabled = false
+                    } else {
+                        tv_count.text = item.gameCount.toString()
+                        isEnabled = true
+                        btn_select.isEnabled = true
+                    }
 
                     divider.isVisible = position == selectedNumber - 1
 
