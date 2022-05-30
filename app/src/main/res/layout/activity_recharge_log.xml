@@ -11,6 +11,7 @@
         android:id="@+id/date_range_selector"
         android:layout_width="match_parent"
         android:layout_height="42dp"
+        app:minusDays="6"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
