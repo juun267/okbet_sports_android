@@ -10,6 +10,6 @@ object LiveUtil {
      */
     fun getAnimationHeightFromWidth(width: Number): Float {
         val widthDP = width.toFloat().px
-        return ((widthDP*0.699)+40).toFloat().dpToPx
+        return (widthDP*0.699+40.0).toFloat().dpToPx
     }
 }

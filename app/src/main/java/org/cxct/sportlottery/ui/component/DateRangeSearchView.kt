@@ -56,7 +56,7 @@ class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: Att
     }
 
     private fun initDate() {
-        tv_start_date.text = TimeUtil.getDefaultDate(7).startTime
+        tv_start_date.text = TimeUtil.getDefaultDate().startTime
         tv_end_date.text = TimeUtil.getDefaultDate().endTime
     }
 
