@@ -208,12 +208,15 @@ class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
             iv_match_in_play.visibility =  if (isAtStart) View.VISIBLE else View.GONE
 
             if (isAtStart) {
-                tv_match_time.setTextColor(context.getColor(R.color.color_FFFFFF_000000))
                 data.matchInfo?.startTime?.minus(System.currentTimeMillis())?.let {
                     tv_match_time.text = String.format(itemView.context.resources.getString(R.string.at_start_remain_minute), TimeUtil.longToMinute(it))
                 }
             } else {
                 tv_match_time.text = data.matchInfo?.startTimeDisplay ?: ""
+            }
+            if(TimeUtil.isTimeInPlay(data.matchInfo?.startTime)){
+                tv_match_time.setTextColor(context.getColor(R.color.color_FFFFFF_000000))
+            }else{
                 tv_match_time.setTextColor(context.getColor(R.color.color_BCBCBC_666666))
             }
         }
