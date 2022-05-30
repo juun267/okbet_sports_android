@@ -83,11 +83,15 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
             }
 
         bet_type_selector.apply {
-            setItemData(mutableListOf(StatusSheetData("0", context.getString(R.string.waiting)), StatusSheetData("1", context.getString(R.string.not_settled_order))))
+            setItemData(mutableListOf(StatusSheetData("0,1", context.getString(R.string.all)),StatusSheetData("0", context.getString(R.string.waiting)), StatusSheetData("1", context.getString(R.string.not_settled_order))))
             itemSelectedListener = { statusSheetData ->
                 statusSheetData.code.let { selectedCode ->
                     selectedCode?.let {
-                        viewModel.statusList = listOf(it.toInt())
+                        var list= mutableListOf<Int>()
+                        it.split(",").forEach {
+                            list.add(it.toInt())
+                        }
+                        viewModel.statusList = list.toList()
                     }
                 }
             }
