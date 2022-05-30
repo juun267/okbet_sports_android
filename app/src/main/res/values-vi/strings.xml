@@ -512,7 +512,7 @@
     <string name="online_bank">Ngân hàng trực tuyến</string>
     <string name="online_juan">JuanCash</string>
     <string name="online_dispenshing">Rút tiền</string>
-    <string name="online_online_bank">Ngân hàng trực tuyến</string>
+    <string name="online_online_bank">GCash / Khác</string>
     <string name="online_gcash">Gcash</string>
     <string name="online_grab">GrabPay</string>
     <string name="online_maya">PayMaya</string>
