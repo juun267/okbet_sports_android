@@ -110,7 +110,7 @@ class FinanceViewModel(
 
         loading()
 
-        val filter = { item: String? -> if (item == allTag) null else item }
+        val filter = { item: String? -> if (item == allTag || item.isNullOrBlank()) null else item }
 
         when {
             isFirstFetch -> {
