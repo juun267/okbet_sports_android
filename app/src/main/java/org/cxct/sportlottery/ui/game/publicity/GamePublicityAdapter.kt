@@ -198,7 +198,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             payloads.forEachIndexed { _, payload ->
                 when (payload) {
                     is Recommend -> {
-                        (holder as PublicityRecommendViewHolder).update(payload, oddsType)
+                        (holder as PublicityRecommendViewHolder).update(payload, oddsType) { notifyItemChanged(position, payload) }
                     }
                     is PublicityTitleImageData -> {
                         (holder as PublicityTitleViewHolder).updateToolbar(payload)

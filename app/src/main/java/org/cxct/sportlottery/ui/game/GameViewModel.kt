@@ -2,12 +2,10 @@ package org.cxct.sportlottery.ui.game
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
-import com.bekawestberg.loopinglayout.library.addViewsAtAnchorEdge
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -30,9 +28,7 @@ import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
 import org.cxct.sportlottery.network.matchLiveInfo.MatchLiveUrlRequest
 import org.cxct.sportlottery.network.matchLiveInfo.Response
-import org.cxct.sportlottery.network.matchTracker.MatchTrackerUrl
 import org.cxct.sportlottery.network.message.MessageListResult
-import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
@@ -48,6 +44,7 @@ import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightLeagueListRequest
 import org.cxct.sportlottery.network.outright.season.OutrightLeagueListResult
+import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
 import org.cxct.sportlottery.network.sport.*
 import org.cxct.sportlottery.network.sport.coupon.SportCouponMenuResult
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
@@ -73,8 +70,6 @@ import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.TimeUtil.DMY_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
-import timber.log.Timber
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -2859,6 +2854,23 @@ class GameViewModel(
                     notifyFavorite(FavoriteType.MATCH)
                 }
             }
+        }
+    }
+
+    fun publicityLeagueChange(leagueChangeEvent: LeagueChangeEvent) {
+        var needUpdatePublicityRecommend = false
+        publicityRecommend.value?.peekContent()?.recommendList?.forEach { recommend ->
+            if (leagueChangeEvent.leagueIdList?.contains(recommend.leagueId) == true) {
+                needUpdatePublicityRecommend = true
+            }
+
+            if (leagueChangeEvent.matchIdList?.contains(recommend.matchInfo?.id) == true) {
+                needUpdatePublicityRecommend = true
+            }
+        }
+
+        if (needUpdatePublicityRecommend) {
+            getRecommend()
         }
     }
 

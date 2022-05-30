@@ -724,7 +724,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun notifySubItemChanged(index: Int, indexMatchOdd: Int) {
         if (index >= 0 && indexMatchOdd >= 0) {
             val data = getGameEntityData()[index]
-            data.vpTableAdapter?.notifyItemChanged(indexMatchOdd)
+            data.vpTableAdapter?.notifyItemChanged(indexMatchOdd, 0)
         }
     }
 
