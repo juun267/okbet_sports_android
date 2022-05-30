@@ -733,7 +733,7 @@
     <string name="transfer_state">Trạng thái chuyển đổi</string>
     <string name="remark">ghi chú</string>
     <string name="transfer_info">chuyển đổi thông tin</string>
-    <string name="sorry_website_is_now_maintenance">Xin lỗi trang web hiện đang được bảo trì !</string>
+    <string name="sorry_website_is_now_maintenance">Trang web hiện đang được bảo trì</string>
     <string name="if_there_is_any_question_please_consult">Nếu bạn có bất kỳ câu hỏi nào, xin vui lòng đi đến tư vấn%1$s</string>
     <string name="bottom_nav_home">trang chủ</string>
     <string name="bottom_nav_game">Sự kiện</string>

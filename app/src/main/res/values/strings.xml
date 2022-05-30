@@ -746,7 +746,7 @@
     <string name="transfer_state">Transfer status</string>
     <string name="remark">Remark：</string>
     <string name="transfer_info">Transfer information</string>
-    <string name="sorry_website_is_now_maintenance">I\'m sorry, the website is under maintenance</string>
+    <string name="sorry_website_is_now_maintenance">The website is under maintenance</string>
     <string name="if_there_is_any_question_please_consult">If you have any questions, please contact%1$s</string>
     <string name="bottom_nav_home">Home page</string>
     <string name="bottom_nav_game">Match</string>
