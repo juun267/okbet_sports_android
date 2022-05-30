@@ -318,6 +318,7 @@ class Vp2GameTable4Adapter(
             itemView.apply {
                 when (matchType) {
                     MatchType.IN_PLAY -> {
+                        tv_match_status.setTextColor(ContextCompat.getColor(context, R.color.color_FFFFFF_000000))
                         when (gameType) {
                             GameType.TN.key -> {
                                 tv_match_status.visibility = View.GONE
@@ -409,6 +410,7 @@ class Vp2GameTable4Adapter(
                         }
                     }
                     MatchType.AT_START -> {
+                        tv_match_status.setTextColor(ContextCompat.getColor(context, R.color.color_BCBCBC_666666))
                         tv_game_type.text = context.getString(R.string.home_tab_today)
                         data?.startTime?.let {
                             val date = Date(it)
@@ -420,6 +422,7 @@ class Vp2GameTable4Adapter(
 
                         tv_score.visibility = View.GONE
                         tv_point.visibility = View.GONE
+                    }else->  {tv_match_time.setTextColor(ContextCompat.getColor(context, R.color.color_BCBCBC_666666))
                     }
                 }
             }
@@ -522,6 +525,7 @@ class Vp2GameTable4Adapter(
             itemView.apply {
                 when (matchType) {
                     MatchType.IN_PLAY -> {
+                        tv_match_time.setTextColor(ContextCompat.getColor(context, R.color.color_FFFFFF_000000))
                         if (time == -1L) tv_match_time.text = dataList[bindingAdapterPosition].runningTime
                         else {
                             when (gameType) {
@@ -538,9 +542,11 @@ class Vp2GameTable4Adapter(
                         }
                     }
                     MatchType.AT_START -> {
+                        tv_match_time.setTextColor(ContextCompat.getColor(context, R.color.color_BCBCBC_666666))
                         if (time == -1L) {
                             tv_match_time.text = dataList[bindingAdapterPosition].runningTime
-                            tv_match_time.setTextColor(ContextCompat.getColor(context, R.color.color_A3A3A3_666666))
+                            tv_match_time.setTextColor(ContextCompat.getColor(context, R.color.color_BCBCBC_666666))
+                            tv_match_time.setTextColor(ContextCompat.getColor(context, R.color.color_BCBCBC_666666))
                         } else {
                             val statusName =
                                 if (data?.startDateDisplay.isNullOrEmpty()) "" else data?.startDateDisplay + " "
@@ -551,10 +557,11 @@ class Vp2GameTable4Adapter(
                             )
                             tv_match_time.text = timeStr
                             dataList[bindingAdapterPosition].runningTime = timeStr
-                            tv_match_time.setTextColor(ContextCompat.getColor(context, R.color.color_A3A3A3_666666))
+                            tv_match_time.setTextColor(ContextCompat.getColor(context, R.color.color_BCBCBC_666666))
                         }
                     }
                     else -> {
+                        tv_match_time.setTextColor(ContextCompat.getColor(context, R.color.color_BCBCBC_666666))
                         tv_match_time.text = "${data?.startDateDisplay ?: ""} ${data?.startTimeDisplay ?: ""}"
                     }
                 }
