@@ -123,6 +123,9 @@ class Vp2GameTable4Adapter(
                 GameTablePayload.PAYLOAD_MATCH_STATUS -> {
                     holder.updateMatchStatus(dataList[position].matchInfo)
                 }
+                else -> {
+                    onBindViewHolder(holder, position)
+                }
             }
         } else {
             onBindViewHolder(holder, position)
