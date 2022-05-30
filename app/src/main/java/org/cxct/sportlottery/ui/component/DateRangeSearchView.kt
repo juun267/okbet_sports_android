@@ -20,6 +20,7 @@ import java.util.*
 class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
 
     var dateRange = -30
+    private var minusDays = 7
     private val typedArray by lazy { context.theme.obtainStyledAttributes(attrs, R.styleable.CalendarBottomSheetStyle, 0, 0) }
     private val bottomSheetLayout by lazy { typedArray.getResourceId(R.styleable.CalendarBottomSheetStyle_calendarLayout, R.layout.dialog_bottom_sheet_calendar) }
     private val bottomSheetView by lazy { LayoutInflater.from(context).inflate(bottomSheetLayout, null) }
@@ -41,9 +42,10 @@ class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: Att
         val view = LayoutInflater.from(context).inflate(R.layout.component_date_range_selector, this, false)
         addView(view)
         dateRange = typedArray.getInteger(R.styleable.CalendarBottomSheetStyle_dateRange, -30)
+        minusDays = typedArray.getInteger(R.styleable.CalendarBottomSheetStyle_minusDays, 7)
 
         try {
-            initDate()
+            initDate(minusDays)
             setupCalendarBottomSheet()
             initOnclick()
 
@@ -55,8 +57,8 @@ class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: Att
 
     }
 
-    private fun initDate() {
-        tv_start_date.text = TimeUtil.getDefaultDate().startTime
+    private fun initDate(minusDays: Int) {
+        tv_start_date.text = TimeUtil.getDefaultDate(minusDays).startTime
         tv_end_date.text = TimeUtil.getDefaultDate().endTime
     }
 
@@ -126,7 +128,7 @@ class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: Att
         val calendarPastMonth = TimeUtil.getTodayEndTimeCalendar()
         calendarPastMonth.add(Calendar.DATE, dateRange)
         bottomSheetView.calendar.setSelectableDateRange(calendarPastMonth, calendarToday)
-        bottomSheetView.calendar.setSelectedDateRange(TimeUtil.getCalendarForDates(7).first, TimeUtil.getCalendarForDates(7).second)
+        bottomSheetView.calendar.setSelectedDateRange(TimeUtil.getCalendarForDates(minusDays).first, TimeUtil.getCalendarForDates(minusDays).second)
     }
 
 }
