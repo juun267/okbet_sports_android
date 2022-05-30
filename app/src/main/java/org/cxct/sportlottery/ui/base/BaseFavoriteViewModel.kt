@@ -123,8 +123,6 @@ abstract class BaseFavoriteViewModel(
                     }
 
                     leagueOdd.matchOdds.forEach { matchOdd ->
-                        matchOdd.setupPlayCate()
-                        matchOdd.sortOdd()
                         matchOdd.setupOddDiscount()
                         matchOdd.matchInfo?.let { matchInfo ->
                             matchInfo.startDateDisplay =
