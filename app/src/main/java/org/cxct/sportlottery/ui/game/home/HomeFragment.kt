@@ -950,6 +950,8 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
+                homeBinding.rvList.visibility = View.VISIBLE
+                homeBinding.loading.root.visibility = View.GONE
                 var needUpdateBetInfo = false
                 SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
                 //滾球盤、即將開賽盤
