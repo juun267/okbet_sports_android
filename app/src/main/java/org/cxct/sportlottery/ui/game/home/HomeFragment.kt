@@ -327,6 +327,26 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             }
         }
 
+        mHomeListAdapter.onClickLiveListener = object : OnSelectItemListener<MatchInfo> {
+            override fun onClick(select: MatchInfo) {
+                if (viewModel.checkLoginStatus()){
+                    val code = select.gameType
+                    val matchId = select.id
+                    navOddsDetailFragment(code, matchId, mSelectMatchType)
+                }
+            }
+        }
+
+        mHomeListAdapter.onClickAnimationListener = object : OnSelectItemListener<MatchInfo> {
+            override fun onClick(select: MatchInfo) {
+                if (viewModel.checkLoginStatus()){
+                    val code = select.gameType
+                    val matchId = select.id
+                    navOddsDetailFragment(code, matchId, mSelectMatchType)
+                }
+            }
+        }
+
         mHomeListAdapter.onClickTotalMatchListener = object : OnSelectItemListener<GameEntity> {
             override fun onClick(select: GameEntity) {
                 viewModel.navSpecialEntrance(
