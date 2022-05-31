@@ -77,8 +77,14 @@ class LiveViewToolbar @JvmOverloads constructor(
         set(value) {
             if (field != value) {
                 field = value
-                if (iv_animation.isSelected)
-                    openWebView()
+                if (iv_animation.isSelected) {
+                    if (isLogin) {
+                        openWebView()
+                    } else {
+                        setWebViewHeight()
+                        setupNotLogin()
+                    }
+                }
             }
         }
 
