@@ -345,13 +345,22 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     override fun loading() {
 //        super.loading()
-        //listLoading()
+        listLoading()
         stopTimer()
     }
 
     override fun hideLoading() {
         //super.hideLoading()
-        //hideListLoading()
+        Log.d("Hewie98", "${game_list.adapter}")
+        when(game_list.adapter) {
+            is LeagueAdapter -> { if(mLeagueOddList.isNotEmpty()) hideListLoading() }
+            is EpsListAdapter -> { if(epsListAdapter.dataList.isNotEmpty()) hideListLoading() }
+            is OutrightLeagueOddAdapter -> { if(outrightLeagueOddAdapter.data.isNotEmpty()) hideListLoading() }
+            is OutrightCountryAdapter -> { if(outrightCountryAdapter.data.isNotEmpty()) hideListLoading() }
+            is CountryAdapter -> { if(countryAdapter.data.isNotEmpty()) hideListLoading() }
+            //else -> { hideListLoading() }
+        }
+        //if(mLeagueOddList.isNotEmpty()) hideListLoading()
         if (timer == null) startTimer()
     }
 
@@ -930,8 +939,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
 
         viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner) {
-            hideLoading()
-
             it.getContentIfNotHandled()?.let { outrightOddsListResult ->
                 if (outrightOddsListResult.success) {
                     val outrightLeagueOddDataList: MutableList<org.cxct.sportlottery.network.outright.odds.MatchOdd?> = mutableListOf()
@@ -959,6 +966,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     game_list.apply {
                         adapter = outrightLeagueOddAdapter
                     }
+                    hideLoading()
                 }
             }
         }
@@ -1278,6 +1286,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 if (it == ServiceConnectStatus.CONNECTED) {
                     if (args.matchType == MatchType.OTHER) {
                         viewModel.getAllPlayCategoryBySpecialMatchType(isReload = true)
+                        hideListLoading()
                     } else {
                         viewModel.getGameHallList(
                             matchType = args.matchType,
