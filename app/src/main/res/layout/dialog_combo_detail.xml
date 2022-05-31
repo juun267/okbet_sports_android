@@ -27,7 +27,7 @@
             android:layout_marginBottom="11dp"
             android:gravity="center"
             android:text="@string/text_combo_title"
-            android:textColor="@color/color_FFFFFF_000000"
+            android:textColor="@color/color_DDDDDD_000000"
             android:textSize="@dimen/textSize16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"

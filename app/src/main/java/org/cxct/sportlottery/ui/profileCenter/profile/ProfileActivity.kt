@@ -13,8 +13,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile.*
-import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.index.config.VerifySwitchType
@@ -371,7 +369,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 itemLayout.isEnabled = true
             } else {
                 text = infoData
-                setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.color_E0E0E0_404040))
+                setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.color_BDBDBD_404040))
                 iconModify.visibility = View.GONE
                 itemLayout.isEnabled = false
             }

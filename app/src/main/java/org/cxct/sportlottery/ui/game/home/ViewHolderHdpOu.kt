@@ -20,7 +20,6 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setTextTypeFace
-import java.util.*
 
 class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
     companion object{
@@ -215,7 +214,7 @@ class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
                 tv_match_time.text = data.matchInfo?.startTimeDisplay ?: ""
             }
             if(TimeUtil.isTimeInPlay(data.matchInfo?.startTime)){
-                tv_match_time.setTextColor(context.getColor(R.color.color_FFFFFF_000000))
+                tv_match_time.setTextColor(context.getColor(R.color.color_DDDDDD_000000))
             }else{
                 tv_match_time.setTextColor(context.getColor(R.color.color_BCBCBC_666666))
             }
