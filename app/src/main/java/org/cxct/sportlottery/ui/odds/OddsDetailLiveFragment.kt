@@ -707,7 +707,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                     GameType.TT -> {
                         setupBackScore(event)
                     }
-                    GameType.RB, GameType.AFT -> {
+                    GameType.RB, GameType.AFT, GameType.BB -> {
                         setupFrontScore(event)
                     }
                     GameType.BM -> {
