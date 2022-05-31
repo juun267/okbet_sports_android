@@ -107,6 +107,14 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
                 { //premium
                     viewModel.navDirectEntrance(MatchType.EPS, null)
                     closeMenuFragment()
+                }, affiliateSelectedListener = {
+                    context?.let {
+                        JumpUtil.toInternalWeb(
+                            it,
+                            Constants.getAffiliateUrl(it),
+                            resources.getString(R.string.btm_navigation_affiliate)
+                        )
+                    }
                 }),
             LeftMenuItemNewAdapter.ItemSelectedListener(
                 { sportType -> //點擊
