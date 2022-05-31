@@ -93,7 +93,7 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     sportCountText = item.num.toString()
                     sportCountTextColor =
                         if (item.isSelected) R.color.color_FFFFFF
-                        else R.color.color_e5e5e5_333333
+                        else R.color.color_CCCCCC_333333
                     isEnabled = true
                 }
                 sport_count_text.text = sportCountText
