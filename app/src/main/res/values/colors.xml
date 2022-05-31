@@ -178,6 +178,7 @@
     <!--region 特殊處理顏色-->
     <color name="home_card_top_text_color">#40FFFFFF</color>
     <color name="home_card_text_color">#FFFFFF</color>
+    <color name="home_card_coming_soon_text_color">#4dffffff</color>
     <color name="play_category_text_color">@color/color_0760D4</color>
     <color name="play_category_stroke_color">@color/color_0760D4</color>
     <color name="play_category_solid_color">#00000000</color>

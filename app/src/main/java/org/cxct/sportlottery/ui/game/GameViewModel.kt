@@ -830,11 +830,11 @@ class GameViewModel(
                 }
             }
             //add coming soon
-            val newList = mutableListOf<SportMenu>()
-            newList.addAll(list)
-            newList.add(SportMenu(gameType = GameType.BB_COMING_SOON,"", "", 0))
-            newList.add(SportMenu(gameType = GameType.ES_COMING_SOON,"", "", 0))
-            _sportMenuList.postValue(Event(newList))
+            val comingSoonList = mutableListOf<SportMenu>()
+            comingSoonList.addAll(list)
+            comingSoonList.add(SportMenu(gameType = GameType.BB_COMING_SOON,"", "", 0))
+            comingSoonList.add(SportMenu(gameType = GameType.ES_COMING_SOON,"", "", 0))
+            _sportMenuList.postValue(Event(comingSoonList))
         }
     }
 

@@ -493,7 +493,7 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
                         )
                     }
                 }
-                //coming soon
+                //coming soon start
                 GameType.BB_COMING_SOON -> {
                     unselectedList.add(
                         MenuItemData(
@@ -518,6 +518,7 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
                         )
                     )
                 }
+                //coming soon end
                 else -> {
                 }
             }
@@ -568,7 +569,6 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
         }
 
         viewModel.sportMenuList.observe(viewLifecycleOwner) {
-
             initData(it.peekContent())
         }
 

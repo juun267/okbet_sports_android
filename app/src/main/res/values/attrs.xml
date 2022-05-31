@@ -20,6 +20,7 @@
         <attr name="cvDividerColor" format="reference" />
         <attr name="cvHint" format="string" />
         <attr name="cvText" format="string" />
+        <attr name="cvTextSize" format="integer" />
         <attr name="cvEms" format="integer" />
         <attr name="cvTitleMinEms" format="integer" />
         <attr name="necessarySymbol">
