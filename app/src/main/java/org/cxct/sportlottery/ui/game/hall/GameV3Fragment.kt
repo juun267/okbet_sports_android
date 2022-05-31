@@ -1689,7 +1689,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     private fun updateSportType(gameTypeList: List<Item>) {
-        gameTypeAdapter.dataSport = gameTypeList
+        //add coming soon
+        val comingSoonList = mutableListOf<Item>()
+        comingSoonList.addAll(gameTypeList)
+        comingSoonList.add(Item(code = GameType.BB_COMING_SOON.key,"", -1 , null, 99))
+        comingSoonList.add(Item(code = GameType.ES_COMING_SOON.key,"", -1 , null, 100))
+        gameTypeAdapter.dataSport = comingSoonList
 
         if (args.matchType != MatchType.OTHER) {
             gameTypeList.find { it.isSelected }.let { item ->
