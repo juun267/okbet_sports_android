@@ -345,13 +345,13 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     override fun loading() {
 //        super.loading()
-        listLoading()
+        //listLoading()
         stopTimer()
     }
 
     override fun hideLoading() {
         //super.hideLoading()
-        hideListLoading()
+        //hideListLoading()
         if (timer == null) startTimer()
     }
 
