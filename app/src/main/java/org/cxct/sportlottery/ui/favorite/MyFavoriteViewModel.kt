@@ -47,7 +47,7 @@ class MyFavoriteViewModel(
     val favoriteRepository = myFavoriteRepository
     val lastSportType = myFavoriteRepository.lastSportType
 
-    fun getSportQuery(getLastPick: Boolean? = false, isReloadPlayCate: Boolean = false) {
+    fun getSportQuery(getLastPick: Boolean? = false, isReloadPlayCate: Boolean = false, getFavoriteMatch: Boolean = false  ) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.sportService.getQuery(
@@ -94,11 +94,13 @@ class MyFavoriteViewModel(
                         }
                     ))
 
-                val selectItem = newSportQueryData.items?.find { it.isSelected }
-                getFavoriteMatch(
-                    selectItem?.code,
-                    selectItem?.play?.firstOrNull()?.code
-                )
+                if(getFavoriteMatch){
+                    val selectItem = newSportQueryData.items?.find { it.isSelected }
+                    getFavoriteMatch(
+                        selectItem?.code,
+                        selectItem?.play?.firstOrNull()?.code
+                    )
+                }
             }
         }
     }
