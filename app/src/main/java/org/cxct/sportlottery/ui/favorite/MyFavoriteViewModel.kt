@@ -170,8 +170,9 @@ class MyFavoriteViewModel(
         }
     }
 
-    fun getFavoriteMatch() {
-        val gameType = sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.code
+    fun getFavoriteMatch(getLastPick: Boolean? = false) {
+        val gameType =
+            if (getLastPick == true) lastSportType.value?.code else sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.code
         val playCateMenu =
             sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.play?.find { it.isSelected }?.code
         val playCateCode =
