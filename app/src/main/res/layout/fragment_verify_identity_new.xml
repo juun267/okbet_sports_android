@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:gravity="start|center_vertical"
             android:text="@string/type_of_certificate"
-            android:textColor="@color/color_e5e5e5_333333"
+            android:textColor="@color/color_CCCCCC_333333"
             android:textSize="@dimen/textSize13sp"
             android:textStyle="bold" />
 
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/prepare_your_id_photo"
-            android:textColor="@color/color_e5e5e5_333333"
+            android:textColor="@color/color_CCCCCC_333333"
             android:textSize="@dimen/textSize12sp"
             android:textStyle="bold" />
 

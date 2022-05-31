@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="12dp"
             android:gravity="center"
-            android:textColor="@color/color_FFFFFF_000000"
+            android:textColor="@color/color_DDDDDD_000000"
             android:textSize="@dimen/textSize16sp"
             android:textStyle="bold"
             android:text="@string/prompt"
