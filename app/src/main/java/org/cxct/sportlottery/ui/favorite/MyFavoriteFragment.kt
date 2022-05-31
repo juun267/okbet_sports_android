@@ -99,9 +99,9 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         LeagueAdapter(MatchType.MY_EVENT, getPlaySelectedCodeSelectionType(), getPlaySelectedCode()).apply {
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
-            leagueListener = LeagueListener({
+            leagueListener = LeagueListener {
                 subscribeChannelHall(it)
-            }, {})
+            }
 
             leagueOddListener = LeagueOddListener(
                 clickListenerPlayType = { matchId, matchInfoList, gameMatchType, liveVideo ->

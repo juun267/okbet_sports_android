@@ -33,7 +33,7 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
                     with(tabTextView) {
                         setTypeface(null, Typeface.BOLD)
                         setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14f)
-                        setTextColor(ContextCompat.getColor(context, R.color.color_e5e5e5_333333))
+                        setTextColor(ContextCompat.getColor(context, R.color.color_CCCCCC_333333))
                     }
                 }
                 when (tab?.position) {
@@ -130,7 +130,7 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
                 with((selectedTab.customView as TextView)) {
                     setTypeface(null, Typeface.BOLD)
                     setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14f)
-                    setTextColor(ContextCompat.getColor(context, R.color.color_e5e5e5_333333))
+                    setTextColor(ContextCompat.getColor(context, R.color.color_CCCCCC_333333))
                 }
             }
             //endregion

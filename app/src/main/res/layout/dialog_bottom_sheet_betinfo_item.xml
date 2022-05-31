@@ -36,7 +36,7 @@
             android:id="@+id/tv_current_money"
             android:layout_width="match_parent"
             android:layout_height="24dp"
-            android:background="@color/color_e5e5e5_333333"
+            android:background="@color/color_CCCCCC_333333"
             android:gravity="center_vertical"
             android:paddingStart="@dimen/activity_horizontal_margin"
             android:textColor="@color/color_191919_EEEFF0"

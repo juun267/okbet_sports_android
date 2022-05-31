@@ -18,7 +18,6 @@ import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.transfer_pay_fragment.*
 import org.cxct.sportlottery.R
@@ -292,7 +291,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             .setTitleText(resources.getString(R.string.title_recharge_time))
             .setCancelText(" ")
             .setSubmitText(getString(R.string.picker_submit))
-            .setTitleColor(ContextCompat.getColor(cv_recharge_time.context, R.color.color_FFFFFF_000000))
+            .setTitleColor(ContextCompat.getColor(cv_recharge_time.context, R.color.color_DDDDDD_000000))
             .setTitleBgColor(ContextCompat.getColor(cv_recharge_time.context, R.color.color_2B2B2B_e2e2e2))
             .setBgColor(ContextCompat.getColor(cv_recharge_time.context, R.color.color_191919_FCFCFC))
             .setSubmitColor(ContextCompat.getColor(cv_recharge_time.context, R.color.color_8F8F8F_999999))
@@ -388,7 +387,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             MoneyType.GCASH_TYPE.code -> {
                 hideEditText()
                 ll_qr.visibility = View.VISIBLE
-                et_nickname.visibility = View.VISIBLE
+                et_nickname.visibility = View.GONE
                 et_name.visibility = View.VISIBLE
 
                 tv_hint1.text = getString(R.string.gcash_recharge_hint)
@@ -396,7 +395,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             MoneyType.GRABPAY_TYPE.code -> {
                 hideEditText()
                 ll_qr.visibility = View.VISIBLE
-                et_nickname.visibility = View.VISIBLE
+                et_nickname.visibility = View.GONE
                 et_name.visibility = View.VISIBLE
 
                 tv_hint1.text = getString(R.string.grabpay_recharge_hint)
@@ -404,7 +403,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             MoneyType.PAYMAYA_TYPE.code -> {
                 hideEditText()
                 ll_qr.visibility = View.VISIBLE
-                et_nickname.visibility = View.VISIBLE
+                et_nickname.visibility = View.GONE
                 et_name.visibility = View.VISIBLE
 
                 tv_hint1.text = getString(R.string.paymaya_recharge_hint)
@@ -562,7 +561,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     depositDate = depositDate.time
                 )
             }
-            MoneyType.WX_TYPE.code -> {
+            MoneyType.WX_TYPE.code, MoneyType.GCASH_TYPE.code, MoneyType.GRABPAY_TYPE.code, MoneyType.PAYMAYA_TYPE.code -> {
                 MoneyAddRequest(
                     rechCfgId = mSelectRechCfgs?.id ?: 0,
                     bankCode = null,
@@ -578,7 +577,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     depositDate = depositDate.time
                 )
             }
-            MoneyType.ALI_TYPE.code, MoneyType.GCASH_TYPE.code, MoneyType.GRABPAY_TYPE.code, MoneyType.PAYMAYA_TYPE.code -> {
+            MoneyType.ALI_TYPE.code -> {
                 MoneyAddRequest(
                     rechCfgId = mSelectRechCfgs?.id ?: 0,
                     bankCode = null,

@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Spanned
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -19,8 +18,6 @@ import androidx.lifecycle.viewModelScope
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder
 import com.bigkoo.pickerview.view.OptionsPickerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.*
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import kotlinx.coroutines.*
 import me.jessyan.autosize.AutoSizeCompat
@@ -318,7 +315,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         }
             .setItemVisibleCount(4)
             .setBgColor(resources.getColor(R.color.color_666666_bcbcbc))
-            .setCancelColor(resources.getColor(R.color.color_e5e5e5_333333))//取消按钮文字颜色
+            .setCancelColor(resources.getColor(R.color.color_CCCCCC_333333))//取消按钮文字颜色
             .setSubmitText(resources.getString(R.string.complete))
             .setCancelText(resources.getString(R.string.btn_cancel))
             .build()

@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_weight="1"
-            android:textColor="@color/color_e5e5e5_333333"
+            android:textColor="@color/color_CCCCCC_333333"
             android:textSize="@dimen/textSize14sp"
             tools:text="Goals O/U" />
     </LinearLayout>
