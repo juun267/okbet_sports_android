@@ -441,7 +441,9 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         private val onClickBetListener: (gameType: String, matchType: MatchType, matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?, playCateMenuCode: String?) -> Unit,
         private val onClickFavoriteListener: (matchId: String?) -> Unit,
         private val onClickStatisticsListener: (matchId: String) -> Unit,
-        private val onClickPlayTypeListener: (gameType: String, matchType: MatchType?, matchId: String?, matchInfoList: List<MatchInfo>) -> Unit
+        private val onClickPlayTypeListener: (gameType: String, matchType: MatchType?, matchId: String?, matchInfoList: List<MatchInfo>) -> Unit,
+        private val onClickLiveIconListener: (gameType: String, matchType: MatchType?, matchId: String?, matchInfoList: List<MatchInfo>) -> Unit,
+        private val onClickAnimationIconListener: (gameType: String, matchType: MatchType?, matchId: String?, matchInfoList: List<MatchInfo>) -> Unit
     ) {
         fun onLogoClickListener() = onLogoClickListener.invoke()
         fun onLanguageBlockClickListener() = onLanguageBlockClickListener.invoke()
@@ -478,6 +480,14 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             matchInfoList: List<MatchInfo>
         ) =
             onClickPlayTypeListener.invoke(gameType, matchType, matchId, matchInfoList)
+        fun onClickLiveIconListener(gameType: String,
+                                    matchType: MatchType?,
+                                    matchId: String?,
+                                    matchInfoList: List<MatchInfo>) = onClickLiveIconListener.invoke(gameType, matchType, matchId, matchInfoList)
+        fun onClickAnimationIconListener(gameType: String,
+                                    matchType: MatchType?,
+                                    matchId: String?,
+                                    matchInfoList: List<MatchInfo>) = onClickAnimationIconListener.invoke(gameType, matchType, matchId, matchInfoList)
     }
 }
 

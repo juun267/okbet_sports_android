@@ -22,6 +22,8 @@ class LeagueOddListener(
     val clickListenerFavorite: (matchId: String?) -> Unit,
     val clickListenerStatistics: (matchId: String?) -> Unit,
     val refreshListener: (leagueId: String) -> Unit,
+    val clickLiveIconListener: (matchId: String?, matchInfoList: List<MatchInfo>, gameMatchType: MatchType, liveVideo: Int) -> Unit,
+    val clickAnimationIconListener: (matchId: String?, matchInfoList: List<MatchInfo>, gameMatchType: MatchType, liveVideo: Int) -> Unit,
 ) {
     fun onClickPlayType(matchId: String?, matchInfoList: List<MatchInfo>, gameMatchType: MatchType, liveVideo: Int = 0) =
         clickListenerPlayType(matchId, matchInfoList, gameMatchType, liveVideo)
@@ -48,4 +50,18 @@ class LeagueOddListener(
     fun onClickStatistics(matchId: String?) = clickListenerStatistics(matchId)
 
     fun onRefresh(leagueId: String) = refreshListener(leagueId)
+
+    fun onClickLiveIconListener(
+        matchId: String?,
+        matchInfoList: List<MatchInfo>,
+        gameMatchType: MatchType,
+        liveVideo: Int
+    ) = clickLiveIconListener(matchId, matchInfoList, gameMatchType, liveVideo)
+
+    fun onClickAnimationIconListener(
+        matchId: String?,
+        matchInfoList: List<MatchInfo>,
+        gameMatchType: MatchType,
+        liveVideo: Int
+    ) = clickAnimationIconListener(matchId, matchInfoList, gameMatchType, liveVideo)
 }

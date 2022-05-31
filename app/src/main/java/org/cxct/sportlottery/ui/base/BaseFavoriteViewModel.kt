@@ -302,4 +302,17 @@ abstract class BaseFavoriteViewModel(
         }
         return this
     }
+
+    /**
+     * 檢查當前登入狀態, 若未登入則跳請登入提示
+     * @return true: 已登入, false: 未登入
+     */
+    fun checkLoginStatus(): Boolean {
+        return if (isLogin.value != true) {
+            mNotifyLogin.postValue(true)
+            false
+        } else {
+            true
+        }
+    }
 }
