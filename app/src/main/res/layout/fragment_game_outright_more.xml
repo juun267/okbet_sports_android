@@ -44,7 +44,7 @@
                 android:ellipsize="end"
                 android:gravity="center"
                 android:singleLine="true"
-                android:textColor="@color/color_e5e5e5_333333"
+                android:textColor="@color/color_CCCCCC_333333"
                 android:textSize="@dimen/textSize16sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/outright_more_date"

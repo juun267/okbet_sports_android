@@ -18,18 +18,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.content_match_record.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_eps.*
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
-import kotlinx.android.synthetic.main.fragment_my_favorite.*
-import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import kotlinx.android.synthetic.main.view_game_tab_odd_v4.*
 import kotlinx.android.synthetic.main.view_game_tab_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
 import kotlinx.android.synthetic.main.view_match_category_v4.*
-import kotlinx.android.synthetic.main.view_match_category_v4.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -226,18 +222,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         ).apply {
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
-            leagueListener = LeagueListener({
+            leagueListener = LeagueListener {
                 subscribeChannelHall(it)
-            }, {
-                loading()
-                if (args.matchType != MatchType.OTHER) {
-                    viewModel.refreshGame(
-                        args.matchType,
-                        listOf(it.league.id),
-                        listOf()
-                    )
-                }
-            })
+            }
             leagueOddListener = LeagueOddListener(
                 clickListenerPlayType = { matchId, matchInfoList, _, liveVideo ->
                     navMatchDetailPage(matchId, matchInfoList, liveVideo)
@@ -435,8 +422,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         return mView
     }
 
-    private fun setupSportTypeList(view: View) {
-        view.sport_type_list.apply {
+    private fun setupSportTypeList() {
+        sport_type_list.apply {
             this.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
@@ -452,15 +439,15 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
     }
 
-    private fun setupToolbar(view: View) {
+    private fun setupToolbar() {
         when (args.matchType) {
-            MatchType.OTHER -> view.game_toolbar_match_type.text =
+            MatchType.OTHER -> game_toolbar_match_type.text =
                 gameToolbarMatchTypeText(args.matchType)
             else -> {
             }
         }
 
-        view.game_toolbar_champion.apply {
+        game_toolbar_champion.apply {
             visibility = when (args.matchType) {
                 MatchType.IN_PLAY, MatchType.AT_START -> {
                     View.VISIBLE
@@ -482,7 +469,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             }
         }
 
-        view.game_toolbar_calendar.apply {
+        game_toolbar_calendar.apply {
             visibility = when (args.matchType) {
                 MatchType.EARLY -> View.VISIBLE
                 else -> View.GONE
@@ -493,19 +480,19 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 mCalendarSelected = newSelectedStatus
                 isSelected = newSelectedStatus
 
-                view.game_filter_type_list.visibility = when (isSelected) {
+                game_filter_type_list.visibility = when (isSelected) {
                     true -> View.VISIBLE
                     false -> View.GONE
                 }
             }
         }
 
-        view.game_toolbar_back.setOnClickListener {
+        game_toolbar_back.setOnClickListener {
             activity?.onBackPressed()
         }
     }
 
-    private fun refreshToolBarUI(view: View?) {
+    private fun refreshToolBarUI() {
         if (view != null) {
             if (leagueAdapter.data.isEmpty()) {
                 if (args.matchType == MatchType.AT_START)
@@ -521,18 +508,18 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
     }
 
-    private fun setupOddTab(view: View) {
-        view.game_tabs.apply {
+    private fun setupOddTab() {
+        game_tabs.apply {
             addOnTabSelectedListener(onTabSelectedListener)
         }
 
-        view.game_tab_odd_v4.visibility = when (args.matchType) {
+        game_tab_odd_v4.visibility = when (args.matchType) {
             MatchType.TODAY, MatchType.EARLY, MatchType.PARLAY, MatchType.OTHER -> View.VISIBLE
             else -> View.GONE
         }
 
-        val epsItem = (view.game_tab_odd_v4.game_tabs.getChildAt(0) as ViewGroup).getChildAt(2)
-        if (view.game_tab_odd_v4.visibility == View.VISIBLE && args.matchType == MatchType.PARLAY) {
+        val epsItem = (game_tab_odd_v4.game_tabs.getChildAt(0) as ViewGroup).getChildAt(2)
+        if (game_tab_odd_v4.visibility == View.VISIBLE && args.matchType == MatchType.PARLAY) {
             epsItem.visibility = View.GONE
         } else if (args.matchType == MatchType.OTHER || args.matchType == MatchType.OTHER_OUTRIGHT) {
             epsItem.visibility = View.GONE
@@ -550,31 +537,31 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         gameItem.isVisible = !isGameListNull
     }
 
-    private fun setupSportBackground(view: View) {
-        view.game_bg_layer2.visibility = when (args.matchType) {
+    private fun setupSportBackground() {
+        game_bg_layer2.visibility = when (args.matchType) {
             MatchType.IN_PLAY, MatchType.AT_START, MatchType.OUTRIGHT, MatchType.EPS -> View.VISIBLE
             else -> View.GONE
         }
 
-        view.game_bg_layer3.visibility = when (args.matchType) {
+        game_bg_layer3.visibility = when (args.matchType) {
             MatchType.TODAY, MatchType.EARLY, MatchType.PARLAY, MatchType.OTHER -> View.VISIBLE
             else -> View.GONE
         }
     }
 
-    private fun setupMatchCategoryPager(view: View) {
-        view.match_category_pager.adapter = matchCategoryPagerAdapter
-        view.match_category_pager.getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
+    private fun setupMatchCategoryPager() {
+        match_category_pager.adapter = matchCategoryPagerAdapter
+        match_category_pager.getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
         OverScrollDecoratorHelper.setUpOverScroll(
-            view.match_category_pager.getChildAt(0) as RecyclerView,
+            match_category_pager.getChildAt(0) as RecyclerView,
             OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL
         )
-        view.match_category_indicator.setupWithViewPager2(view.match_category_pager)
+        match_category_indicator.setupWithViewPager2(match_category_pager)
         setMatchCategoryPagerVisibility(matchCategoryPagerAdapter.itemCount)
     }
 
-    private fun setupPlayCategory(view: View) {
-        view.game_play_category.apply {
+    private fun setupPlayCategory() {
+        game_play_category.apply {
             if (this.layoutManager == null || isReloadPlayCate != false) {
                 this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             }
@@ -600,8 +587,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
     }
 
-    private fun setupGameRow(view: View) {
-        view.game_filter_type_list.apply {
+    private fun setupGameRow() {
+        game_filter_type_list.apply {
             this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
 
@@ -615,7 +602,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             )
         }
 
-        view.game_filter_type_list.visibility =
+        game_filter_type_list.visibility =
             if (args.matchType == MatchType.EARLY && mCalendarSelected) {
                 View.VISIBLE
             } else {
@@ -623,8 +610,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             }
     }
 
-    private fun setupGameListView(view: View) {
-        view.game_list.apply {
+    private fun setupGameListView() {
+        game_list.apply {
             this.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             this.adapter = leagueAdapter
             addScrollWithItemVisibility(
@@ -850,7 +837,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     game_list?.firstVisibleRange(leagueAdapter, activity ?: requireActivity())
 
                 }
-                refreshToolBarUI(this.view)
+                refreshToolBarUI()
             }
             hideLoading()
         }
@@ -1113,8 +1100,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             event.getContentIfNotHandled()?.let {
                 playCategoryAdapter.data = it
                 if (isReloadPlayCate != false) {
-                    mView?.let { notNullView ->
-                        setupPlayCategory(notNullView)
+                    mView?.let {
+                        setupPlayCategory()
                         isReloadPlayCate = false
                     }
                 }
@@ -2205,14 +2192,14 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     override fun onResume() {
         super.onResume()
         mView?.let {
-            setupSportTypeList(it)
-            setupToolbar(it)
-            setupOddTab(it)
-            setupSportBackground(it)
-            setupMatchCategoryPager(it)
-            setupPlayCategory(it)
-            setupGameRow(it)
-            setupGameListView(it)
+            setupSportTypeList()
+            setupToolbar()
+            setupOddTab()
+            setupSportBackground()
+            setupMatchCategoryPager()
+            setupPlayCategory()
+            setupGameRow()
+            setupGameListView()
             //從內頁返回後要重置位置
             initMatchCategoryPagerPosition()
         }
