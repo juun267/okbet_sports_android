@@ -214,6 +214,11 @@ class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
             } else {
                 tv_match_time.text = data.matchInfo?.startTimeDisplay ?: ""
             }
+            if(TimeUtil.isTimeInPlay(data.matchInfo?.startTime)){
+                tv_match_time.setTextColor(context.getColor(R.color.color_FFFFFF_000000))
+            }else{
+                tv_match_time.setTextColor(context.getColor(R.color.color_BCBCBC_666666))
+            }
         }
 
         mHandler.removeMessages(TIMER_TASK)

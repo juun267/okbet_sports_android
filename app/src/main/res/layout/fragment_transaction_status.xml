@@ -74,7 +74,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/frame_color_silver_light_stroke"
                     app:arrowSrc="@drawable/ic_arrow_color_gray"
-                    app:defaultStatusText="@string/waiting"
+                    app:defaultStatusText="@string/label_all"
                     app:horizontalChainStyle="spread"
                     app:textGravity="start|center_vertical"/>
 

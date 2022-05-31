@@ -40,7 +40,7 @@ class TransactionStatusViewModel(
             getBetList(true)
         }
 
-    var statusList: List<Int>? = BetRecordType.WAIT_SETTLEMENT.code.toList()
+    var statusList: List<Int>? = listOf(0,1)
         set(value) {
             field = value
             getBetList(true)
