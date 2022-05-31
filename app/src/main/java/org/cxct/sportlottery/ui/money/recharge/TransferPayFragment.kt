@@ -561,7 +561,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     depositDate = depositDate.time
                 )
             }
-            MoneyType.WX_TYPE.code -> {
+            MoneyType.WX_TYPE.code, MoneyType.GCASH_TYPE.code, MoneyType.GRABPAY_TYPE.code, MoneyType.PAYMAYA_TYPE.code -> {
                 MoneyAddRequest(
                     rechCfgId = mSelectRechCfgs?.id ?: 0,
                     bankCode = null,
@@ -577,7 +577,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     depositDate = depositDate.time
                 )
             }
-            MoneyType.ALI_TYPE.code, MoneyType.GCASH_TYPE.code, MoneyType.GRABPAY_TYPE.code, MoneyType.PAYMAYA_TYPE.code -> {
+            MoneyType.ALI_TYPE.code -> {
                 MoneyAddRequest(
                     rechCfgId = mSelectRechCfgs?.id ?: 0,
                     bankCode = null,
