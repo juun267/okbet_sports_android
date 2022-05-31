@@ -504,6 +504,7 @@ class LiveViewToolbar @JvmOverloads constructor(
             javaScriptEnabled = true
             useWideViewPort = true
             displayZoomControls = false
+            textZoom = 100
         }
         web_view.setInitialScale(25)
         if (MultiLanguagesApplication.isNightMode){
