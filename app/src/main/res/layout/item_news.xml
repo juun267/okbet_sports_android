@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
-        android:textColor="@color/color_e5e5e5_333333"
+        android:textColor="@color/color_CCCCCC_333333"
         android:textSize="@dimen/textSize12sp"
         tools:text="美国职棒大联盟 - 热身赛（洛杉矶道奇 VS 奥克兰运动家）赛事结果调整" />
 

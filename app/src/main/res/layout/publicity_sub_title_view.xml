@@ -23,7 +23,7 @@
         android:layout_weight="1"
         android:text="@string/hot_recommend"
         android:textAllCaps="true"
-        android:textColor="@color/color_e5e5e5_333333"
+        android:textColor="@color/color_CCCCCC_333333"
         android:textSize="@dimen/textSize14sp"
         android:textStyle="bold" />
 

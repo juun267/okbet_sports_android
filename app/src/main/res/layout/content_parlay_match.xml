@@ -33,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textAlignment="viewStart"
-                    android:textColor="@color/color_e5e5e5_333333"
+                    android:textColor="@color/color_CCCCCC_333333"
                     android:textSize="@dimen/textSize14sp"
                     android:textStyle="bold"
                     tools:text="篮球 让球" />
@@ -50,7 +50,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="4dp"
                         android:textAlignment="viewStart"
-                        android:textColor="@color/color_e5e5e5_333333"
+                        android:textColor="@color/color_CCCCCC_333333"
                         android:textSize="@dimen/textSize13sp"
                         tools:text="06-22" />
 
@@ -59,7 +59,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textColor="@color/color_e5e5e5_333333"
+                        android:textColor="@color/color_CCCCCC_333333"
                         android:textSize="@dimen/textSize13sp"
                         tools:text="NBA季后赛" />
 

@@ -138,7 +138,7 @@ object OddSpannableString {
 
 
     private fun setupOddsSpannableString(context: Context, matchOdd: MatchOdd, isChanged: Boolean, oddsType: OddsType) {
-        val textColor = ContextCompat.getColor(context, if (isChanged) R.color.color_191919_FCFCFC else R.color.color_e5e5e5_333333)
+        val textColor = ContextCompat.getColor(context, if (isChanged) R.color.color_191919_FCFCFC else R.color.color_CCCCCC_333333)
         val backgroundColor = ContextCompat.getColor(context, if (isChanged) R.color.color_FF9143_cb7c2e else R.color.transparent_black_0)
 
         val odds =

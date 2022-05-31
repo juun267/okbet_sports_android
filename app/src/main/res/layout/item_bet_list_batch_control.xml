@@ -59,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/bet_list_single"
-                android:textColor="@color/color_e5e5e5_333333"
+                android:textColor="@color/color_CCCCCC_333333"
                 android:textSize="@dimen/textSize15sp" />
 
             <LinearLayout
@@ -82,7 +82,7 @@
                         android:inputType="number"
                         android:maxLength="7"
                         android:paddingStart="10dp"
-                        android:textColor="@color/color_FFFFFF_000000"
+                        android:textColor="@color/color_DDDDDD_000000"
                         android:textColorHint="@color/color_939393_cccccc"
                         android:textSize="@dimen/textSize16sp"
                         android:letterSpacing="0.05"
@@ -106,14 +106,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="4dp"
                         android:text="X"
-                        android:textColor="@color/color_e5e5e5_333333"
+                        android:textColor="@color/color_CCCCCC_333333"
                         android:textSize="@dimen/textSize13sp" />
 
                     <TextView
                         android:id="@+id/tv_single_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/color_e5e5e5_333333"
+                        android:textColor="@color/color_CCCCCC_333333"
                         android:textSize="@dimen/textSize13sp"
                         tools:text="3" />
 
