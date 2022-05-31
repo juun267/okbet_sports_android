@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:orientation="vertical"
+    android:id="@+id/sfl_loading"
     android:background="@color/background">
         <include layout="@layout/shimmer_placeholder_layout" />
 </com.facebook.shimmer.ShimmerFrameLayout>
