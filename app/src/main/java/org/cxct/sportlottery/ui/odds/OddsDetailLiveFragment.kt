@@ -508,6 +508,21 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
             }
         }
 
+        receiver.matchOddsLock.observe(this.viewLifecycleOwner) {
+            it?.let { matchOddsLockEvent ->
+                //比對收到 matchOddsLock event 的 matchId
+                if (matchId == matchOddsLockEvent.matchId) {
+                    oddsDetailListAdapter?.oddsDetailDataList?.let { oddsDetailListDataList ->
+                        oddsDetailListDataList.forEachIndexed { index, oddsDetailListData ->
+                            if (SocketUpdateUtil.updateOddStatus(oddsDetailListData)) {
+                                oddsDetailListAdapter?.notifyItemChanged(index)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         receiver.globalStop.observe(this.viewLifecycleOwner) {
             it?.let { globalStopEvent ->
                 oddsDetailListAdapter?.oddsDetailDataList?.forEachIndexed { index, oddsDetailListData ->
