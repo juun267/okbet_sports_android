@@ -135,6 +135,10 @@ abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KCla
             JumpUtil.toExternalWeb(requireContext(), "https://pagcor.ph/regulatory/index.php")
         }
 
+        txv_affiliate.setOnClickListener {
+            //等Will做好給連結
+        }
+
     }
 
     var afterAnimateListener: AfterAnimateListener? = null
