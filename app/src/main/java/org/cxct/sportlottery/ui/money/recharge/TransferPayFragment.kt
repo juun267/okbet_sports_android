@@ -388,7 +388,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             MoneyType.GCASH_TYPE.code -> {
                 hideEditText()
                 ll_qr.visibility = View.VISIBLE
-                et_nickname.visibility = View.VISIBLE
+                et_nickname.visibility = View.GONE
                 et_name.visibility = View.VISIBLE
 
                 tv_hint1.text = getString(R.string.gcash_recharge_hint)
@@ -396,7 +396,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             MoneyType.GRABPAY_TYPE.code -> {
                 hideEditText()
                 ll_qr.visibility = View.VISIBLE
-                et_nickname.visibility = View.VISIBLE
+                et_nickname.visibility = View.GONE
                 et_name.visibility = View.VISIBLE
 
                 tv_hint1.text = getString(R.string.grabpay_recharge_hint)
@@ -404,7 +404,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             MoneyType.PAYMAYA_TYPE.code -> {
                 hideEditText()
                 ll_qr.visibility = View.VISIBLE
-                et_nickname.visibility = View.VISIBLE
+                et_nickname.visibility = View.GONE
                 et_name.visibility = View.VISIBLE
 
                 tv_hint1.text = getString(R.string.paymaya_recharge_hint)
