@@ -43,9 +43,9 @@
     <color name="color_A3A3A3_999999">@color/color_A3A3A3</color>
     <color name="color_A3A3A3_666666">@color/color_A3A3A3</color>
     <color name="color_ADADAD_444444">@color/color_ADADAD</color>
-    <color name="color_E0E0E0_404040">@color/color_E0E0E0</color>
-    <color name="color_e5e5e5_333333">@color/color_e5e5e5</color>
-    <color name="color_FFFFFF_000000">@color/color_FFFFFF</color>
+    <color name="color_BDBDBD_404040">@color/color_BDBDBD</color>
+    <color name="color_CCCCCC_333333">@color/color_cccccc</color>
+    <color name="color_DDDDDD_000000">@color/color_dddddd</color>
     <color name="color_000000_FFFFFF">@color/color_000000</color>
     <color name="color_191919_EEEFF0">@color/color_191919</color>
     <color name="color_191919_DFEAF8">@color/color_191919</color>
@@ -68,7 +68,6 @@
     <color name="color_FFFFFF_666666">@color/color_FFFFFF</color>
     <color name="color_191919_EAF4FE">@color/color_191919</color>
     <color name="color_e5e5e5_202020">@color/color_e5e5e5</color>
-    <color name="color_e5e5e5_000000">@color/color_e5e5e5</color>
     <color name="color_FFFFFF_060F20">@color/color_FFFFFF</color>
     <color name="color_2a2a2a_dedede">@color/color_2a2a2a</color>
     <color name="color_939393_cccccc">@color/color_939393</color>
@@ -85,7 +84,6 @@
     <color name="color_33303030_33DDDDDD">@color/color_33303030</color>
     <color name="color_F75452_000000">@color/color_F75452</color>
     <color name="color_BCBCBC_CCCCCC">@color/color_bcbcbc</color>
-    <color name="color_404348_404040">@color/color_404348</color>
     <color name="color_2B2B2B_EEEFF0">@color/color_2B2B2B</color>
     <color name="color_191919_FDFDFD">@color/color_191919</color>
     <color name="color_cccccc_e2e2e2">@color/color_cccccc</color>

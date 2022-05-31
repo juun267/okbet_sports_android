@@ -21,7 +21,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.crypto_pay_fragment.*
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import org.cxct.sportlottery.R
@@ -198,7 +197,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 } else {
                     cv_upload.isActivated = false
                     tv_upload.text = resources.getString(R.string.title_reupload_pic)
-                    tv_upload.setTextColor(ContextCompat.getColor(tv_upload.context,R.color.color_e5e5e5_333333))
+                    tv_upload.setTextColor(ContextCompat.getColor(tv_upload.context,R.color.color_CCCCCC_333333))
                 }
             }
         })
@@ -263,7 +262,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         if (url.isNotEmpty()) {
             cv_upload.isActivated = false
             tv_upload.text = resources.getString(R.string.title_reupload_pic)
-            tv_upload.setTextColor(ContextCompat.getColor(tv_upload.context,R.color.color_e5e5e5_333333))
+            tv_upload.setTextColor(ContextCompat.getColor(tv_upload.context,R.color.color_CCCCCC_333333))
         } else {
             cv_upload.isActivated = true
             tv_upload.text = resources.getString(R.string.title_upload_pic_plz)

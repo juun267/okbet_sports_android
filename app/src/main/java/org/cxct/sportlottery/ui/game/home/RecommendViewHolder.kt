@@ -111,7 +111,7 @@ class RecommendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
                 text = data.matchInfo?.getStartTime(context)
                 if (TimeUtil.isTimeInPlay(data.matchInfo?.startTime)){
-                    setTextColor(ContextCompat.getColor(context,R.color.color_FFFFFF_000000))
+                    setTextColor(ContextCompat.getColor(context,R.color.color_DDDDDD_000000))
                 }else{
                     setTextColor(ContextCompat.getColor(context,R.color.color_BCBCBC_666666))
                 }

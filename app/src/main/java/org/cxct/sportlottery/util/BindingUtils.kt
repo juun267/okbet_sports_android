@@ -15,7 +15,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.common.GameMatchStatus
 import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil.MD_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.MD_HMS_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
@@ -249,7 +248,7 @@ fun TextView.setBetStatusMoney(status: Int?, money: Double?) {
         }
 
         val color = when (status) {
-            0, 1, 6, 7 -> R.color.color_E0E0E0_404040
+            0, 1, 6, 7 -> R.color.color_BDBDBD_404040
             2, 3 -> R.color.color_08dc6e_08dc6e
             else -> R.color.color_E44438_e44438
         }

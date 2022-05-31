@@ -42,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textColor="@color/color_e5e5e5_333333"
+                android:textColor="@color/color_CCCCCC_333333"
                 android:textSize="@dimen/textSize12sp"
                 app:autoSizeMaxTextSize="@dimen/textSize12sp"
                 app:autoSizeMinTextSize="@dimen/textSize8sp"
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@{row.orderNo}"
-                android:textColor="@color/color_e5e5e5_333333"
+                android:textColor="@color/color_CCCCCC_333333"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="b000003612091822030128" />
 
@@ -73,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textColor="@color/color_e5e5e5_333333"
+                android:textColor="@color/color_CCCCCC_333333"
                 android:textSize="@dimen/textSize12sp"
                 app:parlayType="@{row.parlayType}" />
 
@@ -91,7 +91,7 @@
                     android:gravity="center"
                     android:maxLines="1"
                     android:text="@{row.matchOdds.size() > 0 ? row.matchOdds.get(0).playCateName : null}"
-                    android:textColor="@color/color_e5e5e5_333333"
+                    android:textColor="@color/color_CCCCCC_333333"
                     android:textSize="@dimen/textSize12sp"
                     app:autoSizeMaxTextSize="@dimen/textSize12sp"
                     app:autoSizeMinTextSize="@dimen/textSize8sp"
@@ -105,7 +105,7 @@
                     android:gravity="center"
                     android:maxLines="1"
                     android:text="@{row.matchOdds.size() > 0 ? row.matchOdds.get(0).playName : null}"
-                    android:textColor="@color/color_e5e5e5_333333"
+                    android:textColor="@color/color_CCCCCC_333333"
                     android:textSize="@dimen/textSize12sp"
                     app:autoSizeMaxTextSize="@dimen/textSize12sp"
                     app:autoSizeMinTextSize="@dimen/textSize8sp"
@@ -135,7 +135,7 @@
             android:layout_weight="2"
             android:gravity="center"
             android:text="@{TextUtil.format(row.totalAmount)}"
-            android:textColor="@color/color_e5e5e5_333333"
+            android:textColor="@color/color_CCCCCC_333333"
             android:textSize="@dimen/textSize12sp"
             tools:text="1,000.00" />
 
@@ -162,7 +162,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textColor="@color/color_e5e5e5_333333"
+                android:textColor="@color/color_CCCCCC_333333"
                 android:textSize="@dimen/textSize12sp"
                 app:status="@{row.status}"
                 tools:text="全赢" />
