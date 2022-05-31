@@ -470,10 +470,14 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 leagueData.updateOddsSort()
 
                 //檢查是否有取得我的賽事資料, 對介面進行調整
-                if (leagueData.isNullOrEmpty()) {
-                    noFavoriteMatchViewState()
-                } else {
-                    showFavoriteMatchViewState()
+                when{
+                    leagueData.isNullOrEmpty() && gameTypeAdapter.dataSport.size > 1 -> {
+                        unSubscribeChannelHallAll()
+                        viewModel.getSportQuery(getLastPick = false, isReloadPlayCate = true, getFavoriteMatch = true)
+                        return@observe
+                    }
+                    leagueData.isNullOrEmpty() -> noFavoriteMatchViewState()
+                    else -> showFavoriteMatchViewState()
                 }
 
                 leagueAdapter.data = leagueData
