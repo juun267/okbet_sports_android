@@ -100,15 +100,9 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         LeagueAdapter(args.matchType, getPlaySelectedCodeSelectionType(), getPlaySelectedCode()).apply {
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
-            leagueListener = LeagueListener({
+            leagueListener = LeagueListener {
                 subscribeChannelHall(it)
-            }, {
-                viewModel.refreshGame(
-                    args.matchType,
-                    listOf(it.league.id),
-                    listOf()
-                )
-            })
+            }
 
             leagueOddListener = LeagueOddListener(
                 { matchId, matchInfoList, gameMatchType, liveVideo ->
