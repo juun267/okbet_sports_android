@@ -12,6 +12,7 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.webkit.WebSettingsCompat
@@ -77,8 +78,14 @@ class LiveViewToolbar @JvmOverloads constructor(
         set(value) {
             if (field != value) {
                 field = value
-                if (iv_animation.isSelected)
-                    openWebView()
+                if (iv_animation.isSelected) {
+                    if (isLogin) {
+                        openWebView()
+                    } else {
+                        setWebViewHeight()
+                        setupNotLogin()
+                    }
+                }
             }
         }
 
@@ -183,6 +190,7 @@ class LiveViewToolbar @JvmOverloads constructor(
         iv_play.setOnClickListener {
             lastLiveType = LiveType.LIVE
             if (!iv_play.isSelected) {
+                setLiveViewHeight()
                 iv_play.isSelected = true
                 if (iv_animation.isSelected){
                     if(isLogin){
@@ -212,6 +220,7 @@ class LiveViewToolbar @JvmOverloads constructor(
 
         iv_animation.setOnClickListener {
             if (!iv_animation.isSelected) {
+                setWebViewHeight()
                 if(isLogin){
                     openWebView()
                     if (iv_play.isSelected) switchLiveView(false)
@@ -275,11 +284,6 @@ class LiveViewToolbar @JvmOverloads constructor(
                 mLiveShowTag = true
                 iv_play.isSelected = true
                 lastLiveType = LiveType.LIVE
-                //動畫高度
-                web_view_layout.layoutParams = FrameLayout.LayoutParams(
-                    MetricsUtil.getScreenWidth(),
-                    resources.getDimensionPixelSize(R.dimen.live_player_height)
-                )
                 checkExpandLayoutStatus()
                 liveToolBarListener?.getLiveInfo()
                 if (!mStreamUrl.isNullOrEmpty()) {
@@ -293,6 +297,17 @@ class LiveViewToolbar @JvmOverloads constructor(
                 checkExpandLayoutStatus()
             }
         }
+    }
+
+    /**
+     * 設置為直播高度
+     */
+    private fun setLiveViewHeight() {
+        web_view_layout.layoutParams = FrameLayout.LayoutParams(
+            MetricsUtil.getScreenWidth(),
+            resources.getDimensionPixelSize(R.dimen.live_player_height)
+        )
+        iv_live_status.scaleType = ImageView.ScaleType.FIT_XY
     }
 
     /**
@@ -327,8 +342,10 @@ class LiveViewToolbar @JvmOverloads constructor(
         iv_play.isVisible = show
         iv_arrow.isVisible = show
 
-        if (mLiveShowTag && lastLiveType == LiveType.LIVE)
+        if (mLiveShowTag && lastLiveType == LiveType.LIVE){
+            setLiveViewHeight()
             switchLiveView(show)
+        }
 
         checkControlBarVisibility()
     }
@@ -336,6 +353,7 @@ class LiveViewToolbar @JvmOverloads constructor(
     fun setupNotLogin(){
         checkExpandLayoutStatus()
         player_view.visibility = View.GONE
+        web_view.visibility = View.GONE
         iv_live_status.isVisible = true
         tvStatus.isVisible = true
         iv_live_status.setImageResource(R.drawable.bg_no_play)
@@ -538,6 +556,7 @@ class LiveViewToolbar @JvmOverloads constructor(
             screenWidth,
             LiveUtil.getAnimationHeightFromWidth(screenWidth).toInt()
         )
+        iv_live_status.scaleType = ImageView.ScaleType.CENTER_CROP
     }
     //endregion
 

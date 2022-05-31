@@ -150,7 +150,7 @@ class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
                         ll_highlight_type.visibility = View.GONE
                     }
                 }
-                if(data.matchInfo?.isStartPosition == false) ll_highlight_type.visibility = View.GONE
+//                if(data.matchInfo?.isStartPosition == false) ll_highlight_type.visibility = View.GONE
                 tv_game_type.text = if (TimeUtil.isTimeToday(data.matchInfo?.startTime)) {
                     resources.getString(R.string.home_tab_today)
                 } else {
