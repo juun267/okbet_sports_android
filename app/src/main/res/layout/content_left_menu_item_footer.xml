@@ -25,7 +25,7 @@
         android:gravity="start|center_vertical"
         android:paddingStart="20dp"
         android:text="@string/left_menu_odds_type_setting"
-        android:textColor="@color/color_e5e5e5_333333"
+        android:textColor="@color/color_CCCCCC_333333"
         android:textSize="@dimen/textSize14sp"
         app:drawableStartCompat="@drawable/ic_setting" />
 
@@ -37,7 +37,7 @@
         android:gravity="start|center_vertical"
         android:paddingStart="20dp"
         android:text="@string/appearance"
-        android:textColor="@color/color_e5e5e5_333333"
+        android:textColor="@color/color_CCCCCC_333333"
         android:textSize="@dimen/textSize14sp"
         app:drawableStartCompat="@drawable/ic_night_mode" />
 
@@ -58,7 +58,7 @@
         android:paddingHorizontal="20dp"
         android:singleLine="true"
         android:text="@string/infomation_center"
-        android:textColor="@color/color_e5e5e5_333333"
+        android:textColor="@color/color_CCCCCC_333333"
         android:textSize="@dimen/textSize14sp"
         android:textStyle="bold" />
 
@@ -70,7 +70,7 @@
         android:gravity="start|center_vertical"
         android:paddingStart="20dp"
         android:text="@string/game_rule"
-        android:textColor="@color/color_e5e5e5_333333"
+        android:textColor="@color/color_CCCCCC_333333"
         android:textSize="@dimen/textSize14sp"
         app:drawableStartCompat="@drawable/icon_game_rule" />
 
@@ -82,7 +82,7 @@
         android:gravity="start|center_vertical"
         android:paddingStart="20dp"
         android:text="@string/news"
-        android:textColor="@color/color_e5e5e5_333333"
+        android:textColor="@color/color_CCCCCC_333333"
         android:textSize="@dimen/textSize14sp"
         app:drawableStartCompat="@drawable/ic_news" />
 

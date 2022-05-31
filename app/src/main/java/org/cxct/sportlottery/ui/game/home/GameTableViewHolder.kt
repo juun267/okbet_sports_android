@@ -59,6 +59,7 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     //初始化載入資料判別
     private var initTag = false
+    private var mGameType: String? = null
 
     init {
         itemView.apply {
@@ -93,6 +94,10 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     fun bind(data: GameEntity) {
+        //若球種不同時, 需重新初始化配置
+        if (mGameType != data.code) {
+            initTag = false
+        }
         itemView.apply {
             tv_game_name.text = data.name
             tv_game_num.text = data.num.toString()
@@ -156,6 +161,7 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                         //僅第一次載入資料 使用這裡邏輯
                         if (!initTag) {
                             if (position < 0 || position >= it.size || it.isNullOrEmpty()) return
+                            mGameType = data.code
                             mMatchOdd = it[position]
                             mPagerPosition = position
                             subscribeChannelHall(mMatchOdd?.matchInfo?.gameType, mMatchOdd?.matchInfo?.id)

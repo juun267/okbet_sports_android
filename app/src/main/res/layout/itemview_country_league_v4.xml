@@ -29,7 +29,7 @@
         android:maxLines="3"
         android:layout_weight="1"
         android:gravity="center_vertical|left"
-        android:textColor="@color/color_e5e5e5_333333"
+        android:textColor="@color/color_CCCCCC_333333"
         android:textSize="@dimen/textSize14sp"
         tools:text="澳大利亚甲组联赛-附加赛" />
 

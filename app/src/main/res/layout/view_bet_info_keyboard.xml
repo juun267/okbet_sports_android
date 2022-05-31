@@ -30,7 +30,7 @@
             android:layout_marginStart="70dp"
             android:layout_toStartOf="@+id/tv_close"
             android:letterSpacing="0.1"
-            android:textColor="@color/color_e5e5e5_333333"
+            android:textColor="@color/color_CCCCCC_333333"
             android:textSize="@dimen/textSize14sp"
             tools:text="让球 - 皇家马德里 +0/0.5 @ 1.85" />
 

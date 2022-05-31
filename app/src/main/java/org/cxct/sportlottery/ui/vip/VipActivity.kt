@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.stx.xhb.androidx.transformers.Transformer
 import kotlinx.android.synthetic.main.activity_vip.*
@@ -109,7 +108,7 @@ class VipActivity : BaseSocketActivity<VipViewModel>(VipViewModel::class) {
 
         //第三方遊戲反水選擇列
         sv_third_games.apply {
-            selectedTextColor = R.color.color_FFFFFF_000000
+            selectedTextColor = R.color.color_DDDDDD_000000
             setAdapter(thirdGameAdapter)
         }
 

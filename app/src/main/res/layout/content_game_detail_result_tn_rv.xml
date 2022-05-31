@@ -152,7 +152,7 @@
                     android:paddingTop="6dp"
                     android:paddingEnd="10dp"
                     android:paddingBottom="6dp"
-                    android:textColor="@color/color_E0E0E0_404040"
+                    android:textColor="@color/color_BDBDBD_404040"
                     android:textSize="@dimen/textSize14sp" />
 
                 <View
@@ -316,7 +316,7 @@
                     android:paddingTop="6dp"
                     android:paddingEnd="10dp"
                     android:paddingBottom="6dp"
-                    android:textColor="@color/color_E0E0E0_404040"
+                    android:textColor="@color/color_BDBDBD_404040"
                     android:textSize="@dimen/textSize14sp" />
 
                 <View
