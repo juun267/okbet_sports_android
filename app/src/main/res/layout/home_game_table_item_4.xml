@@ -313,9 +313,10 @@
 
     <ImageView
         android:id="@+id/iv_match_price"
-        android:layout_width="14dp"
+        android:layout_width="19dp"
         android:layout_height="14dp"
         android:layout_marginStart="10dp"
+        android:paddingEnd="5dp"
         android:contentDescription="@null"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_price_v4"
@@ -325,9 +326,12 @@
 
     <ImageView
         android:id="@+id/iv_play"
-        android:layout_width="14dp"
-        android:layout_height="14dp"
-        android:layout_marginStart="10dp"
+        android:layout_width="24dp"
+        android:layout_height="22dp"
+        android:paddingStart="5dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:paddingEnd="5dp"
         android:src="@drawable/ic_live_player"
         app:layout_constraintBottom_toBottomOf="@id/tv_match_play_type_count"
         app:layout_constraintStart_toEndOf="@id/iv_match_price"
@@ -335,9 +339,12 @@
 
     <ImageView
         android:id="@+id/iv_animation"
-        android:layout_width="14dp"
-        android:layout_height="14dp"
-        android:layout_marginStart="10dp"
+        android:layout_width="24dp"
+        android:layout_height="22dp"
+        android:paddingStart="5dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:paddingEnd="5dp"
         android:src="@drawable/ic_icon_game_schedule"
         app:layout_constraintBottom_toBottomOf="@id/tv_match_play_type_count"
         app:layout_constraintStart_toEndOf="@id/iv_play"
@@ -347,7 +354,7 @@
         android:id="@+id/tv_match_play_type_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="8dp"
         android:drawablePadding="6dp"
