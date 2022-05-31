@@ -87,7 +87,6 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:gravity="center"
-                        android:includeFontPadding="false"
                         android:textColor="@color/color_8F8F8F_999999"
                         android:textSize="@dimen/textSize14sp"
                         android:textStyle="bold"
