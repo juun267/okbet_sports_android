@@ -31,6 +31,7 @@
             android:id="@+id/iv_head"
             android:layout_width="42dp"
             android:layout_height="42dp"
+            app:layout_goneMarginStart="20dp"
             android:scaleType="centerCrop"
             android:src="@drawable/img_avatar_default"
             app:layout_constraintStart_toEndOf="@id/profile_center_back"
@@ -398,6 +399,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="20dp"
                         android:contentDescription="@null"
+                        android:layout_marginStart="10dp"
                         android:src="@drawable/ic_profile_center_bet_record" />
 
                     <TextView

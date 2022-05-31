@@ -7,6 +7,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.home_highlight_item.view.*
@@ -327,6 +328,11 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
         @SuppressLint("SetTextI18n")
         private fun setupTime(data: MatchOdd) {
             itemView.apply {
+                if (TimeUtil.isTimeInPlay(data.matchInfo?.startTime)){
+                    tv_match_time.setTextColor(ContextCompat.getColor(context,R.color.color_FFFFFF_000000))
+                }else{
+                    tv_match_time.setTextColor(ContextCompat.getColor(context,R.color.color_BCBCBC_666666))
+                }
                 if (matchType == MatchType.AT_START) {
                     data.matchInfo?.timeDisplay?.let { timeDisplay ->
                         tv_match_time.text = String.format(itemView.context.resources.getString(R.string.at_start_remain_minute), timeDisplay)
