@@ -84,7 +84,6 @@ class GameViewModel(
     private val sportMenuRepository: SportMenuRepository,
     private val thirdGameRepository: ThirdGameRepository,
     private val withdrawRepository: WithdrawRepository,
-    intentRepository: IntentRepository
 ) : BaseBottomNavViewModel(
     androidContext,
     userInfoRepository,
@@ -92,7 +91,6 @@ class GameViewModel(
     betInfoRepository,
     infoCenterRepository,
     myFavoriteRepository,
-    intentRepository
 ) {
     companion object {
         const val GameLiveSP = "GameLiveSharedPreferences"

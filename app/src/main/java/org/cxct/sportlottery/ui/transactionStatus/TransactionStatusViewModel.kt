@@ -22,7 +22,6 @@ class TransactionStatusViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     favoriteRepository: MyFavoriteRepository,
-    intentRepository: IntentRepository
 ) : BaseBottomNavViewModel(
     androidContext,
     userInfoRepository,
@@ -30,7 +29,6 @@ class TransactionStatusViewModel(
     betInfoRepository,
     infoCenterRepository,
     favoriteRepository,
-    intentRepository
 ) {
 
     //投注單球類
