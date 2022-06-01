@@ -1119,4 +1119,11 @@
     <string name="cancel_auto">注單未成立</string>
     <string name="cancel_manual">退款</string>
     <string name="error_input_has_blank">输入错误，仅限输入英文，请勿输入连续空格。</string>
+
+    <!--region 確認年齡彈窗-->
+    <string name="dialog_age_verify_statement">OKBet 致力于为所有客户提供安全、舒适的游戏体验。\n\n对于绝大多数人来说，游戏是一项令人愉快的休闲活动。但是，我们意识到有时候游戏对某些客户来说不再有趣。\n\n我们强烈建议您在继续之前花一些时间阅读我们的博彩责任和声明。并且，严禁 21 岁及以下的用户使用。\n\n我们的责任是帮助我们的客户安全、负责任地赌博，降低伤害风险，并帮助需要治疗的人得到治疗。\n\n如果您或您的家人遇到游戏问题，请随时联系 keepitfun@pagcor.ph。</string>
+    <string name="dialog_age_verify_hint">请确认您已年满21岁，才能进入本网站</string>
+    <string name="dialog_age_verify_confirm">我已年满21岁</string>
+    <string name="dialog_age_verify_exit">离开</string>
+    <!--endregion-->
 </resources>
