@@ -29,6 +29,7 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.AppManager
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
@@ -184,6 +185,18 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                 supportFragmentManager.popBackStack()
             }
             return
+        }
+        //關閉drawer
+        binding.apply {
+            if (drawerLayout.isDrawerOpen(viewNavRight.navRight)) {
+                drawerLayout.closeDrawers()
+                return
+            }
+        }
+        if (navController.currentDestination?.id != R.id.publicityFragment) {
+            navController.navigateUp()
+        } else {
+            AppManager.AppExit()
         }
     }
 

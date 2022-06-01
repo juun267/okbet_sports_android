@@ -57,6 +57,7 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.MainActivity.Companion.ARGS_THIRD_GAME_CATE
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.main.news.NewsDialog
+import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.menu.ChangeLanguageDialog
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
@@ -714,20 +715,23 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             }
             return
         }
-        when (mNavController.currentDestination?.id) {
-            R.id.gameLeagueFragment, R.id.gameOutrightFragment, R.id.gameOutrightMoreFragment, R.id.oddsDetailFragment, R.id.oddsDetailLiveFragment, R.id.leagueFilterFragment -> {
-                if (isFromPublicity)
-                    finish()
-                else
-                    mNavController.navigateUp()
-            }
-
-            R.id.gameV3Fragment -> {
+        //關閉drawer
+        if (drawer_layout.isDrawerOpen(nav_right)) {
+            drawer_layout.closeDrawers()
+            return
+        }
+        if (sub_drawer_layout.isDrawerOpen(nav_left)) {
+            sub_drawer_layout.closeDrawers()
+            return
+        }
+        if (mNavController.currentDestination?.id != R.id.homeFragment) {
+            mNavController.navigateUp()
+        } else {
+            if (tabLayout.selectedTabPosition != 0) {
                 tabLayout.getTabAt(0)?.select()
-            }
-
-            else -> {
-                super.onBackPressed()
+            } else {
+                //返回宣傳頁
+                GamePublicityActivity.reStart(this)
             }
         }
     }
