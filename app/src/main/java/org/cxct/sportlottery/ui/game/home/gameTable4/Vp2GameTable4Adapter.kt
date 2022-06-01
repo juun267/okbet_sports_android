@@ -50,6 +50,10 @@ class Vp2GameTable4Adapter(
 
     var onClickMatchListener: OnSelectItemListener<MatchInfo>? = null //賽事畫面跳轉
 
+    var onClickLiveListener: OnSelectItemListener<MatchInfo>? = null
+
+    var onClickAnimationListener: OnSelectItemListener<MatchInfo>? = null
+
     var onClickFavoriteListener: OnClickFavoriteListener? = null
 
     var onClickStatisticsListener: OnClickStatisticsListener? = null
@@ -284,8 +288,29 @@ class Vp2GameTable4Adapter(
             itemView.iv_match_price.visibility =
                 if (data.matchInfo?.eps == 1) View.VISIBLE else View.GONE
 
-            itemView.iv_play.isVisible = (data.matchInfo?.liveVideo == 1) && (matchType == MatchType.IN_PLAY)
-            itemView.iv_animation.isVisible = !(data.matchInfo?.trackerId.isNullOrEmpty())
+            with(itemView.iv_play) {
+                isVisible = (data.matchInfo?.liveVideo == 1) && (matchType == MatchType.IN_PLAY)
+
+                setOnClickListener {
+                    data.matchInfo?.let {
+                        val matchInfo = it
+                        matchInfo.gameType = gameType
+                        onClickLiveListener?.onClick(matchInfo)
+                    }
+                }
+            }
+
+            with(itemView.iv_animation) {
+                isVisible = !(data.matchInfo?.trackerId.isNullOrEmpty())
+
+                setOnClickListener {
+                    data.matchInfo?.let {
+                        val matchInfo = it
+                        matchInfo.gameType = gameType
+                        onClickAnimationListener?.onClick(matchInfo)
+                    }
+                }
+            }
 
             itemView.table_match_info_border.setOnClickListener {
                 data.matchInfo?.let {

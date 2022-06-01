@@ -83,6 +83,15 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                     showStatistics(matchId)
                 }, onClickPlayTypeListener = { gameType, matchType, matchId, matchInfoList ->
                     navOddsDetailFragment(gameType, matchType, matchId, matchInfoList)
+                }, onClickLiveIconListener = { gameType, matchType, matchId, matchInfoList ->
+                    if (viewModel.checkLoginStatus()) {
+                        navOddsDetailFragment(gameType, matchType, matchId, matchInfoList)
+                    }
+                },
+                onClickAnimationIconListener = { gameType, matchType, matchId, matchInfoList ->
+                    if (viewModel.checkLoginStatus()) {
+                        navOddsDetailFragment(gameType, matchType, matchId, matchInfoList)
+                    }
                 })
         )
 

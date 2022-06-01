@@ -107,6 +107,14 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
                 { //premium
                     viewModel.navDirectEntrance(MatchType.EPS, null)
                     closeMenuFragment()
+                }, affiliateSelectedListener = {
+                    context?.let {
+                        JumpUtil.toInternalWeb(
+                            it,
+                            Constants.getAffiliateUrl(it),
+                            resources.getString(R.string.btm_navigation_affiliate)
+                        )
+                    }
                 }),
             LeftMenuItemNewAdapter.ItemSelectedListener(
                 { sportType -> //點擊
@@ -493,6 +501,32 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
                         )
                     }
                 }
+                //coming soon start
+                GameType.BB_COMING_SOON -> {
+                    unselectedList.add(
+                        MenuItemData(
+                            R.drawable.img_baseball,
+                            getString(R.string.baseball),
+                            GameType.BB_COMING_SOON.key,
+                            0,
+                            -1,
+                            false
+                        )
+                    )
+                }
+                GameType.ES_COMING_SOON -> {
+                    unselectedList.add(
+                        MenuItemData(
+                            R.drawable.img_esports,
+                            getString(R.string.esports),
+                            GameType.ES_COMING_SOON.key,
+                            0,
+                            -1,
+                            false
+                        )
+                    )
+                }
+                //coming soon end
                 else -> {
                 }
             }

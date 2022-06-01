@@ -227,25 +227,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             }
             leagueOddListener = LeagueOddListener(
                 clickListenerPlayType = { matchId, matchInfoList, _, liveVideo ->
-                    when (args.matchType) {
-                        MatchType.IN_PLAY -> {
-                            matchId?.let {
-                                navOddsDetailLive(it, liveVideo)
-                            }
-                        }
-                        MatchType.AT_START -> {
-                            matchId?.let {
-                                navOddsDetail(it, matchInfoList)
-                            }
-                        }
-                        MatchType.OTHER -> {
-                            matchId?.let {
-                                navOddsDetail(it, matchInfoList)
-                            }
-                        }
-                        else -> {
-                        }
-                    }
+                    navMatchDetailPage(matchId, matchInfoList, liveVideo)
                 },
                 clickListenerBet = { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
                     if (mIsEnabled) {
@@ -282,8 +264,40 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         listOf(),
                         listOf(matchId)
                     )
+                },
+                clickLiveIconListener = { matchId, matchInfoList, _, liveVideo ->
+                    if (viewModel.checkLoginStatus()) {
+                        navMatchDetailPage(matchId, matchInfoList, liveVideo)
+                    }
+                },
+                clickAnimationIconListener = { matchId, matchInfoList, _, liveVideo ->
+                    if (viewModel.checkLoginStatus()) {
+                        navMatchDetailPage(matchId, matchInfoList, liveVideo)
+                    }
                 }
             )
+        }
+    }
+
+    private fun navMatchDetailPage(matchId: String?, matchInfoList: List<MatchInfo>, liveVideo: Int) {
+        when (args.matchType) {
+            MatchType.IN_PLAY -> {
+                matchId?.let {
+                    navOddsDetailLive(it, liveVideo)
+                }
+            }
+            MatchType.AT_START -> {
+                matchId?.let {
+                    navOddsDetail(it, matchInfoList)
+                }
+            }
+            MatchType.OTHER -> {
+                matchId?.let {
+                    navOddsDetail(it, matchInfoList)
+                }
+            }
+            else -> {
+            }
         }
     }
 
@@ -1676,7 +1690,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     private fun updateSportType(gameTypeList: List<Item>) {
-        gameTypeAdapter.dataSport = gameTypeList
+        //add coming soon
+        val comingSoonList = mutableListOf<Item>()
+        comingSoonList.addAll(gameTypeList)
+        comingSoonList.add(Item(code = GameType.BB_COMING_SOON.key,"", -1 , null, 99))
+        comingSoonList.add(Item(code = GameType.ES_COMING_SOON.key,"", -1 , null, 100))
+        gameTypeAdapter.dataSport = comingSoonList
 
         if (args.matchType != MatchType.OTHER) {
             gameTypeList.find { it.isSelected }.let { item ->

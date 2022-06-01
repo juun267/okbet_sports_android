@@ -94,6 +94,8 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var onClickOddListener: OnClickOddListener? = null
     var onClickMatchListener: OnSelectItemListener<MatchInfo>? = null
+    var onClickLiveListener: OnSelectItemListener<MatchInfo>? = null
+    var onClickAnimationListener: OnSelectItemListener<MatchInfo>? = null
     var onClickTotalMatchListener: OnSelectItemListener<GameEntity>? = null
     var onClickSportListener: OnSelectItemListener<OtherMatch>? = null
     var onClickFavoriteListener: OnClickFavoriteListener? = null
@@ -289,6 +291,8 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     setListeners(
                         onClickTotalMatchListener = onClickTotalMatchListener,
                         onClickMatchListener = onClickMatchListener,
+                        onClickLiveListener = onClickLiveListener,
+                        onClickAnimationListener = onClickAnimationListener,
                         onClickOddListener = onClickOddListener,
                         onClickFavoriteListener = onClickFavoriteListener,
                         onClickStatisticsListener = onClickStatisticsListener

@@ -105,15 +105,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
             leagueOddListener = LeagueOddListener(
                 clickListenerPlayType = { matchId, matchInfoList, gameMatchType, liveVideo ->
-                    if (gameMatchType == MatchType.IN_PLAY) {
-                        matchId?.let {
-                            navOddsDetailLive(matchId, gameMatchType)
-                        }
-                    } else {
-                        matchId?.let {
-                            navOddsDetail(matchId, matchInfoList)
-                        }
-                    }
+                    navMatchDetailPage(matchId, matchInfoList, gameMatchType)
                 },
                 clickListenerBet = { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
                     if (mIsEnabled) {
@@ -139,8 +131,31 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 clickListenerStatistics = { matchId ->
                     navStatistics(matchId)
                 },
-                refreshListener = {}
+                refreshListener = {},
+                clickLiveIconListener = { matchId, matchInfoList, gameMatchType, _ ->
+                    if (viewModel.checkLoginStatus()) {
+                        navMatchDetailPage(matchId, matchInfoList, gameMatchType)
+                    }
+                },
+                clickAnimationIconListener = { matchId, matchInfoList, gameMatchType, _ ->
+                    if (viewModel.checkLoginStatus()) {
+                        navMatchDetailPage(matchId, matchInfoList, gameMatchType)
+                    }
+                }
             )
+        }
+    }
+
+
+    private fun navMatchDetailPage(matchId: String?, matchInfoList: List<MatchInfo>, gameMatchType: MatchType) {
+        if (gameMatchType == MatchType.IN_PLAY) {
+            matchId?.let {
+                navOddsDetailLive(matchId, gameMatchType)
+            }
+        } else {
+            matchId?.let {
+                navOddsDetail(matchId, matchInfoList)
+            }
         }
     }
 

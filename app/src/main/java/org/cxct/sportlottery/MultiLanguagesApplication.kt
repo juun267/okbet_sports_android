@@ -68,6 +68,7 @@ class MultiLanguagesApplication : Application() {
     val userInfo = _userInfo.asStateFlow()
     private var isNewsShowed = false
     private var isGameDetailAnimationNeedShow = false
+    private var isAgeVerifyNeedShow = true
 
 
     private val viewModelModule = module {
@@ -234,6 +235,14 @@ class MultiLanguagesApplication : Application() {
         } else {
             true
         }
+    }
+
+    fun isAgeVerifyNeedShow(): Boolean {
+        return isAgeVerifyNeedShow
+    }
+
+    fun setIsAgeVerifyShow(show: Boolean) {
+        this.isAgeVerifyNeedShow = show
     }
 
     companion object {
