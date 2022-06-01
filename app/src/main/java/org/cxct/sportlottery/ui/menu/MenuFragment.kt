@@ -127,6 +127,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         viewModel.rechargeSystemOperation.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
+                    mDownMenuListener?.onClick(tv_recharge)
                     startActivity(Intent(context, MoneyRechargeActivity::class.java))
                 } else {
                     showPromptDialog(
@@ -316,6 +317,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         tv_recharge.apply {
             setVisibilityByCreditSystem()
             setOnClickListener {
+                avoidFastDoubleClick()
                 viewModel.checkRechargeSystem()
             }
         }
@@ -331,8 +333,9 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
         //我的賽事
         menu_my_favorite.setOnClickListener {
-            startActivity(Intent(context, MyFavoriteActivity::class.java))
-            mDownMenuListener?.onClick(menu_my_favorite)
+            if ((activity ?: requireActivity())::class.java.simpleName != MyFavoriteActivity::class.java.simpleName) {
+                startActivity(Intent(context, MyFavoriteActivity::class.java))
+            }
         }
 
         //其他投注記錄
@@ -376,8 +379,10 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                 context?.run {
                     if (sConfigData?.thirdOpen == FLAG_OPEN)
                         MainActivity.reStart(this)
-                    else
+                    else {
                         GamePublicityActivity.reStart(this)
+                        activity?.finish()
+                    }
                 }
             }
             mDownMenuListener?.onClick(btn_sign_out)

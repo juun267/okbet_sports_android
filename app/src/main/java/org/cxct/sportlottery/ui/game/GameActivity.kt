@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -41,8 +42,9 @@ import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.FastBetFragment
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.game.filter.LeagueFilterFragmentDirections
+import org.cxct.sportlottery.ui.game.hall.GameV3Fragment
+import org.cxct.sportlottery.ui.game.hall.GameV3FragmentArgs
 import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
-import org.cxct.sportlottery.ui.game.home.HomeFragment
 import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageFragment
@@ -75,7 +77,6 @@ import timber.log.Timber
 class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) {
 
     companion object {
-        //切換語系，activity 要重啟才會生效
         fun reStart(context: Context) {
             val intent = Intent(context, GameActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -724,15 +725,27 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             sub_drawer_layout.closeDrawers()
             return
         }
-        if (mNavController.currentDestination?.id != R.id.homeFragment) {
-            mNavController.navigateUp()
-        } else {
-            if (tabLayout.selectedTabPosition != 0) {
-                tabLayout.getTabAt(0)?.select()
-            } else {
-                //返回宣傳頁
+        when (mNavController.currentDestination?.id) {
+            R.id.gameV3Fragment -> {
+                //特殊賽事返回時，不回到主頁
+                val navHostFragment =
+                    supportFragmentManager.findFragmentById(R.id.game_container) as NavHostFragment
+                val gameV3Fragment =
+                    navHostFragment.childFragmentManager.fragments.firstOrNull() as GameV3Fragment
+                when (gameV3Fragment.arguments?.getSerializable("matchType") as MatchType) {
+                    MatchType.OTHER -> {
+                        goTab(tabLayout.selectedTabPosition)
+                    }
+                    else -> {
+                        mNavController.navigateUp()
+                    }
+                }
+            }
+            R.id.homeFragment -> {
+                //首頁時，點back返回宣傳頁
                 GamePublicityActivity.reStart(this)
             }
+            else -> mNavController.navigateUp()
         }
     }
 
