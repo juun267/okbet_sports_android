@@ -62,7 +62,7 @@
                 android:layout_height="45dp"
                 android:layout_marginLeft="14dp"
                 android:text="@string/btn_login"
-                android:textColor="@color/color_e5e5e5_333333"
+                android:textColor="@color/color_CCCCCC_333333"
                 android:textSize="@dimen/textSize30sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/view"
@@ -197,7 +197,7 @@
                 android:paddingStart="6dp"
                 android:button="@drawable/effect_login_select_checkbox"
                 android:text="@string/remember_password"
-                android:textColor="@color/color_e5e5e5_333333"
+                android:textColor="@color/color_CCCCCC_333333"
                 android:textSize="@dimen/textSize13sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/block_valid_code" />

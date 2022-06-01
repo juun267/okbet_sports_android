@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:textColor="@color/color_e5e5e5_333333"
+                android:textColor="@color/color_CCCCCC_333333"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="v2.0.37" />
 
@@ -73,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textColor="@color/color_e5e5e5_333333"
+                android:textColor="@color/color_CCCCCC_333333"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="有新的版本(v13_1.2.3)可更新" />
 

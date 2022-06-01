@@ -76,7 +76,7 @@
             android:includeFontPadding="false"
             android:maxLines="2"
             android:minHeight="34dp"
-            android:textColor="@color/color_FFFFFF_000000"
+            android:textColor="@color/color_DDDDDD_000000"
             android:textSize="@dimen/textSize14sp"
             tools:text="皇家馬德里" />
 
@@ -89,7 +89,7 @@
             android:includeFontPadding="false"
             android:maxLines="2"
             android:minHeight="34dp"
-            android:textColor="@color/color_FFFFFF_000000"
+            android:textColor="@color/color_DDDDDD_000000"
             android:textSize="@dimen/textSize14sp"
             tools:text="利物浦" />
 

@@ -94,6 +94,8 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var onClickOddListener: OnClickOddListener? = null
     var onClickMatchListener: OnSelectItemListener<MatchInfo>? = null
+    var onClickLiveListener: OnSelectItemListener<MatchInfo>? = null
+    var onClickAnimationListener: OnSelectItemListener<MatchInfo>? = null
     var onClickTotalMatchListener: OnSelectItemListener<GameEntity>? = null
     var onClickSportListener: OnSelectItemListener<OtherMatch>? = null
     var onClickFavoriteListener: OnClickFavoriteListener? = null
@@ -289,6 +291,8 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     setListeners(
                         onClickTotalMatchListener = onClickTotalMatchListener,
                         onClickMatchListener = onClickMatchListener,
+                        onClickLiveListener = onClickLiveListener,
+                        onClickAnimationListener = onClickAnimationListener,
                         onClickOddListener = onClickOddListener,
                         onClickFavoriteListener = onClickFavoriteListener,
                         onClickStatisticsListener = onClickStatisticsListener
@@ -498,7 +502,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 leagueName = it.matchInfo?.leagueName ?: "",
                 source = it.matchInfo?.source
             ).apply {
-                startDateDisplay = TimeUtil.timeFormat(this.startTime, "MM/dd")
+                startDateDisplay = TimeUtil.timeFormat(this.startTime, "dd/MM")
                 startTimeDisplay = TimeUtil.timeFormat(this.startTime, "HH:mm")
                 isAtStart = TimeUtil.isTimeAtStart(this.startTime)
                 isStartPosition = index == 0

@@ -33,7 +33,7 @@
         app:tabPaddingEnd="25dp"
         app:tabPaddingStart="25dp"
         app:tabRippleColor="@null"
-        app:tabSelectedTextColor="@color/color_e5e5e5_333333"
+        app:tabSelectedTextColor="@color/color_CCCCCC_333333"
         app:tabTextAppearance="@style/NoUppercaseTab"
         app:tabTextColor="@color/color_FFFFFF">
 

@@ -1034,7 +1034,9 @@
     <string name="responsible">博彩责任</string>
     <string name="terms_conditions">规则与条款</string>
     <string name="privacy_policy">隐私权条款</string>
+    <string name="affiliate">代理加盟</string>
     <string name="help">是否需要帮助？</string>
+    <string name="official_partner">官方合作伙伴</string>
     <string name="faqs">常见问题</string>
     <string name="live_chat">在线客服</string>
     <string name="contact">联系我们</string>
@@ -1043,6 +1045,7 @@
     <string name="front_side_result">证件正面扫描结果</string>
     <string name="reverse_side_result">证件反面扫描结果</string>
     <string name="btm_navigation_language">简体中文</string>
+    <string name="btm_navigation_affiliate">代理加盟</string>
     <string name="expire_date">证件过期时间</string>
     <string name="self_limit_froze_impotent_1">自我禁制设定后立即生效</string>
     <string name="self_limit_froze_impotent_2">在自我禁制设定期间内，我们将保管您的余额。</string>
@@ -1119,6 +1122,15 @@
     <string name="cancel_auto">注單未成立</string>
     <string name="cancel_manual">退款</string>
     <string name="error_input_has_blank">输入错误，仅限输入英文，请勿输入连续空格。</string>
+
+    <!--region 確認年齡彈窗-->
+    <string name="dialog_age_verify_statement">OKBet 致力于为所有客户提供安全、舒适的游戏体验。\n\n对于绝大多数人来说，游戏是一项令人愉快的休闲活动。但是，我们意识到有时候游戏对某些客户来说不再有趣。\n\n我们强烈建议您在继续之前花一些时间阅读我们的博彩责任和声明。并且，严禁 21 岁及以下的用户使用。\n\n我们的责任是帮助我们的客户安全、负责任地赌博，降低伤害风险，并帮助需要治疗的人得到治疗。\n\n如果您或您的家人遇到游戏问题，请随时联系 keepitfun@pagcor.ph。</string>
+    <string name="dialog_age_verify_hint">请确认您已年满21岁，才能进入本网站</string>
+    <string name="dialog_age_verify_confirm">我已年满21岁</string>
+    <string name="dialog_age_verify_exit">离开</string>
+    <!--endregion-->
+
     <string name="esports">电子竞技</string>
     <string name="coming_soon">即将推出</string>
+
 </resources>

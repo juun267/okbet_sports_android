@@ -8,12 +8,14 @@ import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.view_toolbar_main.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityGamePublicityBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
+import org.cxct.sportlottery.ui.dialog.AgeVerifyDialog
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.Page
@@ -29,6 +31,7 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.AppManager
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
@@ -69,6 +72,28 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         initBaseFun()
         initObservers()
         setLetterSpace()
+
+        //進入宣傳頁，優先跳出這個視窗(不論有沒有登入，每次都要跳)
+        showAgeVerifyDialog()
+    }
+
+    //確認年齡彈窗
+    private fun showAgeVerifyDialog() {
+        if (MultiLanguagesApplication.getInstance()?.isAgeVerifyNeedShow() == false) return
+        AgeVerifyDialog(
+            this,
+            object : AgeVerifyDialog.OnAgeVerifyCallBack {
+                override fun onConfirm() {
+                    //當玩家點擊"I AM OVER 21 YEARS OLD"後，關閉此視窗
+                    MultiLanguagesApplication.getInstance()?.setIsAgeVerifyShow(false)
+                }
+
+                override fun onExit() {
+                    //當玩家點擊"EXIT"後，徹底關閉APP
+                    AppManager.AppExit()
+                }
+
+            }).show()
     }
 
     override fun onAttachedToWindow() {

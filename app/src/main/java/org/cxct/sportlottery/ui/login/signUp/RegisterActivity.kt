@@ -33,12 +33,10 @@ import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
-import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BitmapUtil
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.ToastUtil
-import timber.log.Timber
 import java.util.*
 
 /**
@@ -699,7 +697,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                             binding.btnSendSms.setTextColor(
                                 ContextCompat.getColor(
                                     this@RegisterActivity,
-                                    R.color.color_E0E0E0_404040
+                                    R.color.color_BDBDBD_404040
                                 )
                             )
                         } else {

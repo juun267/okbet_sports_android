@@ -11,7 +11,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.home_highlight_item.view.*
-import kotlinx.coroutines.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
@@ -30,7 +29,6 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setTextTypeFace
-import java.util.*
 import kotlin.collections.forEach as forEach
 
 class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdpOu>() {
@@ -70,7 +68,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                     leagueName = it.matchInfo?.leagueName,
                     status = it.matchInfo?.status ?: -1,
                     source = it.matchInfo?.source).apply {
-                    startDateDisplay = TimeUtil.timeFormat(this.startTime, "MM/dd")
+                    startDateDisplay = TimeUtil.timeFormat(this.startTime, "dd/MM")
                     startTimeDisplay = TimeUtil.timeFormat(this.startTime, "HH:mm")
                     isAtStart = TimeUtil.isTimeAtStart(this.startTime)
                 }
@@ -329,7 +327,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
         private fun setupTime(data: MatchOdd) {
             itemView.apply {
                 if (TimeUtil.isTimeInPlay(data.matchInfo?.startTime)){
-                    tv_match_time.setTextColor(ContextCompat.getColor(context,R.color.color_FFFFFF_000000))
+                    tv_match_time.setTextColor(ContextCompat.getColor(context,R.color.color_DDDDDD_000000))
                 }else{
                     tv_match_time.setTextColor(ContextCompat.getColor(context,R.color.color_BCBCBC_666666))
                 }
