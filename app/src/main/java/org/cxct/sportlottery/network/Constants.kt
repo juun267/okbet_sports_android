@@ -129,7 +129,7 @@ object Constants {
             context.getString(
                 R.string.app_name
             )
-        }&from=Android"
+        }"
     }
 
     //隐私权政策
