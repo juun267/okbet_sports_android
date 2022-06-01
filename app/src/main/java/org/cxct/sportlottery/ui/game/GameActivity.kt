@@ -74,10 +74,8 @@ import timber.log.Timber
 class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) {
 
     companion object {
-        //切換語系，activity 要重啟才會生效
         fun reStart(context: Context) {
             val intent = Intent(context, GameActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
             if(context is Activity){
                 context.overridePendingTransition(R.anim.push_right_to_left_enter, R.anim.push_right_to_left_exit)

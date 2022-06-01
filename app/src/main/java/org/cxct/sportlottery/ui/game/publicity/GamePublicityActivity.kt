@@ -50,7 +50,6 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
 
         fun reStart(context: Context) {
             val intent = Intent(context, GamePublicityActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
             if (context is Activity) {
                 context.overridePendingTransition(R.anim.push_right_to_left_enter, R.anim.push_right_to_left_exit)
