@@ -1043,6 +1043,7 @@
     <string name="front_side_result">证件正面扫描结果</string>
     <string name="reverse_side_result">证件反面扫描结果</string>
     <string name="btm_navigation_language">简体中文</string>
+    <string name="btm_navigation_affiliate">代理加盟</string>
     <string name="expire_date">证件过期时间</string>
     <string name="self_limit_froze_impotent_1">自我禁制设定后立即生效</string>
     <string name="self_limit_froze_impotent_2">在自我禁制设定期间内，我们将保管您的余额。</string>

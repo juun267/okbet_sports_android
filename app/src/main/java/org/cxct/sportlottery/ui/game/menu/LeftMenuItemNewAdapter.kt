@@ -222,6 +222,10 @@ class LeftMenuItemNewAdapter(
                 tv_promotion.setOnClickListener {
                     headerSelectedListener.promotionSelected()
                 }
+                //代理加盟
+                tv_affiliate.setOnClickListener{
+                    headerSelectedListener.affiliateSelected()
+                }
                 ct_inplay.setOnClickListener {
                     headerSelectedListener.inPlaySelected()
                 }
@@ -345,6 +349,7 @@ class LeftMenuItemNewAdapter(
         private val promotionSelectedListener: () -> Unit,
         private val inPlaySelectedListener: () -> Unit,
         private val premiumOddsSelectedListener: () -> Unit,
+        private val affiliateSelectedListener: () -> Unit
     ) {
         fun backMainPageSelected() = backMainPageSelectedListener()
         fun rechargeSelected() = rechargeSelectedListener()
@@ -353,6 +358,7 @@ class LeftMenuItemNewAdapter(
         fun promotionSelected() = promotionSelectedListener()
         fun inPlaySelected() = inPlaySelectedListener()
         fun premiumOddsSelected() = premiumOddsSelectedListener()
+        fun affiliateSelected() = affiliateSelectedListener()
     }
 
     class ItemSelectedListener(

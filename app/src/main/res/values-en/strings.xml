@@ -1046,6 +1046,7 @@
     <string name="front_side_result">Front side result</string>
     <string name="reverse_side_result">Reverse side result</string>
     <string name="btm_navigation_language">English</string>
+    <string name="btm_navigation_affiliate">Affiliate</string>
     <string name="expire_date">ID expiration date</string>
     <string name="self_limit_froze_impotent_1">Self-exclusion takes effect immediately after setting</string>
     <string name="self_limit_froze_impotent_2">We will keep your balance during the set period of self-exclusion.</string>
