@@ -591,7 +591,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     private fun setupGameRow() {
         game_filter_type_list.apply {
-            this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            this.layoutManager =
+                ScrollCenterLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
 
             this.adapter = dateAdapter
@@ -726,13 +727,13 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
 
         viewModel.curDatePosition.observe(this.viewLifecycleOwner) {
-            val position = viewModel.tempDatePosition
-            if (position != 0)
-                (game_filter_type_list.layoutManager as LinearLayoutManager?)?.scrollToPosition(position)
-            else
-                (game_filter_type_list.layoutManager as LinearLayoutManager?)?.scrollToPositionWithOffset(
-                    it, game_filter_type_list.width / 2
-                )
+            var position = viewModel.tempDatePosition
+            position = if (position != 0) position else it
+            (game_filter_type_list.layoutManager as ScrollCenterLayoutManager?)?.smoothScrollToPosition(
+                game_filter_type_list,
+                RecyclerView.State(),
+                position
+            )
         }
 
         viewModel.curChildMatchType.observe(this.viewLifecycleOwner) {
