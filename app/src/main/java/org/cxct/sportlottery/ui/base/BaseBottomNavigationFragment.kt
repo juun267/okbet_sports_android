@@ -136,7 +136,11 @@ abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KCla
         }
 
         txv_affiliate.setOnClickListener {
-            //等Will做好給連結
+            JumpUtil.toInternalWeb(
+                requireContext(),
+                Constants.getAffiliateUrl(requireContext()),
+                resources.getString(R.string.btm_navigation_affiliate)
+            )
         }
 
     }
