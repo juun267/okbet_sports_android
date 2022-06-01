@@ -320,6 +320,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initToolBar() {
+        binding.clTitle.setOnClickListener {
+            activity?.onBackPressed()
+        }
+
         binding.ivArrow.setOnClickListener {
             activity?.onBackPressed()
         }
@@ -331,14 +335,14 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         betListRefactorAdapter =
             BetListRefactorAdapter(object : BetListRefactorAdapter.OnItemClickListener {
                 override fun onDeleteClick(oddsId: String, currentItemCount: Int) {
-                    isAutoCloseWhenNoData = betListRefactorAdapter?.betList?.size?:0 <= 1
+                    isAutoCloseWhenNoData = betListRefactorAdapter?.betList?.size ?: 0 <= 1
                     viewModel.removeBetInfoItem(oddsId)
                 }
 
                 override fun onRechargeClick() {
-                    if(viewModel.getLoginBoolean()){
+                    if (viewModel.getLoginBoolean()) {
                         startActivity(Intent(context, MoneyRechargeActivity::class.java))
-                    }else{
+                    } else {
                         startActivity(Intent(context, LoginActivity::class.java))
                     }
                 }
@@ -585,7 +589,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 refreshAllAmount(list)
                 checkAllAmountCanBet()
 
-                if(list.size == 0 && isAutoCloseWhenNoData) activity?.onBackPressed()
+                if (list.size == 0 && isAutoCloseWhenNoData) activity?.onBackPressed()
             }
         }
 

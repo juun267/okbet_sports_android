@@ -5,7 +5,7 @@
 
     <View
         android:id="@+id/viewStrip"
-        style="@style/StripRange" />
+        style="@style/StripRange"/>
 
     <com.archit.calendardaterangepicker.customviews.CustomTextView
         android:id="@+id/dayOfMonthText"
