@@ -96,6 +96,15 @@ class BottomNavigationView @JvmOverloads constructor(context: Context, attrs: At
             goSwitchLanguagePage()
         }
 
+        //代理加盟
+        txv_affiliate.setOnClickListener {
+            JumpUtil.toInternalWeb(
+                context,
+                Constants.getAffiliateUrl(context),
+                resources.getString(R.string.btm_navigation_affiliate)
+            )
+        }
+
         txv_language.setOnClickListener {
             goSwitchLanguagePage()
         }
