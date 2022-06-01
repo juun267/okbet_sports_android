@@ -28,7 +28,6 @@ class MyFavoriteViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     myFavoriteRepository: MyFavoriteRepository,
-    intentRepository: IntentRepository
 ) : BaseBottomNavViewModel(
     androidContext,
     userInfoRepository,
@@ -36,7 +35,6 @@ class MyFavoriteViewModel(
     betInfoRepository,
     infoCenterRepository,
     myFavoriteRepository,
-    intentRepository
 ) {
     val showBetUpperLimit = betInfoRepository.showBetUpperLimit
 

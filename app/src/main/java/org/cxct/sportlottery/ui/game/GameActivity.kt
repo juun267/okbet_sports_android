@@ -714,30 +714,36 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             }
             return
         }
+        //關閉drawer
+        if (drawer_layout.isDrawerOpen(nav_right)) {
+            drawer_layout.closeDrawers()
+            return
+        }
+        if (sub_drawer_layout.isDrawerOpen(nav_left)) {
+            sub_drawer_layout.closeDrawers()
+            return
+        }
         when (mNavController.currentDestination?.id) {
-            R.id.gameLeagueFragment, R.id.gameOutrightFragment, R.id.gameOutrightMoreFragment, R.id.oddsDetailFragment, R.id.oddsDetailLiveFragment, R.id.leagueFilterFragment -> {
-                if (isFromPublicity)
-                    finish()
-                else
-                    mNavController.navigateUp()
-            }
-
             R.id.gameV3Fragment -> {
-                val navHostFragment = supportFragmentManager.findFragmentById(R.id.game_container) as NavHostFragment
-                val gameV3Fragment = navHostFragment.childFragmentManager.fragments.firstOrNull() as GameV3Fragment
-
+                //特殊賽事返回時，不回到主頁
+                val navHostFragment =
+                    supportFragmentManager.findFragmentById(R.id.game_container) as NavHostFragment
+                val gameV3Fragment =
+                    navHostFragment.childFragmentManager.fragments.firstOrNull() as GameV3Fragment
                 when (gameV3Fragment.arguments?.getSerializable("matchType") as MatchType) {
                     MatchType.OTHER -> {
                         goTab(tabLayout.selectedTabPosition)
-                    } else -> {
+                    }
+                    else -> {
                         mNavController.navigateUp()
                     }
                 }
             }
-
-            else -> {
-                super.onBackPressed()
+            R.id.homeFragment -> {
+                //首頁時，點back返回宣傳頁
+                GamePublicityActivity.reStart(this)
             }
+            else -> mNavController.navigateUp()
         }
     }
 

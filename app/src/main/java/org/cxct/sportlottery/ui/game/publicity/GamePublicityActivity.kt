@@ -210,6 +210,18 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
             }
             return
         }
+        //關閉drawer
+        binding.apply {
+            if (drawerLayout.isDrawerOpen(viewNavRight.navRight)) {
+                drawerLayout.closeDrawers()
+                return
+            }
+        }
+        if (navController.currentDestination?.id != R.id.publicityFragment) {
+            navController.navigateUp()
+        } else {
+            AppManager.AppExit()
+        }
     }
 
     private fun getSportMenuFilter() {
