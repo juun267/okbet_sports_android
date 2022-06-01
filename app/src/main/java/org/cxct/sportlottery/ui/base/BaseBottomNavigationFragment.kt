@@ -135,6 +135,14 @@ abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KCla
             JumpUtil.toExternalWeb(requireContext(), "https://pagcor.ph/regulatory/index.php")
         }
 
+        txv_affiliate.setOnClickListener {
+            JumpUtil.toInternalWeb(
+                requireContext(),
+                Constants.getAffiliateUrl(requireContext()),
+                resources.getString(R.string.btm_navigation_affiliate)
+            )
+        }
+
     }
 
     var afterAnimateListener: AfterAnimateListener? = null
