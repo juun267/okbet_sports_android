@@ -15,6 +15,7 @@
         android:layout_height="match_parent"
         android:paddingStart="4dp"
         android:paddingEnd="4dp"
+        android:tint="@color/title_color"
         android:src="@drawable/ic_left_selector" />
 
     <com.archit.calendardaterangepicker.customviews.CustomTextView
@@ -35,5 +36,6 @@
         android:layout_height="match_parent"
         android:paddingStart="4dp"
         android:paddingEnd="4dp"
+        android:tint="@color/title_color"
         android:src="@drawable/ic_right_selector" />
 </LinearLayout>

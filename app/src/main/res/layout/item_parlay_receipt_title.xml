@@ -9,7 +9,7 @@
     android:paddingHorizontal="16dp"
     android:paddingVertical="14dp"
     android:text="@string/mix_bet_list"
-    android:textColor="@color/color_e5e5e5_333333"
+    android:textColor="@color/color_CCCCCC_333333"
     android:textSize="@dimen/textSize15sp"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"

@@ -1792,13 +1792,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 setupItemEnable(hasBetClosed)
 
-                val initValue =
-                    if (!(itemData?.inputBetAmountStr.isNullOrEmpty())) itemData?.inputBetAmountStr else ""
-                et_bet_parlay.apply {
-                    setText(initValue)
-                    et_bet_parlay.setSelection(et_bet_parlay.text.length)
-                }
-
                 itemData?.let { data ->
                     tv_parlay_type.text = getParlayName(data.parlayType)
 
@@ -1921,9 +1914,17 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         ) {
             itemView.apply {
                 et_bet_parlay.apply {
+                    //第1步：為了避免TextWatcher在第2步被調用，提前移除
                     if (tag is TextWatcher) {
                         removeTextChangedListener(tag as TextWatcher)
                     }
+
+                    val initValue =
+                        if (!(data.inputBetAmountStr.isNullOrEmpty())) data.inputBetAmountStr else ""
+
+                    //第2步：移除TextWatcher之後，設置EditText的value
+                    setText(initValue)
+                    setSelection(text.length)
 
                     setupOddInfo(data, currentOddsType)
                     setupMinimumLimitMessage(data)

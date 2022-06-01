@@ -568,6 +568,20 @@ object SocketUpdateUtil {
         return isNeedRefresh
     }
 
+    //處理收到 matchOddsLock event 的狀態變化
+    fun updateOddStatus(
+        oddsDetailListData: OddsDetailListData
+    ): Boolean {
+        var isNeedRefresh = false
+
+        oddsDetailListData.oddArrayList.forEach { odd ->
+            odd?.status = BetStatus.LOCKED.code
+            isNeedRefresh = true
+        }
+
+        return isNeedRefresh
+    }
+
     fun updateOddStatus(matchOdd: MatchOdd, matchOddsLockEvent: MatchOddsLockEvent): Boolean {
         var isNeedRefresh = false
 

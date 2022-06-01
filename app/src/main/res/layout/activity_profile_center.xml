@@ -31,6 +31,7 @@
             android:id="@+id/iv_head"
             android:layout_width="42dp"
             android:layout_height="42dp"
+            app:layout_goneMarginStart="20dp"
             android:scaleType="centerCrop"
             android:src="@drawable/img_avatar_default"
             app:layout_constraintStart_toEndOf="@id/profile_center_back"
@@ -215,7 +216,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:text="@string/recharge"
-                    android:textColor="@color/color_E0E0E0_404040"
+                    android:textColor="@color/color_BDBDBD_404040"
                     android:textSize="@dimen/textSize16sp" />
 
             </LinearLayout>
@@ -245,7 +246,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:text="@string/withdraw"
-                    android:textColor="@color/color_E0E0E0_404040"
+                    android:textColor="@color/color_BDBDBD_404040"
                     android:textSize="@dimen/textSize16sp" />
 
             </LinearLayout>
@@ -261,7 +262,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
         android:text="@string/more_service"
-        android:textColor="@color/color_E0E0E0_404040"
+        android:textColor="@color/color_BDBDBD_404040"
         android:textSize="@dimen/textSize14sp"
         android:textStyle="bold" />
 
@@ -303,7 +304,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/profile_info"
-                        android:textColor="@color/color_e5e5e5_333333"
+                        android:textColor="@color/color_CCCCCC_333333"
                         android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
@@ -337,7 +338,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/account_transfer"
-                        android:textColor="@color/color_e5e5e5_333333"
+                        android:textColor="@color/color_CCCCCC_333333"
                         android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
@@ -371,7 +372,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/withdraw_setting"
-                        android:textColor="@color/color_e5e5e5_333333"
+                        android:textColor="@color/color_CCCCCC_333333"
                         android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
@@ -398,6 +399,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="20dp"
                         android:contentDescription="@null"
+                        android:layout_marginStart="10dp"
                         android:src="@drawable/ic_profile_center_bet_record" />
 
                     <TextView
@@ -405,7 +407,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/other_bet_record"
-                        android:textColor="@color/color_e5e5e5_333333"
+                        android:textColor="@color/color_CCCCCC_333333"
                         android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
@@ -439,7 +441,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/fund_detail"
-                        android:textColor="@color/color_e5e5e5_333333"
+                        android:textColor="@color/color_CCCCCC_333333"
                         android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
@@ -479,7 +481,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/news_center"
-                        android:textColor="@color/color_e5e5e5_333333"
+                        android:textColor="@color/color_CCCCCC_333333"
                         android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
@@ -513,7 +515,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/promotion"
-                        android:textColor="@color/color_e5e5e5_333333"
+                        android:textColor="@color/color_CCCCCC_333333"
                         android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
@@ -547,7 +549,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/self_limit"
-                        android:textColor="@color/color_e5e5e5_333333"
+                        android:textColor="@color/color_CCCCCC_333333"
                         android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
@@ -623,7 +625,7 @@
 
                         android:layout_weight="1"
                         android:text="@string/help_center"
-                        android:textColor="@color/color_e5e5e5_333333"
+                        android:textColor="@color/color_CCCCCC_333333"
                         android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
@@ -657,7 +659,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/feedback"
-                        android:textColor="@color/color_e5e5e5_333333"
+                        android:textColor="@color/color_CCCCCC_333333"
                         android:textSize="@dimen/textSize14sp" />
 
                     <ImageView

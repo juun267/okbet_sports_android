@@ -18,6 +18,7 @@ import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.util.VerifyConstUtil
 
 
 class LoginViewModel(
@@ -150,9 +151,9 @@ class LoginViewModel(
         }
     }
 
-    private fun checkValidCode(context: Context, validCode: String): String? {
+     fun checkValidCode(context: Context, validCode: String): String? {
         return when {
-            validCode.isBlank() -> context.getString(R.string.hint_verification_code)
+            validCode.isBlank() -> context.getString(R.string.error_input_empty)
             else -> null
         }
     }
