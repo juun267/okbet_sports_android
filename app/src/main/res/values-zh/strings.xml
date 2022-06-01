@@ -478,7 +478,7 @@
     <string name="txv_online_pay">在线支付</string>
     <string name="txv_crypto_pay">虚拟币转账</string>
     <string name="error_recharge_amount">存款金额格式或数值错误</string>
-    <string name="error_first_recharge_amount">首次充值金额不能小于%s</string>
+    <string name="error_first_recharge_amount">首次存款金额不能小于%s</string>
     <string name="error_recharge_account">存款个数或数值错误</string>
     <string name="error_bank_id">银行卡号格式有错误</string>
     <string name="error_hashcode">区块链交易ID格式错误</string>
