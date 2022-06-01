@@ -247,7 +247,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 mBottomSheetList.add(selectBank)
             }
         else {
-            if (rechCfgsList.size > 1)
+            if (rechCfgsList.size > 0)//對照H5改為全部都要加數字
                 rechCfgsList.forEach {
                     val selectBank =
                         BtsRvAdapter.SelectBank(
