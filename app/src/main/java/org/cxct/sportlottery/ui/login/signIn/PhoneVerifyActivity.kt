@@ -159,7 +159,7 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
     }
 
     private fun checkInputData(): Boolean {
-        return viewModel.checkValidCode(this@PhoneVerifyActivity,binding.eetVerificationCode.text.toString()).isNullOrEmpty()
+        return !viewModel.checkValidCode(this@PhoneVerifyActivity,binding.eetVerificationCode.text.toString()).isNullOrEmpty()
     }
 
 
