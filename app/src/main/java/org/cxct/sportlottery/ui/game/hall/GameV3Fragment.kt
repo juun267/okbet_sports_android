@@ -466,7 +466,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 mCalendarSelected = newSelectedStatus
                 isSelected = newSelectedStatus
 
-                game_filter_type_list.visibility = when (isSelected) {
+                view?.game_filter_type_list?.visibility = when (game_toolbar_calendar.isSelected) {
                     true -> View.VISIBLE
                     false -> View.GONE
                 }
