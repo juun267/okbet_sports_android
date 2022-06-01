@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -88,6 +89,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     viewModel.tempDatePosition = 0
                     //日期圖示選取狀態下，切換球種要重置UI狀態
                     if (game_toolbar_calendar.isSelected) game_toolbar_calendar.performClick()
+                    (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(sport_type_list, RecyclerView.State(), dataSport.indexOfFirst { item -> TextUtils.equals(it.code,item.code) })
                 }
                 //切換球種後要重置位置
                 initMatchCategoryPagerPosition()
@@ -411,7 +413,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private fun setupSportTypeList() {
         sport_type_list.apply {
             this.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                ScrollCenterLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
 
             this.adapter = gameTypeAdapter
