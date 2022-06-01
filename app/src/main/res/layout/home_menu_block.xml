@@ -38,6 +38,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/textSize16sp"
                 android:textStyle="bold"
+                android:visibility="invisible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -114,6 +115,7 @@
                 android:textColor="@color/home_card_text_color"
                 android:textSize="@dimen/textSize16sp"
                 android:textStyle="bold"
+                android:visibility="invisible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -262,6 +264,28 @@
                 android:layout_marginStart="6dp"
                 app:cvIcon="@drawable/ic_game_update"
                 app:cvTitle="@string/version_update" />
+
+            <!--     coming soon start       -->
+            <org.cxct.sportlottery.ui.game.home.HomeGameCard
+                android:id="@+id/card_baseball_coming_soon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                app:cvCount="@string/coming_soon"
+                app:cvIcon="@drawable/ic_game_baseball"
+                app:cvTextSize="12"
+                app:cvTitle="@string/baseball" />
+
+            <org.cxct.sportlottery.ui.game.home.HomeGameCard
+                android:id="@+id/card_esports_coming_soon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                app:cvCount="@string/coming_soon"
+                app:cvIcon="@drawable/ic_game_esports"
+                app:cvTextSize="12"
+                app:cvTitle="@string/esports" />
+            <!--     coming soon end       -->
 
         </LinearLayout>
 

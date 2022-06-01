@@ -83,6 +83,15 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                     showStatistics(matchId)
                 }, onClickPlayTypeListener = { gameType, matchType, matchId, matchInfoList ->
                     navOddsDetailFragment(gameType, matchType, matchId, matchInfoList)
+                }, onClickLiveIconListener = { gameType, matchType, matchId, matchInfoList ->
+                    if (viewModel.checkLoginStatus()) {
+                        navOddsDetailFragment(gameType, matchType, matchId, matchInfoList)
+                    }
+                },
+                onClickAnimationIconListener = { gameType, matchType, matchId, matchInfoList ->
+                    if (viewModel.checkLoginStatus()) {
+                        navOddsDetailFragment(gameType, matchType, matchId, matchInfoList)
+                    }
                 })
         )
 
@@ -120,6 +129,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         receiver.matchClock.removeObservers(viewLifecycleOwner)
         receiver.oddsChange.removeObservers(viewLifecycleOwner)
         receiver.matchOddsLock.removeObservers(viewLifecycleOwner)
+        receiver.leagueChange.removeObservers(viewLifecycleOwner)
         receiver.globalStop.removeObservers(viewLifecycleOwner)
         receiver.producerUp.removeObservers(viewLifecycleOwner)
     }
@@ -272,6 +282,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 if (it == ServiceConnectStatus.CONNECTED) {
 //                    loading()
                     viewModel.getSportMenuFilter()
+                    subscribeSportChannelHall()
                 }
             }
         }
@@ -356,6 +367,12 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                         //TODO 更新邏輯待補，跟進GameV3Fragment
                     }
                 }
+            }
+        })
+
+        receiver.leagueChange.observe(viewLifecycleOwner, {
+            it?.let { leagueChangeEvent ->
+                viewModel.publicityLeagueChange(leagueChangeEvent)
             }
         })
 

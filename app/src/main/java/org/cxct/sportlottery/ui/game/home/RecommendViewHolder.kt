@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.game.home
 
 import android.content.Context
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
@@ -109,6 +110,11 @@ class RecommendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 }
 
                 text = data.matchInfo?.getStartTime(context)
+                if (TimeUtil.isTimeInPlay(data.matchInfo?.startTime)){
+                    setTextColor(ContextCompat.getColor(context,R.color.color_DDDDDD_000000))
+                }else{
+                    setTextColor(ContextCompat.getColor(context,R.color.color_BCBCBC_666666))
+                }
             }
 
             if (data.vpRecommendAdapter == null)

@@ -105,7 +105,16 @@ class LeftMenuItemNewAdapter(
                     img_price.setImageResource(item.imgId)
                     txv_price.text = item.title
 
-                    tv_count.text = item.gameCount.toString()
+                    //暫時利用gameCount當判斷是否為coming soon
+                    if (item.gameCount == -1) {
+                        tv_count.text = context.getString(R.string.coming_soon)
+                        isEnabled = false
+                        btn_select.isEnabled = false
+                    } else {
+                        tv_count.text = item.gameCount.toString()
+                        isEnabled = true
+                        btn_select.isEnabled = true
+                    }
 
                     divider.isVisible = position == selectedNumber - 1
 
@@ -212,6 +221,10 @@ class LeftMenuItemNewAdapter(
                 }
                 tv_promotion.setOnClickListener {
                     headerSelectedListener.promotionSelected()
+                }
+                //代理加盟
+                tv_affiliate.setOnClickListener{
+                    headerSelectedListener.affiliateSelected()
                 }
                 ct_inplay.setOnClickListener {
                     headerSelectedListener.inPlaySelected()
@@ -336,6 +349,7 @@ class LeftMenuItemNewAdapter(
         private val promotionSelectedListener: () -> Unit,
         private val inPlaySelectedListener: () -> Unit,
         private val premiumOddsSelectedListener: () -> Unit,
+        private val affiliateSelectedListener: () -> Unit
     ) {
         fun backMainPageSelected() = backMainPageSelectedListener()
         fun rechargeSelected() = rechargeSelectedListener()
@@ -344,6 +358,7 @@ class LeftMenuItemNewAdapter(
         fun promotionSelected() = promotionSelectedListener()
         fun inPlaySelected() = inPlaySelectedListener()
         fun premiumOddsSelected() = premiumOddsSelectedListener()
+        fun affiliateSelected() = affiliateSelectedListener()
     }
 
     class ItemSelectedListener(

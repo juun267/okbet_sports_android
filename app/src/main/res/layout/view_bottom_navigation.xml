@@ -24,7 +24,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:text="@string/other_link"
-        android:textColor="@color/color_e5e5e5_333333"
+        android:textColor="@color/color_CCCCCC_333333"
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -73,6 +73,17 @@
         app:layout_constraintTop_toTopOf="@+id/txv_about" />
 
     <TextView
+        android:id="@+id/txv_affiliate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/btm_navigation_affiliate"
+        android:textColor="@color/color_8F8F8F_999999"
+        android:textSize="14dp"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vrt"
+        app:layout_constraintTop_toBottomOf="@+id/txv_policy" />
+
+    <TextView
         android:id="@+id/txv_language"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -81,7 +92,7 @@
         android:textColor="@color/color_8F8F8F_999999"
         android:textSize="14dp"
         app:layout_constraintStart_toStartOf="@+id/guideline_vrt"
-        app:layout_constraintTop_toBottomOf="@+id/txv_policy" />
+        app:layout_constraintTop_toBottomOf="@+id/txv_affiliate" />
 
     <ImageView
         android:id="@+id/img_flag"
@@ -99,7 +110,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="22dp"
         android:text="@string/help"
-        android:textColor="@color/color_e5e5e5_333333"
+        android:textColor="@color/color_CCCCCC_333333"
         android:textSize="12dp"
         app:layout_constraintStart_toStartOf="@+id/txv_other"
         app:layout_constraintTop_toBottomOf="@+id/txv_terms" />

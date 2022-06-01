@@ -70,41 +70,32 @@ class PublicityRecommendViewHolder(
                     }
                 }, refreshListener = {
                     //do nothing
+                },
+                clickLiveIconListener = { matchId, matchInfoList, _, _ ->
+                    publicityAdapterListener.onClickLiveIconListener(
+                        gameType = data.gameType,
+                        matchType = data.matchType,
+                        matchId = matchId,
+                        matchInfoList = matchInfoList
+                    )
+                },
+                clickAnimationIconListener = { matchId, matchInfoList, _, _ ->
+                    publicityAdapterListener.onClickAnimationIconListener(
+                        gameType = data.gameType,
+                        matchType = data.matchType,
+                        matchId = matchId,
+                        matchInfoList = matchInfoList
+                    )
                 })
         }
 
+        //GameTypeView
+        setupGameTypeView(data)
+
+        //LeagueView
+        setupLeagueView(data, notifySelf)
+
         with(binding) {
-            //GameTypeView
-            with(gameTypeView) {
-                tvSportType.text = getGameTypeString(root.context, data.gameType)
-                ivSportType.setImageResource(getGameTypeWhiteIcon(data.gameType))
-                data.matchType?.resId?.let { matchTypeRes ->
-                    tvGameType.text = root.context.getString(matchTypeRes)
-                }
-                tvMatchNum.text = data.matchNum.toString()
-            }
-
-            //LeagueView
-            with(leagueView) {
-                GameConfigManager.getTitleBarBackgroundInPublicPage(data.gameType,MultiLanguagesApplication.isNightMode)?.let { titleRes ->
-                    publicityLeagueBg.setImageResource(titleRes)
-                }
-                tvLeagueName.text = data.leagueName
-                ivFlag.setImageDrawable(SvgUtil.getSvgDrawable(itemView.context, data.categoryIcon))
-
-                root.setOnClickListener {
-                    data.unfold = if (data.unfold == FoldState.UNFOLD.code) {
-                        expandCheckList[data.leagueId] = false
-                        FoldState.FOLD.code
-                    } else {
-                        expandCheckList[data.leagueId] = true
-                        FoldState.UNFOLD.code
-                    }
-
-                    notifySelf()
-                }
-            }
-
             //region 測試 - 資料結構與其他處不同
             val matchOddList = transferMatchOddList(data)
             //endregion
@@ -120,7 +111,11 @@ class PublicityRecommendViewHolder(
         }
     }
 
-    fun update(recommend: Recommend, oddsType: OddsType) {
+    fun update(recommend: Recommend, oddsType: OddsType, notifySelf: () -> Unit) {
+        setupGameTypeView(recommend)
+
+        setupLeagueView(recommend, notifySelf)
+
         setupFold(recommend)
 
         updateLeagueOddList(recommend, oddsType)
@@ -135,6 +130,42 @@ class PublicityRecommendViewHolder(
         }
 
         binding.rvLeagueList.visibility = if (data.unfold == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
+    }
+
+    private fun setupGameTypeView(data: Recommend) {
+        with(binding) {
+            with(gameTypeView) {
+                tvSportType.text = getGameTypeString(root.context, data.gameType)
+                ivSportType.setImageResource(getGameTypeWhiteIcon(data.gameType))
+                data.matchType?.resId?.let { matchTypeRes ->
+                    tvGameType.text = root.context.getString(matchTypeRes)
+                }
+                tvMatchNum.text = data.matchNum.toString()
+            }
+        }
+    }
+
+    private fun setupLeagueView(data: Recommend, notifySelf: () -> Unit) {
+        with(binding.leagueView) {
+            GameConfigManager.getTitleBarBackgroundInPublicPage(data.gameType, MultiLanguagesApplication.isNightMode)
+                ?.let { titleRes ->
+                    publicityLeagueBg.setImageResource(titleRes)
+                }
+            tvLeagueName.text = data.leagueName
+            ivFlag.setImageDrawable(SvgUtil.getSvgDrawable(itemView.context, data.categoryIcon))
+
+            root.setOnClickListener {
+                data.unfold = if (data.unfold == FoldState.UNFOLD.code) {
+                    expandCheckList[data.leagueId] = false
+                    FoldState.FOLD.code
+                } else {
+                    expandCheckList[data.leagueId] = true
+                    FoldState.UNFOLD.code
+                }
+
+                notifySelf()
+            }
+        }
     }
 
     private fun updateLeagueOddList(recommend: Recommend, oddsType: OddsType) {

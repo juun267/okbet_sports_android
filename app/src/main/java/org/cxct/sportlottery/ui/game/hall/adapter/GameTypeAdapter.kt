@@ -1,14 +1,12 @@
 package org.cxct.sportlottery.ui.game.hall.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.itemview_sport_type.view.sport_type_img
-import kotlinx.android.synthetic.main.itemview_sport_type.view.sport_type_text
 import kotlinx.android.synthetic.main.itemview_sport_type_v4.view.*
 import kotlinx.android.synthetic.main.itemview_sport_type_v5.view.*
 import org.cxct.sportlottery.R
@@ -84,7 +82,22 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                 sport_type_text.text = getGameTypeString(context, item.code)
 
-                sport_count_text.text = item.num.toString()
+                val sportCountText: String
+                val sportCountTextColor: Int
+                //暫時利用num判斷是否為coming soon
+                if (item.num == -1) {
+                    sportCountText = context.getString(R.string.coming_soon)
+                    sportCountTextColor = R.color.color_A3A3A3_999999
+                    isEnabled = false
+                } else {
+                    sportCountText = item.num.toString()
+                    sportCountTextColor =
+                        if (item.isSelected) R.color.color_FFFFFF
+                        else R.color.color_CCCCCC_333333
+                    isEnabled = true
+                }
+                sport_count_text.text = sportCountText
+                sport_count_text.setTextColor(ContextCompat.getColor(context, sportCountTextColor))
 
                 isSelected = item.isSelected
 
@@ -151,6 +164,12 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 }
                 GameType.FB.key -> {
                     img.setImageResource(R.drawable.selector_sport_type_item_img_fb_v5)
+                }
+                GameType.BB_COMING_SOON.key -> {
+                    img.setImageResource(R.drawable.selector_sport_type_item_img_bb_v5)
+                }
+                GameType.ES_COMING_SOON.key -> {
+                    img.setImageResource(R.drawable.selector_sport_type_item_img_es_v5)
                 }
             }
         }

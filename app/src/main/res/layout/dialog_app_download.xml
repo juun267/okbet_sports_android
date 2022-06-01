@@ -30,8 +30,10 @@
     <LinearLayout
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:gravity="start"
         android:orientation="vertical"
+        android:paddingLeft="@dimen/margin_15"
+        android:paddingRight="@dimen/margin_15"
         app:layout_constraintBottom_toBottomOf="@id/iv_top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/iv_top">
@@ -73,7 +75,7 @@
             android:layout_marginStart="18dp"
             android:layout_marginTop="25dp"
             android:includeFontPadding="false"
-            android:textColor="@color/color_E0E0E0_404040"
+            android:textColor="@color/color_BDBDBD_404040"
             android:textSize="@dimen/textSize14sp"
             tools:text="v1.2.34" />
 
@@ -83,8 +85,8 @@
             android:layout_width="0dp"
             android:layout_height="10dp"
             android:layout_marginHorizontal="9dp"
-            android:layout_marginTop="27dp"
-            android:layout_marginBottom="33dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="20dp"
             android:layout_weight="1"
             android:indeterminate="false"
             android:max="100"
@@ -98,7 +100,7 @@
             android:layout_marginTop="25dp"
             android:layout_marginEnd="18dp"
             android:includeFontPadding="false"
-            android:textColor="@color/color_E0E0E0_404040"
+            android:textColor="@color/color_BDBDBD_404040"
             android:textSize="@dimen/textSize14sp"
             tools:text="v1.2.46" />
 

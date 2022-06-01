@@ -512,7 +512,7 @@
     <string name="online_bank">Ngân hàng trực tuyến</string>
     <string name="online_juan">JuanCash</string>
     <string name="online_dispenshing">Rút tiền</string>
-    <string name="online_online_bank">Ngân hàng trực tuyến</string>
+    <string name="online_online_bank">GCash / Khác</string>
     <string name="online_gcash">Gcash</string>
     <string name="online_grab">GrabPay</string>
     <string name="online_maya">PayMaya</string>
@@ -733,7 +733,7 @@
     <string name="transfer_state">Trạng thái chuyển đổi</string>
     <string name="remark">ghi chú</string>
     <string name="transfer_info">chuyển đổi thông tin</string>
-    <string name="sorry_website_is_now_maintenance">Xin lỗi trang web hiện đang được bảo trì !</string>
+    <string name="sorry_website_is_now_maintenance">Trang web hiện đang được bảo trì</string>
     <string name="if_there_is_any_question_please_consult">Nếu bạn có bất kỳ câu hỏi nào, xin vui lòng đi đến tư vấn%1$s</string>
     <string name="bottom_nav_home">trang chủ</string>
     <string name="bottom_nav_game">Sự kiện</string>
@@ -1076,6 +1076,7 @@
     <string name="front_side_result">Kết quả phía trước</string>
     <string name="reverse_side_result">Kết quả ngược lại</string>
     <string name="btm_navigation_language">Tiếng Việt</string>
+    <string name="btm_navigation_affiliate">Chi nhánh</string>
     <string name="expire_date">Thời gian hết hạn chứng chỉ</string>
     <string name="self_limit_froze_impotent_1">Tự loại trừ có hiệu lực ngay sau khi thiết lập</string>
     <string name="self_limit_froze_impotent_2">Chúng tôi sẽ giữ số dư của bạn trong khoảng thời gian tự loại trừ đã định.</string>
@@ -1161,5 +1162,8 @@
     <string name="dialog_age_verify_confirm">TÔI HƠN 21 TUỔI</string>
     <string name="dialog_age_verify_exit">LỐI RA</string>
     <!--endregion-->
+
+    <string name="coming_soon">Sắp có</string>
+    <string name="esports">eSports</string>
 
 </resources>
