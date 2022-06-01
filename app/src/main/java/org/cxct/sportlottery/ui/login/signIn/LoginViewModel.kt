@@ -153,7 +153,7 @@ class LoginViewModel(
 
      fun checkValidCode(context: Context, validCode: String): String? {
         return when {
-            validCode.isBlank() -> context.getString(R.string.hint_verification_code)
+            validCode.isBlank() -> context.getString(R.string.error_input_empty)
             else -> null
         }
     }

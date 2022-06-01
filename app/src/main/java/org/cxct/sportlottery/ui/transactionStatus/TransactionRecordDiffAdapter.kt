@@ -142,6 +142,7 @@ class TransactionRecordDiffAdapter :
                     object : CountDownTimer(leftTime ?: 0, 1000) {
 
                         override fun onTick(millisUntilFinished: Long) {
+                            tv_count_down.visibility = View.VISIBLE
                             tv_count_down.text = "${TimeUtil.longToSecond(millisUntilFinished)} ${context.getString(R.string.sec)}"
                         }
 
