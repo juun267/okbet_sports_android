@@ -192,7 +192,7 @@ class CustomDateView @JvmOverloads constructor(
             }
         }
         val mDrawable = ContextCompat.getDrawable(context, drawable.green_circle)
-        mDrawable!!.colorFilter = PorterDuffColorFilter(selectedDateCircleColor, filterMode)
+//        mDrawable!!.colorFilter = PorterDuffColorFilter(selectedDateCircleColor, filterMode)
         tvDate.background = mDrawable
         setBackgroundColor(Color.TRANSPARENT)
         tvDate.setTextColor(selectedDateColor)
@@ -203,7 +203,7 @@ class CustomDateView @JvmOverloads constructor(
     private fun setLeftFacedSelectedDate() {
         val layoutParams = strip.layoutParams as LayoutParams
         val drawable = ContextCompat.getDrawable(context, drawable.range_bg_left)
-        drawable!!.colorFilter = PorterDuffColorFilter(stripColor, filterMode)
+//        drawable!!.colorFilter = PorterDuffColorFilter(stripColor, filterMode)
         strip.background = drawable
         layoutParams.setMargins(20, 0, 0, 0)
         strip.layoutParams = layoutParams
@@ -212,7 +212,7 @@ class CustomDateView @JvmOverloads constructor(
     private fun setRightFacedSelectedDate() {
         val layoutParams = strip.layoutParams as LayoutParams
         val drawable = ContextCompat.getDrawable(context, drawable.range_bg_right)
-        drawable!!.colorFilter = PorterDuffColorFilter(stripColor, filterMode)
+//        drawable!!.colorFilter = PorterDuffColorFilter(stripColor, filterMode)
         strip.background = drawable
         layoutParams.setMargins(0, 0, 20, 0)
         strip.layoutParams = layoutParams
@@ -224,7 +224,7 @@ class CustomDateView @JvmOverloads constructor(
     private fun makeAsRangeDate() {
         tvDate.setBackgroundColor(Color.TRANSPARENT)
         val mDrawable = ContextCompat.getDrawable(context, drawable.range_bg)
-        mDrawable!!.colorFilter = PorterDuffColorFilter(stripColor, filterMode)
+//        mDrawable!!.colorFilter = PorterDuffColorFilter(stripColor, filterMode)
         strip.background = mDrawable
         setBackgroundColor(Color.TRANSPARENT)
         tvDate.setTextColor(rangeDateColor)

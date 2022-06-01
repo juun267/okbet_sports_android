@@ -15,6 +15,7 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
+import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 import java.util.*
@@ -67,14 +68,18 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
         binding.btnSubmit.setOnClickListener(this)
         binding.btnSubmit.setTitleLetterSpacing()
         binding.constraintLayout.setOnClickListener(this)
-        binding.eetVerificationCode.addTextChangedListener {
-            binding.btnSubmit.isEnabled = it?.length ?: 0 > 0
-        }
         binding.constraintLayout.setOnClickListener {
             binding.eetVerificationCode.clearFocus()
             binding.etVerificationCode.clearFocus()
 
             hideSoftKeyboard(this@PhoneVerifyActivity)
+        }
+        binding.eetVerificationCode.apply {
+            checkRegisterListener {
+                var errMsg = viewModel.checkValidCode(context, it)
+                binding.btnSubmit.isEnabled = errMsg.isNullOrEmpty()
+                binding.etVerificationCode.setError(errMsg, true)
+            }
         }
     }
 
@@ -154,7 +159,7 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
     }
 
     private fun checkInputData(): Boolean {
-        return binding.eetVerificationCode.text.isBlank()
+        return !viewModel.checkValidCode(this@PhoneVerifyActivity,binding.eetVerificationCode.text.toString()).isNullOrEmpty()
     }
 
 

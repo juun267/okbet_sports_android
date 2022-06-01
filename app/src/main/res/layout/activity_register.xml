@@ -358,7 +358,7 @@
                         android:minHeight="32dp"
                         android:text="@string/get_verification_code"
                         android:textAllCaps="false"
-                        android:textColor="@color/color_191919_FCFCFC"
+                        android:textColor="@color/color_FCFCFC"
                         android:textSize="@dimen/textSize14sp" />
 
                 </LinearLayout>
@@ -668,11 +668,12 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    app:hintText="@string/hint_verification_code"
                     app:iconSignifier="@drawable/ic_login_verify"
                     app:isResponsiveIconColor="false"
                     app:primaryColor="@color/color_AFAFB1"
-                    app:singleText="@string/verification_code"
-                    app:singleTextStyle="normal"
+                    app:labelText="@string/verification_code"
+                    app:labelTextStyle="normal"
                     app:hideSelectedTitle="true">
 
                     <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
