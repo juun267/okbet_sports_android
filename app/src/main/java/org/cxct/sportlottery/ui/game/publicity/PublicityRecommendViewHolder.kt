@@ -102,9 +102,6 @@ class PublicityRecommendViewHolder(
         setupFold(recommend)
 
         updateLeagueOddList(recommend, oddsType)
-
-        binding.llContent.visibility = View.VISIBLE
-        binding.loading.sflLoading.visibility = View.GONE
     }
 
     private fun setupFold(data: Recommend) {
