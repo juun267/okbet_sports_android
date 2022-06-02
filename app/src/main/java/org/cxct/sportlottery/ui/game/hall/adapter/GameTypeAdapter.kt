@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.game.hall.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +26,10 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var dataSport = listOf<Item>()
         set(value) {
             field = value
-            notifyDataSetChanged() // TODO 這裡需要另外處理GameType列表更新問題 By Hewie
+            field.forEachIndexed { index, item ->
+                notifyItemChanged(index, item)
+            }
+            // TODO 這裡需要另外處理GameType列表更新問題 By Hewie
         }
 
     private var dataThirdGame = listOf<GameCateData>()
@@ -54,6 +56,25 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             ItemType.SPORT.ordinal -> ViewHolderSport.from(parent)
             else -> ViewHolderThirdGame.from(parent)
         }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+        when {
+            payloads.isNullOrEmpty() -> {
+                onBindViewHolder(holder, position)
+            }
+            else -> {
+                when (val data = payloads.firstOrNull()) {
+                    is Item -> {
+                        when (holder) {
+                            is ViewHolderSport -> {
+                                holder.update(data, gameTypeListener)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
@@ -82,9 +103,7 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             itemView.apply {
 
-                sport_type_text.text = getGameTypeString(context, item.code)
-
-                sport_count_text.text = item.num.toString()
+                setupSportContent(item, gameTypeListener)
 
                 isSelected = item.isSelected
 
@@ -92,14 +111,30 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     sport_type_img.startAnimation(
                         AnimationUtils.loadAnimation(context, R.anim.rotate_sport)
                     )
+                } else {
+                    sport_type_img.clearAnimation()
                 }
+            }
+
+        }
+
+        fun update(item: Item, gameTypeListener: GameTypeListener?) {
+            setupSportTypeImage(itemView.sport_type_img, item)
+            setupSportContent(item, gameTypeListener)
+
+            updateSelected(item)
+        }
+
+        private fun setupSportContent(item: Item, gameTypeListener: GameTypeListener?){
+            with(itemView) {
+                sport_type_text.text = getGameTypeString(context, item.code)
+
+                sport_count_text.text = item.num.toString()
 
                 setOnClickListener {
                     gameTypeListener?.onClick(item)
                 }
-
             }
-
         }
 
         private fun setupSportTypeImage(img: ImageView, item: Item) {
@@ -154,6 +189,34 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 }
             }
         }
+
+        /**
+         * 更新選中狀態,
+         */
+        private fun updateSelected(item: Item) {
+            with(itemView) {
+                var needUpdateAnimationStatus = false
+                if (isSelected != item.isSelected) {
+                    needUpdateAnimationStatus = true
+                }
+
+                isSelected = item.isSelected
+
+                if (needUpdateAnimationStatus) {
+                    when (isSelected) {
+                        true -> {
+                            sport_type_img.startAnimation(
+                                AnimationUtils.loadAnimation(context, R.anim.rotate_sport)
+                            )
+                        }
+                        false -> {
+                            sport_type_img.clearAnimation()
+                        }
+                    }
+                }
+            }
+        }
+
         companion object {
             fun from(parent: ViewGroup): ViewHolderSport {
                 val layoutInflater = LayoutInflater.from(parent.context)
