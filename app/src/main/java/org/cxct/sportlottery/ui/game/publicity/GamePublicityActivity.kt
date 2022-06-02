@@ -251,7 +251,6 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     }
 
     override fun showBetListPage() {
-        if (viewModel.betInfoList.value?.peekContent()?.size ?: 0 == 0) return
         val transaction = supportFragmentManager.beginTransaction()
             .setCustomAnimations(
                 R.anim.push_bottom_to_top_enter,
