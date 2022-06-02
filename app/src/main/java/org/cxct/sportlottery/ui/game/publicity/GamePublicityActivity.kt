@@ -193,11 +193,11 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         viewModel.showBetInfoSingle.observe(this) { event ->
             event?.getContentIfNotHandled()?.let {
                 if (it) {
-                    if (viewModel.getIsFastBetOpened()) {
-//                        showFastBetFragment()
-                    } else {
+//                    if (viewModel.getIsFastBetOpened()) {
+////                        showFastBetFragment()
+//                    } else {
                         showBetListPage()
-                    }
+//                    }
                 }
             }
         }

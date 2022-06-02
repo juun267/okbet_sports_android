@@ -36,7 +36,8 @@ class UserInfoRepository(private val androidContext: Context) {
 
         if (userInfoResponse.isSuccessful) {
             userInfoResponse.body()?.let {
-                updateUserInfo(it.userInfoData)
+                if (it.success)
+                    updateUserInfo(it.userInfoData)
             }
             if (!checkedUserInfo)
                 checkedUserInfo = true

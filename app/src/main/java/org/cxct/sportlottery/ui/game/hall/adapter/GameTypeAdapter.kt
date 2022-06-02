@@ -25,7 +25,10 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var dataSport = listOf<Item>()
         set(value) {
             field = value
-            notifyDataSetChanged() // TODO 這裡需要另外處理GameType列表更新問題 By Hewie
+            field.forEachIndexed { index, item ->
+                notifyItemChanged(index, item)
+            }
+            // TODO 這裡需要另外處理GameType列表更新問題 By Hewie
         }
 
     private var dataThirdGame = listOf<GameCateData>()
@@ -53,6 +56,25 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             else -> ViewHolderThirdGame.from(parent)
         }
 
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+        when {
+            payloads.isNullOrEmpty() -> {
+                onBindViewHolder(holder, position)
+            }
+            else -> {
+                when (val data = payloads.firstOrNull()) {
+                    is Item -> {
+                        when (holder) {
+                            is ViewHolderSport -> {
+                                holder.update(data, gameTypeListener)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ViewHolderSport -> {
@@ -79,7 +101,30 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             setupSportTypeImage(itemView.sport_type_img, item)
 
             itemView.apply {
+                setupSportContent(item, gameTypeListener)
 
+                isSelected = item.isSelected
+
+                if (isSelected) {
+                    sport_type_img.startAnimation(
+                        AnimationUtils.loadAnimation(context, R.anim.rotate_sport)
+                    )
+                } else {
+                    sport_type_img.clearAnimation()
+                }
+            }
+
+        }
+
+        fun update(item: Item, gameTypeListener: GameTypeListener?) {
+            setupSportTypeImage(itemView.sport_type_img, item)
+            setupSportContent(item, gameTypeListener)
+
+            updateSelected(item)
+        }
+
+        private fun setupSportContent(item: Item, gameTypeListener: GameTypeListener?){
+            with(itemView) {
                 sport_type_text.text = getGameTypeString(context, item.code)
 
                 val sportCountText: String
@@ -99,20 +144,10 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 sport_count_text.text = sportCountText
                 sport_count_text.setTextColor(ContextCompat.getColor(context, sportCountTextColor))
 
-                isSelected = item.isSelected
-
-                if (isSelected) {
-                    sport_type_img.startAnimation(
-                        AnimationUtils.loadAnimation(context, R.anim.rotate_sport)
-                    )
-                }
-
                 setOnClickListener {
                     gameTypeListener?.onClick(item)
                 }
-
             }
-
         }
 
         private fun setupSportTypeImage(img: ImageView, item: Item) {
@@ -173,6 +208,34 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 }
             }
         }
+
+        /**
+         * 更新選中狀態,
+         */
+        private fun updateSelected(item: Item) {
+            with(itemView) {
+                var needUpdateAnimationStatus = false
+                if (isSelected != item.isSelected) {
+                    needUpdateAnimationStatus = true
+                }
+
+                isSelected = item.isSelected
+
+                if (needUpdateAnimationStatus) {
+                    when (isSelected) {
+                        true -> {
+                            sport_type_img.startAnimation(
+                                AnimationUtils.loadAnimation(context, R.anim.rotate_sport)
+                            )
+                        }
+                        false -> {
+                            sport_type_img.clearAnimation()
+                        }
+                    }
+                }
+            }
+        }
+
         companion object {
             fun from(parent: ViewGroup): ViewHolderSport {
                 val layoutInflater = LayoutInflater.from(parent.context)
