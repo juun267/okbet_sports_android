@@ -1698,8 +1698,15 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         comingSoonList.add(Item(code = GameType.ES_COMING_SOON.key,"", -1 , null, 100))
         gameTypeAdapter.dataSport = comingSoonList
 
+        //球種如果選過，下次回來也需要滑動置中
+        (sport_type_list.layoutManager as ScrollCenterLayoutManager?)?.smoothScrollToPosition(
+            sport_type_list,
+            RecyclerView.State(),
+            comingSoonList.indexOfFirst { item -> item.isSelected }
+        )
+
         if (args.matchType != MatchType.OTHER) {
-            gameTypeList.find { it.isSelected }.let { item ->
+            comingSoonList.find { it.isSelected }.let { item ->
                 game_toolbar_sport_type.text =
                     context?.let { getGameTypeString(it, item?.code) } ?: resources.getString(
                         GameType.FT.string
@@ -1708,7 +1715,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 updateSportBackground(item)
             }
         } else {
-            gameTypeList.find { it.isSelected }.let { item ->
+            comingSoonList.find { it.isSelected }.let { item ->
                 item?.let {
                     setOtherOddTab(!it.hasPlay)
                     updateSportBackground(it)
@@ -1716,7 +1723,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             }
         }
 
-        if (gameTypeList.isEmpty()) {
+        if (comingSoonList.isEmpty()) {
             sport_type_list.visibility = View.GONE
             game_toolbar_sport_type.visibility = View.GONE
             game_toolbar_champion.visibility = View.GONE
