@@ -351,6 +351,18 @@
         app:layout_constraintStart_toEndOf="@id/iv_play"
         app:layout_constraintTop_toTopOf="@id/tv_match_play_type_count" />
 
+    <ImageView
+        android:id="@+id/league_neutral"
+        android:layout_width="21dp"
+        android:layout_height="20dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/selector_neutral_v5"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/tv_match_play_type_count"
+        app:layout_constraintStart_toEndOf="@id/iv_animation"
+        app:layout_constraintTop_toTopOf="@id/tv_match_play_type_count"/>
+
     <TextView
         android:id="@+id/tv_match_play_type_count"
         android:layout_width="wrap_content"
@@ -364,7 +376,7 @@
         android:textStyle="bold"
         app:drawableRightCompat="@drawable/ic_iconarrow"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/iv_animation"
+        app:layout_constraintStart_toEndOf="@id/league_neutral"
         app:layout_constraintTop_toBottomOf="@+id/table_match_info_border"
         tools:text="54" />
 
@@ -394,19 +406,8 @@
         android:src="@drawable/selector_star_v4"
         android:translationX="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/league_neutral" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <ImageView
-        android:id="@+id/league_neutral"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginBottom="8dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/selector_neutral_v5"
-        android:visibility="gone"
-        tools:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"  />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
