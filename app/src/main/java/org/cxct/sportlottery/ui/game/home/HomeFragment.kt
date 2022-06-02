@@ -210,6 +210,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     }
                 }
             })
+            mHomeListAdapter.setHomePreloadItem()
         }
     }
 
@@ -733,6 +734,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         viewModel.sportMenuList.observe(viewLifecycleOwner) {
             hideLoading()
             it.peekContent().let { list ->
+                mHomeListAdapter.removeDatas(HomeListAdapter.HomePreloadItem())
                 mHomeListAdapter.updateSportMenuData(list)
             }
         }
@@ -950,8 +952,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
-                homeBinding.rvList.visibility = View.VISIBLE
-                homeBinding.loading.root.visibility = View.GONE
                 var needUpdateBetInfo = false
                 SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
                 //滾球盤、即將開賽盤

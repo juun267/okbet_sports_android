@@ -49,12 +49,11 @@
                 android:id="@+id/rvList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="invisible"
                 android:overScrollMode="never" />
 
-            <include
-                android:id="@+id/loading"
-                layout="@layout/view_home_loading"/>
+<!--            <include-->
+<!--                android:id="@+id/loading"-->
+<!--                layout="@layout/view_home_loading"/>-->
 
         </FrameLayout>
 

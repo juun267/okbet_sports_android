@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zhy.adapter.recyclerview.CommonAdapter
 import com.zhy.adapter.recyclerview.base.ViewHolder
 import kotlinx.android.synthetic.main.home_game_highlight_title.view.*
-import kotlinx.android.synthetic.main.home_highlight_item.view.*
 import kotlinx.android.synthetic.main.home_sport_table_4.view.*
 import kotlinx.android.synthetic.main.itemview_sport_type_list.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
@@ -65,16 +64,17 @@ import java.util.concurrent.CopyOnWriteArrayList
 class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     // 排序對應表
     private val SORTMAP = mapOf<Any, Int>(
-        MenuItemData::class to 0,
-        HomeGameTableBarItemData::class to 1,
-        GameEntity::class to 2,
-        HomeRecommendBarItemData::class to 3,
-        RecommendGameEntity::class to 4,
-        HomeHighlightGameBarItemData::class to 5,
-        HighlightGameTypeItemData::class to 6,
-        HomeHighlightGameTitleItemData::class to 7,
-        MatchOdd::class to 8,
-        HomeBottomNavigationItemData::class to 9
+        HomePreloadItem::class to 0,
+        MenuItemData::class to 1,
+        HomeGameTableBarItemData::class to 2,
+        GameEntity::class to 3,
+        HomeRecommendBarItemData::class to 4,
+        RecommendGameEntity::class to 5,
+        HomeHighlightGameBarItemData::class to 6,
+        HighlightGameTypeItemData::class to 7,
+        HomeHighlightGameTitleItemData::class to 8,
+        MatchOdd::class to 9,
+        HomeBottomNavigationItemData::class to 10
     )
 
     // 接收任何型別
@@ -126,6 +126,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class ItemType {
         NONE,
+        HOME_PRELOAD,
         MENU_BLOCK, //home_menu_block
         GAME_TABLE_BAR, // rg_table_bar
         ODD_DATA, SPORT_GRID_REPAY, // RvGameTable4Adapter
@@ -134,6 +135,8 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         MATCHODD, // RvHighlightAdapter
         BOTTOM_NAVIGATION
     }
+
+    class HomePreloadItem
 
     // region ItemClass
     class MenuItemData {
@@ -168,6 +171,10 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {
         return when(val data = mDataList[position]) {
+            is HomePreloadItem -> {
+                ItemType.HOME_PRELOAD.ordinal
+            }
+
             is MenuItemData -> {
                 ItemType.MENU_BLOCK.ordinal
             }
@@ -211,6 +218,11 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when (viewType) {
+            ItemType.HOME_PRELOAD.ordinal -> {
+                val layout = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.view_home_loading, parent, false)
+                return PreloadViewHolder(layout)
+            }
             ItemType.MENU_BLOCK.ordinal -> {
                 val layout = LayoutInflater.from(parent.context)
                     .inflate(R.layout.home_menu_block, parent, false)
@@ -375,6 +387,11 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 holder.removeHandler()
             }
         }
+    }
+
+    fun setHomePreloadItem(){
+        removeDatas(HomePreloadItem())
+        addDataWithSort(HomePreloadItem())
     }
 
     fun setGameHighLightTitle(homeHighlightGameTitleItemData: HomeHighlightGameTitleItemData = HomeHighlightGameTitleItemData()) {
@@ -612,6 +629,9 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     // region ViewHolders
     class UndefinedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
+    // preload
+    inner class PreloadViewHolder(val itemView: View) : RecyclerView.ViewHolder(itemView)
 
     // Recommend Game Bar
     inner class GameRecommendBarViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
@@ -873,7 +893,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     // region private functions
     // 依照傳入參數刪除同一個類別的資料
-    private fun removeDatas(src: Any?) {
+    fun removeDatas(src: Any?) {
         src?.let {
             val iterator = mDataList.iterator()
             while (iterator.hasNext()) {
