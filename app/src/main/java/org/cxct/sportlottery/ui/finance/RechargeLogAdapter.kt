@@ -86,7 +86,7 @@ class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 RechType.PAYMAYA.type -> itemView.context.getString(R.string.recharge_channel_paymaya)
                 else -> ""
             }
-            itemView.rech_log_state.text = item.rechState
+            itemView.rech_log_state.setRecordStatus(item.status)
             itemView.setOnClickListener {
                 rechargeLogListener?.onClick(Event(item))
             }
