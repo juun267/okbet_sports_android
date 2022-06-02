@@ -210,6 +210,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     }
                 }
             })
+            mHomeListAdapter.setHomePreloadItem()
         }
     }
 
@@ -753,6 +754,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         viewModel.sportMenuList.observe(viewLifecycleOwner) {
             hideLoading()
             it.peekContent().let { list ->
+                mHomeListAdapter.removeDatas(HomeListAdapter.HomePreloadItem())
                 mHomeListAdapter.updateSportMenuData(list)
             }
         }

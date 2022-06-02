@@ -207,7 +207,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                     setCanceledOnTouchOutside(false)
                     isCancelable = false //不能用系統 BACK 按鈕關閉 dialog
                 }
-                mTokenPromptDialog?.show(supportFragmentManager, null)
+                if(!supportFragmentManager.isDestroyed) mTokenPromptDialog?.show(supportFragmentManager, null)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

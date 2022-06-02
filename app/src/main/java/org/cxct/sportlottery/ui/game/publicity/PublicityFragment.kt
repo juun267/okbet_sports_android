@@ -182,6 +182,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         with(mPublicityAdapter) {
             addTitle()
             addSubTitle()
+            addPreload()
         }
     }
 
@@ -213,6 +214,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 mRecommendList.forEach {
                     it.oddsSort = oddsSort
                 }
+                mPublicityAdapter.removeData(GamePublicityAdapter.PreloadItem())
                 mPublicityAdapter.addRecommend(result.recommendList)
                 //先解除全部賽事訂閱
                 unSubscribeChannelHallAll()

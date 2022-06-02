@@ -347,12 +347,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     override fun loading() {
-//        super.loading()
         stopTimer()
     }
 
     override fun hideLoading() {
-        super.hideLoading()
         if (timer == null) startTimer()
     }
 
@@ -616,7 +614,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private fun setupGameListView() {
         game_list.apply {
             this.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-            this.adapter = leagueAdapter
             addScrollWithItemVisibility(
                 onScrolling = {
                     unSubscribeChannelHallAll()
@@ -932,8 +929,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
 
         viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner) {
-            hideLoading()
-
             it.getContentIfNotHandled()?.let { outrightOddsListResult ->
                 if (outrightOddsListResult.success) {
                     val outrightLeagueOddDataList: MutableList<org.cxct.sportlottery.network.outright.odds.MatchOdd?> = mutableListOf()
@@ -961,6 +956,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     game_list.apply {
                         adapter = outrightLeagueOddAdapter
                     }
+                    hideLoading()
                 }
             }
         }

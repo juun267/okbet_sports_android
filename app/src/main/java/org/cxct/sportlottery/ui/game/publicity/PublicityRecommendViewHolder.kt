@@ -107,7 +107,6 @@ class PublicityRecommendViewHolder(
                 adapter = leagueOddAdapter
                 leagueOddAdapter?.setData(matchOddList, oddsType)
             }
-
         }
     }
 

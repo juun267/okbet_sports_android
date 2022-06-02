@@ -798,6 +798,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
 //                }
 
                 OverScrollDecoratorHelper.setUpOverScroll(this, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
+
             }
         }
 
@@ -817,7 +818,6 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                     //update()
                     //notifyDataSetChanged() // TODO
                 }
-                Log.d("Hewie4", "更新(${item.matchInfo?.homeName})：item.oddsMap.size => ${item.oddsMap?.size}")
             }
         }
 

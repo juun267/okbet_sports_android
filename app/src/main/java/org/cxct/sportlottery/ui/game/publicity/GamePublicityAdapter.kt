@@ -14,10 +14,7 @@ import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.HomeBottomNavigationBinding
-import org.cxct.sportlottery.databinding.ItemPublicityRecommendBinding
-import org.cxct.sportlottery.databinding.PublicitySubTitleViewBinding
-import org.cxct.sportlottery.databinding.PublicityTitleViewBinding
+import org.cxct.sportlottery.databinding.*
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.odds.MatchInfo
@@ -37,9 +34,11 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         PublicityTitleImageData::class to 1,
         //熱門推薦..更多
         PublicitySubTitleImageData::class to 2,
+
+        PreloadItem::class to 3,
         //足球, 滾球, 數量, 聯賽名, 國旗, 賽事內容
-        Recommend::class to 3,
-        BottomNavigationItem::class to 4
+        Recommend::class to 4,
+        BottomNavigationItem::class to 5
     )
 
     var oddsType: OddsType = OddsType.EU
@@ -66,6 +65,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
     enum class ItemType {
         PUBLICITY_TITLE,
         PUBLICITY_SUB_TITLE,
+        PRELOAD,
         RECOMMEND,
         BOTTOM_NAVIGATION,
         NONE
@@ -80,6 +80,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
     }
 
     class PublicitySubTitleImageData
+    class PreloadItem
     class BottomNavigationItem
     // endregion
 
@@ -95,6 +96,12 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
     fun addSubTitle() {
         removeData(PublicitySubTitleImageData())
         addDataWithSort(PublicitySubTitleImageData())
+    }
+
+    fun addPreload() {
+        removeData(PreloadItem())
+        val preloadList = listOf(PreloadItem(), PreloadItem())
+        preloadList.forEach { addDataWithSort(it) }
     }
 
     fun addRecommend(recommendList: List<Recommend>) {
@@ -137,6 +144,9 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             is PublicitySubTitleImageData -> {
                 ItemType.PUBLICITY_SUB_TITLE.ordinal
             }
+            is PreloadItem -> {
+                ItemType.PRELOAD.ordinal
+            }
             is Recommend -> {
                 ItemType.RECOMMEND.ordinal
             }
@@ -163,6 +173,15 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             ItemType.PUBLICITY_SUB_TITLE.ordinal -> {
                 PublicitySubTitleViewHolder(
                     PublicitySubTitleViewBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
+            }
+            ItemType.PRELOAD.ordinal -> {
+                PreloadViewHolder(
+                    ViewLoadingBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
@@ -237,7 +256,6 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
 
     // region ItemViewHolder
     inner class PublicityTitleViewHolder(val binding: PublicityTitleViewBinding) :
-    //BaseItemListenerViewHolder(binding.root, publicityAdapterListener){
         RecyclerView.ViewHolder(binding.root) {
         val context: Context = binding.root.context
         fun bind(data: PublicityTitleImageData) {
@@ -363,6 +381,8 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         }
     }
 
+    inner class PreloadViewHolder(val binding: ViewLoadingBinding) : RecyclerView.ViewHolder(binding.root)
+
     inner class BottomNavigationViewHolder(val binding: HomeBottomNavigationBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val context: Context = binding.root.context
@@ -393,7 +413,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
 
     // region private functions
     // 依照傳入參數刪除同一個類別的資料
-    private fun removeData(src: Any?) {
+    fun removeData(src: Any?) {
         src?.let {
             val iterator = mDataList.iterator()
             while (iterator.hasNext()) {
