@@ -930,6 +930,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
         viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { outrightOddsListResult ->
+                if (game_tab_odd_v4.visibility == View.VISIBLE && game_tabs.selectedTabPosition != 1)
+                    return@observe
                 if (outrightOddsListResult.success) {
                     val outrightLeagueOddDataList: MutableList<org.cxct.sportlottery.network.outright.odds.MatchOdd?> = mutableListOf()
                     outrightOddsListResult.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds
