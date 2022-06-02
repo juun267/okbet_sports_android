@@ -107,6 +107,7 @@
     <string name="verification_code_by_sms">短信验证码</string>
     <string name="hint_verification_code">(请输入验证码)</string>
     <string name="error_verification_code">注册验证码错误</string>
+    <string name="error_verification_code_by_login">登录验证码错误</string>
     <string name="hint_verification_code_by_sms">(请输入短信验证码)</string>
     <string name="error_verification_code_by_sms">短信验证码错误</string>
     <string name="get_verification_code">发送验证码</string>

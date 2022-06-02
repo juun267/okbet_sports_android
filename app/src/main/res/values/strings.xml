@@ -106,7 +106,8 @@
     <string name="verification_code">Verification code</string>
     <string name="verification_code_by_sms">SMS verify code</string>
     <string name="hint_verification_code">Verify Code</string>
-    <string name="error_verification_code">Verify code incorrectly</string>
+    <string name="error_verification_code">Registration verification code incorrectly</string>
+    <string name="error_verification_code_by_login">Login verification code incorrectly</string>
     <string name="hint_verification_code_by_sms">(SMS)</string>
     <string name="error_verification_code_by_sms">SMS verification code incorrectly</string>
     <string name="get_verification_code">SEND</string>
