@@ -893,11 +893,11 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         viewModel.showBetInfoSingle.observe(this) {
             it?.getContentIfNotHandled()?.let {
-                if (viewModel.getIsFastBetOpened()) {
-                    //showFastBetFragment()
-                } else {
+//                if (viewModel.getIsFastBetOpened()) {
+//                    //showFastBetFragment()
+//                } else {
                     showBetListPage()
-                }
+//                }
             }
         }
 
