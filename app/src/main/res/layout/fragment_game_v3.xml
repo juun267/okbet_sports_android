@@ -138,13 +138,7 @@
             tools:itemCount="1"
             tools:listitem="@layout/itemview_league_v5"
             android:overScrollMode="never"
-            android:background="@color/color_191919_FCFCFC"
-            android:visibility="gone"/>
-        <org.cxct.sportlottery.widget.ListLoadingView
-            android:id="@+id/listLoadingView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible"/>
+            android:background="@color/color_191919_FCFCFC" />
     </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

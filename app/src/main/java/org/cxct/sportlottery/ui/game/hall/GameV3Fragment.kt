@@ -344,23 +344,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     override fun loading() {
-//        super.loading()
-        listLoading()
         stopTimer()
     }
 
     override fun hideLoading() {
-        //super.hideLoading()
-        Log.d("Hewie98", "${game_list.adapter}")
-        when(game_list.adapter) {
-            is LeagueAdapter -> { if(mLeagueOddList.isNotEmpty()) hideListLoading() }
-            is EpsListAdapter -> { if(epsListAdapter.dataList.isNotEmpty()) hideListLoading() }
-            is OutrightLeagueOddAdapter -> { if(outrightLeagueOddAdapter.data.isNotEmpty()) hideListLoading() }
-            is OutrightCountryAdapter -> { if(outrightCountryAdapter.data.isNotEmpty()) hideListLoading() }
-            is CountryAdapter -> { if(countryAdapter.data.isNotEmpty()) hideListLoading() }
-            //else -> { hideListLoading() }
-        }
-        //if(mLeagueOddList.isNotEmpty()) hideListLoading()
         if (timer == null) startTimer()
     }
 
@@ -623,7 +610,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private fun setupGameListView(view: View) {
         view.game_list.apply {
             this.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-            this.adapter = leagueAdapter
             addScrollWithItemVisibility(
                 onScrolling = {
                     unSubscribeChannelHallAll()
@@ -1286,7 +1272,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 if (it == ServiceConnectStatus.CONNECTED) {
                     if (args.matchType == MatchType.OTHER) {
                         viewModel.getAllPlayCategoryBySpecialMatchType(isReload = true)
-                        hideListLoading()
                     } else {
                         viewModel.getGameHallList(
                             matchType = args.matchType,
@@ -2226,16 +2211,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         stopTimer()
         unSubscribeChannelHallAll()
         unSubscribeChannelHallSport()
-    }
-
-    fun listLoading() {
-        listLoadingView.visibility = View.VISIBLE
-        game_list.visibility = View.GONE
-    }
-
-    fun hideListLoading() {
-        listLoadingView.visibility = View.GONE
-        game_list.visibility = View.VISIBLE
     }
 
     // region handle LeagueOdd data

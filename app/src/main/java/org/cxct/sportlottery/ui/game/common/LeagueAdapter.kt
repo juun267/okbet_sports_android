@@ -212,6 +212,9 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
                             PayLoadEnum.PAYLOAD_PLAYCATE -> {
                                 (holder as ItemViewHolder).updateByPlayCate()
                             }
+                            PayLoadEnum.EXPAND -> {
+                                (holder as ItemViewHolder).updateByExpand()
+                            }
                         }
                     }
                 }
@@ -285,6 +288,9 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
 
         // region update functions
         fun update(item: LeagueOdd, matchType: MatchType, oddsType: OddsType) {
+            itemView.rl_content.visibility = View.VISIBLE
+            itemView.listLoading.visibility = View.GONE
+
             itemView.league_text.text = item.league.name
             val countryIcon = SvgUtil.getSvgDrawable(
                 itemView.context,
@@ -297,7 +303,6 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
             itemView.iv_country.setImageDrawable(countryIcon)
             updateLeagueOddList(item, oddsType)
             updateLeagueExpand(item, matchType)
-
         }
 
         fun updateByBetInfo() {
@@ -306,6 +311,12 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
 
         fun updateByPlayCate() {
             leagueOddAdapter.updateByPlayCate()
+        }
+
+        fun updateByExpand(){
+            itemView.rl_content.visibility = View.VISIBLE
+            itemView.listLoading.visibility = View.GONE
+            setupLeagueOddExpand(data[bindingAdapterPosition], matchType, leagueListener)
         }
 
         private fun updateLeagueOddList(item: LeagueOdd, oddsType: OddsType) {
@@ -395,7 +406,7 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
                 } // TODO IndexOutOfBoundsException: Index: 10, Size: 5
                 updateTimer(matchType, item.gameType)
 
-                notifyItemChanged(adapterPosition)
+                notifyItemChanged(adapterPosition, PayLoadEnum.EXPAND)
 
                 leagueListener?.onClickLeague(item)
             }
