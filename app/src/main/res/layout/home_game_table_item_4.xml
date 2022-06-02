@@ -387,13 +387,26 @@
         android:id="@+id/btn_star"
         android:layout_width="24dp"
         android:layout_height="24dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:contentDescription="@null"
         android:scaleType="centerCrop"
         android:src="@drawable/selector_star_v4"
         android:translationX="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toStartOf="@id/league_neutral" />
+
+    <ImageView
+        android:id="@+id/league_neutral"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginBottom="8dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/selector_neutral_v5"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"  />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"

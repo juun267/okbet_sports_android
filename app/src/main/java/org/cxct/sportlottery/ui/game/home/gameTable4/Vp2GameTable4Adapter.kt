@@ -448,6 +448,11 @@ class Vp2GameTable4Adapter(
                     }else->  {tv_match_time.setTextColor(ContextCompat.getColor(context, R.color.color_BCBCBC_666666))
                     }
                 }
+
+                league_neutral.apply {
+                    isSelected = data?.neutral == 1
+                    isVisible = data?.neutral == 1
+                }
             }
         }
 
@@ -503,6 +508,11 @@ class Vp2GameTable4Adapter(
                         onClickFavoriteListener?.onClickFavorite(data?.id)
                         if (isLogin) btn_star.isSelected = !isSelected
                     }
+                }
+
+                league_neutral.apply {
+                    isSelected = data?.neutral == 1
+                    isVisible = data?.neutral == 1
                 }
 
                 when (matchType) {
