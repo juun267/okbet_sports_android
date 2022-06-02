@@ -438,10 +438,6 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
     class BottomNavigationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }
 
-class LeagueListener(
-    val clickListenerLeague: (item: LeagueOdd) -> Unit,
-    val refreshListener: (item: LeagueOdd) -> Unit
-) {
+class LeagueListener(val clickListenerLeague: (item: LeagueOdd) -> Unit, ) {
     fun onClickLeague(item: LeagueOdd) = clickListenerLeague(item)
-    fun onRefresh(item: LeagueOdd) = refreshListener(item)
 }

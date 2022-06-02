@@ -41,10 +41,18 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
                     true -> {
                         visibility = View.VISIBLE
                         animate().alpha(1f).setDuration(1000).setListener(null)
-                            when (custom_tab_layout.selectedTabPosition == 0) {
-                                true -> viewModel.getUserMsgList(false, adapter.data.size, InfoCenterViewModel.DataType.READ)
-                                false -> viewModel.getUserMsgList(false, adapter.data.size, InfoCenterViewModel.DataType.UNREAD)
-                            }
+                        when (currentPage == BEEN_READ) {
+                            true -> viewModel.getUserMsgList(
+                                false,
+                                adapter.data.size,
+                                InfoCenterViewModel.DataType.READ
+                            )
+                            false -> viewModel.getUserMsgList(
+                                false,
+                                adapter.data.size,
+                                InfoCenterViewModel.DataType.UNREAD
+                            )
+                        }
                     }
                     false -> {
                         animate().alpha(0f).setDuration(1000)

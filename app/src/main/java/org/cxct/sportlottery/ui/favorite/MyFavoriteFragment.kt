@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.favorite
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +12,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_my_favorite.*
+import kotlinx.android.synthetic.main.fragment_my_favorite.appbar_layout
 import kotlinx.android.synthetic.main.fragment_my_favorite.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -28,6 +31,7 @@ import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
+import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueListener
@@ -53,6 +57,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 unSubscribeChannelHallAll()
                 viewModel.switchGameType(it)
                 isReloadPlayCate = true
+                (favorite_game_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(favorite_game_type_list, RecyclerView.State(), dataSport.indexOfFirst { item -> TextUtils.equals(it.code,item.code) })
             }
         }
     }
@@ -99,9 +104,9 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         LeagueAdapter(MatchType.MY_EVENT, getPlaySelectedCodeSelectionType(), getPlaySelectedCode()).apply {
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
-            leagueListener = LeagueListener({
+            leagueListener = LeagueListener {
                 subscribeChannelHall(it)
-            }, {})
+            }
 
             leagueOddListener = LeagueOddListener(
                 clickListenerPlayType = { matchId, matchInfoList, gameMatchType, liveVideo ->
@@ -167,7 +172,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     private fun setupGameTypeList(view: View) {
         view.favorite_game_type_list.apply {
             this.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                ScrollCenterLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
             this.adapter = gameTypeAdapter
 
@@ -373,9 +378,15 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             event?.let {
                 viewModel.getSportQuery(getLastPick = true) //而收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
 
-                val nowGameType = gameTypeAdapter.dataSport.find { gameType -> gameType.isSelected }?.code
-                if (nowGameType == it.gameType) //收到的gameType与用户当前页面所选球种相同, 则需额外调用/myFavorite/match/query
-                    viewModel.getFavoriteMatch()
+                if(event.gameType == gameTypeAdapter.dataSport.find { gameType -> gameType.isSelected }?.code){
+                    val updateLeague = leagueAdapter.data.find { it.league.id == event?.matchIdList?.firstOrNull() }
+                    if(updateLeague != null){
+                        val updateMatch = updateLeague.matchOdds.find { it.matchInfo?.id == event?.matchIdList?.firstOrNull() }
+                        if(updateMatch != null){
+                            viewModel.getFavoriteMatch()
+                        }
+                    }
+                }
             }
         }
     }
@@ -431,7 +442,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
     override fun onStart() {
         super.onStart()
-        viewModel.getSportQuery(getLastPick = true, isReloadPlayCate != false)
+        viewModel.getSportQuery(getLastPick = true, isReloadPlayCate != false, getFavoriteMatch = true)
         viewModel.getSportMenuFilter()
     }
 
@@ -470,10 +481,14 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 leagueData.updateOddsSort()
 
                 //檢查是否有取得我的賽事資料, 對介面進行調整
-                if (leagueData.isNullOrEmpty()) {
-                    noFavoriteMatchViewState()
-                } else {
-                    showFavoriteMatchViewState()
+                when{
+                    leagueData.isNullOrEmpty() && gameTypeAdapter.dataSport.size > 1 -> {
+                        unSubscribeChannelHallAll()
+                        viewModel.getSportQuery(getLastPick = false, isReloadPlayCate = true, getFavoriteMatch = true)
+                        return@observe
+                    }
+                    leagueData.isNullOrEmpty() -> noFavoriteMatchViewState()
+                    else -> showFavoriteMatchViewState()
                 }
 
                 leagueAdapter.data = leagueData

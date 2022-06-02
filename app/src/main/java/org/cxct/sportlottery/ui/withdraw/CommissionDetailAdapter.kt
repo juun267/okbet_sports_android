@@ -9,8 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.withdraw.uwcheck.CheckList
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.util.ArithUtil
-import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setMoneyFormat
 
@@ -45,17 +43,17 @@ class CommissionDetailAdapter: RecyclerView.Adapter<CommissionDetailAdapter.Item
 
                 tvRequiredValidBetsMoney.apply {
                     setMoneyFormat(data.validCheckAmount?.toLong()?.toDouble() ?: 0.0)
-                    setTextColor(ContextCompat.getColor(context, if(data.validCheckAmount ?: 0.0 < 0.0) R.color.color_E44438_e44438 else R.color.color_e5e5e5_333333))
+                    setTextColor(ContextCompat.getColor(context, if(data.validCheckAmount ?: 0.0 < 0.0) R.color.color_E44438_e44438 else R.color.color_CCCCCC_333333))
                 }
 
                 tvSuccessedBetsMoney.apply {
                     setMoneyFormat(data.finishValidAmount?.toLong()?.toDouble() ?: 0.0)
-                    setTextColor(ContextCompat.getColor(context, if(data.finishValidAmount ?: 0.0 < 0.0) R.color.color_E44438_e44438 else R.color.color_e5e5e5_333333))
+                    setTextColor(ContextCompat.getColor(context, if(data.finishValidAmount ?: 0.0 < 0.0) R.color.color_E44438_e44438 else R.color.color_CCCCCC_333333))
                 }
 
                 tvDeductMoney.apply {
                     setMoneyFormat(zero.minus(data.deductMoney ?: 0))
-                    setTextColor(ContextCompat.getColor(context, if(zero.minus(data.deductMoney ?: 0) < 0.0) R.color.color_E44438_e44438 else R.color.color_e5e5e5_333333))
+                    setTextColor(ContextCompat.getColor(context, if(zero.minus(data.deductMoney ?: 0) < 0.0) R.color.color_E44438_e44438 else R.color.color_CCCCCC_333333))
                 }
 
                 when(data.isPass){

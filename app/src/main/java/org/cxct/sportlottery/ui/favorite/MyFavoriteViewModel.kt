@@ -28,7 +28,6 @@ class MyFavoriteViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     myFavoriteRepository: MyFavoriteRepository,
-    intentRepository: IntentRepository
 ) : BaseBottomNavViewModel(
     androidContext,
     userInfoRepository,
@@ -36,7 +35,6 @@ class MyFavoriteViewModel(
     betInfoRepository,
     infoCenterRepository,
     myFavoriteRepository,
-    intentRepository
 ) {
     val showBetUpperLimit = betInfoRepository.showBetUpperLimit
 
@@ -47,7 +45,7 @@ class MyFavoriteViewModel(
     val favoriteRepository = myFavoriteRepository
     val lastSportType = myFavoriteRepository.lastSportType
 
-    fun getSportQuery(getLastPick: Boolean? = false, isReloadPlayCate: Boolean = false) {
+    fun getSportQuery(getLastPick: Boolean? = false, isReloadPlayCate: Boolean = false, getFavoriteMatch: Boolean = false  ) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.sportService.getQuery(
@@ -94,11 +92,13 @@ class MyFavoriteViewModel(
                         }
                     ))
 
-                val selectItem = newSportQueryData.items?.find { it.isSelected }
-                getFavoriteMatch(
-                    selectItem?.code,
-                    selectItem?.play?.firstOrNull()?.code
-                )
+                if(getFavoriteMatch){
+                    val selectItem = newSportQueryData.items?.find { it.isSelected }
+                    getFavoriteMatch(
+                        selectItem?.code,
+                        selectItem?.play?.firstOrNull()?.code
+                    )
+                }
             }
         }
     }
@@ -170,8 +170,9 @@ class MyFavoriteViewModel(
         }
     }
 
-    fun getFavoriteMatch() {
-        val gameType = sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.code
+    fun getFavoriteMatch(getLastPick: Boolean? = false) {
+        val gameType =
+            if (getLastPick == true) lastSportType.value?.code else sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.code
         val playCateMenu =
             sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.play?.find { it.isSelected }?.code
         val playCateCode =

@@ -478,7 +478,7 @@
     <string name="txv_online_pay">在线支付</string>
     <string name="txv_crypto_pay">虚拟币转账</string>
     <string name="error_recharge_amount">存款金额格式或数值错误</string>
-    <string name="error_first_recharge_amount">首次充值金额不能小于%s</string>
+    <string name="error_first_recharge_amount">首次存款金额不能小于%s</string>
     <string name="error_recharge_account">存款个数或数值错误</string>
     <string name="error_bank_id">银行卡号格式有错误</string>
     <string name="error_hashcode">区块链交易ID格式错误</string>
@@ -760,7 +760,6 @@
     <string name="all_in_plat">全部转入</string>
     <string name="write_suggestion">填写建议</string>
     <string name="can_input_1_to_500_word">可输入1–500字</string>
-    <string name="must_fill_this_column">此栏位为必填栏位</string>
     <string name="third_game_ky">开元棋牌</string>
     <string name="choose_title">选择状态</string>
     <string name="odd_type_title">盘口类型</string>

@@ -19,6 +19,7 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
 import org.cxct.sportlottery.util.SvgUtil
+import org.cxct.sportlottery.util.isCreditSystem
 import org.cxct.sportlottery.util.listener.OnClickListener
 import org.cxct.sportlottery.util.setVisibilityByCreditSystem
 
@@ -194,8 +195,8 @@ class LeftMenuItemNewAdapter(
             listener: OnClickListener?
         ) {
             itemView.apply {
-                tv_recharge.isVisible = isLogin
-                tv_withdraw.isVisible = isLogin
+                tv_recharge.isVisible = isLogin && !isCreditSystem()
+                tv_withdraw.isVisible = isLogin && !isCreditSystem()
                 tv_member_level.isVisible = isLogin && isShowMemberLevel
 
                 block_home.setOnClickListener {
@@ -265,8 +266,6 @@ class LeftMenuItemNewAdapter(
                     })
                 }
 
-                tv_recharge.setVisibilityByCreditSystem()
-                tv_withdraw.setVisibilityByCreditSystem()
                 tv_promotion.setVisibilityByCreditSystem()
 
                 if (tv_recharge.visibility == View.GONE &&

@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="@string/finance_list_no_record"
-        android:textColor="@color/color_e5e5e5_333333"
+        android:textColor="@color/color_CCCCCC_333333"
         android:textSize="@dimen/textSize14sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@id/list_no_record_img"

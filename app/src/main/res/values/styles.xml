@@ -12,6 +12,9 @@
 
         <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
         <item name="android:overScrollMode">never</item>
+
+        <!-- about issue 24880 在設定window背景色時在暗色模式時也會吃這裡 不會吃 night/styles -->
+        <!-- <item name="android:windowBackground"></item> -->
     </style>
 
     <style name="VietnamTheme" parent="AppTheme">
