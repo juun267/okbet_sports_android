@@ -12,6 +12,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile_center.*
+import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.Constants
@@ -101,7 +102,7 @@ class ProfileCenterActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_center)
-
+        initToolbar()
         initView()
         setupHeadButton()
         setupEditNickname()
@@ -116,7 +117,13 @@ class ProfileCenterActivity :
         updateThirdOpenUI()
         updateCreditAccountUI()
     }
-
+    private fun initToolbar() {
+        tv_toolbar_title.setTitleLetterSpacing()
+        tv_toolbar_title.text = getString(R.string.profile_center)
+        btn_toolbar_back.setOnClickListener {
+            finish()
+        }
+    }
     private fun initView() {
         tv_currency_type.text = sConfigData?.systemCurrency
     }
@@ -131,9 +138,6 @@ class ProfileCenterActivity :
             AvatarSelectorDialog(this, mSelectMediaListener).show(supportFragmentManager, null)
         }
 
-        profile_center_back.setOnClickListener {
-            finish()
-        }
     }
 
     private fun setupEditNickname() {
@@ -594,14 +598,14 @@ class ProfileCenterActivity :
 
     private fun updateThirdOpenUI(){
         val thirdOpen = sConfigData?.thirdOpen == FLAG_OPEN
-        profile_center_back.visibility = if (!thirdOpen) View.VISIBLE else View.GONE
+        btn_toolbar_back.visibility = if (!thirdOpen) View.VISIBLE else View.GONE
         btn_account_transfer.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
         btn_other_bet_record.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
         bottom_nav_view.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
     }
 
     private fun updateCreditAccountUI() {
-        block_card.setVisibilityByCreditSystem()
+        btn_toolbar_back.setVisibilityByCreditSystem()
         btn_withdrawal_setting.setVisibilityByCreditSystem()
         btn_promotion.setVisibilityByCreditSystem()
     }
