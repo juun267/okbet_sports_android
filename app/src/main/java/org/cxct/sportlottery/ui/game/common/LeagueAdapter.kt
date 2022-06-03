@@ -288,9 +288,6 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
 
         // region update functions
         fun update(item: LeagueOdd, matchType: MatchType, oddsType: OddsType) {
-            itemView.rl_content.visibility = View.VISIBLE
-            itemView.listLoading.visibility = View.GONE
-
             itemView.league_text.text = item.league.name
             val countryIcon = SvgUtil.getSvgDrawable(
                 itemView.context,
@@ -314,8 +311,6 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         }
 
         fun updateByExpand(){
-            itemView.rl_content.visibility = View.VISIBLE
-            itemView.listLoading.visibility = View.GONE
             setupLeagueOddExpand(data[bindingAdapterPosition], matchType, leagueListener)
         }
 
