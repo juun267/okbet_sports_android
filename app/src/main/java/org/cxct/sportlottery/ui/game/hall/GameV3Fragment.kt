@@ -1699,11 +1699,13 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         gameTypeAdapter.dataSport = comingSoonList
 
         //球種如果選過，下次回來也需要滑動置中
-        (sport_type_list.layoutManager as ScrollCenterLayoutManager?)?.smoothScrollToPosition(
-            sport_type_list,
-            RecyclerView.State(),
-            comingSoonList.indexOfFirst { item -> item.isSelected }
-        )
+        if (!gameTypeList.isNullOrEmpty()) {
+            (sport_type_list.layoutManager as ScrollCenterLayoutManager?)?.smoothScrollToPosition(
+                sport_type_list,
+                RecyclerView.State(),
+                comingSoonList.indexOfFirst { item -> item.isSelected }
+            )
+        }
 
         if (args.matchType != MatchType.OTHER) {
             comingSoonList.find { it.isSelected }.let { item ->
