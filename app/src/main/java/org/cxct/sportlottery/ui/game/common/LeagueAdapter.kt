@@ -212,9 +212,6 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
                             PayLoadEnum.PAYLOAD_PLAYCATE -> {
                                 (holder as ItemViewHolder).updateByPlayCate()
                             }
-                            PayLoadEnum.EXPAND -> {
-                                (holder as ItemViewHolder).updateByExpand()
-                            }
                         }
                     }
                 }
@@ -310,10 +307,6 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
             leagueOddAdapter.updateByPlayCate()
         }
 
-        fun updateByExpand(){
-            setupLeagueOddExpand(data[bindingAdapterPosition], matchType, leagueListener)
-        }
-
         private fun updateLeagueOddList(item: LeagueOdd, oddsType: OddsType) {
             leagueOddAdapter.data = if (item.searchMatchOdds.isNotEmpty()) {
                 item.searchMatchOdds
@@ -370,25 +363,14 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         }
 
         private fun setupLeagueOddExpand(item: LeagueOdd, matchType: MatchType, leagueListener: LeagueListener?) {
-
-            //itemView.league_expand.setExpanded(item.unfold == FoldState.UNFOLD.code, false)
-            Log.d("Hewie12", "data[adapterPosition].unfold -> ${data[adapterPosition].unfold}")
-
             expandCheckList[data[adapterPosition].league.id].apply {
                 if (this != null) {
                     data[adapterPosition].unfold = if (this == true) FoldState.UNFOLD.code else FoldState.FOLD.code
                 }
             }
 
-
             itemView.league_odd_list.visibility = if (data[adapterPosition].unfold == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
             updateTimer(matchType, item.gameType)
-
-//            itemView.iv_refresh.isVisible = matchType != MatchType.MY_EVENT
-
-//            itemView.iv_refresh.setOnClickListener {
-//                leagueListener?.onRefresh(item)
-//            }
 
             itemView.setOnClickListener {
                 if (adapterPosition > data.size - 1) return@setOnClickListener
@@ -401,7 +383,7 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
                 } // TODO IndexOutOfBoundsException: Index: 10, Size: 5
                 updateTimer(matchType, item.gameType)
 
-                notifyItemChanged(adapterPosition, PayLoadEnum.EXPAND)
+                notifyItemChanged(adapterPosition)
 
                 leagueListener?.onClickLeague(item)
             }
