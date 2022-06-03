@@ -116,15 +116,13 @@ class StatusSpinnerView @JvmOverloads constructor(
     }
 
     fun setSelectCode(code: String?) {
-        code?.let {
-            for (index in dataList) {
-                if (index.code == code) {
-                    selectItem = index
-                    index.isChecked = true
-                    setSelectInfo(index)
-                } else {
-                    index.isChecked = false
-                }
+        for (index in dataList) {
+            if (index.code == code) {
+                selectItem = index
+                index.isChecked = true
+                setSelectInfo(index)
+            } else {
+                index.isChecked = false
             }
         }
     }

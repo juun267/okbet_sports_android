@@ -80,6 +80,9 @@
     <color name="color_2a2a2a">#2a2a2a</color>
     <color name="color_505050">#505050</color>
     <color name="color_2654A9">#2654A9</color>
+    <color name="color_313131">#313131</color>
+    <color name="color_5d5d5d">#5d5d5d</color>
+    <color name="color_888888">#888888</color>
     <color name="color_33303030">#33303030</color>
     <color name="color_33DDDDDD">#33DDDDDD</color>
     <color name="color_BDBDBD">#BDBDBD</color>
@@ -155,6 +158,9 @@
     <color name="color_2a2a2a_dedede">@color/color_dedede</color>
     <color name="color_939393_cccccc">@color/color_cccccc</color>
     <color name="color_303030_E2E2E2">@color/color_E2E2E2</color>
+    <color name="color_313131_e2e2e2">@color/color_E2E2E2</color>
+    <color name="color_5d5d5d_888888">@color/color_888888</color>
+    <color name="color_e5e5e5_666666">@color/color_666666</color>
 
     <color name="color_FFFFFF_DE000000">@color/color_DE000000</color>
     <color name="color_B3FFFFFF_99000000">@color/transparent_black_60</color>
@@ -178,6 +184,7 @@
     <!--region 特殊處理顏色-->
     <color name="home_card_top_text_color">#40FFFFFF</color>
     <color name="home_card_text_color">#FFFFFF</color>
+    <color name="home_card_coming_soon_text_color">#4dffffff</color>
     <color name="play_category_text_color">@color/color_0760D4</color>
     <color name="play_category_stroke_color">@color/color_0760D4</color>
     <color name="play_category_solid_color">#00000000</color>
@@ -268,7 +275,6 @@
 
 <!--    <color name="color_fff3f3f3">#fff3f3f3</color>-->
 <!--    <color name="color_ffededed">#ffededed</color>-->
-<!--    <color name="color_888888">#888888</color>-->
 <!--    <color name="color_999999">#999999</color>-->
 <!--    <color name="color_AAAAAA">#AAAAAA</color>-->
     <color name="color_FDFDFD">#FDFDFD</color>

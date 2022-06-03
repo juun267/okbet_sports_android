@@ -19,6 +19,7 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
 import org.cxct.sportlottery.util.SvgUtil
+import org.cxct.sportlottery.util.isCreditSystem
 import org.cxct.sportlottery.util.listener.OnClickListener
 import org.cxct.sportlottery.util.setVisibilityByCreditSystem
 
@@ -105,7 +106,16 @@ class LeftMenuItemNewAdapter(
                     img_price.setImageResource(item.imgId)
                     txv_price.text = item.title
 
-                    tv_count.text = item.gameCount.toString()
+                    //暫時利用gameCount當判斷是否為coming soon
+                    if (item.gameCount == -1) {
+                        tv_count.text = context.getString(R.string.coming_soon)
+                        isEnabled = false
+                        btn_select.isEnabled = false
+                    } else {
+                        tv_count.text = item.gameCount.toString()
+                        isEnabled = true
+                        btn_select.isEnabled = true
+                    }
 
                     divider.isVisible = position == selectedNumber - 1
 
@@ -194,8 +204,8 @@ class LeftMenuItemNewAdapter(
             listener: OnClickListener?
         ) {
             itemView.apply {
-                tv_recharge.isVisible = isLogin
-                tv_withdraw.isVisible = isLogin
+                tv_recharge.isVisible = isLogin && !isCreditSystem()
+                tv_withdraw.isVisible = isLogin && !isCreditSystem()
                 tv_member_level.isVisible = isLogin && isShowMemberLevel
 
                 block_home.setOnClickListener {
@@ -212,6 +222,10 @@ class LeftMenuItemNewAdapter(
                 }
                 tv_promotion.setOnClickListener {
                     headerSelectedListener.promotionSelected()
+                }
+                //代理加盟
+                tv_affiliate.setOnClickListener{
+                    headerSelectedListener.affiliateSelected()
                 }
                 ct_inplay.setOnClickListener {
                     headerSelectedListener.inPlaySelected()
@@ -265,8 +279,6 @@ class LeftMenuItemNewAdapter(
                     })
                 }
 
-                tv_recharge.setVisibilityByCreditSystem()
-                tv_withdraw.setVisibilityByCreditSystem()
                 tv_promotion.setVisibilityByCreditSystem()
 
                 if (tv_recharge.visibility == View.GONE &&
@@ -298,7 +310,7 @@ class LeftMenuItemNewAdapter(
             itemView.apply {
 
                 //TODO for test
-                tv_appearance.visibility = if (BuildConfig.CHANNEL_NAME == "spkx" && !BuildConfig.DEBUG) View.GONE else View.VISIBLE
+                tv_appearance.visibility = View.VISIBLE
 
 //                tv_appearance.isVisible = isLogin
                 // tv_appearance.isVisible = false //暫時隱藏
@@ -336,6 +348,7 @@ class LeftMenuItemNewAdapter(
         private val promotionSelectedListener: () -> Unit,
         private val inPlaySelectedListener: () -> Unit,
         private val premiumOddsSelectedListener: () -> Unit,
+        private val affiliateSelectedListener: () -> Unit
     ) {
         fun backMainPageSelected() = backMainPageSelectedListener()
         fun rechargeSelected() = rechargeSelectedListener()
@@ -344,6 +357,7 @@ class LeftMenuItemNewAdapter(
         fun promotionSelected() = promotionSelectedListener()
         fun inPlaySelected() = inPlaySelectedListener()
         fun premiumOddsSelected() = premiumOddsSelectedListener()
+        fun affiliateSelected() = affiliateSelectedListener()
     }
 
     class ItemSelectedListener(

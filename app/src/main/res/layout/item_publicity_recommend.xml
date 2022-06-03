@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -8,8 +7,8 @@
 
     <include
         android:id="@+id/gameTypeView"
-        android:visibility="gone"
-        layout="@layout/publicity_game_type_view" />
+        layout="@layout/publicity_game_type_view"
+        android:visibility="gone" />
 
     <include
         android:id="@+id/leagueView"
@@ -30,3 +29,4 @@
         android:background="@color/color_191919_FCFCFC" />
 
 </LinearLayout>
+

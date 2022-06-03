@@ -11,7 +11,7 @@
     <string name="message_network_no_connect">vui lòng kiểm tra kết nối mạng rồi thử lại</string>
     <string name="message_network_timeout">kết nối mạng vượt quá thời gian, vui lòng thử lại</string>
     <string name="error">Nhắc nhở</string>
-    <string name="error_input_empty">Trường hợp bắt buộc cần điền</string>
+    <string name="error_input_empty">không thể để trống</string>
     <string name="error_incompatible_format">Các ký tự bạn đã nhập không phù hợp</string>
     <string name="error_wx_incompatible_format">lỗi định dạng Wechat ID không hợp lệ</string>
     <string name="congratulation_win">Xin chúc mừng bạn, đơn cược số đuô: %1$s Chiến thắng: %2$s</string>
@@ -105,9 +105,10 @@
     <string name="verification_code">Mã xác nhận</string>
     <string name="verification_code_by_sms">Mã xác nhận SMS</string>
     <string name="hint_verification_code">Vui lòng nhập Đăng ký mã xác nhận</string>
-    <string name="error_verification_code">Mã xác nhận đăng ký không đúng</string>
+    <string name="error_verification_code_by_login">Đăng nhập mã xác nhận không đúng</string>
+    <string name="error_verification_code">Đăng ký mã xác nhận không đúng</string>
     <string name="hint_verification_code_by_sms">(SMS)</string>
-    <string name="error_verification_code_by_sms">Mã xác nhận không đúng</string>
+    <string name="error_verification_code_by_sms">SMS mã xác nhận không đúng</string>
     <string name="get_verification_code">Gửi</string>
     <string name="send_timer">Tên tài khoản này đã tồn tại</string>
     <string name="get_valid_code_fail_point">yêu cầu nhận mã xác nhận thất bại, vui lòng nhấp để thử lại !</string>
@@ -512,7 +513,7 @@
     <string name="online_bank">Ngân hàng trực tuyến</string>
     <string name="online_juan">JuanCash</string>
     <string name="online_dispenshing">Rút tiền</string>
-    <string name="online_online_bank">Ngân hàng trực tuyến</string>
+    <string name="online_online_bank">GCash / Khác</string>
     <string name="online_gcash">Gcash</string>
     <string name="online_grab">GrabPay</string>
     <string name="online_maya">PayMaya</string>
@@ -733,7 +734,7 @@
     <string name="transfer_state">Trạng thái chuyển đổi</string>
     <string name="remark">ghi chú</string>
     <string name="transfer_info">chuyển đổi thông tin</string>
-    <string name="sorry_website_is_now_maintenance">Xin lỗi trang web hiện đang được bảo trì !</string>
+    <string name="sorry_website_is_now_maintenance">Trang web hiện đang được bảo trì</string>
     <string name="if_there_is_any_question_please_consult">Nếu bạn có bất kỳ câu hỏi nào, xin vui lòng đi đến tư vấn%1$s</string>
     <string name="bottom_nav_home">trang chủ</string>
     <string name="bottom_nav_game">Sự kiện</string>
@@ -759,7 +760,6 @@
     <string name="all_in_plat">Tất cả chuyển vào</string>
     <string name="write_suggestion">Điền đề xuất</string>
     <string name="can_input_1_to_500_word">Có thể nhập 1-500 từ</string>
-    <string name="must_fill_this_column">Trường hợp bắt buộc cần điền</string>
     <string name="third_game_ky">Game bài KY</string>
     <string name="choose_title">Chọn trạng thái</string>
     <string name="odd_type_title">Thể loại kèo</string>
@@ -1068,7 +1068,9 @@
     <string name="responsible">Chơi Có Trách Nhiệm</string>
     <string name="terms_conditions">Điều Khoản Và Điều Kiện</string>
     <string name="privacy_policy">Chính Sách Bảo Mật</string>
+    <string name="affiliate">Chi nhánh</string>
     <string name="help">CẦN TRỢ GIÚP?</string>
+    <string name="official_partner">Đối tác chính thức</string>
     <string name="faqs">Câu Hỏi Thường Gặp</string>
     <string name="live_chat">Trò Chuyện Trực Tuyến</string>
     <string name="contact">Liên Hệ</string>
@@ -1076,6 +1078,7 @@
     <string name="front_side_result">Kết quả phía trước</string>
     <string name="reverse_side_result">Kết quả ngược lại</string>
     <string name="btm_navigation_language">Tiếng Việt</string>
+    <string name="btm_navigation_affiliate">Chi nhánh</string>
     <string name="expire_date">Thời gian hết hạn chứng chỉ</string>
     <string name="self_limit_froze_impotent_1">Tự loại trừ có hiệu lực ngay sau khi thiết lập</string>
     <string name="self_limit_froze_impotent_2">Chúng tôi sẽ giữ số dư của bạn trong khoảng thời gian tự loại trừ đã định.</string>
@@ -1153,4 +1156,16 @@
     <string name="cancel_auto">Từ chối</string>
     <string name="cancel_manual">Vô hiệu</string>
     <string name="error_input_has_blank"> Đầu vào không chính xác. Chỉ sử dụng tiếng Anh, không nhập khoảng trắng liên tục.</string>
+
+    <!--region 確認年齡彈窗-->
+    <string name="dialog_age_verify_statement">OKBet cam kết mang đến trải nghiệm chơi game an toàn, thoải mái cho tất cả khách hàng của chúng tôi.\n\nĐối với đại đa số mọi người, chơi game là một hoạt động giải trí thú vị. Tuy nhiên, chúng tôi nhận thấy rằng đôi khi chơi game không còn là niềm vui đối với một số khách hàng.\n\nChúng tôi đặc biệt khuyến khích bạn dành chút thời gian đọc đồ họa và tuyên bố TRÒ CHƠI TRÁCH NHIỆM của chúng tôi trước khi bạn tiếp tục. Người dùng từ 21 tuổi trở xuống hoàn toàn không được phép.\n\nTrách nhiệm của chúng tôi là giúp khách hàng đánh bạc một cách an toàn và có trách nhiệm, giảm nguy cơ thiệt hại và giúp những người cần điều trị có được điều đó.
+\n\nĐừng ngần ngại liên hệ với keepitfun@pagcor.ph nếu bạn hoặc thành viên gia đình của bạn đang gặp sự cố chơi game.</string>
+    <string name="dialog_age_verify_hint">Vui lòng xác minh rằng bạn từ 21 tuổi trở lên để vào trang web này</string>
+    <string name="dialog_age_verify_confirm">TÔI HƠN 21 TUỔI</string>
+    <string name="dialog_age_verify_exit">LỐI RA</string>
+    <!--endregion-->
+
+    <string name="coming_soon">Sắp có</string>
+    <string name="esports">eSports</string>
+
 </resources>

@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.game.league
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -101,23 +102,20 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
             leagueListener = LeagueListener {
-                subscribeChannelHall(it)
+                if (it.unfold == FoldState.FOLD.code) {
+                    Log.d("[subscribe]", "取消訂閱 ${it.league.name}")
+                    unSubscribeChannelHall(it)
+                }
+                //目前無法監聽收合動畫
+                Handler().postDelayed(
+                    {  game_league_odd_list?.firstVisibleRange(this, activity ?: requireActivity()) },
+                    400
+                )
             }
 
             leagueOddListener = LeagueOddListener(
                 { matchId, matchInfoList, gameMatchType, liveVideo ->
-                    when (gameMatchType) {
-                        MatchType.IN_PLAY -> {
-                            matchId?.let {
-                                navOddsDetailLive(it, gameMatchType)
-                            }
-                        }
-                        else -> {
-                            matchId?.let {
-                                navOddsDetail(it, matchInfoList)
-                            }
-                        }
-                    }
+                    navMatchDetailPage(matchId, matchInfoList, gameMatchType)
                 },
                 { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
                     mSelectedMatchInfo = matchInfo
@@ -149,8 +147,30 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 { matchId ->
                     navStatistics(matchId)
                 },
-                {}
+                {},
+                clickLiveIconListener = { matchId, matchInfoList, gameMatchType, _ ->
+                    if (viewModel.checkLoginStatus()) {
+                        navMatchDetailPage(matchId, matchInfoList, gameMatchType)
+                    }
+                },
+                clickAnimationIconListener = { matchId, matchInfoList, gameMatchType, _ ->
+                    if (viewModel.checkLoginStatus()) {
+                        navMatchDetailPage(matchId, matchInfoList, gameMatchType)
+                    }
+                }
             )
+        }
+    }
+
+    private fun navMatchDetailPage(matchId: String?, matchInfoList: List<MatchInfo>, gameMatchType: MatchType) {
+        if (gameMatchType == MatchType.IN_PLAY) {
+            matchId?.let {
+                navOddsDetailLive(matchId, gameMatchType)
+            }
+        } else {
+            matchId?.let {
+                navOddsDetail(matchId, matchInfoList)
+            }
         }
     }
 
@@ -209,7 +229,6 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         view.game_league_odd_list.apply {
             this.layoutManager =
                 SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-            this.adapter = leagueAdapter
             addScrollWithItemVisibility(
                 onScrolling = {
                     unSubscribeChannelHallAll()
@@ -306,6 +325,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     updateSportBackground(oddsListResult.oddsListData?.sport?.code)
 
                     game_league_odd_list.apply {
+                        adapter = leagueAdapter
                         leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
                         leagueAdapter.apply {
                             data = leagueOdds.onEach { leagueOdd ->

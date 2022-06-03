@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.favorite
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +12,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_my_favorite.*
+import kotlinx.android.synthetic.main.fragment_my_favorite.appbar_layout
 import kotlinx.android.synthetic.main.fragment_my_favorite.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -28,6 +31,7 @@ import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
+import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueListener
@@ -53,6 +57,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 unSubscribeChannelHallAll()
                 viewModel.switchGameType(it)
                 isReloadPlayCate = true
+                (favorite_game_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(favorite_game_type_list, RecyclerView.State(), dataSport.indexOfFirst { item -> TextUtils.equals(it.code,item.code) })
             }
         }
     }
@@ -105,15 +110,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
             leagueOddListener = LeagueOddListener(
                 clickListenerPlayType = { matchId, matchInfoList, gameMatchType, liveVideo ->
-                    if (gameMatchType == MatchType.IN_PLAY) {
-                        matchId?.let {
-                            navOddsDetailLive(matchId, gameMatchType)
-                        }
-                    } else {
-                        matchId?.let {
-                            navOddsDetail(matchId, matchInfoList)
-                        }
-                    }
+                    navMatchDetailPage(matchId, matchInfoList, gameMatchType)
                 },
                 clickListenerBet = { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
                     if (mIsEnabled) {
@@ -139,8 +136,31 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 clickListenerStatistics = { matchId ->
                     navStatistics(matchId)
                 },
-                refreshListener = {}
+                refreshListener = {},
+                clickLiveIconListener = { matchId, matchInfoList, gameMatchType, _ ->
+                    if (viewModel.checkLoginStatus()) {
+                        navMatchDetailPage(matchId, matchInfoList, gameMatchType)
+                    }
+                },
+                clickAnimationIconListener = { matchId, matchInfoList, gameMatchType, _ ->
+                    if (viewModel.checkLoginStatus()) {
+                        navMatchDetailPage(matchId, matchInfoList, gameMatchType)
+                    }
+                }
             )
+        }
+    }
+
+
+    private fun navMatchDetailPage(matchId: String?, matchInfoList: List<MatchInfo>, gameMatchType: MatchType) {
+        if (gameMatchType == MatchType.IN_PLAY) {
+            matchId?.let {
+                navOddsDetailLive(matchId, gameMatchType)
+            }
+        } else {
+            matchId?.let {
+                navOddsDetail(matchId, matchInfoList)
+            }
         }
     }
 
@@ -167,7 +187,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     private fun setupGameTypeList(view: View) {
         view.favorite_game_type_list.apply {
             this.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                ScrollCenterLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
             this.adapter = gameTypeAdapter
 

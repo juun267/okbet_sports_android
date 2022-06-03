@@ -518,7 +518,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ViewHolder -> {
-                holder.bindModel(oddsDetailDataList[position])
+                if(oddsDetailDataList.isNotEmpty()) holder.bindModel(oddsDetailDataList[position])
             }
         }
     }

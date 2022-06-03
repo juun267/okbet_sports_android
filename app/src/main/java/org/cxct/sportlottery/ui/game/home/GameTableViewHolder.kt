@@ -43,6 +43,8 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private var onClickTotalMatchListener: OnSelectItemListener<GameEntity>? = null
     private var onClickMatchListener: OnSelectItemListener<MatchInfo>? = null
+    private var onClickLiveListener: OnSelectItemListener<MatchInfo>? = null
+    private var onClickAnimationListener: OnSelectItemListener<MatchInfo>? = null
     private var onClickOddListener: OnClickOddListener? = object : OnClickOddListener {
         override fun onClickBet(
             matchOdd: MatchOdd, odd: Odd, playCateCode: String, playCateName: String?,
@@ -82,12 +84,16 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun setListeners(
         onClickTotalMatchListener: OnSelectItemListener<GameEntity>? = null,
         onClickMatchListener: OnSelectItemListener<MatchInfo>? = null,
+        onClickLiveListener: OnSelectItemListener<MatchInfo>? = null,
+        onClickAnimationListener: OnSelectItemListener<MatchInfo>? = null,
         onClickOddListener: OnClickOddListener? = null,
         onClickFavoriteListener: OnClickFavoriteListener? = null,
         onClickStatisticsListener: OnClickStatisticsListener? = null,
     ) {
         this.onClickTotalMatchListener = onClickTotalMatchListener
         this.onClickMatchListener = onClickMatchListener
+        this.onClickLiveListener = onClickLiveListener
+        this.onClickAnimationListener = onClickAnimationListener
         this.onClickOddListener = onClickOddListener
         this.onClickFavoriteListener = onClickFavoriteListener
         this.onClickStatisticsListener = onClickStatisticsListener
@@ -123,6 +129,8 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 //                if (data.vpTableAdapter == null)
                 data.vpTableAdapter = Vp2GameTable4Adapter(mMatchType)
                 data.vpTableAdapter?.onClickMatchListener = onClickMatchListener
+                data.vpTableAdapter?.onClickLiveListener = onClickLiveListener
+                data.vpTableAdapter?.onClickAnimationListener = onClickAnimationListener
                 data.vpTableAdapter?.onClickOddListener = onClickOddListener
                 data.vpTableAdapter?.onClickFavoriteListener = onClickFavoriteListener
                 data.vpTableAdapter?.onClickStatisticsListener = onClickStatisticsListener
