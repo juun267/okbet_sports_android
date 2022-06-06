@@ -40,6 +40,10 @@ object TextUtil : DecimalFormatUtil() {
         return doNumberFormat(ArithUtil.toMoneyFormat(double).toDouble(), "###,###,###,##0.000")
     }
 
+    fun formatMoneyFourthDecimal(double: Double): String {
+        return doNumberFormat(ArithUtil.toMoneyFormat(double).toDouble(), "###,###,###,##0.0000")
+    }
+
     fun formatMoney(int: Int): String {
         return doNumberFormat(ArithUtil.toMoneyFormat(int.toDouble()).toDouble(), "###,###,###,##0.000")
     }
@@ -66,6 +70,10 @@ object TextUtil : DecimalFormatUtil() {
 
     fun formatForVipRebates(any: Any): String {
         return doNumberFormat(any, "#.# %") { decimalFormat -> decimalFormat.roundingMode = RoundingMode.HALF_UP }
+    }
+
+    fun formatForOddPercentage(any: Any): String {
+        return doNumberFormat(any, "###,###,###,#0.00## %") { decimalFormat -> decimalFormat.roundingMode = RoundingMode.HALF_UP }
     }
 
     fun formatForBetHint(any: Any): String {

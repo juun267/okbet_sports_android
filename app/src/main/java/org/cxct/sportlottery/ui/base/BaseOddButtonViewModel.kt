@@ -645,7 +645,9 @@ abstract class BaseOddButtonViewModel(
         val discount = userInfo.value?.discount ?: 1F
         this.odds.forEach { (key, value) ->
             value.odds.forEach { odd ->
-                odd?.setupDiscount(discount)
+                if(!key.contains(PlayCate.LCS.value)) { //反波膽不處理折扣
+                    odd?.setupDiscount(discount)
+                }
 
                 if (key == PlayCate.EPS.value) {
                     odd?.extInfo = odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
