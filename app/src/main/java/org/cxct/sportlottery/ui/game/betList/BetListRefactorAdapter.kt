@@ -14,12 +14,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail_v2.view.*
-import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.*
-import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.et_bet
-import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.et_clickable
-import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.iv_bet_lock
-import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.layoutKeyBoard
-import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.tvErrorMessage
+import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.*
+import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.et_bet
+import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.et_clickable
+import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.v_bet_lock
+import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.layoutKeyBoard
+import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.tvErrorMessage
 import kotlinx.android.synthetic.main.content_bet_list_batch_control.view.*
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v2.view.*
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_v2.view.*
@@ -127,7 +127,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         return when (viewType) {
             ViewType.Bet.ordinal -> BetInfoItemViewHolder(
                 layoutInflater.inflate(
-                    R.layout.content_bet_info_item_v2,
+                    R.layout.content_bet_info_item_v3,
                     parent,
                     false
                 )
@@ -362,6 +362,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 setupMaximumLimitView(itemData, onItemClickListener, position)
 
+                line.visibility = if (position == 0) View.GONE else View.VISIBLE
 //                bottom_view.visibility = if(position == betListSize -1) View.GONE else View.VISIBLE
             }
         }
@@ -595,8 +596,15 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             onItemClickListener: OnItemClickListener
         ) {
             itemView.apply {
-                v_point.visibility =
-                    if (itemData.pointMarked && betListSize > 1) View.VISIBLE else View.GONE
+                //TODO: 赛事暂无支持串關，只會在串關投注那頁顯示
+                //有无串关
+                if (itemData.pointMarked && betListSize > 1 && ) {
+                    v_no_parlay.visibility = View.VISIBLE
+                    tv_no_parlay.visibility = View.VISIBLE
+                } else {
+                    v_no_parlay.visibility = View.GONE
+                    tv_no_parlay.visibility = View.GONE
+                }
 
 //                if (itemData.matchOdd.odds == itemData.matchOdd.malayOdds
 //                    || itemData.matchType == MatchType.OUTRIGHT
@@ -638,7 +646,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     oldOdds = TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))
                 }
                 tvOdds.text =
-                    if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) "@ " + TextUtil.formatForOdd(
+                    if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) "@" + TextUtil.formatForOdd(
                         getOdds(itemData.matchOdd, currentOddsType)
                     ) else "–"
                 if (itemData.matchOdd.extInfo != null) {
@@ -843,26 +851,21 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
         private fun setupOddStatus(itemData: BetInfoListData) {
             itemView.apply {
-                var inPlay = System.currentTimeMillis() > itemData.matchOdd.startTime ?: 0
-                if (itemData.matchOdd.startTime == null)
-                    inPlay = false
-                if (inPlay) {
-                    tvInGame.visibility = View.VISIBLE
-                } else {
-                    tvInGame.visibility = View.GONE
-                }
-                tvLeagueName.text = itemData.matchOdd.leagueName
+//                //content_bet_info_item_v3 無 tvInGame, tvLeagueName
+//                var inPlay = System.currentTimeMillis() > itemData.matchOdd.startTime ?: 0
+//                if (itemData.matchOdd.startTime == null)
+//                    inPlay = false
+//                if (inPlay) {
+//                    tvInGame.visibility = View.VISIBLE
+//                } else {
+//                    tvInGame.visibility = View.GONE
+//                }
+//                tvLeagueName.text = itemData.matchOdd.leagueName
                 ivSportLogo.setImageResource(GameType.getGameTypeIcon(GameType.getGameType(itemData.matchOdd.gameType)!!))
 
                 if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) {
-                    cl_item_background.setBackgroundColor(
-                        ContextCompat.getColor(
-                            context,
-                            R.color.color_191919_FCFCFC
-                        )
-                    )
-                    iv_bet_lock.visibility = View.GONE
-                    viewGrey.visibility = View.VISIBLE
+                    v_bet_lock.visibility = View.GONE
+                    tv_bet_lock.visibility = View.GONE
                     et_bet.apply {
                         isEnabled = true
                         isFocusable = true
@@ -870,16 +873,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         setBackgroundResource(R.drawable.effect_select_bet_radius_4_edit_text)
                     }
                     et_clickable.isEnabled = true //EditText的click事件
-                    cl_quota_detail.visibility = View.VISIBLE
                 } else {
-                    cl_item_background.setBackgroundColor(
-                        ContextCompat.getColor(
-                            context,
-                            R.color.color_141414_f3f3f3
-                        )
-                    )
-                    iv_bet_lock.visibility = View.VISIBLE
-                    viewGrey.visibility = View.INVISIBLE
+                    v_bet_lock.visibility = View.VISIBLE
+                    tv_bet_lock.visibility = View.VISIBLE
                     et_bet.apply {
                         isEnabled = false
                         isFocusable = false
@@ -887,7 +883,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         setBackgroundResource(R.drawable.bg_square_shape_4dp_cccccc)
                     }
                     et_clickable.isEnabled = false //EditText的click事件
-                    cl_quota_detail.visibility = View.VISIBLE
                 }
             }
         }
