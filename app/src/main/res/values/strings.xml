@@ -565,6 +565,7 @@
     <string name="select_bank">Bank</string>
     <string name="withdraw_amount">Withdraw</string>
     <string name="withdraw_password">Withdraw Password</string>
+    <string name="total_withdrawal">Total Withdrawal %1$s</string>
     <string name="withdraw_all">EXTRACT ALL</string>
     <string name="withdraw_handling_fee_hint">· Service fee: %1$S %% Service fee to be paid: %2$s</string>
     <string name="withdraw_crypto_exchange_rate_hint">· Exchange rate：%1$s</string>
