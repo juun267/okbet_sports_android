@@ -17,6 +17,7 @@ import android.view.animation.AnimationUtils
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.forEach
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -239,7 +240,32 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initTabLayout() {
-        //隱藏最後一個Tab後的divider
+        with(binding.betTypeTabLayout) {
+            for (index in 0 until tabCount) {
+                val tab = getTabAt(index)
+                val tvType = tab?.customView?.findViewById<TextView>(R.id.tvType)
+                val divider = tab?.customView?.findViewById<View>(R.id.divider)
+                when (index) {
+                    0 -> {
+                        tvType?.text = getString(R.string.bet_list_single_type)
+                    }
+                    1 -> {
+                        tvType?.text = getString(R.string.bet_list_parlay_type)
+                    }
+                }
+
+                //隱藏最後一個Tab後的divider
+                divider?.visibility = when (index) {
+                    tabCount - 1 -> {
+                        View.GONE
+                    }
+                    else -> {
+                        View.VISIBLE
+                    }
+                }
+            }
+        }
+
         val lastTab = binding.betTypeTabLayout.getTabAt(binding.betTypeTabLayout.tabCount - 1)
         val tabDivider = lastTab?.customView?.findViewById<View>(R.id.divider)
         tabDivider?.visibility = View.GONE
