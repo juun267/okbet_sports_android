@@ -20,6 +20,7 @@
         <attr name="cvDividerColor" format="reference" />
         <attr name="cvHint" format="string" />
         <attr name="cvText" format="string" />
+        <attr name="cvTextSize" format="integer" />
         <attr name="cvEms" format="integer" />
         <attr name="cvTitleMinEms" format="integer" />
         <attr name="necessarySymbol">
@@ -69,6 +70,7 @@
     <declare-styleable name="CalendarBottomSheetStyle">
         <attr name="calendarLayout" format="reference" />
         <attr name="dateRange" format="integer" />
+        <attr name="minusDays" format="integer" />
     </declare-styleable>
 
     <declare-styleable name="StatusBottomSheetStyle">

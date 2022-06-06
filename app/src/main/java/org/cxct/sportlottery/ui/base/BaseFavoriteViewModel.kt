@@ -51,10 +51,6 @@ abstract class BaseFavoriteViewModel(
         get() = mFavorMatchOddList
     protected val mFavorMatchOddList = MutableLiveData<Event<List<LeagueOdd>>>()
 
-    val myFavoriteLoading: LiveData<Event<Boolean>>
-        get() = mMyFavoriteLoading
-    private val mMyFavoriteLoading = MutableLiveData<Event<Boolean>>()
-
     val favorSportList = myFavoriteRepository.favorSportList
 
     val favorLeagueList = myFavoriteRepository.favorLeagueList
@@ -81,18 +77,15 @@ abstract class BaseFavoriteViewModel(
     fun getFavoriteMatch(gameType: String?, playCateMenu: String?, playCateCode: String? = null) {
         if (isLogin.value != true) {
             mNotifyLogin.postValue(true)
-            mMyFavoriteLoading.postValue(Event(false))
             return
         }
 
         if (gameType == null || playCateMenu == null) {
-            mMyFavoriteLoading.postValue(Event(false))
             mFavorMatchOddList.postValue(Event(listOf()))
             return
         }
 
         getMyFavoriteMatch(gameType, playCateMenu, playCateCode)
-
     }
 
     private fun getMyFavoriteMatch(
@@ -130,8 +123,6 @@ abstract class BaseFavoriteViewModel(
                     }
 
                     leagueOdd.matchOdds.forEach { matchOdd ->
-                        matchOdd.setupPlayCate()
-                        matchOdd.sortOdd()
                         matchOdd.setupOddDiscount()
                         matchOdd.matchInfo?.let { matchInfo ->
                             matchInfo.startDateDisplay =
@@ -310,5 +301,18 @@ abstract class BaseFavoriteViewModel(
             }
         }
         return this
+    }
+
+    /**
+     * 檢查當前登入狀態, 若未登入則跳請登入提示
+     * @return true: 已登入, false: 未登入
+     */
+    fun checkLoginStatus(): Boolean {
+        return if (isLogin.value != true) {
+            mNotifyLogin.postValue(true)
+            false
+        } else {
+            true
+        }
     }
 }

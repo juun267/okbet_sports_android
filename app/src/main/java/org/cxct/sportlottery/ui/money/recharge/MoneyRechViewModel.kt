@@ -133,6 +133,11 @@ class MoneyRechViewModel(
     //上傳支付截圖
     val voucherUrlResult: LiveData<Event<String>> = avatarRepository.voucherUrlResult
 
+    //線上首次充值提示文字
+    val onlinePayFirstRechargeTips: LiveData<Event<String?>>
+        get() = _onlinePayFirstRechargeTips
+    private val _onlinePayFirstRechargeTips = MutableLiveData<Event<String?>>()
+
     //更新使用者資料
     fun getUserInfo() {
         viewModelScope.launch {
@@ -270,6 +275,8 @@ class MoneyRechViewModel(
     ) {
         checkRcgOnlineAmount(depositMoney, mSelectRechCfgs)
         if (onlinePayInput()) {
+            if (!checkOnlinePayFirstRechargeLimit(depositMoney)) return
+
             var url = Constants.getBaseUrl() + USER_RECHARGE_ONLINE_PAY
             val queryMap = hashMapOf(
                 "x-session-token" to (loginRepository.token ?: ""),
@@ -390,12 +397,6 @@ class MoneyRechViewModel(
             rechargeAmount.isEmpty() -> {
                 androidContext.getString(R.string.error_input_empty)
             }
-            checkFirstRecharge() && !VerifyConstUtil.verifyFirstRechargeAmount(rechargeAmount) -> {
-                androidContext.getString(
-                    R.string.error_first_recharge_amount,
-                    TextUtil.format(sConfigData?.firstRechLessAmountLimit ?: 0)
-                )
-            }
             !VerifyConstUtil.verifyRechargeAmount(
                 rechargeAmount,
                 channelMinMoney,
@@ -405,6 +406,30 @@ class MoneyRechViewModel(
             }
             else -> {
                 ""
+            }
+        }
+    }
+
+    /**
+     * 檢查是否符合首次充值限額
+     * @return true:符合, false:不符合
+     */
+    private fun checkOnlinePayFirstRechargeLimit(rechargeAmount: String): Boolean {
+        return when {
+            checkFirstRecharge() && !VerifyConstUtil.verifyFirstRechargeAmount(rechargeAmount) -> {
+                _onlinePayFirstRechargeTips.postValue(
+                    Event(
+                        androidContext.getString(
+                            R.string.error_first_recharge_amount,
+                            TextUtil.format(sConfigData?.firstRechLessAmountLimit ?: 0)
+                        )
+                    )
+                )
+                false
+            }
+            else -> {
+                _onlinePayFirstRechargeTips.postValue(Event(null))
+                true
             }
         }
     }

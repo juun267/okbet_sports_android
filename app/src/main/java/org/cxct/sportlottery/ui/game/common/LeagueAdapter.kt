@@ -297,7 +297,6 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
             itemView.iv_country.setImageDrawable(countryIcon)
             updateLeagueOddList(item, oddsType)
             updateLeagueExpand(item, matchType)
-
         }
 
         fun updateByBetInfo() {
@@ -364,25 +363,14 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         }
 
         private fun setupLeagueOddExpand(item: LeagueOdd, matchType: MatchType, leagueListener: LeagueListener?) {
-
-            //itemView.league_expand.setExpanded(item.unfold == FoldState.UNFOLD.code, false)
-            Log.d("Hewie12", "data[adapterPosition].unfold -> ${data[adapterPosition].unfold}")
-
             expandCheckList[data[adapterPosition].league.id].apply {
                 if (this != null) {
                     data[adapterPosition].unfold = if (this == true) FoldState.UNFOLD.code else FoldState.FOLD.code
                 }
             }
 
-
             itemView.league_odd_list.visibility = if (data[adapterPosition].unfold == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
             updateTimer(matchType, item.gameType)
-
-//            itemView.iv_refresh.isVisible = matchType != MatchType.MY_EVENT
-
-//            itemView.iv_refresh.setOnClickListener {
-//                leagueListener?.onRefresh(item)
-//            }
 
             itemView.setOnClickListener {
                 if (adapterPosition > data.size - 1) return@setOnClickListener
@@ -427,10 +415,6 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
     class BottomNavigationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }
 
-class LeagueListener(
-    val clickListenerLeague: (item: LeagueOdd) -> Unit,
-    val refreshListener: (item: LeagueOdd) -> Unit
-) {
+class LeagueListener(val clickListenerLeague: (item: LeagueOdd) -> Unit, ) {
     fun onClickLeague(item: LeagueOdd) = clickListenerLeague(item)
-    fun onRefresh(item: LeagueOdd) = refreshListener(item)
 }

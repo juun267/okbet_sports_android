@@ -24,7 +24,10 @@ enum class GameType(val key: String, @StringRes val string: Int) {
     MR("MR", R.string.motor_racing),
     GF("GF", R.string.golf),
     FB("FB",R.string.financial_bets),
-    OTHER("OTHER",R.string.other);
+    OTHER("OTHER",R.string.other),
+    BB_COMING_SOON("BB_COMING_SOON", R.string.baseball),
+    ES_COMING_SOON("ES_COMING_SOON", R.string.esports);
+
 
     companion object {
         fun getGameType(code: String?): GameType? {
@@ -45,6 +48,8 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 MR.key -> MR
                 GF.key -> GF
                 FB.key -> FB
+                BB_COMING_SOON.key -> BB_COMING_SOON
+                ES_COMING_SOON.key -> ES_COMING_SOON
                 else -> null
             }
         }
@@ -67,6 +72,8 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 MR.key -> MR.string
                 GF.key -> GF.string
                 FB.key -> FB.string
+                BB_COMING_SOON.key -> BB_COMING_SOON.string
+                ES_COMING_SOON.key -> ES_COMING_SOON.string
                 else -> R.string.unknown_name
             }
         }
@@ -109,6 +116,8 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 GF -> R.drawable.ic_game_golf
                 FB -> R.drawable.ic_game_finance
                 OTHER -> R.drawable.ic_game_champ
+                BB_COMING_SOON -> R.drawable.ic_game_baseball
+                ES_COMING_SOON -> R.drawable.ic_game_esports
             }
         }
 
@@ -130,6 +139,8 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 MR.key -> R.drawable.img_racing_white
                 GF.key -> R.drawable.img_golf_white
                 FB.key -> R.drawable.img_finance_white
+                BB_COMING_SOON.key -> R.drawable.img_baseball_white
+                ES_COMING_SOON.key -> R.drawable.img_esports_white
                 else -> R.drawable.ic_game_champ
             }
         }
@@ -153,6 +164,8 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 GF -> R.drawable.selector_sport_type_item_img_gf_v5
                 FB -> R.drawable.selector_sport_type_item_img_fb_v5
                 OTHER -> R.drawable.ic_game_champ
+                BB_COMING_SOON -> R.drawable.selector_sport_type_item_img_bb_v5
+                ES_COMING_SOON -> R.drawable.selector_sport_type_item_img_es_v5
             }
         }
     }

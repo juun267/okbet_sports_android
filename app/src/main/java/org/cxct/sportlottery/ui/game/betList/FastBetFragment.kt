@@ -136,6 +136,9 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         override fun handleMessage(msg: Message) {
             when (msg.what) {
                 BET_CONFIRM_TIPS -> {
+                    //解除訂閱快捷投注單的賽事
+                    fastBetPageUnSubscribeEvent()
+
                     val spannableStringBuilder = SpannableStringBuilder()
                     val text1 = SpannableString(getString(R.string.text_bet_not_success))
                     val text2 = SpannableString(getString(R.string.text_bet_not_success2))
@@ -172,7 +175,6 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         success = true,
                         isOutsideCancelable = true
                     ) {
-                        dismiss()
                         //(activity as GameActivity).
 //                        viewModel.navTranStatus()
                     }

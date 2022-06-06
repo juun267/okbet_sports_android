@@ -29,7 +29,7 @@
             android:paddingEnd="22dp"
             android:paddingBottom="18dp"
             android:src="@drawable/ic_back"
-            app:tint="@color/color_e5e5e5_333333" />
+            app:tint="@color/color_CCCCCC_333333" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -37,7 +37,7 @@
             android:layout_centerInParent="true"
             android:letterSpacing="0.1"
             android:text="@string/member_level"
-            android:textColor="@color/color_e5e5e5_333333"
+            android:textColor="@color/color_CCCCCC_333333"
             android:textSize="@dimen/textSize16sp" />
     </RelativeLayout>
 
@@ -86,7 +86,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="8dp"
                                 android:text="@string/greet"
-                                android:textColor="@color/color_e5e5e5_333333"
+                                android:textColor="@color/color_CCCCCC_333333"
                                 android:textSize="@dimen/textSize16sp"
                                 android:textStyle="bold" />
 
@@ -94,7 +94,7 @@
                                 android:id="@+id/tv_greet"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/color_e5e5e5_333333"
+                                android:textColor="@color/color_CCCCCC_333333"
                                 android:textSize="@dimen/textSize16sp"
                                 android:textStyle="bold"
                                 tools:text="Jason0921" />

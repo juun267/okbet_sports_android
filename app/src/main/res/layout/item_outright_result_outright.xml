@@ -34,7 +34,7 @@
                 android:id="@+id/tv_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/color_e5e5e5_333333"
+                android:textColor="@color/color_CCCCCC_333333"
                 tools:text="冠軍"
                 android:textSize="@dimen/textSize12sp"
                 android:layout_marginTop="6dp"/>
@@ -48,7 +48,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:layout_gravity="center"
-            android:textColor="@color/color_e5e5e5_333333"
+            android:textColor="@color/color_CCCCCC_333333"
             android:textStyle="bold"
             android:textSize="@dimen/textSize14sp"
             android:padding="8dp"

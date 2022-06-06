@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.game.league
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -54,16 +55,16 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
         PlayCategoryAdapter().apply {
             playCategoryListener = PlayCategoryListener(onClickSetItemListener = {
+                unSubscribeChannelHallAll()
                 viewModel.switchPlay(
                     args.matchType,
                     args.leagueId.toList(),
                     args.matchId.toList(),
                     it
                 )
-                leagueAdapter.data.updateOddsSort()
-                leagueAdapter.updateLeagueByPlayCate()
             },
                 onClickNotSelectableListener = {
+                    unSubscribeChannelHallAll()
                     viewModel.switchPlay(
                         args.matchType,
                         args.leagueId.toList(),
@@ -71,20 +72,26 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         it
                     )
                     upDateSelectPlay(it)
-                    leagueAdapter.data.updateOddsSort()
-                    leagueAdapter.updateLeagueByPlayCate()
                 },
-                onSelectPlayCateListener = { play, playCate ->
+                onSelectPlayCateListener = { play, playCate, hasItemSelect ->
+                    if (!hasItemSelect) {
+                        unSubscribeChannelHallAll()
+                    }
                     viewModel.switchPlayCategory(
                         args.matchType,
                         args.leagueId.toList(),
                         args.matchId.toList(),
                         play,
-                        playCate.code
+                        playCate.code,
+                        hasItemSelect
                     )
+
                     upDateSelectPlay(play)
-                    leagueAdapter.data.updateOddsSort()
-                    leagueAdapter.updateLeagueByPlayCate()
+                    //當前已選中下拉選單不用重新要資料
+                    if (hasItemSelect) {
+                        leagueAdapter.data.updateOddsSort()
+                        leagueAdapter.updateLeagueByPlayCate()
+                    }
                 })
         }
     }
@@ -94,30 +101,21 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         LeagueAdapter(args.matchType, getPlaySelectedCodeSelectionType(), getPlaySelectedCode()).apply {
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
-            leagueListener = LeagueListener({
-                subscribeChannelHall(it)
-            }, {
-                viewModel.refreshGame(
-                    args.matchType,
-                    listOf(it.league.id),
-                    listOf()
+            leagueListener = LeagueListener {
+                if (it.unfold == FoldState.FOLD.code) {
+                    Log.d("[subscribe]", "取消訂閱 ${it.league.name}")
+                    unSubscribeChannelHall(it)
+                }
+                //目前無法監聽收合動畫
+                Handler().postDelayed(
+                    {  game_league_odd_list?.firstVisibleRange(this, activity ?: requireActivity()) },
+                    400
                 )
-            })
+            }
 
             leagueOddListener = LeagueOddListener(
                 { matchId, matchInfoList, gameMatchType, liveVideo ->
-                    when (gameMatchType) {
-                        MatchType.IN_PLAY -> {
-                            matchId?.let {
-                                navOddsDetailLive(it, gameMatchType)
-                            }
-                        }
-                        else -> {
-                            matchId?.let {
-                                navOddsDetail(it, matchInfoList)
-                            }
-                        }
-                    }
+                    navMatchDetailPage(matchId, matchInfoList, gameMatchType)
                 },
                 { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
                     mSelectedMatchInfo = matchInfo
@@ -149,8 +147,30 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 { matchId ->
                     navStatistics(matchId)
                 },
-                {}
+                {},
+                clickLiveIconListener = { matchId, matchInfoList, gameMatchType, _ ->
+                    if (viewModel.checkLoginStatus()) {
+                        navMatchDetailPage(matchId, matchInfoList, gameMatchType)
+                    }
+                },
+                clickAnimationIconListener = { matchId, matchInfoList, gameMatchType, _ ->
+                    if (viewModel.checkLoginStatus()) {
+                        navMatchDetailPage(matchId, matchInfoList, gameMatchType)
+                    }
+                }
             )
+        }
+    }
+
+    private fun navMatchDetailPage(matchId: String?, matchInfoList: List<MatchInfo>, gameMatchType: MatchType) {
+        if (gameMatchType == MatchType.IN_PLAY) {
+            matchId?.let {
+                navOddsDetailLive(matchId, gameMatchType)
+            }
+        } else {
+            matchId?.let {
+                navOddsDetail(matchId, matchInfoList)
+            }
         }
     }
 
@@ -209,7 +229,6 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         view.game_league_odd_list.apply {
             this.layoutManager =
                 SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-            this.adapter = leagueAdapter
             addScrollWithItemVisibility(
                 onScrolling = {
                     unSubscribeChannelHallAll()
@@ -306,6 +325,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     updateSportBackground(oddsListResult.oddsListData?.sport?.code)
 
                     game_league_odd_list.apply {
+                        adapter = leagueAdapter
                         leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
                         leagueAdapter.apply {
                             data = leagueOdds.onEach { leagueOdd ->
@@ -314,7 +334,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         }
                     }
 
-                    game_league_odd_list?.firstVisibleRange(leagueAdapter, activity?:requireActivity())
+                    game_league_odd_list?.firstVisibleRange(leagueAdapter, activity ?: requireActivity())
                 }
             }
         }
@@ -665,7 +685,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
 
     private fun updateSportBackground(sportCode: String?) {
-        GameConfigManager.getTitleBarBackgroundInPublicPage(sportCode ,MultiLanguagesApplication.isNightMode)?.let { titleRes ->
+        GameConfigManager.getTitleBarBackgroundInPublicPage(sportCode, MultiLanguagesApplication.isNightMode)?.let { titleRes ->
             game_league_toolbar_bg.setImageResource(titleRes)
         }
     }

@@ -806,12 +806,12 @@ public class TextFieldBoxes extends FrameLayout {
 
         /* EditText Layout */
         this.inputLayout.setPadding(
-                0, res.getDimensionPixelOffset(
+                0, hideSelectedTitle ? 0 : (res.getDimensionPixelOffset(
                         useDenseSpacing ?
                                 R.dimen.dense_editTextLayout_padding_top :
                                 R.dimen.editTextLayout_padding_top
-                ),
-                0, res.getDimensionPixelOffset(R.dimen.editTextLayout_padding_bottom));
+                )),
+                0, hideSelectedTitle ? 0 : (res.getDimensionPixelOffset(R.dimen.editTextLayout_padding_bottom)));
 
         /* End Icon */
         this.endIconImageButton.setMinimumHeight(

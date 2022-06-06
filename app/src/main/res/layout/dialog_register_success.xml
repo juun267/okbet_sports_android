@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_marginTop="@dimen/margin_20"
-            android:textColor="@color/color_FFFFFF_000000"
+            android:textColor="@color/color_DDDDDD_000000"
             android:textSize="@dimen/textSize20sp"
             android:textStyle="bold"
             android:text="@string/register_success"

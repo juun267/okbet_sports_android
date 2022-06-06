@@ -244,9 +244,9 @@
   },
   {
     "titleNameMap": {
-      "zh": "网银线上",
-      "en": "Internet Banking",
-      "vi": "Ngân hàng trực tuyến"
+      "zh": "GCash / 其他",
+      "en": "GCash / Others",
+      "vi": "GCash / Khác"
     },
     "subtitle": "菲律賓在線網銀",
     "image": "ic_internet_bank",

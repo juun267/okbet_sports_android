@@ -22,7 +22,6 @@ class TransactionStatusViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     favoriteRepository: MyFavoriteRepository,
-    intentRepository: IntentRepository
 ) : BaseBottomNavViewModel(
     androidContext,
     userInfoRepository,
@@ -30,7 +29,6 @@ class TransactionStatusViewModel(
     betInfoRepository,
     infoCenterRepository,
     favoriteRepository,
-    intentRepository
 ) {
 
     //投注單球類
@@ -40,7 +38,7 @@ class TransactionStatusViewModel(
             getBetList(true)
         }
 
-    var statusList: List<Int>? = BetRecordType.WAIT_SETTLEMENT.code.toList()
+    var statusList: List<Int>? = listOf(0,1)
         set(value) {
             field = value
             getBetList(true)

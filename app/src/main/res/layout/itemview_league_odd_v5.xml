@@ -73,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingEnd="5dp"
-                android:textColor="@color/color_A3A3A3_666666"
+                android:textColor="@color/color_BCBCBC_666666"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="比赛延期" />
 
@@ -82,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingEnd="5dp"
-                android:textColor="@color/color_A3A3A3_666666"
+                android:textColor="@color/color_BCBCBC_666666"
                 android:textSize="@dimen/textSize12sp"
                 android:visibility="gone"
                 tools:text="/5"
@@ -92,7 +92,7 @@
                 android:id="@+id/league_odd_match_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/color_A3A3A3_666666"
+                android:textColor="@color/color_BCBCBC_666666"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="00:43" />
 
@@ -174,7 +174,7 @@
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="2"
-        android:textColor="@color/color_e5e5e5_000000"
+        android:textColor="@color/color_DDDDDD_000000"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintBottom_toTopOf="@id/league_odd_match_total_score_home_bottom"
         app:layout_constraintEnd_toEndOf="@id/guide_content"
@@ -201,7 +201,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:textColor="@color/color_e5e5e5_333333"
+        android:textColor="@color/color_CCCCCC_333333"
         android:textSize="@dimen/textSize14sp"
         android:visibility="gone"
         app:layout_constraintStart_toEndOf="@id/league_odd_match_total_score_home_bottom"
@@ -275,7 +275,7 @@
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="2"
-        android:textColor="@color/color_e5e5e5_000000"
+        android:textColor="@color/color_DDDDDD_000000"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintBottom_toTopOf="@id/league_odd_match_total_score_away_bottom"
         app:layout_constraintEnd_toEndOf="@id/guide_content"
@@ -302,7 +302,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:textColor="@color/color_e5e5e5_333333"
+        android:textColor="@color/color_CCCCCC_333333"
         android:textSize="@dimen/textSize14sp"
         android:visibility="gone"
         app:layout_constraintStart_toEndOf="@id/league_odd_match_total_score_away_bottom"
@@ -325,9 +325,10 @@
 
     <ImageView
         android:id="@+id/league_odd_match_price_boost"
-        android:layout_width="24dp"
+        android:layout_width="19dp"
         android:layout_height="14dp"
-        android:paddingEnd="@dimen/margin_10"
+        android:paddingEnd="10dp"
+        android:paddingStart="4dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_price_v4"
         android:visibility="gone"
@@ -340,7 +341,10 @@
         android:id="@+id/iv_play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingEnd="@dimen/margin_10"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:paddingStart="0dp"
+        android:paddingEnd="8dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_living_ffffff_de000000"
         android:visibility="gone"
@@ -354,7 +358,8 @@
         android:id="@+id/iv_animation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingEnd="@dimen/margin_10"
+        android:paddingStart="0dp"
+        android:paddingEnd="8dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_game_schedule"
         android:visibility="gone"
@@ -368,7 +373,8 @@
         android:id="@+id/league_odd_match_play_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawablePadding="5dp"
+        android:drawablePadding="0dp"
+        android:paddingStart="0dp"
         android:gravity="center"
         android:textColor="@color/color_FFFFFF_DE000000"
         android:textSize="@dimen/textSize12sp"
@@ -377,13 +383,12 @@
         app:layout_constraintBottom_toBottomOf="@id/league_odd_quick_cate_divider"
         app:layout_constraintStart_toEndOf="@id/iv_animation"
         app:layout_constraintTop_toTopOf="@id/guide_game_bottom"
-        tools:text="6" />
+        tools:text="120" />
 
     <ImageView
         android:id="@+id/league_odd_match_chart"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginEnd="2dp"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
         android:padding="1dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_chart"
@@ -395,9 +400,8 @@
 
     <ImageView
         android:id="@+id/league_odd_match_favorite"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginEnd="2dp"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
         android:scaleType="centerCrop"
         app:layout_goneMarginEnd="0dp"
         android:src="@drawable/selector_star_v4"
@@ -408,9 +412,9 @@
 
     <ImageView
         android:id="@+id/league_neutral"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:padding="4.5dp"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:padding="1dp"
         android:scaleType="centerCrop"
         android:src="@drawable/selector_neutral_v5"
         android:visibility="gone"
@@ -419,8 +423,6 @@
         app:layout_constraintEnd_toEndOf="@id/guide_content"
         app:layout_constraintTop_toTopOf="@id/guide_game_bottom"
         tools:ignore="ContentDescription" />
-
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_league_odd_btn_pager_main"

@@ -60,6 +60,7 @@ import java.util.*
 class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class), TimerManager, Animation.AnimationListener {
 
     private val args: OddsDetailLiveFragmentArgs by navArgs()
+    private var matchType: MatchType = MatchType.OTHER
 
     private var oddsDetailListAdapter: OddsDetailListAdapter? = null
     private var isLogin:Boolean = false
@@ -137,6 +138,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         matchId = args.matchId
+        matchType = args.matchType
     }
 
     override fun onCreateView(
@@ -184,6 +186,12 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
         matchOdd?.matchInfo?.let { matchInfo ->
             live_view_tool_bar.setStatisticsState(matchInfo.source == MatchSource.SHOW_STATISTICS.code)
+        }
+
+        if (MultiLanguagesApplication.colorModeChanging) {
+            initObserve()
+            initSocketObserver()
+            MultiLanguagesApplication.colorModeChanging = false
         }
     }
 
@@ -269,7 +277,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     }
 
     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
-    private fun observeData() {
+    private fun initObserve() {
         viewModel.oddsDetailResult.observe(this.viewLifecycleOwner) {
             it?.getContentIfNotHandled()?.let { result ->
                 when (result.success) {
@@ -306,7 +314,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                         setupInitShowView(result.oddsDetailData?.matchOdd?.matchInfo)
                         setupLiveView(result.oddsDetailData?.matchOdd?.matchInfo?.liveVideo)
 
-                        if (args.matchType == MatchType.IN_PLAY &&
+                        if (matchType == MatchType.IN_PLAY &&
                             (args.gameType == GameType.TN || args.gameType == GameType.VB || args.gameType == GameType.TT || args.gameType == GameType.BM)
                             && (it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt != null)
                         ) {
@@ -429,6 +437,8 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
             it?.let { matchStatusChangeEvent ->
                 matchStatusChangeEvent.matchStatusCO?.takeIf { ms -> ms.matchId == this.matchId }
                     ?.apply {
+                        matchType = MatchType.IN_PLAY
+
                         tv_time_top?.let { tv ->
                             val statusValue =
                                 statusNameI18n?.get(getSelectLanguage(context).key) ?: statusName
@@ -490,6 +500,21 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                                 && oddsDetailListData.isExpand
                             ) {
                                 updateBetInfo(oddsDetailListData, matchOddsChangeEvent)
+                                oddsDetailListAdapter?.notifyItemChanged(index)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        receiver.matchOddsLock.observe(this.viewLifecycleOwner) {
+            it?.let { matchOddsLockEvent ->
+                //比對收到 matchOddsLock event 的 matchId
+                if (matchId == matchOddsLockEvent.matchId) {
+                    oddsDetailListAdapter?.oddsDetailDataList?.let { oddsDetailListDataList ->
+                        oddsDetailListDataList.forEachIndexed { index, oddsDetailListData ->
+                            if (SocketUpdateUtil.updateOddStatus(oddsDetailListData)) {
                                 oddsDetailListAdapter?.notifyItemChanged(index)
                             }
                         }
@@ -588,7 +613,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
             tv_away_name.text = this.awayName ?: ""
 
-            if (args.matchType != MatchType.IN_PLAY) {
+            if (matchType != MatchType.IN_PLAY) {
                 val timeStr = TimeUtil.timeFormat(startTime, HM_FORMAT)
                 if (timeStr.isNotEmpty()) {
                     tv_time_bottom.text = timeStr
@@ -662,7 +687,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     }
 
     private fun setupStatusList(event: MatchStatusChangeEvent) {
-        if (args.matchType != MatchType.IN_PLAY) return
+        if (matchType != MatchType.IN_PLAY) return
 
         //region setup game score
         when (event.matchStatusCO?.status) {
@@ -697,7 +722,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                     GameType.TT -> {
                         setupBackScore(event)
                     }
-                    GameType.RB, GameType.AFT -> {
+                    GameType.RB, GameType.AFT, GameType.BB -> {
                         setupFrontScore(event)
                     }
                     GameType.BM -> {
@@ -829,7 +854,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     override fun onAnimationStart(animation: Animation?) {}
 
     override fun onAnimationEnd(animation: Animation?) {
-        observeData()
+        initObserve()
         initSocketObserver()
     }
 

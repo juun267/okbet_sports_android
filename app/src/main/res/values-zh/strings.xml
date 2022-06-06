@@ -107,6 +107,7 @@
     <string name="verification_code_by_sms">短信验证码</string>
     <string name="hint_verification_code">(请输入验证码)</string>
     <string name="error_verification_code">注册验证码错误</string>
+    <string name="error_verification_code_by_login">登录验证码错误</string>
     <string name="hint_verification_code_by_sms">(请输入短信验证码)</string>
     <string name="error_verification_code_by_sms">短信验证码错误</string>
     <string name="get_verification_code">发送验证码</string>
@@ -144,7 +145,7 @@
     <string name="title_eps_more">更高赔率</string>
     <string name="game_soon">即将开赛</string>
     <string name="label_in_play_games">滚球盘</string>
-    <string name="label_all">所有</string>
+    <string name="label_all">全部</string>
     <string name="label_match_recommend">赛事推荐</string>
     <string name="label_highlight">精选</string>
     <string name="display_all">显示全部</string>
@@ -478,7 +479,7 @@
     <string name="txv_online_pay">在线支付</string>
     <string name="txv_crypto_pay">虚拟币转账</string>
     <string name="error_recharge_amount">存款金额格式或数值错误</string>
-    <string name="error_first_recharge_amount">首次充值金额不能小于%s</string>
+    <string name="error_first_recharge_amount">首次存款金额不能小于%s</string>
     <string name="error_recharge_account">存款个数或数值错误</string>
     <string name="error_bank_id">银行卡号格式有错误</string>
     <string name="error_hashcode">区块链交易ID格式错误</string>
@@ -511,7 +512,7 @@
     <string name="online_bank">在线网银</string>
     <string name="online_juan">JuanCash</string>
     <string name="online_dispenshing">出款</string>
-    <string name="online_online_bank">网银线上</string>
+    <string name="online_online_bank">GCash / 其他</string>
     <string name="online_gcash">Gcash</string>
     <string name="online_grab">GrabPay</string>
     <string name="online_maya">PayMaya</string>
@@ -734,7 +735,7 @@
     <string name="transfer_state">转换状态：</string>
     <string name="remark">备注：</string>
     <string name="transfer_info">转换信息</string>
-    <string name="sorry_website_is_now_maintenance">很抱歉，目前网站维护中</string>
+    <string name="sorry_website_is_now_maintenance">目前网站维护中</string>
     <string name="if_there_is_any_question_please_consult">若有疑问请咨询%1$s</string>
     <string name="bottom_nav_home">首页</string>
     <string name="bottom_nav_game">赛事</string>
@@ -760,7 +761,6 @@
     <string name="all_in_plat">全部转入</string>
     <string name="write_suggestion">填写建议</string>
     <string name="can_input_1_to_500_word">可输入1–500字</string>
-    <string name="must_fill_this_column">此栏位为必填栏位</string>
     <string name="third_game_ky">开元棋牌</string>
     <string name="choose_title">选择状态</string>
     <string name="odd_type_title">盘口类型</string>
@@ -1034,15 +1034,18 @@
     <string name="responsible">博彩责任</string>
     <string name="terms_conditions">规则与条款</string>
     <string name="privacy_policy">隐私权条款</string>
+    <string name="affiliate">代理加盟</string>
     <string name="help">是否需要帮助？</string>
+    <string name="official_partner">官方合作伙伴</string>
     <string name="faqs">常见问题</string>
     <string name="live_chat">在线客服</string>
     <string name="contact">联系我们</string>
     <string name="btm_navigation_hint">%1$s is a Registered Trade Mark, Brand and Business Name Owned by Ekxinum Inc. Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR).</string>
-    <string name="btm_navigation_copyright">COPYRIGHT © 2022 %1$s ALL RIGHTS RESERVED</string>
+    <string name="btm_navigation_copyright">Copyright © 2022 %1$s ALL RIGHTS RESERVED</string>
     <string name="front_side_result">证件正面扫描结果</string>
     <string name="reverse_side_result">证件反面扫描结果</string>
     <string name="btm_navigation_language">简体中文</string>
+    <string name="btm_navigation_affiliate">代理加盟</string>
     <string name="expire_date">证件过期时间</string>
     <string name="self_limit_froze_impotent_1">自我禁制设定后立即生效</string>
     <string name="self_limit_froze_impotent_2">在自我禁制设定期间内，我们将保管您的余额。</string>
@@ -1119,4 +1122,15 @@
     <string name="cancel_auto">注單未成立</string>
     <string name="cancel_manual">退款</string>
     <string name="error_input_has_blank">输入错误，仅限输入英文，请勿输入连续空格。</string>
+
+    <!--region 確認年齡彈窗-->
+    <string name="dialog_age_verify_statement">OKBet 致力于为所有客户提供安全、舒适的游戏体验。\n\n对于绝大多数人来说，游戏是一项令人愉快的休闲活动。但是，我们意识到有时候游戏对某些客户来说不再有趣。\n\n我们强烈建议您在继续之前花一些时间阅读我们的博彩责任和声明。并且，严禁 21 岁及以下的用户使用。\n\n我们的责任是帮助我们的客户安全、负责任地赌博，降低伤害风险，并帮助需要治疗的人得到治疗。\n\n如果您或您的家人遇到游戏问题，请随时联系 keepitfun@pagcor.ph。</string>
+    <string name="dialog_age_verify_hint">请确认您已年满21岁，才能进入本网站</string>
+    <string name="dialog_age_verify_confirm">我已年满21岁</string>
+    <string name="dialog_age_verify_exit">离开</string>
+    <!--endregion-->
+
+    <string name="esports">电子竞技</string>
+    <string name="coming_soon">即将推出</string>
+
 </resources>

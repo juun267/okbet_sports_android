@@ -68,6 +68,7 @@ class MultiLanguagesApplication : Application() {
     val userInfo = _userInfo.asStateFlow()
     private var isNewsShowed = false
     private var isGameDetailAnimationNeedShow = false
+    private var isAgeVerifyNeedShow = true
 
 
     private val viewModelModule = module {
@@ -90,13 +91,13 @@ class MultiLanguagesApplication : Application() {
         viewModel { ProfileCenterViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
         viewModel { VersionUpdateViewModel(get(), get(), get(), get()) }
         viewModel { MoneyTransferViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { GameViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { GameViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
         viewModel { MaintenanceViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { OtherBetRecordViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { VipViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { AccountHistoryViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { TransactionStatusViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { MyFavoriteViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { AccountHistoryViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { TransactionStatusViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { MyFavoriteViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { CreditRecordViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { StatisticsViewModel(get(), get(), get(), get()) }
         viewModel { GooglePermissionViewModel(get(), get(), get()) }
@@ -120,7 +121,6 @@ class MultiLanguagesApplication : Application() {
         single { PlayQuotaComRepository() }
         single { MyFavoriteRepository() }
         single { SelfLimitRepository() }
-        single { IntentRepository() }
     }
 
 
@@ -234,6 +234,14 @@ class MultiLanguagesApplication : Application() {
         } else {
             true
         }
+    }
+
+    fun isAgeVerifyNeedShow(): Boolean {
+        return isAgeVerifyNeedShow
+    }
+
+    fun setIsAgeVerifyShow(show: Boolean) {
+        this.isAgeVerifyNeedShow = show
     }
 
     companion object {

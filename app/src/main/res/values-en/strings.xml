@@ -106,7 +106,8 @@
     <string name="verification_code">Verification code</string>
     <string name="verification_code_by_sms">SMS verify code</string>
     <string name="hint_verification_code">Verify Code</string>
-    <string name="error_verification_code">Verify code incorrectly</string>
+    <string name="error_verification_code">Registration verification code incorrectly</string>
+    <string name="error_verification_code_by_login">Login verification code incorrectly</string>
     <string name="hint_verification_code_by_sms">(SMS)</string>
     <string name="error_verification_code_by_sms">SMS verification code incorrectly</string>
     <string name="get_verification_code">SEND</string>
@@ -491,7 +492,7 @@
     <string name="txv_online_pay">Top Up Online</string>
     <string name="txv_crypto_pay">Virtual currency transfer</string>
     <string name="error_recharge_amount">Incorrect format or value of deposit amount</string>
-    <string name="error_first_recharge_amount">The first recharge amount cannot be less than %s</string>
+    <string name="error_first_recharge_amount">The first deposit amount cannot be less than %s</string>
     <string name="error_recharge_account">Incorrect number or value of deposit amount</string>
     <string name="error_bank_id">There is an error in the format of the bank account number</string>
     <string name="error_hashcode">Block chain trading ID format error</string>
@@ -524,7 +525,7 @@
     <string name="online_bank">Banking</string>
     <string name="online_juan">JuanCash</string>
     <string name="online_dispenshing">Withdraw</string>
-    <string name="online_online_bank">Internet Banking</string>
+    <string name="online_online_bank">GCash / Others</string>
     <string name="online_gcash">Gcash</string>
     <string name="online_grab">GrabPay</string>
     <string name="online_maya">PayMaya</string>
@@ -575,8 +576,8 @@
     <string name="hint_please_enter_withdraw_password">withdrawal password</string>
     <string name="add_new">Add</string>
     <string name="add_credit_card">Add Bank Card</string>
-    <string name="add_crypto_card">Adding virtual coins</string>
-    <string name="add_e_wallet">Adding eWallet</string>
+    <string name="add_crypto_card">Add USDT</string>
+    <string name="add_e_wallet">Add eWallet</string>
     <string name="add_credit_or_virtual">add bank card / USDT / eWallet</string>
     <string name="add_credit_or_e_wallet">add bank card / eWallet</string>
     <string name="create_bank">Bank</string>
@@ -746,7 +747,7 @@
     <string name="transfer_state">Transfer status</string>
     <string name="remark">Remark：</string>
     <string name="transfer_info">Transfer information</string>
-    <string name="sorry_website_is_now_maintenance">I\'m sorry, the website is under maintenance</string>
+    <string name="sorry_website_is_now_maintenance">The website is under maintenance</string>
     <string name="if_there_is_any_question_please_consult">If you have any questions, please contact%1$s</string>
     <string name="bottom_nav_home">Home page</string>
     <string name="bottom_nav_game">Match</string>
@@ -772,7 +773,6 @@
     <string name="all_in_plat">All in</string>
     <string name="write_suggestion">Submission</string>
     <string name="can_input_1_to_500_word">Can enter 1–500 words</string>
-    <string name="must_fill_this_column">This field is required</string>
     <string name="third_game_ky">KY games</string>
     <string name="choose_title">Select status</string>
     <string name="odd_type_title">Odds Setting</string>
@@ -1030,12 +1030,14 @@
     <string name="responsible">Responsible Gaming</string>
     <string name="terms_conditions">Terms &amp; Conditions</string>
     <string name="privacy_policy">Privacy Policy</string>
+    <string name="affiliate">Affiliate</string>
     <string name="help">NEED HELP NOW?</string>
+    <string name="official_partner">Official Partner</string>
     <string name="faqs">FAQs</string>
     <string name="live_chat">Live Chat</string>
     <string name="contact">Contact Us</string>
     <string name="btm_navigation_hint">%1$s is a Registered Trade Mark, Brand and Business Name Owned by Ekxinum Inc. Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR).</string>
-    <string name="btm_navigation_copyright">COPYRIGHT © 2022 %1$s ALL RIGHTS RESERVED</string>
+    <string name="btm_navigation_copyright">Copyright © 2022 %1$s ALL RIGHTS RESERVED</string>
     <string name="e_address">Address</string>
     <string name="brackets">(%s)</string>
     <string name="online_paypal">Paypal</string>
@@ -1046,6 +1048,7 @@
     <string name="front_side_result">Front side result</string>
     <string name="reverse_side_result">Reverse side result</string>
     <string name="btm_navigation_language">English</string>
+    <string name="btm_navigation_affiliate">Affiliate</string>
     <string name="expire_date">ID expiration date</string>
     <string name="self_limit_froze_impotent_1">Self-exclusion takes effect immediately after setting</string>
     <string name="self_limit_froze_impotent_2">We will keep your balance during the set period of self-exclusion.</string>
@@ -1123,4 +1126,15 @@
     <string name="cancel_auto">Rejected</string>
     <string name="cancel_manual">Void</string>
     <string name="error_input_has_blank">Incorrect input. Use english only, don\'t enter the continuous space.</string>
+
+    <!--region 確認年齡彈窗-->
+    <string name="dialog_age_verify_statement">OKBet is committed to providing a safe, comfortable gaming experience for all our customers.\n\nFor the vast majority of people, gaming is an enjoyable leisure activity. However, we recognize that there are times when gaming ceases being fun for some customers.\n\nWe strongly encourage you to take some time to read our RESPONSIBLE GAMING infographic and statement before you proceed. Users aged 21 and below are strictly not allowed.\n\nOur responsibility is to help our customers gamble safely and responsibly, reduce the risk of harm, and help people who need treatment get it.\n\nDon\'t hesitate to contact keepitfun@pagcor.ph if you or your family member is having gaming issues.</string>
+    <string name="dialog_age_verify_hint">Please verify that you are 21 years of ages or older to enter this site</string>
+    <string name="dialog_age_verify_confirm">I AM OVER 21 YEARS OLD</string>
+    <string name="dialog_age_verify_exit">EXIT</string>
+    <!--endregion-->
+
+    <string name="coming_soon">Coming Soon</string>
+    <string name="esports">eSports</string>
+
 </resources>

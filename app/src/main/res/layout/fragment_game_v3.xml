@@ -138,8 +138,7 @@
             tools:itemCount="1"
             tools:listitem="@layout/itemview_league_v5"
             android:overScrollMode="never"
-            android:background="@color/color_191919_FCFCFC"/>
-
+            android:background="@color/color_191919_FCFCFC" />
     </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

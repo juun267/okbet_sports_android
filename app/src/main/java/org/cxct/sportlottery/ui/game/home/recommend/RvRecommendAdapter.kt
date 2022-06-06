@@ -4,18 +4,17 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import kotlinx.android.synthetic.main.home_game_table_4.view.*
 import kotlinx.android.synthetic.main.home_recommend_item.view.*
 import kotlinx.android.synthetic.main.home_recommend_item.view.indicator_view
+import kotlinx.android.synthetic.main.home_recommend_item.view.tv_game_name_away
+import kotlinx.android.synthetic.main.home_recommend_item.view.tv_game_name_home
+import kotlinx.android.synthetic.main.home_recommend_item.view.tv_match_time
 import kotlinx.android.synthetic.main.home_recommend_item.view.view_pager
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.common.PlayCate
@@ -208,6 +207,11 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                     }
 
                     text = data.matchInfo?.getStartTime(context)
+                    if (TimeUtil.isTimeInPlay(data.matchInfo?.startTime)){
+                        tv_match_time.setTextColor(ContextCompat.getColor(context,R.color.color_DDDDDD_000000))
+                    }else{
+                        tv_match_time.setTextColor(ContextCompat.getColor(context,R.color.color_BCBCBC_666666))
+                    }
                 }
 
                 if (data.vpRecommendAdapter == null)

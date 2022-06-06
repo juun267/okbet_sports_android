@@ -332,6 +332,11 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 }
             }
 
+            itemView.league_neutral.apply {
+                isSelected = item.matchInfo?.neutral == 1
+                isVisible = item.matchInfo?.neutral == 1
+            }
+
             itemView.league_odd_match_chart.apply {
                 visibility = if (item.matchInfo?.source == MatchSource.SHOW_STATISTICS.code) View.VISIBLE else View.GONE
 
@@ -351,11 +356,32 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
 
             itemView.league_odd_match_price_boost.isVisible = item.matchInfo?.eps == 1
             //itemView.space2.isVisible = (item.matchInfo?.eps == 1 || item.matchInfo?.liveVideo == 1)
-            itemView.iv_play.isVisible =
-                item.matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(item.matchInfo?.startTime))
-            itemView.iv_animation.isVisible =
-                TimeUtil.isTimeInPlay(item.matchInfo?.startTime) && !(item.matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
-                    ?.getGameDetailAnimationNeedShow() == true
+            with(itemView.iv_play) {
+                isVisible = item.matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(item.matchInfo?.startTime))
+
+                setOnClickListener {
+                    leagueOddListener?.onClickLiveIconListener(
+                        item.matchInfo?.id,
+                        matchInfoList,
+                        if (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)) MatchType.IN_PLAY else matchType,
+                        item.matchInfo?.liveVideo ?: 0
+                    )
+                }
+            }
+            with(itemView.iv_animation) {
+                isVisible =
+                    TimeUtil.isTimeInPlay(item.matchInfo?.startTime) && !(item.matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
+                        ?.getGameDetailAnimationNeedShow() == true
+
+                setOnClickListener {
+                    leagueOddListener?.onClickAnimationIconListener(
+                        item.matchInfo?.id,
+                        matchInfoList,
+                        if (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)) MatchType.IN_PLAY else matchType,
+                        item.matchInfo?.liveVideo ?: 0
+                    )
+                }
+            }
 
         }
 
@@ -423,7 +449,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
         //時間的色值同步#000000 即將開賽的Icon不改顏色，和Ian確認過
         private fun setStatusTextColor(item: MatchOdd) {
             val color =
-                if (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)) R.color.color_FFFFFF_000000 else R.color.color_A3A3A3_666666
+                if (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)) R.color.color_DDDDDD_000000 else R.color.color_BCBCBC_666666
             itemView.apply {
                 league_odd_match_status.setTextColor(ContextCompat.getColor(this.context, color))
                 league_odd_spt.setTextColor(ContextCompat.getColor(this.context, color))
@@ -772,6 +798,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
 //                }
 
                 OverScrollDecoratorHelper.setUpOverScroll(this, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
+
             }
         }
 
@@ -791,7 +818,6 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                     //update()
                     //notifyDataSetChanged() // TODO
                 }
-                Log.d("Hewie4", "更新(${item.matchInfo?.homeName})：item.oddsMap.size => ${item.oddsMap?.size}")
             }
         }
 
