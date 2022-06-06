@@ -24,7 +24,7 @@
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:textColor="@color/color_DDDDDD_000000"
+            android:textColor="@color/color_CCCCCC_000000"
             android:textSize="@dimen/textSize14sp"
             tools:text="皇家马德里" />
 
@@ -36,7 +36,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/draw"
-            android:textColor="@color/color_DDDDDD_000000"
+            android:textColor="@color/color_CCCCCC_000000"
             android:textSize="@dimen/textSize14sp"
             tools:text="和" />
 
@@ -47,7 +47,7 @@
             android:layout_marginStart="8dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:textColor="@color/color_DDDDDD_000000"
+            android:textColor="@color/color_CCCCCC_000000"
             android:textSize="@dimen/textSize14sp"
             tools:text="利物浦" />
 

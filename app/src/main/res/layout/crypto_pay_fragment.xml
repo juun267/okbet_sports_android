@@ -35,7 +35,7 @@
                     android:layout_marginStart="12dp"
                     android:text="@string/title_currency"
                     android:textSize="@dimen/textSize13sp"
-                    android:textColor="@color/color_DDDDDD_000000"
+                    android:textColor="@color/color_CCCCCC_000000"
                     android:textStyle="bold" />
 
                 <View
@@ -54,7 +54,7 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="center_vertical|left"
-                    android:textColor="@color/color_CCCCCC_333333"
+                    android:textColor="@color/color_BBBBBB_333333"
                     android:textSize="@dimen/textSize14sp" />
 
                 <ImageView
@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="@string/title_recharge_account"
-                    android:textColor="@color/color_DDDDDD_000000"
+                    android:textColor="@color/color_CCCCCC_000000"
                     android:textStyle="bold"
                     android:textSize="@dimen/textSize13sp" />
 
@@ -110,7 +110,7 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="center_vertical|left"
-                    android:textColor="@color/color_CCCCCC_333333"
+                    android:textColor="@color/color_BBBBBB_333333"
                     android:textSize="@dimen/textSize14sp" />
 
                 <ImageView
@@ -163,7 +163,7 @@
                         android:layout_weight="1"
                         android:gravity="top"
                         android:text="@string/title_recharge_address"
-                        android:textColor="@color/color_CCCCCC_333333"
+                        android:textColor="@color/color_BBBBBB_333333"
                         android:textSize="@dimen/textSize14sp"
                         android:textStyle="bold" />
 
@@ -174,7 +174,7 @@
                         android:layout_gravity="top"
                         android:layout_weight="1"
                         android:gravity="top"
-                        android:textColor="@color/color_CCCCCC_333333"
+                        android:textColor="@color/color_BBBBBB_333333"
                         android:textSize="@dimen/textSize12sp"
                         tools:text="TCZVMNd1D42qcweFSahY2NtWW2DCt8KR7GJ" />
 
@@ -206,7 +206,7 @@
                             android:background="@drawable/bg_3dp_radius_button"
                             android:gravity="center"
                             android:text="@string/btn_copy"
-                            android:textColor="@color/color_A3A3A3_666666"
+                            android:textColor="@color/color_909090_666666"
                             android:textSize="@dimen/textSize12sp" />
 
                         <Button
@@ -289,7 +289,7 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/title_recharge_time"
-                    android:textColor="@color/color_DDDDDD_000000"
+                    android:textColor="@color/color_CCCCCC_000000"
                     android:textStyle="bold"
                     android:textSize="@dimen/textSize13sp" />
 
@@ -311,7 +311,7 @@
                     android:gravity="start|center_vertical"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:textColor="@color/color_CCCCCC_333333"
+                    android:textColor="@color/color_BBBBBB_333333"
                     android:textSize="@dimen/textSize12sp"
                     app:autoSizeMaxTextSize="@dimen/textSize12sp"
                     app:autoSizeMinTextSize="@dimen/textSize8sp"
@@ -369,7 +369,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/title_upload_pic"
-                    android:textColor="@color/color_CCCCCC_333333"
+                    android:textColor="@color/color_BBBBBB_333333"
                     android:textSize="@dimen/textSize13sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"

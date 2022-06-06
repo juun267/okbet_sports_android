@@ -943,7 +943,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             context: Context,
             oddsDetail: OddsDetailListData
         ): SpannableStringBuilder {
-            val textColor = ContextCompat.getColor(context, R.color.color_A3A3A3_666666)
+            val textColor = ContextCompat.getColor(context, R.color.color_909090_666666)
             val gameTitleContentBuilder = SpannableStringBuilder()
             val statusWord =
                 oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)

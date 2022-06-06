@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_14"
         android:text="1234"
-        android:textColor="@color/color_CCCCCC_333333"
+        android:textColor="@color/color_BBBBBB_333333"
         android:textSize="@dimen/margin_14"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

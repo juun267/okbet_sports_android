@@ -24,7 +24,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:text="@string/other_link"
-        android:textColor="@color/color_CCCCCC_333333"
+        android:textColor="@color/color_BBBBBB_333333"
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="@string/about_us"
-        android:textColor="@color/color_8F8F8F_999999"
+        android:textColor="@color/color_7F7F7F_999999"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintStart_toStartOf="@+id/txv_other"
         app:layout_constraintTop_toBottomOf="@+id/txv_other" />
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="@string/responsible"
-        android:textColor="@color/color_8F8F8F_999999"
+        android:textColor="@color/color_7F7F7F_999999"
         android:textSize="14dp"
         app:layout_constraintStart_toStartOf="@+id/txv_about"
         app:layout_constraintTop_toBottomOf="@+id/txv_about" />
@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="@string/terms_conditions"
-        android:textColor="@color/color_8F8F8F_999999"
+        android:textColor="@color/color_7F7F7F_999999"
         android:textSize="14dp"
         app:layout_constraintStart_toStartOf="@+id/txv_gaming"
         app:layout_constraintTop_toBottomOf="@+id/txv_gaming" />
@@ -67,7 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/privacy_policy"
-        android:textColor="@color/color_8F8F8F_999999"
+        android:textColor="@color/color_7F7F7F_999999"
         android:textSize="14dp"
         app:layout_constraintStart_toStartOf="@+id/guideline_vrt"
         app:layout_constraintTop_toTopOf="@+id/txv_about" />
@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="@string/btm_navigation_affiliate"
-        android:textColor="@color/color_8F8F8F_999999"
+        android:textColor="@color/color_7F7F7F_999999"
         android:textSize="14dp"
         app:layout_constraintStart_toStartOf="@+id/guideline_vrt"
         app:layout_constraintTop_toBottomOf="@+id/txv_policy" />
@@ -89,7 +89,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="@string/btm_navigation_language"
-        android:textColor="@color/color_8F8F8F_999999"
+        android:textColor="@color/color_7F7F7F_999999"
         android:textSize="14dp"
         app:layout_constraintStart_toStartOf="@+id/guideline_vrt"
         app:layout_constraintTop_toBottomOf="@+id/txv_affiliate" />
@@ -100,7 +100,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="22dp"
         android:text="@string/official_partner"
-        android:textColor="@color/color_CCCCCC_333333"
+        android:textColor="@color/color_BBBBBB_333333"
         android:textSize="12dp"
         android:textAllCaps="true"
         app:layout_constraintStart_toStartOf="@+id/guideline_vrt"
@@ -131,7 +131,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="22dp"
         android:text="@string/help"
-        android:textColor="@color/color_CCCCCC_333333"
+        android:textColor="@color/color_BBBBBB_333333"
         android:textSize="12dp"
         app:layout_constraintStart_toStartOf="@+id/txv_other"
         app:layout_constraintTop_toBottomOf="@+id/txv_terms" />
@@ -142,7 +142,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="@string/faqs"
-        android:textColor="@color/color_8F8F8F_999999"
+        android:textColor="@color/color_7F7F7F_999999"
         android:textSize="14dp"
         app:layout_constraintStart_toStartOf="@+id/txv_help"
         app:layout_constraintTop_toBottomOf="@+id/txv_help" />
@@ -153,7 +153,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="@string/live_chat"
-        android:textColor="@color/color_8F8F8F_999999"
+        android:textColor="@color/color_7F7F7F_999999"
         android:textSize="14dp"
         app:layout_constraintStart_toStartOf="@+id/txv_faq"
         app:layout_constraintTop_toBottomOf="@+id/txv_faq" />
@@ -165,7 +165,7 @@
         android:layout_marginTop="4dp"
         android:paddingBottom="12dp"
         android:text="@string/contact"
-        android:textColor="@color/color_8F8F8F_999999"
+        android:textColor="@color/color_7F7F7F_999999"
         android:textSize="14dp"
         app:layout_constraintStart_toStartOf="@+id/txv_chat"
         app:layout_constraintTop_toBottomOf="@+id/txv_chat" />
@@ -194,7 +194,7 @@
         android:gravity="center_horizontal"
         android:paddingTop="16dp"
         android:text="@string/btm_navigation_hint"
-        android:textColor="@color/color_8F8F8F_999999"
+        android:textColor="@color/color_7F7F7F_999999"
         android:textSize="12dp"
         android:lineSpacingExtra="6dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -221,7 +221,7 @@
         android:gravity="center"
         android:paddingBottom="12dp"
         android:text="@string/btm_navigation_copyright"
-        android:textColor="@color/color_8F8F8F_999999"
+        android:textColor="@color/color_7F7F7F_999999"
         android:textSize="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
