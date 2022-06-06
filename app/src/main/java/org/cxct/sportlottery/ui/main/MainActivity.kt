@@ -55,6 +55,8 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
 
     private var mNewsDialog: NewsDialog? = null
 
+    private var needInitJumpGame = true //用來判斷需不需要根據Intent參數跳轉頁面
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -71,6 +73,14 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
         //20210414修改邏輯, 若local host可以使用, 就直接使用, 若無法使用才getHost取得可以使用之域名
         /*if (mSplashViewModel.isNeedGetHost())
             mSplashViewModel.getHost()*/
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (needInitJumpGame) {
+            //不能保證MainActivity會一直存在, 所以onCreate也要做判斷是否跳轉MainMoreFragment
+            jumpScreen()
+        }
     }
 
     private fun setFontTheme() {
@@ -113,6 +123,7 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
                 ThirdGameCategory.CGCP -> goToMainFragment()
                 else -> goToMainMoreFragment(cate.name)
             }
+            needInitJumpGame = false
         } catch (e: Exception) {
             e.printStackTrace()
         }
