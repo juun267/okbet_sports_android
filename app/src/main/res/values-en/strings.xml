@@ -241,8 +241,8 @@
     <string name="search">Search</string>
     <string name="game_type">Sports</string>
     <string name="winner">Winner</string>
-    <string name="first_half_game">First half</string>
-    <string name="second_half_game">Second half</string>
+    <string name="first_half_game">1st Half</string>
+    <string name="second_half_game">2nd Half</string>
     <string name="total_score">Total score</string>
     <string name="full_game">Full-Time</string>
     <string name="game_result">Result</string>
@@ -269,7 +269,7 @@
     <string name="plat">Set</string>
     <string name="round">Innings</string>
     <string name="score">Score</string>
-    <string name="first_plat">Fist set</string>
+    <string name="first_plat">First set</string>
     <string name="second_plat">Second set</string>
     <string name="third_plat">Third set</string>
     <string name="fourth_plat">Fourth set</string>
@@ -283,13 +283,13 @@
     <string name="night_mode">Night mode</string>
     <string name="add_time_first_plat">OT First period</string>
     <string name="add_time_second_plat">OT second period</string>
-    <string name="first_session">Fist term</string>
+    <string name="first_session">First term</string>
     <string name="second_session">First period</string>
     <string name="third_session">Second period</string>
     <string name="fourth_session">4th period</string>
     <string name="add_time">Overtime</string>
-    <string name="add_time_first_half_game">Overtime First half</string>
-    <string name="add_time_second_half_game">Overtime Second half</string>
+    <string name="add_time_first_half_game">Overtime 1st Half</string>
+    <string name="add_time_second_half_game">Overtime 2nd Half</string>
     <string name="account_balance">Current Balance</string>
     <string name="user_id_colon">User ID：</string>
     <string name="recharge">Deposit</string>
@@ -809,7 +809,7 @@
     <string name="keyboard_done">Collapse</string>
     <string name="keyboard_max">Max</string>
     <string name="no_game_description">Select the icon above，add to My Matches. You can group them and easily watch all the match that interest you.</string>
-    <string name="odds_button_name_first">Fist</string>
+    <string name="odds_button_name_first">First</string>
     <string name="odds_button_name_ant">Any</string>
     <string name="odds_button_name_last">Last</string>
     <string name="bet_succeeded">You have been successful bets</string>
