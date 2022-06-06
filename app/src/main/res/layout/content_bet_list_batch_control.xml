@@ -61,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/bet_list_view_more_options"
-                    android:textColor="@color/color_CCCCCC_333333"
+                    android:textColor="@color/color_BBBBBB_333333"
                     android:textSize="@dimen/textSize14sp" />
             </LinearLayout>
         </LinearLayout>

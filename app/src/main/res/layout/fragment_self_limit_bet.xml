@@ -29,7 +29,7 @@
                 android:layout_marginTop="@dimen/margin_10"
                 android:layout_marginBottom="@dimen/margin_10"
                 android:text="@string/self_limit_per_bet_limit"
-                android:textColor="@color/color_CCCCCC_333333"
+                android:textColor="@color/color_BBBBBB_333333"
                 android:textSize="@dimen/textSize13sp"
                 android:textStyle="bold" />
 
@@ -46,7 +46,7 @@
                 android:layout_marginRight="@dimen/margin_14"
                 android:layout_marginBottom="@dimen/margin_10"
                 android:text="@string/self_limit_per_bet_limit_content"
-                android:textColor="@color/color_CCCCCC_333333"
+                android:textColor="@color/color_BBBBBB_333333"
                 android:textSize="@dimen/textSize12sp" />
 
             <LinearLayout
@@ -66,7 +66,7 @@
                     android:layout_marginLeft="@dimen/margin_14"
                     android:layout_weight="1"
                     android:text="@string/self_limit_impotent"
-                    android:textColor="@color/color_CCCCCC_333333"
+                    android:textColor="@color/color_BBBBBB_333333"
                     android:textSize="@dimen/textSize13sp"
                     android:textStyle="bold" />
 
@@ -104,7 +104,7 @@
                 android:layout_marginStart="@dimen/margin_10"
                 android:layout_marginEnd="@dimen/margin_10"
                 android:text="@string/self_limit_per_bet_limit_highest"
-                android:textColor="@color/color_CCCCCC_333333"
+                android:textColor="@color/color_BBBBBB_333333"
                 android:textSize="@dimen/textSize13sp"
                 android:textStyle="bold" />
 
@@ -124,7 +124,7 @@
                 android:layout_marginLeft="@dimen/margin_8"
                 android:layout_weight="1"
                 android:backgroundTint="@color/transparent"
-                android:textColor="@color/color_CCCCCC_333333"
+                android:textColor="@color/color_BBBBBB_333333"
                 android:textColorHint="@color/color_404040_cccccc"
                 android:hint="@string/self_limit_per_bet_limit_input_highest"
                 android:inputType="number"

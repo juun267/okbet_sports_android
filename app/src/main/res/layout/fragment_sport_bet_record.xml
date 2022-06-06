@@ -60,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/champion_play"
-                android:textColor="@color/color_BDBDBD_404040" />
+                android:textColor="@color/color_AEAEAE_404040" />
 
         </LinearLayout>
 
@@ -84,7 +84,7 @@
             android:layout_weight="2"
             android:gravity="center"
             android:text="@string/order_number"
-            android:textColor="@color/color_CCCCCC_333333"
+            android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize12sp" />
 
         <TextView
@@ -93,7 +93,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/bet_type"
-            android:textColor="@color/color_CCCCCC_333333"
+            android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize12sp"/>
 
         <TextView
@@ -102,7 +102,7 @@
             android:layout_weight="2"
             android:gravity="center"
             android:text="@string/total_bet_money"
-            android:textColor="@color/color_CCCCCC_333333"
+            android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize12sp" />
 
         <TextView
@@ -111,7 +111,7 @@
             android:layout_weight="1.5"
             android:gravity="center"
             android:text="@string/status"
-            android:textColor="@color/color_CCCCCC_333333"
+            android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize12sp" />
     </LinearLayout>
 

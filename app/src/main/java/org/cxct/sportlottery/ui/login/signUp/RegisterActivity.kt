@@ -645,7 +645,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                             binding.btnSendSms.setTextColor(
                                 ContextCompat.getColor(
                                     this@RegisterActivity,
-                                    R.color.color_BDBDBD_404040
+                                    R.color.color_AEAEAE_404040
                                 )
                             )
                         } else {
