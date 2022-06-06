@@ -9,6 +9,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,7 +28,6 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
@@ -36,7 +36,6 @@ import org.cxct.sportlottery.ui.main.entity.GameItemData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.LanguageManager
 
 
 class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
@@ -154,25 +153,25 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             false // Do not consume events
         }
 
-        scroll_view.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
+        scroll_view.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, _ ->
             if (mLastAction == Action.IS_SCROLL) {
-                when (scrollY) {
-                    in 0 until label_lottery.top -> {
+                when {
+                    label_sport.isVisible && (scrollY in 0 until btn_sport.bottom) -> {
                         selectTab(tab_sport)
                     }
-                    in label_lottery.top until label_live.top -> {
+                    label_lottery.isVisible && scrollY in getPreGamePagerBottom(lotteryGamePager) until lotteryGamePager.bottom -> {
                         selectTab(tab_lottery)
                     }
-                    in label_live.top until label_poker.top -> {
+                    label_live.isVisible && scrollY in getPreGamePagerBottom(liveGamePager) until liveGamePager.bottom -> {
                         selectTab(tab_live)
                     }
-                    in label_poker.top until label_slot.top -> {
+                    label_poker.isVisible && scrollY in getPreGamePagerBottom(pokerGamePager) until pokerGamePager.bottom -> {
                         selectTab(tab_poker)
                     }
-                    in label_slot.top until label_fishing.top -> {
+                    label_slot.isVisible && scrollY in getPreGamePagerBottom(slotGamePager) until slotGamePager.bottom -> {
                         selectTab(tab_slot)
                     }
-                    in label_fishing.top until view_footer.top -> {
+                    label_fishing.isVisible && scrollY in getPreGamePagerBottom(fishingGamePager) until fishingGamePager.bottom -> {
                         selectTab(tab_fishing)
                     }
                 }
@@ -182,7 +181,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         //為了讓滑動切換 tab 效果能到最後一項，需動態變更 over_scroll_view 高度，來補足滑動距離
         scroll_view.post {
             try {
-                val distanceY = view_footer.bottom - label_fishing.top
+                val distanceY = view_footer.bottom - getLastLabel().top
                 val paddingHeight = scroll_view.height - distanceY
 
                 if (paddingHeight > 0)
@@ -191,6 +190,32 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 e.printStackTrace()
             }
         }
+    }
+
+    /**
+     * 獲取前一個有顯示的遊戲項目Bottom
+     */
+    private fun getPreGamePagerBottom(gamePager: MainGamePager): Int {
+        val childViewList =
+            listOf<View>(btn_sport, lotteryGamePager, liveGamePager, pokerGamePager, slotGamePager, fishingGamePager)
+        if (childViewList.indexOf(gamePager) < 0) return 0
+        val targetViewList = childViewList.subList(0, childViewList.indexOf(gamePager))
+
+        return targetViewList.last { it.isVisible }.bottom
+    }
+
+    /**
+     * 獲取最後一個有顯示的遊戲Label
+     */
+    private fun getLastLabel(): MainLabel {
+        return listOf<MainLabel>(
+            label_fishing,
+            label_slot,
+            label_poker,
+            label_live,
+            label_lottery,
+            label_sport
+        ).first { it.isVisible }
     }
 
     private fun scrollToTabPosition(tab: View) {
