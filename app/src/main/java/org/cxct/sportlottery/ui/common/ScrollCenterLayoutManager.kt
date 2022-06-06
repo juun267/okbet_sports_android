@@ -23,6 +23,14 @@ class ScrollCenterLayoutManager(context: Context?, @RecyclerView.Orientation ori
         startSmoothScroll(smoothScroller)
     }
 
+    override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State?) {
+        try {
+            super.onLayoutChildren(recycler, state)
+        } catch (e: IndexOutOfBoundsException) {
+            e.printStackTrace()
+        }
+    }
+
     private class CenterSmoothScroller(context: Context?) : LinearSmoothScroller(context) {
         override fun calculateDtToFit(
             viewStart: Int,

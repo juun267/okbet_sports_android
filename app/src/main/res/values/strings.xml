@@ -106,7 +106,8 @@
     <string name="verification_code">Verification code</string>
     <string name="verification_code_by_sms">SMS verify code</string>
     <string name="hint_verification_code">Verify Code</string>
-    <string name="error_verification_code">Verify code incorrectly</string>
+    <string name="error_verification_code">Registration verification code incorrectly</string>
+    <string name="error_verification_code_by_login">Login verification code incorrectly</string>
     <string name="hint_verification_code_by_sms">(SMS)</string>
     <string name="error_verification_code_by_sms">SMS verification code incorrectly</string>
     <string name="get_verification_code">SEND</string>
@@ -1039,7 +1040,7 @@
     <string name="live_chat">Live Chat</string>
     <string name="contact">Contact Us</string>
     <string name="btm_navigation_hint">%1$s is a Registered Trade Mark, Brand and Business Name Owned by Ekxinum Inc. Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR).</string>
-    <string name="btm_navigation_copyright">COPYRIGHT © 2022 %1$s ALL RIGHTS RESERVED</string>
+    <string name="btm_navigation_copyright">Copyright © 2022 %1$s ALL RIGHTS RESERVED</string>
     <string name="e_address">Address</string>
     <string name="brackets">(%s)</string>
     <string name="online_paypal">Paypal</string>

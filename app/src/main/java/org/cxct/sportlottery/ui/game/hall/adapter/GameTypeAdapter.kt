@@ -69,7 +69,16 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                             is ViewHolderSport -> {
                                 holder.update(data, gameTypeListener)
                             }
+                            is ViewHolderSportHome -> {
+                                holder.bind(data, gameTypeListener)
+                            }
+                            else -> {
+                                onBindViewHolder(holder, position)
+                            }
                         }
+                    }
+                    else -> {
+                        onBindViewHolder(holder, position)
                     }
                 }
             }

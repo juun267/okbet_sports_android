@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.game.league
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -101,7 +102,15 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
             leagueListener = LeagueListener {
-                subscribeChannelHall(it)
+                if (it.unfold == FoldState.FOLD.code) {
+                    Log.d("[subscribe]", "取消訂閱 ${it.league.name}")
+                    unSubscribeChannelHall(it)
+                }
+                //目前無法監聽收合動畫
+                Handler().postDelayed(
+                    {  game_league_odd_list?.firstVisibleRange(this, activity ?: requireActivity()) },
+                    400
+                )
             }
 
             leagueOddListener = LeagueOddListener(
