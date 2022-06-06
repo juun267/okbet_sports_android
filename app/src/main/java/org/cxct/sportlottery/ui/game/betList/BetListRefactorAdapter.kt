@@ -615,11 +615,23 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     handler?.postDelayed({
                         tv_odd_content_changed?.visibility = View.GONE
                     }, 3000)
-                    tv_odd_content_changed.text = context.getString(
-                        R.string.bet_info_odd_content_changed2,
-                        oldOdds,
-                        TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))
-                    )
+
+                    tv_odd_content_changed.text =
+                        if (itemData.matchOdd.playCode == PlayCate.LCS.value) context.getString(
+                            R.string.bet_info_odd_content_changed2,
+                            tvOdds.text,
+                            TextUtil.formatForOddPercentage(
+                                getOdds(
+                                    itemData.matchOdd,
+                                    currentOddsType
+                                ) - 1
+                            )
+                        ) else
+                            context.getString(
+                                R.string.bet_info_odd_content_changed2,
+                                oldOdds,
+                                TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))
+                            )
                 }
                 var spread = ""
                 spread =
