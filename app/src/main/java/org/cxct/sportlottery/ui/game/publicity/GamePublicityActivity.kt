@@ -314,6 +314,9 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                 publicityToolbar.ivLogo, gameToolbar.ivLogo -> {
                     if (navController.currentDestination?.id != R.id.publicityFragment) {
                         navController.navigateUp()
+                    } else {
+                        if (sConfigData?.thirdOpen == FLAG_OPEN)
+                            MainActivity.reStart(this@GamePublicityActivity)
                     }
                     removeBetListFragment()
                 }
