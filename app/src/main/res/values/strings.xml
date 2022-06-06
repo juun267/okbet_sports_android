@@ -241,8 +241,8 @@
     <string name="search">Search</string>
     <string name="game_type">Sports</string>
     <string name="winner">Winner</string>
-    <string name="first_half_game">First half</string>
-    <string name="second_half_game">Second half</string>
+    <string name="first_half_game">1st Half</string>
+    <string name="second_half_game">2nd Half</string>
     <string name="total_score">Total score</string>
     <string name="full_game">Full-Time</string>
     <string name="game_result">Result</string>
