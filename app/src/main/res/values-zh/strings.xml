@@ -1019,6 +1019,10 @@
     <string name="self_limit_per_bet_limit_user_none">无</string>
     <string name="self_limit_per_bet_limit_user_limit"> (最高可设定:%1$s %3$s-%2$s %3$s)</string>
     <string name="self_limit_error">资料格式不符，请输入整数</string>
+    <string name="self_limit_input_password_for_confirm">请输入登录密码以确认申请</string>
+    <string name="self_limit_input_password_for_modification">请输入登录密码以确认修改</string>
+    <string name="self_limit_submit_button">确认</string>
+
     <!--自我禁制-->
     <string name="e_address">详细地址</string>
     <string name="hint_e_address">(请输入联系地址)</string>
