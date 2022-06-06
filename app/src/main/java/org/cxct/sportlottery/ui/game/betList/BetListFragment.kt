@@ -232,9 +232,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             tv_accept_odds_change.setOnClickListener { addBet() }
         }
 
-        ll_odds_close_warn.setOnClickListener {
+        /*ll_odds_close_warn.setOnClickListener {
             removeClosedPlat()
-        }
+        }*/
     }
 
     private fun initTabLayout() {
@@ -898,7 +898,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 tv_odds_closed_changed.visibility = View.GONE
                 tv_warn_odds_change.visibility = View.GONE
             }*/
-            showPlatCloseWarn -> {
+            //20220606 新介面都不顯示了
+            /*showPlatCloseWarn -> {
                 ll_odds_close_warn.visibility = View.VISIBLE
                 tv_odds_closed_changed.visibility = View.GONE
                 tv_warn_odds_change.visibility = View.GONE
@@ -910,7 +911,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             else -> {
                 ll_odds_close_warn.visibility = View.GONE
                 tv_warn_odds_change.visibility = View.GONE
-            }
+            }*/
         }
     }
 

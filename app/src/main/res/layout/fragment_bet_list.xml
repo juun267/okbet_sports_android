@@ -293,7 +293,7 @@
                 android:id="@+id/cl_total_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/tv_warn_odds_change"
+                android:layout_above="@+id/ll_bet"
                 android:background="@color/color_2B2B2B_FCFCFC"
                 android:paddingStart="12dp"
                 android:paddingTop="6dp"
@@ -380,7 +380,7 @@
 
 
 
-            <TextView
+            <!--<TextView
                 android:id="@+id/tv_warn_odds_change"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -395,7 +395,7 @@
                 android:textColor="@color/color_E44438_e44438"
                 android:textSize="@dimen/textSize12sp"
                 android:visibility="gone"
-                tools:visibility="gone" />
+                tools:visibility="gone" />-->
 
             <View
                 android:layout_width="match_parent"
@@ -441,7 +441,7 @@
             </LinearLayout>
 
             <!-- 選項關閉提示 -->
-            <LinearLayout
+            <!--<LinearLayout
                 android:id="@+id/ll_odds_close_warn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -454,7 +454,7 @@
                 android:paddingEnd="@dimen/margin_8"
                 android:paddingBottom="3dp"
                 android:visibility="gone"
-                tools:visibility="gone">
+                tools:visibility="visible">
 
                 <TextView
                     android:id="@+id/tv_odds_closed_changed"
@@ -481,7 +481,7 @@
                     android:text="@string/bet_info_remove_closed"
                     android:textColor="@color/color_317FFF_0760D4"
                     android:textSize="@dimen/textSize12sp" />
-            </LinearLayout>
+            </LinearLayout>-->
 
         </RelativeLayout>
 
