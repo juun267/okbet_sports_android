@@ -649,7 +649,7 @@
     <string name="bet_list_delete_all">Delete all</string>
     <string name="bet_list_single_warn">(Fill all individual options with the same amount of bet)</string>
     <string name="bet_list_single">Singles</string>
-    <string name="bet_list_view_more_options">Show all the multiple options</string>
+    <string name="bet_list_view_more_options">More options</string>
     <string name="bet_list_cant_parlay_warn">Remind if the same match betting items can not be linked for parlay</string>
     <string name="bet_info_odd_content_close">One or more options for the selected bet have been closed</string>
     <string name="bet_info_remove_closed">Remove disabled options</string>
@@ -1138,7 +1138,7 @@
 
     <!--region 注單模塊調整-->
     <string name="bet_info_bet_lock_hint">注单盘口已关闭</string>
-    <string name="bet_info_no_parlay_hint">赛事暂无支持串关</string>
+    <string name="bet_info_no_parlay_hint">The match hasn\'t supported parlay</string>
     <!--endregion-->
 
 </resources>

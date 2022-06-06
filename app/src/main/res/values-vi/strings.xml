@@ -637,7 +637,7 @@
     <string name="bet_list_delete_all">Xóa tất cả</string>
     <string name="bet_list_single_warn">(Có thể sử dụng cùng số tiền đặt cược để thực hiện tất cả các lựa chọn riêng lẻ)</string>
     <string name="bet_list_single">Đơn cược</string>
-    <string name="bet_list_view_more_options">Xem tất cả các tùy chọn</string>
+    <string name="bet_list_view_more_options">Nhiều lựa chọn hơn</string>
     <string name="bet_info_odd_content_close">Một hoặc nhiều tùy chọn của cá cược đã bị đóng</string>
     <string name="bet_info_remove_closed">Xóa các tùy chọn đã đóng</string>
     <string name="parlay_rule_nc1">%1$s chuỗi 1 là một cược đơn bao gồm%1$s tùy chọn \ nTất cả các tùy chọn phải thắng để được hoàn lại tiền \ nKhi có nhiều tùy chọn sự kiện hơn,%1$s chuỗi 1 có thể được kết hợp thành nhiều chuỗi kết nối, ví dụ:%2$s đối sánh có thể được hoán vị và kết hợp để tạo thành%2$s%1$s chuỗi 1</string>
@@ -1169,7 +1169,7 @@
 
     <!--region 注單模塊調整-->
     <string name="bet_info_bet_lock_hint">注单盘口已关闭</string>
-    <string name="bet_info_no_parlay_hint">赛事暂无支持串关</string>
+    <string name="bet_info_no_parlay_hint">Trận đấu không hỗ trợ đá xiên.</string>
     <!--endregion-->
 
 </resources>

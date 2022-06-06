@@ -21,10 +21,10 @@ import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.v_bet_lock
 import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.layoutKeyBoard
 import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.tvErrorMessage
 import kotlinx.android.synthetic.main.content_bet_list_batch_control.view.*
-import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v2.view.*
-import kotlinx.android.synthetic.main.item_bet_list_batch_control_v2.view.*
-import kotlinx.android.synthetic.main.item_bet_list_batch_control_v2.view.ll_winnable
-import kotlinx.android.synthetic.main.item_bet_list_batch_control_v2.view.tv_winnable_amount
+import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v3.view.*
+import kotlinx.android.synthetic.main.item_bet_list_batch_control_v3.view.*
+import kotlinx.android.synthetic.main.item_bet_list_batch_control_v3.view.ll_winnable
+import kotlinx.android.synthetic.main.item_bet_list_batch_control_v3.view.tv_winnable_amount
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.info.MatchOdd
@@ -148,14 +148,14 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             )
             ViewType.Single.ordinal -> BatchSingleInMoreOptionViewHolder(
                 layoutInflater.inflate(
-                    R.layout.item_bet_list_batch_control_v2,
+                    R.layout.item_bet_list_batch_control_v3,
                     parent,
                     false
                 )
             )
             else -> BatchParlayConnectViewHolder(
                 layoutInflater.inflate(
-                    R.layout.item_bet_list_batch_control_connect_v2,
+                    R.layout.item_bet_list_batch_control_connect_v3,
                     parent,
                     false
                 )
@@ -253,13 +253,14 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
     override fun getItemViewType(position: Int): Int {
         val betSize = betList?.size ?: 0
+        val parlaySize = parlayList?.size ?: 0
         return when {
             isCantParlayWarn && position == (itemCount - 1) -> {
                 ViewType.Warn.ordinal
             }
             position < betSize -> ViewType.Bet.ordinal
             position == betSize -> ViewType.ParlayFirst.ordinal
-            position == betSize + 1 && parlayList?.size ?: 0 > 0 && moreOptionCollapse -> ViewType.Single.ordinal
+            position == betSize + 1 && parlaySize > 0 && moreOptionCollapse -> ViewType.Single.ordinal
             else -> ViewType.Parlay.ordinal
         }
     }
@@ -1782,24 +1783,23 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             setupInputMoney(itemData, userMoney, userLogin)
 
             itemView.apply {
-                ll_winnable.visibility = View.VISIBLE
-                ll_max_bet_amount.visibility = View.GONE
 
                 setupItemEnable(hasBetClosed)
 
                 itemData?.let { data ->
                     tv_parlay_type.text = getParlayName(data.parlayType)
 
-                    tv_parlay_odd.apply {
-                        if (firstItem && !hasBetClosed) {
-                            visibility = View.VISIBLE
-                            text = TextUtil.formatForOdd(getOdds(data, currentOddsType))
-                        } else
-                            visibility = View.GONE
-                    }
-
-                    tv_symbol_odd.visibility =
-                        if (firstItem && !hasBetClosed) View.VISIBLE else View.GONE
+//                    //item_bet_list_batch_control_connect_v3 無 tv_parlay_odd, tv_symbol_odd
+//                    tv_parlay_odd.apply {
+//                        if (firstItem && !hasBetClosed) {
+//                            visibility = View.VISIBLE
+//                            text = TextUtil.formatForOdd(getOdds(data, currentOddsType))
+//                        } else
+//                            visibility = View.GONE
+//                    }
+//
+//                    tv_symbol_odd.visibility =
+//                        if (firstItem && !hasBetClosed) View.VISIBLE else View.GONE
 
                     tv_com_count.text = data.num.toString()
 
@@ -1850,7 +1850,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             itemView.apply {
 //                iv_bet_lock.visibility = if (hasBetClosed) View.VISIBLE else View.GONE
                 //viewGrey.visibility = if (hasBetClosed) View.INVISIBLE else View.VISIBLE
-                item_parlay_quota_detail.visibility = if (hasBetClosed) View.GONE else View.VISIBLE
 
                 btn_rule.visibility = if (hasBetClosed) View.GONE else View.VISIBLE
 
@@ -1869,30 +1868,25 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             itemView.apply {
                 if (data.betAmount > 0) {
                     itemView.apply {
-                        tv_check_maximum_limit.visibility = View.GONE
-                        ll_bet_quota_detail.visibility = View.GONE
-                        ll_win_quota_detail.visibility = View.VISIBLE
                         checkMinimumLimit(data)
                     }
                 } else {
                     et_bet_parlay.setText("")
                     itemView.apply {
-                        tv_check_maximum_limit.visibility = View.GONE
-                        ll_bet_quota_detail.visibility = View.GONE
-                        ll_win_quota_detail.visibility = View.VISIBLE
                         checkMinimumLimit(data)
                     }
                 }
 
                 et_bet_parlay.setSelection(et_bet_parlay.text.length)
 
-                val quota = data.betAmount
-                //比照以往計算
-                var win = quota * getOdds(data, currentOddsType)
-                if (currentOddsType == OddsType.EU) {
-                    win -= (quota * data.num)
-                }
-                tv_win_quota.text = TextUtil.format(win)
+//                //item_bet_list_batch_control_connect_v3 無 content_bet_info_item_quota_detail_v2
+//                val quota = data.betAmount
+//                //比照以往計算
+//                var win = quota * getOdds(data, currentOddsType)
+//                if (currentOddsType == OddsType.EU) {
+//                    win -= (quota * data.num)
+//                }
+//                tv_win_quota.text = TextUtil.format(win)
             }
         }
 
@@ -2126,34 +2120,36 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             userLogin: Boolean
         ) {
             itemView.apply {
-                tv_bet_maximum_limit.text = TextUtil.formatBetQuota(itemData.max)
-                tv_check_maximum_limit.setOnClickListener {
-                    it.visibility = View.GONE
-                    ll_bet_quota_detail.visibility = View.GONE
-                }
+//                //item_bet_list_batch_control_connect_v3 無 content_bet_info_item_quota_detail_v2
+//                tv_bet_maximum_limit.text = TextUtil.formatBetQuota(itemData.max)
+//                tv_check_maximum_limit.setOnClickListener {
+//                    it.visibility = View.GONE
+//                    ll_bet_quota_detail.visibility = View.GONE
+//                }
 
                 et_bet_parlay.isSelected =
                     mSelectedPosition == bindingAdapterPosition && mBetView == BetViewType.PARLAY
 
-                ll_bet_quota_detail.setOnClickListener {
-                    et_bet_parlay.apply {
-                        setText(itemData.max.toString())
-                        isFocusable = true
-                        setSelection(text.length)
-                    }
-                    layoutKeyBoard.showKeyboard(
-                        et_bet_parlay,
-                        position,
-                        inputMaxMoney,
-                        itemData.min.toLong(),
-                        userLogin
-                    )
-                    //onItemClickListener.onShowParlayKeyboard(et_bet, itemData, position, itemData.max.toLong())
-                    onSelectedPositionListener.onSelectChange(
-                        bindingAdapterPosition,
-                        BetViewType.PARLAY
-                    )
-                }
+//                //item_bet_list_batch_control_connect_v3 無 content_bet_info_item_quota_detail_v2
+//                ll_bet_quota_detail.setOnClickListener {
+//                    et_bet_parlay.apply {
+//                        setText(itemData.max.toString())
+//                        isFocusable = true
+//                        setSelection(text.length)
+//                    }
+//                    layoutKeyBoard.showKeyboard(
+//                        et_bet_parlay,
+//                        position,
+//                        inputMaxMoney,
+//                        itemData.min.toLong(),
+//                        userLogin
+//                    )
+//                    //onItemClickListener.onShowParlayKeyboard(et_bet, itemData, position, itemData.max.toLong())
+//                    onSelectedPositionListener.onSelectChange(
+//                        bindingAdapterPosition,
+//                        BetViewType.PARLAY
+//                    )
+//                }
             }
         }
 
