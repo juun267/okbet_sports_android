@@ -421,7 +421,7 @@ class MoneyRechViewModel(
                     Event(
                         androidContext.getString(
                             R.string.error_first_recharge_amount,
-                            TextUtil.format(sConfigData?.firstRechLessAmountLimit ?: 0)
+                            TextUtil.formatMoney(sConfigData?.firstRechLessAmountLimit ?: 0)
                         )
                     )
                 )
