@@ -598,7 +598,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             itemView.apply {
                 //TODO: 赛事暂无支持串關，只會在串關投注那頁顯示
                 //有无串关
-                if (itemData.pointMarked && betListSize > 1 && ) {
+                if (itemData.pointMarked && betListSize > 1) {
                     v_no_parlay.visibility = View.VISIBLE
                     tv_no_parlay.visibility = View.VISIBLE
                 } else {
