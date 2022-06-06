@@ -17,11 +17,13 @@ import android.view.animation.AnimationUtils
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.forEach
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.*
 import kotlinx.android.synthetic.main.button_bet.view.*
 import kotlinx.android.synthetic.main.button_fast_bet_setting.view.*
@@ -129,7 +131,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     )
 
     private val deleteAllLayoutAnimationListener by lazy {
-        object : Animation.AnimationListener {
+        /*object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {
             }
 
@@ -142,7 +144,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             override fun onAnimationRepeat(animation: Animation?) {
             }
 
-        }
+        }*/
     }
 
     //提示
@@ -190,6 +192,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun initView() {
         initBtnView()
         initBtnEvent()
+        initTabLayout()
         initRecyclerView()
         initCommonToolbar()
         initToolBar()
@@ -231,9 +234,63 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             tv_accept_odds_change.setOnClickListener { addBet() }
         }
 
-        ll_odds_close_warn.setOnClickListener {
+        /*ll_odds_close_warn.setOnClickListener {
             removeClosedPlat()
+        }*/
+    }
+
+    private fun initTabLayout() {
+        with(binding.betTypeTabLayout) {
+            for (index in 0 until tabCount) {
+                val tab = getTabAt(index)
+                val tvType = tab?.customView?.findViewById<TextView>(R.id.tvType)
+                val divider = tab?.customView?.findViewById<View>(R.id.divider)
+                when (index) {
+                    0 -> {
+                        tvType?.text = getString(R.string.bet_list_single_type)
+                    }
+                    1 -> {
+                        tvType?.text = getString(R.string.bet_list_parlay_type)
+                    }
+                }
+
+                //隱藏最後一個Tab後的divider
+                divider?.visibility = when (index) {
+                    tabCount - 1 -> {
+                        View.GONE
+                    }
+                    else -> {
+                        View.VISIBLE
+                    }
+                }
+            }
         }
+
+        val lastTab = binding.betTypeTabLayout.getTabAt(binding.betTypeTabLayout.tabCount - 1)
+        val tabDivider = lastTab?.customView?.findViewById<View>(R.id.divider)
+        tabDivider?.visibility = View.GONE
+
+        binding.betTypeTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when (tab?.position) {
+                    //單項投注
+                    0 -> {
+                        //TODO set betSingleType in betListRefactorAdapter
+                    }
+                    //串關投注
+                    1 -> {
+                        //TODO set betParlayType in betListRefactorAdapter
+                    }
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+
+        })
     }
 
     private fun initRecyclerView() {
@@ -260,7 +317,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun initCommonToolbar() {
         if (showToolbar) {
-            with(binding.toolBar) {
+            //20220606 調整樣式, 注單之外無法互動
+            /*with(binding.toolBar) {
                 toolBar.visibility = View.VISIBLE
                 ivLogo.setOnClickListener { removeBetListFragment() }
                 ivNotice.setOnClickListener { clickNotice() }
@@ -268,14 +326,15 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 ivLanguage.setImageResource(LanguageManager.getLanguageFlag(context))
                 btnLogin.setOnClickListener { startActivity(Intent(context, LoginActivity::class.java)) }
                 btnRegister.setOnClickListener { startActivity(Intent(context, RegisterActivity::class.java)) }
-            }
+            }*/
         }
     }
 
     private fun updateCommonToolbarLoginStatus(isLogin: Boolean) {
         if (!showToolbar) return
 
-        with(binding.toolBar) {
+        //20220606 調整樣式, 注單之外無法互動
+        /*with(binding.toolBar) {
             if (isLogin) {
                 btnLogin.visibility = View.GONE
                 btnRegister.visibility = View.GONE
@@ -293,11 +352,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 ivNotice.visibility = View.GONE
                 ivMenu.visibility = View.GONE
             }
-        }
+        }*/
     }
 
     private fun updateCommonToolbarNotice(hasNotice: Boolean) {
-        binding.toolBar.ivNotice.setImageResource(if (hasNotice) R.drawable.icon_bell_with_red_dot else R.drawable.icon_bell)
+        //20220606 調整樣式, 注單之外無法互動
+//        binding.toolBar.ivNotice.setImageResource(if (hasNotice) R.drawable.icon_bell_with_red_dot else R.drawable.icon_bell)
     }
 
 
@@ -491,7 +551,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initDeleteAllOnClickEvent() {
-        val exitAnimation =
+        /*val exitAnimation =
             AnimationUtils.loadAnimation(context, R.anim.pop_left_to_right_exit).apply {
                 setAnimationListener(deleteAllLayoutAnimationListener)
                 duration = 300
@@ -515,6 +575,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 isAutoCloseWhenNoData = true
                 viewModel.removeBetInfoAll()
             }
+        }*/
+
+        binding.btnDeleteAll.setOnClickListener {
+            isAutoCloseWhenNoData = true
+            viewModel.removeBetInfoAll()
         }
     }
 
@@ -581,7 +646,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             it.peekContent().let { list ->
                 //注單列表沒東西時關閉fragment
                 cl_no_data.visibility = if (list.size == 0) View.VISIBLE else View.GONE
-                btn_delete_all.visibility = if (list.size == 0) View.GONE else View.VISIBLE
+//                btn_delete_all.visibility = if (list.size == 0) View.GONE else View.VISIBLE
                 tv_bet_list_count.text = list.size.toString()
                 betListRefactorAdapter?.betList = list
 
@@ -821,11 +886,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             tv_balance.visibility = View.VISIBLE
             tv_balance_currency.visibility = View.VISIBLE
             tv_balance_currency.text = sConfigData?.systemCurrency
-            ivBetMoney.visibility = View.VISIBLE
         } else {
             tv_balance.visibility = View.GONE
             tv_balance_currency.visibility = View.GONE
-            ivBetMoney.visibility = View.GONE
         }
     }
 
@@ -884,7 +947,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 tv_odds_closed_changed.visibility = View.GONE
                 tv_warn_odds_change.visibility = View.GONE
             }*/
-            showPlatCloseWarn -> {
+            //20220606 新介面都不顯示了
+            /*showPlatCloseWarn -> {
                 ll_odds_close_warn.visibility = View.VISIBLE
                 tv_odds_closed_changed.visibility = View.GONE
                 tv_warn_odds_change.visibility = View.GONE
@@ -896,7 +960,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             else -> {
                 ll_odds_close_warn.visibility = View.GONE
                 tv_warn_odds_change.visibility = View.GONE
-            }
+            }*/
         }
     }
 

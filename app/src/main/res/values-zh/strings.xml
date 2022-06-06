@@ -107,6 +107,7 @@
     <string name="verification_code_by_sms">短信验证码</string>
     <string name="hint_verification_code">(请输入验证码)</string>
     <string name="error_verification_code">注册验证码错误</string>
+    <string name="error_verification_code_by_login">登录验证码错误</string>
     <string name="hint_verification_code_by_sms">(请输入短信验证码)</string>
     <string name="error_verification_code_by_sms">短信验证码错误</string>
     <string name="get_verification_code">发送验证码</string>
@@ -607,7 +608,8 @@
     <string name="bet_info_list_bet_quota">投注金额：</string>
     <string name="bet_receipt_bet_quota">投注金额：</string>
     <string name="bet_info_list_win_quota">可赢金额：</string>
-    <string name="bet_list_win_quota">可赢金额：</string>
+    <string name="bet_list_win_quota">可赢金额</string>
+    <string name="bet_receipt_win_quota">可赢金额：</string>
     <string name="bet_info_list_add_more">更多选择</string>
     <string name="bet_info_list_bet">投注</string>
     <string name="bet_info_list_odds_change">接受变更并投注</string>
@@ -616,6 +618,7 @@
     <string name="bet_info_list_bigger_than_max_limit">投注额大于下注限额</string>
     <string name="bet_info_list_less_than_minimum_limit">投注额小于下注限额</string>
     <string name="bet_info_list">注单</string>
+
     <string name="bet_info_parlay_list">复式连串过关投注</string>
     <string name="bet_info_parlay_win_quota">可赢金额：</string>
     <string name="bet_info_add_bet_success">投注成功</string>
@@ -637,6 +640,8 @@
     <string name="bet_list_delete_all">全删除</string>
     <string name="bet_list_single_warn">可用相同的投注额填充所有单项选择</string>
     <string name="bet_list_single">单注</string>
+    <string name="bet_list_single_type">单项投注</string>
+    <string name="bet_list_parlay_type">串关投注</string>
     <string name="bet_list_view_more_options">更多投注选项</string>
     <string name="bet_list_cant_parlay_warn">提醒若同一赛事, 不同球种, 冠军等投注项目不可进行串关</string>
     <string name="bet_info_odd_content_close">所选投注的一个或多个选项已关闭</string>
@@ -1040,7 +1045,7 @@
     <string name="live_chat">在线客服</string>
     <string name="contact">联系我们</string>
     <string name="btm_navigation_hint">%1$s is a Registered Trade Mark, Brand and Business Name Owned by Ekxinum Inc. Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR).</string>
-    <string name="btm_navigation_copyright">COPYRIGHT © 2022 %1$s ALL RIGHTS RESERVED</string>
+    <string name="btm_navigation_copyright">Copyright © 2022 %1$s ALL RIGHTS RESERVED</string>
     <string name="front_side_result">证件正面扫描结果</string>
     <string name="reverse_side_result">证件反面扫描结果</string>
     <string name="btm_navigation_language">简体中文</string>

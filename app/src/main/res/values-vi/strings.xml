@@ -105,9 +105,10 @@
     <string name="verification_code">Mã xác nhận</string>
     <string name="verification_code_by_sms">Mã xác nhận SMS</string>
     <string name="hint_verification_code">Vui lòng nhập Đăng ký mã xác nhận</string>
-    <string name="error_verification_code">Mã xác nhận đăng ký không đúng</string>
+    <string name="error_verification_code_by_login">Đăng nhập mã xác nhận không đúng</string>
+    <string name="error_verification_code">Đăng ký mã xác nhận không đúng</string>
     <string name="hint_verification_code_by_sms">(SMS)</string>
-    <string name="error_verification_code_by_sms">Mã xác nhận không đúng</string>
+    <string name="error_verification_code_by_sms">SMS mã xác nhận không đúng</string>
     <string name="get_verification_code">Gửi</string>
     <string name="send_timer">Tên tài khoản này đã tồn tại</string>
     <string name="get_valid_code_fail_point">yêu cầu nhận mã xác nhận thất bại, vui lòng nhấp để thử lại !</string>
@@ -607,7 +608,8 @@
     <string name="bet_info_list_bet_quota">Số tiền cược : </string>
     <string name="bet_receipt_bet_quota">Số tiền đặt cược : </string>
     <string name="bet_info_list_win_quota">Số tiền có thể thắng : </string>
-    <string name="bet_list_win_quota">Số tiền có thể thắng:</string>
+    <string name="bet_list_win_quota">Số tiền có thể thắng</string>
+    <string name="bet_receipt_win_quota">Số tiền có thể thắng:</string>
     <string name="bet_info_list_add_more">Thêm nhiều lựa chọn</string>
     <string name="bet_info_list_bet">Cá cược</string>
     <string name="bet_info_list_odds_change">Chấp nhận các thay đổi và đặt cược</string>
@@ -637,6 +639,8 @@
     <string name="bet_list_delete_all">Xóa tất cả</string>
     <string name="bet_list_single_warn">(Có thể sử dụng cùng số tiền đặt cược để thực hiện tất cả các lựa chọn riêng lẻ)</string>
     <string name="bet_list_single">Đơn cược</string>
+    <string name="bet_list_single_type">Cược đơn</string>
+    <string name="bet_list_parlay_type">Cược xâu</string>
     <string name="bet_list_view_more_options">Nhiều lựa chọn hơn</string>
     <string name="bet_info_odd_content_close">Một hoặc nhiều tùy chọn của cá cược đã bị đóng</string>
     <string name="bet_info_remove_closed">Xóa các tùy chọn đã đóng</string>

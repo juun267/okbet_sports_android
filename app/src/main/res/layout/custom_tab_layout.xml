@@ -28,6 +28,11 @@
             android:layout_height="wrap_content"
             android:text="@string/login_password"/>
 
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/color_666666"/>
+
         <com.google.android.material.tabs.TabItem
             android:id="@+id/second_tab"
             android:layout_width="wrap_content"
