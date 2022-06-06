@@ -214,7 +214,7 @@ class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
                 tv_match_time.text = data.matchInfo?.startTimeDisplay ?: ""
             }
             if(TimeUtil.isTimeInPlay(data.matchInfo?.startTime)){
-                tv_match_time.setTextColor(context.getColor(R.color.color_DDDDDD_000000))
+                tv_match_time.setTextColor(context.getColor(R.color.color_CCCCCC_000000))
             }else{
                 tv_match_time.setTextColor(context.getColor(R.color.color_BCBCBC_666666))
             }

@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/platform_account_money"
-        android:textColor="@color/color_CCCCCC_333333"
+        android:textColor="@color/color_BBBBBB_333333"
         android:textSize="@dimen/textSize12sp"
         android:textStyle="bold" />
 
@@ -43,7 +43,7 @@
         android:layout_gravity="center"
         android:scaleType="centerInside"
         android:src="@drawable/ic_profile_center_refresh"
-        app:tint="@color/color_8F8F8F_999999" />
+        app:tint="@color/color_7F7F7F_999999" />
 
 </LinearLayout>
 

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
@@ -89,7 +90,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     viewModel.tempDatePosition = 0
                     //日期圖示選取狀態下，切換球種要重置UI狀態
                     if (game_toolbar_calendar.isSelected) game_toolbar_calendar.performClick()
-                    (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(sport_type_list, RecyclerView.State(), dataSport.indexOfFirst { item -> TextUtils.equals(it.code,item.code) })
+                    (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
+                        sport_type_list,
+                        RecyclerView.State(),
+                        dataSport.indexOfFirst { item -> TextUtils.equals(it.code, item.code) })
                 }
                 //切換球種後要重置位置
                 initMatchCategoryPagerPosition()
@@ -225,7 +229,15 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
             leagueListener = LeagueListener {
-                subscribeChannelHall(it)
+                if (it.unfold == FoldState.FOLD.code) {
+                    Log.d("[subscribe]", "取消訂閱 ${it.league.name}")
+                    unSubscribeChannelHall(it)
+                }
+                //目前無法監聽收合動畫
+                Handler().postDelayed(
+                    { game_list?.firstVisibleRange(this, activity ?: requireActivity()) },
+                    400
+                )
             }
             leagueOddListener = LeagueOddListener(
                 clickListenerPlayType = { matchId, matchInfoList, _, liveVideo ->
@@ -930,6 +942,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
         viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { outrightOddsListResult ->
+                if (game_tab_odd_v4.visibility == View.VISIBLE && game_tabs.selectedTabPosition != 1)
+                    return@observe
                 if (outrightOddsListResult.success) {
                     val outrightLeagueOddDataList: MutableList<org.cxct.sportlottery.network.outright.odds.MatchOdd?> = mutableListOf()
                     outrightOddsListResult.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds
@@ -1692,12 +1706,21 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         //add coming soon
         val comingSoonList = mutableListOf<Item>()
         comingSoonList.addAll(gameTypeList)
-        comingSoonList.add(Item(code = GameType.BB_COMING_SOON.key,"", -1 , null, 99))
-        comingSoonList.add(Item(code = GameType.ES_COMING_SOON.key,"", -1 , null, 100))
+        comingSoonList.add(Item(code = GameType.BB_COMING_SOON.key, "", -1, null, 99))
+        comingSoonList.add(Item(code = GameType.ES_COMING_SOON.key, "", -1, null, 100))
         gameTypeAdapter.dataSport = comingSoonList
 
+        //球種如果選過，下次回來也需要滑動置中
+        if (!gameTypeList.isNullOrEmpty()) {
+            (sport_type_list.layoutManager as ScrollCenterLayoutManager?)?.smoothScrollToPosition(
+                sport_type_list,
+                RecyclerView.State(),
+                comingSoonList.indexOfFirst { item -> item.isSelected }
+            )
+        }
+
         if (args.matchType != MatchType.OTHER) {
-            gameTypeList.find { it.isSelected }.let { item ->
+            comingSoonList.find { it.isSelected }.let { item ->
                 game_toolbar_sport_type.text =
                     context?.let { getGameTypeString(it, item?.code) } ?: resources.getString(
                         GameType.FT.string
@@ -1706,7 +1729,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 updateSportBackground(item)
             }
         } else {
-            gameTypeList.find { it.isSelected }.let { item ->
+            comingSoonList.find { it.isSelected }.let { item ->
                 item?.let {
                     setOtherOddTab(!it.hasPlay)
                     updateSportBackground(it)
@@ -1714,7 +1737,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             }
         }
 
-        if (gameTypeList.isEmpty()) {
+        if (comingSoonList.isEmpty()) {
             sport_type_list.visibility = View.GONE
             game_toolbar_sport_type.visibility = View.GONE
             game_toolbar_champion.visibility = View.GONE

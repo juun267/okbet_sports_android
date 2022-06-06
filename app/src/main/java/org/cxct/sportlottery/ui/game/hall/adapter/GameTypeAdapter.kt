@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.game.hall.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
@@ -68,7 +69,16 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                             is ViewHolderSport -> {
                                 holder.update(data, gameTypeListener)
                             }
+                            is ViewHolderSportHome -> {
+                                holder.bind(data, gameTypeListener)
+                            }
+                            else -> {
+                                onBindViewHolder(holder, position)
+                            }
                         }
+                    }
+                    else -> {
+                        onBindViewHolder(holder, position)
                     }
                 }
             }
@@ -94,7 +104,35 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemCount(): Int = dataSport.size + dataThirdGame.size
 
+    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
+        when (holder) {
+            is ViewHolderSport -> {
+                with(holder) {
+                    if (sportImageAnimation != null) {
+                        itemView.sport_type_img.startAnimation(sportImageAnimation)
+                    } else {
+                        itemView.sport_type_img.clearAnimation()
+                    }
+                }
+            }
+        }
+
+        super.onViewAttachedToWindow(holder)
+    }
+
+    override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
+        when (holder) {
+            is ViewHolderSport -> {
+                holder.itemView.sport_type_img.clearAnimation()
+            }
+        }
+        super.onViewDetachedFromWindow(holder)
+    }
+
     class ViewHolderSport private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        //用來讓ViewAttachedToWindow和ViewDetachedFromWindow時判斷球種icon動畫配置用, 在onBindViewHolder時都要重新賦值
+        var sportImageAnimation: Animation? = null
 
         fun bind(item: Item, gameTypeListener: GameTypeListener?) {
 
@@ -106,11 +144,11 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 isSelected = item.isSelected
 
                 if (isSelected) {
-                    sport_type_img.startAnimation(
-                        AnimationUtils.loadAnimation(context, R.anim.rotate_sport)
-                    )
+                    sportImageAnimation = AnimationUtils.loadAnimation(sport_type_img.context, R.anim.rotate_sport)
+                    sport_type_img.startAnimation(sportImageAnimation)
                 } else {
                     sport_type_img.clearAnimation()
+                    sportImageAnimation = null
                 }
             }
 
@@ -132,13 +170,13 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 //暫時利用num判斷是否為coming soon
                 if (item.num == -1) {
                     sportCountText = context.getString(R.string.coming_soon)
-                    sportCountTextColor = R.color.color_A3A3A3_999999
+                    sportCountTextColor = R.color.color_7F7F7F_999999
                     isEnabled = false
                 } else {
                     sportCountText = item.num.toString()
                     sportCountTextColor =
                         if (item.isSelected) R.color.color_FFFFFF
-                        else R.color.color_CCCCCC_333333
+                        else R.color.color_BBBBBB_333333
                     isEnabled = true
                 }
                 sport_count_text.text = sportCountText
@@ -224,12 +262,14 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 if (needUpdateAnimationStatus) {
                     when (isSelected) {
                         true -> {
+                            sportImageAnimation = AnimationUtils.loadAnimation(context, R.anim.rotate_sport)
                             sport_type_img.startAnimation(
-                                AnimationUtils.loadAnimation(context, R.anim.rotate_sport)
+                                sportImageAnimation
                             )
                         }
                         false -> {
                             sport_type_img.clearAnimation()
+                            sportImageAnimation = null
                         }
                     }
                 }

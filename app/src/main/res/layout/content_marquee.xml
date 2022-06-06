@@ -8,6 +8,6 @@
     android:focusable="true"
     android:gravity="center_vertical"
     android:singleLine="true"
-    android:textColor="@color/color_8F8F8F_999999"
+    android:textColor="@color/color_7F7F7F_999999"
     android:textSize="@dimen/textSize11sp"
     tools:text="內容長度一定要超過控制元件的長度,內容長度一定要超過控制元件的長度,內容長度一定要超過控制元件的長度" />

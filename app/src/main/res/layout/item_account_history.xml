@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textColor="@color/color_CCCCCC_333333"
+                android:textColor="@color/color_BBBBBB_333333"
                 android:textSize="@dimen/textSize12sp"
                 android:text="@{row.statDate}"
                 app:dateNoYear="@{row.statDate}"
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 app:dayOfWeek="@{row.statDate}"
-                android:textColor="@color/color_CCCCCC_333333"
+                android:textColor="@color/color_BBBBBB_333333"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="星期一" />
 
@@ -70,7 +70,7 @@
             android:text="@string/unknown_data"
             app:moneyFormat="@{row.settledBetMoney}"
             android:layout_marginStart="4dp"
-            android:textColor="@color/color_CCCCCC_333333"
+            android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize12sp" />
 
         <TextView
@@ -83,7 +83,7 @@
             tools:text="9,959,500.000"
             android:text="@string/unknown_data"
             app:moneyFormat="@{row.validBetMoney}"
-            android:textColor="@color/color_CCCCCC_333333"
+            android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize12sp" />
 
         <TextView
@@ -97,7 +97,7 @@
             app:moneyColor="@{row.vipRewardMoneyWithRebate}"
             app:moneyFormat="@{row.vipRewardMoneyWithRebate}"
             tools:text="-9,959,500.000"
-            android:textColor="@color/color_CCCCCC_333333"
+            android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize12sp" />
 
     </LinearLayout>

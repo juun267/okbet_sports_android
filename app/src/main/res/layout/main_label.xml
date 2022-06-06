@@ -25,7 +25,7 @@
         android:padding="4dp"
         android:text="@string/more"
         android:textAllCaps="true"
-        android:textColor="@color/color_8F8F8F_999999"
+        android:textColor="@color/color_7F7F7F_999999"
         android:textSize="@dimen/textSize12sp"
         app:drawableEndCompat="@drawable/ic_more_arrow"
         app:layout_constraintBottom_toBottomOf="parent"

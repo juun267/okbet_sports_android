@@ -105,9 +105,10 @@
     <string name="verification_code">Mã xác nhận</string>
     <string name="verification_code_by_sms">Mã xác nhận SMS</string>
     <string name="hint_verification_code">Vui lòng nhập Đăng ký mã xác nhận</string>
-    <string name="error_verification_code">Mã xác nhận đăng ký không đúng</string>
+    <string name="error_verification_code_by_login">Đăng nhập mã xác nhận không đúng</string>
+    <string name="error_verification_code">Đăng ký mã xác nhận không đúng</string>
     <string name="hint_verification_code_by_sms">(SMS)</string>
-    <string name="error_verification_code_by_sms">Mã xác nhận không đúng</string>
+    <string name="error_verification_code_by_sms">SMS mã xác nhận không đúng</string>
     <string name="get_verification_code">Gửi</string>
     <string name="send_timer">Tên tài khoản này đã tồn tại</string>
     <string name="get_valid_code_fail_point">yêu cầu nhận mã xác nhận thất bại, vui lòng nhấp để thử lại !</string>
@@ -397,7 +398,6 @@
     <string name="ou_hdp_hdp_title_v_b">Điểm chấp</string>
     <string name="ou_hdp_1x2_title">Đội Vô Địch</string>
     <string name="x12_x_play_name">Hòa trận</string>
-    <string name="no_history_content">Lựa chọn hiện tại của bạn chưa có nội dung</string>
     <string name="no_history_search">Không có dữ liệu tương ứng cho mục tìm kiếm của bạn</string>
     <string name="odd_button_ou_o">Trên</string>
     <string name="odd_button_ou_u">Dưới</string>

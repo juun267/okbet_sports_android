@@ -17,7 +17,7 @@
             android:textSize="@dimen/textSize12sp"
             android:paddingStart="28dp"
             android:paddingEnd="4dp"
-            android:buttonTint="@color/color_BDBDBD_404040" />
+            android:buttonTint="@color/color_AEAEAE_404040" />
 
         <TextView
             android:id="@+id/tv_cancel_selections"
@@ -27,7 +27,7 @@
             android:textSize="@dimen/textSize12sp"
             android:paddingHorizontal="24dp"
             android:text="@string/select_cancel"
-            android:textColor="@color/color_8F8F8F_999999" />
+            android:textColor="@color/color_7F7F7F_999999" />
 
 
 </LinearLayout>

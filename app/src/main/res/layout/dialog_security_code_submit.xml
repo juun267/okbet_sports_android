@@ -22,7 +22,7 @@
             android:gravity="center"
             android:minHeight="44dp"
             android:text="@string/dialog_security_title"
-            android:textColor="@color/color_DDDDDD_000000"
+            android:textColor="@color/color_CCCCCC_000000"
             android:textSize="@dimen/textSize16sp"
             android:textStyle="bold" />
 
@@ -43,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/dialog_security_hint"
-                android:textColor="@color/color_BDBDBD_404040"
+                android:textColor="@color/color_AEAEAE_404040"
                 android:textSize="@dimen/textSize12sp" />
 
         </LinearLayout>

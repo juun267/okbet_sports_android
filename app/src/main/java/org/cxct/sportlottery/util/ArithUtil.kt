@@ -122,7 +122,8 @@ object ArithUtil : DecimalFormatUtil() {
 
     fun div(b1: BigDecimal, b2: BigDecimal, scale: Int, roundMode: RoundingMode? = RoundingMode.HALF_UP): BigDecimal {
         require(scale >= 0) { "保留的小数位数必须大于零" }
-        return b1.divide(b2, scale, roundMode)
+        val divisor = if (b2.toDouble() == 0.0) BigDecimal(1.0) else b2
+        return b1.divide(divisor, scale, roundMode)
     }
 
     /**

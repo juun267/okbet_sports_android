@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.game.league
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +24,9 @@ import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.OddsListData
+import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.query.Play
@@ -101,14 +104,22 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
             leagueListener = LeagueListener {
-                subscribeChannelHall(it)
+                if (it.unfold == FoldState.FOLD.code) {
+                    Log.d("[subscribe]", "取消訂閱 ${it.league.name}")
+                    unSubscribeChannelHall(it)
+                }
+                //目前無法監聽收合動畫
+                Handler().postDelayed(
+                    {  game_league_odd_list?.firstVisibleRange(this, activity ?: requireActivity()) },
+                    400
+                )
             }
 
             leagueOddListener = LeagueOddListener(
-                { matchId, matchInfoList, gameMatchType, liveVideo ->
+                clickListenerPlayType = { matchId, matchInfoList, gameMatchType, liveVideo ->
                     navMatchDetailPage(matchId, matchInfoList, gameMatchType)
                 },
-                { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
+                clickListenerBet = { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
                     mSelectedMatchInfo = matchInfo
                     if (mIsEnabled) {
                         avoidFastDoubleClick()
@@ -122,20 +133,18 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     }
                     hideKeyboard()
                 },
-                { matchOdd, quickPlayCate ->
-                    matchOdd.matchInfo?.let {
-                        viewModel.getQuickList(it.id)
-                    }
+                clickListenerQuickCateTab = { matchOdd, quickPlayCate ->
+                    setQuickPlayCateSelected(matchOdd, quickPlayCate)
                 },
-                {
+                clickListenerQuickCateClose = {
                     viewModel.clearQuickPlayCateSelected()
                 },
-                { matchId ->
+                clickListenerFavorite = { matchId ->
                     matchId?.let {
                         viewModel.pinFavorite(FavoriteType.MATCH, it)
                     }
                 },
-                { matchId ->
+                clickListenerStatistics = { matchId ->
                     navStatistics(matchId)
                 },
                 {},
@@ -777,6 +786,22 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 playSelected.code
             }
             else -> null
+        }
+    }
+
+    private fun setQuickPlayCateSelected(
+        selectedMatchOdd: MatchOdd,
+        selectedQuickPlayCate: QuickPlayCate
+    ) {
+        leagueAdapter.data.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                if (selectedMatchOdd.matchInfo?.id == matchOdd.matchInfo?.id) {
+                    matchOdd.isExpand = true
+                    matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                        if (selectedQuickPlayCate.code == quickPlayCate.code) quickPlayCate.isSelected = true
+                    }
+                }
+            }
         }
     }
 

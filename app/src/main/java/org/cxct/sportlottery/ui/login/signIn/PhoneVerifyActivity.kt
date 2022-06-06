@@ -7,7 +7,6 @@ import android.os.Looper
 import android.provider.Settings
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityPhoneVerifyBinding
@@ -129,7 +128,7 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
                             binding.btnSendSms.setTextColor(
                                 ContextCompat.getColor(
                                     this@PhoneVerifyActivity,
-                                    R.color.color_BDBDBD_404040
+                                    R.color.color_AEAEAE_404040
                                 )
                             )
                         } else {

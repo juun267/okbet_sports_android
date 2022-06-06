@@ -111,7 +111,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                 }
                 it?.success == true -> checkAppMinVersion()
 
-                else -> showErrorRetryDialog(getString(R.string.error_config_title), getString(R.string.error_config))
+                else -> showErrorRetryDialog(getString(R.string.error_config_title), getString(R.string.message_network_no_connect))
             }
         }
 
