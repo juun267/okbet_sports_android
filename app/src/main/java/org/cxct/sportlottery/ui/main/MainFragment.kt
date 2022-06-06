@@ -28,6 +28,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameCateData
@@ -465,7 +466,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun setupSport() {
         btn_sport.setOnClickListener {
-            startActivity(Intent(activity, GameActivity::class.java))
+            GamePublicityActivity.reStart(context ?: requireActivity())
         }
     }
 
