@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.game
 
 import android.app.Application
 import android.content.Context
+import android.content.res.Configuration
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -72,7 +73,6 @@ import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class GameViewModel(
     androidContext: Application,
@@ -84,7 +84,6 @@ class GameViewModel(
     private val sportMenuRepository: SportMenuRepository,
     private val thirdGameRepository: ThirdGameRepository,
     private val withdrawRepository: WithdrawRepository,
-    intentRepository: IntentRepository
 ) : BaseBottomNavViewModel(
     androidContext,
     userInfoRepository,
@@ -92,7 +91,6 @@ class GameViewModel(
     betInfoRepository,
     infoCenterRepository,
     myFavoriteRepository,
-    intentRepository
 ) {
     companion object {
         const val GameLiveSP = "GameLiveSharedPreferences"
@@ -824,7 +822,12 @@ class GameViewModel(
                     }
                 }
             }
-            _sportMenuList.postValue(Event(list))
+            //add coming soon
+            val comingSoonList = mutableListOf<SportMenu>()
+            comingSoonList.addAll(list)
+            comingSoonList.add(SportMenu(gameType = GameType.BB_COMING_SOON,"", "", 0))
+            comingSoonList.add(SportMenu(gameType = GameType.ES_COMING_SOON,"", "", 0))
+            _sportMenuList.postValue(Event(comingSoonList))
         }
     }
 
@@ -1970,19 +1973,19 @@ class GameViewModel(
             }
     }
 
+    fun getLocalString(context: Context, resId:Int): String {
+        val locale = LanguageManager.getSetLanguageLocale(androidContext)
+        var conf = context.resources.configuration
+        conf = Configuration(conf)
+        conf.setLocale(locale)
+        val localizedContext = context.createConfigurationContext(conf)
+        return localizedContext.resources.getString(resId)
+    }
     private fun getDateRowEarly(): List<Date> {
-        val locale = when (LanguageManager.getSelectLanguage(androidContext)) {
-            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
-                Locale.CHINA
-            }
-            LanguageManager.Language.VI -> {
-                Locale("vi")
-            }
-            else -> Locale.getDefault()
-        }
+        val locale = LanguageManager.getSetLanguageLocale(androidContext)
         val dateRow = mutableListOf(
             Date(
-                androidContext.getString(R.string.date_row_all),
+                getLocalString(androidContext,R.string.date_row_all),
                 TimeUtil.getEarlyAllTimeRangeParams()
             ), Date(
                 androidContext.getString(R.string.other),
@@ -2013,7 +2016,7 @@ class GameViewModel(
     private fun getDateRowParlay(): List<Date> {
         val dateRow = mutableListOf(
             Date(
-                androidContext.getString(R.string.date_row_all),
+                getLocalString(androidContext,R.string.date_row_all),
                 TimeUtil.getParlayAllTimeRangeParams()
             ), Date(
                 androidContext.getString(R.string.date_row_live),

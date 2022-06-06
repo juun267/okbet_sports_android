@@ -117,6 +117,21 @@ object Constants {
         }
     }
 
+    //代理加盟
+    fun getAffiliateUrl(context: Context): String {
+        return "${getBaseUrl()}sports-rule/#/${
+            when (getSelectLanguage(context)) {
+                LanguageManager.Language.ZH -> ""
+                LanguageManager.Language.VI -> "vi/"
+                else -> "us/"
+            }
+        }affiliate?platform=${
+            context.getString(
+                R.string.app_name
+            )
+        }"
+    }
+
     //隐私权政策
     fun getPrivacyRuleUrl(context: Context): String? {
 

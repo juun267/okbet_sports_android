@@ -1,14 +1,12 @@
 package org.cxct.sportlottery.ui.game.hall.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.itemview_sport_type.view.sport_type_img
-import kotlinx.android.synthetic.main.itemview_sport_type.view.sport_type_text
 import kotlinx.android.synthetic.main.itemview_sport_type_v4.view.*
 import kotlinx.android.synthetic.main.itemview_sport_type_v5.view.*
 import org.cxct.sportlottery.R
@@ -27,7 +25,10 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var dataSport = listOf<Item>()
         set(value) {
             field = value
-            notifyDataSetChanged() // TODO 這裡需要另外處理GameType列表更新問題 By Hewie
+            field.forEachIndexed { index, item ->
+                notifyItemChanged(index, item)
+            }
+            // TODO 這裡需要另外處理GameType列表更新問題 By Hewie
         }
 
     private var dataThirdGame = listOf<GameCateData>()
@@ -55,6 +56,25 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             else -> ViewHolderThirdGame.from(parent)
         }
 
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+        when {
+            payloads.isNullOrEmpty() -> {
+                onBindViewHolder(holder, position)
+            }
+            else -> {
+                when (val data = payloads.firstOrNull()) {
+                    is Item -> {
+                        when (holder) {
+                            is ViewHolderSport -> {
+                                holder.update(data, gameTypeListener)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ViewHolderSport -> {
@@ -81,10 +101,7 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             setupSportTypeImage(itemView.sport_type_img, item)
 
             itemView.apply {
-
-                sport_type_text.text = getGameTypeString(context, item.code)
-
-                sport_count_text.text = item.num.toString()
+                setupSportContent(item, gameTypeListener)
 
                 isSelected = item.isSelected
 
@@ -92,14 +109,45 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     sport_type_img.startAnimation(
                         AnimationUtils.loadAnimation(context, R.anim.rotate_sport)
                     )
+                } else {
+                    sport_type_img.clearAnimation()
                 }
+            }
+
+        }
+
+        fun update(item: Item, gameTypeListener: GameTypeListener?) {
+            setupSportTypeImage(itemView.sport_type_img, item)
+            setupSportContent(item, gameTypeListener)
+
+            updateSelected(item)
+        }
+
+        private fun setupSportContent(item: Item, gameTypeListener: GameTypeListener?){
+            with(itemView) {
+                sport_type_text.text = getGameTypeString(context, item.code)
+
+                val sportCountText: String
+                val sportCountTextColor: Int
+                //暫時利用num判斷是否為coming soon
+                if (item.num == -1) {
+                    sportCountText = context.getString(R.string.coming_soon)
+                    sportCountTextColor = R.color.color_A3A3A3_999999
+                    isEnabled = false
+                } else {
+                    sportCountText = item.num.toString()
+                    sportCountTextColor =
+                        if (item.isSelected) R.color.color_FFFFFF
+                        else R.color.color_CCCCCC_333333
+                    isEnabled = true
+                }
+                sport_count_text.text = sportCountText
+                sport_count_text.setTextColor(ContextCompat.getColor(context, sportCountTextColor))
 
                 setOnClickListener {
                     gameTypeListener?.onClick(item)
                 }
-
             }
-
         }
 
         private fun setupSportTypeImage(img: ImageView, item: Item) {
@@ -152,8 +200,42 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 GameType.FB.key -> {
                     img.setImageResource(R.drawable.selector_sport_type_item_img_fb_v5)
                 }
+                GameType.BB_COMING_SOON.key -> {
+                    img.setImageResource(R.drawable.selector_sport_type_item_img_bb_v5)
+                }
+                GameType.ES_COMING_SOON.key -> {
+                    img.setImageResource(R.drawable.selector_sport_type_item_img_es_v5)
+                }
             }
         }
+
+        /**
+         * 更新選中狀態,
+         */
+        private fun updateSelected(item: Item) {
+            with(itemView) {
+                var needUpdateAnimationStatus = false
+                if (isSelected != item.isSelected) {
+                    needUpdateAnimationStatus = true
+                }
+
+                isSelected = item.isSelected
+
+                if (needUpdateAnimationStatus) {
+                    when (isSelected) {
+                        true -> {
+                            sport_type_img.startAnimation(
+                                AnimationUtils.loadAnimation(context, R.anim.rotate_sport)
+                            )
+                        }
+                        false -> {
+                            sport_type_img.clearAnimation()
+                        }
+                    }
+                }
+            }
+        }
+
         companion object {
             fun from(parent: ViewGroup): ViewHolderSport {
                 val layoutInflater = LayoutInflater.from(parent.context)

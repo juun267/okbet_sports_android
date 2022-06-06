@@ -30,7 +30,6 @@ class GamePublicityViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     favoriteRepository: MyFavoriteRepository,
-    intentRepository: IntentRepository
 ) : BaseBottomNavViewModel(
     androidContext,
     userInfoRepository,
@@ -38,7 +37,6 @@ class GamePublicityViewModel(
     betInfoRepository,
     infoCenterRepository,
     favoriteRepository,
-    intentRepository
 ) {
     private val _publicityRecommend = MutableLiveData<Event<RecommendResult>>()
     val publicityRecommend: LiveData<Event<RecommendResult>>

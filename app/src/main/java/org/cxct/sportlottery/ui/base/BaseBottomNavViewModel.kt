@@ -20,7 +20,6 @@ abstract class BaseBottomNavViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     favoriteRepository: MyFavoriteRepository,
-    private val intentRepository: IntentRepository
 ) : BaseSocketViewModel(
     androidContext,
     userInfoRepository,
@@ -33,7 +32,8 @@ abstract class BaseBottomNavViewModel(
         get() = _thirdGameCategory
 
     val intentClass: LiveData<Event<Class<*>>>
-        get() = intentRepository.intentClass
+        get() = _intentClass
+    private val _intentClass = MutableLiveData<Event<Class<*>>>()
 
     val showShoppingCart: LiveData<Event<Boolean>>
         get() = _showShoppingCart
@@ -70,7 +70,7 @@ abstract class BaseBottomNavViewModel(
     }
 
     fun navGame() {
-        intentRepository.setIntentClassLiveData(GameActivity::class.java)
+        setIntentClassLiveData(GameActivity::class.java)
     }
 
     fun navMyFavorite() {
@@ -79,7 +79,7 @@ abstract class BaseBottomNavViewModel(
             return
         }
 
-        intentRepository.setIntentClassLiveData(MyFavoriteActivity::class.java)
+        setIntentClassLiveData(MyFavoriteActivity::class.java)
     }
 
     fun navAccountHistory() {
@@ -88,7 +88,7 @@ abstract class BaseBottomNavViewModel(
             return
         }
 
-        intentRepository.setIntentClassLiveData(AccountHistoryActivity::class.java)
+        setIntentClassLiveData(AccountHistoryActivity::class.java)
     }
 
     fun navTranStatus() {
@@ -97,7 +97,7 @@ abstract class BaseBottomNavViewModel(
             return
         }
 
-        intentRepository.setIntentClassLiveData(TransactionStatusActivity::class.java)
+        setIntentClassLiveData(TransactionStatusActivity::class.java)
     }
 
     fun navShoppingCart() {
@@ -105,5 +105,9 @@ abstract class BaseBottomNavViewModel(
 //            betInfoRepository.betInfoList.value?.peekContent()?.isNotEmpty() //注單為0時，不可以打開投注單
             Event(true) //2022/1/11新需求，注單為0時可以開啟投注單，並且顯示特定UI by Bill
         )
+    }
+
+    private fun setIntentClassLiveData(clazz: Class<*>) {
+        _intentClass.postValue(Event(clazz))
     }
 }

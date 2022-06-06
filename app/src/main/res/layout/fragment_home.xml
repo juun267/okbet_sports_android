@@ -35,6 +35,7 @@
                 android:layout_height="wrap_content"
                 app:layout_scrollFlags="scroll">
             </com.google.android.material.appbar.CollapsingToolbarLayout>
+
         </com.google.android.material.appbar.AppBarLayout>
 
         <FrameLayout
@@ -42,12 +43,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
             <!-- 整合列表 -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:overScrollMode="never" />
+
+<!--            <include-->
+<!--                android:id="@+id/loading"-->
+<!--                layout="@layout/view_home_loading"/>-->
+
         </FrameLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

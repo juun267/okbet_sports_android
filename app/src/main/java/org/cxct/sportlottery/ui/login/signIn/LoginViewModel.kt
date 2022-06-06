@@ -18,6 +18,7 @@ import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.util.VerifyConstUtil
 
 
 class LoginViewModel(
@@ -77,7 +78,9 @@ class LoginViewModel(
                 loginRepository.login(loginRequest)
             }?.let { result ->
                 // TODO 20220108 更新UserInfo by Hewie
-                userInfoRepository.getUserInfo()
+                //若已經驗證過則直接獲取最新的用戶資料, 未驗證需等待驗證後
+                if (result.loginData?.deviceValidateStatus == 1)
+                    userInfoRepository.getUserInfo()
 //                result.loginData?.discount = 0.4f //後台修復中 測試用
                 _loginResult.postValue(result)
             }
@@ -105,6 +108,10 @@ class LoginViewModel(
             doNetwork(androidContext) {
                 loginRepository.validateLoginDeviceSms(validateRequest)
             }?.let { result ->
+                //手機驗證成功後, 獲取最新的用戶資料
+                if (result.success) {
+                    userInfoRepository.getUserInfo()
+                }
                 _validResult.postValue(result)
             }
         }
@@ -150,9 +157,9 @@ class LoginViewModel(
         }
     }
 
-    private fun checkValidCode(context: Context, validCode: String): String? {
+     fun checkValidCode(context: Context, validCode: String): String? {
         return when {
-            validCode.isBlank() -> context.getString(R.string.hint_verification_code)
+            validCode.isBlank() -> context.getString(R.string.error_input_empty)
             else -> null
         }
     }

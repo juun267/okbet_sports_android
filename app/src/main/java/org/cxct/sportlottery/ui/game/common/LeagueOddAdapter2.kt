@@ -356,11 +356,32 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
 
             itemView.league_odd_match_price_boost.isVisible = item.matchInfo?.eps == 1
             //itemView.space2.isVisible = (item.matchInfo?.eps == 1 || item.matchInfo?.liveVideo == 1)
-            itemView.iv_play.isVisible =
-                item.matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(item.matchInfo?.startTime))
-            itemView.iv_animation.isVisible =
-                TimeUtil.isTimeInPlay(item.matchInfo?.startTime) && !(item.matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
-                    ?.getGameDetailAnimationNeedShow() == true
+            with(itemView.iv_play) {
+                isVisible = item.matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(item.matchInfo?.startTime))
+
+                setOnClickListener {
+                    leagueOddListener?.onClickLiveIconListener(
+                        item.matchInfo?.id,
+                        matchInfoList,
+                        if (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)) MatchType.IN_PLAY else matchType,
+                        item.matchInfo?.liveVideo ?: 0
+                    )
+                }
+            }
+            with(itemView.iv_animation) {
+                isVisible =
+                    TimeUtil.isTimeInPlay(item.matchInfo?.startTime) && !(item.matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
+                        ?.getGameDetailAnimationNeedShow() == true
+
+                setOnClickListener {
+                    leagueOddListener?.onClickAnimationIconListener(
+                        item.matchInfo?.id,
+                        matchInfoList,
+                        if (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)) MatchType.IN_PLAY else matchType,
+                        item.matchInfo?.liveVideo ?: 0
+                    )
+                }
+            }
 
         }
 
@@ -777,6 +798,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
 //                }
 
                 OverScrollDecoratorHelper.setUpOverScroll(this, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
+
             }
         }
 
@@ -796,7 +818,6 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                     //update()
                     //notifyDataSetChanged() // TODO
                 }
-                Log.d("Hewie4", "更新(${item.matchInfo?.homeName})：item.oddsMap.size => ${item.oddsMap?.size}")
             }
         }
 

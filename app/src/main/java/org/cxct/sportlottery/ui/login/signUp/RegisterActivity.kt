@@ -593,7 +593,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 )
             }
             validCodeMsg.observe(this@RegisterActivity) {
-                binding.etSmsValidCode.setError(
+                binding.etVerificationCode.setError(
                     it.first,
                     false
                 )

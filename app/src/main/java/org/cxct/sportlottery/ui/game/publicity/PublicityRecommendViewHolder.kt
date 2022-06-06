@@ -70,6 +70,22 @@ class PublicityRecommendViewHolder(
                     }
                 }, refreshListener = {
                     //do nothing
+                },
+                clickLiveIconListener = { matchId, matchInfoList, _, _ ->
+                    publicityAdapterListener.onClickLiveIconListener(
+                        gameType = data.gameType,
+                        matchType = data.matchType,
+                        matchId = matchId,
+                        matchInfoList = matchInfoList
+                    )
+                },
+                clickAnimationIconListener = { matchId, matchInfoList, _, _ ->
+                    publicityAdapterListener.onClickAnimationIconListener(
+                        gameType = data.gameType,
+                        matchType = data.matchType,
+                        matchId = matchId,
+                        matchInfoList = matchInfoList
+                    )
                 })
         }
 
@@ -91,7 +107,6 @@ class PublicityRecommendViewHolder(
                 adapter = leagueOddAdapter
                 leagueOddAdapter?.setData(matchOddList, oddsType)
             }
-
         }
     }
 

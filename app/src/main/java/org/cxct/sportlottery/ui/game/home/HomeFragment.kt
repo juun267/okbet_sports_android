@@ -210,6 +210,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     }
                 }
             })
+            mHomeListAdapter.setHomePreloadItem()
         }
     }
 
@@ -324,6 +325,26 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 val code = select.gameType
                 val matchId = select.id
                 navOddsDetailFragment(code, matchId, mSelectMatchType)
+            }
+        }
+
+        mHomeListAdapter.onClickLiveListener = object : OnSelectItemListener<MatchInfo> {
+            override fun onClick(select: MatchInfo) {
+                if (viewModel.checkLoginStatus()){
+                    val code = select.gameType
+                    val matchId = select.id
+                    navOddsDetailFragment(code, matchId, mSelectMatchType)
+                }
+            }
+        }
+
+        mHomeListAdapter.onClickAnimationListener = object : OnSelectItemListener<MatchInfo> {
+            override fun onClick(select: MatchInfo) {
+                if (viewModel.checkLoginStatus()){
+                    val code = select.gameType
+                    val matchId = select.id
+                    navOddsDetailFragment(code, matchId, mSelectMatchType)
+                }
             }
         }
 
@@ -733,6 +754,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         viewModel.sportMenuList.observe(viewLifecycleOwner) {
             hideLoading()
             it.peekContent().let { list ->
+                mHomeListAdapter.removeDatas(HomeListAdapter.HomePreloadItem())
                 mHomeListAdapter.updateSportMenuData(list)
             }
         }

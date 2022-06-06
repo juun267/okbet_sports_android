@@ -83,6 +83,15 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                     showStatistics(matchId)
                 }, onClickPlayTypeListener = { gameType, matchType, matchId, matchInfoList ->
                     navOddsDetailFragment(gameType, matchType, matchId, matchInfoList)
+                }, onClickLiveIconListener = { gameType, matchType, matchId, matchInfoList ->
+                    if (viewModel.checkLoginStatus()) {
+                        navOddsDetailFragment(gameType, matchType, matchId, matchInfoList)
+                    }
+                },
+                onClickAnimationIconListener = { gameType, matchType, matchId, matchInfoList ->
+                    if (viewModel.checkLoginStatus()) {
+                        navOddsDetailFragment(gameType, matchType, matchId, matchInfoList)
+                    }
                 })
         )
 
@@ -173,6 +182,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         with(mPublicityAdapter) {
             addTitle()
             addSubTitle()
+            addPreload()
         }
     }
 
@@ -204,6 +214,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 mRecommendList.forEach {
                     it.oddsSort = oddsSort
                 }
+                mPublicityAdapter.removeData(GamePublicityAdapter.PreloadItem())
                 mPublicityAdapter.addRecommend(result.recommendList)
                 //先解除全部賽事訂閱
                 unSubscribeChannelHallAll()
