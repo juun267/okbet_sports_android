@@ -260,7 +260,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun initCommonToolbar() {
         if (showToolbar) {
-            with(binding.toolBar) {
+            //20220606 調整樣式, 注單之外無法互動
+            /*with(binding.toolBar) {
                 toolBar.visibility = View.VISIBLE
                 ivLogo.setOnClickListener { removeBetListFragment() }
                 ivNotice.setOnClickListener { clickNotice() }
@@ -268,14 +269,15 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 ivLanguage.setImageResource(LanguageManager.getLanguageFlag(context))
                 btnLogin.setOnClickListener { startActivity(Intent(context, LoginActivity::class.java)) }
                 btnRegister.setOnClickListener { startActivity(Intent(context, RegisterActivity::class.java)) }
-            }
+            }*/
         }
     }
 
     private fun updateCommonToolbarLoginStatus(isLogin: Boolean) {
         if (!showToolbar) return
 
-        with(binding.toolBar) {
+        //20220606 調整樣式, 注單之外無法互動
+        /*with(binding.toolBar) {
             if (isLogin) {
                 btnLogin.visibility = View.GONE
                 btnRegister.visibility = View.GONE
@@ -293,11 +295,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 ivNotice.visibility = View.GONE
                 ivMenu.visibility = View.GONE
             }
-        }
+        }*/
     }
 
     private fun updateCommonToolbarNotice(hasNotice: Boolean) {
-        binding.toolBar.ivNotice.setImageResource(if (hasNotice) R.drawable.icon_bell_with_red_dot else R.drawable.icon_bell)
+        //20220606 調整樣式, 注單之外無法互動
+//        binding.toolBar.ivNotice.setImageResource(if (hasNotice) R.drawable.icon_bell_with_red_dot else R.drawable.icon_bell)
     }
 
 
@@ -581,7 +584,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             it.peekContent().let { list ->
                 //注單列表沒東西時關閉fragment
                 cl_no_data.visibility = if (list.size == 0) View.VISIBLE else View.GONE
-                btn_delete_all.visibility = if (list.size == 0) View.GONE else View.VISIBLE
+//                btn_delete_all.visibility = if (list.size == 0) View.GONE else View.VISIBLE
                 tv_bet_list_count.text = list.size.toString()
                 betListRefactorAdapter?.betList = list
 
@@ -821,11 +824,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             tv_balance.visibility = View.VISIBLE
             tv_balance_currency.visibility = View.VISIBLE
             tv_balance_currency.text = sConfigData?.systemCurrency
-            ivBetMoney.visibility = View.VISIBLE
         } else {
             tv_balance.visibility = View.GONE
             tv_balance_currency.visibility = View.GONE
-            ivBetMoney.visibility = View.GONE
         }
     }
 

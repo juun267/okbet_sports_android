@@ -618,7 +618,8 @@
     <string name="bet_info_list_bet_quota">Betting amount: </string>
     <string name="bet_receipt_bet_quota">Stake：</string>
     <string name="bet_info_list_win_quota">To win: </string>
-    <string name="bet_list_win_quota">EST winning：</string>
+    <string name="bet_list_win_quota">EST winning</string>
+    <string name="bet_receipt_win_quota">EST winning：</string>
     <string name="bet_info_list_add_more">More selection</string>
     <string name="bet_info_list_bet">Place bet</string>
     <string name="bet_info_list_odds_change">Accept changes &#038; bets</string>
