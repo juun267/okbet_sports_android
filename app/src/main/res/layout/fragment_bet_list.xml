@@ -154,6 +154,35 @@
                 </LinearLayout>-->
             </FrameLayout>
 
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/betTypeTabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:layout_below="@id/fl_title"
+                app:tabIndicatorColor="@color/color_317FFF_0760D4"
+                app:tabIndicatorFullWidth="true"
+                app:tabMode="fixed"
+                app:tabPaddingEnd="0dp"
+                app:tabPaddingStart="0dp"
+                app:tabRippleColor="@null"
+                app:tabSelectedTextColor="@color/color_CCCCCC_333333"
+                app:tabTextAppearance="@style/NoUppercaseTab"
+                app:tabTextColor="@color/color_CCCCCC_999999">
+
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/first_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout="@layout/item_bet_list_tab" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/second_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout="@layout/item_bet_list_tab" />
+
+            </com.google.android.material.tabs.TabLayout>
+
             <!--<View
                 android:id="@+id/gray_view"
                 android:layout_width="match_parent"
@@ -165,7 +194,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/cl_total_info"
-                android:layout_below="@id/fl_title">
+                android:layout_below="@id/betTypeTabLayout">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_bet_list"

@@ -617,6 +617,7 @@
     <string name="bet_info_list_bigger_than_max_limit">投注额大于下注限额</string>
     <string name="bet_info_list_less_than_minimum_limit">投注额小于下注限额</string>
     <string name="bet_info_list">注单</string>
+
     <string name="bet_info_parlay_list">复式连串过关投注</string>
     <string name="bet_info_parlay_win_quota">可赢金额：</string>
     <string name="bet_info_add_bet_success">投注成功</string>
@@ -638,6 +639,8 @@
     <string name="bet_list_delete_all">全删除</string>
     <string name="bet_list_single_warn">可用相同的投注额填充所有单项选择</string>
     <string name="bet_list_single">单注</string>
+    <string name="bet_list_single_type">单项投注</string>
+    <string name="bet_list_parlay_type">串关投注</string>
     <string name="bet_list_view_more_options">查看所有多个选项</string>
     <string name="bet_list_cant_parlay_warn">提醒若同一赛事, 不同球种, 冠军等投注项目不可进行串关</string>
     <string name="bet_info_odd_content_close">所选投注的一个或多个选项已关闭</string>

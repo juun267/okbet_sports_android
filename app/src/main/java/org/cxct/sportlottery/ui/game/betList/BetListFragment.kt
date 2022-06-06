@@ -190,6 +190,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun initView() {
         initBtnView()
         initBtnEvent()
+        initTabLayout()
         initRecyclerView()
         initCommonToolbar()
         initToolBar()
@@ -234,6 +235,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         ll_odds_close_warn.setOnClickListener {
             removeClosedPlat()
         }
+    }
+
+    private fun initTabLayout() {
+        //隱藏最後一個Tab後的divider
+        val lastTab = binding.betTypeTabLayout.getTabAt(binding.betTypeTabLayout.tabCount - 1)
+        val tabDivider = lastTab?.customView?.findViewById<View>(R.id.divider)
+        tabDivider?.visibility = View.GONE
     }
 
     private fun initRecyclerView() {
