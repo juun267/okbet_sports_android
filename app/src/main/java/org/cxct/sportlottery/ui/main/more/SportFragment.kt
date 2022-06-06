@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.fragment_main.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
 
 class SportFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
@@ -20,7 +21,7 @@ class SportFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         super.onViewCreated(view, savedInstanceState)
 
         btn_sport.setOnClickListener {
-            startActivity(Intent(activity, GameActivity::class.java))
+            GamePublicityActivity.reStart(activity ?: requireActivity())
         }
     }
 }
