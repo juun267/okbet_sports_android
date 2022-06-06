@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.*
 import kotlinx.android.synthetic.main.button_bet.view.*
 import kotlinx.android.synthetic.main.button_fast_bet_setting.view.*
@@ -242,6 +243,28 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         val lastTab = binding.betTypeTabLayout.getTabAt(binding.betTypeTabLayout.tabCount - 1)
         val tabDivider = lastTab?.customView?.findViewById<View>(R.id.divider)
         tabDivider?.visibility = View.GONE
+
+        binding.betTypeTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when (tab?.position) {
+                    //單項投注
+                    0 -> {
+                        //TODO set betSingleType in betListRefactorAdapter
+                    }
+                    //串關投注
+                    1 -> {
+                        //TODO set betParlayType in betListRefactorAdapter
+                    }
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+
+        })
     }
 
     private fun initRecyclerView() {
