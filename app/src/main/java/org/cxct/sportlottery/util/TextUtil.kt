@@ -32,6 +32,20 @@ object TextUtil : DecimalFormatUtil() {
         return null
     }
 
+    fun formatMoney(any: Any): String? {
+        try {
+            var target = any
+
+            if (any !is Number)
+                target = target.toString().toDouble()
+
+            return doNumberFormat(target, "###,###,###,##0")
+        } catch (e: Exception) {
+            Timber.e("$e")
+        }
+        return null
+    }
+
     fun formatInputMoney(any: Any): String {
         return doNumberFormat(any, "0.##")
     }
