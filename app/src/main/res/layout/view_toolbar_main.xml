@@ -5,7 +5,7 @@
     android:id="@+id/toolBar"
     android:layout_width="match_parent"
     android:layout_height="@dimen/tool_bar_height"
-    android:background="@color/color_191919_FCFCFC"
+    android:background="@drawable/bg_title"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     app:layout_scrollFlags="scroll|enterAlways"
