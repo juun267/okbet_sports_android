@@ -129,7 +129,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     )
 
     private val deleteAllLayoutAnimationListener by lazy {
-        object : Animation.AnimationListener {
+        /*object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {
             }
 
@@ -142,7 +142,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             override fun onAnimationRepeat(animation: Animation?) {
             }
 
-        }
+        }*/
     }
 
     //提示
@@ -494,7 +494,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initDeleteAllOnClickEvent() {
-        val exitAnimation =
+        /*val exitAnimation =
             AnimationUtils.loadAnimation(context, R.anim.pop_left_to_right_exit).apply {
                 setAnimationListener(deleteAllLayoutAnimationListener)
                 duration = 300
@@ -518,6 +518,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 isAutoCloseWhenNoData = true
                 viewModel.removeBetInfoAll()
             }
+        }*/
+
+        binding.btnDeleteAll.setOnClickListener {
+            isAutoCloseWhenNoData = true
+            viewModel.removeBetInfoAll()
         }
     }
 
