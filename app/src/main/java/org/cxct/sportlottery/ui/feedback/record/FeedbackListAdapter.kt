@@ -8,8 +8,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.feedback.FeedBackRows
 import org.cxct.sportlottery.util.setDateTime
@@ -90,7 +88,7 @@ class FeedbackListAdapter(var context: Context, private val clickListener: ItemC
                 clickListener.onClick(item)
             }
             tvStatus.text = tvStatus.context.getString(getMsgStatus(item.status))
-            val statusColor = if (item.status == 0) R.color.color_A3A3A3_666666 else R.color.color_08dc6e_08dc6e
+            val statusColor = if (item.status == 0) R.color.color_909090_666666 else R.color.color_08dc6e_08dc6e
             tvStatus.setTextColor(ContextCompat.getColor(tvStatus.context, statusColor))
         }
 

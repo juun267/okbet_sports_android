@@ -29,7 +29,7 @@
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
                 android:text="@string/bottom_sheet_close"
-                android:textColor="@color/color_8F8F8F_999999"
+                android:textColor="@color/color_7F7F7F_999999"
                 android:textSize="@dimen/textSize14sp" />
 
         </RelativeLayout>

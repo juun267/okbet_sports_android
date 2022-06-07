@@ -8,14 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.view_item_recharge_log.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.list.Row
-import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.ui.finance.df.Status
-import org.cxct.sportlottery.ui.results.StatusType
-import org.cxct.sportlottery.util.BindingUtil
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.setRecordStatus
-import org.cxct.sportlottery.util.setStatus
 
 class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -118,7 +114,7 @@ class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     itemView.rech_log_state.setTextColor(
                         ContextCompat.getColor(
                             itemView.context,
-                            R.color.color_A3A3A3_666666
+                            R.color.color_909090_666666
                         )
                     )
                 }

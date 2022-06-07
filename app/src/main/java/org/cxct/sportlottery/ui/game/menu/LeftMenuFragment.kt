@@ -870,7 +870,7 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
                                 ) {
                                 override fun convert(holder: ViewHolder, itt: SearchResponse.Row.LeagueMatch.MatchInfo, position: Int) {
                                     val time = SpannableString(TimeUtil.timeFormat(itt.startTime.toLong(), TimeUtil.DM_HM_FORMAT))
-                                    time.setSpan(ForegroundColorSpan(ContextCompat.getColor(holder.convertView.context, R.color.color_A3A3A3_666666)),
+                                    time.setSpan(ForegroundColorSpan(ContextCompat.getColor(holder.convertView.context, R.color.color_909090_666666)),
                                         0, time.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
                                     val tvTimeAndMatch = holder.getView<HighlightTextView>(R.id.tv_time_and_match)

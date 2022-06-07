@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="14dp"
         android:text="@string/main_footer_desc"
-        android:textColor="@color/color_8F8F8F_999999"
+        android:textColor="@color/color_7F7F7F_999999"
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintTop_toBottomOf="@id/line" />
 

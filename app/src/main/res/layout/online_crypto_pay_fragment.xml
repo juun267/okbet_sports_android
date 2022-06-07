@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="@string/title_currency"
-                    android:textColor="@color/color_DDDDDD_000000"
+                    android:textColor="@color/color_CCCCCC_000000"
                     android:textSize="@dimen/textSize13sp"
                     android:textStyle="bold" />
 
@@ -61,7 +61,7 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="center_vertical|left"
-                    android:textColor="@color/color_CCCCCC_333333"
+                    android:textColor="@color/color_BBBBBB_333333"
                     android:textSize="@dimen/textSize14sp" />
 
                 <ImageView
@@ -98,7 +98,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="@string/title_recharge_account"
-                    android:textColor="@color/color_DDDDDD_000000"
+                    android:textColor="@color/color_CCCCCC_000000"
                     android:textSize="@dimen/textSize13sp"
                     android:textStyle="bold" />
 
@@ -118,7 +118,7 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="center_vertical|left"
-                    android:textColor="@color/color_CCCCCC_333333"
+                    android:textColor="@color/color_BBBBBB_333333"
                     android:textSize="@dimen/textSize14sp" />
 
                 <ImageView

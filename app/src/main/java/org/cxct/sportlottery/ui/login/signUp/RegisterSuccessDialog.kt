@@ -15,7 +15,10 @@ import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_custom_alert.*
 import kotlinx.android.synthetic.main.dialog_register_success.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.repository.FLAG_OPEN
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
+import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
@@ -52,7 +55,7 @@ class RegisterSuccessDialog(context: Context) : DialogFragment() {
 
         override fun onFinish() {
             dismiss()
-            startActivity(Intent(mContext, GamePublicityActivity::class.java))
+            goHomePage()
         }
     }
     private fun initView() {
@@ -60,7 +63,7 @@ class RegisterSuccessDialog(context: Context) : DialogFragment() {
         timer.start()
         tvVisitFirst.setOnClickListener {
             dismiss()
-            startActivity(Intent(mContext, GamePublicityActivity::class.java))
+            goHomePage()
         }
         tvJump.text = getString(R.string.register_jump,getString(R.string.app_name))
         btnRecharge.setOnClickListener (mNegativeClickListener)
@@ -68,6 +71,17 @@ class RegisterSuccessDialog(context: Context) : DialogFragment() {
     }
     fun setNegativeClickListener(negativeClickListener: View.OnClickListener) {
         mNegativeClickListener = negativeClickListener
+    }
+
+    /**
+     * 根據第三方開關判斷當前首頁是哪一個
+     */
+    private fun goHomePage() {
+        if (sConfigData?.thirdOpen == FLAG_OPEN) {
+            MainActivity.reStart(mContext)
+        } else {
+            GamePublicityActivity.reStart(mContext)
+        }
     }
 
     override fun onDestroy() {

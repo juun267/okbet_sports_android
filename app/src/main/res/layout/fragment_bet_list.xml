@@ -167,7 +167,7 @@
                 app:tabPaddingEnd="0dp"
                 app:tabPaddingStart="0dp"
                 app:tabRippleColor="@null"
-                app:tabSelectedTextColor="@color/color_CCCCCC_333333"
+                app:tabSelectedTextColor="@color/color_BBBBBB_333333"
                 app:tabTextAppearance="@style/NoUppercaseTab"
                 app:tabTextColor="@color/color_CCCCCC_999999">
 
@@ -271,7 +271,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="19dp"
                     android:text="@string/bet_list_empty"
-                    android:textColor="@color/color_A3A3A3_666666"
+                    android:textColor="@color/color_909090_666666"
                     android:textSize="@dimen/textSize14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -312,7 +312,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/bet_list_view_more_options"
-                        android:textColor="@color/color_A3A3A3_666666"
+                        android:textColor="@color/color_909090_666666"
                         android:textSize="@dimen/textSize12sp" />
 
                     <TextView
@@ -385,7 +385,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/bet_info_all_bet"
-                    android:textColor="@color/color_A3A3A3_666666"
+                    android:textColor="@color/color_909090_666666"
                     android:textSize="@dimen/textSize14sp"
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
@@ -396,8 +396,8 @@
                     android:layout_width="1dp"
                     android:layout_height="10dp"
                     android:layout_marginStart="6dp"
-                    android:background="@color/color_A3A3A3_666666"
                     android:visibility="gone"
+                    android:background="@color/color_909090_666666"
                     app:layout_constraintBottom_toBottomOf="@+id/title_all_bet"
                     app:layout_constraintStart_toEndOf="@+id/title_all_bet"
                     app:layout_constraintTop_toTopOf="@+id/title_all_bet" />
@@ -407,7 +407,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/bet_list_win_quota"
-                    android:textColor="@color/color_A3A3A3_666666"
+                    android:textColor="@color/color_909090_666666"
                     android:textSize="@dimen/textSize14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

@@ -19,8 +19,8 @@
         app:tabPaddingEnd="0dp"
         app:tabPaddingStart="0dp"
         app:tabRippleColor="@null"
-        app:tabSelectedTextColor="@color/color_CCCCCC_333333"
-        app:tabTextColor="@color/color_A3A3A3_666666">
+        app:tabSelectedTextColor="@color/color_BBBBBB_333333"
+        app:tabTextColor="@color/color_909090_666666">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/first_tab"

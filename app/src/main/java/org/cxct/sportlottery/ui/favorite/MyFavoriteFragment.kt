@@ -81,7 +81,10 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                     viewModel.switchPlayCategory(play, playCate.code, hasItemSelect)
                     upDateSelectPlay(play)
                     if (hasItemSelect) {
-                        leagueAdapter.data.updateOddsSort()
+                        leagueAdapter.data.updateOddsSort(
+                            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key,
+                            this
+                        )
                         leagueAdapter.updateLeagueByPlayCate()
                     }
                 }
@@ -314,7 +317,10 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 val playSelected = playCategoryAdapter.data.find { play -> play.isSelected }
                 val leagueOdds = leagueAdapter.data
 
-                leagueOdds.updateOddsSort() //篩選玩法
+                leagueOdds.updateOddsSort(
+                    GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key,
+                    playCategoryAdapter
+                ) //篩選玩法
 
                 //翻譯更新
                 leagueOdds.forEach { LeagueOdd ->
@@ -493,7 +499,10 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
                 favorite_game_list.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
                 val leagueData = leagueOddList.toMutableList()
-                leagueData.updateOddsSort()
+                leagueData.updateOddsSort(
+                    GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key,
+                    playCategoryAdapter
+                )
 
                 //檢查是否有取得我的賽事資料, 對介面進行調整
                 when{
@@ -746,64 +755,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
      * */
     private fun getPlaySelectedCodeSelectionType(): Int? {
         return playCategoryAdapter.data.find { it.isSelected }?.selectionType
-    }
-
-    private fun getPlayCateMenuCode(): String? {
-        val playSelected = playCategoryAdapter.data.find { it.isSelected }
-
-        return when (playSelected?.selectionType) {
-            SelectionType.SELECTABLE.code -> {
-                playSelected.playCateList?.find { it.isSelected }?.code
-            }
-            SelectionType.UN_SELECTABLE.code -> {
-                playSelected.code
-            }
-            else -> null
-        }
-    }
-
-    /**
-     * 篩選玩法
-     * 更新翻譯、排序
-     * */
-
-    private fun MutableList<LeagueOdd>.updateOddsSort() {
-        val nowGameType = GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
-        val playCateMenuCode =
-            if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else getPlaySelectedCode()
-        val oddsSortFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else PlayCateMenuFilterUtils.filterOddsSort(
-            nowGameType,
-            playCateMenuCode
-        )
-        val playCateNameMapFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) PlayCateMenuFilterUtils.filterSelectablePlayCateNameMap(
-            nowGameType,
-            getPlaySelectedCode(),
-            playCateMenuCode
-        ) else PlayCateMenuFilterUtils.filterPlayCateNameMap(nowGameType, playCateMenuCode)
-
-        this.forEach { LeagueOdd ->
-            LeagueOdd.matchOdds.forEach { MatchOdd ->
-                MatchOdd.oddsSort = oddsSortFilter
-                MatchOdd.playCateNameMap = playCateNameMapFilter
-            }
-        }
-    }
-
-    /**
-     * 可以下拉的PlayCate, 進行oddsMap的篩選, 只留下選擇的玩法
-     */
-    private fun List<LeagueOdd>.filterMenuPlayCate(): List<LeagueOdd> {
-        val playSelected = playCategoryAdapter.data.find { it.isSelected }
-        return when (playSelected?.selectionType) {
-            SelectionType.SELECTABLE.code -> {
-                this.toMutableList().onEach { leagueOdd ->
-                    leagueOdd.matchOdds.forEach { matchOdd ->
-                        matchOdd.oddsMap?.entries?.retainAll { oddMap -> oddMap.key == getPlayCateMenuCode() }
-                    }
-                }.toList()
-            }
-            else -> this.toMutableList().toList()
-        }
     }
 
     private fun navOddsDetail(matchId: String, matchInfoList: List<MatchInfo>) {

@@ -31,7 +31,7 @@
             android:minHeight="48dp"
             android:paddingHorizontal="10dp"
             android:text="@string/go_back_home_page"
-            android:textColor="@color/color_CCCCCC_333333"
+            android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize14sp" />
 
     </LinearLayout>
@@ -68,7 +68,7 @@
             android:minHeight="48dp"
             android:paddingHorizontal="10dp"
             android:text="@string/recharge"
-            android:textColor="@color/color_CCCCCC_333333"
+            android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize14sp" />
 
     </LinearLayout>
@@ -98,7 +98,7 @@
             android:minHeight="48dp"
             android:paddingHorizontal="10dp"
             android:text="@string/withdraw"
-            android:textColor="@color/color_CCCCCC_333333"
+            android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize14sp" />
 
     </LinearLayout>
@@ -128,7 +128,7 @@
             android:minHeight="48dp"
             android:paddingHorizontal="10dp"
             android:text="@string/member_level"
-            android:textColor="@color/color_CCCCCC_333333"
+            android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize14sp" />
 
     </LinearLayout>
@@ -158,7 +158,7 @@
             android:minHeight="48dp"
             android:paddingHorizontal="10dp"
             android:text="@string/promotion"
-            android:textColor="@color/color_CCCCCC_333333"
+            android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize14sp" />
 
     </LinearLayout>
@@ -188,7 +188,7 @@
             android:minHeight="48dp"
             android:paddingHorizontal="10dp"
             android:text="@string/btm_navigation_affiliate"
-            android:textColor="@color/color_CCCCCC_333333"
+            android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize14sp" />
 
     </LinearLayout>
@@ -226,7 +226,7 @@
             android:minHeight="48dp"
             android:paddingHorizontal="10dp"
             android:text="@string/match_type_row_in_play"
-            android:textColor="@color/color_CCCCCC_333333"
+            android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize14sp" />
 
     </LinearLayout>
@@ -259,7 +259,7 @@
             android:minHeight="48dp"
             android:paddingHorizontal="10dp"
             android:text="@string/premium_odds"
-            android:textColor="@color/color_CCCCCC_333333"
+            android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize14sp" />
 
     </LinearLayout>

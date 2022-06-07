@@ -315,7 +315,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         }
             .setItemVisibleCount(4)
             .setBgColor(resources.getColor(R.color.color_666666_bcbcbc))
-            .setCancelColor(resources.getColor(R.color.color_CCCCCC_333333))//取消按钮文字颜色
+            .setCancelColor(resources.getColor(R.color.color_BBBBBB_333333))//取消按钮文字颜色
             .setSubmitText(resources.getString(R.string.complete))
             .setCancelText(resources.getString(R.string.btn_cancel))
             .build()
