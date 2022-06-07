@@ -570,8 +570,9 @@ class WithdrawViewModel(
         val limit = getWithdrawAmountLimit()
         _withdrawAmountHint.value = String.format(
             androidContext.getString(R.string.hint_please_enter_withdraw_amount),
+            sConfigData?.systemCurrency,
             limit.min.toLong(), limit.max.toLong()
-        ) + sConfigData?.systemCurrency
+        )
     }
 
     fun getWithdrawAmountLimit(): WithdrawAmountLimit {
@@ -626,19 +627,18 @@ class WithdrawViewModel(
                 _withdrawCryptoFeeHint.value = ""
                 _withdrawRateHint.value = String.format(
                     androidContext.getString(R.string.withdraw_handling_fee_hint),
-                    ArithUtil.toMoneyFormat(cardConfig?.feeRate?.times(100)),
-                    ArithUtil.toMoneyFormat((cardConfig?.feeRate)?.times(withdrawAmount ?: 0.0)),
+                    ArithUtil.toMoneyFormat(cardConfig?.feeRate?.times(100)),sConfigData?.systemCurrency,
+                    ArithUtil.toMoneyFormat((cardConfig?.feeRate)?.times(withdrawAmount ?: 0.0))
+                )
 
-                    ) + sConfigData?.systemCurrency
+                _withdrawAmountTotal.value = String.format(androidContext.getString(R.string.total_withdrawal), sConfigData?.systemCurrency,"0.000"
 
-                _withdrawAmountTotal.value = String.format(androidContext.getString(R.string.total_withdrawal), "0.000"
-                    + sConfigData?.systemCurrency
                 )
 
 
 
                 if (withdrawAmount != null && withdrawAmount.toDouble() > 0) {
-                    _withdrawAmountTotal.value = String.format(androidContext.getString(R.string.total_withdrawal), ArithUtil.toMoneyFormat(
+                    _withdrawAmountTotal.value = String.format(androidContext.getString(R.string.total_withdrawal),sConfigData?.systemCurrency, ArithUtil.toMoneyFormat(
                         ArithUtil.add(
                             withdrawAmount.toDouble(),
                             ArithUtil.toMoneyFormat(
@@ -647,7 +647,7 @@ class WithdrawViewModel(
                                 )
                             ).toDouble()
                         )
-                    )+ sConfigData?.systemCurrency
+                    )
                     )
 
                 }
@@ -661,16 +661,18 @@ class WithdrawViewModel(
                         } ?: 0.0 else 0.0
                     _withdrawCryptoAmountHint.value = String.format(
                         androidContext.getString(R.string.withdraw_crypto_amount_hint),
-                        ArithUtil.toMoneyFormat(withdrawNeedAmount),
-                        sConfigData?.systemCurrency
+                        sConfigData?.systemCurrency,
+                        ArithUtil.toMoneyFormat(withdrawNeedAmount)
+
                     )
                     _withdrawAmountTotal.value = String.format(androidContext.getString(R.string.total_withdrawal), "0.000"
-                            + sConfigData?.systemUSDTCurrency
+                           , sConfigData?.systemUSDTCurrency
                     )
                     _withdrawCryptoFeeHint.value = String.format(
                         androidContext.getString(R.string.withdraw_crypto_fee_hint),
-                        ArithUtil.toMoneyFormat(fee),
-                        sConfigData?.systemCurrency
+                        sConfigData?.systemCurrency,
+                        ArithUtil.toMoneyFormat(fee)
+
                     )
                     _withdrawRateHint.value = String.format(
                         androidContext.getString(R.string.withdraw_crypto_exchange_rate_hint),
@@ -683,7 +685,7 @@ class WithdrawViewModel(
                                 ArithUtil.div(fee, cardConfig?.exchangeRate!!.toDouble())
                             )
                                     )
-                        )+ sConfigData?.systemUSDTCurrency
+                        ),sConfigData?.systemUSDTCurrency
                         )
 
 
