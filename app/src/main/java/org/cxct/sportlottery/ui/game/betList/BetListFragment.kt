@@ -205,6 +205,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         initKeyBoard(viewModel.getLoginBoolean())
         fl_title.setOnClickListener { betListRefactorAdapter?.closeAllKeyboard() }
         cl_total_info.setOnClickListener { betListRefactorAdapter?.closeAllKeyboard() }
+        //避免快捷注單的投注金額，未更新到滿版注單
+        refreshAllAmount()
     }
 
     private fun initBtnView() {
