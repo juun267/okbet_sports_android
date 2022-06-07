@@ -148,7 +148,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     upDateSelectPlay(play)
                     //當前已選中下拉選單不用重新要資料
                     if (hasItemSelect) {
-                        leagueAdapter.data.updateOddsSort()
+                        leagueAdapter.data.updateOddsSort(
+                            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key,
+                            this
+                        )
                         leagueAdapter.updateLeagueByPlayCate()
                     }
                 })
@@ -1393,7 +1396,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                         val leagueOdds = leagueAdapter.data
                         leagueOdds.sortOddsMap()
-                        leagueOdds.updateOddsSort() //篩選玩法
+                        leagueOdds.updateOddsSort(
+                            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key,
+                            playCategoryAdapter
+                        ) //篩選玩法
 
                         //翻譯更新
                         leagueOdds.forEach { LeagueOdd ->
@@ -1608,35 +1614,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
 
         return this
-    }
-
-    /**
-     * 篩選玩法
-     * 更新翻譯、排序
-     * */
-    private fun MutableList<LeagueOdd>.updateOddsSort() {
-        val nowGameType =
-            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
-        val playCateMenuCode =
-            if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else getPlaySelectedCode()
-        val oddsSortFilter =
-            if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else PlayCateMenuFilterUtils.filterOddsSort(
-                nowGameType,
-                playCateMenuCode
-            )
-        val playCateNameMapFilter =
-            if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) PlayCateMenuFilterUtils.filterSelectablePlayCateNameMap(
-                nowGameType,
-                getPlaySelectedCode(),
-                playCateMenuCode
-            ) else PlayCateMenuFilterUtils.filterPlayCateNameMap(nowGameType, playCateMenuCode)
-
-        this.forEach { LeagueOdd ->
-            LeagueOdd.matchOdds.forEach { MatchOdd ->
-                MatchOdd.oddsSort = oddsSortFilter
-                MatchOdd.playCateNameMap = playCateNameMapFilter
-            }
-        }
     }
 
     /**
