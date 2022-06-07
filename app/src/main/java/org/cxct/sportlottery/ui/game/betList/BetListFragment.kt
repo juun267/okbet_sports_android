@@ -290,6 +290,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     //單項投注
                     0 -> {
                         //TODO set betSingleType in betListRefactorAdapter
+                        betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
                         binding.apply {
                             llMoreOption.visibility = View.GONE
                             llParlayList.visibility = View.GONE
@@ -298,6 +299,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     //串關投注
                     1 -> {
                         //TODO set betParlayType in betListRefactorAdapter
+                        betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.PARLAY_SINGLE
                         binding.apply {
                             if (getCurrentParlayList().isNotEmpty()) {
                                 llMoreOption.visibility = View.VISIBLE
