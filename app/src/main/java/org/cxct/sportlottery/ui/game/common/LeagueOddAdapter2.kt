@@ -89,10 +89,10 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
         }
     }
 
-    fun updateByPlayCate(){
-       data.forEachIndexed { index, matchOdd ->
-           notifyItemChanged(index, Pair(PayLoadEnum.PAYLOAD_PLAYCATE, matchOdd))
-       }
+    fun updateByPlayCate() {
+        data.forEachIndexed { index, matchOdd ->
+            notifyItemChanged(index, Pair(PayLoadEnum.PAYLOAD_PLAYCATE, matchOdd))
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -147,7 +147,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
 
                 is Pair<*, *> -> {
                     (payloads.first() as Pair<*, *>).apply {
-                        when(first){
+                        when (first) {
                             PayLoadEnum.PAYLOAD_BET_INFO -> {
                                 (holder as ViewHolderHdpOu).updateByBetInfo(
                                     item = second as MatchOdd,
@@ -161,7 +161,6 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                             PayLoadEnum.PAYLOAD_PLAYCATE -> {
                                 (holder as ViewHolderHdpOu).updateByPlayCate(
                                     item = second as MatchOdd,
-                                    leagueOddListener = leagueOddListener,
                                     oddsType = oddsType,
                                     playSelectedCodeSelectionType = playSelectedCodeSelectionType,
                                 )
@@ -267,10 +266,9 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
         fun updateByPlayCate(
             item: MatchOdd,
             oddsType: OddsType,
-            leagueOddListener: LeagueOddListener?,
             playSelectedCodeSelectionType: Int?,
-        ){
-            setupOddsButton(item, oddsType, leagueOddListener, playSelectedCodeSelectionType)
+        ) {
+            updateOddsButton(item, oddsType, playSelectedCodeSelectionType)
         }
 
         private fun updateMatchInfo(item: MatchOdd, matchType: MatchType) {
@@ -736,8 +734,6 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             )
         }
 
-        var isFromDataChange = true
-
         val oddButtonPagerAdapter = OddButtonPagerAdapter()
         private fun setupOddsButton(
             item: MatchOdd,
@@ -750,12 +746,6 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 layoutManager = linearLayoutManager
                 setHasFixedSize(true)
                 (rv_league_odd_btn_pager_main.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-//                oddButtonPagerAdapter.setData(
-//                    item.matchInfo,
-//                    item.oddsSort,
-//                    item.playCateNameMap,
-//                    item.betPlayCateNameMap
-//                )
 
                 this.adapter = oddButtonPagerAdapter.apply {
                     stateRestorationPolicy = StateRestorationPolicy.PREVENT
@@ -773,32 +763,10 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                         }
                 }
 
-//                itemView.nested_scroll_view_league_odd.viewTreeObserver.addOnScrollChangedListener {
-//                    val scrollX = itemView.nested_scroll_view_league_odd.scrollX
-//                    if (!isFromDataChange && item.rvScrollPos != scrollX) {  //第一次listener觸發由notifyDataSetChange所造成，因此不紀錄
-//                        item.rvScrollPos = scrollX
-//                    }
-//                }
-
-                isFromDataChange = false
-
                 Log.d("Hewie4", "綁定(${item.matchInfo?.homeName})：item.oddsMap.size => ${item.oddsMap?.size}")
                 updateOddsButton(item, oddsType, playSelectedCodeSelectionType)
 
-//                item.rvScrollPos?.let {
-//                    post(Runnable {
-//                        itemView.nested_scroll_view_league_odd.scrollTo(it, 0)
-//                    })
-//                }
-
-//                visibility = if (item.oddsMap?.size ?: 0 > 2) {
-//                    View.VISIBLE
-//                } else {
-//                    View.GONE
-//                }
-
                 OverScrollDecoratorHelper.setUpOverScroll(this, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
-
             }
         }
 
@@ -813,8 +781,8 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 )
                 oddButtonPagerAdapter.apply {
                     stateRestorationPolicy = StateRestorationPolicy.PREVENT
-                    this.odds = item.oddsMap ?: mutableMapOf()
                     this.oddsType = oddsType
+                    this.odds = item.oddsMap ?: mutableMapOf()
                     //update()
                     //notifyDataSetChanged() // TODO
                 }
