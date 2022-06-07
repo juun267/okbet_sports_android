@@ -642,7 +642,7 @@
     <string name="bet_info_check_maximum_limit">MAX BET</string>
     <string name="bet_info_bet_quota">bet amount</string>
     <string name="bet_info_win_quota">To win</string>
-    <string name="bet_info_accept_odds_change">Accept changes &#038; bets</string>
+    <string name="bet_info_accept_odds_change">Accept Change</string>
     <string name="bet_info_add_to_bet_info">Add to bet slip</string>
     <string name="bet_info_odd_content_changed">One or more options for odds, concede. Points or score has changed</string>
     <string name="bet_info_odd_content_changed2">The odds have changed, %s to %s </string>

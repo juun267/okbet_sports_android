@@ -631,7 +631,7 @@
     <string name="bet_info_check_maximum_limit">Xem giới hạn tối đa số tiền</string>
     <string name="bet_info_bet_quota">Số tiền đặt cược</string>
     <string name="bet_info_win_quota">Số tiền có thể thắng</string>
-    <string name="bet_info_accept_odds_change">Chấp nhận các thay đổi và đặt cược</string>
+    <string name="bet_info_accept_odds_change">Chấp nhận thay đối</string>
     <string name="bet_info_add_to_bet_info">Thêm vào đơn ca cược</string>
     <string name="bet_info_odd_content_changed">Tỷ lệ cược của một hoặc nhiều lựa chọn, điểm chấp hoặc điểm số đã được thay đổi</string>
     <string name="bet_info_odd_content_changed2">Tỷ lệ cược đã thay đổi, %s thành %s</string>

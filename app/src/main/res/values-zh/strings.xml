@@ -632,7 +632,7 @@
     <string name="bet_info_check_maximum_limit">查看最高下注</string>
     <string name="bet_info_bet_quota">投注额</string>
     <string name="bet_info_win_quota">可赢额</string>
-    <string name="bet_info_accept_odds_change">接受更改并投注</string>
+    <string name="bet_info_accept_odds_change">接受变更</string>
     <string name="bet_info_add_to_bet_info">加入投注单</string>
     <string name="bet_info_odd_content_changed">一个或多个选项的赔率，让球数或比分已更改</string>
     <string name="bet_info_odd_content_changed2">赔率已变更，从 %s 至 %s 。</string>
