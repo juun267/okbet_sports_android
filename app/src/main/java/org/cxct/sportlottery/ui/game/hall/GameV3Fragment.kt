@@ -2261,7 +2261,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private fun setMatchCategoryPagerVisibility(itemCount: Int) {
         game_match_category_pager.visibility =
             if ((args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) &&
-                itemCount > 0 &&
                 game_tabs.selectedTabPosition == 0
             ) {
                 View.VISIBLE
