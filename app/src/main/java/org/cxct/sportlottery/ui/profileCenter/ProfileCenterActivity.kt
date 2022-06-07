@@ -605,8 +605,10 @@ class ProfileCenterActivity :
     }
 
     private fun updateCreditAccountUI() {
-        btn_toolbar_back.setVisibilityByCreditSystem()
-        btn_withdrawal_setting.setVisibilityByCreditSystem()
-        btn_promotion.setVisibilityByCreditSystem()
+        lin_wallet_operation.setVisibilityByCreditSystem()
+        v_divide.setVisibilityByCreditSystem()
+        btn_account_transfer.setVisibilityByCreditSystem()
+        btn_other_bet_record.setVisibilityByCreditSystem()
+        btn_self_limit.setVisibilityByCreditSystem()
     }
 }
