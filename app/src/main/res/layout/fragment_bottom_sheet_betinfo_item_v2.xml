@@ -27,19 +27,21 @@
         android:background="@color/transparent_black_50"
         android:orientation="vertical">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_141414_F3F4F5"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <FrameLayout
-                android:id="@+id/fl_title"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/color_141414_F3F4F5"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:paddingBottom="18dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_title"
@@ -51,9 +53,9 @@
                         android:id="@+id/iv_arrow"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:background="@color/color_1A000000_1A000000"
                         android:paddingStart="9dp"
                         android:paddingEnd="9dp"
-                        android:background="@color/color_1A000000_1A000000"
                         android:src="@drawable/ic_arrow_down_white"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -102,8 +104,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/margin_4"
                         android:text="0.000"
-                        android:textSize="@dimen/textSize14sp"
                         android:textColor="@color/color_FFFFFF_FFFFFF"
+                        android:textSize="@dimen/textSize14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/iv_arrow"
                         app:layout_constraintTop_toTopOf="parent"
@@ -114,49 +116,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/margin_4"
-                        android:textSize="@dimen/textSize14sp"
                         android:textColor="@color/color_FFFFFF_FFFFFF"
+                        android:textSize="@dimen/textSize14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/tv_balance"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="PHP" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <!--<LinearLayout
-                    android:id="@+id/ll_delete_all"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="44dp"
-                    android:animateLayoutChanges="true"
-                    android:background="@color/color_2B2B2B_FCFCFC"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:visibility="gone"
-                    tools:visibility="gone">
-
-                    <TextView
-                        android:id="@+id/btn_delete_all_confirm"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/margin_8"
-                        android:layout_marginBottom="@dimen/margin_8"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_radius_4_button_e44438"
-                        android:gravity="center"
-                        android:text="@string/bet_list_delete_all"
-                        android:textSize="@dimen/textSize12sp"
-                        android:textColor="@android:color/white" />
-
-                    <ImageView
-                        android:id="@+id/btn_delete_all_cancel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:background="@color/color_2B2B2B_FCFCFC"
-                        android:padding="16dp"
-                        android:src="@drawable/ic_close_gray" />
-                </LinearLayout>-->
-            </FrameLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -293,7 +260,6 @@
                                 android:layout_height="@dimen/et_bet_height"
                                 android:layout_marginTop="7dp"
                                 android:layout_marginEnd="@dimen/margin_24"
-                                android:layout_marginBottom="@dimen/margin_18"
                                 android:background="@drawable/effect_select_bet_radius_4_edit_text"
                                 android:hint="@string/bet_info_input_quota"
                                 android:inputType="numberDecimal"
@@ -303,29 +269,28 @@
                                 android:textColor="@color/color_DDDDDD_000000"
                                 android:textColorHint="@color/color_939393_cccccc"
                                 android:textSize="@dimen/textSize16sp"
-                                tools:text="100"
-                                app:layout_constraintBottom_toTopOf="@+id/tvErrorMessage"
+                                app:layout_constraintBottom_toTopOf="@id/tv_bet_lock"
                                 app:layout_constraintEnd_toStartOf="@+id/btnRecharge"
                                 app:layout_constraintStart_toStartOf="@+id/tv_odds_content"
-                                app:layout_constraintTop_toBottomOf="@+id/cl_to_win" />
+                                app:layout_constraintTop_toBottomOf="@+id/cl_to_win"
+                                tools:text="100" />
 
                             <TextView
-                                android:layout_width="76dp"
                                 android:id="@+id/btnRecharge"
+                                android:layout_width="76dp"
                                 android:layout_height="36dp"
-                                android:background="@drawable/bg_radius_4_ffe136"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                android:text="@string/recharge"
-                                android:gravity="center"
-                                android:textSize="@dimen/textSize14sp"
-                                android:textColor="@color/color_060F20"
-                                android:layout_marginEnd="@dimen/margin_8"
                                 android:layout_marginStart="@dimen/margin_2"
-                                app:layout_constraintTop_toTopOf="@+id/et_bet"
-                                app:layout_constraintStart_toEndOf="@+id/et_bet"
-                                app:layout_constraintBottom_toBottomOf="@+id/et_bet"
+                                android:layout_marginEnd="@dimen/margin_8"
+                                android:background="@drawable/bg_radius_4_ffe136"
+                                android:gravity="center"
+                                android:text="@string/recharge"
+                                android:textColor="@color/color_060F20"
+                                android:textSize="@dimen/textSize14sp"
                                 android:visibility="gone"
-                                />
+                                app:layout_constraintBottom_toBottomOf="@+id/et_bet"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/et_bet"
+                                app:layout_constraintTop_toTopOf="@+id/et_bet" />
 
                             <View
                                 android:id="@+id/et_clickable"
@@ -371,31 +336,33 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
                                 android:layout_marginTop="4dp"
-                                android:layout_marginBottom="10dp"
+                                android:paddingTop="6dp"
                                 android:textColor="@color/color_E44438_e44438"
-                                android:textSize="@dimen/textSize13sp"
+                                android:textSize="@dimen/textSize12sp"
                                 android:visibility="gone"
-                                app:layout_constraintStart_toStartOf="@+id/et_bet"
                                 app:layout_constraintBottom_toTopOf="@id/tv_odd_content_changed"
+                                app:layout_constraintStart_toStartOf="@+id/et_bet"
                                 tools:text="@string/bet_info_list_minimum_limit_amount"
                                 tools:visibility="visible" />
 
                             <!--預留空間為了對應鍵盤與警告提示自動增長-->
-                            <View
+                            <!--<View
                                 android:layout_width="match_parent"
                                 android:layout_height="10dp"
                                 android:background="@color/transparent"
-                                app:layout_constraintTop_toBottomOf="@+id/tvErrorMessage"/>
+                                app:layout_constraintTop_toBottomOf="@+id/tvErrorMessage"/>-->
 
                             <org.cxct.sportlottery.util.KeyboardView
                                 android:id="@+id/layoutKeyBoard"
                                 android:layout_width="match_parent"
+                                android:layout_height="118dp"
                                 android:layout_marginHorizontal="24dp"
-                                android:layout_height="120dp"
                                 android:layout_marginTop="@dimen/margin_10"
+                                android:layout_marginBottom="8dp"
+                                android:paddingTop="10dp"
                                 android:visibility="gone"
-                                tools:visibility="visible"
-                                app:layout_constraintBottom_toBottomOf="parent"/>
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                tools:visibility="visible" />
 
                             <!--                            <LinearLayout-->
                             <!--                                android:id="@+id/ll_keyboard_bg"-->
@@ -423,16 +390,6 @@
 
                             <!--                            </LinearLayout>-->
 
-                            <View
-                                android:id="@+id/v_bet_lock"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:background="@color/transparent_black_8"
-                                android:visibility="gone"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                tools:visibility="gone" />
-
                             <TextView
                                 android:id="@+id/tv_odd_content_changed"
                                 android:layout_width="match_parent"
@@ -442,7 +399,6 @@
                                 android:drawablePadding="@dimen/margin_4"
                                 android:gravity="center_vertical"
                                 android:paddingTop="@dimen/margin_6"
-                                android:paddingBottom="@dimen/margin_18"
                                 android:text="@string/bet_info_odd_content_changed2"
                                 android:textColor="@color/color_E44438_e44438"
                                 android:textSize="@dimen/textSize12sp"
@@ -459,13 +415,12 @@
                                 android:drawablePadding="@dimen/margin_4"
                                 android:gravity="center_vertical"
                                 android:paddingTop="@dimen/margin_6"
-                                android:paddingBottom="@dimen/margin_18"
                                 android:text="@string/bet_info_bet_lock_hint"
                                 android:textColor="@color/color_E44438_e44438"
                                 android:textSize="@dimen/textSize12sp"
                                 android:visibility="gone"
-                                app:layout_constraintTop_toBottomOf="@+id/et_bet"
-                                tools:visibility="gone" />
+                                app:layout_constraintBottom_toTopOf="@id/tvErrorMessage"
+                                tools:visibility="visible" />
 
                             <ImageView
                                 android:id="@+id/iv_close"
@@ -484,7 +439,20 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/v_bet_lock"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/transparent_black_8"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                tools:layout_editor_absoluteX="0dp"
+                tools:visibility="gone" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
             android:layout_width="match_parent"
