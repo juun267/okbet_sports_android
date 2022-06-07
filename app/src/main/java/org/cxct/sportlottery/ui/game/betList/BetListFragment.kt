@@ -1035,7 +1035,19 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             betListRefactorAdapter?.hideCantParlayWarn()
         }
 
-        refreshLlMoreOption()
+        when (binding.betTypeTabLayout.selectedTabPosition) {
+            //單項投注
+            0 -> {
+                with(binding) {
+                    llMoreOption.visibility = View.GONE
+                    llParlayList.visibility = View.GONE
+                }
+            }
+            //串關投注
+            1 -> {
+                refreshLlMoreOption()
+            }
+        }
     }
 
     private fun subscribeChannel(list: MutableList<BetInfoListData>) {
