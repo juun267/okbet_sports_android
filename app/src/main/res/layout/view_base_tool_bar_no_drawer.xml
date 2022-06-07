@@ -4,7 +4,7 @@
     android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/color_0764DE"
+    android:background="@drawable/bg_title"
     tools:context="org.cxct.sportlottery.ui.common.CustomTopToolbar"
     android:orientation="horizontal">
 
