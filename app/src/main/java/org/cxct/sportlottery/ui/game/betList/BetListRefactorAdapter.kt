@@ -245,7 +245,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             is BatchParlayConnectViewHolder -> {
                 holder.bind(
                     ////region 20220607 投注單版面調整
-                    parlayList?.getOrNull(position),
+                    parlayList?.getOrNull(
+                        when (isOddsChangedWarn) {
+                            true -> position - 1
+                            false -> position
+                        }
+                    ),
 //                    parlayList?.getOrNull(position - 1 - (betList?.size ?: 0)),
                     //endregion
                     currentOddsType,
