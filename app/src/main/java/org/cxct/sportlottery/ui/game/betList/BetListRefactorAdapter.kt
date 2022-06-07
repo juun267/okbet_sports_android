@@ -285,7 +285,14 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
             }
             BetRvType.PARLAY_SINGLE -> {
-                ViewType.Bet.ordinal
+                when {
+                    isCantParlayWarn && position == itemCount - 1 -> {
+                        ViewType.Warn.ordinal
+                    }
+                    else -> {
+                        ViewType.Bet.ordinal
+                    }
+                }
             }
             BetRvType.PARLAY -> {
                 ViewType.Parlay.ordinal
@@ -373,7 +380,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
             }
             BetRvType.PARLAY_SINGLE -> {
-                betListSize
+                if (isCantParlayWarn) {
+                    //多加一項不能串關提示訊息
+                    betListSize + 1
+                } else {
+                    betListSize
+                }
             }
             BetRvType.PARLAY -> {
                 when {
@@ -697,9 +709,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             adapterBetType: BetRvType?
         ) {
             itemView.apply {
-                //TODO: 赛事暂无支持串關，只會在串關投注那頁顯示
                 //有无串关
-                if (itemData.pointMarked && betListSize > 1) {
+                //僅有串關的單注才會出現此提示
+                if (adapterBetType == BetRvType.PARLAY_SINGLE && itemData.pointMarked && betListSize > 1) {
                     v_no_parlay.visibility = View.VISIBLE
                     tv_no_parlay.visibility = View.VISIBLE
                 } else {
