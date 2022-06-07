@@ -45,6 +45,7 @@ enum class PlayCate(val value: String) {
     CS_OT("CS-OT"),
     CS_SEG("CS-SEG"),
     CS_SEG1("CS-SEG1"),
+    LCS("LCS"),//反波胆
     DC("DC"),//双重机会
     DC_BTS("DC-BTS"),//双重机会&双方球队进球
     DC_FLG("DC-FLG"),//双重机会&首次进球队伍
@@ -450,6 +451,7 @@ enum class PlayCate(val value: String) {
                 CS_OT.value -> CS_OT
                 CS_SEG.value -> CS_SEG
                 CS_SEG1.value -> CS_SEG1
+                LCS.value -> LCS
                 DC.value -> DC
                 DC_BTS.value -> DC_BTS
                 DC_FLG.value -> DC_FLG

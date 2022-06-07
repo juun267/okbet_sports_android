@@ -86,21 +86,6 @@ class RegisterViewModel(
         get() = _loginForGuestResult
 
 
-    private val cbPrivacyChecked: LiveData<Boolean?>
-        get() = _cbPrivacyChecked
-
-    private val agreementChecked: LiveData<Boolean?>
-        get() = _agreementChecked
-
-    private val cbNotPHOfficialChecked: LiveData<Boolean?>
-        get() = _cbNotPHOfficialChecked
-
-    private val cbNotPHSchoolChecked: LiveData<Boolean?>
-        get() = _cbNotPHSchoolChecked
-
-    private val cbRuleOkbetChecked: LiveData<Boolean?>
-        get() = _cbRuleOkbetChecked
-
     private val cbAgreeAllChecked: LiveData<Boolean?>
         get() = _cbAgreeAllChecked
 
@@ -447,11 +432,6 @@ class RegisterViewModel(
         securityPb: String,
         smsCode: String,
         validCode: String,
-        cbPrivacyChecked: Boolean,
-        agreementChecked: Boolean,
-        cbNotPHOfficialChecked: Boolean,
-        cbNotPHSchoolChecked: Boolean,
-        cbRuleOkbetChecked: Boolean,
         cbAgreeAllChecked: Boolean,
     ): Boolean {
         if (sConfigData?.enableInviteCode == FLAG_OPEN)
@@ -494,11 +474,6 @@ class RegisterViewModel(
         if (sConfigData?.enableRegValidCode == FLAG_OPEN)
             checkValidCode(validCode)
 
-        checkCbPrivacy(cbPrivacyChecked)
-        checkCbAgreement(agreementChecked)
-        checkCbNotPHOfficial(cbNotPHOfficialChecked)
-        checkCbNotPHSchool(cbNotPHSchoolChecked)
-        checkCbRuleOkbet(cbRuleOkbetChecked)
         checkCbAgreeAll(cbAgreeAllChecked)
 
         return checkAllInputComplete()
@@ -550,16 +525,6 @@ class RegisterViewModel(
         if (sConfigData?.enableRegValidCode == FLAG_OPEN && checkInputPair(validCodeMsg))
             return false
 
-        if (cbPrivacyChecked.value != true)
-            return false
-        if (agreementChecked.value != true)
-            return false
-        if (cbNotPHOfficialChecked.value != true)
-            return false
-        if (cbNotPHSchoolChecked.value != true)
-            return false
-        if (cbRuleOkbetChecked.value != true)
-            return false
         if (cbAgreeAllChecked.value != true)
             return false
 
@@ -619,11 +584,6 @@ class RegisterViewModel(
         securityPb: String,
         smsCode: String,
         validCode: String,
-        cbPrivacyChecked: Boolean,
-        agreementChecked: Boolean,
-        cbNotPHOfficialChecked: Boolean,
-        cbNotPHSchoolChecked: Boolean,
-        cbRuleOkbetChecked: Boolean,
         cbAgreeAllChecked: Boolean,
         deviceSn: String,
         deviceId: String
@@ -650,11 +610,6 @@ class RegisterViewModel(
                 securityPb,
                 smsCode,
                 validCode,
-                cbPrivacyChecked,
-                agreementChecked,
-                cbNotPHOfficialChecked,
-                cbNotPHSchoolChecked,
-                cbRuleOkbetChecked,
                 cbAgreeAllChecked,
             )) {
             register(

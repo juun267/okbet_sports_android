@@ -44,7 +44,7 @@
   {
     "titleNameMap": {
       "zh": "虚拟币",
-      "en": "USDT transaction",
+      "en": "USDT Transactions",
       "vi": "Tiền ảo"
     },
     "subtitle": "在线虚拟币支付",
@@ -146,7 +146,7 @@
   {
     "titleNameMap": {
       "zh": "虚拟币转账",
-      "en": "USDT transaction",
+      "en": "USDT Transactions",
       "vi": "Chuyển khoản tiền ảo"
     },
     "subtitle": "虚拟币支付",

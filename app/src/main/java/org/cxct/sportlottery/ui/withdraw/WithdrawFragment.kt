@@ -76,6 +76,9 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             clearIsShow = false
             getAllIsShow = true
         }
+
+
+
         ll_tab_layout.visibility = View.GONE // 預設先隱藏 等待卡片資料讀取完畢後再顯示
 
         btn_info.setOnClickListener {
@@ -92,7 +95,11 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             tv_notification_1,
             tv_dot_1,
             sConfigData?.minRechMoney,
-            getString(R.string.initial_withdrawal_needs_credited, sConfigData?.minRechMoney, sConfigData?.systemCurrency)
+            getString(
+                R.string.initial_withdrawal_needs_credited,
+                sConfigData?.minRechMoney,
+                sConfigData?.systemCurrency
+            )
         )
 
         if (sConfigData?.enableMinRemainingBalance == FLAG_OPEN) {
@@ -100,7 +107,11 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 tv_notification_2,
                 tv_dot_2,
                 sConfigData?.minRemainingBalance,
-                getString(R.string.make_sure_valid_account, sConfigData?.minRemainingBalance, sConfigData?.systemCurrency)
+                getString(
+                    R.string.make_sure_valid_account,
+                    sConfigData?.minRemainingBalance,
+                    sConfigData?.systemCurrency
+                )
             )
         }
     }
@@ -230,6 +241,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         }
     }
 
+
     private fun clearEvent() {
         et_withdrawal_amount.setText("")
         et_withdrawal_password.setText("")
@@ -252,12 +264,15 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
         viewModel.deductMoney.observe(this.viewLifecycleOwner, Observer {
             tv_commission.apply {
-                text = if(it.isNaN()) "0" else TextUtil.formatMoney(zero.minus(it ?: 0.0))
+                text = if (it.isNaN()) "0" else TextUtil.formatMoney(zero.minus(it ?: 0.0))
 
                 setTextColor(
                     ContextCompat.getColor(
                         context,
-                        if (zero.minus(it ?: 0.0) > 0) R.color.color_08dc6e_08dc6e else R.color.color_E44438_e44438
+                        if (zero.minus(
+                                it ?: 0.0
+                            ) > 0
+                        ) R.color.color_08dc6e_08dc6e else R.color.color_E44438_e44438
                     )
                 )
             }
@@ -269,6 +284,12 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             else
                 hideLoading()
         })
+
+        viewModel.withdrawAmountTotal.observe(this.viewLifecycleOwner) {
+
+            tv_withdrawal_total.text = it
+
+        }
 
         viewModel.userMoney.observe(this.viewLifecycleOwner, Observer {
             tv_balance.text = TextUtil.format(ArithUtil.toMoneyFormat(it).toDouble())
@@ -330,10 +351,13 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             } else {
                 tab_layout.visibility = View.VISIBLE
                 ll_tab_layout.visibility = View.VISIBLE
-                
-                tab_layout.getTabAt(0)?.view?.visibility = if (list.contains(TransferType.BANK.type)) View.VISIBLE else View.GONE
-                tab_layout.getTabAt(1)?.view?.visibility =  if (list.contains(TransferType.CRYPTO.type)) View.VISIBLE else View.GONE
-                tab_layout.getTabAt(2)?.view?.visibility = if (list.contains(TransferType.E_WALLET.type)) View.VISIBLE else View.GONE
+
+                tab_layout.getTabAt(0)?.view?.visibility =
+                    if (list.contains(TransferType.BANK.type)) View.VISIBLE else View.GONE
+                tab_layout.getTabAt(1)?.view?.visibility =
+                    if (list.contains(TransferType.CRYPTO.type)) View.VISIBLE else View.GONE
+                tab_layout.getTabAt(2)?.view?.visibility =
+                    if (list.contains(TransferType.E_WALLET.type)) View.VISIBLE else View.GONE
 //                tab_bank_card.visibility =
 //                    if (list.contains(TransferType.BANK.type)) View.VISIBLE else View.GONE
 //                tab_crypto.visibility =
@@ -397,6 +421,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             }
         })
 
+
         //提款密碼訊息
         viewModel.withdrawPasswordMsg.observe(this.viewLifecycleOwner, Observer {
             et_withdrawal_password.setError(it ?: "")
@@ -455,24 +480,27 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         bankCardBottomSheet.apply {
             setContentView(bankCardBottomSheetView)
             bankCardAdapter =
-                WithdrawBankCardAdapter(lv_bank_item.context, bankCardList, BankCardAdapterListener {
+                WithdrawBankCardAdapter(
+                    lv_bank_item.context,
+                    bankCardList,
+                    BankCardAdapterListener {
 
-                    val cardIcon = when (it.transferType) {
-                        TransferType.BANK -> getBankIconByBankName(it.bankName)
-                        TransferType.CRYPTO -> getCryptoIconByCryptoName(it.transferType.type)
-                        TransferType.E_WALLET -> getBankIconByBankName(it.bankName)
-                    }
-                    view.iv_bank_card_icon.setImageResource(cardIcon)
+                        val cardIcon = when (it.transferType) {
+                            TransferType.BANK -> getBankIconByBankName(it.bankName)
+                            TransferType.CRYPTO -> getCryptoIconByCryptoName(it.transferType.type)
+                            TransferType.E_WALLET -> getBankIconByBankName(it.bankName)
+                        }
+                        view.iv_bank_card_icon.setImageResource(cardIcon)
 
-                    view.tv_select_bank_card.text = getBankCardTailNo(it)
+                        view.tv_select_bank_card.text = getBankCardTailNo(it)
 
-                    withdrawBankCardData = it
-                    viewModel.setupWithdrawCard(it)
+                        withdrawBankCardData = it
+                        viewModel.setupWithdrawCard(it)
 
-                    view.et_withdrawal_amount.resetText()
+                        view.et_withdrawal_amount.resetText()
 
-                    dismiss()
-                })
+                        dismiss()
+                    })
 
             with(lv_bank_item) {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -569,10 +597,20 @@ class WithdrawBankCardAdapter(
 
                 if (bankCard.isSelected) {
                     imgCheckBank.visibility = View.VISIBLE
-                    llSelectBankCard.setBackgroundColor(ContextCompat.getColor(context, R.color.color_191919_EEEFF0))
+                    llSelectBankCard.setBackgroundColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.color_191919_EEEFF0
+                        )
+                    )
                 } else {
                     imgCheckBank.visibility = View.GONE
-                    llSelectBankCard.setBackgroundColor(ContextCompat.getColor(context, R.color.color_191919_FCFCFC))
+                    llSelectBankCard.setBackgroundColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.color_191919_FCFCFC
+                        )
+                    )
                 }
             }
         }

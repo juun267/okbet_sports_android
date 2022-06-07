@@ -28,7 +28,7 @@
     <string name="version_name">Version %s</string>
     <string name="btn_pass">Skip</string>
     <string name="login_account">Account</string>
-    <string name="please_input_account">(your member account)</string>
+    <string name="please_input_account">(your username)</string>
     <string name="please_input_password">(your login password)</string>
     <string name="login_password">Password</string>
     <string name="remember_password">Save this password</string>
@@ -84,7 +84,7 @@
     <string name="city">City</string>
     <string name="hint_city">(Please enter city)</string>
     <string name="we_chat">Wechat</string>
-    <string name="identity">Verification Identity</string>
+    <string name="identity">Verification Status</string>
     <string name="hint_we_chat_number">(Wechat ID)</string>
     <string name="error_we_chat_number">Wechat ID formatted incorrectly</string>
     <string name="zalo">Zalo</string>
@@ -241,8 +241,8 @@
     <string name="search">Search</string>
     <string name="game_type">Sports</string>
     <string name="winner">Winner</string>
-    <string name="first_half_game">First half</string>
-    <string name="second_half_game">Second half</string>
+    <string name="first_half_game">1st Half</string>
+    <string name="second_half_game">2nd Half</string>
     <string name="total_score">Total score</string>
     <string name="full_game">Full-Time</string>
     <string name="game_result">Result</string>
@@ -269,7 +269,7 @@
     <string name="plat">Set</string>
     <string name="round">Innings</string>
     <string name="score">Score</string>
-    <string name="first_plat">Fist set</string>
+    <string name="first_plat">First set</string>
     <string name="second_plat">Second set</string>
     <string name="third_plat">Third set</string>
     <string name="fourth_plat">Fourth set</string>
@@ -283,29 +283,29 @@
     <string name="night_mode">Night mode</string>
     <string name="add_time_first_plat">OT First period</string>
     <string name="add_time_second_plat">OT second period</string>
-    <string name="first_session">Fist term</string>
+    <string name="first_session">First term</string>
     <string name="second_session">First period</string>
     <string name="third_session">Second period</string>
     <string name="fourth_session">4th period</string>
     <string name="add_time">Overtime</string>
-    <string name="add_time_first_half_game">Overtime First half</string>
-    <string name="add_time_second_half_game">Overtime Second half</string>
+    <string name="add_time_first_half_game">Overtime 1st Half</string>
+    <string name="add_time_second_half_game">Overtime 2nd Half</string>
     <string name="account_balance">Current Balance</string>
     <string name="user_id_colon">User ID：</string>
     <string name="recharge">Deposit</string>
     <string name="more_service">More service</string>
     <string name="account_transfer">Transfer Limit</string>
     <string name="money_recycle_succeed">Recovery limit successfully</string>
-    <string name="news_center">My Information</string>
+    <string name="news_center">My Messages</string>
     <string name="help_center">Help</string>
-    <string name="fund_detail">Fund Detail</string>
+    <string name="fund_detail">Funds Details</string>
     <string name="feedback">Feedback</string>
     <string name="promotion">Promotions</string>
     <string name="need_improve">Need to be completed</string>
-    <string name="profile_info">Your Info</string>
+    <string name="profile_info">My Details</string>
     <string name="avatar">Profile photo</string>
     <string name="nickname">Nickname</string>
-    <string name="password_setting">Setting password</string>
+    <string name="password_setting">Password Setting</string>
     <string name="modify_avatar">Edit profile photo</string>
     <string name="choose_a_photo_from_the_album">Select a photo from camera roll</string>
     <string name="take_a_picture">Take a photo</string>
@@ -313,7 +313,7 @@
     <string name="change_nickname">Change nickname</string>
     <string name="hint_nickname">characters</string>
     <string name="error_nickname"><![CDATA[Nickname must be 6–20 characters long and contain English & Chinese letter]]></string>
-    <string name="setting_password">Setting password</string>
+    <string name="setting_password">Password Setting</string>
     <string name="withdrawal_password">Withdrawal Password</string>
     <string name="current_login_password">Current login password</string>
     <string name="current_withdrawal_password">Current withdrawal password</string>
@@ -409,7 +409,6 @@
     <string name="ou_hdp_hdp_title_v_b">Concede score</string>
     <string name="ou_hdp_1x2_title">Single</string>
     <string name="x12_x_play_name">Draw</string>
-    <string name="no_history_content">Your current selection has nothing～</string>
     <string name="no_history_search">No data found for your search or filter</string>
     <string name="odd_button_ou_o">Over</string>
     <string name="odd_button_ou_u">Under</string>
@@ -489,7 +488,7 @@
     <string name="btn_service">Contact customer service</string>
     <string name="btn_service_maintain">Customer service</string>
     <string name="txv_transfer_pay">Transfer</string>
-    <string name="txv_online_pay">Top Up Online</string>
+    <string name="txv_online_pay">Online Deposit</string>
     <string name="txv_crypto_pay">Virtual currency transfer</string>
     <string name="error_recharge_amount">Incorrect format or value of deposit amount</string>
     <string name="error_first_recharge_amount">The first deposit amount cannot be less than %s</string>
@@ -559,7 +558,7 @@
     <string name="go_to_setting">To set up</string>
     <string name="message_withdraw_maintain">The withdrawal system is being upgraded，Please waiting</string>
     <string name="text_money_get_success">Withdrawal successful, please wait for customer service personnel check</string>
-    <string name="withdraw_setting">Withdraw Setting</string>
+    <string name="withdraw_setting">Withdrawal Setting</string>
     <string name="tail_number">End no</string>
     <string name="bind_start_time">Bind</string>
     <string name="bind_credit_card_not_yet">You do not have a bank card/crypto bound</string>
@@ -667,26 +666,26 @@
     <string name="already_bet_complete">You have been successful bets</string>
     <string name="complete">Completed</string>
     <string name="winnable_amount_colon">To Win：</string>
-    <string name="finance">Fund Detail</string>
+    <string name="finance">Funds Details</string>
     <string name="record_recharge">Deposit Records</string>
-    <string name="record_withdrawal">Withdrawal Record</string>
+    <string name="record_withdrawal">Withdrawal Records</string>
     <string name="record_conversion">Conversion Record</string>
-    <string name="record_history">Transaction History</string>
+    <string name="record_history">Transactions History</string>
     <string name="recharge_state_success">Success</string>
     <string name="recharge_state_failed">Fail</string>
     <string name="recharge_state_processing">Processing</string>
     <string name="all_order_status">All Status</string>
     <string name="recharge_channel_all">All Method</string>
-    <string name="recharge_channel_online">Top Up Online</string>
-    <string name="recharge_channel_bank">Bank card transfer</string>
+    <string name="recharge_channel_online">Online Deposit</string>
+    <string name="recharge_channel_bank">Bank Transfer</string>
     <string name="recharge_channel_alipay">Alipay transfer</string>
     <string name="recharge_channel_weixin">Wechat transfer</string>
     <string name="recharge_channel_cft">Tenpay transfer</string>
-    <string name="recharge_channel_crypto">USDT transaction</string>
+    <string name="recharge_channel_crypto">USDT Transactions</string>
     <string name="recharge_channel_gcash">Gcash</string>
-    <string name="recharge_channel_grabpay">GrabPay</string>
-    <string name="recharge_channel_paymaya">PayMaya</string>
-    <string name="recharge_channel_admin">System add money</string>
+    <string name="recharge_channel_grabpay">Grabpay</string>
+    <string name="recharge_channel_paymaya">Maya</string>
+    <string name="recharge_channel_admin">Manual Deposit</string>
     <string name="recharge_log_order_time">Time</string>
     <string name="recharge_log_recharge_amount">Deposit Amount</string>
     <string name="recharge_log_channel_type">Method</string>
@@ -696,9 +695,9 @@
     <string name="withdraw_log_state_pass">Completed</string>
     <string name="withdraw_log_state_un_pass">Failed</string>
     <string name="withdraw_log_type_all">All Method</string>
-    <string name="withdraw_log_type_bank_trans">Bank withdraw</string>
-    <string name="withdraw_log_type_admin">Back-end deduct money</string>
-    <string name="withdraw_log_crypto_transfer">USDT withdraw</string>
+    <string name="withdraw_log_type_bank_trans">Bank</string>
+    <string name="withdraw_log_type_admin">Manual</string>
+    <string name="withdraw_log_crypto_transfer">USDT</string>
     <string name="log_detail_title">Check details</string>
     <string name="log_detail_trans_num_sub">Order ID：</string>
     <string name="log_detail_trans_num_sub2">Trading number</string>
@@ -813,7 +812,7 @@
     <string name="keyboard_done">Collapse</string>
     <string name="keyboard_max">Max</string>
     <string name="no_game_description">Select the icon above，add to My Matches. You can group them and easily watch all the match that interest you.</string>
-    <string name="odds_button_name_first">Fist</string>
+    <string name="odds_button_name_first">First</string>
     <string name="odds_button_name_ant">Any</string>
     <string name="odds_button_name_last">Last</string>
     <string name="bet_succeeded">You have been successful bets</string>
@@ -1020,6 +1019,10 @@
     <string name="self_limit_per_bet_limit_user_none">None</string>
     <string name="self_limit_per_bet_limit_user_limit"> (Maximum limited bet:%1$s %3$s-%2$s %3$s)</string>
     <string name="self_limit_error">The field format is incorrect, please enter an integer.</string>
+    <string name="self_limit_input_password_for_confirm">Please enter the login password to confirm the application.</string>
+    <string name="self_limit_input_password_for_modification">Please enter the login password to confirm the modification.</string>
+    <string name="self_limit_submit_button">Confirm</string>
+    <string name="self_limit_submit_input_password_hint">Please enter password</string>
     <!--自我禁制-->
 
     <!--登入手機驗證-->
@@ -1091,14 +1094,14 @@
     <string name="grant_location_permission_on_setting">Enable location permission on the settings page.</string>
 
     <!--歷史紀錄start-->
-    <string name="text_account_history_type">Type</string>
+    <string name="text_account_history_type">Method</string>
     <string name="text_account_history_time">Transaction time</string>
     <string name="text_account_history_number">Order no.</string>
     <string name="text_account_history_amount">Transaction amount</string>
     <string name="text_account_history_balance">Balance</string>
 
     <string name="text_account_history_bet">Bet</string>
-    <string name="text_account_history_recharge">Deposit</string>
+    <string name="text_account_history_recharge">Amount</string>
     <string name="text_account_history_withdraw">Withdraw</string>
     <string name="text_account_history_activity">Activity</string>
     <string name="text_account_history_credit">Credit</string>

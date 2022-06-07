@@ -205,6 +205,8 @@
         <attr name="subLabelText" format="string" />
         <attr name="hintText" format="string" />
         <attr name="singleText" format="string" />
+        <attr name="singleTextColor" format="color" />
+        <attr name="singleTextStartPadding" format="integer" />
         <attr name="singleTextStyle" format="enum">
             <enum name="normal" value="0"/>
             <enum name="bold" value="1"/>

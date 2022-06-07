@@ -8,10 +8,12 @@ import android.view.ViewGroup
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentSelfLimitFrozeBinding
+import org.cxct.sportlottery.enum.PassVerifyEnum
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.common.CustomPasswordVerifyDialog
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -55,7 +57,6 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
         initView()
         initObserve()
         initEditText()
-        initDataLive()
         resetView()
     }
 
@@ -98,35 +99,14 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
 
             binding.btnConfirm.isEnabled = !showError
         }
-    }
 
-    private fun submit() {
-        CustomAlertDialog(requireContext()).apply {
-            setTitle(this@SelfLimitFrozeFragment.getString(R.string.self_limit_confirm))
-            setMessage(this@SelfLimitFrozeFragment.getString(R.string.self_limit_confirm_content))
-            setPositiveButtonText(this@SelfLimitFrozeFragment.getString(R.string.btn_confirm))
-            setNegativeButtonText(this@SelfLimitFrozeFragment.getString(R.string.btn_cancel))
-            setPositiveClickListener {
-                viewModel.setFroze(binding.etFrozeDay.text.toString().toInt())
-                dismiss()
-            }
-            setNegativeClickListener {
-                dismiss()
-            }
-            setCanceledOnTouchOutside(false)
-            setCancelable(false) //不能用系統 BACK 按鈕關閉 dialog
-        }.show(childFragmentManager, null)
-    }
-
-    private fun initDataLive() {
         viewModel.frozeResult.observe(viewLifecycleOwner, {
-
             if (it.success) {
                 val dialog = CustomAlertDialog(requireActivity()).apply {
+                    isCancelable = false
                     setTitle(this@SelfLimitFrozeFragment.getString(R.string.self_limit_confirm))
                     setMessage(this@SelfLimitFrozeFragment.getString(R.string.self_limit_confirm_done))
                     setNegativeButtonText(null)
-                    setCancelable(false)
                     setPositiveButtonText(this@SelfLimitFrozeFragment.getString(R.string.btn_confirm))
                     setPositiveClickListener {
                         dismiss()
@@ -142,8 +122,13 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
                 }
                 dialog.show(childFragmentManager, null)
             }
-
         })
+    }
+
+    private fun submit() {
+        hideKeyboard()
+        CustomPasswordVerifyDialog.newInstance(PassVerifyEnum.FROZE, inputValue = binding.etFrozeDay.text.toString())
+            .show(childFragmentManager, CustomPasswordVerifyDialog::class.java.simpleName)
     }
 
 }

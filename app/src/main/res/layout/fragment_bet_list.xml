@@ -44,7 +44,7 @@
                     android:id="@+id/cl_title"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:background="@drawable/bg_gradient_0068d6_0054ac">
+                    android:background="@drawable/bg_gradient_bet_info_title">
 
                     <ImageView
                         android:id="@+id/iv_arrow"

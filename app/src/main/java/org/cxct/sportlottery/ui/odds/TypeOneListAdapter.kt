@@ -15,7 +15,8 @@ import org.cxct.sportlottery.ui.menu.OddsType
 class TypeOneListAdapter(
     private var oddsDetail: OddsDetailListData,
     private val onOddClickListener: OnOddClickListener,
-    private val oddsType: OddsType
+    private val oddsType: OddsType,
+    private val isOddPercentage:Boolean? = false
 ) : RecyclerView.Adapter<TypeOneListAdapter.ViewHolder>() {
 
 
@@ -52,7 +53,7 @@ class TypeOneListAdapter(
 
         fun bindModel(odd: Odd?) {
             btnOdds?.apply {
-                setupOdd(odd, oddsType)
+                setupOdd(odd, oddsType, isOddPercentage = isOddPercentage)
                 setupOddState(this, odd)
                 setOnClickListener {
                     odd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }

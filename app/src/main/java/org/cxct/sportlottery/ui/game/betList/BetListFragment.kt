@@ -576,7 +576,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         binding.apply {
             tvTotalWinnableAmount.text =
-                "${TextUtil.formatMoney(winnableAmount)} ${sConfigData?.systemCurrency}"
+                "${TextUtil.formatMoneyFourthDecimal(winnableAmount)} ${sConfigData?.systemCurrency}"
         }
 
         setupBtnBetAmount(totalBetAmount)
@@ -1074,6 +1074,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
      * 同賽事不能串關提示
      * @param show true:顯示, false:隱藏
      * @如果資料只有一筆，也不用顯示
+     * @反波膽也不能串關
      */
     private fun showHideCantParlayWarn(show: Boolean) {
         //TODO 現在只有串關投注才會顯示次提示

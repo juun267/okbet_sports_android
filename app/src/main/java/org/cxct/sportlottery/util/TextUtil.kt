@@ -32,12 +32,30 @@ object TextUtil : DecimalFormatUtil() {
         return null
     }
 
+    fun formatMoney(any: Any): String? {
+        try {
+            var target = any
+
+            if (any !is Number)
+                target = target.toString().toDouble()
+
+            return doNumberFormat(target, "###,###,###,##0")
+        } catch (e: Exception) {
+            Timber.e("$e")
+        }
+        return null
+    }
+
     fun formatInputMoney(any: Any): String {
         return doNumberFormat(any, "0.##")
     }
 
     fun formatMoney(double: Double): String {
         return doNumberFormat(ArithUtil.toMoneyFormat(double).toDouble(), "###,###,###,##0.000")
+    }
+
+    fun formatMoneyFourthDecimal(double: Double): String {
+        return doNumberFormat(ArithUtil.toMoneyFormat(double).toDouble(), "###,###,###,##0.0000")
     }
 
     fun formatMoney(int: Int): String {
@@ -66,6 +84,10 @@ object TextUtil : DecimalFormatUtil() {
 
     fun formatForVipRebates(any: Any): String {
         return doNumberFormat(any, "#.# %") { decimalFormat -> decimalFormat.roundingMode = RoundingMode.HALF_UP }
+    }
+
+    fun formatForOddPercentage(any: Any): String {
+        return doNumberFormat(any, "###,###,###,#0.00## %") { decimalFormat -> decimalFormat.roundingMode = RoundingMode.HALF_UP }
     }
 
     fun formatForBetHint(any: Any): String {
