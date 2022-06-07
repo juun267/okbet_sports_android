@@ -318,7 +318,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun refreshLlMoreOption() {
         binding.apply {
-            if (getCurrentParlayList().isNotEmpty()) {
+            if (getCurrentBetList().size > 1 && getCurrentParlayList().isNotEmpty()) {
                 llMoreOption.visibility = View.VISIBLE
                 tvMoreOptionsCount.text = "(${getCurrentParlayList().size})"
                 llParlayList.visibility = View.VISIBLE
@@ -727,11 +727,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 betParlayListRefactorAdapter?.hasParlayList = false
             } else {
                 betListRefactorAdapter?.hasParlayList = true
-                betListRefactorAdapter?.parlayList = it
 
                 betParlayListRefactorAdapter?.hasParlayList = true
-                betParlayListRefactorAdapter?.parlayList = it
             }
+            betListRefactorAdapter?.parlayList = it
+            betParlayListRefactorAdapter?.parlayList = it
         }
 
         viewModel.betParlaySuccess.observe(viewLifecycleOwner) {
