@@ -334,7 +334,6 @@
                                 android:id="@+id/tvErrorMessage"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
                                 android:layout_marginTop="4dp"
                                 android:paddingTop="6dp"
                                 android:textColor="@color/color_E44438_e44438"
