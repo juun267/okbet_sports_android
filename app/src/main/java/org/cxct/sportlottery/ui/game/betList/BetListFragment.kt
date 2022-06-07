@@ -309,17 +309,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     1 -> {
                         tabPosition = 1
                         betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.PARLAY_SINGLE
-                        binding.apply {
-                            if (getCurrentParlayList().isNotEmpty()) {
-                                llMoreOption.visibility = View.VISIBLE
-                                tvMoreOptionsCount.text = "(${getCurrentParlayList().size})"
-                                llParlayList.visibility = View.VISIBLE
-                                ivArrowMoreOptions.setImageResource(R.drawable.ic_arrow_gray_down)
-                            } else {
-                                llMoreOption.visibility = View.GONE
-                                llParlayList.visibility = View.GONE
-                            }
-                        }
+                        refreshLlMoreOption()
                         refreshAllAmount()
                     }
                 }
@@ -332,6 +322,20 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
 
         })
+    }
+
+    private fun refreshLlMoreOption() {
+        binding.apply {
+            if (getCurrentBetList().size > 1 && getCurrentParlayList().isNotEmpty()) {
+                llMoreOption.visibility = View.VISIBLE
+                tvMoreOptionsCount.text = "(${getCurrentParlayList().size})"
+                llParlayList.visibility = View.VISIBLE
+                ivArrowMoreOptions.setImageResource(R.drawable.ic_arrow_gray_down)
+            } else {
+                llMoreOption.visibility = View.GONE
+                llParlayList.visibility = View.GONE
+            }
+        }
     }
 
     private fun initRecyclerView() {
@@ -750,17 +754,17 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         viewModel.parlayList.observe(this.viewLifecycleOwner) {
             if (it.size == 0) {
                 betListRefactorAdapter?.hasParlayList = false
-                betListRefactorAdapter?.parlayList = singleParlayList
+                //20220607 投注單版面調整 不需要特別加入一個串關作為單注的判斷了
+//                betListRefactorAdapter?.parlayList = singleParlayList
 
                 betParlayListRefactorAdapter?.hasParlayList = false
-                betParlayListRefactorAdapter?.parlayList = singleParlayList
             } else {
                 betListRefactorAdapter?.hasParlayList = true
-                betListRefactorAdapter?.parlayList = it
 
                 betParlayListRefactorAdapter?.hasParlayList = true
-                betParlayListRefactorAdapter?.parlayList = it
             }
+            betListRefactorAdapter?.parlayList = it
+            betParlayListRefactorAdapter?.parlayList = it
         }
 
         viewModel.betParlaySuccess.observe(viewLifecycleOwner) {
@@ -1070,6 +1074,20 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             betListRefactorAdapter?.showCantParlayWarn()
         } else {
             betListRefactorAdapter?.hideCantParlayWarn()
+        }
+
+        when (binding.betTypeTabLayout.selectedTabPosition) {
+            //單項投注
+            0 -> {
+                with(binding) {
+                    llMoreOption.visibility = View.GONE
+                    llParlayList.visibility = View.GONE
+                }
+            }
+            //串關投注
+            1 -> {
+                refreshLlMoreOption()
+            }
         }
     }
 
