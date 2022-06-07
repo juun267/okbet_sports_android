@@ -165,6 +165,7 @@
     <color name="color_313131_e2e2e2">@color/color_E2E2E2</color>
     <color name="color_5d5d5d_888888">@color/color_888888</color>
     <color name="color_e5e5e5_666666">@color/color_666666</color>
+    <color name="color_bbbbbb_ffffff">@color/color_FFFFFF</color>
 
     <color name="color_FFFFFF_DE000000">@color/color_DE000000</color>
     <color name="color_B3FFFFFF_99000000">@color/transparent_black_60</color>
