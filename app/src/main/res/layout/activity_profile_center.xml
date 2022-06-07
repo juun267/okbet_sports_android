@@ -14,11 +14,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/bg_gray_gradient">
+        android:background="@color/color_191919_FCFCFC">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
+
         android:paddingStart="0dp"
         android:paddingEnd="20dp">
 
@@ -59,8 +59,9 @@
             android:layout_marginStart="1dp"
             android:background="@null"
             android:contentDescription="@null"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_edit_button"
+            android:scaleType="fitCenter"
+            android:padding="@dimen/margin_6"
+            android:src="@drawable/ic_pen"
             app:layout_constraintBottom_toBottomOf="@id/tv_user_nickname"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
@@ -98,8 +99,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/margin_20"
-            android:paddingTop="@dimen/margin_12"
-            android:paddingBottom="@dimen/margin_32"
+            android:paddingTop="@dimen/margin_10"
+            android:paddingBottom="@dimen/margin_10"
             android:layout_marginHorizontal="@dimen/margin_20"
             android:layout_marginTop="@dimen/margin_16"
             android:background="@drawable/bg_amount_yellow_gradient"
@@ -111,10 +112,10 @@
                 android:id="@+id/tv_currency_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:gravity="center_vertical"
+                android:fontFamily="@font/helvetica_bold"
                 android:textColor="@color/color_643C00"
-                android:textSize="@dimen/textSize18sp"
+                android:textSize="@dimen/textSize20sp"
                 android:textStyle="bold"
                 tools:text="P" />
             <TextView
@@ -127,6 +128,7 @@
                 android:textColor="@color/color_643C00"
                 android:textSize="@dimen/textSize20sp"
                 android:textStyle="bold"
+                android:fontFamily="@font/roboto_medium_numbers"
                 app:autoSizeMaxTextSize="20dp"
                 app:autoSizeMinTextSize="2dp"
                 tools:text="87,547,000.000" />
@@ -162,11 +164,11 @@
 
 
         <LinearLayout
+            android:id="@+id/lin_wallet_operation"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="16dp"
-            android:layout_marginTop="-20dp"
-            android:paddingTop="@dimen/margin_20"
+            android:layout_height="60dp"
+            android:layout_marginTop="-10dp"
+            android:paddingTop="@dimen/margin_10"
             android:background="@drawable/bg_white_wallet"
             android:gravity="center"
             android:orientation="horizontal"
@@ -175,9 +177,8 @@
             <LinearLayout
                 android:id="@+id/btn_recharge"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:paddingVertical="@dimen/margin_12"
                 android:elevation="5dp"
                 android:gravity="center"
                 android:orientation="horizontal">
@@ -206,9 +207,8 @@
             <LinearLayout
                 android:id="@+id/btn_withdraw"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:paddingVertical="@dimen/margin_12"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -231,9 +231,10 @@
         </LinearLayout>
     </LinearLayout>
     <View
+        android:id="@+id/v_divide"
         android:layout_width="match_parent"
         android:layout_height="@dimen/margin_8"
-        android:background="@color/color_F3F4F5"/>
+        android:background="@color/color_141414_F3F4F5"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

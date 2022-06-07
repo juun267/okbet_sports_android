@@ -598,15 +598,16 @@ class ProfileCenterActivity :
 
     private fun updateThirdOpenUI(){
         val thirdOpen = sConfigData?.thirdOpen == FLAG_OPEN
-        btn_toolbar_back.visibility = if (!thirdOpen) View.VISIBLE else View.GONE
         btn_account_transfer.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
         btn_other_bet_record.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
         bottom_nav_view.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
     }
 
     private fun updateCreditAccountUI() {
-        btn_toolbar_back.setVisibilityByCreditSystem()
-        btn_withdrawal_setting.setVisibilityByCreditSystem()
-        btn_promotion.setVisibilityByCreditSystem()
+        lin_wallet_operation.setVisibilityByCreditSystem()
+        v_divide.setVisibilityByCreditSystem()
+        btn_account_transfer.setVisibilityByCreditSystem()
+        btn_other_bet_record.setVisibilityByCreditSystem()
+        btn_self_limit.setVisibilityByCreditSystem()
     }
 }
