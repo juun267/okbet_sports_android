@@ -1077,7 +1077,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             mBetView,
                             onSelectedPositionListener,
                             position,
-                            hasBetClosedForSingle
+                            hasBetClosedForSingle,
+                            userLogin
                         )
                     }
                     else -> {
@@ -1164,6 +1165,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             onSelectedPositionListener: OnSelectedPositionListener,
             position: Int,
             hasBetClosed: Boolean,
+            userLogin: Boolean
         ) {
             itemView.item_first_single.apply {
 
@@ -1194,8 +1196,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 )
                 et_bet_single.apply {
                     //init bet amount value
-                    val maxAmount = getMaxOrMinAmount(isGetMax = true, betList)
-                    val minAmount = getMaxOrMinAmount(isGetMax = false, betList)
+//                    val maxAmount = getMaxOrMinAmount(isGetMax = true, betList)
+//                    val minAmount = getMaxOrMinAmount(isGetMax = false, betList)
                     //hint = getAllSingleMinMaxHint(context, maxAmount, minAmount)
 
                     setText(initValue)
@@ -1212,7 +1214,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             val allWinnableAmount =
                                 getAllSingleWinnableAmount(inputValue, currentOddsType, betList)
 
-                            val maxAmount = getMaxOrMinAmount(isGetMax = true, betList)
+                            val maxAmount = getMaxOrMinAmount(isGetMax = true, betList, userLogin)
 
                             maxAmount.let { max ->
                                 if (inputValue > max) {
@@ -1285,29 +1287,31 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 if (et_bet_single.isFocusable) layoutKeyBoard.setMaxBetMoney(
                     getMaxOrMinAmount(
                         isGetMax = true,
-                        betList
-                    ).toDouble()
+                        betList,
+                        userLogin
+                    )
                 )
 
-//                et_bet_single.setOnTouchListener { view, event ->
-//                    if (event.action == MotionEvent.ACTION_UP) {
-//                        et_bet_single.isFocusable = true
-//                        layoutKeyBoard.showKeyboard(
-//                            et_bet_single,
-//                            position,
-//                            getMaxOrMinAmount(isGetMax = true, betList).toDouble(),
-//                            getMaxOrMinAmount(isGetMax = false, betList)
-//                        )
-//                        //onItemClickListener.onShowParlayKeyboard(et_bet_single, itemData, position, getMaxOrMinAmount(isGetMax = true, betList))
-//                        onSelectedPositionListener.onSelectChange(
-//                            bindingAdapterPosition,
-//                            BetViewType.SINGLE
-//                        )
-//
-//
-//                    }
-//                    false
-//                }
+                et_bet_single.setOnTouchListener { view, event ->
+                    if (event.action == MotionEvent.ACTION_UP) {
+                        et_bet_single.isFocusable = true
+                        layoutKeyBoard.showKeyboard(
+                            et_bet_single,
+                            position,
+                            getMaxOrMinAmount(isGetMax = true, betList, userLogin),
+                            getMaxOrMinAmount(isGetMax = false, betList, userLogin).toLong(),
+                            userLogin
+                        )
+                        //onItemClickListener.onShowParlayKeyboard(et_bet_single, itemData, position, getMaxOrMinAmount(isGetMax = true, betList))
+                        onSelectedPositionListener.onSelectChange(
+                            bindingAdapterPosition,
+                            BetViewType.SINGLE
+                        )
+
+
+                    }
+                    false
+                }
 //                et_container.setOnClickListener {
 //                    et_bet_single.isFocusable = true
 //                    et_bet_single.setSelection(et_bet_single.text.length)
@@ -1415,8 +1419,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
         private fun getMaxOrMinAmount(
             isGetMax: Boolean,
-            betList: MutableList<BetInfoListData>
-        ): Long {
+            betList: MutableList<BetInfoListData>,
+            userLogin: Boolean
+        ): Double {
             var min = betList.first().parlayOdds?.min ?: 0
             var max = betList.first().parlayOdds?.max ?: 99999999
             betList.forEach {
@@ -1429,8 +1434,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             }
 
             return when (isGetMax) {
-                true -> min(max.toLong(), mUserMoney.toLong())
-                else -> min.toLong()
+                true -> if (userLogin) min(max.toDouble(), mUserMoney) else max.toDouble()
+                else -> min.toDouble()
             }
         }
 
