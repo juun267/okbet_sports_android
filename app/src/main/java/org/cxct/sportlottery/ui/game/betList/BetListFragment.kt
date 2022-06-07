@@ -1088,7 +1088,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
             //串關投注
             1 -> {
-                refreshLlMoreOption()
+                with(binding) {
+                    llMoreOption.visibility = View.VISIBLE
+                }
             }
         }
     }
