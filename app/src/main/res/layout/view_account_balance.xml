@@ -20,24 +20,27 @@
         android:textSize="@dimen/textSize14sp" />
 
     <TextView
-        android:id="@+id/tv_balance"
+        android:id="@+id/tv_currency_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
+        android:textColor="@color/color_317FFF_0760D4"
+        tools:text="PHP"
+        android:textSize="@dimen/textSize16sp" />
+
+    <TextView
+        android:id="@+id/tv_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="8dp"
         android:textColor="@color/color_317FFF_0760D4"
         android:textSize="@dimen/textSize20sp"
         android:textStyle="bold"
         tools:text="87,547,000.000"
         />
 
-    <TextView
-        android:id="@+id/tv_currency_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:textColor="@color/color_317FFF_0760D4"
-        tools:text="PHP"
-        android:textSize="@dimen/textSize16sp" />
+
 
     <ImageView
         android:id="@+id/btn_refresh"
