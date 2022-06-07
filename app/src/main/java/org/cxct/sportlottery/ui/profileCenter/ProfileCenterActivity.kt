@@ -114,6 +114,7 @@ class ProfileCenterActivity :
         initBottomNav()
         getUserInfo()
         initObserve()
+        updateThirdOpenUI()
         updateCreditAccountUI()
     }
     private fun initToolbar() {
@@ -595,6 +596,12 @@ class ProfileCenterActivity :
         viewModel.uploadImage(uploadImgRequest)
     }
 
+    private fun updateThirdOpenUI(){
+        val thirdOpen = sConfigData?.thirdOpen == FLAG_OPEN
+        btn_account_transfer.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
+        btn_other_bet_record.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
+        bottom_nav_view.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
+    }
 
     private fun updateCreditAccountUI() {
         lin_wallet_operation.setVisibilityByCreditSystem()
