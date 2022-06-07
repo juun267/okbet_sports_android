@@ -193,7 +193,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/cl_total_info"
+                android:layout_above="@+id/ll_container"
                 android:layout_below="@id/betTypeTabLayout">
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -248,11 +248,11 @@
                 android:id="@+id/cl_no_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/cl_total_info"
+                android:layout_above="@+id/ll_container"
                 android:layout_below="@+id/fl_title"
                 android:background="@color/color_191919_FCFCFC"
                 android:visibility="gone"
-                tools:visibility="visible">
+                tools:visibility="gone">
 
                 <ImageView
                     android:id="@+id/iv_no_data"
@@ -283,11 +283,85 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <View
+            <LinearLayout
+                android:id="@+id/ll_container"
                 android:layout_width="match_parent"
-                android:layout_height="4dp"
+                android:layout_height="wrap_content"
                 android:layout_above="@id/cl_total_info"
-                android:background="@drawable/bg_gradient_bottom_sheet_shadow" />
+                android:orientation="vertical">
+
+                <View
+                    android:id="@+id/line_shadow"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:background="@drawable/bg_gradient_bottom_sheet_shadow" />
+
+                <LinearLayout
+                    android:id="@+id/ll_more_option"
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:background="@color/color_191919_FCFCFC"
+                    android:gravity="center"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bet_list_view_more_options"
+                        android:textColor="@color/color_A3A3A3_666666"
+                        android:textSize="@dimen/textSize12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_more_options_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_4"
+                        android:textColor="@color/color_317FFF_0760D4"
+                        android:textSize="@dimen/textSize12sp"
+                        tools:text="(3)" />
+
+                    <ImageView
+                        android:id="@+id/iv_arrow_more_options"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_4"
+                        android:src="@drawable/ic_arrow_gray_top"
+                        tools:src="@drawable/ic_arrow_gray_top" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_212121_eeeeee" />
+
+                <LinearLayout
+                    android:id="@+id/ll_parlay_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tv_odds_changed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bet_info_odd_content_changed"
+                        android:visibility="gone" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_parlay_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="235dp"
+                        android:overScrollMode="never" />
+
+                    <View
+                        android:id="@+id/shadow_parlay_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:background="@drawable/bg_gradient_bottom_sheet_shadow" />
+
+                </LinearLayout>
+            </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_total_info"
@@ -397,18 +471,12 @@
                 android:visibility="gone"
                 tools:visibility="gone" />-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_above="@id/ll_bet"
-                android:background="@color/color_212121_eeeeee"/>
-
             <LinearLayout
                 android:id="@+id/ll_bet"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
                 android:layout_alignParentBottom="true"
-                android:background="@color/color_2B2B2B_FCFCFC"
+                android:background="@color/color_141414_F3F4F5"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="@dimen/margin_8"

@@ -18,6 +18,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -237,6 +238,19 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         /*ll_odds_close_warn.setOnClickListener {
             removeClosedPlat()
         }*/
+
+        binding.apply {
+            llMoreOption.setOnClickListener {
+                if (llParlayList.isVisible) {
+                    ivArrowMoreOptions.setImageResource(R.drawable.ic_arrow_gray_top)
+                    llParlayList.visibility = View.GONE
+                } else {
+                    tvMoreOptionsCount.text = "(${getCurrentParlayList().size})"
+                    ivArrowMoreOptions.setImageResource(R.drawable.ic_arrow_gray_down)
+                    llParlayList.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
     private fun initTabLayout() {
@@ -276,10 +290,25 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     //單項投注
                     0 -> {
                         //TODO set betSingleType in betListRefactorAdapter
+                        binding.apply {
+                            llMoreOption.visibility = View.GONE
+                            llParlayList.visibility = View.GONE
+                        }
                     }
                     //串關投注
                     1 -> {
                         //TODO set betParlayType in betListRefactorAdapter
+                        binding.apply {
+                            if (getCurrentParlayList().isNotEmpty()) {
+                                llMoreOption.visibility = View.VISIBLE
+                                tvMoreOptionsCount.text = "(${getCurrentParlayList().size})"
+                                llParlayList.visibility = View.VISIBLE
+                                ivArrowMoreOptions.setImageResource(R.drawable.ic_arrow_gray_down)
+                            } else {
+                                llMoreOption.visibility = View.GONE
+                                llParlayList.visibility = View.GONE
+                            }
+                        }
                     }
                 }
             }
