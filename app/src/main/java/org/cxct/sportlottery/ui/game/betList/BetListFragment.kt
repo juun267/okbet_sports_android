@@ -326,13 +326,14 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         })
     }
 
-    private fun refreshLlMoreOption() {
+    private fun refreshLlMoreOption(showParlayList: Boolean = true) {
         binding.apply {
             if (getCurrentBetList().size > 1 && getCurrentParlayList().isNotEmpty()) {
                 llMoreOption.visibility = View.VISIBLE
                 tvMoreOptionsCount.text = "(${getCurrentParlayList().size})"
-                llParlayList.visibility = View.VISIBLE
-                ivArrowMoreOptions.setImageResource(R.drawable.ic_arrow_gray_down)
+                if (showParlayList) llParlayList.visibility = View.VISIBLE
+                if (llParlayList.isVisible) ivArrowMoreOptions.setImageResource(R.drawable.ic_arrow_gray_down)
+                else ivArrowMoreOptions.setImageResource(R.drawable.ic_arrow_gray_top)
             } else {
                 llMoreOption.visibility = View.GONE
                 llParlayList.visibility = View.GONE
@@ -1092,18 +1093,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
             //串關投注
             1 -> {
-                with(binding) {
-                    //呈現預設狀態
-                    if (getCurrentBetList().size > 1 && getCurrentParlayList().isNotEmpty()) {
-                        llMoreOption.visibility = View.VISIBLE
-                        tvMoreOptionsCount.text = "(${getCurrentParlayList().size})"
-                        if (llParlayList.isVisible) ivArrowMoreOptions.setImageResource(R.drawable.ic_arrow_gray_down)
-                        else ivArrowMoreOptions.setImageResource(R.drawable.ic_arrow_gray_top)
-                    } else {
-                        llMoreOption.visibility = View.GONE
-                        llParlayList.visibility = View.GONE
-                    }
-                }
+                refreshLlMoreOption(false)
             }
         }
     }
