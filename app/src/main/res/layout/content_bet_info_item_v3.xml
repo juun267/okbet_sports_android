@@ -50,9 +50,9 @@
 
                     <ImageView
                         android:id="@+id/ivSportLogo"
-                        android:layout_width="@dimen/margin_12"
-                        android:layout_height="@dimen/margin_12"
-                        android:layout_marginStart="8dp"
+                        android:layout_width="@dimen/margin_10"
+                        android:layout_height="@dimen/margin_10"
+                        android:layout_marginStart="@dimen/margin_8"
                         android:src="@drawable/ic_tennis_icon"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_odds_content"
                         app:layout_constraintStart_toStartOf="parent"
@@ -138,7 +138,7 @@
                     <EditText
                         android:id="@+id/et_bet"
                         android:layout_width="0dp"
-                        android:layout_height="40dp"
+                        android:layout_height="@dimen/et_bet_height"
                         android:layout_marginTop="7dp"
                         android:layout_marginEnd="@dimen/margin_24"
                         android:layout_marginBottom="@dimen/margin_18"

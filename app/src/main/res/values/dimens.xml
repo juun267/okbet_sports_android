@@ -147,4 +147,6 @@
 
     <dimen name="live_player_height">232dp</dimen>
 
+    <dimen name="et_bet_height">34dp</dimen>
+
 </resources>

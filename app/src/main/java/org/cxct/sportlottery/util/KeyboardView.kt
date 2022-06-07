@@ -109,7 +109,8 @@ class KeyboardView @JvmOverloads constructor(
             insertDot()
         }
         tvClear.setOnClickListener {
-            mEditText.text.clear()
+            //關閉鍵盤
+            hideKeyboard()
         }
         tvMax.setOnClickListener {
             if (mIsLogin) {
