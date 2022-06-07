@@ -206,7 +206,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:itemCount="2"
-                    tools:listitem="@layout/content_bet_info_item" />
+                    tools:listitem="@layout/content_bet_info_item_v3" />
 
                 <View
                     android:id="@+id/shadow"

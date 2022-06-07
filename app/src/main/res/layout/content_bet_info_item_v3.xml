@@ -134,6 +134,11 @@
                         app:layout_constraintTop_toTopOf="@+id/tv_match"
                         tools:text="0.89" />
 
+                    <!-- 當底下view隱藏時 當作padding的view -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/margin_18"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_match"/>
 
                     <EditText
                         android:id="@+id/et_bet"
