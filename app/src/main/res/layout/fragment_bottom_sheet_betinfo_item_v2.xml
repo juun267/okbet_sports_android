@@ -375,11 +375,10 @@
                                 android:textColor="@color/color_E44438_e44438"
                                 android:textSize="@dimen/textSize13sp"
                                 android:visibility="gone"
-                                app:layout_constraintBottom_toTopOf="@+id/layoutKeyBoard"
                                 app:layout_constraintStart_toStartOf="@+id/et_bet"
-                                app:layout_constraintTop_toBottomOf="@+id/et_bet"
+                                app:layout_constraintBottom_toTopOf="@id/tv_odd_content_changed"
                                 tools:text="@string/bet_info_list_minimum_limit_amount"
-                                tools:visibility="gone" />
+                                tools:visibility="visible" />
 
                             <!--預留空間為了對應鍵盤與警告提示自動增長-->
                             <View
@@ -391,11 +390,12 @@
                             <org.cxct.sportlottery.util.KeyboardView
                                 android:id="@+id/layoutKeyBoard"
                                 android:layout_width="match_parent"
+                                android:layout_marginHorizontal="24dp"
                                 android:layout_height="120dp"
                                 android:layout_marginTop="@dimen/margin_10"
                                 android:visibility="gone"
                                 tools:visibility="visible"
-                                app:layout_constraintTop_toBottomOf="@+id/tvErrorMessage" />
+                                app:layout_constraintBottom_toBottomOf="parent"/>
 
                             <!--                            <LinearLayout-->
                             <!--                                android:id="@+id/ll_keyboard_bg"-->
@@ -447,7 +447,7 @@
                                 android:textColor="@color/color_E44438_e44438"
                                 android:textSize="@dimen/textSize12sp"
                                 android:visibility="gone"
-                                app:layout_constraintTop_toBottomOf="@+id/et_bet"
+                                app:layout_constraintBottom_toTopOf="@id/layoutKeyBoard"
                                 tools:visibility="visible" />
 
                             <TextView
