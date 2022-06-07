@@ -51,6 +51,19 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     enum class BetViewType { SINGLE, PARLAY, NULL }
     private val attachedViewSet = HashSet<RecyclerView.ViewHolder>()
 
+    /**
+     * @property SINGLE 單項投注
+     * @property PARLAY_SINGLE 串關投注的單項投注項
+     * @property PARLAY 串關投注的串關投注項
+     */
+    enum class BetRvType { SINGLE, PARLAY_SINGLE, PARLAY }
+
+    var adapterBetType: BetRvType = BetRvType.SINGLE
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
     var betList: MutableList<BetInfoListData>? = mutableListOf()
         set(value) {
             field = value
@@ -177,18 +190,21 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
         when (holder) {
             is BetInfoItemViewHolder -> {
-                holder.bind(
-                    betList?.getOrNull(position)!!,
-                    currentOddsType,
-                    itemCount,
-                    onItemClickListener,
-                    betList?.size ?: 0,
-                    mSelectedPosition,
-                    onSelectedPositionListener,
-                    position,
-                    userMoney,
-                    userLogin
-                )
+                betList?.getOrNull(position)?.let { betInfoListData ->
+                    holder.bind(
+                        betInfoListData,
+                        currentOddsType,
+                        itemCount,
+                        onItemClickListener,
+                        betList?.size ?: 0,
+                        mSelectedPosition,
+                        onSelectedPositionListener,
+                        position,
+                        userMoney,
+                        userLogin,
+                        adapterBetType
+                    )
+                }
             }
             is BatchSingleViewHolder -> {
                 holder.bind(
@@ -213,12 +229,16 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     position,
                     hasBetClosedForSingle,
                     userMoney,
-                    userLogin
+                    userLogin,
+                    adapterBetType
                 )
             }
             is BatchParlayConnectViewHolder -> {
                 holder.bind(
-                    parlayList?.getOrNull(position - 1 - (betList?.size ?: 0)),
+                    ////region 20220607 投注單版面調整
+                    parlayList?.getOrNull(position),
+//                    parlayList?.getOrNull(position - 1 - (betList?.size ?: 0)),
+                    //endregion
                     currentOddsType,
                     hasBetClosed,
                     onItemClickListener,
@@ -252,6 +272,29 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     }
 
     override fun getItemViewType(position: Int): Int {
+        //region 20220607 投注單版面調整
+        return when (adapterBetType) {
+            BetRvType.SINGLE -> {
+                when {
+                    betList?.size ?: 0 > 1 && position == itemCount - 1 -> {
+                        ViewType.ParlayFirst.ordinal
+                    }
+                    else -> {
+                        ViewType.Bet.ordinal
+                    }
+                }
+            }
+            BetRvType.PARLAY_SINGLE -> {
+                ViewType.Bet.ordinal
+            }
+            BetRvType.PARLAY -> {
+                ViewType.Parlay.ordinal
+            }
+            else -> {
+                ViewType.Bet.ordinal
+            }
+        }
+        /*
         val betSize = betList?.size ?: 0
         val parlaySize = parlayList?.size ?: 0
         return when {
@@ -263,14 +306,21 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             position == betSize + 1 && parlaySize > 0 && moreOptionCollapse -> ViewType.Single.ordinal
             else -> ViewType.Parlay.ordinal
         }
+        */
+        //endregion
     }
 
     override fun getItemCount(): Int {
+        //region 20220607 投注單版面調整
+        return getListSize()
+        /*
         var size = getListSize()
         if (isCantParlayWarn) {
             size++
         }
         return size
+        */
+        //endregion
     }
 
     override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
@@ -311,6 +361,35 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     }
 
     private fun getListSize(): Int {
+        //region 20220607 投注單版面調整
+        val betListSize = betList?.size ?: 0
+        return when (adapterBetType) {
+            BetRvType.SINGLE -> {
+
+                if (betListSize > 1) {
+                    betListSize + 1
+                } else {
+                    betListSize
+                }
+            }
+            BetRvType.PARLAY_SINGLE -> {
+                betListSize
+            }
+            BetRvType.PARLAY -> {
+                when {
+                    betListSize < 2 -> {
+                        0
+                    }
+                    else -> {
+                        parlayList?.size ?: 0
+                    }
+                }
+            }
+            else -> {
+                0
+            }
+        }
+        /*
         val betListSize = betList?.size ?: 0
         val parlayListSize = when {
             betListSize < 2 -> 0
@@ -321,6 +400,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             betListSize + parlayListSize + 1
         else
             betListSize + parlayListSize
+        */
+        //endregion
     }
 
     //單注
@@ -338,13 +419,28 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             onSelectedPositionListener: OnSelectedPositionListener,
             position: Int,
             userMoney: Double,
-            userLogin: Boolean
+            userLogin: Boolean,
+            adapterBetType: BetRvType?
         ) {
 
             //設置輸入投注上限額
             setupInputMaxMoney(itemData, userMoney, userLogin)
 
             itemView.apply {
+                //region 20220607 投注單版面調整
+                when (adapterBetType) {
+                    BetRvType.SINGLE -> {
+                        cl_to_win.isVisible = true
+                        et_bet.isVisible = true
+                        et_clickable.isVisible = true
+                    }
+                    else -> {
+                        cl_to_win.isVisible = false
+                        et_bet.isVisible = false
+                        et_clickable.isVisible = false
+                        tv_odd_content_changed.isVisible = false
+                    }
+                }
                 setupBetAmountInput(
                     itemData,
                     currentOddsType,
@@ -354,8 +450,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     onSelectedPositionListener,
                     position,
                     userMoney,
-                    userLogin
+                    userLogin,
+                    adapterBetType
                 )
+                //endregion
 
                 setupOddStatus(itemData)
 
@@ -388,7 +486,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             onSelectedPositionListener: OnSelectedPositionListener,
             position: Int,
             userMoney: Double,
-            userLogin: Boolean
+            userLogin: Boolean,
+            adapterBetType: BetRvType?
         ) {
             itemView.apply {
                 et_bet.apply {
@@ -401,7 +500,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
                 onFocusChangeListener = null
 
-                setupOddInfo(itemData, currentOddsType, betListSize, onItemClickListener)
+                setupOddInfo(itemData, currentOddsType, betListSize, onItemClickListener, adapterBetType)
                 setupMinimumLimitMessage(itemData)
 
                 if (et_bet.isFocusable) {
@@ -594,7 +693,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             itemData: BetInfoListData,
             currentOddsType: OddsType,
             betListSize: Int,
-            onItemClickListener: OnItemClickListener
+            onItemClickListener: OnItemClickListener,
+            adapterBetType: BetRvType?
         ) {
             itemView.apply {
                 //TODO: 赛事暂无支持串關，只會在串關投注那頁顯示
@@ -615,7 +715,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 //                }
 
                 //setupOddsContent(itemData, oddsType = currentOddsType, tv_odds_content)
-                if (oddsId == itemData.matchOdd.oddsId && itemData.matchOdd.status == BetStatus.ACTIVATED.code && oldOdds != "" && oldOdds != TextUtil.formatForOdd(
+                if (adapterBetType == BetRvType.SINGLE && oddsId == itemData.matchOdd.oddsId && itemData.matchOdd.status == BetStatus.ACTIVATED.code && oldOdds != "" && oldOdds != TextUtil.formatForOdd(
                         getOdds(itemData.matchOdd, currentOddsType)
                     )
                 ) {
@@ -955,11 +1055,39 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             position: Int,
             hasBetClosedForSingle: Boolean,
             userMoney: Double,
-            userLogin: Boolean
+            userLogin: Boolean,
+            adapterBetType: BetRvType?
         ) {
             mUserMoney = userMoney
 
             itemView.apply {
+                //region 20220607 投注單版面調整
+                when(adapterBetType) {
+                    BetRvType.SINGLE -> {
+                        item_first_single.isVisible = true
+                        item_first_connect.isVisible = false
+                        ll_more_option.isVisible = false
+                        setupSingleItem(
+                            betList,
+                            itemData,
+                            currentOddsType,
+                            onItemClickListener,
+                            notifyAllBet,
+                            mSelectedPosition,
+                            mBetView,
+                            onSelectedPositionListener,
+                            position,
+                            hasBetClosedForSingle
+                        )
+                    }
+                    else -> {
+                        item_first_single.isVisible = false
+                        item_first_connect.isVisible = false
+                        ll_more_option.isVisible = false
+                    }
+                }
+
+                /*
                 item_first_single.isVisible = false
                 ll_more_option.visibility = View.VISIBLE
                 when (parlayListSize) {
@@ -1019,6 +1147,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         clickMoreOption
                     )
                 }
+                */
+                //endregion
             }
         }
 

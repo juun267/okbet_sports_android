@@ -302,7 +302,8 @@
                     android:layout_height="28dp"
                     android:background="@color/color_191919_FCFCFC"
                     android:gravity="center"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -339,7 +340,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <TextView
                         android:id="@+id/tv_odds_changed"
@@ -352,7 +354,8 @@
                         android:id="@+id/rv_parlay_list"
                         android:layout_width="match_parent"
                         android:layout_height="235dp"
-                        android:overScrollMode="never" />
+                        android:overScrollMode="never"
+                        tools:listitem="@layout/item_bet_list_batch_control_connect_v3"/>
 
                     <View
                         android:id="@+id/shadow_parlay_list"
