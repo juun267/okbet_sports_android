@@ -6,8 +6,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.network.feedback.*
+import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.user.info.UserInfoResult
+import org.cxct.sportlottery.network.user.passwordVerify.PasswordVerifyRequest
+import org.cxct.sportlottery.network.user.passwordVerify.PasswordVerifyResult
 import org.cxct.sportlottery.network.user.selflimit.FrozeRequest
 import org.cxct.sportlottery.network.user.selflimit.FrozeResult
 import org.cxct.sportlottery.network.user.selflimit.PerBetLimitRequest
@@ -43,11 +45,11 @@ class SelfLimitViewModel(
 
     val toolbarName: LiveData<String>
         get() = _toolbarName
-    val frozeResult:LiveData<FrozeResult>
+    val frozeResult: LiveData<FrozeResult>
         get() = _frozeResult
-    val perBetLimitResult:LiveData<PerBetLimitResult>
+    val perBetLimitResult: LiveData<PerBetLimitResult>
         get() = _perBetLimitResult
-    val userInfoResult:LiveData<UserInfoResult>
+    val userInfoResult: LiveData<UserInfoResult>
         get() = _userInfoResult
     private val _toolbarName = MutableLiveData<String>()
     private val _frozeResult = MutableLiveData<FrozeResult>()
@@ -63,6 +65,9 @@ class SelfLimitViewModel(
         get() = _isFrozeEditTextError
     private val _isFrozeEditTextError = MutableLiveData<Boolean>()
 
+    val passwordVerifyResult: LiveData<PasswordVerifyResult>
+        get() = _passwordVerifyResult
+    private val _passwordVerifyResult = MutableLiveData<PasswordVerifyResult>()
 
     //使用者ID
     var userID: Long? = null
@@ -70,34 +75,6 @@ class SelfLimitViewModel(
 
     fun setToolbarName(name: String) {
         _toolbarName.value = name
-    }
-
-
-    fun setPerBetLimit(mount:Int) {
-        var request = PerBetLimitRequest(mount)
-
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                repository.setPerBetLimit(request)
-            }.let { result ->
-                _perBetLimitResult.value = result
-            }
-        }
-    }
-
-
-
-
-    fun setFroze(day:Int) {
-        var frozeRequest = FrozeRequest(day)
-
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                repository.froze(frozeRequest)
-            }.let { result ->
-                _frozeResult.value = result
-            }
-        }
     }
 
     fun getUserInfo() {
@@ -117,12 +94,45 @@ class SelfLimitViewModel(
         else _isShowToolbar.value = View.GONE
     }
 
-    fun setBetEditTextError(boolean: Boolean){
+    fun setBetEditTextError(boolean: Boolean) {
         _isBetEditTextError.postValue(boolean)
     }
 
-    fun setFrozeEditTextError(boolean: Boolean){
+    fun setFrozeEditTextError(boolean: Boolean) {
         _isFrozeEditTextError.postValue(boolean)
     }
 
+    fun passwordVerifyForFroze(password: String, day: Int) {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.userService.passwordVerify(PasswordVerifyRequest(password))
+            }?.let { passwordVerifyResult ->
+                _passwordVerifyResult.value = passwordVerifyResult
+                if (!passwordVerifyResult.success) return@launch
+
+                doNetwork(androidContext) {
+                    repository.froze(FrozeRequest(day))
+                }?.let {
+                    _frozeResult.postValue(it)
+                }
+            }
+        }
+    }
+
+    fun passwordVerifyForLimitBet(password: String, mount: Int) {
+        viewModelScope.launch {
+            doNetwork(androidContext, false) {
+                OneBoSportApi.userService.passwordVerify(PasswordVerifyRequest(password))
+            }?.let { passwordVerifyResult ->
+                _passwordVerifyResult.value = passwordVerifyResult
+                if (!passwordVerifyResult.success) return@launch
+
+                doNetwork(androidContext) {
+                    repository.setPerBetLimit(PerBetLimitRequest(mount))
+                }?.let {
+                    _perBetLimitResult.postValue(it)
+                }
+            }
+        }
+    }
 }

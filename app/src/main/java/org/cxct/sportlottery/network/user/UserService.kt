@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.network.user
 
 import org.cxct.sportlottery.network.Constants.LOCK_MONEY
+import org.cxct.sportlottery.network.Constants.PASSWORD_VERIFY
 import org.cxct.sportlottery.network.Constants.USER_BET_LIMIT
 import org.cxct.sportlottery.network.Constants.USER_CREDIT_CIRCLE_HISTORY
 import org.cxct.sportlottery.network.Constants.USER_EDIT_ICON_URL
@@ -19,6 +20,8 @@ import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.network.user.nickname.NicknameRequest
 import org.cxct.sportlottery.network.user.nickname.NicknameResult
+import org.cxct.sportlottery.network.user.passwordVerify.PasswordVerifyRequest
+import org.cxct.sportlottery.network.user.passwordVerify.PasswordVerifyResult
 import org.cxct.sportlottery.network.user.selflimit.FrozeRequest
 import org.cxct.sportlottery.network.user.selflimit.FrozeResult
 import org.cxct.sportlottery.network.user.selflimit.PerBetLimitRequest
@@ -72,4 +75,7 @@ interface UserService {
 
     @GET(LOCK_MONEY)
     suspend fun lockMoney(): Response<UserMoneyResult>
+
+    @POST(PASSWORD_VERIFY)
+    suspend fun passwordVerify(@Body passwordVerifyRequest: PasswordVerifyRequest): Response<PasswordVerifyResult>
 }

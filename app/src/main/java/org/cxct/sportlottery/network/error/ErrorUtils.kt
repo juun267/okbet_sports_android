@@ -42,6 +42,7 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_INFO
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_LEAGUE_LIST
+import org.cxct.sportlottery.network.Constants.PASSWORD_VERIFY
 import org.cxct.sportlottery.network.Constants.QUERY_FIRST_ORDERS
 import org.cxct.sportlottery.network.Constants.QUERY_SECOND_ORDERS
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
@@ -128,6 +129,7 @@ import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.info.UserInfoResult
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.network.user.nickname.NicknameResult
+import org.cxct.sportlottery.network.user.passwordVerify.PasswordVerifyResult
 import org.cxct.sportlottery.network.user.setWithdrawInfo.WithdrawInfoResult
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
@@ -507,6 +509,10 @@ object ErrorUtils {
                             null,
                             null
                         ) as T
+                    }
+                    (url.contains(PASSWORD_VERIFY)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return PasswordVerifyResult(it.code, it.msg, it.success) as T
                     }
                 }
             }
