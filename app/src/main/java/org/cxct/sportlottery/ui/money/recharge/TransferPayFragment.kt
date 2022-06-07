@@ -535,7 +535,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     private fun updateMoneyRange() {
         et_recharge_amount.setHint(
             String.format(
-                "${getString(R.string.edt_hint_deposit_money)} ${sConfigData?.systemCurrency}",
+                getString(R.string.edt_hint_deposit_money),sConfigData?.systemCurrency,
                 TextUtil.formatBetQuota(ArithUtil.toMoneyFormatForHint(mSelectRechCfgs?.minMoney ?: 0.00).toInt()),
                 TextUtil.formatBetQuota(ArithUtil.toMoneyFormatForHint(mSelectRechCfgs?.maxMoney ?: 999999.00).toInt())
             )

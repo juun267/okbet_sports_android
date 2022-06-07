@@ -232,7 +232,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     private fun getAmountLimitHint(): String {
         return String.format(
-            "${getString(R.string.edt_hint_deposit_money)} ${sConfigData?.systemCurrency}",
+            getString(R.string.edt_hint_deposit_money), sConfigData?.systemCurrency,
             TextUtil.formatBetQuota(mSelectRechCfgs?.minMoney?.toLong() ?: 0),
             TextUtil.formatBetQuota(mSelectRechCfgs?.maxMoney?.toLong() ?: 999999)
         )

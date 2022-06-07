@@ -237,7 +237,7 @@ class TransactionRecordDiffAdapter :
         fun bind(totalAmount: Double) {
             itemView.apply {
                 last_total_amount.text =
-                    "${TextUtil.format(totalAmount)} ${sConfigData?.systemCurrency}"
+                    "${sConfigData?.systemCurrency}${TextUtil.format(totalAmount)}"
             }
         }
     }

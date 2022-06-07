@@ -77,7 +77,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             getAllIsShow = true
         }
 
-        tv_withdrawal_total.text = getString(R.string.total_withdrawal, "0.000")
+
 
         ll_tab_layout.visibility = View.GONE // 預設先隱藏 等待卡片資料讀取完畢後再顯示
 
