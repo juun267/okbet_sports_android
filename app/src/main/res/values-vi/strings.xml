@@ -1057,6 +1057,7 @@
     <string name="self_limit_input_password_for_confirm">Vui lòng nhập mật khẩu đăng nhập để xác nhận ứng dụng.</string>
     <string name="self_limit_input_password_for_modification">Vui lòng nhập mật khẩu đăng nhập để xác nhận sửa đổi.</string>
     <string name="self_limit_submit_button">Xác nhận</string>
+    <string name="self_limit_submit_input_password_hint">Hãy nhập mật khẩu</string>
     <!--自我禁制-->
 
     <!--登入手機驗證-->

@@ -1020,6 +1020,7 @@
     <string name="self_limit_input_password_for_confirm">Please enter the login password to confirm the application.</string>
     <string name="self_limit_input_password_for_modification">Please enter the login password to confirm the modification.</string>
     <string name="self_limit_submit_button">Confirm</string>
+    <string name="self_limit_submit_input_password_hint">Please enter password</string>
     <!--自我禁制-->
 
     <!--登入手機驗證-->

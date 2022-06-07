@@ -84,6 +84,16 @@ public class TextFieldBoxes extends FrameLayout {
     protected int singleTextStyle;
 
     /**
+     * singleText text color
+     */
+    protected int singleTextColor;
+
+    /**
+     * singleText text start padding
+     */
+    protected int singleTextStartPadding;
+
+    /**
      * helper Label text at the bottom.
      */
     protected String helperText;
@@ -551,7 +561,8 @@ public class TextFieldBoxes extends FrameLayout {
             this.singleText = styledAttrs.getString(R.styleable.TextFieldBoxes_singleText)
                     == null ? "" : styledAttrs.getString(R.styleable.TextFieldBoxes_singleText);
             this.singleTextStyle = styledAttrs.getInt(R.styleable.TextFieldBoxes_singleTextStyle, Typeface.BOLD);
-
+            this.singleTextColor = styledAttrs.getInt(R.styleable.TextFieldBoxes_singleTextColor, DEFAULT_TEXT_COLOR);
+            this.singleTextStartPadding = styledAttrs.getInt(R.styleable.TextFieldBoxes_singleTextStartPadding, 0);
             this.helperText = styledAttrs.getString(R.styleable.TextFieldBoxes_helperText)
                     == null ? "" : styledAttrs.getString(R.styleable.TextFieldBoxes_helperText);
 
@@ -1030,6 +1041,8 @@ public class TextFieldBoxes extends FrameLayout {
         setHintText(this.hintText);
         setSingleText(this.singleText);
         setSingleTextStyle(this.singleTextStyle);
+        setSingleTextColor(this.singleTextColor);
+        setSingleTextStartPadding(this.singleTextStartPadding);
         /* Colors */
         setHelperTextColor(this.helperTextColor);
         setmCounterTextColor(this.mCounterTextColor);
@@ -1125,6 +1138,15 @@ public class TextFieldBoxes extends FrameLayout {
     public void setSingleTextStyle(int textStyle) {
         this.singleTextStyle = textStyle;
         this.floatingSingle.setTypeface(this.floatingSingle.getTypeface(), this.singleTextStyle);
+    }
+
+    public void setSingleTextColor(int colorRes){
+        floatingSingle.setTextColor(colorRes);
+    }
+
+    public void setSingleTextStartPadding(int start){
+        int startPadding = ((int) MetricsUtil.INSTANCE.convertDpToPixel(start, floatingSingle.getContext()));
+        floatingSingle.setPadding(startPadding,0,0,0);
     }
 
     public void setHelperText(String helperText) {

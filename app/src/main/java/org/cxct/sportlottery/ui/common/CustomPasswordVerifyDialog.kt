@@ -9,6 +9,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.PassVerifyEnum
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.selflimit.SelfLimitViewModel
+import org.cxct.sportlottery.util.MD5Util
 
 /**
  * @author kevin
@@ -63,6 +64,10 @@ class CustomPasswordVerifyDialog : BaseDialog<SelfLimitViewModel>(SelfLimitViewM
         tv_submit.setOnClickListener {
             submit()
         }
+
+        tv_close.setOnClickListener {
+            dismiss()
+        }
     }
 
     private fun initPasswordExitText() {
@@ -97,13 +102,13 @@ class CustomPasswordVerifyDialog : BaseDialog<SelfLimitViewModel>(SelfLimitViewM
             PassVerifyEnum.FROZE -> {
                 if (!checkPassword(password)) return
                 inputValue?.let {
-                    viewModel.passwordVerifyForFroze(password, it.toInt())
+                    viewModel.passwordVerifyForFroze(MD5Util.MD5Encode(password), it.toInt())
                 }
             }
             PassVerifyEnum.BET -> {
                 if (!checkPassword(password)) return
                 inputValue?.let {
-                    viewModel.passwordVerifyForLimitBet(password, it.toInt())
+                    viewModel.passwordVerifyForLimitBet(MD5Util.MD5Encode(password), it.toInt())
                 }
             }
         }
