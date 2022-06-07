@@ -806,6 +806,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             showOddChangeWarn = it
             btn_bet.isOddsChanged = it
             showHideWarn()
+            when (it) {
+                true -> betParlayListRefactorAdapter?.showOddsChangedWarn()
+                false -> betParlayListRefactorAdapter?.hideOddsChangedWarn()
+            }
         }
 
         //盤口關閉提示

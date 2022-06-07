@@ -47,7 +47,7 @@ import kotlin.math.min
 class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private enum class ViewType { Bet, Parlay, ParlayFirst, Warn, Single }
+    private enum class ViewType { Bet, Parlay, ParlayFirst, Warn, Single, OddsWarn }
     enum class BetViewType { SINGLE, PARLAY, NULL }
     private val attachedViewSet = HashSet<RecyclerView.ViewHolder>()
 
@@ -135,6 +135,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
     var isCantParlayWarn = false
 
+    private var isOddsChangedWarn = false //顯示賠率變更提示
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return when (viewType) {
@@ -162,6 +164,13 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             ViewType.Single.ordinal -> BatchSingleInMoreOptionViewHolder(
                 layoutInflater.inflate(
                     R.layout.item_bet_list_batch_control_v3,
+                    parent,
+                    false
+                )
+            )
+            ViewType.OddsWarn.ordinal -> OddsChangedWarnViewHolder(
+                layoutInflater.inflate(
+                    R.layout.content_odds_changed_warn,
                     parent,
                     false
                 )
@@ -295,7 +304,14 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
             }
             BetRvType.PARLAY -> {
-                ViewType.Parlay.ordinal
+                when {
+                    isOddsChangedWarn && position == 0 -> {
+                        ViewType.OddsWarn.ordinal
+                    }
+                    else -> {
+                        ViewType.Parlay.ordinal
+                    }
+                }
             }
             else -> {
                 ViewType.Bet.ordinal
@@ -361,6 +377,16 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         notifyDataSetChanged()
     }
 
+    fun showOddsChangedWarn() {
+        isOddsChangedWarn = true
+        notifyDataSetChanged()
+    }
+
+    fun hideOddsChangedWarn() {
+        isOddsChangedWarn = false
+        notifyDataSetChanged()
+    }
+
     fun closeAllKeyboard() {
         attachedViewSet.forEach {
             it.itemView.findViewById<KeyboardView>(R.id.layoutKeyBoard)?.hideKeyboard()
@@ -393,7 +419,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         0
                     }
                     else -> {
-                        parlayList?.size ?: 0
+                        val parlayListSize = parlayList?.size ?: 0
+                        if (isOddsChangedWarn) {
+                            parlayListSize + 1
+                        } else {
+                            parlayListSize
+                        }
                     }
                 }
             }
@@ -2327,6 +2358,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
     // 警訊
     class CantParlayWarnViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
+    class OddsChangedWarnViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     interface OnItemClickListener {
         fun onDeleteClick(oddsId: String, currentItemCount: Int)
