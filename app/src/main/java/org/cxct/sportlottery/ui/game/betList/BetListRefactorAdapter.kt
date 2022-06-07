@@ -277,7 +277,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             BetRvType.SINGLE -> {
                 when {
                     betList?.size ?: 0 > 1 && position == itemCount - 1 -> {
-                        ViewType.ParlayFirst.ordinal
+                        ViewType.Single.ordinal
                     }
                     else -> {
                         ViewType.Bet.ordinal

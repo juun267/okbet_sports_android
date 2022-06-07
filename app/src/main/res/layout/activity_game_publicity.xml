@@ -113,13 +113,13 @@
             android:layout_height="55dp"
             app:layout_constraintBottom_toBottomOf="@id/viewBottom"/>
 
-        <!-- 投注單 -->
+        <!-- 投注單 & 快捷投注單 -->
         <FrameLayout
             android:id="@+id/flBetList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:visibility="gone" />
+            tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

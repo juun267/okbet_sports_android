@@ -211,7 +211,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.background = ColorDrawable(Color.TRANSPARENT)
+//        view.background = ColorDrawable(Color.TRANSPARENT)
         //initData()
         initView()
         initQuota()
@@ -267,6 +267,10 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initView() {
+        //點背景dismiss
+        binding.root.setOnClickListener {
+            dismiss()
+        }
         binding.tvBalanceCurrency.text = sConfigData?.systemCurrency
         binding.ivArrow.setOnClickListener {
             dismiss()

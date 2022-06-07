@@ -934,7 +934,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         fastBetFragment.arguments = bundle;
 
         transaction
-            .add(R.id.fl_fast_bet, fastBetFragment)
+            .add(R.id.fl_bet_list, fastBetFragment)
             .addToBackStack(FastBetFragment::class.java.simpleName)
             .commit()
     }

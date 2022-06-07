@@ -21,6 +21,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
         android:gravity="bottom"
         android:background="@color/transparent_black_50"
         android:orientation="vertical">
@@ -193,8 +195,7 @@
                                 android:src="@drawable/ic_tennis_icon"
                                 app:layout_constraintBottom_toBottomOf="@+id/tv_odds_content"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="@+id/tv_odds_content"
-                                app:tint="@color/color_F79D3A" />
+                                app:layout_constraintTop_toTopOf="@+id/tv_odds_content" />
 
                             <!--playName + spread + @ + odds + (oddsType)-->
                             <TextView

@@ -88,6 +88,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private var showReceipt: Boolean = false
 
+    private var tabPosition = 0 //tab的位置
+
     private val mHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
             when (msg.what) {
@@ -206,6 +208,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initBtnView() {
+        //點背景dismiss
+        binding.root.setOnClickListener {
+            activity?.onBackPressed()
+        }
         binding.btnBet.apply {
             tv_quota.text = TextUtil.formatBetQuota(0)
         }
@@ -291,16 +297,17 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 when (tab?.position) {
                     //單項投注
                     0 -> {
-                        //TODO set betSingleType in betListRefactorAdapter
+                        tabPosition = 0
                         betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
                         binding.apply {
                             llMoreOption.visibility = View.GONE
                             llParlayList.visibility = View.GONE
                         }
+                        refreshAllAmount()
                     }
                     //串關投注
                     1 -> {
-                        //TODO set betParlayType in betListRefactorAdapter
+                        tabPosition = 1
                         betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.PARLAY_SINGLE
                         binding.apply {
                             if (getCurrentParlayList().isNotEmpty()) {
@@ -313,6 +320,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                                 llParlayList.visibility = View.GONE
                             }
                         }
+                        refreshAllAmount()
                     }
                 }
             }
@@ -515,26 +523,51 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         val parlayList =
             if (originalList.size == list.size) getCurrentParlayList() else mutableListOf()//單注有不能投注的單則串關不做顯示也不能投注
 
-        val totalBetAmount =
-            list.sumByDouble { it.realAmount } + (parlayList.sumByDouble { it.betAmount * it.num })
-        val betCount =
-            list.count { it.betAmount > 0 } + parlayList.filter { it.betAmount > 0 }
-                .sumBy { it.num }
-        val winnableAmount = list.sumByDouble {
-            var currentOddsType = oddsType
-            if (it.matchOdd.odds == it.matchOdd.malayOdds
-                || it.matchType == MatchType.OUTRIGHT
-                || it.matchType == MatchType.OTHER_OUTRIGHT
-            ) {
-                currentOddsType = OddsType.EU
+//        val totalBetAmount =
+//            list.sumByDouble { it.realAmount } + (parlayList.sumByDouble { it.betAmount * it.num })
+//        val betCount =
+//            list.count { it.betAmount > 0 } + parlayList.filter { it.betAmount > 0 }
+//                .sumBy { it.num }
+//        val winnableAmount = list.sumByDouble {
+//            var currentOddsType = oddsType
+//            if (it.matchOdd.odds == it.matchOdd.malayOdds
+//                || it.matchType == MatchType.OUTRIGHT
+//                || it.matchType == MatchType.OTHER_OUTRIGHT
+//            ) {
+//                currentOddsType = OddsType.EU
+//            }
+//            getWinnable(it.betAmount, getOddsNew(it.matchOdd, currentOddsType), currentOddsType)
+//        } + parlayList.sumByDouble { getComboWinnable(it.betAmount, getOdds(it, OddsType.EU), it.num) }
+
+        //只取得對應tab內的totalBetAmount
+        val totalBetAmount = if (tabPosition == 0) {
+            list.sumByDouble { it.realAmount }
+        } else {
+            parlayList.sumByDouble { it.betAmount * it.num }
+        }
+
+        val winnableAmount = if (tabPosition == 0) {
+            list.sumByDouble {
+                var currentOddsType = oddsType
+                if (it.matchOdd.odds == it.matchOdd.malayOdds
+                    || it.matchType == MatchType.OUTRIGHT
+                    || it.matchType == MatchType.OTHER_OUTRIGHT
+                ) {
+                    currentOddsType = OddsType.EU
+                }
+                getWinnable(it.betAmount, getOddsNew(it.matchOdd, currentOddsType), currentOddsType)
             }
-            getWinnable(it.betAmount, getOddsNew(it.matchOdd, currentOddsType), currentOddsType)
-        } + parlayList.sumByDouble { getComboWinnable(it.betAmount, getOdds(it, OddsType.EU), it.num) }
+        } else {
+            parlayList.sumByDouble {
+                getComboWinnable(
+                    it.betAmount,
+                    getOdds(it, OddsType.EU),
+                    it.num
+                )
+            }
+        }
 
         binding.apply {
-            tvAllBetCount.text = betCount.toString()
-            tvTotalBetAmount.text =
-                "${TextUtil.formatMoney(totalBetAmount)} ${sConfigData?.systemCurrency}"
             tvTotalWinnableAmount.text =
                 "${TextUtil.formatMoney(winnableAmount)} ${sConfigData?.systemCurrency}"
         }
@@ -849,8 +882,15 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
         betParlayList = tempParlayList
 
-        val totalBetAmount =
-            betListFilter.sumByDouble { it.realAmount } + (parlayList.sumByDouble { it.betAmount * it.num })
+        //只取得對應tab內的totalBetAmount
+        val totalBetAmount = if (tabPosition == 0) {
+            betListFilter.sumByDouble { it.realAmount }
+        } else {
+            parlayList.sumByDouble { it.betAmount * it.num }
+        }
+//        val totalBetAmount =
+//            betListFilter.sumByDouble { it.realAmount } + (parlayList.sumByDouble { it.betAmount * it.num })
+
         //下注總金額大於用戶餘額，提示餘額不足
         if (totalBetAmount > (viewModel.userMoney.value ?: 0.0)) {
             hideLoading()
@@ -864,7 +904,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         viewModel.addBetList(
             getCurrentBetList(),
             parlayList,
-            oddsType
+            oddsType,
+            tabPosition
         )
     }
 
