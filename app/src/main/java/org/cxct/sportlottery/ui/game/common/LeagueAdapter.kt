@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.common
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +25,7 @@ import org.cxct.sportlottery.util.SvgUtil
 import org.cxct.sportlottery.util.SvgUtil.defaultIconPath
 import java.util.*
 
+@SuppressLint("NotifyDataSetChanged")
 class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelectionType: Int?, var playSelectedCode: String?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -95,7 +97,7 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         }
 
     enum class ItemType {
-        ITEM, NO_DATA, BOTTOM_NAVIGATION
+        ITEM, NO_DATA, PRELOAD_ITEM, BOTTOM_NAVIGATION
     }
 
     var isLock = true
@@ -104,6 +106,7 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
     var data = mutableListOf<LeagueOdd>()
         set(value) {
             field = value
+            isPreload = false
             //notifyDataSetChanged()
         }
 
@@ -118,13 +121,11 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
             }
 
             field = value
-            //notifyDataSetChanged()
         }
 
     var searchText = ""
         set(value) {
             field = value
-            //notifyDataSetChanged()
         }
 
     var oddsType: OddsType = OddsType.EU
@@ -139,7 +140,18 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
 
     var leagueOddListener: LeagueOddListener? = null
 
+    var isPreload: Boolean = false
+
+    fun setPreloadItem() {
+        data.clear()
+        isPreload = true
+        notifyDataSetChanged()
+    }
+
     override fun getItemViewType(position: Int): Int {
+        if (isPreload) {
+            return ItemType.PRELOAD_ITEM.ordinal
+        }
         return when {
             data.isEmpty() -> ItemType.NO_DATA.ordinal
             data.size == position -> ItemType.BOTTOM_NAVIGATION.ordinal
@@ -151,6 +163,9 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         return when (viewType) {
             ItemType.ITEM.ordinal -> {
                 ItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.itemview_league_v5, parent, false)) //itemview_league_v5
+            }
+            ItemType.PRELOAD_ITEM.ordinal -> {
+                PreloadItemViewHolder.from(parent)
             }
             ItemType.BOTTOM_NAVIGATION.ordinal -> {
                 BottomNavigationViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.home_bottom_navigation, parent, false))
@@ -413,8 +428,17 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
     }
 
     class BottomNavigationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
+    class PreloadItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        companion object {
+            fun from(parent: ViewGroup): PreloadItemViewHolder =
+                PreloadItemViewHolder(
+                    LayoutInflater.from(parent.context).inflate(R.layout.view_list_loading, parent, false)
+                )
+        }
+    }
 }
 
-class LeagueListener(val clickListenerLeague: (item: LeagueOdd) -> Unit, ) {
+class LeagueListener(val clickListenerLeague: (item: LeagueOdd) -> Unit) {
     fun onClickLeague(item: LeagueOdd) = clickListenerLeague(item)
 }

@@ -129,7 +129,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
             }
             when (it) {
                 true -> {
-                    goGamePage()
+                    goGamePublicityPage()
                 }
                 false -> {
                     goHomePage()
@@ -140,9 +140,6 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         viewModel.isLogin.observe(this) {
             if (sConfigData?.maintainStatus == FLAG_OPEN) {
                 goMaintenancePage()
-            }
-            else {
-                goGamePublicityPage()
             }
         }
     }

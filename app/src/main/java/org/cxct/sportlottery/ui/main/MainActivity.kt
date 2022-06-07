@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.main
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -17,6 +18,7 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
@@ -26,10 +28,7 @@ import org.cxct.sportlottery.ui.menu.ChangeLanguageDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
 import org.cxct.sportlottery.ui.splash.SplashViewModel
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.MetricsUtil
-import org.cxct.sportlottery.util.phoneNumCheckDialog
+import org.cxct.sportlottery.util.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import java.util.*
@@ -42,6 +41,9 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
             val intent = Intent(context, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
+            if(context is Activity){
+                context.overridePendingTransition(R.anim.push_right_to_left_enter, R.anim.push_right_to_left_exit)
+            }
         }
 
         const val ARGS_THIRD_GAME_CATE = "key-thirdGameCategory"
@@ -52,6 +54,8 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
     private val navController by lazy { findNavController(R.id.main_container) }
 
     private var mNewsDialog: NewsDialog? = null
+
+    private var needInitJumpGame = true //用來判斷需不需要根據Intent參數跳轉頁面
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +73,14 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
         //20210414修改邏輯, 若local host可以使用, 就直接使用, 若無法使用才getHost取得可以使用之域名
         /*if (mSplashViewModel.isNeedGetHost())
             mSplashViewModel.getHost()*/
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (needInitJumpGame) {
+            //不能保證MainActivity會一直存在, 所以onCreate也要做判斷是否跳轉MainMoreFragment
+            jumpScreen()
+        }
     }
 
     private fun setFontTheme() {
@@ -89,6 +101,8 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
         if (navController.currentDestination?.id != R.id.mainFragment) {
             iv_logo.performClick()
             return
+        } else {
+            AppManager.AppExit()
         }
 
         super.onBackPressed()
@@ -109,6 +123,7 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
                 ThirdGameCategory.CGCP -> goToMainFragment()
                 else -> goToMainMoreFragment(cate.name)
             }
+            needInitJumpGame = false
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -173,7 +188,7 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
                     true
                 }
                 R.id.game_page -> {
-                    startActivity(Intent(this, GameActivity::class.java))
+                    GamePublicityActivity.reStart(this)
                     false
                 }
                 R.id.promotion_page -> {
