@@ -1141,7 +1141,7 @@
     <string name="esports">eSports</string>
 
     <!--region 注單模塊調整-->
-    <string name="bet_info_bet_lock_hint">注单盘口已关闭</string>
+    <string name="bet_info_bet_lock_hint">Markets of your bet has changed</string>
     <string name="bet_info_no_parlay_hint">The match hasn\'t supported parlay</string>
     <!--endregion-->
 
