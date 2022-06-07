@@ -95,6 +95,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         RecyclerView.State(),
                         dataSport.indexOfFirst { item -> TextUtils.equals(it.code, item.code) })
                 }
+
+                leagueAdapter.setPreloadItem()
+
                 //切換球種後要重置位置
                 initMatchCategoryPagerPosition()
                 loading()
@@ -626,6 +629,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private fun setupGameListView() {
         game_list.apply {
             this.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = leagueAdapter
             addScrollWithItemVisibility(
                 onScrolling = {
                     unSubscribeChannelHallAll()
@@ -647,6 +651,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                 }
             )
+            leagueAdapter.setPreloadItem()
         }
     }
 

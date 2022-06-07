@@ -21,25 +21,5 @@
         <include layout="@layout/shimmer_placeholder_layout" />
 
         <include layout="@layout/shimmer_placeholder_layout" />
-
-        <include layout="@layout/shimmer_placeholder_layout" />
-
-        <include layout="@layout/shimmer_placeholder_layout" />
-
-        <include layout="@layout/shimmer_placeholder_layout" />
-
-        <include layout="@layout/shimmer_placeholder_layout" />
-
-        <include layout="@layout/shimmer_placeholder_layout" />
-
-        <include layout="@layout/shimmer_placeholder_layout" />
-
-        <include layout="@layout/shimmer_placeholder_layout" />
-
-        <include layout="@layout/shimmer_placeholder_layout" />
-
-        <include layout="@layout/shimmer_placeholder_layout" />
-
-        <include layout="@layout/shimmer_placeholder_layout" />
     </LinearLayout>
 </com.facebook.shimmer.ShimmerFrameLayout>
