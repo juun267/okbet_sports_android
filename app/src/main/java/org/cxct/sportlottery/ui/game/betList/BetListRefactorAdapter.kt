@@ -481,12 +481,15 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         cl_to_win.isVisible = true
                         et_bet.isVisible = true
                         et_clickable.isVisible = true
+                        //提示文字Container
+                        ll_single_tips.isVisible = true
                     }
                     else -> {
                         cl_to_win.isVisible = false
                         et_bet.isVisible = false
                         et_clickable.isVisible = false
-                        tv_odd_content_changed.isVisible = false
+                        //提示文字Container
+                        ll_single_tips.isVisible = false
                     }
                 }
                 setupBetAmountInput(
