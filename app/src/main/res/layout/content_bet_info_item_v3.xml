@@ -29,7 +29,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/color_141414_F3F4F5"
-                android:paddingBottom="18dp"
                 app:layout_constraintTop_toTopOf="parent">
 
 
@@ -209,6 +208,62 @@
 
                     </LinearLayout>
 
+                    <include
+                        android:id="@+id/cl_to_win"
+                        layout="@layout/content_bet_info_item_quota_detail_v2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_8"
+                        android:layout_marginEnd="@dimen/margin_24"
+                        android:layout_marginBottom="@dimen/margin_8"
+                        android:visibility="visible"
+                        tools:visibility="visible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/tv_odds_content"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_match"
+                        app:parlayOdd="@{parlayOdd}" />
+
+                    <org.cxct.sportlottery.util.KeyboardView
+                        android:id="@+id/layoutKeyBoard"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:layout_marginHorizontal="24dp"
+                        android:layout_marginBottom="8dp"
+                        android:paddingTop="10dp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toTopOf="@+id/bottomPaddingView"
+                        tools:visibility="visible" />
+
+                    <View
+                        android:id="@+id/bottomPaddingView"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/margin_18"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <!-- 提示文字和關閉按鈕要在變色背景之上 -->
+                    <!-- 變色背景 start -->
+                    <View
+                        android:id="@+id/v_no_parlay"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:background="@color/transparent_white_50"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:visibility="gone" />
+
+                    <View
+                        android:id="@+id/v_bet_lock"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:background="@color/transparent_black_8"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:visibility="gone" />
+                    <!-- 變色背景 end -->
+
+                    <!-- 提示文字和關閉按鈕 start -->
                     <LinearLayout
                         android:id="@+id/ll_single_tips"
                         android:layout_width="match_parent"
@@ -246,41 +301,6 @@
                             app:layout_constraintBottom_toTopOf="@id/layoutKeyBoard"
                             tools:visibility="visible" />
                     </LinearLayout>
-
-                    <include
-                        android:id="@+id/cl_to_win"
-                        layout="@layout/content_bet_info_item_quota_detail_v2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_8"
-                        android:layout_marginEnd="@dimen/margin_24"
-                        android:layout_marginBottom="@dimen/margin_8"
-                        android:visibility="visible"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/tv_odds_content"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_match"
-                        app:parlayOdd="@{parlayOdd}" />
-
-                    <org.cxct.sportlottery.util.KeyboardView
-                        android:id="@+id/layoutKeyBoard"
-                        android:layout_width="match_parent"
-                        android:layout_height="120dp"
-                        android:layout_marginHorizontal="24dp"
-                        android:layout_marginBottom="8dp"
-                        android:paddingTop="10dp"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        tools:visibility="visible" />
-
-                    <View
-                        android:id="@+id/v_no_parlay"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:background="@color/transparent_white_50"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:visibility="gone" />
 
                     <TextView
                         android:id="@+id/tv_bet_lock"
@@ -322,21 +342,12 @@
                         app:layout_constraintBottom_toBottomOf="@+id/tv_odds_content"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/tv_odds_content" />
+                    <!-- 提示文字和關閉按鈕 end -->
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <View
-                android:id="@+id/v_bet_lock"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@color/transparent_black_8"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:visibility="gone" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
