@@ -36,7 +36,8 @@ class SplashViewModel(
     private var mServerUrlIndex = 0
     private var mCheckHostUrlCount = 0 //已經完成 check host 的數量
     private var mIsGetFastHostDown = false //get host 流程結束
-    private var mAppUrlList: List<String>? = null
+    private var mAppUrlList: List<String> = listOf()
+    private var isCheckNewHost = false
 
     val configResult: LiveData<ConfigResult?>
         get() = _configResult
@@ -58,8 +59,6 @@ class SplashViewModel(
      */
     fun checkLocalHost() {
         val hostUrl = hostRepository.hostUrl
-        hostRepository.isNeedGetHost = true
-
 
         viewModelScope.launch {
             if (hostUrl.isNotEmpty()) {
@@ -74,6 +73,8 @@ class SplashViewModel(
                     setBaseUrl(hostUrl, retrofit)
                     result.configData?.let { setRandomSocketUrl(it.wsHost) }
                     getPlayQuotaCom()
+                    isCheckNewHost = true
+                    getHost()
                     return@launch
                 } else {
                     getHost()
@@ -130,7 +131,7 @@ class SplashViewModel(
                     mCheckHostUrlCount = 0
                     mIsGetFastHostDown = false
 
-                    mAppUrlList?.forEach { hostUrl ->
+                    mAppUrlList.forEach { hostUrl ->
                         checkHostByGettingConfig(hostUrl)
                     }
                 }
@@ -141,7 +142,7 @@ class SplashViewModel(
             if (++mServerUrlIndex in Constants.SERVER_URL_LIST.indices)
                 sendGetHostRequest(mServerUrlIndex)
             else
-                _configResult.postValue(null)
+                if (!isCheckNewHost) _configResult.postValue(null)
         }
     }
 
@@ -161,18 +162,22 @@ class SplashViewModel(
             if (result?.success == true) {
                 Timber.i("==> Check host success!!! baseUrl = $baseUrl")
                 mIsGetFastHostDown = true
-                hostRepository.isNeedGetHost = false
-                setConfig(result)
-                gotConfigData = true
-                setBaseUrl(baseUrl, retrofit)
-                result.configData?.let { setRandomSocketUrl(it.wsHost) }
-                getPlayQuotaCom()
+                setStoreBaseUrl(baseUrl)
+                if (!isCheckNewHost) {
+                    setConfig(result)
+                    gotConfigData = true
+                    setBaseUrl(baseUrl, retrofit)
+                    result.configData?.let { setRandomSocketUrl(it.wsHost) }
+                    getPlayQuotaCom()
+                }
             } else {
                 Timber.e("==> Check host fail!!! baseUrl = $baseUrl")
-                val listSize = mAppUrlList?.size ?: 0
+                val listSize = mAppUrlList.size
                 if (++mCheckHostUrlCount >= listSize) { //當所有的 check request 都失敗才跳 error
-                    setConfig(result)
-                    gotConfigData = false
+                    if (!isCheckNewHost) {
+                        setConfig(result)
+                        gotConfigData = false
+                    }
                 }
             }
         }
@@ -186,19 +191,19 @@ class SplashViewModel(
 
     private fun setBaseUrl(baseUrl: String, retrofit: Retrofit) {
         Timber.i("Final choice host: $baseUrl")
-        hostRepository.hostUrl = baseUrl
         Constants.setBaseUrl(baseUrl)
         RequestManager.instance.retrofit = retrofit
+    }
+
+    private fun setStoreBaseUrl(baseUrl: String) {
+        Timber.i("Final choice store host: $baseUrl")
+        hostRepository.hostUrl = baseUrl
     }
 
     private fun setRandomSocketUrl(wsHost: String) {
         val wsList = wsHost.split(',')
         val randomIndex = Random.nextInt(wsList.size)
         Constants.setSocketUrl(wsList[randomIndex])
-    }
-
-    fun isNeedGetHost(): Boolean {
-        return hostRepository.isNeedGetHost
     }
 
     private fun getPlayQuotaCom() {

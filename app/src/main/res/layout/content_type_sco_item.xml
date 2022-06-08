@@ -19,6 +19,7 @@
             android:background="@color/color_191919_FCFCFC"
             android:gravity="start|center"
             android:paddingHorizontal="@dimen/activity_horizontal_margin"
+            android:textSize="@dimen/textSize14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.392"

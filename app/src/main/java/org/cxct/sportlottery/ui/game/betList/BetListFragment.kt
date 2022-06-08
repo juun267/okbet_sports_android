@@ -576,7 +576,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         binding.apply {
             tvTotalWinnableAmount.text =
-                "${TextUtil.formatMoneyFourthDecimal(winnableAmount)} ${sConfigData?.systemCurrency}"
+                "${sConfigData?.systemCurrency} ${TextUtil.formatMoneyFourthDecimal(winnableAmount)}"
         }
 
         setupBtnBetAmount(totalBetAmount)
