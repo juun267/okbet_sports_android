@@ -43,17 +43,17 @@ class CommissionDetailAdapter: RecyclerView.Adapter<CommissionDetailAdapter.Item
 
                 tvRequiredValidBetsMoney.apply {
                     setMoneyFormat(data.validCheckAmount?.toLong()?.toDouble() ?: 0.0)
-                    setTextColor(ContextCompat.getColor(context, if(data.validCheckAmount ?: 0.0 < 0.0) R.color.color_E44438_e44438 else R.color.color_CCCCCC_333333))
+                    setTextColor(ContextCompat.getColor(context, if(data.validCheckAmount ?: 0.0 < 0.0) R.color.color_E44438_e44438 else R.color.color_BBBBBB_333333))
                 }
 
                 tvSuccessedBetsMoney.apply {
                     setMoneyFormat(data.finishValidAmount?.toLong()?.toDouble() ?: 0.0)
-                    setTextColor(ContextCompat.getColor(context, if(data.finishValidAmount ?: 0.0 < 0.0) R.color.color_E44438_e44438 else R.color.color_CCCCCC_333333))
+                    setTextColor(ContextCompat.getColor(context, if(data.finishValidAmount ?: 0.0 < 0.0) R.color.color_E44438_e44438 else R.color.color_BBBBBB_333333))
                 }
 
                 tvDeductMoney.apply {
                     setMoneyFormat(zero.minus(data.deductMoney ?: 0))
-                    setTextColor(ContextCompat.getColor(context, if(zero.minus(data.deductMoney ?: 0) < 0.0) R.color.color_E44438_e44438 else R.color.color_CCCCCC_333333))
+                    setTextColor(ContextCompat.getColor(context, if(zero.minus(data.deductMoney ?: 0) < 0.0) R.color.color_E44438_e44438 else R.color.color_BBBBBB_333333))
                 }
 
                 when(data.isPass){

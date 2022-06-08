@@ -33,7 +33,7 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
                     with(tabTextView) {
                         setTypeface(null, Typeface.BOLD)
                         setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14f)
-                        setTextColor(ContextCompat.getColor(context, R.color.color_CCCCCC_333333))
+                        setTextColor(ContextCompat.getColor(context, R.color.color_BBBBBB_333333))
                     }
                 }
                 when (tab?.position) {
@@ -53,7 +53,7 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
                     with(tabTextView) {
                         setTypeface(null, Typeface.NORMAL)
                         setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14f)
-                        setTextColor(ContextCompat.getColor(context, R.color.color_A3A3A3_666666))
+                        setTextColor(ContextCompat.getColor(context, R.color.color_909090_666666))
                     }
                 }
             }
@@ -115,7 +115,7 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
                         width = ViewGroup.LayoutParams.WRAP_CONTENT
                         height = ViewGroup.LayoutParams.WRAP_CONTENT
                     }
-                    tabTextView.setTextColor(ContextCompat.getColor(context, R.color.color_A3A3A3_666666))
+                    tabTextView.setTextColor(ContextCompat.getColor(context, R.color.color_909090_666666))
                     tabTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14f)
                     tabTextView.text = tab.text
                 }
@@ -130,7 +130,7 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
                 with((selectedTab.customView as TextView)) {
                     setTypeface(null, Typeface.BOLD)
                     setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14f)
-                    setTextColor(ContextCompat.getColor(context, R.color.color_CCCCCC_333333))
+                    setTextColor(ContextCompat.getColor(context, R.color.color_BBBBBB_333333))
                 }
             }
             //endregion

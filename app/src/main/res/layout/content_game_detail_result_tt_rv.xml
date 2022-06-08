@@ -28,7 +28,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/score"
-                android:textColor="@color/color_A3A3A3_666666"
+                android:textColor="@color/color_909090_666666"
                 android:textSize="@dimen/textSize12sp" />
 
             <TextView
@@ -37,7 +37,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/plat"
-                android:textColor="@color/color_A3A3A3_666666"
+                android:textColor="@color/color_909090_666666"
                 android:textSize="@dimen/textSize12sp" />
 
         </LinearLayout>
@@ -66,7 +66,7 @@
             android:paddingTop="6dp"
             android:paddingEnd="10dp"
             android:paddingBottom="6dp"
-            android:textColor="@color/color_A3A3A3_666666"
+            android:textColor="@color/color_909090_666666"
             android:textSize="@dimen/textSize12sp"
             tools:text="BB模拟主队NE2201041646"/>
 
@@ -83,7 +83,7 @@
             android:gravity="center"
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
-            android:textColor="@color/color_8F8F8F_999999"
+            android:textColor="@color/color_7F7F7F_999999"
             android:textSize="@dimen/textSize14sp"
             tools:text="0" />
 
@@ -100,7 +100,7 @@
             android:gravity="center"
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
-            android:textColor="@color/color_8F8F8F_999999"
+            android:textColor="@color/color_7F7F7F_999999"
             android:textSize="@dimen/textSize14sp"
             tools:text="0" />
 
@@ -132,7 +132,7 @@
             android:paddingTop="6dp"
             android:paddingEnd="10dp"
             android:paddingBottom="6dp"
-            android:textColor="@color/color_A3A3A3_666666"
+            android:textColor="@color/color_909090_666666"
             android:textSize="@dimen/textSize12sp"
             tools:text="BB模拟客队NE2201041646"/>
 
@@ -149,7 +149,7 @@
             android:gravity="center"
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
-            android:textColor="@color/color_8F8F8F_999999"
+            android:textColor="@color/color_7F7F7F_999999"
             android:textSize="@dimen/textSize14sp"
             tools:text="0" />
 
@@ -166,7 +166,7 @@
             android:gravity="center"
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
-            android:textColor="@color/color_8F8F8F_999999"
+            android:textColor="@color/color_7F7F7F_999999"
             android:textSize="@dimen/textSize14sp"
             tools:text="0" />
 

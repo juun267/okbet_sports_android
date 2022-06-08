@@ -30,7 +30,7 @@
                 android:gravity="end"
                 android:minWidth="70dp"
                 android:text="@string/league_name"
-                android:textColor="@color/color_BDBDBD_404040"
+                android:textColor="@color/color_AEAEAE_404040"
                 android:textSize="@dimen/textSize12sp"
                 app:autoSizeMaxTextSize="@dimen/textSize12sp"
                 app:autoSizeMinTextSize="@dimen/textSize8sp" />
@@ -42,7 +42,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_weight="1"
                 android:text="@{data.leagueName}"
-                android:textColor="@color/color_CCCCCC_333333"
+                android:textColor="@color/color_BBBBBB_333333"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="超级联赛" />
 
@@ -61,7 +61,7 @@
                 android:gravity="end"
                 android:minWidth="70dp"
                 android:text="@string/game_match"
-                android:textColor="@color/color_BDBDBD_404040"
+                android:textColor="@color/color_AEAEAE_404040"
                 android:textSize="@dimen/textSize12sp"
                 app:autoSizeMaxTextSize="@dimen/textSize12sp"
                 app:autoSizeMinTextSize="@dimen/textSize8sp" />
@@ -73,7 +73,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_weight="1"
                 android:text="@{String.format(@string/match_names, data.homeName, data.awayName)}"
-                android:textColor="@color/color_CCCCCC_333333"
+                android:textColor="@color/color_BBBBBB_333333"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="(主) 泰拉维  vs  库塔伊西鱼雷 (客)" />
         </LinearLayout>
@@ -91,7 +91,7 @@
                 android:gravity="end"
                 android:minWidth="70dp"
                 android:text="@string/play_type"
-                android:textColor="@color/color_BDBDBD_404040"
+                android:textColor="@color/color_AEAEAE_404040"
                 android:textSize="@dimen/textSize12sp"
                 app:autoSizeMaxTextSize="@dimen/textSize12sp"
                 app:autoSizeMinTextSize="@dimen/textSize8sp" />
@@ -103,7 +103,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_weight="1"
                 android:text="@{data.playCateName}"
-                android:textColor="@color/color_CCCCCC_333333"
+                android:textColor="@color/color_BBBBBB_333333"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="独赢" />
         </LinearLayout>
@@ -121,7 +121,7 @@
                 android:gravity="end"
                 android:minWidth="70dp"
                 android:text="@string/game_odds"
-                android:textColor="@color/color_BDBDBD_404040"
+                android:textColor="@color/color_AEAEAE_404040"
                 android:textSize="@dimen/textSize12sp"
                 app:autoSizeMaxTextSize="@dimen/textSize12sp"
                 app:autoSizeMinTextSize="@dimen/textSize8sp" />
@@ -132,7 +132,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_weight="1"
-                android:textColor="@color/color_CCCCCC_333333"
+                android:textColor="@color/color_BBBBBB_333333"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="泰拉雅 2 \@3.45" />
 

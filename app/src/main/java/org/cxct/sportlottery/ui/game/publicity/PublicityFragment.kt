@@ -18,12 +18,15 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
+import org.cxct.sportlottery.repository.FLAG_OPEN
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
+import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
 import org.cxct.sportlottery.util.SocketUpdateUtil
@@ -44,6 +47,9 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
             GamePublicityAdapter.PublicityAdapterListener(
                 onLogoClickListener = {
                     removeBetListFragment()
+                    if (sConfigData?.thirdOpen == FLAG_OPEN) {
+                        MainActivity.reStart(activity ?: requireActivity())
+                    }
                 },
                 onLanguageBlockClickListener = {
                     goSwitchLanguagePage()

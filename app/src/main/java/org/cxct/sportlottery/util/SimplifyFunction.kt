@@ -14,11 +14,14 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.network.common.QuickPlayCate
+import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
+import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.widget.FakeBoldSpan
 
 /**
@@ -191,7 +194,7 @@ fun TextView.setTeamNames(countCheck: Int, homeName: String?, awayName: String?)
 /**
  * 依 config -> creditSystem 參數顯示
  */
-fun View.setVisibilityByCreditSystem(){
+fun View.setVisibilityByCreditSystem() {
     visibility = if (sConfigData?.creditSystem == FLAG_CREDIT_OPEN) View.GONE else View.VISIBLE
 }
 
@@ -201,4 +204,49 @@ fun View.setVisibilityByCreditSystem(){
  */
 fun isCreditSystem(): Boolean {
     return sConfigData?.creditSystem == FLAG_CREDIT_OPEN
+}
+
+/**
+ * 篩選玩法
+ * 更新翻譯、排序
+ */
+fun MutableList<LeagueOdd>.updateOddsSort(
+    gameType: String?,
+    playCategoryAdapter: PlayCategoryAdapter
+) {
+    val playSelected = playCategoryAdapter.data.find { it.isSelected }
+    val selectionType = playSelected?.selectionType
+    val playSelectedCode = playSelected?.code
+    val playCateMenuCode = when (playSelected?.selectionType) {
+        SelectionType.SELECTABLE.code -> {
+            playSelected.playCateList?.find { it.isSelected }?.code
+        }
+        SelectionType.UN_SELECTABLE.code -> {
+            playSelected.code
+        }
+        else -> null
+    }
+
+    val mPlayCateMenuCode =
+        if (selectionType == SelectionType.SELECTABLE.code) playCateMenuCode else playSelectedCode
+
+    val oddsSortFilter =
+        if (selectionType == SelectionType.SELECTABLE.code) playCateMenuCode else PlayCateMenuFilterUtils.filterOddsSort(
+            gameType,
+            mPlayCateMenuCode
+        )
+    val playCateNameMapFilter =
+        if (selectionType == SelectionType.SELECTABLE.code) PlayCateMenuFilterUtils.filterSelectablePlayCateNameMap(
+            gameType,
+            playSelectedCode,
+            mPlayCateMenuCode
+        ) else PlayCateMenuFilterUtils.filterPlayCateNameMap(gameType, mPlayCateMenuCode)
+
+    this.forEach { LeagueOdd ->
+        LeagueOdd.matchOdds.forEach { MatchOdd ->
+            MatchOdd.oddsSort = oddsSortFilter
+            MatchOdd.playCateNameMap = playCateNameMapFilter
+        }
+    }
+
 }

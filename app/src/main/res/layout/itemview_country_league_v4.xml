@@ -29,7 +29,7 @@
         android:maxLines="3"
         android:layout_weight="1"
         android:gravity="center_vertical|left"
-        android:textColor="@color/color_CCCCCC_333333"
+        android:textColor="@color/color_BBBBBB_333333"
         android:textSize="@dimen/textSize14sp"
         tools:text="澳大利亚甲组联赛-附加赛" />
 
@@ -38,7 +38,7 @@
         android:layout_width="1dp"
         android:layout_height="14dp"
         android:layout_gravity="center"
-        android:background="@color/color_8F8F8F_999999" />
+        android:background="@color/color_7F7F7F_999999" />
 
     <TextView
         android:id="@+id/country_league_count"

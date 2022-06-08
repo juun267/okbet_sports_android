@@ -369,7 +369,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 itemLayout.isEnabled = true
             } else {
                 text = infoData
-                setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.color_BDBDBD_404040))
+                setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.color_AEAEAE_404040))
                 iconModify.visibility = View.GONE
                 itemLayout.isEnabled = false
             }
