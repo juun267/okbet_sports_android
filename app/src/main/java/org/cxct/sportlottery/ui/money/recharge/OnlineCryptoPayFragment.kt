@@ -118,12 +118,12 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
         updateMoneyRange()
         refreshCurrencyType(CurrentCurrency)
 
-        tv_recharge_money.text = String.format(resources.getString(R.string.txv_recharge_money), "0.000", sConfigData?.systemCurrency)
+        tv_recharge_money.text = String.format(resources.getString(R.string.txv_recharge_money),  sConfigData?.systemCurrency,"0.000")
 
         if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0)  //返利
-            tv_fee_amount.text = String.format(getString(R.string.hint_feeback_amount), "0.000", sConfigData?.systemCurrency)
+            tv_fee_amount.text = String.format(getString(R.string.hint_feeback_amount), sConfigData?.systemCurrency, "0.000")
         else
-            tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), "0.000", sConfigData?.systemCurrency)
+            tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), sConfigData?.systemCurrency, "0.000")
     }
 
     private fun initButton() {
@@ -262,7 +262,7 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
             when{
                 selectRechCfgs?.rebateFee ==  0.0 || selectRechCfgs?.rebateFee == null -> {
                     tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), "0.000") + "%"
-                    tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), "0.000", sConfigData?.systemCurrency)
+                    tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), sConfigData?.systemCurrency,"0.000")
                 }
                 selectRechCfgs.rebateFee ?: 0.0 > 0.0 ->{
                     tv_fee_rate.text = String.format(getString(R.string.hint_feeback_rate),  ArithUtil.toMoneyFormat(selectRechCfgs?.rebateFee?.times(100))) + "%"
@@ -321,35 +321,35 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
                 checkRechargeAccount(it, mSelectRechCfgs)
                 if (it.isEmpty() || it.isBlank()) {
                     tv_recharge_money.text =
-                        String.format(resources.getString(R.string.txv_recharge_money), "0.000", sConfigData?.systemCurrency)
+                        String.format(resources.getString(R.string.txv_recharge_money), sConfigData?.systemCurrency, "0.000")
                     if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) {
                         tv_fee_amount.text =
-                            String.format(getString(R.string.hint_feeback_amount), "0.000", sConfigData?.systemCurrency)
+                            String.format(getString(R.string.hint_feeback_amount), sConfigData?.systemCurrency, "0.000")
                     } else {
-                        tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), "0.000", sConfigData?.systemCurrency)
+                        tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), sConfigData?.systemCurrency, "0.000")
                     }
                 } else {
                     //充值金額
                     tv_recharge_money.text = String.format(
-                        resources.getString(R.string.txv_recharge_money),
-                        TextUtil.formatMoney(ArithUtil.toMoneyFormat(it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)).toDouble()), sConfigData?.systemCurrency
+                        resources.getString(R.string.txv_recharge_money), sConfigData?.systemCurrency,
+                        TextUtil.formatMoney(ArithUtil.toMoneyFormat(it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)).toDouble())
                     )
                     //返利/手續費金額
                     if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) { //返利/手續費金額
                         tv_fee_amount.text =
-                            String.format(getString(R.string.hint_feeback_amount),
-                                ArithUtil.toMoneyFormat((it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)).times(mSelectRechCfgs?.rebateFee?:0.0)),
-                                sConfigData?.systemCurrency
+                            String.format(getString(R.string.hint_feeback_amount),sConfigData?.systemCurrency,
+                                ArithUtil.toMoneyFormat((it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)).times(mSelectRechCfgs?.rebateFee?:0.0))
+
                             )
                     } else {
                         tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount),
-                            ArithUtil.toMoneyFormat(abs(it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0).times(mSelectRechCfgs?.rebateFee?:0.0))),
-                            sConfigData?.systemCurrency)
+                            sConfigData?.systemCurrency,
+                            ArithUtil.toMoneyFormat(abs(it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0).times(mSelectRechCfgs?.rebateFee?:0.0))))
                     }
 
                     if(mSelectRechCfgs?.rebateFee == 0.0 || mSelectRechCfgs?.rebateFee == null){
                         tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), "0.000") + "%"
-                        tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), "0.000", sConfigData?.systemCurrency)
+                        tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), sConfigData?.systemCurrency, "0.000")
                     }
                 }
             }

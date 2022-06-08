@@ -14,6 +14,8 @@ import org.cxct.sportlottery.databinding.ActivityGamePublicityBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.repository.FLAG_OPEN
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.dialog.AgeVerifyDialog
 import org.cxct.sportlottery.ui.game.GameActivity
@@ -220,7 +222,11 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         if (navController.currentDestination?.id != R.id.publicityFragment) {
             navController.navigateUp()
         } else {
-            AppManager.AppExit()
+            if (sConfigData?.thirdOpen == FLAG_OPEN) {
+                MainActivity.reStart(this)
+            } else {
+                AppManager.AppExit()
+            }
         }
     }
 
@@ -308,6 +314,9 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                 publicityToolbar.ivLogo, gameToolbar.ivLogo -> {
                     if (navController.currentDestination?.id != R.id.publicityFragment) {
                         navController.navigateUp()
+                    } else {
+                        if (sConfigData?.thirdOpen == FLAG_OPEN)
+                            MainActivity.reStart(this@GamePublicityActivity)
                     }
                     removeBetListFragment()
                 }

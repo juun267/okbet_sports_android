@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.outright
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,17 +8,19 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_outright_league_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
+import org.cxct.sportlottery.ui.base.BaseGameAdapter
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.results.OutrightType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 
-class OutrightLeagueOddAdapter :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+@SuppressLint("NotifyDataSetChanged")
+class OutrightLeagueOddAdapter : BaseGameAdapter() {
 
     var data: List<MatchOdd?> = listOf()
         set(value) {
             field = value
+            isPreload = false
             notifyDataSetChanged()
         }
 
@@ -39,19 +42,18 @@ class OutrightLeagueOddAdapter :
 
     var outrightOddListener: OutrightOddListener? = null
 
+    fun setPreloadItem() {
+        data.toMutableList().clear()
+        isPreload = true
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        //return LeagueOddViewHolder.from(parent)
         return when (viewType) {
             OutrightType.OUTRIGHT.ordinal -> {
                 LeagueOddViewHolder.from(parent)
             }
-            OutrightType.BOTTOM_NAVIGATION.ordinal -> {
-                BottomNavigationViewHolder(
-                    LayoutInflater.from(parent.context)
-                        .inflate(R.layout.home_bottom_navigation, parent, false)
-                )
-            }
-            else -> NoDataViewHolder.from(parent)
+            else -> initBaseViewHolders(parent, viewType)
         }
     }
 
@@ -70,16 +72,20 @@ class OutrightLeagueOddAdapter :
     }
 
     override fun getItemViewType(position: Int): Int {
+        if (isPreload) {
+            return BaseItemType.PRELOAD_ITEM.type
+        }
+
         return when {
             data.isEmpty() -> {
                 if (position == 0) {
-                    OutrightType.NO_DATA.ordinal
+                    BaseItemType.NO_DATA.type
                 } else {
-                    OutrightType.BOTTOM_NAVIGATION.ordinal
+                    BaseItemType.BOTTOM_NAVIGATION.type
                 }
             }
             position == (data.size) -> {
-                OutrightType.BOTTOM_NAVIGATION.ordinal
+                BaseItemType.BOTTOM_NAVIGATION.type
             }
             else -> {
                 OutrightType.OUTRIGHT.ordinal
@@ -130,20 +136,5 @@ class OutrightLeagueOddAdapter :
             }
         }
     }
-
-    class NoDataViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        companion object {
-            fun from(parent: ViewGroup): NoDataViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater
-                    .inflate(R.layout.itemview_game_no_record, parent, false)
-
-                return NoDataViewHolder(view)
-            }
-        }
-    }
-
-    class BottomNavigationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-
 
 }

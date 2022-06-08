@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/my_favorite_empty_title"
-        android:textColor="@color/color_CCCCCC_333333"
+        android:textColor="@color/color_BBBBBB_333333"
         android:textStyle="bold"
         android:textSize="16sp"
         android:layout_marginTop="25dp"/>
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/my_favorite_empty_msg"
-            android:textColor="@color/color_DDDDDD_000000"
+            android:textColor="@color/color_CCCCCC_000000"
             android:textSize="12sp"
             android:layout_marginTop="35dp"
             android:layout_marginStart="10dp"

@@ -86,8 +86,13 @@
     <color name="color_33303030">#33303030</color>
     <color name="color_33DDDDDD">#33DDDDDD</color>
     <color name="color_BDBDBD">#BDBDBD</color>
+    <color name="color_643C00">#643C00</color>
+    <color name="color_F5F5F5">#F5F5F5</color>
 
-
+    <color name="color_7F7F7F">#7F7F7F</color>
+    <color name="color_909090">#909090</color>
+    <color name="color_9D9D9D">#9D9D9D</color>
+    <color name="color_BBBBBB">#BBBBBB</color>
     <!--以下部分，是系统中的白天的色值 -->
     <!--命名規則，color_[夜間色碼]_[白天色碼] -->
 
@@ -132,14 +137,13 @@
     <color name="color_404040_cccccc">@color/color_cccccc</color>
     <color name="color_666666_bcbcbc">@color/color_bcbcbc</color>
     <color name="color_616161_b4b4b4">@color/color_b4b4b4</color>
-    <color name="color_8F8F8F_999999">@color/color_999999</color>
+    <color name="color_7F7F7F_999999">@color/color_999999</color>
     <color name="color_505050_E2E2E2">@color/color_E2E2E2</color>
-    <color name="color_A3A3A3_999999">@color/color_999999</color>
-    <color name="color_A3A3A3_666666">@color/color_666666</color>
-    <color name="color_ADADAD_444444">@color/color_444444</color>
-    <color name="color_BDBDBD_404040">@color/color_404040</color>
-    <color name="color_CCCCCC_333333">@color/color_333333</color>
-    <color name="color_DDDDDD_000000">@color/color_000000</color>
+    <color name="color_909090_666666">@color/color_666666</color>
+    <color name="color_9D9D9D_444444">@color/color_444444</color>
+    <color name="color_AEAEAE_404040">@color/color_404040</color>
+    <color name="color_BBBBBB_333333">@color/color_333333</color>
+    <color name="color_CCCCCC_000000">@color/color_000000</color>
     <color name="color_000000_FFFFFF">@color/color_FFFFFF</color>
     <color name="color_212121_EAF4FE">@color/color_EAF4FE</color>
     <color name="color_1A1A1A_FAFAFA">@color/color_FAFAFA</color>
@@ -161,6 +165,7 @@
     <color name="color_313131_e2e2e2">@color/color_E2E2E2</color>
     <color name="color_5d5d5d_888888">@color/color_888888</color>
     <color name="color_e5e5e5_666666">@color/color_666666</color>
+    <color name="color_bbbbbb_ffffff">@color/color_FFFFFF</color>
 
     <color name="color_FFFFFF_DE000000">@color/color_DE000000</color>
     <color name="color_B3FFFFFF_99000000">@color/transparent_black_60</color>
@@ -292,7 +297,8 @@
     <color name="color_EDEDED">#EDEDED</color>
 
     <color name="color_AFAFB1">#AFAFB1</color>
-
+    <color name="color_FFFDFE">#FFFDFE</color>
+    <color name="color_7C8288">#7C8288</color>
     <!-- ======================================= -->
 
 

@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -105,7 +104,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
                     setTitle(getString(R.string.prompt))
                     setMessage(if (it.success) getString(R.string.transfer_money_succeed) else it.msg)
                     setNegativeButtonText(null)
-                    setTextColor(if (it.success) R.color.color_A3A3A3_666666 else R.color.color_F75452_b73a20)
+                    setTextColor(if (it.success) R.color.color_909090_666666 else R.color.color_F75452_b73a20)
                 }
                 dialog.show(childFragmentManager, null)
 

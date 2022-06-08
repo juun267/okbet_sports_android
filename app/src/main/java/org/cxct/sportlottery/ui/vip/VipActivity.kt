@@ -108,7 +108,7 @@ class VipActivity : BaseSocketActivity<VipViewModel>(VipViewModel::class) {
 
         //第三方遊戲反水選擇列
         sv_third_games.apply {
-            selectedTextColor = R.color.color_DDDDDD_000000
+            selectedTextColor = R.color.color_CCCCCC_000000
             setAdapter(thirdGameAdapter)
         }
 

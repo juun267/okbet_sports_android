@@ -26,8 +26,8 @@
             app:tabPaddingEnd="25dp"
             app:tabPaddingStart="25dp"
             app:tabRippleColor="@null"
-            app:tabSelectedTextColor="@color/color_CCCCCC_333333"
-            app:tabTextColor="@color/color_A3A3A3_666666">
+            app:tabSelectedTextColor="@color/color_BBBBBB_333333"
+            app:tabTextColor="@color/color_909090_666666">
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
@@ -71,27 +71,31 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:text="@string/now_balance"
-            android:textColor="@color/color_CCCCCC_333333"
+            android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize14sp"
             android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/tv_currency_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_BBBBBB_333333"
+            android:textSize="@dimen/textSize14sp"
+            tools:text="PHP" />
+
 
         <TextView
             android:id="@+id/tv_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"
-            android:textColor="@color/color_CCCCCC_333333"
+            android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize14sp"
+            android:layout_marginStart="4dp"
             tools:text="19940.000" />
 
-        <TextView
-            android:id="@+id/tv_currency_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:textColor="@color/color_CCCCCC_333333"
-            android:textSize="@dimen/textSize14sp"
-            tools:text="PHP" />
+
 
     </LinearLayout>
 
@@ -119,7 +123,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="start|center_vertical"
                 android:text="@string/select_bank"
-                android:textColor="@color/color_CCCCCC_333333"
+                android:textColor="@color/color_BBBBBB_333333"
                 android:textSize="@dimen/textSize13sp"
                 android:textStyle="bold" />
 
@@ -144,7 +148,7 @@
                 android:layout_weight="1"
                 android:gravity="start|center_vertical"
                 android:text="@string/select_bank"
-                android:textColor="@color/color_CCCCCC_333333"
+                android:textColor="@color/color_BBBBBB_333333"
                 android:textSize="@dimen/textSize12sp" />
 
             <ImageView
@@ -209,7 +213,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="start|center_vertical"
                 android:text="@string/commission_deducted_amount"
-                android:textColor="@color/color_CCCCCC_333333"
+                android:textColor="@color/color_BBBBBB_333333"
                 android:textSize="@dimen/textSize13sp"
                 android:textStyle="bold" />
 
@@ -262,12 +266,53 @@
             app:cvInputType="numberPassword"
             app:cvTitle="@string/withdraw_password" />
 
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="@drawable/effect_edittext_bg"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingEnd="12dp"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical"
+                android:text="@string/total_withdrawal"
+                android:textColor="@color/color_BBBBBB_333333"
+                android:textSize="@dimen/textSize13sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:background="@color/color_1F1F1F_E2E2E2" />
+
+            <TextView
+                android:id="@+id/tv_withdrawal_total"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:textColor="@color/color_BBBBBB_333333"
+                android:text="0.000"
+                android:textSize="@dimen/textSize12sp" />
+
+        </LinearLayout>
+
         <TextView
             android:id="@+id/btn_withdraw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="12dp"
             android:background="@drawable/bg_radius_20_button_dusk"
             android:paddingVertical="9dp"
             android:text="@string/submit"

@@ -20,7 +20,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.602"
-            android:background="@color/color_cccccc">
+            android:background="@drawable/bg_preload">
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -30,7 +30,7 @@
             android:layout_height="100dp"
             android:layout_marginStart="6dp"
             android:layout_weight="0.398"
-            android:background="@color/color_cccccc">
+            android:background="@drawable/bg_preload">
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -44,25 +44,25 @@
         <View
             android:layout_width="110dp"
             android:layout_height="match_parent"
-            android:background="@color/color_cccccc" />
+            android:background="@drawable/bg_preload" />
 
         <View
             android:layout_width="110dp"
             android:layout_height="match_parent"
             android:layout_marginStart="6dp"
-            android:background="@color/color_cccccc" />
+            android:background="@drawable/bg_preload" />
 
         <View
             android:layout_width="110dp"
             android:layout_height="match_parent"
             android:layout_marginStart="6dp"
-            android:background="@color/color_cccccc" />
+            android:background="@drawable/bg_preload" />
 
         <View
             android:layout_width="110dp"
             android:layout_height="match_parent"
             android:layout_marginStart="6dp"
-            android:background="@color/color_cccccc" />
+            android:background="@drawable/bg_preload" />
 
     </LinearLayout>
 

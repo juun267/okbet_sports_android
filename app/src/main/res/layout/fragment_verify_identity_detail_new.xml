@@ -106,7 +106,7 @@
                 android:scaleType="centerCrop"
                 app:layout_constraintTop_toBottomOf="@id/img_id_card"
                 app:riv_corner_radius="10dp"
-                tools:src="@color/color_8F8F8F_999999" />
+                tools:src="@color/color_7F7F7F_999999" />
 
             <TextView
                 android:id="@+id/img_text"

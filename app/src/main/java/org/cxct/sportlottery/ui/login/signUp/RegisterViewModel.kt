@@ -86,25 +86,9 @@ class RegisterViewModel(
         get() = _loginForGuestResult
 
 
-    private val cbPrivacyChecked: LiveData<Boolean?>
-        get() = _cbPrivacyChecked
-
-    private val agreementChecked: LiveData<Boolean?>
-        get() = _agreementChecked
-
-    private val cbNotPHOfficialChecked: LiveData<Boolean?>
-        get() = _cbNotPHOfficialChecked
-
-    private val cbNotPHSchoolChecked: LiveData<Boolean?>
-        get() = _cbNotPHSchoolChecked
-
-    private val cbRuleOkbetChecked: LiveData<Boolean?>
-        get() = _cbRuleOkbetChecked
-
     private val cbAgreeAllChecked: LiveData<Boolean?>
         get() = _cbAgreeAllChecked
 
-    var cbCheckedCounts = 0 //checkbox勾選數量
 
     private val _registerResult = MutableLiveData<LoginResult>()
     private val _inviteCodeMsg = MutableLiveData<String?>()
@@ -135,11 +119,6 @@ class RegisterViewModel(
     private val _smsResult = MutableLiveData<SmsResult?>()
     private val _loginForGuestResult = MutableLiveData<LoginResult>()
 
-    private val _cbPrivacyChecked = MutableLiveData<Boolean?>()
-    private val _agreementChecked = MutableLiveData<Boolean?>()
-    private val _cbNotPHOfficialChecked = MutableLiveData<Boolean?>()
-    private val _cbNotPHSchoolChecked = MutableLiveData<Boolean?>()
-    private val _cbRuleOkbetChecked = MutableLiveData<Boolean?>()
     private val _cbAgreeAllChecked = MutableLiveData<Boolean?>()
 
     @Deprecated("沒在用")
@@ -394,30 +373,6 @@ class RegisterViewModel(
         }
     }
 
-    fun checkCbPrivacy(checked: Boolean?) {
-        _cbPrivacyChecked.value = checked
-        focusChangeCheckAllInputComplete()
-    }
-
-    fun checkCbAgreement(checked: Boolean?) {
-        _agreementChecked.value = checked
-        focusChangeCheckAllInputComplete()
-    }
-
-    fun checkCbNotPHOfficial(checked: Boolean?) {
-        _cbNotPHOfficialChecked.value = checked
-        focusChangeCheckAllInputComplete()
-    }
-
-    fun checkCbNotPHSchool(checked: Boolean?) {
-        _cbNotPHSchoolChecked.value = checked
-        focusChangeCheckAllInputComplete()
-    }
-
-    fun checkCbRuleOkbet(checked: Boolean?) {
-        _cbRuleOkbetChecked.value = checked
-        focusChangeCheckAllInputComplete()
-    }
 
     fun checkCbAgreeAll(checked: Boolean?) {
         _cbAgreeAllChecked.value = checked
@@ -447,11 +402,6 @@ class RegisterViewModel(
         securityPb: String,
         smsCode: String,
         validCode: String,
-        cbPrivacyChecked: Boolean,
-        agreementChecked: Boolean,
-        cbNotPHOfficialChecked: Boolean,
-        cbNotPHSchoolChecked: Boolean,
-        cbRuleOkbetChecked: Boolean,
         cbAgreeAllChecked: Boolean,
     ): Boolean {
         if (sConfigData?.enableInviteCode == FLAG_OPEN)
@@ -494,11 +444,6 @@ class RegisterViewModel(
         if (sConfigData?.enableRegValidCode == FLAG_OPEN)
             checkValidCode(validCode)
 
-        checkCbPrivacy(cbPrivacyChecked)
-        checkCbAgreement(agreementChecked)
-        checkCbNotPHOfficial(cbNotPHOfficialChecked)
-        checkCbNotPHSchool(cbNotPHSchoolChecked)
-        checkCbRuleOkbet(cbRuleOkbetChecked)
         checkCbAgreeAll(cbAgreeAllChecked)
 
         return checkAllInputComplete()
@@ -550,16 +495,6 @@ class RegisterViewModel(
         if (sConfigData?.enableRegValidCode == FLAG_OPEN && checkInputPair(validCodeMsg))
             return false
 
-        if (cbPrivacyChecked.value != true)
-            return false
-        if (agreementChecked.value != true)
-            return false
-        if (cbNotPHOfficialChecked.value != true)
-            return false
-        if (cbNotPHSchoolChecked.value != true)
-            return false
-        if (cbRuleOkbetChecked.value != true)
-            return false
         if (cbAgreeAllChecked.value != true)
             return false
 
@@ -619,11 +554,6 @@ class RegisterViewModel(
         securityPb: String,
         smsCode: String,
         validCode: String,
-        cbPrivacyChecked: Boolean,
-        agreementChecked: Boolean,
-        cbNotPHOfficialChecked: Boolean,
-        cbNotPHSchoolChecked: Boolean,
-        cbRuleOkbetChecked: Boolean,
         cbAgreeAllChecked: Boolean,
         deviceSn: String,
         deviceId: String
@@ -650,11 +580,6 @@ class RegisterViewModel(
                 securityPb,
                 smsCode,
                 validCode,
-                cbPrivacyChecked,
-                agreementChecked,
-                cbNotPHOfficialChecked,
-                cbNotPHSchoolChecked,
-                cbRuleOkbetChecked,
                 cbAgreeAllChecked,
             )) {
             register(

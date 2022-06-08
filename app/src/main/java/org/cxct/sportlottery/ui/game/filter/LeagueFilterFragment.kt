@@ -47,6 +47,7 @@ class LeagueFilterFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
             this.league_filter_country_list.apply {
                 layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
                 adapter = countryAdapter
+                countryAdapter.setPreloadItem()
             }
             this.league_filter_all_view.setOnClickListener {
                 viewModel.filterLeague(listOf())

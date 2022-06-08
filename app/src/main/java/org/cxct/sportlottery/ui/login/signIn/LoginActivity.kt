@@ -24,6 +24,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.SelfLimitFrozeErrorDialog
+import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -55,12 +56,14 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         setupRememberPWD()
         setupForgetPasswordButton()
         setupRegisterButton()
+        setupServiceButton()
         setUpLoginForGuestButton()
         initObserve()
         setLetterSpace()
     }
-    private fun setLetterSpace(){
-        if (LanguageManager.getSelectLanguage(this)==LanguageManager.Language.ZH) {
+
+    private fun setLetterSpace() {
+        if (LanguageManager.getSelectLanguage(this) == LanguageManager.Language.ZH) {
             binding.btnLogin.letterSpacing = 0.6f
         }
     }
@@ -78,7 +81,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     private fun setupAccount() {
         binding.eetAccount.setText(viewModel.account)
         binding.etAccount.endIconImageButton.setOnClickListener {
-            binding.eetAccount.text=null
+            binding.eetAccount.text = null
         }
 //        binding.eetAccount.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
 //            if (!hasFocus)
@@ -204,6 +207,24 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         binding.btnSignUp.setOnClickListener {
             startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
             finish()
+        }
+    }
+
+    private fun setupServiceButton() {
+        binding.btnService.setOnClickListener {
+            val serviceUrl = sConfigData?.customerServiceUrl
+            val serviceUrl2 = sConfigData?.customerServiceUrl2
+            when {
+                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    ServiceDialog().show(supportFragmentManager, null)
+                }
+                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    JumpUtil.toExternalWeb(this@LoginActivity, serviceUrl2)
+                }
+                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
+                    JumpUtil.toExternalWeb(this@LoginActivity, serviceUrl)
+                }
+            }
         }
     }
 

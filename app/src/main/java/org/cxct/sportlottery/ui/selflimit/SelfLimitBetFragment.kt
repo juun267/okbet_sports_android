@@ -118,10 +118,10 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
         val perBetMinAmount = if (sConfigData?.perBetMinAmount.isNullOrEmpty()) 0.0 else sConfigData?.perBetMinAmount?.toDouble() ?: 0.0
         val perBetMaxAmount = if (sConfigData?.perBetMaxAmount.isNullOrEmpty()) 0.0 else sConfigData?.perBetMaxAmount?.toDouble() ?: 0.0
         binding.tvLimit.text = String.format(
-            getString(R.string.self_limit_per_bet_limit_user_limit),
+            getString(R.string.self_limit_per_bet_limit_user_limit),  sConfigData?.systemCurrency ?: " ",
             TextUtil.formatMoney(perBetMinAmount),
-            TextUtil.formatMoney(perBetMaxAmount),
-            sConfigData?.systemCurrency ?: " "
+            TextUtil.formatMoney(perBetMaxAmount)
+
         )
     }
 

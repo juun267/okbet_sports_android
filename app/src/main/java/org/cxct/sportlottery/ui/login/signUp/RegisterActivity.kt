@@ -48,10 +48,6 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     private var mSmsTimer: Timer? = null
     private lateinit var binding: ActivityRegisterBinding
 
-    companion object {
-        const val CHECKBOX_SUM = 5
-    }
-
     override fun onClick(v: View?) {
         when (v) {
             binding.ivReturn -> {
@@ -153,7 +149,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         binding.ivReturn.setOnClickListener(this)
         binding.tvDuty.setOnClickListener(this)
         binding.tvPrivacy.text =
-            getString(R.string.register_privacy) + getString(R.string.register_privacy_policy) + getString(
+            "1."+getString(R.string.register_privacy) + getString(R.string.register_privacy_policy) + getString(
                 R.string.register_privacy_policy_promotions
             )
         binding.tvPrivacy.makeLinks(
@@ -170,8 +166,8 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         val appName = getString(R.string.app_name)
         //中英appName在前半 越南文appName會在後半
         binding.tvAgreement.text = when (LanguageManager.getSelectLanguage(this@RegisterActivity)) {
-            LanguageManager.Language.VI -> String.format(getString(R.string.register_over_21), appName) + getString(R.string.register_rules) + String.format(getString(R.string.register_rules_2nd_half), appName)
-            else -> String.format(getString(R.string.register_over_21), appName) + getString(R.string.register_rules)
+            LanguageManager.Language.VI -> "2."+String.format(getString(R.string.register_over_21), appName) + getString(R.string.register_rules) + String.format(getString(R.string.register_rules_2nd_half), appName)
+            else -> "2."+String.format(getString(R.string.register_over_21), appName) + getString(R.string.register_rules)
         }
 
         binding.tvAgreement.makeLinks(
@@ -184,9 +180,9 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             })
         )
 
-        binding.tvNotPHOfficial.text = getString(R.string.register_not_ph_official)
-        binding.tvNotPHSchool.text = getString(R.string.register_not_ph_school)
-        binding.tvRuleOkbet.text = getString(R.string.register_rule_okbet)
+        binding.tvNotPHOfficial.text = "3."+getString(R.string.register_not_ph_official)
+        binding.tvNotPHSchool.text = "4."+getString(R.string.register_not_ph_school)
+        binding.tvRuleOkbet.text = "5."+getString(R.string.register_rule_okbet)
         binding.tvAgreeAll.text = getString(R.string.register_rule_agree_all)
         setLetterSpace()
     }
@@ -305,69 +301,15 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
     private fun setupAgreement() {
         binding.apply {
-            cbPrivacy.setOnCheckedChangeListener { _, isChecked ->
-                run {
-                    updateCbCheckedCounts(isChecked)
-                    viewModel.checkCbPrivacy(isChecked)
-                }
-            }
-            cbAgreement.setOnCheckedChangeListener { _, isChecked ->
-                run {
-                    updateCbCheckedCounts(isChecked)
-                    viewModel.checkCbAgreement(isChecked)
-                }
-            }
-            cbNotPHOfficial.setOnCheckedChangeListener{ _, isChecked ->
-                run {
-                    updateCbCheckedCounts(isChecked)
-                    viewModel.checkCbNotPHOfficial(isChecked)
-                }
-            }
-            cbNotPHSchool.setOnCheckedChangeListener{ _, isChecked ->
-                run {
-                    updateCbCheckedCounts(isChecked)
-                    viewModel.checkCbNotPHSchool(isChecked)
-                }
-            }
-            cbRuleOkbet.setOnCheckedChangeListener{ _, isChecked ->
-                run {
-                    updateCbCheckedCounts(isChecked)
-                    viewModel.checkCbRuleOkbet(isChecked)
-                }
-            }
             cbAgreeAll.setOnClickListener {
                 viewModel.apply {
-                    checkCbAgreeAll(cbCheckedCounts != CHECKBOX_SUM)
-                    setupAllCbCheckedStatus(cbCheckedCounts != CHECKBOX_SUM)
+                    checkCbAgreeAll(cbAgreeAll.isChecked)
                 }
             }
             btnRegister.setTitleLetterSpacing()
         }
     }
 
-    private fun updateCbCheckedCounts(isChecked: Boolean) {
-        viewModel.apply {
-            if (isChecked) cbCheckedCounts += 1 else cbCheckedCounts -= 1
-            binding.cbAgreeAll.isChecked = cbCheckedCounts == CHECKBOX_SUM
-//            Timber.d("cbCheckedCounts:$cbCheckedCounts")
-        }
-    }
-
-    private fun setupAllCbCheckedStatus(isChecked: Boolean) {
-        binding.apply {
-            cbPrivacy.isChecked = isChecked
-            cbAgreement.isChecked = isChecked
-            cbNotPHOfficial.isChecked = isChecked
-            cbNotPHSchool.isChecked = isChecked
-            cbRuleOkbet.isChecked = isChecked
-
-            viewModel.checkCbPrivacy(cbPrivacy.isChecked)
-            viewModel.checkCbAgreement(cbAgreement.isChecked)
-            viewModel.checkCbNotPHOfficial(cbNotPHOfficial.isChecked)
-            viewModel.checkCbNotPHSchool(cbNotPHSchool.isChecked)
-            viewModel.checkCbRuleOkbet(cbRuleOkbet.isChecked)
-        }
-    }
 
     private fun setupRegisterButton() {
         binding.apply {
@@ -469,11 +411,6 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     eetSecurityPb.text.toString(),
                     eetSmsValidCode.text.toString(),
                     eetVerificationCode.text.toString(),
-                    cbPrivacy.isChecked,
-                    cbAgreement.isChecked,
-                    cbNotPHOfficial.isChecked,
-                    cbNotPHSchool.isChecked,
-                    cbRuleOkbet.isChecked,
                     cbAgreeAll.isChecked,
                     deviceSn,
                     deviceId
@@ -697,7 +634,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                             binding.btnSendSms.setTextColor(
                                 ContextCompat.getColor(
                                     this@RegisterActivity,
-                                    R.color.color_BDBDBD_404040
+                                    R.color.color_AEAEAE_404040
                                 )
                             )
                         } else {

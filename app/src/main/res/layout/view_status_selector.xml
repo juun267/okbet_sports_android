@@ -16,7 +16,7 @@
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="1"
-        android:textColor="@color/color_BDBDBD_404040"
+        android:textColor="@color/color_AEAEAE_404040"
         android:textSize="@dimen/textSize14sp"
         android:paddingHorizontal="14dp"
         app:autoSizeMaxTextSize="@dimen/textSize14sp"

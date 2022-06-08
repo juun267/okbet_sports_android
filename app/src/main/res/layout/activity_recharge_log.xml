@@ -58,7 +58,7 @@
             android:paddingStart="2dp"
             android:maxLines="1"
             android:text="@string/recharge_log_order_time"
-            android:textColor="@color/color_CCCCCC_333333"
+            android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize12sp"/>
 
         <TextView
@@ -70,7 +70,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/recharge_log_recharge_amount"
-            android:textColor="@color/color_CCCCCC_333333"
+            android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize12sp"/>
 
         <TextView
@@ -82,7 +82,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/recharge_log_channel_type"
-            android:textColor="@color/color_CCCCCC_333333"
+            android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize12sp"/>
 
         <TextView
@@ -94,7 +94,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/recharge_log_order_state"
-            android:textColor="@color/color_CCCCCC_333333"
+            android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize12sp"/>
     </LinearLayout>
 

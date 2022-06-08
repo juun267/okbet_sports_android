@@ -26,6 +26,7 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
@@ -128,10 +129,11 @@ class TransactionRecordDiffAdapter :
 //                    else -> "(" + context.getString(OddsType.EU.res) + ")"
 //                }
 
+                val formatForOdd = if(matchOdds.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(matchOdds.odds - 1) else TextUtil.formatForOdd(matchOdds.odds)
                 play_content.setPlayContent(
                     matchOdds.playName,
                     matchOdds.spread,
-                    TextUtil.formatForOdd(matchOdds.odds)
+                    formatForOdd
                 )
 
                 match_play_time.text = TimeUtil.timeFormat(matchOdds.startTime, TimeUtil.YMD_HM_FORMAT)
@@ -202,10 +204,11 @@ class TransactionRecordDiffAdapter :
 //                    else -> "(" + context.getString(OddsType.EU.res) + ")"
 //                }
 
+                val formatForOdd = if(matchOdds.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(matchOdds.odds - 1) else TextUtil.formatForOdd(matchOdds.odds)
                 play_content.setPlayContent(
                     matchOdds.playName,
                     matchOdds.spread,
-                    TextUtil.formatForOdd(matchOdds.odds)
+                    formatForOdd
                 )
                 matchOdds.startTime?.let {
                     play_time.text = TimeUtil.timeFormat(it, TimeUtil.YMD_HM_FORMAT)
@@ -237,7 +240,7 @@ class TransactionRecordDiffAdapter :
         fun bind(totalAmount: Double) {
             itemView.apply {
                 last_total_amount.text =
-                    "${TextUtil.format(totalAmount)} ${sConfigData?.systemCurrency}"
+                    "${sConfigData?.systemCurrency}${TextUtil.format(totalAmount)}"
             }
         }
     }

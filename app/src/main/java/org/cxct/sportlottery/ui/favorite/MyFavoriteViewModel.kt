@@ -229,7 +229,7 @@ class MyFavoriteViewModel(
             )
         }
 
-        getSportQuery(getLastPick = true)
+        getSportQuery(getLastPick = true, getFavoriteMatch = true)
     }
 
     fun switchPlayCategory(play: Play, playCateCode: String?, hasItemSelect: Boolean = false) {
@@ -238,7 +238,7 @@ class MyFavoriteViewModel(
                 _sportQueryData.value?.peekContent()?.updatePlaySelected(play)?.updatePlayCateSelected(playCateCode)
             )
         )
-        if (!hasItemSelect) getSportQuery(getLastPick = true)
+        if (!hasItemSelect) getSportQuery(getLastPick = true, getFavoriteMatch = true)
     }
 
     private fun SportQueryData.updateGameTypeSelected(item: Item): SportQueryData {

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_login"
+    tools:ignore="SpUsage"
     tools:context=".ui.login.signIn.LoginActivity">
 
     <ImageView
@@ -62,7 +63,7 @@
                 android:layout_height="45dp"
                 android:layout_marginLeft="14dp"
                 android:text="@string/btn_login"
-                android:textColor="@color/color_CCCCCC_333333"
+                android:textColor="@color/color_BBBBBB_333333"
                 android:textSize="@dimen/textSize30sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/view"
@@ -197,7 +198,7 @@
                 android:paddingStart="6dp"
                 android:button="@drawable/effect_login_select_checkbox"
                 android:text="@string/remember_password"
-                android:textColor="@color/color_CCCCCC_333333"
+                android:textColor="@color/color_BBBBBB_333333"
                 android:textSize="@dimen/textSize13sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/block_valid_code" />
@@ -232,12 +233,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cb_remember_password" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/block_sign_up"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:gravity="center"
+                android:paddingHorizontal="12dp"
                 android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@+id/btn_login">
 
@@ -247,7 +248,7 @@
                     android:layout_height="wrap_content"
                     android:padding="4dp"
                     android:text="@string/visit_first"
-                    android:textColor="@color/color_A3A3A3_666666"
+                    android:textColor="@color/color_909090_666666"
                     android:textSize="@dimen/textSize12sp"
                     android:visibility="gone" />
 
@@ -255,7 +256,7 @@
                     android:layout_width="1dp"
                     android:layout_height="12dp"
                     android:layout_marginHorizontal="4dp"
-                    android:background="@color/color_A3A3A3_666666"
+                    android:background="@color/color_909090_666666"
                     android:visibility="gone" />
 
                 <TextView
@@ -267,13 +268,20 @@
                     android:textColor="@color/colorOrange"
                     android:textSize="@dimen/textSize12sp" />
 
-            </LinearLayout>
+                <TextView
+                    android:id="@+id/btn_service"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:padding="4dp"
+                    android:text="@string/btn_service"
+                    android:textColor="@color/colorOrange"
+                    android:textSize="@dimen/textSize12sp" />
 
+            </RelativeLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     </ScrollView>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

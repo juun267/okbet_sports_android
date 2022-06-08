@@ -121,7 +121,7 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
 
 
     private fun setupOddsSpannableString(context: Context, matchOdd: MatchOdd, isChanged: Boolean, oddsType: OddsType) {
-        val textColor = ContextCompat.getColor(context, if (isChanged) R.color.color_191919_FCFCFC else R.color.color_CCCCCC_333333)
+        val textColor = ContextCompat.getColor(context, if (isChanged) R.color.color_191919_FCFCFC else R.color.color_BBBBBB_333333)
         val backgroundColor = ContextCompat.getColor(context, if (isChanged) R.color.color_FF9143_cb7c2e else R.color.transparent_black_0)
 
         val odds =
@@ -134,7 +134,7 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
     }
 
     private fun setupOddsTypeSpannableString(context: Context, oddsType: OddsType) {
-        val textColor = ContextCompat.getColor(context,  R.color.color_A3A3A3_666666)
+        val textColor = ContextCompat.getColor(context,  R.color.color_909090_666666)
         val backgroundColor = ContextCompat.getColor(context,  R.color.transparent_black_0)
 
         val oddsType = " ("+context.getString(oddsType.res)+")"
