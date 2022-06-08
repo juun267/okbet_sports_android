@@ -30,6 +30,7 @@ import org.cxct.sportlottery.network.bet.settledDetailList.MatchOdd
 import org.cxct.sportlottery.network.bet.settledDetailList.Other
 import org.cxct.sportlottery.network.bet.settledDetailList.Row
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -270,10 +271,11 @@ class AccountHistoryNextAdapter(
 
             first?.let { it ->
 
+                val formatForOdd = if (it.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage((it.odds ?: 0.0) - 1.0) else TextUtil.formatForOdd(it.odds ?: 0)
                 binding.tvContent.setPlayContent(
                     it.playName,
                     it.spread,
-                    it.odds?.let { odd -> TextUtil.formatForOdd(odd) }
+                    formatForOdd
                 )
 
                 binding.tvStartTime.text = TimeUtil.timeFormat(it.startTime, TimeUtil.YMD_HM_FORMAT)
