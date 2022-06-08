@@ -12,6 +12,7 @@
     <string name="message_network_timeout">网络连接超时。 请再试一次。</string>
     <string name="error">错误</string>
     <string name="error_input_empty">此栏位为必填栏位</string>
+    <string name="error_input_empty_new">此栏位为必填栏位</string>
     <string name="error_incompatible_format">您输入的字元不符</string>
     <string name="error_wx_incompatible_format">微信ID格式错误</string>
     <string name="congratulation_win">恭喜您 注单尾码:%1$s 中奖:%2$s</string>
