@@ -320,7 +320,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_4"
-                        android:textColor="@color/color_317FFF_0760D4"
+                        android:textColor="@color/color_0760D4_0760D4"
                         android:textSize="@dimen/textSize12sp"
                         tools:text="(3)" />
 

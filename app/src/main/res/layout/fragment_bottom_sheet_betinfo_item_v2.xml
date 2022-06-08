@@ -367,7 +367,7 @@
                                 android:id="@+id/v_bet_lock"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
-                                android:background="@color/transparent_black_8"
+                                android:background="@color/color_66000000_14000000"
                                 android:visibility="gone"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
