@@ -108,8 +108,9 @@ class SplashViewModel(
 
                 if (!userInfoRepository.checkedUserInfo && isLogin.value == true) {
                     userInfoRepository.getUserInfo()
+                    _skipHomePage.postValue(true)
                 } else {
-                    _skipHomePage.postValue(false)
+                    _skipHomePage.postValue(true)
                 }
             }
         } else {
