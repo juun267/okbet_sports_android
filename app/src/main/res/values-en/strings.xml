@@ -47,7 +47,7 @@
     <string name="error_register_password">Password must be 6–20 characters and contain letter and numbers</string>
     <string name="error_password_format">The password must be a combination of numbers, letters</string>
     <string name="register_please_read">Please read our</string>
-    <string name="register_responsibilities">&#160;gambling responsibilities</string>
+    <string name="register_responsibilities">&#160;Responsible Gaming</string>
     <string name="register_privacy">Send me updates and promotions in accordance with the</string>
     <string name="register_privacy_policy">&#160;Privacy Policy</string>
     <string name="register_privacy_policy_promotions"></string>

@@ -47,7 +47,7 @@
     <string name="error_register_password">Mật khẩu từ 4-16 ký tự bao gồm chữ và số</string>
     <string name="error_password_format">Mật khẩu cần phải chữ và số</string>
     <string name="register_please_read">Hãy đọc kỹ</string>
-    <string name="register_responsibilities">&#160;trách nhiệm của chúng tôi trong cờ bạc</string>
+    <string name="register_responsibilities">&#160;Hãy đọc kỹ Chơi có trách nhiệm</string>
     <string name="register_privacy">Gửi cho tôi thông tin cập nhật và khuyến mãi theo</string>
     <string name="register_privacy_policy">&#160;chính sách bảo mật</string>
     <string name="register_privacy_policy_promotions"></string>
