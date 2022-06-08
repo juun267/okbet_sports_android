@@ -38,7 +38,6 @@ class MaintenanceViewModel(
 
     fun getConfig() {
         val hostUrl = hostRepository.hostUrl
-        hostRepository.isNeedGetHost = true
 
         viewModelScope.launch {
             if (hostUrl.isNotEmpty()) {
