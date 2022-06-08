@@ -76,7 +76,7 @@
                     <View
                         android:layout_width="16dp"
                         android:layout_height="16dp"
-                        android:background="@drawable/bg_circle_white"
+                        android:background="@drawable/bg_circle_ffffff_ffffff"
                         app:layout_constraintBottom_toBottomOf="@id/tv_bet_list_count"
                         app:layout_constraintEnd_toEndOf="@id/tv_bet_list_count"
                         app:layout_constraintStart_toStartOf="@id/tv_bet_list_count"

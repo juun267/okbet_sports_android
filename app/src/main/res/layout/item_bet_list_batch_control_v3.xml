@@ -147,14 +147,14 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="4dp"
                             android:text="X"
-                            android:textColor="@color/color_FFFFFF_060F20"
+                            android:textColor="@color/color_BBBBBB_060F20"
                             android:textSize="@dimen/textSize13sp" />
 
                         <TextView
                             android:id="@+id/tv_single_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/color_FFFFFF_060F20"
+                            android:textColor="@color/color_BBBBBB_060F20"
                             android:textSize="@dimen/textSize13sp"
                             tools:text="3" />
 

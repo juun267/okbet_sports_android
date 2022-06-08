@@ -74,7 +74,7 @@
                     <View
                         android:layout_width="16dp"
                         android:layout_height="16dp"
-                        android:background="@drawable/bg_circle_white"
+                        android:background="@drawable/bg_circle_ffffff_ffffff"
                         app:layout_constraintBottom_toBottomOf="@id/tv_bet_list_count"
                         app:layout_constraintEnd_toEndOf="@id/tv_bet_list_count"
                         app:layout_constraintStart_toStartOf="@id/tv_bet_list_count"
@@ -169,7 +169,7 @@
                 app:tabRippleColor="@null"
                 app:tabSelectedTextColor="@color/color_BBBBBB_333333"
                 app:tabTextAppearance="@style/NoUppercaseTab"
-                app:tabTextColor="@color/color_CCCCCC_999999">
+                app:tabTextColor="@color/color_7F7F7F_999999">
 
                 <com.google.android.material.tabs.TabItem
                     android:id="@+id/first_tab"
@@ -360,21 +360,22 @@
                         android:overScrollMode="never"
                         tools:listitem="@layout/item_bet_list_batch_control_connect_v3"/>
 
-                    <View
-                        android:id="@+id/shadow_parlay_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="4dp"
-                        android:background="@drawable/bg_gradient_bottom_sheet_shadow" />
-
                 </LinearLayout>
             </LinearLayout>
+
+            <View
+                android:id="@+id/shadow_parlay_list"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_above="@id/cl_total_info"
+                android:background="@drawable/bg_gradient_bottom_sheet_shadow" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_total_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/ll_bet"
-                android:background="@color/color_2B2B2B_FCFCFC"
+                android:background="@color/color_191919_FCFCFC"
                 android:paddingStart="12dp"
                 android:paddingTop="6dp"
                 android:paddingEnd="12dp"
