@@ -430,7 +430,7 @@
     <string name="title_address">Địa chỉ：</string>
     <string name="title_deposit_money">Số tiền đặt cọc</string>
     <string name="title_payer">Tài khoản</string>
-    <string name="edt_hint_deposit_money">Giới hạn %1$s～%2$s</string>
+    <string name="edt_hint_deposit_money">Giới hạn %1$s %2$s～%3$s</string>
     <string name="edt_hint_payer">Vui lòng nhập số tài khoản của bạn</string>
     <string name="edt_hint_deposit_money_new">Giới hạn %1$s-%2$s</string>
     <string name="title_real_name">Xác nhận họ tên</string>
@@ -493,10 +493,10 @@
     <string name="title_transaction_id">ID giao dịch chuỗi khối</string>
     <string name="hint_transaction_id">ID blockchain của bạn</string>
     <string name="hint_fee_rate">・Phí xử lý：%1$s</string>
-    <string name="hint_fee_amount">・Số tiền phí xử lý：%1$s %s</string>
+    <string name="hint_fee_amount">・Số tiền phí xử lý：%1$s %2$s</string>
     <string name="hint_feeback_rate">・Hoàn lại：%1$s</string>
-    <string name="hint_feeback_amount">・Số tiền hoàn lại： %1$s %s</string>
-    <string name="txv_recharge_money">・Số tiền đặt cọc %1$s %s</string>
+    <string name="hint_feeback_amount">・Số tiền hoàn lại： %1$s %2$s</string>
+    <string name="txv_recharge_money">・Số tiền đặt cọc %1$s %2$s</string>
     <string name="title_recharge_account">Tài khoản gửi tiền</string>
     <string name="title_choose_recharge_account">Chọn một tài khoản gửi tiền</string>
     <string name="title_recharge_address">Địa chỉ gửi tiền：</string>
@@ -535,7 +535,7 @@
     <string name="error_withdraw_amount_crypto">Định dạng hoặc giá trị số tiền rút bị sai</string>
     <string name="error_withdraw_amount_bigger_than_balance">Số tiền rút lớn hơn số dư tài khoản</string>
     <string name="please_setting_withdraw_password">Vui lòng thiết mật khẩu rút tiền</string>
-    <string name="total_withdrawal">Tổng số tiền rút %1$s</string>
+    <string name="total_withdrawal">Tổng số tiền rút %1$s %2$s</string>
     <string name="please_complete_profile_info">thông tin cá nhân đã được hoàn thiện</string>
     <string name="please_setting_bank_card">Vui lòng thiết lập thẻ ngân hàng</string>
     <string name="please_setting_bank_card_crypto">Vui lòng thiết lập thẻ ngân hàng / tiền ảo</string>
@@ -555,11 +555,11 @@
     <string name="withdraw_amount">Số tiền rút</string>
     <string name="withdraw_password">Mật khẩu rút tiền</string>
     <string name="withdraw_all">TẤT CẢ CÁC</string>
-    <string name="withdraw_handling_fee_hint">· Tỷ lệ phí xử lý ：%1$s%% Phí xử lý phải trả：%2$s</string>
+    <string name="withdraw_handling_fee_hint">· Tỷ lệ phí xử lý ：%1$s%% Phí xử lý phải trả：%2$s%3$s</string>
     <string name="withdraw_crypto_exchange_rate_hint">· Tỷ giá：%1$s</string>
-    <string name="withdraw_crypto_amount_hint">· Số tiền rút：%1$s %s</string>
-    <string name="withdraw_crypto_fee_hint">· Phí rút tiền：%1$s %s</string>
-    <string name="hint_please_enter_withdraw_amount">số tiền giới hạn %1$s~%2$s</string>
+    <string name="withdraw_crypto_amount_hint">· Số tiền rút：%1$s%2$s</string>
+    <string name="withdraw_crypto_fee_hint">· Phí rút tiền：%1$s%2$s</string>
+    <string name="hint_please_enter_withdraw_amount">số tiền giới hạn %1$s%2$s~%3$s</string>
     <string name="hint_four_number_password">Vui lòng nhập mật khẩu rút tiền</string>
     <string name="hint_please_enter_withdraw_password">Mật khẩu rút tiền</string>
     <string name="add_new">Thêm mới</string>
@@ -1055,7 +1055,7 @@
     <string name="self_limit_per_bet_limit_impotent">· Bạn có thể sửa đổi giới hạn đặt cược của mình bất cứ lúc nào. Sửa đổi sẽ có hiệu lực sau khi gửi yêu cầu.</string>
     <string name="self_limit_per_bet_limit_user">Cược giới hạn hiện tại: %s</string>
     <string name="self_limit_per_bet_limit_user_none">Không có</string>
-    <string name="self_limit_per_bet_limit_user_limit"> (Cược giới hạn tối đa:%1$s %3$s-%2$s %3$s)</string>
+    <string name="self_limit_per_bet_limit_user_limit"> (Cược giới hạn tối đa:%1$s %2$s-%1$s %3$s)</string>
     <string name="self_limit_error">Định dạng trường không chính xác, vui lòng nhập một số nguyên.</string>
     <string name="self_limit_input_password_for_confirm">Vui lòng nhập mật khẩu đăng nhập để xác nhận ứng dụng.</string>
     <string name="self_limit_input_password_for_modification">Vui lòng nhập mật khẩu đăng nhập để xác nhận sửa đổi.</string>

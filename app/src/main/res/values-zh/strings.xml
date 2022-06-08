@@ -492,10 +492,10 @@
     <string name="title_transaction_id">区块链交易ID</string>
     <string name="hint_transaction_id">请输入您的区块链ID</string>
     <string name="hint_fee_rate">・手续费：%1$s</string>
-    <string name="hint_fee_amount">・手续费金额：%1$s %2$s </string>
+    <string name="hint_fee_amount">・手续费金额：%1$s %2$s</string>
     <string name="hint_feeback_rate">・返利：%1$s</string>
-    <string name="hint_feeback_amount">・返利金额：%1$s %2$s </string>
-    <string name="txv_recharge_money">・存款金额：%1$s %2$s </string>
+    <string name="hint_feeback_amount">・返利金额：%1$s %2$s</string>
+    <string name="txv_recharge_money">・存款金额：%1$s %2$s</string>
     <string name="title_recharge_account">存款账号</string>
     <string name="title_choose_recharge_account">选择存款账号</string>
     <string name="title_recharge_address">充币地址:</string>
@@ -560,7 +560,7 @@
     <string name="withdraw_crypto_exchange_rate_hint">· 汇率：%1$s</string>
     <string name="withdraw_crypto_amount_hint">· 提款金额：%1$s%2$s</string>
     <string name="withdraw_crypto_fee_hint">· 提款手续费：%1$s%2$s</string>
-    <string name="hint_please_enter_withdraw_amount">限额%1$s%2$s~%3$s</string>
+    <string name="hint_please_enter_withdraw_amount">限额 %1$s%2$s~%3$s</string>
     <string name="hint_four_number_password">请输入提款密码</string>
     <string name="hint_please_enter_withdraw_password">请输入提款密码</string>
     <string name="add_new">新增</string>
@@ -1021,7 +1021,7 @@
     <string name="self_limit_per_bet_limit_impotent">您随时可以修改您的每次投注上限。修改将于申请送出后生效</string>
     <string name="self_limit_per_bet_limit_user">已设置投注上限：%s</string>
     <string name="self_limit_per_bet_limit_user_none">无</string>
-    <string name="self_limit_per_bet_limit_user_limit"> (最高可设定:%1$s %3$s-%2$s %3$s)</string>
+    <string name="self_limit_per_bet_limit_user_limit"> (最高可设定:%1$s %2$s-%1$s %3$s)</string>
     <string name="self_limit_error">资料格式不符，请输入整数</string>
     <string name="self_limit_input_password_for_confirm">请输入登录密码以确认申请</string>
     <string name="self_limit_input_password_for_modification">请输入登录密码以确认修改</string>
