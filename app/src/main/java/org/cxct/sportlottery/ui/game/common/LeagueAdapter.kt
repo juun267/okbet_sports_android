@@ -16,6 +16,7 @@ import org.cxct.sportlottery.network.common.FoldState
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.ui.base.BaseGameAdapter
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -27,7 +28,7 @@ import java.util.*
 
 @SuppressLint("NotifyDataSetChanged")
 class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelectionType: Int?, var playSelectedCode: String?) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    BaseGameAdapter() {
 
     private fun refreshByBetInfo() {
         data.forEach { leagueOdd ->
@@ -97,7 +98,7 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         }
 
     enum class ItemType {
-        ITEM, NO_DATA, PRELOAD_ITEM, BOTTOM_NAVIGATION
+        ITEM, NO_DATA
     }
 
     var isLock = true
@@ -107,7 +108,6 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         set(value) {
             field = value
             isPreload = false
-            //notifyDataSetChanged()
         }
 
     var discount: Float = 1.0F
@@ -123,11 +123,6 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
             field = value
         }
 
-    var searchText = ""
-        set(value) {
-            field = value
-        }
-
     var oddsType: OddsType = OddsType.EU
         set(value) {
             if (value != field) {
@@ -140,8 +135,6 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
 
     var leagueOddListener: LeagueOddListener? = null
 
-    var isPreload: Boolean = false
-
     fun setPreloadItem() {
         data.clear()
         isPreload = true
@@ -150,11 +143,11 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
 
     override fun getItemViewType(position: Int): Int {
         if (isPreload) {
-            return ItemType.PRELOAD_ITEM.ordinal
+            return BaseItemType.PRELOAD_ITEM.type
         }
         return when {
-            data.isEmpty() -> ItemType.NO_DATA.ordinal
-            data.size == position -> ItemType.BOTTOM_NAVIGATION.ordinal
+            data.isEmpty() -> BaseItemType.NO_DATA.type
+            data.size == position -> BaseItemType.BOTTOM_NAVIGATION.type
             else -> ItemType.ITEM.ordinal
         }
     }
@@ -164,15 +157,8 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
             ItemType.ITEM.ordinal -> {
                 ItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.itemview_league_v5, parent, false)) //itemview_league_v5
             }
-            ItemType.PRELOAD_ITEM.ordinal -> {
-                PreloadItemViewHolder.from(parent)
-            }
-            ItemType.BOTTOM_NAVIGATION.ordinal -> {
-                BottomNavigationViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.home_bottom_navigation, parent, false))
-            }
-            else -> {
-                NoDataViewHolder.from(parent, searchText)
-            }
+
+            else -> initBaseViewHolders(parent, viewType)
         }
     }
 
@@ -214,7 +200,6 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
             when (payloads.first()) {
                 is LeagueOdd -> {
                     val leagueOdd = payloads.first() as LeagueOdd
-                    Log.d("Hewie", "更新：聯賽：($position) => ${leagueOdd.league.name}")
                     (holder as ItemViewHolder).update(leagueOdd, matchType, oddsType)
                 }
 
@@ -239,15 +224,12 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         when (holder) {
             is ItemViewHolder -> {
                 val item = data[position]
-                Log.d("Hewie", "綁定：聯賽：($position) => ${item.league.name}")
                 holder.bind(
                     item,
                     matchType,
                     leagueListener,
                     leagueOddListener,
-                    oddsType,
-                    playSelectedCodeSelectionType,
-                    playSelectedCode
+                    oddsType
                 )
             }
         }
@@ -281,8 +263,6 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
             leagueListener: LeagueListener?,
             leagueOddListener: LeagueOddListener?,
             oddsType: OddsType,
-            playSelectedCodeSelectionType: Int?,
-            playSelectedCode: String?
         ) {
             itemView.league_text.text = item.league.name
             val countryIcon = SvgUtil.getSvgDrawable(
@@ -410,33 +390,6 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         }
     }
 
-    class NoDataViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        companion object {
-            fun from(parent: ViewGroup, searchText: String): NoDataViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val noDataLayoutId = if (searchText.isBlank())
-                    R.layout.view_no_record_for_game
-                else
-                    R.layout.itemview_game_no_record
-                val view = layoutInflater
-                    .inflate(noDataLayoutId, parent, false)
-
-                return NoDataViewHolder(view)
-            }
-        }
-    }
-
-    class BottomNavigationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-
-    class PreloadItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        companion object {
-            fun from(parent: ViewGroup): PreloadItemViewHolder =
-                PreloadItemViewHolder(
-                    LayoutInflater.from(parent.context).inflate(R.layout.view_list_loading, parent, false)
-                )
-        }
-    }
 }
 
 class LeagueListener(val clickListenerLeague: (item: LeagueOdd) -> Unit) {
