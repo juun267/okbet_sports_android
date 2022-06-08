@@ -687,7 +687,9 @@ class BetInfoRepository(val androidContext: Context) {
     }
 
     fun getIsFastBetOpened(): Boolean{
-        return gameFastBetOpenedSharedPreferences.getBoolean("isOpen", true)
+//        return gameFastBetOpenedSharedPreferences.getBoolean("isOpen", true)
+        //20220608 改為只使用滿版注單開啟
+        return false
     }
 
     fun updateBetAmount(input: String) {
