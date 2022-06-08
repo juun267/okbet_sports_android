@@ -1386,6 +1386,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     }
                 }
             }.apply {
+                reverse()
                 tvHomeName?.text = this.firstOrNull()
                 tvAwayName?.text = this.getOrNull(1)
             }
