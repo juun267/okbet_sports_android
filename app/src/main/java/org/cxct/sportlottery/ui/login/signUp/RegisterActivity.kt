@@ -48,10 +48,6 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     private var mSmsTimer: Timer? = null
     private lateinit var binding: ActivityRegisterBinding
 
-    companion object {
-        const val CHECKBOX_SUM = 1
-    }
-
     override fun onClick(v: View?) {
         when (v) {
             binding.ivReturn -> {
@@ -307,20 +303,13 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         binding.apply {
             cbAgreeAll.setOnClickListener {
                 viewModel.apply {
-                    checkCbAgreeAll(cbCheckedCounts != CHECKBOX_SUM)
+                    checkCbAgreeAll(cbAgreeAll.isChecked)
                 }
             }
             btnRegister.setTitleLetterSpacing()
         }
     }
 
-    private fun updateCbCheckedCounts(isChecked: Boolean) {
-        viewModel.apply {
-            if (isChecked) cbCheckedCounts += 1 else cbCheckedCounts -= 1
-            binding.cbAgreeAll.isChecked = cbCheckedCounts == CHECKBOX_SUM
-//            Timber.d("cbCheckedCounts:$cbCheckedCounts")
-        }
-    }
 
     private fun setupRegisterButton() {
         binding.apply {

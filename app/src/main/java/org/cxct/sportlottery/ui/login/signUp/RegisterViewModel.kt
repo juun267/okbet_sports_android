@@ -89,7 +89,6 @@ class RegisterViewModel(
     private val cbAgreeAllChecked: LiveData<Boolean?>
         get() = _cbAgreeAllChecked
 
-    var cbCheckedCounts = 0 //checkbox勾選數量
 
     private val _registerResult = MutableLiveData<LoginResult>()
     private val _inviteCodeMsg = MutableLiveData<String?>()
@@ -120,11 +119,6 @@ class RegisterViewModel(
     private val _smsResult = MutableLiveData<SmsResult?>()
     private val _loginForGuestResult = MutableLiveData<LoginResult>()
 
-    private val _cbPrivacyChecked = MutableLiveData<Boolean?>()
-    private val _agreementChecked = MutableLiveData<Boolean?>()
-    private val _cbNotPHOfficialChecked = MutableLiveData<Boolean?>()
-    private val _cbNotPHSchoolChecked = MutableLiveData<Boolean?>()
-    private val _cbRuleOkbetChecked = MutableLiveData<Boolean?>()
     private val _cbAgreeAllChecked = MutableLiveData<Boolean?>()
 
     @Deprecated("沒在用")
@@ -379,30 +373,6 @@ class RegisterViewModel(
         }
     }
 
-    fun checkCbPrivacy(checked: Boolean?) {
-        _cbPrivacyChecked.value = checked
-        focusChangeCheckAllInputComplete()
-    }
-
-    fun checkCbAgreement(checked: Boolean?) {
-        _agreementChecked.value = checked
-        focusChangeCheckAllInputComplete()
-    }
-
-    fun checkCbNotPHOfficial(checked: Boolean?) {
-        _cbNotPHOfficialChecked.value = checked
-        focusChangeCheckAllInputComplete()
-    }
-
-    fun checkCbNotPHSchool(checked: Boolean?) {
-        _cbNotPHSchoolChecked.value = checked
-        focusChangeCheckAllInputComplete()
-    }
-
-    fun checkCbRuleOkbet(checked: Boolean?) {
-        _cbRuleOkbetChecked.value = checked
-        focusChangeCheckAllInputComplete()
-    }
 
     fun checkCbAgreeAll(checked: Boolean?) {
         _cbAgreeAllChecked.value = checked
