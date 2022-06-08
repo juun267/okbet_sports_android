@@ -65,11 +65,12 @@
         android:textColor="@color/color_bbbbbb_ffffff"
         android:textSize="@dimen/textSize14sp" />
 
+
     <ImageView
         android:id="@+id/iv_notice"
         android:layout_width="wrap_content"
-        android:layout_height="23dp"
-        android:scaleType="centerInside"
+        android:layout_height="wrap_content"
+        android:minWidth="30dp"
         android:src="@drawable/icon_bell"
         android:visibility="gone"
         tools:visibility="visible" />
@@ -121,11 +122,10 @@
 
     <ImageView
         android:id="@+id/iv_menu"
-        android:layout_width="22dp"
-        android:layout_height="22dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:scaleType="centerInside"
         android:src="@drawable/ic_menu"
         android:visibility="gone"
         tools:visibility="visible" />

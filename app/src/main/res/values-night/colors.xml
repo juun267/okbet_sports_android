@@ -94,6 +94,8 @@
     <color name="color_404040_BCBCBC">@color/color_404040</color>
     <color name="color_BCBCBC_666666">@color/color_bcbcbc</color>
     <color name="color_E2E2E2_D8D8D8">@color/color_E2E2E2</color>
+    <color name="color_141414_FCFCFC">@color/color_141414</color>
+
     <!--region 特殊處理顏色-->
     <color name="home_card_top_text_color">#1AFFFFFF</color>
     <color name="home_card_text_color">#CAE0FF</color>
