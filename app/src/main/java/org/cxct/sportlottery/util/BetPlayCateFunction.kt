@@ -44,7 +44,7 @@ object BetPlayCateFunction {
      */
     private fun MutableMap<String?, Map<String?, String?>?>?.getNGOALBetPlayCateName(): Map<String?, String?>? {
         val nGOALMap = this?.filter { map ->
-            map.key?.isNumPlatType() ?: false
+            map.key?.isNOGALType() ?: false
         }
 
         return nGOALMap?.maxByOrNull { map ->
