@@ -629,7 +629,7 @@
     <string name="bet_info_list_clean">Xóa bằng một cú nhấp chuột</string>
     <string name="bet_info_bet_balance_insufficient">Số dư không đủ</string>
     <string name="bet_info_different_game_type">không cùng loại bóng không thể tiến hành cược xiên</string>
-    <string name="bet_info_input_quota">Nhập số tiền</string>
+    <string name="bet_info_input_quota">Vui lòng nhập số tiền</string>
     <string name="bet_info_check_maximum_limit">Xem giới hạn tối đa số tiền</string>
     <string name="bet_info_bet_quota">Số tiền đặt cược</string>
     <string name="bet_info_win_quota">Số tiền có thể thắng</string>
