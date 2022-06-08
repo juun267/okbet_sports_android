@@ -227,8 +227,8 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     @SuppressLint("LogNotTimber")
     private fun setupLeagueOddList(view: View) {
         view.game_league_odd_list.apply {
-            this.layoutManager =
-                SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+            this.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = leagueAdapter
             addScrollWithItemVisibility(
                 onScrolling = {
                     unSubscribeChannelHallAll()
@@ -250,6 +250,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     }
                 }
             )
+            leagueAdapter.setPreloadItem()
         }
     }
 
