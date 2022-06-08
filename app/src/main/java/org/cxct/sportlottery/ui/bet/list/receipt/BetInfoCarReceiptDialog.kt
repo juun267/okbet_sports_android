@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.view_match_receipt_bet.*
 import kotlinx.android.synthetic.main.view_match_receipt_bet.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
+import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
 import org.cxct.sportlottery.network.service.order_settlement.Status
@@ -24,7 +24,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import java.util.*
 
-class BetInfoCarReceiptDialog(val result: BetAddResult) :
+class BetInfoCarReceiptDialog(val receipt: Receipt?) :
     BaseSocketBottomSheetFragment<GameViewModel>(GameViewModel::class) {
 
     val mHandler = Handler(Looper.getMainLooper())
@@ -48,7 +48,7 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
 
     private fun initView(view: View) {
         view.apply {
-            result.receipt?.singleBets?.firstOrNull()?.apply {
+            receipt?.singleBets?.firstOrNull()?.apply {
                 matchOdds?.firstOrNull()?.apply {
                     view.tvLeague.text = leagueName
                     view.tv_team_names.setTeamNames(15, homeName, awayName)
@@ -63,7 +63,7 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
                 view.tv_bet_status.setBetReceiptStatus(status)
                 if(status == 0){
                     startTimer(
-                        (result.receipt.betConfirmTime?.minus(System.currentTimeMillis())) ?: 0,
+                        (receipt.betConfirmTime?.minus(System.currentTimeMillis())) ?: 0,
                         view
                     )
                 }
@@ -127,7 +127,7 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
 
         viewModel.oddsType.observe(viewLifecycleOwner) { oddType ->
 
-            result.receipt?.singleBets?.firstOrNull()?.let { betResult ->
+            receipt?.singleBets?.firstOrNull()?.let { betResult ->
                 betResult.matchOdds?.firstOrNull()?.let { matchOdd ->
                     var currentOddsTypes = oddType
                     if (matchOdd.odds == matchOdd.malayOdds || betResult.matchType == MatchType.OUTRIGHT || betResult.matchType == MatchType.OTHER_OUTRIGHT) {

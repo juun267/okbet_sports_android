@@ -91,6 +91,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private var tabPosition = 0 //tab的位置
 
+    private var isMultiBet = false //是否為多筆注單
+
     private val mHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
             when (msg.what) {
@@ -734,6 +736,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         viewModel.betInfoList.observe(viewLifecycleOwner) {
             it.peekContent().let { list ->
                 //注單列表沒東西時關閉fragment
+                if (list.size == 0 && isAutoCloseWhenNoData) activity?.onBackPressed()
+
+                //顯示無資料畫面
                 cl_no_data.visibility = if (list.size == 0) View.VISIBLE else View.GONE
 
                 //依照注單數量動態調整高度
@@ -741,9 +746,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     binding.llRoot.layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
                     binding.betTypeTabLayout.visibility = View.GONE
                     betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
-                } else {
+                    isMultiBet = false
+                } else if (!isAutoCloseWhenNoData) {
                     binding.llRoot.layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT
                     binding.betTypeTabLayout.visibility = View.VISIBLE
+                    isMultiBet = true
                 }
 
 //                btn_delete_all.visibility = if (list.size == 0) View.GONE else View.VISIBLE
@@ -754,8 +761,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 subscribeChannel(list)
                 refreshAllAmount(list)
                 checkAllAmountCanBet()
-
-                if (list.size == 0 && isAutoCloseWhenNoData) activity?.onBackPressed()
             }
         }
 
@@ -795,9 +800,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 result?.let { resultNotNull ->
                     hideLoading()
                     if (resultNotNull.success) {
+                        if (!isMultiBet) {
+                            isAutoCloseWhenNoData = true
+                        }
                         betResultListener?.onBetResult(
                             resultNotNull.receipt,
-                            betParlayList ?: listOf()
+                            betParlayList ?: listOf(),
+                            isMultiBet
                         )
                         refreshAllAmount()
                         showOddChangeWarn = false
@@ -1157,7 +1166,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     interface BetResultListener {
-        fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>)
+        fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>, isMultiBet: Boolean)
     }
 
 }

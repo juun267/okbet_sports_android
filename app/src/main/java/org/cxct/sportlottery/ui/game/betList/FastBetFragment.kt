@@ -707,7 +707,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun showBottomSheetDialog(result: BetAddResult) {
         context?.let {
             dismiss()
-            BetInfoCarReceiptDialog(result).show(
+            BetInfoCarReceiptDialog(result.receipt).show(
                 parentFragmentManager,
                 BetInfoCarReceiptDialog::class.java.simpleName
             )

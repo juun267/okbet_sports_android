@@ -7,11 +7,12 @@
     android:background="@color/transparent_black_0"
     tools:context=".ui.game.betList.receipt.BetReceiptFragment">
 
-    <include
+    <View
         android:id="@+id/tool_bar"
-        layout="@layout/view_toolbar_main"
-        android:background="@color/transparent_black_0"
-        android:visibility="invisible" />
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tool_bar_notification_height"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/transparent_black_50" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

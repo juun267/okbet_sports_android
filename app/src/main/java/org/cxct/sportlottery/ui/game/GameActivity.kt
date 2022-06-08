@@ -40,7 +40,6 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.FastBetFragment
-import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.game.filter.LeagueFilterFragmentDirections
 import org.cxct.sportlottery.ui.game.hall.GameV3Fragment
 import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
@@ -328,22 +327,13 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         betListFragment =
             BetListFragment.newInstance(object : BetListFragment.BetResultListener {
-                override fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>) {
-                    supportFragmentManager.beginTransaction()
-                        .setCustomAnimations(
-                            R.anim.push_right_to_left_enter,
-                            R.anim.pop_bottom_to_top_exit,
-                            R.anim.push_right_to_left_enter,
-                            R.anim.pop_bottom_to_top_exit
-                        )
-                        .add(
-                            R.id.fl_bet_list,
-                            BetReceiptFragment.newInstance(betResultData, betParlayList)
-                        )
-                        .addToBackStack(BetReceiptFragment::class.java.simpleName)
-                        .commit()
+                override fun onBetResult(
+                    betResultData: Receipt?,
+                    betParlayList: List<ParlayOdd>,
+                    isMultiBet: Boolean
+                ) {
+                    showBetReceiptDialog(betResultData, betParlayList, isMultiBet, R.id.fl_bet_list)
                 }
-
             })
 
         transaction
