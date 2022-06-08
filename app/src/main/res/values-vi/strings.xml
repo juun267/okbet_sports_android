@@ -535,7 +535,7 @@
     <string name="error_withdraw_amount_crypto">Định dạng hoặc giá trị số tiền rút bị sai</string>
     <string name="error_withdraw_amount_bigger_than_balance">Số tiền rút lớn hơn số dư tài khoản</string>
     <string name="please_setting_withdraw_password">Vui lòng thiết mật khẩu rút tiền</string>
-    <string name="total_withdrawal">Tổng số tiền rút %1$s %2$s</string>
+    <string name="total_withdrawal">Tổng số tiền rút</string>
     <string name="please_complete_profile_info">thông tin cá nhân đã được hoàn thiện</string>
     <string name="please_setting_bank_card">Vui lòng thiết lập thẻ ngân hàng</string>
     <string name="please_setting_bank_card_crypto">Vui lòng thiết lập thẻ ngân hàng / tiền ảo</string>
