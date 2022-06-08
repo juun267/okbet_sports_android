@@ -16,6 +16,7 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
 import org.cxct.sportlottery.network.service.order_settlement.Status
 import org.cxct.sportlottery.ui.base.BaseSocketBottomSheetFragment
@@ -81,11 +82,12 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
                     currentOddsTypes = OddsType.EU
                 }
 
+                val formatForOdd = if(matchOdd?.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(getOdds(matchOdd, oddsType ?: OddsType.EU) - 1) else  TextUtil.formatForOdd(getOdds(matchOdd, oddsType ?: OddsType.EU))
                 tv_play_content.text = setPlayContent(
                     needShowSpread(matchOdd?.playCateCode) && (matchType != MatchType.OUTRIGHT),
                     matchOdd?.playName,
                     if (matchType != MatchType.OUTRIGHT) matchOdd?.spread else "",
-                    TextUtil.formatForOdd(getOdds(matchOdd, oddsType ?: OddsType.EU)),
+                    formatForOdd,
                     tv_play_content.context.getString(matchOdd?.let { matchOdd ->
                         currentOddsTypes?.let { currentOddsTypes ->
                             getOddTypeRes(
@@ -133,11 +135,13 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
                     if (matchOdd.odds == matchOdd.malayOdds || betResult.matchType == MatchType.OUTRIGHT || betResult.matchType == MatchType.OTHER_OUTRIGHT) {
                         currentOddsTypes = OddsType.EU
                     }
+
+                    val formatForOdd = if(matchOdd.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(getOdds(matchOdd, currentOddsTypes) - 1) else  TextUtil.formatForOdd(getOdds(matchOdd, currentOddsTypes))
                     tv_play_content.text = setPlayContent(
                         needShowSpread(matchOdd.playCateCode) && (betResult.matchType != MatchType.OUTRIGHT),
                         matchOdd.playName,
                         if (betResult.matchType != MatchType.OUTRIGHT) matchOdd.spread else "",
-                        TextUtil.formatForOdd(getOdds(matchOdd, currentOddsTypes)),
+                        formatForOdd,
                         getString(currentOddsTypes.res)
                     )
 

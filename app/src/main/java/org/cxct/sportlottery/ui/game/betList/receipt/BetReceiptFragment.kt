@@ -129,9 +129,9 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         tv_all_bet_count.text = betCount.toString()
         (context ?: requireContext()).apply {
-            tv_total_bet_amount.text = "${TextUtil.formatMoney(betResultData?.totalStake?: 0.0)} ${sConfigData?.systemCurrency}"
+            tv_total_bet_amount.text = "${TextUtil.formatMoneyFourthDecimal(betResultData?.totalStake?: 0.0)} ${sConfigData?.systemCurrency}"
             tv_total_winnable_amount.text =
-                "${TextUtil.formatMoney(betResultData?.totalWinnable ?: 0.0)} ${sConfigData?.systemCurrency}"
+                "${TextUtil.formatMoneyFourthDecimal(betResultData?.totalWinnable ?: 0.0)} ${sConfigData?.systemCurrency}"
         }
     }
 
