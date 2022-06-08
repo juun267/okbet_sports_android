@@ -24,6 +24,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -207,11 +208,12 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
             itemView.apply {
                 itemData.apply {
                     matchOdds?.firstOrNull()?.apply {
+                        val formatForOdd = if(this.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(getOdds(this, oddsType ?: OddsType.EU) - 1) else TextUtil.formatForOdd(getOdds(this, oddsType))
                         tv_play_content.text = setSpannedString(
                             needShowSpread(playCateCode) && (matchType != MatchType.OUTRIGHT),
                             playName,
                             if (matchType != MatchType.OUTRIGHT) spread else "",
-                            TextUtil.formatForOdd(getOdds(this, oddsType)),
+                            formatForOdd,
                             context.getString(getOddTypeRes(this, oddsType))
                         )
 

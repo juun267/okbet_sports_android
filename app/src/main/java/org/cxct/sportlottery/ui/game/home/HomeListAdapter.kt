@@ -227,8 +227,8 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             ItemType.MENU_BLOCK.ordinal -> {
                 val layout = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.home_menu_block, parent, false)
-                return GameMenuViewHolder(layout)
+                    .inflate(R.layout.home_menu_block_v2, parent, false)
+                return GameMenuV2ViewHolder(layout)
             }
             ItemType.HIGH_LIGHT_BAR.ordinal -> {
                 val layout = LayoutInflater.from(parent.context)
@@ -286,6 +286,12 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val data = mDataList[position]
         when (holder) {
             is GameMenuViewHolder -> {
+                holder.apply {
+                    setListener(onClickMenuListener)
+                    bind(data as MenuItemData)
+                }
+            }
+            is GameMenuV2ViewHolder -> {
                 holder.apply {
                     setListener(onClickMenuListener)
                     bind(data as MenuItemData)

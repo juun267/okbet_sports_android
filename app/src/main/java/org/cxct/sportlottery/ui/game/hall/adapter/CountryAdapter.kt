@@ -1,31 +1,33 @@
 package org.cxct.sportlottery.ui.game.hall.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.itemview_country.view.*
 import kotlinx.android.synthetic.main.itemview_country_v4.view.*
 import kotlinx.android.synthetic.main.itemview_country_v4.view.iv_country
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.league.Row
+import org.cxct.sportlottery.ui.base.BaseGameAdapter
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.util.SvgUtil
 
-class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+@SuppressLint("NotifyDataSetChanged")
+class CountryAdapter : BaseGameAdapter() {
 
     private val itemPinPosition = 0
 
     enum class ItemType {
-        ITEM_PIN, ITEM, NO_DATA, BOTTOM_NAVIGATION
+        ITEM_PIN, ITEM
     }
 
     var data = listOf<Row>()
         set(value) {
             field = value
-            //notifyDataSetChanged()
+            isPreload = false
         }
 
     var datePin = listOf<League>()
@@ -33,16 +35,15 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             field = value
             if (data.isNotEmpty())
                 notifyItemChanged(itemPinPosition)
-            //notifyDataSetChanged()
-        }
-
-    var searchText = ""
-        set(value) {
-            field = value
-            //notifyDataSetChanged()
         }
 
     var countryLeagueListener: CountryLeagueListener? = null
+
+    fun setPreloadItem() {
+        data.toMutableList().clear()
+        isPreload = true
+        notifyDataSetChanged()
+    }
 
     fun notifyCountryItem(dataPosition: Int) {
         if (data.isNotEmpty()) {
@@ -54,10 +55,13 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun getItemViewType(position: Int): Int {
+        if (isPreload) {
+            return BaseItemType.PRELOAD_ITEM.type
+        }
         return when {
-            data.isEmpty() -> ItemType.NO_DATA.ordinal
-            (position == itemPinPosition) -> ItemType.ITEM_PIN.ordinal
-            position == data.size + 1 -> ItemType.BOTTOM_NAVIGATION.ordinal
+            data.isEmpty() -> BaseItemType.NO_DATA.type
+            position == itemPinPosition -> ItemType.ITEM_PIN.ordinal
+            position == data.size + 1 -> BaseItemType.BOTTOM_NAVIGATION.type
             else -> ItemType.ITEM.ordinal
         }
     }
@@ -80,12 +84,7 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     }
                 }
             }
-            ItemType.BOTTOM_NAVIGATION.ordinal -> {
-                BottomNavigationViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.home_bottom_navigation, parent, false))
-            }
-            else -> {
-                NoDataViewHolder.from(parent, searchText)
-            }
+            else -> initBaseViewHolders(parent, viewType)
         }
     }
 
@@ -157,7 +156,7 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                 country_text.text = item.name
 
-                if (item.icon.isNotEmpty()){
+                if (item.icon.isNotEmpty()) {
                     val countryIcon = SvgUtil.getSvgDrawable(context, item.icon)
                     iv_country.setImageDrawable(countryIcon)
                 }
@@ -199,22 +198,4 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    class NoDataViewHolder private constructor(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
-
-        companion object {
-            fun from(parent: ViewGroup, searchText: String): NoDataViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val noDataLayoutId = if (searchText.isBlank())
-                    R.layout.view_no_record
-                else
-                    R.layout.itemview_game_no_record
-                val view = layoutInflater
-                    .inflate(noDataLayoutId, parent, false)
-
-                return NoDataViewHolder(view)
-            }
-        }
-    }
-    class BottomNavigationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }

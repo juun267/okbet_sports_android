@@ -12,6 +12,7 @@
     <string name="message_network_timeout">kết nối mạng vượt quá thời gian, vui lòng thử lại</string>
     <string name="error">Nhắc nhở</string>
     <string name="error_input_empty">không thể để trống</string>
+    <string name="error_input_empty_new">Trường này là bắt buộc.</string>
     <string name="error_incompatible_format">Các ký tự bạn đã nhập không phù hợp</string>
     <string name="error_wx_incompatible_format">lỗi định dạng Wechat ID không hợp lệ</string>
     <string name="congratulation_win">Xin chúc mừng bạn, đơn cược số đuô: %1$s Chiến thắng: %2$s</string>
@@ -39,6 +40,7 @@
     <string name="hint_recommend_code">(Vui lòng nhập Mã giới thiệu)</string>
     <string name="error_recommend_code">Mã giới thiệu không tồn tại</string>
     <string name="member_account">Đăng nhập tài khoản</string>
+    <string name="member_account_in_profile">Tài khoản hội viên</string>
     <string name="hint_member_account">(Độ dài từ 4-16 ký tự bao gồm cả chữ và số)</string>
     <string name="error_member_account">Tài khoản từ 4-16 ký tự bao gồm chữ và số</string>
     <string name="desc_register_checking_account">Đang kiểm tra tài khoản</string>
@@ -47,7 +49,7 @@
     <string name="error_register_password">Mật khẩu từ 4-16 ký tự bao gồm chữ và số</string>
     <string name="error_password_format">Mật khẩu cần phải chữ và số</string>
     <string name="register_please_read">Hãy đọc kỹ</string>
-    <string name="register_responsibilities">&#160;trách nhiệm của chúng tôi trong cờ bạc</string>
+    <string name="register_responsibilities">&#160;Hãy đọc kỹ Chơi có trách nhiệm</string>
     <string name="register_privacy">Gửi cho tôi thông tin cập nhật và khuyến mãi theo</string>
     <string name="register_privacy_policy">&#160;chính sách bảo mật</string>
     <string name="register_privacy_policy_promotions"></string>
@@ -535,7 +537,7 @@
     <string name="error_withdraw_amount_crypto">Định dạng hoặc giá trị số tiền rút bị sai</string>
     <string name="error_withdraw_amount_bigger_than_balance">Số tiền rút lớn hơn số dư tài khoản</string>
     <string name="please_setting_withdraw_password">Vui lòng thiết mật khẩu rút tiền</string>
-    <string name="total_withdrawal">Tổng số tiền rút %1$s %2$s</string>
+    <string name="total_withdrawal">Tổng số tiền rút</string>
     <string name="please_complete_profile_info">thông tin cá nhân đã được hoàn thiện</string>
     <string name="please_setting_bank_card">Vui lòng thiết lập thẻ ngân hàng</string>
     <string name="please_setting_bank_card_crypto">Vui lòng thiết lập thẻ ngân hàng / tiền ảo</string>

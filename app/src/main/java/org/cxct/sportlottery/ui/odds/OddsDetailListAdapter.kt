@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.odds
 
-
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Typeface
@@ -28,6 +27,7 @@ import org.cxct.sportlottery.network.common.ComparePlayCate
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.ui.base.BaseGameAdapter
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.common.IndicatorView
@@ -41,7 +41,6 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-
 /**
  * @author Kevin
  * @create 2020/12/23
@@ -50,8 +49,7 @@ import kotlin.collections.HashMap
  * 2021/08/17 玩法六個一組和四個一組的排版改為依順序分組
  */
 @SuppressLint("NotifyDataSetChanged")
-class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) : BaseGameAdapter() {
 
     var betInfoList: MutableList<BetInfoListData> = mutableListOf()
         set(value) {
@@ -138,8 +136,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
     override fun getItemViewType(position: Int): Int {
         return when {
-            oddsDetailDataList.isEmpty() -> PlayCate.getPlayCate("NO_DATA").ordinal
-            position == oddsDetailDataList.size  -> PlayCate.getPlayCate("BOTTOM_NAVIGATION").ordinal
+            oddsDetailDataList.isEmpty() -> BaseItemType.NO_DATA.type
+            position == oddsDetailDataList.size -> BaseItemType.BOTTOM_NAVIGATION.type
             else -> {
                 val playCateCode = oddsDetailDataList[position].gameType
                 PlayCate.getPlayCate(playCateCode).let { playCate ->
@@ -409,13 +407,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         }
 
         return when (viewType) {
-            PlayCate.BOTTOM_NAVIGATION.ordinal -> {
-                BottomNavigationViewHolder(
-                    LayoutInflater.from(parent.context)
-                        .inflate(R.layout.home_bottom_navigation, parent, false)
-                )
+            BaseItemType.BOTTOM_NAVIGATION.type -> {
+                BottomNavigationViewHolder.from(parent)
             }
-            else ->{
+            else -> {
                 ViewHolder(
                     LayoutInflater.from(parent.context).inflate(layout, parent, false),
                     viewType
@@ -521,7 +516,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ViewHolder -> {
-                if(oddsDetailDataList.isNotEmpty()) holder.bindModel(oddsDetailDataList[position])
+                if (oddsDetailDataList.isNotEmpty()) holder.bindModel(oddsDetailDataList[position])
             }
         }
     }
@@ -1482,6 +1477,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     }
                 }
             }.apply {
+                reverse()
                 tvHomeName?.text = this.firstOrNull()
                 tvAwayName?.text = this.getOrNull(1)
             }
@@ -1609,8 +1605,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             )
 
     }
-
-    class BottomNavigationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
 }
 

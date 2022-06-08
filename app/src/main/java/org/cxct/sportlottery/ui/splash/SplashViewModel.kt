@@ -102,14 +102,18 @@ class SplashViewModel(
     }
 
     fun goNextPage() {
-        if (sConfigData?.thirdOpen != FLAG_OPEN)
+        if (sConfigData?.thirdOpen != FLAG_OPEN) {
             viewModelScope.launch {
                 loginRepository.checkToken()
 
                 if (!userInfoRepository.checkedUserInfo && isLogin.value == true) {
                     userInfoRepository.getUserInfo()
+                    _skipHomePage.postValue(true)
+                } else {
+                    _skipHomePage.postValue(true)
                 }
-            } else {
+            }
+        } else {
             _skipHomePage.postValue(false)
         }
     }

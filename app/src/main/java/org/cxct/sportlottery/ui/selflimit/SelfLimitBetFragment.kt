@@ -147,15 +147,10 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
                     setNegativeButtonText(null)
                     setPositiveButtonText(this@SelfLimitBetFragment.getString(R.string.btn_confirm))
                     setPositiveClickListener {
+                        updateBetLimit(binding.etMount.text.toString())
+                        resetView()
+                        viewModel.getUserInfo()
                         dismiss()
-                        viewModel.doLogoutCleanUser {
-                            run {
-                                if (sConfigData?.thirdOpen == FLAG_OPEN)
-                                    MainActivity.reStart(MultiLanguagesApplication.appContext)
-                                else
-                                    GamePublicityActivity.reStart(MultiLanguagesApplication.appContext)
-                            }
-                        }
                     }
                 }
                 dialog.show(childFragmentManager, null)
@@ -172,6 +167,13 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
         hideKeyboard()
         CustomPasswordVerifyDialog.newInstance(PassVerifyEnum.BET, inputValue = binding.etMount.text.toString())
             .show(childFragmentManager, CustomPasswordVerifyDialog::class.java.simpleName)
+    }
+
+    private fun updateBetLimit(text: String) {
+        binding.tvPerBetLimit.text = String.format(
+            getString(R.string.self_limit_per_bet_limit_user),
+            TextUtil.formatMoney(text.toDouble())
+        ) + " " + sConfigData?.systemCurrency
     }
 
 }

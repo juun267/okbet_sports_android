@@ -16,6 +16,7 @@ import org.cxct.sportlottery.network.user.selflimit.PerBetLimitRequest
 import org.cxct.sportlottery.network.user.selflimit.PerBetLimitResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.util.Event
 
 class SelfLimitViewModel(
     androidContext: Application,
@@ -65,9 +66,9 @@ class SelfLimitViewModel(
         get() = _isFrozeEditTextError
     private val _isFrozeEditTextError = MutableLiveData<Boolean>()
 
-    val passwordVerifyResult: LiveData<PasswordVerifyResult>
+    val passwordVerifyResult: LiveData<Event<PasswordVerifyResult>>
         get() = _passwordVerifyResult
-    private val _passwordVerifyResult = MutableLiveData<PasswordVerifyResult>()
+    private val _passwordVerifyResult = MutableLiveData<Event<PasswordVerifyResult>>()
 
     //使用者ID
     var userID: Long? = null
@@ -107,7 +108,7 @@ class SelfLimitViewModel(
             doNetwork(androidContext) {
                 OneBoSportApi.userService.passwordVerify(PasswordVerifyRequest(password))
             }?.let { passwordVerifyResult ->
-                _passwordVerifyResult.value = passwordVerifyResult
+                _passwordVerifyResult.value = Event(passwordVerifyResult)
                 if (!passwordVerifyResult.success) return@launch
 
                 doNetwork(androidContext) {
@@ -124,7 +125,7 @@ class SelfLimitViewModel(
             doNetwork(androidContext, false) {
                 OneBoSportApi.userService.passwordVerify(PasswordVerifyRequest(password))
             }?.let { passwordVerifyResult ->
-                _passwordVerifyResult.value = passwordVerifyResult
+                _passwordVerifyResult.value = Event(passwordVerifyResult)
                 if (!passwordVerifyResult.success) return@launch
 
                 doNetwork(androidContext) {

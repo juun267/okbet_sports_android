@@ -20,7 +20,13 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.exoplayer2.util.Util
+import kotlinx.android.synthetic.main.fragment_odds_detail.*
 import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
+import kotlinx.android.synthetic.main.fragment_odds_detail_live.cl_content
+import kotlinx.android.synthetic.main.fragment_odds_detail_live.live_view_tool_bar
+import kotlinx.android.synthetic.main.fragment_odds_detail_live.rv_cat
+import kotlinx.android.synthetic.main.fragment_odds_detail_live.rv_detail
+import kotlinx.android.synthetic.main.fragment_odds_detail_live.v_loading
 import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -337,6 +343,8 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
             it.getContentIfNotHandled()?.let { list ->
                 if (list.isNotEmpty()) {
                     oddsDetailListAdapter?.oddsDetailDataList = list
+                    v_loading.visibility = View.GONE
+                    cl_content.visibility = View.VISIBLE
                 }
             }
         }
