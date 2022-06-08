@@ -97,6 +97,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
 
                 leagueAdapter.setPreloadItem()
+                countryAdapter.setPreloadItem()
 
                 //切換球種後要重置位置
                 initMatchCategoryPagerPosition()
