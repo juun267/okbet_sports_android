@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="9dp"
             android:text="@string/user_id_colon"
-            android:textColor="@color/color_8F8F8F_999999"
+            android:textColor="@color/color_7F7F7F_999999"
             android:textSize="@dimen/textSize12sp"
             app:layout_constraintBottom_toBottomOf="@id/iv_head"
             app:layout_constraintStart_toEndOf="@id/iv_head"
@@ -87,7 +87,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
-            android:textColor="@color/color_8F8F8F_999999"
+            android:textColor="@color/color_7F7F7F_999999"
             android:textSize="@dimen/textSize12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/label_user_id"
@@ -216,7 +216,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:text="@string/recharge"
-                    android:textColor="@color/color_BDBDBD_404040"
+                    android:textColor="@color/color_AEAEAE_404040"
                     android:textSize="@dimen/textSize16sp" />
 
             </LinearLayout>
@@ -246,7 +246,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:text="@string/withdraw"
-                    android:textColor="@color/color_BDBDBD_404040"
+                    android:textColor="@color/color_AEAEAE_404040"
                     android:textSize="@dimen/textSize16sp" />
 
             </LinearLayout>
@@ -262,7 +262,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
         android:text="@string/more_service"
-        android:textColor="@color/color_BDBDBD_404040"
+        android:textColor="@color/color_AEAEAE_404040"
         android:textSize="@dimen/textSize14sp"
         android:textStyle="bold" />
 
@@ -304,7 +304,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/profile_info"
-                        android:textColor="@color/color_CCCCCC_333333"
+                        android:textColor="@color/color_BBBBBB_333333"
                         android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
@@ -338,7 +338,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/account_transfer"
-                        android:textColor="@color/color_CCCCCC_333333"
+                        android:textColor="@color/color_BBBBBB_333333"
                         android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
@@ -372,7 +372,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/withdraw_setting"
-                        android:textColor="@color/color_CCCCCC_333333"
+                        android:textColor="@color/color_BBBBBB_333333"
                         android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
@@ -407,7 +407,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/other_bet_record"
-                        android:textColor="@color/color_CCCCCC_333333"
+                        android:textColor="@color/color_BBBBBB_333333"
                         android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
@@ -441,7 +441,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/fund_detail"
-                        android:textColor="@color/color_CCCCCC_333333"
+                        android:textColor="@color/color_BBBBBB_333333"
                         android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
@@ -481,7 +481,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/news_center"
-                        android:textColor="@color/color_CCCCCC_333333"
+                        android:textColor="@color/color_BBBBBB_333333"
                         android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
@@ -515,7 +515,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/promotion"
-                        android:textColor="@color/color_CCCCCC_333333"
+                        android:textColor="@color/color_BBBBBB_333333"
                         android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
@@ -549,7 +549,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/self_limit"
-                        android:textColor="@color/color_CCCCCC_333333"
+                        android:textColor="@color/color_BBBBBB_333333"
                         android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
@@ -625,7 +625,7 @@
 
                         android:layout_weight="1"
                         android:text="@string/help_center"
-                        android:textColor="@color/color_CCCCCC_333333"
+                        android:textColor="@color/color_BBBBBB_333333"
                         android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
@@ -659,7 +659,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/feedback"
-                        android:textColor="@color/color_CCCCCC_333333"
+                        android:textColor="@color/color_BBBBBB_333333"
                         android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
@@ -681,7 +681,7 @@
                     android:background="@drawable/bg_radius_20_button_2b_e2"
                     android:minHeight="42dp"
                     android:text="@string/sign_out"
-                    android:textColor="@color/color_A3A3A3_666666"
+                    android:textColor="@color/color_909090_666666"
                     android:textSize="@dimen/textSize14sp" />
 
             </LinearLayout>

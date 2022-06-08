@@ -24,7 +24,9 @@ import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.OddsListData
+import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.query.Play
@@ -89,7 +91,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     upDateSelectPlay(play)
                     //當前已選中下拉選單不用重新要資料
                     if (hasItemSelect) {
-                        leagueAdapter.data.updateOddsSort()
+                        leagueAdapter.data.updateOddsSort(args.gameType.key, this)
                         leagueAdapter.updateLeagueByPlayCate()
                     }
                 })
@@ -114,10 +116,10 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             }
 
             leagueOddListener = LeagueOddListener(
-                { matchId, matchInfoList, gameMatchType, liveVideo ->
+                clickListenerPlayType = { matchId, matchInfoList, gameMatchType, liveVideo ->
                     navMatchDetailPage(matchId, matchInfoList, gameMatchType)
                 },
-                { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
+                clickListenerBet = { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
                     mSelectedMatchInfo = matchInfo
                     if (mIsEnabled) {
                         avoidFastDoubleClick()
@@ -131,20 +133,18 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     }
                     hideKeyboard()
                 },
-                { matchOdd, quickPlayCate ->
-                    matchOdd.matchInfo?.let {
-                        viewModel.getQuickList(it.id)
-                    }
+                clickListenerQuickCateTab = { matchOdd, quickPlayCate ->
+                    setQuickPlayCateSelected(matchOdd, quickPlayCate)
                 },
-                {
+                clickListenerQuickCateClose = {
                     viewModel.clearQuickPlayCateSelected()
                 },
-                { matchId ->
+                clickListenerFavorite = { matchId ->
                     matchId?.let {
                         viewModel.pinFavorite(FavoriteType.MATCH, it)
                     }
                 },
-                { matchId ->
+                clickListenerStatistics = { matchId ->
                     navStatistics(matchId)
                 },
                 {},
@@ -497,7 +497,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
                 val leagueOdds = leagueAdapter.data
 
-                leagueOdds.updateOddsSort() //篩選玩法
+                leagueOdds.updateOddsSort(args.gameType.key, playCategoryAdapter) //篩選玩法
 
                 //翻譯更新
                 leagueOdds.forEach { LeagueOdd ->
@@ -630,33 +630,6 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     }
 
     /**
-     * 篩選玩法
-     * 更新翻譯、排序
-     * */
-
-    private fun MutableList<LeagueOdd>.updateOddsSort() {
-        val nowGameType = args.gameType.key
-        val playCateMenuCode =
-            if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else getPlaySelectedCode()
-        val oddsSortFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) getPlayCateMenuCode() else PlayCateMenuFilterUtils.filterOddsSort(
-            nowGameType,
-            playCateMenuCode
-        )
-        val playCateNameMapFilter = if (getPlaySelectedCodeSelectionType() == SelectionType.SELECTABLE.code) PlayCateMenuFilterUtils.filterSelectablePlayCateNameMap(
-            nowGameType,
-            getPlaySelectedCode(),
-            playCateMenuCode
-        ) else PlayCateMenuFilterUtils.filterPlayCateNameMap(nowGameType, playCateMenuCode)
-
-        this.forEach { LeagueOdd ->
-            LeagueOdd.matchOdds.forEach { MatchOdd ->
-                MatchOdd.oddsSort = oddsSortFilter
-                MatchOdd.playCateNameMap = playCateNameMapFilter
-            }
-        }
-    }
-
-    /**
      * 只有有下拉篩選玩法的才需要過濾odds
      */
     private fun OddsChangeEvent.filterMenuPlayCate() {
@@ -665,7 +638,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         when (playSelected?.selectionType) {
             SelectionType.SELECTABLE.code -> {
                 val playCateMenuCode = playSelected.playCateList?.find { it.isSelected }?.code
-                this.odds?.entries?.retainAll { oddMap -> oddMap.key == playCateMenuCode }
+                this.odds.entries.retainAll { oddMap -> oddMap.key == playCateMenuCode }
             }
         }
     }
@@ -749,18 +722,6 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 getPlayCateMenuCode()
             )
             (activity as GameActivity).showFastBetFragment(fastBetDataBean)
-
-//            viewModel.updateMatchBetList(
-//                args.matchType,
-//                args.gameType,
-//                playCateCode,
-//                playCateName,
-//                matchInfo,
-//                odd,
-//                ChannelType.HALL,
-//                betPlayCateNameMap,
-//                getPlayCateMenuCode()
-//            )
         }
     }
 
@@ -786,6 +747,22 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 playSelected.code
             }
             else -> null
+        }
+    }
+
+    private fun setQuickPlayCateSelected(
+        selectedMatchOdd: MatchOdd,
+        selectedQuickPlayCate: QuickPlayCate
+    ) {
+        leagueAdapter.data.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                if (selectedMatchOdd.matchInfo?.id == matchOdd.matchInfo?.id) {
+                    matchOdd.isExpand = true
+                    matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                        if (selectedQuickPlayCate.code == quickPlayCate.code) quickPlayCate.isSelected = true
+                    }
+                }
+            }
         }
     }
 

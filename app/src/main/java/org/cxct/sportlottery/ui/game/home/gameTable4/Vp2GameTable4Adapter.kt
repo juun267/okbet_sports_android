@@ -341,7 +341,7 @@ class Vp2GameTable4Adapter(
             itemView.apply {
                 when (matchType) {
                     MatchType.IN_PLAY -> {
-                        tv_match_status.setTextColor(ContextCompat.getColor(context, R.color.color_DDDDDD_000000))
+                        tv_match_status.setTextColor(ContextCompat.getColor(context, R.color.color_CCCCCC_000000))
                         when (gameType) {
                             GameType.TN.key -> {
                                 tv_match_status.visibility = View.GONE
@@ -558,7 +558,7 @@ class Vp2GameTable4Adapter(
             itemView.apply {
                 when (matchType) {
                     MatchType.IN_PLAY -> {
-                        tv_match_time.setTextColor(ContextCompat.getColor(context, R.color.color_DDDDDD_000000))
+                        tv_match_time.setTextColor(ContextCompat.getColor(context, R.color.color_CCCCCC_000000))
                         if (time == -1L) tv_match_time.text = dataList[bindingAdapterPosition].runningTime
                         else {
                             when (gameType) {

@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:gravity="left|center_vertical"
             android:minHeight="48dp"
-            android:textColor="@color/color_CCCCCC_333333"
+            android:textColor="@color/color_BBBBBB_333333"
             android:textStyle="bold"
             android:textSize="@dimen/textSize14sp"
             tools:text="让球" />
@@ -88,7 +88,7 @@
             android:layout_height="wrap_content"
             android:drawablePadding="10dp"
             android:text="@string/display_more"
-            android:textColor="@color/color_A3A3A3_666666"
+            android:textColor="@color/color_909090_666666"
             android:textAllCaps="true"
             android:textSize="@dimen/textSize14sp"
             android:textStyle="bold"

@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.base
 
 import android.content.Context
+import android.content.res.Configuration
 import androidx.annotation.Nullable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -20,6 +21,7 @@ import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.NetworkUtil
 import retrofit2.Response
 import timber.log.Timber
@@ -113,15 +115,21 @@ abstract class BaseViewModel(
     }
 
     private fun doOnException(context: Context, exception: Exception) {
+        val locale = LanguageManager.getSetLanguageLocale(context)
+        var conf = context.resources.configuration
+        conf = Configuration(conf)
+        conf.setLocale(locale)
+        val localizedContext = context.createConfigurationContext(conf)
+
         when (exception) {
             is DoNoConnectException -> {
-                _networkExceptionUnavailable.postValue(context.getString(R.string.message_network_no_connect))
+                _networkExceptionUnavailable.postValue(localizedContext.resources.getString(R.string.message_network_no_connect))
             }
             is SocketTimeoutException -> {
-                _networkExceptionTimeout.postValue(context.getString(R.string.message_network_timeout))
+                _networkExceptionTimeout.postValue(localizedContext.resources.getString(R.string.message_network_timeout))
             }
             else -> {
-                _networkExceptionUnknown.postValue(context.getString(R.string.message_network_no_connect))
+                _networkExceptionUnknown.postValue(localizedContext.resources.getString(R.string.message_network_no_connect))
             }
         }
     }

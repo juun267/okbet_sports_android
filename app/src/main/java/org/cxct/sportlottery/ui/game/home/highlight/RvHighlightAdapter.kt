@@ -327,7 +327,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
         private fun setupTime(data: MatchOdd) {
             itemView.apply {
                 if (TimeUtil.isTimeInPlay(data.matchInfo?.startTime)){
-                    tv_match_time.setTextColor(ContextCompat.getColor(context,R.color.color_DDDDDD_000000))
+                    tv_match_time.setTextColor(ContextCompat.getColor(context,R.color.color_CCCCCC_000000))
                 }else{
                     tv_match_time.setTextColor(ContextCompat.getColor(context,R.color.color_BCBCBC_666666))
                 }

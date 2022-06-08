@@ -111,7 +111,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                 }
                 it?.success == true -> checkAppMinVersion()
 
-                else -> showErrorRetryDialog(getString(R.string.error_config_title), getString(R.string.error_config))
+                else -> showErrorRetryDialog(getString(R.string.error_config_title), getString(R.string.message_network_no_connect))
             }
         }
 
@@ -129,7 +129,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
             }
             when (it) {
                 true -> {
-                    goGamePage()
+                    goGamePublicityPage()
                 }
                 false -> {
                     goHomePage()
@@ -140,9 +140,6 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         viewModel.isLogin.observe(this) {
             if (sConfigData?.maintainStatus == FLAG_OPEN) {
                 goMaintenancePage()
-            }
-            else {
-                goGamePublicityPage()
             }
         }
     }
