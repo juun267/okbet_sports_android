@@ -631,14 +631,14 @@ class WithdrawViewModel(
                     ArithUtil.toMoneyFormat((cardConfig?.feeRate)?.times(withdrawAmount ?: 0.0))
                 )
 
-                _withdrawAmountTotal.value = String.format(androidContext.getString(R.string.total_withdrawal), sConfigData?.systemCurrency,"0.000"
+                _withdrawAmountTotal.value = "0.000"
 
-                )
+
 
 
 
                 if (withdrawAmount != null && withdrawAmount.toDouble() > 0) {
-                    _withdrawAmountTotal.value = String.format(androidContext.getString(R.string.total_withdrawal),sConfigData?.systemCurrency, ArithUtil.toMoneyFormat(
+                    _withdrawAmountTotal.value =  ArithUtil.toMoneyFormat(
                         ArithUtil.add(
                             withdrawAmount.toDouble(),
                             ArithUtil.toMoneyFormat(
@@ -648,7 +648,7 @@ class WithdrawViewModel(
                             ).toDouble()
                         )
                     )
-                    )
+
 
                 }
             }
@@ -665,9 +665,9 @@ class WithdrawViewModel(
                         ArithUtil.toMoneyFormat(withdrawNeedAmount)
 
                     )
-                    _withdrawAmountTotal.value = String.format(androidContext.getString(R.string.total_withdrawal), "0.000"
-                           , sConfigData?.systemUSDTCurrency
-                    )
+                    _withdrawAmountTotal.value =  "0.000"
+
+
                     _withdrawCryptoFeeHint.value = String.format(
                         androidContext.getString(R.string.withdraw_crypto_fee_hint),
                         sConfigData?.systemCurrency,
@@ -679,13 +679,13 @@ class WithdrawViewModel(
                         ArithUtil.toMoneyFormat(cardConfig?.exchangeRate)
                     )
                     if (withdrawAmount != null && withdrawAmount.toDouble() > 0) {
-                        _withdrawAmountTotal.value = String.format(androidContext.getString(R.string.total_withdrawal),ArithUtil.toMoneyFormat(
+                        _withdrawAmountTotal.value =ArithUtil.toMoneyFormat(
                             (ArithUtil.add(
                                 withdrawAmount.toDouble(),
                                 ArithUtil.div(fee, cardConfig?.exchangeRate!!.toDouble())
                             )
                                     )
-                        ),sConfigData?.systemUSDTCurrency
+
                         )
 
 
