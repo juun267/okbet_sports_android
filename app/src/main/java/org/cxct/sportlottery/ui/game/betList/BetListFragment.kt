@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
@@ -205,8 +206,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         initKeyBoard(viewModel.getLoginBoolean())
         fl_title.setOnClickListener { betListRefactorAdapter?.closeAllKeyboard() }
         cl_total_info.setOnClickListener { betListRefactorAdapter?.closeAllKeyboard() }
-        //避免快捷注單的投注金額，未更新到滿版注單
-        refreshAllAmount()
     }
 
     private fun initBtnView() {
@@ -251,13 +250,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         binding.apply {
             llMoreOption.setOnClickListener {
-                if (llParlayList.isVisible) {
+                if (clParlayList.isVisible) {
                     ivArrowMoreOptions.setImageResource(R.drawable.ic_arrow_gray_top)
-                    llParlayList.visibility = View.GONE
+                    clParlayList.visibility = View.GONE
                 } else {
                     tvMoreOptionsCount.text = "(${getCurrentParlayList().size})"
                     ivArrowMoreOptions.setImageResource(R.drawable.ic_arrow_gray_down)
-                    llParlayList.visibility = View.VISIBLE
+                    clParlayList.visibility = View.VISIBLE
                 }
             }
         }
@@ -303,7 +302,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
                         binding.apply {
                             llMoreOption.visibility = View.GONE
-                            llParlayList.visibility = View.GONE
+                            clParlayList.visibility = View.GONE
                         }
                         refreshAllAmount()
                     }
@@ -337,12 +336,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             if (getCurrentParlayList().any { it.parlayType.isNotEmpty() && it.parlayType != "1C1" }) {
                 llMoreOption.visibility = View.VISIBLE
                 tvMoreOptionsCount.text = "(${getCurrentParlayList().size})"
-                if (showParlayList) llParlayList.visibility = View.VISIBLE
-                if (llParlayList.isVisible) ivArrowMoreOptions.setImageResource(R.drawable.ic_arrow_gray_down)
+                if (showParlayList) clParlayList.visibility = View.VISIBLE
+                if (clParlayList.isVisible) ivArrowMoreOptions.setImageResource(R.drawable.ic_arrow_gray_down)
                 else ivArrowMoreOptions.setImageResource(R.drawable.ic_arrow_gray_top)
             } else {
                 llMoreOption.visibility = View.GONE
-                llParlayList.visibility = View.GONE
+                clParlayList.visibility = View.GONE
             }
         }
     }
@@ -736,6 +735,17 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             it.peekContent().let { list ->
                 //注單列表沒東西時關閉fragment
                 cl_no_data.visibility = if (list.size == 0) View.VISIBLE else View.GONE
+
+                //依照注單數量動態調整高度
+                if (list.size == 1) {
+                    binding.llRoot.layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
+                    binding.betTypeTabLayout.visibility = View.GONE
+                    betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
+                } else {
+                    binding.llRoot.layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT
+                    binding.betTypeTabLayout.visibility = View.VISIBLE
+                }
+
 //                btn_delete_all.visibility = if (list.size == 0) View.GONE else View.VISIBLE
                 tv_bet_list_count.text = list.size.toString()
                 betListRefactorAdapter?.betList = list
@@ -1079,7 +1089,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             0 -> {
                 with(binding) {
                     llMoreOption.visibility = View.GONE
-                    llParlayList.visibility = View.GONE
+                    clParlayList.visibility = View.GONE
                 }
             }
             //串關投注
