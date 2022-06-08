@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.fragment.app.FragmentActivity
 import androidx.preference.PreferenceManager
 import cn.jpush.android.api.JPushInterface
 import com.github.jokar.multilanguages.library.MultiLanguage
@@ -55,6 +56,7 @@ import timber.log.Timber
 import timber.log.Timber.DebugTree
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import org.cxct.sportlottery.ui.dialog.AgeVerifyDialog
 import org.cxct.sportlottery.ui.game.quick.TestViewModel
 import org.cxct.sportlottery.ui.news.NewsViewModel
 import org.cxct.sportlottery.ui.permission.GooglePermissionViewModel
@@ -287,7 +289,7 @@ class MultiLanguagesApplication : Application() {
             }
 
         fun getChangeModeColorCode(defaultColor: String, nightModeColor: String): String {
-            return if(isNightMode) nightModeColor else defaultColor
+            return if (isNightMode) nightModeColor else defaultColor
         }
 
         fun getInstance(): MultiLanguagesApplication? {
@@ -295,5 +297,23 @@ class MultiLanguagesApplication : Application() {
             return instance
         }
 
+        //確認年齡彈窗
+        fun showAgeVerifyDialog(activity: FragmentActivity) {
+            if (getInstance()?.isAgeVerifyNeedShow() == false) return
+            AgeVerifyDialog(
+                activity,
+                object : AgeVerifyDialog.OnAgeVerifyCallBack {
+                    override fun onConfirm() {
+                        //當玩家點擊"I AM OVER 21 YEARS OLD"後，關閉此視窗
+                        getInstance()?.setIsAgeVerifyShow(false)
+                    }
+
+                    override fun onExit() {
+                        //當玩家點擊"EXIT"後，徹底關閉APP
+                        AppManager.AppExit()
+                    }
+
+                }).show()
+        }
     }
 }
