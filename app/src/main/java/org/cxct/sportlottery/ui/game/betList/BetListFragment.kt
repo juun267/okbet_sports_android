@@ -328,7 +328,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun refreshLlMoreOption(showParlayList: Boolean = true) {
         binding.apply {
-            if (getCurrentBetList().size > 1 && getCurrentParlayList().isNotEmpty()) {
+            /**
+             * @since 只有一張投注單時 串關資料會存在一筆parlayType為1C1的資料
+             * @since 投注單無法串關時 串關資料為空(parlayList), 經處理會塞入一項資料(singleParlayList)作為"單項投注"填充所有單注使用
+             * @see org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil.getCom
+             * @see singleParlayList
+             */
+            if (getCurrentParlayList().any { it.parlayType.isNotEmpty() && it.parlayType != "1C1" }) {
                 llMoreOption.visibility = View.VISIBLE
                 tvMoreOptionsCount.text = "(${getCurrentParlayList().size})"
                 if (showParlayList) llParlayList.visibility = View.VISIBLE
@@ -757,17 +763,16 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         viewModel.parlayList.observe(this.viewLifecycleOwner) {
             if (it.size == 0) {
                 betListRefactorAdapter?.hasParlayList = false
-                //20220607 投注單版面調整 不需要特別加入一個串關作為單注的判斷了
-//                betListRefactorAdapter?.parlayList = singleParlayList
+                betListRefactorAdapter?.parlayList = singleParlayList
 
                 betParlayListRefactorAdapter?.hasParlayList = false
             } else {
                 betListRefactorAdapter?.hasParlayList = true
+                betListRefactorAdapter?.parlayList = it
 
                 betParlayListRefactorAdapter?.hasParlayList = true
+                betParlayListRefactorAdapter?.parlayList = it
             }
-            betListRefactorAdapter?.parlayList = it
-            betParlayListRefactorAdapter?.parlayList = it
         }
 
         viewModel.betParlaySuccess.observe(viewLifecycleOwner) {
