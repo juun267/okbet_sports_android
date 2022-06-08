@@ -12,6 +12,7 @@
     <string name="message_network_timeout">The connection has timed out, please try again.</string>
     <string name="error">Error</string>
     <string name="error_input_empty">This field is required</string>
+    <string name="error_input_empty_new">This field is required.</string>
     <string name="error_incompatible_format">The name that you entered is not valid</string>
     <string name="error_wx_incompatible_format">Wechat ID formatted incorrectly</string>
     <string name="congratulation_win">Congratulations，betting slip suffix code:%1$s Winning :%2$s</string>
