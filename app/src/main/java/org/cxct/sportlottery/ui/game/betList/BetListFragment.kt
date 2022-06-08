@@ -697,7 +697,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun initObserver() {
         //是否登入
         viewModel.isLogin.observe(this.viewLifecycleOwner) {
-            setupUserBalanceView(it)
             setupBetButtonType(it)
             initKeyBoard(it)
             updateCommonToolbarLoginStatus(it)
@@ -987,20 +986,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
         }
         snackBarNotify?.show()
-    }
-
-    /**
-     * 顯示、隱藏使用者餘額(登入、未登入)
-     */
-    private fun setupUserBalanceView(isLogin: Boolean) {
-        if (isLogin) {
-            tv_balance.visibility = View.VISIBLE
-            tv_balance_currency.visibility = View.VISIBLE
-            tv_balance_currency.text = sConfigData?.systemCurrency
-        } else {
-            tv_balance.visibility = View.GONE
-            tv_balance_currency.visibility = View.GONE
-        }
     }
 
     /**
