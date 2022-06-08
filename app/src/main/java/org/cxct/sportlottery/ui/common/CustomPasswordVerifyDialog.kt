@@ -85,11 +85,13 @@ class CustomPasswordVerifyDialog : BaseDialog<SelfLimitViewModel>(SelfLimitViewM
     }
 
     private fun initObserve() {
-        viewModel.passwordVerifyResult.observe(viewLifecycleOwner) {
-            if (!it.success) {
-                showErrorPromptDialog(getString(R.string.prompt), it.msg) {}
-            } else {
-                dismiss()
+        viewModel.passwordVerifyResult.observe(viewLifecycleOwner) { event ->
+            event?.getContentIfNotHandled()?.let {
+                if (!it.success) {
+                    showErrorPromptDialog(getString(R.string.self_limit_confirm), it.msg) {}
+                } else {
+                    dismiss()
+                }
             }
         }
     }
@@ -116,7 +118,7 @@ class CustomPasswordVerifyDialog : BaseDialog<SelfLimitViewModel>(SelfLimitViewM
 
     private fun checkPassword(password: String): Boolean {
         if (password.isBlank()) {
-            tfb_password.setError(getString(R.string.error_input_empty), true)
+            tfb_password.setError(getString(R.string.error_input_empty_new), true)
             return false
         }
         return true

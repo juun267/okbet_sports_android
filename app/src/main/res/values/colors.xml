@@ -192,6 +192,7 @@
     <color name="color_E2E2E2_D8D8D8">#D8D8D8</color>
     <color name="color_1A000000_1A000000">#1A000000</color>
     <color name="color_0D000000_0D000000">#0D000000</color>
+    <color name="color_141414_FCFCFC">@color/color_FCFCFC</color>
 
     <!--region 特殊處理顏色-->
     <color name="home_card_top_text_color">#40FFFFFF</color>

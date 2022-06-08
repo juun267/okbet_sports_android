@@ -75,26 +75,8 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         setLetterSpace()
 
         //進入宣傳頁，優先跳出這個視窗(不論有沒有登入，每次都要跳)
-        showAgeVerifyDialog()
-    }
-
-    //確認年齡彈窗
-    private fun showAgeVerifyDialog() {
-        if (MultiLanguagesApplication.getInstance()?.isAgeVerifyNeedShow() == false) return
-        AgeVerifyDialog(
-            this,
-            object : AgeVerifyDialog.OnAgeVerifyCallBack {
-                override fun onConfirm() {
-                    //當玩家點擊"I AM OVER 21 YEARS OLD"後，關閉此視窗
-                    MultiLanguagesApplication.getInstance()?.setIsAgeVerifyShow(false)
-                }
-
-                override fun onExit() {
-                    //當玩家點擊"EXIT"後，徹底關閉APP
-                    AppManager.AppExit()
-                }
-
-            }).show()
+        if (sConfigData?.thirdOpen != FLAG_OPEN)
+            MultiLanguagesApplication.showAgeVerifyDialog(this)
     }
 
     override fun onAttachedToWindow() {
@@ -102,12 +84,14 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
 
         initDestination()
     }
-    private fun setLetterSpace(){
-        if (LanguageManager.getSelectLanguage(this)==LanguageManager.Language.ZH) {
+
+    private fun setLetterSpace() {
+        if (LanguageManager.getSelectLanguage(this) == LanguageManager.Language.ZH) {
             binding.tvRegister.letterSpacing = 0.6f
             binding.tvLogin.letterSpacing = 0.6f
         }
     }
+
     private fun initDestination() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {

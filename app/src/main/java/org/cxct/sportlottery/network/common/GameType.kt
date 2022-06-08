@@ -99,25 +99,25 @@ enum class GameType(val key: String, @StringRes val string: Int) {
 
         fun getGameTypeMenuIcon(gameType: GameType): Int{
             return when(gameType){
-                FT -> R.drawable.ic_game_football
-                BK -> R.drawable.ic_game_basketball
-                TN -> R.drawable.ic_game_tennis
-                VB -> R.drawable.ic_game_volleyball
-                BM -> R.drawable.ic_game_badminton
-                TT -> R.drawable.ic_game_pingpong
-                IH -> R.drawable.ic_game_icehockey
-                BX -> R.drawable.ic_game_boxing
-                CB -> R.drawable.ic_game_snooker
-                CK -> R.drawable.ic_game_cricket
-                BB -> R.drawable.ic_game_baseball
-                RB -> R.drawable.ic_game_rugby
-                AFT -> R.drawable.ic_game_amfootball
-                MR -> R.drawable.ic_game_rancing
-                GF -> R.drawable.ic_game_golf
-                FB -> R.drawable.ic_game_finance
-                OTHER -> R.drawable.ic_game_champ
-                BB_COMING_SOON -> R.drawable.ic_game_baseball
-                ES_COMING_SOON -> R.drawable.ic_game_esports
+                FT -> R.drawable.ic_home_football
+                BK -> R.drawable.ic_home_basketball
+                TN -> R.drawable.ic_home_tennis
+                VB -> R.drawable.ic_home_volleyballx
+                BM -> R.drawable.ic_home_badminton
+                TT -> R.drawable.ic_home_pingpong
+                IH -> R.drawable.ic_home_icehockey
+                BX -> R.drawable.ic_home_boxing
+                CB -> R.drawable.ic_home_snooker
+                CK -> R.drawable.ic_home_cricket
+                BB -> R.drawable.ic_home_baseball
+                RB -> R.drawable.ic_home_rugby
+                AFT -> R.drawable.ic_home_amfootball
+                MR -> R.drawable.ic_home_racing
+                GF -> R.drawable.ic_home_golf
+                FB -> R.drawable.ic_home_finance_piechart
+                OTHER -> R.drawable.ic_home_champ
+                BB_COMING_SOON -> R.drawable.ic_home_baseball
+                ES_COMING_SOON -> R.drawable.ic_home_gaming
             }
         }
 

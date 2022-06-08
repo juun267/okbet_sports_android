@@ -31,6 +31,8 @@ data class MatchOdd(
     var indoOdds: Double,
     @Json(name = "oddsId")
     val oddsId: String,
+    @Json(name = "playCateCode")
+    val playCateCode: String?,
     @Json(name = "playCateId")
     val playCateId: Int,
     @Json(name = "playCateName")

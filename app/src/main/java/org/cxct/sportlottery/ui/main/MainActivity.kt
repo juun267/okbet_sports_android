@@ -11,13 +11,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
@@ -68,6 +68,9 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
 //        initServiceButton()
         initObserve()
         setFontTheme()
+
+        if (sConfigData?.thirdOpen == FLAG_OPEN)
+            MultiLanguagesApplication.showAgeVerifyDialog(this)
 
         //若啟動頁是使用 local host 進入，到首頁要再 getHost() 一次，背景替換使用最快線路
         //20210414修改邏輯, 若local host可以使用, 就直接使用, 若無法使用才getHost取得可以使用之域名

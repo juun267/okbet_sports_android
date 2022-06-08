@@ -97,6 +97,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
 
                 leagueAdapter.setPreloadItem()
+                countryAdapter.setPreloadItem()
 
                 //切換球種後要重置位置
                 initMatchCategoryPagerPosition()
@@ -224,7 +225,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             )
         }
     }
-
 
     private val leagueAdapter by lazy {
         LeagueAdapter(
@@ -374,7 +374,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     private val onTabSelectedListener = object : TabLayout.OnTabSelectedListener {
         override fun onTabSelected(tab: TabLayout.Tab?) {
-            game_list.adapter = null
+            countryAdapter.setPreloadItem()
+            outrightLeagueOddAdapter.setPreloadItem()
             //切換tab要重置位置
             initMatchCategoryPagerPosition()
             when (tab?.text.toString()) { //固定寫死
