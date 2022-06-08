@@ -507,14 +507,14 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) { //返利/手續費金額
                 tv_fee_amount.text =
                     String.format(
-                        getString(R.string.hint_feeback_amount),
+                        getString(R.string.hint_feeback_amount), sConfigData?.systemCurrency,
                         ArithUtil.toMoneyFormat(
                             (rechargeAmount.toDouble()
                                 .times(mSelectRechCfgs?.exchangeRate ?: 1.0)).times(
                                     mSelectRechCfgs?.rebateFee ?: 0.0
                                 )
-                        ),
-                        sConfigData?.systemCurrency
+                        )
+
                     )
             } else {
                 tv_fee_amount.text = String.format(

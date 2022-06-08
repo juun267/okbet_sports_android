@@ -337,9 +337,9 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
                     //返利/手續費金額
                     if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) { //返利/手續費金額
                         tv_fee_amount.text =
-                            String.format(getString(R.string.hint_feeback_amount),
-                                ArithUtil.toMoneyFormat((it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)).times(mSelectRechCfgs?.rebateFee?:0.0)),
-                                sConfigData?.systemCurrency
+                            String.format(getString(R.string.hint_feeback_amount),sConfigData?.systemCurrency,
+                                ArithUtil.toMoneyFormat((it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)).times(mSelectRechCfgs?.rebateFee?:0.0))
+
                             )
                     } else {
                         tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount),
