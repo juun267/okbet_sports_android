@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
+    android:background="@color/colorBackground"
     tools:context=".ui.profileCenter.money_transfer.MoneyTransferActivity">
 
     <include
@@ -15,44 +16,39 @@
         android:id="@+id/ll_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_317FFF_1463cf"
-        android:orientation="horizontal"
-        android:paddingHorizontal="15dp"
-        android:paddingVertical="8dp">
+        android:orientation="vertical">
 
-
-        <RadioGroup
+        <com.google.android.material.tabs.TabLayout
+            app:tabTextAppearance="@style/NoUppercaseTab"
+            android:id="@+id/tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/frame_4dp_white"
-            android:orientation="horizontal">
+            android:layout_height="48dp"
+            app:tabIndicator="@drawable/custom_tab_indicator"
+            app:tabIndicatorFullWidth="false"
+            app:tabMode="fixed"
+            app:tabPaddingEnd="25dp"
+            app:tabPaddingStart="25dp"
+            app:tabRippleColor="@null"
+            app:tabSelectedTextColor="@color/color_BBBBBB_333333"
+            app:tabTextColor="@color/color_909090_666666">
 
-            <RadioButton
-                android:id="@+id/rb_change"
-                android:layout_width="0dp"
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/selector_button_white_blue_left"
-                android:button="@null"
-                android:checked="true"
-                android:gravity="center"
-                android:paddingVertical="4dp"
-                android:text="@string/account_transfer"
-                android:textColor="@color/selector_blue_white" />
+                android:text="@string/account_transfer" />
 
-            <RadioButton
-                android:id="@+id/rb_record"
-                android:layout_width="0dp"
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/selector_button_white_blue_right"
-                android:button="@null"
-                android:gravity="center"
-                android:paddingVertical="4dp"
-                android:text="@string/record_conversion"
-                android:textColor="@color/selector_blue_white" />
-        </RadioGroup>
+                android:text="@string/record_conversion" />
+
+
+        </com.google.android.material.tabs.TabLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="0dp"
+            android:background="@color/color_191919_EEEFF0" />
 
     </LinearLayout>
 

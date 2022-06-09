@@ -9,12 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.activity_recharge_log.view.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_record.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_record.date_search_bar
 import kotlinx.android.synthetic.main.fragment_money_transfer_record.iv_scroll_to_top
 import kotlinx.android.synthetic.main.fragment_money_transfer_record.rv_record
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 
 
@@ -79,7 +81,8 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
     private fun initView() {
         rv_record.adapter = rvAdapter
         rv_record.addOnScrollListener(recyclerViewOnScrollListener)
-        selector_transfer_status.dataList = viewModel.statusList
+        selector_transfer_status.setItemData(viewModel.statusList as MutableList<StatusSheetData>)
+        selector_transfer_status.setSelectCode(viewModel.statusList.first().code)
     }
 
     private fun initOnclick() {
@@ -111,11 +114,13 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
         }
 
         viewModel.recordInPlatSheetList.observe(viewLifecycleOwner) {
-            selector_in_plat.dataList = it
+            selector_in_plat.setItemData(it as MutableList<StatusSheetData>)
+            selector_in_plat.setSelectCode(it.first().code)
         }
 
         viewModel.recordOutPlatSheetList.observe(viewLifecycleOwner) {
-            selector_out_plat.dataList = it
+            selector_out_plat.setItemData(it as MutableList<StatusSheetData>)
+            selector_out_plat.setSelectCode(it.first().code)
         }
     }
 
