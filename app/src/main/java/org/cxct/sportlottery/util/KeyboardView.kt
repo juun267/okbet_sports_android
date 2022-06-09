@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.item_number_keyboard_layout.view.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
+import timber.log.Timber
 import java.lang.reflect.Method
 
 class KeyboardView @JvmOverloads constructor(
@@ -40,36 +41,39 @@ class KeyboardView @JvmOverloads constructor(
 
     @SuppressLint("SetTextI18n")
     private fun initView() {
-        sConfigData?.presetBetAmount?.let {
+//        Timber.d("presetBetAmount: ${sConfigData?.presetBetAmount}")
+        //20220609 預設下注金額, 改為由大到小(三個按鈕顯示)
+        sConfigData?.presetBetAmount?.reversed()?.let {
+//            Timber.d("presetBetAmount reversed: $it")
             it.forEachIndexed { index, i ->
                 if (index == 0) {
-                    tvPlus1.text = "+ ${it[index]}"
+                    tvPlus1.text = "+ $i"
                     tvPlus1.visibility = View.VISIBLE
-                    tvPlus1.setOnClickListener { v ->
-                        plus(it[index].toLong())
+                    tvPlus1.setOnClickListener {
+                        plus(i.toLong())
                     }
                 }
                 if (index == 1) {
-                    tvPlus2.text = "+ ${it[index]}"
+                    tvPlus2.text = "+ $i"
                     tvPlus2.visibility = View.VISIBLE
-                    tvPlus2.setOnClickListener { v ->
-                        plus(it[index].toLong())
+                    tvPlus2.setOnClickListener {
+                        plus(i.toLong())
                     }
                 }
                 if (index == 2) {
-                    tvPlus3.text = "+ ${it[index]}"
+                    tvPlus3.text = "+ $i"
                     tvPlus3.visibility = View.VISIBLE
-                    tvPlus3.setOnClickListener { v ->
-                        plus(it[index].toLong())
+                    tvPlus3.setOnClickListener {
+                        plus(i.toLong())
                     }
                 }
-                if (index == 3) {
-                    tvPlus4.text = "+ ${it[index]}"
-                    tvPlus4.visibility = View.VISIBLE
-                    tvPlus4.setOnClickListener { v ->
-                        plus(it[index].toLong())
-                    }
-                }
+//                if (index == 3) {
+//                    tvPlus4.text = "+ $i"
+//                    tvPlus4.visibility = View.VISIBLE
+//                    tvPlus4.setOnClickListener {
+//                        plus(i.toLong())
+//                    }
+//                }
             }
         }
         tvNum0.setOnClickListener {
