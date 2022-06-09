@@ -547,8 +547,6 @@ abstract class BaseOddButtonViewModel(
             it.value?.filterNotNull()?.forEach { odd ->
                 if (it.key == PlayCate.EPS.value)
                     odd.setupEPSDiscount(discount)
-                if (it.key == PlayCate.LCS.value)
-                    return@forEach
                 else
                     odd.setupDiscount(discount)
             }
@@ -571,10 +569,8 @@ abstract class BaseOddButtonViewModel(
     }
 
     fun org.cxct.sportlottery.network.odds.Odd.setupDiscount(discount: Float) {
-        if(this.playCode != PlayCate.LCS.value){
-            this.odds = this.odds?.applyDiscount(discount)
-            this.hkOdds = this.hkOdds?.applyHKDiscount(discount)
-        }
+        this.odds = this.odds?.applyDiscount(discount)
+        this.hkOdds = this.hkOdds?.applyHKDiscount(discount)
     }
 
     protected fun org.cxct.sportlottery.network.odds.Odd.setupEPSDiscount(discount: Float) {
