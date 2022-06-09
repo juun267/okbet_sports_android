@@ -142,7 +142,7 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
             if (it.success) {
                 val dialog = CustomAlertDialog(requireActivity()).apply {
                     isCancelable = false
-                    setTitle(this@SelfLimitBetFragment.getString(R.string.self_limit_confirm))
+                    setTitle(this@SelfLimitBetFragment.getString(R.string.self_limit_fix_confirm))
                     setMessage(this@SelfLimitBetFragment.getString(R.string.self_limit_fix_confirm_done))
                     setNegativeButtonText(null)
                     setPositiveButtonText(this@SelfLimitBetFragment.getString(R.string.btn_confirm))
