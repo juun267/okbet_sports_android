@@ -296,7 +296,7 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
     private fun initSocketObserver() {
         receiver.matchOddsChange.observe(this.viewLifecycleOwner) {
-            it?.let { matchOddsChangeEvent ->
+            it?.peekContent()?.let { matchOddsChangeEvent ->
                 matchOddsChangeEvent.updateOddsSelectedState()
 
                 oddsDetailListAdapter?.oddsDetailDataList?.forEachIndexed { index, oddsDetailListData ->

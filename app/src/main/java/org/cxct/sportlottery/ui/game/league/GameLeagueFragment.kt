@@ -497,7 +497,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         }
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
-            it?.let { oddsChangeEvent ->
+            it?.peekContent()?.let { oddsChangeEvent ->
                 SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
                 oddsChangeEvent.updateOddsSelectedState()
                 oddsChangeEvent.filterMenuPlayCate()
