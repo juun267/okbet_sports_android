@@ -1,11 +1,16 @@
 package org.cxct.sportlottery.ui.profileCenter.money_transfer
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_money_transfer.*
+import kotlinx.android.synthetic.main.activity_money_transfer.tab_layout
+import kotlinx.android.synthetic.main.fragment_withdraw.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.record.MoneyTransferRecordFragmentDirections
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer.MoneyTransferFragmentDirections
@@ -57,19 +62,24 @@ class MoneyTransferActivity :
     }
 
     private fun initOnClick() {
-        rb_change.setOnClickListener {
-            when (navController.currentDestination?.id) {
-                R.id.moneyTransferRecordFragment -> {
-                    my_nav_host_fragment.findNavController().navigate(MoneyTransferRecordFragmentDirections.actionMoneyTransferRecordFragmentToMoneyTransferFragment())
+        tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when (tab?.position) {
+                    0 -> {
+                        my_nav_host_fragment.findNavController().navigate(MoneyTransferRecordFragmentDirections.actionMoneyTransferRecordFragmentToMoneyTransferFragment())
+                    }
+                    1 -> {
+                        my_nav_host_fragment.findNavController().navigate(MoneyTransferFragmentDirections.actionMoneyTransferFragmentToMoneyTransferRecordFragment())
+                    }
                 }
             }
-        }
-        rb_record.setOnClickListener {
-            when (navController.currentDestination?.id) {
-                R.id.moneyTransferFragment -> {
-                    my_nav_host_fragment.findNavController().navigate(MoneyTransferFragmentDirections.actionMoneyTransferFragmentToMoneyTransferRecordFragment())
-                }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
             }
-        }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+        })
+
     }
 }

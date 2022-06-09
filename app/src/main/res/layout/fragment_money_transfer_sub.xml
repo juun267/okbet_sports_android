@@ -10,6 +10,8 @@
     <include
         android:id="@+id/layout_balance"
         layout="@layout/view_account_balance_2"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
