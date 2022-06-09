@@ -1470,14 +1470,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
             return mutableListOf<String>().apply {
                 groupTeamName.forEach {
-                    it.key?.let { key ->
-                        add(
-                            key
-                        )
-                    }
+                    it.key?.let { key -> add(key) }
                 }
             }.apply {
-                reverse()
+                if(firstOrNull() != homeName) reverse()
                 tvHomeName?.text = this.firstOrNull()
                 tvAwayName?.text = this.getOrNull(1)
             }

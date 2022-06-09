@@ -1,0 +1,32 @@
+[
+  {
+    "zh": "普通会员",
+    "vi": "hội viên phổ thông",
+    "en": "Normal member"
+  },
+  {
+    "zh": "白银会员",
+    "vi": "hội viên bạc",
+    "en": "Sliver member"
+  },
+  {
+    "zh": "黄金会员",
+    "vi": "hội viên vàng",
+    "en": "Gold member"
+  },
+  {
+    "zh": "铂金会员",
+    "vi": "hội viên bạch kim",
+    "en": "Birkin member"
+  },
+  {
+    "zh": "钻石会员",
+    "vi": "hội viên kim cương",
+    "en": "Diamond member"
+  },
+  {
+    "zh": "至尊会员",
+    "vi": "hội viên chí tôn",
+    "en": "Supreme member"
+  }
+]

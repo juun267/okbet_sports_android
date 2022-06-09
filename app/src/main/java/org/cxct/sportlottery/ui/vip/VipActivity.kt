@@ -23,6 +23,8 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.util.ScreenUtil
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.getLevelName
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 class VipActivity : BaseSocketActivity<VipViewModel>(VipViewModel::class) {
 
@@ -100,6 +102,11 @@ class VipActivity : BaseSocketActivity<VipViewModel>(VipViewModel::class) {
     }
 
     private fun initView() {
+        tv_title.setTitleLetterSpacing()
+
+        //等開啟第三方時在開發
+        tv_vip_name.setTitleLetterSpacing()
+
         getDataFromApi()
 
         pb_user_level.max = levelBubbleList.size
@@ -177,8 +184,10 @@ class VipActivity : BaseSocketActivity<VipViewModel>(VipViewModel::class) {
             when (StaticData.getTestFlag(userInfo.testFlag)) {
                 TestFlag.GUEST -> {
                     tv_greet.text =
-                        if ((user.fullName ?: "").isNotEmpty()) user.fullName else (TextUtil.maskUserName(user.fullName
-                            ?: ""))
+                        if ((user.fullName ?: "").isNotEmpty()) user.fullName else (TextUtil.maskUserName(
+                            user.fullName
+                                ?: ""
+                        ))
                 }
                 else -> {
                     tv_greet.text =
@@ -213,6 +222,7 @@ class VipActivity : BaseSocketActivity<VipViewModel>(VipViewModel::class) {
             banner_vip_level.bannerCurrentItem = ordinal
         }
     }
+
     private fun updateLevelBar(levelIndex: Int) {
         //0: VIP1, 1: VIP2 ...
         val level = levelIndex + 1
@@ -242,11 +252,13 @@ class VipActivity : BaseSocketActivity<VipViewModel>(VipViewModel::class) {
     private fun setupBannerData() {
         banner_vip_level.apply {
             val layoutParams: android.widget.LinearLayout.LayoutParams =
-                android.widget.LinearLayout.LayoutParams(android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
-                    (ScreenUtil.getScreenWidth(this@VipActivity) / 2.5).toInt())
+                android.widget.LinearLayout.LayoutParams(
+                    android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
+                    (ScreenUtil.getScreenWidth(this@VipActivity) / 2.5).toInt()
+                )
             setLayoutParams(layoutParams)
             setBannerData(R.layout.item_banner_member_level, setupBannerLevelRequirement())
-            loadImage { _, model, view, _ ->
+            loadImage { _, model, view, index ->
                 val tvLevel: TextView? = view?.findViewById(R.id.tv_level)
                 val ivLevel: ImageView? = view?.findViewById(R.id.iv_level_icon)
                 val tvLevelName: TextView? = view?.findViewById(R.id.tv_level_name)
@@ -255,8 +267,10 @@ class VipActivity : BaseSocketActivity<VipViewModel>(VipViewModel::class) {
 
                 tvLevel?.text = getString(cardInfo.level)
                 ivLevel?.setImageDrawable(ContextCompat.getDrawable(this@VipActivity, cardInfo.levelIcon))
-                tvLevelName?.text = cardInfo.levelName //TODO Bill 這裡要請API改成多語系
                 tvGrowthRequirement?.text = getGrowthRequirementTips(cardInfo.levelId, cardInfo.growthRequirement)
+                tvLevelName?.setTitleLetterSpacing()
+
+                tvLevelName?.text = getLevelName(context, Level.values().indexOf(Level.values().find { it.ordinal == index }))
             }
             bannerCurrentItem = userVipLevel?.ordinal?.plus(1) ?: 0
         }
@@ -327,8 +341,10 @@ class ThirdGameAdapter(private val selectedListener: OnSelectThirdGames) :
             val itemChecked = dataCheckedList[position]
             itemView.apply {
                 checkbox_item.text = data.firmShowName
-                checkbox_item.background = if (itemChecked) ContextCompat.getDrawable(context,
-                    R.color.color_191919_EEEFF0) else ContextCompat.getDrawable(context, android.R.color.white)
+                checkbox_item.background = if (itemChecked) ContextCompat.getDrawable(
+                    context,
+                    R.color.color_191919_EEEFF0
+                ) else ContextCompat.getDrawable(context, android.R.color.white)
                 checkbox_item.setOnClickListener {
                     if (selectedPosition != position) {
                         selectedListener.onSelected(data)

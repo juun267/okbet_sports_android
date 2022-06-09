@@ -12,13 +12,11 @@ import kotlinx.android.synthetic.main.item_third_rebates_form_content.view.tv_be
 import kotlinx.android.synthetic.main.item_third_rebates_form_content.view.tv_rebates
 import kotlinx.android.synthetic.main.item_third_rebates_form_content.view.tv_rebates_rate
 import kotlinx.android.synthetic.main.item_third_rebates_form_content_last.view.*
-import kotlinx.android.synthetic.main.item_third_rebates_form_title.view.title_top_center
-import kotlinx.android.synthetic.main.item_third_rebates_form_title.view.title_top_left
-import kotlinx.android.synthetic.main.item_third_rebates_form_title.view.title_top_right
-import kotlinx.android.synthetic.main.item_third_rebates_form_title.view.tv_level
+import kotlinx.android.synthetic.main.item_third_rebates_form_title.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.vip.thirdRebates.Debate
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 class ThirdRebatesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -97,9 +95,11 @@ class TitleViewHolder private constructor(itemView: View) : RecyclerView.ViewHol
                 title_top_right.backgroundTintList = it
             }
 
+            //level_name 等開啟第三方時在開發
             itemData.apply {
-                val vipLevel = Level.values().find { it.levelRequirement.levelId == userLevelId }?.levelRequirement?.level?.let { context.getString(it) } ?: ""
-                tv_level.text = "$vipLevel $userLevelName"
+                tv_level.text = Level.values().find { it.levelRequirement.levelId == userLevelId }?.levelRequirement?.level?.let { context.getString(it) } ?: ""
+                tv_level_name.setTitleLetterSpacing()
+                tv_level_name.text = userLevelName
             }
         }
     }

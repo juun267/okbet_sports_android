@@ -3,17 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="SpUsage">
 
-    <TextView
-        android:id="@+id/tv_level"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:textColor="@color/color_BBBBBB_333333"
-        android:textSize="@dimen/textSize13sp"
-        android:textStyle="bold"
-        tools:text="VIP1 普通会员" />
+        android:orientation="horizontal"
+        android:layout_marginBottom="5dp">
+
+        <TextView
+            android:id="@+id/tv_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_BBBBBB_333333"
+            android:textSize="@dimen/textSize13sp"
+            android:textStyle="bold"
+            tools:text="VIP1" />
+
+        <TextView
+            android:id="@+id/tv_level_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:textColor="@color/color_BBBBBB_333333"
+            android:textSize="@dimen/textSize13sp"
+            android:textStyle="bold"
+            tools:text="普通会员" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
