@@ -21,6 +21,7 @@
     <string name="btn_confirm">Confirm</string>
     <string name="btn_determine">Confirm</string>
     <string name="btn_cancel">Cancel</string>
+    <string name="btn_cancel_new">Cancel</string>
     <string name="btn_retry">Try again</string>
     <string name="loading_get_config">Fast-loading</string>
     <string name="error_config_title">Bad line</string>

@@ -21,6 +21,7 @@
     <string name="btn_confirm">Xác nhận</string>
     <string name="btn_determine">Xác nhận</string>
     <string name="btn_cancel">Hủy bỏ</string>
+    <string name="btn_cancel_new">Hủy</string>
     <string name="btn_retry">Vui lòng thử lại</string>
     <string name="loading_get_config">Đang lấy địa chỉ nhanh nhất</string>
     <string name="error_config_title">mạng không ổn định</string>
