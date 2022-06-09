@@ -115,7 +115,6 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             override fun onTextChanged(theNewText: String?, isError: Boolean) {
                 if (binding.etPassword.endIconImageButton.visibility == View.GONE) {
                     binding.etPassword.endIconImageButton.visibility = View.VISIBLE
-                    binding.eetPassword.setText(null)
                 }
 
             }

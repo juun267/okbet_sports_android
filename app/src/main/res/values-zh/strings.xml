@@ -21,6 +21,7 @@
     <string name="btn_confirm">确认</string>
     <string name="btn_determine">确认</string>
     <string name="btn_cancel">取消</string>
+    <string name="btn_cancel_new">取消</string>
     <string name="btn_retry">重新尝试</string>
     <string name="loading_get_config">正在获取最快地址…</string>
     <string name="error_config_title">线路不畅通</string>
