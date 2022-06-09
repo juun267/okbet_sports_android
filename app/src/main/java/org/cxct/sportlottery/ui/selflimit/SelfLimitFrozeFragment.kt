@@ -104,7 +104,7 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
             if (it.success) {
                 val dialog = CustomAlertDialog(requireActivity()).apply {
                     isCancelable = false
-                    setTitle(this@SelfLimitFrozeFragment.getString(R.string.self_limit_fix_confirm))
+                    setTitle(this@SelfLimitFrozeFragment.getString(R.string.self_limit_confirm))
                     setMessage(this@SelfLimitFrozeFragment.getString(R.string.self_limit_confirm_done))
                     setNegativeButtonText(null)
                     setPositiveButtonText(this@SelfLimitFrozeFragment.getString(R.string.btn_confirm))
