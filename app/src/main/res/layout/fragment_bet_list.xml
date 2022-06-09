@@ -140,6 +140,7 @@
                         android:id="@+id/betTypeTabLayout"
                         android:layout_width="match_parent"
                         android:layout_height="34dp"
+                        android:background="@color/color_191919_FCFCFC"
                         app:layout_constraintTop_toTopOf="parent"
                         app:tabIndicatorColor="@color/color_317FFF_0760D4"
                         app:tabIndicatorFullWidth="true"
