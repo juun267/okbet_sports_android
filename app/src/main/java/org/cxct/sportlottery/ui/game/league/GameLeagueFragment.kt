@@ -331,6 +331,12 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         leagueAdapter.apply {
                             data = leagueOdds.onEach { leagueOdd ->
                                 leagueOdd.gameType = args.gameType
+                                val leagueOddFromMap = leagueOddMap[leagueOdd.league.id]
+                                leagueOddFromMap?.let {
+                                    leagueOdd.matchOdds.forEach { mMatchOdd ->
+                                        mMatchOdd.oddsMap = leagueOddFromMap.matchOdds.find { matchOdd -> mMatchOdd.matchInfo?.id == matchOdd.matchInfo?.id }?.oddsMap
+                                    }
+                                }
                             }.toMutableList()
                         }
                     }
@@ -432,6 +438,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         }
     }
 
+    private val leagueOddMap = HashMap<String, LeagueOdd>()
     private fun initSocketObserver() {
         receiver.serviceConnectStatus.observe(this.viewLifecycleOwner) { status ->
             status?.let {
@@ -506,7 +513,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         if (MatchOdd.matchInfo?.id == oddsChangeEvent.eventId) {
                             //馬克說betPlayCateNameMap還是由socket更新
                             oddsChangeEvent.betPlayCateNameMap?.let {
-                                MatchOdd.betPlayCateNameMap?.putAll(oddsChangeEvent.betPlayCateNameMap!!)
+                                MatchOdd.betPlayCateNameMap?.putAll(it)
                             }
                         }
                     }
@@ -520,7 +527,10 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         } &&
                         leagueOdd.unfold == FoldState.UNFOLD.code
                     ) {
+                        leagueOddMap[leagueOdd.league.id] = leagueOdd
+                        updateGameList(index, leagueOdd)
                         updateBetInfo(leagueOdd, oddsChangeEvent)
+                    } else {
                         updateGameList(index, leagueOdd)
                     }
                 }

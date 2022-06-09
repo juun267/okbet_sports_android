@@ -889,7 +889,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             if(matchOdd.status == BetStatus.ACTIVATED.code && oldOdds != TextUtil.formatForOdd(getOdds(matchOdd, oddsType))){
                 oldOdds = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
             }
-            
+
             //反波膽顯示 %
             var tvOdd = "@" + TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
             if(matchOdd.playCode == PlayCate.LCS.value)

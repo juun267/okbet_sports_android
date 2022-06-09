@@ -2,6 +2,7 @@ package org.cxct.sportlottery.util
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.graphics.Rect
 import android.text.SpannableString
 import android.text.Spanned
@@ -20,9 +21,11 @@ import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.widget.FakeBoldSpan
+import org.json.JSONArray
 
 /**
  * @author kevin
@@ -248,5 +251,19 @@ fun MutableList<LeagueOdd>.updateOddsSort(
             MatchOdd.playCateNameMap = playCateNameMapFilter
         }
     }
+}
 
+fun getLevelName(context: Context, level: Int): String {
+    val jsonString = LocalJsonUtil.getLocalJson(MultiLanguagesApplication.appContext, "localJson/LevelName.json")
+    val jsonArray = JSONArray(jsonString)
+    val jsonObject = jsonArray.getJSONObject(level)
+    return jsonObject.getString(LanguageManager.getSelectLanguage(context).key)
+}
+
+val playCateMappingList by lazy {
+    val json = LocalJsonUtil.getLocalJson(
+        MultiLanguagesApplication.appContext,
+        "localJson/PlayCateMapping.json"
+    )
+    json.fromJson<List<PlayCateMapItem>>() ?: listOf()
 }
