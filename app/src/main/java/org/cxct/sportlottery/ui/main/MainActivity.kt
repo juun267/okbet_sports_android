@@ -71,11 +71,6 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
 
         if (sConfigData?.thirdOpen == FLAG_OPEN)
             MultiLanguagesApplication.showAgeVerifyDialog(this)
-
-        //若啟動頁是使用 local host 進入，到首頁要再 getHost() 一次，背景替換使用最快線路
-        //20210414修改邏輯, 若local host可以使用, 就直接使用, 若無法使用才getHost取得可以使用之域名
-        /*if (mSplashViewModel.isNeedGetHost())
-            mSplashViewModel.getHost()*/
     }
 
     override fun onResume() {
