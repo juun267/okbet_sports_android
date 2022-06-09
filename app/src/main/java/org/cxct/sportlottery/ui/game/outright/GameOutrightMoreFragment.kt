@@ -167,7 +167,7 @@ class GameOutrightMoreFragment : BaseBottomNavigationFragment<GameViewModel>(Gam
 
     private fun initSocketObserver() {
         receiver.oddsChange.observe(this.viewLifecycleOwner, {
-            it?.peekContent()?.let { oddsChangeEvent ->
+            it?.getContentIfNotHandled()?.let { oddsChangeEvent ->
                 SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
                 oddsChangeEvent.updateOddsSelectedState()
                 oddsChangeEvent.odds?.let { oddTypeSocketMap ->

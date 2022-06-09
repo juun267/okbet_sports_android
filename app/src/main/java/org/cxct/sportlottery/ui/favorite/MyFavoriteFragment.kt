@@ -309,7 +309,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         }
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
-            it?.peekContent()?.let { oddsChangeEvent ->
+            it?.getContentIfNotHandled()?.let { oddsChangeEvent ->
                 SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
                 oddsChangeEvent.updateOddsSelectedState()
                 oddsChangeEvent.filterMenuPlayCate()

@@ -971,7 +971,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         }
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
-            it?.peekContent()?.let { oddsChangeEvent ->
+            it?.getContentIfNotHandled()?.let { oddsChangeEvent ->
                 var needUpdateBetInfo = false
                 SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
                 //滾球盤、即將開賽盤

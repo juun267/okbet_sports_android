@@ -486,7 +486,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         }
 
         receiver.matchOddsChange.observe(this.viewLifecycleOwner) {
-            it?.peekContent()?.let { matchOddsChangeEvent ->
+            it?.getContentIfNotHandled()?.let { matchOddsChangeEvent ->
                 matchOddsChangeEvent.updateOddsSelectedState()
 
                 oddsDetailListAdapter?.oddsDetailDataList?.let { oddsDetailListDataList ->

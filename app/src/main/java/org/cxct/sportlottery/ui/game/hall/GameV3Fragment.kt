@@ -1381,7 +1381,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
-            it?.peekContent()?.let { oddsChangeEvent ->
+            it?.getContentIfNotHandled()?.let { oddsChangeEvent ->
                 SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
                 oddsChangeEvent.updateOddsSelectedState()
                 oddsChangeEvent.filterMenuPlayCate()
