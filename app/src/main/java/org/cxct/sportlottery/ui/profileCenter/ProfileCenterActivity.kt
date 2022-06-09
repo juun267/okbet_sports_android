@@ -125,7 +125,7 @@ class ProfileCenterActivity :
         }
     }
     private fun initView() {
-        tv_currency_type.text = sConfigData?.systemCurrency
+        tv_currency_type.text = sConfigData?.systemCurrencySign
     }
 
     override fun onResume() {
@@ -604,10 +604,11 @@ class ProfileCenterActivity :
     }
 
     private fun updateCreditAccountUI() {
+        val thirdOpen = sConfigData?.thirdOpen == FLAG_OPEN
         lin_wallet_operation.setVisibilityByCreditSystem()
         v_divide.setVisibilityByCreditSystem()
-        btn_account_transfer.setVisibilityByCreditSystem()
-        btn_other_bet_record.setVisibilityByCreditSystem()
-        btn_self_limit.setVisibilityByCreditSystem()
+        if (thirdOpen) btn_account_transfer.setVisibilityByCreditSystem()
+        if (thirdOpen) btn_other_bet_record.setVisibilityByCreditSystem()
+        if (!(sConfigData?.selfRestraintVerified == "0" || sConfigData?.selfRestraintVerified == null)) btn_self_limit.setVisibilityByCreditSystem()
     }
 }
