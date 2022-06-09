@@ -338,15 +338,18 @@ open class ServiceBroadcastReceiver(
     private fun OddsChangeEvent.setupOddDiscount(discount: Float): OddsChangeEvent {
         this.oddsList.let { oddTypeSocketList ->
             oddTypeSocketList.forEach { oddsList ->
-                oddsList.oddsList?.forEach { odd ->
-                    if(odd?.playCode != PlayCate.LCS.value ){
-                        odd?.odds = odd?.odds?.applyDiscount(discount)
-                        odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
-                        odd?.malayOdds = odd?.hkOdds?.convertToMYOdds()
-                        odd?.indoOdds = odd?.hkOdds?.convertToIndoOdds()
+                if (oddsList.playCateCode != PlayCate.LCS.value) {
+                    oddsList.oddsList?.forEach { odd ->
+                        if (odd?.playCode != PlayCate.LCS.value) {
+                            odd?.odds = odd?.odds?.applyDiscount(discount)
+                            odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
+                            odd?.malayOdds = odd?.hkOdds?.convertToMYOdds()
+                            odd?.indoOdds = odd?.hkOdds?.convertToIndoOdds()
 
-                        if (oddsList.playCateCode == PlayCate.EPS.value) {
-                            odd?.extInfo = odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
+                            if (oddsList.playCateCode == PlayCate.EPS.value) {
+                                odd?.extInfo =
+                                    odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
+                            }
                         }
                     }
                 }
