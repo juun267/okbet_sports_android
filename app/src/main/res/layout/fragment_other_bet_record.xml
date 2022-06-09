@@ -17,7 +17,7 @@
     <org.cxct.sportlottery.ui.component.StatusSpinnerView
         android:id="@+id/status_selector"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="44dp"
         android:background="@color/color_191919_FCFCFC"
         app:defaultStatusText="@string/all_plat_type"
         app:layout_constraintTop_toBottomOf="@id/date_search_bar" />
