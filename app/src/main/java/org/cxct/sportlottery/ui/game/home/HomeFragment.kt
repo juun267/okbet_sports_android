@@ -971,7 +971,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         }
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
-            it?.let { oddsChangeEvent ->
+            it?.peekContent()?.let { oddsChangeEvent ->
                 var needUpdateBetInfo = false
                 SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
                 //滾球盤、即將開賽盤
@@ -1023,7 +1023,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 recommendDataList.recommendSortOddsMap()
                 recommendDataList.forEach { entity ->
                     if (oddsChangeEvent.gameType != entity.code) return@forEach
-                    if (entity.matchInfo?.id != it.eventId) return@forEach
+                    if (entity.matchInfo?.id != oddsChangeEvent.eventId) return@forEach
                     entity.oddBeans.forEachIndexed { oddIndex, oddBean ->
                         if (SocketUpdateUtil.updateMatchOdds(oddBean, oddsChangeEvent)) {
                             //判斷是否有加入注單的賠率項

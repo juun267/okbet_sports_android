@@ -334,7 +334,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         })
 
         receiver.oddsChange.observe(viewLifecycleOwner, { event ->
-            event?.let { oddsChangeEvent ->
+            event?.peekContent()?.let { oddsChangeEvent ->
                 SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
                 oddsChangeEvent.sortOddsMap()
                 val targetList = getNewestRecommendData()

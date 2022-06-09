@@ -36,6 +36,7 @@ import org.cxct.sportlottery.service.BackService.Companion.CONNECT_STATUS
 import org.cxct.sportlottery.service.BackService.Companion.SERVER_MESSAGE_KEY
 import org.cxct.sportlottery.service.BackService.Companion.mUserId
 import org.cxct.sportlottery.util.EncryptUtil
+import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.convertToIndoOdds
@@ -55,7 +56,7 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
     val matchClock: LiveData<MatchClockEvent?>
         get() = _matchClock
 
-    val matchOddsChange: LiveData<MatchOddsChangeEvent?>
+    val matchOddsChange: LiveData<Event<MatchOddsChangeEvent?>>
         get() = _matchOddsChange
 
     val matchStatusChange: LiveData<MatchStatusChangeEvent?>
@@ -64,7 +65,7 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
     val notice: LiveData<NoticeEvent?>
         get() = _notice
 
-    val oddsChange: LiveData<OddsChangeEvent?>
+    val oddsChange: LiveData<Event<OddsChangeEvent?>>
         get() = _oddsChange
 
     val orderSettlement: LiveData<OrderSettlementEvent?>
@@ -115,10 +116,10 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
 
     private val _globalStop = MutableLiveData<GlobalStopEvent?>()
     private val _matchClock = MutableLiveData<MatchClockEvent?>()
-    private val _matchOddsChange = MutableLiveData<MatchOddsChangeEvent?>()
+    private val _matchOddsChange = MutableLiveData<Event<MatchOddsChangeEvent?>>()
     private val _matchStatusChange = MutableLiveData<MatchStatusChangeEvent?>()
     private val _notice = MutableLiveData<NoticeEvent?>()
-    private val _oddsChange = MutableLiveData<OddsChangeEvent?>()
+    private val _oddsChange = MutableLiveData<Event<OddsChangeEvent?>>()
     private val _orderSettlement = MutableLiveData<OrderSettlementEvent?>()
     private val _pingPong = MutableLiveData<PingPongEvent?>()
     private val _producerUp = MutableLiveData<ProducerUpEvent?>()
@@ -249,10 +250,10 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
                             val discount = userInfoRepository?.getDiscount(userId)
                             data?.setupOddDiscount(discount ?: 1.0F)
                             withContext(Dispatchers.Main) {
-                                _oddsChange.value = data
+                                _oddsChange.value = Event(data)
                             }
                         } ?: run {
-                            _oddsChange.value = data
+                            _oddsChange.value = Event(data)
                         }
                     }
                 }
@@ -275,10 +276,10 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
                             val discount = userInfoRepository?.getDiscount(userId)
                             data?.setupOddDiscount(discount ?: 1.0F)
                             withContext(Dispatchers.Main) {
-                                _matchOddsChange.value = data
+                                _matchOddsChange.value = Event(data)
                             }
                         } ?: run {
-                            _matchOddsChange.value = data
+                            _matchOddsChange.value = Event(data)
                         }
                     }
                 }
