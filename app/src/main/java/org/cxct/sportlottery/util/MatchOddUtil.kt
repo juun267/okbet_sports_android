@@ -77,11 +77,13 @@ object MatchOddUtil {
     }
 
     fun Odd.updateDiscount(discount: Float, newDiscount: Float) {
+        if(this.playCode != PlayCate.LCS.value){
         this.odds = this.odds?.updateDiscount(discount, newDiscount)
         this.hkOdds = this.hkOdds?.updateHKDiscount(discount, newDiscount)
         if(this.malayOdds != this.odds){
             this.malayOdds = this.hkOdds?.convertToMYOdds()
             this.indoOdds = this.hkOdds?.convertToIndoOdds()
+        }
         }
     }
 
@@ -91,16 +93,17 @@ object MatchOddUtil {
     }
 
     fun MatchOdd.updateDiscount(discount: Float, newDiscount: Float) {
-        if (playCode == PlayCate.LCS.value) return
-        this.odds = this.odds.updateDiscount(discount, newDiscount)
-        this.hkOdds = this.hkOdds.updateHKDiscount(discount, newDiscount)
-        if(this.malayOdds != this.odds){
-            this.malayOdds = this.hkOdds?.convertToMYOdds()
-            this.indoOdds = this.hkOdds?.convertToIndoOdds()
-        }
+        if (this.playCode != PlayCate.LCS.value){
+            this.odds = this.odds.updateDiscount(discount, newDiscount)
+            this.hkOdds = this.hkOdds.updateHKDiscount(discount, newDiscount)
+            if(this.malayOdds != this.odds){
+                this.malayOdds = this.hkOdds?.convertToMYOdds()
+                this.indoOdds = this.hkOdds?.convertToIndoOdds()
+            }
 
-        if (this.playCode == PlayCate.EPS.value) {
-            this.extInfo = this.extInfo?.toDouble()?.updateDiscount(discount, newDiscount)?.toString()
+            if (this.playCode == PlayCate.EPS.value) {
+                this.extInfo = this.extInfo?.toDouble()?.updateDiscount(discount, newDiscount)?.toString()
+            }
         }
     }
 
