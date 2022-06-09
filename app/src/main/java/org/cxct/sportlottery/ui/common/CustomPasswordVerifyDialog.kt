@@ -56,7 +56,7 @@ class CustomPasswordVerifyDialog : BaseDialog<SelfLimitViewModel>(SelfLimitViewM
                 tv_message.text = getString(R.string.self_limit_input_password_for_confirm)
             }
             PassVerifyEnum.BET -> {
-                tv_title.text = getString(R.string.self_limit_confirm)
+                tv_title.text = getString(R.string.self_limit_fix_confirm)
                 tv_message.text = getString(R.string.self_limit_input_password_for_modification)
             }
         }
