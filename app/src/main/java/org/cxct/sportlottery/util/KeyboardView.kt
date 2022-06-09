@@ -17,17 +17,11 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
 import java.lang.reflect.Method
 
-class KeyboardView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : FrameLayout(
-    context, attrs, defStyleAttr
+class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : FrameLayout(
+        context, attrs, defStyleAttr
 ) {
 
-    private val view: View by lazy {
-        LayoutInflater.from(context).inflate(R.layout.item_number_keyboard_layout, null, false)
-    }
+    private val view: View by lazy { LayoutInflater.from(context).inflate(R.layout.item_number_keyboard_layout, null, false) }
 
     /**键盘点击事件*/
     private var numCLick: ((number: String) -> Unit)? = null
@@ -42,28 +36,28 @@ class KeyboardView @JvmOverloads constructor(
     private fun initView() {
         sConfigData?.presetBetAmount?.let {
             it.forEachIndexed { index, i ->
-                if (index == 0) {
+                if(index == 0){
                     tvPlus1.text = "+ ${it[index]}"
                     tvPlus1.visibility = View.VISIBLE
                     tvPlus1.setOnClickListener { v ->
                         plus(it[index].toLong())
                     }
                 }
-                if (index == 1) {
+                if(index == 1){
                     tvPlus2.text = "+ ${it[index]}"
                     tvPlus2.visibility = View.VISIBLE
                     tvPlus2.setOnClickListener { v ->
                         plus(it[index].toLong())
                     }
                 }
-                if (index == 2) {
+                if(index == 2){
                     tvPlus3.text = "+ ${it[index]}"
                     tvPlus3.visibility = View.VISIBLE
                     tvPlus3.setOnClickListener { v ->
                         plus(it[index].toLong())
                     }
                 }
-                if (index == 3) {
+                if(index == 3){
                     tvPlus4.text = "+ ${it[index]}"
                     tvPlus4.visibility = View.VISIBLE
                     tvPlus4.setOnClickListener { v ->
@@ -108,9 +102,6 @@ class KeyboardView @JvmOverloads constructor(
         tvDot.setOnClickListener {
             insertDot()
         }
-        tvClear.setOnClickListener {
-            mEditText.text.clear()
-        }
         tvMax.setOnClickListener {
             if (mIsLogin) {
                 plusAll(maxBetMoney)
@@ -134,20 +125,12 @@ class KeyboardView @JvmOverloads constructor(
     private lateinit var mEditText: EditText
     private var maxBetMoney: String = "0"
     private var isShow = false
-
     //是否登入
     private var mIsLogin = false
-
     //提示未登入
     private var snackBarNotify: Snackbar? = null
 
-    fun showKeyboard(
-        editText: EditText,
-        position: Int?,
-        maxBetMoney: Double,
-        minBetMoney: Long,
-        isLogin: Boolean
-    ) {
+    fun showKeyboard(editText: EditText, position: Int?, maxBetMoney: Double, minBetMoney: Long, isLogin: Boolean) {
         this.mEditText = editText
         this.maxBetMoney = TextUtil.formatInputMoney(maxBetMoney)
         //InputType.TYPE_NULL 禁止彈出系統鍵盤
@@ -199,20 +182,24 @@ class KeyboardView @JvmOverloads constructor(
         this.maxBetMoney = TextUtil.formatInputMoney(maxBetMoney)
     }
 
-    private fun disableKeyboard() {
-        var cls: Class<EditText> = EditText::class.java
-        var method: Method
-        try {
-            method = cls.getMethod("setShowSoftInputOnFocus", Boolean::class.java)
-            method.setAccessible(true);
-            method.invoke(mEditText, false)
-        } catch (e: Exception) {//TODO: handle exception
-        }
-        try {
-            method = cls.getMethod("setSoftInputShownOnFocus", Boolean::class.java)
-            method.setAccessible(true)
-            method.invoke(mEditText, false)
-        } catch (e: Exception) {//TODO: handle exception
+    private fun disableKeyboard(){
+        if (android.os.Build.VERSION.SDK_INT <= 10) {
+            mEditText.setInputType(InputType.TYPE_NULL);
+        } else {
+            var cls:Class<EditText> = EditText::class.java
+            var method:Method
+            try {
+                method = cls.getMethod("setShowSoftInputOnFocus", Boolean::class.java)
+                method.setAccessible(true);
+                method.invoke(mEditText, false)
+            } catch (e: Exception) {//TODO: handle exception
+            }
+            try {
+                method = cls.getMethod("setSoftInputShownOnFocus",Boolean::class.java)
+                method.setAccessible(true)
+                method.invoke(mEditText, false)
+            } catch (e: Exception) {//TODO: handle exception
+            }
         }
     }
 
@@ -224,20 +211,17 @@ class KeyboardView @JvmOverloads constructor(
         mEditText.setText(tran.toLong().toString())
         mEditText.setSelection(mEditText.text.length)
     }
-
     private fun plusAll(all: String) {
         mEditText.setText(all)
         mEditText.setSelection(mEditText.text.length)
 
     }
-
     private fun insert(count: Long) {
         val editable = mEditText.text
         val start = mEditText.selectionStart
         editable.insert(start, count.toString())
 
     }
-
     private fun insertDot() {
         val editable = mEditText.text
         val start = mEditText.selectionStart
