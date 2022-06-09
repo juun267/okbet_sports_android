@@ -10,6 +10,7 @@ import android.text.method.DigitsKeyListener
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
@@ -24,7 +25,11 @@ import kotlinx.android.synthetic.main.edittext_login.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
-class LoginEditText @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
+class LoginEditText @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) : LinearLayout(context, attrs, defStyle) {
 
     private var mVerificationCodeBtnOnClickListener: OnClickListener? = null
     private var mOnFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
@@ -66,7 +71,10 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.CustomView, 0, 0)
         try {
             view.tv_title.text = typedArray.getText(R.styleable.CustomView_cvTitle)
-            view.tv_title.setTypeface(null, typedArray.getInt(R.styleable.CustomView_cvTitleTextStyle, 1))
+            view.tv_title.setTypeface(
+                null,
+                typedArray.getInt(R.styleable.CustomView_cvTitleTextStyle, 1)
+            )
             view.et_input.setText(typedArray.getText(R.styleable.CustomView_cvText))
             view.et_input.hint = typedArray.getText(R.styleable.CustomView_cvHint)
             if (!editable) {
@@ -85,7 +93,11 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
                     view.tv_title.minEms = it
                 }
             }
-            view.block_verification_code.visibility = if (typedArray.getBoolean(R.styleable.CustomView_cvEnableVerificationCode, false)) View.VISIBLE else View.GONE
+            view.block_verification_code.visibility = if (typedArray.getBoolean(
+                    R.styleable.CustomView_cvEnableVerificationCode,
+                    false
+                )
+            ) View.VISIBLE else View.GONE
 
             inputType = typedArray.getInt(R.styleable.CustomView_cvInputType, 0x00000001)
             when (inputType) {
@@ -102,22 +114,27 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             }
 
 
-            view.et_input.isEnabled = typedArray.getBoolean(R.styleable.CustomView_cvEnable, true).apply {
-                if (this)
-                    clearIsShow = false
-            }
+            view.et_input.isEnabled =
+                typedArray.getBoolean(R.styleable.CustomView_cvEnable, true).apply {
+                    if (this)
+                        clearIsShow = false
+                }
 
-            view.tv_start.visibility = typedArray.getInt(R.styleable.CustomView_necessarySymbol, 0x00000008) //預設隱藏 需要再打開
+            view.tv_start.visibility =
+                typedArray.getInt(R.styleable.CustomView_necessarySymbol, 0x00000008) //預設隱藏 需要再打開
             view.btn_withdraw_all.visibility = View.GONE //預設關閉 需要再打開
             view.btn_clear.visibility = View.GONE
-            view.btn_eye.visibility = if (inputType == 0x00000081) View.VISIBLE else View.GONE
+            view.btn_eye.visibility =
+                if (inputType == 0x00000081 || inputType == 0x00000012) View.VISIBLE else View.GONE
 
             //控制物件與下方的間距, default = 10dp
-            val itemMarginBottom: Int = typedArray.getDimensionPixelOffset(R.styleable.CustomView_cvMarginBottom, 10.dp)
+            val itemMarginBottom: Int =
+                typedArray.getDimensionPixelOffset(R.styleable.CustomView_cvMarginBottom, 10.dp)
             setMarginBottom(itemMarginBottom)
 
             //分割線顏色
-            val dividerColor: Int = typedArray.getResourceId(R.styleable.CustomView_cvDividerColor, 0)
+            val dividerColor: Int =
+                typedArray.getResourceId(R.styleable.CustomView_cvDividerColor, 0)
             if (dividerColor != 0) {
                 view.v_divider.setBackgroundResource(dividerColor)
             }
