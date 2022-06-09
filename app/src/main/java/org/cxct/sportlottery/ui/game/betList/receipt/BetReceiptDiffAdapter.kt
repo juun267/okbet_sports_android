@@ -230,6 +230,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                     if (status != 0)
                         tv_bet_status.setBetReceiptStatus(status)
 
+                    //"status": 7 顯示賠率已改變
                     if (status == 7)
                         interfaceStatusChangeListener?.onChange()
 
@@ -314,6 +315,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                     if (status != 0)
                         tv_bet_status.setBetReceiptStatus(status)
 
+                    //"status": 7 顯示賠率已改變
                     if (status == 7)
                         interfaceStatusChangeListener?.onChange()
 
