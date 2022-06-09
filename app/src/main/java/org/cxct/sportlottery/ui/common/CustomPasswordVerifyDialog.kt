@@ -56,7 +56,7 @@ class CustomPasswordVerifyDialog : BaseDialog<SelfLimitViewModel>(SelfLimitViewM
                 tv_message.text = getString(R.string.self_limit_input_password_for_confirm)
             }
             PassVerifyEnum.BET -> {
-                tv_title.text = getString(R.string.self_limit_fix_confirm)
+                tv_title.text = getString(R.string.self_limit_confirm)
                 tv_message.text = getString(R.string.self_limit_input_password_for_modification)
             }
         }
@@ -88,7 +88,7 @@ class CustomPasswordVerifyDialog : BaseDialog<SelfLimitViewModel>(SelfLimitViewM
         viewModel.passwordVerifyResult.observe(viewLifecycleOwner) { event ->
             event?.getContentIfNotHandled()?.let {
                 if (!it.success) {
-                    showErrorPromptDialog(getString(R.string.self_limit_confirm), it.msg) {}
+                    showErrorPromptDialog(getString(R.string.self_limit_fix_confirm), it.msg) {}
                 } else {
                     dismiss()
                 }
