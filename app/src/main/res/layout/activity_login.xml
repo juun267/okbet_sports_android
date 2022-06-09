@@ -274,7 +274,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:padding="4dp"
-                    android:text="@string/btn_service"
+                    android:text="@string/btn_service_maintain"
                     android:textColor="@color/colorOrange"
                     android:textSize="@dimen/textSize12sp" />
 
