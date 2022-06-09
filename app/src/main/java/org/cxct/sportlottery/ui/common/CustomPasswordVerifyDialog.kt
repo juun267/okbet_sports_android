@@ -126,7 +126,7 @@ class CustomPasswordVerifyDialog : BaseDialog<SelfLimitViewModel>(SelfLimitViewM
 
     private fun checkPassword(password: String): Boolean {
         if (password.isBlank()) {
-            tfb_password.setError(getString(R.string.error_input_empty_new), true)
+            tfb_password.setError(getString(R.string.error_input_empty_new), false)
             return false
         }
         return true

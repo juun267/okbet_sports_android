@@ -1018,6 +1018,7 @@ public class TextFieldBoxes extends FrameLayout {
      */
     public void removeError() {
         this.onError = false;
+        this.mainLayout.setBackgroundResource(R.drawable.bg_bounds_edittext_h);
         if (this.hasFocus) setHighlightColor(this.primaryColor);
         else setHighlightColor(this.secondaryColor);
         this.helperLabel.setTextColor(this.helperTextColor);
