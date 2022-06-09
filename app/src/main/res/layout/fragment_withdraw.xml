@@ -301,7 +301,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:textColor="@color/color_BBBBBB_333333"
+                android:textColor="@color/color_E44438_e44438"
                 android:text="0.000"
                 android:textSize="@dimen/textSize12sp" />
 
