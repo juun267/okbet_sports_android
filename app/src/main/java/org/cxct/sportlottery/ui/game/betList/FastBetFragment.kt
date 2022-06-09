@@ -12,10 +12,7 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
-import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.EditText
@@ -214,6 +211,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
         view.background = ColorDrawable(Color.TRANSPARENT)
         //initData()
         initView()
@@ -901,16 +899,14 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             if(matchOdd.status == BetStatus.ACTIVATED.code && oldOdds != TextUtil.formatForOdd(getOdds(matchOdd, oddsType))){
                 oldOdds = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
             }
-            //反波膽顯示 %
-            var tvOdd = "@" + TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
-            if(matchOdd.playCode == PlayCate.LCS.value)
-                tvOdd = TextUtil.formatForOddPercentage(getOdds(matchOdd, oddsType)-1)
-            binding.tvOdds.text =if (matchOdd.status == BetStatus.ACTIVATED.code) tvOdd else "–"
-
-            if(matchOdd.extInfo != null){
-                binding.tvContent.text = matchOdd.extInfo+spread
-            }else{
-                binding.tvContent.text = spread
+            binding.tvOdds.text =if (matchOdd.status == BetStatus.ACTIVATED.code) "@"+TextUtil.formatForOdd(getOdds(matchOdd, oddsType)) else "–"
+            //特別處理playCode為SCO時, 此處不顯示
+            if (matchOdd.playCode != PlayCate.SCO.value) {
+                if (matchOdd.extInfo != null) {
+                    binding.tvContent.text = matchOdd.extInfo + spread
+                } else {
+                    binding.tvContent.text = spread
+                }
             }
         }
     }

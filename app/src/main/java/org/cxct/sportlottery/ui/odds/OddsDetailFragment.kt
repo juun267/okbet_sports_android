@@ -220,6 +220,8 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             it.getContentIfNotHandled()?.let { list ->
                 if (list.isNotEmpty()) {
                     oddsDetailListAdapter?.oddsDetailDataList = list
+                    v_loading.visibility = View.GONE
+                    cl_content.visibility = View.VISIBLE
                 } else {
                     navGameInPlay()
                 }
