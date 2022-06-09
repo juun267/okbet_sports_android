@@ -88,7 +88,15 @@ class CustomPasswordVerifyDialog : BaseDialog<SelfLimitViewModel>(SelfLimitViewM
         viewModel.passwordVerifyResult.observe(viewLifecycleOwner) { event ->
             event?.getContentIfNotHandled()?.let {
                 if (!it.success) {
-                    showErrorPromptDialog(getString(R.string.self_limit_fix_confirm), it.msg) {}
+                    val title: Int = when (arguments?.getSerializable(PASSWORD_VERIFY) as PassVerifyEnum) {
+                        PassVerifyEnum.FROZE -> {
+                            R.string.self_limit_confirm
+                        }
+                        PassVerifyEnum.BET -> {
+                            R.string.self_limit_fix_confirm
+                        }
+                    }
+                    showErrorPromptDialog(getString(title), it.msg) {}
                 } else {
                     dismiss()
                 }
