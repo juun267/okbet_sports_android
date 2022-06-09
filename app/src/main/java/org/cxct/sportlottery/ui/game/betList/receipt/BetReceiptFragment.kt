@@ -165,7 +165,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 interfaceStatusChangeListener = object :
                     BetReceiptDiffAdapter.InterfaceStatusChangeListener{
                     override fun onChange() {
-                        setReceiptStatus7()
+                        showOddChange()
                     }
                 }
             }
@@ -204,7 +204,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         btn_complete.setTextColor(ContextCompat.getColor(btn_complete.context,R.color.white))
     }
 
-    private fun setReceiptStatus7() {
+    private fun showOddChange() {
         btn_complete.text = getString(R.string.bet_fail_btn)
         btn_complete.setTextColor(
             ContextCompat.getColor(
