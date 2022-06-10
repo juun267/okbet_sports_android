@@ -177,6 +177,10 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         }
     }
 
+    fun updateLeagueByExpand(position: Int) {
+        notifyItemChanged(position, PayLoadEnum.EXPAND)
+    }
+
     // 限制全列表更新頻率
     fun limitRefresh() {
         if (isLock) {
@@ -211,6 +215,9 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
                             }
                             PayLoadEnum.PAYLOAD_PLAYCATE -> {
                                 (holder as ItemViewHolder).updateByPlayCate()
+                            }
+                            PayLoadEnum.EXPAND -> {
+                                (holder as ItemViewHolder).updateLeagueExpand(data[position], matchType)
                             }
                         }
                     }
@@ -291,7 +298,7 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
             )
             itemView.iv_country.setImageDrawable(countryIcon)
             updateLeagueOddList(item, oddsType)
-            updateLeagueExpand(item, matchType)
+            updateTimer(matchType, item.gameType)
         }
 
         fun updateByBetInfo() {
@@ -318,12 +325,15 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
             }
         }
 
-        private fun updateLeagueExpand(item: LeagueOdd, matchType: MatchType) {
-            //itemView.league_expand.setExpanded(item.unfold == FoldState.UNFOLD.code, false)
-            //itemView.league_odd_list.visibility = if(item.unfold == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
+        fun updateLeagueExpand(item: LeagueOdd, matchType: MatchType) {
+            expandCheckList[data[adapterPosition].league.id].apply {
+                if (this != null) {
+                    data[adapterPosition].unfold = if (this == true) FoldState.UNFOLD.code else FoldState.FOLD.code
+                }
+            }
+            itemView.league_odd_list.visibility = if (data[adapterPosition].unfold == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
             updateTimer(matchType, item.gameType)
         }
-        // endregion
 
         private fun setupLeagueOddList(
             item: LeagueOdd,
@@ -378,7 +388,8 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
                 } // TODO IndexOutOfBoundsException: Index: 10, Size: 5
                 updateTimer(matchType, item.gameType)
 
-                notifyItemChanged(adapterPosition)
+//                notifyItemChanged(adapterPosition)
+                updateLeagueByExpand(bindingAdapterPosition)
 
                 leagueListener?.onClickLeague(item)
             }

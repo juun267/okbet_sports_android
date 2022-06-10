@@ -22,8 +22,6 @@ import org.cxct.sportlottery.util.TextUtil
  */
 class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
-    private val betStatusCancelledCode = 7
-
     private var betResultData: Receipt? = null
 
     private var betParlayList: List<ParlayOdd>? = null
@@ -176,8 +174,8 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     private fun setupReceiptStatusTips() {
         //全部都失敗才會顯示投注失敗
-        val hasBetSuccess = betResultData?.singleBets?.find { it.status != betStatusCancelledCode } != null
-        val hasParlaySuccess = betResultData?.parlayBets?.find { it.status != betStatusCancelledCode } != null
+        val hasBetSuccess = betResultData?.singleBets?.find { it.status != BetStatus.CANCELED.value } != null
+        val hasParlaySuccess = betResultData?.parlayBets?.find { it.status != BetStatus.CANCELED.value } != null
 //        tv_already_bet_complete.apply {
 //            when (hasBetSuccess || hasParlaySuccess) {
 //                true -> {
