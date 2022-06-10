@@ -30,6 +30,7 @@ import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
 import org.cxct.sportlottery.network.service.user_level_config_change.UserLevelConfigListEvent
 import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
+import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.service.BackService.Companion.CHANNEL_KEY
 import org.cxct.sportlottery.service.BackService.Companion.CONNECT_STATUS
@@ -47,7 +48,10 @@ import org.json.JSONObject
 import org.json.JSONTokener
 import timber.log.Timber
 
-open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? = null) :
+open class ServiceBroadcastReceiver(
+    val userInfoRepository: UserInfoRepository? = null,
+    val betInfoRepository: BetInfoRepository
+) :
     BroadcastReceiver() {
 
     val globalStop: LiveData<GlobalStopEvent?>
@@ -251,9 +255,15 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
                             data?.setupOddDiscount(discount ?: 1.0F)
                             withContext(Dispatchers.Main) {
                                 _oddsChange.value = Event(data)
+                                data?.let { socketEvent ->
+                                    betInfoRepository.updateMatchOdd(socketEvent)
+                                }
                             }
                         } ?: run {
                             _oddsChange.value = Event(data)
+                            data?.let { socketEvent ->
+                                betInfoRepository.updateMatchOdd(socketEvent)
+                            }
                         }
                     }
                 }
@@ -277,9 +287,15 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
                             data?.setupOddDiscount(discount ?: 1.0F)
                             withContext(Dispatchers.Main) {
                                 _matchOddsChange.value = Event(data)
+                                data?.let { socketEvent ->
+                                    betInfoRepository.updateMatchOdd(socketEvent)
+                                }
                             }
                         } ?: run {
                             _matchOddsChange.value = Event(data)
+                            data?.let { socketEvent ->
+                                betInfoRepository.updateMatchOdd(socketEvent)
+                            }
                         }
                     }
                 }

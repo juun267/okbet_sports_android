@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.BaseSecurityCodeResult
@@ -296,7 +297,7 @@ class MainViewModel(
     }
 
     fun getDeafaultOddTypeStatusSheetData(context: Context): StatusSheetData {
-        return when (loginRepository.sOddsType) {
+        return when (MultiLanguagesApplication.mInstance.sOddsType) {
             OddsType.EU.code -> StatusSheetData(
                 OddsType.EU.code,
                 context.resources?.getString(R.string.odd_type_eu)

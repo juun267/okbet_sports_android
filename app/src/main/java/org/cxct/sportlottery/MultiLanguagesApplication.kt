@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.MutableLiveData
 import androidx.preference.PreferenceManager
 import cn.jpush.android.api.JPushInterface
 import com.github.jokar.multilanguages.library.MultiLanguage
@@ -58,6 +59,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import org.cxct.sportlottery.ui.dialog.AgeVerifyDialog
 import org.cxct.sportlottery.ui.game.quick.TestViewModel
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.news.NewsViewModel
 import org.cxct.sportlottery.ui.permission.GooglePermissionViewModel
 
@@ -66,11 +68,25 @@ import org.cxct.sportlottery.ui.permission.GooglePermissionViewModel
  */
 class MultiLanguagesApplication : Application() {
     //private var userInfoData : UserInfo?= null
+    private val sharedPref: SharedPreferences by lazy {
+        getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
+    }
     private var _userInfo = MutableStateFlow<UserInfo?>(null)
     val userInfo = _userInfo.asStateFlow()
     private var isNewsShowed = false
     private var isGameDetailAnimationNeedShow = false
     private var isAgeVerifyNeedShow = true
+
+    val mOddsType = MutableLiveData<OddsType>()
+
+    var sOddsType
+        get() = sharedPref.getString(KEY_ODDS_TYPE, OddsType.HK.code)
+        set(value) {
+            with(sharedPref.edit()) {
+                putString(KEY_ODDS_TYPE, value)
+                commit()
+            }
+        }
 
 
     private val viewModelModule = module {
@@ -127,7 +143,7 @@ class MultiLanguagesApplication : Application() {
 
 
     private val serviceModule = module {
-        factory { ServiceBroadcastReceiver(get()) }
+        factory { ServiceBroadcastReceiver(get(), get()) }
     }
 
     override fun attachBaseContext(base: Context) {
@@ -147,6 +163,7 @@ class MultiLanguagesApplication : Application() {
         super.onCreate()
         appContext = applicationContext
         instance = this
+        mInstance = this
         AppManager.init(this)
         myPref = PreferenceManager.getDefaultSharedPreferences(applicationContext)
 
@@ -252,6 +269,7 @@ class MultiLanguagesApplication : Application() {
         const val UUID_DEVICE_CODE = "uuidDeviceCode"
         const val UUID = "uuid"
         private var instance: MultiLanguagesApplication? = null
+        lateinit var mInstance: MultiLanguagesApplication
 
         fun saveSearchHistory(searchHistory: MutableList<String>?) {
             this.searchHistory = searchHistory

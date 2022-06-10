@@ -34,9 +34,13 @@ class ChangeAppearanceDialog : BaseDialog<MainViewModel>(MainViewModel::class) {
             if(MultiLanguagesApplication.isNightMode){
                 rb_night_mode.isChecked = true
                 rb_day_mode.isChecked = false
+                tv_title.text =  "${getString(R.string.appearance)}${"："}${getString(R.string.night_mode)}"
+
             }else{
                 rb_night_mode.isChecked = false
                 rb_day_mode.isChecked = true
+                tv_title.text =  "${getString(R.string.appearance)}${"："}${getString(R.string.day_mode)}"
+
             }
 
             img_back?.setOnClickListener {
@@ -49,6 +53,8 @@ class ChangeAppearanceDialog : BaseDialog<MainViewModel>(MainViewModel::class) {
                 }
                 parentFragmentManager.popBackStack()
             }
+
+
 
             rb_day_mode?.setOnClickListener {
                 MultiLanguagesApplication.saveNightMode(false)
