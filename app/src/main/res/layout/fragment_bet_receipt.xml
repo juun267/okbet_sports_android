@@ -69,18 +69,18 @@
                 android:layout_marginRight="@dimen/margin_8"
                 android:src="@drawable/ic_bet_list_money"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/tv_balance"
+                app:layout_constraintRight_toLeftOf="@id/tv_currency"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_balance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin_4"
+                android:layout_marginEnd="@dimen/margin_14"
                 android:textColor="@color/color_BBBBBB_333333"
                 android:textSize="@dimen/textSize14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/tv_currency"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="9,875,241.000" />
 
@@ -88,12 +88,12 @@
                 android:id="@+id/tv_currency"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin_14"
+                android:layout_marginEnd="@dimen/margin_4"
                 android:text="RMB"
                 android:textColor="@color/color_BBBBBB_333333"
                 android:textSize="@dimen/textSize14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tv_balance"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
