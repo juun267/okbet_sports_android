@@ -47,8 +47,6 @@ class LoginRepository(private val androidContext: Context) {
         androidContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
 
-    val mOddsType = MutableLiveData<OddsType>()
-
     val isLogin: LiveData<Boolean>
         get() = _isLogin
 
@@ -127,15 +125,6 @@ class LoginRepository(private val androidContext: Context) {
         set(value) {
             with(sharedPref.edit()) {
                 putBoolean(KEY_REMEMBER_PWD, value)
-                commit()
-            }
-        }
-
-    var sOddsType
-        get() = sharedPref.getString(KEY_ODDS_TYPE, OddsType.HK.code)
-        set(value) {
-            with(sharedPref.edit()) {
-                putString(KEY_ODDS_TYPE, value)
                 commit()
             }
         }

@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
+import org.cxct.sportlottery.enum.SpreadState
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
@@ -16,14 +17,13 @@ import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuota
 import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuotaComData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
+import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.GameConfigManager
-import org.cxct.sportlottery.util.MatchOddUtil
-import org.cxct.sportlottery.util.QuickListManager
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.parlaylimit.ParlayBetLimit
 import org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil
 import kotlin.math.abs
@@ -699,4 +699,137 @@ class BetInfoRepository(val androidContext: Context) {
         //更新快捷投注項選中list
         QuickListManager.setQuickSelectedList(betList.map { bet -> bet.matchOdd.oddsId }.toMutableList())
     }
+
+    fun updateMatchOdd(changeEvent: Any) {
+        val newList: MutableList<Odd> = mutableListOf()
+        when (changeEvent) {
+            is OddsChangeEvent -> {
+                changeEvent.odds.forEach { map ->
+                    val value = map.value
+                    value?.forEach { odd ->
+                        odd?.let {
+                            val newOdd = Odd(
+                                extInfoMap = null,
+                                id = odd.id,
+                                name = null,
+                                odds = odd.odds,
+                                hkOdds = odd.hkOdds,
+                                malayOdds = odd.malayOdds,
+                                indoOdds = odd.indoOdds,
+                                producerId = odd.producerId,
+                                spread = odd.spread,
+                                status = odd.status,
+                            )
+                            newList.add(newOdd)
+                        }
+                    }
+                }
+            }
+
+            is MatchOddsChangeEvent -> {
+                for ((_, value) in changeEvent.odds ?: mapOf()) {
+                    value.odds?.forEach { odd ->
+                        odd?.let { o ->
+                            newList.add(o)
+                        }
+                    }
+                }
+            }
+        }
+        betInfoList.value?.peekContent()?.forEach {
+            updateItem(it.matchOdd, newList)
+        }
+        notifyBetInfoChanged()
+
+    }
+
+    private fun updateItem(
+        oldItem: MatchOdd,
+        newList: List<Odd>
+    ) {
+        for (newItem in newList) {
+            try {
+                newItem.let {
+                    if (it.id == oldItem.oddsId) {
+                        //若賠率關閉則賠率不做高亮變化
+                        newItem.status.let { status -> oldItem.status = status }
+
+                        //賠率為啟用狀態時才去判斷是否有賠率變化
+                        var currentOddsType = MultiLanguagesApplication.mInstance.mOddsType.value ?: OddsType.HK
+                        if (it.odds == it.malayOdds) currentOddsType = OddsType.EU
+                        if (oldItem.status == BetStatus.ACTIVATED.code) {
+                            oldItem.oddState = getOddState(
+                                getOdds(
+                                    oldItem,
+                                    currentOddsType
+                                ), newItem
+                            )
+
+                            if (oldItem.oddState != OddState.SAME.state)
+                                oldItem.oddsHasChanged = true
+                        }
+
+                        oldItem.spreadState = getSpreadState(oldItem.spread, it.spread ?: "")
+
+                        if (oldItem.status == BetStatus.ACTIVATED.code) {
+                            newItem.odds.let { odds -> oldItem.odds = odds ?: 0.0 }
+                            newItem.hkOdds.let { hkOdds -> oldItem.hkOdds = hkOdds ?: 0.0 }
+                            newItem.indoOdds.let { indoOdds -> oldItem.indoOdds = indoOdds ?: 0.0 }
+                            newItem.malayOdds.let { malayOdds -> oldItem.malayOdds = malayOdds ?: 0.0 }
+                            newItem.spread.let { spread -> oldItem.spread = spread ?: "" }
+                        }
+
+                        //從socket獲取後 賠率有變動並且投注狀態開啟時 需隱藏錯誤訊息
+                        if (oldItem.oddState != OddState.SAME.state &&
+                            oldItem.status == BetStatus.ACTIVATED.code
+                        ) {
+                            oldItem.betAddError = null
+                        }
+
+                    }
+                }
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun getOddState(
+        oldItemOdds: Double,
+        newOdd: Odd
+    ): Int {
+        //馬來盤、印尼盤為null時自行計算
+        var newMalayOdds = 0.0
+        var newIndoOdds = 0.0
+
+        newOdd.hkOdds?.let {
+            newMalayOdds =
+                if (newOdd.hkOdds ?: 0.0 > 1) ArithUtil.oddIdfFormat(-1 / newOdd.hkOdds!!)
+                    .toDouble() else newOdd.hkOdds ?: 0.0
+            newIndoOdds =
+                if (newOdd.hkOdds ?: 0.0 < 1) ArithUtil.oddIdfFormat(-1 / newOdd.hkOdds!!)
+                    .toDouble() else newOdd.hkOdds ?: 0.0
+        }
+
+        val odds = when (MultiLanguagesApplication.mInstance.mOddsType.value) {
+            OddsType.EU -> newOdd.odds
+            OddsType.HK -> newOdd.hkOdds
+            OddsType.MYS -> newOdd.malayOdds ?: newMalayOdds
+            OddsType.IDN -> newOdd.indoOdds ?: newIndoOdds
+            else -> null
+        }
+        val newOdds = odds ?: 0.0
+        return when {
+            newOdds == oldItemOdds -> OddState.SAME.state
+            newOdds > oldItemOdds -> OddState.LARGER.state
+            newOdds < oldItemOdds -> OddState.SMALLER.state
+            else -> OddState.SAME.state
+        }
+    }
+
+    private fun getSpreadState(oldSpread: String, newSpread: String): Int =
+        when {
+            newSpread != oldSpread -> SpreadState.DIFFERENT.state
+            else -> SpreadState.SAME.state
+        }
 }
