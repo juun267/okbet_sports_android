@@ -21,6 +21,7 @@ import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
 import org.cxct.sportlottery.network.service.order_settlement.Status
 import org.cxct.sportlottery.ui.base.BaseSocketBottomSheetFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import java.util.*
@@ -49,6 +50,13 @@ class BetInfoCarReceiptDialog(val receipt: Receipt?) :
 
     private fun initView(view: View) {
         view.apply {
+            if (receipt?.singleBets.isNullOrEmpty()) {
+                //無資料時的預設內容
+                view.tv_bet_amount.text = TextUtil.formatMoney(0.0)
+                view.tv_winnable_amount.text = TextUtil.formatMoney(0.0)
+                view.tv_order_number.text = "-"
+                return
+            }
             receipt?.singleBets?.firstOrNull()?.apply {
                 matchOdds?.firstOrNull()?.apply {
                     view.tvLeague.text = leagueName
@@ -111,7 +119,12 @@ class BetInfoCarReceiptDialog(val receipt: Receipt?) :
     }
 
     private fun initOnclick() {
-        btn_done.text = resources.getString(R.string.complete)
+        val hasBetSuccess =
+            receipt?.singleBets?.find { it.status != BetReceiptFragment.BetStatus.CANCELED.value } != null
+        btn_done.text = when (hasBetSuccess) {
+            true -> resources.getString(R.string.complete)
+            false -> resources.getString(R.string.bet_fail_btn)
+        }
         btn_done.setOnClickListener {
             this@BetInfoCarReceiptDialog.dismiss()
         }

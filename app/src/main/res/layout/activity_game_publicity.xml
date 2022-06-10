@@ -35,6 +35,7 @@
                 layout="@layout/view_toolbar_main"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/tool_bar_height"
+                android:visibility="gone"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
