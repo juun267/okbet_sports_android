@@ -929,12 +929,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             data = rows
                         }
                     }
-                    game_match_category_pager.isVisible = rows.isEmpty()
-                    game_tab_odd_v4.isVisible = rows.isEmpty()
-                    game_toolbar_match_type.isVisible =  rows.isEmpty()
-                    game_toolbar_sport_type.isVisible = rows.isEmpty()
-                    game_toolbar_champion.isVisible = rows.isEmpty()
-                    game_toolbar_calendar.isVisible = rows.isEmpty()
+                    game_match_category_pager.isVisible = rows.isNotEmpty()
+                    game_tab_odd_v4.isVisible = rows.isNotEmpty()
+                    game_toolbar_match_type.isVisible =  rows.isNotEmpty()
+                    game_toolbar_sport_type.isVisible = rows.isNotEmpty()
+                    game_toolbar_champion.isVisible = rows.isNotEmpty()
+                    game_toolbar_calendar.isVisible = rows.isNotEmpty()
                 }
             }
             hideLoading()
