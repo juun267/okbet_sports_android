@@ -42,8 +42,8 @@ class KeyboardView @JvmOverloads constructor(
     @SuppressLint("SetTextI18n")
     private fun initView() {
 //        Timber.d("presetBetAmount: ${sConfigData?.presetBetAmount}")
-        //20220609 預設下注金額, 改為由大到小(三個按鈕顯示)
-        sConfigData?.presetBetAmount?.reversed()?.let {
+        //20220610 預設下注金額, 改為三個按鈕顯示 (順序依照後台設置)
+        sConfigData?.presetBetAmount?.let {
 //            Timber.d("presetBetAmount reversed: $it")
             it.forEachIndexed { index, i ->
                 if (index == 0) {
