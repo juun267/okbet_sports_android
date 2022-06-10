@@ -1035,7 +1035,7 @@
     <!--自我禁制-->
     <string name="self_limit">Tự loại trừ</string>
     <string name="self_limit_impotent">Chú ý</string>
-    <string name="self_limit_confirm">Xác nhận</string>
+    <string name="self_limit_confirm">Xác nhận đơn đăng ký</string>
     <string name="self_limit_fix_confirm">Xác nhận sửa đổi</string>
     <string name="self_limit_confirm_content">Bạn có chắc chắn muốn áp dụng cược giới hạn không?</string>
     <string name="self_limit_fix_confirm_content">Bạn có chắc chắn muốn sửa đổi mức cược giới hạn không?</string>
