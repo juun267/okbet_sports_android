@@ -411,7 +411,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 tab?.text.toString() == getString(R.string.game_tab_league_odd) &&
                         (args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY)
                         && matchCategoryPagerAdapter.itemCount > 0
-                        && game_tabs.selectedTabPosition == 0 && countryAdapter.data.isNotEmpty()
+                        && game_tabs.selectedTabPosition == 0
         }
 
         override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -536,8 +536,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             MatchType.TODAY, MatchType.EARLY, MatchType.PARLAY, MatchType.OTHER -> View.VISIBLE
             else -> View.GONE
         }
-
-        game_tab_odd_v4.isVisible = (args.matchType == MatchType.TODAY || args.matchType == MatchType.EARLY) && countryAdapter.data.isNotEmpty()
 
         val epsItem = (game_tab_odd_v4.game_tabs.getChildAt(0) as ViewGroup).getChildAt(2)
         if (game_tab_odd_v4.visibility == View.VISIBLE && args.matchType == MatchType.PARLAY) {
@@ -929,12 +927,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             data = rows
                         }
                     }
-                    game_match_category_pager.isVisible = rows.isEmpty()
-                    game_tab_odd_v4.isVisible = rows.isEmpty()
-                    game_toolbar_match_type.isVisible =  rows.isEmpty()
-                    game_toolbar_sport_type.isVisible = rows.isEmpty()
-                    game_toolbar_champion.isVisible = rows.isEmpty()
-                    game_toolbar_calendar.isVisible = rows.isEmpty()
                 }
             }
             hideLoading()
@@ -2270,7 +2262,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private fun setMatchCategoryPagerVisibility(itemCount: Int) {
         game_match_category_pager.visibility =
             if ((args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) &&
-                game_tabs.selectedTabPosition == 0 && countryAdapter.data.isNotEmpty()
+                game_tabs.selectedTabPosition == 0
             ) {
                 View.VISIBLE
             } else {
