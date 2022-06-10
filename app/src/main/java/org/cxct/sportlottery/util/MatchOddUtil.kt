@@ -91,6 +91,7 @@ object MatchOddUtil {
     }
 
     fun MatchOdd.updateDiscount(discount: Float, newDiscount: Float) {
+        if (playCode == PlayCate.LCS.value) return
         this.odds = this.odds.updateDiscount(discount, newDiscount)
         this.hkOdds = this.hkOdds.updateHKDiscount(discount, newDiscount)
         if(this.malayOdds != this.odds){

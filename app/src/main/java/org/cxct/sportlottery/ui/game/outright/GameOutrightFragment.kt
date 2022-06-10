@@ -207,7 +207,7 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
     private fun initSocketObserver() {
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
-            it?.let { oddsChangeEvent ->
+            it?.getContentIfNotHandled()?.let { oddsChangeEvent ->
                 oddsChangeEvent.updateOddsSelectedState()
 
                 val matchOdds = outrightLeagueOddAdapter.data

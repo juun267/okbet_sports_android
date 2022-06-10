@@ -1000,7 +1000,7 @@
     <!--自我禁制-->
     <string name="self_limit">Self-exclusion</string>
     <string name="self_limit_impotent">Attention</string>
-    <string name="self_limit_confirm">Confirm</string>
+    <string name="self_limit_confirm">Confirm the application</string>
     <string name="self_limit_fix_confirm">Confirm the modification</string>
     <string name="self_limit_confirm_content">Are you sure you want to apply the self-exclusion？</string>
     <string name="self_limit_fix_confirm_content">Are you sure you want to modify the limit bet?</string>
