@@ -21,6 +21,7 @@ import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
 import org.cxct.sportlottery.network.service.order_settlement.Status
 import org.cxct.sportlottery.ui.base.BaseSocketBottomSheetFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import java.util.*
@@ -111,7 +112,12 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
     }
 
     private fun initOnclick() {
-        btn_done.text = resources.getString(R.string.complete)
+        val hasBetSuccess =
+            result.receipt?.singleBets?.find { it.status != BetReceiptFragment.BetStatus.CANCELED.value } != null
+        btn_done.text = when (hasBetSuccess) {
+            true -> resources.getString(R.string.complete)
+            false -> resources.getString(R.string.bet_fail_btn)
+        }
         btn_done.setOnClickListener {
             this@BetInfoCarReceiptDialog.dismiss()
         }
