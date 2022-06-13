@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
+import androidx.lifecycle.distinctUntilChanged
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
