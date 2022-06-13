@@ -739,11 +739,14 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
                 //依照注單數量動態調整高度
                 if (list.size == 1) {
+                    //單一注單
                     binding.llRoot.layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
                     binding.betTypeTabLayout.visibility = View.GONE
+                    binding.clTotalInfo.visibility = View.GONE
                     betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
                     isMultiBet = false
                 } else if (!isAutoCloseWhenNoData) {
+                    //多筆注單 or 空注單
                     binding.llRoot.layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT
                     binding.betTypeTabLayout.visibility = View.VISIBLE
                     isMultiBet = true
