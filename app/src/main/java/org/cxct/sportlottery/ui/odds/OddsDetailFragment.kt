@@ -297,8 +297,6 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     private fun initSocketObserver() {
         receiver.matchOddsChange.observe(this.viewLifecycleOwner) {
             it?.getContentIfNotHandled()?.let { matchOddsChangeEvent ->
-                matchOddsChangeEvent.updateOddsSelectedState()
-
                 oddsDetailListAdapter?.oddsDetailDataList?.forEachIndexed { index, oddsDetailListData ->
                     if (SocketUpdateUtil.updateMatchOdds(
                             oddsDetailListData,
@@ -350,20 +348,6 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         }
     }
 
-    private fun MatchOddsChangeEvent.updateOddsSelectedState(): MatchOddsChangeEvent {
-        this.odds?.let { oddTypeSocketMap ->
-            oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
-                oddTypeSocketMapEntry.value.odds?.onEach { odd ->
-                    odd?.isSelected =
-                        viewModel.betInfoList.value?.peekContent()?.any { betInfoListData ->
-                            betInfoListData.matchOdd.oddsId == odd?.id
-                        }
-                }
-            }
-        }
-
-        return this
-    }
 
     private fun getData() {
         matchId?.let { matchId ->

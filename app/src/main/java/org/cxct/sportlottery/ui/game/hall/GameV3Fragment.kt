@@ -1382,10 +1382,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.getContentIfNotHandled()?.let { oddsChangeEvent ->
-                SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
-                oddsChangeEvent.updateOddsSelectedState()
-                oddsChangeEvent.filterMenuPlayCate()
-                oddsChangeEvent.sortOddsMap()
                 when (game_list.adapter) {
                     is LeagueAdapter -> {
                         leagueAdapter.data.forEach { leagueOdd ->

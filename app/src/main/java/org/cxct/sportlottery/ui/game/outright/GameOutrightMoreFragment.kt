@@ -168,10 +168,7 @@ class GameOutrightMoreFragment : BaseBottomNavigationFragment<GameViewModel>(Gam
     private fun initSocketObserver() {
         receiver.oddsChange.observe(this.viewLifecycleOwner, {
             it?.getContentIfNotHandled()?.let { oddsChangeEvent ->
-                SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
-                oddsChangeEvent.updateOddsSelectedState()
-                oddsChangeEvent.odds?.let { oddTypeSocketMap ->
-
+                oddsChangeEvent.odds.let { oddTypeSocketMap ->
                     outrightOddAdapter.data?.first?.filterNotNull()
                         ?.forEachIndexed { index: Int, odd: Odd ->
                             val oddsType = outrightOddAdapter.oddsType

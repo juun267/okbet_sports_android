@@ -973,7 +973,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.getContentIfNotHandled()?.let { oddsChangeEvent ->
                 var needUpdateBetInfo = false
-                SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
                 //滾球盤、即將開賽盤
                 val filterCode = when (mSelectMatchType) {
                     MatchType.IN_PLAY -> "HOME_INPLAY_MOBILE"
