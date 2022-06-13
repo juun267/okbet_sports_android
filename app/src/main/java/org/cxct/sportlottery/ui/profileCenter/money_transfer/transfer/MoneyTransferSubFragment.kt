@@ -43,7 +43,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         moveAnim(isPlatReversed)
         out_account.selectedText = getString(R.string.plat_money)
         in_account.selectedText = gameDataArg.gameData.showName
-        layout_balance.tv_currency_type.text = sConfigData?.systemCurrency
+        layout_balance.tv_currency_type.text = sConfigData?.systemCurrencySign
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.OUT_PLAT, gameDataArg.gameData.showName)
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.IN_PLAT, getString(R.string.plat_money))
         btn_transfer.setTitleLetterSpacing()
