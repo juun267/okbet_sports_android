@@ -310,8 +310,8 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.getContentIfNotHandled()?.let { oddsChangeEvent ->
-                SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
-                oddsChangeEvent.updateOddsSelectedState()
+
+                //該處篩選於viewModel內是不同寫法 暫時不同步於ServiceBroadcastReceiver內
                 oddsChangeEvent.filterMenuPlayCate()
 
                 val playSelected = playCategoryAdapter.data.find { play -> play.isSelected }

@@ -215,10 +215,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                     subscribeChannelHall(matchOdd)
 
-                    this.data.find { it == matchOdd }?.oddsMap?.get(oddsKey)?.forEach { odd ->
-                        odd?.isExpand?.let { isExpand ->
-                            odd.isExpand = !isExpand
-                        }
+                    matchOdd?.oddsExpand?.get(oddsKey)?.let { oddExpand ->
+                        matchOdd.oddsExpand?.put(oddsKey, !oddExpand)
                     }
                     this.notifyItemChanged(this.data.indexOf(matchOdd))
                 }
@@ -411,7 +409,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 tab?.text.toString() == getString(R.string.game_tab_league_odd) &&
                         (args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY)
                         && matchCategoryPagerAdapter.itemCount > 0
-                        && game_tabs.selectedTabPosition == 0 && countryAdapter.data.isNotEmpty()
+                        && game_tabs.selectedTabPosition == 0
         }
 
         override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -536,8 +534,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             MatchType.TODAY, MatchType.EARLY, MatchType.PARLAY, MatchType.OTHER -> View.VISIBLE
             else -> View.GONE
         }
-
-        game_tab_odd_v4.isVisible = (args.matchType == MatchType.TODAY || args.matchType == MatchType.EARLY) && countryAdapter.data.isNotEmpty()
 
         val epsItem = (game_tab_odd_v4.game_tabs.getChildAt(0) as ViewGroup).getChildAt(2)
         if (game_tab_odd_v4.visibility == View.VISIBLE && args.matchType == MatchType.PARLAY) {
@@ -929,12 +925,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             data = rows
                         }
                     }
-                    game_match_category_pager.isVisible = rows.isNotEmpty()
-                    game_tab_odd_v4.isVisible = rows.isNotEmpty()
-                    game_toolbar_match_type.isVisible =  rows.isNotEmpty()
-                    game_toolbar_sport_type.isVisible = rows.isNotEmpty()
-                    game_toolbar_champion.isVisible = rows.isNotEmpty()
-                    game_toolbar_calendar.isVisible = rows.isNotEmpty()
                 }
             }
             hideLoading()
@@ -1068,6 +1058,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             game_toolbar_sport_type.isVisible = !it
             game_play_category.isVisible =
                 (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START || (args.matchType == MatchType.OTHER && childMatchType == MatchType.OTHER)) && !it
+
+            game_toolbar_match_type.isVisible = !it
+            game_match_category_pager.isVisible = !it
+            game_tab_odd_v4.isVisible = (args.matchType == MatchType.AT_START || args.matchType == MatchType.EARLY) && !it
+            game_toolbar_champion.isVisible = (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START) && !it
+            game_toolbar_calendar.isVisible = args.matchType == MatchType.EARLY && !it
             hideLoading()
         }
 
@@ -1390,10 +1386,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.getContentIfNotHandled()?.let { oddsChangeEvent ->
-                SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
-                oddsChangeEvent.updateOddsSelectedState()
-                oddsChangeEvent.filterMenuPlayCate()
-                oddsChangeEvent.sortOddsMap()
                 when (game_list.adapter) {
                     is LeagueAdapter -> {
                         leagueAdapter.data.forEach { leagueOdd ->
@@ -2270,7 +2262,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private fun setMatchCategoryPagerVisibility(itemCount: Int) {
         game_match_category_pager.visibility =
             if ((args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) &&
-                game_tabs.selectedTabPosition == 0 && countryAdapter.data.isNotEmpty()
+                game_tabs.selectedTabPosition == 0
+                && viewModel.isNoEvents.value == false
             ) {
                 View.VISIBLE
             } else {

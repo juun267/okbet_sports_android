@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.game.outright
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +33,7 @@ class OutrightOddAdapter :
                 val list = mutableListOf<Any>()
                 matchOdd.oddsMap?.forEach {
                     if (it.value?.get(0) != null) {
+                        val playCateExpand = matchOdd.oddsExpand?.get(it.key) ?: false
                         list.add(it.key)
 
                         list.addAll(
@@ -41,16 +41,18 @@ class OutrightOddAdapter :
                                 //?.filterIndexed { index, _ -> index < 4 }
                                 ?.mapIndexed { index, odd ->
                                     odd.outrightCateKey = it.key
+                                    odd.playCateExpand = playCateExpand
                                     odd
                                 } ?: listOf()
                         )
 
                         if (it.value?.filterNotNull()?.size ?: 0 > 5) {
-                            list.add(it.key to matchOdd)
+                            //Triple(玩法key, MatchOdd, 該玩法是否需要展開)
+                            list.add(Triple(it.key, matchOdd, playCateExpand))
                         }
                     }
-                    data = list
                 }
+                data = list
             }
         }
 
@@ -108,13 +110,11 @@ class OutrightOddAdapter :
                 holder.bind(matchOdd, item, outrightOddListener, oddsType)
             }
             is MoreViewHolder -> {
-                val item = data[position] as Pair<*, *>
-                val isExpand = data.filterIsInstance<Odd>()
-                    .first { it.outrightCateKey == item.first as String }.isExpand
+                val item = data[position] as Triple<*, *, *>
                 holder.bind(
                     (item.first as String),
                     (item.second as MatchOdd),
-                    isExpand,
+                    (item.third as Boolean),
                     outrightOddListener
                 )
             }
@@ -144,9 +144,15 @@ class OutrightOddAdapter :
                     }
                 }
             }
-            itemView.ll_odd_content.visibility =
-                if (item.isExpand) View.VISIBLE else View.GONE
-            itemView.layoutParams = if (item.isExpand) LinearLayout.LayoutParams(
+
+            /**
+             * item是否需要顯示, (玩法收合, 是否顯示更多)
+             */
+            val show = item.playCateExpand && item.isExpand
+
+            itemView.visibility =
+                if (show) View.VISIBLE else View.GONE
+            itemView.layoutParams = if (show) LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             ) else LinearLayout.LayoutParams(0, 0)
@@ -204,7 +210,14 @@ class OutrightOddAdapter :
         private val tvMore = itemView.findViewById<TextView>(R.id.tvMore)
         private val ivMoreIcon = itemView.findViewById<ImageView>(R.id.ivMoreIcon)
 
-        fun bind(oddsKey: String, matchOdd: MatchOdd, isExpand:Boolean, outrightOddListener: OutrightOddListener?) {
+        fun bind(oddsKey: String, matchOdd: MatchOdd, isExpand: Boolean, outrightOddListener: OutrightOddListener?) {
+            itemView.visibility = if (isExpand) View.VISIBLE else View.GONE
+
+            itemView.layoutParams = if (isExpand) LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                (itemView.context.resources.displayMetrics.density * 64).toInt()
+            ) else LinearLayout.LayoutParams(0, 0)
+
             itemView.setOnClickListener {
                 outrightOddListener?.onClickMore(oddsKey, matchOdd)
             }

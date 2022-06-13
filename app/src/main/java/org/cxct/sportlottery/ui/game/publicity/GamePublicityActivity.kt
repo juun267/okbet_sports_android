@@ -358,7 +358,6 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     }
 
     override fun initBottomNavigation() {
-        viewModel.getTransNum()
         binding.gameBottomNavigation.sportBottomNavigation.clearSelectedStatus()
         binding.gameBottomNavigation.sportBottomNavigation.setNavigationItemClickListener {
             when (it) {

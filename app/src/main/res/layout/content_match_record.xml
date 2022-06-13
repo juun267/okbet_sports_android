@@ -111,8 +111,6 @@
                     android:textAlignment="viewEnd"
                     android:textColor="@color/color_317FFF_0760D4"
                     android:textSize="@dimen/textSize14sp"
-                    android:visibility="gone"
-                    tools:visibility="visible"
                     tools:text="30s" />
 
                 <TextView

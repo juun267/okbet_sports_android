@@ -494,7 +494,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
                 setupBetAmountInput(
                     itemData,
-                    currentOddsType,
+                    if (itemData.matchOdd.isOnlyEUType) OddsType.EU else currentOddsType,
                     onItemClickListener,
                     betListSize,
                     mSelectedPosition,
@@ -824,7 +824,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         tvContent.text = spread
                     }
                 }
-                
+
                 btnRecharge.setOnClickListener {
                     onItemClickListener.onRechargeClick()
                 }
@@ -1895,27 +1895,28 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             var allWinnableAmount = 0.0
             betList.forEach {
                 var win = 0.0
-                when (currentOddsType) {
+                when (val currentOddsTypeChecked =
+                    if (it.matchOdd.isOnlyEUType) OddsType.EU else currentOddsType) {
                     OddsType.MYS -> {
-                        if (getOdds(it.matchOdd, currentOddsType) < 0) {
-                            win = betAmount
+                        win = if (getOdds(it.matchOdd, currentOddsTypeChecked) < 0) {
+                            betAmount
                         } else {
-                            win = betAmount * getOdds(it.matchOdd, currentOddsType)
+                            betAmount * getOdds(it.matchOdd, currentOddsTypeChecked)
                         }
 
                     }
                     OddsType.IDN -> {
-                        if (getOdds(it.matchOdd, currentOddsType) < 0) {
-                            win = betAmount
+                        win = if (getOdds(it.matchOdd, currentOddsTypeChecked) < 0) {
+                            betAmount
                         } else {
-                            win = betAmount * getOdds(it.matchOdd, currentOddsType)
+                            betAmount * getOdds(it.matchOdd, currentOddsTypeChecked)
                         }
                     }
                     OddsType.EU -> {
-                        win = betAmount * (getOdds(it.matchOdd, currentOddsType) - 1)
+                        win = betAmount * (getOdds(it.matchOdd, currentOddsTypeChecked) - 1)
                     }
                     else -> {
-                        win = betAmount * getOdds(it.matchOdd, currentOddsType)
+                        win = betAmount * getOdds(it.matchOdd, currentOddsTypeChecked)
                     }
                 }
                 allWinnableAmount += win

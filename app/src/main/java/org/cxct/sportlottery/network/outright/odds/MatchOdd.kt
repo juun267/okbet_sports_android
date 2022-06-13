@@ -47,4 +47,12 @@ data class MatchOdd(
     @IgnoredOnParcel
     var startTime: String = ""
 
+    @IgnoredOnParcel
+    var oddsExpand: MutableMap<String, Boolean>? = oddsMap?.mapValues {
+        it.key == oddsMap?.keys?.firstOrNull()
+    }?.toMutableMap()
+
+    @IgnoredOnParcel
+    var isExpand: Boolean = true
+
 }
