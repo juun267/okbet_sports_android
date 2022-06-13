@@ -215,10 +215,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                     subscribeChannelHall(matchOdd)
 
-                    this.data.find { it == matchOdd }?.oddsMap?.get(oddsKey)?.forEach { odd ->
-                        odd?.isExpand?.let { isExpand ->
-                            odd.isExpand = !isExpand
-                        }
+                    matchOdd?.oddsExpand?.get(oddsKey)?.let { oddExpand ->
+                        matchOdd.oddsExpand?.put(oddsKey, !oddExpand)
                     }
                     this.notifyItemChanged(this.data.indexOf(matchOdd))
                 }

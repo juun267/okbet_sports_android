@@ -78,7 +78,9 @@ data class Odd(
 
     var outrightCateKey: String? = null
 
-    var isExpand = false
+    var isExpand = false //投注項是否展開
+
+    var playCateExpand = false //玩法是否展開
 
     val isOnlyEUType = odds == hkOdds && odds == malayOdds && odds == indoOdds
 }
