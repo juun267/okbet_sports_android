@@ -40,7 +40,7 @@ class WithdrawCommissionDetailActivity :
             CommissionDetailInfoDialog().show(supportFragmentManager, null)
         }
 
-        tv_currency.text = sConfigData?.systemCurrency
+        tv_currency.text = sConfigData?.systemCurrencySign
     }
 
     private fun setupBackButton() {
