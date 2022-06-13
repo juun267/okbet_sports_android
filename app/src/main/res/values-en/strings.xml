@@ -282,8 +282,8 @@
     <string name="third">Three</string>
     <string name="fourth">Four</string>
     <string name="fifth">Five</string>
-    <string name="day_mode">Day mode</string>
-    <string name="night_mode">Night mode</string>
+    <string name="day_mode">Day Mode</string>
+    <string name="night_mode">Night Mode</string>
     <string name="add_time_first_plat">OT First period</string>
     <string name="add_time_second_plat">OT second period</string>
     <string name="first_session">First term</string>
