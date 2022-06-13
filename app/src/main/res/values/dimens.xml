@@ -2,7 +2,7 @@
 <resources>
     <dimen name="tool_bar_height">48dp</dimen>
     <dimen name="notification_view_height">21dp</dimen>
-    <dimen name="tool_bar_notification_height">69dp</dimen>
+    <dimen name="tool_bar_notification_height">52dp</dimen>
 
     <dimen name="textSize7sp">7dp</dimen>
     <dimen name="textSize8sp">8dp</dimen>
