@@ -562,7 +562,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 ) {
                     currentOddsType = OddsType.EU
                 }
-                getWinnable(it.betAmount, getOddsNew(it.matchOdd, currentOddsType), currentOddsType)
+                if (it.matchOdd.isOnlyEUType) currentOddsType = OddsType.EU
+                getWinnable(it.betAmount, getOdds(it.matchOdd, currentOddsType), currentOddsType)
             }
         } else {
             parlayList.sumByDouble {

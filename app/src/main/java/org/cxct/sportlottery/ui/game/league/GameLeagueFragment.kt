@@ -498,11 +498,6 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.getContentIfNotHandled()?.let { oddsChangeEvent ->
-                SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
-                oddsChangeEvent.updateOddsSelectedState()
-                oddsChangeEvent.filterMenuPlayCate()
-                oddsChangeEvent.sortOddsMap()
-
                 val leagueOdds = leagueAdapter.data
 
                 leagueOdds.updateOddsSort(args.gameType.key, playCategoryAdapter) //篩選玩法
@@ -658,7 +653,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
      * 賠率排序
      */
     private fun OddsChangeEvent.sortOddsMap() {
-        this.odds?.forEach { (_, value) ->
+        this.odds.forEach { (_, value) ->
             if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
                 value?.sortBy {
                     it?.marketSort

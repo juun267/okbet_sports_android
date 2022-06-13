@@ -126,7 +126,7 @@ abstract class BaseFavoriteViewModel(
                         matchOdd.setupOddDiscount()
                         matchOdd.matchInfo?.let { matchInfo ->
                             matchInfo.startDateDisplay =
-                                TimeUtil.timeFormat(matchInfo.startTime, "dd/MM")
+                                TimeUtil.timeFormat(matchInfo.startTime, "MM/dd")
 
                             matchInfo.startTimeDisplay =
                                 TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")

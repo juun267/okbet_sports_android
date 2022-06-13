@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.ui.main.accountHistory.next
 
+import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Paint
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -172,7 +174,7 @@ class AccountHistoryNextAdapter(
 
                 row.parlayType?.let { parlayType ->
                     ParlayType.getParlayStringRes(parlayType)?.let { parlayTypeStringResId ->
-                        tvParlayType.text = MultiLanguagesApplication.appContext.getString(parlayTypeStringResId)
+                        tvParlayType.text = LocalUtils.getString(parlayTypeStringResId)
                     }
                 }
 
@@ -209,7 +211,6 @@ class AccountHistoryNextAdapter(
         }
 
     }
-
 
     class OutrightItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentOutrightBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -517,4 +518,5 @@ sealed class DataItem {
         override val orderNum: String? = null
         override val parlayType = ""
     }
+
 }

@@ -419,18 +419,8 @@ abstract class BaseOddButtonViewModel(
                 if (it) {
                     betInfoRepository.clear()
                 }
-                updateTransNum()
             }
 
-        }
-    }
-
-    //更新交易狀況數量
-    private fun updateTransNum() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                loginRepository.getTransNum()
-            }
         }
     }
 
@@ -461,7 +451,6 @@ abstract class BaseOddButtonViewModel(
                 if (it) {
                     afterBet(betInfoListData.matchType, result)
                 }
-                updateTransNum()
             }
         }
     }

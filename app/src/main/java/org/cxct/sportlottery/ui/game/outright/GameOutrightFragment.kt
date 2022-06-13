@@ -208,8 +208,6 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.getContentIfNotHandled()?.let { oddsChangeEvent ->
-                oddsChangeEvent.updateOddsSelectedState()
-
                 val matchOdds = outrightLeagueOddAdapter.data
 
                 matchOdds.filterNotNull().forEachIndexed { index, matchOdd ->

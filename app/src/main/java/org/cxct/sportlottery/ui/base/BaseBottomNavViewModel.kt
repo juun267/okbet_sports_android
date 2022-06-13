@@ -46,16 +46,6 @@ abstract class BaseBottomNavViewModel(
     private val _showShoppingCart = MutableLiveData<Event<Boolean>>()
     private val _navPublicityPage = MutableLiveData<Event<Boolean>>()
 
-    fun getTransNum() {
-        if (isLogin.value == true) {
-            viewModelScope.launch {
-                doNetwork(androidContext) {
-                    loginRepository.getTransNum()
-                }
-            }
-        }
-    }
-
     fun navMainPage(thirdGameCategory: ThirdGameCategory) {
         _thirdGameCategory.postValue(
             Event(
