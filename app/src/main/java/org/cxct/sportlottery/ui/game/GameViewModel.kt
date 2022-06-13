@@ -1972,20 +1972,11 @@ class GameViewModel(
                 dateRow.updateDateSelectedState(it)
             }
     }
-
-    fun getLocalString(context: Context, resId:Int): String {
-        val locale = LanguageManager.getSetLanguageLocale(androidContext)
-        var conf = context.resources.configuration
-        conf = Configuration(conf)
-        conf.setLocale(locale)
-        val localizedContext = context.createConfigurationContext(conf)
-        return localizedContext.resources.getString(resId)
-    }
     private fun getDateRowEarly(): List<Date> {
         val locale = LanguageManager.getSetLanguageLocale(androidContext)
         val dateRow = mutableListOf(
             Date(
-                getLocalString(androidContext,R.string.date_row_all),
+                LocalUtils.getString(R.string.date_row_all),
                 TimeUtil.getEarlyAllTimeRangeParams()
             ), Date(
                 androidContext.getString(R.string.other),
@@ -2016,7 +2007,7 @@ class GameViewModel(
     private fun getDateRowParlay(): List<Date> {
         val dateRow = mutableListOf(
             Date(
-                getLocalString(androidContext,R.string.date_row_all),
+                LocalUtils.getString(R.string.date_row_all),
                 TimeUtil.getParlayAllTimeRangeParams()
             ), Date(
                 androidContext.getString(R.string.date_row_live),
