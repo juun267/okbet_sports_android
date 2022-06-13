@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
+import androidx.lifecycle.distinctUntilChanged
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -1060,7 +1061,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START || (args.matchType == MatchType.OTHER && childMatchType == MatchType.OTHER)) && !it
 
             game_toolbar_match_type.isVisible = !it
-            game_match_category_pager.isVisible = !it
+            game_match_category_pager.isVisible = (args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) && !it
             game_tab_odd_v4.isVisible = (args.matchType == MatchType.AT_START || args.matchType == MatchType.EARLY) && !it
             game_toolbar_champion.isVisible = (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START) && !it
             game_toolbar_calendar.isVisible = args.matchType == MatchType.EARLY && !it
