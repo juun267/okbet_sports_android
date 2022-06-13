@@ -493,9 +493,11 @@ class BetInfoRepository(val androidContext: Context) {
                 //[Martin]為馬來盤＆印度計算投注上限
                 if (oddsType == OddsType.MYS && !it.value.isOnlyEUType) {
                     if ((matchOddList.getOrNull(0)?.malayOdds ?: 0.0) < 0.0 && oddsList.size <= 1) {
-                        val myMax = (maxBetMoney.div(abs(matchOddList.getOrNull(0)?.malayOdds ?: 0.0))).toInt()
+                        val malayMax = ((playQuota?.max?.toDouble()?.plus(abs(matchOddList.getOrNull(0)?.malayOdds ?: 0.0)))?.toInt())?.minus(1)?: 0
+                        val malayUserMax = (maxBetMoney.div(abs(matchOddList.getOrNull(0)?.malayOdds ?: 0.0))).toInt()
                         listOf(
-                            myMax,
+                            malayMax,
+                            malayUserMax,
                             parlayBetLimit,
                             maxPayout.toInt(),
                             userSelfLimit ?: 0
