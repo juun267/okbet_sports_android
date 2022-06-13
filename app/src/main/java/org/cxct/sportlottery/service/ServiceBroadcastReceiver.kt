@@ -261,11 +261,13 @@ open class ServiceBroadcastReceiver(
                                 it.updateOddsSelectedState()
                                 it.filterMenuPlayCate()
                                 it.sortOddsMap()
-                                betInfoRepository.updateMatchOdd(it)
                             }
 
                             withContext(Dispatchers.Main) {
                                 _oddsChange.value = Event(data)
+                                data?.let { socketEvent ->
+                                    betInfoRepository.updateMatchOdd(socketEvent)
+                                }
                             }
                         } ?: run {
                             _oddsChange.value = Event(data)
