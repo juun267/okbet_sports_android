@@ -173,7 +173,7 @@ class BetInfoRepository(val androidContext: Context) {
                 betInfoListData.matchOdd
             }.toMutableList()
 
-            _matchOddList.value = parlayMatchOddList
+            _matchOddList.postValue(parlayMatchOddList)
 
             if (!hasPointMark) {
                 val newParlayList = updateParlayOddOrder(
