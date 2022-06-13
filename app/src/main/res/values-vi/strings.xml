@@ -706,7 +706,7 @@
     <string name="feedback_tabName_problem">Câu hỏi và gợi ý</string>
     <string name="feedback_tabName_record">Lịch sử phản hồi</string>
     <string name="feedback_description">Nếu bạn có đề xuất tốt cho sảnh trò chơi hoặc tìm thấy lỗi (BUG) có thể gửi cho dịch vụ khách hàng sẽ trả lời trong vòng 48 giờ. Chúng tôi sẽ nhanh chóng chỉnh sửa BUG hoặc tham khảo phản hồi của bạn để liên tục tối ưu hóa các sản phẩm và dịch vụ của chúng tôi. (Nếu có nhiều phản hồi cho cùng một đề xuất hoặc BUG, ​​tiền thưởng sẽ được gửi đến người phản hồi đầu tiên, hãy nhớ phản hồi ngay khi bạn phát hiện ra vấn đề)</string>
-    <string name="feedback_description_money">Nếu ý kiến đóng góp được thông qua hoặc lỗi được xác minh, phần thưởng tối đa là 3000 %s (hoặc đơn vị tiền tệ tương đương khác).</string>
+    <string name="feedback_description_money">Nếu ý kiến đóng góp được thông qua hoặc lỗi được xác minh, phần thưởng tối đa là %s 3000 (hoặc đơn vị tiền tệ tương đương khác).</string>
     <string name="feedback_submit_succeed">phản hồi được gửi thành công</string>
     <string name="all_status">Tất cả các trạng thái</string>
     <string name="feedback_last_reply_time">Lần phản hồi cuối cùng</string>
