@@ -33,7 +33,7 @@ class FeedbackSuggestFragment : BaseFragment<FeedbackViewModel>(FeedbackViewMode
     }
 
     private fun initView() {
-        tv_description.text = String.format(getString(R.string.feedback_description_money), sConfigData?.systemCurrency)
+        tv_description.text = String.format(getString(R.string.feedback_description_money), sConfigData?.systemCurrencySign)
     }
 
     private fun initButton() {

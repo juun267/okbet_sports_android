@@ -72,7 +72,7 @@ class BetButton @JvmOverloads constructor(
 
     private fun init() {
         inflate(context, R.layout.button_bet, this)
-        tv_currency_type.text = sConfigData?.systemCurrency
+        tv_currency_type.text = sConfigData?.systemCurrencySign
         setupQuotaListener()
     }
 
