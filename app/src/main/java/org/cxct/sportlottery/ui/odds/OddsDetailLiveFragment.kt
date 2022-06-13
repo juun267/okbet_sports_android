@@ -116,11 +116,14 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                 if (timeMillis >= 1000) {
                     text = TimeUtil.longToMmSs(timeMillis)
                     startTime = timeMillis / 1000L
+                    isVisible = true
                 } else {
                     text = this.context.getString(R.string.time_null)
+                    isVisible = false
                 }
             } else {
                 text = this.context.getString(R.string.time_null)
+                isVisible = false
             }
         }
         return@Handler false
@@ -611,6 +614,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                 } else {
                     tv_time_bottom.text = getString(R.string.time_null)
                 }
+                tv_time_bottom.isVisible = timeStr.isNotEmpty()
                 tv_time_top.text = TimeUtil.timeFormat(startTime, DM_FORMAT)
             } else {
                 // 不需要一直重置
