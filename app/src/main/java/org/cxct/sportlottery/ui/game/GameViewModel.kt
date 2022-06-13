@@ -201,7 +201,7 @@ class GameViewModel(
         get() = _leagueFilterList
 
     val playList: LiveData<Event<List<Play>>>
-        get() = _playList
+        get() = PlayRepository.playList
 
     val playCate: LiveData<Event<String?>>
         get() = _playCate
@@ -258,7 +258,7 @@ class GameViewModel(
     private val _leagueSelectedList = MutableLiveData<List<League>>()
     private val _leagueSubmitList = MutableLiveData<Event<List<League>>>()
     private val _leagueFilterList = MutableLiveData<List<League>>()
-    private val _playList = MutableLiveData<Event<List<Play>>>()
+    private val _playList = PlayRepository.mPlayList
     private val _playCate = MutableLiveData<Event<String?>>()
     private val _searchResult = MutableLiveData<Event<List<SearchResult>?>>()
     private val _navDetail = MutableLiveData<Event<NavDirections>>()
