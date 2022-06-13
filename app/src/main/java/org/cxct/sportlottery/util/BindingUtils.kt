@@ -85,10 +85,10 @@ fun TextView.setPlayCateName(parlayType: String?) {
     }
 }
 
-@BindingAdapter("dayOfWeek")
-fun TextView.setWeekDay(timeStamp: Long?) {
-    text = TimeUtil.setupDayOfWeek(context, timeStamp)
-}
+//@BindingAdapter("dayOfWeek")
+//fun TextView.setWeekDay(timeStamp: Long?) {
+//    text = TimeUtil.setupDayOfWeek(context, timeStamp)
+//}
 
 @BindingAdapter("dayOfWeek")
 fun TextView.setWeekDay(date: String?) {

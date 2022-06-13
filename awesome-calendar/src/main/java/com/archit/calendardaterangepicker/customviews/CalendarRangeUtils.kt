@@ -48,7 +48,7 @@ fun resetTime(date: Calendar, dateTiming: DateTiming) {
  */
 fun printDate(calendar: Calendar?): String {
     return if (calendar != null) {
-        val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+        val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault())
         return simpleDateFormat.format(calendar.time)
     } else {
         "null"
