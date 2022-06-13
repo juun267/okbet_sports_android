@@ -487,8 +487,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
         receiver.matchOddsChange.observe(this.viewLifecycleOwner) {
             it?.getContentIfNotHandled()?.let { matchOddsChangeEvent ->
-                matchOddsChangeEvent.updateOddsSelectedState()
-
                 oddsDetailListAdapter?.oddsDetailDataList?.let { oddsDetailListDataList ->
                     SocketUpdateUtil.updateMatchOddsMap(
                         oddsDetailListDataList,
@@ -596,21 +594,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                 }
             }
         }
-    }
-
-    private fun MatchOddsChangeEvent.updateOddsSelectedState(): MatchOddsChangeEvent {
-        this.odds?.let { oddTypeSocketMap ->
-            oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
-                oddTypeSocketMapEntry.value.odds?.onEach { odd ->
-                    odd?.isSelected =
-                        viewModel.betInfoList.value?.peekContent()?.any { betInfoListData ->
-                            betInfoListData.matchOdd.oddsId == odd?.id
-                        }
-                }
-            }
-        }
-
-        return this
     }
 
     private fun setupStartTime() {
