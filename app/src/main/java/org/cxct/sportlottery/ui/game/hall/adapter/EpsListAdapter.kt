@@ -70,9 +70,9 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
                 itemView.ll_content.layoutParams = params
             }
             itemView.tv_date.text = when (LanguageManager.getSelectLanguage(itemView.context)) {
-                LanguageManager.Language.VI -> "${TimeUtil.setupDayOfWeekVi(itemView.context, item.date)} ${TimeUtil.timeFormat(item.date, VI_MD_FORMAT)}"
-                LanguageManager.Language.EN -> "${TimeUtil.setupDayOfWeek(itemView.context, item.date)} ${TimeUtil.timeFormat(item.date, DAY_FORMAT)} ${TimeUtil.monthFormat(itemView.context, item.date)}"
-                else -> "${TimeUtil.setupDayOfWeekVi(itemView.context, item.date)} ${TimeUtil.timeFormat(item.date, DAY_FORMAT)} ${TimeUtil.monthFormat(itemView.context, item.date)}"
+                LanguageManager.Language.VI -> " ${TimeUtil.timeFormat(item.date, VI_MD_FORMAT)}"
+                LanguageManager.Language.EN -> " ${TimeUtil.timeFormat(item.date, DAY_FORMAT)} ${TimeUtil.monthFormat(itemView.context, item.date)}"
+                else -> " ${TimeUtil.timeFormat(item.date, DAY_FORMAT)} ${TimeUtil.monthFormat(itemView.context, item.date)}"
             }
         }
     }
