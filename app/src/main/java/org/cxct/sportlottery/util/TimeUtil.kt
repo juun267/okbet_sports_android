@@ -15,18 +15,18 @@ object TimeUtil {
     const val YMD_HMS_FORMAT = "yyyy-MM-dd HH:mm:ss"
     const val YMD_HM_FORMAT = "yyyy-MM-dd HH:mm"
     const val YMD_FORMAT = "yyyy-MM-dd"
-    const val DMY_FORMAT = "dd / MM / yyyy"
+    const val DMY_FORMAT = "yyyy / MM / dd /"
     const val MD_FORMAT = "MM-dd"
     const val DAY_FORMAT = "d"
     const val VI_MD_FORMAT = "dd 'TH.'M"
-    const val DM_FORMAT = "dd / MM"
+    const val DM_FORMAT = "MM / dd"
     const val HM_FORMAT = "HH:mm"
     const val MD_HMS_FORMAT = "MM-dd HH:mm:ss"
     const val MD_HM_FORMAT = "MM/dd HH:mm"
-    const val DM_HM_FORMAT = "dd/MM HH:mm"
+    const val DM_HM_FORMAT = "MM/dd HH:mm"
     private const val YMDE_FORMAT = "yyyy-MMMM-d-EEE"
     private const val YMDE_HMS_FORMAT = "yyyy-MMMM-d-EEE HH:mm:ss"
-    private const val DMY_HM_FORMAT = "MM-dd-yyyy HH:mm"
+    private const val DMY_HM_FORMAT = "yyyy-MM-dd HH:mm"
 
     fun stampToDateHMS(time: Long): String {
         return timeFormat(time, YMD_HMS_FORMAT)
@@ -196,23 +196,23 @@ object TimeUtil {
     /**
      * return : 星期幾
      */
-    fun setupDayOfWeek(context: Context, todayMillis: Long?): String {
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = todayMillis ?: 0
-
-        val id = when (calendar.get(Calendar.DAY_OF_WEEK)) {
-            Calendar.SUNDAY -> R.string.sunday
-            Calendar.MONDAY -> R.string.monday
-            Calendar.TUESDAY -> R.string.tuesday
-            Calendar.WEDNESDAY -> R.string.wednesday
-            Calendar.THURSDAY -> R.string.thursday
-            Calendar.FRIDAY -> R.string.friday
-            Calendar.SATURDAY -> R.string.saturday
-            else -> R.string.sunday
-        }
-
-        return context.getString(id)
-    }
+//    fun setupDayOfWeek(context: Context, todayMillis: Long?): String {
+//        val calendar = Calendar.getInstance()
+//        calendar.timeInMillis = todayMillis ?: 0
+//
+//        val id = when (calendar.get(Calendar.DAY_OF_WEEK)) {
+//            Calendar.SUNDAY -> R.string.sunday
+//            Calendar.MONDAY -> R.string.monday
+//            Calendar.TUESDAY -> R.string.tuesday
+//            Calendar.WEDNESDAY -> R.string.wednesday
+//            Calendar.THURSDAY -> R.string.thursday
+//            Calendar.FRIDAY -> R.string.friday
+//            Calendar.SATURDAY -> R.string.saturday
+//            else -> R.string.sunday
+//        }
+//
+//        return context.getString(id)
+//    }
 
     fun setupDayOfWeekVi(context: Context, todayMillis: Long?): String {
         val calendar = Calendar.getInstance()
@@ -258,28 +258,28 @@ object TimeUtil {
     /**
      * return : 週幾
      */
-    fun setupDayOfWeekAndToday(todayMillis: Long?): Int {
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = todayMillis ?: 0
-
-        val todayTimeMillis = Calendar.getInstance().timeInMillis
-
-        return if (timeFormat(todayMillis, YMD_FORMAT) == timeFormat(todayTimeMillis, YMD_FORMAT)) {
-            R.string.home_tab_today
-        } else {
-            when (calendar.get(Calendar.DAY_OF_WEEK)) {
-                Calendar.SUNDAY -> R.string.sunday2
-                Calendar.MONDAY -> R.string.monday2
-                Calendar.TUESDAY -> R.string.tuesday2
-                Calendar.WEDNESDAY -> R.string.wednesday2
-                Calendar.THURSDAY -> R.string.thursday2
-                Calendar.FRIDAY -> R.string.friday2
-                Calendar.SATURDAY -> R.string.saturday2
-                else -> R.string.sunday2
-            }
-        }
-
-    }
+//    fun setupDayOfWeekAndToday(todayMillis: Long?): Int {
+//        val calendar = Calendar.getInstance()
+//        calendar.timeInMillis = todayMillis ?: 0
+//
+//        val todayTimeMillis = Calendar.getInstance().timeInMillis
+//
+//        return if (timeFormat(todayMillis, YMD_FORMAT) == timeFormat(todayTimeMillis, YMD_FORMAT)) {
+//            R.string.home_tab_today
+//        } else {
+//            when (calendar.get(Calendar.DAY_OF_WEEK)) {
+//                Calendar.SUNDAY -> R.string.sunday2
+//                Calendar.MONDAY -> R.string.monday2
+//                Calendar.TUESDAY -> R.string.tuesday2
+//                Calendar.WEDNESDAY -> R.string.wednesday2
+//                Calendar.THURSDAY -> R.string.thursday2
+//                Calendar.FRIDAY -> R.string.friday2
+//                Calendar.SATURDAY -> R.string.saturday2
+//                else -> R.string.sunday2
+//            }
+//        }
+//
+//    }
 
     /**
      * return : 星期幾
@@ -365,8 +365,8 @@ object TimeUtil {
 
     fun getTodayStartTimeCalendar(): Calendar {
         val calendar = Calendar.getInstance()
-        calendar.set(Calendar.HOUR_OF_DAY, 0)
         calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
         calendar.set(Calendar.SECOND, 0)
         calendar.set(Calendar.MILLISECOND, 0)
         return calendar
@@ -374,8 +374,8 @@ object TimeUtil {
 
     fun getTodayEndTimeCalendar(): Calendar {
         val calendar = Calendar.getInstance()
-        calendar.set(Calendar.HOUR_OF_DAY, 23)
         calendar.set(Calendar.MINUTE, 59)
+        calendar.set(Calendar.HOUR_OF_DAY, 23)
         calendar.set(Calendar.SECOND, 59)
         calendar.set(Calendar.MILLISECOND, 999)
         return calendar

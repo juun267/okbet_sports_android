@@ -68,7 +68,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                     leagueName = it.matchInfo?.leagueName,
                     status = it.matchInfo?.status ?: -1,
                     source = it.matchInfo?.source).apply {
-                    startDateDisplay = TimeUtil.timeFormat(this.startTime, "dd/MM")
+                    startDateDisplay = TimeUtil.timeFormat(this.startTime, "MM/dd")
                     startTimeDisplay = TimeUtil.timeFormat(this.startTime, "HH:mm")
                     isAtStart = TimeUtil.isTimeAtStart(this.startTime)
                 }
@@ -271,7 +271,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                     tv_game_type.text = if (TimeUtil.isTimeToday(data.matchInfo?.startTime)) {
                         resources.getString(R.string.home_tab_today)
                     } else {
-                        "${resources.getString(TimeUtil.setupDayOfWeekAndToday(data.matchInfo?.startTime))} ${data.matchInfo?.startDateDisplay}"
+                       data.matchInfo?.startDateDisplay
                     }
                 }
             } catch (e: Exception) {
