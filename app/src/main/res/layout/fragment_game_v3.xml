@@ -77,7 +77,9 @@
                     layout="@layout/view_game_tab_odd_v4"
                     android:layout_width="match_parent"
                     android:layout_height="32dp"
-                    app:layout_constraintTop_toBottomOf="@id/game_toolbar_v4" />
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@id/game_toolbar_v4"
+                    tools:visibility="visible"/>
 
                 <include
                     android:id="@+id/game_match_category_pager"
@@ -87,9 +89,11 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="20dp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/game_tab_odd_v4" />
+                    app:layout_constraintTop_toBottomOf="@id/game_tab_odd_v4"
+                    tools:visibility="visible"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/game_play_category"
@@ -100,11 +104,13 @@
                     android:paddingTop="10dp"
                     android:paddingEnd="16dp"
                     android:paddingBottom="10dp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/game_match_category_pager"
                     tools:itemCount="1"
                     tools:listitem="@layout/itemview_play_category_v4"
+                    tools:visibility="visible"
                     android:overScrollMode="never"/>
 
                 <androidx.recyclerview.widget.RecyclerView
