@@ -279,6 +279,7 @@
                     android:id="@+id/cl_parlay_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/color_191919_FCFCFC"
                     android:orientation="vertical"
                     android:visibility="gone"
                     tools:visibility="gone">
