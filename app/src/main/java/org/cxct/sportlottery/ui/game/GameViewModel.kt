@@ -1597,7 +1597,7 @@ class GameViewModel(
                     matchOdd.sortOddsMap()
                     matchOdd.matchInfo?.let { matchInfo ->
                         matchInfo.startDateDisplay =
-                            TimeUtil.timeFormat(matchInfo.startTime, "dd/MM")
+                            TimeUtil.timeFormat(matchInfo.startTime, "MM/dd")
 
                         matchOdd.matchInfo.startTimeDisplay =
                             TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
@@ -2901,7 +2901,7 @@ class GameViewModel(
      * 設置賽事時間參數
      */
     private fun Recommend.setupMatchTime() {
-        matchInfo?.startDateDisplay = TimeUtil.timeFormat(matchInfo?.startTime, "dd/MM")
+        matchInfo?.startDateDisplay = TimeUtil.timeFormat(matchInfo?.startTime, "MM/dd")
 
         matchInfo?.startTimeDisplay = TimeUtil.timeFormat(matchInfo?.startTime, "HH:mm")
 
