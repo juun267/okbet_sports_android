@@ -153,7 +153,7 @@ class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
                 tv_game_type.text = if (TimeUtil.isTimeToday(data.matchInfo?.startTime)) {
                     resources.getString(R.string.home_tab_today)
                 } else {
-                    "${resources.getString(TimeUtil.setupDayOfWeekAndToday(data.matchInfo?.startTime))} ${data.matchInfo?.startDateDisplay}"
+                   data.matchInfo?.startDateDisplay
                 }
             }
         } catch (e: Exception) {

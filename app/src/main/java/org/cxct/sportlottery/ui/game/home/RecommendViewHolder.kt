@@ -180,7 +180,7 @@ class RecommendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
     }
     private fun org.cxct.sportlottery.network.matchCategory.result.MatchInfo.getStartTime(context: Context): String {
-        val dateFormat = "dd / MM"
+        val dateFormat = "MM / dd"
         val todayDate = TimeUtil.timeFormat(System.currentTimeMillis(), dateFormat)
         return this.startTime?.let { startTimeNotNull ->
             TimeUtil.timeFormat(startTimeNotNull, "$dateFormat\nHH:mm")
