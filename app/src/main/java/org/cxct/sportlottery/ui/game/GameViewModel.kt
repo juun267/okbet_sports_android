@@ -1473,7 +1473,8 @@ class GameViewModel(
 
                     matchOdd?.setupOddDiscount()
                     matchOdd?.setupPlayCate()
-                    matchOdd?.sortOdds()
+                    //20220613 冠軍的排序字串切割方式不同, 跟進iOS此處無重新排序
+//                    matchOdd?.sortOdds()
 
                     matchOdd?.startDate = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, DMY_FORMAT)
                     matchOdd?.startTime = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, HM_FORMAT)
@@ -1512,7 +1513,8 @@ class GameViewModel(
 
                     matchOdd?.setupOddDiscount()
                     matchOdd?.setupPlayCate()
-                    matchOdd?.sortOdds()
+                    //20220613 冠軍的排序字串切割方式不同, 跟進iOS此處無重新排序
+//                    matchOdd?.sortOdds()
 
                     matchOdd?.startDate = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, DMY_FORMAT)
                     matchOdd?.startTime = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, HM_FORMAT)
