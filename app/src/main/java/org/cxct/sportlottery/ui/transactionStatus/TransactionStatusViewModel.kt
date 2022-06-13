@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
 import org.cxct.sportlottery.network.bet.list.BetListResult
@@ -109,7 +110,7 @@ class TransactionStatusViewModel(
                     _betListData.value =
                         BetListData(
                             rowList,
-                            loginRepository.mOddsType.value ?: OddsType.HK,
+                            MultiLanguagesApplication.mInstance.mOddsType.value ?: OddsType.HK,
                             result.other?.totalAmount ?: 0.0,
                             page,
                             (rowList.size >= (result.total ?: 0))

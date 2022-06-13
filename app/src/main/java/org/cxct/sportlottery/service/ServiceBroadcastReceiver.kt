@@ -12,6 +12,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.UserDiscountChangeEvent
@@ -30,6 +31,8 @@ import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
 import org.cxct.sportlottery.network.service.user_level_config_change.UserLevelConfigListEvent
 import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
+import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.repository.PlayRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.service.BackService.Companion.CHANNEL_KEY
 import org.cxct.sportlottery.service.BackService.Companion.CONNECT_STATUS
@@ -41,13 +44,17 @@ import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.convertToIndoOdds
 import org.cxct.sportlottery.util.MatchOddUtil.convertToMYOdds
+import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONTokener
 import timber.log.Timber
 
-open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? = null) :
+open class ServiceBroadcastReceiver(
+    val userInfoRepository: UserInfoRepository? = null,
+    val betInfoRepository: BetInfoRepository
+) :
     BroadcastReceiver() {
 
     val globalStop: LiveData<GlobalStopEvent?>
@@ -156,18 +163,18 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
         val decryptMessage = EncryptUtil.uncompress(messageStr)
         try {
             decryptMessage?.let {
-                if(it.isNotEmpty()){
+                if (it.isNotEmpty()) {
                     val json = JSONTokener(it).nextValue()
                     if (json is JSONArray) {
                         var jsonArray = JSONArray(it)
                         for (i in 0 until jsonArray.length()) {
                             var jObj = jsonArray.optJSONObject(i)
                             val jObjStr = jObj.toString()
-                            handleEvent(jObj,jObjStr,channelStr)
+                            handleEvent(jObj, jObjStr, channelStr)
                         }
-                    }else if(json is JSONObject){
+                    } else if (json is JSONObject) {
                         val jObjStr = json.toString()
-                        handleEvent(json,jObjStr,channelStr)
+                        handleEvent(json, jObjStr, channelStr)
                     }
                 }
             }
@@ -248,12 +255,23 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
                     withContext(Dispatchers.IO) {
                         mUserId?.let { userId ->
                             val discount = userInfoRepository?.getDiscount(userId)
-                            data?.setupOddDiscount(discount ?: 1.0F)
+                            data?.let {
+                                it.setupOddDiscount(discount ?: 1.0F)
+                                SocketUpdateUtil.updateMatchOdds(it)
+                                it.updateOddsSelectedState()
+                                it.filterMenuPlayCate()
+                                it.sortOddsMap()
+                                betInfoRepository.updateMatchOdd(it)
+                            }
+
                             withContext(Dispatchers.Main) {
                                 _oddsChange.value = Event(data)
                             }
                         } ?: run {
                             _oddsChange.value = Event(data)
+                            data?.let { socketEvent ->
+                                betInfoRepository.updateMatchOdd(socketEvent)
+                            }
                         }
                     }
                 }
@@ -274,12 +292,22 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
                     withContext(Dispatchers.IO) {
                         mUserId?.let { userId ->
                             val discount = userInfoRepository?.getDiscount(userId)
-                            data?.setupOddDiscount(discount ?: 1.0F)
+                            data?.let {
+                                it.setupOddDiscount(discount ?: 1.0F)
+                                it.updateOddsSelectedState()
+                            }
+
                             withContext(Dispatchers.Main) {
                                 _matchOddsChange.value = Event(data)
+                                data?.let { socketEvent ->
+                                    betInfoRepository.updateMatchOdd(socketEvent)
+                                }
                             }
                         } ?: run {
                             _matchOddsChange.value = Event(data)
+                            data?.let { socketEvent ->
+                                betInfoRepository.updateMatchOdd(socketEvent)
+                            }
                         }
                     }
                 }
@@ -347,6 +375,60 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
                 }
             }
         }
+        return this
+    }
+
+    private fun OddsChangeEvent.sortOddsMap() {
+        this.odds.forEach { (_, value) ->
+            if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
+                value?.sortBy {
+                    it?.marketSort
+                }
+            }
+        }
+    }
+
+    private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
+        this.odds.let { oddTypeSocketMap ->
+            oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
+                oddTypeSocketMapEntry.value?.onEach { odd ->
+                    odd?.isSelected =
+                        betInfoRepository.betInfoList.value?.peekContent()?.any { betInfoListData ->
+                            betInfoListData.matchOdd.oddsId == odd?.id
+                        }
+                }
+            }
+        }
+
+        return this
+    }
+
+    /**
+     * 只有有下拉篩選玩法的才需要過濾odds
+     */
+    private fun OddsChangeEvent.filterMenuPlayCate() {
+        val playSelected = PlayRepository.playList.value?.peekContent()?.find { it.isSelected }
+
+        when (playSelected?.selectionType) {
+            SelectionType.SELECTABLE.code -> {
+                val playCateMenuCode = playSelected.playCateList?.find { it.isSelected }?.code
+                this.odds.entries.retainAll { oddMap -> oddMap.key == playCateMenuCode }
+            }
+        }
+    }
+
+    private fun MatchOddsChangeEvent.updateOddsSelectedState(): MatchOddsChangeEvent {
+        this.odds?.let { oddTypeSocketMap ->
+            oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
+                oddTypeSocketMapEntry.value.odds?.onEach { odd ->
+                    odd?.isSelected =
+                        betInfoRepository.betInfoList.value?.peekContent()?.any { betInfoListData ->
+                            betInfoListData.matchOdd.oddsId == odd?.id
+                        }
+                }
+            }
+        }
+
         return this
     }
 }

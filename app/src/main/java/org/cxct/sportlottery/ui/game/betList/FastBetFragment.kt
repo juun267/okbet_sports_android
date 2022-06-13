@@ -674,7 +674,6 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.getContentIfNotHandled()?.let { oddsChangeEvent ->
-                SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
                 viewModel.updateMatchOdd(oddsChangeEvent)
             }
         }

@@ -666,18 +666,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initSocketObserver() {
-        receiver.matchOddsChange.observe(this.viewLifecycleOwner) {
-            it?.getContentIfNotHandled()?.let { matchOddsChangeEvent ->
-                viewModel.updateMatchOdd(matchOddsChangeEvent)
-            }
-        }
-
-        receiver.oddsChange.observe(this.viewLifecycleOwner) {
-            it?.getContentIfNotHandled()?.let { oddsChangeEvent ->
-                SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
-                viewModel.updateMatchOdd(oddsChangeEvent)
-            }
-        }
 
         receiver.matchOddsLock.observe(this.viewLifecycleOwner) {
             it?.let { matchOddsLockEvent ->

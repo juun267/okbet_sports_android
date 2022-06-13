@@ -75,7 +75,7 @@ abstract class BaseOddButtonViewModel(
 
     val hasBetPlatClose get() = betInfoRepository.hasBetPlatClose
 
-    val oddsType: LiveData<OddsType> = loginRepository.mOddsType
+    val oddsType: LiveData<OddsType> = MultiLanguagesApplication.mInstance.mOddsType
 
     val betAddResult: LiveData<Event<BetAddResult?>>
         get() = _betAddResult
@@ -120,13 +120,13 @@ abstract class BaseOddButtonViewModel(
     }
 
     fun saveOddsType(oddsType: OddsType) {
-        loginRepository.sOddsType = oddsType.code
-        loginRepository.mOddsType.postValue(oddsType)
+        MultiLanguagesApplication.mInstance.sOddsType = oddsType.code
+        MultiLanguagesApplication.mInstance.mOddsType.postValue(oddsType)
     }
 
     fun getOddsType() {
-        loginRepository.mOddsType.postValue(
-            when (loginRepository.sOddsType) {
+        MultiLanguagesApplication.mInstance.mOddsType.postValue(
+            when (MultiLanguagesApplication.mInstance.sOddsType) {
                 OddsType.EU.code -> OddsType.EU
                 OddsType.HK.code -> OddsType.HK
                 OddsType.MYS.code -> OddsType.MYS
@@ -151,7 +151,7 @@ abstract class BaseOddButtonViewModel(
         val betItem = betInfoRepository.betInfoList.value?.peekContent()
             ?.find { it.matchOdd.oddsId == odd.id }
 
-        var currentOddsType = loginRepository.mOddsType.value ?: OddsType.HK
+        var currentOddsType = MultiLanguagesApplication.mInstance.mOddsType.value ?: OddsType.HK
         if (odd.odds == odd.malayOdds) {
             currentOddsType = OddsType.EU
         }
@@ -199,7 +199,7 @@ abstract class BaseOddButtonViewModel(
         val betItem = betInfoRepository.betInfoList.value?.peekContent()
             ?.find { it.matchOdd.oddsId == odd.id }
 
-        var currentOddsType = loginRepository.mOddsType.value
+        var currentOddsType = MultiLanguagesApplication.mInstance.mOddsType.value
         if (odd.odds == odd.malayOdds) {
             currentOddsType = OddsType.EU
         }
@@ -415,18 +415,8 @@ abstract class BaseOddButtonViewModel(
                 if (it) {
                     betInfoRepository.clear()
                 }
-                updateTransNum()
             }
 
-        }
-    }
-
-    //更新交易狀況數量
-    private fun updateTransNum() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                loginRepository.getTransNum()
-            }
         }
     }
 
@@ -457,7 +447,6 @@ abstract class BaseOddButtonViewModel(
                 if (it) {
                     afterBet(betInfoListData.matchType, result)
                 }
-                updateTransNum()
             }
         }
     }
@@ -515,7 +504,7 @@ abstract class BaseOddButtonViewModel(
                     .toDouble() else newOdd.hkOdds ?: 0.0
         }
 
-        val odds = when (loginRepository.mOddsType.value) {
+        val odds = when (MultiLanguagesApplication.mInstance.mOddsType.value) {
             OddsType.EU -> newOdd.odds
             OddsType.HK -> newOdd.hkOdds
             OddsType.MYS -> newOdd.malayOdds ?: newMalayOdds
@@ -688,7 +677,7 @@ abstract class BaseOddButtonViewModel(
                         newItem.status.let { status -> oldItem.status = status }
 
                         //賠率為啟用狀態時才去判斷是否有賠率變化
-                        var currentOddsType = loginRepository.mOddsType.value ?: OddsType.HK
+                        var currentOddsType = MultiLanguagesApplication.mInstance.mOddsType.value ?: OddsType.HK
                         if (it.odds == it.malayOdds) currentOddsType = OddsType.EU
                         if (oldItem.status == BetStatus.ACTIVATED.code) {
                             oldItem.oddState = getOddState(
@@ -754,7 +743,7 @@ abstract class BaseOddButtonViewModel(
 
                     val newMatchOdd = newBetInfoListData.matchOdd
 
-                    var currentOddsType = loginRepository.mOddsType.value
+                    var currentOddsType = MultiLanguagesApplication.mInstance.mOddsType.value
                     if (newMatchOdd.odds == newMatchOdd.malayOdds) {
                         currentOddsType = OddsType.EU
                     }
@@ -821,7 +810,7 @@ abstract class BaseOddButtonViewModel(
 
             try {
                 newItem.let {
-                    var currentOddsType = loginRepository.mOddsType.value
+                    var currentOddsType = MultiLanguagesApplication.mInstance.mOddsType.value
                     if (it.odds == it.malayOdds) {
                         currentOddsType = OddsType.EU
                     }

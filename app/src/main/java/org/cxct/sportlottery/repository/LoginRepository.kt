@@ -47,8 +47,6 @@ class LoginRepository(private val androidContext: Context) {
         androidContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
 
-    val mOddsType = MutableLiveData<OddsType>()
-
     val isLogin: LiveData<Boolean>
         get() = _isLogin
 
@@ -131,15 +129,6 @@ class LoginRepository(private val androidContext: Context) {
             }
         }
 
-    var sOddsType
-        get() = sharedPref.getString(KEY_ODDS_TYPE, OddsType.HK.code)
-        set(value) {
-            with(sharedPref.edit()) {
-                putString(KEY_ODDS_TYPE, value)
-                commit()
-            }
-        }
-
     var isCheckToken = false
 
     suspend fun register(registerRequest: RegisterRequest): Response<LoginResult> {
@@ -196,26 +185,6 @@ class LoginRepository(private val androidContext: Context) {
         }
 
         return loginForGuestResponse
-    }
-
-    suspend fun getTransNum(): Response<BetListResult> {
-
-        val betListRequest = BetListRequest(
-            championOnly = 0,
-            BetRecordType.UNSETTLEMENT.code,
-            page = 1,
-            pageSize = 20
-        )
-
-        val response = OneBoSportApi.betService.getBetList(betListRequest)
-
-        if (response.isSuccessful) {
-            response.body()?.total?.let {
-                _transNum.value = it
-            }
-        }
-
-        return response
     }
 
     fun updateTransNum(transNum: Int) {
