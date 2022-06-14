@@ -268,6 +268,22 @@ class ProfileCenterActivity :
         btn_feedback.setOnClickListener {
             startActivity(Intent(this, FeedbackMainActivity::class.java))
         }
+        //联系客服
+        btn_custom_serivce.setOnClickListener {
+            val serviceUrl = sConfigData?.customerServiceUrl
+            val serviceUrl2 = sConfigData?.customerServiceUrl2
+            when {
+                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    JumpUtil.toExternalWeb(this@ProfileCenterActivity, serviceUrl)
+                }
+                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    JumpUtil.toExternalWeb(this@ProfileCenterActivity, serviceUrl2)
+                }
+                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
+                    JumpUtil.toExternalWeb(this@ProfileCenterActivity, serviceUrl)
+                }
+            }
+        }
     }
 
     // TODO 跳轉Promotion 20220108新增 by Hewie
