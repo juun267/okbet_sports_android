@@ -492,7 +492,7 @@
                     android:singleLine="true"
                     android:textColor="@color/color_BBBBBB_333333"
                     android:textSize="@dimen/textSize14sp"
-                    tools:text="15,282.42 RMB" />
+                    tools:text="₱ 15,282.42" />
 
             </LinearLayout>
 
