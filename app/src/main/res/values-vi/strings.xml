@@ -1053,7 +1053,7 @@
     <string name="self_limit_per_bet_limit">Giới hạn</string>
     <string name="self_limit_per_bet_limit_input_highest">Vui lòng nhập số</string>
     <string name="self_limit_per_bet_limit_impotent">· Bạn có thể sửa đổi giới hạn đặt cược của mình bất cứ lúc nào. Sửa đổi sẽ có hiệu lực sau khi gửi yêu cầu.</string>
-    <string name="self_limit_per_bet_limit_user">Cược giới hạn hiện tại: %s</string>
+    <string name="self_limit_per_bet_limit_user">Cược giới hạn hiện tại: %1$s %2$s</string>
     <string name="self_limit_per_bet_limit_user_none">Không có</string>
     <string name="self_limit_per_bet_limit_user_limit"> (Cược giới hạn tối đa:%1$s %2$s-%1$s %3$s)</string>
     <string name="self_limit_error">Định dạng trường không chính xác, vui lòng nhập một số nguyên.</string>
