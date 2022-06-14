@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize14sp"
-            tools:text="PHP" />
+            tools:text="₱" />
 
 
         <TextView
