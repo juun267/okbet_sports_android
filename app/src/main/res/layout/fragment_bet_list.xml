@@ -39,15 +39,13 @@
             <FrameLayout
                 android:id="@+id/fl_title"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_gradient_bet_info_title_background">
+                android:layout_height="wrap_content">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_title"
                     android:layout_width="match_parent"
-                    android:layout_height="47dp"
-                    android:layout_marginTop="1dp"
-                    android:background="@drawable/bg_gradient_bet_info_title_foreground">
+                    android:layout_height="48dp"
+                    android:background="@drawable/bg_gradient_bet_info_title_v2">
 
                     <ImageView
                         android:id="@+id/iv_arrow"
