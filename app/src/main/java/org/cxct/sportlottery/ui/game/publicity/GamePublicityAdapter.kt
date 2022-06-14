@@ -322,9 +322,9 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
 
                 ivNotice.setImageResource(
                     if (hasNotice) {
-                        R.drawable.icon_bell_white_red_dot
+                        R.drawable.icon_bell_with_red_dot
                     } else {
-                        R.drawable.icon_bell_white
+                        R.drawable.icon_bell
                     }
                 )
 
