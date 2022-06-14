@@ -210,8 +210,8 @@
     <string name="daily_bet_range">giá trị cược hiệu lực mỗi ngày</string>
     <string name="title_rebates_rate">Số % hoàn lãi</string>
     <string name="daily_rebates">hoàn lợi nhuận tối đa trong một ngày</string>
-    <string name="hint_recharge_growth">Gửi tiền vào %d %s nhận được %d tăng điểm</string>
-    <string name="hint_bet_growth">Cá cược %d %s dân tệ để nhận %d điểm</string>
+    <string name="hint_recharge_growth">Gửi tiền vào %s %d nhận được %d tăng điểm</string>
+    <string name="hint_bet_growth">Cá cược %s %d dân tệ để nhận %d điểm</string>
     <string name="contact_us">liên hệ chúng tôi</string>
     <string name="game_rule">Luật trò chơi</string>
     <string name="news">Tin tức</string>
