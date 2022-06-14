@@ -36,11 +36,11 @@ class ServiceFloatingButton @JvmOverloads constructor(
 
     fun setView(activity: AppCompatActivity) {
         //2022-01-29 改為 config 控制開關 by Bill
-        if (sConfigData?.customerFloating != "1") {
-            visibility = View.GONE
-        } else {
+        if (sConfigData?.customerFloating == "1"||sConfigData?.customerServiceUrl.isNullOrBlank()||sConfigData?.customerServiceUrl2.isNullOrBlank()) {
             visibility = View.VISIBLE
             setupClickEvent(activity)
+        } else {
+            visibility = View.GONE
         }
     }
 
