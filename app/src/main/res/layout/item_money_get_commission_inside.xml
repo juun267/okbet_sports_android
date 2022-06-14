@@ -37,29 +37,29 @@
         android:id="@+id/tv_deduct_money"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="5dp"
         android:gravity="right|center_vertical"
         android:maxLines="1"
         android:textColor="@color/color_BBBBBB_333333"
         android:textSize="14dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_status"
-        app:layout_constraintEnd_toStartOf="@+id/tv_vnd"
-        app:layout_constraintStart_toEndOf="@+id/tv_status"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_status"
         tools:text="-10.000" />
 
     <TextView
         android:id="@+id/tv_vnd"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:gravity="center"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="5dp"
+        android:gravity="end"
         android:textColor="#9A9A9A"
         android:textSize="14dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_status"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_deduct_money"
+        app:layout_constraintStart_toEndOf="@+id/tv_status"
         app:layout_constraintTop_toTopOf="@+id/tv_status"
-        tools:text="PHP" />
+        tools:text="₱" />
 
     <!--     第二行     -->
 
@@ -92,31 +92,31 @@
     <TextView
         android:id="@+id/tv_required_valid_bets_money"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="5dp"
+        android:layout_height="wrap_content"
         android:gravity="end|center_vertical"
         android:maxLines="1"
         android:textColor="@color/color_BBBBBB_333333"
         android:textSize="14dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_required_valid_bets"
-        app:layout_constraintEnd_toStartOf="@+id/tv_required_valid_bets_vnd"
-        app:layout_constraintStart_toEndOf="@+id/tv_required_valid_bets"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_required_valid_bets"
         app:layout_constraintVertical_bias="0.0"
         tools:text="1000.000" />
 
     <TextView
         android:id="@+id/tv_required_valid_bets_vnd"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:gravity="center"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="5dp"
+        android:gravity="end"
         android:textColor="#9A9A9A"
         android:textSize="14dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_required_valid_bets"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_required_valid_bets_money"
+        app:layout_constraintStart_toEndOf="@+id/tv_required_valid_bets"
         app:layout_constraintTop_toTopOf="@+id/tv_required_valid_bets"
-        tools:text="PHP" />
+        tools:text="₱" />
 
     <!--     第四行     -->
 
@@ -134,30 +134,30 @@
     <TextView
         android:id="@+id/tv_successed_bets_money"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="5dp"
+        android:layout_height="wrap_content"
         android:gravity="end|center_vertical"
         android:maxLines="1"
         android:textColor="@color/color_BBBBBB_333333"
         android:textSize="14dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_successed_bets"
-        app:layout_constraintEnd_toStartOf="@+id/tv_successed_bets_vnd"
-        app:layout_constraintStart_toEndOf="@+id/tv_successed_bets"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_successed_bets"
         tools:text="1000.000" />
 
     <TextView
         android:id="@+id/tv_successed_bets_vnd"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:gravity="center"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="5dp"
+        android:gravity="end"
         android:textColor="#9A9A9A"
         android:textSize="14dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_successed_bets"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_successed_bets_money"
+        app:layout_constraintStart_toEndOf="@+id/tv_successed_bets"
         app:layout_constraintTop_toTopOf="@+id/tv_successed_bets"
-        tools:text="PHP" />
+        tools:text="₱" />
 
     <!--     第五行     -->
 
