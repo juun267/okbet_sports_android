@@ -570,7 +570,7 @@ class WithdrawViewModel(
         val limit = getWithdrawAmountLimit()
         _withdrawAmountHint.value = String.format(
             androidContext.getString(R.string.hint_please_enter_withdraw_amount),
-            sConfigData?.systemCurrency,
+            sConfigData?.systemCurrencySign,
             limit.min.toLong(), limit.max.toLong()
         )
     }
@@ -627,7 +627,7 @@ class WithdrawViewModel(
                 _withdrawCryptoFeeHint.value = ""
                 _withdrawRateHint.value = String.format(
                     androidContext.getString(R.string.withdraw_handling_fee_hint),
-                    ArithUtil.toMoneyFormat(cardConfig?.feeRate?.times(100)),sConfigData?.systemCurrency,
+                    ArithUtil.toMoneyFormat(cardConfig?.feeRate?.times(100)),sConfigData?.systemCurrencySign,
                     ArithUtil.toMoneyFormat((cardConfig?.feeRate)?.times(withdrawAmount ?: 0.0))
                 )
 
@@ -661,7 +661,7 @@ class WithdrawViewModel(
                         } ?: 0.0 else 0.0
                     _withdrawCryptoAmountHint.value = String.format(
                         androidContext.getString(R.string.withdraw_crypto_amount_hint),
-                        sConfigData?.systemCurrency,
+                        sConfigData?.systemCurrencySign,
                         ArithUtil.toMoneyFormat(withdrawNeedAmount)
 
                     )
@@ -670,7 +670,7 @@ class WithdrawViewModel(
 
                     _withdrawCryptoFeeHint.value = String.format(
                         androidContext.getString(R.string.withdraw_crypto_fee_hint),
-                        sConfigData?.systemCurrency,
+                        sConfigData?.systemCurrencySign,
                         ArithUtil.toMoneyFormat(fee)
 
                     )
