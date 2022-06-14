@@ -26,6 +26,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.parlaylimit.ParlayBetLimit
 import org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil
+import timber.log.Timber
 import kotlin.math.abs
 
 
@@ -160,7 +161,13 @@ class BetInfoRepository(val androidContext: Context) {
         }
 
         betList.forEach {
-            if (hasLcsGameType || hasMatchType || gameType != GameType.getGameType(it.matchOdd.gameType) || matchIdList[it.matchOdd.matchId]?.size ?: 0 > 1) {
+            //parlay (是否可以参加过关，0：否，1：是)
+            val cannotParlay = it.outrightMatchInfo?.parlay == 0
+//            Timber.e("parlay: ${it.outrightMatchInfo?.parlay}, cannotParlay: $cannotParlay")
+            if (cannotParlay || hasLcsGameType || hasMatchType ||
+                gameType != GameType.getGameType(it.matchOdd.gameType) ||
+                matchIdList[it.matchOdd.matchId]?.size ?: 0 > 1
+            ) {
                 hasPointMark = true
                 it.pointMarked = true
             } else {
