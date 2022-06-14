@@ -47,15 +47,15 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
                 wd_log_detail_reason.text = it.reason ?: ""
 3
                 it.displayMoney?.let { nonNullDisplayMoney ->
-                    wd_log_detail_amount.text = "$nonNullDisplayMoney ${sConfigData?.systemCurrency}"
+                    wd_log_detail_amount.text = "${sConfigData?.systemCurrencySign} $nonNullDisplayMoney"
                 }
 
                 it.withdrawDeductMoney?.let { nonNullDeductMoney ->
-                    wd_log_detail_commission.text = "$nonNullDeductMoney ${sConfigData?.systemCurrency}"
+                    wd_log_detail_commission.text = "${sConfigData?.systemCurrencySign} $nonNullDeductMoney"
                 }
 
                 (it.fee ?: 0.0).let { fee ->
-                    wd_log_detail_handle_fee.text = "${TextUtil.format(abs(fee))} ${sConfigData?.systemCurrency}"
+                    wd_log_detail_handle_fee.text = "${sConfigData?.systemCurrencySign} ${TextUtil.format(abs(fee))}"
                     wd_log_detail_handle_fee_subtitle.text =
                         if ((fee) > 0.0) getString(R.string.log_detail_rebate_money)
                         else getString(R.string.log_detail_handle_fee)
