@@ -438,7 +438,7 @@ class GameViewModel(
         _oddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
         getSportMenu(matchType, onlyRefreshSportMenu = false)
-        getAllPlayCategory(matchType)
+        getAllPlayCategory(matchType,refreshTabBar = true)
         filterLeague(listOf())
     }
 
@@ -664,7 +664,7 @@ class GameViewModel(
         _isLoading.postValue(false) // TODO IllegalStateException: Cannot invoke setValue on a background thread
     }
 
-    fun getAllPlayCategory(matchType: MatchType) {
+    fun getAllPlayCategory(matchType: MatchType, refreshTabBar:Boolean = false) {
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.sportService.getQuery(
@@ -678,7 +678,8 @@ class GameViewModel(
                 if (result?.success == true) {
                     sportQueryData = result.sportQueryData
                     checkLastSportType(matchType, sportQueryData)
-                    _isNoEvents.value = result.sportQueryData?.num == 0
+                    if (refreshTabBar)
+                        _isNoEvents.value = result.sportQueryData?.num == 0
                 } else {
                     _showErrorDialogMsg.value = result?.msg
                 }
@@ -1473,7 +1474,8 @@ class GameViewModel(
 
                     matchOdd?.setupOddDiscount()
                     matchOdd?.setupPlayCate()
-                    matchOdd?.sortOdds()
+                    //20220613 冠軍的排序字串切割方式不同, 跟進iOS此處無重新排序
+//                    matchOdd?.sortOdds()
 
                     matchOdd?.startDate = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, DMY_FORMAT)
                     matchOdd?.startTime = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, HM_FORMAT)
@@ -1512,7 +1514,8 @@ class GameViewModel(
 
                     matchOdd?.setupOddDiscount()
                     matchOdd?.setupPlayCate()
-                    matchOdd?.sortOdds()
+                    //20220613 冠軍的排序字串切割方式不同, 跟進iOS此處無重新排序
+//                    matchOdd?.sortOdds()
 
                     matchOdd?.startDate = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, DMY_FORMAT)
                     matchOdd?.startTime = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, HM_FORMAT)

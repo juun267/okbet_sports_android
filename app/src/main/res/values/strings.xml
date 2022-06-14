@@ -36,7 +36,7 @@
     <string name="remember_password">Save this password</string>
     <string name="forget_password_question">Forgot password?</string>
     <string name="desc_forget_password">Please contact customer service</string>
-    <string name="sign_up_know">sign up now</string>
+    <string name="sign_up_know">Sign up now</string>
     <string name="recommend_code">Invite Code</string>
     <string name="hint_recommend_code">(Invite Code)</string>
     <string name="error_recommend_code">Invite code not available</string>
