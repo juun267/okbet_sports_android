@@ -99,8 +99,20 @@
                         android:layout_marginRight="@dimen/margin_8"
                         android:src="@drawable/ic_bet_list_money"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintRight_toLeftOf="@+id/tv_balance"
+                        app:layout_constraintRight_toLeftOf="@+id/tv_balance_currency"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_balance_currency"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/margin_4"
+                        android:textSize="@dimen/textSize12sp"
+                        android:textColor="@color/color_BBBBBB_333333"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/tv_balance"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="₱" />
 
                     <TextView
                         android:id="@+id/tv_balance"
@@ -111,21 +123,9 @@
                         android:textSize="@dimen/textSize12sp"
                         android:textColor="@color/color_BBBBBB_333333"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintRight_toLeftOf="@+id/tv_balance_currency"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="9,875,241.000" />
-
-                    <TextView
-                        android:id="@+id/tv_balance_currency"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/margin_4"
-                        android:textSize="@dimen/textSize12sp"
-                        android:textColor="@color/color_BBBBBB_333333"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintRight_toLeftOf="@+id/btn_delete_all"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="PHP" />
+                        tools:text="9,875,241.000" />
 
                     <ImageView
                         android:id="@+id/btn_delete_all"
