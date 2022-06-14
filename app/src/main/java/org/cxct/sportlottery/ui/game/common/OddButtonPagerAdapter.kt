@@ -590,7 +590,7 @@ class OddButtonPagerViewHolder private constructor(
                     betStatus = odds.second?.getOrNull(0)?.status
                 }
             }
-
+            setupOdd(odds.second?.getOrNull(0), oddsType)
             //20220426 先判斷spread是否需要顯示，提供name判斷其佈局調整
             tv_spread.apply {
                 visibility = when (!odds.second?.getOrNull(0)?.spread.isNullOrEmpty()) {
@@ -643,7 +643,6 @@ class OddButtonPagerViewHolder private constructor(
                 requestLayout()
             }
 
-            setupOdd(odds.second?.getOrNull(0), oddsType)
 
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(0))
 
@@ -681,6 +680,7 @@ class OddButtonPagerViewHolder private constructor(
                 }
             }
 
+            setupOdd(odds.second?.getOrNull(1), oddsType)
             tv_spread.apply {
                 visibility = when (!odds.second?.getOrNull(1)?.spread.isNullOrEmpty()) {
                     true -> View.VISIBLE
@@ -727,7 +727,6 @@ class OddButtonPagerViewHolder private constructor(
                 requestLayout()
             }
 
-            setupOdd(odds.second?.getOrNull(1), oddsType)
 
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(1))
 
@@ -770,6 +769,7 @@ class OddButtonPagerViewHolder private constructor(
                 }
             }
 
+            setupOdd(odds.second?.getOrNull(2), oddsType)
             tv_spread.apply {
                 visibility = when (!odds.second?.getOrNull(2)?.spread.isNullOrEmpty()) {
                     true -> View.VISIBLE
@@ -814,7 +814,6 @@ class OddButtonPagerViewHolder private constructor(
                 requestLayout()
             }
 
-            setupOdd(odds.second?.getOrNull(2), oddsType)
 
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(2))
 
@@ -893,6 +892,7 @@ class OddButtonPagerViewHolder private constructor(
                     betStatus = odds.second?.getOrNull(0)?.status
                 }
             }
+            setupOdd(odds.second?.getOrNull(0), oddsType)
             tv_name.apply {
                 visibility = when {
                     playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() -> View.VISIBLE
@@ -931,7 +931,7 @@ class OddButtonPagerViewHolder private constructor(
                 text = odds.second?.getOrNull(0)?.spread ?: ""
                 requestLayout()
             }
-            setupOdd(odds.second?.getOrNull(0), oddsType)
+
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(0))
             isSelected = odds.second?.getOrNull(0)?.isSelected ?: false
         }
@@ -949,6 +949,7 @@ class OddButtonPagerViewHolder private constructor(
                     betStatus = odds.second?.getOrNull(1)?.status
                 }
             }
+            setupOdd(odds.second?.getOrNull(1), oddsType)
             tv_name.apply {
                 visibility = when {
                     playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() -> View.VISIBLE
@@ -990,7 +991,7 @@ class OddButtonPagerViewHolder private constructor(
                 text = odds.second?.getOrNull(1)?.spread ?: ""
                 requestLayout()
             }
-            setupOdd(odds.second?.getOrNull(1), oddsType)
+
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(1))
             isSelected = odds.second?.getOrNull(1)?.isSelected ?: false
         }
@@ -1017,6 +1018,7 @@ class OddButtonPagerViewHolder private constructor(
                     betStatus = odds.second?.getOrNull(2)?.status
                 }
             }
+            setupOdd(odds.second?.getOrNull(2), oddsType)
             tv_name.apply {
                 visibility = View.VISIBLE
 
@@ -1050,7 +1052,7 @@ class OddButtonPagerViewHolder private constructor(
                 text = odds.second?.getOrNull(2)?.spread ?: ""
                 requestLayout()
             }
-            setupOdd(odds.second?.getOrNull(2), oddsType)
+
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(2))
             isSelected = odds.second?.getOrNull(2)?.isSelected ?: false
         }
