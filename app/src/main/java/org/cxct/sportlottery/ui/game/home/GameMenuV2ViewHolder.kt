@@ -4,6 +4,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
+import android.text.style.ScaleXSpan
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.size
@@ -196,9 +197,9 @@ class GameMenuV2ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             ForegroundColorSpan(
                 ContextCompat.getColor(
                     itemView.context,
-                    R.color.color_7F7F7F_999999
+                    R.color.color_b73a20
                 ),
-            ), 0, comingSoonString.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            ), 0, comingSoonString.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
         )
         spannableStringBuilder.append(titleSpannableString).append(" ").append(comingSoonSpannableString)
         this.setTitle(spannableStringBuilder)
