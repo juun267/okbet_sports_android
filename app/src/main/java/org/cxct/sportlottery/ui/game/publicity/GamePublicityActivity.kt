@@ -74,6 +74,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         initBaseFun()
         initObservers()
         setLetterSpace()
+        setupDataSourceChange()
 
         //進入宣傳頁，優先跳出這個視窗(不論有沒有登入，每次都要跳)
         if (sConfigData?.thirdOpen != FLAG_OPEN)
@@ -478,6 +479,16 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         }
 
         goGamePage()
+    }
+
+    private fun setupDataSourceChange() {
+        setDataSourceChangeEvent {
+            if (navController.currentDestination?.id != R.id.publicityFragment) {
+                navController.navigateUp()
+            } else {
+                navController.navigate(PublicityFragmentDirections.actionPublicityFragmentSelf())
+            }
+        }
     }
 
 }
