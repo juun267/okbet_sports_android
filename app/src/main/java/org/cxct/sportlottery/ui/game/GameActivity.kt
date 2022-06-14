@@ -160,6 +160,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             e.printStackTrace()
         }
         queryData()
+        setupDataSourceChange()
     }
 
     override fun onStart() {
@@ -467,7 +468,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         }
     }
 
-    private val MatchTypeTabPositionMap = mapOf<MatchType, Int>(
+    private val matchTypeTabPositionMap = mapOf<MatchType, Int>(
         MatchType.MAIN to 0,
         MatchType.IN_PLAY to 1,
         MatchType.AT_START to 2,
@@ -489,7 +490,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             null
         }
         else -> {
-            when (val tabPosition = MatchTypeTabPositionMap[matchType]) {
+            when (val tabPosition = matchTypeTabPositionMap[matchType]) {
                 null -> {
                     Timber.e("There is not tab position of $matchType")
                     null
@@ -786,8 +787,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         viewModel.messageListResult.observe(this) {
             it.getContentIfNotHandled()?.let { result ->
                 updateUiWithResult(result)
-            //Task 1901 在新版公告介面出來之前先隱藏
-//                setNewsDialog(result) //公告彈窗
             }
         }
 
@@ -919,7 +918,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         val fastBetFragment = FastBetFragment()
         val bundle = Bundle()
-        bundle.putParcelable("data",  Parcels.wrap(fastBetDataBean));
+        bundle.putParcelable("data", Parcels.wrap(fastBetDataBean));
         fastBetFragment.arguments = bundle;
 
         transaction
@@ -997,7 +996,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         }
 
         GamePublicityActivity.reStart(this)
-//        tabLayout.getTabAt(0)?.select()
     }
 
     private fun updateUiWithResult(messageListResult: MessageListResult?) {
@@ -1005,7 +1003,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         messageListResult?.let {
             it.rows?.forEach { data ->
                 if (data.type.toInt() == 1) titleList.add(data.title + " - " + data.message)
-//                titleList.add(data.title + " - " + data.message)
             }
 
             mMarqueeAdapter.setData(titleList)
@@ -1032,7 +1029,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     }
 
     private fun queryData() {
-//        loading()
         getSportList()
     }
 
@@ -1096,5 +1092,13 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         expandCheckList.clear()
         HomePageStatusManager.clear()
         super.onDestroy()
+    }
+
+    private fun setupDataSourceChange() {
+        setDataSourceChangeEvent {
+            viewModel.fetchDataFromDataSourceChange(
+                matchTypeTabPositionMap.filterValues { it == tabLayout.selectedTabPosition }.entries.first().key
+            )
+        }
     }
 }

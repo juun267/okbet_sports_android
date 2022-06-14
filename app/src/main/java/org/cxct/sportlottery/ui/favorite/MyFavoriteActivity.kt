@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_my_favorite.*
@@ -37,22 +38,17 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
 
     private var betListFragment = BetListFragment()
 
+    private val navController by lazy { findNavController(R.id.my_favorite_container) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_my_favorite)
-
         initToolBar()
-
         initBottomNavigation()
-
         initMenu()
-
         initObserver()
-
         setupNoticeButton(iv_notice)
-
-//        initServiceButton()
+        setupDataSourceChange()
     }
 
     override fun initToolBar() {
@@ -315,5 +311,15 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
         }
 
         startActivity(Intent(this, GamePublicityActivity::class.java))
+    }
+
+    private fun setupDataSourceChange() {
+        setDataSourceChangeEvent {
+            if (navController.currentDestination?.id != R.id.myFavoriteFragment) {
+                navController.navigateUp()
+            } else {
+                navController.navigate(MyFavoriteFragmentDirections.actionMyFavoriteFragmentSelf())
+            }
+        }
     }
 }
