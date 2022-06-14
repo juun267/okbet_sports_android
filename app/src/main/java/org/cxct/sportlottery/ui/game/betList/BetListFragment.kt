@@ -742,8 +742,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 if (list.size == 1) {
                     //單一注單
                     binding.llRoot.layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
+                    //上方tabBar betTypeTabLayout隱藏，下方可贏金額 clTotalInfo要顯示
                     binding.betTypeTabLayout.visibility = View.GONE
-                    binding.clTotalInfo.visibility = View.GONE
                     betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
                     isMultiBet = false
                 } else if (!isAutoCloseWhenNoData) {
