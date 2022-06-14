@@ -5,8 +5,10 @@ import android.content.Context
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
@@ -54,10 +56,6 @@ class OddsButton @JvmOverloads constructor(
             }
         }
 
-    private var mOdd: Odd? = null
-
-    private var mOddsType: OddsType = OddsType.EU
-
     private var mFillet = true
 
     private var hideItem = false
@@ -85,8 +83,6 @@ class OddsButton @JvmOverloads constructor(
     }
 
     fun setupOdd(odd: Odd?, oddsType: OddsType, gameType: String? = null, isOddPercentage:Boolean? = false) {
-        mOdd = odd
-        mOddsType = oddsType
         tv_name.apply {
             val extInfoStr =
                 odd?.extInfoMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.extInfo
@@ -113,7 +109,22 @@ class OddsButton @JvmOverloads constructor(
         else
             tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
 
-        updateOddsTextColor()
+        if (getOdds(odd, oddsType) < 0.0) {
+            tv_odds.setTextColor(
+                ContextCompat.getColorStateList(
+                    context,
+                    R.color.selector_button_odd_bottom_text_red
+                )
+            )
+        } else {
+            tv_odds.setTextColor(
+                ContextCompat.getColorStateList(
+                    context,
+                    if (MultiLanguagesApplication.isNightMode) R.color.selector_button_odd_bottom_text_dark
+                    else R.color.selector_button_odd_bottom_text
+                )
+            )
+        }
 
         isSelected = odd?.isSelected ?: false
         //[Martin]馬來盤＆印尼盤會有負數的賠率
@@ -244,31 +255,18 @@ class OddsButton @JvmOverloads constructor(
 
                 isActivated = false
 
-                updateOddsTextColor()
+                tv_odds.setTextColor(
+                    ContextCompat.getColorStateList(
+                        context,
+                        if (MultiLanguagesApplication.isNightMode) {
+                            R.color.selector_button_odd_bottom_text_dark
+                        } else R.color.selector_button_odd_bottom_text
+                    )
+                )
+                if (MultiLanguagesApplication.isNightMode) {
+                    tv_odds.isActivated = true
+                }
             }
-        }
-    }
-
-    /**
-     * 透過當前賠率更新賠率文字顏色
-     */
-    private fun updateOddsTextColor() {
-        //負盤
-        if (getOdds(mOdd, mOddsType) < 0.0) {
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    R.color.selector_button_odd_bottom_text_red
-                )
-            )
-        } else {
-            tv_odds.setTextColor(
-                ContextCompat.getColorStateList(
-                    context,
-                    if (MultiLanguagesApplication.isNightMode) R.color.selector_button_odd_bottom_text_dark
-                    else R.color.selector_button_odd_bottom_text
-                )
-            )
         }
     }
 }
