@@ -507,11 +507,6 @@ class LiveViewToolbar @JvmOverloads constructor(
             textZoom = 100
         }
         web_view.setInitialScale(25)
-        if (MultiLanguagesApplication.isNightMode){
-            if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
-                WebSettingsCompat.setForceDark(web_view.settings, WebSettingsCompat.FORCE_DARK_ON);
-            }
-        }
         web_view.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(
                 view: WebView?,
