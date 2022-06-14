@@ -231,8 +231,8 @@
     <string name="daily_bet_range">每日有效打码区间值</string>
     <string name="title_rebates_rate">返水%数</string>
     <string name="daily_rebates">单日最大返水</string>
-    <string name="hint_recharge_growth">存款 %d %s可获得 %d 点成长值</string>
-    <string name="hint_bet_growth">投注 %d %s可获得 %d 点成长值</string>
+    <string name="hint_recharge_growth">存款 %s %d 可获得 %d 点成长值</string>
+    <string name="hint_bet_growth">投注 %s %d 可获得 %d 点成长值</string>
     <string name="contact_us">联络我们</string>
     <string name="game_rule">游戏规则</string>
     <string name="news">最新消息</string>

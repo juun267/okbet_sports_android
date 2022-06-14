@@ -231,8 +231,8 @@
     <string name="daily_bet_range">Daily valid code interval valued</string>
     <string name="title_rebates_rate">Rebate %</string>
     <string name="daily_rebates">Maximum rebate amount in one day</string>
-    <string name="hint_recharge_growth">Top-up %d %s lulfilling %d to level up</string>
-    <string name="hint_bet_growth">Bet %d %s lulfilling %d to level up</string>
+    <string name="hint_recharge_growth">Top-up %s %d lulfilling %d to level up</string>
+    <string name="hint_bet_growth">Bet %s %d lulfilling %d to level up</string>
     <string name="contact_us">Contact us</string>
     <string name="game_rule">Game Rules</string>
     <string name="news">News</string>
