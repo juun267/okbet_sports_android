@@ -64,10 +64,11 @@
                         android:id="@+id/tv_bet_list"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/margin_8"
+                        android:layout_marginStart="@dimen/margin_9"
                         android:text="@string/bet_list_title"
                         android:textColor="@color/color_317FFF_0760D4"
                         android:textSize="@dimen/textSize14sp"
+                        android:textAllCaps="true"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/tv_bet_list_count"
                         app:layout_constraintTop_toTopOf="parent" />
