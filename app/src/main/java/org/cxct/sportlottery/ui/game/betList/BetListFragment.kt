@@ -433,9 +433,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         binding.apply {
             tvAllBetCount.text = betCount.toString()
             tvTotalBetAmount.text =
-                "${sConfigData?.systemCurrency} ${TextUtil.formatMoneyFourthDecimal(totalBetAmount)}"
+                "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoneyFourthDecimal(totalBetAmount)}"
             tvTotalWinnableAmount.text =
-                "${sConfigData?.systemCurrency} ${TextUtil.formatMoneyFourthDecimal(winnableAmount)}"
+                "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoneyFourthDecimal(winnableAmount)}"
         }
 
         setupBtnBetAmount(totalBetAmount)
@@ -809,7 +809,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         if (isLogin) {
             tv_balance.visibility = View.VISIBLE
             tv_balance_currency.visibility = View.VISIBLE
-            tv_balance_currency.text = sConfigData?.systemCurrency
+            tv_balance_currency.text = sConfigData?.systemCurrencySign
             ivBetMoney.visibility = View.VISIBLE
         } else {
             tv_balance.visibility = View.GONE

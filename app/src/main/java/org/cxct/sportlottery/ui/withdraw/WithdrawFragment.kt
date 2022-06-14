@@ -97,8 +97,8 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             sConfigData?.minRechMoney,
             getString(
                 R.string.initial_withdrawal_needs_credited,
-                sConfigData?.minRechMoney,
-                sConfigData?.systemCurrency
+                sConfigData?.systemCurrencySign,
+                sConfigData?.minRechMoney
             )
         )
 
@@ -109,8 +109,8 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 sConfigData?.minRemainingBalance,
                 getString(
                     R.string.make_sure_valid_account,
-                    sConfigData?.minRemainingBalance,
-                    sConfigData?.systemCurrency
+                    sConfigData?.systemCurrencySign,
+                    sConfigData?.minRemainingBalance
                 )
             )
         }
