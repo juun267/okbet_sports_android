@@ -339,7 +339,7 @@ class AccountHistoryNextAdapter(
         fun bind(data: Other?) {
             binding.other = data
             binding.executePendingBindings()
-            binding.tvCurrencyType.text = sConfigData?.systemCurrency
+            binding.tvCurrencyType.text = sConfigData?.systemCurrencySign
         }
 
         companion object {

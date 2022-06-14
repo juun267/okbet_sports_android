@@ -103,7 +103,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
     private fun initView() {
-        tv_currency.text = sConfigData?.systemCurrency
+        tv_currency.text = sConfigData?.systemCurrencySign
         setupTotalValue()
 
         initButton()
@@ -127,9 +127,9 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         tv_all_bet_count.text = betCount.toString()
         (context ?: requireContext()).apply {
-            tv_total_bet_amount.text = "${sConfigData?.systemCurrency} ${TextUtil.formatMoneyFourthDecimal(betResultData?.totalStake?: 0.0)}"
+            tv_total_bet_amount.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoneyFourthDecimal(betResultData?.totalStake?: 0.0)}"
             tv_total_winnable_amount.text =
-                "${sConfigData?.systemCurrency} ${TextUtil.formatMoneyFourthDecimal(betResultData?.totalWinnable ?: 0.0)}"
+                "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoneyFourthDecimal(betResultData?.totalWinnable ?: 0.0)}"
         }
     }
 

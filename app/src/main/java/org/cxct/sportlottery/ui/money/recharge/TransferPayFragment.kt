@@ -132,7 +132,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         getBankType(0)
         refreshFieldTitle()
 
-        tv_currency_type.text = sConfigData?.systemCurrency
+        tv_currency_type.text = sConfigData?.systemCurrencySign
     }
 
     private fun refreshFieldTitle(){
@@ -166,7 +166,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             et_nickname.setError(it)
         }
         viewModel.userMoney.observe(viewLifecycleOwner) {
-            txv_wallet_money.text = "${sConfigData?.systemCurrency}${ArithUtil.toMoneyFormat(it)} "
+            txv_wallet_money.text = "${sConfigData?.systemCurrencySign} ${ArithUtil.toMoneyFormat(it)} "
         }
 
         viewModel.transferPayResult.observe(viewLifecycleOwner) {
