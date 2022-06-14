@@ -643,7 +643,8 @@ class OddButtonPagerViewHolder private constructor(
                 requestLayout()
             }
 
-            setupOdd(odds.second?.getOrNull(0), oddsType)
+            tv_odds.text = getOddByType(odds.second?.getOrNull(0), oddsType)
+            tv_odds.setTextColor(oddColorStateList(odds.second?.getOrNull(0), oddsType))
 
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(0))
 
@@ -727,7 +728,24 @@ class OddButtonPagerViewHolder private constructor(
                 requestLayout()
             }
 
-            setupOdd(odds.second?.getOrNull(1), oddsType)
+            tv_odds.text = getOddByType(odds.second?.getOrNull(1), oddsType)
+            tv_odds.setTextColor(oddColorStateList(odds.second?.getOrNull(1), oddsType))
+
+            if (getOdds(odds.second?.getOrNull(1), oddsType) < 0.0) {
+                tv_odds.setTextColor(
+                    ContextCompat.getColorStateList(
+                        context,
+                        R.color.selector_button_odd_bottom_text_red
+                    )
+                )
+            } else {
+                tv_odds.setTextColor(
+                    ContextCompat.getColorStateList(
+                        context,
+                        R.color.selector_button_odd_bottom_text
+                    )
+                )
+            }
 
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(1))
 
@@ -814,7 +832,8 @@ class OddButtonPagerViewHolder private constructor(
                 requestLayout()
             }
 
-            setupOdd(odds.second?.getOrNull(2), oddsType)
+            tv_odds.text = getOddByType(odds.second?.getOrNull(2), oddsType)
+            tv_odds.setTextColor(oddColorStateList(odds.second?.getOrNull(2), oddsType))
 
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(2))
 
@@ -931,7 +950,8 @@ class OddButtonPagerViewHolder private constructor(
                 text = odds.second?.getOrNull(0)?.spread ?: ""
                 requestLayout()
             }
-            setupOdd(odds.second?.getOrNull(0), oddsType)
+            tv_odds.text = getOddByType(odds.second?.getOrNull(0), oddsType)
+            tv_odds.setTextColor(oddColorStateList(odds.second?.getOrNull(0), oddsType))
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(0))
             isSelected = odds.second?.getOrNull(0)?.isSelected ?: false
         }
@@ -990,7 +1010,23 @@ class OddButtonPagerViewHolder private constructor(
                 text = odds.second?.getOrNull(1)?.spread ?: ""
                 requestLayout()
             }
-            setupOdd(odds.second?.getOrNull(1), oddsType)
+            tv_odds.text = getOddByType(odds.second?.getOrNull(1), oddsType)
+            tv_odds.setTextColor(oddColorStateList(odds.second?.getOrNull(1), oddsType))
+            if (getOdds(odds.second?.getOrNull(1), oddsType) < 0.0) {
+                tv_odds.setTextColor(
+                    ContextCompat.getColorStateList(
+                        context,
+                        R.color.selector_button_odd_bottom_text_red
+                    )
+                )
+            } else {
+                tv_odds.setTextColor(
+                    ContextCompat.getColorStateList(
+                        context,
+                        R.color.selector_button_odd_bottom_text
+                    )
+                )
+            }
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(1))
             isSelected = odds.second?.getOrNull(1)?.isSelected ?: false
         }
@@ -1050,7 +1086,8 @@ class OddButtonPagerViewHolder private constructor(
                 text = odds.second?.getOrNull(2)?.spread ?: ""
                 requestLayout()
             }
-            setupOdd(odds.second?.getOrNull(2), oddsType)
+            tv_odds.text = getOddByType(odds.second?.getOrNull(2), oddsType)
+            tv_odds.setTextColor(oddColorStateList(odds.second?.getOrNull(2), oddsType))
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(2))
             isSelected = odds.second?.getOrNull(2)?.isSelected ?: false
         }
@@ -1077,6 +1114,21 @@ class OddButtonPagerViewHolder private constructor(
             OddsType.MYS -> TextUtil.formatForOdd(odd?.malayOdds ?: 0)
             OddsType.IDN -> TextUtil.formatForOdd(odd?.indoOdds ?: 0)
         }
+    }
+
+    private fun OddsButton.oddColorStateList(
+        odd: Odd?,
+        oddsType: OddsType
+    ) = if (getOdds(odd, oddsType) < 0.0) {
+        ContextCompat.getColorStateList(
+            context,
+            R.color.selector_button_odd_bottom_text_red
+        )
+    } else {
+        ContextCompat.getColorStateList(
+            context,
+            R.color.selector_button_odd_bottom_text
+        )
     }
 
     private fun PlayCateMapItem.getPlayCateName(l: LanguageManager.Language): String {
