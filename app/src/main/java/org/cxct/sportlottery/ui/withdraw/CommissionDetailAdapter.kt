@@ -71,7 +71,7 @@ class CommissionDetailAdapter: RecyclerView.Adapter<CommissionDetailAdapter.Item
                     }
                 }
 
-                sConfigData?.systemCurrency.let {
+                sConfigData?.systemCurrencySign.let {
                     tvVnd.text = it
                     tvRequiredValidBetsVnd.text = it
                     tvSuccessedBetsVnd.text = it
