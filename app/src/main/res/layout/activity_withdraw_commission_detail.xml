@@ -85,22 +85,23 @@
             android:textSize="@dimen/textSize14sp" />
 
         <TextView
-            android:id="@+id/tv_total"
+            android:id="@+id/tv_currency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="10dp"
+            android:textColor="#9A9A9A"
+            android:textSize="14sp"
+            tools:text="₱" />
+
+        <TextView
+            android:id="@+id/tv_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textColor="@color/color_E44438_e44438"
             android:textSize="14sp"
             tools:text="-300.000" />
 
-        <TextView
-            android:id="@+id/tv_currency"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#9A9A9A"
-            android:textSize="14sp"
-            tools:text="PHP"/>
     </LinearLayout>
 
 

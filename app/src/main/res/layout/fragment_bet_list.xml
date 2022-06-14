@@ -95,7 +95,7 @@
                         tools:text="10" />
 
                     <TextView
-                        android:id="@+id/tv_balance"
+                        android:id="@+id/tv_balance_currency"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/margin_10"
@@ -105,10 +105,10 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/gray_line"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="9,875,241.000" />
+                        tools:text="₱" />
 
                     <TextView
-                        android:id="@+id/tv_balance_currency"
+                        android:id="@+id/tv_balance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/margin_4"
@@ -117,7 +117,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/tv_balance"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="PHP" />
+                        tools:text="9,875,241.000" />
 
                     <View
                         android:id="@+id/gray_line"
@@ -356,7 +356,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/title_winnable_amount"
                     app:layout_constraintTop_toTopOf="@+id/title_winnable_amount"
-                    tools:text="PHP 0.000" />
+                    tools:text="₱ 0.000" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

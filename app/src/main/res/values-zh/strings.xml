@@ -231,8 +231,8 @@
     <string name="daily_bet_range">每日有效打码区间值</string>
     <string name="title_rebates_rate">返水%数</string>
     <string name="daily_rebates">单日最大返水</string>
-    <string name="hint_recharge_growth">存款 %d %s可获得 %d 点成长值</string>
-    <string name="hint_bet_growth">投注 %d %s可获得 %d 点成长值</string>
+    <string name="hint_recharge_growth">存款 %s %d 可获得 %d 点成长值</string>
+    <string name="hint_bet_growth">投注 %s %d 可获得 %d 点成长值</string>
     <string name="contact_us">联络我们</string>
     <string name="game_rule">游戏规则</string>
     <string name="news">最新消息</string>
@@ -1022,7 +1022,7 @@
     <string name="self_limit_per_bet_limit_highest">上限</string>
     <string name="self_limit_per_bet_limit_input_highest">请输入数字</string>
     <string name="self_limit_per_bet_limit_impotent">您随时可以修改您的每次投注上限。修改将于申请送出后生效</string>
-    <string name="self_limit_per_bet_limit_user">已设置投注上限：%s</string>
+    <string name="self_limit_per_bet_limit_user">已设置投注上限：%1$s %2$s</string>
     <string name="self_limit_per_bet_limit_user_none">无</string>
     <string name="self_limit_per_bet_limit_user_limit"> (最高可设定:%1$s %2$s-%1$s %3$s)</string>
     <string name="self_limit_error">资料格式不符，请输入整数</string>

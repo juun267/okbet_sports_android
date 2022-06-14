@@ -238,13 +238,13 @@ class VipActivity : BaseSocketActivity<VipViewModel>(VipViewModel::class) {
     private fun setupGrowthHint(growthConfigs: List<GrowthConfig>) {
         growthConfigs.firstOrNull()?.growth?.let { growth ->
             growthConfigs.firstOrNull()?.unit?.let { unit ->
-                tv_hint_recharge_growth.text = String.format(getString(R.string.hint_recharge_growth), unit, sConfigData?.systemCurrency, growth)
+                tv_hint_recharge_growth.text = String.format(getString(R.string.hint_recharge_growth), sConfigData?.systemCurrencySign, unit, growth)
             }
         }
 
         growthConfigs.getOrNull(1)?.growth?.let { growth ->
             growthConfigs.getOrNull(1)?.unit?.let { unit ->
-                tv_hint_bet_growth.text = String.format(getString(R.string.hint_bet_growth), unit, sConfigData?.systemCurrency, growth)
+                tv_hint_bet_growth.text = String.format(getString(R.string.hint_bet_growth), sConfigData?.systemCurrencySign, unit, growth)
             }
         }
     }

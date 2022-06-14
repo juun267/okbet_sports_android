@@ -36,7 +36,7 @@
     <string name="remember_password">Save this password</string>
     <string name="forget_password_question">Forgot password?</string>
     <string name="desc_forget_password">Please contact customer service</string>
-    <string name="sign_up_know">sign up now</string>
+    <string name="sign_up_know">Sign up now</string>
     <string name="recommend_code">Invite Code</string>
     <string name="hint_recommend_code">(Invite Code)</string>
     <string name="error_recommend_code">Invite code not available</string>
@@ -231,8 +231,8 @@
     <string name="daily_bet_range">Daily valid code interval valued</string>
     <string name="title_rebates_rate">Rebate %</string>
     <string name="daily_rebates">Maximum rebate amount in one day</string>
-    <string name="hint_recharge_growth">Top-up %d %s lulfilling %d to level up</string>
-    <string name="hint_bet_growth">Bet %d %s lulfilling %d to level up</string>
+    <string name="hint_recharge_growth">Top-up %s %d lulfilling %d to level up</string>
+    <string name="hint_bet_growth">Bet %s %d lulfilling %d to level up</string>
     <string name="contact_us">Contact us</string>
     <string name="game_rule">Game Rules</string>
     <string name="news">News</string>
@@ -1018,7 +1018,7 @@
     <string name="self_limit_per_bet_limit_highest">Upper limit</string>
     <string name="self_limit_per_bet_limit_input_highest">Please enter numbers</string>
     <string name="self_limit_per_bet_limit_impotent">·You can modify your limit bet at any time. The modification will be active, after that sending the request. </string>
-    <string name="self_limit_per_bet_limit_user">Current limit Bet: %s</string>
+    <string name="self_limit_per_bet_limit_user">Current limit Bet: %1$s %2$s</string>
     <string name="self_limit_per_bet_limit_user_none">None</string>
     <string name="self_limit_per_bet_limit_user_limit"> (Maximum limited bet:%1$s %2$s-%1$s %3$s)</string>
     <string name="self_limit_error">The field format is incorrect, please enter an integer.</string>
