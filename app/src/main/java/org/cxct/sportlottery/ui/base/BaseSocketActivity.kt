@@ -116,14 +116,10 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
         receiver.dataSourceChange.observe(this) {
             this.run {
-                fun reStart() = if (sConfigData?.thirdOpen == FLAG_OPEN)
-                    MainActivity.reStart(this)
-                else
-                    GamePublicityActivity.reStart(this)
                 showErrorPromptDialog(
                     title = getString(R.string.prompt),
                     message = getString(R.string.message_source_change)
-                ) { reStart() }
+                ) { dataSourceChangeEven() }
             }
         }
 
@@ -147,6 +143,12 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
                     it.userLevelConfigList.firstOrNull()?.maxCpBetMoney ?: 99999
             }
         }
+    }
+
+    var dataSourceChangeEven = {}
+
+    fun setDataSourceChangeEvent(dataSourceChangeEven: () -> Unit) {
+        this.dataSourceChangeEven = dataSourceChangeEven
     }
 
     fun subscribeSportChannelHall(){
