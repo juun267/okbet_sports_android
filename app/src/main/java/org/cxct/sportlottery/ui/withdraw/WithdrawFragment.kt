@@ -89,7 +89,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             startActivity(Intent(activity, WithdrawCommissionDetailActivity::class.java))
         }
 
-        tv_currency_type.text = sConfigData?.systemCurrency
+        tv_currency_type.text = sConfigData?.systemCurrencySign
 
         checkNotificationVisiable(
             tv_notification_1,
