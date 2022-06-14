@@ -96,7 +96,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     }
 
     private fun initView() {
-        tv_currency_type.text = sConfigData?.systemCurrency
+        tv_currency_type.text = sConfigData?.systemCurrencySign
 
         et_recharge_online_amount.setHint(getAmountLimitHint())
 
@@ -232,7 +232,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     private fun getAmountLimitHint(): String {
         return String.format(
-            getString(R.string.edt_hint_deposit_money), sConfigData?.systemCurrency,
+            getString(R.string.edt_hint_deposit_money), sConfigData?.systemCurrencySign,
             TextUtil.formatBetQuota(mSelectRechCfgs?.minMoney?.toLong() ?: 0),
             TextUtil.formatBetQuota(mSelectRechCfgs?.maxMoney?.toLong() ?: 999999)
         )
