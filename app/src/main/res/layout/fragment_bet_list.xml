@@ -103,7 +103,7 @@
                         android:textColor="@color/color_909090_666666"
                         android:textSize="@dimen/textSize14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/gray_line"
+                        app:layout_constraintEnd_toStartOf="@id/tv_balance"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="₱" />
 
@@ -115,7 +115,7 @@
                         android:textColor="@color/color_909090_666666"
                         android:textSize="@dimen/textSize14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/tv_balance"
+                        app:layout_constraintEnd_toStartOf="@id/gray_line"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="9,875,241.000" />
 
