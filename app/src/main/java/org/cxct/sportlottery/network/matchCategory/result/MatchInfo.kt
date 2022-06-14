@@ -40,7 +40,9 @@ data class MatchInfo(
     @Json(name = "trackerId")
     val trackerId: String?,
     @Json(name = "source")
-    val source: Int?
+    val source: Int?,
+    @Json(name = "parlay")
+    val parlay: Int? //parlay (是否可以参加过关，0：否，1：是)
 ) : MatchInfo {
 
     override val gameType: String? = null
