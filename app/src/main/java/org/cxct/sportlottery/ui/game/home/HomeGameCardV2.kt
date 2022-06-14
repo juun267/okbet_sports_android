@@ -7,6 +7,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.home_game_card_v2.view.*
 import org.cxct.sportlottery.R
@@ -50,7 +51,12 @@ class HomeGameCardV2 @JvmOverloads constructor(context: Context, attrs: Attribut
     }
 
     fun setCount(num: Int) {
-        tv_count.text = num.toString()
+        if (num > 0) {
+            tv_count.text = num.toString()
+        }else{
+            tv_count.text = context.getString(R.string.coming_soon)
+            tv_count.setTextColor(ContextCompat.getColor(context,R.color.color_b73a20))
+        }
     }
 
     fun setDividerVisibility(show: Boolean) {

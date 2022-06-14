@@ -160,8 +160,8 @@
     <string name="label_transaction_status">Bet List</string>
     <string name="label_title_parlay">Comprehensive pass</string>
     <string name="conspire">Parlay</string>
-    <string name="message_no_at_start">Now no Coming soon Matches</string>
-    <string name="message_no_in_play">Now no Coming soon Matches</string>
+    <string name="message_no_at_start">Now no Soon Matches</string>
+    <string name="message_no_in_play">Now no Soon Matches</string>
     <string name="message_no_sport_game">There are currently no events for %1$s</string>
     <string name="champion">OUTRIGHT</string>
     <string name="league">League</string>
@@ -1144,7 +1144,7 @@
 
     <!--region coming soon-->
     <string name="esports">eSports</string>
-    <string name="coming_soon">Coming Soon</string>
+    <string name="coming_soon">Soon</string>
     <!--endregion-->
 
 </resources>
