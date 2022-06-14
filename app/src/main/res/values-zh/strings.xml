@@ -925,7 +925,7 @@
     <string name="identity_marital_status">婚姻状态</string>
     <string name="identity_sex">性别</string>
     <string name="identity_work">工作</string>
-    <string name="message_source_change">系统收到最新赛事数据,将立即自动回到首页</string>
+    <string name="message_source_change">系统收到最新赛事数据，确认后将刷新页面</string>
     <string name="appearance">外观</string>
     <string name="day_mode">日间模式</string>
     <string name="night_mode">夜间模式</string>
