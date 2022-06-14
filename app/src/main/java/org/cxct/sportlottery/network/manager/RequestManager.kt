@@ -47,11 +47,14 @@ class RequestManager private constructor(context: Context) {
         .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
         .addInterceptor(MoreBaseUrlInterceptor())
         .addInterceptor(RequestInterceptor(context))
-        .addInterceptor(HttpLogInterceptor())
         //.addInterceptor(LogInterceptor().setLevel(LogInterceptor.Level.BODY))
 
 
         .apply {
+            //debug版本才打印api內容
+            if (BuildConfig.DEBUG) {
+                addInterceptor(HttpLogInterceptor())
+            }
             // mock data, 必須擺在最後
             if (BuildConfig.MOCK)
                 addInterceptor(MockApiInterceptor(context))
