@@ -440,7 +440,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         binding.ivArrow.setOnClickListener {
             activity?.onBackPressed()
         }
-        binding.tvBalanceCurrency.text = sConfigData?.systemCurrency
+        binding.tvBalanceCurrency.text = sConfigData?.systemCurrencySign
         initDeleteAllOnClickEvent()
     }
 
@@ -577,7 +577,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         binding.apply {
             tvTotalWinnableAmount.text =
-                "${sConfigData?.systemCurrency} ${TextUtil.formatMoneyFourthDecimal(winnableAmount)}"
+                "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoneyFourthDecimal(winnableAmount)}"
         }
 
         setupBtnBetAmount(totalBetAmount)
