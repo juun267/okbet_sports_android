@@ -617,6 +617,10 @@ class GameViewModel(
         }
     }
 
+    fun fetchDataFromDataSourceChange(matchType: MatchType) {
+        switchMatchType(matchType)
+    }
+
     //獲取體育菜單
     fun getSportMenu() {
         getSportMenu(null)
@@ -627,9 +631,6 @@ class GameViewModel(
         switchFirstTag: Boolean = false,
         onlyRefreshSportMenu: Boolean = true
     ) {
-        if (!onlyRefreshSportMenu)
-            _isLoading.postValue(true)
-
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 sportMenuRepository.getSportMenu(
@@ -660,8 +661,6 @@ class GameViewModel(
 
             postHomeCardCount(result)
         }
-
-        _isLoading.postValue(false) // TODO IllegalStateException: Cannot invoke setValue on a background thread
     }
 
     fun getAllPlayCategory(matchType: MatchType, refreshTabBar:Boolean = false) {
