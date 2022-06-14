@@ -160,12 +160,12 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         updateMoneyRange()
         refreshCurrencyType(currentCurrency)
 
-        tv_recharge_money.text = String.format(resources.getString(R.string.txv_recharge_money),sConfigData?.systemCurrency, "0.000")
+        tv_recharge_money.text = String.format(resources.getString(R.string.txv_recharge_money),sConfigData?.systemCurrencySign, "0.000")
         
         if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0)  //返利
-            tv_fee_amount.text = String.format(getString(R.string.hint_feeback_amount), sConfigData?.systemCurrency, "0.000")
+            tv_fee_amount.text = String.format(getString(R.string.hint_feeback_amount), sConfigData?.systemCurrencySign, "0.000")
         else
-            tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), sConfigData?.systemCurrency, "0.000")
+            tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), sConfigData?.systemCurrencySign, "0.000")
 
     }
 
@@ -418,7 +418,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             when{
                 selectRechCfgs?.rebateFee ==  0.0 || selectRechCfgs?.rebateFee == null -> {
                     tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), "0.000") + "%"
-                    tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), sConfigData?.systemCurrency, "0.000")
+                    tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), sConfigData?.systemCurrencySign, "0.000")
                 }
                 selectRechCfgs.rebateFee > 0.0 ->{
                     tv_fee_rate.text = String.format(getString(R.string.hint_feeback_rate), ArithUtil.toMoneyFormat(selectRechCfgs.rebateFee.times(100))) + "%"
@@ -472,7 +472,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
                 if (mSelectRechCfgs?.rebateFee == 0.0 || mSelectRechCfgs?.rebateFee == null) {
                     tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), "0.000") + "%"
-                    tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), sConfigData?.systemCurrency, "0.000")
+                    tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), sConfigData?.systemCurrencySign, "0.000")
                 }
             }
 
@@ -487,18 +487,18 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     private fun refreshMoneyDetail(rechargeAmount:String){
         if (rechargeAmount.isEmpty() || rechargeAmount.isBlank()) {
             tv_recharge_money.text =
-                String.format(resources.getString(R.string.txv_recharge_money), sConfigData?.systemCurrency,"0.000")
+                String.format(resources.getString(R.string.txv_recharge_money), sConfigData?.systemCurrencySign,"0.000")
             if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) {
                 tv_fee_amount.text =
-                    String.format(getString(R.string.hint_feeback_amount), sConfigData?.systemCurrency, "0.000")
+                    String.format(getString(R.string.hint_feeback_amount), sConfigData?.systemCurrencySign, "0.000")
             } else {
                 tv_fee_amount.text =
-                    String.format(getString(R.string.hint_fee_amount), sConfigData?.systemCurrency, "0.000")
+                    String.format(getString(R.string.hint_fee_amount), sConfigData?.systemCurrencySign, "0.000")
             }
         } else {
             //充值金額
             tv_recharge_money.text = String.format(
-                resources.getString(R.string.txv_recharge_money),sConfigData?.systemCurrency,
+                resources.getString(R.string.txv_recharge_money),sConfigData?.systemCurrencySign,
                 ArithUtil.toMoneyFormat(
                     rechargeAmount.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)
                 )
@@ -507,7 +507,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) { //返利/手續費金額
                 tv_fee_amount.text =
                     String.format(
-                        getString(R.string.hint_feeback_amount), sConfigData?.systemCurrency,
+                        getString(R.string.hint_feeback_amount), sConfigData?.systemCurrencySign,
                         ArithUtil.toMoneyFormat(
                             (rechargeAmount.toDouble()
                                 .times(mSelectRechCfgs?.exchangeRate ?: 1.0)).times(
@@ -518,7 +518,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                     )
             } else {
                 tv_fee_amount.text = String.format(
-                    getString(R.string.hint_fee_amount), sConfigData?.systemCurrency,
+                    getString(R.string.hint_fee_amount), sConfigData?.systemCurrencySign,
                     ArithUtil.toMoneyFormat(
                         abs(
                             rechargeAmount.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)
