@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_switch_language.view.*
+import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivitySwitchLanguageBinding
 import org.cxct.sportlottery.repository.FLAG_OPEN
@@ -16,6 +17,7 @@ import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.SPUtil
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 import java.security.AccessController.getContext
 
 
@@ -29,9 +31,6 @@ class SwitchLanguageActivity : BaseActivity<LoginViewModel>(LoginViewModel::clas
 
     override fun onClick(v: View?) {
         when (v) {
-            binding.ivBack -> {
-                onBackPressed()
-            }
             binding.llChina -> {
                 viewModel.betInfoRepository.clear()
                 selectLanguage(LanguageManager.Language.ZH)
@@ -44,21 +43,22 @@ class SwitchLanguageActivity : BaseActivity<LoginViewModel>(LoginViewModel::clas
                 viewModel.betInfoRepository.clear()
                 selectLanguage(LanguageManager.Language.VI)
             }
-            binding.ivLogo ->{
-                if (sConfigData?.thirdOpen == FLAG_OPEN)
-                    MainActivity.reStart(this)
-                else
-                    goGamePublicityPage()
-            }
         }
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySwitchLanguageBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        initToolbar();
         initView()
     }
-
+    private fun initToolbar() {
+        tv_toolbar_title.setTitleLetterSpacing()
+        tv_toolbar_title.text = getString(R.string.language_setting)
+        btn_toolbar_back.setOnClickListener {
+           finish()
+        }
+    }
     private fun initView(){
         val lngeList = sConfigData?.supportLanguage?.split(",")
 
@@ -77,11 +77,9 @@ class SwitchLanguageActivity : BaseActivity<LoginViewModel>(LoginViewModel::clas
             }
         }
 
-        binding.ivBack.setOnClickListener(this)
         binding.llEnglish.setOnClickListener(this)
         binding.llChina.setOnClickListener(this)
         binding.llVietnam.setOnClickListener(this)
-        binding.ivLogo.setOnClickListener(this)
         when (LanguageManager.getSelectLanguage(applicationContext)) {
             LanguageManager.Language.ZH -> {
                 binding.tvChina.setTextColor(ContextCompat.getColor(applicationContext, R.color.color_317FFF_0760D4))

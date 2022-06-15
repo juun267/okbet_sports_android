@@ -1140,5 +1140,6 @@
 
     <string name="esports">电子竞技</string>
     <string name="coming_soon">即将推出</string>
+    <string name="timezone_change">时区切换</string>
 
 </resources>

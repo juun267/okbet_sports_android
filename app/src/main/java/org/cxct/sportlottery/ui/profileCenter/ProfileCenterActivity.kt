@@ -28,22 +28,25 @@ import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.ui.menu.ChangeOddsTypeFullScreenDialog
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity.Companion.PWD_PAGE
-import org.cxct.sportlottery.ui.profileCenter.creditrecord.CreditRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
+import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.selflimit.SelfLimitActivity
+import org.cxct.sportlottery.ui.vip.VipActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.*
@@ -52,7 +55,6 @@ import org.cxct.sportlottery.util.TimeUtil.getRemainDay
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
-import java.util.*
 
 /**
  * @app_destination 個人中心
@@ -248,7 +250,18 @@ class ProfileCenterActivity :
                 }
             }
         }
-
+        //代理加盟
+        btn_affiliate.setOnClickListener {
+            JumpUtil.toInternalWeb(
+                this,
+                Constants.getAffiliateUrl(this),
+                resources.getString(R.string.btm_navigation_affiliate)
+            )
+        }
+        //会员等级
+        btn_member_level.setOnClickListener {
+            startActivity(Intent(this, VipActivity::class.java))
+        }
         //自我約束
         if (sConfigData?.selfRestraintVerified == "0" || sConfigData?.selfRestraintVerified == null) {
             btn_self_limit.visibility = View.GONE
@@ -257,6 +270,30 @@ class ProfileCenterActivity :
             btn_self_limit.setOnClickListener {
                 startActivity(Intent(this, SelfLimitActivity::class.java))
             }
+        }
+        //赛果结算
+        btn_game_settlement.setOnClickListener {
+            startActivity(Intent(this, ResultsSettlementActivity::class.java))
+        }
+        //游戏规则
+        btn_game_rule.setOnClickListener {
+            JumpUtil.toInternalWeb(
+                this,
+                Constants.getGameRuleUrl(this),
+                getString(R.string.game_rule)
+            )
+        }
+        //切换语言
+        btn_language.setOnClickListener {
+            startActivity(Intent(this,SwitchLanguageActivity::class.java))
+        }
+        //外觀
+        btn_appearance.setOnClickListener {
+            startActivity(Intent(this,AppearanceActivity::class.java))
+        }
+        //时区切换
+        btn_time_zone.setOnClickListener {
+            startActivity(Intent(this,TimeZoneActivity::class.java))
         }
 
         //幫助中心
@@ -283,6 +320,14 @@ class ProfileCenterActivity :
                     JumpUtil.toExternalWeb(this@ProfileCenterActivity, serviceUrl)
                 }
             }
+        }
+        //关于我们
+        btn_about_us.setOnClickListener {
+            JumpUtil.toInternalWeb(
+                this,
+                Constants.getContactUrl(this),
+                getString(R.string.contact)
+            )
         }
     }
 
@@ -622,7 +667,6 @@ class ProfileCenterActivity :
     private fun updateCreditAccountUI() {
         val thirdOpen = sConfigData?.thirdOpen == FLAG_OPEN
         lin_wallet_operation.setVisibilityByCreditSystem()
-        v_divide.setVisibilityByCreditSystem()
         if (thirdOpen) btn_account_transfer.setVisibilityByCreditSystem()
         if (thirdOpen) btn_other_bet_record.setVisibilityByCreditSystem()
         if (!(sConfigData?.selfRestraintVerified == "0" || sConfigData?.selfRestraintVerified == null)) btn_self_limit.setVisibilityByCreditSystem()
