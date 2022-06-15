@@ -198,6 +198,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         initKeyBoard(viewModel.getLoginBoolean())
         fl_title.setOnClickListener { betListRefactorAdapter?.closeAllKeyboard() }
         cl_total_info.setOnClickListener { betListRefactorAdapter?.closeAllKeyboard() }
+        tv_balance.text = TextUtil.formatMoney(0.0)
     }
 
     private fun initBtnView() {
