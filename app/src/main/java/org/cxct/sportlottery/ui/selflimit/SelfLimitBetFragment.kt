@@ -106,7 +106,8 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
         if (viewModel.userInfo.value?.perBetLimit == null) {
             binding.tvPerBetLimit.text = String.format(
                 getString(R.string.self_limit_per_bet_limit_user),
-                getString(R.string.self_limit_per_bet_limit_user_none)
+                getString(R.string.self_limit_per_bet_limit_user_none),
+                ""
             )
         } else {
             binding.tvPerBetLimit.text = String.format(
