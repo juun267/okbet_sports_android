@@ -4,6 +4,7 @@ import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,8 +13,11 @@ import com.zhy.adapter.recyclerview.CommonAdapter
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter
 import com.zhy.adapter.recyclerview.base.ViewHolder
 import kotlinx.android.synthetic.main.content_left_menu_item.view.*
+import kotlinx.android.synthetic.main.content_left_menu_item.view.divider
+import kotlinx.android.synthetic.main.content_left_menu_item.view.tv_count
 import kotlinx.android.synthetic.main.content_left_menu_item_footer.view.*
 import kotlinx.android.synthetic.main.content_left_menu_item_header.view.*
+import kotlinx.android.synthetic.main.home_game_card_v2.view.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -109,10 +113,12 @@ class LeftMenuItemNewAdapter(
                     //暫時利用gameCount當判斷是否為coming soon
                     if (item.gameCount == -1) {
                         tv_count.text = context.getString(R.string.coming_soon)
+                        tv_count.setTextColor(ContextCompat.getColor(context,R.color.color_b73a20))
                         isEnabled = false
                         btn_select.isEnabled = false
                     } else {
                         tv_count.text = item.gameCount.toString()
+                        tv_count.setTextColor(ContextCompat.getColor(context,R.color.color_BBBBBB_333333))
                         isEnabled = true
                         btn_select.isEnabled = true
                     }
