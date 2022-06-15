@@ -170,7 +170,7 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 //暫時利用num判斷是否為coming soon
                 if (item.num == -1) {
                     sportCountText = context.getString(R.string.coming_soon)
-                    sportCountTextColor = R.color.color_7F7F7F_999999
+                    sportCountTextColor = R.color.color_F75452_b73a20
                     isEnabled = false
                 } else {
                     sportCountText = item.num.toString()

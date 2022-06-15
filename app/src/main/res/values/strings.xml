@@ -160,8 +160,8 @@
     <string name="label_transaction_status">Bet List</string>
     <string name="label_title_parlay">Comprehensive pass</string>
     <string name="conspire">Parlay</string>
-    <string name="message_no_at_start">Now no Coming soon Matches</string>
-    <string name="message_no_in_play">Now no Coming soon Matches</string>
+    <string name="message_no_at_start">Now no Soon Matches</string>
+    <string name="message_no_in_play">Now no Soon Matches</string>
     <string name="message_no_sport_game">There are currently no events for %1$s</string>
     <string name="champion">OUTRIGHT</string>
     <string name="league">League</string>
@@ -622,7 +622,7 @@
     <string name="bet_info_list_bet_quota">Betting amount: </string>
     <string name="bet_receipt_bet_quota">Stake：</string>
     <string name="bet_info_list_win_quota">To win: </string>
-    <string name="bet_list_win_quota">EST winning：</string>
+    <string name="bet_list_win_quota">EST Winning：</string>
     <string name="bet_receipt_win_quota">EST winning：</string>
     <string name="bet_info_list_add_more">More selection</string>
     <string name="bet_info_list_bet">Place bet</string>
@@ -644,7 +644,7 @@
     <string name="bet_info_input_quota">Enter Stake</string>
     <string name="bet_info_check_maximum_limit">MAX BET</string>
     <string name="bet_info_bet_quota">bet amount</string>
-    <string name="bet_info_win_quota">To win</string>
+    <string name="bet_info_win_quota">To Win</string>
     <string name="bet_info_accept_odds_change">Accept Change</string>
     <string name="bet_info_add_to_bet_info">Add to bet slip</string>
     <string name="bet_info_odd_content_changed">One or more options for odds, concede. Points or score has changed</string>
@@ -1146,7 +1146,7 @@
 
     <!--region coming soon-->
     <string name="esports">eSports</string>
-    <string name="coming_soon">Coming Soon</string>
+    <string name="coming_soon">Soon</string>
     <!--endregion-->
 
     <!--region 注單模塊調整-->
