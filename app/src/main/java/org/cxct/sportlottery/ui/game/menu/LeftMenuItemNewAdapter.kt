@@ -118,7 +118,7 @@ class LeftMenuItemNewAdapter(
                         btn_select.isEnabled = false
                     } else {
                         tv_count.text = item.gameCount.toString()
-                        tv_count.setTextColor(ContextCompat.getColor(context,R.color.color_BBBBBB_333333))
+                        tv_count.setTextColor(ContextCompat.getColor(context,R.color.selector_blue_gray_light))
                         isEnabled = true
                         btn_select.isEnabled = true
                     }
