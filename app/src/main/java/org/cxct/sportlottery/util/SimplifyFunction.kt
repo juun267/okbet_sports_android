@@ -8,12 +8,14 @@ import android.text.SpannableString
 import android.text.Spanned
 import android.util.Log
 import android.view.View
+import android.webkit.WebView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.odds.Odd
@@ -266,4 +268,20 @@ val playCateMappingList by lazy {
         "localJson/PlayCateMapping.json"
     )
     json.fromJson<List<PlayCateMapItem>>() ?: listOf()
+}
+
+/**
+ * 設置WebView的日、夜間模式背景色, 避免還在讀取時出現與日夜模式不符的顏色區塊
+ * @since 夜間模式時, WebView尚未讀取完成時會顯示其預設背景(白色)
+ */
+fun WebView.setWebViewCommonBackgroundColor(){
+    setBackgroundColor(
+        ContextCompat.getColor(
+            context, if (MultiLanguagesApplication.isNightMode) {
+                R.color.color_000000
+            } else {
+                R.color.color_FFFFFF
+            }
+        )
+    )
 }
