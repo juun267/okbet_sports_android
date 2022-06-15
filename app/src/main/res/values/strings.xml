@@ -622,7 +622,7 @@
     <string name="bet_info_list_bet_quota">Betting amount: </string>
     <string name="bet_receipt_bet_quota">Stake：</string>
     <string name="bet_info_list_win_quota">To win: </string>
-    <string name="bet_list_win_quota">EST winning：</string>
+    <string name="bet_list_win_quota">EST Winning：</string>
     <string name="bet_receipt_win_quota">EST winning：</string>
     <string name="bet_info_list_add_more">More selection</string>
     <string name="bet_info_list_bet">Place bet</string>
@@ -644,7 +644,7 @@
     <string name="bet_info_input_quota">Enter Stake</string>
     <string name="bet_info_check_maximum_limit">MAX BET</string>
     <string name="bet_info_bet_quota">bet amount</string>
-    <string name="bet_info_win_quota">To win</string>
+    <string name="bet_info_win_quota">To Win</string>
     <string name="bet_info_accept_odds_change">Accept Change</string>
     <string name="bet_info_add_to_bet_info">Add to bet slip</string>
     <string name="bet_info_odd_content_changed">One or more options for odds, concede. Points or score has changed</string>
