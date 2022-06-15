@@ -111,16 +111,16 @@ class LeftMenuItemNewAdapter(
                     txv_price.text = item.title
 
                     //暫時利用gameCount當判斷是否為coming soon
-                    if (item.gameCount == -1) {
+                    if (item.gameCount > 0) {
+                        tv_count.text = item.gameCount.toString()
+                        tv_count.setTextColor(ContextCompat.getColor(context,R.color.color_7F7F7F_999999))
+                        isEnabled = true
+                        btn_select.isEnabled = true
+                    } else {
                         tv_count.text = context.getString(R.string.coming_soon)
                         tv_count.setTextColor(ContextCompat.getColor(context,R.color.color_b73a20))
                         isEnabled = false
                         btn_select.isEnabled = false
-                    } else {
-                        tv_count.text = item.gameCount.toString()
-                        tv_count.setTextColor(ContextCompat.getColor(context,R.color.selector_blue_gray_light))
-                        isEnabled = true
-                        btn_select.isEnabled = true
                     }
 
                     divider.isVisible = position == selectedNumber - 1
@@ -128,6 +128,7 @@ class LeftMenuItemNewAdapter(
                     if (item.isCurrentSportType) {
                         txv_price.setTypeface(txv_price.typeface, Typeface.BOLD)
                         tv_count.setTypeface(tv_count.typeface, Typeface.BOLD)
+                        tv_count.setTextColor(ContextCompat.getColor(context,R.color.color_317FFF_0760D4))
                         txv_price.isSelected = true
                         tv_count.isSelected = true
                     } else {
