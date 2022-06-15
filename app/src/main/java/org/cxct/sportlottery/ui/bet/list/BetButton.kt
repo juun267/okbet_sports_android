@@ -95,22 +95,27 @@ class BetButton @JvmOverloads constructor(
 
 
     private fun setupOddsChanged(isOddsChanged: Boolean) {
-        tv_accept_odds_change.visibility =
-            if (isOddsChanged && (tv_quota.text.toString().replace(",", "").toDoubleOrNull() ?: 0.0) != 0.0) View.VISIBLE else View.GONE
-    }
-
-
-    private fun setupSendOutClickable(isCanSendOut: Boolean) {
-        cl_bet.apply {
-            isSelected = isCanSendOut
-            isClickable = isCanSendOut
-        }
-
-        tv_accept_odds_change.apply {
-            isSelected = isCanSendOut
-            isClickable = isCanSendOut
+        if (isOddsChanged && (tv_quota.text.toString().replace(",", "").toDoubleOrNull() ?: 0.0) != 0.0) {
+            tv_accept_odds_change.visibility = View.VISIBLE
+            tv_bet.visibility = View.INVISIBLE
+        } else {
+            tv_accept_odds_change.visibility = View.GONE
+            tv_bet.visibility = View.VISIBLE
         }
     }
+
+
+//    private fun setupSendOutClickable(isCanSendOut: Boolean) {
+//        cl_bet.apply {
+//            isSelected = isCanSendOut
+//            isClickable = isCanSendOut
+//        }
+//
+//        tv_accept_odds_change.apply {
+//            isSelected = isCanSendOut
+//            isClickable = isCanSendOut
+//        }
+//    }
 
     private fun setupBetClickable() {
         val betClickable = !(hasBetPlatClose == true || isCanSendOut == false || amountCanBet == false)
@@ -118,12 +123,6 @@ class BetButton @JvmOverloads constructor(
             isSelected = betClickable
             isClickable = betClickable
         }
-
-        tv_accept_odds_change.apply {
-            isSelected = betClickable
-            isClickable = betClickable
-        }
     }
-
 
 }
