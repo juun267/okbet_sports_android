@@ -14,10 +14,7 @@ import android.webkit.WebViewClient
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.webkit.WebSettingsCompat
-import androidx.webkit.WebViewFeature
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.upstream.HttpDataSource
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -30,6 +27,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LiveUtil
 import org.cxct.sportlottery.util.MetricsUtil
+import org.cxct.sportlottery.util.setWebViewCommonBackgroundColor
 import timber.log.Timber
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -508,15 +506,7 @@ class LiveViewToolbar @JvmOverloads constructor(
             textZoom = 100
         }
         web_view.setInitialScale(25)
-        web_view.setBackgroundColor(
-            ContextCompat.getColor(
-                context, if (MultiLanguagesApplication.isNightMode) {
-                    R.color.color_000000
-                } else {
-                    R.color.color_FFFFFF
-                }
-            )
-        )
+        web_view.setWebViewCommonBackgroundColor()
         web_view.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(
                 view: WebView?,
