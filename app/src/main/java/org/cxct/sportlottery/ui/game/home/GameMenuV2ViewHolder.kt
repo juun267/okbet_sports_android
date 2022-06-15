@@ -89,7 +89,6 @@ class GameMenuV2ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
             val filteredSportMenuList = sportMenuList.filter { it.gameCount > 0 || it.gameType.key == "BB_COMING_SOON"||
                     it.gameType.key == "ES_COMING_SOON"}
-//            val filteredSportMenuList = sportMenuList.filter { it.gameCount > -1}
 
             if (block_game.size != filteredSportMenuList.size) {
                 block_game.removeAllViews()
@@ -150,7 +149,6 @@ class GameMenuV2ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val title = GameType.getGameTypeString(context, sportMenu.gameType.key)
             val iocnGameType = GameType.getGameTypeMenuIcon(sportMenu.gameType)
             setTitle(if (title.isEmpty()) sportMenu.sportName else title)
-//            sportMenu.icon?.let { setIcon(sportMenu.icon) }
             sportMenu.icon?.let { setIcon(if (iocnGameType == 0) sportMenu.icon else iocnGameType) }
             setCount(sportMenu.gameCount)
 
