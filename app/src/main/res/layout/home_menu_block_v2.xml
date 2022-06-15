@@ -79,19 +79,20 @@
             app:cvTitle="@string/fishing" />
 
         <!--     coming soon start       -->
-        <org.cxct.sportlottery.ui.game.home.HomeGameCardV2
-            android:id="@+id/card_baseball_coming_soon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cvIcon="@drawable/ic_home_baseball"
-            app:cvTitle="@string/baseball" />
+<!--        <org.cxct.sportlottery.ui.game.home.HomeGameCardV2-->
+<!--            android:id="@+id/card_baseball_coming_soon"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:cvIcon="@drawable/ic_home_baseball"-->
+<!--            app:cvTitle="@string/baseball" />-->
 
-        <org.cxct.sportlottery.ui.game.home.HomeGameCardV2
-            android:id="@+id/card_esports_coming_soon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cvIcon="@drawable/ic_home_gaming"
-            app:cvTitle="@string/esports" />
+<!--        <org.cxct.sportlottery.ui.game.home.HomeGameCardV2-->
+<!--            android:id="@+id/card_esports_coming_soon"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:cvIcon="@drawable/ic_home_gaming"-->
+<!--            app:cvTitle="@string/esports" />-->
+
         <!--     coming soon end       -->
 
         <org.cxct.sportlottery.ui.game.home.HomeGameCardV2
