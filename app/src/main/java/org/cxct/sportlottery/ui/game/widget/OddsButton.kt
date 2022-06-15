@@ -125,7 +125,7 @@ class OddsButton @JvmOverloads constructor(
     //主頁精選oddsButton的判斷
     fun setupOddName4Home(name: String?, gameType: String? = null) {
         tv_name.apply {
-            if (gameType?.contains("1X2") == true) {
+            if (gameType?.contains(PlayCate.SINGLE.value) == true) {
                 isVisible = true
                 text = name
             } else isVisible = false
