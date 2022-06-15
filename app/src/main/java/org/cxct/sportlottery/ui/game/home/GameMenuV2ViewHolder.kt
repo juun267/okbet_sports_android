@@ -87,8 +87,10 @@ class GameMenuV2ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private fun setupSportMenu(sportMenuList: List<SportMenu>) {
         with(itemView) {
 
-            val filteredSportMenuList = sportMenuList.filter { it.gameCount > 0 || it.gameType.key == "BB_COMING_SOON"||
-                    it.gameType.key == "ES_COMING_SOON"}
+            val filteredSportMenuList = sportMenuList.filter {
+                it.gameCount > 0 || it.gameType.key == "BB_COMING_SOON" ||
+                        it.gameType.key == "ES_COMING_SOON"
+            }
 
             if (block_game.size != filteredSportMenuList.size) {
                 block_game.removeAllViews()
@@ -96,8 +98,9 @@ class GameMenuV2ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 filteredSportMenuList.forEachIndexed { index, sportMenu ->
                     when (index) {
                         else -> {
-                            if (sportMenu.gameCount > 0 || sportMenu.gameType.key == "BB_COMING_SOON"||
-                                sportMenu.gameType.key == "ES_COMING_SOON") {
+                            if (sportMenu.gameCount > 0 || sportMenu.gameType.key == "BB_COMING_SOON" ||
+                                sportMenu.gameType.key == "ES_COMING_SOON"
+                            ) {
                                 block_game.addView(
                                     HomeGameCardV2(
                                         itemView.context
@@ -112,8 +115,9 @@ class GameMenuV2ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 filteredSportMenuList.forEachIndexed { index, sportMenu ->
                     when (index) {
                         else -> {
-                            if (sportMenu.gameCount > 0 || sportMenu.gameType.key == "BB_COMING_SOON"||
-                                sportMenu.gameType.key == "ES_COMING_SOON") {
+                            if (sportMenu.gameCount > 0 || sportMenu.gameType.key == "BB_COMING_SOON" ||
+                                sportMenu.gameType.key == "ES_COMING_SOON"
+                            ) {
                                 val homeGameCardV2 = (block_game.getChildAt(index) as HomeGameCardV2)
                                 setupHomeCard(
                                     homeGameCardV2,
@@ -147,13 +151,14 @@ class GameMenuV2ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private fun setupHomeCard(homeGameCardV2: HomeGameCardV2, sportMenu: SportMenu) {
         homeGameCardV2.apply {
             val title = GameType.getGameTypeString(context, sportMenu.gameType.key)
-            val iocnGameType = GameType.getGameTypeMenuIcon(sportMenu.gameType)
+            val iconGameType = GameType.getGameTypeMenuIcon(sportMenu.gameType)
             setTitle(if (title.isEmpty()) sportMenu.sportName else title)
-            sportMenu.icon?.let { setIcon(if (iocnGameType == 0) sportMenu.icon else iocnGameType) }
+            sportMenu.icon?.let { setIcon(if (iconGameType == 0) sportMenu.icon else iconGameType) }
             setCount(sportMenu.gameCount)
 
             setOnClickListener {
-                mOnClickMenuListener?.onHomeCard(sportMenu)
+                if (sportMenu.gameType.key != "BB_COMING_SOON" && sportMenu.gameType.key != "ES_COMING_SOON")
+                    mOnClickMenuListener?.onHomeCard(sportMenu)
             }
         }
     }
