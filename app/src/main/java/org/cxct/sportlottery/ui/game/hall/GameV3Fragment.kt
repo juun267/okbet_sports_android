@@ -1196,33 +1196,35 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         val nowGameType =
                             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
 
-                        val hasLeagueIdList =
-                            leagueAdapter.data.any { leagueOdd -> leagueOdd.league.id == mLeagueChangeEvent?.leagueIdList?.firstOrNull() }
+                        if(leagueAdapter.data.isNotEmpty()) {
+                            val hasLeagueIdList =
+                                leagueAdapter.data.any { leagueOdd -> leagueOdd.league.id == mLeagueChangeEvent?.leagueIdList?.firstOrNull() }
 
-                        if (nowGameType == mLeagueChangeEvent?.gameType) {
-                            when {
-                                !hasLeagueIdList ||
-                                        args.matchType == MatchType.AT_START -> {
-                                    //全刷
-                                    unSubscribeChannelHallAll()
-                                    withContext(Dispatchers.Main) {
+                            if (nowGameType == mLeagueChangeEvent?.gameType) {
+                                when {
+                                    !hasLeagueIdList ||
+                                            args.matchType == MatchType.AT_START -> {
+                                        //全刷
+                                        unSubscribeChannelHallAll()
+                                        withContext(Dispatchers.Main) {
+                                            if (args.matchType == MatchType.OTHER) {
+                                                viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
+                                            } else {
+                                                viewModel.getGameHallList(args.matchType, false)
+                                            }
+                                        }
+                                    }
+                                    else -> {
+                                        unSubscribeChannelHall(nowGameType ?: GameType.FT.key, mLeagueChangeEvent?.matchIdList?.firstOrNull())
+                                        subscribeChannelHall(nowGameType ?: GameType.FT.key, mLeagueChangeEvent?.matchIdList?.firstOrNull())
                                         if (args.matchType == MatchType.OTHER) {
                                             viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
-                                        } else {
-                                            viewModel.getGameHallList(args.matchType, false)
                                         }
                                     }
                                 }
-                                else -> {
-                                    unSubscribeChannelHall(nowGameType ?: GameType.FT.key, mLeagueChangeEvent?.matchIdList?.firstOrNull())
-                                    subscribeChannelHall(nowGameType ?: GameType.FT.key, mLeagueChangeEvent?.matchIdList?.firstOrNull())
-                                    if (args.matchType == MatchType.OTHER) {
-                                        viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
-                                    }
-                                }
+                            } else if (args.matchType == MatchType.OTHER) {
+                                viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
                             }
-                        } else if (args.matchType == MatchType.OTHER) {
-                            viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
                         }
                         isUpdatingLeague = false
                     }
