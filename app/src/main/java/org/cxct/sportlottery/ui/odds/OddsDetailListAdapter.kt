@@ -1402,8 +1402,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         }
 
         private fun forSCO(oddsDetail: OddsDetailListData, position: Int) {
+            val teamNameList = oddsDetail.teamNameList
 
-            val teamNameList = setupSCOTeamName(oddsDetail)
+            tvHomeName?.text = teamNameList.firstOrNull()
+            tvAwayName?.text = teamNameList.getOrNull(1)
 
             itemView.findViewById<ConstraintLayout>(R.id.cl_tab).visibility =
                 if (oddsDetail.isExpand) View.VISIBLE else View.GONE
@@ -1411,7 +1413,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             rvBet?.apply {
                 adapter = TypeSCOAdapter(
                     selectSCO(
-                        context,
                         oddsDetail,
                         oddsDetail.gameTypeSCOSelect ?: teamNameList[0],
                         teamNameList
@@ -1432,7 +1433,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 isSelected = oddsDetail.gameTypeSCOSelect == teamNameList[0]
                 setOnClickListener {
                     (rvBet?.adapter as TypeSCOAdapter).mOddsDetail = selectSCO(
-                        context = context,
                         oddsDetail = oddsDetail.apply {
                             gameTypeSCOSelect = teamNameList[0]
                             isMoreExpand = false
@@ -1448,7 +1448,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 isSelected = oddsDetail.gameTypeSCOSelect == teamNameList[1]
                 setOnClickListener {
                     (rvBet?.adapter as TypeSCOAdapter).mOddsDetail = selectSCO(
-                        context = context,
                         oddsDetail = oddsDetail.apply {
                             gameTypeSCOSelect = teamNameList[1]
                             isMoreExpand = false
@@ -1461,84 +1460,16 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
         }
 
-        private fun setupSCOTeamName(oddsDetail: OddsDetailListData): MutableList<String> {
-
-            val groupTeamName = oddsDetail.oddArrayList.groupBy {
-                it?.extInfoMap?.get(LanguageManager.getSelectLanguage(tvHomeName?.context).key)
-            }.filterNot {
-                it.key.isNullOrBlank()
-            }
-            return mutableListOf<String>().apply {
-                groupTeamName.forEach {
-                    it.key?.let { key -> add(key) }
-                }
-            }.apply {
-                if(firstOrNull() != homeName) reverse()
-                tvHomeName?.text = this.firstOrNull()
-                tvAwayName?.text = this.getOrNull(1)
-            }
-        }
-
         private fun selectSCO(
-            context: Context,
             oddsDetail: OddsDetailListData,
             teamName: String,
             teamNameList: MutableList<String>
         ): OddsDetailListData {
-            oddsDetail.gameTypeSCOSelect = teamName
-
             tvHomeName?.isSelected = teamName == teamNameList[0]
             tvAwayName?.isSelected = teamName != teamNameList[0]
-
-            //建立球員列表(一個球員三個賠率)
-            var map: HashMap<String, List<Odd?>> = HashMap()
-
-            //過濾掉 其他:(第一、任何、最後), 无進球
-            //依隊名分開
-            oddsDetail.oddArrayList.filterNot { odd ->
-                odd?.playCode == OddSpreadForSCO.SCORE_1ST_O.playCode ||
-                        odd?.playCode == OddSpreadForSCO.SCORE_ANT_O.playCode ||
-                        odd?.playCode == OddSpreadForSCO.SCORE_LAST_O.playCode ||
-                        odd?.playCode == OddSpreadForSCO.SCORE_N.playCode
-            }.groupBy {
-                it?.extInfoMap?.get(LanguageManager.getSelectLanguage(context).key)
-            }.forEach {
-                if (it.key == teamName) {
-                    map = it.value.groupBy { odd -> odd?.name } as HashMap<String, List<Odd?>>
-                }
-            }
-
-            //保留 其他:(第一、任何、最後), 无進球
-            //依球員名稱分開
-            //倒序排列 多的在前(無進球只有一種賠率 放最後面)
-            //添加至球員列表內
-            oddsDetail.oddArrayList.filter { odd ->
-                odd?.playCode == OddSpreadForSCO.SCORE_1ST_O.playCode ||
-                        odd?.playCode == OddSpreadForSCO.SCORE_ANT_O.playCode ||
-                        odd?.playCode == OddSpreadForSCO.SCORE_LAST_O.playCode ||
-                        odd?.playCode == OddSpreadForSCO.SCORE_N.playCode
-            }.groupBy {
-                it?.name
-            }.entries.sortedByDescending {
-                it.value.size
-            }.associateBy(
-                { it.key }, { it.value }
-            ).forEach {
-                map[it.key ?: ""] = it.value
-            }
-
-            return OddsDetailListData(
-                oddsDetail.gameType,
-                oddsDetail.typeCodes,
-                oddsDetail.name,
-                oddsDetail.oddArrayList,
-                oddsDetail.nameMap,
-                oddsDetail.rowSort
-            ).apply {
-                isExpand = oddsDetail.isExpand
-                isMoreExpand = oddsDetail.isMoreExpand
-                gameTypeSCOSelect = oddsDetail.gameTypeSCOSelect
-                scoItem = map
+            return oddsDetail.apply {
+                gameTypeSCOSelect = teamName
+                scoItem = if (tvHomeName?.isSelected == true) oddsDetail.homeMap else oddsDetail.awayMap
             }
         }
 

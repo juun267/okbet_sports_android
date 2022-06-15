@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.game
 
 import android.app.Application
 import android.content.Context
-import android.content.res.Configuration
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -10,6 +9,7 @@ import androidx.navigation.NavDirections
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.enum.OddSpreadForSCO
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
@@ -1264,7 +1264,7 @@ class GameViewModel(
 
         val sportCode = getSportSelectedCode(nowMatchType)
 
-        val mt = if(matchType == nowChildMatchType) matchType else nowChildMatchType
+        val mt = if (matchType == nowChildMatchType) matchType else nowChildMatchType
 
         sportCode?.let { code ->
             when (mt) {
@@ -1974,6 +1974,7 @@ class GameViewModel(
                 dateRow.updateDateSelectedState(it)
             }
     }
+
     private fun getDateRowEarly(): List<Date> {
         val locale = LanguageManager.getSetLanguageLocale(androidContext)
         val dateRow = mutableListOf(
@@ -2116,16 +2117,25 @@ class GameViewModel(
                             //因排版問題 null也需要添加
                             filteredOddList.add(detailOdd)
                         }
-                        list.add(
-                            OddsDetailListData(
-                                key,
-                                TextUtil.split(value.typeCodes),
-                                value.name,
-                                filteredOddList,
-                                value.nameMap,
-                                value.rowSort
-                            )
+
+                        val oddsDetail = OddsDetailListData(
+                            key,
+                            TextUtil.split(value.typeCodes),
+                            value.name,
+                            filteredOddList,
+                            value.nameMap,
+                            value.rowSort
                         )
+
+                        //球員玩法邏輯
+                        if (PlayCate.getPlayCate(key) == PlayCate.SCO) {
+                            oddsDetail.setSCOTeamNameList(filteredOddList, result.oddsDetailData.matchOdd.matchInfo.homeName)
+                            oddsDetail.homeMap = setItemMap(filteredOddList, result.oddsDetailData.matchOdd.matchInfo.homeName)
+                            oddsDetail.awayMap = setItemMap(filteredOddList, result.oddsDetailData.matchOdd.matchInfo.awayName)
+                            oddsDetail.scoItem = oddsDetail.homeMap // default
+                        }
+
+                        list.add(oddsDetail)
                     }
 
                     result.oddsDetailData?.matchOdd?.odds?.sortPlayCate()
@@ -2173,6 +2183,61 @@ class GameViewModel(
                 }
             }
         }
+    }
+
+    private fun OddsDetailListData.setSCOTeamNameList(oddList: MutableList<Odd?>, homeName: String?) {
+        val groupTeamName = oddList.groupBy {
+            it?.extInfoMap?.get(LanguageManager.getSelectLanguage(androidContext).key)
+        }.filterNot {
+            it.key.isNullOrBlank()
+        }
+        val teamNameList = mutableListOf<String>().apply {
+            groupTeamName.forEach {
+                it.key?.let { key -> add(key) }
+            }
+        }.apply {
+            if (firstOrNull() != homeName) reverse()
+        }
+        this.teamNameList = teamNameList
+    }
+
+    private fun setItemMap(oddList: MutableList<Odd?>, teamName: String?): HashMap<String, List<Odd?>>{
+        //建立球員列表(一個球員三個賠率)
+        var map: HashMap<String, List<Odd?>> = HashMap()
+
+        //過濾掉 其他:(第一、任何、最後), 无進球
+        //依隊名分開
+        oddList.filterNot { odd ->
+            odd?.playCode == OddSpreadForSCO.SCORE_1ST_O.playCode ||
+                    odd?.playCode == OddSpreadForSCO.SCORE_ANT_O.playCode ||
+                    odd?.playCode == OddSpreadForSCO.SCORE_LAST_O.playCode ||
+                    odd?.playCode == OddSpreadForSCO.SCORE_N.playCode
+        }.groupBy {
+            it?.extInfoMap?.get(LanguageManager.getSelectLanguage(androidContext).key)
+        }.forEach {
+            if (it.key == teamName) {
+                map = it.value.groupBy { odd -> odd?.name } as HashMap<String, List<Odd?>>
+            }
+        }
+        //保留 其他:(第一、任何、最後), 无進球
+        //依球員名稱分開
+        //倒序排列 多的在前(無進球只有一種賠率 放最後面)
+        //添加至球員列表內
+        oddList.filter { odd ->
+            odd?.playCode == OddSpreadForSCO.SCORE_1ST_O.playCode ||
+                    odd?.playCode == OddSpreadForSCO.SCORE_ANT_O.playCode ||
+                    odd?.playCode == OddSpreadForSCO.SCORE_LAST_O.playCode ||
+                    odd?.playCode == OddSpreadForSCO.SCORE_N.playCode
+        }.groupBy {
+            it?.name
+        }.entries.sortedByDescending {
+            it.value.size
+        }.associateBy(
+            { it.key }, { it.value }
+        ).forEach {
+            map[it.key ?: ""] = it.value
+        }
+        return map
     }
 
     private fun getMatchCount(matchType: MatchType, sportMenuResult: SportMenuResult? = null): Int {

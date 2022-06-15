@@ -4,18 +4,11 @@ package org.cxct.sportlottery.ui.statistics
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
-import android.widget.LinearLayout
-import androidx.webkit.WebSettingsCompat
-import androidx.webkit.WebViewFeature
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_webview.*
-import kotlinx.android.synthetic.main.view_toolbar_live.view.*
-import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBottomSheetWebviewBinding
@@ -27,9 +20,8 @@ import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.MetricsUtil
+import org.cxct.sportlottery.util.setWebViewCommonBackgroundColor
 
 
 /**
@@ -147,11 +139,7 @@ class StatisticsDialog : BaseBottomSheetFragment<StatisticsViewModel>(Statistics
                 ?.replace("{eventId}", arguments?.getString(MATCH_ID) ?: "")?.let {
                     loadUrl(it)
                 }
-            if (MultiLanguagesApplication.isNightMode){
-                if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
-                    WebSettingsCompat.setForceDark(settings, WebSettingsCompat.FORCE_DARK_ON);
-                }
-            }
+            setWebViewCommonBackgroundColor()
         }
     }
 
