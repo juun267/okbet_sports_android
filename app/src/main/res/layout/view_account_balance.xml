@@ -26,7 +26,7 @@
         android:layout_marginStart="15dp"
         android:textColor="@color/color_317FFF_0760D4"
         tools:text="PHP"
-        android:textSize="@dimen/textSize16sp" />
+        android:textSize="@dimen/textSize20sp" />
 
     <TextView
         android:id="@+id/tv_balance"
