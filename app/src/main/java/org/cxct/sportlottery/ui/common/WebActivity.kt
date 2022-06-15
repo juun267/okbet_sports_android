@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.common
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -11,16 +10,12 @@ import android.os.Message
 import android.view.View
 import android.webkit.*
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.webkit.WebSettingsCompat
-import androidx.webkit.WebSettingsCompat.FORCE_DARK_ON
-import androidx.webkit.WebViewFeature
 import kotlinx.android.synthetic.main.activity_web.*
-import kotlinx.android.synthetic.main.view_toolbar_live.view.*
 import org.cxct.sportlottery.BuildConfig
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
+import org.cxct.sportlottery.util.setWebViewCommonBackgroundColor
 import timber.log.Timber
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
@@ -85,6 +80,8 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         if (BuildConfig.DEBUG)
             WebView.setWebContentsDebuggingEnabled(true)
 
+        webView.setWebViewCommonBackgroundColor()
+
         val settings: WebSettings = webView.settings
         settings.javaScriptEnabled = true
         settings.blockNetworkImage = false
@@ -98,11 +95,6 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         settings.databaseEnabled = false
         settings.setAppCacheEnabled(false)
         settings.setSupportMultipleWindows(true) //20191120 記錄問題： target=_black 允許跳轉新窗口處理
-        if (MultiLanguagesApplication.isNightMode){
-            if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
-                WebSettingsCompat.setForceDark(settings, WebSettingsCompat.FORCE_DARK_ON);
-            }
-        }
         webView.webChromeClient = object : WebChromeClient() {
             override fun onCreateWindow(view: WebView, isDialog: Boolean, isUserGesture: Boolean, resultMsg: Message): Boolean {
                 val newWebView = WebView(view.context)
