@@ -1054,7 +1054,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
 
         //當前玩法無賽事
-        viewModel.isNoEvents.observe(this.viewLifecycleOwner) {
+        viewModel.isNoEvents.distinctUntilChanged().observe(this.viewLifecycleOwner) {
             sport_type_list.isVisible = !it
             game_toolbar_sport_type.isVisible = !it
             game_play_category.isVisible =
@@ -1740,10 +1740,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     else -> View.GONE
                 }
                 isSelected = mCalendarSelected
-            }
-            game_tab_odd_v4.visibility = when (args.matchType) {
-                MatchType.TODAY, MatchType.EARLY, MatchType.PARLAY, MatchType.OTHER -> View.VISIBLE
-                else -> View.GONE
             }
 
             setMatchCategoryPagerVisibility(matchCategoryPagerAdapter.itemCount)
