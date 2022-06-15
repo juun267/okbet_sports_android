@@ -224,7 +224,7 @@ class LeftMenuItemNewAdapter(
                     headerSelectedListener.promotionSelected()
                 }
                 //代理加盟
-                tv_affiliate.setOnClickListener{
+                tv_affiliate.setOnClickListener {
                     headerSelectedListener.affiliateSelected()
                 }
                 ct_inplay.setOnClickListener {
@@ -249,11 +249,16 @@ class LeftMenuItemNewAdapter(
                             position: Int
                         ) {
                             holder.setText(R.id.tvSpecialEvent, t.title)
-                            try {//後端有機會給錯格式導致無法解析
-                                val countryIcon = SvgUtil.getSvgDrawable(itemView.context, t.couponIcon)
-                                holder.setImageDrawable(R.id.img_ic, countryIcon)
-                            } catch (e: Exception) {
-                                e.printStackTrace()
+
+                            if (t.couponIcon.first().toString() != "<") {
+                                holder.setImageResource(R.id.img_ic, R.drawable.ic_menu_special)
+                            } else {
+                                try {//後端有機會給錯格式導致無法解析
+                                    val countryIcon = SvgUtil.getSvgDrawable(itemView.context, t.couponIcon)
+                                    holder.setImageDrawable(R.id.img_ic, countryIcon)
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                }
                             }
                         }
 

@@ -13,11 +13,15 @@ data class OddsDetailListData(
     var isExpand: Boolean = true
     var isMoreExpand: Boolean = false
     var gameTypeFgLgSelect = FGLGType.FG
-    var groupItem = HashMap<String, List<Odd?>>()
-    var gameTypeSCOSelect: String? = null
-    var scoItem = HashMap<String, List<Odd?>>()
     var isPin = false
     var originPosition = 0
+
+    //SCO
+    var gameTypeSCOSelect: String? = null
+    var teamNameList = mutableListOf<String>()
+    var scoItem = HashMap<String, List<Odd?>>() // 當前選中
+    var homeMap = HashMap<String, List<Odd?>>() // 球員玩法主隊
+    var awayMap = HashMap<String, List<Odd?>>() // 球員玩法客隊
 }
 
 enum class FGLGType {
