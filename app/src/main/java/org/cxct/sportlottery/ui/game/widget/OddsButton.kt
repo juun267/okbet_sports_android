@@ -16,8 +16,12 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.ui.game.common.OddButtonPagerViewHolder
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
+import org.cxct.sportlottery.util.BetPlayCateFunction.isNOGALType
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.LocalUtils.getString
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 
