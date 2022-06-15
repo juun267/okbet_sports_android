@@ -107,7 +107,7 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initUI()
-        observeData()
+        initObserve()
         initSocketObserver()
     }
 
@@ -191,7 +191,7 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
 
     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
-    private fun observeData() {
+    private fun initObserve() {
         viewModel.oddsDetailResult.observe(this.viewLifecycleOwner) {
             it?.getContentIfNotHandled()?.let { result ->
                 when (result.success) {
