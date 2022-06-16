@@ -812,6 +812,7 @@ class OddButtonPagerViewHolder private constructor(
                 requestLayout()
             }
 
+
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(2))
 
             isSelected = QuickListManager.getQuickSelectedList()?.contains(odds.second?.getOrNull(2)?.id) ?: false
@@ -1076,21 +1077,6 @@ class OddButtonPagerViewHolder private constructor(
             OddsType.MYS -> TextUtil.formatForOdd(odd?.malayOdds ?: 0)
             OddsType.IDN -> TextUtil.formatForOdd(odd?.indoOdds ?: 0)
         }
-    }
-
-    private fun OddsButton.oddColorStateList(
-        odd: Odd?,
-        oddsType: OddsType
-    ) = if (getOdds(odd, oddsType) < 0.0) {
-        ContextCompat.getColorStateList(
-            context,
-            R.color.selector_button_odd_bottom_text_red
-        )
-    } else {
-        ContextCompat.getColorStateList(
-            context,
-            R.color.selector_button_odd_bottom_text
-        )
     }
 
     private fun PlayCateMapItem.getPlayCateName(l: LanguageManager.Language): String {

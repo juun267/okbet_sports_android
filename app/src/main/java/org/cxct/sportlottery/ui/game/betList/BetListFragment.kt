@@ -198,6 +198,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         initKeyBoard(viewModel.getLoginBoolean())
         fl_title.setOnClickListener { betListRefactorAdapter?.closeAllKeyboard() }
         cl_total_info.setOnClickListener { betListRefactorAdapter?.closeAllKeyboard() }
+        tv_balance.text = TextUtil.formatMoney(0.0)
     }
 
     private fun initBtnView() {
@@ -427,7 +428,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             ) {
                 currentOddsType = OddsType.EU
             }
-            getWinnable(it.betAmount, getOddsNew(it.matchOdd, currentOddsType), currentOddsType)
+            if (it.matchOdd.isOnlyEUType) currentOddsType = OddsType.EU
+            getWinnable(it.betAmount, getOdds(it.matchOdd, currentOddsType), currentOddsType)
         } + parlayList.sumByDouble { getComboWinnable(it.betAmount, getOdds(it, OddsType.EU), it.num) }
 
         binding.apply {
