@@ -106,6 +106,7 @@ class GameMenuV2ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                                         itemView.context
                                     ).apply {
                                         setupHomeCard(this, sportMenu)
+                                        setDividerVisibility(index != filteredSportMenuList.size - 1)
                                     })
                             }
                         }
@@ -123,6 +124,7 @@ class GameMenuV2ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                                     homeGameCardV2,
                                     sportMenu
                                 )
+                                homeGameCardV2.setDividerVisibility(index != filteredSportMenuList.size - 1)
                             }
                         }
                     }
