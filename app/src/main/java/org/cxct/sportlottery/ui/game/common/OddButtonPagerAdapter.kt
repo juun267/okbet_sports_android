@@ -1078,21 +1078,6 @@ class OddButtonPagerViewHolder private constructor(
         }
     }
 
-    private fun OddsButton.oddColorStateList(
-        odd: Odd?,
-        oddsType: OddsType
-    ) = if (getOdds(odd, oddsType) < 0.0) {
-        ContextCompat.getColorStateList(
-            context,
-            R.color.selector_button_odd_bottom_text_red
-        )
-    } else {
-        ContextCompat.getColorStateList(
-            context,
-            R.color.selector_button_odd_bottom_text
-        )
-    }
-
     private fun PlayCateMapItem.getPlayCateName(l: LanguageManager.Language): String {
         return when (l) {
             LanguageManager.Language.EN -> {
