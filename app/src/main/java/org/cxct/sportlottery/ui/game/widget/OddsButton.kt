@@ -377,4 +377,38 @@ class OddsButton @JvmOverloads constructor(
             )
         }
     }
+    /**
+     * 玩法判斷
+     * */
+    private fun String.isOUType(): Boolean {
+        return this.contains(PlayCate.OU.value) && !this.isCombination()
+    }
+
+    private fun String.isOEType(): Boolean {
+        return (this.contains(PlayCate.OE.value) || this.contains(PlayCate.Q_OE.value)) && !this.isCombination()
+    }
+
+    private fun String.isBTSType(): Boolean {
+        return this.contains(PlayCate.BTS.value) && !this.isCombination()
+    }
+
+    /**
+     * 後端回傳文字需保留完整文字, 文字顯示縮減由前端自行處理
+     */
+    private fun String.abridgeOddsName(): String {
+        return this.replace("Over", "O").replace("Under", "U")
+    }
+
+    /**
+     * 足球：下個進球玩法會使用到
+     */
+    private fun getOrdinalNumbers(number:String):String {
+        return when (number) {
+            "1" -> "1st"
+            "2" -> "2nd"
+            "3" -> "3rd"
+            else -> "${number}th"
+        }
+    }
+
 }

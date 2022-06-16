@@ -1058,12 +1058,7 @@ class OddButtonPagerViewHolder private constructor(
         }
     }
 
-    private fun getOrdinalNumbers(number:String):String {
-        return when (number) {
-            "1" -> "1st"
-            "2" -> "2nd"
-            "3" -> "3rd"
-            else -> "${number}th"
+//            isSelected = odds.second?.getOrNull(2)?.isSelected ?: false
         }
     }
 
@@ -1093,25 +1088,6 @@ class OddButtonPagerViewHolder private constructor(
                 this.playCateName
             }
         }
-    }
-
-    private fun String.isOUType(): Boolean {
-        return this.contains(PlayCate.OU.value) && !this.isCombination()
-    }
-
-    private fun String.isOEType(): Boolean {
-        return (this.contains(PlayCate.OE.value) || this.contains(PlayCate.Q_OE.value)) && !this.isCombination()
-    }
-
-    private fun String.isBTSType(): Boolean {
-        return this.contains(PlayCate.BTS.value) && !this.isCombination()
-    }
-
-    /**
-     * 後端回傳文字需保留完整文字, 文字顯示縮減由前端自行處理
-     */
-    private fun String.abridgeOddsName(): String {
-        return this.replace("Over", "O").replace("Under", "U")
     }
 
     private fun String.updatePlayCateColor(): Spanned {
