@@ -126,6 +126,108 @@ class OddsButton @JvmOverloads constructor(
 
     }
 
+    fun setupOdd4hall(playCateCode: String, odds: Odd?, oddList: List<Odd?>?, oddsType: OddsType, isDrawBtn: Boolean? = false) {
+        mOdd = odds
+        mOddsType = oddsType
+
+        if (isDrawBtn == true) {
+            when {
+                (oddList?.size ?: 0 > 2) -> {
+                    visibility = View.VISIBLE
+                }
+                (oddList?.size ?: 0 < 3) -> {
+                    visibility = View.INVISIBLE
+                }
+            }
+        }
+
+        when {
+            (oddList == null || oddList.all { odd -> odd == null }) -> {
+                betStatus = BetStatus.DEACTIVATED.code
+                return
+            }
+            (oddList.size < 2 || odds?.odds ?: 0.0 <= 0.0) -> {
+                betStatus = BetStatus.LOCKED.code
+                return
+            }
+            else -> {
+                betStatus = odds?.status
+            }
+        }
+
+        tv_name.apply {
+            if(isDrawBtn == true){
+                visibility = View.VISIBLE
+
+                text = when {
+                    playCateCode.isNOGALType() -> getString(R.string.none)
+                    playCateCode.isCombination() -> {
+                        (odds?.nameMap?.get(
+                            LanguageManager.getSelectLanguage(context).key
+                        ) ?: odds?.name)?.split("-")?.firstOrNull() ?: ""
+                    }
+                    !playCateCode.isCombination() -> {
+                        odds?.nameMap?.get(
+                            LanguageManager.getSelectLanguage(context).key
+                        ) ?: odds?.name
+                    }
+                    else -> ""
+                }
+            } else {
+                visibility = when {
+                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() -> View.VISIBLE
+                    else -> View.GONE
+                }
+
+                text = when {
+                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() -> {
+                        (odds?.nameMap?.get(
+                            LanguageManager.getSelectLanguage(
+                                context
+                            ).key
+                        ) ?: odds?.name)?.abridgeOddsName()
+                    }
+                    playCateCode.isNOGALType() -> {
+                        when (LanguageManager.getSelectLanguage(this.context)) {
+                            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
+                                "第" + odds?.nextScore.toString()
+                            }
+                            else -> {
+                                getOrdinalNumbers(odds?.nextScore.toString())
+                            }
+                        }
+                    }
+                    else -> ""
+                }
+            }
+            requestLayout()
+        }
+
+        tv_spread.apply {
+            visibility = when (!odds?.spread.isNullOrEmpty()) {
+                true -> View.VISIBLE
+                false -> {
+                    when {
+                        playCateCode.isOUType() -> View.INVISIBLE
+                        else -> View.GONE
+                    }
+                }
+            }
+            text = odds?.spread ?: ""
+            requestLayout()
+        }
+
+        tv_odds.apply {
+            text = TextUtil.formatForOdd(getOdds(odds, oddsType))
+        }
+
+        updateOddsTextColor()
+
+        isSelected = odds?.isSelected ?: false
+
+
+    }
+
     //主頁精選oddsButton的判斷
     fun setupOddName4Home(name: String?, gameType: String? = null) {
         tv_name.apply {
