@@ -464,7 +464,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 //                }
                 tv_win_quota.text = TextUtil.format(win)
 
-                button_bet.isOddsChanged = false //輸入金額行為, 視為接受當前賠率
+//                button_bet.isOddsChanged = false //輸入金額一樣顯示接受的文案
 
                 viewModel.updateBetAmount(it)
 

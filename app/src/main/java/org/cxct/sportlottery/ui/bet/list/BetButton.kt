@@ -95,7 +95,8 @@ class BetButton @JvmOverloads constructor(
 
 
     private fun setupOddsChanged(isOddsChanged: Boolean) {
-        if (isOddsChanged && (tv_quota.text.toString().replace(",", "").toDoubleOrNull() ?: 0.0) != 0.0) {
+        //20220616 賠率更變時，按鈕顯示文案修改 (不管有無輸入金額)
+        if (isOddsChanged) {
             tv_accept_odds_change.visibility = View.VISIBLE
             tv_bet.visibility = View.INVISIBLE
         } else {
