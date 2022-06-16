@@ -95,7 +95,7 @@ class InfoCenterRepository {
             val noticeRead = noticeList?.find {
                 it.id == msgId.toInt()
             }
-            noticeList?.remove(noticeRead)
+//            noticeList?.remove(noticeRead)
             _unreadList.postValue(noticeList?.toList() ?: listOf())
 
             _unreadNoticeList.postValue(noticeList?.toList() ?: listOf())

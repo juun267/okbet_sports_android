@@ -140,11 +140,12 @@ class InfoCenterViewModel(
             _isLoading.value = true
             doNetwork(androidContext) {
                 infoCenterRepository.setMsgRead(msgId)
-                val infoCenterRequest =
-                    InfoCenterRequest(mUnReadNextRequestPage, pageSize, 0)
-                infoCenterRepository.getUserNoticeList(infoCenterRequest)
+                //原本的邏輯是"未讀的資料打開要變成已讀" 並且更新Tab，2022/06/16要求修改，先註解保留原本邏輯
+//                val infoCenterRequest =
+//                    InfoCenterRequest(mUnReadNextRequestPage, pageSize, 0)
+//                infoCenterRepository.getUserNoticeList(infoCenterRequest)
             }
-            infoCenterRepository.getMsgCount(MsgType.NOTICE_READED.code)
+//            infoCenterRepository.getMsgCount(MsgType.NOTICE_READED.code)
             _isLoading.value = false
         }
     }
