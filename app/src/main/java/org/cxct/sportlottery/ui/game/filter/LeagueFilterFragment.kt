@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_league_filter.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.MatchType
@@ -18,6 +20,7 @@ import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.hall.adapter.CountryAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.CountryLeagueListener
+import org.cxct.sportlottery.util.GameConfigManager
 import java.util.*
 
 
@@ -77,6 +80,9 @@ class LeagueFilterFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
 //        game_toolbar_match_type.text = if (args.matchType == MatchType.AT_START) getString(R.string.home_tab_at_start_2) else getString(args.matchType.resId)
 
         game_toolbar_sport_type.text = getString(args.gameType.string)
+
+        GameConfigManager.getTitleBarBackground(args.gameType.key, MultiLanguagesApplication.isNightMode)
+            ?.let { game_toolbar_bg.setBackgroundResource(it) }
 
         game_toolbar_back.setOnClickListener {
             findNavController().navigateUp()
