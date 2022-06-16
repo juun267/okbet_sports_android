@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/color_317FFF_1F4780"
         android:layout_marginHorizontal="8dp"
-        android:textSize="@dimen/textSize16sp"
+        android:textSize="@dimen/textSize20sp"
         tools:text="PHP" />
 
     <TextView
