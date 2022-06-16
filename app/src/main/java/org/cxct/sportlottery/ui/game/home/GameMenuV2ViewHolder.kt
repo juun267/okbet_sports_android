@@ -26,7 +26,7 @@ class GameMenuV2ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(data: HomeListAdapter.MenuItemData) {
         //TODO 即將開賽、第三方... 尚未確定先隱藏
-        with(itemView) {
+        /*with(itemView) {
             card_game_soon.visibility = View.GONE
             card_lottery.visibility = View.GONE
             card_live.visibility = View.GONE
@@ -35,7 +35,7 @@ class GameMenuV2ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             card_fishing.visibility = View.GONE
             card_game_result.visibility = View.GONE
             card_update.visibility = View.GONE
-        }
+        }*/
 //        setupView(data)
 //        updateThirdGameCard(data)
         setupViewClick()
@@ -45,12 +45,12 @@ class GameMenuV2ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     private fun setupView(data: HomeListAdapter.MenuItemData) {
-        itemView.card_game_soon.setCount(data.atStartCount)
+//        itemView.card_game_soon.setCount(data.atStartCount)
     }
 
     private fun setupViewClick() {
         with(itemView) {
-            card_game_soon.setOnClickListener {
+            /*card_game_soon.setOnClickListener {
                 mOnClickMenuListener?.onGameSoon()
             }
 
@@ -80,7 +80,7 @@ class GameMenuV2ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
             card_update.setOnClickListener {
                 mOnClickMenuListener?.onUpdate()
-            }
+            }*/
         }
     }
 
@@ -176,13 +176,13 @@ class GameMenuV2ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     private fun updateThirdGameCard(data: HomeListAdapter.MenuItemData) {
-        with(itemView) {
+        /*with(itemView) {
             card_lottery.visibility = if (data.lotteryVisible) View.VISIBLE else View.GONE
             card_live.visibility = if (data.liveVisible) View.VISIBLE else View.GONE
             card_poker.visibility = if (data.pokerVisible) View.VISIBLE else View.GONE
             card_slot.visibility = if (data.slotVisible) View.VISIBLE else View.GONE
             card_fishing.visibility = if (data.fishingVisible) View.VISIBLE else View.GONE
-        }
+        }*/
     }
 
 //    private fun setupComingSoonCard() {
