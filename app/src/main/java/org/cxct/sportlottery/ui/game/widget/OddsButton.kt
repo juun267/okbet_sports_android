@@ -35,6 +35,7 @@ import org.cxct.sportlottery.util.getOdds
  * 2021/07/27 合併其他odd button
  * 2021/07/29 新增特優賠率樣式
  * 2021/08/16 新增isSelect判斷
+ * 2022/06/16 大廳賠率按鈕顯示邏輯搬移至OddsButton
  */
 class OddsButton @JvmOverloads constructor(
     context: Context,
