@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.distinctUntilChanged
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_my_favorite.*
+import kotlinx.android.synthetic.main.activity_my_favorite.drawer_layout
 import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
 import kotlinx.android.synthetic.main.sport_bottom_navigation.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
@@ -235,6 +237,11 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
     }
 
     private fun initObserver() {
+        viewModel.isScrollDown.distinctUntilChanged().observe(this) {
+            it.getContentIfNotHandled()?.let { isScrollDown ->
+                my_favorite_bottom_navigation.slideVisibility(isScrollDown)
+            }
+        }
         viewModel.showBetUpperLimit.observe(this) {
             if (it.getContentIfNotHandled() == true)
                 snackBarBetUpperLimitNotify.apply {

@@ -1,7 +1,10 @@
 package org.cxct.sportlottery.ui.base
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -134,6 +137,30 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
                 supportFragmentManager,
                 BetInfoCarReceiptDialog::class.java.simpleName
             )
+        }
+    }
+
+    fun View.slideVisibility(isHide: Boolean, duration: Long = 200) {
+        if (isHide) {
+            if (translationY == height.toFloat()) return
+            translationY = 0f
+            animate()
+                .translationY(height.toFloat())
+                .setDuration(duration).setListener(object: AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator?, isReverse: Boolean) {
+                        translationY = height.toFloat()
+                    }
+                })
+        } else {
+            if (translationY == 0f) return
+            translationY = height.toFloat()
+            animate()
+                .translationY(0f)
+                .setDuration(duration).setListener(object: AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator?, isReverse: Boolean) {
+                        translationY = 0f
+                    }
+                })
         }
     }
 }

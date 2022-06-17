@@ -652,6 +652,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             )
                         }
                     }
+                },
+                onScrollDown = {
+                    viewModel.setIsScrollDown(it)
                 }
             )
             leagueAdapter.setPreloadItem()

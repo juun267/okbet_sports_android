@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.distinctUntilChanged
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
@@ -760,6 +761,11 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initObserve() {
+        viewModel.isScrollDown.distinctUntilChanged().observe(this) {
+            it.getContentIfNotHandled()?.let { isScrollDown ->
+                game_bottom_navigation.slideVisibility(isScrollDown)
+            }
+        }
         viewModel.settlementNotificationMsg.observe(this) {
             val message = it.getContentIfNotHandled()
             message?.let { messageNotnull -> view_notification.addNotification(messageNotnull) }

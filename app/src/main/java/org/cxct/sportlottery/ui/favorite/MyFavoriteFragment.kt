@@ -256,6 +256,9 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                             )
                         }
                     }
+                },
+                onScrollDown = {
+                    viewModel.setIsScrollDown(it)
                 }
             )
         }

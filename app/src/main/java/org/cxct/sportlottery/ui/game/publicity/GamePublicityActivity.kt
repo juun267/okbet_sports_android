@@ -6,7 +6,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.distinctUntilChanged
 import androidx.navigation.findNavController
+import kotlinx.android.synthetic.main.activity_game_publicity.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -168,6 +170,11 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     }
 
     private fun initObservers() {
+        viewModel.isScrollDown.distinctUntilChanged().observe(this) {
+            it.getContentIfNotHandled()?.let { isScrollDown ->
+                game_Bottom_Navigation.slideVisibility(isScrollDown)
+            }
+        }
         viewModel.showBetUpperLimit.observe(this) {
             if (it.getContentIfNotHandled() == true)
                 snackBarBetUpperLimitNotify.apply {

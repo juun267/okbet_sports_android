@@ -30,7 +30,11 @@ abstract class BaseSocketViewModel(
     val settlementNotificationMsg: LiveData<Event<SportBet>>
         get() = _settlementNotificationMsg
 
+    val isScrollDown: LiveData<Event<Boolean>>
+        get() = _isScrollDown
+
     private val _settlementNotificationMsg = MutableLiveData<Event<SportBet>>()
+    private val _isScrollDown = MutableLiveData<Event<Boolean>>()
 
     init {
         /* gotConfigData 判斷：避免進 WebViewActivity crash */
@@ -77,5 +81,9 @@ abstract class BaseSocketViewModel(
                 userInfo.value?.userId?.let { userInfoRepository.updateDiscount(it, discount.toFloat()) }
             }
         }
+    }
+
+    fun setIsScrollDown(isScrollDown: Boolean) {
+        _isScrollDown.postValue(Event(isScrollDown))
     }
 }

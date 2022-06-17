@@ -34,13 +34,37 @@ import org.json.JSONArray
  * @create 2022/3/31
  * @description
  */
-fun RecyclerView.addScrollWithItemVisibility(onScrolling: () -> Unit, onVisible: (visibleList: List<Pair<Int, Int>>) -> Unit) {
+fun RecyclerView.addScrollWithItemVisibility(
+    onScrolling: () -> Unit,
+    onVisible: (visibleList: List<Pair<Int, Int>>) -> Unit,
+    onScrollDown: (b: Boolean) -> Unit
+) {
     addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        var needChangeBottomBar = false
+        var directionIsDown = true
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            if (needChangeBottomBar) {
+                needChangeBottomBar = false
+                //更新記錄的方向
+                if (dy > 0) {
+                    directionIsDown = true
+                } else if (dy < 0) {
+                    directionIsDown = false
+                }
+                onScrollDown(directionIsDown)
+            }
+            //Y軸移動的值和記錄的方向不同時, 重設狀態
+            if (dy > 0 != directionIsDown) {
+                needChangeBottomBar = true
+            }
+        }
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             when (newState) {
                 //停止
                 RecyclerView.SCROLL_STATE_IDLE -> {
+                    needChangeBottomBar = false
 
                     val visibleRangePair = mutableListOf<Pair<Int, Int>>()
 
@@ -61,6 +85,7 @@ fun RecyclerView.addScrollWithItemVisibility(onScrolling: () -> Unit, onVisible:
 
                 //手指滾動
                 RecyclerView.SCROLL_STATE_DRAGGING -> {
+                    needChangeBottomBar = true
                     onScrolling()
                 }
             }

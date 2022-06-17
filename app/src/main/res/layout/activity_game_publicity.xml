@@ -108,7 +108,7 @@
             app:layout_constraintBottom_toTopOf="@id/viewBottom" />
 
         <include
-            android:id="@+id/gameBottomNavigation"
+            android:id="@+id/game_Bottom_Navigation"
             layout="@layout/view_bottom_navigation_sport"
             android:layout_width="match_parent"
             android:layout_height="55dp"
