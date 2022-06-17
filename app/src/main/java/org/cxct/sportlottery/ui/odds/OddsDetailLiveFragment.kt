@@ -191,7 +191,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
             live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null,isLogin)
         }
 
-        if(args.liveVideo == 0) live_view_tool_bar.setUnLiveState()
+//        if(args.liveVideo == 0) live_view_tool_bar.setUnLiveState()
 
         matchOdd?.matchInfo?.let { matchInfo ->
             live_view_tool_bar.setStatisticsState(matchInfo.source == MatchSource.SHOW_STATISTICS.code)

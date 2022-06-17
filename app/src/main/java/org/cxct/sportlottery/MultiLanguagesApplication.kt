@@ -248,11 +248,13 @@ class MultiLanguagesApplication : Application() {
     }
 
     fun getGameDetailAnimationNeedShow(): Boolean {
-        return if (BuildConfig.CHANNEL_NAME == "spkx") {
-            isGameDetailAnimationNeedShow
+        return true
+        /*return if (BuildConfig.CHANNEL_NAME == "spkx") {
+//            isGameDetailAnimationNeedShow
+            true
         } else {
             true
-        }
+        }*/
     }
 
     fun isAgeVerifyNeedShow(): Boolean {
