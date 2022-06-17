@@ -1074,8 +1074,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START || (args.matchType == MatchType.OTHER && childMatchType == MatchType.OTHER)) && !it
 
             game_toolbar_match_type.isVisible = !it
-            game_tab_odd_v4.isVisible = (args.matchType == MatchType.AT_START || args.matchType == MatchType.EARLY) && !it
-            game_toolbar_champion.isVisible = (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START) && !it
             game_toolbar_calendar.isVisible = args.matchType == MatchType.EARLY && !it
             hideLoading()
         }
