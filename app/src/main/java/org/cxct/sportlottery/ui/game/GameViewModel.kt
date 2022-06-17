@@ -1240,6 +1240,12 @@ class GameViewModel(
         isLastSportType: Boolean = false,
         isIncrement: Boolean = false
     ) {
+
+        if(getMatchCount(matchType) < 1){
+            _isNoEvents.postValue(true)
+            return
+        }
+
         val nowMatchType = curMatchType.value ?: matchType
         val nowChildMatchType = curChildMatchType.value ?: matchType
 
@@ -2240,7 +2246,7 @@ class GameViewModel(
         return map
     }
 
-    private fun getMatchCount(matchType: MatchType, sportMenuResult: SportMenuResult? = null): Int {
+    fun getMatchCount(matchType: MatchType, sportMenuResult: SportMenuResult? = null): Int {
         val sportMenuRes = sportMenuResult ?: _sportMenuResult.value
 
         return when (matchType) {
