@@ -12,6 +12,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile_center.*
+import kotlinx.android.synthetic.main.fragment_left_menu.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
@@ -28,6 +29,7 @@ import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
@@ -274,13 +276,13 @@ class ProfileCenterActivity :
             val serviceUrl2 = sConfigData?.customerServiceUrl2
             when {
                 !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(this@ProfileCenterActivity, serviceUrl)
+                    ServiceDialog().show(supportFragmentManager, null)
                 }
                 serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(this@ProfileCenterActivity, serviceUrl2)
+                    JumpUtil.toExternalWeb(this, serviceUrl2)
                 }
                 !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(this@ProfileCenterActivity, serviceUrl)
+                    JumpUtil.toExternalWeb(this, serviceUrl)
                 }
             }
         }
