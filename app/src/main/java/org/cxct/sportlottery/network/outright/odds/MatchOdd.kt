@@ -55,4 +55,7 @@ data class MatchOdd(
     @IgnoredOnParcel
     var isExpand: Boolean = true
 
+    //僅給冠軍重組賠率項資料結構使用
+    var outrightOddsList: MutableList<Any> = mutableListOf()
+
 }

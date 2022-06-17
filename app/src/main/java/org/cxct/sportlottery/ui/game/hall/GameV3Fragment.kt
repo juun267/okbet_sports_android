@@ -14,6 +14,7 @@ import android.view.animation.Animation
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.lifecycle.distinctUntilChanged
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -45,6 +46,7 @@ import org.cxct.sportlottery.network.odds.eps.EpsLeagueOddsItem
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
+import org.cxct.sportlottery.network.outright.odds.OutrightShowMoreItem
 import org.cxct.sportlottery.network.outright.season.Season
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
@@ -219,6 +221,23 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     matchOdd?.oddsExpand?.get(oddsKey)?.let { oddExpand ->
                         matchOdd.oddsExpand?.put(oddsKey, !oddExpand)
                     }
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        matchOdd?.outrightOddsList?.forEach { any ->
+                            when (any) {
+                                is OutrightShowMoreItem -> {
+                                    if (any.playCateCode == oddsKey) {
+                                        any.playCateExpand = matchOdd.oddsExpand?.get(oddsKey) ?: false
+                                    }
+                                }
+                                is Odd -> {
+                                    if (any.outrightCateKey == oddsKey) {
+                                        any.playCateExpand = matchOdd.oddsExpand?.get(oddsKey) ?: false
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     this.notifyItemChanged(this.data.indexOf(matchOdd))
                 }
             )
@@ -993,6 +1012,20 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                     hideLoading()
                 }
+            }
+        }
+
+        viewModel.outrightMatchList.observe(this.viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { outrightMatchList ->
+                if (game_tab_odd_v4.visibility == View.VISIBLE && game_tabs.selectedTabPosition != 1)
+                    return@observe
+
+                outrightLeagueOddAdapter.data = outrightMatchList
+                outrightMatchList.forEach { matchOdd ->
+                    subscribeChannelHall(matchOdd)
+                }
+                game_list.adapter = outrightLeagueOddAdapter
+                hideLoading()
             }
         }
 

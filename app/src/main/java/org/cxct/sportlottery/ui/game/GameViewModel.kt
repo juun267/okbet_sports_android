@@ -6,7 +6,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.OddSpreadForSCO
@@ -17,6 +19,7 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeMenuIcon
 import org.cxct.sportlottery.network.common.GameType.Companion.getSpecificLanguageString
+import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
@@ -41,12 +44,12 @@ import org.cxct.sportlottery.network.odds.list.OddsListRequest
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.odds.quick.QuickListData
 import org.cxct.sportlottery.network.odds.quick.QuickListRequest
-import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
-import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
+import org.cxct.sportlottery.network.outright.odds.*
 import org.cxct.sportlottery.network.outright.season.OutrightLeagueListRequest
 import org.cxct.sportlottery.network.outright.season.OutrightLeagueListResult
 import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
 import org.cxct.sportlottery.network.sport.*
+import org.cxct.sportlottery.network.sport.Sport
 import org.cxct.sportlottery.network.sport.coupon.SportCouponMenuResult
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
@@ -155,6 +158,9 @@ class GameViewModel(
     val outrightOddsListResult: LiveData<Event<OutrightOddsListResult?>>
         get() = _outrightOddsListResult
 
+    val outrightMatchList: LiveData<Event<List<org.cxct.sportlottery.network.outright.odds.MatchOdd>>>
+        get() = _outrightMatchList
+
     val matchCategoryQueryResult: LiveData<Event<MatchCategoryQueryResult?>>
         get() = _matchCategoryQueryResult
 
@@ -242,6 +248,7 @@ class GameViewModel(
     private val _leagueListResult = MutableLiveData<Event<LeagueListResult?>>()
     private val _outrightLeagueListResult = MutableLiveData<Event<OutrightLeagueListResult?>>()
     private val _outrightOddsListResult = MutableLiveData<Event<OutrightOddsListResult?>>()
+    private val _outrightMatchList = MutableLiveData<Event<List<org.cxct.sportlottery.network.outright.odds.MatchOdd>>>()
     private val _epsListResult = MutableLiveData<Event<OddsEpsListResult?>>()
     private val _countryListSearchResult = MutableLiveData<List<Row>>()
     private val _leagueListSearchResult = MutableLiveData<List<LeagueOdd>>()
@@ -1461,7 +1468,7 @@ class GameViewModel(
     }
 
     fun getOutrightOddsList(gameType: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.outrightService.getOutrightOddsList(
                     OutrightOddsListRequest(
@@ -1470,6 +1477,8 @@ class GameViewModel(
                     )
                 )
             }
+
+            val outrightMatchList = mutableListOf<org.cxct.sportlottery.network.outright.odds.MatchOdd>()
 
             result?.outrightOddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds?.forEach { matchOdd ->
@@ -1484,17 +1493,61 @@ class GameViewModel(
 
                     matchOdd?.startDate = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, DMY_FORMAT)
                     matchOdd?.startTime = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, HM_FORMAT)
+
+                    //region 先處理頁面顯示需要的資料結構
+                    matchOdd?.let { matchOddNotNull ->
+                        val oddsList = mutableListOf<Any>()
+                        matchOdd.oddsMap?.forEach { oddMap ->
+                            val playCateExpand = matchOdd.oddsExpand?.get(oddMap.key) ?: false
+
+                            //region 玩法標題
+                            oddsList.add(
+                                OutrightSubTitleItem(
+                                    playCateCode = oddMap.key,
+                                    subTitle = matchOdd.dynamicMarkets[oddMap.key]?.let {
+                                        when (LanguageManager.getSelectLanguage(LocalUtils.getLocalizedContext())) {
+                                            LanguageManager.Language.ZH -> {
+                                                it.zh
+                                            }
+                                            LanguageManager.Language.VI -> {
+                                                it.vi
+                                            }
+                                            else -> {
+                                                it.en
+                                            }
+                                        }
+                                    } ?: ""))
+                            //endregion
+
+                            //region 玩法賠率項
+                            oddsList.addAll(
+                                oddMap.value?.filterNotNull()
+                                    ?.mapIndexed { index, odd ->
+                                        odd.outrightCateKey = oddMap.key
+                                        odd.playCateExpand = playCateExpand
+                                        if (index < 5) odd.isExpand = true
+                                        odd
+                                    } ?: listOf()
+                            )
+                            //endregion
+
+                            //region 顯示更多選項(大於五項才需要此功能)
+                            if (oddMap.value?.filterNotNull()?.size ?: 0 > 5) {
+                                //Triple(玩法key, MatchOdd, 該玩法是否需要展開)
+                                oddsList.add(OutrightShowMoreItem(oddMap.key, matchOdd, playCateExpand))
+                            }
+                            //endregion
+                        }
+                        matchOddNotNull.outrightOddsList = oddsList
+                        outrightMatchList.add(matchOddNotNull)
+                    }
+                    //endregion
                 }
             }
 
-            val matchOdd =
-                result?.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()
-            matchOdd?.let {
-                matchOdd.playCateMappingList = playCateMappingList
-                matchOdd.updateOddStatus()
+            withContext(Dispatchers.Main) {
+                _outrightMatchList.value = Event(outrightMatchList)
             }
-
-            _outrightOddsListResult.postValue(Event(result))
         }
     }
 
