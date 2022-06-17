@@ -9,7 +9,11 @@
     tools:context=".ui.profileCenter.ProfileCenterActivity"
     tools:ignore="spUsage">
     <include
-        layout="@layout/view_base_tool_bar_no_drawer"/>
+        android:id="@+id/my_profile_toolbar"
+        layout="@layout/view_toolbar_main"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,7 +27,7 @@
         android:paddingEnd="20dp">
 
         <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/iv_head"
+            android:id="@+id/iv_head1"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:layout_marginLeft="@dimen/margin_30"
@@ -48,8 +52,8 @@
             android:textSize="@dimen/textSize16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/label_user_id"
-            app:layout_constraintStart_toEndOf="@id/iv_head"
-            app:layout_constraintTop_toTopOf="@id/iv_head"
+            app:layout_constraintStart_toEndOf="@id/iv_head1"
+            app:layout_constraintTop_toTopOf="@id/iv_head1"
             tools:text="Jason0921155" />
 
         <ImageButton
@@ -76,8 +80,8 @@
             android:text="@string/user_id_colon"
             android:textColor="@color/color_7F7F7F_999999"
             android:textSize="@dimen/textSize12sp"
-            app:layout_constraintBottom_toBottomOf="@id/iv_head"
-            app:layout_constraintStart_toEndOf="@id/iv_head"
+            app:layout_constraintBottom_toBottomOf="@id/iv_head1"
+            app:layout_constraintStart_toEndOf="@id/iv_head1"
             app:layout_constraintTop_toBottomOf="@id/tv_user_nickname" />
 
         <TextView
