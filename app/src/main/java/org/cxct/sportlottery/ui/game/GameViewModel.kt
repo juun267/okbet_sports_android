@@ -1487,7 +1487,8 @@ class GameViewModel(
                     }
 
                     matchOdd?.setupOddDiscount()
-                    matchOdd?.setupPlayCate()
+                    //20220617 冠軍的排序字串切割方式不同, 跟進iOS odds給什麼就顯示什麼
+//                    matchOdd?.setupPlayCate()
                     //20220613 冠軍的排序字串切割方式不同, 跟進iOS此處無重新排序
 //                    matchOdd?.sortOdds()
 
