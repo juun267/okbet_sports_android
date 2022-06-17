@@ -582,9 +582,6 @@ class OddButtonPagerViewHolder private constructor(
 
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(0))
 
-            //TODO Bill 這裡要確認為什麼是用快捷玩法
-            isSelected = QuickListManager.getQuickSelectedList()?.contains(odds.second?.getOrNull(0)?.id) ?: false
-
             setOnClickListener {
                 odds.second?.getOrNull(0)?.let { odd ->
                     //it.isSelected = !it.isSelected
@@ -605,8 +602,6 @@ class OddButtonPagerViewHolder private constructor(
 
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(1))
 
-            isSelected = QuickListManager.getQuickSelectedList()?.contains(odds.second?.getOrNull(1)?.id) ?: false
-
             setOnClickListener {
                 odds.second?.getOrNull(1)?.let { odd ->
 //                    it.isSelected = !it.isSelected
@@ -626,8 +621,6 @@ class OddButtonPagerViewHolder private constructor(
             setupOdd4hall(playCateCode, odds.second?.getOrNull(2), odds.second, oddsType, isDrawBtn = true)
 
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(2))
-
-            isSelected = QuickListManager.getQuickSelectedList()?.contains(odds.second?.getOrNull(2)?.id) ?: false
 
             setOnClickListener {
                 odds.second?.getOrNull(2)?.let { odd ->

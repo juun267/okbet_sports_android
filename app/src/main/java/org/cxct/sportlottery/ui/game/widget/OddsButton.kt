@@ -223,8 +223,8 @@ class OddsButton @JvmOverloads constructor(
 
         updateOddsTextColor()
 
-        isSelected = odds?.isSelected ?: false
-
+//        isSelected = odds?.isSelected ?: false
+        isSelected = QuickListManager.getQuickSelectedList()?.contains(odds?.id) ?: false
 
     }
 
