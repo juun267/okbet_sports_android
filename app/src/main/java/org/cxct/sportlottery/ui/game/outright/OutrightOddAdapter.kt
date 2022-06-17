@@ -176,12 +176,14 @@ class OutrightOddAdapter :
         private val tvMore = itemView.findViewById<TextView>(R.id.tvMore)
         private val ivMoreIcon = itemView.findViewById<ImageView>(R.id.ivMoreIcon)
 
+        private val moreItemViewHeight = (itemView.context.resources.displayMetrics.density * 64).toInt() //顯示更多Item的高度
+
         fun bind(oddsKey: String, matchOdd: MatchOdd, isExpand: Boolean, outrightOddListener: OutrightOddListener?) {
             itemView.visibility = if (isExpand) View.VISIBLE else View.GONE
 
             itemView.layoutParams = if (isExpand) LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                (itemView.context.resources.displayMetrics.density * 64).toInt()
+                moreItemViewHeight
             ) else LinearLayout.LayoutParams(0, 0)
 
             itemView.setOnClickListener {
