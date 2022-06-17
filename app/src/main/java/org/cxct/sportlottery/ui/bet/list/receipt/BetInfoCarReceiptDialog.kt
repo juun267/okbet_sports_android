@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.view_match_receipt_bet.*
 import kotlinx.android.synthetic.main.view_match_receipt_bet.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
+import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
@@ -26,7 +26,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import java.util.*
 
-class BetInfoCarReceiptDialog(val result: BetAddResult) :
+class BetInfoCarReceiptDialog(val receipt: Receipt?) :
     BaseSocketBottomSheetFragment<GameViewModel>(GameViewModel::class) {
 
     val mHandler = Handler(Looper.getMainLooper())
@@ -50,7 +50,6 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
 
     private fun initView(view: View) {
         view.apply {
-            val receipt = result.receipt
             if (receipt?.singleBets.isNullOrEmpty()) {
                 //無資料時的預設內容
                 view.tv_bet_amount.text = TextUtil.formatMoney(0.0)
@@ -121,7 +120,7 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
 
     private fun initOnclick() {
         val hasBetSuccess =
-            result.receipt?.singleBets?.find { it.status != BetReceiptFragment.BetStatus.CANCELED.value } != null
+            receipt?.singleBets?.find { it.status != BetReceiptFragment.BetStatus.CANCELED.value } != null
         btn_done.text = when (hasBetSuccess) {
             true -> resources.getString(R.string.complete)
             false -> resources.getString(R.string.bet_fail_btn)
@@ -143,7 +142,7 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
 
         viewModel.oddsType.observe(viewLifecycleOwner) { oddType ->
 
-            result.receipt?.singleBets?.firstOrNull()?.let { betResult ->
+            receipt?.singleBets?.firstOrNull()?.let { betResult ->
                 betResult.matchOdds?.firstOrNull()?.let { matchOdd ->
                     var currentOddsTypes = oddType
                     if (matchOdd.odds == matchOdd.malayOdds || betResult.matchType == MatchType.OUTRIGHT || betResult.matchType == MatchType.OTHER_OUTRIGHT) {

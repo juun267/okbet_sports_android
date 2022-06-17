@@ -523,9 +523,10 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 liveVideo = it.matchInfo?.liveVideo,
                 status = it.matchInfo?.status ?: -1,
                 leagueName = it.matchInfo?.leagueName ?: "",
-                source = it.matchInfo?.source
+                source = it.matchInfo?.source,
+                parlay = it.matchInfo?.parlay
             ).apply {
-                startDateDisplay = TimeUtil.timeFormat(this.startTime, "dd/MM")
+                startDateDisplay = TimeUtil.timeFormat(this.startTime, "MM/dd")
                 startTimeDisplay = TimeUtil.timeFormat(this.startTime, "HH:mm")
                 isAtStart = TimeUtil.isTimeAtStart(this.startTime)
                 isStartPosition = index == 0

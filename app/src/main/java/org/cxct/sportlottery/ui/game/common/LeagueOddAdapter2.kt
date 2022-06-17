@@ -697,9 +697,9 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 }
                 else -> {
                     if (TimeUtil.isTimeToday(item.matchInfo?.startTime))
-                        itemView.context.getString(TimeUtil.setupDayOfWeekAndToday(item.matchInfo?.startTime))
+                        itemView.context.getString((R.string.home_tab_today))
                     else
-                        "${itemView.context.getString(TimeUtil.setupDayOfWeekAndToday(item.matchInfo?.startTime))} ${item.matchInfo?.startDateDisplay}"
+                       item.matchInfo?.startDateDisplay
                 }
             }
         }

@@ -43,11 +43,11 @@ class RechargeLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
                 log_detail_time.text = it.rechDateAndTime ?: ""
                 log_detail_type.text = it.rechTypeDisplay ?: ""
                 log_detail_status.text = it.rechState ?: ""
-                log_detail_amount.text = "${it.displayMoney} ${sConfigData?.systemCurrency}"
+                log_detail_amount.text = "${sConfigData?.systemCurrencySign} ${it.displayMoney}"
                 log_detail_reason.text = it.reason ?: ""
 
                 (it.rebateMoney ?: 0.0).let { nonNullDisplayFee ->
-                    log_detail_rebate.text ="${TextUtil.format(abs(nonNullDisplayFee))} ${sConfigData?.systemCurrency}"
+                    log_detail_rebate.text ="${sConfigData?.systemCurrencySign} ${TextUtil.format(abs(nonNullDisplayFee))}"
                     log_detail_rebate_subtitle.text =
                         if (nonNullDisplayFee > 0.0) getString(R.string.log_detail_rebate_money)
                         else getString(R.string.log_detail_handle_fee)

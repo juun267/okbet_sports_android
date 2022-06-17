@@ -4,6 +4,7 @@ import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,8 +13,11 @@ import com.zhy.adapter.recyclerview.CommonAdapter
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter
 import com.zhy.adapter.recyclerview.base.ViewHolder
 import kotlinx.android.synthetic.main.content_left_menu_item.view.*
+import kotlinx.android.synthetic.main.content_left_menu_item.view.divider
+import kotlinx.android.synthetic.main.content_left_menu_item.view.tv_count
 import kotlinx.android.synthetic.main.content_left_menu_item_footer.view.*
 import kotlinx.android.synthetic.main.content_left_menu_item_header.view.*
+import kotlinx.android.synthetic.main.home_game_card_v2.view.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -107,14 +111,16 @@ class LeftMenuItemNewAdapter(
                     txv_price.text = item.title
 
                     //暫時利用gameCount當判斷是否為coming soon
-                    if (item.gameCount == -1) {
-                        tv_count.text = context.getString(R.string.coming_soon)
-                        isEnabled = false
-                        btn_select.isEnabled = false
-                    } else {
+                    if (item.gameCount > 0) {
                         tv_count.text = item.gameCount.toString()
+                        tv_count.setTextColor(ContextCompat.getColor(context,R.color.color_7F7F7F_999999))
                         isEnabled = true
                         btn_select.isEnabled = true
+                    } else {
+                        tv_count.text = context.getString(R.string.coming_soon)
+                        tv_count.setTextColor(ContextCompat.getColor(context,R.color.color_b73a20))
+                        isEnabled = false
+                        btn_select.isEnabled = false
                     }
 
                     divider.isVisible = position == selectedNumber - 1
@@ -122,6 +128,7 @@ class LeftMenuItemNewAdapter(
                     if (item.isCurrentSportType) {
                         txv_price.setTypeface(txv_price.typeface, Typeface.BOLD)
                         tv_count.setTypeface(tv_count.typeface, Typeface.BOLD)
+                        tv_count.setTextColor(ContextCompat.getColor(context,R.color.color_317FFF_0760D4))
                         txv_price.isSelected = true
                         tv_count.isSelected = true
                     } else {
@@ -224,7 +231,7 @@ class LeftMenuItemNewAdapter(
                     headerSelectedListener.promotionSelected()
                 }
                 //代理加盟
-                tv_affiliate.setOnClickListener{
+                tv_affiliate.setOnClickListener {
                     headerSelectedListener.affiliateSelected()
                 }
                 ct_inplay.setOnClickListener {
@@ -249,11 +256,16 @@ class LeftMenuItemNewAdapter(
                             position: Int
                         ) {
                             holder.setText(R.id.tvSpecialEvent, t.title)
-                            try {//後端有機會給錯格式導致無法解析
-                                val countryIcon = SvgUtil.getSvgDrawable(itemView.context, t.couponIcon)
-                                holder.setImageDrawable(R.id.img_ic, countryIcon)
-                            } catch (e: Exception) {
-                                e.printStackTrace()
+
+                            if (t.couponIcon.first().toString() != "<") {
+                                holder.setImageResource(R.id.img_ic, R.drawable.ic_menu_special)
+                            } else {
+                                try {//後端有機會給錯格式導致無法解析
+                                    val countryIcon = SvgUtil.getSvgDrawable(itemView.context, t.couponIcon)
+                                    holder.setImageDrawable(R.id.img_ic, countryIcon)
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                }
                             }
                         }
 

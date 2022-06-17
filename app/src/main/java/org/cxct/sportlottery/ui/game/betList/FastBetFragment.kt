@@ -20,17 +20,12 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.button_bet.view.*
-import kotlinx.android.synthetic.main.content_bet_info_item.*
-import kotlinx.android.synthetic.main.content_bet_info_item.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail.*
-import kotlinx.android.synthetic.main.content_bet_info_item_v2.view.*
-import kotlinx.android.synthetic.main.fragment_bottom_sheet_betinfo_item.*
-import kotlinx.android.synthetic.main.fragment_game_v3.*
+import kotlinx.android.synthetic.main.fragment_bottom_sheet_betinfo_item_v2.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import kotlinx.android.synthetic.main.snackbar_my_favorite_notify.view.*
-import kotlinx.android.synthetic.main.view_bet_info_close_message.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.FragmentBottomSheetBetinfoItemBinding
+import org.cxct.sportlottery.databinding.FragmentBottomSheetBetinfoItemV2Binding
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.enum.SpreadState
@@ -43,6 +38,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.error.BetAddErrorParser
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.*
@@ -68,7 +64,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         private const val BET_CONFIRM_TIPS = 1001
     }
 
-    private lateinit var binding: FragmentBottomSheetBetinfoItemBinding
+    private lateinit var binding: FragmentBottomSheetBetinfoItemV2Binding
 
     //提示
     private var snackBarNotify: Snackbar? = null
@@ -186,6 +182,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         set(value) {
             field = value
             binding.layoutKeyBoard.setMaxBetMoney(getMaxBetMoney())
+            binding.tvBalance.text = TextUtil.formatMoney(value ?: 0.0)
         }
 
     override fun onCreateView(
@@ -193,7 +190,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentBottomSheetBetinfoItemBinding.inflate(inflater, container, false)
+        binding = FragmentBottomSheetBetinfoItemV2Binding.inflate(inflater, container, false)
         binding.apply {
 //            lifecycleOwner = this@FastBetFragment.viewLifecycleOwner
 //            dialog = this@BetInfoCarDialog
@@ -211,12 +208,11 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
-        view.background = ColorDrawable(Color.TRANSPARENT)
+//        view.background = ColorDrawable(Color.TRANSPARENT)
         //initData()
         initView()
         initQuota()
-        initButton()
+//        initButton()
         initEditText()
         initObserve()
         initSocketObserver()
@@ -268,6 +264,18 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initView() {
+        //點背景dismiss
+        binding.root.setOnClickListener {
+            dismiss()
+        }
+        binding.tvBalanceCurrency.text = sConfigData?.systemCurrency
+        binding.ivArrow.setOnClickListener {
+            dismiss()
+        }
+        binding.btnDeleteAll.setOnClickListener {
+            viewModel.removeBetInfoAll()
+            dismiss()
+        }
         binding.ivClose.setOnClickListener {
             viewModel.removeBetInfoSingle()
             dismiss()
@@ -305,13 +313,13 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
             isCanSendOut = false
         }
-        binding.tvAddToBetInfo.setOnClickListener {
-            addToBetInfoList()
-            dismiss()
-        }
-        binding.buttonFastBetSetting.setOnClickListener {
-            showSettingDialog()
-        }
+//        binding.tvAddToBetInfo.setOnClickListener {
+//            addToBetInfoList()
+//            dismiss()
+//        }
+//        binding.buttonFastBetSetting.setOnClickListener {
+//            showSettingDialog()
+//        }
         binding.btnRecharge.setOnClickListener {
             if(isLogin == true){
                 startActivity(Intent(context, MoneyRechargeActivity::class.java))
@@ -324,9 +332,9 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initButton() {
-        cl_close_waring.setOnClickListener {
-            removeClosedPlat()
-        }
+//        cl_close_waring.setOnClickListener {
+//            removeClosedPlat()
+//        }
     }
 
     private fun dismiss() {
@@ -456,7 +464,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 //                }
                 tv_win_quota.text = TextUtil.format(win)
 
-                button_bet.isOddsChanged = false //輸入金額行為, 視為接受當前賠率
+//                button_bet.isOddsChanged = false //輸入金額一樣顯示接受的文案
 
                 viewModel.updateBetAmount(it)
 
@@ -520,16 +528,17 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         }
                     }
                     matchOdd?.let { matchOdd ->
-                        //並不是每筆資料都有滾球的Booleam可以判斷 所以改用時間
-                        var inPlay = System.currentTimeMillis() > matchOdd.startTime ?: 0
-                        if (matchOdd.startTime == null)
-                            inPlay = false
-                        if (inPlay) {
-                            tvInGame.visibility = View.VISIBLE
-                        } else {
-                            tvInGame.visibility = View.GONE
-                        }
-                        binding.tvLeagueName.text = matchOdd.leagueName
+//                        //fragment_bottom_sheet_betinfo_item_v2.xml 無 tvInGame, tvLeagueName
+//                        //並不是每筆資料都有滾球的Booleam可以判斷 所以改用時間
+//                        var inPlay = System.currentTimeMillis() > matchOdd.startTime ?: 0
+//                        if (matchOdd.startTime == null)
+//                            inPlay = false
+//                        if (inPlay) {
+//                            tvInGame.visibility = View.VISIBLE
+//                        } else {
+//                            tvInGame.visibility = View.GONE
+//                        }
+//                        binding.tvLeagueName.text = matchOdd.leagueName
                         binding.ivSportLogo.setImageResource(
                             GameType.getGameTypeIcon(
                                 GameType.getGameType(
@@ -674,7 +683,6 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.getContentIfNotHandled()?.let { oddsChangeEvent ->
-                SocketUpdateUtil.updateMatchOdds(oddsChangeEvent)
                 viewModel.updateMatchOdd(oddsChangeEvent)
             }
         }
@@ -695,7 +703,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun showBottomSheetDialog(result: BetAddResult) {
         context?.let {
             dismiss()
-            BetInfoCarReceiptDialog(result).show(
+            BetInfoCarReceiptDialog(result.receipt).show(
                 parentFragmentManager,
                 BetInfoCarReceiptDialog::class.java.simpleName
             )
@@ -809,42 +817,22 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
 
         if (matchOdd.status == BetStatus.ACTIVATED.code) {
-            binding.clItemBackground.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.color_191919_FCFCFC
-                )
-            )
-            binding.llOddsChanged.visibility = View.VISIBLE
-            binding.ivBetLock.visibility = View.GONE
-            binding.viewGrey.visibility = View.VISIBLE
+            binding.vBetLock.visibility = View.GONE
+            binding.tvBetLock.visibility = View.GONE
             binding.etBet.isEnabled = true
             binding.etBet.isFocusable = true
             binding.etBet.isFocusableInTouchMode = true
             binding.etBet.setBackgroundResource(R.drawable.effect_select_bet_radius_4_edit_text)
             binding.etClickable.isEnabled = true
-            cl_quota_detail.visibility = View.VISIBLE
-            cl_close_waring.visibility = View.GONE
-            tv_remove.visibility = View.GONE
         } else {
-            binding.clItemBackground.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.color_141414_f3f3f3
-                )
-            )
-            binding.llOddsChanged.visibility = View.GONE
-            binding.ivBetLock.visibility = View.VISIBLE
-            binding.viewGrey.visibility = View.INVISIBLE
+            binding.vBetLock.visibility = View.VISIBLE
+            binding.tvBetLock.visibility = View.VISIBLE
             binding.etBet.isEnabled = false
             binding.etBet.isFocusable = false
             binding.etBet.isFocusableInTouchMode = false
             binding.etBet.setBackgroundResource(R.drawable.bg_square_shape_4dp_cccccc)
             binding.etClickable.isEnabled = false
             binding.layoutKeyBoard.hideKeyboard()
-            cl_quota_detail.visibility = View.GONE
-            cl_close_waring.visibility = View.VISIBLE
-            tv_remove.visibility = View.VISIBLE
         }
 
         if (matchOdd.spreadState != SpreadState.SAME.state || matchOdd.oddState != OddState.SAME.state) {
@@ -860,10 +848,11 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     oldOdds,
                     TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
                 )
-                
-                //若賠率有變更過就要一直存在
-                tv_odds_changed.text = getString(R.string.bet_info_odd_content_changed)
-                tv_odds_changed.visibility = View.VISIBLE
+
+//                //fragment_bottom_sheet_betinfo_item_v2.xml 無 tv_odds_changed
+//                //若賠率有變更過就要一直存在
+//                tv_odds_changed.text = getString(R.string.bet_info_odd_content_changed)
+//                tv_odds_changed.visibility = View.VISIBLE
             }
         }
 

@@ -245,7 +245,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
             }
         }
         private fun org.cxct.sportlottery.network.matchCategory.result.MatchInfo.getStartTime(context: Context): String {
-            val dateFormat = "dd / MM"
+            val dateFormat = "MM / dd"
             val todayDate = TimeUtil.timeFormat(System.currentTimeMillis(), dateFormat)
             return this.startTime?.let { startTimeNotNull ->
                 TimeUtil.timeFormat(startTimeNotNull, "$dateFormat\nHH:mm")
@@ -268,7 +268,8 @@ fun RecommendGameEntity.toMatchOdd(): MatchOdd {
         status = this.matchInfo?.status ?: -1,
         name = this.leagueName,
         leagueName = this.leagueName,
-        source = this.matchInfo?.source
+        source = this.matchInfo?.source,
+        parlay = this.matchInfo?.parlay
     )
     val odds: MutableMap<String, MutableList<Odd?>?> = mutableMapOf()
     this.oddBeans.forEach {

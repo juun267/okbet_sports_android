@@ -28,11 +28,30 @@
             android:includeFontPadding="false"
             android:paddingTop="2dp"
             android:paddingBottom="1dp"
+            tools:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/tv_quota"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed" />
+
+        <!-- tv_accept_odds_change移到cl_bet中 -->
+        <TextView
+            android:id="@+id/tv_accept_odds_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bet_info_accept_odds_change"
+            android:textColor="@color/color_FFFFFF_FFFFFF"
+            android:textSize="@dimen/textSize14sp"
+            android:includeFontPadding="false"
+            android:paddingTop="2dp"
+            android:paddingBottom="1dp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_bet"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_bet"/>
 
         <TextView
             android:id="@+id/tv_quota"
@@ -65,23 +84,23 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <TextView
-        android:id="@+id/tv_accept_odds_change"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/selector_button_radius_5_bet"
-        android:gravity="center"
-        android:text="@string/bet_info_accept_odds_change"
-        android:textColor="@color/color_FCFCFC"
-        android:textSize="@dimen/textSize13sp"
-        android:visibility="gone"/>
+<!--    <TextView-->
+<!--        android:id="@+id/tv_accept_odds_change"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:background="@drawable/selector_button_radius_5_bet"-->
+<!--        android:gravity="center"-->
+<!--        android:text="@string/bet_info_accept_odds_change"-->
+<!--        android:textColor="@color/color_FCFCFC"-->
+<!--        android:textSize="@dimen/textSize13sp"-->
+<!--        android:visibility="gone"/>-->
 
 
     <TextView
         android:id="@+id/tv_login"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/button_radius_5_0760d4"
+        android:background="@drawable/button_radius_4_0870f7_0659c4"
         android:gravity="center"
         android:text="@string/btn_login"
         android:textAllCaps="true"

@@ -38,7 +38,7 @@ class MoneySubmitDialog(
     private fun initView() {
         txv_pay_way.text = payWay
         txv_pay_money.text =
-            "${TextUtil.formatMoney(ArithUtil.toMoneyFormat(payMoney.toDouble()).toDouble())} ${sConfigData?.systemCurrency}"
+            "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(ArithUtil.toMoneyFormat(payMoney.toDouble()).toDouble())}"
     }
 
     fun initButton() {

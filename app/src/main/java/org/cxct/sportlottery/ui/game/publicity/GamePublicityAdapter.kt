@@ -275,9 +275,9 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                     ivLogo.setImageResource(R.drawable.ic_logo_for_day_mode)
                     ivNotice.setImageResource(
                         if (hasNotice) {
-                            R.drawable.icon_bell_white_red_dot
+                            R.drawable.icon_bell_with_red_dot
                         } else {
-                            R.drawable.icon_bell_white
+                            R.drawable.icon_bell
                         }
                     )
                     ivMenu.setImageResource(R.drawable.ic_menu_gray)
@@ -322,9 +322,9 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
 
                 ivNotice.setImageResource(
                     if (hasNotice) {
-                        R.drawable.icon_bell_white_red_dot
+                        R.drawable.icon_bell_with_red_dot
                     } else {
-                        R.drawable.icon_bell_white
+                        R.drawable.icon_bell
                     }
                 )
 

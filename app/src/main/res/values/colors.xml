@@ -86,13 +86,17 @@
     <color name="color_33303030">#33303030</color>
     <color name="color_33DDDDDD">#33DDDDDD</color>
     <color name="color_BDBDBD">#BDBDBD</color>
+    <color name="color_F79D3A">#F79D3A</color>
     <color name="color_643C00">#643C00</color>
     <color name="color_F5F5F5">#F5F5F5</color>
-
     <color name="color_7F7F7F">#7F7F7F</color>
     <color name="color_909090">#909090</color>
     <color name="color_9D9D9D">#9D9D9D</color>
     <color name="color_BBBBBB">#BBBBBB</color>
+    <color name="color_9CC7FF">#9CC7FF</color>
+    <color name="color_171E26">#171E26</color>
+    <color name="color_E7F1FF">#E7F1FF</color>
+    <color name="color_232426">#232426</color>
     <!--以下部分，是系统中的白天的色值 -->
     <!--命名規則，color_[夜間色碼]_[白天色碼] -->
 
@@ -107,6 +111,9 @@
     <color name="color_1A1A1A_0760D4">@color/color_0760D4</color>
     <color name="color_404348_FFFFFF">@color/color_FFFFFF</color>
     <color name="color_FFFFFF_0760D4">@color/color_0760D4</color>
+    <color name="color_0760D4_0760D4">@color/color_0760D4</color>
+    <color name="color_171E26_9CC7FF">@color/color_9CC7FF</color>
+    <color name="color_232426_E7F1FF">@color/color_E7F1FF</color>
 
     <color name="color_FF9E3C_FF9E3C">@color/color_FF9E3C</color>
     <color name="color_FF9143_ff9200">@color/color_ff9200</color>
@@ -166,9 +173,13 @@
     <color name="color_5d5d5d_888888">@color/color_888888</color>
     <color name="color_e5e5e5_666666">@color/color_666666</color>
     <color name="color_bbbbbb_ffffff">@color/color_FFFFFF</color>
+    <color name="color_BBBBBB_060F20">@color/color_060F20</color>
+
 
     <color name="color_FFFFFF_DE000000">@color/color_DE000000</color>
     <color name="color_B3FFFFFF_99000000">@color/transparent_black_60</color>
+    <color name="color_80000000_80FFFFFF">@color/transparent_white_50</color>
+    <color name="color_66000000_14000000">@color/transparent_black_8</color>
     <color name="color_AEAEAE_545454">@color/color_AEAEAE</color>
     <color name="color_1E1E1E_FFFFFF">@color/color_FFFFFF</color>
     <color name="color_404040_e5e5e5">@color/color_e5e5e5</color>
@@ -185,6 +196,8 @@
     <color name="color_404040_BCBCBC">@color/color_bcbcbc</color>
     <color name="color_BCBCBC_666666">@color/color_666666</color>
     <color name="color_E2E2E2_D8D8D8">#D8D8D8</color>
+    <color name="color_1A000000_1A000000">#1A000000</color>
+    <color name="color_0D000000_0D000000">#0D000000</color>
     <color name="color_141414_FCFCFC">@color/color_FCFCFC</color>
 
     <!--region 特殊處理顏色-->
@@ -274,9 +287,12 @@
 
     <color name="transparent">#00000000</color>
     <color name="transparent_black_0">#00000000</color>
+    <color name="transparent_black_8">#14000000</color>
+    <color name="transparent_black_40">#66000000</color>
     <color name="transparent_black_50">#80000000</color>
     <color name="transparent_black_60">#99000000</color>
 
+    <color name="transparent_white_50">#80FFFFFF</color>
     <color name="transparent_white_70">#B3FFFFFF</color>
 
 <!--    <color name="color_fff3f3f3">#fff3f3f3</color>-->
@@ -298,7 +314,8 @@
     <color name="color_EDEDED">#EDEDED</color>
 
     <color name="color_AFAFB1">#AFAFB1</color>
-
+    <color name="color_FFFDFE">#FFFDFE</color>
+    <color name="color_7C8288">#7C8288</color>
     <!-- ======================================= -->
 
 

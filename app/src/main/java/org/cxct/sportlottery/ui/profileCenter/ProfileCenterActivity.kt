@@ -12,6 +12,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile_center.*
+import kotlinx.android.synthetic.main.fragment_left_menu.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
@@ -28,6 +29,7 @@ import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
@@ -38,6 +40,7 @@ import org.cxct.sportlottery.ui.menu.ChangeOddsTypeFullScreenDialog
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity.Companion.PWD_PAGE
+import org.cxct.sportlottery.ui.profileCenter.creditrecord.CreditRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
@@ -55,6 +58,7 @@ import org.cxct.sportlottery.util.TimeUtil.getRemainDay
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
+import java.util.*
 
 /**
  * @app_destination 個人中心
@@ -311,13 +315,13 @@ class ProfileCenterActivity :
             val serviceUrl2 = sConfigData?.customerServiceUrl2
             when {
                 !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(this@ProfileCenterActivity, serviceUrl)
+                    ServiceDialog().show(supportFragmentManager, null)
                 }
                 serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(this@ProfileCenterActivity, serviceUrl2)
+                    JumpUtil.toExternalWeb(this, serviceUrl2)
                 }
                 !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(this@ProfileCenterActivity, serviceUrl)
+                    JumpUtil.toExternalWeb(this, serviceUrl)
                 }
             }
         }
@@ -667,6 +671,7 @@ class ProfileCenterActivity :
     private fun updateCreditAccountUI() {
         val thirdOpen = sConfigData?.thirdOpen == FLAG_OPEN
         lin_wallet_operation.setVisibilityByCreditSystem()
+        v_divide.setVisibilityByCreditSystem()
         if (thirdOpen) btn_account_transfer.setVisibilityByCreditSystem()
         if (thirdOpen) btn_other_bet_record.setVisibilityByCreditSystem()
         if (!(sConfigData?.selfRestraintVerified == "0" || sConfigData?.selfRestraintVerified == null)) btn_self_limit.setVisibilityByCreditSystem()

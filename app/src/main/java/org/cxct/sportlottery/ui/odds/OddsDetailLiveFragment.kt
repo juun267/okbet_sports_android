@@ -116,11 +116,14 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                 if (timeMillis >= 1000) {
                     text = TimeUtil.longToMmSs(timeMillis)
                     startTime = timeMillis / 1000L
+                    isVisible = true
                 } else {
                     text = this.context.getString(R.string.time_null)
+                    isVisible = false
                 }
             } else {
                 text = this.context.getString(R.string.time_null)
+                isVisible = false
             }
         }
         return@Handler false
@@ -188,7 +191,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
             live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null,isLogin)
         }
 
-        if(args.liveVideo == 0) live_view_tool_bar.setUnLiveState()
+//        if(args.liveVideo == 0) live_view_tool_bar.setUnLiveState()
 
         matchOdd?.matchInfo?.let { matchInfo ->
             live_view_tool_bar.setStatisticsState(matchInfo.source == MatchSource.SHOW_STATISTICS.code)
@@ -487,8 +490,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
         receiver.matchOddsChange.observe(this.viewLifecycleOwner) {
             it?.getContentIfNotHandled()?.let { matchOddsChangeEvent ->
-                matchOddsChangeEvent.updateOddsSelectedState()
-
                 oddsDetailListAdapter?.oddsDetailDataList?.let { oddsDetailListDataList ->
                     SocketUpdateUtil.updateMatchOddsMap(
                         oddsDetailListDataList,
@@ -598,21 +599,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         }
     }
 
-    private fun MatchOddsChangeEvent.updateOddsSelectedState(): MatchOddsChangeEvent {
-        this.odds?.let { oddTypeSocketMap ->
-            oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
-                oddTypeSocketMapEntry.value.odds?.onEach { odd ->
-                    odd?.isSelected =
-                        viewModel.betInfoList.value?.peekContent()?.any { betInfoListData ->
-                            betInfoListData.matchOdd.oddsId == odd?.id
-                        }
-                }
-            }
-        }
-
-        return this
-    }
-
     private fun setupStartTime() {
 
         matchOdd?.matchInfo?.apply {
@@ -628,6 +614,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                 } else {
                     tv_time_bottom.text = getString(R.string.time_null)
                 }
+                tv_time_bottom.isVisible = timeStr.isNotEmpty()
                 tv_time_top.text = TimeUtil.timeFormat(startTime, DM_FORMAT)
             } else {
                 // 不需要一直重置

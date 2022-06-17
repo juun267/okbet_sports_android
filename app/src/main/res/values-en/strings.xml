@@ -36,7 +36,7 @@
     <string name="remember_password">Save this password</string>
     <string name="forget_password_question">Forgot password?</string>
     <string name="desc_forget_password">Please contact customer service</string>
-    <string name="sign_up_know">sign up now</string>
+    <string name="sign_up_know">Sign up now</string>
     <string name="recommend_code">Invite Code</string>
     <string name="hint_recommend_code">(Invite Code)</string>
     <string name="error_recommend_code">Invite code not available</string>
@@ -231,8 +231,8 @@
     <string name="daily_bet_range">Daily valid code interval valued</string>
     <string name="title_rebates_rate">Rebate %</string>
     <string name="daily_rebates">Maximum rebate amount in one day</string>
-    <string name="hint_recharge_growth">Top-up %d %s lulfilling %d to level up</string>
-    <string name="hint_bet_growth">Bet %d %s lulfilling %d to level up</string>
+    <string name="hint_recharge_growth">Top-up %s %d lulfilling %d to level up</string>
+    <string name="hint_bet_growth">Bet %s %d lulfilling %d to level up</string>
     <string name="contact_us">Contact us</string>
     <string name="game_rule">Game Rules</string>
     <string name="news">News</string>
@@ -282,8 +282,8 @@
     <string name="third">Three</string>
     <string name="fourth">Four</string>
     <string name="fifth">Five</string>
-    <string name="day_mode">Day mode</string>
-    <string name="night_mode">Night mode</string>
+    <string name="day_mode">Day Mode</string>
+    <string name="night_mode">Night Mode</string>
     <string name="add_time_first_plat">OT First period</string>
     <string name="add_time_second_plat">OT second period</string>
     <string name="first_session">First term</string>
@@ -488,7 +488,7 @@
     <string name="hint_pay1">1. The payment will be automatically received after successful payment, and the prompt will pop up.</string>
     <string name="hint_pay2">2. If there is no response for a long time, please contact customer service.</string>
     <string name="btn_look_for">Check trade</string>
-    <string name="btn_service">Contact customer service</string>
+    <string name="btn_service">Customer Service</string>
     <string name="btn_service_maintain">Customer service</string>
     <string name="txv_transfer_pay">Transfer</string>
     <string name="txv_online_pay">Online Deposit</string>
@@ -621,7 +621,8 @@
     <string name="bet_info_list_bet_quota">Betting amount: </string>
     <string name="bet_receipt_bet_quota">Stake：</string>
     <string name="bet_info_list_win_quota">To win: </string>
-    <string name="bet_list_win_quota">EST winning：</string>
+    <string name="bet_list_win_quota">EST Winning：</string>
+    <string name="bet_receipt_win_quota">EST winning：</string>
     <string name="bet_info_list_add_more">More selection</string>
     <string name="bet_info_list_bet">Place bet</string>
     <string name="bet_info_list_odds_change">Accept changes &#038; bets</string>
@@ -642,8 +643,8 @@
     <string name="bet_info_input_quota">Enter Stake</string>
     <string name="bet_info_check_maximum_limit">MAX BET</string>
     <string name="bet_info_bet_quota">bet amount</string>
-    <string name="bet_info_win_quota">To win</string>
-    <string name="bet_info_accept_odds_change">Accept changes &#038; bets</string>
+    <string name="bet_info_win_quota">To Win</string>
+    <string name="bet_info_accept_odds_change">Accept changes</string>
     <string name="bet_info_add_to_bet_info">Add to bet slip</string>
     <string name="bet_info_odd_content_changed">One or more options for odds, concede. Points or score has changed</string>
     <string name="bet_info_odd_content_changed2">The odds have changed, %s to %s </string>
@@ -652,7 +653,9 @@
     <string name="bet_list_delete_all">Delete all</string>
     <string name="bet_list_single_warn">(Fill all individual options with the same amount of bet)</string>
     <string name="bet_list_single">Singles</string>
-    <string name="bet_list_view_more_options">Show all the multiple options</string>
+    <string name="bet_list_single_type">Singles</string>
+    <string name="bet_list_parlay_type">Parlay</string>
+    <string name="bet_list_view_more_options">More options</string>
     <string name="bet_list_cant_parlay_warn">Remind if the same match betting items can not be linked for parlay</string>
     <string name="bet_info_odd_content_close">One or more options for the selected bet have been closed</string>
     <string name="bet_info_remove_closed">Remove disabled options</string>
@@ -715,7 +718,7 @@
     <string name="feedback_tabName_problem">Suggestions</string>
     <string name="feedback_tabName_record">Feedback history</string>
     <string name="feedback_description">If you have a good suggestion for the game or platform or find a Bug to submit, the official customer service will reply within 48 hours. We will timely fix bugs or refer to your feedback to continuously optimize our products and services. (If there are many people who give feedback on the same suggestion or Bug, the bonus will be given to the first person who gives feedback. Remember to give feedback as soon as you find any problem.)</string>
-    <string name="feedback_description_money">If the suggestion is adopted or the Bug is verified, the maximum reward is 3000 %s (or other equivalent currency).</string>
+    <string name="feedback_description_money">If the suggestion is adopted or the Bug is verified, the maximum reward is %s 3000 (or other equivalent currency).</string>
     <string name="feedback_submit_succeed">Feedback submitted successfully</string>
     <string name="all_status">All Status</string>
     <string name="feedback_last_reply_time">Time</string>
@@ -921,7 +924,7 @@
     <string name="identity_marital_status">Civil Status</string>
     <string name="identity_sex">Sex</string>
     <string name="identity_work">Occupation</string>
-    <string name="message_source_change">The system receives the latest event data and will automatically return to the homepage immediately</string>
+    <string name="message_source_change">The system receives new data, click confirm button to refresh</string>
     <string name="appearance">Appearance</string>
     <string name="goal_buster">GOAL BUSTER</string>
     <string name="top_games">TOP GAMES</string>
@@ -1015,7 +1018,7 @@
     <string name="self_limit_per_bet_limit_highest">Upper limit</string>
     <string name="self_limit_per_bet_limit_input_highest">Please enter numbers</string>
     <string name="self_limit_per_bet_limit_impotent">·You can modify your limit bet at any time. The modification will be active, after that sending the request. </string>
-    <string name="self_limit_per_bet_limit_user">Current limit Bet: %s</string>
+    <string name="self_limit_per_bet_limit_user">Current limit Bet: %1$s %2$s</string>
     <string name="self_limit_per_bet_limit_user_none">None</string>
     <string name="self_limit_per_bet_limit_user_limit"> (Maximum limited bet:%1$s %2$s-%1$s %3$s)</string>
     <string name="self_limit_error">The field format is incorrect, please enter an integer.</string>
@@ -1140,8 +1143,13 @@
     <string name="dialog_age_verify_exit">EXIT</string>
     <!--endregion-->
 
-    <string name="coming_soon">Coming Soon</string>
+    <string name="coming_soon">Soon</string>
     <string name="esports">eSports</string>
     <string name="timezone_change">Time Zone</string>
+
+    <!--region 注單模塊調整-->
+    <string name="bet_info_bet_lock_hint">Markets of your bet has changed</string>
+    <string name="bet_info_no_parlay_hint">The match hasn\'t supported parlay</string>
+    <!--endregion-->
 
 </resources>

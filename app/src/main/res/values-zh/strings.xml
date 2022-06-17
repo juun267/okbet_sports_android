@@ -231,8 +231,8 @@
     <string name="daily_bet_range">每日有效打码区间值</string>
     <string name="title_rebates_rate">返水%数</string>
     <string name="daily_rebates">单日最大返水</string>
-    <string name="hint_recharge_growth">存款 %d %s可获得 %d 点成长值</string>
-    <string name="hint_bet_growth">投注 %d %s可获得 %d 点成长值</string>
+    <string name="hint_recharge_growth">存款 %s %d 可获得 %d 点成长值</string>
+    <string name="hint_bet_growth">投注 %s %d 可获得 %d 点成长值</string>
     <string name="contact_us">联络我们</string>
     <string name="game_rule">游戏规则</string>
     <string name="news">最新消息</string>
@@ -612,6 +612,7 @@
     <string name="bet_receipt_bet_quota">投注金额：</string>
     <string name="bet_info_list_win_quota">可赢金额：</string>
     <string name="bet_list_win_quota">可赢金额：</string>
+    <string name="bet_receipt_win_quota">可赢金额：</string>
     <string name="bet_info_list_add_more">更多选择</string>
     <string name="bet_info_list_bet">投注</string>
     <string name="bet_info_list_odds_change">接受变更并投注</string>
@@ -620,6 +621,7 @@
     <string name="bet_info_list_bigger_than_max_limit">投注额大于下注限额</string>
     <string name="bet_info_list_less_than_minimum_limit">投注额小于下注限额</string>
     <string name="bet_info_list">注单</string>
+
     <string name="bet_info_parlay_list">复式连串过关投注</string>
     <string name="bet_info_parlay_win_quota">可赢金额：</string>
     <string name="bet_info_add_bet_success">投注成功</string>
@@ -633,7 +635,7 @@
     <string name="bet_info_check_maximum_limit">查看最高下注</string>
     <string name="bet_info_bet_quota">投注额</string>
     <string name="bet_info_win_quota">可赢额</string>
-    <string name="bet_info_accept_odds_change">接受更改并投注</string>
+    <string name="bet_info_accept_odds_change">接受变更</string>
     <string name="bet_info_add_to_bet_info">加入投注单</string>
     <string name="bet_info_odd_content_changed">一个或多个选项的赔率，让球数或比分已更改</string>
     <string name="bet_info_odd_content_changed2">赔率已变更，从 %s 至 %s 。</string>
@@ -641,7 +643,9 @@
     <string name="bet_list_delete_all">全删除</string>
     <string name="bet_list_single_warn">可用相同的投注额填充所有单项选择</string>
     <string name="bet_list_single">单注</string>
-    <string name="bet_list_view_more_options">查看所有多个选项</string>
+    <string name="bet_list_single_type">单项投注</string>
+    <string name="bet_list_parlay_type">串关投注</string>
+    <string name="bet_list_view_more_options">更多投注选项</string>
     <string name="bet_list_cant_parlay_warn">提醒若同一赛事, 不同球种, 冠军等投注项目不可进行串关</string>
     <string name="bet_info_odd_content_close">所选投注的一个或多个选项已关闭</string>
     <string name="bet_info_remove_closed">移除已关闭的选项</string>
@@ -921,7 +925,7 @@
     <string name="identity_marital_status">婚姻状态</string>
     <string name="identity_sex">性别</string>
     <string name="identity_work">工作</string>
-    <string name="message_source_change">系统收到最新赛事数据,将立即自动回到首页</string>
+    <string name="message_source_change">系统收到最新赛事数据，确认后将刷新页面</string>
     <string name="appearance">外观</string>
     <string name="day_mode">日间模式</string>
     <string name="night_mode">夜间模式</string>
@@ -1018,7 +1022,7 @@
     <string name="self_limit_per_bet_limit_highest">上限</string>
     <string name="self_limit_per_bet_limit_input_highest">请输入数字</string>
     <string name="self_limit_per_bet_limit_impotent">您随时可以修改您的每次投注上限。修改将于申请送出后生效</string>
-    <string name="self_limit_per_bet_limit_user">已设置投注上限：%s</string>
+    <string name="self_limit_per_bet_limit_user">已设置投注上限：%1$s %2$s</string>
     <string name="self_limit_per_bet_limit_user_none">无</string>
     <string name="self_limit_per_bet_limit_user_limit"> (最高可设定:%1$s %2$s-%1$s %3$s)</string>
     <string name="self_limit_error">资料格式不符，请输入整数</string>
@@ -1141,5 +1145,10 @@
     <string name="esports">电子竞技</string>
     <string name="coming_soon">即将推出</string>
     <string name="timezone_change">时区切换</string>
+
+    <!--region 注單模塊調整-->
+    <string name="bet_info_bet_lock_hint">注单盘口已关闭</string>
+    <string name="bet_info_no_parlay_hint">赛事暂无支持串关</string>
+    <!--endregion-->
 
 </resources>

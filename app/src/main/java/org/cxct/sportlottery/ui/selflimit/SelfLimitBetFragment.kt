@@ -106,19 +106,21 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
         if (viewModel.userInfo.value?.perBetLimit == null) {
             binding.tvPerBetLimit.text = String.format(
                 getString(R.string.self_limit_per_bet_limit_user),
-                getString(R.string.self_limit_per_bet_limit_user_none)
+                getString(R.string.self_limit_per_bet_limit_user_none),
+                ""
             )
         } else {
             binding.tvPerBetLimit.text = String.format(
                 getString(R.string.self_limit_per_bet_limit_user),
+                sConfigData?.systemCurrencySign,
                 TextUtil.formatMoney(viewModel.userInfo.value?.perBetLimit?.toDouble() ?: 0.0)
-            ) + " " + sConfigData?.systemCurrency
+            )
         }
 
         val perBetMinAmount = if (sConfigData?.perBetMinAmount.isNullOrEmpty()) 0.0 else sConfigData?.perBetMinAmount?.toDouble() ?: 0.0
         val perBetMaxAmount = if (sConfigData?.perBetMaxAmount.isNullOrEmpty()) 0.0 else sConfigData?.perBetMaxAmount?.toDouble() ?: 0.0
         binding.tvLimit.text = String.format(
-            getString(R.string.self_limit_per_bet_limit_user_limit),  sConfigData?.systemCurrency ?: " ",
+            getString(R.string.self_limit_per_bet_limit_user_limit),  sConfigData?.systemCurrencySign ?: " ",
             TextUtil.formatMoney(perBetMinAmount),
             TextUtil.formatMoney(perBetMaxAmount)
 
@@ -159,7 +161,7 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
 
         viewModel.userInfoResult.observe(viewLifecycleOwner, {
             binding.tvPerBetLimit.text =
-                String.format(getString(R.string.self_limit_per_bet_limit_user), TextUtil.formatMoney(viewModel.userInfo.value?.perBetLimit!!) + sConfigData?.systemCurrency)
+                String.format(getString(R.string.self_limit_per_bet_limit_user), sConfigData?.systemCurrencySign, TextUtil.formatMoney(viewModel.userInfo.value?.perBetLimit ?: 0))
         })
     }
 
@@ -172,8 +174,9 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
     private fun updateBetLimit(text: String) {
         binding.tvPerBetLimit.text = String.format(
             getString(R.string.self_limit_per_bet_limit_user),
+            sConfigData?.systemCurrencySign,
             TextUtil.formatMoney(text.toDouble())
-        ) + " " + sConfigData?.systemCurrency
+        )
     }
 
 }

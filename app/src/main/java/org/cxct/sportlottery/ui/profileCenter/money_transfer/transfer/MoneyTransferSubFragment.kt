@@ -43,7 +43,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         moveAnim(isPlatReversed)
         out_account.selectedText = getString(R.string.plat_money)
         in_account.selectedText = gameDataArg.gameData.showName
-        layout_balance.tv_currency_type.text = sConfigData?.systemCurrency
+        layout_balance.tv_currency_type.text = sConfigData?.systemCurrencySign
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.OUT_PLAT, gameDataArg.gameData.showName)
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.IN_PLAT, getString(R.string.plat_money))
         btn_transfer.setTitleLetterSpacing()
@@ -100,16 +100,20 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
 
         viewModel.transferResult.observe(viewLifecycleOwner) { result ->
             result?.getContentIfNotHandled()?.let { it ->
-                val dialog = CustomAlertDialog(requireActivity()).apply {
-                    setTitle(getString(R.string.prompt))
-                    setMessage(if (it.success) getString(R.string.transfer_money_succeed) else it.msg)
-                    setNegativeButtonText(null)
-                    setTextColor(if (it.success) R.color.color_909090_666666 else R.color.color_F75452_b73a20)
-                }
-                dialog.show(childFragmentManager, null)
-
                 if (it.success) {
-                    view?.findNavController()?.navigate(MoneyTransferSubFragmentDirections.actionMoneyTransferSubFragmentToMoneyTransferFragment())
+                    context?.let { context ->
+                        val dialog = CustomAlertDialog(context).apply {
+                            setTitle(context.getString(R.string.prompt))
+                            setMessage(if (it.success) context.getString(R.string.transfer_money_succeed) else it.msg)
+                            setPositiveClickListener {
+                                this@MoneyTransferSubFragment.view?.findNavController()
+                                    ?.navigate(MoneyTransferSubFragmentDirections.actionMoneyTransferSubFragmentToMoneyTransferFragment())
+                            }
+                            setNegativeButtonText(null)
+                            setTextColor(if (it.success) R.color.color_909090_666666 else R.color.color_F75452_b73a20)
+                        }
+                        dialog.show(childFragmentManager, null)
+                    }
                 }
             }
         }

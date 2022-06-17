@@ -4,6 +4,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
+import android.text.style.ScaleXSpan
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.size
@@ -25,7 +26,7 @@ class GameMenuV2ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(data: HomeListAdapter.MenuItemData) {
         //TODO 即將開賽、第三方... 尚未確定先隱藏
-        with(itemView) {
+        /*with(itemView) {
             card_game_soon.visibility = View.GONE
             card_lottery.visibility = View.GONE
             card_live.visibility = View.GONE
@@ -34,22 +35,22 @@ class GameMenuV2ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             card_fishing.visibility = View.GONE
             card_game_result.visibility = View.GONE
             card_update.visibility = View.GONE
-        }
+        }*/
 //        setupView(data)
 //        updateThirdGameCard(data)
         setupViewClick()
         setupSportMenu(data.sportMenuList)
-        setupComingSoonCard()
+//        setupComingSoonCard()
 //        setupSportCouponMenu(data.sportCouponMenuList)
     }
 
     private fun setupView(data: HomeListAdapter.MenuItemData) {
-        itemView.card_game_soon.setCount(data.atStartCount)
+//        itemView.card_game_soon.setCount(data.atStartCount)
     }
 
     private fun setupViewClick() {
         with(itemView) {
-            card_game_soon.setOnClickListener {
+            /*card_game_soon.setOnClickListener {
                 mOnClickMenuListener?.onGameSoon()
             }
 
@@ -79,13 +80,17 @@ class GameMenuV2ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
             card_update.setOnClickListener {
                 mOnClickMenuListener?.onUpdate()
-            }
+            }*/
         }
     }
 
     private fun setupSportMenu(sportMenuList: List<SportMenu>) {
         with(itemView) {
-            val filteredSportMenuList = sportMenuList.filter { it.gameCount > 0 }
+
+            val filteredSportMenuList = sportMenuList.filter {
+                it.gameCount > 0 || it.gameType.key == "BB_COMING_SOON" ||
+                        it.gameType.key == "ES_COMING_SOON"
+            }
 
             if (block_game.size != filteredSportMenuList.size) {
                 block_game.removeAllViews()
@@ -93,12 +98,15 @@ class GameMenuV2ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 filteredSportMenuList.forEachIndexed { index, sportMenu ->
                     when (index) {
                         else -> {
-                            if (sportMenu.gameCount > 0) {
+                            if (sportMenu.gameCount > 0 || sportMenu.gameType.key == "BB_COMING_SOON" ||
+                                sportMenu.gameType.key == "ES_COMING_SOON"
+                            ) {
                                 block_game.addView(
                                     HomeGameCardV2(
                                         itemView.context
                                     ).apply {
                                         setupHomeCard(this, sportMenu)
+                                        setDividerVisibility(index != filteredSportMenuList.size - 1)
                                     })
                             }
                         }
@@ -108,12 +116,15 @@ class GameMenuV2ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 filteredSportMenuList.forEachIndexed { index, sportMenu ->
                     when (index) {
                         else -> {
-                            if (sportMenu.gameCount > 0) {
+                            if (sportMenu.gameCount > 0 || sportMenu.gameType.key == "BB_COMING_SOON" ||
+                                sportMenu.gameType.key == "ES_COMING_SOON"
+                            ) {
                                 val homeGameCardV2 = (block_game.getChildAt(index) as HomeGameCardV2)
                                 setupHomeCard(
                                     homeGameCardV2,
                                     sportMenu
                                 )
+                                homeGameCardV2.setDividerVisibility(index != filteredSportMenuList.size - 1)
                             }
                         }
                     }
@@ -142,12 +153,14 @@ class GameMenuV2ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private fun setupHomeCard(homeGameCardV2: HomeGameCardV2, sportMenu: SportMenu) {
         homeGameCardV2.apply {
             val title = GameType.getGameTypeString(context, sportMenu.gameType.key)
+            val iconGameType = GameType.getGameTypeMenuIcon(sportMenu.gameType)
             setTitle(if (title.isEmpty()) sportMenu.sportName else title)
-            sportMenu.icon?.let { setIcon(sportMenu.icon) }
+            sportMenu.icon?.let { setIcon(if (iconGameType == 0) sportMenu.icon else iconGameType) }
             setCount(sportMenu.gameCount)
 
             setOnClickListener {
-                mOnClickMenuListener?.onHomeCard(sportMenu)
+                if (sportMenu.gameType.key != "BB_COMING_SOON" && sportMenu.gameType.key != "ES_COMING_SOON")
+                    mOnClickMenuListener?.onHomeCard(sportMenu)
             }
         }
     }
@@ -163,44 +176,44 @@ class GameMenuV2ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     private fun updateThirdGameCard(data: HomeListAdapter.MenuItemData) {
-        with(itemView) {
+        /*with(itemView) {
             card_lottery.visibility = if (data.lotteryVisible) View.VISIBLE else View.GONE
             card_live.visibility = if (data.liveVisible) View.VISIBLE else View.GONE
             card_poker.visibility = if (data.pokerVisible) View.VISIBLE else View.GONE
             card_slot.visibility = if (data.slotVisible) View.VISIBLE else View.GONE
             card_fishing.visibility = if (data.fishingVisible) View.VISIBLE else View.GONE
-        }
+        }*/
     }
 
-    private fun setupComingSoonCard() {
-        itemView.card_baseball_coming_soon.setComingSoonGameCard(itemView.context.getString(R.string.baseball))
-        itemView.card_esports_coming_soon.setComingSoonGameCard(itemView.context.getString(R.string.esports))
-        //最後一項不需要divider
-        itemView.card_esports_coming_soon.setDividerVisibility(false)
-    }
+//    private fun setupComingSoonCard() {
+//        itemView.card_baseball_coming_soon.setComingSoonGameCard(itemView.context.getString(R.string.baseball))
+//        itemView.card_esports_coming_soon.setComingSoonGameCard(itemView.context.getString(R.string.esports))
+//        //最後一項不需要divider
+//        itemView.card_esports_coming_soon.setDividerVisibility(false)
+//    }
 
-    private fun HomeGameCardV2.setComingSoonGameCard(titleString: String) {
-        val spannableStringBuilder = SpannableStringBuilder()
-        val titleSpannableString = SpannableString(titleString)
-        titleSpannableString.setSpan(
-            ForegroundColorSpan(
-                ContextCompat.getColor(
-                    itemView.context,
-                    R.color.color_BBBBBB_333333
-                ),
-            ), 0, titleString.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        val comingSoonString = itemView.context.getString(R.string.coming_soon)
-        val comingSoonSpannableString = SpannableString(comingSoonString)
-        comingSoonSpannableString.setSpan(
-            ForegroundColorSpan(
-                ContextCompat.getColor(
-                    itemView.context,
-                    R.color.color_7F7F7F_999999
-                ),
-            ), 0, comingSoonString.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        spannableStringBuilder.append(titleSpannableString).append(" ").append(comingSoonSpannableString)
-        this.setTitle(spannableStringBuilder)
-    }
+//    private fun HomeGameCardV2.setComingSoonGameCard(titleString: String) {
+//        val spannableStringBuilder = SpannableStringBuilder()
+//        val titleSpannableString = SpannableString(titleString)
+//        titleSpannableString.setSpan(
+//            ForegroundColorSpan(
+//                ContextCompat.getColor(
+//                    itemView.context,
+//                    R.color.color_BBBBBB_333333
+//                ),
+//            ), 0, titleString.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+//        )
+//        val comingSoonString = itemView.context.getString(R.string.coming_soon)
+//        val comingSoonSpannableString = SpannableString(comingSoonString)
+//        comingSoonSpannableString.setSpan(
+//            ForegroundColorSpan(
+//                ContextCompat.getColor(
+//                    itemView.context,
+//                    R.color.color_b73a20
+//                ),
+//            ), 0, comingSoonString.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
+//        )
+//        spannableStringBuilder.append(titleSpannableString).append(" ").append(comingSoonSpannableString)
+//        this.setTitle(spannableStringBuilder)
+//    }
 }

@@ -72,7 +72,7 @@ class BetButton @JvmOverloads constructor(
 
     private fun init() {
         inflate(context, R.layout.button_bet, this)
-        tv_currency_type.text = sConfigData?.systemCurrency
+        tv_currency_type.text = sConfigData?.systemCurrencySign
         setupQuotaListener()
     }
 
@@ -95,22 +95,28 @@ class BetButton @JvmOverloads constructor(
 
 
     private fun setupOddsChanged(isOddsChanged: Boolean) {
-        tv_accept_odds_change.visibility =
-            if (isOddsChanged && (tv_quota.text.toString().replace(",", "").toDoubleOrNull() ?: 0.0) != 0.0) View.VISIBLE else View.GONE
-    }
-
-
-    private fun setupSendOutClickable(isCanSendOut: Boolean) {
-        cl_bet.apply {
-            isSelected = isCanSendOut
-            isClickable = isCanSendOut
-        }
-
-        tv_accept_odds_change.apply {
-            isSelected = isCanSendOut
-            isClickable = isCanSendOut
+        //20220616 賠率更變時，按鈕顯示文案修改 (不管有無輸入金額)
+        if (isOddsChanged) {
+            tv_accept_odds_change.visibility = View.VISIBLE
+            tv_bet.visibility = View.INVISIBLE
+        } else {
+            tv_accept_odds_change.visibility = View.GONE
+            tv_bet.visibility = View.VISIBLE
         }
     }
+
+
+//    private fun setupSendOutClickable(isCanSendOut: Boolean) {
+//        cl_bet.apply {
+//            isSelected = isCanSendOut
+//            isClickable = isCanSendOut
+//        }
+//
+//        tv_accept_odds_change.apply {
+//            isSelected = isCanSendOut
+//            isClickable = isCanSendOut
+//        }
+//    }
 
     private fun setupBetClickable() {
         val betClickable = !(hasBetPlatClose == true || isCanSendOut == false || amountCanBet == false)
@@ -118,12 +124,6 @@ class BetButton @JvmOverloads constructor(
             isSelected = betClickable
             isClickable = betClickable
         }
-
-        tv_accept_odds_change.apply {
-            isSelected = betClickable
-            isClickable = betClickable
-        }
     }
-
 
 }

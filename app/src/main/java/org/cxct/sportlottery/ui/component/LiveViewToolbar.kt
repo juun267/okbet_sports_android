@@ -15,8 +15,6 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
-import androidx.webkit.WebSettingsCompat
-import androidx.webkit.WebViewFeature
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.upstream.HttpDataSource
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -29,6 +27,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LiveUtil
 import org.cxct.sportlottery.util.MetricsUtil
+import org.cxct.sportlottery.util.setWebViewCommonBackgroundColor
 import timber.log.Timber
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -62,16 +61,24 @@ class LiveViewToolbar @JvmOverloads constructor(
     }
     private val webBottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(context) }
 
+    private var mIsLive = false
+        set(value) {
+            field = value
+            checkControlBarVisibility()
+        }
     private var mStreamUrl: String? = null
+        set(value) {
+            if (value.isNullOrEmpty()) return
+            field = value
+        }
     private var newestUrl: Boolean = false
     private var isLogin:Boolean = false
 
     private var mMatchId: String? = null
     private var mEventId: String? = null //動畫Id
         set(value) {
+            if (value.isNullOrEmpty()) return
             field = value
-            iv_animation.visibility = if (field.isNullOrEmpty()) View.GONE else View.VISIBLE
-
             checkControlBarVisibility()
         }
     private var mTrackerUrl: String = ""
@@ -339,9 +346,7 @@ class LiveViewToolbar @JvmOverloads constructor(
     }
 
     fun setupPlayerControl(show: Boolean) {
-        iv_play.isVisible = show
-        iv_arrow.isVisible = show
-
+        mIsLive = show
         if (mLiveShowTag && lastLiveType == LiveType.LIVE){
             setLiveViewHeight()
             switchLiveView(show)
@@ -507,11 +512,7 @@ class LiveViewToolbar @JvmOverloads constructor(
             textZoom = 100
         }
         web_view.setInitialScale(25)
-        if (MultiLanguagesApplication.isNightMode){
-            if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
-                WebSettingsCompat.setForceDark(web_view.settings, WebSettingsCompat.FORCE_DARK_ON);
-            }
-        }
+        web_view.setWebViewCommonBackgroundColor()
         web_view.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(
                 view: WebView?,
@@ -581,6 +582,9 @@ class LiveViewToolbar @JvmOverloads constructor(
      * 若該列沒有任何圖示顯示則隱藏該列
      */
     private fun checkControlBarVisibility() {
+        iv_play.visibility = if (!mIsLive) View.GONE else View.VISIBLE
+        iv_animation.visibility = if (mEventId.isNullOrEmpty()) View.GONE else View.VISIBLE
+        iv_arrow.visibility = if (!iv_play.isVisible && !iv_animation.isVisible) View.GONE else View.VISIBLE
         cl_control.visibility =
             if (!iv_play.isVisible && !iv_animation.isVisible && !iv_statistics.isVisible) View.GONE else View.VISIBLE
     }

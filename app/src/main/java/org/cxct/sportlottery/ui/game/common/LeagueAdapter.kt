@@ -141,6 +141,11 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         notifyDataSetChanged()
     }
 
+    fun removePreloadItem(){
+        data = mutableListOf()
+        notifyDataSetChanged()
+    }
+
     override fun getItemViewType(position: Int): Int {
         if (isPreload) {
             return BaseItemType.PRELOAD_ITEM.type

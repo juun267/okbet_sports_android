@@ -210,8 +210,8 @@
     <string name="daily_bet_range">giá trị cược hiệu lực mỗi ngày</string>
     <string name="title_rebates_rate">Số % hoàn lãi</string>
     <string name="daily_rebates">hoàn lợi nhuận tối đa trong một ngày</string>
-    <string name="hint_recharge_growth">Gửi tiền vào %d %s nhận được %d tăng điểm</string>
-    <string name="hint_bet_growth">Cá cược %d %s dân tệ để nhận %d điểm</string>
+    <string name="hint_recharge_growth">Gửi tiền vào %s %d nhận được %d tăng điểm</string>
+    <string name="hint_bet_growth">Cá cược %s %d dân tệ để nhận %d điểm</string>
     <string name="contact_us">liên hệ chúng tôi</string>
     <string name="game_rule">Luật trò chơi</string>
     <string name="news">Tin tức</string>
@@ -612,6 +612,7 @@
     <string name="bet_receipt_bet_quota">Số tiền đặt cược : </string>
     <string name="bet_info_list_win_quota">Số tiền có thể thắng : </string>
     <string name="bet_list_win_quota">Số tiền có thể thắng:</string>
+    <string name="bet_receipt_win_quota">Số tiền có thể thắng:</string>
     <string name="bet_info_list_add_more">Thêm nhiều lựa chọn</string>
     <string name="bet_info_list_bet">Cá cược</string>
     <string name="bet_info_list_odds_change">Chấp nhận các thay đổi và đặt cược</string>
@@ -629,11 +630,11 @@
     <string name="bet_info_list_clean">Xóa bằng một cú nhấp chuột</string>
     <string name="bet_info_bet_balance_insufficient">Số dư không đủ</string>
     <string name="bet_info_different_game_type">không cùng loại bóng không thể tiến hành cược xiên</string>
-    <string name="bet_info_input_quota">Nhập số tiền</string>
+    <string name="bet_info_input_quota">Vui lòng nhập số tiền</string>
     <string name="bet_info_check_maximum_limit">Xem giới hạn tối đa số tiền</string>
     <string name="bet_info_bet_quota">Số tiền đặt cược</string>
     <string name="bet_info_win_quota">Số tiền có thể thắng</string>
-    <string name="bet_info_accept_odds_change">Chấp nhận các thay đổi và đặt cược</string>
+    <string name="bet_info_accept_odds_change">Chấp nhận thay đối</string>
     <string name="bet_info_add_to_bet_info">Thêm vào đơn ca cược</string>
     <string name="bet_info_odd_content_changed">Tỷ lệ cược của một hoặc nhiều lựa chọn, điểm chấp hoặc điểm số đã được thay đổi</string>
     <string name="bet_info_odd_content_changed2">Tỷ lệ cược đã thay đổi, %s thành %s</string>
@@ -641,7 +642,9 @@
     <string name="bet_list_delete_all">Xóa tất cả</string>
     <string name="bet_list_single_warn">(Có thể sử dụng cùng số tiền đặt cược để thực hiện tất cả các lựa chọn riêng lẻ)</string>
     <string name="bet_list_single">Đơn cược</string>
-    <string name="bet_list_view_more_options">Xem tất cả các tùy chọn</string>
+    <string name="bet_list_single_type">Cược đơn</string>
+    <string name="bet_list_parlay_type">Cược xâu</string>
+    <string name="bet_list_view_more_options">Nhiều lựa chọn hơn</string>
     <string name="bet_info_odd_content_close">Một hoặc nhiều tùy chọn của cá cược đã bị đóng</string>
     <string name="bet_info_remove_closed">Xóa các tùy chọn đã đóng</string>
     <string name="parlay_rule_nc1">%1$s chuỗi 1 là một cược đơn bao gồm%1$s tùy chọn \ nTất cả các tùy chọn phải thắng để được hoàn lại tiền \ nKhi có nhiều tùy chọn sự kiện hơn,%1$s chuỗi 1 có thể được kết hợp thành nhiều chuỗi kết nối, ví dụ:%2$s đối sánh có thể được hoán vị và kết hợp để tạo thành%2$s%1$s chuỗi 1</string>
@@ -703,7 +706,7 @@
     <string name="feedback_tabName_problem">Câu hỏi và gợi ý</string>
     <string name="feedback_tabName_record">Lịch sử phản hồi</string>
     <string name="feedback_description">Nếu bạn có đề xuất tốt cho sảnh trò chơi hoặc tìm thấy lỗi (BUG) có thể gửi cho dịch vụ khách hàng sẽ trả lời trong vòng 48 giờ. Chúng tôi sẽ nhanh chóng chỉnh sửa BUG hoặc tham khảo phản hồi của bạn để liên tục tối ưu hóa các sản phẩm và dịch vụ của chúng tôi. (Nếu có nhiều phản hồi cho cùng một đề xuất hoặc BUG, ​​tiền thưởng sẽ được gửi đến người phản hồi đầu tiên, hãy nhớ phản hồi ngay khi bạn phát hiện ra vấn đề)</string>
-    <string name="feedback_description_money">Nếu ý kiến đóng góp được thông qua hoặc lỗi được xác minh, phần thưởng tối đa là 3000 %s (hoặc đơn vị tiền tệ tương đương khác).</string>
+    <string name="feedback_description_money">Nếu ý kiến đóng góp được thông qua hoặc lỗi được xác minh, phần thưởng tối đa là %s 3000 (hoặc đơn vị tiền tệ tương đương khác).</string>
     <string name="feedback_submit_succeed">phản hồi được gửi thành công</string>
     <string name="all_status">Tất cả các trạng thái</string>
     <string name="feedback_last_reply_time">Lần phản hồi cuối cùng</string>
@@ -945,7 +948,7 @@
     Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
     <string name="parlay_10_fold_rule">1 xiên 10 là một cược đơn bao gồm 10 lựa chọn, cần phải thắng tất cả các mục chọn để được hoàn tiền, không cùng loại bóng và cách chơi của giải vô địch không thể tiến hành cá cược xiên</string>
     <string name="parlay_10_block_rule">10 xâu 1013 là kết hợp 10 đơn cược từ các sự kiện khác nhau, 45 xâu 2x1, 120 xâu 3x1, 210 xâu 4x1, 252 xâu 5x1, 210 xâu 6x1, 120 xâu 7x1, 45 xâu 8x1, 10 xâu 9x1 và 1 xâu 10x1. Cần có ít nhất 2 lựa chọn thắng cược để đảm bảo tiền thưởng, không cùng loại bóng và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
-    <string name="message_source_change">Hệ thống nhận dữ liệu sự kiện mới nhất và sẽ tự động quay lại trang chủ ngay lập tức</string>
+    <string name="message_source_change">Hệ thống nhận dữ liệu mới, bấm nút xác nhận để làm mới</string>
     <string name="appearance">Ngoại hình</string>
     <string name="goal_buster">GOAL BUSTER</string>
     <string name="top_games">TOP GAMES</string>
@@ -1053,7 +1056,7 @@
     <string name="self_limit_per_bet_limit">Giới hạn</string>
     <string name="self_limit_per_bet_limit_input_highest">Vui lòng nhập số</string>
     <string name="self_limit_per_bet_limit_impotent">· Bạn có thể sửa đổi giới hạn đặt cược của mình bất cứ lúc nào. Sửa đổi sẽ có hiệu lực sau khi gửi yêu cầu.</string>
-    <string name="self_limit_per_bet_limit_user">Cược giới hạn hiện tại: %s</string>
+    <string name="self_limit_per_bet_limit_user">Cược giới hạn hiện tại: %1$s %2$s</string>
     <string name="self_limit_per_bet_limit_user_none">Không có</string>
     <string name="self_limit_per_bet_limit_user_limit"> (Cược giới hạn tối đa:%1$s %2$s-%1$s %3$s)</string>
     <string name="self_limit_error">Định dạng trường không chính xác, vui lòng nhập một số nguyên.</string>
@@ -1175,5 +1178,10 @@
     <string name="coming_soon">Sắp có</string>
     <string name="esports">eSports</string>
     <string name="timezone_change">Múi giờ</string>
+
+    <!--region 注單模塊調整-->
+    <string name="bet_info_bet_lock_hint">Kèo chấp đã đóng</string>
+    <string name="bet_info_no_parlay_hint">Trận đấu không hỗ trợ đá xiên.</string>
+    <!--endregion-->
 
 </resources>

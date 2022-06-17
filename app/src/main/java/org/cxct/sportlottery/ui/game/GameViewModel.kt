@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.game
 
 import android.app.Application
 import android.content.Context
-import android.content.res.Configuration
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -10,6 +9,7 @@ import androidx.navigation.NavDirections
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.enum.OddSpreadForSCO
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
@@ -201,7 +201,7 @@ class GameViewModel(
         get() = _leagueFilterList
 
     val playList: LiveData<Event<List<Play>>>
-        get() = _playList
+        get() = PlayRepository.playList
 
     val playCate: LiveData<Event<String?>>
         get() = _playCate
@@ -258,7 +258,7 @@ class GameViewModel(
     private val _leagueSelectedList = MutableLiveData<List<League>>()
     private val _leagueSubmitList = MutableLiveData<Event<List<League>>>()
     private val _leagueFilterList = MutableLiveData<List<League>>()
-    private val _playList = MutableLiveData<Event<List<Play>>>()
+    private val _playList = PlayRepository.mPlayList
     private val _playCate = MutableLiveData<Event<String?>>()
     private val _searchResult = MutableLiveData<Event<List<SearchResult>?>>()
     private val _navDetail = MutableLiveData<Event<NavDirections>>()
@@ -438,7 +438,7 @@ class GameViewModel(
         _oddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
         getSportMenu(matchType, onlyRefreshSportMenu = false)
-        getAllPlayCategory(matchType)
+        getAllPlayCategory(matchType,refreshTabBar = true)
         filterLeague(listOf())
     }
 
@@ -617,6 +617,10 @@ class GameViewModel(
         }
     }
 
+    fun fetchDataFromDataSourceChange(matchType: MatchType) {
+        switchMatchType(matchType)
+    }
+
     //獲取體育菜單
     fun getSportMenu() {
         getSportMenu(null)
@@ -627,9 +631,6 @@ class GameViewModel(
         switchFirstTag: Boolean = false,
         onlyRefreshSportMenu: Boolean = true
     ) {
-        if (!onlyRefreshSportMenu)
-            _isLoading.postValue(true)
-
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 sportMenuRepository.getSportMenu(
@@ -660,11 +661,9 @@ class GameViewModel(
 
             postHomeCardCount(result)
         }
-
-        _isLoading.postValue(false) // TODO IllegalStateException: Cannot invoke setValue on a background thread
     }
 
-    fun getAllPlayCategory(matchType: MatchType) {
+    fun getAllPlayCategory(matchType: MatchType, refreshTabBar:Boolean = false) {
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.sportService.getQuery(
@@ -678,7 +677,8 @@ class GameViewModel(
                 if (result?.success == true) {
                     sportQueryData = result.sportQueryData
                     checkLastSportType(matchType, sportQueryData)
-                    _isNoEvents.value = result.sportQueryData?.num == 0
+                    if (refreshTabBar)
+                        _isNoEvents.value = result.sportQueryData?.num == 0
                 } else {
                     _showErrorDialogMsg.value = result?.msg
                 }
@@ -1240,6 +1240,12 @@ class GameViewModel(
         isLastSportType: Boolean = false,
         isIncrement: Boolean = false
     ) {
+
+        if(getMatchCount(matchType) < 1){
+            _isNoEvents.postValue(true)
+            return
+        }
+
         val nowMatchType = curMatchType.value ?: matchType
         val nowChildMatchType = curChildMatchType.value ?: matchType
 
@@ -1264,7 +1270,7 @@ class GameViewModel(
 
         val sportCode = getSportSelectedCode(nowMatchType)
 
-        val mt = if(matchType == nowChildMatchType) matchType else nowChildMatchType
+        val mt = if (matchType == nowChildMatchType) matchType else nowChildMatchType
 
         sportCode?.let { code ->
             when (mt) {
@@ -1473,7 +1479,8 @@ class GameViewModel(
 
                     matchOdd?.setupOddDiscount()
                     matchOdd?.setupPlayCate()
-                    matchOdd?.sortOdds()
+                    //20220613 冠軍的排序字串切割方式不同, 跟進iOS此處無重新排序
+//                    matchOdd?.sortOdds()
 
                     matchOdd?.startDate = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, DMY_FORMAT)
                     matchOdd?.startTime = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, HM_FORMAT)
@@ -1512,7 +1519,8 @@ class GameViewModel(
 
                     matchOdd?.setupOddDiscount()
                     matchOdd?.setupPlayCate()
-                    matchOdd?.sortOdds()
+                    //20220613 冠軍的排序字串切割方式不同, 跟進iOS此處無重新排序
+//                    matchOdd?.sortOdds()
 
                     matchOdd?.startDate = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, DMY_FORMAT)
                     matchOdd?.startTime = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, HM_FORMAT)
@@ -1595,7 +1603,7 @@ class GameViewModel(
                     matchOdd.sortOddsMap()
                     matchOdd.matchInfo?.let { matchInfo ->
                         matchInfo.startDateDisplay =
-                            TimeUtil.timeFormat(matchInfo.startTime, "dd/MM")
+                            TimeUtil.timeFormat(matchInfo.startTime, "MM/dd")
 
                         matchOdd.matchInfo.startTimeDisplay =
                             TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
@@ -1973,19 +1981,11 @@ class GameViewModel(
             }
     }
 
-    fun getLocalString(context: Context, resId:Int): String {
-        val locale = LanguageManager.getSetLanguageLocale(androidContext)
-        var conf = context.resources.configuration
-        conf = Configuration(conf)
-        conf.setLocale(locale)
-        val localizedContext = context.createConfigurationContext(conf)
-        return localizedContext.resources.getString(resId)
-    }
     private fun getDateRowEarly(): List<Date> {
         val locale = LanguageManager.getSetLanguageLocale(androidContext)
         val dateRow = mutableListOf(
             Date(
-                getLocalString(androidContext,R.string.date_row_all),
+                LocalUtils.getString(R.string.date_row_all),
                 TimeUtil.getEarlyAllTimeRangeParams()
             ), Date(
                 androidContext.getString(R.string.other),
@@ -2016,7 +2016,7 @@ class GameViewModel(
     private fun getDateRowParlay(): List<Date> {
         val dateRow = mutableListOf(
             Date(
-                getLocalString(androidContext,R.string.date_row_all),
+                LocalUtils.getString(R.string.date_row_all),
                 TimeUtil.getParlayAllTimeRangeParams()
             ), Date(
                 androidContext.getString(R.string.date_row_live),
@@ -2123,16 +2123,25 @@ class GameViewModel(
                             //因排版問題 null也需要添加
                             filteredOddList.add(detailOdd)
                         }
-                        list.add(
-                            OddsDetailListData(
-                                key,
-                                TextUtil.split(value.typeCodes),
-                                value.name,
-                                filteredOddList,
-                                value.nameMap,
-                                value.rowSort
-                            )
+
+                        val oddsDetail = OddsDetailListData(
+                            key,
+                            TextUtil.split(value.typeCodes),
+                            value.name,
+                            filteredOddList,
+                            value.nameMap,
+                            value.rowSort
                         )
+
+                        //球員玩法邏輯
+                        if (PlayCate.getPlayCate(key) == PlayCate.SCO) {
+                            oddsDetail.setSCOTeamNameList(filteredOddList, result.oddsDetailData.matchOdd.matchInfo.homeName)
+                            oddsDetail.homeMap = setItemMap(filteredOddList, result.oddsDetailData.matchOdd.matchInfo.homeName)
+                            oddsDetail.awayMap = setItemMap(filteredOddList, result.oddsDetailData.matchOdd.matchInfo.awayName)
+                            oddsDetail.scoItem = oddsDetail.homeMap // default
+                        }
+
+                        list.add(oddsDetail)
                     }
 
                     result.oddsDetailData?.matchOdd?.odds?.sortPlayCate()
@@ -2182,7 +2191,62 @@ class GameViewModel(
         }
     }
 
-    private fun getMatchCount(matchType: MatchType, sportMenuResult: SportMenuResult? = null): Int {
+    private fun OddsDetailListData.setSCOTeamNameList(oddList: MutableList<Odd?>, homeName: String?) {
+        val groupTeamName = oddList.groupBy {
+            it?.extInfoMap?.get(LanguageManager.getSelectLanguage(androidContext).key)
+        }.filterNot {
+            it.key.isNullOrBlank()
+        }
+        val teamNameList = mutableListOf<String>().apply {
+            groupTeamName.forEach {
+                it.key?.let { key -> add(key) }
+            }
+        }.apply {
+            if (firstOrNull() != homeName) reverse()
+        }
+        this.teamNameList = teamNameList
+    }
+
+    private fun setItemMap(oddList: MutableList<Odd?>, teamName: String?): HashMap<String, List<Odd?>>{
+        //建立球員列表(一個球員三個賠率)
+        var map: HashMap<String, List<Odd?>> = HashMap()
+
+        //過濾掉 其他:(第一、任何、最後), 无進球
+        //依隊名分開
+        oddList.filterNot { odd ->
+            odd?.playCode == OddSpreadForSCO.SCORE_1ST_O.playCode ||
+                    odd?.playCode == OddSpreadForSCO.SCORE_ANT_O.playCode ||
+                    odd?.playCode == OddSpreadForSCO.SCORE_LAST_O.playCode ||
+                    odd?.playCode == OddSpreadForSCO.SCORE_N.playCode
+        }.groupBy {
+            it?.extInfoMap?.get(LanguageManager.getSelectLanguage(androidContext).key)
+        }.forEach {
+            if (it.key == teamName) {
+                map = it.value.groupBy { odd -> odd?.name } as HashMap<String, List<Odd?>>
+            }
+        }
+        //保留 其他:(第一、任何、最後), 无進球
+        //依球員名稱分開
+        //倒序排列 多的在前(無進球只有一種賠率 放最後面)
+        //添加至球員列表內
+        oddList.filter { odd ->
+            odd?.playCode == OddSpreadForSCO.SCORE_1ST_O.playCode ||
+                    odd?.playCode == OddSpreadForSCO.SCORE_ANT_O.playCode ||
+                    odd?.playCode == OddSpreadForSCO.SCORE_LAST_O.playCode ||
+                    odd?.playCode == OddSpreadForSCO.SCORE_N.playCode
+        }.groupBy {
+            it?.name
+        }.entries.sortedByDescending {
+            it.value.size
+        }.associateBy(
+            { it.key }, { it.value }
+        ).forEach {
+            map[it.key ?: ""] = it.value
+        }
+        return map
+    }
+
+    fun getMatchCount(matchType: MatchType, sportMenuResult: SportMenuResult? = null): Int {
         val sportMenuRes = sportMenuResult ?: _sportMenuResult.value
 
         return when (matchType) {
@@ -2908,7 +2972,7 @@ class GameViewModel(
      * 設置賽事時間參數
      */
     private fun Recommend.setupMatchTime() {
-        matchInfo?.startDateDisplay = TimeUtil.timeFormat(matchInfo?.startTime, "dd/MM")
+        matchInfo?.startDateDisplay = TimeUtil.timeFormat(matchInfo?.startTime, "MM/dd")
 
         matchInfo?.startTimeDisplay = TimeUtil.timeFormat(matchInfo?.startTime, "HH:mm")
 

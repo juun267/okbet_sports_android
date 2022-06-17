@@ -41,7 +41,6 @@ class TransactionRecordDiffAdapter :
     ListAdapter<DataItem, RecyclerView.ViewHolder>(TransactionRecordDiffCallBack()) {
     var isLastPage: Boolean = false
     var totalAmount: Double = 0.0
-    var status = 0
     var itemList = listOf<DataItem>()
 
     private enum class ViewType { Match, Parlay, Outright, LastTotal, NoData }
@@ -49,7 +48,6 @@ class TransactionRecordDiffAdapter :
     fun setupBetList(betListData: BetListData, status: Int) {
         isLastPage = betListData.isLastPage
         totalAmount = betListData.totalMoney
-        this.status = status
         itemList = when {
             betListData.row.isEmpty() -> listOf(DataItem.NoData)
             else -> betListData.row.map { DataItem.Item(it) } + listOf(DataItem.Total(totalAmount))
@@ -79,10 +77,10 @@ class TransactionRecordDiffAdapter :
         val rvData = getItem(holder.adapterPosition)
         when (holder) {
             is MatchRecordViewHolder -> {
-                holder.bind((rvData as DataItem.Item).row, status)
+                holder.bind((rvData as DataItem.Item).row)
             }
             is ParlayRecordViewHolder -> {
-                holder.bind((rvData as DataItem.Item).row, status)
+                holder.bind((rvData as DataItem.Item).row)
             }
             is OutrightRecordViewHolder -> {
                 holder.bind((rvData as DataItem.Item).row)
@@ -115,7 +113,7 @@ class TransactionRecordDiffAdapter :
             }
         }
 
-        fun bind(data: Row, status: Int) {
+        fun bind(data: Row) {
             val matchOdds = data.matchOdds[0]
             itemView.apply {
                 title_league_name.text = matchOdds.leagueName.replace("\n","")
@@ -150,7 +148,7 @@ class TransactionRecordDiffAdapter :
 
                         override fun onFinish() {
                             tv_count_down.text = "0 ${context.getString(R.string.sec)}"
-                            if(status != 0){
+                            if(data.status != 0){
                                 tv_count_down.visibility = View.GONE
                             }
                         }
@@ -240,7 +238,7 @@ class TransactionRecordDiffAdapter :
         fun bind(totalAmount: Double) {
             itemView.apply {
                 last_total_amount.text =
-                    "${sConfigData?.systemCurrency}${TextUtil.format(totalAmount)}"
+                    "${sConfigData?.systemCurrencySign} ${TextUtil.format(totalAmount)}"
             }
         }
     }
@@ -254,12 +252,13 @@ class TransactionRecordDiffAdapter :
             }
         }
 
-        fun bind(data: Row, status: Int) {
-            val contentParlayMatchAdapter by lazy { ContentParlayMatchAdapter(status) }
+        fun bind(data: Row) {
+            val contentParlayMatchAdapter by lazy { ContentParlayMatchAdapter(data.status) }
 
             itemView.apply {
                 getParlayStringRes(data.parlayType)?.let { parlayTypeStringResId ->
-                    title_parlay_type.text = MultiLanguagesApplication.appContext.getString(parlayTypeStringResId)
+                    //盡量避免直接使用 MultiLanguagesApplication.appContext.getString 容易出現語系顯示錯誤
+                    title_parlay_type.text = itemView.context.getString(parlayTypeStringResId)
                 }
                 rv_parlay_match.apply {
                     adapter = contentParlayMatchAdapter

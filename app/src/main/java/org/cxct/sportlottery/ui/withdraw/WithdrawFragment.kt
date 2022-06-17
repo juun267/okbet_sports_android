@@ -89,7 +89,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             startActivity(Intent(activity, WithdrawCommissionDetailActivity::class.java))
         }
 
-        tv_currency_type.text = sConfigData?.systemCurrency
+        tv_currency_type.text = sConfigData?.systemCurrencySign
 
         checkNotificationVisiable(
             tv_notification_1,
@@ -97,8 +97,8 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             sConfigData?.minRechMoney,
             getString(
                 R.string.initial_withdrawal_needs_credited,
-                sConfigData?.minRechMoney,
-                sConfigData?.systemCurrency
+                sConfigData?.systemCurrencySign,
+                sConfigData?.minRechMoney
             )
         )
 
@@ -109,8 +109,8 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 sConfigData?.minRemainingBalance,
                 getString(
                     R.string.make_sure_valid_account,
-                    sConfigData?.minRemainingBalance,
-                    sConfigData?.systemCurrency
+                    sConfigData?.systemCurrencySign,
+                    sConfigData?.minRemainingBalance
                 )
             )
         }
