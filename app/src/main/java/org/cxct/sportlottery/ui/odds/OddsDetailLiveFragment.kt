@@ -276,6 +276,11 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             adapter = oddsDetailListAdapter
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+            addScrollListenerForBottomNavBar(
+                onScrollDown = {
+                    viewModel.setIsScrollDown(it)
+                }
+            )
         }
 
         rv_cat.apply {

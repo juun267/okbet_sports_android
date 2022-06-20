@@ -30,7 +30,7 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
 import org.cxct.sportlottery.util.SocketUpdateUtil
-import org.cxct.sportlottery.util.addScrollWithItemVisibility
+import org.cxct.sportlottery.util.addScrollListenerForBottomNavBar
 
 /**
  * @app_destination 宣傳頁
@@ -182,13 +182,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         with(binding.rvPublicity) {
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = mPublicityAdapter
-            addScrollWithItemVisibility(
-                onScrolling = {
-
-                },
-                onVisible = {
-
-                },
+            addScrollListenerForBottomNavBar(
                 onScrollDown = {
                     viewModel.setIsScrollDown(it)
                 }

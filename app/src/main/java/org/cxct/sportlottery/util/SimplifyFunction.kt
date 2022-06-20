@@ -37,7 +37,7 @@ import org.json.JSONArray
 fun RecyclerView.addScrollWithItemVisibility(
     onScrolling: () -> Unit,
     onVisible: (visibleList: List<Pair<Int, Int>>) -> Unit,
-    onScrollDown: (b: Boolean) -> Unit
+    onScrollDown: (isScrollDown: Boolean) -> Unit
 ) {
     addOnScrollListener(object : RecyclerView.OnScrollListener() {
         var needChangeBottomBar = false
@@ -49,10 +49,10 @@ fun RecyclerView.addScrollWithItemVisibility(
                 //更新記錄的方向
                 if (dy > 0) {
                     directionIsDown = true
-                    onScrollDown(directionIsDown)
+                    onScrollDown(true)
                 } else if (dy < 0) {
                     directionIsDown = false
-                    onScrollDown(directionIsDown)
+                    onScrollDown(false)
                 }
             }
             //Y軸移動的值和記錄的方向不同時, 重設狀態
@@ -88,6 +88,47 @@ fun RecyclerView.addScrollWithItemVisibility(
                 RecyclerView.SCROLL_STATE_DRAGGING -> {
                     needChangeBottomBar = true
                     onScrolling()
+                }
+            }
+        }
+    })
+}
+
+fun RecyclerView.addScrollListenerForBottomNavBar(
+    onScrollDown: (isScrollDown: Boolean) -> Unit
+) {
+    addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        var needChangeBottomBar = false
+        var directionIsDown = true
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            if (needChangeBottomBar) {
+                needChangeBottomBar = false
+                //更新記錄的方向
+                if (dy > 0) {
+                    directionIsDown = true
+                    onScrollDown(true)
+                } else if (dy < 0) {
+                    directionIsDown = false
+                    onScrollDown(false)
+                }
+            }
+            //Y軸移動的值和記錄的方向不同時, 重設狀態
+            if (dy > 0 != directionIsDown) {
+                needChangeBottomBar = true
+            }
+        }
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            when (newState) {
+                //停止
+                RecyclerView.SCROLL_STATE_IDLE -> {
+                    needChangeBottomBar = false
+                }
+
+                //手指滾動
+                RecyclerView.SCROLL_STATE_DRAGGING -> {
+                    needChangeBottomBar = true
                 }
             }
         }
