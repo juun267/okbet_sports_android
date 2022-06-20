@@ -155,6 +155,11 @@ class TransactionStatusActivity :
                     R.id.navigation_transaction_status -> {
                         true
                     }
+                    R.id.navigation_my -> {
+                        viewModel.navMy()
+                        finish()
+                        false
+                    }
                     else -> false
                 }
             }

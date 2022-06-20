@@ -321,6 +321,10 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     viewModel.navTranStatus()
                     false
                 }
+                R.id.navigation_my -> {
+                    viewModel.navMy()
+                    false
+                }
                 else -> false
             }
         }

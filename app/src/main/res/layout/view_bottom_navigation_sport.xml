@@ -69,7 +69,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_4"
-            android:text="0.000"
             android:textColor="@color/color_909090_666666"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintBottom_toBottomOf="parent"

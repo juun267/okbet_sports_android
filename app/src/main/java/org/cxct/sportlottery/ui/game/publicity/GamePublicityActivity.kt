@@ -11,7 +11,6 @@ import androidx.lifecycle.distinctUntilChanged
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.activity_game_publicity.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
-import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityGamePublicityBinding
@@ -21,7 +20,6 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
-import org.cxct.sportlottery.ui.dialog.AgeVerifyDialog
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.Page
@@ -395,6 +393,10 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                 }
                 R.id.navigation_transaction_status -> {
                     viewModel.navTranStatus()
+                    false
+                }
+                R.id.navigation_my -> {
+                    viewModel.navMy()
                     false
                 }
                 else -> false

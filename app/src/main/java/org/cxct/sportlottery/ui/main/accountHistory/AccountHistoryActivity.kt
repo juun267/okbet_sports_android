@@ -12,7 +12,6 @@ import kotlinx.android.synthetic.main.activity_account_history.*
 import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
 import kotlinx.android.synthetic.main.sport_bottom_navigation.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
-import kotlinx.android.synthetic.main.view_bottom_navigation_sport.view.*
 import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
@@ -81,6 +80,11 @@ class AccountHistoryActivity :
                     }
                     R.id.navigation_transaction_status -> {
                         viewModel.navTranStatus()
+                        finish()
+                        false
+                    }
+                    R.id.navigation_my -> {
+                        viewModel.navMy()
                         finish()
                         false
                     }

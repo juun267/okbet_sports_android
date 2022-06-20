@@ -157,6 +157,11 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
                         finish()
                         false
                     }
+                    R.id.navigation_my -> {
+                        viewModel.navMy()
+                        finish()
+                        false
+                    }
                     else -> false
                 }
             }

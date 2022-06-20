@@ -10,6 +10,7 @@ import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
 import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusActivity
 import org.cxct.sportlottery.util.Event
 
@@ -88,6 +89,15 @@ abstract class BaseBottomNavViewModel(
         }
 
         setIntentClassLiveData(TransactionStatusActivity::class.java)
+    }
+
+    fun navMy() {
+        if (isLogin.value != true) {
+            mNotifyLogin.postValue(true)
+            return
+        }
+
+        setIntentClassLiveData(ProfileCenterActivity::class.java)
     }
 
     fun navShoppingCart() {
