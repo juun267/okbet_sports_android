@@ -107,13 +107,13 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
         when (holder) {
             is ViewHolderSport -> {
-                with(holder) {
-                    if (sportImageAnimation != null) {
-                        itemView.sport_type_img.startAnimation(sportImageAnimation)
-                    } else {
-                        itemView.sport_type_img.clearAnimation()
-                    }
-                }
+//                with(holder) {
+//                    if (sportImageAnimation != null) {
+//                        itemView.sport_type_img.startAnimation(sportImageAnimation)
+//                    } else {
+//                        itemView.sport_type_img.clearAnimation()
+//                    }
+//                }
             }
         }
 
@@ -132,7 +132,7 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class ViewHolderSport private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         //用來讓ViewAttachedToWindow和ViewDetachedFromWindow時判斷球種icon動畫配置用, 在onBindViewHolder時都要重新賦值
-        var sportImageAnimation: Animation? = null
+//        var sportImageAnimation: Animation? = null
 
         fun bind(item: Item, gameTypeListener: GameTypeListener?) {
 
@@ -143,13 +143,13 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                 isSelected = item.isSelected
 
-                if (isSelected) {
-                    sportImageAnimation = AnimationUtils.loadAnimation(sport_type_img.context, R.anim.rotate_sport)
-                    sport_type_img.startAnimation(sportImageAnimation)
-                } else {
-                    sport_type_img.clearAnimation()
-                    sportImageAnimation = null
-                }
+//                if (isSelected) {
+//                    sportImageAnimation = AnimationUtils.loadAnimation(sport_type_img.context, R.anim.rotate_sport)
+//                    sport_type_img.startAnimation(sportImageAnimation)
+//                } else {
+//                    sport_type_img.clearAnimation()
+//                    sportImageAnimation = null
+//                }
             }
 
         }
@@ -167,6 +167,7 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                 val sportCountText: String
                 val sportCountTextColor: Int
+                val sportTypeTextColor: Int
                 //暫時利用num判斷是否為coming soon
                 if (item.num == -1) {
                     sportCountText = context.getString(R.string.coming_soon)
@@ -175,13 +176,16 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 } else {
                     sportCountText = item.num.toString()
                     sportCountTextColor =
-                        if (item.isSelected) R.color.color_FFFFFF
+                        if (item.isSelected) R.color.color_0760D4
                         else R.color.color_BBBBBB_333333
+
                     isEnabled = true
                 }
+
                 sport_count_text.text = sportCountText
                 sport_count_text.setTextColor(ContextCompat.getColor(context, sportCountTextColor))
-
+                sport_type_text.setTextColor(ContextCompat.getColor(context, if (item.isSelected) R.color.color_0760D4
+                else R.color.color_BBBBBB_333333))
                 setOnClickListener {
                     gameTypeListener?.onClick(item)
                 }
@@ -241,9 +245,9 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 GameType.BB_COMING_SOON.key -> {
                     img.setImageResource(R.drawable.selector_sport_type_item_img_bb_v5)
                 }
-                GameType.ES_COMING_SOON.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_es_v5)
-                }
+//                GameType.ES_COMING_SOON.key -> {
+//                    img.setImageResource(R.drawable.selector_sport_type_item_img_es_v5)
+//                }
             }
         }
 
@@ -259,20 +263,20 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                 isSelected = item.isSelected
 
-                if (needUpdateAnimationStatus) {
-                    when (isSelected) {
-                        true -> {
-                            sportImageAnimation = AnimationUtils.loadAnimation(context, R.anim.rotate_sport)
-                            sport_type_img.startAnimation(
-                                sportImageAnimation
-                            )
-                        }
-                        false -> {
-                            sport_type_img.clearAnimation()
-                            sportImageAnimation = null
-                        }
-                    }
-                }
+//                if (needUpdateAnimationStatus) {
+//                    when (isSelected) {
+//                        true -> {
+//                            sportImageAnimation = AnimationUtils.loadAnimation(context, R.anim.rotate_sport)
+//                            sport_type_img.startAnimation(
+//                                sportImageAnimation
+//                            )
+//                        }
+//                        false -> {
+//                            sport_type_img.clearAnimation()
+//                            sportImageAnimation = null
+//                        }
+//                    }
+//                }
             }
         }
 
@@ -280,7 +284,7 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             fun from(parent: ViewGroup): ViewHolderSport {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                    .inflate(R.layout.itemview_sport_type_v5, parent, false)
+                    .inflate(R.layout.itemview_sport_type_v6, parent, false)
 
                 return ViewHolderSport(view)
             }
