@@ -556,7 +556,7 @@ class OddButtonPagerViewHolder private constructor(
 
         odds.second?.firstOrNull()?.replaceScore?.let { playCateName.replace("{S}", it) }
 
-        if (playCateName == "null" || playCateName.isNullOrEmpty()){
+        if (playCateName == "null" || playCateName.isEmpty()){
             playCateName = "-"
         }
 
