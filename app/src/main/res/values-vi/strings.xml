@@ -847,6 +847,7 @@
     <string name="bet_fail_btn">Đặt cược không thành công</string>
     <string name="credit_record_deactivate">Chức năng thẻ tín dụng bị vô hiệu hóa</string>
     <string name="game_postponed">Trận đấu bị hoãn</string>
+    <string name="game_out">Outs:%s</string>
     <string name="money_recharge_hint1">Vui lòng gửi thông tin gửi tiền sau khi chuyển khoản thành công.</string>
     <string name="money_recharge_hint2">Vui lòng làm mới trang mỗi khi gửi tiền để tài khoản nhận khoản mới nhất, tránh nạp vào tài khoản đã hết hạn và không được đền bù nếu quý khách nhầm lẫn.</string>
     <string name="parlay_rule_nc1_ex">Khi có nhiều tùy chọn sự kiện hơn,%1$s chuỗi 1 có thể được kết hợp thành nhiều chuỗi. Ví dụ: các kết quả khớp%2$s có thể được hoán vị và kết hợp để tạo thành%2$s %1$s chuỗi 1</string>
