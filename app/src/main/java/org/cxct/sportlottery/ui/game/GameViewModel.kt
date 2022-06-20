@@ -2149,11 +2149,12 @@ class GameViewModel(
                     result.oddsDetailData?.matchOdd?.updateOddStatus()
 
                     //因UI需求 特優賠率移到第一項
-                    list.find { it.gameType == PlayCate.EPS.value }.apply {
-                        if (this != null) {
-                            list.add(0, list.removeAt(list.indexOf(this)))
-                        }
-                    }
+                    //需求先隱藏特優賠率
+//                    list.find { it.gameType == PlayCate.EPS.value }.apply {
+//                        if (this != null) {
+//                            list.add(0, list.removeAt(list.indexOf(this)))
+//                        }
+//                    }
 
                     list.forEach {
                         it.originPosition = list.indexOf(it)
@@ -2519,10 +2520,10 @@ class GameViewModel(
             //即將開賽
             setupMatchTypeSelectState(MatchType.AT_START, menuData.atStart)
 
-            //特優賠率
-            menuData.menu.eps?.let { epsSport ->
-                setupMatchTypeSelectState(MatchType.EPS, epsSport)
-            }
+            //特優賠率 需求先隱藏特優賠率
+//            menuData.menu.eps?.let { epsSport ->
+//                setupMatchTypeSelectState(MatchType.EPS, epsSport)
+//            }
         }
         _sportMenuResult.postValue(this)
     }

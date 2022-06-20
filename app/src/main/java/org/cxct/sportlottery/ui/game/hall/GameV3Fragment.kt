@@ -398,13 +398,13 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         viewModel.switchChildMatchType(childMatchType = MatchType.OUTRIGHT)
                     }
                 }
-                getString(R.string.game_tab_price_boosts_odd) -> { //特優賠率
-                    if (args.matchType == MatchType.OTHER) {
-                        viewModel.switchChildMatchType(childMatchType = MatchType.OTHER_EPS)
-                    } else {
-                        viewModel.switchChildMatchType(childMatchType = MatchType.EPS)
-                    }
-                }
+//                getString(R.string.game_tab_price_boosts_odd) -> { //特優賠率  需求先隱藏特優賠率
+//                    if (args.matchType == MatchType.OTHER) {
+//                        viewModel.switchChildMatchType(childMatchType = MatchType.OTHER_EPS)
+//                    } else {
+//                        viewModel.switchChildMatchType(childMatchType = MatchType.EPS)
+//                    }
+//                }
             }
             game_match_category_pager.isVisible =
                 tab?.text.toString() == getString(R.string.game_tab_league_odd) &&
