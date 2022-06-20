@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.distinctUntilChanged
 import androidx.navigation.findNavController
@@ -20,6 +21,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.FastBetFragment
@@ -34,6 +36,7 @@ import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
+import org.cxct.sportlottery.util.TextUtil
 import org.parceler.Parcels
 
 class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavoriteViewModel::class) {
@@ -124,6 +127,11 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
     }
 
     override fun initBottomNavigation() {
+        tv_balance_currency.text = sConfigData?.systemCurrencySign
+        tv_balance.text = TextUtil.formatMoney(0.0)
+        cl_bet_list_bar.setOnClickListener {
+            showBetListPage()
+        }
         sport_bottom_navigation.apply {
             setNavigationItemClickListener {
                 when (it) {
@@ -219,6 +227,8 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
 
     override fun updateBetListCount(num: Int) {
         sport_bottom_navigation.setBetCount(num)
+        cl_bet_list_bar.isVisible = num > 0
+        tv_bet_list_count.text = num.toString()
     }
 
     override fun showLoginNotify() {
@@ -237,6 +247,11 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
     }
 
     private fun initObserver() {
+        viewModel.userMoney.observe(this) {
+            it?.let { money ->
+                tv_balance.text = TextUtil.formatMoney(money)
+            }
+        }
         viewModel.isScrollDown.distinctUntilChanged().observe(this) {
             it.getContentIfNotHandled()?.let { isScrollDown ->
                 my_favorite_bottom_navigation.slideVisibility(isScrollDown)

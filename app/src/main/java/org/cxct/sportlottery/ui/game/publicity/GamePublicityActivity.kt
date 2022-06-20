@@ -5,10 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.distinctUntilChanged
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.activity_game_publicity.*
+import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -34,11 +36,7 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.AppManager
-import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.MetricsUtil
-import org.cxct.sportlottery.util.setVisibilityByCreditSystem
+import org.cxct.sportlottery.util.*
 import org.parceler.Parcels
 
 class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class),
@@ -170,6 +168,11 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     }
 
     private fun initObservers() {
+        viewModel.userMoney.observe(this) {
+            it?.let { money ->
+                tv_balance.text = TextUtil.formatMoney(money)
+            }
+        }
         viewModel.isScrollDown.distinctUntilChanged().observe(this) {
             it.getContentIfNotHandled()?.let { isScrollDown ->
                 game_Bottom_Navigation.slideVisibility(isScrollDown)
@@ -366,6 +369,11 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     }
 
     override fun initBottomNavigation() {
+        tv_balance_currency.text = sConfigData?.systemCurrencySign
+        tv_balance.text = TextUtil.formatMoney(0.0)
+        cl_bet_list_bar.setOnClickListener {
+            showBetListPage()
+        }
         binding.gameBottomNavigation.sportBottomNavigation.clearSelectedStatus()
         binding.gameBottomNavigation.sportBottomNavigation.setNavigationItemClickListener {
             when (it) {
@@ -397,7 +405,8 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     override fun updateUiWithLogin(isLogin: Boolean) {
         with(binding) {
             if (isLogin) {
-                gameBottomNavigation.sportBottomNavigation.visibility = View.VISIBLE
+                viewBottom.visibility = View.GONE
+                game_Bottom_Navigation.visibility = View.VISIBLE
 
                 //region publicity tool bar
                 publicityToolbar.ivNotice.visibility = View.VISIBLE
@@ -416,10 +425,9 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                     toolbarDivider.visibility = View.GONE
                 }
                 //endregion
-
-                viewBottom.layoutParams.height = 55.dp
             } else {
-                gameBottomNavigation.sportBottomNavigation.visibility = View.GONE
+                viewBottom.visibility = View.VISIBLE
+                game_Bottom_Navigation.visibility = View.GONE
 
                 //region publicity tool bar
                 publicityToolbar.ivNotice.visibility = View.GONE
@@ -438,8 +446,6 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                     toolbarDivider.visibility = View.VISIBLE
                 }
                 //endregion
-
-                viewBottom.layoutParams.height = 60.dp
             }
         }
     }
@@ -450,6 +456,8 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
 
     override fun updateBetListCount(num: Int) {
         binding.gameBottomNavigation.sportBottomNavigation.setBetCount(num)
+        cl_bet_list_bar.isVisible = num > 0
+        tv_bet_list_count.text = num.toString()
     }
 
     override fun showLoginNotify() {

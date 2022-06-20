@@ -8,12 +8,14 @@
     tools:ignore="SpUsage, ContentDescription">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_title"
+        android:id="@+id/cl_bet_list_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bet_list_bar_height"
         android:background="@drawable/bg_gradient_bet_info_title_v2"
         android:clickable="true"
-        android:focusable="true">
+        android:focusable="true"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <ImageView
             android:id="@+id/iv_arrow"

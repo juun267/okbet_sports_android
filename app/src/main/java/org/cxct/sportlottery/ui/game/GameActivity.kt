@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.distinctUntilChanged
@@ -21,7 +22,6 @@ import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import kotlinx.android.synthetic.main.sport_bottom_navigation.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
-import kotlinx.android.synthetic.main.view_bottom_navigation_sport.cl_title
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.tv_balance
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.tv_bet_list_count
 import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
@@ -286,7 +286,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     override fun initBottomNavigation() {
         tv_balance_currency.text = sConfigData?.systemCurrencySign
         tv_balance.text = TextUtil.formatMoney(0.0)
-        cl_title.setOnClickListener {
+        cl_bet_list_bar.setOnClickListener {
             showBetListPage()
         }
         sport_bottom_navigation.setNavigationItemClickListener {
@@ -359,6 +359,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
     override fun updateBetListCount(num: Int) {
         sport_bottom_navigation.setBetCount(num)
+        cl_bet_list_bar.isVisible = num > 0
         tv_bet_list_count.text = num.toString()
     }
 
@@ -773,7 +774,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     private fun initObserve() {
         viewModel.userMoney.observe(this) {
             it?.let { money ->
-                tv_balance.text = TextUtil.formatMoney(money )
+                tv_balance.text = TextUtil.formatMoney(money)
             }
         }
         viewModel.isScrollDown.distinctUntilChanged().observe(this) {
