@@ -141,19 +141,20 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
     }
 
     fun View.slideVisibility(isHide: Boolean, duration: Long = 200) {
+        val bottomNavBarHeight = resources.getDimension(R.dimen.bottom_nav_bar_height)
         if (isHide) {
-            if (translationY == height.toFloat()) return
+            if (translationY == bottomNavBarHeight) return
             translationY = 0f
             animate()
-                .translationY(height.toFloat())
+                .translationY(bottomNavBarHeight)
                 .setDuration(duration).setListener(object: AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator?, isReverse: Boolean) {
-                        translationY = height.toFloat()
+                        translationY = bottomNavBarHeight
                     }
                 })
         } else {
             if (translationY == 0f) return
-            translationY = height.toFloat()
+            translationY = bottomNavBarHeight
             animate()
                 .translationY(0f)
                 .setDuration(duration).setListener(object: AnimatorListenerAdapter() {

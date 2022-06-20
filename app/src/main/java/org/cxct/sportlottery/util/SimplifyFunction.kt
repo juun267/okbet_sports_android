@@ -49,10 +49,11 @@ fun RecyclerView.addScrollWithItemVisibility(
                 //更新記錄的方向
                 if (dy > 0) {
                     directionIsDown = true
+                    onScrollDown(directionIsDown)
                 } else if (dy < 0) {
                     directionIsDown = false
+                    onScrollDown(directionIsDown)
                 }
-                onScrollDown(directionIsDown)
             }
             //Y軸移動的值和記錄的方向不同時, 重設狀態
             if (dy > 0 != directionIsDown) {

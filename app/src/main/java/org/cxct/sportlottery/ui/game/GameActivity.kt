@@ -21,6 +21,9 @@ import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import kotlinx.android.synthetic.main.sport_bottom_navigation.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
+import kotlinx.android.synthetic.main.view_bottom_navigation_sport.cl_title
+import kotlinx.android.synthetic.main.view_bottom_navigation_sport.tv_balance
+import kotlinx.android.synthetic.main.view_bottom_navigation_sport.tv_bet_list_count
 import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
 import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_right.*
@@ -36,6 +39,7 @@ import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.message.Row
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
@@ -280,6 +284,11 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     }
 
     override fun initBottomNavigation() {
+        tv_balance_currency.text = sConfigData?.systemCurrencySign
+        tv_balance.text = TextUtil.formatMoney(0.0)
+        cl_title.setOnClickListener {
+            showBetListPage()
+        }
         sport_bottom_navigation.setNavigationItemClickListener {
             when (it) {
                 R.id.navigation_sport -> {
@@ -350,6 +359,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
     override fun updateBetListCount(num: Int) {
         sport_bottom_navigation.setBetCount(num)
+        tv_bet_list_count.text = num.toString()
     }
 
     override fun showLoginNotify() {
@@ -761,6 +771,11 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initObserve() {
+        viewModel.userMoney.observe(this) {
+            it?.let { money ->
+                tv_balance.text = TextUtil.formatMoney(money )
+            }
+        }
         viewModel.isScrollDown.distinctUntilChanged().observe(this) {
             it.getContentIfNotHandled()?.let { isScrollDown ->
                 game_bottom_navigation.slideVisibility(isScrollDown)

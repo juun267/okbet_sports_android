@@ -1,52 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:ignore="SpUsage, ContentDescription">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/btn_return_to_top"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_title"
         android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_above="@+id/sport_bottom_navigation"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="9dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="9dp"
-        android:visibility="gone"
-        app:cardBackgroundColor="@color/color_191919_EEEFF0"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="0dp"
-        app:contentPadding="10dp"
-        tools:visibility="visible">
+        android:layout_height="@dimen/bet_list_bar_height"
+        android:background="@drawable/bg_gradient_bet_info_title_v2"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:id="@+id/iv_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/margin_7"
+            android:paddingHorizontal="@dimen/margin_8"
+            android:rotation="180"
+            android:src="@drawable/ic_arrow_gray_down"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/tv_bet_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/return_to_top"
+            android:layout_marginStart="@dimen/margin_9"
+            android:text="@string/bet_list_title"
+            android:textColor="@color/color_317FFF_0760D4"
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_bet_list_count"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/bg_circle_317fff_0760d4"
+            app:layout_constraintBottom_toBottomOf="@id/tv_bet_list_count"
+            app:layout_constraintEnd_toEndOf="@id/tv_bet_list_count"
+            app:layout_constraintStart_toStartOf="@id/tv_bet_list_count"
+            app:layout_constraintTop_toTopOf="@id/tv_bet_list_count" />
+
+        <TextView
+            android:id="@+id/tv_bet_list_count"
+            android:layout_width="18dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:gravity="center"
+            android:textColor="@color/color_FFFFFF_FFFFFF"
+            android:textSize="@dimen/textSize16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="10" />
+
+        <TextView
+            android:id="@+id/tv_balance_currency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_4"
+            android:text="0.000"
             android:textColor="@color/color_909090_666666"
-            android:textSize="@dimen/textSize14sp" />
-    </androidx.cardview.widget.CardView>
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_balance"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="₱" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation_sport"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/color_191919_FCFCFC"
-        app:itemIconTint="@color/selector_blue_silver"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/bottom_navigation_sport"
-        android:visibility="gone"/>
+        <TextView
+            android:id="@+id/tv_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_10"
+            android:textColor="@color/color_909090_666666"
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/gray_line"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="9,875,241.000" />
 
+        <View
+            android:id="@+id/gray_line"
+            android:layout_width="1dp"
+            android:layout_height="14dp"
+            android:background="@color/color_404040_cccccc"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/iv_arrow"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <org.cxct.sportlottery.ui.game.bottomNavigation.SportBottomNavigation
         android:id="@+id/sport_bottom_navigation"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_alignParentBottom="true" />
+        android:layout_height="@dimen/bottom_nav_bar_height" />
 
-
-</RelativeLayout>
+</LinearLayout>

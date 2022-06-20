@@ -111,7 +111,7 @@
             android:id="@+id/game_Bottom_Navigation"
             layout="@layout/view_bottom_navigation_sport"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@id/viewBottom"/>
 
         <!-- 投注單 & 快捷投注單 -->
