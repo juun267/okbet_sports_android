@@ -256,11 +256,11 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                             )
                         }
                     }
-                },
-                onScrollDown = {
-                    viewModel.setIsScrollDown(it)
                 }
             )
+            addScrollListenerForBottomNavBar {
+                viewModel.setIsScrollDown(it)
+            }
         }
     }
 

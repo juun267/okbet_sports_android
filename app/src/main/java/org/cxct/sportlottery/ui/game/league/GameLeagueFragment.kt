@@ -248,11 +248,11 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                             )
                         }
                     }
-                },
-                onScrollDown = {
-                    viewModel.setIsScrollDown(it)
                 }
             )
+            addScrollListenerForBottomNavBar {
+                viewModel.setIsScrollDown(it)
+            }
             leagueAdapter.setPreloadItem()
         }
     }

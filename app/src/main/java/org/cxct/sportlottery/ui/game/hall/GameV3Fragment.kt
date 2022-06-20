@@ -661,11 +661,11 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             )
                         }
                     }
-                },
-                onScrollDown = {
-                    viewModel.setIsScrollDown(it)
                 }
             )
+            addScrollListenerForBottomNavBar {
+                viewModel.setIsScrollDown(it)
+            }
             if (viewModel.getMatchCount(args.matchType) < 1) {
                 leagueAdapter.removePreloadItem()
             } else {
