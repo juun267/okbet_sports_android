@@ -229,6 +229,7 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
         sport_bottom_navigation.setBetCount(num)
         cl_bet_list_bar.isVisible = num > 0
         tv_bet_list_count.text = num.toString()
+        if (num > 0) viewModel.getMoney()
     }
 
     override fun showLoginNotify() {
