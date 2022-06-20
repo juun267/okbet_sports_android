@@ -334,8 +334,8 @@ class LiveViewToolbarNew @JvmOverloads constructor(
         }
         web_view.loadUrl(defaultAnimationUrl)
     }
-/* //先留著，確定之後不用可刪
-    private fun setLivePlayImg() {
+ //先留著，確定之後不用可刪
+/*    private fun setLivePlayImg() {
         when (gameType) {
             GameType.FT -> iv_animation.setImageResource(R.drawable.ic_live_football_small)
             GameType.BK -> iv_animation.setImageResource(R.drawable.ic_live_basketball_small)
@@ -353,8 +353,7 @@ class LiveViewToolbarNew @JvmOverloads constructor(
             GameType.MR -> iv_animation.setImageResource(R.drawable.ic_live_racing_small)
             GameType.GF -> iv_animation.setImageResource(R.drawable.ic_live_golf_small)
         }
-    }
-
+    }*/
     private fun setAnimationImgIcon(isOn: Boolean) {
         if (isOn) {
             when (gameType) {
@@ -394,12 +393,12 @@ class LiveViewToolbarNew @JvmOverloads constructor(
             }
         }
     }
-*/
 
-    private fun setAnimationImgIcon(isOn: Boolean) {
-        if (isOn) iv_animation.setImageResource(R.drawable.ic_icon_game_live_soccer_selected)
-        else iv_animation.setImageResource(R.drawable.ic_icon_game_live_soccer_unselected)
-    }
+
+//    private fun setAnimationImgIcon(isOn: Boolean) {
+//        if (isOn) iv_animation.setImageResource(R.drawable.ic_icon_game_live_soccer_selected)
+//        else iv_animation.setImageResource(R.drawable.ic_icon_game_live_soccer_unselected)
+//    }
 
     private fun hideWebView() {
         web_view.isVisible = false

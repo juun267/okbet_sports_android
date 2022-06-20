@@ -55,7 +55,7 @@
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:overScrollMode="never"
-                android:visibility="gone" />
+                 />
 
         </RelativeLayout>
 
@@ -90,12 +90,11 @@
             android:layout_marginEnd="20dp"
             android:padding="2dp"
             android:src="@drawable/selector_game_schedule"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/iv_statistics"
             app:layout_constraintStart_toEndOf="@id/iv_play"
             app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible" />
+             />
 
         <ImageView
             android:id="@+id/iv_statistics"
