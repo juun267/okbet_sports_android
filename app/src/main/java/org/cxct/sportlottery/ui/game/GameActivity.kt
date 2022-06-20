@@ -132,12 +132,12 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     var isFromPublicity: Boolean = false
 
     private fun updateServiceButtonVisibility(destinationId: Int) {
-        btn_floating_service.visibility = when (destinationId) {
+        when (destinationId) {
             R.id.homeFragment -> {
-                View.VISIBLE
+                btn_floating_service.setView(this)
             }
             else -> {
-                View.GONE
+                btn_floating_service.visibility=View.GONE
             }
         }
     }

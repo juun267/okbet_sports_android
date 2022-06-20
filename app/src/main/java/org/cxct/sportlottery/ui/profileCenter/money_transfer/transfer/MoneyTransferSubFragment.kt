@@ -100,16 +100,20 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
 
         viewModel.transferResult.observe(viewLifecycleOwner) { result ->
             result?.getContentIfNotHandled()?.let { it ->
-                val dialog = CustomAlertDialog(requireActivity()).apply {
-                    setTitle(getString(R.string.prompt))
-                    setMessage(if (it.success) getString(R.string.transfer_money_succeed) else it.msg)
-                    setNegativeButtonText(null)
-                    setTextColor(if (it.success) R.color.color_909090_666666 else R.color.color_F75452_b73a20)
-                }
-                dialog.show(childFragmentManager, null)
-
                 if (it.success) {
-                    view?.findNavController()?.navigate(MoneyTransferSubFragmentDirections.actionMoneyTransferSubFragmentToMoneyTransferFragment())
+                    context?.let { context ->
+                        val dialog = CustomAlertDialog(context).apply {
+                            setTitle(context.getString(R.string.prompt))
+                            setMessage(if (it.success) context.getString(R.string.transfer_money_succeed) else it.msg)
+                            setPositiveClickListener {
+                                this@MoneyTransferSubFragment.view?.findNavController()
+                                    ?.navigate(MoneyTransferSubFragmentDirections.actionMoneyTransferSubFragmentToMoneyTransferFragment())
+                            }
+                            setNegativeButtonText(null)
+                            setTextColor(if (it.success) R.color.color_909090_666666 else R.color.color_F75452_b73a20)
+                        }
+                        dialog.show(childFragmentManager, null)
+                    }
                 }
             }
         }

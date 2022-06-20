@@ -70,7 +70,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                     source = it.matchInfo?.source,
                     parlay = it.matchInfo?.parlay
                 ).apply {
-                    startDateDisplay = TimeUtil.timeFormat(this.startTime, "dd/MM")
+                    startDateDisplay = TimeUtil.timeFormat(this.startTime, "MM/dd")
                     startTimeDisplay = TimeUtil.timeFormat(this.startTime, "HH:mm")
                     isAtStart = TimeUtil.isTimeAtStart(this.startTime)
                 }

@@ -643,7 +643,6 @@ class OddButtonPagerViewHolder private constructor(
                 requestLayout()
             }
 
-
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(0))
 
 //            isSelected = odds.second?.getOrNull(0)?.isSelected ?: false
@@ -726,7 +725,6 @@ class OddButtonPagerViewHolder private constructor(
                 }
                 requestLayout()
             }
-
 
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(1))
 
