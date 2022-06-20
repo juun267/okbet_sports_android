@@ -514,18 +514,18 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
                         )
                     )
                 }
-//                GameType.ES_COMING_SOON -> {
-//                    unselectedList.add(
-//                        MenuItemData(
-//                            R.drawable.img_esports,
-//                            getString(R.string.esports),
-//                            GameType.ES_COMING_SOON.key,
-//                            0,
-//                            -1,
-//                            false
-//                        )
-//                    )
-//                }
+                GameType.ES_COMING_SOON -> {
+                    unselectedList.add(
+                        MenuItemData(
+                            R.drawable.img_esports,
+                            getString(R.string.esports),
+                            GameType.ES_COMING_SOON.key,
+                            0,
+                            -1,
+                            false
+                        )
+                    )
+                }
                 //coming soon end
                 else -> {
                 }

@@ -245,9 +245,9 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 GameType.BB_COMING_SOON.key -> {
                     img.setImageResource(R.drawable.selector_sport_type_item_img_bb_v5)
                 }
-//                GameType.ES_COMING_SOON.key -> {
-//                    img.setImageResource(R.drawable.selector_sport_type_item_img_es_v5)
-//                }
+                GameType.ES_COMING_SOON.key -> {
+                    img.setImageResource(R.drawable.selector_sport_type_item_img_es_v5)
+                }
             }
         }
 

@@ -25,8 +25,8 @@ enum class GameType(val key: String, @StringRes val string: Int) {
     GF("GF", R.string.golf),
     FB("FB",R.string.financial_bets),
     OTHER("OTHER",R.string.other),
-    BB_COMING_SOON("BB_COMING_SOON", R.string.baseball);
-//    ES_COMING_SOON("ES_COMING_SOON", R.string.esports);
+    BB_COMING_SOON("BB_COMING_SOON", R.string.baseball),
+    ES_COMING_SOON("ES_COMING_SOON", R.string.esports);
 
 
     companion object {
@@ -49,7 +49,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 GF.key -> GF
                 FB.key -> FB
                 BB_COMING_SOON.key -> BB_COMING_SOON
-//                ES_COMING_SOON.key -> ES_COMING_SOON
+                ES_COMING_SOON.key -> ES_COMING_SOON
                 else -> null
             }
         }
@@ -73,7 +73,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 GF.key -> GF.string
                 FB.key -> FB.string
                 BB_COMING_SOON.key -> BB_COMING_SOON.string
-//                ES_COMING_SOON.key -> ES_COMING_SOON.string
+                ES_COMING_SOON.key -> ES_COMING_SOON.string
                 else -> R.string.unknown_name
             }
         }
@@ -117,7 +117,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 FB -> R.drawable.ic_home_finance_piechart
                 OTHER -> R.drawable.ic_home_champ
                 BB_COMING_SOON -> R.drawable.ic_home_baseball
-//                ES_COMING_SOON -> R.drawable.ic_home_gaming
+                ES_COMING_SOON -> R.drawable.ic_home_gaming
             }
         }
 
@@ -140,7 +140,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 GF.key -> R.drawable.img_golf_white
                 FB.key -> R.drawable.img_finance_white
                 BB_COMING_SOON.key -> R.drawable.img_baseball_white
-//                ES_COMING_SOON.key -> R.drawable.img_esports_white
+                ES_COMING_SOON.key -> R.drawable.img_esports_white
                 else -> R.drawable.ic_game_champ
             }
         }
@@ -165,7 +165,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 FB -> R.drawable.selector_sport_type_item_img_fb_v5
                 OTHER -> R.drawable.ic_game_champ
                 BB_COMING_SOON -> R.drawable.selector_sport_type_item_img_bb_v5
-//                ES_COMING_SOON -> R.drawable.selector_sport_type_item_img_es_v5
+                ES_COMING_SOON -> R.drawable.selector_sport_type_item_img_es_v5
             }
         }
     }
