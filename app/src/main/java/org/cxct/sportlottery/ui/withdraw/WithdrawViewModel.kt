@@ -164,7 +164,7 @@ class WithdrawViewModel(
 
     //判斷Tab是不是要顯示
     private var _withdrawTabIsShow = MutableLiveData<List<String>>()
-    val withdrawSystemOperation: LiveData<List<String>>
+    val withdrawTabIsShow: LiveData<List<String>>
         get() = _withdrawTabIsShow
 
     private var _needCheck = MutableLiveData<Boolean>()

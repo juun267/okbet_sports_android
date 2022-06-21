@@ -12,56 +12,64 @@ import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.money.config.MoneyRechCfgResult
 import org.cxct.sportlottery.network.money.config.TransferType
-import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.util.Event
 import retrofit2.Response
 
-class WithdrawRepository(
-    private val userInfoRepository: UserInfoRepository
-) {
+object WithdrawRepository {
+
+    enum class SecurityEnter(val code: Int){
+        UPDATE_PW(0),//更新提款卡密碼
+        SETTING_PW(1),//設定提現密碼
+        COMPLETE_PROFILE_INFO(2),//完善個人資料
+        SETTING_PROFILE_INFO(3),//設定個人資料
+        BIND_BANK_CARD(4),//綁定銀行卡
+        INTO_WITHDRAW(5)
+    }
+
+    private val userInfoRepository = UserInfoRepository
 
     private val userInfoFlow: Flow<UserInfo?>?
         get() = MultiLanguagesApplication.getInstance()?.userInfo
 
-    private var _withdrawSystemOperation = MutableLiveData<Event<Boolean>>()
+    private var mWithdrawSystemOperation = MutableLiveData<Event<Boolean>>()
     val withdrawSystemOperation: LiveData<Event<Boolean>>
-        get() = _withdrawSystemOperation
+        get() = mWithdrawSystemOperation
 
-    private var _rechargeSystemOperation = MutableLiveData<Event<Boolean>>()
+    private var mRechargeSystemOperation = MutableLiveData<Event<Boolean>>()
     val rechargeSystemOperation: LiveData<Event<Boolean>>
-        get() = _rechargeSystemOperation
+        get() = mRechargeSystemOperation
 
-    private var _needToUpdateWithdrawPassword = MutableLiveData<Event<Boolean>>()
+    private var mNeedToUpdateWithdrawPassword = MutableLiveData<Event<Boolean>>()
     val needToUpdateWithdrawPassword: LiveData<Event<Boolean>> //提款頁面是否需要更新提款密碼 true: 需要, false: 不需要
-        get() = _needToUpdateWithdrawPassword
+        get() = mNeedToUpdateWithdrawPassword
 
-    private var _settingNeedToUpdateWithdrawPassword = MutableLiveData<Event<Boolean>>()
+    private var mSettingNeedToUpdateWithdrawPassword = MutableLiveData<Event<Boolean>>()
     val settingNeedToUpdateWithdrawPassword: LiveData<Event<Boolean>> //提款設置頁面是否需要更新提款密碼 true: 需要, false: 不需要
-        get() = _settingNeedToUpdateWithdrawPassword
+        get() = mSettingNeedToUpdateWithdrawPassword
 
-    private var _needToCompleteProfileInfo = MutableLiveData<Event<Boolean>>()
+    private var mNeedToCompleteProfileInfo = MutableLiveData<Event<Boolean>>()
     val needToCompleteProfileInfo: LiveData<Event<Boolean>> //提款頁面是否需要完善個人資料 true: 需要, false: 不需要
-        get() = _needToCompleteProfileInfo
+        get() = mNeedToCompleteProfileInfo
 
-    private var _settingNeedToCompleteProfileInfo = MutableLiveData<Event<Boolean>>()
+    private var mSettingNeedToCompleteProfileInfo = MutableLiveData<Event<Boolean>>()
     val settingNeedToCompleteProfileInfo: LiveData<Event<Boolean>> //提款頁面是否需要完善個人資料 true: 需要, false: 不需要
-        get() = _settingNeedToCompleteProfileInfo
+        get() = mSettingNeedToCompleteProfileInfo
 
-    private var _needToBindBankCard = MutableLiveData<Event<Int?>>()
-    val needToBindBankCard: LiveData<Event<Int?>>
-        get() = _needToBindBankCard //提款頁面是否需要新增銀行卡 -1 : 不需要新增, else : 以value作為string id 顯示彈窗提示
+    private var mNeedToBindBankCard = MutableLiveData<Event<Int?>>()
+    val needToBindBankCard: LiveData<Event<Int?>> //提款頁面是否需要新增銀行卡 -1 : 不需要新增, else : 以value作為string id 顯示彈窗提示
+        get() = mNeedToBindBankCard
 
-    private var _intoWithdraw = MutableLiveData<Event<Boolean>>()
+    private var mIntoWithdraw = MutableLiveData<Event<Boolean>>()
     val intoWithdraw: LiveData<Event<Boolean>> //進入提款頁前判斷
-        get() = _intoWithdraw
+        get() = mIntoWithdraw
 
-    private var _showSecurityDialog = MutableLiveData<Event<Boolean>>()
+    private var mShowSecurityDialog = MutableLiveData<Event<Boolean>>()
     val showSecurityDialog: LiveData<Event<Boolean>> //判斷是否需要簡訊驗證 true：顯示簡訊驗證彈窗 false：不顯示
-        get() = _showSecurityDialog
+        get() = mShowSecurityDialog
 
-    private var _hasPhoneNumber = MutableLiveData<Event<Boolean>>()
+    private var mHasPhoneNumber = MutableLiveData<Event<Boolean>>()
     val hasPhoneNumber: LiveData<Event<Boolean>> //是否有手機號碼
-        get() = _hasPhoneNumber
+        get() = mHasPhoneNumber
 
     private var mWithdrawOperation: SystemOperation? = null
 
@@ -74,12 +82,12 @@ class WithdrawRepository(
     //顯示驗證過了之後要繼續驗證前的邏輯
     suspend fun sendTwoFactor() {
         when (sConfigData?.enterCertified) {
-            ProfileCenterViewModel.SecurityEnter.SETTING_PW.ordinal -> settingCheckPermissions()
-            ProfileCenterViewModel.SecurityEnter.UPDATE_PW.ordinal -> withdrawCheckPermissions()
-            ProfileCenterViewModel.SecurityEnter.COMPLETET_PROFILE_INFO.ordinal -> checkProfileInfoComplete()
-            ProfileCenterViewModel.SecurityEnter.SETTING_PROFILE_INFO.ordinal -> checkSettingProfileInfoComplete()
-            ProfileCenterViewModel.SecurityEnter.BIND_BANK_CARD.ordinal -> checkBankCardPermissions()
-            ProfileCenterViewModel.SecurityEnter.INTO_WITHDRAW.ordinal -> checkIntoWithdraw()
+            SecurityEnter.SETTING_PW.ordinal -> settingCheckPermissions()
+            SecurityEnter.UPDATE_PW.ordinal -> withdrawCheckPermissions()
+            SecurityEnter.COMPLETE_PROFILE_INFO.ordinal -> checkProfileInfoComplete()
+            SecurityEnter.SETTING_PROFILE_INFO.ordinal -> checkSettingProfileInfoComplete()
+            SecurityEnter.BIND_BANK_CARD.ordinal -> checkBankCardPermissions()
+            SecurityEnter.INTO_WITHDRAW.ordinal -> checkIntoWithdraw()
         }
     }
 
@@ -103,7 +111,7 @@ class WithdrawRepository(
 
             val operation =
                 bankWithdrawSystemOperation || cryptoWithdrawSystemOperation || eWalletWithdrawSystemOperation
-            _withdrawSystemOperation.value = Event(operation)
+            mWithdrawSystemOperation.value = Event(operation)
 
             if (operation) {
                 withdrawCheckPermissions()
@@ -119,7 +127,7 @@ class WithdrawRepository(
             val rechCfgsList = response.body()?.rechCfg?.rechCfgs  //後台有開的充值方式
             val operation = (rechTypesList?.size ?: 0 > 0) && (rechCfgsList?.size ?: 0 > 0)
 
-            _rechargeSystemOperation.value = Event(operation)
+            mRechargeSystemOperation.value = Event(operation)
         }
         return response
     }
@@ -140,11 +148,11 @@ class WithdrawRepository(
 
                 //是否需要顯示簡訊驗證 false: 需顯示簡訊驗證
                 if (twoFactorStatus == false) {
-                    sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.UPDATE_PW.ordinal
-                    _showSecurityDialog.value = Event(true)
+                    sConfigData?.enterCertified = SecurityEnter.UPDATE_PW.ordinal
+                    mShowSecurityDialog.value = Event(true)
                 } else if (twoFactorStatus == true) {
                     //不需要簡訊驗證，提示需更新提款密碼
-                    _needToUpdateWithdrawPassword.postValue(Event(needUpdatePassWord))
+                    mNeedToUpdateWithdrawPassword.postValue(Event(needUpdatePassWord))
                 }
             }
             verifyProfileInfoComplete() -> {
@@ -176,7 +184,7 @@ class WithdrawRepository(
             checkUserHavePhoneNumber().let { hasPhone ->
                 if (!hasPhone) {
                     //因需要顯示簡訊驗證卻沒有手機號碼時
-                    _hasPhoneNumber.postValue(Event(hasPhone))
+                    mHasPhoneNumber.postValue(Event(hasPhone))
                     return null
                 }
             }
@@ -185,7 +193,7 @@ class WithdrawRepository(
     }
 
     suspend fun checkNeedToShowSecurityDialog() {
-        _showSecurityDialog.value = Event(!getTwoFactorStatus())
+        mShowSecurityDialog.value = Event(!getTwoFactorStatus())
     }
 
     /**
@@ -206,11 +214,11 @@ class WithdrawRepository(
             needUpdatePassWord -> {
                 //是否需要顯示簡訊驗證 false: 需顯示簡訊驗證
                 if (twoFactorStatus == false) {
-                    sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.SETTING_PW.ordinal
-                    _showSecurityDialog.value = Event(true)
+                    sConfigData?.enterCertified = SecurityEnter.SETTING_PW.ordinal
+                    mShowSecurityDialog.value = Event(true)
                 } else if (twoFactorStatus == true) {
                     //不需要簡訊驗證，提示需更新提款密碼
-                    _needToUpdateWithdrawPassword.postValue(Event(needUpdatePassWord))
+                    mNeedToUpdateWithdrawPassword.postValue(Event(needUpdatePassWord))
                 }
             }
             else -> {
@@ -224,25 +232,25 @@ class WithdrawRepository(
      * complete true: 個人資訊有缺漏, false: 個人資訊完整
      */
     suspend fun checkProfileInfoComplete() {
-        _needToCompleteProfileInfo.postValue(Event(verifyProfileInfoComplete()))
+        mNeedToCompleteProfileInfo.postValue(Event(verifyProfileInfoComplete()))
     }
 
     //提款設置用
     private suspend fun checkSettingProfileInfoComplete() {
-        sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.SETTING_PROFILE_INFO.ordinal
+        sConfigData?.enterCertified = SecurityEnter.SETTING_PROFILE_INFO.ordinal
         verifyProfileInfoComplete().let { verify ->
             val twoFactorStatus = checkTwoFactorStatus()
             //資料完整準備進入提款設置頁面
             if (!verify) {
                 if (twoFactorStatus == false) {
-                    _showSecurityDialog.value = Event(true)
+                    mShowSecurityDialog.value = Event(true)
                 } else if (twoFactorStatus == true) {
                     //不需要簡訊驗證，提示需更新提款密碼
-                    _settingNeedToCompleteProfileInfo.postValue(Event(verify))
+                    mSettingNeedToCompleteProfileInfo.postValue(Event(verify))
                 }
             } else {
                 //資料不完善通知跳轉個人資訊頁面
-                _settingNeedToCompleteProfileInfo.value = Event(verify)
+                mSettingNeedToCompleteProfileInfo.value = Event(verify)
             }
         }
     }
@@ -380,11 +388,11 @@ class WithdrawRepository(
 
             //是否需要顯示簡訊驗證 false: 需顯示簡訊驗證
             if (twoFactorStatus == false) {
-                sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.BIND_BANK_CARD.ordinal
-                _showSecurityDialog.value = Event(true)
+                sConfigData?.enterCertified = SecurityEnter.BIND_BANK_CARD.ordinal
+                mShowSecurityDialog.value = Event(true)
             } else if (twoFactorStatus == true) {
                 //不需要簡訊驗證，提示需先綁定銀行卡
-                _needToBindBankCard.postValue(Event(promptMessageId))
+                mNeedToBindBankCard.postValue(Event(promptMessageId))
             }
         } else {
             checkIntoWithdraw()
@@ -394,10 +402,10 @@ class WithdrawRepository(
     private suspend fun checkIntoWithdraw() {
         val twoFactorStatus = checkTwoFactorStatus()
         if (twoFactorStatus == false) {
-            sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.INTO_WITHDRAW.ordinal
-            _showSecurityDialog.value = Event(true)
+            sConfigData?.enterCertified = SecurityEnter.INTO_WITHDRAW.ordinal
+            mShowSecurityDialog.value = Event(true)
         } else {
-            _intoWithdraw.value = Event(true)
+            mIntoWithdraw.value = Event(true)
         }
     }
 
