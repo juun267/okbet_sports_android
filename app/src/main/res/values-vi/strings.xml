@@ -1178,6 +1178,9 @@
     <string name="coming_soon">Sắp có</string>
     <string name="esports">eSports</string>
 
+    <!--region 大廳賠率按鈕-->
+    <string name="none">None</string>
+    <!--endregion-->
     <!--region 注單模塊調整-->
     <string name="bet_info_bet_lock_hint">Kèo chấp đã đóng</string>
     <string name="bet_info_no_parlay_hint">Trận đấu không hỗ trợ đá xiên.</string>

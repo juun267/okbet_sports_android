@@ -14,6 +14,7 @@ import android.view.animation.Animation
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.lifecycle.distinctUntilChanged
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -45,6 +46,8 @@ import org.cxct.sportlottery.network.odds.eps.EpsLeagueOddsItem
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
+import org.cxct.sportlottery.network.outright.odds.OutrightShowMoreItem
+import org.cxct.sportlottery.network.outright.odds.OutrightSubTitleItem
 import org.cxct.sportlottery.network.outright.season.Season
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
@@ -65,7 +68,6 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
-import timber.log.Timber
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -190,38 +192,130 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     private val outrightLeagueOddAdapter by lazy {
         OutrightLeagueOddAdapter().apply {
-            discount = viewModel.userInfo.value?.discount ?: 1.0F
-
             outrightOddListener = OutrightOddListener(
-                { matchOdd, odd, playCateCode ->
+                clickListenerBet = { matchOdd, odd, playCateCode ->
                     matchOdd?.let {
                         if (mIsEnabled) {
                             avoidFastDoubleClick()
                             addOutRightOddsDialog(matchOdd, odd, playCateCode)
-                            //addOddsDialog(matchOdd.matchInfo, odd, playCateCode,"",null)
                         }
                     }
                 },
-                { oddsKey, matchOdd ->
-                    this.data.find { it == matchOdd }?.oddsMap?.get(oddsKey)?.forEachIndexed { index, odd ->
+                clickListenerMore = { oddsKey, matchOdd ->
+                    matchOdd.oddsMap?.get(oddsKey)?.forEachIndexed { index, odd ->
                         if (index >= 5) {
                             odd?.isExpand?.let { isExpand ->
                                 odd.isExpand = !isExpand
+                                this.notifyItemChanged(this.data.indexOf(odd))
                             }
                         }
                     }
-                    this.notifyItemChanged(this.data.indexOf(matchOdd))
                 },
-                { matchOdd, oddsKey ->
-
+                clickExpand = { matchOdd, oddsKey ->
+                    //TODO 訂閱邏輯需重新調整
                     subscribeChannelHall(matchOdd)
 
                     matchOdd?.oddsExpand?.get(oddsKey)?.let { oddExpand ->
                         matchOdd.oddsExpand?.put(oddsKey, !oddExpand)
                     }
-                    this.notifyItemChanged(this.data.indexOf(matchOdd))
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        this@apply.data.filter { any ->
+                            //同一場聯賽內的賠率項(Odd)及顯示更多(OutrightShowMoreItem)
+                            when (any) {
+                                is OutrightShowMoreItem -> {
+                                    any.matchOdd == matchOdd
+                                }
+                                is Odd -> {
+                                    any.belongMatchOdd == matchOdd
+                                }
+                                else -> {
+                                    false
+                                }
+                            }
+                        }.forEach { any ->
+                            val oddsExpand = matchOdd?.oddsExpand?.get(oddsKey) ?: false
+
+                            when (any) {
+                                is OutrightShowMoreItem -> {
+                                    if (any.playCateCode == oddsKey) {
+                                        if (any.playCateExpand != oddsExpand) {
+                                            any.playCateExpand = oddsExpand
+                                            updateOutrightAdapterInMain(any)
+                                        }
+                                    }
+                                }
+                                is Odd -> {
+                                    if (any.outrightCateKey == oddsKey) {
+                                        if (any.playCateExpand != oddsExpand) {
+                                            any.playCateExpand = oddsExpand
+                                            updateOutrightAdapterInMain(any)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                onClickMatch = { matchOdd ->
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        val newExpanded = !(matchOdd?.isExpand ?: true)
+                        matchOdd?.isExpand = newExpanded
+
+                        this@apply.data.filter { any ->
+                            when (any) {
+                                is org.cxct.sportlottery.network.outright.odds.MatchOdd -> {
+                                    any == matchOdd
+                                }
+                                is OutrightSubTitleItem -> {
+                                    any.belongMatchOdd == matchOdd
+                                }
+                                is OutrightShowMoreItem -> {
+                                    any.matchOdd == matchOdd
+                                }
+                                is Odd -> {
+                                    any.belongMatchOdd == matchOdd
+                                }
+                                else -> {
+                                    false
+                                }
+                            }
+                        }.forEach { any ->
+                            when (any) {
+                                is org.cxct.sportlottery.network.outright.odds.MatchOdd -> {
+                                    //聯賽標題需更新與其他Item的間隔
+                                    updateOutrightAdapterInMain(any)
+                                }
+                                is OutrightSubTitleItem -> {
+                                    if (any.leagueExpanded != newExpanded) {
+                                        any.leagueExpanded = newExpanded
+                                        updateOutrightAdapterInMain(any)
+                                    }
+                                }
+                                is OutrightShowMoreItem -> {
+                                    if (any.leagueExpanded != newExpanded) {
+                                        any.leagueExpanded = newExpanded
+                                        updateOutrightAdapterInMain(any)
+                                    }
+                                }
+                                is Odd -> {
+                                    if (any.leagueExpanded != newExpanded) {
+                                        any.leagueExpanded = newExpanded
+                                        updateOutrightAdapterInMain(any)
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             )
+        }
+    }
+
+    private fun updateOutrightAdapterInMain(any: Any) {
+        lifecycleScope.launch(Dispatchers.Main) {
+            if (game_list.adapter is OutrightLeagueOddAdapter) {
+                outrightLeagueOddAdapter.notifyItemChanged(outrightLeagueOddAdapter.data.indexOf(any))
+            }
         }
     }
 
@@ -647,18 +741,56 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     unSubscribeChannelHallAll()
                 },
                 onVisible = {
-                    if (leagueAdapter.data.isNotEmpty()) {
-                        it.forEach { p ->
-                            Log.d(
-                                "[subscribe]",
-                                "訂閱 ${leagueAdapter.data[p.first].league.name} -> " +
-                                        "${leagueAdapter.data[p.first].matchOdds[p.second].matchInfo?.homeName} vs " +
-                                        "${leagueAdapter.data[p.first].matchOdds[p.second].matchInfo?.awayName}"
-                            )
-                            subscribeChannelHall(
-                                leagueAdapter.data[p.first].gameType?.key,
-                                leagueAdapter.data[p.first].matchOdds[p.second].matchInfo?.id
-                            )
+                    when (adapter) {
+                        is LeagueAdapter -> {
+                            if (leagueAdapter.data.isNotEmpty()) {
+                                it.forEach { p ->
+                                    Log.d(
+                                        "[subscribe]",
+                                        "訂閱 ${leagueAdapter.data[p.first].league.name} -> " +
+                                                "${leagueAdapter.data[p.first].matchOdds[p.second].matchInfo?.homeName} vs " +
+                                                "${leagueAdapter.data[p.first].matchOdds[p.second].matchInfo?.awayName}"
+                                    )
+                                    subscribeChannelHall(
+                                        leagueAdapter.data[p.first].gameType?.key,
+                                        leagueAdapter.data[p.first].matchOdds[p.second].matchInfo?.id
+                                    )
+                                }
+                            }
+                        }
+                        //冠軍
+                        is OutrightLeagueOddAdapter -> {
+                            it.forEach { pair ->
+                                val outrightDataList = outrightLeagueOddAdapter.data[pair.first]
+                                when (outrightDataList) {
+                                    is org.cxct.sportlottery.network.outright.odds.MatchOdd -> {
+                                        outrightDataList
+                                    }
+                                    is OutrightSubTitleItem -> {
+                                        outrightDataList.belongMatchOdd
+                                    }
+                                    is Odd -> {
+                                        outrightDataList.belongMatchOdd
+                                    }
+                                    is OutrightShowMoreItem -> {
+                                        outrightDataList.matchOdd
+                                    }
+                                    else -> {
+                                        null
+                                    }
+                                }?.let { itemMatchOdd ->
+                                    Log.d(
+                                        "[subscribe]",
+                                        "訂閱 ${itemMatchOdd.matchInfo?.name} -> " +
+                                                "${itemMatchOdd.matchInfo?.homeName} vs " +
+                                                "${itemMatchOdd.matchInfo?.awayName}"
+                                    )
+                                    subscribeChannelHall(
+                                        GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key,
+                                        itemMatchOdd.matchInfo?.id
+                                    )
+                                }
+                            }
                         }
                     }
                 }
@@ -674,6 +806,28 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
         appbar_layout.addOffsetListenerForBottomNavBar {
             MultiLanguagesApplication.mInstance.setIsScrollDown(it)
+        }
+    }
+
+    /**
+     * 設置冠軍adapter, 訂閱當前頁面上的資料
+     */
+    private fun setOutrightLeagueAdapter() {
+        if (game_list.adapter !is OutrightLeagueOddAdapter) {
+            game_list.adapter = outrightLeagueOddAdapter
+        }
+
+        if (game_list.adapter is OutrightLeagueOddAdapter) {
+            Handler().postDelayed(
+                {
+                    game_list?.firstVisibleRange(
+                        GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key,
+                        outrightLeagueOddAdapter,
+                        activity ?: requireActivity()
+                    )
+                },
+                400
+            )
         }
     }
 
@@ -807,6 +961,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                 is EpsListAdapter -> {
                     epsListAdapter.discount = userInfo?.discount ?: 1.0F
+                }
+
+                is OutrightLeagueOddAdapter -> {
+                    viewModel.updateOutrightDiscount(userInfo?.discount ?: 1.0F)
                 }
             }
         }
@@ -967,38 +1125,14 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             hideLoading()
         }
 
-        viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { outrightOddsListResult ->
+        viewModel.outrightMatchList.observe(this.viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { outrightMatchList ->
                 if (game_tab_odd_v4.visibility == View.VISIBLE && game_tabs.selectedTabPosition != 1)
                     return@observe
-                if (outrightOddsListResult.success) {
-                    val outrightLeagueOddDataList: MutableList<org.cxct.sportlottery.network.outright.odds.MatchOdd?> = mutableListOf()
-                    outrightOddsListResult.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds
-                        ?: listOf()
-                    outrightOddsListResult.outrightOddsListData?.leagueOdds?.forEach { leagueOdd ->
-                        leagueOdd.matchOdds?.forEach { matchOdds ->
-                            outrightLeagueOddDataList.add(matchOdds)
-                        }
 
-                    }
-
-                    outrightLeagueOddDataList.forEachIndexed { _, matchOdd ->
-                        matchOdd?.oddsMap?.forEach { oddsMap ->
-                            oddsMap.value?.filterNotNull()?.forEachIndexed { index, odd ->
-                                if (index < 5) odd.isExpand = true
-                            }
-                        }
-                    }
-
-                    outrightLeagueOddAdapter.data = outrightLeagueOddDataList
-                    outrightLeagueOddDataList.forEach { matchOdd ->
-                        subscribeChannelHall(matchOdd)
-                    }
-                    game_list.apply {
-                        adapter = outrightLeagueOddAdapter
-                    }
-                    hideLoading()
-                }
+                outrightLeagueOddAdapter.data = outrightMatchList
+                setOutrightLeagueAdapter()
+                hideLoading()
             }
         }
 
@@ -1102,21 +1236,15 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
                 epsListAdapter.notifyDataSetChanged()
 
-                val odds = mutableListOf<Odd>()
-
-                outrightLeagueOddAdapter.data.forEach { matchOdd ->
-                    matchOdd?.oddsMap?.values?.forEach { oddList ->
-                        odds.addAll(oddList?.filterNotNull() ?: mutableListOf())
-                    }
-                }
-
-                odds.forEach { odd ->
-                    odd.isSelected = betInfoList.any { betInfoListData ->
+                outrightLeagueOddAdapter.data.filterIsInstance<Odd>().forEach { odd ->
+                    val betInfoSelected = betInfoList.any { betInfoListData ->
                         betInfoListData.matchOdd.oddsId == odd.id
                     }
+                    if (odd.isSelected != betInfoSelected) {
+                        odd.isSelected = betInfoSelected
+                        outrightLeagueOddAdapter.notifyItemChanged(outrightLeagueOddAdapter.data.indexOf(odd))
+                    }
                 }
-
-                outrightLeagueOddAdapter.notifyDataSetChanged()
             }
         }
 
@@ -1166,7 +1294,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
 
         viewModel.favorLeagueList.observe(this.viewLifecycleOwner) {
-            Timber.e("Dean, favorLeagueList = $it")
             updateLeaguePin(it)
             updateLeaguePinOutright(it)
         }
@@ -1468,6 +1595,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 epsListAdapter.notifyItemChanged(index)
                             }
                         }
+                    }
+
+                    is OutrightLeagueOddAdapter -> {
+                        viewModel.updateOutrightOddsChange(context, oddsChangeEvent)
                     }
                 }
             }
