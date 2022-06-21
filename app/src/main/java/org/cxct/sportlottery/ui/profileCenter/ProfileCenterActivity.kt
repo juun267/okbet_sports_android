@@ -579,6 +579,12 @@ class ProfileCenterActivity :
             else
                 iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(msg) {} }
         }
+
+        viewModel.intoWithdraw.observe(this) {
+            it.getContentIfNotHandled()?.let {
+                startActivity(Intent(this, WithdrawActivity::class.java))
+            }
+        }
     }
 
     @SuppressLint("SetTextI18n")

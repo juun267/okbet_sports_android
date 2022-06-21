@@ -302,6 +302,11 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             }
         }
 
+        viewModel.intoWithdraw.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let {
+                startActivity(Intent(context, WithdrawActivity::class.java))
+            }
+        }
     }
 
     private fun initEvent() {
