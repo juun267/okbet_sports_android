@@ -8,6 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="6dp"
         android:orientation="horizontal">
 
         <TextView
@@ -16,7 +17,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/color_BCBCBC_666666"
             android:textSize="@dimen/textSize12sp"
-            tools:text="1" />
+            tools:text="10" />
 
         <ImageView
             android:id="@+id/league_odd_match_halfTime"
