@@ -22,5 +22,13 @@ interface MatchInfo {
     var homeCornerKicks: Int?
     var awayCornerKicks: Int?
 
+    //BB
+    var attack: String?
+    var halfTime: Int?
+    var firstBaseBag: Int?
+    var secBaseBag: Int?
+    var thirdBaseBag: Int?
+    var outNumber:Int?
+
     var stopped: Int? //是否计时停止 1:是 ，0：否
 }
