@@ -7,6 +7,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -285,9 +286,8 @@ class Vp2GameTable4Adapter(
             } else {
                 View.GONE
             }
-            itemView.iv_match_price.visibility =
-                if (data.matchInfo?.eps == 1) View.VISIBLE else View.GONE
-
+//            itemView.iv_match_price.visibility = if (data.matchInfo?.eps == 1) View.VISIBLE else View.GONE
+            itemView.iv_match_price.visibility = View.GONE
             with(itemView.iv_play) {
                 isVisible = (data.matchInfo?.liveVideo == 1) && (matchType == MatchType.IN_PLAY)
 
@@ -301,8 +301,8 @@ class Vp2GameTable4Adapter(
             }
 
             with(itemView.iv_animation) {
-                isVisible = !(data.matchInfo?.trackerId.isNullOrEmpty())
-
+                setLiveImg()
+                isVisible = (!data.matchInfo?.trackerId.isNullOrEmpty() && data.matchInfo?.liveVideo == 0)
                 setOnClickListener {
                     data.matchInfo?.let {
                         val matchInfo = it
@@ -456,10 +456,10 @@ class Vp2GameTable4Adapter(
             }
         }
 
-        /* 目前不會用，先留著，以防之後說要改回來。
+//         目前不會用，先留著，以防之後說要改回來。
                 private fun ImageView.setLiveImg() {
                     when (gameType) {
-                        GameType.FT.key -> setImageResource(R.drawable.ic_live_football_small)
+                        GameType.FT.key -> setImageResource(R.drawable.ic_live_soccer_small)
                         GameType.BK.key -> setImageResource(R.drawable.ic_live_basketball_small)
                         GameType.TN.key -> setImageResource(R.drawable.ic_live_tennis_small)
                         GameType.VB.key -> setImageResource(R.drawable.ic_live_volleyball_small)
@@ -471,12 +471,11 @@ class Vp2GameTable4Adapter(
                         GameType.CK.key -> setImageResource(R.drawable.ic_live_cricket_small)
                         GameType.BB.key -> setImageResource(R.drawable.ic_live_baseball_small)
                         GameType.RB.key -> setImageResource(R.drawable.ic_live_rugby_small)
-                        GameType.AFT.key -> setImageResource(R.drawable.ic_live_soccer_small)
+                        GameType.AFT.key -> setImageResource(R.drawable.ic_live_football_small)
                         GameType.MR.key -> setImageResource(R.drawable.ic_live_racing_small)
                         GameType.GF.key -> setImageResource(R.drawable.ic_live_golf_small)
                     }
                 }
-                */
         private fun setupOddList(data: MatchOdd) {
             itemView.apply {
                 //要取 datas 的matchOdds 下面的 oddsSort 去抓排序裡第一個的翻譯顯示 2022/01/11 與後端Ｍax確認 by Bill
