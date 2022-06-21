@@ -56,8 +56,8 @@ data class MatchStatusCO(
     val awayOut: String? = null,
     @Json(name = "attack")
     val attack: String? = null, //攻击方 H:主队 C:客队
-    @Json(name = "halfTime")
-    val halfTime: Int? = null, //滚球半场状态 (0:上半场 1:下半场)
+    @Json(name = "halfStatus")
+    val halfStatus: Int? = null, //滚球半场状态 (0:上半场 1:下半场)
     @Json(name = "firstBaseBag")
     val firstBaseBag: Int? = null, //一垒是否有人(0沒人/1有人)
     @Json(name = "secBaseBag")

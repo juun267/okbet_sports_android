@@ -88,7 +88,7 @@ data class MatchInfo(
 
     //BB
     override var attack: String? = null
-    override var halfTime: Int? = null
+    override var halfStatus: Int? = null
     override var firstBaseBag: Int? = null
     override var secBaseBag: Int? = null
     override var thirdBaseBag: Int? = null

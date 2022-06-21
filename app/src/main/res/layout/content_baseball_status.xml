@@ -20,7 +20,7 @@
             tools:text="10" />
 
         <ImageView
-            android:id="@+id/league_odd_match_halfTime"
+            android:id="@+id/league_odd_match_halfStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
