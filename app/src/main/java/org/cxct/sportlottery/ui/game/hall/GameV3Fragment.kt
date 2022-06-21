@@ -68,7 +68,6 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
-import timber.log.Timber
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -1289,7 +1288,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
 
         viewModel.favorLeagueList.observe(this.viewLifecycleOwner) {
-            Timber.e("Dean, favorLeagueList = $it")
             updateLeaguePin(it)
             updateLeaguePinOutright(it)
         }
