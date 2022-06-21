@@ -286,9 +286,8 @@ class Vp2GameTable4Adapter(
             } else {
                 View.GONE
             }
-            itemView.iv_match_price.visibility =
-                if (data.matchInfo?.eps == 1) View.VISIBLE else View.GONE
-
+//            itemView.iv_match_price.visibility = if (data.matchInfo?.eps == 1) View.VISIBLE else View.GONE
+            itemView.iv_match_price.visibility = View.GONE
             with(itemView.iv_play) {
                 isVisible = (data.matchInfo?.liveVideo == 1) && (matchType == MatchType.IN_PLAY)
 
@@ -302,8 +301,8 @@ class Vp2GameTable4Adapter(
             }
 
             with(itemView.iv_animation) {
-                isVisible = (data.matchInfo?.trackerId.isNullOrEmpty() && data.matchInfo?.liveVideo == 0)
-                if (data.matchInfo?.trackerId.isNullOrEmpty() && data.matchInfo?.liveVideo == 0){setLiveImg()}
+                setLiveImg()
+                isVisible = (!data.matchInfo?.trackerId.isNullOrEmpty() && data.matchInfo?.liveVideo == 0)
                 setOnClickListener {
                     data.matchInfo?.let {
                         val matchInfo = it

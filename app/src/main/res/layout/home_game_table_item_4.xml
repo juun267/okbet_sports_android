@@ -321,6 +321,7 @@
         android:contentDescription="@null"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_price_v4"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/tv_match_play_type_count"
         app:layout_constraintStart_toEndOf="@id/iv_match_in_play"
         app:layout_constraintTop_toTopOf="@id/tv_match_play_type_count" />
@@ -347,6 +348,8 @@
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
         android:paddingEnd="5dp"
+        android:visibility="gone"
+        tools:visibility="visible"
         android:src="@drawable/ic_icon_game_schedule"
         app:layout_constraintBottom_toBottomOf="@id/tv_match_play_type_count"
         app:layout_constraintStart_toEndOf="@id/iv_play"

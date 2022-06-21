@@ -173,6 +173,7 @@
             android:layout_height="14dp"
             android:layout_marginStart="10dp"
             android:contentDescription="@null"
+            android:visibility="gone"
             android:src="@drawable/ic_price_v4" />
 
         <TextView
