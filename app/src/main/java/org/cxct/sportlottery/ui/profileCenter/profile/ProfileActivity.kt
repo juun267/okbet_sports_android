@@ -266,7 +266,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         }
 
         //是否顯示簡訊驗證彈窗
-        viewModel.showSecurityDialog.observe(this) {
+        viewModel.needToSendTwoFactor.observe(this) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
                     customSecurityDialog = CustomSecurityDialog(this).apply {

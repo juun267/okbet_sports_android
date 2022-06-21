@@ -92,7 +92,7 @@ class MultiLanguagesApplication : Application() {
     private val viewModelModule = module {
         viewModel { SplashViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { MoneyRechViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { MainViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { MainViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { LoginViewModel(get(), get(), get(), get(), get()) }
         viewModel { RegisterViewModel(get(), get(), get(), get(), get()) }
         viewModel { SettlementViewModel(get(), get(), get(), get(), get(), get(), get()) }
@@ -100,16 +100,16 @@ class MultiLanguagesApplication : Application() {
         viewModel { InfoCenterViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { HelpCenterViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { WithdrawViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { ProfileModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { ProfileModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { ModifyProfileInfoViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { SettingPasswordViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { FeedbackViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { SelfLimitViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { FinanceViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { ProfileCenterViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { ProfileCenterViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { VersionUpdateViewModel(get(), get(), get(), get()) }
         viewModel { MoneyTransferViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { GameViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { GameViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
         viewModel { MaintenanceViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { OtherBetRecordViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { VipViewModel(get(), get(), get(), get(), get(), get()) }
@@ -124,7 +124,7 @@ class MultiLanguagesApplication : Application() {
     }
 
     private val repoModule = module {
-        single { UserInfoRepository(get()) }
+        single { UserInfoRepository }
         single { LoginRepository(get()) }
         single { SportMenuRepository() }
         single { SettlementRepository() }
@@ -135,7 +135,7 @@ class MultiLanguagesApplication : Application() {
         single { FeedbackRepository() }
         single { HostRepository(get()) }
         single { ThirdGameRepository() }
-        single { WithdrawRepository(get()) }
+        single { WithdrawRepository }
         single { PlayQuotaComRepository() }
         single { MyFavoriteRepository() }
         single { SelfLimitRepository() }

@@ -3,9 +3,7 @@ package org.cxct.sportlottery.repository
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.annotation.WorkerThread
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -14,10 +12,10 @@ import org.cxct.sportlottery.network.user.info.UserInfoResult
 import org.cxct.sportlottery.util.GameConfigManager
 import retrofit2.Response
 
-class UserInfoRepository(private val androidContext: Context) {
+object UserInfoRepository {
 
     private val sharedPref: SharedPreferences by lazy {
-        androidContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
+        MultiLanguagesApplication.appContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
 
     var checkedUserInfo = false //紀錄checkToken後是否獲取過UserInfo
