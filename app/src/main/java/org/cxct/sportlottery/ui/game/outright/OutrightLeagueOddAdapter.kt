@@ -136,15 +136,34 @@ class OutrightLeagueOddAdapter : BaseGameAdapter() {
 
     class OutrightTitleViewHolder private constructor(private val viewBinding: ItemviewOutrightTitleV4Binding) :
         RecyclerView.ViewHolder(viewBinding.root) {
+        private val firstItemTopMargin = 10.dp //第一個Title與球類標題的間隔
+        private val endDivider = 8.dp //若該聯賽隱藏與下一個聯賽的間隔
 
         @SuppressLint("SetTextI18n")
         fun bind(
             matchOdd: MatchOdd?,
             outrightOddListener: OutrightOddListener?
         ) {
-            if (bindingAdapterPosition == 0) {
-                val lp = itemView.layoutParams as RecyclerView.LayoutParams
-                lp.setMargins(0, 10.dp, 0, 0)
+            val lp = itemView.layoutParams as RecyclerView.LayoutParams
+
+            //第一個Title與球類標題的間隔
+            val topMargin = if (bindingAdapterPosition == 0) {
+                firstItemTopMargin
+            } else {
+                0
+            }
+
+            //若該聯賽隱藏與下一個聯賽的間隔
+            val bottomMargin = if (matchOdd?.isExpand == true) {
+                0
+            } else {
+                endDivider
+            }
+
+            lp.setMargins(0, topMargin, 0, bottomMargin)
+
+            viewBinding.root.setOnClickListener {
+                outrightOddListener?.onClickMatch(matchOdd)
             }
 
             viewBinding.outrightLeagueName.text = matchOdd?.matchInfo?.name
@@ -166,7 +185,19 @@ class OutrightLeagueOddAdapter : BaseGameAdapter() {
         RecyclerView.ViewHolder(itemView) {
 
         fun bind(matchOdd: MatchOdd?, item: OutrightSubTitleItem, outrightOddListener: OutrightOddListener?) {
-            itemView.outright_odd_subtitle.text = item.subTitle
+            /**
+             * item是否需要顯示, (聯賽收合)
+             */
+            val itemVisibility = item.leagueExpanded
+            if (itemVisibility) {
+                itemView.visibility = View.VISIBLE
+                itemView.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                itemView.outright_odd_subtitle.text = item.subTitle
+            } else {
+                itemView.visibility = View.GONE
+                itemView.layoutParams = LinearLayout.LayoutParams(0, 0)
+            }
+
             itemView.outright_odd_subtitle.setOnClickListener {
                 outrightOddListener?.onClickExpand(matchOdd, item.playCateCode)
             }
@@ -194,6 +225,11 @@ class OutrightLeagueOddAdapter : BaseGameAdapter() {
             outrightOddListener: OutrightOddListener?,
             oddsType: OddsType
         ) {
+            /**
+             * item是否需要顯示, (聯賽收合, 玩法收合, 是否顯示更多)
+             */
+            val show = item.leagueExpanded && item.playCateExpand && item.isExpand
+
             if (item.isExpand) {
                 itemView.outright_odd_btn.apply {
                     setupOdd(item, oddsType)
@@ -204,11 +240,6 @@ class OutrightLeagueOddAdapter : BaseGameAdapter() {
                     }
                 }
             }
-
-            /**
-             * item是否需要顯示, (玩法收合, 是否顯示更多)
-             */
-            val show = item.playCateExpand && item.isExpand
 
             itemView.visibility =
                 if (show) View.VISIBLE else View.GONE
@@ -237,9 +268,14 @@ class OutrightLeagueOddAdapter : BaseGameAdapter() {
         private val moreItemViewHeight = (itemView.context.resources.displayMetrics.density * 64).toInt() //顯示更多Item的高度
 
         fun bind(itemData: OutrightShowMoreItem, outrightOddListener: OutrightOddListener?) {
-            viewBinding.root.visibility = if (itemData.playCateExpand) View.VISIBLE else View.GONE
+            /**
+             * item是否需要顯示, (聯賽收合, 玩法收合)
+             */
+            val itemVisibility = itemData.leagueExpanded && itemData.playCateExpand
 
-            viewBinding.root.layoutParams = if (itemData.playCateExpand) LinearLayout.LayoutParams(
+            viewBinding.root.visibility = if (itemVisibility) View.VISIBLE else View.GONE
+
+            viewBinding.root.layoutParams = if (itemVisibility) LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 moreItemViewHeight
             ) else LinearLayout.LayoutParams(0, 0)
