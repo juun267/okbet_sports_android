@@ -220,9 +220,11 @@ class OutrightOddAdapter :
 class OutrightOddListener(
     val clickListenerBet: (matchOdd: MatchOdd?, odd: Odd, playCateCode: String) -> Unit,
     val clickListenerMore: (oddsKey: String, matchOdd: MatchOdd) -> Unit,
-    val clickExpand: (matchOdd: MatchOdd?, oddsKey: String) -> Unit
+    val clickExpand: (matchOdd: MatchOdd?, oddsKey: String) -> Unit,
+    private val onClickMatch: (matchOdd: MatchOdd?) -> Unit
 ) {
     fun onClickBet(matchOdd: MatchOdd?, odd: Odd, playCateCode: String) = clickListenerBet(matchOdd, odd, playCateCode)
     fun onClickMore(oddsKey: String, matchOdd: MatchOdd) = clickListenerMore(oddsKey, matchOdd)
     fun onClickExpand(matchOdd: MatchOdd?,oddsKey: String) = clickExpand(matchOdd, oddsKey)
+    fun onClickMatch(matchOdd: MatchOdd?) = onClickMatch.invoke(matchOdd)
 }

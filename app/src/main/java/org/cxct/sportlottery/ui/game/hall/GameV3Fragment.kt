@@ -47,6 +47,7 @@ import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.network.outright.odds.OutrightShowMoreItem
+import org.cxct.sportlottery.network.outright.odds.OutrightSubTitleItem
 import org.cxct.sportlottery.network.outright.season.Season
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
@@ -193,7 +194,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     private val outrightLeagueOddAdapter by lazy {
         OutrightLeagueOddAdapter().apply {
             outrightOddListener = OutrightOddListener(
-                { matchOdd, odd, playCateCode ->
+                clickListenerBet = { matchOdd, odd, playCateCode ->
                     matchOdd?.let {
                         if (mIsEnabled) {
                             avoidFastDoubleClick()
@@ -201,7 +202,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         }
                     }
                 },
-                { oddsKey, matchOdd ->
+                clickListenerMore = { oddsKey, matchOdd ->
                     matchOdd.oddsMap?.get(oddsKey)?.forEachIndexed { index, odd ->
                         if (index >= 5) {
                             odd?.isExpand?.let { isExpand ->
@@ -211,7 +212,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         }
                     }
                 },
-                { matchOdd, oddsKey ->
+                clickExpand = { matchOdd, oddsKey ->
+                    //TODO 訂閱邏輯需重新調整
                     subscribeChannelHall(matchOdd)
 
                     matchOdd?.oddsExpand?.get(oddsKey)?.let { oddExpand ->
@@ -249,6 +251,57 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                             any.playCateExpand = oddsExpand
                                             updateOutrightAdapterInMain(any)
                                         }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                onClickMatch = { matchOdd ->
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        val newExpanded = !(matchOdd?.isExpand ?: true)
+                        matchOdd?.isExpand = newExpanded
+
+                        this@apply.data.filter { any ->
+                            when (any) {
+                                is org.cxct.sportlottery.network.outright.odds.MatchOdd -> {
+                                    any == matchOdd
+                                }
+                                is OutrightSubTitleItem -> {
+                                    any.belongMatchOdd == matchOdd
+                                }
+                                is OutrightShowMoreItem -> {
+                                    any.matchOdd == matchOdd
+                                }
+                                is Odd -> {
+                                    any.belongMatchOdd == matchOdd
+                                }
+                                else -> {
+                                    false
+                                }
+                            }
+                        }.forEach { any ->
+                            when (any) {
+                                is org.cxct.sportlottery.network.outright.odds.MatchOdd -> {
+                                    //聯賽標題需更新與其他Item的間隔
+                                    updateOutrightAdapterInMain(any)
+                                }
+                                is OutrightSubTitleItem -> {
+                                    if (any.leagueExpanded != newExpanded) {
+                                        any.leagueExpanded = newExpanded
+                                        updateOutrightAdapterInMain(any)
+                                    }
+                                }
+                                is OutrightShowMoreItem -> {
+                                    if (any.leagueExpanded != newExpanded) {
+                                        any.leagueExpanded = newExpanded
+                                        updateOutrightAdapterInMain(any)
+                                    }
+                                }
+                                is Odd -> {
+                                    if (any.leagueExpanded != newExpanded) {
+                                        any.leagueExpanded = newExpanded
+                                        updateOutrightAdapterInMain(any)
                                     }
                                 }
                             }

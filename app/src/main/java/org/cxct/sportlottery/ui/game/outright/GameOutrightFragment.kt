@@ -106,6 +106,9 @@ class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                             }
                         }
                     }
+                },
+                onClickMatch = {
+                    //TODO
                 }
             )
         }
