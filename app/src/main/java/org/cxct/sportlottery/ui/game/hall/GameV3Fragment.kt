@@ -1060,41 +1060,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             hideLoading()
         }
 
-        viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { outrightOddsListResult ->
-                if (game_tab_odd_v4.visibility == View.VISIBLE && game_tabs.selectedTabPosition != 1)
-                    return@observe
-                if (outrightOddsListResult.success) {
-                    val outrightLeagueOddDataList: MutableList<org.cxct.sportlottery.network.outright.odds.MatchOdd?> = mutableListOf()
-                    outrightOddsListResult.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds
-                        ?: listOf()
-                    outrightOddsListResult.outrightOddsListData?.leagueOdds?.forEach { leagueOdd ->
-                        leagueOdd.matchOdds?.forEach { matchOdds ->
-                            outrightLeagueOddDataList.add(matchOdds)
-                        }
-
-                    }
-
-                    outrightLeagueOddDataList.forEachIndexed { _, matchOdd ->
-                        matchOdd?.oddsMap?.forEach { oddsMap ->
-                            oddsMap.value?.filterNotNull()?.forEachIndexed { index, odd ->
-                                if (index < 5) odd.isExpand = true
-                            }
-                        }
-                    }
-
-                    outrightLeagueOddAdapter.data = outrightLeagueOddDataList
-                    outrightLeagueOddDataList.forEach { matchOdd ->
-                        subscribeChannelHall(matchOdd)
-                    }
-                    game_list.apply {
-                        adapter = outrightLeagueOddAdapter
-                    }
-                    hideLoading()
-                }
-            }
-        }
-
         viewModel.outrightMatchList.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { outrightMatchList ->
                 if (game_tab_odd_v4.visibility == View.VISIBLE && game_tabs.selectedTabPosition != 1)
