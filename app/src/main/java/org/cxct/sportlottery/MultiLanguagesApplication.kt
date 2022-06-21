@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.preference.PreferenceManager
 import cn.jpush.android.api.JPushInterface
@@ -62,6 +63,7 @@ import org.cxct.sportlottery.ui.game.quick.TestViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.news.NewsViewModel
 import org.cxct.sportlottery.ui.permission.GooglePermissionViewModel
+import org.cxct.sportlottery.util.Event
 
 /**
  * App 內部切換語系
@@ -87,6 +89,10 @@ class MultiLanguagesApplication : Application() {
                 commit()
             }
         }
+
+    private val _isScrollDown = MutableLiveData<Event<Boolean>>()
+    val isScrollDown: LiveData<Event<Boolean>>
+        get() = _isScrollDown
 
 
     private val viewModelModule = module {
@@ -263,6 +269,15 @@ class MultiLanguagesApplication : Application() {
 
     fun setIsAgeVerifyShow(show: Boolean) {
         this.isAgeVerifyNeedShow = show
+    }
+
+    fun setIsScrollDown(isScrollDown: Boolean) {
+        _isScrollDown.postValue(Event(isScrollDown))
+    }
+
+    //重新顯示bottomNavBar
+    fun initBottomNavBar() {
+        setIsScrollDown(false)
     }
 
     companion object {

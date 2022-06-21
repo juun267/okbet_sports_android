@@ -204,10 +204,10 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                         //更新記錄的方向
                         if (dy > 0) {
                             directionIsDown = true
-                            viewModel.setIsScrollDown(directionIsDown)
+                            MultiLanguagesApplication.mInstance.setIsScrollDown(true)
                         } else if (dy < 0) {
                             directionIsDown = false
-                            viewModel.setIsScrollDown(directionIsDown)
+                            MultiLanguagesApplication.mInstance.setIsScrollDown(false)
                         }
                     }
                     //Y軸移動的值和記錄的方向不同時, 重設狀態

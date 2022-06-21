@@ -42,6 +42,7 @@ import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryListener
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
+import timber.log.Timber
 
 /**
  * @app_destination 我的賽事
@@ -159,10 +160,12 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         if (gameMatchType == MatchType.IN_PLAY) {
             matchId?.let {
                 navOddsDetailLive(matchId, gameMatchType)
+                Timber.e("navOddsDetailLive")
             }
         } else {
             matchId?.let {
                 navOddsDetail(matchId, matchInfoList)
+                Timber.e("navOddsDetail")
             }
         }
     }
@@ -259,11 +262,11 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 }
             )
             addScrollListenerForBottomNavBar {
-                viewModel.setIsScrollDown(it)
+                MultiLanguagesApplication.mInstance.setIsScrollDown(it)
             }
         }
         view.appbar_layout.addOffsetListenerForBottomNavBar {
-            viewModel.setIsScrollDown(it)
+            MultiLanguagesApplication.mInstance.setIsScrollDown(it)
         }
     }
 

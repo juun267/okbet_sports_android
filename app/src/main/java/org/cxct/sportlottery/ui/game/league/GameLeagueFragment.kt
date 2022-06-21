@@ -251,12 +251,12 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 }
             )
             addScrollListenerForBottomNavBar {
-                viewModel.setIsScrollDown(it)
+                MultiLanguagesApplication.mInstance.setIsScrollDown(it)
             }
             leagueAdapter.setPreloadItem()
         }
         view.appbar_layout.addOffsetListenerForBottomNavBar {
-            viewModel.setIsScrollDown(it)
+            MultiLanguagesApplication.mInstance.setIsScrollDown(it)
         }
     }
 

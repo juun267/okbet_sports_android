@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.distinctUntilChanged
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.activity_game_publicity.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
@@ -93,7 +92,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
 
     private fun initDestination() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            viewModel.initBottomNavBar()
+            MultiLanguagesApplication.mInstance.initBottomNavBar()
             when (destination.id) {
                 R.id.publicityFragment -> {
                     binding.gameToolbar.toolBar.visibility = View.GONE
@@ -172,7 +171,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                 tv_balance.text = TextUtil.formatMoney(money)
             }
         }
-        viewModel.isScrollDown.distinctUntilChanged().observe(this) {
+        MultiLanguagesApplication.mInstance.isScrollDown.observe(this) {
             it.getContentIfNotHandled()?.let { isScrollDown ->
                 setBottomNavBarVisibility(game_Bottom_Navigation, isScrollDown)
             }

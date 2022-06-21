@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.databinding.FragmentPublicityBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.FavoriteType
@@ -184,7 +185,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
             adapter = mPublicityAdapter
             addScrollListenerForBottomNavBar(
                 onScrollDown = {
-                    viewModel.setIsScrollDown(it)
+                    MultiLanguagesApplication.mInstance.setIsScrollDown(it)
                 }
             )
         }

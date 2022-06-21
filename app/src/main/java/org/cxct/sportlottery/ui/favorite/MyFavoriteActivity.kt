@@ -6,7 +6,6 @@ import android.view.MenuItem
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.distinctUntilChanged
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -17,6 +16,7 @@ import kotlinx.android.synthetic.main.sport_bottom_navigation.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
@@ -60,7 +60,7 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
         super.onAttachedToWindow()
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            viewModel.initBottomNavBar()
+            MultiLanguagesApplication.mInstance.initBottomNavBar()
         }
     }
 
@@ -266,7 +266,7 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
                 tv_balance.text = TextUtil.formatMoney(money)
             }
         }
-        viewModel.isScrollDown.distinctUntilChanged().observe(this) {
+        MultiLanguagesApplication.mInstance.isScrollDown.observe(this) {
             it.getContentIfNotHandled()?.let { isScrollDown ->
                 setBottomNavBarVisibility(my_favorite_bottom_navigation, isScrollDown)
             }

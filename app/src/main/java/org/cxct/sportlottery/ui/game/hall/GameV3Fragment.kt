@@ -664,7 +664,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
             )
             addScrollListenerForBottomNavBar {
-                viewModel.setIsScrollDown(it)
+                MultiLanguagesApplication.mInstance.setIsScrollDown(it)
             }
             if (viewModel.getMatchCount(args.matchType) < 1) {
                 leagueAdapter.removePreloadItem()
@@ -673,7 +673,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             }
         }
         appbar_layout.addOffsetListenerForBottomNavBar {
-            viewModel.setIsScrollDown(it)
+            MultiLanguagesApplication.mInstance.setIsScrollDown(it)
         }
     }
 

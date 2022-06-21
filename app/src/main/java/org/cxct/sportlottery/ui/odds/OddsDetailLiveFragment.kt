@@ -277,7 +277,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             addScrollListenerForBottomNavBar(
                 onScrollDown = {
-                    viewModel.setIsScrollDown(it)
+                    MultiLanguagesApplication.mInstance.setIsScrollDown(it)
                 }
             )
         }
@@ -289,7 +289,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         }
 
         app_bar_layout.addOffsetListenerForBottomNavBar {
-            viewModel.setIsScrollDown(it)
+            MultiLanguagesApplication.mInstance.setIsScrollDown(it)
         }
     }
 

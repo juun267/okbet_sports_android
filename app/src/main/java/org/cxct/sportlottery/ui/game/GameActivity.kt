@@ -8,7 +8,6 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.distinctUntilChanged
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
@@ -97,7 +96,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     private val mNavController by lazy { findNavController(R.id.game_container) }
     private val navDestListener by lazy {
         NavController.OnDestinationChangedListener { _, destination, arguments ->
-            viewModel.initBottomNavBar()
+            MultiLanguagesApplication.mInstance.initBottomNavBar()
             updateServiceButtonVisibility(destinationId = destination.id)
             when (destination.id) {
                 R.id.homeFragment -> {
@@ -783,7 +782,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 tv_balance.text = TextUtil.formatMoney(money)
             }
         }
-        viewModel.isScrollDown.distinctUntilChanged().observe(this) {
+        MultiLanguagesApplication.mInstance.isScrollDown.observe(this) {
             it.getContentIfNotHandled()?.let { isScrollDown ->
                 setBottomNavBarVisibility(game_bottom_navigation, isScrollDown)
             }
