@@ -1,21 +1,13 @@
 package org.cxct.sportlottery.ui.game.home
 
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.SpannableStringBuilder
-import android.text.style.ForegroundColorSpan
-import android.text.style.ScaleXSpan
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.core.view.size
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.home_menu_block_v2.view.*
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.network.sport.coupon.SportCouponMenuData
-import timber.log.Timber
 
 class GameMenuV2ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private var mOnClickMenuListener: OnClickMenuListener? = null

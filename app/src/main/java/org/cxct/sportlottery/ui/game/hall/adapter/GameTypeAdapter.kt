@@ -8,8 +8,13 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.item_play_spinner.view.*
 import kotlinx.android.synthetic.main.itemview_sport_type_v4.view.*
 import kotlinx.android.synthetic.main.itemview_sport_type_v5.view.*
+import kotlinx.android.synthetic.main.itemview_sport_type_v5.view.sport_count_text
+import kotlinx.android.synthetic.main.itemview_sport_type_v5.view.sport_type_img
+import kotlinx.android.synthetic.main.itemview_sport_type_v5.view.sport_type_text
+import kotlinx.android.synthetic.main.itemview_sport_type_v6.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeString
@@ -50,6 +55,7 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         else -> ItemType.THIRD_GAME.ordinal
     }
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when (viewType) {
             ItemType.SPORT_HOME.ordinal -> ViewHolderSportHome.from(parent)
@@ -70,7 +76,7 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                                 holder.update(data, gameTypeListener)
                             }
                             is ViewHolderSportHome -> {
-                                holder.bind(data, gameTypeListener)
+                                holder.bind(position,data, gameTypeListener)
                             }
                             else -> {
                                 onBindViewHolder(holder, position)
@@ -89,11 +95,11 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         when (holder) {
             is ViewHolderSport -> {
                 val item = dataSport[position]
-                holder.bind(item, gameTypeListener)
+                holder.bind(dataSport.size,position,item, gameTypeListener)
             }
             is ViewHolderSportHome -> {
                 val item = dataSport[position]
-                holder.bind(item, gameTypeListener)
+                holder.bind(position,item, gameTypeListener)
             }
             is ViewHolderThirdGame -> {
                 val item = dataThirdGame[position - dataSport.size]
@@ -134,13 +140,13 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         //用來讓ViewAttachedToWindow和ViewDetachedFromWindow時判斷球種icon動畫配置用, 在onBindViewHolder時都要重新賦值
 //        var sportImageAnimation: Animation? = null
 
-        fun bind(item: Item, gameTypeListener: GameTypeListener?) {
-
-            setupSportTypeImage(itemView.sport_type_img, item)
+        fun bind(count: Int, position: Int, item: Item, gameTypeListener: GameTypeListener?) {
+            itemView.sport_type_img.setImageResource(GameType.getGameTypeMenuIcon(item.code))
+//            setupSportTypeImage(itemView.sport_type_img, item)
 
             itemView.apply {
                 setupSportContent(item, gameTypeListener)
-
+                divider.visibility = if (position >= count - 1) View.GONE else View.VISIBLE
                 isSelected = item.isSelected
 
 //                if (isSelected) {
@@ -155,7 +161,8 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
 
         fun update(item: Item, gameTypeListener: GameTypeListener?) {
-            setupSportTypeImage(itemView.sport_type_img, item)
+            itemView.sport_type_img.setImageResource(GameType.getGameTypeMenuIcon(item.code))
+//            setupSportTypeImage(itemView.sport_type_img, item)
             setupSportContent(item, gameTypeListener)
 
             updateSelected(item)
@@ -192,64 +199,64 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
 
-        private fun setupSportTypeImage(img: ImageView, item: Item) {
-            when (item.code) {
-                GameType.FT.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_ft_v5)
-                }
-                GameType.BK.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_bk_v5)
-                }
-                GameType.TN.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_tn_v5)
-                }
-                GameType.VB.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_vb_v5)
-                }
-                GameType.BM.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_bm_v5)
-                }
-                GameType.TT.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_tt_v5)
-                }
-                GameType.IH.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_ih_v5)
-                }
-                GameType.BX.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_bx_v5)
-                }
-                GameType.CB.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_cb_v5)
-                }
-                GameType.CK.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_ck_v5)
-                }
-                GameType.BB.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_bb_v5)
-                }
-                GameType.RB.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_rb_v5)
-                }
-                GameType.AFT.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_aft_v5)
-                }
-                GameType.MR.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_mr_v5)
-                }
-                GameType.GF.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_gf_v5)
-                }
-                GameType.FB.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_fb_v5)
-                }
-                GameType.BB_COMING_SOON.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_bb_v5)
-                }
-                GameType.ES_COMING_SOON.key -> {
-                    img.setImageResource(R.drawable.selector_sport_type_item_img_es_v5)
-                }
-            }
-        }
+//        private fun setupSportTypeImage(img: ImageView, item: Item) {
+//            when (item.code) {
+//                GameType.FT.key -> {
+//                    img.setImageResource(R.drawable.selector_sport_type_item_img_ft_v5)
+//                }
+//                GameType.BK.key -> {
+//                    img.setImageResource(R.drawable.selector_sport_type_item_img_bk_v5)
+//                }
+//                GameType.TN.key -> {
+//                    img.setImageResource(R.drawable.selector_sport_type_item_img_tn_v5)
+//                }
+//                GameType.VB.key -> {
+//                    img.setImageResource(R.drawable.selector_sport_type_item_img_vb_v5)
+//                }
+//                GameType.BM.key -> {
+//                    img.setImageResource(R.drawable.selector_sport_type_item_img_bm_v5)
+//                }
+//                GameType.TT.key -> {
+//                    img.setImageResource(R.drawable.selector_sport_type_item_img_tt_v5)
+//                }
+//                GameType.IH.key -> {
+//                    img.setImageResource(R.drawable.selector_sport_type_item_img_ih_v5)
+//                }
+//                GameType.BX.key -> {
+//                    img.setImageResource(R.drawable.selector_sport_type_item_img_bx_v5)
+//                }
+//                GameType.CB.key -> {
+//                    img.setImageResource(R.drawable.selector_sport_type_item_img_cb_v5)
+//                }
+//                GameType.CK.key -> {
+//                    img.setImageResource(R.drawable.selector_sport_type_item_img_ck_v5)
+//                }
+//                GameType.BB.key -> {
+//                    img.setImageResource(R.drawable.selector_sport_type_item_img_bb_v5)
+//                }
+//                GameType.RB.key -> {
+//                    img.setImageResource(R.drawable.selector_sport_type_item_img_rb_v5)
+//                }
+//                GameType.AFT.key -> {
+//                    img.setImageResource(R.drawable.selector_sport_type_item_img_aft_v5)
+//                }
+//                GameType.MR.key -> {
+//                    img.setImageResource(R.drawable.selector_sport_type_item_img_mr_v5)
+//                }
+//                GameType.GF.key -> {
+//                    img.setImageResource(R.drawable.selector_sport_type_item_img_gf_v5)
+//                }
+//                GameType.FB.key -> {
+//                    img.setImageResource(R.drawable.selector_sport_type_item_img_fb_v5)
+//                }
+//                GameType.BB_COMING_SOON.key -> {
+//                    img.setImageResource(R.drawable.selector_sport_type_item_img_bb_v5)
+//                }
+//                GameType.ES_COMING_SOON.key -> {
+//                    img.setImageResource(R.drawable.selector_sport_type_item_img_es_v5)
+//                }
+//            }
+//        }
 
         /**
          * 更新選中狀態,
@@ -293,12 +300,11 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class ViewHolderSportHome private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: Item, gameTypeListener: GameTypeListener?) {
-
-            setupSportTypeImage(itemView.sport_type_home_img, item)
+        fun bind(position: Int,item: Item, gameTypeListener: GameTypeListener?) {
+            itemView.sport_type_home_img.setImageResource(GameType.getGameTypeMenuIcon(item.code))
+//            setupSportTypeImage(itemView.sport_type_home_img, item)
 
             itemView.apply {
-
                 sport_type_home_text.text = getGameTypeString(context, item.code)
 
                 isSelected = item.isSelected
@@ -321,58 +327,58 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
 
-        private fun setupSportTypeImage(img: ImageView, item: Item) {
-            when (item.code) {
-                GameType.FT.key -> {
-                    img.setImageResource(R.drawable.selector_left_menu_ball_ft)
-                }
-                GameType.BK.key -> {
-                    img.setImageResource(R.drawable.selector_left_menu_ball_bk)
-                }
-                GameType.TN.key -> {
-                    img.setImageResource(R.drawable.selector_left_menu_ball_tn)
-                }
-                GameType.VB.key -> {
-                    img.setImageResource(R.drawable.selector_left_menu_ball_vb)
-                }
-                GameType.BM.key -> {
-                    img.setImageResource(R.drawable.selector_left_menu_ball_bm)
-                }
-                GameType.TT.key -> {
-                    img.setImageResource(R.drawable.selector_left_menu_ball_pp)
-                }
-                GameType.IH.key -> {
-                    img.setImageResource(R.drawable.selector_left_menu_ball_ih)
-                }
-                GameType.BX.key -> {
-                    img.setImageResource(R.drawable.selector_left_menu_ball_bx)
-                }
-                GameType.CB.key -> {
-                    img.setImageResource(R.drawable.selector_left_menu_ball_cb)
-                }
-                GameType.CK.key -> {
-                    img.setImageResource(R.drawable.selector_left_menu_ball_ck)
-                }
-                GameType.BB.key -> {
-                    img.setImageResource(R.drawable.selector_left_menu_ball_bb)
-                }
-                GameType.RB.key -> {
-                    img.setImageResource(R.drawable.selector_left_menu_ball_rb)
-                }
-                GameType.AFT.key -> {
-                    img.setImageResource(R.drawable.selector_left_menu_ball_aft)
-                }
-                GameType.MR.key -> {
-                    img.setImageResource(R.drawable.selector_left_menu_ball_mr)
-                }
-                GameType.GF.key -> {
-                    img.setImageResource(R.drawable.selector_left_menu_ball_gf)
-                }
-                GameType.FB.key -> {
-                    img.setImageResource(R.drawable.selector_left_menu_ball_fb)
-                }
-            }
-        }
+//        private fun setupSportTypeImage(img: ImageView, item: Item) {
+//            when (item.code) {
+//                GameType.FT.key -> {
+//                    img.setImageResource(R.drawable.selector_left_menu_ball_ft)
+//                }
+//                GameType.BK.key -> {
+//                    img.setImageResource(R.drawable.selector_left_menu_ball_bk)
+//                }
+//                GameType.TN.key -> {
+//                    img.setImageResource(R.drawable.selector_left_menu_ball_tn)
+//                }
+//                GameType.VB.key -> {
+//                    img.setImageResource(R.drawable.selector_left_menu_ball_vb)
+//                }
+//                GameType.BM.key -> {
+//                    img.setImageResource(R.drawable.selector_left_menu_ball_bm)
+//                }
+//                GameType.TT.key -> {
+//                    img.setImageResource(R.drawable.selector_left_menu_ball_pp)
+//                }
+//                GameType.IH.key -> {
+//                    img.setImageResource(R.drawable.selector_left_menu_ball_ih)
+//                }
+//                GameType.BX.key -> {
+//                    img.setImageResource(R.drawable.selector_left_menu_ball_bx)
+//                }
+//                GameType.CB.key -> {
+//                    img.setImageResource(R.drawable.selector_left_menu_ball_cb)
+//                }
+//                GameType.CK.key -> {
+//                    img.setImageResource(R.drawable.selector_left_menu_ball_ck)
+//                }
+//                GameType.BB.key -> {
+//                    img.setImageResource(R.drawable.selector_left_menu_ball_bb)
+//                }
+//                GameType.RB.key -> {
+//                    img.setImageResource(R.drawable.selector_left_menu_ball_rb)
+//                }
+//                GameType.AFT.key -> {
+//                    img.setImageResource(R.drawable.selector_left_menu_ball_aft)
+//                }
+//                GameType.MR.key -> {
+//                    img.setImageResource(R.drawable.selector_left_menu_ball_mr)
+//                }
+//                GameType.GF.key -> {
+//                    img.setImageResource(R.drawable.selector_left_menu_ball_gf)
+//                }
+//                GameType.FB.key -> {
+//                    img.setImageResource(R.drawable.selector_left_menu_ball_fb)
+//                }
+//            }
+//        }
     }
 
     class ViewHolderThirdGame private constructor(itemView: View) :
