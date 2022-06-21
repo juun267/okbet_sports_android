@@ -24,7 +24,7 @@ interface MatchInfo {
 
     //BB
     var attack: String?
-    var halfTime: Int?
+    var halfStatus: Int?
     var firstBaseBag: Int?
     var secBaseBag: Int?
     var thirdBaseBag: Int?
