@@ -137,6 +137,9 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         btn_complete.setOnClickListener {
             activity?.onBackPressed()
         }
+        iv_receipt.setOnClickListener {
+            activity?.onBackPressed()
+        }
     }
 
     private fun initRecyclerView() {

@@ -51,6 +51,10 @@ class WithdrawRepository(
     val needToBindBankCard: LiveData<Event<Int?>>
         get() = _needToBindBankCard //提款頁面是否需要新增銀行卡 -1 : 不需要新增, else : 以value作為string id 顯示彈窗提示
 
+    private var _intoWithdraw = MutableLiveData<Event<Boolean>>()
+    val intoWithdraw: LiveData<Event<Boolean>> //進入提款頁前判斷
+        get() = _intoWithdraw
+
     private var _showSecurityDialog = MutableLiveData<Event<Boolean>>()
     val showSecurityDialog: LiveData<Event<Boolean>> //判斷是否需要簡訊驗證 true：顯示簡訊驗證彈窗 false：不顯示
         get() = _showSecurityDialog
@@ -75,6 +79,7 @@ class WithdrawRepository(
             ProfileCenterViewModel.SecurityEnter.COMPLETET_PROFILE_INFO.ordinal -> checkProfileInfoComplete()
             ProfileCenterViewModel.SecurityEnter.SETTING_PROFILE_INFO.ordinal -> checkSettingProfileInfoComplete()
             ProfileCenterViewModel.SecurityEnter.BIND_BANK_CARD.ordinal -> checkBankCardPermissions()
+            ProfileCenterViewModel.SecurityEnter.INTO_WITHDRAW.ordinal -> checkIntoWithdraw()
         }
     }
 
@@ -382,8 +387,17 @@ class WithdrawRepository(
                 _needToBindBankCard.postValue(Event(promptMessageId))
             }
         } else {
-            //不需要新增銀行卡時, 一樣透過此LiveData傳遞
-            _needToBindBankCard.postValue(Event(promptMessageId))
+            checkIntoWithdraw()
+        }
+    }
+
+    private suspend fun checkIntoWithdraw() {
+        val twoFactorStatus = checkTwoFactorStatus()
+        if (twoFactorStatus == false) {
+            sConfigData?.enterCertified = ProfileCenterViewModel.SecurityEnter.INTO_WITHDRAW.ordinal
+            _showSecurityDialog.value = Event(true)
+        } else {
+            _intoWithdraw.value = Event(true)
         }
     }
 

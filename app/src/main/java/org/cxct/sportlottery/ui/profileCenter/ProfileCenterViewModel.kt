@@ -43,7 +43,8 @@ class ProfileCenterViewModel(
         SETTING_PW(1),//設定提現密碼
         COMPLETET_PROFILE_INFO(2),//完善個人資料
         SETTING_PROFILE_INFO(3),//設定個人資料
-        BIND_BANK_CARD(4)//綁定銀行卡
+        BIND_BANK_CARD(4),//綁定銀行卡
+        INTO_WITHDRAW(5)
     }
 
     val token = loginRepository.token
@@ -52,18 +53,27 @@ class ProfileCenterViewModel(
         withdrawRepository.withdrawSystemOperation
     val rechargeSystemOperation =
         withdrawRepository.rechargeSystemOperation
-    val needToUpdateWithdrawPassword =
-        withdrawRepository.needToUpdateWithdrawPassword //提款頁面是否需要更新提款密碼 true: 需要, false: 不需要
-    val settingNeedToUpdateWithdrawPassword =
-        withdrawRepository.settingNeedToUpdateWithdrawPassword //提款設置頁面是否需要更新提款密碼 true: 需要, false: 不需要
-    val settingNeedToCompleteProfileInfo =
-        withdrawRepository.settingNeedToCompleteProfileInfo //提款設置頁面是否需要完善個人資料 true: 需要, false: 不需要
-    val needToCompleteProfileInfo =
-        withdrawRepository.needToCompleteProfileInfo //提款頁面是否需要完善個人資料 true: 需要, false: 不需要
-    val needToBindBankCard =
-        withdrawRepository.needToBindBankCard //提款頁面是否需要新增銀行卡 -1 : 不需要新增, else : 以value作為string id 顯示彈窗提示
-    val needToSendTwoFactor =
-        withdrawRepository.showSecurityDialog //判斷是不是要進行手機驗證 true: 需要, false: 不需要
+
+    //提款頁面是否需要更新提款密碼 true: 需要, false: 不需要
+    val needToUpdateWithdrawPassword = withdrawRepository.needToUpdateWithdrawPassword
+
+    //提款設置頁面是否需要更新提款密碼 true: 需要, false: 不需要
+    val settingNeedToUpdateWithdrawPassword = withdrawRepository.settingNeedToUpdateWithdrawPassword
+
+    //提款設置頁面是否需要完善個人資料 true: 需要, false: 不需要
+    val settingNeedToCompleteProfileInfo = withdrawRepository.settingNeedToCompleteProfileInfo
+
+    //提款頁面是否需要完善個人資料 true: 需要, false: 不需要
+    val needToCompleteProfileInfo = withdrawRepository.needToCompleteProfileInfo
+
+    //提款頁面是否需要新增銀行卡 -1 : 不需要新增, else : 以value作為string id 顯示彈窗提示
+    val needToBindBankCard = withdrawRepository.needToBindBankCard
+
+    //判斷是不是要進行手機驗證 true: 需要, false: 不需要
+    val needToSendTwoFactor = withdrawRepository.showSecurityDialog
+
+    //進入提款頁前判斷
+    val intoWithdraw = withdrawRepository.intoWithdraw
 
     val editIconUrlResult: LiveData<Event<IconUrlResult?>> = avatarRepository.editIconUrlResult
 
