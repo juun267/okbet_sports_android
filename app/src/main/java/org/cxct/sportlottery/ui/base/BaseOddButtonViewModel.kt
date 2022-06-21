@@ -49,8 +49,8 @@ abstract class BaseOddButtonViewModel(
     loginRepository: LoginRepository,
     userInfoRepository: UserInfoRepository,
     betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
-) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+    infoCenterRepository: InfoCenterRepository,
+) : BaseWithdrawViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     @Deprecated("之後API都會給翻譯")
     protected val playCateMappingList by lazy {

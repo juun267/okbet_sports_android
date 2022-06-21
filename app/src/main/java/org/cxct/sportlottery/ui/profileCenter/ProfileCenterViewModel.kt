@@ -27,7 +27,6 @@ class ProfileCenterViewModel(
     betInfoRepository: BetInfoRepository,
     private val avatarRepository: AvatarRepository,
     infoCenterRepository: InfoCenterRepository,
-    private val withdrawRepository: WithdrawRepository,
     favoriteRepository: MyFavoriteRepository
 ) : BaseSocketViewModel(
     androidContext,
@@ -37,43 +36,7 @@ class ProfileCenterViewModel(
     infoCenterRepository,
     favoriteRepository
 ) {
-
-    enum class SecurityEnter(val code: Int){
-        UPDATE_PW(0),//更新提款卡密碼
-        SETTING_PW(1),//設定提現密碼
-        COMPLETET_PROFILE_INFO(2),//完善個人資料
-        SETTING_PROFILE_INFO(3),//設定個人資料
-        BIND_BANK_CARD(4),//綁定銀行卡
-        INTO_WITHDRAW(5)
-    }
-
     val token = loginRepository.token
-
-    val withdrawSystemOperation =
-        withdrawRepository.withdrawSystemOperation
-    val rechargeSystemOperation =
-        withdrawRepository.rechargeSystemOperation
-
-    //提款頁面是否需要更新提款密碼 true: 需要, false: 不需要
-    val needToUpdateWithdrawPassword = withdrawRepository.needToUpdateWithdrawPassword
-
-    //提款設置頁面是否需要更新提款密碼 true: 需要, false: 不需要
-    val settingNeedToUpdateWithdrawPassword = withdrawRepository.settingNeedToUpdateWithdrawPassword
-
-    //提款設置頁面是否需要完善個人資料 true: 需要, false: 不需要
-    val settingNeedToCompleteProfileInfo = withdrawRepository.settingNeedToCompleteProfileInfo
-
-    //提款頁面是否需要完善個人資料 true: 需要, false: 不需要
-    val needToCompleteProfileInfo = withdrawRepository.needToCompleteProfileInfo
-
-    //提款頁面是否需要新增銀行卡 -1 : 不需要新增, else : 以value作為string id 顯示彈窗提示
-    val needToBindBankCard = withdrawRepository.needToBindBankCard
-
-    //判斷是不是要進行手機驗證 true: 需要, false: 不需要
-    val needToSendTwoFactor = withdrawRepository.showSecurityDialog
-
-    //進入提款頁前判斷
-    val intoWithdraw = withdrawRepository.intoWithdraw
 
     val editIconUrlResult: LiveData<Event<IconUrlResult?>> = avatarRepository.editIconUrlResult
 
@@ -88,24 +51,6 @@ class ProfileCenterViewModel(
     val uploadVerifyPhotoResult: LiveData<Event<UploadVerifyPhotoResult?>>
         get() = _uploadVerifyPhotoResult
     private val _uploadVerifyPhotoResult = MutableLiveData<Event<UploadVerifyPhotoResult?>>()
-
-    //發送簡訊碼之後60s無法再發送
-    val twoFactorResult: LiveData<BaseSecurityCodeResult?>
-        get() = _twoFactorResult
-    private val _twoFactorResult = MutableLiveData<BaseSecurityCodeResult?>()
-
-    //錯誤提示
-    val errorMessageDialog: LiveData<String?>
-        get() = _errorMessageDialog
-    private val _errorMessageDialog = MutableLiveData<String?>()
-
-    //認證成功
-    val twoFactorSuccess: LiveData<Boolean?>
-        get() = _twoFactorSuccess
-    private val _twoFactorSuccess = MutableLiveData<Boolean?>()
-
-    //需要完善個人資訊(缺電話號碼) needPhoneNumber
-    val showPhoneNumberMessageDialog = withdrawRepository.hasPhoneNumber
 
     val credentialInitialResult: LiveData<Event<CredentialResult?>>
         get() = _credentialInitialResult
@@ -148,46 +93,10 @@ class ProfileCenterViewModel(
         }
     }
 
-    //提款功能是否啟用
-    fun checkWithdrawSystem() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                withdrawRepository.checkWithdrawSystem()
-            }
-        }
-    }
-
-    //充值功能是否啟用
-    fun checkRechargeSystem() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                withdrawRepository.checkRechargeSystem()
-            }
-        }
-    }
-
     //提款設置判斷權限
     fun settingCheckPermissions() {
         viewModelScope.launch {
             withdrawRepository.settingCheckPermissions()
-        }
-    }
-
-    /**
-     * 判斷個人資訊是否完整, 若不完整需要前往個人資訊頁面完善資料.
-     * complete true: 個人資訊有缺漏, false: 個人資訊完整
-     */
-    fun checkProfileInfoComplete() {
-        viewModelScope.launch {
-            withdrawRepository.checkProfileInfoComplete()
-        }
-    }
-
-    fun checkBankCardPermissions() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                withdrawRepository.checkBankCardPermissions()
-            }
         }
     }
 
@@ -302,32 +211,4 @@ class ProfileCenterViewModel(
             }
         }
     }
-
-
-    //發送簡訊驗證碼
-    fun sendTwoFactor() {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.withdrawService.sendTwoFactor()
-            }
-            _twoFactorResult.postValue(result)
-        }
-    }
-
-    //双重验证校验
-    fun validateTwoFactor(validateTwoFactorRequest: ValidateTwoFactorRequest) {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                OneBoSportApi.withdrawService.validateTwoFactor(validateTwoFactorRequest)
-            }?.let { result ->
-                if(result.success){
-                    _twoFactorSuccess.value = true
-                    withdrawRepository.sendTwoFactor()
-                }
-                else
-                    _errorMessageDialog.value = result.msg
-            }
-        }
-    }
-
 }
