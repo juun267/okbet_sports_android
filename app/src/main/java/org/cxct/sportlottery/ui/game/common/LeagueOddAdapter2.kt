@@ -403,7 +403,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                         GameType.BK.key -> setBkScoreText(matchType, item)
                         GameType.TT.key -> setVbScoreText(matchType, item)
                         GameType.BM.key -> setBmScoreText(matchType, item)
-                        GameType.BB.key -> setBbScoreText(item)
+                        GameType.BB.key -> setBbScoreText(matchType, item)
                         else -> setBkScoreText(matchType, item)
                     }
                 }
@@ -451,48 +451,51 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             }
         }
 
-        private fun setBbScoreText(item: MatchOdd) {
-            itemView.apply {
-                setScoreTextAtFront(item)
-                if (item.matchInfo?.attack.equals("H")) {
-                    ic_attack_h.visibility = View.VISIBLE
-                    ic_attack_c.visibility = View.INVISIBLE
-                } else {
-                    ic_attack_h.visibility = View.INVISIBLE
-                    ic_attack_c.visibility = View.VISIBLE
-                }
+        private fun setBbScoreText(matchType: MatchType, item: MatchOdd) {
+            if(matchType == MatchType.IN_PLAY){
+                itemView.apply {
+                    setScoreTextAtFront(item)
+                    if (item.matchInfo?.attack.equals("H")) {
+                        ic_attack_h.visibility = View.VISIBLE
+                        ic_attack_c.visibility = View.INVISIBLE
+                    } else {
+                        ic_attack_h.visibility = View.INVISIBLE
+                        ic_attack_c.visibility = View.VISIBLE
+                    }
 
-                league_odd_match_bb_status.apply {
-                    text = item.matchInfo?.statusName18n
-                    isVisible = true
-                }
+                    league_odd_match_bb_status.apply {
+                        text = item.matchInfo?.statusName18n
+                        isVisible = true
+                    }
 
-                txvOut.apply {
-                    text = this.context.getString(R.string.game_out, item.matchInfo?.outNumber ?: "")
-                    isVisible = true
-                }
+                    txvOut.apply {
+                        text = this.context.getString(R.string.game_out, item.matchInfo?.outNumber ?: "")
+                        isVisible = true
+                    }
 
-                league_odd_match_halfStatus.apply {
-                    setImageResource(if(item.matchInfo?.halfStatus == 0) R.drawable.ic_bb_first_half else R.drawable.ic_bb_second_half)
-                    isVisible = true
-                }
+                    league_odd_match_halfStatus.apply {
+                        setImageResource(if(item.matchInfo?.halfStatus == 0) R.drawable.ic_bb_first_half else R.drawable.ic_bb_second_half)
+                        isVisible = true
+                    }
 
-                league_odd_match_basebag.apply {
-                    setImageResource(
-                        when {
-                            item.matchInfo?.firstBaseBag == 0 && item.matchInfo.secBaseBag == 0 && item.matchInfo.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_0_0_0
-                            item.matchInfo?.firstBaseBag == 0 && item.matchInfo.secBaseBag == 1 && item.matchInfo.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_0_1_0
-                            item.matchInfo?.firstBaseBag == 0 && item.matchInfo.secBaseBag == 0 && item.matchInfo.thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_0_0_1
-                            item.matchInfo?.firstBaseBag == 1 && item.matchInfo.secBaseBag == 1 && item.matchInfo.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_1_1_0
-                            item.matchInfo?.firstBaseBag == 1 && item.matchInfo.secBaseBag == 0 && item.matchInfo.thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_1_0_1
-                            item.matchInfo?.firstBaseBag == 0 && item.matchInfo.secBaseBag == 1 && item.matchInfo.thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_0_1_1
-                            item.matchInfo?.firstBaseBag == 1 && item.matchInfo.secBaseBag == 1 && item.matchInfo.thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_1_1_1
-                            else -> R.drawable.ic_bb_base_bag_0_0_0
-                        }
-                    )
-                    isVisible = true
+                    league_odd_match_basebag.apply {
+                        setImageResource(
+                            when {
+                                item.matchInfo?.firstBaseBag == 0 && item.matchInfo.secBaseBag == 0 && item.matchInfo.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_0_0_0
+                                item.matchInfo?.firstBaseBag == 0 && item.matchInfo.secBaseBag == 1 && item.matchInfo.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_0_1_0
+                                item.matchInfo?.firstBaseBag == 0 && item.matchInfo.secBaseBag == 0 && item.matchInfo.thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_0_0_1
+                                item.matchInfo?.firstBaseBag == 1 && item.matchInfo.secBaseBag == 1 && item.matchInfo.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_1_1_0
+                                item.matchInfo?.firstBaseBag == 1 && item.matchInfo.secBaseBag == 0 && item.matchInfo.thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_1_0_1
+                                item.matchInfo?.firstBaseBag == 0 && item.matchInfo.secBaseBag == 1 && item.matchInfo.thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_0_1_1
+                                item.matchInfo?.firstBaseBag == 1 && item.matchInfo.secBaseBag == 1 && item.matchInfo.thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_1_1_1
+                                else -> R.drawable.ic_bb_base_bag_0_0_0
+                            }
+                        )
+                        isVisible = true
+                    }
                 }
-            }
+            }else
+                setBkScoreText(matchType, item)
         }
 
         //時間的色值同步#000000 即將開賽的Icon不改顏色，和Ian確認過
