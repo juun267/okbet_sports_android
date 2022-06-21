@@ -784,7 +784,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         }
         viewModel.isScrollDown.distinctUntilChanged().observe(this) {
             it.getContentIfNotHandled()?.let { isScrollDown ->
-                game_bottom_navigation.slideVisibility(isScrollDown)
+                setBottomNavBarVisibility(game_bottom_navigation, isScrollDown)
             }
         }
         viewModel.settlementNotificationMsg.observe(this) {

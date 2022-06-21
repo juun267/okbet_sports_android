@@ -173,7 +173,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         }
         viewModel.isScrollDown.distinctUntilChanged().observe(this) {
             it.getContentIfNotHandled()?.let { isScrollDown ->
-                game_Bottom_Navigation.slideVisibility(isScrollDown)
+                setBottomNavBarVisibility(game_Bottom_Navigation, isScrollDown)
             }
         }
         viewModel.showBetUpperLimit.observe(this) {

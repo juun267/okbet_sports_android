@@ -20,7 +20,6 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.exoplayer2.util.Util
-import kotlinx.android.synthetic.main.fragment_odds_detail.*
 import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
 import kotlinx.android.synthetic.main.fragment_odds_detail_live.cl_content
 import kotlinx.android.synthetic.main.fragment_odds_detail_live.live_view_tool_bar
@@ -287,6 +286,10 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
             adapter = tabCateAdapter
             itemAnimator?.changeDuration = 0
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
+        }
+
+        app_bar_layout.addOffsetListenerForBottomNavBar {
+            viewModel.setIsScrollDown(it)
         }
     }
 

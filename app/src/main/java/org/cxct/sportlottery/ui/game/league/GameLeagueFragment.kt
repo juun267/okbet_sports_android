@@ -255,6 +255,9 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             }
             leagueAdapter.setPreloadItem()
         }
+        view.appbar_layout.addOffsetListenerForBottomNavBar {
+            viewModel.setIsScrollDown(it)
+        }
     }
 
     private fun unSubscribeChannelHall(leagueOdd: LeagueOdd) {

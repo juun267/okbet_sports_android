@@ -262,6 +262,9 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 viewModel.setIsScrollDown(it)
             }
         }
+        view.appbar_layout.addOffsetListenerForBottomNavBar {
+            viewModel.setIsScrollDown(it)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

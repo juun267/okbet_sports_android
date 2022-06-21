@@ -260,7 +260,7 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
         }
         viewModel.isScrollDown.distinctUntilChanged().observe(this) {
             it.getContentIfNotHandled()?.let { isScrollDown ->
-                my_favorite_bottom_navigation.slideVisibility(isScrollDown)
+                setBottomNavBarVisibility(my_favorite_bottom_navigation, isScrollDown)
             }
         }
         viewModel.showBetUpperLimit.observe(this) {

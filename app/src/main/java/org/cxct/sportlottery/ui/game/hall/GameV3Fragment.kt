@@ -672,6 +672,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 leagueAdapter.setPreloadItem()
             }
         }
+        appbar_layout.addOffsetListenerForBottomNavBar {
+            viewModel.setIsScrollDown(it)
+        }
     }
 
     private fun initObserve() {

@@ -189,6 +189,9 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
         }
 
+        app_bar_layout.addOffsetListenerForBottomNavBar {
+            viewModel.setIsScrollDown(it)
+        }
     }
 
 
