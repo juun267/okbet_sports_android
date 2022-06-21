@@ -48,7 +48,10 @@ class GameOutrightMoreFragment : BaseBottomNavigationFragment<GameViewModel>(Gam
                             addOddsDialog(matchOdd, odd, playCateCode)
                         }
                     }
-                }, { _, _ -> },{ _, _ -> }
+                }, { _, _ -> },{ _, _ -> },
+                onClickMatch = {
+                    //TODO
+                }
             )
         }
     }

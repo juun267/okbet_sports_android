@@ -4,6 +4,7 @@
     android:id="@+id/outright_odd_subtitle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:minHeight="48dp"
     android:layout_marginHorizontal="16dp"
     android:background="@color/color_191919_FCFCFC"
     android:gravity="center"

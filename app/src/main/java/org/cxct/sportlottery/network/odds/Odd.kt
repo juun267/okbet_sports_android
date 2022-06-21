@@ -6,6 +6,7 @@ import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.odds.list.OddStateParams
+import org.cxct.sportlottery.network.outright.odds.MatchOdd
 
 /**
  * @author Kevin
@@ -83,4 +84,8 @@ data class Odd(
     var playCateExpand = false //玩法是否展開
 
     val isOnlyEUType = odds == hkOdds && odds == malayOdds && odds == indoOdds
+
+    var belongMatchOdd: MatchOdd? = null //紀錄所屬的MatchOdd
+
+    var leagueExpanded: Boolean = true //所屬MatchOdd是否為展開
 }
