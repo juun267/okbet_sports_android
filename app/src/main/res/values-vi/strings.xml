@@ -1175,4 +1175,7 @@
     <string name="coming_soon">Sắp có</string>
     <string name="esports">eSports</string>
 
+    <!--region 大廳賠率按鈕-->
+    <string name="none">None</string>
+    <!--endregion-->
 </resources>
