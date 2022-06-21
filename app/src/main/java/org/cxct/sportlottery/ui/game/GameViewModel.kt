@@ -158,7 +158,7 @@ class GameViewModel(
     val outrightOddsListResult: LiveData<Event<OutrightOddsListResult?>>
         get() = _outrightOddsListResult
 
-    val outrightMatchList: LiveData<Event<List<org.cxct.sportlottery.network.outright.odds.MatchOdd>>>
+    val outrightMatchList: LiveData<Event<List<Any>>>
         get() = _outrightMatchList
 
     val matchCategoryQueryResult: LiveData<Event<MatchCategoryQueryResult?>>
@@ -248,7 +248,7 @@ class GameViewModel(
     private val _leagueListResult = MutableLiveData<Event<LeagueListResult?>>()
     private val _outrightLeagueListResult = MutableLiveData<Event<OutrightLeagueListResult?>>()
     private val _outrightOddsListResult = MutableLiveData<Event<OutrightOddsListResult?>>()
-    private val _outrightMatchList = MutableLiveData<Event<List<org.cxct.sportlottery.network.outright.odds.MatchOdd>>>()
+    private val _outrightMatchList = MutableLiveData<Event<List<Any>>>()
     private val _epsListResult = MutableLiveData<Event<OddsEpsListResult?>>()
     private val _countryListSearchResult = MutableLiveData<List<Row>>()
     private val _leagueListSearchResult = MutableLiveData<List<LeagueOdd>>()
@@ -1480,6 +1480,7 @@ class GameViewModel(
 
             val outrightMatchList = mutableListOf<org.cxct.sportlottery.network.outright.odds.MatchOdd>()
 
+            val oddsList = mutableListOf<Any>()
             result?.outrightOddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds?.forEach { matchOdd ->
                     matchOdd?.oddsMap?.values?.forEach { oddList ->
@@ -1497,15 +1498,18 @@ class GameViewModel(
 
                     //region 先處理頁面顯示需要的資料結構
                     matchOdd?.let { matchOddNotNull ->
-                        val oddsList = mutableListOf<Any>()
-                        matchOdd.oddsMap?.forEach { oddMap ->
-                            val playCateExpand = matchOdd.oddsExpand?.get(oddMap.key) ?: false
+                        //聯賽標題
+                        oddsList.add(matchOddNotNull)
+
+                        matchOddNotNull.oddsMap?.forEach { oddMap ->
+                            val playCateExpand = matchOddNotNull.oddsExpand?.get(oddMap.key) ?: false
 
                             //region 玩法標題
                             oddsList.add(
                                 OutrightSubTitleItem(
+                                    belongMatchOdd = matchOddNotNull,
                                     playCateCode = oddMap.key,
-                                    subTitle = matchOdd.dynamicMarkets[oddMap.key]?.let {
+                                    subTitle = matchOddNotNull.dynamicMarkets[oddMap.key]?.let {
                                         when (LanguageManager.getSelectLanguage(LocalUtils.getLocalizedContext())) {
                                             LanguageManager.Language.ZH -> {
                                                 it.zh
@@ -1526,6 +1530,7 @@ class GameViewModel(
                                     ?.mapIndexed { index, odd ->
                                         odd.outrightCateKey = oddMap.key
                                         odd.playCateExpand = playCateExpand
+                                        odd.belongMatchOdd = matchOddNotNull
                                         if (index < 5) odd.isExpand = true
                                         odd
                                     } ?: listOf()
@@ -1535,11 +1540,11 @@ class GameViewModel(
                             //region 顯示更多選項(大於五項才需要此功能)
                             if (oddMap.value?.filterNotNull()?.size ?: 0 > 5) {
                                 //Triple(玩法key, MatchOdd, 該玩法是否需要展開)
-                                oddsList.add(OutrightShowMoreItem(oddMap.key, matchOdd, playCateExpand))
+                                oddsList.add(OutrightShowMoreItem(oddMap.key, matchOddNotNull, playCateExpand, isExpanded = false))
                             }
                             //endregion
                         }
-                        matchOddNotNull.outrightOddsList = oddsList
+//                        matchOddNotNull.outrightOddsList = oddsList
                         outrightMatchList.add(matchOddNotNull)
                     }
                     //endregion
@@ -1547,7 +1552,8 @@ class GameViewModel(
             }
 
             withContext(Dispatchers.Main) {
-                _outrightMatchList.value = Event(outrightMatchList)
+//                _outrightMatchList.value = Event(outrightMatchList)
+                _outrightMatchList.value = Event(oddsList)
             }
         }
     }

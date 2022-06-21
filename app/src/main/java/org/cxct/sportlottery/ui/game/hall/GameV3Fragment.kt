@@ -192,55 +192,78 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     private val outrightLeagueOddAdapter by lazy {
         OutrightLeagueOddAdapter().apply {
-            discount = viewModel.userInfo.value?.discount ?: 1.0F
-
             outrightOddListener = OutrightOddListener(
                 { matchOdd, odd, playCateCode ->
                     matchOdd?.let {
                         if (mIsEnabled) {
                             avoidFastDoubleClick()
                             addOutRightOddsDialog(matchOdd, odd, playCateCode)
-                            //addOddsDialog(matchOdd.matchInfo, odd, playCateCode,"",null)
                         }
                     }
                 },
                 { oddsKey, matchOdd ->
-                    this.data.find { it == matchOdd }?.oddsMap?.get(oddsKey)?.forEachIndexed { index, odd ->
+                    matchOdd.oddsMap?.get(oddsKey)?.forEachIndexed { index, odd ->
                         if (index >= 5) {
                             odd?.isExpand?.let { isExpand ->
                                 odd.isExpand = !isExpand
+                                this.notifyItemChanged(this.data.indexOf(odd))
                             }
                         }
                     }
-                    this.notifyItemChanged(this.data.indexOf(matchOdd))
                 },
                 { matchOdd, oddsKey ->
-
                     subscribeChannelHall(matchOdd)
 
                     matchOdd?.oddsExpand?.get(oddsKey)?.let { oddExpand ->
                         matchOdd.oddsExpand?.put(oddsKey, !oddExpand)
                     }
                     lifecycleScope.launch(Dispatchers.IO) {
-                        matchOdd?.outrightOddsList?.forEach { any ->
+                        this@apply.data.filter { any ->
+                            //同一場聯賽內的賠率項(Odd)及顯示更多(OutrightShowMoreItem)
+                            when (any) {
+                                is OutrightShowMoreItem -> {
+                                    any.matchOdd == matchOdd
+                                }
+                                is Odd -> {
+                                    any.belongMatchOdd == matchOdd
+                                }
+                                else -> {
+                                    false
+                                }
+                            }
+                        }.forEach { any ->
+                            val oddsExpand = matchOdd?.oddsExpand?.get(oddsKey) ?: false
+
                             when (any) {
                                 is OutrightShowMoreItem -> {
                                     if (any.playCateCode == oddsKey) {
-                                        any.playCateExpand = matchOdd.oddsExpand?.get(oddsKey) ?: false
+                                        if (any.playCateExpand != oddsExpand) {
+                                            any.playCateExpand = oddsExpand
+                                            updateOutrightAdapterInMain(any)
+                                        }
                                     }
                                 }
                                 is Odd -> {
                                     if (any.outrightCateKey == oddsKey) {
-                                        any.playCateExpand = matchOdd.oddsExpand?.get(oddsKey) ?: false
+                                        if (any.playCateExpand != oddsExpand) {
+                                            any.playCateExpand = oddsExpand
+                                            updateOutrightAdapterInMain(any)
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-
-                    this.notifyItemChanged(this.data.indexOf(matchOdd))
                 }
             )
+        }
+    }
+
+    private fun updateOutrightAdapterInMain(any: Any) {
+        lifecycleScope.launch(Dispatchers.Main) {
+            if (game_list.adapter is OutrightLeagueOddAdapter) {
+                outrightLeagueOddAdapter.notifyItemChanged(outrightLeagueOddAdapter.data.indexOf(any))
+            }
         }
     }
 
@@ -821,6 +844,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 is EpsListAdapter -> {
                     epsListAdapter.discount = userInfo?.discount ?: 1.0F
                 }
+
+                //TODO discount 去ViewModel配置
             }
         }
 
@@ -1021,9 +1046,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     return@observe
 
                 outrightLeagueOddAdapter.data = outrightMatchList
-                outrightMatchList.forEach { matchOdd ->
+                //TODO 冠軍聯賽訂閱
+                /*outrightMatchList.forEach { matchOdd ->
                     subscribeChannelHall(matchOdd)
-                }
+                }*/
                 game_list.adapter = outrightLeagueOddAdapter
                 hideLoading()
             }
@@ -1129,21 +1155,15 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
                 epsListAdapter.notifyDataSetChanged()
 
-                val odds = mutableListOf<Odd>()
-
-                outrightLeagueOddAdapter.data.forEach { matchOdd ->
-                    matchOdd?.oddsMap?.values?.forEach { oddList ->
-                        odds.addAll(oddList?.filterNotNull() ?: mutableListOf())
-                    }
-                }
-
-                odds.forEach { odd ->
-                    odd.isSelected = betInfoList.any { betInfoListData ->
+                outrightLeagueOddAdapter.data.filterIsInstance<Odd>().forEach { odd ->
+                    val betInfoSelected = betInfoList.any { betInfoListData ->
                         betInfoListData.matchOdd.oddsId == odd.id
                     }
+                    if (odd.isSelected != betInfoSelected) {
+                        odd.isSelected = betInfoSelected
+                        outrightLeagueOddAdapter.notifyItemChanged(outrightLeagueOddAdapter.data.indexOf(odd))
+                    }
                 }
-
-                outrightLeagueOddAdapter.notifyDataSetChanged()
             }
         }
 
