@@ -97,6 +97,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     private val mNavController by lazy { findNavController(R.id.game_container) }
     private val navDestListener by lazy {
         NavController.OnDestinationChangedListener { _, destination, arguments ->
+            viewModel.initBottomNavBar()
             updateServiceButtonVisibility(destinationId = destination.id)
             when (destination.id) {
                 R.id.homeFragment -> {

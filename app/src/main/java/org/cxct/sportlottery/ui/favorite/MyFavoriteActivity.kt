@@ -56,6 +56,14 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
         setupDataSourceChange()
     }
 
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            viewModel.initBottomNavBar()
+        }
+    }
+
     override fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
         iv_logo.setOnClickListener {

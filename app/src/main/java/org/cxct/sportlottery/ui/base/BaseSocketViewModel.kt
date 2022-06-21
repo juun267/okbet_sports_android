@@ -86,4 +86,9 @@ abstract class BaseSocketViewModel(
     fun setIsScrollDown(isScrollDown: Boolean) {
         _isScrollDown.postValue(Event(isScrollDown))
     }
+
+    //重新顯示bottomNavBar
+    fun initBottomNavBar() {
+        setIsScrollDown(false)
+    }
 }

@@ -93,6 +93,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
 
     private fun initDestination() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            viewModel.initBottomNavBar()
             when (destination.id) {
                 R.id.publicityFragment -> {
                     binding.gameToolbar.toolBar.visibility = View.GONE
