@@ -89,7 +89,7 @@
             android:layout_height="24dp"
             android:layout_marginEnd="20dp"
             android:padding="2dp"
-            android:src="@drawable/selector_game_schedule"
+            android:src="@drawable/ic_icon_game_live_golf_selected"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/iv_statistics"
             app:layout_constraintStart_toEndOf="@id/iv_play"

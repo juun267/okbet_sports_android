@@ -284,12 +284,13 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 isSelected = item.matchInfo?.neutral == 1
                 isVisible = item.matchInfo?.neutral == 1
             }
+//            滚球动画 直播 显示控制
             //itemView.space2.isVisible = (item.matchInfo?.eps == 1 || item.matchInfo?.liveVideo == 1)
             itemView.iv_play.isVisible =
                 item.matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(item.matchInfo?.startTime))
             itemView.iv_animation.isVisible =
                 TimeUtil.isTimeInPlay(item.matchInfo?.startTime) && !(item.matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
-                    ?.getGameDetailAnimationNeedShow() == true
+                    ?.getGameDetailAnimationNeedShow() == true && item.matchInfo?.liveVideo == 0
         }
 
         private fun setupMatchInfo(
