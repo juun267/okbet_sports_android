@@ -86,4 +86,6 @@ data class Odd(
     val isOnlyEUType = odds == hkOdds && odds == malayOdds && odds == indoOdds
 
     var belongMatchOdd: MatchOdd? = null //紀錄所屬的MatchOdd
+
+    var leagueExpanded: Boolean = true //所屬MatchOdd是否為展開
 }

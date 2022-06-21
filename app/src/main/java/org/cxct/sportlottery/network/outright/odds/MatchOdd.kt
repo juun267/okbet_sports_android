@@ -48,6 +48,7 @@ data class MatchOdd(
     var startTime: String = ""
 
     @IgnoredOnParcel
+    //預設為第一項玩法展開
     var oddsExpand: MutableMap<String, Boolean>? = oddsMap?.mapValues {
         it.key == oddsMap?.keys?.firstOrNull()
     }?.toMutableMap()

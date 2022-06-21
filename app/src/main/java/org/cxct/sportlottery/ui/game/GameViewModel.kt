@@ -1524,7 +1524,8 @@ class GameViewModel(
                                                 it.en
                                             }
                                         }
-                                    } ?: ""))
+                                    } ?: "",
+                                    leagueExpanded = matchOddNotNull.isExpand))
                             //endregion
 
                             //region 玩法賠率項
@@ -1533,6 +1534,7 @@ class GameViewModel(
                                     ?.mapIndexed { index, odd ->
                                         odd.outrightCateKey = oddMap.key
                                         odd.playCateExpand = playCateExpand
+                                        odd.leagueExpanded = matchOddNotNull.isExpand
                                         odd.belongMatchOdd = matchOddNotNull
                                         if (index < 5) odd.isExpand = true
                                         odd
@@ -1543,7 +1545,15 @@ class GameViewModel(
                             //region 顯示更多選項(大於五項才需要此功能)
                             if (oddMap.value?.filterNotNull()?.size ?: 0 > 5) {
                                 //Triple(玩法key, MatchOdd, 該玩法是否需要展開)
-                                oddsList.add(OutrightShowMoreItem(oddMap.key, matchOddNotNull, playCateExpand, isExpanded = false))
+                                oddsList.add(
+                                    OutrightShowMoreItem(
+                                        oddMap.key,
+                                        matchOddNotNull,
+                                        playCateExpand,
+                                        isExpanded = false,
+                                        leagueExpanded = matchOddNotNull.isExpand
+                                    )
+                                )
                             }
                             //endregion
                         }
