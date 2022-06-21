@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.content_baseball_status.view.*
 import kotlin.collections.MutableList
 import kotlinx.android.synthetic.main.home_game_table_item_4.view.*
 import kotlinx.android.synthetic.main.home_game_table_item_4.view.iv_play
@@ -286,6 +287,8 @@ class Vp2GameTable4Adapter(
             setupTime(data.matchInfo, time)
             setupCardText(data.matchInfo)
 
+            itemView.content_baseball_status.isVisible = data.matchInfo?.gameType == GameType.BB.key
+
             //TODO simon test review 賠率 icon 顯示邏輯
             itemView.iv_match_in_play.visibility = if (matchType == MatchType.AT_START) {
                 View.VISIBLE
@@ -421,6 +424,68 @@ class Vp2GameTable4Adapter(
                                     text = "${data?.awayTotalScore ?: 0}"
                                     visibility = View.VISIBLE
                                 }
+                            }
+                            GameType.BB.key -> {
+
+                                if (data?.attack.equals("H")) {
+                                    ic_attack_h.visibility = View.VISIBLE
+                                    ic_attack_c.visibility = View.INVISIBLE
+                                } else {
+                                    ic_attack_h.visibility = View.INVISIBLE
+                                    ic_attack_c.visibility = View.VISIBLE
+                                }
+
+                                iv_match_price.visibility = View.GONE
+
+                                //盤比分
+                                tv_game_score_home.apply {
+                                    text = "${data?.homeTotalScore ?: 0}"
+                                    visibility = View.VISIBLE
+                                }
+                                tv_game_score_away.apply {
+                                    text = "${data?.awayTotalScore ?: 0}"
+                                    visibility = View.VISIBLE
+                                }
+
+                                tv_match_status.visibility = View.GONE
+
+                                //局比分
+                                tv_score.visibility = View.GONE
+
+                                //點比分
+                                tv_point.visibility = View.GONE
+
+
+                                league_odd_match_bb_status.apply {
+                                    text = data?.statusName18n ?: ""
+                                }
+
+                                league_odd_match_halfStatus.apply {
+                                    setImageResource(if(data?.halfStatus == 0) R.drawable.ic_bb_first_half else R.drawable.ic_bb_second_half)
+                                    isVisible = true
+                                }
+
+                                league_odd_match_basebag.apply {
+                                    setImageResource(
+                                        when {
+                                            data?.firstBaseBag == 0 && data.secBaseBag == 0 && data.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_0_0_0
+                                            data?.firstBaseBag == 0 && data.secBaseBag == 1 && data.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_0_1_0
+                                            data?.firstBaseBag == 0 && data.secBaseBag == 0 && data.thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_0_0_1
+                                            data?.firstBaseBag == 1 && data.secBaseBag == 1 && data.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_1_1_0
+                                            data?.firstBaseBag == 1 && data.secBaseBag == 0 && data.thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_1_0_1
+                                            data?.firstBaseBag == 0 && data.secBaseBag == 1 && data.thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_0_1_1
+                                            data?.firstBaseBag == 1 && data.secBaseBag == 1 && data.thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_1_1_1
+                                            else -> R.drawable.ic_bb_base_bag_0_0_0
+                                        }
+                                    )
+                                    isVisible = true
+                                }
+
+                                txvOut.apply {
+                                    text = this.context.getString(R.string.game_out, data?.outNumber ?: "")
+                                    isVisible = true
+                                }
+
                             }
                             else -> {
                                 tv_match_status.apply {
