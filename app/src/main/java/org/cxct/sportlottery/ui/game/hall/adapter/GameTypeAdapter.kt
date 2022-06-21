@@ -64,6 +64,7 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+
         when {
             payloads.isNullOrEmpty() -> {
                 onBindViewHolder(holder, position)
@@ -76,7 +77,7 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                                 holder.update(data, gameTypeListener)
                             }
                             is ViewHolderSportHome -> {
-                                holder.bind(position,data, gameTypeListener)
+                                holder.bind(data, gameTypeListener)
                             }
                             else -> {
                                 onBindViewHolder(holder, position)
@@ -99,7 +100,7 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             is ViewHolderSportHome -> {
                 val item = dataSport[position]
-                holder.bind(position,item, gameTypeListener)
+                holder.bind(item, gameTypeListener)
             }
             is ViewHolderThirdGame -> {
                 val item = dataThirdGame[position - dataSport.size]
@@ -300,7 +301,7 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class ViewHolderSportHome private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(position: Int,item: Item, gameTypeListener: GameTypeListener?) {
+        fun bind(item: Item, gameTypeListener: GameTypeListener?) {
             itemView.sport_type_home_img.setImageResource(GameType.getGameTypeMenuIcon(item.code))
 //            setupSportTypeImage(itemView.sport_type_home_img, item)
 
