@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:gravity="center_vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +17,9 @@
             android:layout_height="wrap_content"
             android:textColor="@color/color_BCBCBC_666666"
             android:textSize="@dimen/textSize12sp"
-            tools:text="10" />
+            android:visibility="gone"
+            tools:text="10"
+            tools:visibility="visible" />
 
         <ImageView
             android:id="@+id/league_odd_match_halfStatus"
@@ -34,9 +36,9 @@
             android:id="@+id/league_odd_match_basebag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginStart="6dp"
             android:src="@drawable/ic_bb_base_bag_0_0_0"
-            android:layout_gravity="center"
             android:visibility="gone"
             tools:ignore="ContentDescription"
             tools:visibility="visible" />
@@ -49,7 +51,7 @@
             android:textColor="@color/color_BCBCBC_666666"
             android:textSize="@dimen/textSize12sp"
             android:visibility="gone"
-            tools:text="Out:0"
+            tools:text="@string/game_out"
             tools:visibility="visible" />
 
     </LinearLayout>
