@@ -16,6 +16,7 @@ import org.cxct.sportlottery.network.uploadImg.*
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.Event
 import java.io.File
@@ -28,7 +29,7 @@ class ProfileCenterViewModel(
     private val avatarRepository: AvatarRepository,
     infoCenterRepository: InfoCenterRepository,
     favoriteRepository: MyFavoriteRepository
-) : BaseSocketViewModel(
+) : BaseBottomNavViewModel(
     androidContext,
     userInfoRepository,
     loginRepository,

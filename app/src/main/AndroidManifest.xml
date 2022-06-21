@@ -152,6 +152,12 @@
             android:name=".ui.game.language.SwitchLanguageActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.profileCenter.AppearanceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.profileCenter.timezone.TimeZoneActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.profileCenter.money_transfer.MoneyTransferActivity"
             android:screenOrientation="portrait" /> <!-- 後臺服務-長連線 -->
         <service android:name=".service.BackService" /> <!-- broadCast -->

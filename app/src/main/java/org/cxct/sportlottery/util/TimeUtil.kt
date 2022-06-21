@@ -3,6 +3,7 @@ package org.cxct.sportlottery.util
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import timber.log.Timber
@@ -27,6 +28,8 @@ object TimeUtil {
     private const val YMDE_FORMAT = "yyyy-MMMM-d-EEE"
     private const val YMDE_HMS_FORMAT = "yyyy-MMMM-d-EEE HH:mm:ss"
     private const val DMY_HM_FORMAT = "yyyy-MM-dd HH:mm"
+
+    const val TIMEZONE_DEFAULT = "GMT-4"
 
     fun stampToDateHMS(time: Long): String {
         return timeFormat(time, YMD_HMS_FORMAT)
@@ -155,11 +158,12 @@ object TimeUtil {
         date: String?,
         timeType: TimeType = TimeType.START_OF_DAY,
         dateFormatPattern: String = YMD_HMS_FORMAT,
+        timeZone:TimeZone?=TimeZone.getDefault(),
         locale: Locale = Locale.getDefault()
     ): Long? {
         if (date.isNullOrEmpty()) return null
         val formatter = SimpleDateFormat("$dateFormatPattern S", locale)
-        formatter.timeZone = TimeZone.getTimeZone("GMT+8")
+        formatter.timeZone =timeZone
         val startTimeStamp = formatter.parse("$date 00:00:00 000")?.time
         val endTimeStamp = formatter.parse("$date 23:59:59 999")?.time
         return if (timeType == TimeType.START_OF_DAY) startTimeStamp else endTimeStamp
@@ -300,10 +304,11 @@ object TimeUtil {
         }
     }
 
-    fun getDefaultTimeStamp(minusDays: Int? = 6): TimeRangeParams {
+    fun getDefaultTimeStamp(minusDays: Int? = 6,timeZone:TimeZone?=TimeZone.getDefault()): TimeRangeParams {
         val cPair = getCalendarForDates(minusDays)
-        val minusDayTimeStamp = cPair.first.timeInMillis
-        val todayTimeStamp = cPair.second.timeInMillis
+
+        val minusDayTimeStamp = cPair.first.apply { this.timeZone=timeZone }.timeInMillis
+        val todayTimeStamp = cPair.second.apply { this.timeZone=timeZone }.timeInMillis
         return object : TimeRangeParams {
             //TODO simon review: TimeRangeParams 裡的 startTime、endTime 同時可能代表 timeStamp 也可能代表 日期(yyyy-MM-dd)，感覺最好拆開定義
             override val startTime: String
@@ -437,7 +442,7 @@ object TimeUtil {
         val endTimeCalendar = getTodayEndTimeCalendar()
         val startTimeCalendar = getTodayStartTimeCalendar()
 
-        val eUSTimeZone = TimeZone.getTimeZone("GMT-4")
+        val eUSTimeZone = TimeZone.getTimeZone(TIMEZONE_DEFAULT)
         endTimeCalendar.timeZone = eUSTimeZone
         startTimeCalendar.timeZone = eUSTimeZone
         startTimeCalendar.add(Calendar.DATE, -7)
@@ -454,7 +459,6 @@ object TimeUtil {
 
     fun getEarlyAllTimeRangeParams(): TimeRangeParams {
         val calendar = Calendar.getInstance()
-        calendar.timeZone = TimeZone.getTimeZone("GMT+8")
         calendar.add(Calendar.DAY_OF_MONTH, 1)
         calendar.set(Calendar.HOUR_OF_DAY, 0)
         calendar.set(Calendar.MINUTE, 0)
@@ -545,7 +549,6 @@ object TimeUtil {
     fun getFutureDate(day: Int, locale: Locale = Locale.getDefault()): List<String> {
         val weekDateList = mutableListOf<String>()
         val calendar = Calendar.getInstance()
-        calendar.timeZone = TimeZone.getTimeZone("GMT+8")
         repeat(day) {
             calendar.add(Calendar.DATE, 1)
             weekDateList.add(timeFormat(calendar.timeInMillis, YMDE_FORMAT, locale = locale))

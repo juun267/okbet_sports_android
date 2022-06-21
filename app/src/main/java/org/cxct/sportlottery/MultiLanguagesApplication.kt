@@ -64,6 +64,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.news.NewsViewModel
 import org.cxct.sportlottery.ui.permission.GooglePermissionViewModel
 import org.cxct.sportlottery.util.Event
+import java.util.*
 
 /**
  * App 內部切換語系
@@ -178,7 +179,7 @@ class MultiLanguagesApplication : Application() {
             return@init LanguageManager.getSetLanguageLocale(context)
         }
         MultiLanguage.setApplicationLanguage(this)
-
+//        TimeZone.setDefault(TimeZone.getTimeZone(timeZone))
         startKoin {
             androidContext(this@MultiLanguagesApplication)
             modules(
@@ -323,10 +324,17 @@ class MultiLanguagesApplication : Application() {
                 editor?.apply()
             }
 
+
         fun getChangeModeColorCode(defaultColor: String, nightModeColor: String): String {
             return if (isNightMode) nightModeColor else defaultColor
         }
-
+        var timeZone: String
+            get() = myPref?.getString("timeZone", "GMT-4").toString()
+            set(check) {
+                val editor = myPref?.edit()
+                editor?.putString("timeZone", check)
+                editor?.apply()
+            }
         fun getInstance(): MultiLanguagesApplication? {
             if (instance == null) throw IllegalStateException("Application not be created yet.")
             return instance

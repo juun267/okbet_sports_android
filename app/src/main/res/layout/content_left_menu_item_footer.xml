@@ -29,17 +29,7 @@
         android:textSize="@dimen/textSize14sp"
         app:drawableStartCompat="@drawable/ic_setting" />
 
-    <TextView
-        android:id="@+id/tv_appearance"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:drawablePadding="10dp"
-        android:gravity="start|center_vertical"
-        android:paddingStart="20dp"
-        android:text="@string/appearance"
-        android:textColor="@color/color_BBBBBB_333333"
-        android:textSize="@dimen/textSize14sp"
-        app:drawableStartCompat="@drawable/ic_night_mode" />
+
 
     <View
         android:layout_width="match_parent"

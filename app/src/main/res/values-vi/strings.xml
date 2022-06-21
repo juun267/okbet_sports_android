@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="language_setting">Ngôn ngữ cài đặt</string>
+    <string name="language_setting">Ngôn ngữ</string>
     <string name="loading">đang tải</string>
     <string name="connect_first">vui lòng kết nối mạng</string>
     <string name="error_url_fail">chuyển đổi địa chỉ bị lỗi</string>
@@ -1181,9 +1181,16 @@
     <!--region 大廳賠率按鈕-->
     <string name="none">None</string>
     <!--endregion-->
+    <string name="timezone_change">Múi giờ</string>
+    <string name="timezone">Múi giờ</string>
     <!--region 注單模塊調整-->
     <string name="bet_info_bet_lock_hint">Kèo chấp đã đóng</string>
     <string name="bet_info_no_parlay_hint">Trận đấu không hỗ trợ đá xiên.</string>
+    <string name="function">Chức năng thường dùng</string>
+    <string name="sport_relative">Liên quan thể thao</string>
+    <string name="setting">Cài đặt hệ thống</string>
+    <string name="service">Phục vụ</string>
+    <string name="timezone_list_no_record">Không có kết quả nào</string>
     <!--endregion-->
 
 </resources>

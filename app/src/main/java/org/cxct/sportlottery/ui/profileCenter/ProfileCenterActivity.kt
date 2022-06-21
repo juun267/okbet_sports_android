@@ -5,64 +5,79 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.view.MenuItem
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile_center.*
-import kotlinx.android.synthetic.main.fragment_left_menu.*
-import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
+import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
+import kotlinx.android.synthetic.main.view_nav_right.*
+import kotlinx.android.synthetic.main.view_toolbar_main.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.bet.FastBetDataBean
+import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
+import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.ServiceDialog
+import org.cxct.sportlottery.ui.game.betList.BetListFragment
+import org.cxct.sportlottery.ui.game.betList.FastBetFragment
+import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
+import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.menu.*
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity.Companion.PWD_PAGE
-import org.cxct.sportlottery.ui.profileCenter.creditrecord.CreditRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
+import org.cxct.sportlottery.ui.profileCenter.timezone.TimeZoneActivity
+import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.selflimit.SelfLimitActivity
+import org.cxct.sportlottery.ui.vip.VipActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.TextUtil.formatMoneyNoDecimal
 import org.cxct.sportlottery.util.TimeUtil.getRemainDay
+import org.parceler.Parcels
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
-import java.util.*
 
 /**
  * @app_destination 個人中心
  */
-class ProfileCenterActivity :
-    BaseSocketActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
+class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
     //簡訊驗證彈窗
     private var customSecurityDialog: CustomSecurityDialog? = null
+    private var betListFragment = BetListFragment()
 
     private val mSelectMediaListener = object : OnResultCallbackListener<LocalMedia> {
         override fun onResult(result: MutableList<LocalMedia>?) {
@@ -104,7 +119,10 @@ class ProfileCenterActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_center)
-        initToolbar()
+        initToolBar()
+        initBottomNavigation()
+        initMenu()
+        setupNoticeButton(iv_notice)
         initView()
         setupHeadButton()
         setupEditNickname()
@@ -119,11 +137,39 @@ class ProfileCenterActivity :
         updateThirdOpenUI()
         updateCreditAccountUI()
     }
-    private fun initToolbar() {
-        tv_toolbar_title.setTitleLetterSpacing()
-        tv_toolbar_title.text = getString(R.string.profile_center)
-        btn_toolbar_back.setOnClickListener {
-            finish()
+    override fun initToolBar() {
+        iv_logo.setImageResource(R.drawable.ic_logo)
+        iv_logo.setOnClickListener {
+            viewModel.navMainPage(ThirdGameCategory.MAIN)
+        }
+
+        iv_language.setImageResource(LanguageManager.getLanguageFlag(this))
+
+        //頭像 當 側邊欄 開/關
+        iv_menu.setOnClickListener {
+            if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
+            else {
+                drawer_layout.openDrawer(nav_right)
+                viewModel.getMoney()
+            }
+        }
+
+        btn_login.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+        }
+
+        btn_register.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
+        }
+
+        tv_odds_type.setOnClickListener {
+            ChangeOddsTypeDialog().show(supportFragmentManager, null)
+        }
+
+        iv_language.setOnClickListener {
+            ChangeLanguageDialog(ChangeLanguageDialog.ClearBetListListener{
+                viewModel.betInfoRepository.clear()
+            }).show(supportFragmentManager, null)
         }
     }
     private fun initView() {
@@ -176,6 +222,11 @@ class ProfileCenterActivity :
     private fun getMoney() {
         refreshMoneyLoading()
         viewModel.getMoney()
+        if (MultiLanguagesApplication.isNightMode) {
+            tv_appearance.text = getString(R.string.appearance) + ": " + getString(R.string.night_mode)
+        } else {
+            tv_appearance.text = getString(R.string.appearance) + ": " + getString(R.string.day_mode)
+        }
     }
 
     private fun refreshMoneyLoading() {
@@ -187,8 +238,7 @@ class ProfileCenterActivity :
     }
 
     private fun setupLogout() {
-        btn_logout.setTitleLetterSpacing()
-        btn_logout.setOnClickListener {
+        iv_logout.setOnClickListener {
             viewModel.doLogoutAPI()
             viewModel.doLogoutCleanUser {
                 run {
@@ -198,7 +248,6 @@ class ProfileCenterActivity :
                         GamePublicityActivity.reStart(this)
                 }
             }
-
         }
     }
 
@@ -250,7 +299,18 @@ class ProfileCenterActivity :
                 }
             }
         }
-
+        //代理加盟
+        btn_affiliate.setOnClickListener {
+            JumpUtil.toInternalWeb(
+                this,
+                Constants.getAffiliateUrl(this),
+                resources.getString(R.string.btm_navigation_affiliate)
+            )
+        }
+        //会员等级
+        btn_member_level.setOnClickListener {
+            startActivity(Intent(this, VipActivity::class.java))
+        }
         //自我約束
         if (sConfigData?.selfRestraintVerified == "0" || sConfigData?.selfRestraintVerified == null) {
             btn_self_limit.visibility = View.GONE
@@ -259,6 +319,31 @@ class ProfileCenterActivity :
             btn_self_limit.setOnClickListener {
                 startActivity(Intent(this, SelfLimitActivity::class.java))
             }
+        }
+        //赛果结算
+        btn_game_settlement.setOnClickListener {
+            startActivity(Intent(this, ResultsSettlementActivity::class.java))
+        }
+        //游戏规则
+        btn_game_rule.setOnClickListener {
+            JumpUtil.toInternalWeb(
+                this,
+                Constants.getGameRuleUrl(this),
+                getString(R.string.game_rule)
+            )
+        }
+        //切换语言
+        btn_language.setOnClickListener {
+            startActivity(Intent(this,SwitchLanguageActivity::class.java))
+        }
+        //外觀
+        btn_appearance.setOnClickListener {
+            startActivity(Intent(this,AppearanceActivity::class.java))
+        }
+        btn_time_zone.visibility = View.GONE
+        //时区切换
+        btn_time_zone.setOnClickListener {
+            startActivity(Intent(this, TimeZoneActivity::class.java))
         }
 
         //幫助中心
@@ -285,6 +370,14 @@ class ProfileCenterActivity :
                     JumpUtil.toExternalWeb(this, serviceUrl)
                 }
             }
+        }
+        //关于我们
+        btn_about_us.setOnClickListener {
+            JumpUtil.toInternalWeb(
+                this,
+                Constants.getContactUrl(this),
+                getString(R.string.contact)
+            )
         }
     }
 
@@ -592,7 +685,7 @@ class ProfileCenterActivity :
         Glide.with(this)
             .load(userInfo?.iconUrl)
             .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
-            .into(iv_head) //載入頭像
+            .into(iv_head1) //載入頭像
 
         tv_user_nickname.text = if (userInfo?.nickName.isNullOrEmpty()) {
             userInfo?.userName
@@ -630,9 +723,191 @@ class ProfileCenterActivity :
     private fun updateCreditAccountUI() {
         val thirdOpen = sConfigData?.thirdOpen == FLAG_OPEN
         lin_wallet_operation.setVisibilityByCreditSystem()
-        v_divide.setVisibilityByCreditSystem()
         if (thirdOpen) btn_account_transfer.setVisibilityByCreditSystem()
         if (thirdOpen) btn_other_bet_record.setVisibilityByCreditSystem()
         if (!(sConfigData?.selfRestraintVerified == "0" || sConfigData?.selfRestraintVerified == null)) btn_self_limit.setVisibilityByCreditSystem()
     }
+    override fun clickMenuEvent() {
+        if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
+        else {
+            drawer_layout.openDrawer(nav_right)
+            viewModel.getMoney()
+        }
+    }
+
+    override fun initMenu() {
+        try {
+            //關閉側邊欄滑動行為
+            drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+
+            //選單選擇結束要收起選單
+            val menuFrag =
+                supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
+            menuFrag.setDownMenuListener { drawer_layout.closeDrawers() }
+            nav_right.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun initBottomNavigation() {
+        sport_bottom_navigation.apply {
+            setNavigationItemClickListener {
+                when (it) {
+                    R.id.navigation_sport -> {
+                        viewModel.navGame()
+                        finish()
+                        false
+                    }
+                    R.id.navigation_game -> {
+                        true
+                    }
+                    R.id.item_bet_list -> {
+                        viewModel.navShoppingCart()
+                        false
+                    }
+                    R.id.navigation_account_history -> {
+                        viewModel.navAccountHistory()
+                        finish()
+                        false
+                    }
+                    R.id.navigation_transaction_status -> {
+                        viewModel.navTranStatus()
+                        finish()
+                        false
+                    }
+                    else -> false
+                }
+            }
+
+            setSelected(R.id.navigation_transaction_status)
+        }
+    }
+
+    override fun onBackPressed() {
+        //返回鍵優先關閉投注單fragment
+        if (supportFragmentManager.backStackEntryCount != 0) {
+            for (i in 0 until supportFragmentManager.backStackEntryCount) {
+                supportFragmentManager.popBackStack()
+            }
+            return
+        }
+        super.onBackPressed()
+    }
+
+    override fun showBetListPage() {
+        betListFragment =
+            BetListFragment.newInstance(object : BetListFragment.BetResultListener {
+                override fun onBetResult(
+                    betResultData: Receipt?,
+                    betParlayList: List<ParlayOdd>,
+                    isMultiBet: Boolean
+                ) {
+                    showBetReceiptDialog(betResultData, betParlayList, isMultiBet, R.id.fl_bet_list)
+                }
+
+            })
+
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.anim.push_bottom_to_top_enter,
+                R.anim.pop_bottom_to_top_exit,
+                R.anim.push_bottom_to_top_enter,
+                R.anim.pop_bottom_to_top_exit
+            )
+            .add(R.id.fl_bet_list, betListFragment)
+            .addToBackStack(BetListFragment::class.java.simpleName)
+            .commit()
+    }
+
+    override fun getBetListPageVisible(): Boolean {
+        return betListFragment.isVisible
+    }
+
+    fun showFastBetFragment(fastBetDataBean: FastBetDataBean) {
+        val transaction = supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.anim.push_bottom_to_top_enter,
+                R.anim.pop_bottom_to_top_exit,
+                R.anim.push_bottom_to_top_enter,
+                R.anim.pop_bottom_to_top_exit
+            )
+
+        val betListFragment = FastBetFragment()
+        val bundle = Bundle()
+        bundle.putParcelable("data", Parcels.wrap(fastBetDataBean));
+        betListFragment.arguments = bundle;
+
+        transaction
+            .add(R.id.fl_bet_list, betListFragment)
+            .addToBackStack(BetListFragment::class.java.simpleName)
+            .commit()
+    }
+
+    override fun updateBetListCount(num: Int) {
+        sport_bottom_navigation.setBetCount(num)
+    }
+
+    override fun showLoginNotify() {
+        snackBarLoginNotify.apply {
+            setAnchorView(R.id.my_profile_bottom_navigation)
+            show()
+        }
+    }
+
+    override fun showMyFavoriteNotify(myFavoriteNotifyType: Int) {
+        setSnackBarMyFavoriteNotify(myFavoriteNotifyType)
+        snackBarMyFavoriteNotify?.apply {
+            setAnchorView(R.id.my_profile_bottom_navigation)
+            show()
+        }
+    }
+
+    override fun updateUiWithLogin(isLogin: Boolean) {
+        if (isLogin) {
+            btn_login.visibility = View.GONE
+            iv_menu.visibility =View.VISIBLE
+            iv_notice.visibility =View.VISIBLE
+            btn_register.visibility = View.GONE
+            toolbar_divider.visibility = View.GONE
+            iv_head.visibility = View.GONE
+            tv_odds_type.visibility = View.GONE
+        } else {
+            btn_login.visibility = View.VISIBLE
+            btn_register.visibility = View.VISIBLE
+            toolbar_divider.visibility = View.VISIBLE
+            iv_head.visibility = View.GONE
+            tv_odds_type.visibility = View.GONE
+            iv_menu.visibility =View.GONE
+            iv_notice.visibility =View.GONE
+        }
+    }
+
+    override fun updateOddsType(oddsType: OddsType) {
+        tv_odds_type.text = getString(oddsType.res)
+    }
+
+    override fun navOneSportPage(thirdGameCategory: ThirdGameCategory?) {
+        if (thirdGameCategory != null) {
+            val intent = Intent(this, MainActivity::class.java)
+                .putExtra(MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory)
+            startActivity(intent)
+
+            return
+        }
+
+        startActivity(Intent(this, GamePublicityActivity::class.java))
+    }
+
 }
