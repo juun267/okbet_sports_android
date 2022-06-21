@@ -177,6 +177,13 @@ class Vp2GameTable4Adapter(
                     matchOdd.matchInfo?.homeCards = matchStatusCO.homeCards
                     matchOdd.matchInfo?.awayCards = matchStatusCO.awayCards
                     matchOdd.matchInfo?.scoreStatus = matchStatusCO.status
+                    if(matchStatusCO.attack != null) matchOdd.matchInfo?.attack = matchStatusCO.attack
+                    if(matchStatusCO.halfStatus != null) matchOdd.matchInfo?.halfStatus = matchStatusCO.halfStatus
+                    if(matchStatusCO.firstBaseBag != null) matchOdd.matchInfo?.firstBaseBag = matchStatusCO.firstBaseBag
+                    if(matchStatusCO.secBaseBag != null) matchOdd.matchInfo?.secBaseBag = matchStatusCO.secBaseBag
+                    if(matchStatusCO.thirdBaseBag != null) matchOdd.matchInfo?.thirdBaseBag = matchStatusCO.thirdBaseBag
+                    if(matchStatusCO.outNumber != null) matchOdd.matchInfo?.outNumber = matchStatusCO.outNumber
+
                     Handler(Looper.getMainLooper()).post {
                         notifyItemChanged(index, GameTablePayload.PAYLOAD_MATCH_STATUS)
                     }
