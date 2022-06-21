@@ -239,6 +239,17 @@
         app:layout_constraintTop_toTopOf="@id/tv_game_name_home"
         tools:visibility="visible" />
 
+    <include
+        android:id="@+id/content_baseball_status"
+        layout="@layout/content_baseball_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/table_match_info_border"
+        app:layout_constraintTop_toBottomOf="@+id/table_match_info_border" />
+
     <TextView
         android:id="@+id/tv_score"
         android:layout_width="wrap_content"
@@ -250,7 +261,7 @@
         android:textSize="@dimen/textSize12sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/table_match_info_border"
+        app:layout_constraintStart_toEndOf="@id/content_baseball_status"
         app:layout_constraintTop_toBottomOf="@+id/table_match_info_border"
         tools:text="5–3"
         tools:visibility="visible" />
