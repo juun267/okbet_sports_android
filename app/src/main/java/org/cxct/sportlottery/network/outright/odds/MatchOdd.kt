@@ -48,11 +48,15 @@ data class MatchOdd(
     var startTime: String = ""
 
     @IgnoredOnParcel
+    //預設為第一項玩法展開
     var oddsExpand: MutableMap<String, Boolean>? = oddsMap?.mapValues {
         it.key == oddsMap?.keys?.firstOrNull()
     }?.toMutableMap()
 
     @IgnoredOnParcel
     var isExpand: Boolean = true
+
+    //僅給冠軍重組賠率項資料結構使用
+    var outrightOddsList: MutableList<Any> = mutableListOf()
 
 }

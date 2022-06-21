@@ -1148,4 +1148,7 @@
     <string name="coming_soon">Soon</string>
     <!--endregion-->
 
+    <!--region 大廳賠率按鈕-->
+    <string name="none">None</string>
+    <!--endregion-->
 </resources>
