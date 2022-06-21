@@ -155,7 +155,7 @@
             android:name=".ui.profileCenter.AppearanceActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.profileCenter.TimeZoneActivity"
+            android:name=".ui.profileCenter.timezone.TimeZoneActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.profileCenter.money_transfer.MoneyTransferActivity"

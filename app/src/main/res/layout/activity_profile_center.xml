@@ -116,7 +116,16 @@
                         app:layout_constraintStart_toEndOf="@id/label_user_id"
                         app:layout_constraintTop_toTopOf="@id/label_user_id"
                         tools:text="48745884554" />
-
+                    <ImageView
+                        android:id="@+id/iv_logout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_20"
+                        android:layout_marginRight="@dimen/margin_20"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_logout"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
@@ -786,6 +795,7 @@
                                 android:src="@drawable/ic_change_skin" />
 
                             <TextView
+                                android:id="@+id/tv_appearance"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"

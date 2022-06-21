@@ -1154,5 +1154,6 @@
     <string name="bet_info_no_parlay_hint">The match hasn\'t supported parlay</string>
     <!--endregion-->
     <string name="timezone_change">Time Zone</string>
+    <string name="timezone">Time Zone</string>
 
 </resources>

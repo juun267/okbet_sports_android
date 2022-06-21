@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.activity_profile_center.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.Constants
@@ -30,7 +31,6 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
@@ -51,13 +51,13 @@ import org.cxct.sportlottery.ui.menu.*
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity.Companion.PWD_PAGE
-import org.cxct.sportlottery.ui.profileCenter.creditrecord.CreditRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
+import org.cxct.sportlottery.ui.profileCenter.timezone.TimeZoneActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.selflimit.SelfLimitActivity
 import org.cxct.sportlottery.ui.vip.VipActivity
@@ -70,7 +70,6 @@ import org.parceler.Parcels
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
-import java.util.*
 
 /**
  * @app_destination 個人中心
@@ -223,6 +222,11 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
     private fun getMoney() {
         refreshMoneyLoading()
         viewModel.getMoney()
+        if (MultiLanguagesApplication.isNightMode) {
+            tv_appearance.text = getString(R.string.appearance) + ": " + getString(R.string.night_mode)
+        } else {
+            tv_appearance.text = getString(R.string.appearance) + ": " + getString(R.string.day_mode)
+        }
     }
 
     private fun refreshMoneyLoading() {
@@ -235,7 +239,7 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
 
     private fun setupLogout() {
         btn_logout.setTitleLetterSpacing()
-        btn_logout.setOnClickListener {
+        View.OnClickListener {
             viewModel.doLogoutAPI()
             viewModel.doLogoutCleanUser {
                 run {
@@ -245,7 +249,9 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
                         GamePublicityActivity.reStart(this)
                 }
             }
-
+        }.let {
+            iv_logout.setOnClickListener(it)
+            btn_logout.setOnClickListener(it)
         }
     }
 
@@ -340,7 +346,7 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
         }
         //时区切换
         btn_time_zone.setOnClickListener {
-            startActivity(Intent(this,TimeZoneActivity::class.java))
+            startActivity(Intent(this, TimeZoneActivity::class.java))
         }
 
         //幫助中心
@@ -782,7 +788,7 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
                 }
             }
 
-            setSelected(R.id.navigation_game)
+            setSelected(R.id.navigation_transaction_status)
         }
     }
 

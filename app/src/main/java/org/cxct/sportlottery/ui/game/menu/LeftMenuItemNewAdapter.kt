@@ -211,28 +211,9 @@ class LeftMenuItemNewAdapter(
             listener: OnClickListener?
         ) {
             itemView.apply {
-                tv_recharge.isVisible = isLogin && !isCreditSystem()
-                tv_withdraw.isVisible = isLogin && !isCreditSystem()
-                tv_member_level.isVisible = isLogin && isShowMemberLevel
 
                 block_home.setOnClickListener {
                     headerSelectedListener.backMainPageSelected()
-                }
-                tv_recharge.setOnClickListener {
-                    headerSelectedListener.rechargeSelected()
-                }
-                tv_withdraw.setOnClickListener {
-                    headerSelectedListener.withdrawSelected()
-                }
-                tv_member_level.setOnClickListener {
-                    headerSelectedListener.memberLevelSelected()
-                }
-                tv_promotion.setOnClickListener {
-                    headerSelectedListener.promotionSelected()
-                }
-                //代理加盟
-                tv_affiliate.setOnClickListener {
-                    headerSelectedListener.affiliateSelected()
                 }
                 ct_inplay.setOnClickListener {
                     headerSelectedListener.inPlaySelected()
@@ -291,15 +272,6 @@ class LeftMenuItemNewAdapter(
                     })
                 }
 
-                tv_promotion.setVisibilityByCreditSystem()
-
-                if (tv_recharge.visibility == View.GONE &&
-                    tv_withdraw.visibility == View.GONE &&
-                    tv_member_level.visibility == View.GONE &&
-                    tv_promotion.visibility == View.GONE
-                ) {
-                    divider_login.visibility = View.GONE
-                }
             }
         }
     }
@@ -321,23 +293,9 @@ class LeftMenuItemNewAdapter(
         ) {
             itemView.apply {
 
-                //TODO for test
-                tv_appearance.visibility = View.VISIBLE
-
-//                tv_appearance.isVisible = isLogin
-                // tv_appearance.isVisible = false //暫時隱藏
-                if (MultiLanguagesApplication.isNightMode) {
-                    tv_appearance.text = context.getString(R.string.appearance) + ": " + context.getString(R.string.night_mode)
-                } else {
-                    tv_appearance.text = context.getString(R.string.appearance) + ": " + context.getString(R.string.day_mode)
-                }
                 //盤口設定
                 tv_odds_type.setOnClickListener {
                     footerSelectedListener.oddTypeSelected()
-                }
-
-                tv_appearance.setOnClickListener {
-                    footerSelectedListener.appearanceSelected()
                 }
 
                 //遊戲規則
