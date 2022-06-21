@@ -152,6 +152,21 @@
         tools:text="1"
         tools:visibility="visible" />
 
+
+    <ImageView
+        android:id="@+id/ic_attack_h"
+        android:layout_width="2dp"
+        android:layout_height="14dp"
+        android:layout_marginEnd="@dimen/margin_8"
+        android:src="@drawable/ic_baseball_attack"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/league_odd_match_name_home"
+        app:layout_constraintEnd_toStartOf="@id/guide_game_start"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/league_odd_match_name_home"
+        tools:visibility="visible" />
+
     <TextView
         android:id="@+id/league_odd_match_score_home"
         android:layout_width="30dp"
@@ -251,6 +266,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/league_odd_match_name_away"
         tools:text="1"
+        tools:visibility="visible" />
+
+
+    <ImageView
+        android:id="@+id/ic_attack_c"
+        android:layout_width="2dp"
+        android:layout_height="14dp"
+        android:layout_marginEnd="@dimen/margin_8"
+        android:src="@drawable/ic_baseball_attack"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/league_odd_match_name_away"
+        app:layout_constraintEnd_toStartOf="@+id/guide_game_start"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/league_odd_match_name_away"
         tools:visibility="visible" />
 
     <TextView
