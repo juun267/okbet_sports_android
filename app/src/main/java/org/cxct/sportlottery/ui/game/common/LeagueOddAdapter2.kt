@@ -14,6 +14,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
+import kotlinx.android.synthetic.main.content_baseball_status.view.*
 import kotlinx.android.synthetic.main.itemview_league_odd_v5.view.*
 import kotlinx.android.synthetic.main.itemview_league_quick.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
@@ -384,6 +385,11 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
         }
 
         private fun setupMatchScore(item: MatchOdd, matchType: MatchType) {
+            itemView.apply {
+                linear_layout.isVisible = item.matchInfo?.gameType != GameType.BB.key
+                content_baseball_status.isVisible = item.matchInfo?.gameType == GameType.BB.key
+            }
+
             when (item.matchInfo?.socketMatchStatus) {
                 //20220507 status:999 邏輯變更 隱藏分數 -> 賽事狀態變為滾球
                 /*GameMatchStatus.HIDE_SCORE.value -> {
@@ -397,7 +403,8 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                         GameType.BK.key -> setBkScoreText(matchType, item)
                         GameType.TT.key -> setVbScoreText(matchType, item)
                         GameType.BM.key -> setBmScoreText(matchType, item)
-                        else -> setBkScoreText(matchType, item)//TODO Bill 這裡要等PM確認版型 SocketUpdateUtil
+                        GameType.BB.key -> setBbScoreText(item)
+                        else -> setBkScoreText(matchType, item)
                     }
                 }
             }
@@ -441,6 +448,43 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 setAllScoreTextAtBottom(matchType, item)
                 setScoreText(matchType, item)
                 setSptText(item, matchType)
+            }
+        }
+
+        private fun setBbScoreText(item: MatchOdd) {
+            itemView.apply {
+                setScoreTextAtFront(item)
+
+                league_odd_match_bb_status.apply {
+                    text = item.matchInfo?.statusName18n
+                    isVisible = true
+                }
+
+                txvOut.apply {
+                    text = this.context.getString(R.string.game_out, item.matchInfo?.outNumber ?: "")
+                    isVisible = true
+                }
+
+                league_odd_match_halfStatus.apply {
+                    setImageResource(if(item.matchInfo?.halfStatus == 0) R.drawable.ic_bb_first_half else R.drawable.ic_bb_second_half)
+                    isVisible = true
+                }
+
+                league_odd_match_basebag.apply {
+                    setImageResource(
+                        when {
+                            item.matchInfo?.firstBaseBag == 0 && item.matchInfo.secBaseBag == 0 && item.matchInfo.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_0_0_0
+                            item.matchInfo?.firstBaseBag == 0 && item.matchInfo.secBaseBag == 1 && item.matchInfo.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_0_1_0
+                            item.matchInfo?.firstBaseBag == 0 && item.matchInfo.secBaseBag == 0 && item.matchInfo.thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_0_0_1
+                            item.matchInfo?.firstBaseBag == 1 && item.matchInfo.secBaseBag == 1 && item.matchInfo.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_1_1_0
+                            item.matchInfo?.firstBaseBag == 1 && item.matchInfo.secBaseBag == 0 && item.matchInfo.thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_1_0_1
+                            item.matchInfo?.firstBaseBag == 0 && item.matchInfo.secBaseBag == 1 && item.matchInfo.thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_0_1_1
+                            item.matchInfo?.firstBaseBag == 1 && item.matchInfo.secBaseBag == 1 && item.matchInfo.thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_1_1_1
+                            else -> R.drawable.ic_bb_base_bag_0_0_0
+                        }
+                    )
+                    isVisible = true
+                }
             }
         }
 
