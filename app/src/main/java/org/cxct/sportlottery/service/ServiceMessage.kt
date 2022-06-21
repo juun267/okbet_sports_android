@@ -47,8 +47,13 @@ object ServiceMessage {
     }
 
     fun getMatchStatusChange(messageStr: String): MatchStatusChangeEvent? {
-        val adapter = moshi.adapter(MatchStatusChangeEvent::class.java)
-        return adapter.fromJson(messageStr)
+        return try {
+            val adapter = moshi.adapter(MatchStatusChangeEvent::class.java)
+            return adapter.fromJson(messageStr)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
     }
 
     fun getNotice(messageStr: String): NoticeEvent? {
