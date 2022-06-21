@@ -357,7 +357,7 @@ class LiveViewToolbarNew @JvmOverloads constructor(
     private fun setAnimationImgIcon(isOn: Boolean) {
         if (isOn) {
             when (gameType) {
-                GameType.FT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_football_selected)
+                GameType.FT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_soccer_selected)
                 GameType.BK -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_basketball_selected)
                 GameType.TN -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_tennis_selected)
                 GameType.VB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_volleyball_selected)
@@ -369,7 +369,7 @@ class LiveViewToolbarNew @JvmOverloads constructor(
                 GameType.CK -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_cricket_selected)
                 GameType.BB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_baseball_selected)
                 GameType.RB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_rugby_selected)
-                GameType.AFT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_soccer_selected)
+                GameType.AFT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_football_selected)
                 GameType.MR -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_racing_selected)
                 GameType.GF -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_golf_selected)
             }
