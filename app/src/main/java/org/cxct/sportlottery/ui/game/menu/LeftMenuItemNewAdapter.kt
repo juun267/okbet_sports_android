@@ -17,7 +17,6 @@ import kotlinx.android.synthetic.main.content_left_menu_item.view.divider
 import kotlinx.android.synthetic.main.content_left_menu_item.view.tv_count
 import kotlinx.android.synthetic.main.content_left_menu_item_footer.view.*
 import kotlinx.android.synthetic.main.content_left_menu_item_header.view.*
-import kotlinx.android.synthetic.main.home_game_card_v2.view.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R

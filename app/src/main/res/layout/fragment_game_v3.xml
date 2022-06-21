@@ -57,13 +57,13 @@
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false"
                     android:paddingHorizontal="16dp"
-                    android:paddingVertical="10dp"
                     app:layout_constrainedWidth="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:itemCount="1"
-                    tools:listitem="@layout/itemview_sport_type_v5" />
+                    android:background="@color/color_FCFCFC"
+                    tools:listitem="@layout/itemview_sport_type_v6" />
 
                 <include
                     android:id="@+id/game_toolbar_v4"
