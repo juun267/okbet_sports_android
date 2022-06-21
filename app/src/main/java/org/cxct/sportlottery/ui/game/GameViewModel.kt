@@ -209,22 +209,29 @@ class GameViewModel(
         get() = _searchResult
 
 
-    val withdrawSystemOperation =
-        withdrawRepository.withdrawSystemOperation
-    val rechargeSystemOperation =
-        withdrawRepository.rechargeSystemOperation
-    val needToUpdateWithdrawPassword =
-        withdrawRepository.needToUpdateWithdrawPassword //提款頁面是否需要更新提款密碼 true: 需要, false: 不需要
-    val settingNeedToUpdateWithdrawPassword =
-        withdrawRepository.settingNeedToUpdateWithdrawPassword //提款設置頁面是否需要更新提款密碼 true: 需要, false: 不需要
-    val settingNeedToCompleteProfileInfo =
-        withdrawRepository.settingNeedToCompleteProfileInfo //提款設置頁面是否需要完善個人資料 true: 需要, false: 不需要
-    val needToCompleteProfileInfo =
-        withdrawRepository.needToCompleteProfileInfo //提款頁面是否需要完善個人資料 true: 需要, false: 不需要
-    val needToBindBankCard =
-        withdrawRepository.needToBindBankCard //提款頁面是否需要新增銀行卡 -1 : 不需要新增, else : 以value作為string id 顯示彈窗提示
-    val needToSendTwoFactor =
-        withdrawRepository.showSecurityDialog //判斷是不是要進行手機驗證 true: 需要, false: 不需要
+    val withdrawSystemOperation = withdrawRepository.withdrawSystemOperation
+    val rechargeSystemOperation = withdrawRepository.rechargeSystemOperation
+
+    //提款頁面是否需要更新提款密碼 true: 需要, false: 不需要
+    val needToUpdateWithdrawPassword = withdrawRepository.needToUpdateWithdrawPassword
+
+    //提款設置頁面是否需要更新提款密碼 true: 需要, false: 不需要
+    val settingNeedToUpdateWithdrawPassword = withdrawRepository.settingNeedToUpdateWithdrawPassword
+
+    //提款設置頁面是否需要完善個人資料 true: 需要, false: 不需要
+    val settingNeedToCompleteProfileInfo = withdrawRepository.settingNeedToCompleteProfileInfo
+
+    //提款頁面是否需要完善個人資料 true: 需要, false: 不需要
+    val needToCompleteProfileInfo = withdrawRepository.needToCompleteProfileInfo
+
+    //提款頁面是否需要新增銀行卡 -1 : 不需要新增, else : 以value作為string id 顯示彈窗提示'
+    val needToBindBankCard = withdrawRepository.needToBindBankCard
+
+    //判斷是不是要進行手機驗證 true: 需要, false: 不需要
+    val needToSendTwoFactor = withdrawRepository.showSecurityDialog
+
+    //進入提款頁前判斷
+    val intoWithdraw = withdrawRepository.intoWithdraw
 
     val showBetUpperLimit = betInfoRepository.showBetUpperLimit
 
@@ -438,7 +445,7 @@ class GameViewModel(
         _oddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
         getSportMenu(matchType, onlyRefreshSportMenu = false)
-        getAllPlayCategory(matchType,refreshTabBar = true)
+        getAllPlayCategory(matchType, refreshTabBar = true)
         filterLeague(listOf())
     }
 
@@ -508,9 +515,9 @@ class GameViewModel(
 
     fun getSportSearch(key: String) {
         if (key.isNotEmpty()) {
-        //[Martin] 小弟愚鈍 搜尋無法一次Filter所有資料(待強人捕)
-        // 所以下面的做法總共分三次去Filter資料 然後再合併
-        // 1.篩選球種 2.篩選聯賽 3.篩選比賽
+            //[Martin] 小弟愚鈍 搜尋無法一次Filter所有資料(待強人捕)
+            // 所以下面的做法總共分三次去Filter資料 然後再合併
+            // 1.篩選球種 2.篩選聯賽 3.篩選比賽
             var finalResult: MutableList<SearchResult> = arrayListOf()
             //1.篩選球種
             var searchResult = allSearchData?.filter { row ->
@@ -539,7 +546,7 @@ class GameViewModel(
             leagueMatchSearchResult?.forEachIndexed { index, league ->
                 var searchResultLeagueList: MutableList<SearchResult.SearchResultLeague> =
                     arrayListOf()
-                league.forEach {leagueMatch ->
+                league.forEach { leagueMatch ->
                     var searchResultLeague = SearchResult.SearchResultLeague(leagueMatch.leagueName)
                     searchResultLeagueList.add(searchResultLeague)
                 }
@@ -663,7 +670,7 @@ class GameViewModel(
         }
     }
 
-    fun getAllPlayCategory(matchType: MatchType, refreshTabBar:Boolean = false) {
+    fun getAllPlayCategory(matchType: MatchType, refreshTabBar: Boolean = false) {
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.sportService.getQuery(
@@ -825,8 +832,8 @@ class GameViewModel(
             //add coming soon
             val comingSoonList = mutableListOf<SportMenu>()
             comingSoonList.addAll(list)
-            comingSoonList.add(SportMenu(gameType = GameType.BB_COMING_SOON,"", "", 0))
-            comingSoonList.add(SportMenu(gameType = GameType.ES_COMING_SOON,"", "", 0))
+            comingSoonList.add(SportMenu(gameType = GameType.BB_COMING_SOON, "", "", 0))
+            comingSoonList.add(SportMenu(gameType = GameType.ES_COMING_SOON, "", "", 0))
             _sportMenuList.postValue(Event(comingSoonList))
         }
     }
@@ -1241,7 +1248,7 @@ class GameViewModel(
         isIncrement: Boolean = false
     ) {
 
-        if(getMatchCount(matchType) < 1){
+        if (getMatchCount(matchType) < 1) {
             _isNoEvents.postValue(true)
             return
         }
@@ -2180,7 +2187,8 @@ class GameViewModel(
                     val animationHeight = (LiveUtil.getAnimationHeightFromWidth(screenWidth)).px
                     val languageParams = LanguageManager.getLanguageString(MultiLanguagesApplication.appContext)
 
-                    val trackerUrl = "${Constants.getBaseUrl()}animation/?eventId=${eventId}&width=${screenWidth.pxToDp}&height=${animationHeight}&lang=${languageParams}&mode=widget"
+                    val trackerUrl =
+                        "${Constants.getBaseUrl()}animation/?eventId=${eventId}&width=${screenWidth.pxToDp}&height=${animationHeight}&lang=${languageParams}&mode=widget"
                     //測試用eventId=4385309, 4477265
 //                    val trackerUrl = "${Constants.getBaseUrl()}animation/?eventId=4477265&width=${screenWidth.px}&height=${animationHeight}&lang=${languageParams}&mode=widget"
 
@@ -2207,7 +2215,7 @@ class GameViewModel(
         this.teamNameList = teamNameList
     }
 
-    private fun setItemMap(oddList: MutableList<Odd?>, teamName: String?): HashMap<String, List<Odd?>>{
+    private fun setItemMap(oddList: MutableList<Odd?>, teamName: String?): HashMap<String, List<Odd?>> {
         //建立球員列表(一個球員三個賠率)
         var map: HashMap<String, List<Odd?>> = HashMap()
 

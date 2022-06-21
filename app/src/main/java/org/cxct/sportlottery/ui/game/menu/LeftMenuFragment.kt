@@ -787,6 +787,11 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
             }
         }
 
+        viewModel.intoWithdraw.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let {
+                startActivity(Intent(context, WithdrawActivity::class.java))
+            }
+        }
     }
 
     var searchResult: MutableList<SearchResult> = ArrayList()
