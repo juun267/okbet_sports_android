@@ -742,18 +742,56 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     unSubscribeChannelHallAll()
                 },
                 onVisible = {
-                    if (leagueAdapter.data.isNotEmpty()) {
-                        it.forEach { p ->
-                            Log.d(
-                                "[subscribe]",
-                                "訂閱 ${leagueAdapter.data[p.first].league.name} -> " +
-                                        "${leagueAdapter.data[p.first].matchOdds[p.second].matchInfo?.homeName} vs " +
-                                        "${leagueAdapter.data[p.first].matchOdds[p.second].matchInfo?.awayName}"
-                            )
-                            subscribeChannelHall(
-                                leagueAdapter.data[p.first].gameType?.key,
-                                leagueAdapter.data[p.first].matchOdds[p.second].matchInfo?.id
-                            )
+                    when (adapter) {
+                        is LeagueAdapter -> {
+                            if (leagueAdapter.data.isNotEmpty()) {
+                                it.forEach { p ->
+                                    Log.d(
+                                        "[subscribe]",
+                                        "訂閱 ${leagueAdapter.data[p.first].league.name} -> " +
+                                                "${leagueAdapter.data[p.first].matchOdds[p.second].matchInfo?.homeName} vs " +
+                                                "${leagueAdapter.data[p.first].matchOdds[p.second].matchInfo?.awayName}"
+                                    )
+                                    subscribeChannelHall(
+                                        leagueAdapter.data[p.first].gameType?.key,
+                                        leagueAdapter.data[p.first].matchOdds[p.second].matchInfo?.id
+                                    )
+                                }
+                            }
+                        }
+                        //冠軍
+                        is OutrightLeagueOddAdapter -> {
+                            it.forEach { pair ->
+                                val outrightDataList = outrightLeagueOddAdapter.data[pair.first]
+                                when (outrightDataList) {
+                                    is org.cxct.sportlottery.network.outright.odds.MatchOdd -> {
+                                        outrightDataList
+                                    }
+                                    is OutrightSubTitleItem -> {
+                                        outrightDataList.belongMatchOdd
+                                    }
+                                    is Odd -> {
+                                        outrightDataList.belongMatchOdd
+                                    }
+                                    is OutrightShowMoreItem -> {
+                                        outrightDataList.matchOdd
+                                    }
+                                    else -> {
+                                        null
+                                    }
+                                }?.let { itemMatchOdd ->
+                                    Log.d(
+                                        "[subscribe]",
+                                        "訂閱 ${itemMatchOdd.matchInfo?.name} -> " +
+                                                "${itemMatchOdd.matchInfo?.homeName} vs " +
+                                                "${itemMatchOdd.matchInfo?.awayName}"
+                                    )
+                                    subscribeChannelHall(
+                                        GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key,
+                                        itemMatchOdd.matchInfo?.id
+                                    )
+                                }
+                            }
                         }
                     }
                 }
@@ -763,6 +801,26 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             } else {
                 leagueAdapter.setPreloadItem()
             }
+        }
+    }
+
+    /**
+     * 設置冠軍adapter, 訂閱當前頁面上的資料
+     */
+    private fun setOutrightLeagueAdapter() {
+        game_list.adapter = outrightLeagueOddAdapter
+
+        if (game_list.adapter is OutrightLeagueOddAdapter) {
+            Handler().postDelayed(
+                {
+                    game_list?.firstVisibleRange(
+                        GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key,
+                        outrightLeagueOddAdapter,
+                        activity ?: requireActivity()
+                    )
+                },
+                400
+            )
         }
     }
 
@@ -1066,11 +1124,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     return@observe
 
                 outrightLeagueOddAdapter.data = outrightMatchList
-                //TODO 冠軍聯賽訂閱
-                /*outrightMatchList.forEach { matchOdd ->
-                    subscribeChannelHall(matchOdd)
-                }*/
-                game_list.adapter = outrightLeagueOddAdapter
+                setOutrightLeagueAdapter()
                 hideLoading()
             }
         }
