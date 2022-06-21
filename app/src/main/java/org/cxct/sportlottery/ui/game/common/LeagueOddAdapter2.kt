@@ -454,6 +454,13 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
         private fun setBbScoreText(item: MatchOdd) {
             itemView.apply {
                 setScoreTextAtFront(item)
+                if (item.matchInfo?.attack.equals("H")) {
+                    ic_attack_h.visibility = View.VISIBLE
+                    ic_attack_c.visibility = View.INVISIBLE
+                } else {
+                    ic_attack_h.visibility = View.INVISIBLE
+                    ic_attack_c.visibility = View.VISIBLE
+                }
 
                 league_odd_match_bb_status.apply {
                     text = item.matchInfo?.statusName18n
