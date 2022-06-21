@@ -845,7 +845,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     epsListAdapter.discount = userInfo?.discount ?: 1.0F
                 }
 
-                //TODO discount 去ViewModel配置
+                is OutrightLeagueOddAdapter -> {
+                    viewModel.updateOutrightDiscount(userInfo?.discount ?: 1.0F)
+                }
             }
         }
 

@@ -39,17 +39,6 @@ class OutrightLeagueOddAdapter : BaseGameAdapter() {
             notifyDataSetChanged()
         }
 
-    //TODO discount配置
-    /*var discount: Float = 1.0F
-        set(value) {
-            data.forEach { matchOdd ->
-                matchOdd?.oddsMap?.updateOddsDiscount(field, value)
-            }
-
-            field = value
-            notifyDataSetChanged()
-        }*/
-
     var outrightOddListener: OutrightOddListener? = null
 
     fun setPreloadItem() {

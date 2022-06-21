@@ -71,6 +71,7 @@ import org.cxct.sportlottery.util.DisplayUtil.px
 import org.cxct.sportlottery.util.DisplayUtil.pxToDp
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
+import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
 import org.cxct.sportlottery.util.TimeUtil.DMY_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
@@ -368,6 +369,8 @@ class GameViewModel(
     var sportQueryData: SportQueryData? = null
     var specialMenuData: SportQueryData? = null
     var allSearchData: List<SearchResponse.Row>? = null
+
+    private var outrightMatchDiscount = userInfo.value?.discount ?: 1.0F //當前冠軍頁面適配的折扣率
 
 
     private var lastSportTypeHashMap: HashMap<String, String?> = hashMapOf(
@@ -1558,6 +1561,21 @@ class GameViewModel(
         }
     }
 
+    fun updateOutrightDiscount(newDiscount: Float) {
+        viewModelScope.launch(Dispatchers.IO) {
+            outrightMatchList.value?.peekContent()?.let { outrightList ->
+                outrightList.filterIsInstance<Odd>().forEach { odd ->
+                    odd.updateDiscount(outrightMatchDiscount, newDiscount)
+                }
+
+                withContext(Dispatchers.Main) {
+                    _outrightMatchList.value = Event(outrightList)
+                }
+
+                outrightMatchDiscount = newDiscount
+            }
+        }
+    }
 
     fun getOutrightOddsList(gameType: GameType, leagueId: String) {
         viewModelScope.launch {
