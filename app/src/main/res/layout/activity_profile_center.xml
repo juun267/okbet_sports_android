@@ -288,7 +288,7 @@
                             android:layout_marginHorizontal="10dp"
                             android:layout_marginTop="4dp"
                             android:layout_marginBottom="8dp"
-                            android:text="@string/more_service"
+                            android:text="@string/function"
                             android:textColor="@color/color_AEAEAE_404040"
                             android:textSize="@dimen/textSize14sp"
                             android:textStyle="bold" />
@@ -616,7 +616,7 @@
                             android:layout_marginHorizontal="10dp"
                             android:layout_marginTop="4dp"
                             android:layout_marginBottom="8dp"
-                            android:text="@string/more_service"
+                            android:text="@string/sport_relative"
                             android:textColor="@color/color_AEAEAE_404040"
                             android:textSize="@dimen/textSize14sp"
                             android:textStyle="bold" />
@@ -738,7 +738,7 @@
                             android:layout_marginHorizontal="10dp"
                             android:layout_marginTop="4dp"
                             android:layout_marginBottom="8dp"
-                            android:text="@string/more_service"
+                            android:text="@string/setting"
                             android:textColor="@color/color_AEAEAE_404040"
                             android:textSize="@dimen/textSize14sp"
                             android:textStyle="bold" />
@@ -861,7 +861,7 @@
                             android:layout_marginHorizontal="10dp"
                             android:layout_marginTop="4dp"
                             android:layout_marginBottom="8dp"
-                            android:text="@string/more_service"
+                            android:text="@string/service"
                             android:textColor="@color/color_AEAEAE_404040"
                             android:textSize="@dimen/textSize14sp"
                             android:textStyle="bold" />
@@ -1004,20 +1004,9 @@
 
                         </LinearLayout>
                     </LinearLayout>
-
-                    <Button
-                        android:id="@+id/btn_logout"
-                        style="?android:attr/borderlessButtonStyle"
+                    <Space
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/margin_3"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="25dp"
-                        android:background="@drawable/bg_radius_20_button_2b_e2"
-                        android:minHeight="42dp"
-                        android:text="@string/sign_out"
-                        android:textColor="@color/color_909090_666666"
-                        android:textSize="@dimen/textSize14sp" />
+                        android:layout_height="70dp" />
                 </LinearLayout>
                 </LinearLayout>
             </ScrollView>

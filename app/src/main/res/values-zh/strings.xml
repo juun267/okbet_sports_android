@@ -1150,5 +1150,10 @@
     <!--region 注單模塊調整-->
     <string name="bet_info_bet_lock_hint">注单盘口已关闭</string>
     <string name="bet_info_no_parlay_hint">赛事暂无支持串关</string>
+    <string name="function">常用功能</string>
+    <string name="sport_relative">体育相关</string>
+    <string name="setting">系统设定</string>
+    <string name="service">服务</string>
+    <string name="timezone_list_no_record">搜寻结果为空</string>
     <!--endregion-->
 </resources>

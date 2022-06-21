@@ -1155,5 +1155,10 @@
     <!--endregion-->
     <string name="timezone_change">Time Zone</string>
     <string name="timezone">Time Zone</string>
+    <string name="function">Functions</string>
+    <string name="sport_relative">Sports Related</string>
+    <string name="setting">Settings</string>
+    <string name="service">Service</string>
+    <string name="timezone_list_no_record">No result found</string>
 
 </resources>

@@ -238,8 +238,7 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
     }
 
     private fun setupLogout() {
-        btn_logout.setTitleLetterSpacing()
-        View.OnClickListener {
+        iv_logout.setOnClickListener {
             viewModel.doLogoutAPI()
             viewModel.doLogoutCleanUser {
                 run {
@@ -249,9 +248,6 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
                         GamePublicityActivity.reStart(this)
                 }
             }
-        }.let {
-            iv_logout.setOnClickListener(it)
-            btn_logout.setOnClickListener(it)
         }
     }
 
@@ -344,6 +340,7 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
         btn_appearance.setOnClickListener {
             startActivity(Intent(this,AppearanceActivity::class.java))
         }
+        btn_time_zone.visibility = View.GONE
         //时区切换
         btn_time_zone.setOnClickListener {
             startActivity(Intent(this, TimeZoneActivity::class.java))

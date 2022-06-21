@@ -17,6 +17,7 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TimeUtil
+import java.util.*
 
 
 class AccountHistoryViewModel(
@@ -95,6 +96,8 @@ class AccountHistoryViewModel(
     /*private val accountHistoryTimeRangeParams = TimeUtil.getAccountHistoryTimeRangeParams()
     val startTime = accountHistoryTimeRangeParams.startTime
     val endTime = accountHistoryTimeRangeParams.endTime*/
+
+    //20220621 按照默认时区来请求数据
     val startTime = TimeUtil.getDefaultTimeStamp(7).startTime
     val endTime = TimeUtil.getDefaultTimeStamp(7).endTime
 

@@ -41,8 +41,8 @@ class TimeZoneAdapter(private val clickListener: ItemClickListener) :
                 clickListener.onClick(data)
             })
             if (data.isSelected){
-               binding.tvCity.setTextColor(itemView.context.getColor(R.color.color_1A1A1A_0760D4))
-                binding.tvTime.setTextColor(itemView.context.getColor(R.color.color_1A1A1A_0760D4))
+               binding.tvCity.setTextColor(itemView.context.getColor(R.color.color_317FFF_0760D4))
+                binding.tvTime.setTextColor(itemView.context.getColor(R.color.color_317FFF_0760D4))
             }else{
                 binding.tvCity.setTextColor(itemView.context.getColor(R.color.color_909090_666666))
                 binding.tvTime.setTextColor(itemView.context.getColor(R.color.color_909090_666666))

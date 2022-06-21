@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.profileCenter.timezone
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -54,17 +55,11 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
             }
             override fun afterTextChanged(s: Editable?) {
-                et_search.text.toString().let {
-                    if (it.isNullOrBlank()){
-                        adapter.setItems(items)
-                    }else{
-                        filter(it)
-                    }
-                }
+                filter(et_search.text.toString().trim())
             }
         })
         rv_list.layoutManager=LinearLayoutManager(this,RecyclerView.VERTICAL,false)
-        rv_list.addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(this, R.drawable.divider_gray)))
+        rv_list.addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(this, R.drawable.divider_color_gray_light2)))
         adapter= TimeZoneAdapter(ItemClickListener {
                 items.forEach { item->
                     item.isSelected= false
@@ -76,9 +71,16 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         rv_list.adapter=adapter
     }
     fun filter(key:String){
-        var filterData=items.filter {
-            it.city!!.contains(key)
+        if (key.isNullOrBlank()){
+            adapter.setItems(items)
+            lin_empty.visibility = View.GONE
+        }else{
+            var filterData=items.filter {
+                it.city!!.contains(key)
+            }
+            adapter.setItems(filterData)
+            lin_empty.visibility =  if(filterData.isNullOrEmpty()) View.VISIBLE else View.GONE
         }
-        adapter.setItems(filterData)
+
     }
 }
