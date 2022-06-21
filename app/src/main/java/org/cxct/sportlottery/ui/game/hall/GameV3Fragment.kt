@@ -808,7 +808,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
      * 設置冠軍adapter, 訂閱當前頁面上的資料
      */
     private fun setOutrightLeagueAdapter() {
-        game_list.adapter = outrightLeagueOddAdapter
+        if (game_list.adapter !is OutrightLeagueOddAdapter) {
+            game_list.adapter = outrightLeagueOddAdapter
+        }
 
         if (game_list.adapter is OutrightLeagueOddAdapter) {
             Handler().postDelayed(
@@ -1589,6 +1591,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 epsListAdapter.notifyItemChanged(index)
                             }
                         }
+                    }
+
+                    is OutrightLeagueOddAdapter -> {
+                        viewModel.updateOutrightOddsChange(context, oddsChangeEvent)
                     }
                 }
             }

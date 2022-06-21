@@ -48,6 +48,7 @@ import org.cxct.sportlottery.network.outright.odds.*
 import org.cxct.sportlottery.network.outright.season.OutrightLeagueListRequest
 import org.cxct.sportlottery.network.outright.season.OutrightLeagueListResult
 import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
+import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.*
 import org.cxct.sportlottery.network.sport.Sport
 import org.cxct.sportlottery.network.sport.coupon.SportCouponMenuResult
@@ -1583,6 +1584,22 @@ class GameViewModel(
                 }
 
                 outrightMatchDiscount = newDiscount
+            }
+        }
+    }
+
+    fun updateOutrightOddsChange(context: Context?, oddsChangeEvent: OddsChangeEvent) {
+        viewModelScope.launch(Dispatchers.IO) {
+            outrightMatchList.value?.peekContent()?.let { outrightList ->
+                outrightList.filterIsInstance<MatchOdd>().forEach { matchOdd ->
+                    SocketUpdateUtil.updateMatchOdds(
+                        context, matchOdd, oddsChangeEvent
+                    )
+                }
+
+                withContext(Dispatchers.Main) {
+                    _outrightMatchList.value = Event(outrightList)
+                }
             }
         }
     }
