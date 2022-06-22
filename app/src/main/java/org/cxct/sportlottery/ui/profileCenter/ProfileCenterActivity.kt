@@ -721,10 +721,7 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
     }
 
     private fun updateCreditAccountUI() {
-        val thirdOpen = sConfigData?.thirdOpen == FLAG_OPEN
         lin_wallet_operation.setVisibilityByCreditSystem()
-        if (thirdOpen) btn_account_transfer.setVisibilityByCreditSystem()
-        if (thirdOpen) btn_other_bet_record.setVisibilityByCreditSystem()
         if (!(sConfigData?.selfRestraintVerified == "0" || sConfigData?.selfRestraintVerified == null)) btn_self_limit.setVisibilityByCreditSystem()
     }
     override fun clickMenuEvent() {
