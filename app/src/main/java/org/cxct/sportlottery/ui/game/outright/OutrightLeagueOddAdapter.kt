@@ -315,7 +315,7 @@ class OutrightLeagueOddAdapter : BaseGameAdapter() {
         companion object {
             fun from(parent: ViewGroup): MoreViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                return MoreViewHolder(ItemviewOutrightOddMoreV4Binding.inflate(layoutInflater))
+                return MoreViewHolder(ItemviewOutrightOddMoreV4Binding.inflate(layoutInflater, parent, false))
             }
         }
     }
