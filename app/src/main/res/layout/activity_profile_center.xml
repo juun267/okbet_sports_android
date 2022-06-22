@@ -43,9 +43,8 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:paddingStart="0dp"
-                    android:paddingEnd="20dp">
+                    android:paddingRight="@dimen/margin_20">
 
                     <com.makeramen.roundedimageview.RoundedImageView
                         android:id="@+id/iv_head1"
@@ -121,7 +120,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_20"
-                        android:layout_marginRight="@dimen/margin_20"
+                        android:layout_marginRight="@dimen/margin_10"
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_logout"
                         app:layout_constraintTop_toTopOf="parent"
@@ -315,40 +314,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="@string/profile_info"
-                                android:textColor="@color/color_BBBBBB_333333"
-                                android:textSize="@dimen/textSize14sp" />
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="10dp"
-                                android:contentDescription="@null"
-                                android:src="@drawable/ic_arrow_right" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/btn_account_transfer"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@null"
-                            android:gravity="center"
-                            android:minHeight="48dp"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginEnd="20dp"
-                                android:contentDescription="@null"
-                                android:src="@drawable/ic_profile_center_account_transfer" />
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="@string/account_transfer"
                                 android:textColor="@color/color_BBBBBB_333333"
                                 android:textSize="@dimen/textSize14sp" />
 
@@ -561,6 +526,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:contentDescription="@null"
+                                android:layout_marginEnd="10dp"
                                 android:src="@drawable/ic_arrow_right" />
 
                         </LinearLayout>
@@ -595,10 +561,43 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:contentDescription="@null"
+                                android:layout_marginEnd="10dp"
                                 android:src="@drawable/ic_arrow_right" />
 
                         </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/btn_account_transfer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:gravity="center"
+                            android:minHeight="48dp"
+                            android:orientation="horizontal">
 
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="20dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_profile_center_account_transfer" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/account_transfer"
+                                android:textColor="@color/color_BBBBBB_333333"
+                                android:textSize="@dimen/textSize14sp" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_arrow_right" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
