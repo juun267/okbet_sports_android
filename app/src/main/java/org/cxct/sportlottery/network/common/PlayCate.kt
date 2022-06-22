@@ -283,6 +283,7 @@ enum class PlayCate(val value: String) {
     WM_SEG3("WM-SEG3"),
     WM_SEG4("WM-SEG4"),
     WM3_SD_OT("WM3-SD-OT"),
+    WM_1ST("WM-1ST"),
     GTD("GTD"),
     MOV("MOV"),
     MOV_UFC("MOV-UFC"),
