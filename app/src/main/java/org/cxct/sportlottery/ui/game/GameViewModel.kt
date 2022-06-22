@@ -1471,14 +1471,22 @@ class GameViewModel(
         }
     }
 
-    fun getOutrightOddsList(gameType: String) {
+    fun getOutrightOddsList(gameType: String, outrightLeagueId: String? = null) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.outrightService.getOutrightOddsList(
-                    OutrightOddsListRequest(
-                        gameType,
-                        matchType = MatchType.OUTRIGHT.postValue
-                    )
+                    if (outrightLeagueId.isNullOrEmpty()) {
+                        OutrightOddsListRequest(
+                            gameType,
+                            matchType = MatchType.OUTRIGHT.postValue
+                        )
+                    } else {
+                        OutrightOddsListRequest(
+                            gameType,
+                            matchType = MatchType.OUTRIGHT.postValue,
+                            leagueIdList = listOf(outrightLeagueId)
+                        )
+                    }
                 )
             }
 
