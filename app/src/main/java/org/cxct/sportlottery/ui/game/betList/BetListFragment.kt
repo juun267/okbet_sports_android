@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.view.animation.Animation
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -1161,6 +1162,15 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     interface BetResultListener {
         fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>, isMultiBet: Boolean)
+    }
+
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
+        if (enter) {
+            bg_dim_mount.animate().alphaBy(1f).setDuration(200).setStartDelay(200).start()
+        } else {
+            bg_dim_mount.alpha = 0f
+        }
+        return super.onCreateAnimation(transit, enter, nextAnim)
     }
 
 }

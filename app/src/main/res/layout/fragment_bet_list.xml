@@ -10,454 +10,468 @@
             type="org.cxct.sportlottery.ui.game.GameViewModel" />
     </data>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/transparent_black_50"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="bottom"
-        android:orientation="vertical"
-        tools:ignore="SpUsage, ContentDescription">
+        android:layout_height="match_parent">
 
-        <!--<include
-            android:id="@+id/tool_bar"
-            layout="@layout/view_toolbar_main"
-            android:background="@color/transparent_black_0"
-            android:visibility="invisible" />-->
+        <View
+            android:id="@+id/bg_dim_mount"
+            android:alpha="0"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent_black_50"/>
 
         <LinearLayout
-            android:id="@+id/ll_root"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/tool_bar_notification_height"
+            android:layout_height="match_parent"
             android:clickable="true"
             android:focusable="true"
+            android:gravity="bottom"
             android:orientation="vertical"
-            tools:context=".ui.game.betList.BetListFragment">
+            tools:ignore="SpUsage, ContentDescription">
 
-            <FrameLayout
-                android:id="@+id/fl_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/cl_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/bet_list_bar_height"
-                    android:background="@drawable/bg_gradient_bet_info_title_v2">
-
-                    <ImageView
-                        android:id="@+id/iv_arrow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="@dimen/margin_7"
-                        android:paddingHorizontal="@dimen/margin_8"
-                        android:src="@drawable/ic_arrow_gray_down"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tv_bet_list"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_9"
-                        android:text="@string/bet_list_title"
-                        android:textColor="@color/color_317FFF_0760D4"
-                        android:textSize="@dimen/textSize14sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/tv_bet_list_count"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <View
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:background="@drawable/bg_circle_317fff_0760d4"
-                        app:layout_constraintBottom_toBottomOf="@id/tv_bet_list_count"
-                        app:layout_constraintEnd_toEndOf="@id/tv_bet_list_count"
-                        app:layout_constraintStart_toStartOf="@id/tv_bet_list_count"
-                        app:layout_constraintTop_toTopOf="@id/tv_bet_list_count" />
-
-                    <TextView
-                        android:id="@+id/tv_bet_list_count"
-                        android:layout_width="18dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:gravity="center"
-                        android:textColor="@color/color_FFFFFF_FFFFFF"
-                        android:textSize="@dimen/textSize16sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="10" />
-
-                    <TextView
-                        android:id="@+id/tv_balance_currency"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/margin_4"
-                        android:textColor="@color/color_909090_666666"
-                        android:textSize="@dimen/textSize14sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/tv_balance"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="₱" />
-
-                    <TextView
-                        android:id="@+id/tv_balance"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/margin_10"
-                        android:textColor="@color/color_909090_666666"
-                        android:textSize="@dimen/textSize14sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/gray_line"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="9,875,241.000" />
-
-                    <View
-                        android:id="@+id/gray_line"
-                        android:layout_width="1dp"
-                        android:layout_height="14dp"
-                        android:background="@color/color_404040_cccccc"
-                        app:layout_constraintEnd_toStartOf="@id/iv_arrow"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </FrameLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@color/color_141414_F3F4F5">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/betTypeTabLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="34dp"
-                        android:background="@color/color_191919_FCFCFC"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:tabIndicatorColor="@color/color_317FFF_0760D4"
-                        app:tabIndicatorFullWidth="true"
-                        app:tabMode="fixed"
-                        app:tabPaddingEnd="0dp"
-                        app:tabPaddingStart="0dp"
-                        app:tabRippleColor="@null"
-                        app:tabSelectedTextColor="@color/color_BBBBBB_333333"
-                        app:tabTextAppearance="@style/NoUppercaseTab"
-                        app:tabTextColor="@color/color_7F7F7F_999999">
-
-                        <com.google.android.material.tabs.TabItem
-                            android:id="@+id/first_tab"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout="@layout/item_bet_list_tab" />
-
-                        <com.google.android.material.tabs.TabItem
-                            android:id="@+id/second_tab"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout="@layout/item_bet_list_tab" />
-
-                    </com.google.android.material.tabs.TabLayout>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_bet_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:overScrollMode="never"
-                        tools:itemCount="2"
-                        tools:listitem="@layout/content_bet_info_item_v3" />
-                </LinearLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/cl_no_data"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/color_191919_FCFCFC"
-                    android:visibility="gone"
-                    tools:visibility="gone">
-
-                    <ImageView
-                        android:id="@+id/iv_no_data"
-                        android:layout_width="65dp"
-                        android:layout_height="69dp"
-                        android:src="@drawable/icon_no_data"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/guide_line" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="19dp"
-                        android:text="@string/bet_list_empty"
-                        android:textColor="@color/color_909090_666666"
-                        android:textSize="@dimen/textSize14sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/iv_no_data" />
-
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/guide_line"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        app:layout_constraintGuide_percent="0.25" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <View
-                    android:id="@+id/line_shadow"
-                    android:layout_width="match_parent"
-                    android:layout_height="4dp"
-                    android:background="@drawable/bg_gradient_bottom_sheet_shadow"
-                    app:layout_constraintBottom_toBottomOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <!--<include
+                android:id="@+id/tool_bar"
+                layout="@layout/view_toolbar_main"
+                android:background="@color/transparent_black_0"
+                android:visibility="invisible" />-->
 
             <LinearLayout
-                android:id="@+id/ll_container"
+                android:id="@+id/ll_root"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginTop="@dimen/tool_bar_notification_height"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="vertical"
+                tools:context=".ui.game.betList.BetListFragment">
 
-                <LinearLayout
-                    android:id="@+id/ll_more_option"
+                <FrameLayout
+                    android:id="@+id/fl_title"
                     android:layout_width="match_parent"
-                    android:layout_height="28dp"
-                    android:background="@color/color_191919_FCFCFC"
-                    android:gravity="center"
-                    android:visibility="gone"
-                    tools:visibility="visible">
+                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/bet_list_view_more_options"
-                        android:textColor="@color/color_909090_666666"
-                        android:textSize="@dimen/textSize12sp" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/bet_list_bar_height"
+                        android:background="@drawable/bg_gradient_bet_info_title_v2">
 
-                    <TextView
-                        android:id="@+id/tv_more_options_count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_4"
-                        android:textColor="@color/color_0760D4_0760D4"
-                        android:textSize="@dimen/textSize12sp"
-                        tools:text="(3)" />
+                        <ImageView
+                            android:id="@+id/iv_arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="@dimen/margin_7"
+                            android:paddingHorizontal="@dimen/margin_8"
+                            android:src="@drawable/ic_arrow_gray_down"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
-                        android:id="@+id/iv_arrow_more_options"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/margin_4"
-                        android:src="@drawable/ic_arrow_gray_top"
-                        tools:src="@drawable/ic_arrow_gray_top" />
-                </LinearLayout>
+                        <TextView
+                            android:id="@+id/tv_bet_list"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_9"
+                            android:text="@string/bet_list_title"
+                            android:textColor="@color/color_317FFF_0760D4"
+                            android:textSize="@dimen/textSize14sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/tv_bet_list_count"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/color_212121_eeeeee" />
+                        <View
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:background="@drawable/bg_circle_317fff_0760d4"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_bet_list_count"
+                            app:layout_constraintEnd_toEndOf="@id/tv_bet_list_count"
+                            app:layout_constraintStart_toStartOf="@id/tv_bet_list_count"
+                            app:layout_constraintTop_toTopOf="@id/tv_bet_list_count" />
+
+                        <TextView
+                            android:id="@+id/tv_bet_list_count"
+                            android:layout_width="18dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:gravity="center"
+                            android:textColor="@color/color_FFFFFF_FFFFFF"
+                            android:textSize="@dimen/textSize16sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="10" />
+
+                        <TextView
+                            android:id="@+id/tv_balance_currency"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_4"
+                            android:textColor="@color/color_909090_666666"
+                            android:textSize="@dimen/textSize14sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/tv_balance"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="₱" />
+
+                        <TextView
+                            android:id="@+id/tv_balance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_10"
+                            android:textColor="@color/color_909090_666666"
+                            android:textSize="@dimen/textSize14sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/gray_line"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="9,875,241.000" />
+
+                        <View
+                            android:id="@+id/gray_line"
+                            android:layout_width="1dp"
+                            android:layout_height="14dp"
+                            android:background="@color/color_404040_cccccc"
+                            app:layout_constraintEnd_toStartOf="@id/iv_arrow"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </FrameLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/cl_parlay_list"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/color_191919_FCFCFC"
-                    android:orientation="vertical"
-                    android:visibility="gone"
-                    tools:visibility="gone">
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:background="@color/color_141414_F3F4F5">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_parlay_list"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="235dp"
-                        android:overScrollMode="never"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:listitem="@layout/item_bet_list_batch_control_connect_v3" />
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/betTypeTabLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="34dp"
+                            android:background="@color/color_191919_FCFCFC"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tabIndicatorColor="@color/color_317FFF_0760D4"
+                            app:tabIndicatorFullWidth="true"
+                            app:tabMode="fixed"
+                            app:tabPaddingEnd="0dp"
+                            app:tabPaddingStart="0dp"
+                            app:tabRippleColor="@null"
+                            app:tabSelectedTextColor="@color/color_BBBBBB_333333"
+                            app:tabTextAppearance="@style/NoUppercaseTab"
+                            app:tabTextColor="@color/color_7F7F7F_999999">
+
+                            <com.google.android.material.tabs.TabItem
+                                android:id="@+id/first_tab"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout="@layout/item_bet_list_tab" />
+
+                            <com.google.android.material.tabs.TabItem
+                                android:id="@+id/second_tab"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout="@layout/item_bet_list_tab" />
+
+                        </com.google.android.material.tabs.TabLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_bet_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:overScrollMode="never"
+                            tools:itemCount="2"
+                            tools:listitem="@layout/content_bet_info_item_v3" />
+                    </LinearLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_no_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/color_191919_FCFCFC"
+                        android:visibility="gone"
+                        tools:visibility="gone">
+
+                        <ImageView
+                            android:id="@+id/iv_no_data"
+                            android:layout_width="65dp"
+                            android:layout_height="69dp"
+                            android:src="@drawable/icon_no_data"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/guide_line" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="19dp"
+                            android:text="@string/bet_list_empty"
+                            android:textColor="@color/color_909090_666666"
+                            android:textSize="@dimen/textSize14sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/iv_no_data" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guide_line"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintGuide_percent="0.25" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <View
-                        android:id="@+id/shadow_parlay_list"
+                        android:id="@+id/line_shadow"
                         android:layout_width="match_parent"
                         android:layout_height="4dp"
                         android:background="@drawable/bg_gradient_bottom_sheet_shadow"
                         app:layout_constraintBottom_toBottomOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-            </LinearLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_total_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/color_191919_FCFCFC"
-                android:paddingStart="12dp"
-                android:paddingTop="6dp"
-                android:paddingEnd="12dp"
-                android:paddingBottom="6dp">
-
-                <TextView
-                    android:id="@+id/title_all_bet"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/bet_info_all_bet"
-                    android:textColor="@color/color_909090_666666"
-                    android:textSize="@dimen/textSize14sp"
-                    android:visibility="gone"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <View
-                    android:id="@+id/divider_all_bet"
-                    android:layout_width="1dp"
-                    android:layout_height="10dp"
-                    android:layout_marginStart="6dp"
-                    android:background="@color/color_909090_666666"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="@+id/title_all_bet"
-                    app:layout_constraintStart_toEndOf="@+id/title_all_bet"
-                    app:layout_constraintTop_toTopOf="@+id/title_all_bet" />
-
-                <TextView
-                    android:id="@+id/title_winnable_amount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/bet_list_win_quota"
-                    android:textColor="@color/color_909090_666666"
-                    android:textSize="@dimen/textSize14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/title_all_bet" />
-
-                <TextView
-                    android:id="@+id/tv_total_winnable_amount"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:gravity="end"
-                    android:textColor="@color/color_317FFF_0760D4"
-                    android:textSize="@dimen/textSize14sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/title_winnable_amount"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/title_winnable_amount"
-                    app:layout_constraintTop_toTopOf="@+id/title_winnable_amount"
-                    tools:text="₱ 0.000" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            <!--<TextView
-                android:id="@+id/tv_warn_odds_change"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/ll_odds_close_warn"
-                android:background="@color/color_232628_EAF4FE"
-                android:gravity="center"
-                android:paddingStart="@dimen/margin_8"
-                android:paddingTop="3dp"
-                android:paddingEnd="@dimen/margin_8"
-                android:paddingBottom="3dp"
-                android:text="@string/bet_info_odd_content_changed"
-                android:textColor="@color/color_E44438_e44438"
-                android:textSize="@dimen/textSize12sp"
-                android:visibility="gone"
-                tools:visibility="gone" />-->
-
-            <LinearLayout
-                android:id="@+id/ll_bet"
-                android:layout_width="match_parent"
-                android:layout_height="58dp"
-                android:background="@color/color_141414_F3F4F5"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/margin_8"
-                android:paddingRight="@dimen/margin_8">
-
-                <ImageView
-                    android:id="@+id/btn_delete_all"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_radius_4_button_ededed"
-                    android:padding="12dp"
-                    android:src="@drawable/ic_trash_bin_red"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <org.cxct.sportlottery.ui.bet.list.FastBetSettingButton
-                    android:id="@+id/button_fast_bet_setting"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:layout_marginEnd="8dp"
-                    android:visibility="gone" />
-
-                <org.cxct.sportlottery.ui.bet.list.BetButton
-                    android:id="@+id/btn_bet"
-                    android:layout_width="0dp"
-                    android:layout_height="44dp"
-                    android:layout_marginStart="6dp"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <!-- 選項關閉提示 -->
-            <!--<LinearLayout
-                android:id="@+id/ll_odds_close_warn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/ll_bet"
-                android:background="@color/color_232628_EAF4FE"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingStart="@dimen/margin_8"
-                android:paddingTop="3dp"
-                android:paddingEnd="@dimen/margin_8"
-                android:paddingBottom="3dp"
-                android:visibility="gone"
-                tools:visibility="visible">
-
-                <TextView
-                    android:id="@+id/tv_odds_closed_changed"
+                <LinearLayout
+                    android:id="@+id/ll_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/ll_more_option"
+                        android:layout_width="match_parent"
+                        android:layout_height="28dp"
+                        android:background="@color/color_191919_FCFCFC"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/bet_list_view_more_options"
+                            android:textColor="@color/color_909090_666666"
+                            android:textSize="@dimen/textSize12sp" />
+
+                        <TextView
+                            android:id="@+id/tv_more_options_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_4"
+                            android:textColor="@color/color_0760D4_0760D4"
+                            android:textSize="@dimen/textSize12sp"
+                            tools:text="(3)" />
+
+                        <ImageView
+                            android:id="@+id/iv_arrow_more_options"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/margin_4"
+                            android:src="@drawable/ic_arrow_gray_top"
+                            tools:src="@drawable/ic_arrow_gray_top" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_212121_eeeeee" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_parlay_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/color_191919_FCFCFC"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        tools:visibility="gone">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_parlay_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="235dp"
+                            android:overScrollMode="never"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:listitem="@layout/item_bet_list_batch_control_connect_v3" />
+
+                        <View
+                            android:id="@+id/shadow_parlay_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="4dp"
+                            android:background="@drawable/bg_gradient_bottom_sheet_shadow"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_total_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_191919_FCFCFC"
+                    android:paddingStart="12dp"
+                    android:paddingTop="6dp"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="6dp">
+
+                    <TextView
+                        android:id="@+id/title_all_bet"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bet_info_all_bet"
+                        android:textColor="@color/color_909090_666666"
+                        android:textSize="@dimen/textSize14sp"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/divider_all_bet"
+                        android:layout_width="1dp"
+                        android:layout_height="10dp"
+                        android:layout_marginStart="6dp"
+                        android:background="@color/color_909090_666666"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/title_all_bet"
+                        app:layout_constraintStart_toEndOf="@+id/title_all_bet"
+                        app:layout_constraintTop_toTopOf="@+id/title_all_bet" />
+
+                    <TextView
+                        android:id="@+id/title_winnable_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bet_list_win_quota"
+                        android:textColor="@color/color_909090_666666"
+                        android:textSize="@dimen/textSize14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/title_all_bet" />
+
+                    <TextView
+                        android:id="@+id/tv_total_winnable_amount"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:gravity="end"
+                        android:textColor="@color/color_317FFF_0760D4"
+                        android:textSize="@dimen/textSize14sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/title_winnable_amount"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/title_winnable_amount"
+                        app:layout_constraintTop_toTopOf="@+id/title_winnable_amount"
+                        tools:text="₱ 0.000" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <!--<TextView
+                    android:id="@+id/tv_warn_odds_change"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/ll_odds_close_warn"
+                    android:background="@color/color_232628_EAF4FE"
+                    android:gravity="center"
+                    android:paddingStart="@dimen/margin_8"
+                    android:paddingTop="3dp"
+                    android:paddingEnd="@dimen/margin_8"
                     android:paddingBottom="3dp"
                     android:text="@string/bet_info_odd_content_changed"
-                    android:textAlignment="center"
                     android:textColor="@color/color_E44438_e44438"
-                    android:textSize="@dimen/textSize12sp" />
+                    android:textSize="@dimen/textSize12sp"
+                    android:visibility="gone"
+                    tools:visibility="gone" />-->
 
-                <TextView
+                <LinearLayout
+                    android:id="@+id/ll_bet"
+                    android:layout_width="match_parent"
+                    android:layout_height="58dp"
+                    android:background="@color/color_141414_F3F4F5"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/margin_8"
+                    android:paddingRight="@dimen/margin_8">
+
+                    <ImageView
+                        android:id="@+id/btn_delete_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_radius_4_button_ededed"
+                        android:padding="12dp"
+                        android:src="@drawable/ic_trash_bin_red"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <org.cxct.sportlottery.ui.bet.list.FastBetSettingButton
+                        android:id="@+id/button_fast_bet_setting"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:layout_marginEnd="8dp"
+                        android:visibility="gone" />
+
+                    <org.cxct.sportlottery.ui.bet.list.BetButton
+                        android:id="@+id/btn_bet"
+                        android:layout_width="0dp"
+                        android:layout_height="44dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_weight="1" />
+                </LinearLayout>
+
+                <!-- 選項關閉提示 -->
+                <!--<LinearLayout
+                    android:id="@+id/ll_odds_close_warn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_above="@+id/ll_bet"
+                    android:background="@color/color_232628_EAF4FE"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingStart="@dimen/margin_8"
+                    android:paddingTop="3dp"
+                    android:paddingEnd="@dimen/margin_8"
                     android:paddingBottom="3dp"
-                    android:text="@string/bet_info_odd_content_close"
-                    android:textAlignment="center"
-                    android:textColor="@color/color_E44438_e44438"
-                    android:textSize="@dimen/textSize12sp" />
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/bet_info_remove_closed"
-                    android:textColor="@color/color_317FFF_0760D4"
-                    android:textSize="@dimen/textSize12sp" />
-            </LinearLayout>-->
+                    <TextView
+                        android:id="@+id/tv_odds_closed_changed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="3dp"
+                        android:text="@string/bet_info_odd_content_changed"
+                        android:textAlignment="center"
+                        android:textColor="@color/color_E44438_e44438"
+                        android:textSize="@dimen/textSize12sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="3dp"
+                        android:text="@string/bet_info_odd_content_close"
+                        android:textAlignment="center"
+                        android:textColor="@color/color_E44438_e44438"
+                        android:textSize="@dimen/textSize12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bet_info_remove_closed"
+                        android:textColor="@color/color_317FFF_0760D4"
+                        android:textSize="@dimen/textSize12sp" />
+                </LinearLayout>-->
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+    </FrameLayout>
+
+
 
 
 </layout>
