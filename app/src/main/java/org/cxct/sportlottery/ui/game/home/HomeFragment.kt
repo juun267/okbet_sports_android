@@ -52,11 +52,8 @@ import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
-import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.OddsSortUtil.recommendSortOddsMap
-import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
-import org.cxct.sportlottery.util.SocketUpdateUtil
-import org.cxct.sportlottery.util.getVisibleRangePosition
 import java.util.*
 
 
@@ -195,43 +192,24 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             adapter = mHomeListAdapter
             itemAnimator = null
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                var needChangeBottomBar = false
-                var directionIsDown = true
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    if (needChangeBottomBar) {
-                        needChangeBottomBar = false
-                        //更新記錄的方向
-                        if (dy > 0) {
-                            directionIsDown = true
-                            MultiLanguagesApplication.mInstance.setIsScrollDown(true)
-                        } else if (dy < 0) {
-                            directionIsDown = false
-                            MultiLanguagesApplication.mInstance.setIsScrollDown(false)
-                        }
-                    }
-                    //Y軸移動的值和記錄的方向不同時, 重設狀態
-                    if (dy > 0 != directionIsDown) {
-                        needChangeBottomBar = true
-                    }
-                }
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
                     when (newState) {
                         //停止
                         RecyclerView.SCROLL_STATE_IDLE -> {
-                            needChangeBottomBar = false
                             subscribeLogic()
                         }
 
                         //手指滾動
                         RecyclerView.SCROLL_STATE_DRAGGING -> {
-                            needChangeBottomBar = true
                             unSubscribeChannelHallAll()
                         }
                     }
                 }
             })
+            addScrollListenerForBottomNavBar {
+                MultiLanguagesApplication.mInstance.setIsScrollDown(it)
+            }
             mHomeListAdapter.setHomePreloadItem()
         }
     }
