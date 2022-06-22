@@ -301,8 +301,8 @@ class Vp2GameTable4Adapter(
             }
 
             with(itemView.iv_animation) {
-                setLiveImg()
                 isVisible = (!data.matchInfo?.trackerId.isNullOrEmpty() && data.matchInfo?.liveVideo == 0)
+                setLiveImg()
                 setOnClickListener {
                     data.matchInfo?.let {
                         val matchInfo = it

@@ -279,7 +279,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             setStatusTextColor(item)
             itemView.league_odd_match_play_count.text = item.matchInfo?.playCateNum.toString()
             itemView.league_odd_match_favorite.isSelected = item.matchInfo?.isFavorite ?: false
-            itemView.league_odd_match_price_boost.isVisible = item.matchInfo?.eps == 1
+//            itemView.league_odd_match_price_boost.isVisible = item.matchInfo?.eps == 1
             itemView.league_neutral.apply {
                 isSelected = item.matchInfo?.neutral == 1
                 isVisible = item.matchInfo?.neutral == 1
@@ -353,7 +353,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 )
             }
 
-            itemView.league_odd_match_price_boost.isVisible = item.matchInfo?.eps == 1
+//            itemView.league_odd_match_price_boost.isVisible = item.matchInfo?.eps == 1
             //itemView.space2.isVisible = (item.matchInfo?.eps == 1 || item.matchInfo?.liveVideo == 1)
             with(itemView.iv_play) {
                 isVisible = item.matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(item.matchInfo?.startTime))
@@ -370,7 +370,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             with(itemView.iv_animation) {
                 isVisible =
                     TimeUtil.isTimeInPlay(item.matchInfo?.startTime) && !(item.matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
-                        ?.getGameDetailAnimationNeedShow() == true
+                        ?.getGameDetailAnimationNeedShow() == true && item.matchInfo?.liveVideo == 0
 
                 setOnClickListener {
                     leagueOddListener?.onClickAnimationIconListener(
