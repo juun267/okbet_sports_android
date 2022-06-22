@@ -207,7 +207,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun initBtnView() {
         //點背景dismiss
-        binding.root.setOnClickListener {
+        binding.bgDimMount.setOnClickListener {
             activity?.onBackPressed()
         }
         binding.btnBet.apply {
