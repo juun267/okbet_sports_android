@@ -448,12 +448,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
             this.adapter = gameTypeAdapter
             removeItemDecorations()
-            addItemDecoration(
-                SpaceItemDecoration(
-                    context,
-                    R.dimen.recyclerview_item_dec_spec_sport_type
-                )
-            )
+//            addItemDecoration(
+//                SpaceItemDecoration(
+//                    context,
+//                    R.dimen.recyclerview_item_dec_spec_sport_type
+//                )
+//            )
         }
     }
 
