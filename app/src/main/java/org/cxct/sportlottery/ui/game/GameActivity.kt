@@ -49,7 +49,6 @@ import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageFragment
 import org.cxct.sportlottery.ui.game.league.GameLeagueFragmentDirections
 import org.cxct.sportlottery.ui.game.menu.LeftMenuFragment
-import org.cxct.sportlottery.ui.game.outright.GameOutrightFragmentDirections
 import org.cxct.sportlottery.ui.game.outright.GameOutrightMoreFragmentDirections
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
@@ -94,6 +93,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     private val navDestListener by lazy {
         NavController.OnDestinationChangedListener { _, destination, arguments ->
             updateServiceButtonVisibility(destinationId = destination.id)
+            mOutrightLeagueId = arguments?.get("outrightLeagueId") as? String
             when (destination.id) {
                 R.id.homeFragment -> {
                     updateSelectTabState(0)
@@ -122,6 +122,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         }
     }
     var isFromPublicity: Boolean = false
+
+    private var mOutrightLeagueId: String? = null //主頁跳轉冠軍頁時傳遞的聯賽Id
 
     private fun updateServiceButtonVisibility(destinationId: Int) {
         when (destinationId) {
@@ -528,7 +530,14 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 viewModel.switchMatchType(MatchType.EARLY)
             }
             getMatchTypeTabPosition(MatchType.OUTRIGHT) -> {
-                viewModel.switchMatchType(MatchType.OUTRIGHT)
+                /**
+                 * 若mOutrightLeagueId有值的話, 此行為為主頁點擊聯賽跳轉至冠軍頁, 跳轉行為於HomeFragment處理
+                 *
+                 * @see org.cxct.sportlottery.ui.game.home.HomeFragment.navGameOutright
+                 */
+                if (mOutrightLeagueId.isNullOrEmpty()) {
+                    viewModel.switchMatchType(MatchType.OUTRIGHT)
+                }
             }
             getMatchTypeTabPosition(MatchType.PARLAY) -> {
                 viewModel.switchMatchType(MatchType.PARLAY)

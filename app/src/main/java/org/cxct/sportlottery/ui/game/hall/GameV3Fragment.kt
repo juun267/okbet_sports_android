@@ -1203,7 +1203,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
         //當前玩法無賽事
         viewModel.isNoEvents.distinctUntilChanged().observe(this.viewLifecycleOwner) {
-            sport_type_list.isVisible = !it
+            sport_type_list.isVisible = !it && !isRecommendOutright()
             game_toolbar_sport_type.isVisible = !it
             game_play_category.isVisible =
                 (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START || (args.matchType == MatchType.OTHER && childMatchType == MatchType.OTHER)) && !it
@@ -1313,7 +1313,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         viewModel.leagueFilterList.observe(this.viewLifecycleOwner) { leagueList ->
             mLeagueIsFiltered = leagueList.isNotEmpty()
             game_toolbar_champion.isSelected = mLeagueIsFiltered
-            sport_type_list.visibility = if (mLeagueIsFiltered) View.GONE else View.VISIBLE
+            sport_type_list.visibility = if (mLeagueIsFiltered || isRecommendOutright()) View.GONE else View.VISIBLE
         }
 
         viewModel.checkInListFromSocket.observe(this.viewLifecycleOwner) {
@@ -1444,6 +1444,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 if (it == ServiceConnectStatus.CONNECTED) {
                     if (args.matchType == MatchType.OTHER) {
                         viewModel.getAllPlayCategoryBySpecialMatchType(isReload = true)
+                    } else if (!args.gameType.isNullOrEmpty() && args.matchType == MatchType.OUTRIGHT && isRecommendOutright()) {
+                        args.gameType?.let { gameType ->
+                            viewModel.getOutrightOddsList(gameType = gameType, outrightLeagueId = args.outrightLeagueId)
+                        }
                     } else {
                         viewModel.getGameHallList(
                             matchType = args.matchType,
@@ -1850,13 +1854,24 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
 
         if (args.matchType != MatchType.OTHER) {
-            comingSoonList.find { it.isSelected }.let { item ->
-                game_toolbar_sport_type.text =
-                    context?.let { getGameTypeString(it, item?.code) } ?: resources.getString(
+            if (isRecommendOutright()) {
+                args.gameType?.let { gameType ->
+                    game_toolbar_sport_type.text = context?.let {
+                        getGameTypeString(it, gameType)
+                    } ?: resources.getString(
                         GameType.FT.string
-                    )
-                        .toUpperCase(Locale.getDefault())
-                updateSportBackground(item)
+                    ).toUpperCase(Locale.getDefault())
+                    updateSportBackground(gameType)
+                }
+            } else {
+                comingSoonList.find { it.isSelected }.let { item ->
+                    game_toolbar_sport_type.text =
+                        context?.let { getGameTypeString(it, item?.code) } ?: resources.getString(
+                            GameType.FT.string
+                        )
+                            .toUpperCase(Locale.getDefault())
+                    updateSportBackground(item)
+                }
             }
         } else {
             comingSoonList.find { it.isSelected }.let { item ->
@@ -1878,7 +1893,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             game_filter_type_list.visibility = View.GONE
             return
         } else {
-            sport_type_list.visibility = if (mLeagueIsFiltered) View.GONE else View.VISIBLE
+            sport_type_list.visibility = if (mLeagueIsFiltered || isRecommendOutright()) View.GONE else View.VISIBLE
             game_toolbar_sport_type.visibility = View.VISIBLE
             game_toolbar_calendar.apply {
                 visibility = when (args.matchType) {
@@ -2034,8 +2049,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                 ).into(it)
             }
-
-
         }
     }
 
@@ -2409,4 +2422,11 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         match_category_pager.currentItem = 0
     }
     // endregion
+
+    /**
+     * 判斷是不是從主頁推薦賽事跳轉至此頁的
+     */
+    private fun isRecommendOutright(): Boolean {
+        return !args.outrightLeagueId.isNullOrEmpty()
+    }
 }
