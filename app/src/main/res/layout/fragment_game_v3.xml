@@ -57,7 +57,7 @@
                     android:id="@+id/ll_sport_type"
                     android:layout_width="match_parent"
                     android:layout_height="88dp"
-                    android:background="@color/color_FCFCFC"
+                    android:background="@color/color_191919_FCFCFC"
                     android:gravity="center_horizontal"
                     tools:ignore="MissingConstraints">
 
