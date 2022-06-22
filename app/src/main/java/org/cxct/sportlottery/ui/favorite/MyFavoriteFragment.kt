@@ -197,12 +197,12 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
             this.adapter = gameTypeAdapter
 
-            addItemDecoration(
-                SpaceItemDecoration(
-                    context,
-                    R.dimen.recyclerview_item_dec_spec_sport_type
-                )
-            )
+//            addItemDecoration(
+//                SpaceItemDecoration(
+//                    context,
+//                    R.dimen.recyclerview_item_dec_spec_sport_type
+//                )
+//            )
         }
     }
 
