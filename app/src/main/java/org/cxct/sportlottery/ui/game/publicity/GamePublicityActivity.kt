@@ -136,7 +136,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     }
 
     private fun initServiceButton() {
-        binding.btnFloatingService.setView(this)
+        binding.gameBottomNavigation.btnFloatingService.setView(this)
     }
 
     private fun initRegionViewBtn() {

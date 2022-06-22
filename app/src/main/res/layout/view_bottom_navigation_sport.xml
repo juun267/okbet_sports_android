@@ -7,19 +7,37 @@
     android:orientation="vertical"
     tools:ignore="SpUsage, ContentDescription">
 
-    <Button
-        android:id="@+id/game_submit"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_margin="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@color/color_FF9143_ff9200"
-        android:text="@string/button_league_submit"
-        android:textColor="@color/color_FCFCFC"
-        android:textSize="@dimen/textSize14sp"
-        android:visibility="gone"
-        tools:layout_editor_absoluteX="8dp"
-        tools:visibility="gone" />
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/game_submit"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_margin="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/color_FF9143_ff9200"
+            android:text="@string/button_league_submit"
+            android:textColor="@color/color_FCFCFC"
+            android:textSize="@dimen/textSize14sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:layout_editor_absoluteX="8dp"
+            tools:visibility="gone" />
+
+        <org.cxct.sportlottery.ui.common.ServiceFloatingButton
+            android:id="@+id/btn_floating_service"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginBottom="14dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:visibility="gone" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_bet_list_bar"
