@@ -181,7 +181,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         OutrightCountryAdapter().apply {
             outrightCountryLeagueListener = OutrightCountryLeagueListener(
                 { season ->
-                    season.id?.let { navGameOutright(it) }
+                    //TODO review此adapter還是否有用
+//                    season.id?.let { navGameOutright(it) }
                 },
                 { leagueId ->
                     viewModel.pinFavorite(FavoriteType.LEAGUE, leagueId)
@@ -2078,21 +2079,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 matchIdList.toTypedArray(),
                 matchCategoryName
             )
-
-            findNavController().navigate(action)
-        }
-    }
-
-    private fun navGameOutright(matchId: String) {
-        val gameType =
-            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
-
-        gameType?.let {
-            val action =
-                GameV3FragmentDirections.actionGameV3FragmentToGameOutrightFragment(
-                    gameType,
-                    matchId
-                )
 
             findNavController().navigate(action)
         }

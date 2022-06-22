@@ -107,10 +107,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     updateSelectTabState(arguments?.get("matchType") as MatchType)
                 }
 
-                R.id.gameOutrightFragment -> {
-                    updateSelectTabState(MatchType.OUTRIGHT)
-                }
-
                 R.id.oddsDetailFragment -> {
                     //20220504 跟進h5進賽事詳情時不切換至對應的賽事類別
                     /*updateSelectTabState(arguments?.let {
@@ -629,13 +625,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     GameLeagueFragmentDirections.actionGameLeagueFragmentToGameV3Fragment(matchType)
                 mNavController.navigate(action)
             }
-            R.id.gameOutrightFragment -> {
-                val action =
-                    GameOutrightFragmentDirections.actionGameOutrightFragmentToGameV3Fragment(
-                        matchType
-                    )
-                mNavController.navigate(action)
-            }
             R.id.gameOutrightMoreFragment -> {
                 val action =
                     GameOutrightMoreFragmentDirections.actionGameOutrightMoreFragmentToGameV3Fragment(
@@ -678,12 +667,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             R.id.gameLeagueFragment -> {
                 val action =
                     GameLeagueFragmentDirections.actionGameLeagueFragmentToHomeFragment()
-                mNavController.navigate(action)
-            }
-
-            R.id.gameOutrightFragment -> {
-                val action =
-                    GameOutrightFragmentDirections.actionGameOutrightFragmentToHomeFragment()
                 mNavController.navigate(action)
             }
 

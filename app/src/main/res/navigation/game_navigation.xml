@@ -66,21 +66,6 @@
         </action>
 
         <action
-            android:id="@+id/action_homeFragment_to_gameOutrightFragment"
-            app:destination="@id/gameOutrightFragment"
-            app:enterAnim="@anim/enter_from_right"
-            app:popEnterAnim="@anim/none"
-            app:popExitAnim="@anim/exit_to_right">
-            <argument
-                android:name="gameType"
-                app:argType="org.cxct.sportlottery.network.common.GameType" />
-
-            <argument
-                android:name="eventId"
-                app:argType="string" />
-        </action>
-
-        <action
             android:id="@+id/action_homeFragment_to_gameOutrightMoreFragment"
             app:destination="@id/gameOutrightMoreFragment">
 
@@ -137,21 +122,6 @@
                 android:name="matchCategoryName"
                 app:argType="string"
                 app:nullable="true"/>
-        </action>
-
-        <action
-            android:id="@+id/action_gameV3Fragment_to_gameOutrightFragment"
-            app:destination="@id/gameOutrightFragment"
-            app:enterAnim="@anim/enter_from_right"
-            app:popEnterAnim="@anim/none"
-            app:popExitAnim="@anim/exit_to_right">
-            <argument
-                android:name="gameType"
-                app:argType="org.cxct.sportlottery.network.common.GameType" />
-
-            <argument
-                android:name="eventId"
-                app:argType="string" />
         </action>
 
         <action
@@ -314,46 +284,6 @@
         <!--返回首頁-->
         <action
             android:id="@+id/action_gameLeagueFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/gameOutrightFragment"
-        android:name="org.cxct.sportlottery.ui.game.outright.GameOutrightFragment"
-        tools:layout="@layout/fragment_game_outright">
-        <argument
-            android:name="gameType"
-            app:argType="org.cxct.sportlottery.network.common.GameType" />
-
-        <argument
-            android:name="eventId"
-            app:argType="string" />
-
-        <action
-            android:id="@+id/action_gameOutrightFragment_to_gameV3Fragment"
-            app:destination="@id/gameV3Fragment"
-            app:popUpTo="@id/gameV3Fragment">
-            <argument
-                android:name="matchType"
-                app:argType="org.cxct.sportlottery.network.common.MatchType" />
-        </action>
-
-        <action
-            android:id="@+id/action_gameOutrightFragment_to_gameOutrightMoreFragment"
-            app:destination="@id/gameOutrightMoreFragment">
-
-            <argument
-                android:name="oddsKey"
-                app:argType="string" />
-
-            <argument
-                android:name="matchOdd"
-                app:argType="org.cxct.sportlottery.network.outright.odds.MatchOdd" />
-        </action>
-
-        <!--返回首頁-->
-        <action
-            android:id="@+id/action_gameOutrightFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
 
