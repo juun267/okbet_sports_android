@@ -24,7 +24,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 @SuppressLint("NotifyDataSetChanged")
 class OutrightLeagueOddAdapter : BaseGameAdapter() {
 
-    enum class OutrightViewType { TITLE, SUB_TITLE, ODD, MORE }
+    enum class OutrightViewType { TITLE, SUB_TITLE, ODD, MORE, NULL }
 
     var data: List<Any?> = listOf()
         set(value) {
@@ -70,6 +70,9 @@ class OutrightLeagueOddAdapter : BaseGameAdapter() {
             }
             OutrightViewType.ODD.ordinal -> {
                 OddViewHolder.from(parent, oddStateRefreshListener)
+            }
+            OutrightViewType.NULL.ordinal -> {
+                NullViewHolder.from(parent)
             }
             OutrightViewType.MORE.ordinal -> {
                 MoreViewHolder.from(parent)
@@ -126,7 +129,15 @@ class OutrightLeagueOddAdapter : BaseGameAdapter() {
                 when (data[position]) {
                     is MatchOdd -> OutrightViewType.TITLE.ordinal
                     is OutrightSubTitleItem -> OutrightViewType.SUB_TITLE.ordinal
-                    is Odd -> OutrightViewType.ODD.ordinal
+                    is Odd -> {
+                        val item = data[position] as Odd
+                        val show = item.leagueExpanded && item.playCateExpand && item.isExpand
+                        if (show) {
+                            OutrightViewType.ODD.ordinal
+                        } else {
+                            OutrightViewType.NULL.ordinal
+                        }
+                    }
                     is OutrightShowMoreItem -> OutrightViewType.MORE.ordinal
                     else -> OutrightViewType.MORE.ordinal
                 }
@@ -306,6 +317,16 @@ class OutrightLeagueOddAdapter : BaseGameAdapter() {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 return MoreViewHolder(ItemviewOutrightOddMoreV4Binding.inflate(layoutInflater))
             }
+        }
+    }
+
+    class NullViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        companion object {
+            fun from(parent: ViewGroup) =
+                NullViewHolder(
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.itemview_null, parent, false)
+                )
         }
     }
 
