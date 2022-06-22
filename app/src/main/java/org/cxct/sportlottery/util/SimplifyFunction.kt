@@ -108,6 +108,11 @@ fun RecyclerView.addScrollListenerForBottomNavBar(
             if (dy > 0 != directionIsDown) {
                 needChangeBottomBar = true
             }
+
+            //滑到最底部時顯示
+            if (!recyclerView.canScrollVertically(1)) {
+                onScrollDown(false)
+            }
         }
     })
 }
