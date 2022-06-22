@@ -771,10 +771,7 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
                         false
                     }
                     R.id.navigation_game -> {
-                        true
-                    }
-                    R.id.item_bet_list -> {
-                        viewModel.navShoppingCart()
+                        viewModel.navMyFavorite()
                         false
                     }
                     R.id.navigation_account_history -> {
@@ -787,11 +784,14 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
                         finish()
                         false
                     }
+                    R.id.navigation_my -> {
+                        true
+                    }
                     else -> false
                 }
             }
 
-            setSelected(R.id.navigation_transaction_status)
+            setSelected(R.id.navigation_my)
         }
     }
 
