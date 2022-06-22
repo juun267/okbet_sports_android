@@ -19,6 +19,16 @@
             <argument
                 android:name="matchType"
                 app:argType="org.cxct.sportlottery.network.common.MatchType" />
+            <argument
+                android:name="gameType"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+            <argument
+                android:name="outrightLeagueId"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
         </action>
 
         <action
@@ -87,6 +97,18 @@
         <argument
             android:name="matchType"
             app:argType="org.cxct.sportlottery.network.common.MatchType" />
+
+        <argument
+            android:name="gameType"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="outrightLeagueId"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
 
         <action
             android:id="@+id/action_gameFragment_to_gameFragment"
