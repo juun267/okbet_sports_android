@@ -186,7 +186,16 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
             }
             return
         }
-        super.onBackPressed()
+        //關閉drawer
+        if (drawer_layout.isDrawerOpen(nav_right)) {
+            drawer_layout.closeDrawers()
+            return
+        }
+        if (navController.currentDestination?.id != R.id.myFavoriteFragment) {
+            navController.navigateUp()
+        } else {
+            super.onBackPressed()
+        }
     }
 
     override fun showBetListPage() {
