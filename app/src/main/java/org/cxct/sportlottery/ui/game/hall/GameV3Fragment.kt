@@ -762,34 +762,36 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         //冠軍
                         is OutrightLeagueOddAdapter -> {
                             it.forEach { pair ->
-                                val outrightDataList = outrightLeagueOddAdapter.data[pair.first]
-                                when (outrightDataList) {
-                                    is org.cxct.sportlottery.network.outright.odds.MatchOdd -> {
-                                        outrightDataList
+                                if (pair.first < outrightLeagueOddAdapter.data.size) {
+                                    val outrightDataList = outrightLeagueOddAdapter.data[pair.first]
+                                    when (outrightDataList) {
+                                        is org.cxct.sportlottery.network.outright.odds.MatchOdd -> {
+                                            outrightDataList
+                                        }
+                                        is OutrightSubTitleItem -> {
+                                            outrightDataList.belongMatchOdd
+                                        }
+                                        is Odd -> {
+                                            outrightDataList.belongMatchOdd
+                                        }
+                                        is OutrightShowMoreItem -> {
+                                            outrightDataList.matchOdd
+                                        }
+                                        else -> {
+                                            null
+                                        }
+                                    }?.let { itemMatchOdd ->
+                                        Log.d(
+                                            "[subscribe]",
+                                            "訂閱 ${itemMatchOdd.matchInfo?.name} -> " +
+                                                    "${itemMatchOdd.matchInfo?.homeName} vs " +
+                                                    "${itemMatchOdd.matchInfo?.awayName}"
+                                        )
+                                        subscribeChannelHall(
+                                            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key,
+                                            itemMatchOdd.matchInfo?.id
+                                        )
                                     }
-                                    is OutrightSubTitleItem -> {
-                                        outrightDataList.belongMatchOdd
-                                    }
-                                    is Odd -> {
-                                        outrightDataList.belongMatchOdd
-                                    }
-                                    is OutrightShowMoreItem -> {
-                                        outrightDataList.matchOdd
-                                    }
-                                    else -> {
-                                        null
-                                    }
-                                }?.let { itemMatchOdd ->
-                                    Log.d(
-                                        "[subscribe]",
-                                        "訂閱 ${itemMatchOdd.matchInfo?.name} -> " +
-                                                "${itemMatchOdd.matchInfo?.homeName} vs " +
-                                                "${itemMatchOdd.matchInfo?.awayName}"
-                                    )
-                                    subscribeChannelHall(
-                                        GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key,
-                                        itemMatchOdd.matchInfo?.id
-                                    )
                                 }
                             }
                         }
