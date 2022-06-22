@@ -112,10 +112,10 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
                         dismiss()
                         viewModel.doLogoutCleanUser {
                             run {
-                                if (sConfigData?.thirdOpen == FLAG_OPEN)
-                                    MainActivity.reStart(MultiLanguagesApplication.appContext)
-                                else
-                                    GamePublicityActivity.reStart(MultiLanguagesApplication.appContext)
+//                                if (sConfigData?.thirdOpen == FLAG_OPEN)
+//                                    MainActivity.reStart(MultiLanguagesApplication.appContext)
+//                                else
+                                GamePublicityActivity.reStart(MultiLanguagesApplication.appContext)
                             }
                         }
                     }

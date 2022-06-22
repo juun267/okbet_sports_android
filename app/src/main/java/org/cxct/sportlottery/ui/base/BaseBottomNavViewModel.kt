@@ -48,7 +48,7 @@ abstract class BaseBottomNavViewModel(
     private val _navPublicityPage = MutableLiveData<Event<Boolean>>()
 
     fun navMainPage(thirdGameCategory: ThirdGameCategory) {
-        _thirdGameCategory.postValue(
+        /*_thirdGameCategory.postValue(
             Event(
                 if (sConfigData?.thirdOpen != FLAG_OPEN) {
                     _navPublicityPage.postValue(Event(true))
@@ -57,7 +57,8 @@ abstract class BaseBottomNavViewModel(
                     thirdGameCategory
                 }
             )
-        )
+        )*/
+        _navPublicityPage.postValue(Event(true))
     }
 
     fun navGame() {

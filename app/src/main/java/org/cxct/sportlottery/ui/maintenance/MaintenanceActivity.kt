@@ -36,10 +36,10 @@ class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(Maintenance
                     tv_maintenance_time.text = it.configData.maintainInfo
                 }
                 else -> {
-                    if (sConfigData?.thirdOpen == FLAG_OPEN)
-                        MainActivity.reStart(this)
-                    else
-                        GamePublicityActivity.reStart(this)
+//                    if (sConfigData?.thirdOpen == FLAG_OPEN)
+//                        MainActivity.reStart(this)
+//                    else
+                    GamePublicityActivity.reStart(this)
                     finish()
                 }
             }

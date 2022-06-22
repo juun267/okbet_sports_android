@@ -199,6 +199,10 @@ class AccountHistoryActivity :
         viewModel.nowTransNum.observe(this) {
             navigation_transaction_status.trans_number.text = it.toString()
         }
+
+        viewModel.navPublicityPage.observe(this) {
+            GamePublicityActivity.reStart(this)
+        }
     }
 
     /*private fun initServiceButton(){

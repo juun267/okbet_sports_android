@@ -337,12 +337,12 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             viewModel.doLogoutAPI()
             viewModel.doLogoutCleanUser {
                 context?.run {
-                    if (sConfigData?.thirdOpen == FLAG_OPEN)
-                        MainActivity.reStart(this)
-                    else {
+//                    if (sConfigData?.thirdOpen == FLAG_OPEN)
+//                        MainActivity.reStart(this)
+//                    else {
                         GamePublicityActivity.reStart(this)
                         activity?.finish()
-                    }
+//                    }
                 }
             }
             mDownMenuListener?.onClick(btn_sign_out)

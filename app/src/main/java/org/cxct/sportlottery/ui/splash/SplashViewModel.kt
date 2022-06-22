@@ -103,7 +103,7 @@ class SplashViewModel(
     }
 
     fun goNextPage() {
-        if (sConfigData?.thirdOpen != FLAG_OPEN) {
+//        if (sConfigData?.thirdOpen != FLAG_OPEN) {
             viewModelScope.launch {
                 loginRepository.checkToken()
 
@@ -114,9 +114,9 @@ class SplashViewModel(
                     _skipHomePage.postValue(true)
                 }
             }
-        } else {
-            _skipHomePage.postValue(false)
-        }
+//        } else {
+//            _skipHomePage.postValue(false)
+//        }
     }
 
     private suspend fun sendGetHostRequest(index: Int) {

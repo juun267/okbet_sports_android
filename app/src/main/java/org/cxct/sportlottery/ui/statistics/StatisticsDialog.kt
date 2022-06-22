@@ -97,11 +97,11 @@ class StatisticsDialog : BaseBottomSheetFragment<StatisticsViewModel>(Statistics
 
         vBinding.gameToolbar.ivLogo.setOnClickListener {
             dismiss()
-            if (sConfigData?.thirdOpen == FLAG_OPEN) {
-                MainActivity.reStart(MultiLanguagesApplication.appContext)
-            } else {
+//            if (sConfigData?.thirdOpen == FLAG_OPEN) {
+//                MainActivity.reStart(MultiLanguagesApplication.appContext)
+//            } else {
                 GamePublicityActivity.reStart(MultiLanguagesApplication.appContext)
-            }
+//            }
         }
 
         vBinding.gameToolbar.ivNotice.setOnClickListener {

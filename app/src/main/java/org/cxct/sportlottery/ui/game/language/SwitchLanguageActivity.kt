@@ -97,14 +97,14 @@ class SwitchLanguageActivity : BaseActivity<LoginViewModel>(LoginViewModel::clas
         if(SPUtil.getInstance(applicationContext).getSelectLanguage() != select.key){
             this?.run {
                 LanguageManager.saveSelectLanguage(this, select)
-                if (sConfigData?.thirdOpen == FLAG_OPEN)
-                    MainActivity.reStart(this)
-                else {
+//                if (sConfigData?.thirdOpen == FLAG_OPEN)
+//                    MainActivity.reStart(this)
+//                else {
                     when (intent.getSerializableExtra(FROM_ACTIVITY)) {
                         Page.PUBLICITY -> goGamePublicityPage()
                         else -> GamePublicityActivity.reStart(this)
                     }
-                }
+//                }
             }
         }
     }

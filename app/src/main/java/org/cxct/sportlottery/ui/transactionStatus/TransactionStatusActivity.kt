@@ -264,6 +264,10 @@ class TransactionStatusActivity :
         viewModel.loading.observe(this) {
             if (it) loading() else hideLoading()
         }
+
+        viewModel.navPublicityPage.observe(this) {
+            GamePublicityActivity.reStart(this)
+        }
     }
 
     /*private fun initServiceButton() {

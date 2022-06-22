@@ -242,9 +242,9 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
             viewModel.doLogoutAPI()
             viewModel.doLogoutCleanUser {
                 run {
-                    if (sConfigData?.thirdOpen == FLAG_OPEN)
-                        MainActivity.reStart(this)
-                    else
+//                    if (sConfigData?.thirdOpen == FLAG_OPEN)
+//                        MainActivity.reStart(this)
+//                    else
                         GamePublicityActivity.reStart(this)
                 }
             }
@@ -399,7 +399,8 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
             //20200303 紀錄：跳轉其他 Activity 頁面，不需要切換 BottomNav 選取狀態
             when (it.itemId) {
                 R.id.home_page -> {
-                    startActivity(Intent(this, MainActivity::class.java))
+//                    startActivity(Intent(this, MainActivity::class.java))
+                    GamePublicityActivity.reStart(this)
                     false
                 }
                 R.id.game_page -> {
