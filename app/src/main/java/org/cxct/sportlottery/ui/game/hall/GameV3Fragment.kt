@@ -1898,6 +1898,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     private fun updateSportBackground(sport: Item?) {
+        updateSportBackground(sport?.code)
+    }
+
+    private fun updateSportBackground(gameTypeKey: String?) {
         when {
             game_bg_layer2.isVisible -> game_bg_layer2
             game_bg_layer3.isVisible -> game_bg_layer3
@@ -1913,7 +1917,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 ).into(it)
             } else {
                 Glide.with(requireContext()).load(
-                    when (sport?.code) {
+                    when (gameTypeKey) {
                         GameType.FT.key -> {
                             when {
                                 game_bg_layer2.isVisible -> R.drawable.soccer108
