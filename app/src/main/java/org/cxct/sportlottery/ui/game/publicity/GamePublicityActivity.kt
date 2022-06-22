@@ -77,7 +77,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         setupDataSourceChange()
 
         //進入宣傳頁，優先跳出這個視窗(不論有沒有登入，每次都要跳)
-        if (sConfigData?.thirdOpen != FLAG_OPEN)
+//        if (sConfigData?.thirdOpen != FLAG_OPEN)
             MultiLanguagesApplication.showAgeVerifyDialog(this)
     }
 
@@ -207,11 +207,11 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         if (navController.currentDestination?.id != R.id.publicityFragment) {
             navController.navigateUp()
         } else {
-            if (sConfigData?.thirdOpen == FLAG_OPEN) {
-                MainActivity.reStart(this)
-            } else {
+//            if (sConfigData?.thirdOpen == FLAG_OPEN) {
+//                MainActivity.reStart(this)
+//            } else {
                 AppManager.AppExit()
-            }
+//            }
         }
     }
 
@@ -300,8 +300,8 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                     if (navController.currentDestination?.id != R.id.publicityFragment) {
                         navController.navigateUp()
                     } else {
-                        if (sConfigData?.thirdOpen == FLAG_OPEN)
-                            MainActivity.reStart(this@GamePublicityActivity)
+//                        if (sConfigData?.thirdOpen == FLAG_OPEN)
+//                            MainActivity.reStart(this@GamePublicityActivity)
                     }
                     removeBetListFragment()
                 }

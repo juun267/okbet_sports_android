@@ -127,10 +127,10 @@ class SwitchLanguageFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         if(SPUtil.getInstance(context).getSelectLanguage() != select.key){
             activity?.run {
                 LanguageManager.saveSelectLanguage(this, select)
-                if (sConfigData?.thirdOpen == FLAG_OPEN)
-                    MainActivity.reStart(this)
-                else
-                    GamePublicityActivity.reStart(this)
+//                if (sConfigData?.thirdOpen == FLAG_OPEN)
+//                    MainActivity.reStart(this)
+//                else
+                GamePublicityActivity.reStart(this)
             }
         }
     }

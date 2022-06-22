@@ -77,11 +77,11 @@ class RegisterSuccessDialog(context: Context) : DialogFragment() {
      * 根據第三方開關判斷當前首頁是哪一個
      */
     private fun goHomePage() {
-        if (sConfigData?.thirdOpen == FLAG_OPEN) {
-            MainActivity.reStart(mContext)
-        } else {
-            GamePublicityActivity.reStart(mContext)
-        }
+//        if (sConfigData?.thirdOpen == FLAG_OPEN) {
+//            MainActivity.reStart(mContext)
+//        } else {
+        GamePublicityActivity.reStart(mContext)
+//        }
     }
 
     override fun onDestroy() {

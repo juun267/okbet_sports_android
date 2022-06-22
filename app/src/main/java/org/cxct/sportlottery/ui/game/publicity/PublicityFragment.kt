@@ -47,9 +47,9 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
             GamePublicityAdapter.PublicityAdapterListener(
                 onLogoClickListener = {
                     removeBetListFragment()
-                    if (sConfigData?.thirdOpen == FLAG_OPEN) {
-                        MainActivity.reStart(activity ?: requireActivity())
-                    }
+//                    if (sConfigData?.thirdOpen == FLAG_OPEN) {
+//                        MainActivity.reStart(activity ?: requireActivity())
+//                    }
                 },
                 onLanguageBlockClickListener = {
                     goSwitchLanguagePage()
