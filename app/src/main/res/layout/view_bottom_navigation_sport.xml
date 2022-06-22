@@ -7,6 +7,20 @@
     android:orientation="vertical"
     tools:ignore="SpUsage, ContentDescription">
 
+    <Button
+        android:id="@+id/game_submit"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_margin="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/color_FF9143_ff9200"
+        android:text="@string/button_league_submit"
+        android:textColor="@color/color_FCFCFC"
+        android:textSize="@dimen/textSize14sp"
+        android:visibility="gone"
+        tools:layout_editor_absoluteX="8dp"
+        tools:visibility="gone" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_bet_list_bar"
         android:layout_width="match_parent"
@@ -15,7 +29,7 @@
         android:clickable="true"
         android:focusable="true"
         android:visibility="gone"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <ImageView
             android:id="@+id/iv_arrow"
