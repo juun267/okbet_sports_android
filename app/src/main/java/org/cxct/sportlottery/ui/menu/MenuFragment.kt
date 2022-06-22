@@ -62,14 +62,6 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         initSocketObserver()
         initEvent()
         setupVersion()
-        getOddsType()
-        updateLanguageItem()
-        updateUIVisibility()
-    }
-
-    private fun updateLanguageItem() {
-        menu_language.text = LanguageManager.getLanguageStringResource(context)
-        menu_language.updateLanguageImage()
     }
 
     private fun initSocketObserver() {
@@ -95,9 +87,6 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             }
         }
 
-        viewModel.oddsType.observe(viewLifecycleOwner) {
-            updateOddsType(it)
-        }
 
         viewModel.infoCenterRepository.unreadNoticeList.observe(viewLifecycleOwner) {
             menu_profile_center.updateNoticeCount(it.size)
@@ -336,40 +325,6 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             }
         }
 
-        //我的賽事
-        menu_my_favorite.setOnClickListener {
-            if ((activity ?: requireActivity())::class.java.simpleName != MyFavoriteActivity::class.java.simpleName) {
-                startActivity(Intent(context, MyFavoriteActivity::class.java))
-            }
-        }
-
-        //其他投注記錄
-        menu_other_bet_record.setOnClickListener {
-            startActivity(Intent(context, OtherBetRecordActivity::class.java))
-            mDownMenuListener?.onClick(menu_other_bet_record)
-        }
-
-        //會員層級
-        menu_member_level.setOnClickListener {
-            startActivity(Intent(context, VipActivity::class.java))
-            mDownMenuListener?.onClick(menu_member_level)
-        }
-
-        //賽果結算
-        menu_game_result.setOnClickListener {
-            startActivity(Intent(activity, ResultsSettlementActivity::class.java))
-            mDownMenuListener?.onClick(menu_game_result)
-        }
-
-        //遊戲規則
-        menu_game_rule.setOnClickListener {
-            JumpUtil.toInternalWeb(
-                requireContext(),
-                Constants.getGameRuleUrl(requireContext()),
-                getString(R.string.game_rule)
-            )
-            mDownMenuListener?.onClick(menu_game_rule)
-        }
 
         //版本更新
         menu_version_update.setOnClickListener {
@@ -393,84 +348,10 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             mDownMenuListener?.onClick(btn_sign_out)
         }
 
-        //語系選擇
-        menu_language.setOnClickListener {
-            val intent = Intent(context, SwitchLanguageActivity::class.java).apply {
-                activity?.let { fragmentActivity ->
-                    putExtra(
-                        SwitchLanguageActivity.FROM_ACTIVITY, when (fragmentActivity) {
-                            is GamePublicityActivity -> Page.PUBLICITY
-                            else -> Page.GAME
-                        }
-                    )
-                }
-            }
-
-            context?.startActivity(intent)
-            mDownMenuListener?.onClick(menu_language)
-        }
-
-        menu_odds_type.setOnClickListener {
-            menu_odds_type.showOddsTypeChose()
-            menu_odds_type.setOddsEU {
-                viewModel.saveOddsType(OddsType.EU)
-                menu_odds_type.showOddsTypeChose()
-                //mDownMenuListener?.onClick(menu_odds_type)
-            }
-            menu_odds_type.setOddsHK {
-                viewModel.saveOddsType(OddsType.HK)
-                menu_odds_type.showOddsTypeChose()
-                //mDownMenuListener?.onClick(menu_odds_type)
-            }
-            menu_odds_type.setOddsMY {
-                viewModel.saveOddsType(OddsType.MYS)
-                menu_odds_type.showOddsTypeChose()
-                //mDownMenuListener?.onClick(menu_odds_type)
-            }
-            menu_odds_type.setOddsIDN {
-                viewModel.saveOddsType(OddsType.IDN)
-                menu_odds_type.showOddsTypeChose()
-                //mDownMenuListener?.onClick(menu_odds_type)
-            }
-//            context?.let {
-//                showBottomSheetDialog("",
-//                    viewModel.getOddTypeStatusSheetList(it),
-//                    viewModel.getDeafaultOddTypeStatusSheetData(it),
-//                    StatusSheetAdapter.ItemCheckedListener { _, data ->
-//                        when (data.code) {
-//                            OddsType.EU.code -> viewModel.saveOddsType(OddsType.EU)
-//                            OddsType.HK.code -> viewModel.saveOddsType(OddsType.HK)
-//                            OddsType.MYS.code -> viewModel.saveOddsType(OddsType.MYS)
-//                            OddsType.IDN.code -> viewModel.saveOddsType(OddsType.IDN)
-//                            else -> viewModel.saveOddsType(OddsType.EU)
-//                        }
-//                    })
-//            }
-        }
     }
 
     private fun setupVersion() {
         tv_version.text = getString(R.string.label_version, BuildConfig.VERSION_NAME)
-    }
-
-    private fun getOddsType() {
-        viewModel.getOddsType()
-    }
-
-    private fun updateUIVisibility() {
-        //其他投注記錄 信用盤 或 第三方關閉 隱藏
-        menu_other_bet_record.visibility =
-            if (sConfigData?.thirdOpen != FLAG_OPEN) {
-                View.GONE
-            } else {
-                View.VISIBLE
-            }
-
-        menu_member_level.visibility = if (sConfigData?.thirdOpen != FLAG_OPEN) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
     }
 
     private fun updateUI(
@@ -510,7 +391,4 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         mDownMenuListener = listener
     }
 
-    private fun updateOddsType(oddsType: OddsType) {
-        menu_odds_type.text = getString(oddsType.res)
-    }
 }

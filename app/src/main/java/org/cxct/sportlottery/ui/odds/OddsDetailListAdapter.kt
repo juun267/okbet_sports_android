@@ -917,21 +917,21 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
 
             for (element in oddsDetail.typeCodes) {
-                //有特優賠率時常駐顯示
-                if (viewType == PlayCate.EPS.ordinal) {
-                    setVisibility(true)
-                } else {
-                    try {
-                        if (element == code) {
-                            setVisibility(true)
-                            break
-                        } else {
-                            setVisibility(false)
-                        }
-                    } catch (e: Exception) {
-                        setVisibility(true)
-                    }
-                }
+                //有特優賠率時常駐顯示 需求 先隱藏特優賠率
+//                if (viewType == PlayCate.EPS.ordinal) {
+//                    setVisibility(true)
+//                } else {
+//                    try {
+//                        if (element == code) {
+//                            setVisibility(true)
+//                            break
+//                        } else {
+//                            setVisibility(false)
+//                        }
+//                    } catch (e: Exception) {
+//                        setVisibility(true)
+//                    }
+//                }
             }
 
             if (oddsDetail.isPin) {

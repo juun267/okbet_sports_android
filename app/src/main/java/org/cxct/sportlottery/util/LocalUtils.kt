@@ -6,12 +6,16 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 
 object LocalUtils {
     fun getString(resId:Int): String {
-        var context=MultiLanguagesApplication.appContext
+        val localizedContext = getLocalizedContext()
+        return localizedContext.resources.getString(resId)
+    }
+
+    fun getLocalizedContext(): Context {
+        val context = MultiLanguagesApplication.appContext
         val locale = LanguageManager.getSetLanguageLocale(context)
         var conf = context.resources.configuration
         conf = Configuration(conf)
         conf.setLocale(locale)
-        val localizedContext = context.createConfigurationContext(conf)
-        return localizedContext.resources.getString(resId)
+        return context.createConfigurationContext(conf)
     }
 }

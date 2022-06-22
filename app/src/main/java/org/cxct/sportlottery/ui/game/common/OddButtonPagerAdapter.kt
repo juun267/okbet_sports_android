@@ -6,9 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import kotlinx.android.synthetic.main.itemview_odd_btn_2x2_v6.view.*
@@ -28,7 +26,6 @@ import org.cxct.sportlottery.util.BetPlayCateFunction.isNOGALType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.QuickListManager
 import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.getOdds
 import java.lang.Exception
 
 
@@ -559,7 +556,7 @@ class OddButtonPagerViewHolder private constructor(
 
         odds.second?.firstOrNull()?.replaceScore?.let { playCateName.replace("{S}", it) }
 
-        if (playCateName == "null" || playCateName.isNullOrEmpty()){
+        if (playCateName == "null" || playCateName.isEmpty()){
             playCateName = "-"
         }
 
@@ -577,79 +574,8 @@ class OddButtonPagerViewHolder private constructor(
         }
 
         oddBtnHome.apply homeButtonSettings@{
-            when {
-                (odds.second == null || odds.second?.all { odd -> odd == null } == true) -> {
-                    betStatus = BetStatus.DEACTIVATED.code
-                    return@homeButtonSettings
-                }
-                (odds.second?.size ?: 0 < 2 || odds.second?.getOrNull(0)?.odds ?: 0.0 <= 0.0) -> {
-                    betStatus = BetStatus.LOCKED.code
-                    return@homeButtonSettings
-                }
-                else -> {
-                    betStatus = odds.second?.getOrNull(0)?.status
-                }
-            }
-            setupOdd(odds.second?.getOrNull(0), oddsType)
-            //20220426 先判斷spread是否需要顯示，提供name判斷其佈局調整
-            tv_spread.apply {
-                visibility = when (!odds.second?.getOrNull(0)?.spread.isNullOrEmpty()) {
-                    true -> {
-                        View.VISIBLE
-                    }
-                    false -> {
-                        when {
-                            playCateCode.isOUType() -> View.INVISIBLE
-                            else -> {
-                                View.GONE
-                            }
-                        }
-                    }
-                }
-
-                text = odds.second?.getOrNull(0)?.spread ?: ""
-                requestLayout()
-            }
-
-            //20220426 修正spread沒有顯示時，有機會name僅顯示"..."
-            tv_name.apply {
-                visibility = when {
-                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() -> View.VISIBLE
-                    else -> {
-                        View.GONE
-                    }
-                }
-
-                text = when {
-                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() -> {
-                        (odds.second?.getOrNull(0)?.nameMap?.get(
-                            LanguageManager.getSelectLanguage(
-                                context
-                            ).key
-                        ) ?: odds.second?.getOrNull(0)?.name)?.abridgeOddsName()
-                    }
-                    playCateCode.isNOGALType() -> {
-                        when (LanguageManager.getSelectLanguage(this.context)) {
-                            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
-                                "第" + odds.second?.getOrNull(0)?.nextScore.toString()
-                            }
-                            else -> {
-                                getOrdinalNumbers(odds.second?.getOrNull(0)?.nextScore.toString())
-                            }
-                        }
-                    }
-                    else -> ""
-                }
-                requestLayout()
-            }
-
+            setupOdd4hall(playCateCode,odds.second?.getOrNull(0), odds.second, oddsType)
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(0))
-
-//            isSelected = odds.second?.getOrNull(0)?.isSelected ?: false
-
-            //isSelected = QuickListManager.getQuickSelectedList()?.contains(odds.second?.getOrNull(0)?.id) ?: false
-            isSelected = QuickListManager.getQuickSelectedList()?.contains(odds.second?.getOrNull(0)?.id) ?: false
-
             setOnClickListener {
                 odds.second?.getOrNull(0)?.let { odd ->
                     //it.isSelected = !it.isSelected
@@ -665,71 +591,8 @@ class OddButtonPagerViewHolder private constructor(
         }
 
         oddBtnAway.apply awayButtonSettings@{
-            when {
-                (odds.second == null || odds.second?.all { odd -> odd == null } == true) -> {
-                    betStatus = BetStatus.DEACTIVATED.code
-                    return@awayButtonSettings
-                }
-                (odds.second?.size ?: 0 < 2 || odds.second?.getOrNull(1)?.odds ?: 0.0 <= 0.0) -> {
-                    betStatus = BetStatus.LOCKED.code
-                    return@awayButtonSettings
-                }
-                else -> {
-                    betStatus = odds.second?.getOrNull(1)?.status
-                }
-            }
-
-            setupOdd(odds.second?.getOrNull(1), oddsType)
-            tv_spread.apply {
-                visibility = when (!odds.second?.getOrNull(1)?.spread.isNullOrEmpty()) {
-                    true -> View.VISIBLE
-                    false -> {
-                        when {
-                            playCateCode.isOUType() -> View.INVISIBLE
-                            else -> View.GONE
-                        }
-                    }
-                }
-
-                text = odds.second?.getOrNull(1)?.spread ?: ""
-                requestLayout()
-            }
-
-            tv_name.apply {
-                visibility = when {
-                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() -> View.VISIBLE
-                    else -> {
-                        View.GONE
-                    }
-                }
-
-                text = when {
-                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() -> {
-                        (odds.second?.getOrNull(1)?.nameMap?.get(
-                            LanguageManager.getSelectLanguage(
-                                context
-                            ).key
-                        ) ?: odds.second?.getOrNull(1)?.name)?.abridgeOddsName()
-                    }
-                    playCateCode.isNOGALType() -> {
-                        when (LanguageManager.getSelectLanguage(this.context)) {
-                            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
-                                "第" + odds.second?.getOrNull(1)?.nextScore.toString()
-                            }
-                            else -> {
-                                getOrdinalNumbers(odds.second?.getOrNull(1)?.nextScore.toString())
-                            }
-                        }
-                    }
-                    else -> ""
-                }
-                requestLayout()
-            }
-
+            setupOdd4hall(playCateCode,odds.second?.getOrNull(1), odds.second, oddsType)
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(1))
-
-            isSelected = QuickListManager.getQuickSelectedList()?.contains(odds.second?.getOrNull(1)?.id) ?: false
-
             setOnClickListener {
                 odds.second?.getOrNull(1)?.let { odd ->
 //                    it.isSelected = !it.isSelected
@@ -745,77 +608,10 @@ class OddButtonPagerViewHolder private constructor(
         }
 
         oddBtnDraw.apply drawButtonSettings@{
-            when{
-                (odds.second?.size ?: 0 > 2) -> {
-                    visibility = View.VISIBLE
-                }
-                (odds.second?.size ?: 0 < 3) -> {
-                    visibility = View.INVISIBLE
-                }
-            }
-            when {
-                odds.second?.all { odd -> odd == null } == true -> {
-                    betStatus = BetStatus.DEACTIVATED.code
-                    return@drawButtonSettings
-                }
-                (odds.second?.getOrNull(2)?.odds ?: 0.0 <= 0.0) -> {
-                    betStatus = BetStatus.LOCKED.code
-                    return@drawButtonSettings
-                }
-                else -> {
-                    betStatus = odds.second?.getOrNull(2)?.status
-                }
-            }
-
-            setupOdd(odds.second?.getOrNull(2), oddsType)
-            tv_spread.apply {
-                visibility = when (!odds.second?.getOrNull(2)?.spread.isNullOrEmpty()) {
-                    true -> View.VISIBLE
-                    false -> {
-                        when {
-                            playCateCode.isOUType() -> View.INVISIBLE
-                            else -> View.GONE
-                        }
-                    }
-                }
-
-                text = odds.second?.getOrNull(2)?.spread ?: ""
-                requestLayout()
-            }
-
-            tv_name.apply {
-                visibility = View.VISIBLE
-
-                text = when {
-                    playCateCode.isNOGALType() -> {
-                        when (LanguageManager.getSelectLanguage(this.context)) {
-                            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
-                                "无"
-                            }
-                            else -> {
-                                "None"
-                            }
-                        }
-                    }
-                    playCateCode.isCombination() -> {
-                        (odds.second?.getOrNull(2)?.nameMap?.get(
-                            LanguageManager.getSelectLanguage(context).key
-                        ) ?: odds.second?.getOrNull(2)?.name)?.split("-")?.firstOrNull() ?: ""
-                    }
-                    !playCateCode.isCombination() -> {
-                        odds.second?.getOrNull(2)?.nameMap?.get(
-                            LanguageManager.getSelectLanguage(context).key
-                        ) ?: odds.second?.getOrNull(2)?.name
-                    }
-                    else -> ""
-                }
-                requestLayout()
-            }
-
+            
+            setupOdd4hall(playCateCode, odds.second?.getOrNull(2), odds.second, oddsType, isDrawBtn = true)
 
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(2))
-
-            isSelected = QuickListManager.getQuickSelectedList()?.contains(odds.second?.getOrNull(2)?.id) ?: false
 
             setOnClickListener {
                 odds.second?.getOrNull(2)?.let { odd ->
@@ -877,191 +673,16 @@ class OddButtonPagerViewHolder private constructor(
             else -> playCateName.updatePlayCateColor()
         }
         oddBtnHome.apply homeButtonSettings@{
-            when {
-                (odds.second == null || odds.second?.all { odd -> odd == null } == true) -> {
-                    betStatus = BetStatus.DEACTIVATED.code
-                    return@homeButtonSettings
-                }
-                (odds.second?.size ?: 0 < 2 || odds.second?.getOrNull(0)?.odds ?: 0.0 <= 0.0) -> {
-                    betStatus = BetStatus.LOCKED.code
-                    return@homeButtonSettings
-                }
-                else -> {
-                    betStatus = odds.second?.getOrNull(0)?.status
-                }
-            }
-            setupOdd(odds.second?.getOrNull(0), oddsType)
-            tv_name.apply {
-                visibility = when {
-                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() -> View.VISIBLE
-                    else -> {
-                        when (!odds.second?.getOrNull(0)?.spread.isNullOrEmpty()) {
-                            true -> View.INVISIBLE
-                            false -> View.GONE
-                        }
-                    }
-                }
-                text = when {
-                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() -> {
-                        (odds.second?.getOrNull(0)?.nameMap?.get(
-                            LanguageManager.getSelectLanguage(
-                                context
-                            ).key
-                        ) ?: odds.second?.getOrNull(0)?.name)?.abridgeOddsName()
-                    }
-                    playCateCode.isNOGALType() -> {
-                        "第" + odds.second?.getOrNull(0)?.nextScore.toString()
-                    }
-                    else -> ""
-                }
-                requestLayout()
-            }
-            tv_spread.apply {
-                visibility = when (!odds.second?.getOrNull(0)?.spread.isNullOrEmpty()) {
-                    true -> View.VISIBLE
-                    false -> {
-                        when {
-                            playCateCode.isOUType() -> View.INVISIBLE
-                            else -> View.GONE
-                        }
-                    }
-                }
-                text = odds.second?.getOrNull(0)?.spread ?: ""
-                requestLayout()
-            }
-
+            setupOdd4hall(playCateCode,odds.second?.getOrNull(0), odds.second, oddsType)
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(0))
-            isSelected = odds.second?.getOrNull(0)?.isSelected ?: false
         }
         oddBtnAway.apply awayButtonSettings@{
-            when {
-                (odds.second == null || odds.second?.all { odd -> odd == null } == true) -> {
-                    betStatus = BetStatus.DEACTIVATED.code
-                    return@awayButtonSettings
-                }
-                (odds.second?.size ?: 0 < 2 || odds.second?.getOrNull(1)?.odds ?: 0.0 <= 0.0) -> {
-                    betStatus = BetStatus.LOCKED.code
-                    return@awayButtonSettings
-                }
-                else -> {
-                    betStatus = odds.second?.getOrNull(1)?.status
-                }
-            }
-            setupOdd(odds.second?.getOrNull(1), oddsType)
-            tv_name.apply {
-                visibility = when {
-                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() -> View.VISIBLE
-                    else -> {
-//                        when (!odds.second?.getOrNull(1)?.spread.isNullOrEmpty()) {
-//                            true -> View.INVISIBLE
-//                            false -> View.GONE
-//                        }
-                        View.GONE
-                    }
-                }
-
-                text = when {
-                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() -> {
-                        (odds.second?.getOrNull(1)?.nameMap?.get(
-                            LanguageManager.getSelectLanguage(
-                                context
-                            ).key
-                        ) ?: odds.second?.getOrNull(1)?.name)?.abridgeOddsName()
-                    }
-                    playCateCode.isNOGALType() -> {
-                        "第" + odds.second?.getOrNull(1)?.nextScore.toString()
-                    }
-                    else -> ""
-                }
-                requestLayout()
-            }
-            tv_spread.apply {
-                visibility = when (!odds.second?.getOrNull(1)?.spread.isNullOrEmpty()) {
-                    true -> View.VISIBLE
-                    false -> {
-                        when {
-                            playCateCode.isOUType() -> View.INVISIBLE
-                            else -> View.GONE
-                        }
-                    }
-                }
-
-                text = odds.second?.getOrNull(1)?.spread ?: ""
-                requestLayout()
-            }
-
+            setupOdd4hall(playCateCode,odds.second?.getOrNull(1), odds.second, oddsType)
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(1))
-            isSelected = odds.second?.getOrNull(1)?.isSelected ?: false
         }
         oddBtnDraw.apply drawButtonSettings@{
-            when{
-                (odds.second?.size ?: 0 > 2) -> {
-                    visibility = View.VISIBLE
-                }
-                (odds.second?.size ?: 0 < 3) -> {
-                    visibility = View.INVISIBLE
-                }
-            }
-
-            when {
-                odds.second?.all { odd -> odd == null } == true -> {
-                    betStatus = BetStatus.DEACTIVATED.code
-                    return@drawButtonSettings
-                }
-                (odds.second?.getOrNull(2)?.odds ?: 0.0 <= 0.0) -> {
-                    betStatus = BetStatus.LOCKED.code
-                    return@drawButtonSettings
-                }
-                else -> {
-                    betStatus = odds.second?.getOrNull(2)?.status
-                }
-            }
-            setupOdd(odds.second?.getOrNull(2), oddsType)
-            tv_name.apply {
-                visibility = View.VISIBLE
-
-                text = when {
-                    playCateCode.isNOGALType() -> "无"
-                    playCateCode.isCombination() -> {
-                        (odds.second?.getOrNull(2)?.nameMap?.get(
-                            LanguageManager.getSelectLanguage(context).key
-                        ) ?: odds.second?.getOrNull(2)?.name)?.split("-")?.firstOrNull() ?: ""
-                    }
-                    !playCateCode.isCombination() -> {
-                        odds.second?.getOrNull(2)?.nameMap?.get(
-                            LanguageManager.getSelectLanguage(context).key
-                        ) ?: odds.second?.getOrNull(2)?.name
-                    }
-                    else -> ""
-                }
-                requestLayout()
-            }
-            tv_spread.apply {
-                visibility = when (!odds.second?.getOrNull(2)?.spread.isNullOrEmpty()) {
-                    true -> View.VISIBLE
-                    false -> {
-                        when {
-                            playCateCode.isOUType() -> View.INVISIBLE
-                            else -> View.GONE
-                        }
-                    }
-                }
-
-                text = odds.second?.getOrNull(2)?.spread ?: ""
-                requestLayout()
-            }
-
+            setupOdd4hall(playCateCode, odds.second?.getOrNull(2), odds.second, oddsType, isDrawBtn = true)
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(2))
-            isSelected = odds.second?.getOrNull(2)?.isSelected ?: false
-        }
-    }
-
-    private fun getOrdinalNumbers(number:String):String {
-        return when (number) {
-            "1" -> "1st"
-            "2" -> "2nd"
-            "3" -> "3rd"
-            else -> "${number}th"
         }
     }
 
@@ -1079,21 +700,6 @@ class OddButtonPagerViewHolder private constructor(
         }
     }
 
-    private fun OddsButton.oddColorStateList(
-        odd: Odd?,
-        oddsType: OddsType
-    ) = if (getOdds(odd, oddsType) < 0.0) {
-        ContextCompat.getColorStateList(
-            context,
-            R.color.selector_button_odd_bottom_text_red
-        )
-    } else {
-        ContextCompat.getColorStateList(
-            context,
-            R.color.selector_button_odd_bottom_text
-        )
-    }
-
     private fun PlayCateMapItem.getPlayCateName(l: LanguageManager.Language): String {
         return when (l) {
             LanguageManager.Language.EN -> {
@@ -1106,25 +712,6 @@ class OddButtonPagerViewHolder private constructor(
                 this.playCateName
             }
         }
-    }
-
-    private fun String.isOUType(): Boolean {
-        return this.contains(PlayCate.OU.value) && !this.isCombination()
-    }
-
-    private fun String.isOEType(): Boolean {
-        return (this.contains(PlayCate.OE.value) || this.contains(PlayCate.Q_OE.value)) && !this.isCombination()
-    }
-
-    private fun String.isBTSType(): Boolean {
-        return this.contains(PlayCate.BTS.value) && !this.isCombination()
-    }
-
-    /**
-     * 後端回傳文字需保留完整文字, 文字顯示縮減由前端自行處理
-     */
-    private fun String.abridgeOddsName(): String {
-        return this.replace("Over", "O").replace("Under", "U")
     }
 
     private fun String.updatePlayCateColor(): Spanned {

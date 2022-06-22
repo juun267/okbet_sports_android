@@ -14,11 +14,11 @@ import kotlinx.android.synthetic.main.itemview_outright_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_toolbar_live.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.outright.odds.DynamicMarket
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
+import org.cxct.sportlottery.network.outright.odds.OutrightShowMoreItem
+import org.cxct.sportlottery.network.outright.odds.OutrightSubTitleItem
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.LanguageManager
 
 class OutrightOddAdapter :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -29,30 +29,8 @@ class OutrightOddAdapter :
     var matchOdd: MatchOdd? = null
         set(value) {
             field = value
-            field?.let { matchOdd ->
-                val list = mutableListOf<Any>()
-                matchOdd.oddsMap?.forEach {
-                    if (it.value?.get(0) != null) {
-                        val playCateExpand = matchOdd.oddsExpand?.get(it.key) ?: false
-                        list.add(it.key)
-
-                        list.addAll(
-                            it.value?.filterNotNull()
-                                //?.filterIndexed { index, _ -> index < 4 }
-                                ?.mapIndexed { index, odd ->
-                                    odd.outrightCateKey = it.key
-                                    odd.playCateExpand = playCateExpand
-                                    odd
-                                } ?: listOf()
-                        )
-
-                        if (it.value?.filterNotNull()?.size ?: 0 > 5) {
-                            //Triple(玩法key, MatchOdd, 該玩法是否需要展開)
-                            list.add(Triple(it.key, matchOdd, playCateExpand))
-                        }
-                    }
-                }
-                data = list
+            value?.let {
+                data = it.outrightOddsList
             }
         }
 
@@ -85,7 +63,7 @@ class OutrightOddAdapter :
     override fun getItemViewType(position: Int): Int {
         return when (data.getOrNull(position)) {
             is Odd -> ItemType.ODD.ordinal
-            is String -> ItemType.SUB_TITLE.ordinal
+            is OutrightSubTitleItem -> ItemType.SUB_TITLE.ordinal
             else -> ItemType.MORE.ordinal
         }
     }
@@ -101,8 +79,8 @@ class OutrightOddAdapter :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is SubTitleViewHolder -> {
-                val item = data[position] as String
-                holder.bind(matchOdd,item, matchOdd?.dynamicMarkets, outrightOddListener)
+                val item = data[position] as OutrightSubTitleItem
+                holder.bind(matchOdd, item, outrightOddListener)
             }
             is OddViewHolder -> {
                 val item = data[position] as Odd
@@ -110,11 +88,11 @@ class OutrightOddAdapter :
                 holder.bind(matchOdd, item, outrightOddListener, oddsType)
             }
             is MoreViewHolder -> {
-                val item = data[position] as Triple<*, *, *>
+                val item = data[position] as OutrightShowMoreItem
                 holder.bind(
-                    (item.first as String),
-                    (item.second as MatchOdd),
-                    (item.third as Boolean),
+                    item.playCateCode,
+                    item.matchOdd,
+                    item.playCateExpand,
                     outrightOddListener
                 )
             }
@@ -175,22 +153,10 @@ class OutrightOddAdapter :
     class SubTitleViewHolder private constructor(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
-        fun bind(matchOdd: MatchOdd?,item: String, dynamicMarkets: Map<String, DynamicMarket>?,outrightOddListener: OutrightOddListener?) {
-            itemView.outright_odd_subtitle.text = dynamicMarkets?.get(item)?.let {
-                when (LanguageManager.getSelectLanguage(itemView.context)) {
-                    LanguageManager.Language.ZH -> {
-                        it.zh
-                    }
-                    LanguageManager.Language.VI -> {
-                        it.vi
-                    }
-                    else -> {
-                        it.en
-                    }
-                }
-            }
+        fun bind(matchOdd: MatchOdd?,item: OutrightSubTitleItem,outrightOddListener: OutrightOddListener?) {
+            itemView.outright_odd_subtitle.text = item.subTitle
             itemView.outright_odd_subtitle.setOnClickListener {
-                outrightOddListener?.onClickExpand(matchOdd,item)
+                outrightOddListener?.onClickExpand(matchOdd, item.playCateCode)
             }
         }
 
@@ -210,12 +176,14 @@ class OutrightOddAdapter :
         private val tvMore = itemView.findViewById<TextView>(R.id.tvMore)
         private val ivMoreIcon = itemView.findViewById<ImageView>(R.id.ivMoreIcon)
 
+        private val moreItemViewHeight = (itemView.context.resources.displayMetrics.density * 64).toInt() //顯示更多Item的高度
+
         fun bind(oddsKey: String, matchOdd: MatchOdd, isExpand: Boolean, outrightOddListener: OutrightOddListener?) {
             itemView.visibility = if (isExpand) View.VISIBLE else View.GONE
 
             itemView.layoutParams = if (isExpand) LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                (itemView.context.resources.displayMetrics.density * 64).toInt()
+                moreItemViewHeight
             ) else LinearLayout.LayoutParams(0, 0)
 
             itemView.setOnClickListener {
@@ -252,9 +220,11 @@ class OutrightOddAdapter :
 class OutrightOddListener(
     val clickListenerBet: (matchOdd: MatchOdd?, odd: Odd, playCateCode: String) -> Unit,
     val clickListenerMore: (oddsKey: String, matchOdd: MatchOdd) -> Unit,
-    val clickExpand: (matchOdd: MatchOdd?, oddsKey: String) -> Unit
+    val clickExpand: (matchOdd: MatchOdd?, oddsKey: String) -> Unit,
+    private val onClickMatch: (matchOdd: MatchOdd?) -> Unit
 ) {
     fun onClickBet(matchOdd: MatchOdd?, odd: Odd, playCateCode: String) = clickListenerBet(matchOdd, odd, playCateCode)
     fun onClickMore(oddsKey: String, matchOdd: MatchOdd) = clickListenerMore(oddsKey, matchOdd)
     fun onClickExpand(matchOdd: MatchOdd?,oddsKey: String) = clickExpand(matchOdd, oddsKey)
+    fun onClickMatch(matchOdd: MatchOdd?) = onClickMatch.invoke(matchOdd)
 }
