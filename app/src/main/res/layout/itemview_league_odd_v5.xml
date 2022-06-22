@@ -369,6 +369,7 @@
         app:layout_constraintStart_toEndOf="@+id/iv_play"
         app:layout_constraintTop_toTopOf="@id/guide_game_bottom"
         tools:ignore="ContentDescription"
+        tools:visibility="visible"
         />
 
     <TextView
