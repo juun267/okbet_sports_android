@@ -34,6 +34,7 @@ import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.component.LiveViewToolbar
+import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
@@ -147,6 +148,9 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                                 fastBetDataBean
                             )
                             is GamePublicityActivity -> (activity as GamePublicityActivity).showFastBetFragment(
+                                fastBetDataBean
+                            )
+                            is MyFavoriteActivity -> (activity as MyFavoriteActivity).showFastBetFragment(
                                 fastBetDataBean
                             )
                         }
