@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import kotlinx.android.synthetic.main.itemview_outright_odd_subtitle_v4.view.*
@@ -126,20 +125,45 @@ class OutrightLeagueOddAdapter : BaseGameAdapter() {
                 BaseItemType.BOTTOM_NAVIGATION.type
             }
             else -> {
-                when (data[position]) {
+                when (val item = data[position]) {
                     is MatchOdd -> OutrightViewType.TITLE.ordinal
-                    is OutrightSubTitleItem -> OutrightViewType.SUB_TITLE.ordinal
+                    is OutrightSubTitleItem -> {
+                        /**
+                         * item是否需要顯示, (聯賽收合)
+                         */
+                        val itemVisibility = item.leagueExpanded
+
+                        if (itemVisibility) {
+                            OutrightViewType.SUB_TITLE.ordinal
+                        } else {
+                            OutrightViewType.NULL.ordinal
+                        }
+                    }
                     is Odd -> {
-                        val item = data[position] as Odd
+                        /**
+                         * item是否需要顯示, (聯賽收合, 玩法收合, 是否顯示更多)
+                         */
                         val show = item.leagueExpanded && item.playCateExpand && item.isExpand
+
                         if (show) {
                             OutrightViewType.ODD.ordinal
                         } else {
                             OutrightViewType.NULL.ordinal
                         }
                     }
-                    is OutrightShowMoreItem -> OutrightViewType.MORE.ordinal
-                    else -> OutrightViewType.MORE.ordinal
+                    is OutrightShowMoreItem -> {
+                        /**
+                         * item是否需要顯示, (聯賽收合, 玩法收合)
+                         */
+                        val itemVisibility = item.leagueExpanded && item.playCateExpand
+
+                        if (itemVisibility) {
+                            OutrightViewType.MORE.ordinal
+                        } else {
+                            OutrightViewType.NULL.ordinal
+                        }
+                    }
+                    else -> OutrightViewType.NULL.ordinal
                 }
             }
         }
@@ -196,18 +220,7 @@ class OutrightLeagueOddAdapter : BaseGameAdapter() {
         RecyclerView.ViewHolder(itemView) {
 
         fun bind(matchOdd: MatchOdd?, item: OutrightSubTitleItem, outrightOddListener: OutrightOddListener?) {
-            /**
-             * item是否需要顯示, (聯賽收合)
-             */
-            val itemVisibility = item.leagueExpanded
-            if (itemVisibility) {
-                itemView.visibility = View.VISIBLE
-                itemView.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-                itemView.outright_odd_subtitle.text = item.subTitle
-            } else {
-                itemView.visibility = View.GONE
-                itemView.layoutParams = LinearLayout.LayoutParams(0, 0)
-            }
+            itemView.outright_odd_subtitle.text = item.subTitle
 
             itemView.outright_odd_subtitle.setOnClickListener {
                 outrightOddListener?.onClickExpand(matchOdd, item.playCateCode)
@@ -236,28 +249,14 @@ class OutrightLeagueOddAdapter : BaseGameAdapter() {
             outrightOddListener: OutrightOddListener?,
             oddsType: OddsType
         ) {
-            /**
-             * item是否需要顯示, (聯賽收合, 玩法收合, 是否顯示更多)
-             */
-            val show = item.leagueExpanded && item.playCateExpand && item.isExpand
-
-            if (item.isExpand) {
-                itemView.outright_odd_btn.apply {
-                    setupOdd(item, oddsType)
-                    tv_spread.text = ""
-                    this@OddViewHolder.setupOddState(this, item)
-                    setOnClickListener {
-                        outrightOddListener?.onClickBet(matchOdd, item, item.outrightCateKey ?: "")
-                    }
+            itemView.outright_odd_btn.apply {
+                setupOdd(item, oddsType)
+                tv_spread.text = ""
+                this@OddViewHolder.setupOddState(this, item)
+                setOnClickListener {
+                    outrightOddListener?.onClickBet(matchOdd, item, item.outrightCateKey ?: "")
                 }
             }
-
-            itemView.visibility =
-                if (show) View.VISIBLE else View.GONE
-            itemView.layoutParams = if (show) LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ) else LinearLayout.LayoutParams(0, 0)
         }
 
         companion object {
@@ -276,21 +275,7 @@ class OutrightLeagueOddAdapter : BaseGameAdapter() {
 
     class MoreViewHolder(private val viewBinding: ItemviewOutrightOddMoreV4Binding) :
         RecyclerView.ViewHolder(viewBinding.root) {
-        private val moreItemViewHeight = (itemView.context.resources.displayMetrics.density * 64).toInt() //顯示更多Item的高度
-
         fun bind(itemData: OutrightShowMoreItem, outrightOddListener: OutrightOddListener?) {
-            /**
-             * item是否需要顯示, (聯賽收合, 玩法收合)
-             */
-            val itemVisibility = itemData.leagueExpanded && itemData.playCateExpand
-
-            viewBinding.root.visibility = if (itemVisibility) View.VISIBLE else View.GONE
-
-            viewBinding.root.layoutParams = if (itemVisibility) LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                moreItemViewHeight
-            ) else LinearLayout.LayoutParams(0, 0)
-
             viewBinding.root.setOnClickListener {
                 outrightOddListener?.onClickMore(itemData.playCateCode, itemData.matchOdd)
                 itemData.isExpanded = !(itemData.isExpanded)
