@@ -375,8 +375,8 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
         btn_about_us.setOnClickListener {
             JumpUtil.toInternalWeb(
                 this,
-                Constants.getContactUrl(this),
-                getString(R.string.contact)
+                Constants.getAboutUsUrl(this),
+                getString(R.string.about_us)
             )
         }
     }
