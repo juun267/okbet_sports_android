@@ -39,10 +39,7 @@ import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
-import org.cxct.sportlottery.util.GameConfigManager
-import org.cxct.sportlottery.util.SocketUpdateUtil
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.*
 import java.util.*
 
 /**
@@ -183,6 +180,11 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             adapter = oddsDetailListAdapter
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+            addScrollListenerForBottomNavBar(
+                onScrollDown = {
+                    MultiLanguagesApplication.mInstance.setIsScrollDown(it)
+                }
+            )
         }
 
         rv_cat.apply {
@@ -191,6 +193,9 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
         }
 
+        app_bar_layout.addOffsetListenerForBottomNavBar {
+            MultiLanguagesApplication.mInstance.setIsScrollDown(it)
+        }
     }
 
 

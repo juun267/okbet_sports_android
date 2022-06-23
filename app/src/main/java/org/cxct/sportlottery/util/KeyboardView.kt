@@ -15,13 +15,20 @@ import kotlinx.android.synthetic.main.item_number_keyboard_layout.view.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
+import timber.log.Timber
 import java.lang.reflect.Method
 
-class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : FrameLayout(
-        context, attrs, defStyleAttr
+class KeyboardView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : FrameLayout(
+    context, attrs, defStyleAttr
 ) {
 
-    private val view: View by lazy { LayoutInflater.from(context).inflate(R.layout.item_number_keyboard_layout, null, false) }
+    private val view: View by lazy {
+        LayoutInflater.from(context).inflate(R.layout.item_number_keyboard_layout, null, false)
+    }
 
     /**键盘点击事件*/
     private var numCLick: ((number: String) -> Unit)? = null
@@ -34,36 +41,39 @@ class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeS
 
     @SuppressLint("SetTextI18n")
     private fun initView() {
+//        Timber.d("presetBetAmount: ${sConfigData?.presetBetAmount}")
+        //20220610 預設下注金額, 改為三個按鈕顯示 (順序依照後台設置)
         sConfigData?.presetBetAmount?.let {
+//            Timber.d("presetBetAmount reversed: $it")
             it.forEachIndexed { index, i ->
-                if(index == 0){
-                    tvPlus1.text = "+ ${it[index]}"
+                if (index == 0) {
+                    tvPlus1.text = "+ $i"
                     tvPlus1.visibility = View.VISIBLE
-                    tvPlus1.setOnClickListener { v ->
-                        plus(it[index].toLong())
+                    tvPlus1.setOnClickListener {
+                        plus(i.toLong())
                     }
                 }
-                if(index == 1){
-                    tvPlus2.text = "+ ${it[index]}"
+                if (index == 1) {
+                    tvPlus2.text = "+ $i"
                     tvPlus2.visibility = View.VISIBLE
-                    tvPlus2.setOnClickListener { v ->
-                        plus(it[index].toLong())
+                    tvPlus2.setOnClickListener {
+                        plus(i.toLong())
                     }
                 }
-                if(index == 2){
-                    tvPlus3.text = "+ ${it[index]}"
+                if (index == 2) {
+                    tvPlus3.text = "+ $i"
                     tvPlus3.visibility = View.VISIBLE
-                    tvPlus3.setOnClickListener { v ->
-                        plus(it[index].toLong())
+                    tvPlus3.setOnClickListener {
+                        plus(i.toLong())
                     }
                 }
-                if(index == 3){
-                    tvPlus4.text = "+ ${it[index]}"
-                    tvPlus4.visibility = View.VISIBLE
-                    tvPlus4.setOnClickListener { v ->
-                        plus(it[index].toLong())
-                    }
-                }
+//                if (index == 3) {
+//                    tvPlus4.text = "+ $i"
+//                    tvPlus4.visibility = View.VISIBLE
+//                    tvPlus4.setOnClickListener {
+//                        plus(i.toLong())
+//                    }
+//                }
             }
         }
         tvNum0.setOnClickListener {
@@ -102,6 +112,10 @@ class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeS
         tvDot.setOnClickListener {
             insertDot()
         }
+        tvClear.setOnClickListener {
+            //關閉鍵盤
+            hideKeyboard()
+        }
         tvMax.setOnClickListener {
             if (mIsLogin) {
                 plusAll(maxBetMoney)
@@ -125,12 +139,20 @@ class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeS
     private lateinit var mEditText: EditText
     private var maxBetMoney: String = "0"
     private var isShow = false
+
     //是否登入
     private var mIsLogin = false
+
     //提示未登入
     private var snackBarNotify: Snackbar? = null
 
-    fun showKeyboard(editText: EditText, position: Int?, maxBetMoney: Double, minBetMoney: Long, isLogin: Boolean) {
+    fun showKeyboard(
+        editText: EditText,
+        position: Int?,
+        maxBetMoney: Double,
+        minBetMoney: Long,
+        isLogin: Boolean
+    ) {
         this.mEditText = editText
         this.maxBetMoney = TextUtil.formatInputMoney(maxBetMoney)
         //InputType.TYPE_NULL 禁止彈出系統鍵盤
@@ -182,24 +204,20 @@ class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeS
         this.maxBetMoney = TextUtil.formatInputMoney(maxBetMoney)
     }
 
-    private fun disableKeyboard(){
-        if (android.os.Build.VERSION.SDK_INT <= 10) {
-            mEditText.setInputType(InputType.TYPE_NULL);
-        } else {
-            var cls:Class<EditText> = EditText::class.java
-            var method:Method
-            try {
-                method = cls.getMethod("setShowSoftInputOnFocus", Boolean::class.java)
-                method.setAccessible(true);
-                method.invoke(mEditText, false)
-            } catch (e: Exception) {//TODO: handle exception
-            }
-            try {
-                method = cls.getMethod("setSoftInputShownOnFocus",Boolean::class.java)
-                method.setAccessible(true)
-                method.invoke(mEditText, false)
-            } catch (e: Exception) {//TODO: handle exception
-            }
+    private fun disableKeyboard() {
+        var cls: Class<EditText> = EditText::class.java
+        var method: Method
+        try {
+            method = cls.getMethod("setShowSoftInputOnFocus", Boolean::class.java)
+            method.setAccessible(true);
+            method.invoke(mEditText, false)
+        } catch (e: Exception) {//TODO: handle exception
+        }
+        try {
+            method = cls.getMethod("setSoftInputShownOnFocus", Boolean::class.java)
+            method.setAccessible(true)
+            method.invoke(mEditText, false)
+        } catch (e: Exception) {//TODO: handle exception
         }
     }
 
@@ -211,17 +229,20 @@ class KeyboardView @JvmOverloads constructor(context: Context, attrs: AttributeS
         mEditText.setText(tran.toLong().toString())
         mEditText.setSelection(mEditText.text.length)
     }
+
     private fun plusAll(all: String) {
         mEditText.setText(all)
         mEditText.setSelection(mEditText.text.length)
 
     }
+
     private fun insert(count: Long) {
         val editable = mEditText.text
         val start = mEditText.selectionStart
         editable.insert(start, count.toString())
 
     }
+
     private fun insertDot() {
         val editable = mEditText.text
         val start = mEditText.selectionStart

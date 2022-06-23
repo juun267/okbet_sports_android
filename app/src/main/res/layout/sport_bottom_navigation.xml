@@ -28,7 +28,8 @@
 
     <FrameLayout
         android:layout_width="67dp"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/item_bet_list"
@@ -111,5 +112,13 @@
             app:btiTitle="@string/label_transaction_status" />
 
     </FrameLayout>
+
+    <org.cxct.sportlottery.ui.game.bottomNavigation.BottomNavigationItem
+        android:id="@+id/navigation_my"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        app:btiIcon="@drawable/ic_btm_my"
+        app:btiTitle="@string/bottom_nav_my_account" />
 
 </LinearLayout>

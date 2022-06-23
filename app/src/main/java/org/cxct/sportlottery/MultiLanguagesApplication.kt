@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.preference.PreferenceManager
 import cn.jpush.android.api.JPushInterface
@@ -62,6 +63,8 @@ import org.cxct.sportlottery.ui.game.quick.TestViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.news.NewsViewModel
 import org.cxct.sportlottery.ui.permission.GooglePermissionViewModel
+import org.cxct.sportlottery.util.Event
+import java.util.*
 
 /**
  * App 內部切換語系
@@ -88,11 +91,15 @@ class MultiLanguagesApplication : Application() {
             }
         }
 
+    private val _isScrollDown = MutableLiveData<Event<Boolean>>()
+    val isScrollDown: LiveData<Event<Boolean>>
+        get() = _isScrollDown
+
 
     private val viewModelModule = module {
         viewModel { SplashViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { MoneyRechViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { MainViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { MainViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { LoginViewModel(get(), get(), get(), get(), get()) }
         viewModel { RegisterViewModel(get(), get(), get(), get(), get()) }
         viewModel { SettlementViewModel(get(), get(), get(), get(), get(), get(), get()) }
@@ -100,16 +107,16 @@ class MultiLanguagesApplication : Application() {
         viewModel { InfoCenterViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { HelpCenterViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { WithdrawViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { ProfileModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { ProfileModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { ModifyProfileInfoViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { SettingPasswordViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { FeedbackViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { SelfLimitViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { FinanceViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { ProfileCenterViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { ProfileCenterViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { VersionUpdateViewModel(get(), get(), get(), get()) }
         viewModel { MoneyTransferViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { GameViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { GameViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
         viewModel { MaintenanceViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { OtherBetRecordViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { VipViewModel(get(), get(), get(), get(), get(), get()) }
@@ -124,7 +131,7 @@ class MultiLanguagesApplication : Application() {
     }
 
     private val repoModule = module {
-        single { UserInfoRepository(get()) }
+        single { UserInfoRepository }
         single { LoginRepository(get()) }
         single { SportMenuRepository() }
         single { SettlementRepository() }
@@ -135,7 +142,7 @@ class MultiLanguagesApplication : Application() {
         single { FeedbackRepository() }
         single { HostRepository(get()) }
         single { ThirdGameRepository() }
-        single { WithdrawRepository(get()) }
+        single { WithdrawRepository }
         single { PlayQuotaComRepository() }
         single { MyFavoriteRepository() }
         single { SelfLimitRepository() }
@@ -172,7 +179,7 @@ class MultiLanguagesApplication : Application() {
             return@init LanguageManager.getSetLanguageLocale(context)
         }
         MultiLanguage.setApplicationLanguage(this)
-
+//        TimeZone.setDefault(TimeZone.getTimeZone(timeZone))
         startKoin {
             androidContext(this@MultiLanguagesApplication)
             modules(
@@ -265,6 +272,15 @@ class MultiLanguagesApplication : Application() {
         this.isAgeVerifyNeedShow = show
     }
 
+    fun setIsScrollDown(isScrollDown: Boolean) {
+        _isScrollDown.postValue(Event(isScrollDown))
+    }
+
+    //重新顯示bottomNavBar
+    fun initBottomNavBar() {
+        setIsScrollDown(false)
+    }
+
     companion object {
         private var myPref: SharedPreferences? = null
         lateinit var appContext: Context
@@ -308,10 +324,17 @@ class MultiLanguagesApplication : Application() {
                 editor?.apply()
             }
 
+
         fun getChangeModeColorCode(defaultColor: String, nightModeColor: String): String {
             return if (isNightMode) nightModeColor else defaultColor
         }
-
+        var timeZone: String
+            get() = myPref?.getString("timeZone", "GMT-4").toString()
+            set(check) {
+                val editor = myPref?.edit()
+                editor?.putString("timeZone", check)
+                editor?.apply()
+            }
         fun getInstance(): MultiLanguagesApplication? {
             if (instance == null) throw IllegalStateException("Application not be created yet.")
             return instance

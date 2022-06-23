@@ -917,9 +917,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
 
             for (element in oddsDetail.typeCodes) {
-                //有特優賠率時常駐顯示
+                //有特優賠率時常駐顯示 需求 先隱藏特優賠率
                 if (viewType == PlayCate.EPS.ordinal) {
-                    setVisibility(true)
+                    setVisibility(false)
                 } else {
                     try {
                         if (element == code) {

@@ -62,9 +62,8 @@ class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
         setupTime(data)
         setupOddButton(data, oddsType)
 
-        itemView.iv_match_price.visibility =
-            if (data.matchInfo?.eps == 1) View.VISIBLE else View.GONE
-
+//        itemView.iv_match_price.visibility = if (data.matchInfo?.eps == 1) View.VISIBLE else View.GONE
+        itemView.iv_match_price.visibility = View.GONE
         itemView.highlight_match_info.setOnClickListener {
             onClickMatchListener?.onClick(data)
         }
@@ -90,8 +89,8 @@ class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
                 itemView.iv_match_in_play.visibility =
                     if (TimeUtil.isTimeAtStart(data.matchInfo?.startTime)) View.VISIBLE else View.GONE
 
-                itemView.iv_match_price.visibility =
-                    if (data.matchInfo?.eps == 1) View.VISIBLE else View.GONE
+//                itemView.iv_match_price.visibility = if (data.matchInfo?.eps == 1) View.VISIBLE else View.GONE
+                itemView.iv_match_price.visibility = View.GONE
 
                 itemView.highlight_match_info.setOnClickListener {
                     onClickMatchListener?.onClick(data)

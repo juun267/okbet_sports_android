@@ -114,7 +114,6 @@
                 android:layout_marginStart="6dp"
                 app:cvIcon="@drawable/ic_game_update"
                 app:cvTitle="@string/version_update" />-->
-
         </LinearLayout>
 
     </HorizontalScrollView>

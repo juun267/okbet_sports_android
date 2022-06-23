@@ -52,11 +52,8 @@ import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
-import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.OddsSortUtil.recommendSortOddsMap
-import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
-import org.cxct.sportlottery.util.SocketUpdateUtil
-import org.cxct.sportlottery.util.getVisibleRangePosition
 import java.util.*
 
 
@@ -210,6 +207,9 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     }
                 }
             })
+            addScrollListenerForBottomNavBar {
+                MultiLanguagesApplication.mInstance.setIsScrollDown(it)
+            }
             mHomeListAdapter.setHomePreloadItem()
         }
     }
@@ -411,6 +411,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             }
         }
 
+        //TODO review 看是不是直接改成和點擊標題同行為
         mHomeListAdapter.onRecommendClickMoreListener = object : OnClickMoreListener {
             override fun onClickMore(oddsKey: String, matchOdd: MatchOdd) {
                 val action = HomeFragmentDirections.actionHomeFragmentToGameOutrightMoreFragment(
@@ -1259,14 +1260,15 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         )
     }
 
-    private fun navGameOutright(gameTypeCode: String?, matchId: String?) {
+    private fun navGameOutright(gameTypeCode: String?, outrightLeagueId: String?) {
         val gameType = GameType.getGameType(gameTypeCode)
 
-        if (gameType != null && matchId != null) {
+        if (gameType != null && outrightLeagueId != null) {
             val action =
-                HomeFragmentDirections.actionHomeFragmentToGameOutrightFragment(
-                    gameType,
-                    matchId
+                HomeFragmentDirections.actionHomeFragmentToGameFragment(
+                    MatchType.OUTRIGHT,
+                    gameTypeCode,
+                    outrightLeagueId
                 )
 
             findNavController().navigate(action)

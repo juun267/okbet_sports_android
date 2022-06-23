@@ -4,14 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true"
     android:background="@color/transparent_black_0"
     tools:context=".ui.game.betList.receipt.BetReceiptFragment">
 
-    <include
+    <View
         android:id="@+id/tool_bar"
-        layout="@layout/view_toolbar_main"
-        android:background="@color/transparent_black_0"
-        android:visibility="invisible" />
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tool_bar_notification_height"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/transparent_black_50" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -173,7 +176,7 @@
                 android:id="@+id/title_winnable_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/bet_list_win_quota"
+                android:text="@string/bet_receipt_win_quota"
                 android:textColor="@color/color_909090_666666"
                 android:textSize="@dimen/textSize14sp"
                 app:layout_constraintBottom_toBottomOf="parent"

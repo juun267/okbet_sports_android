@@ -11,7 +11,7 @@
     <TextView
         android:id="@+id/tv_toolbar_title"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/tool_bar_height"
         android:gravity="center"
         android:letterSpacing="0.2"
         android:textColor="@color/color_FFFFFF_FFFFFF"

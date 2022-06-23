@@ -100,7 +100,7 @@
         android:id="@+id/tv_login"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/button_radius_5_0760d4"
+        android:background="@drawable/button_radius_4_0870f7_0659c4"
         android:gravity="center"
         android:text="@string/btn_login"
         android:textAllCaps="true"

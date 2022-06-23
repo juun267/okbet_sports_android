@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -36,7 +37,10 @@ import org.json.JSONArray
  * @create 2022/3/31
  * @description
  */
-fun RecyclerView.addScrollWithItemVisibility(onScrolling: () -> Unit, onVisible: (visibleList: List<Pair<Int, Int>>) -> Unit) {
+fun RecyclerView.addScrollWithItemVisibility(
+    onScrolling: () -> Unit,
+    onVisible: (visibleList: List<Pair<Int, Int>>) -> Unit
+) {
     addOnScrollListener(object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
@@ -77,6 +81,66 @@ fun RecyclerView.addScrollWithItemVisibility(onScrolling: () -> Unit, onVisible:
                     onScrolling()
                 }
             }
+        }
+    })
+}
+
+fun RecyclerView.addScrollListenerForBottomNavBar(
+    onScrollDown: (isScrollDown: Boolean) -> Unit
+) {
+    addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        var needChangeBottomBar = true
+        var directionIsDown = true
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            if (needChangeBottomBar) {
+                needChangeBottomBar = false
+                //更新記錄的方向
+                if (dy > 0) {
+                    directionIsDown = true
+                    onScrollDown(true)
+                } else if (dy < 0) {
+                    directionIsDown = false
+                    onScrollDown(false)
+                }
+            }
+            //Y軸移動的值和記錄的方向不同時, 重設狀態
+            if (dy > 0 != directionIsDown) {
+                needChangeBottomBar = true
+            }
+
+            //滑到最底部時顯示
+            if (!recyclerView.canScrollVertically(1)) {
+                onScrollDown(false)
+            }
+        }
+    })
+}
+
+fun AppBarLayout.addOffsetListenerForBottomNavBar(
+    onScrollDown: (isScrollDown: Boolean) -> Unit
+) {
+    addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener {
+        var oldOffset = 0
+        var needChangeBottomBar = true
+        var directionIsDown = true
+        override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
+            if (needChangeBottomBar) {
+                needChangeBottomBar = false
+                //更新記錄的方向
+                if (oldOffset > verticalOffset) {
+                    directionIsDown = true
+                    onScrollDown(true)
+                } else if (oldOffset < verticalOffset) {
+                    directionIsDown = false
+                    onScrollDown(false)
+                }
+            }
+            //移動的值和記錄的方向不同時, 重設狀態
+            if (oldOffset > verticalOffset != directionIsDown) {
+                needChangeBottomBar = true
+            }
+            oldOffset = verticalOffset
         }
     })
 }

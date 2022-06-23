@@ -336,7 +336,7 @@
         app:layout_constraintBottom_toBottomOf="@id/league_odd_quick_cate_divider"
         app:layout_constraintStart_toStartOf="@id/guide_game_start"
         app:layout_constraintTop_toTopOf="@id/guide_game_bottom"
-        tools:visibility="visible" />
+         />
 
     <ImageView
         android:id="@+id/iv_play"
@@ -369,7 +369,8 @@
         app:layout_constraintStart_toEndOf="@+id/iv_play"
         app:layout_constraintTop_toTopOf="@id/guide_game_bottom"
         tools:ignore="ContentDescription"
-        tools:visibility="visible" />
+        tools:visibility="visible"
+        />
 
     <TextView
         android:id="@+id/league_odd_match_play_count"

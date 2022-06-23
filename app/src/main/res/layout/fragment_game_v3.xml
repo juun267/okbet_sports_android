@@ -14,9 +14,10 @@
         android:id="@+id/appbar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/transparent"
         android:layout_marginBottom="5dp"
+        android:background="@color/transparent"
         app:elevation="0dp">
+
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsingToolbarLayout"
             android:layout_width="match_parent"
@@ -28,6 +29,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/fillet_5dp_white"
                 android:orientation="vertical">
+
                 <ImageView
                     android:id="@+id/game_bg_layer2"
                     android:layout_width="match_parent"
@@ -35,7 +37,7 @@
                     android:scaleType="centerCrop"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@id/game_toolbar_v4"
-                    app:layout_constraintTop_toTopOf="@id/sport_type_list"
+                    app:layout_constraintTop_toTopOf="@id/ll_sport_type"
                     tools:ignore="ContentDescription"
                     tools:src="@drawable/soccer108" />
 
@@ -46,31 +48,36 @@
                     android:scaleType="centerCrop"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@id/game_tab_odd_v4"
-                    app:layout_constraintTop_toTopOf="@id/sport_type_list"
+                    app:layout_constraintTop_toTopOf="@id/ll_sport_type"
                     tools:ignore="ContentDescription"
                     tools:src="@drawable/soccer140"
                     tools:visibility="visible" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/sport_type_list"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="10dp"
-                    app:layout_constrainedWidth="true"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:itemCount="1"
-                    tools:listitem="@layout/itemview_sport_type_v5" />
+                <LinearLayout
+                    android:id="@+id/ll_sport_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="88dp"
+                    android:background="@color/color_191919_FCFCFC"
+                    android:gravity="center_horizontal"
+                    tools:ignore="MissingConstraints">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/sport_type_list"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:nestedScrollingEnabled="false"
+                        tools:itemCount="1"
+                        tools:listitem="@layout/itemview_sport_type_v6" />
+                </LinearLayout>
+
 
                 <include
                     android:id="@+id/game_toolbar_v4"
                     layout="@layout/view_game_toolbar_v4"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    app:layout_constraintTop_toBottomOf="@id/sport_type_list" />
+                    android:layout_marginTop="4dp"
+                    app:layout_constraintTop_toBottomOf="@id/ll_sport_type" />
 
                 <include
                     android:id="@+id/game_tab_odd_v4"
@@ -78,7 +85,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="32dp"
                     app:layout_constraintTop_toBottomOf="@id/game_toolbar_v4"
-                    tools:visibility="visible"/>
+                    tools:visibility="visible" />
 
                 <include
                     android:id="@+id/game_match_category_pager"
@@ -92,13 +99,14 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/game_tab_odd_v4"
-                    tools:visibility="visible"/>
+                    tools:visibility="visible" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/game_play_category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"
                     android:paddingStart="16dp"
                     android:paddingTop="10dp"
                     android:paddingEnd="16dp"
@@ -109,8 +117,7 @@
                     app:layout_constraintTop_toBottomOf="@id/game_match_category_pager"
                     tools:itemCount="1"
                     tools:listitem="@layout/itemview_play_category_v4"
-                    tools:visibility="visible"
-                    android:overScrollMode="never"/>
+                    tools:visibility="visible" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/game_filter_type_list"
@@ -130,20 +137,22 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <FrameLayout android:id="@+id/gameContainer"
+    <FrameLayout
+        android:id="@+id/gameContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:animateLayoutChanges="true">
+        android:animateLayoutChanges="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/game_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/color_191919_FCFCFC"
+            android:overScrollMode="never"
             android:paddingTop="0dp"
             tools:itemCount="1"
-            tools:listitem="@layout/itemview_league_v5"
-            android:overScrollMode="never"
-            android:background="@color/color_191919_FCFCFC" />
+            tools:listitem="@layout/itemview_league_v5" />
     </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

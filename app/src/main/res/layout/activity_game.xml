@@ -70,7 +70,7 @@
                     android:name="androidx.navigation.fragment.NavHostFragment"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    app:layout_constraintBottom_toTopOf="@id/game_bottom_navigation"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/btn_menu_left"
                     app:navGraph="@navigation/game_navigation"
                     tools:layout="@layout/fragment_home" />
@@ -83,47 +83,21 @@
                     app:layout_constraintStart_toEndOf="@+id/btn_menu_left"
                     app:layout_constraintTop_toBottomOf="@id/view_notification" />
 
-                <Button
-                    android:id="@+id/game_submit"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_margin="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@color/color_FF9143_ff9200"
-                    android:text="@string/button_league_submit"
-                    android:textColor="@color/color_FCFCFC"
-                    android:textSize="@dimen/textSize14sp"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toTopOf="@id/game_bottom_navigation"
-                    tools:ignore="SpUsage,TextContrastCheck"
-                    tools:layout_editor_absoluteX="8dp"
-                    tools:visibility="visible" />
-
-                <!--根據需求先隱藏，確定不用可刪-->
-                <org.cxct.sportlottery.ui.common.ServiceFloatingButton
-                    android:id="@+id/btn_floating_service"
-                    android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:layout_marginBottom="14dp"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    app:layout_constraintBottom_toTopOf="@id/game_bottom_navigation" />
-
                 <include
                     android:id="@+id/game_bottom_navigation"
                     layout="@layout/view_bottom_navigation_sport"
                     android:layout_width="match_parent"
-                    android:layout_height="55dp"
+                    android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent" />
 
-                <!-- 快捷投注單 -->
-                <!-- 因左邊選單需在快捷注單上層 故在此將快捷注單獨立顯示-->
-                <FrameLayout
-                    android:id="@+id/fl_fast_bet"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    tools:visibility="gone" />
+<!--                &lt;!&ndash; 快捷投注單 &ndash;&gt;-->
+<!--                &lt;!&ndash; 因左邊選單需在快捷注單上層 故在此將快捷注單獨立顯示&ndash;&gt;-->
+<!--                <FrameLayout-->
+<!--                    android:id="@+id/fl_fast_bet"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    tools:visibility="gone" />-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -144,11 +118,11 @@
 
         </androidx.drawerlayout.widget.DrawerLayout>
 
-        <!-- 投注單列表 -->
+        <!-- 投注單列表 & 快捷投注單 -->
         <FrameLayout
             android:id="@+id/fl_bet_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:visibility="gone" />
 

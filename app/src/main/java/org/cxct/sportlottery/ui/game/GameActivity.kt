@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -20,6 +21,8 @@ import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import kotlinx.android.synthetic.main.sport_bottom_navigation.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
+import kotlinx.android.synthetic.main.view_bottom_navigation_sport.tv_balance
+import kotlinx.android.synthetic.main.view_bottom_navigation_sport.tv_bet_list_count
 import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
 import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_right.*
@@ -35,12 +38,12 @@ import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.message.Row
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.FastBetFragment
-import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.game.filter.LeagueFilterFragmentDirections
 import org.cxct.sportlottery.ui.game.hall.GameV3Fragment
 import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
@@ -49,7 +52,6 @@ import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageFragment
 import org.cxct.sportlottery.ui.game.league.GameLeagueFragmentDirections
 import org.cxct.sportlottery.ui.game.menu.LeftMenuFragment
-import org.cxct.sportlottery.ui.game.outright.GameOutrightFragmentDirections
 import org.cxct.sportlottery.ui.game.outright.GameOutrightMoreFragmentDirections
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
@@ -93,7 +95,9 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     private val mNavController by lazy { findNavController(R.id.game_container) }
     private val navDestListener by lazy {
         NavController.OnDestinationChangedListener { _, destination, arguments ->
+            MultiLanguagesApplication.mInstance.initBottomNavBar()
             updateServiceButtonVisibility(destinationId = destination.id)
+            mOutrightLeagueId = arguments?.get("outrightLeagueId") as? String
             when (destination.id) {
                 R.id.homeFragment -> {
                     updateSelectTabState(0)
@@ -105,10 +109,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
                 R.id.gameLeagueFragment -> {
                     updateSelectTabState(arguments?.get("matchType") as MatchType)
-                }
-
-                R.id.gameOutrightFragment -> {
-                    updateSelectTabState(MatchType.OUTRIGHT)
                 }
 
                 R.id.oddsDetailFragment -> {
@@ -126,6 +126,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         }
     }
     var isFromPublicity: Boolean = false
+
+    private var mOutrightLeagueId: String? = null //主頁跳轉冠軍頁時傳遞的聯賽Id
 
     private fun updateServiceButtonVisibility(destinationId: Int) {
         when (destinationId) {
@@ -280,6 +282,11 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     }
 
     override fun initBottomNavigation() {
+        tv_balance_currency.text = sConfigData?.systemCurrencySign
+        tv_balance.text = TextUtil.formatMoney(0.0)
+        cl_bet_list_bar.setOnClickListener {
+            showBetListPage()
+        }
         sport_bottom_navigation.setNavigationItemClickListener {
             when (it) {
                 R.id.navigation_sport -> {
@@ -312,6 +319,10 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     viewModel.navTranStatus()
                     false
                 }
+                R.id.navigation_my -> {
+                    viewModel.navMy()
+                    false
+                }
                 else -> false
             }
         }
@@ -328,22 +339,13 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         betListFragment =
             BetListFragment.newInstance(object : BetListFragment.BetResultListener {
-                override fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>) {
-                    supportFragmentManager.beginTransaction()
-                        .setCustomAnimations(
-                            R.anim.push_right_to_left_enter,
-                            R.anim.pop_bottom_to_top_exit,
-                            R.anim.push_right_to_left_enter,
-                            R.anim.pop_bottom_to_top_exit
-                        )
-                        .add(
-                            R.id.fl_bet_list,
-                            BetReceiptFragment.newInstance(betResultData, betParlayList)
-                        )
-                        .addToBackStack(BetReceiptFragment::class.java.simpleName)
-                        .commit()
+                override fun onBetResult(
+                    betResultData: Receipt?,
+                    betParlayList: List<ParlayOdd>,
+                    isMultiBet: Boolean
+                ) {
+                    showBetReceiptDialog(betResultData, betParlayList, isMultiBet, R.id.fl_bet_list)
                 }
-
             })
 
         transaction
@@ -359,6 +361,9 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
     override fun updateBetListCount(num: Int) {
         sport_bottom_navigation.setBetCount(num)
+        cl_bet_list_bar.isVisible = num > 0
+        tv_bet_list_count.text = num.toString()
+        if (num > 0) viewModel.getMoney()
     }
 
     override fun showLoginNotify() {
@@ -532,7 +537,14 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 viewModel.switchMatchType(MatchType.EARLY)
             }
             getMatchTypeTabPosition(MatchType.OUTRIGHT) -> {
-                viewModel.switchMatchType(MatchType.OUTRIGHT)
+                /**
+                 * 若mOutrightLeagueId有值的話, 此行為為主頁點擊聯賽跳轉至冠軍頁, 跳轉行為於HomeFragment處理
+                 *
+                 * @see org.cxct.sportlottery.ui.game.home.HomeFragment.navGameOutright
+                 */
+                if (mOutrightLeagueId.isNullOrEmpty()) {
+                    viewModel.switchMatchType(MatchType.OUTRIGHT)
+                }
             }
             getMatchTypeTabPosition(MatchType.PARLAY) -> {
                 viewModel.switchMatchType(MatchType.PARLAY)
@@ -629,13 +641,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     GameLeagueFragmentDirections.actionGameLeagueFragmentToGameV3Fragment(matchType)
                 mNavController.navigate(action)
             }
-            R.id.gameOutrightFragment -> {
-                val action =
-                    GameOutrightFragmentDirections.actionGameOutrightFragmentToGameV3Fragment(
-                        matchType
-                    )
-                mNavController.navigate(action)
-            }
             R.id.gameOutrightMoreFragment -> {
                 val action =
                     GameOutrightMoreFragmentDirections.actionGameOutrightMoreFragmentToGameV3Fragment(
@@ -678,12 +683,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             R.id.gameLeagueFragment -> {
                 val action =
                     GameLeagueFragmentDirections.actionGameLeagueFragmentToHomeFragment()
-                mNavController.navigate(action)
-            }
-
-            R.id.gameOutrightFragment -> {
-                val action =
-                    GameOutrightFragmentDirections.actionGameOutrightFragmentToHomeFragment()
                 mNavController.navigate(action)
             }
 
@@ -770,6 +769,16 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initObserve() {
+        viewModel.userMoney.observe(this) {
+            it?.let { money ->
+                tv_balance.text = TextUtil.formatMoney(money)
+            }
+        }
+        MultiLanguagesApplication.mInstance.isScrollDown.observe(this) {
+            it.getContentIfNotHandled()?.let { isScrollDown ->
+                setBottomNavBarVisibility(game_bottom_navigation, isScrollDown)
+            }
+        }
         viewModel.settlementNotificationMsg.observe(this) {
             val message = it.getContentIfNotHandled()
             message?.let { messageNotnull -> view_notification.addNotification(messageNotnull) }
@@ -932,7 +941,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         fastBetFragment.arguments = bundle;
 
         transaction
-            .add(R.id.fl_fast_bet, fastBetFragment)
+            .add(R.id.fl_bet_list, fastBetFragment)
             .addToBackStack(FastBetFragment::class.java.simpleName)
             .commit()
     }

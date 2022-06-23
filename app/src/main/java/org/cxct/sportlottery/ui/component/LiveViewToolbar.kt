@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.dialog_bottom_sheet_webview.view.*
 import kotlinx.android.synthetic.main.view_toolbar_live.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LiveUtil
 import org.cxct.sportlottery.util.MetricsUtil
@@ -73,7 +74,7 @@ class LiveViewToolbar @JvmOverloads constructor(
         }
     private var newestUrl: Boolean = false
     private var isLogin:Boolean = false
-
+    var gameType: GameType? = null
     private var mMatchId: String? = null
     private var mEventId: String? = null //動畫Id
         set(value) {
@@ -306,6 +307,64 @@ class LiveViewToolbar @JvmOverloads constructor(
         }
     }
 
+    private fun ImageView.setLiveImxg() {
+        when (gameType) {
+            GameType.FT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_soccer_unselected)
+            GameType.BK -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_basketball_unselected)
+            GameType.TN -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_tennis_unselected)
+            GameType.VB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_volleyball_unselected)
+            GameType.BM -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_badminton_unselected)
+            GameType.TT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_pingpong_unselected)
+            GameType.IH -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_icehockey_unselected)
+            GameType.BX -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_boxing_unselected)
+            GameType.CB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_billiards_unselected)
+            GameType.CK -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_cricket_unselected)
+            GameType.BB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_baseball_unselected)
+            GameType.RB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_rugby_unselected)
+            GameType.AFT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_football_unselected)
+            GameType.MR -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_racing_unselected)
+            GameType.GF -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_golf_unselected)
+        }
+    }
+    private fun setAnimationImgIcon(isOn: Boolean) {
+        if (isOn) {
+            when (gameType) {
+                GameType.FT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_soccer_selected)
+                GameType.BK -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_basketball_selected)
+                GameType.TN -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_tennis_selected)
+                GameType.VB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_volleyball_selected)
+                GameType.BM -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_badminton_selected)
+                GameType.TT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_pingpong_selected)
+                GameType.IH -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_icehockey_selected)
+                GameType.BX -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_boxing_selected)
+                GameType.CB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_billiards_selected)
+                GameType.CK -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_cricket_selected)
+                GameType.BB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_baseball_selected)
+                GameType.RB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_rugby_selected)
+                GameType.AFT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_football_selected)
+                GameType.MR -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_racing_selected)
+                GameType.GF -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_golf_selected)
+            }
+        } else {
+            when (gameType) {
+                GameType.FT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_soccer_unselected)
+                GameType.BK -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_basketball_unselected)
+                GameType.TN -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_tennis_unselected)
+                GameType.VB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_volleyball_unselected)
+                GameType.BM -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_badminton_unselected)
+                GameType.TT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_pingpong_unselected)
+                GameType.IH -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_icehockey_unselected)
+                GameType.BX -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_boxing_unselected)
+                GameType.CB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_billiards_unselected)
+                GameType.CK -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_cricket_unselected)
+                GameType.BB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_baseball_unselected)
+                GameType.RB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_rugby_unselected)
+                GameType.AFT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_football_unselected)
+                GameType.MR -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_racing_unselected)
+                GameType.GF -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_golf_unselected)
+            }
+        }
+    }
     /**
      * 設置為直播高度
      */
@@ -409,6 +468,7 @@ class LiveViewToolbar @JvmOverloads constructor(
         streamUrl?.let {
             iv_play.isSelected = true
             iv_animation.isSelected = false
+            iv_animation.setLiveImxg()
             if (exoPlayer == null) {
                 exoPlayer = SimpleExoPlayer.Builder(context).build().also { exoPlayer ->
                     player_view.player = exoPlayer
@@ -502,7 +562,7 @@ class LiveViewToolbar @JvmOverloads constructor(
         lastLiveType = LiveType.ANIMATION
 //        setLivePlayImg()
         web_view.isVisible = true
-//        setAnimationImgIcon(true)
+        setAnimationImgIcon(true)
         player_view.isVisible = false
 
         web_view.settings.apply {
@@ -546,7 +606,7 @@ class LiveViewToolbar @JvmOverloads constructor(
         web_view.isVisible = false
         web_view.onPause()
         checkExpandLayoutStatus()
-//        setAnimationImgIcon(false)
+        setAnimationImgIcon(false)
     }
 
     /**

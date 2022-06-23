@@ -43,6 +43,7 @@ import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryListener
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
+import timber.log.Timber
 
 /**
  * @app_destination 我的賽事
@@ -160,10 +161,12 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
         if (gameMatchType == MatchType.IN_PLAY) {
             matchId?.let {
                 navOddsDetailLive(matchId, gameMatchType)
+                Timber.e("navOddsDetailLive")
             }
         } else {
             matchId?.let {
                 navOddsDetail(matchId, matchInfoList)
+                Timber.e("navOddsDetail")
             }
         }
     }
@@ -195,12 +198,12 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
 
             this.adapter = gameTypeAdapter
 
-            addItemDecoration(
-                SpaceItemDecoration(
-                    context,
-                    R.dimen.recyclerview_item_dec_spec_sport_type
-                )
-            )
+//            addItemDecoration(
+//                SpaceItemDecoration(
+//                    context,
+//                    R.dimen.recyclerview_item_dec_spec_sport_type
+//                )
+//            )
         }
     }
 
@@ -259,6 +262,12 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
                     }
                 }
             )
+            addScrollListenerForBottomNavBar {
+                MultiLanguagesApplication.mInstance.setIsScrollDown(it)
+            }
+        }
+        view.appbar_layout.addOffsetListenerForBottomNavBar {
+            MultiLanguagesApplication.mInstance.setIsScrollDown(it)
         }
     }
 

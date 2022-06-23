@@ -121,6 +121,33 @@ enum class GameType(val key: String, @StringRes val string: Int) {
             }
         }
 
+
+        fun getGameTypeMenuIcon(gameType: String): Int{
+            return when(gameType){
+                FT.key -> R.drawable.ic_home_football
+                BK.key -> R.drawable.ic_home_basketball
+                TN.key -> R.drawable.ic_home_tennis
+                VB.key -> R.drawable.ic_home_volleyballx
+                BM.key -> R.drawable.ic_home_badminton
+                TT.key -> R.drawable.ic_home_pingpong
+                IH.key -> R.drawable.ic_home_icehockey
+                BX.key -> R.drawable.ic_home_boxing
+                CB.key -> R.drawable.ic_home_snooker
+                CK.key -> R.drawable.ic_home_cricket
+                BB.key -> R.drawable.ic_home_baseball
+                RB.key -> R.drawable.ic_home_rugby
+                AFT.key -> R.drawable.ic_home_amfootball
+                MR.key -> R.drawable.ic_home_racing
+                GF.key -> R.drawable.ic_home_golf
+                FB.key -> R.drawable.ic_home_finance_piechart
+                OTHER.key -> R.drawable.ic_home_champ
+                BB_COMING_SOON.key -> R.drawable.ic_home_baseball
+                ES_COMING_SOON.key -> R.drawable.ic_home_gaming
+                else -> R.drawable.ic_game_champ
+            }
+        }
+
+
         fun getGameTypeWhiteIcon(gameType: String): Int {
             return when (gameType) {
                 FT.key -> R.drawable.img_soccer_white

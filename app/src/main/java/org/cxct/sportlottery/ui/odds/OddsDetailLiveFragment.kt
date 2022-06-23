@@ -20,7 +20,6 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.exoplayer2.util.Util
-import kotlinx.android.synthetic.main.fragment_odds_detail.*
 import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
 import kotlinx.android.synthetic.main.fragment_odds_detail_live.cl_content
 import kotlinx.android.synthetic.main.fragment_odds_detail_live.live_view_tool_bar
@@ -229,7 +228,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     }
 
     private fun initUI() {
-//        live_view_tool_bar.gameType = args.gameType //賽事動畫icon用，之後用不到可刪
+        live_view_tool_bar.gameType = args.gameType //賽事動畫icon用，之後用不到可刪
         oddsDetailListAdapter = OddsDetailListAdapter(
             OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
                 if(mIsEnabled) {
@@ -280,12 +279,21 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             adapter = oddsDetailListAdapter
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+            addScrollListenerForBottomNavBar(
+                onScrollDown = {
+                    MultiLanguagesApplication.mInstance.setIsScrollDown(it)
+                }
+            )
         }
 
         rv_cat.apply {
             adapter = tabCateAdapter
             itemAnimator?.changeDuration = 0
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
+        }
+
+        app_bar_layout.addOffsetListenerForBottomNavBar {
+            MultiLanguagesApplication.mInstance.setIsScrollDown(it)
         }
     }
 

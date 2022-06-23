@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.annotation.IdRes
 import kotlinx.android.synthetic.main.sport_bottom_navigation.view.*
-import kotlinx.android.synthetic.main.view_bottom_navigation_sport.view.*
 import org.cxct.sportlottery.R
 
 class SportBottomNavigation @JvmOverloads constructor(
@@ -35,6 +34,7 @@ class SportBottomNavigation @JvmOverloads constructor(
         setupNavigationItemClick(item_bet_list)
         setupNavigationItemClick(navigation_account_history)
         setupNavigationItemClick(navigation_transaction_status)
+        setupNavigationItemClick(navigation_my)
     }
 
     private fun setupNavigationItemClick(item: View) {
@@ -80,12 +80,12 @@ class SportBottomNavigation @JvmOverloads constructor(
     }
 
     fun setBetCount(betCount: Int) {
-        val betCountStr = betCount.toString()
-        if(tv_bet_count.text != betCountStr) {
-            laExplo.visibility = VISIBLE
-            laExplo.playAnimation()
-            tv_bet_count.text = betCountStr
-        }
+//        val betCountStr = betCount.toString()
+//        if(tv_bet_count.text != betCountStr) {
+//            laExplo.visibility = VISIBLE
+//            laExplo.playAnimation()
+//            tv_bet_count.text = betCountStr
+//        }
     }
 
     /**

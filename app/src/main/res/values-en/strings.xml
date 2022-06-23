@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="language_setting">Language setting</string>
+    <string name="language_setting">Language</string>
     <string name="loading">Loading</string>
     <string name="connect_first">Select the internet to connect</string>
     <string name="error_url_fail">Jumping to address error</string>
@@ -644,7 +644,7 @@
     <string name="bet_info_check_maximum_limit">MAX BET</string>
     <string name="bet_info_bet_quota">bet amount</string>
     <string name="bet_info_win_quota">To Win</string>
-    <string name="bet_info_accept_odds_change">Accept changes &#038; bets</string>
+    <string name="bet_info_accept_odds_change">Accept changes</string>
     <string name="bet_info_add_to_bet_info">Add to bet slip</string>
     <string name="bet_info_odd_content_changed">One or more options for odds, concede. Points or score has changed</string>
     <string name="bet_info_odd_content_changed2">The odds have changed, %s to %s </string>
@@ -653,7 +653,9 @@
     <string name="bet_list_delete_all">Delete all</string>
     <string name="bet_list_single_warn">(Fill all individual options with the same amount of bet)</string>
     <string name="bet_list_single">Singles</string>
-    <string name="bet_list_view_more_options">Show all the multiple options</string>
+    <string name="bet_list_single_type">Singles</string>
+    <string name="bet_list_parlay_type">Parlay</string>
+    <string name="bet_list_view_more_options">More options</string>
     <string name="bet_list_cant_parlay_warn">Remind if the same match betting items can not be linked for parlay</string>
     <string name="bet_info_odd_content_close">One or more options for the selected bet have been closed</string>
     <string name="bet_info_remove_closed">Remove disabled options</string>
@@ -1147,4 +1149,16 @@
     <!--region 大廳賠率按鈕-->
     <string name="none">None</string>
     <!--endregion-->
+    <string name="timezone_change">Time Zone</string>
+    <string name="timezone">Time Zone</string>
+    <!--region 注單模塊調整-->
+    <string name="bet_info_bet_lock_hint">Markets of your bet has changed</string>
+    <string name="bet_info_no_parlay_hint">The match hasn\'t supported parlay</string>
+    <string name="function">Functions</string>
+    <string name="sport_relative">Sports Related</string>
+    <string name="setting">Settings</string>
+    <string name="service">Service</string>
+    <string name="timezone_list_no_record">No result found</string>
+    <!--endregion-->
+
 </resources>

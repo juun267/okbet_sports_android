@@ -58,7 +58,7 @@ class VpRecommendAdapter(
     override fun getItemViewType(position: Int): Int {
         return when {
             isOutright != 0 -> ItemType.RECOMMEND_OUTRIGHT.ordinal //冠軍推薦賽事
-            dataList[position].playTypeCode == PlayCate.EPS.value -> ItemType.RECOMMEND_EPS.ordinal //特優賠率
+//            dataList[position].playTypeCode == PlayCate.EPS.value -> ItemType.RECOMMEND_EPS.ordinal //特優賠率  需求先隱藏特優賠率
             else -> ItemType.RECOMMEND.ordinal //一般推薦賽事
         }
     }

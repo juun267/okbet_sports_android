@@ -5,9 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
-import kotlinx.android.synthetic.main.view_toolbar_main.*
+import kotlinx.android.synthetic.main.activity_game_publicity.*
+import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityGamePublicityBinding
@@ -17,13 +19,11 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
-import org.cxct.sportlottery.ui.dialog.AgeVerifyDialog
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.Page
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.FastBetFragment
-import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity.Companion.FROM_ACTIVITY
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
@@ -33,11 +33,7 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.AppManager
-import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.MetricsUtil
-import org.cxct.sportlottery.util.setVisibilityByCreditSystem
+import org.cxct.sportlottery.util.*
 import org.parceler.Parcels
 
 class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class),
@@ -96,6 +92,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
 
     private fun initDestination() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            MultiLanguagesApplication.mInstance.initBottomNavBar()
             when (destination.id) {
                 R.id.publicityFragment -> {
                     binding.gameToolbar.toolBar.visibility = View.GONE
@@ -139,7 +136,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     }
 
     private fun initServiceButton() {
-        binding.btnFloatingService.setView(this)
+        binding.gameBottomNavigation.btnFloatingService.setView(this)
     }
 
     private fun initRegionViewBtn() {
@@ -169,6 +166,16 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     }
 
     private fun initObservers() {
+        viewModel.userMoney.observe(this) {
+            it?.let { money ->
+                tv_balance.text = TextUtil.formatMoney(money)
+            }
+        }
+        MultiLanguagesApplication.mInstance.isScrollDown.observe(this) {
+            it.getContentIfNotHandled()?.let { isScrollDown ->
+                setBottomNavBarVisibility(game_Bottom_Navigation, isScrollDown)
+            }
+        }
         viewModel.showBetUpperLimit.observe(this) {
             if (it.getContentIfNotHandled() == true)
                 snackBarBetUpperLimitNotify.apply {
@@ -252,20 +259,12 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
 
         betListFragment =
             BetListFragment.newInstance(object : BetListFragment.BetResultListener {
-                override fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>) {
-                    supportFragmentManager.beginTransaction()
-                        .setCustomAnimations(
-                            R.anim.push_right_to_left_enter,
-                            R.anim.pop_bottom_to_top_exit,
-                            R.anim.push_right_to_left_enter,
-                            R.anim.pop_bottom_to_top_exit
-                        )
-                        .add(
-                            binding.flBetList.id,
-                            BetReceiptFragment.newInstance(betResultData, betParlayList)
-                        )
-                        .addToBackStack(BetReceiptFragment::class.java.simpleName)
-                        .commit()
+                override fun onBetResult(
+                    betResultData: Receipt?,
+                    betParlayList: List<ParlayOdd>,
+                    isMultiBet: Boolean
+                ) {
+                    showBetReceiptDialog(betResultData, betParlayList, isMultiBet, binding.flBetList.id)
                 }
 
             }, showToolbar = navController.currentDestination?.id == R.id.publicityFragment)
@@ -368,6 +367,11 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     }
 
     override fun initBottomNavigation() {
+        tv_balance_currency.text = sConfigData?.systemCurrencySign
+        tv_balance.text = TextUtil.formatMoney(0.0)
+        cl_bet_list_bar.setOnClickListener {
+            showBetListPage()
+        }
         binding.gameBottomNavigation.sportBottomNavigation.clearSelectedStatus()
         binding.gameBottomNavigation.sportBottomNavigation.setNavigationItemClickListener {
             when (it) {
@@ -391,6 +395,10 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                     viewModel.navTranStatus()
                     false
                 }
+                R.id.navigation_my -> {
+                    viewModel.navMy()
+                    false
+                }
                 else -> false
             }
         }
@@ -399,7 +407,8 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     override fun updateUiWithLogin(isLogin: Boolean) {
         with(binding) {
             if (isLogin) {
-                gameBottomNavigation.sportBottomNavigation.visibility = View.VISIBLE
+                viewBottom.visibility = View.GONE
+                game_Bottom_Navigation.visibility = View.VISIBLE
 
                 //region publicity tool bar
                 publicityToolbar.ivNotice.visibility = View.VISIBLE
@@ -418,10 +427,9 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                     toolbarDivider.visibility = View.GONE
                 }
                 //endregion
-
-                viewBottom.layoutParams.height = 55.dp
             } else {
-                gameBottomNavigation.sportBottomNavigation.visibility = View.GONE
+                viewBottom.visibility = View.VISIBLE
+                game_Bottom_Navigation.visibility = View.GONE
 
                 //region publicity tool bar
                 publicityToolbar.ivNotice.visibility = View.GONE
@@ -440,8 +448,6 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                     toolbarDivider.visibility = View.VISIBLE
                 }
                 //endregion
-
-                viewBottom.layoutParams.height = 60.dp
             }
         }
     }
@@ -452,6 +458,9 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
 
     override fun updateBetListCount(num: Int) {
         binding.gameBottomNavigation.sportBottomNavigation.setBetCount(num)
+        cl_bet_list_bar.isVisible = num > 0
+        tv_bet_list_count.text = num.toString()
+        if (num > 0) viewModel.getMoney()
     }
 
     override fun showLoginNotify() {
