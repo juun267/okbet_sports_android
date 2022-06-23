@@ -173,6 +173,7 @@ class MultiLanguagesApplication : Application() {
         mInstance = this
         AppManager.init(this)
         myPref = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        getOddsType()
 
         MultiLanguage.init { context ->
             //返回自己本地保存选择的语言设置
@@ -279,6 +280,18 @@ class MultiLanguagesApplication : Application() {
     //重新顯示bottomNavBar
     fun initBottomNavBar() {
         setIsScrollDown(false)
+    }
+
+    fun getOddsType() {
+        mInstance.mOddsType.postValue(
+            when (mInstance.sOddsType) {
+                OddsType.EU.code -> OddsType.EU
+                OddsType.HK.code -> OddsType.HK
+                OddsType.MYS.code -> OddsType.MYS
+                OddsType.IDN.code -> OddsType.IDN
+                else -> OddsType.HK
+            }
+        )
     }
 
     companion object {

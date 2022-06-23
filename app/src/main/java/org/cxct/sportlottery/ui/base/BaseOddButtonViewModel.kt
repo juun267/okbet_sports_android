@@ -124,18 +124,6 @@ abstract class BaseOddButtonViewModel(
         MultiLanguagesApplication.mInstance.mOddsType.postValue(oddsType)
     }
 
-    fun getOddsType() {
-        MultiLanguagesApplication.mInstance.mOddsType.postValue(
-            when (MultiLanguagesApplication.mInstance.sOddsType) {
-                OddsType.EU.code -> OddsType.EU
-                OddsType.HK.code -> OddsType.HK
-                OddsType.MYS.code -> OddsType.MYS
-                OddsType.IDN.code -> OddsType.IDN
-                else -> OddsType.EU
-            }
-        )
-    }
-
     fun updateMatchBetList(
         matchType: MatchType,
         gameType: GameType,
