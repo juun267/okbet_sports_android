@@ -854,11 +854,11 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     when (viewType) {
                         PlayCate.SINGLE_ND.ordinal,
                         PlayCate.HDP.ordinal, PlayCate.HDP_1ST.ordinal, PlayCate.HDP_2ST.ordinal,
-                        PlayCate.OU.ordinal, PlayCate.OU_1ST.ordinal, PlayCate.OU_2ST.ordinal,
-                        PlayCate.WM.ordinal
+                        PlayCate.OU.ordinal, PlayCate.OU_1ST.ordinal, PlayCate.OU_2ST.ordinal
                         -> forSingle(oddsDetail, 2)
 
-                        PlayCate.SINGLE.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.SINGLE_2ST.ordinal
+                        PlayCate.SINGLE.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.SINGLE_2ST.ordinal,
+                        PlayCate.WM.ordinal
                         -> forSingle(oddsDetail, 3)
 
                         PlayCate.EPS.ordinal
