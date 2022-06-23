@@ -12,10 +12,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_my_favorite.*
 import kotlinx.android.synthetic.main.fragment_my_favorite.appbar_layout
 import kotlinx.android.synthetic.main.fragment_my_favorite.view.*
+import kotlinx.android.synthetic.main.include_my_favorite_empty.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -267,6 +267,10 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
             }
         }
         view.appbar_layout.addOffsetListenerForBottomNavBar {
+            MultiLanguagesApplication.mInstance.setIsScrollDown(it)
+        }
+
+        view.scroll_view.addScrollListenerForBottomNavBar {
             MultiLanguagesApplication.mInstance.setIsScrollDown(it)
         }
     }
