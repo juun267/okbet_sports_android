@@ -178,6 +178,13 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
 
     override fun onResume() {
         super.onResume()
+        if (MultiLanguagesApplication.isNightMode) {
+            tv_appearance.text = getString(R.string.appearance) + ": " + getString(R.string.night_mode)
+        } else {
+            tv_appearance.text = getString(R.string.appearance) + ": " + getString(R.string.day_mode)
+        }
+        tv_language.text=LanguageManager.getLanguageStringResource(this)
+        iv_flag.setImageResource(LanguageManager.getLanguageFlag(this))
         getMoney()
     }
 
@@ -222,11 +229,6 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
     private fun getMoney() {
         refreshMoneyLoading()
         viewModel.getMoney()
-        if (MultiLanguagesApplication.isNightMode) {
-            tv_appearance.text = getString(R.string.appearance) + ": " + getString(R.string.night_mode)
-        } else {
-            tv_appearance.text = getString(R.string.appearance) + ": " + getString(R.string.day_mode)
-        }
     }
 
     private fun refreshMoneyLoading() {

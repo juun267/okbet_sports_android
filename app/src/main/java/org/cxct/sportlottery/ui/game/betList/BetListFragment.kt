@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
@@ -44,7 +45,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.bet.list.FastBetSettingDialog
-import org.cxct.sportlottery.ui.common.SocketLinearManager
+import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
@@ -199,9 +200,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         initCommonToolbar()
         initToolBar()
 
-        initKeyBoard(viewModel.getLoginBoolean())
-        fl_title.setOnClickListener { betListRefactorAdapter?.closeAllKeyboard() }
-        cl_total_info.setOnClickListener { betListRefactorAdapter?.closeAllKeyboard() }
+        ll_root.setOnClickListener { betListRefactorAdapter?.closeAllKeyboard() }
         tv_balance.text = TextUtil.formatMoney(0.0)
     }
 
@@ -301,6 +300,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                             llMoreOption.visibility = View.GONE
                             clParlayList.visibility = View.GONE
                         }
+                        checkAllAmountCanBet()
                         refreshAllAmount()
                     }
                     //串關投注
@@ -308,6 +308,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         tabPosition = 1
                         betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.PARLAY_SINGLE
                         refreshLlMoreOption()
+                        checkAllAmountCanBet()
                         refreshAllAmount()
                     }
                 }
@@ -346,12 +347,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun initRecyclerView() {
         initAdapter()
 
-        val layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+        val layoutManager = ScrollCenterLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_bet_list.layoutManager = layoutManager
         betListRefactorAdapter?.setHasStableIds(true)
         rv_bet_list.adapter = betListRefactorAdapter
 
-        val parlayLayoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+        val parlayLayoutManager = ScrollCenterLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_parlay_list.layoutManager = parlayLayoutManager
         betParlayListRefactorAdapter?.setHasStableIds(true)
         rv_parlay_list.adapter = betParlayListRefactorAdapter
@@ -461,17 +462,14 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     }
                 }
 
-                override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd, position: Int, max: Long) {
-                    //keyboard?.showKeyboard(editText, position, max)
+                override fun onShowKeyboard(position: Int) {
+                    (rv_bet_list.layoutManager as ScrollCenterLayoutManager)
+                        .smoothScrollToPosition(rv_bet_list, RecyclerView.State(), position)
                 }
 
-                override fun onShowParlayKeyboard(
-                    editText: EditText,
-                    parlayOdd: ParlayOdd?,
-                    position: Int,
-                    max: Long
-                ) {
-                    //keyboard?.showKeyboard(editText, position, max)
+                override fun onShowParlayKeyboard(position: Int) {
+                    (rv_parlay_list.layoutManager as ScrollCenterLayoutManager)
+                        .smoothScrollToPosition(rv_parlay_list, RecyclerView.State(), position)
                 }
 
                 override fun onHideKeyBoard() {
@@ -508,16 +506,20 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun checkAllAmountCanBet() {
         val betList = getCurrentBetList()
         val parlayList = getCurrentParlayList()
-        betList.forEach {
-            if (it.amountError) {
-                btn_bet.amountCanBet = false
-                return
+        //僅判斷對應tab裡的amountError
+        if (tabPosition == 0) {
+            betList.forEach {
+                if (it.amountError) {
+                    btn_bet.amountCanBet = false
+                    return
+                }
             }
-        }
-        parlayList.forEach {
-            if (it.amountError) {
-                btn_bet.amountCanBet = false
-                return
+        } else {
+            parlayList.forEach {
+                if (it.amountError) {
+                    btn_bet.amountCanBet = false
+                    return
+                }
             }
         }
         btn_bet.amountCanBet = true
@@ -668,34 +670,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
     }
 
-    private fun initKeyBoard(loginBoolean: Boolean) {
-//        keyboard =
-//            KeyBoardUtil(
-//                binding.kvKeyboard,
-//                null,
-//                sConfigData?.presetBetAmount ?: mutableListOf(),
-//                loginBoolean,
-//                GameConfigManager.maxBetMoney?.toLong(),
-//                object : KeyBoardUtil.KeyBoardViewListener {
-//                    override fun showLoginNotice() {
-//                        setSnackBarNotify(isLogin = false)
-//                    }
-//
-//                    override fun showOrHideKeyBoardBackground(isShow: Boolean, position: Int?) {
-//                        shadow.visibility = if (isShow) View.VISIBLE else View.GONE
-//                        ll_keyboard_bg.visibility = if (isShow) View.VISIBLE else View.GONE
-//                        if (position != null) {
-//                            rv_bet_list.scrollToPosition(position)
-//                        }
-//                    }
-//                })
-    }
-
     private fun initObserver() {
         //是否登入
         viewModel.isLogin.observe(this.viewLifecycleOwner) {
             setupBetButtonType(it)
-            initKeyBoard(it)
             updateCommonToolbarLoginStatus(it)
             betListRefactorAdapter?.userLogin = it
             betParlayListRefactorAdapter?.userLogin = it
