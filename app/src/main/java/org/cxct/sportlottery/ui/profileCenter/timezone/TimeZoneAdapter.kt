@@ -12,6 +12,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemTimezoneBinding
+import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.TimeUtil
+import java.util.*
+import java.util.TimeZone.getTimeZone
 
 class TimeZoneAdapter(private val clickListener: ItemClickListener) :
     ListAdapter<TimeZone, RecyclerView.ViewHolder>(DiffCallback()) {
@@ -41,8 +45,23 @@ class TimeZoneAdapter(private val clickListener: ItemClickListener) :
                 clickListener.onClick(data)
             })
             binding.tvTime.text=data.name
-            binding.tvCity.text=data.city_zh
-            binding.tvCountry.text=data.country_zh
+            when(LanguageManager.getSelectLanguage(itemView.context)){
+                LanguageManager.Language.ZH->{
+                    binding.tvCity.text=data.city_zh
+                    binding.tvCountry.text=data.country_zh
+                }
+                LanguageManager.Language.EN->{
+                    binding.tvCity.text=data.city_en
+                    binding.tvCountry.text=data.country_en
+                }
+                LanguageManager.Language.VI->{
+                    binding.tvCity.text=data.city_zh
+                    binding.tvCountry.text=data.country_zh
+                }
+            }
+            TimeUtil
+            binding.tvDateWeek.text = getDateAndWeek(data.name)
+
             if (data.isSelected){
                binding.tvCity.setTextColor(itemView.context.getColor(R.color.color_317FFF_0760D4))
                 binding.tvTime.setTextColor(itemView.context.getColor(R.color.color_317FFF_0760D4))
@@ -51,6 +70,12 @@ class TimeZoneAdapter(private val clickListener: ItemClickListener) :
                 binding.tvTime.setTextColor(itemView.context.getColor(R.color.color_909090_666666))
             }
         }
+
+        fun getDateAndWeek(timeZone:String ):String{
+            var cal=Calendar.getInstance(java.util.TimeZone.getTimeZone(timeZone))
+            return TimeUtil.dateToDateFormat(cal.time)+ "(" + TimeUtil.setupDayOfWeekByCal(itemView.context,cal) + ")"
+        }
+
         companion object {
             fun from(parent: ViewGroup): RecyclerView.ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
@@ -60,12 +85,11 @@ class TimeZoneAdapter(private val clickListener: ItemClickListener) :
         }
     }
 
-
 }
 
 class DiffCallback : DiffUtil.ItemCallback<TimeZone>() {
     override fun areItemsTheSame(oldItem: TimeZone, newItem: TimeZone): Boolean {
-        return oldItem.city_en == newItem.city_en
+        return oldItem.city_en == newItem.city_en&&oldItem.country_en == newItem.country_en
     }
 
     override fun areContentsTheSame(oldItem: TimeZone, newItem: TimeZone): Boolean {

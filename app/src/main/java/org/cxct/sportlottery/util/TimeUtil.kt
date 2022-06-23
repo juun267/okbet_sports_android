@@ -208,23 +208,20 @@ object TimeUtil {
     /**
      * return : 星期幾
      */
-//    fun setupDayOfWeek(context: Context, todayMillis: Long?): String {
-//        val calendar = Calendar.getInstance()
-//        calendar.timeInMillis = todayMillis ?: 0
-//
-//        val id = when (calendar.get(Calendar.DAY_OF_WEEK)) {
-//            Calendar.SUNDAY -> R.string.sunday
-//            Calendar.MONDAY -> R.string.monday
-//            Calendar.TUESDAY -> R.string.tuesday
-//            Calendar.WEDNESDAY -> R.string.wednesday
-//            Calendar.THURSDAY -> R.string.thursday
-//            Calendar.FRIDAY -> R.string.friday
-//            Calendar.SATURDAY -> R.string.saturday
-//            else -> R.string.sunday
-//        }
-//
-//        return context.getString(id)
-//    }
+    fun setupDayOfWeekByCal(context: Context,calendar: Calendar): String {
+        val id = when (calendar.get(Calendar.DAY_OF_WEEK)) {
+            Calendar.SUNDAY -> R.string.sunday
+            Calendar.MONDAY -> R.string.monday
+            Calendar.TUESDAY -> R.string.tuesday
+            Calendar.WEDNESDAY -> R.string.wednesday
+            Calendar.THURSDAY -> R.string.thursday
+            Calendar.FRIDAY -> R.string.friday
+            Calendar.SATURDAY -> R.string.saturday
+            else -> R.string.sunday
+        }
+
+        return context.getString(id)
+    }
 
     fun setupDayOfWeekVi(context: Context, todayMillis: Long?): String {
         val calendar = Calendar.getInstance()

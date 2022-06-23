@@ -23,10 +23,7 @@ import org.cxct.sportlottery.util.setTitleLetterSpacing
 class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     lateinit var adapter: TimeZoneAdapter
-    var items= Gson().fromJson<List<TimeZone>>(
-        String(assets.open("timezone.json").readBytes()),
-        object :TypeToken<List<TimeZone>>(){}.type
-    )
+    var items= listOf<TimeZone>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +60,12 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                 }
                 it.isSelected = true
                 adapter.notifyDataSetChanged()
+
         })
+        items=Gson().fromJson<List<TimeZone>>(
+            String(assets.open("timezone.json").readBytes()),
+            object :TypeToken<List<TimeZone>>(){}.type
+        )
         adapter.setItems(items)
         rv_list.adapter=adapter
     }
