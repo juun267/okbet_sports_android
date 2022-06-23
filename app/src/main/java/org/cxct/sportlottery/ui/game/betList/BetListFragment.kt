@@ -301,6 +301,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                             llMoreOption.visibility = View.GONE
                             clParlayList.visibility = View.GONE
                         }
+                        checkAllAmountCanBet()
                         refreshAllAmount()
                     }
                     //串關投注
@@ -308,6 +309,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         tabPosition = 1
                         betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.PARLAY_SINGLE
                         refreshLlMoreOption()
+                        checkAllAmountCanBet()
                         refreshAllAmount()
                     }
                 }
@@ -508,16 +510,20 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun checkAllAmountCanBet() {
         val betList = getCurrentBetList()
         val parlayList = getCurrentParlayList()
-        betList.forEach {
-            if (it.amountError) {
-                btn_bet.amountCanBet = false
-                return
+        //僅判斷對應tab裡的amountError
+        if (tabPosition == 0) {
+            betList.forEach {
+                if (it.amountError) {
+                    btn_bet.amountCanBet = false
+                    return
+                }
             }
-        }
-        parlayList.forEach {
-            if (it.amountError) {
-                btn_bet.amountCanBet = false
-                return
+        } else {
+            parlayList.forEach {
+                if (it.amountError) {
+                    btn_bet.amountCanBet = false
+                    return
+                }
             }
         }
         btn_bet.amountCanBet = true
