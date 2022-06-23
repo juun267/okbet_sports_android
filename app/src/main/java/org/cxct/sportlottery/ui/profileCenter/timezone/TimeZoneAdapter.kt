@@ -40,6 +40,9 @@ class TimeZoneAdapter(private val clickListener: ItemClickListener) :
             itemView.setOnClickListener(View.OnClickListener {
                 clickListener.onClick(data)
             })
+            binding.tvTime.text=data.name
+            binding.tvCity.text=data.city_zh
+            binding.tvCountry.text=data.country_zh
             if (data.isSelected){
                binding.tvCity.setTextColor(itemView.context.getColor(R.color.color_317FFF_0760D4))
                 binding.tvTime.setTextColor(itemView.context.getColor(R.color.color_317FFF_0760D4))
@@ -62,21 +65,12 @@ class TimeZoneAdapter(private val clickListener: ItemClickListener) :
 
 class DiffCallback : DiffUtil.ItemCallback<TimeZone>() {
     override fun areItemsTheSame(oldItem: TimeZone, newItem: TimeZone): Boolean {
-        return oldItem.city == newItem.city
+        return oldItem.city_en == newItem.city_en
     }
 
     override fun areContentsTheSame(oldItem: TimeZone, newItem: TimeZone): Boolean {
         return oldItem == newItem
     }
-}
-
-data class TimeZone(
-     val city: String?,
-     val time: String?,
-     val country: String?,
-     val date: String?
-){
-    var isSelected:Boolean = false
 }
 
 class ItemClickListener(val clickListener: (data: TimeZone) -> Unit) {

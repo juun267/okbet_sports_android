@@ -7,6 +7,8 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.common.reflect.TypeToken
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_timezone.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
@@ -21,15 +23,10 @@ import org.cxct.sportlottery.util.setTitleLetterSpacing
 class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     lateinit var adapter: TimeZoneAdapter
-    var items= arrayListOf<TimeZone>(
-        TimeZone("","","",""),
-        TimeZone("","","",""),
-        TimeZone("","","",""),
-        TimeZone("","","",""),
-        TimeZone("","","","")
-    ).apply {
-        this[0].isSelected =true
-    }
+    var items= Gson().fromJson<List<TimeZone>>(
+        String(assets.open("timezone.json").readBytes()),
+        object :TypeToken<List<TimeZone>>(){}.type
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,11 +73,10 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             lin_empty.visibility = View.GONE
         }else{
             var filterData=items.filter {
-                it.city!!.contains(key)
+                it.country_zh.contains(key)|| it.country_en.contains(key)||it.city_zh.contains(key)|| it.city_en.contains(key)
             }
             adapter.setItems(filterData)
             lin_empty.visibility =  if(filterData.isNullOrEmpty()) View.VISIBLE else View.GONE
         }
-
     }
 }
