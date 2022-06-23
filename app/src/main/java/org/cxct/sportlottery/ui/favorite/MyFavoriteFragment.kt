@@ -28,6 +28,7 @@ import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
+import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
@@ -47,7 +48,7 @@ import org.cxct.sportlottery.util.*
  * @app_destination 我的賽事
  */
 @SuppressLint("LogNotTimber")
-class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteViewModel::class) {
+class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyFavoriteViewModel::class) {
 
     private var isReloadPlayCate: Boolean? = null //是否重新加載玩法篩選Layout
 
@@ -265,6 +266,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         super.onViewCreated(view, savedInstanceState)
         initObserver()
         initSocketObserver()
+        initBottomNavigation()
     }
 
     private fun initSocketObserver() {
