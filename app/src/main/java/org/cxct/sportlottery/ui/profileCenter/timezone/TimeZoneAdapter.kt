@@ -60,7 +60,7 @@ class TimeZoneAdapter(private val clickListener: ItemClickListener) :
                 }
             }
             TimeUtil
-            binding.tvDateWeek.text = getDateAndWeek(data.name)
+            binding.tvDateWeek.text = getDateAndWeek(data.name.replace(" ",""))
 
             if (data.isSelected){
                binding.tvCity.setTextColor(itemView.context.getColor(R.color.color_317FFF_0760D4))
@@ -71,7 +71,7 @@ class TimeZoneAdapter(private val clickListener: ItemClickListener) :
             }
         }
 
-        fun getDateAndWeek(timeZone:String ):String{
+        fun getDateAndWeek(timeZone:String):String{
             var cal=Calendar.getInstance(java.util.TimeZone.getTimeZone(timeZone))
             return TimeUtil.dateToDateFormat(cal.time)+ "(" + TimeUtil.setupDayOfWeekByCal(itemView.context,cal) + ")"
         }
