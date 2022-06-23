@@ -114,10 +114,12 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         set(value) {
             if (field == value) return
 
-            data.forEach { leagueOdd ->
+            data.forEachIndexed { index, leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
                     matchOdd.oddsMap?.updateOddsDiscount(field, value)
                 }
+
+                updateLeague(index, leagueOdd)
             }
 
             field = value
