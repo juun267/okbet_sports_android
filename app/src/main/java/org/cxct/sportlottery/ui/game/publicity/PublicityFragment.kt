@@ -19,17 +19,13 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
-import org.cxct.sportlottery.repository.FLAG_OPEN
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
-import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
-import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.addScrollListenerForBottomNavBar
 
@@ -223,10 +219,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 hideLoading()
                 isNewestDataFromApi = true
                 mRecommendList = result.recommendList
-                val oddsSort = viewModel.sportMenuFilterList.value?.getContentIfNotHandled()?.get(mRecommendList.firstOrNull()?.gameType)?.get("MAIN")?.oddsSort
-                mRecommendList.forEach {
-                    it.oddsSort = oddsSort
-                }
                 mPublicityAdapter.removeData(GamePublicityAdapter.PreloadItem())
                 mPublicityAdapter.addRecommend(result.recommendList)
                 //先解除全部賽事訂閱
@@ -252,8 +244,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                         }
                     }
                     if (needUpdate) {
-                        val oddsSort = viewModel.sportMenuFilterList.value?.getContentIfNotHandled()?.get(recommend.gameType)?.get("MAIN")?.oddsSort
-                        recommend.oddsSort = oddsSort
                         mPublicityAdapter.updateRecommendData(index, recommend)
                     }
                 }
@@ -270,8 +260,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                     needUpdate = true
                 }
                 if (needUpdate) {
-                    val oddsSort = viewModel.sportMenuFilterList.value?.getContentIfNotHandled()?.get(recommend.gameType)?.get("MAIN")?.oddsSort
-                    recommend.oddsSort = oddsSort
                     mPublicityAdapter.updateRecommendData(index, recommend)
                 }
             }
@@ -346,7 +334,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 targetList.forEachIndexed { index, recommend ->
                     if (recommend.id == oddsChangeEvent.eventId) {
                         recommend.sortOddsMap()
-                        recommend.updateOddsSort() //篩選玩法
 
                         //region 翻譯更新
                         oddsChangeEvent.playCateNameMap?.let { playCateNameMap ->
@@ -453,20 +440,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 }
             }
         }
-    }
-
-    /**
-     * 篩選玩法
-     * 更新翻譯、排序
-     * */
-    private fun Recommend.updateOddsSort() {
-        val nowGameType = gameType
-        val playCateMenuCode = menuList.firstOrNull()?.code
-        val oddsSortFilter = PlayCateMenuFilterUtils.filterOddsSort(nowGameType, playCateMenuCode)
-        val playCateNameMapFilter = PlayCateMenuFilterUtils.filterPlayCateNameMap(nowGameType, playCateMenuCode)
-
-        oddsSort = oddsSortFilter
-        playCateNameMap = playCateNameMapFilter
     }
 
     private fun queryData() {
@@ -576,8 +549,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     private fun updateRecommendList(index: Int, recommend: Recommend) {
         with(binding) {
             if (rvPublicity.scrollState == RecyclerView.SCROLL_STATE_IDLE && !rvPublicity.isComputingLayout) {
-                val oddsSort = viewModel.sportMenuFilterList.value?.peekContent()?.get(recommend.gameType)?.get("MAIN")?.oddsSort
-                recommend.oddsSort = oddsSort
                 mPublicityAdapter.updateRecommendData(index, recommend)
             }
         }
