@@ -236,8 +236,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
 
             cl_bet.setOnClickListener { addBet() }
-
-            tv_accept_odds_change.setOnClickListener { addBet() }
         }
 
         /*ll_odds_close_warn.setOnClickListener {
