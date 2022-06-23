@@ -1435,14 +1435,22 @@ class GameViewModel(
         }
     }
 
-    fun getOutrightOddsList(gameType: String) {
+    fun getOutrightOddsList(gameType: String, outrightLeagueId: String? = null) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.outrightService.getOutrightOddsList(
-                    OutrightOddsListRequest(
-                        gameType,
-                        matchType = MatchType.OUTRIGHT.postValue
-                    )
+                    if (outrightLeagueId.isNullOrEmpty()) {
+                        OutrightOddsListRequest(
+                            gameType,
+                            matchType = MatchType.OUTRIGHT.postValue
+                        )
+                    } else {
+                        OutrightOddsListRequest(
+                            gameType,
+                            matchType = MatchType.OUTRIGHT.postValue,
+                            leagueIdList = listOf(outrightLeagueId)
+                        )
+                    }
                 )
             }
 
@@ -1565,45 +1573,6 @@ class GameViewModel(
                     _outrightMatchList.value = Event(outrightList)
                 }
             }
-        }
-    }
-
-    fun getOutrightOddsList(gameType: GameType, leagueId: String) {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.outrightService.getOutrightOddsList(
-                    OutrightOddsListRequest(
-                        gameType.key,
-                        matchType = MatchType.OUTRIGHT.postValue,
-                        leagueIdList = listOf(leagueId)
-                    )
-                )
-            }
-
-            result?.outrightOddsListData?.leagueOdds?.forEach { leagueOdd ->
-                leagueOdd.matchOdds?.forEach { matchOdd ->
-                    matchOdd?.oddsMap?.values?.forEach { oddList ->
-                        oddList?.updateOddSelectState()
-                    }
-
-                    matchOdd?.setupOddDiscount()
-                    matchOdd?.setupPlayCate()
-                    //20220613 冠軍的排序字串切割方式不同, 跟進iOS此處無重新排序
-//                    matchOdd?.sortOdds()
-
-                    matchOdd?.startDate = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, DMY_FORMAT)
-                    matchOdd?.startTime = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, HM_FORMAT)
-                }
-            }
-
-            val matchOdd =
-                result?.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()
-            matchOdd?.let {
-                matchOdd.playCateMappingList = playCateMappingList
-                matchOdd.updateOddStatus()
-            }
-
-            _outrightOddsListResult.postValue(Event(result))
         }
     }
 
