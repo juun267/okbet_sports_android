@@ -73,6 +73,7 @@ import org.cxct.sportlottery.util.DisplayUtil.pxToDp
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
+import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 import org.cxct.sportlottery.util.TimeUtil.DMY_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
@@ -2917,6 +2918,23 @@ class GameViewModel(
 
         if (needUpdatePublicityRecommend) {
             getRecommend()
+        }
+    }
+
+    /**
+     * 更新宣傳頁賠率折扣
+     */
+    fun publicityUpdateDiscount(oldDiscount: Float, newDiscount: Float) {
+        viewModelScope.launch(Dispatchers.IO) {
+            publicityRecommend.value?.peekContent()?.let { recommendResult ->
+                recommendResult.recommendList.forEach { recommend ->
+                    recommend.oddsMap?.updateOddsDiscount(oldDiscount, newDiscount)
+                }
+
+                withContext(Dispatchers.Main) {
+                    _publicityRecommend.value = Event(recommendResult)
+                }
+            }
         }
     }
 

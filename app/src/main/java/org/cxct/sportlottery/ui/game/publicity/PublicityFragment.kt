@@ -124,6 +124,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     }
 
     private fun clearObservers() {
+        viewModel.userInfo.removeObservers(viewLifecycleOwner)
         viewModel.oddsType.removeObservers(viewLifecycleOwner)
         viewModel.publicityRecommend.removeObservers(viewLifecycleOwner)
         viewModel.betInfoList.removeObservers(viewLifecycleOwner)
@@ -206,6 +207,12 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
 
         viewModel.infoCenterRepository.unreadNoticeList.observe(viewLifecycleOwner, {
             mPublicityAdapter.hasNotice = it.isNotEmpty()
+        })
+
+        viewModel.userInfo.observe(viewLifecycleOwner, { userInfo ->
+            val newDiscount = userInfo?.discount ?: 1.0F
+            viewModel.publicityUpdateDiscount(mPublicityAdapter.discount, newDiscount)
+            mPublicityAdapter.discount = newDiscount
         })
 
         viewModel.oddsType.observe(viewLifecycleOwner, {
