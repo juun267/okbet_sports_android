@@ -705,6 +705,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                 bindingAdapterPosition,
                                 BetViewType.SINGLE
                             )
+                            onItemClickListener.onShowKeyboard(position)
                         }
                     }
                     false
@@ -1086,12 +1087,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         isFocusable = true
                         setSelection(text.length)
                     }
-                    onItemClickListener.onShowKeyboard(
-                        et_bet,
-                        itemData.matchOdd,
-                        position,
-                        itemData.parlayOdds?.max?.toLong() ?: 0
-                    )
                 }
             }
         }
@@ -1846,14 +1841,18 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             bindingAdapterPosition,
                             BetViewType.SINGLE
                         )
-
-
+                        onItemClickListener.onShowKeyboard(position)
                     }
                     false
                 }
 
                 et_bet_single.setOnFocusChangeListener { v, hasFocus ->
                     if (!hasFocus) layoutKeyBoard?.hideKeyboard()
+                }
+
+                cl_item_background_single.setOnClickListener {
+                    onItemClickListener.onHideKeyBoard()
+                    clearFocus()
                 }
 
                 setupItemEnable(hasBetClosed)
@@ -2257,7 +2256,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             bindingAdapterPosition,
                             BetViewType.PARLAY
                         )
-
+                        onItemClickListener.onShowParlayKeyboard(position)
                     }
                     false
                 }
@@ -2392,13 +2391,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     interface OnItemClickListener {
         fun onDeleteClick(oddsId: String, currentItemCount: Int)
         fun onRechargeClick()
-        fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd, position: Int, max: Long)
-        fun onShowParlayKeyboard(
-            editText: EditText,
-            parlayOdd: ParlayOdd?,
-            position: Int,
-            max: Long
-        )
+        fun onShowKeyboard(position: Int)
+        fun onShowParlayKeyboard(position: Int)
 
         fun onHideKeyBoard()
         fun saveOddsHasChanged(matchOdd: MatchOdd)

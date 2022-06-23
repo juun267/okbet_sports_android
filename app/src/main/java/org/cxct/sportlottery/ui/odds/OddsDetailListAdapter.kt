@@ -854,11 +854,11 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     when (viewType) {
                         PlayCate.SINGLE_ND.ordinal,
                         PlayCate.HDP.ordinal, PlayCate.HDP_1ST.ordinal, PlayCate.HDP_2ST.ordinal,
-                        PlayCate.OU.ordinal, PlayCate.OU_1ST.ordinal, PlayCate.OU_2ST.ordinal,
-                        PlayCate.WM.ordinal
+                        PlayCate.OU.ordinal, PlayCate.OU_1ST.ordinal, PlayCate.OU_2ST.ordinal
                         -> forSingle(oddsDetail, 2)
 
-                        PlayCate.SINGLE.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.SINGLE_2ST.ordinal
+                        PlayCate.SINGLE.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.SINGLE_2ST.ordinal,
+                        PlayCate.WM.ordinal
                         -> forSingle(oddsDetail, 3)
 
                         PlayCate.EPS.ordinal
@@ -917,15 +917,20 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
 
             for (element in oddsDetail.typeCodes) {
-                try {
-                    if (element == code) {
+                //有特優賠率時常駐顯示 需求 先隱藏特優賠率
+                if (viewType == PlayCate.EPS.ordinal) {
+                    setVisibility(false)
+                } else {
+                    try {
+                        if (element == code) {
+                            setVisibility(true)
+                            break
+                        } else {
+                            setVisibility(false)
+                        }
+                    } catch (e: Exception) {
                         setVisibility(true)
-                        break
-                    } else {
-                        setVisibility(false)
                     }
-                } catch (e: Exception) {
-                    setVisibility(true)
                 }
             }
 
