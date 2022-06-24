@@ -299,7 +299,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     PlayCate.EPS.ordinal
                     -> LayoutType.EPS.layout
 
-                    PlayCate.WM.ordinal,PlayCate.WM_1ST.ordinal
+                    PlayCate.WM.ordinal, PlayCate.WM_1ST.ordinal
                     -> LayoutType.SINGLE_2_ITEM.layout
 
                     else -> LayoutType.ONE_LIST.layout
