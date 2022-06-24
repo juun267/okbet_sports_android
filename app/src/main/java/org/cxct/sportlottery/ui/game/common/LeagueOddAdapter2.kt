@@ -386,8 +386,25 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
 
         private fun setupMatchScore(item: MatchOdd, matchType: MatchType) {
             itemView.apply {
-                linear_layout.isVisible = item.matchInfo?.gameType != GameType.BB.key
-                content_baseball_status.isVisible = item.matchInfo?.gameType == GameType.BB.key
+                when {
+                    matchType != MatchType.IN_PLAY -> {
+                        linear_layout.isVisible = true
+                        content_baseball_status.isVisible = false
+                    }
+                    else -> {
+                        when (item.matchInfo?.gameType) {
+                            GameType.BB.key -> {
+                                linear_layout.isVisible = false
+                                content_baseball_status.isVisible = true
+                            }
+                            else -> {
+                                linear_layout.isVisible = true
+                                content_baseball_status.isVisible = false
+                            }
+                        }
+
+                    }
+                }
             }
 
             when (item.matchInfo?.socketMatchStatus) {
