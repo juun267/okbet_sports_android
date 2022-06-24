@@ -16,10 +16,10 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="120dp"
         android:layout_gravity="center_horizontal"
-        android:textColor="#D88B53"
-        android:textSize="@dimen/textSize26sp"
+        android:textColor="#8A8681"
+        android:textSize="@dimen/textSize24sp"
         android:fontFamily="@font/helvetica_bold"
         android:textStyle="bold"
         android:text="@string/redenvelope_fail"/>
@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="60dp"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="240dp"
         android:textAlignment="center"
         android:layout_gravity="center_horizontal"
         android:textColor="@color/color_1A1A1A_FFFFFF"
@@ -40,6 +40,5 @@
         android:id="@+id/iv_close"
         android:layout_width="@dimen/margin_40"
         android:layout_height="@dimen/margin_40"
-        android:layout_marginTop="@dimen/margin_20"
         android:src="@drawable/ic_close_gray_bg"/>
 </LinearLayout>

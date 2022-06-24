@@ -52,6 +52,5 @@
         android:id="@+id/iv_close"
         android:layout_width="@dimen/margin_40"
         android:layout_height="@dimen/margin_40"
-        android:layout_marginTop="@dimen/margin_20"
         android:src="@drawable/ic_close_gray_bg"/>
 </LinearLayout>
