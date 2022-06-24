@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.repository
 
-import kotlinx.coroutines.flow.Flow
+import androidx.lifecycle.LiveData
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -11,14 +11,8 @@ import retrofit2.Response
 
 class MoneyRepository() {
 
-    val userInfo: Flow<UserInfo?>?
-        get() = MultiLanguagesApplication.getInstance()?.userInfo
-//        get() = userInfoDao.getUserInfo().map {
-//            if (it.isNotEmpty()) {
-//                return@map it[0]
-//            }
-//            return@map null
-//        }
+    val userInfo: LiveData<UserInfo?>
+        get() = MultiLanguagesApplication.mInstance.userInfo
 
     suspend fun getRechCfg(): Response<MoneyRechCfgResult> {
         return OneBoSportApi.moneyService.getRechCfg()

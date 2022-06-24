@@ -73,6 +73,7 @@ import org.cxct.sportlottery.util.DisplayUtil.pxToDp
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
+import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 import org.cxct.sportlottery.util.TimeUtil.DMY_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
@@ -2887,6 +2888,7 @@ class GameViewModel(
                 if (result.success) {
                     result.result.recommendList.forEach { recommend ->
                         with(recommend) {
+                            setupOddsSort()
                             setupMatchType()
                             setupMatchTime()
                             setupPlayCateNum()
@@ -2916,6 +2918,23 @@ class GameViewModel(
 
         if (needUpdatePublicityRecommend) {
             getRecommend()
+        }
+    }
+
+    /**
+     * 更新宣傳頁賠率折扣
+     */
+    fun publicityUpdateDiscount(oldDiscount: Float, newDiscount: Float) {
+        viewModelScope.launch(Dispatchers.IO) {
+            publicityRecommend.value?.peekContent()?.let { recommendResult ->
+                recommendResult.recommendList.forEach { recommend ->
+                    recommend.oddsMap?.updateOddsDiscount(oldDiscount, newDiscount)
+                }
+
+                withContext(Dispatchers.Main) {
+                    _publicityRecommend.value = Event(recommendResult)
+                }
+            }
         }
     }
 
@@ -2969,6 +2988,19 @@ class GameViewModel(
      */
     private fun Recommend.setupLeagueName() {
         matchInfo?.leagueName = leagueName
+    }
+
+    /**
+     * 設置大廳獲取的玩法排序、玩法名稱
+     */
+    private fun Recommend.setupOddsSort() {
+        val nowGameType = gameType
+        val playCateMenuCode = menuList.firstOrNull()?.code
+        val oddsSortFilter = PlayCateMenuFilterUtils.filterOddsSort(nowGameType, playCateMenuCode)
+        val playCateNameMapFilter = PlayCateMenuFilterUtils.filterPlayCateNameMap(nowGameType, playCateMenuCode)
+
+        oddsSort = oddsSortFilter
+        playCateNameMap = playCateNameMapFilter
     }
     //endregion
 

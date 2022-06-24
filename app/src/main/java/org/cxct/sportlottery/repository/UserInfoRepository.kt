@@ -3,7 +3,7 @@ package org.cxct.sportlottery.repository
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.annotation.WorkerThread
-import kotlinx.coroutines.flow.Flow
+import androidx.lifecycle.LiveData
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -20,14 +20,8 @@ object UserInfoRepository {
 
     var checkedUserInfo = false //紀錄checkToken後是否獲取過UserInfo
 
-    val userInfo: Flow<UserInfo?>?
-        get() = MultiLanguagesApplication.getInstance()?.userInfo
-//        get() = userInfoDao.getUserInfo().map {
-//            if (it.isNotEmpty()) {
-//                return@map it[0]
-//            }
-//            return@map null
-//        }
+    val userInfo: LiveData<UserInfo?>
+        get() = MultiLanguagesApplication.mInstance.userInfo
 
     suspend fun getUserInfo(): Response<UserInfoResult> {
         val userInfoResponse = OneBoSportApi.userService.getUserInfo()
