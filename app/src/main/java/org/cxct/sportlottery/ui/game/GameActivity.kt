@@ -162,7 +162,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        queryData()
         setupDataSourceChange()
     }
 
@@ -522,7 +521,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         when (position) {
             getMatchTypeTabPosition(MatchType.MAIN) -> {
-                viewModel.switchMainMatchType()
+                viewModel.switchMatchType(MatchType.MAIN)
             }
             getMatchTypeTabPosition(MatchType.IN_PLAY) -> {
                 viewModel.switchMatchType(MatchType.IN_PLAY)
@@ -1045,14 +1044,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             .apply(RequestOptions().placeholder(R.drawable.img_avatar_default)).into(
                 iv_head
             ) //載入頭像
-    }
-
-    private fun queryData() {
-        getSportList()
-    }
-
-    private fun getSportList() {
-        viewModel.getSportList()
     }
 
     private fun getAnnouncement() {

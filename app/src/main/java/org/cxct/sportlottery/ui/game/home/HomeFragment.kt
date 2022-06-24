@@ -1210,11 +1210,11 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         }
     }
 
-    private fun queryData(gameType: String = "", leagueIdList: List<String>? = null) {
+    private fun queryData(gameType: String = "") {
         changeTime = System.currentTimeMillis()
         tableInPlayMap.clear()
         tableSoonMap.clear()
-        viewModel.getSportMenu()
+        viewModel.getSportListAtHomePage()
 
         //滾球盤、即將開賽盤
         viewModel.getMatchPreloadInPlay()

@@ -107,13 +107,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 loading()
                 isReloadPlayCate = true
                 unSubscribeChannelHallAll()
-                viewModel.getSportMenu(args.matchType, onlyRefreshSportMenu = true)
-                if (args.matchType == MatchType.OTHER) {
-                    viewModel.getAllPlayCategoryBySpecialMatchType(item = it)
-                } else {
-                    viewModel.getAllPlayCategory(args.matchType)
-                }
-                viewModel.switchSportType(args.matchType, it)
+                viewModel.switchGameType(it)
             }
 
             thirdGameListener = ThirdGameListener {
@@ -1012,11 +1006,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         if (args.matchType == MatchType.OTHER) {
                             // 待觀察，再決定是否要補
                         } else {
-                            viewModel.getSportMenu(
-                                args.matchType,
-                                switchFirstTag = true,
-                                onlyRefreshSportMenu = true
-                            )
+                            viewModel.switchFirstSportType(args.matchType)
                         }
                     }
 
@@ -1334,9 +1324,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             if (args.matchType == MatchType.OTHER) {
                                 // 後面處理
                             } else {
-                                viewModel.getAllPlayCategory(args.matchType)
+                                viewModel.switchMatchType(args.matchType)
                             }
-                            viewModel.getSportMenu(args.matchType, onlyRefreshSportMenu = true)
                         }
                         //收到的gameType与用户当前页面所选球种相同, 则需额外调用/match/odds/simple/list & /match/odds/eps/list
                         val nowGameType =
@@ -2315,19 +2304,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         timer = Timer()
         timer?.schedule(object : TimerTask() {
             override fun run() {
-                if (args.matchType == MatchType.OTHER) {
-                    viewModel.getAllPlayCategoryBySpecialMatchType()
-                } else {
-                    viewModel.getAllPlayCategory(args.matchType)
-                }
-                viewModel.getSportMenu(args.matchType, onlyRefreshSportMenu = true)
-                if (!isUpdatingLeague) {
-                    viewModel.switchSportType(
-                        args.matchType,
-                        GameType.getGameType(viewModel.getSportSelectedCode(args.matchType))?.key
-                            ?: GameType.FT.key
-                    )
-                }
+                viewModel.switchMatchType(args.matchType)
             }
         }, 60 * 3 * 1000L, 60 * 3 * 1000L)
     }
