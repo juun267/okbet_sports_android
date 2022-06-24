@@ -1214,7 +1214,7 @@
     <string name="sport_relative">体育相关</string>
     <string name="setting">系统设定</string>
     <string name="service">服务</string>
-    <string name="timezone_list_no_record">搜寻结果为空</string>
+    <string name="hint_enter_city">请输入所在城市</string>
     <!--endregion-->
 
     <string name="verification_status">身份证验证</string>

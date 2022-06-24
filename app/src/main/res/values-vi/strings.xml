@@ -1201,7 +1201,7 @@
     <string name="sport_relative">Liên quan thể thao</string>
     <string name="setting">Cài đặt hệ thống</string>
     <string name="service">Phục vụ</string>
-    <string name="timezone_list_no_record">Không có kết quả nào</string>
+    <string name="hint_enter_city">Vui lòng nhập thành phố</string>
     <!--endregion-->
 
     <string name="verification_status">Verification Status</string>

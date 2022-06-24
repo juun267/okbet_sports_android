@@ -73,7 +73,7 @@ class TimeZoneAdapter(private val clickListener: ItemClickListener) :
 
         fun getDateAndWeek(timeZone:String):String{
             var cal=Calendar.getInstance(java.util.TimeZone.getTimeZone(timeZone))
-            return TimeUtil.dateToDateFormat(cal.time)+ "(" + TimeUtil.setupDayOfWeekByCal(itemView.context,cal) + ")"
+            return TimeUtil.dateToDateFormat(cal.time)+ "(" + TimeUtil.setupDayOfWeekVi(itemView.context,cal) + ")"
         }
 
         companion object {

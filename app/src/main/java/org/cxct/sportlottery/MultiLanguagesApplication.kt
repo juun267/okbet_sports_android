@@ -178,7 +178,7 @@ class MultiLanguagesApplication : Application() {
             return@init LanguageManager.getSetLanguageLocale(context)
         }
         MultiLanguage.setApplicationLanguage(this)
-//        TimeZone.setDefault(TimeZone.getTimeZone(timeZone))
+        TimeZone.setDefault(timeZone)
         startKoin {
             androidContext(this@MultiLanguagesApplication)
             modules(
@@ -340,11 +340,21 @@ class MultiLanguagesApplication : Application() {
         fun getChangeModeColorCode(defaultColor: String, nightModeColor: String): String {
             return if (isNightMode) nightModeColor else defaultColor
         }
-        var timeZone: String
-            get() = myPref?.getString("timeZone", "GMT-4").toString()
-            set(check) {
+        var timeZone: TimeZone
+            get() {
+                var displayName=myPref ?. getString ("timeZone", null)
+                if (displayName.isNullOrBlank()){
+                    return TimeZone.getDefault()
+                }else{
+                    var zone=TimeZone.getTimeZone(displayName)
+                    zone.id=myPref ?. getString ("timeZoneId", null)
+                    return zone
+                }
+            }
+            set(zone) {
                 val editor = myPref?.edit()
-                editor?.putString("timeZone", check)
+                editor?.putString("timeZone", zone.getDisplayName(false,TimeZone.SHORT))
+                editor?.putString("timeZoneId", zone.id)
                 editor?.apply()
             }
         fun getInstance(): MultiLanguagesApplication? {

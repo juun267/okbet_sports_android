@@ -38,7 +38,7 @@
             android:textColor="@color/color_939393_333333"
             android:textColorHint="@color/color_7F7F7F_999999"
             android:textSize="12sp"
-            android:hint="请输入地区"/>
+            android:hint="@string/hint_enter_city"/>
     </LinearLayout>
     <FrameLayout
         android:layout_width="match_parent"

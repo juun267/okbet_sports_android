@@ -1212,7 +1212,7 @@
     <string name="sport_relative">Sports Related</string>
     <string name="setting">Settings</string>
     <string name="service">Service</string>
-    <string name="timezone_list_no_record">No result found</string>
+    <string name="hint_enter_city">Please enter city</string>
     <!--endregion-->
 
     <string name="verification_status">Verification Status</string>

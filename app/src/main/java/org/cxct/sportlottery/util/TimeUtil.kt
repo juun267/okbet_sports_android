@@ -223,10 +223,7 @@ object TimeUtil {
         return context.getString(id)
     }
 
-    fun setupDayOfWeekVi(context: Context, todayMillis: Long?): String {
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = todayMillis ?: 0
-
+    fun setupDayOfWeekVi(context: Context,calendar: Calendar): String {
         val id = when (calendar.get(Calendar.DAY_OF_WEEK)) {
             Calendar.SUNDAY -> R.string.sunday2
             Calendar.MONDAY -> R.string.monday2

@@ -2,7 +2,9 @@ package org.cxct.sportlottery.ui.profileCenter.timezone
 
 import android.os.Bundle
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,12 +12,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_timezone.*
+import kotlinx.android.synthetic.main.bottom_navigation_item.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.main.MainViewModel
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.setTitleLetterSpacing
+import org.cxct.sportlottery.util.toJson
+import java.time.ZoneId
+import java.time.format.TextStyle
+import java.util.*
 
 /**
  * @app_destination 外觀(日間/夜間)切換
@@ -60,12 +69,24 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                 }
                 it.isSelected = true
                 adapter.notifyDataSetChanged()
-
+                var zone= java.util.TimeZone.getTimeZone(it.name.replace(" ",""))
+                zone.id=it.country_en+"/"+it.city_en
+                java.util.TimeZone.setDefault(zone)
+            MultiLanguagesApplication.timeZone=zone
         })
+        val curTimeZone=java.util.TimeZone.getDefault()
+        val displayName=curTimeZone.getDisplayName(false,java.util.TimeZone.SHORT)
+        val id=curTimeZone.id
         items=Gson().fromJson<List<TimeZone>>(
             String(assets.open("timezone.json").readBytes()),
             object :TypeToken<List<TimeZone>>(){}.type
-        )
+        ).apply {
+            forEach {
+                if (displayName.contains(it.name.replace(" ",""))&&id.split("/").contains(it.city_en)){
+                    it.isSelected=true
+            }
+        }
+        }
         adapter.setItems(items)
         rv_list.adapter=adapter
     }
@@ -75,7 +96,20 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             lin_empty.visibility = View.GONE
         }else{
             var filterData=items.filter {
-                it.country_zh.contains(key)|| it.country_en.contains(key)||it.city_zh.contains(key)|| it.city_en.contains(key)
+                when(LanguageManager.getSelectLanguage(this)){
+                    LanguageManager.Language.ZH->{
+                        it.city_zh.contains(key)
+                    }
+                    LanguageManager.Language.EN->{
+                        it.city_en.contains(key)
+                    }
+                    LanguageManager.Language.VI->{
+                        it.city_en.contains(key)
+                    }
+                    else->{
+                        it.city_en.contains(key)
+                    }
+                }
             }
             adapter.setItems(filterData)
             lin_empty.visibility =  if(filterData.isNullOrEmpty()) View.VISIBLE else View.GONE
