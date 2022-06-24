@@ -9,8 +9,6 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail_v2.view.*
@@ -32,7 +30,6 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType
@@ -995,7 +992,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         ) {
             itemView.apply {
                 val betAmount = itemData.betAmount
-                var amountError = false
+                var amountError = true
                 val balanceError: Boolean
                 itemData.parlayOdds?.min?.let { min ->
                     tvErrorMessage.visibility = if (betAmount != 0.0 && betAmount < min) {
@@ -1955,7 +1952,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             betAmount: Double
         ) {
             itemView.apply {
-                var amountError = false
+                var amountError = true
                 itemData.parlayOdds?.min?.let { min ->
                     amountError = betAmount != 0.0 && betAmount < min
                 }
@@ -1967,6 +1964,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
     abstract class BatchParlayViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var mUserMoney: Double = 0.0
+        private var mUserLogin: Boolean = false
         private var inputMaxMoney: Double = 0.0
         protected fun setupParlayItem(
             itemData: ParlayOdd?,
@@ -1981,8 +1979,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             userMoney: Double,
             userLogin: Boolean
         ) {
+            mUserMoney = userMoney
+            mUserLogin = userLogin
+
             //設置投注輸入上限額
-            setupInputMoney(itemData, userMoney, userLogin)
+            setupInputMoney(itemData)
 
             itemView.apply {
 
@@ -2012,18 +2013,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         mSelectedPosition,
                         mBetView,
                         onSelectedPositionListener,
-                        position,
-                        userLogin
-                    )
-
-                    setupMaximumLimitView(
-                        data,
-                        onItemClickListener,
-                        mSelectedPosition,
-                        mBetView,
-                        onSelectedPositionListener,
-                        position,
-                        userLogin
+                        position
                     )
 
                     setupParlayRuleButton(data, onItemClickListener)
@@ -2032,14 +2022,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             }
         }
 
-        private fun setupInputMoney(itemData: ParlayOdd?, userMoney: Double, userLogin: Boolean) {
-            mUserMoney = userMoney
+        private fun setupInputMoney(itemData: ParlayOdd?) {
             val parlayMaxBet = itemData?.max ?: 0
-            inputMaxMoney = if (userLogin) {
-                min(parlayMaxBet.toDouble(), mUserMoney)
-            } else {
-                parlayMaxBet.toDouble()
-            }
+            inputMaxMoney = parlayMaxBet.toDouble()
         }
 
         private fun getParlayName(parlayType: String): String {
@@ -2100,8 +2085,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             mSelectedPosition: Int,
             mBetView: BetViewType,
             onSelectedPositionListener: OnSelectedPositionListener,
-            position: Int,
-            userLogin: Boolean
+            position: Int
         ) {
             itemView.apply {
                 et_bet_parlay.apply {
@@ -2118,7 +2102,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     setSelection(text.length)
 
                     setupOddInfo(data, currentOddsType)
-                    setupMinimumLimitMessage(data)
                     /* set listener */
                     val tw: TextWatcher?
                     var ignore = false
@@ -2247,7 +2230,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             position,
                             inputMaxMoney,
                             data.min.toLong(),
-                            userLogin
+                            mUserLogin
                         )
                         onSelectedPositionListener.onSelectChange(
                             bindingAdapterPosition,
@@ -2285,73 +2268,27 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             }
         }
 
-        private fun setupMinimumLimitMessage(itemData: ParlayOdd) {
-            itemView.apply {
-                tvErrorMessage.text = context.getString(R.string.bet_info_list_minimum_limit_amount)
-                et_bet.apply {
-//                    hint = getLimitHint(
-//                        context,
-//                        itemData.min,
-//                        itemData.max
-//                    )
-                }
-            }
-        }
-
         private fun checkMinimumLimit(itemData: ParlayOdd, betAmount: Double = itemData.betAmount) {
             itemView.apply {
+                var amountError: Boolean
+                val balanceError: Boolean
                 itemData.min.let { min ->
-                    tvErrorMessage.visibility = if (betAmount != 0.0 && betAmount < min) {
-                        itemData.amountError = true
+                    tvErrorMessageParlay.visibility = if (betAmount != 0.0 && betAmount < min) {
+                        amountError = true
                         View.VISIBLE
                     } else {
-                        itemData.amountError = false
+                        amountError = false
                         View.GONE
                     }
                 }
-            }
-        }
-
-        private fun setupMaximumLimitView(
-            itemData: ParlayOdd,
-            onItemClickListener: OnItemClickListener,
-            mSelectedPosition: Int,
-            mBetView: BetViewType,
-            onSelectedPositionListener: OnSelectedPositionListener,
-            position: Int,
-            userLogin: Boolean
-        ) {
-            itemView.apply {
-//                //item_bet_list_batch_control_connect_v3 無 content_bet_info_item_quota_detail_v2
-//                tv_bet_maximum_limit.text = TextUtil.formatBetQuota(itemData.max)
-//                tv_check_maximum_limit.setOnClickListener {
-//                    it.visibility = View.GONE
-//                    ll_bet_quota_detail.visibility = View.GONE
-//                }
-
-                et_bet_parlay.isSelected =
-                    mSelectedPosition == bindingAdapterPosition && mBetView == BetViewType.PARLAY
-
-//                //item_bet_list_batch_control_connect_v3 無 content_bet_info_item_quota_detail_v2
-//                ll_bet_quota_detail.setOnClickListener {
-//                    et_bet_parlay.apply {
-//                        setText(itemData.max.toString())
-//                        isFocusable = true
-//                        setSelection(text.length)
-//                    }
-//                    layoutKeyBoard.showKeyboard(
-//                        et_bet_parlay,
-//                        position,
-//                        inputMaxMoney,
-//                        itemData.min.toLong(),
-//                        userLogin
-//                    )
-//                    //onItemClickListener.onShowParlayKeyboard(et_bet, itemData, position, itemData.max.toLong())
-//                    onSelectedPositionListener.onSelectChange(
-//                        bindingAdapterPosition,
-//                        BetViewType.PARLAY
-//                    )
-//                }
+                tvBalanceInsufficientMessageParlay.visibility = if (betAmount != 0.0 && betAmount > mUserMoney) {
+                    balanceError = true
+                    View.VISIBLE
+                } else {
+                    balanceError = false
+                    View.GONE
+                }
+                itemData.amountError = if (balanceError) true else amountError
             }
         }
 
