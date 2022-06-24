@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_change_odd_type_full_screen.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.game.menu.LeftMenuFragment
@@ -73,7 +74,7 @@ class ChangeOddsTypeFullScreenDialog : BaseDialog<MainViewModel>(MainViewModel::
 
 
     private fun getOddsType() {
-        viewModel.getOddsType()
+        MultiLanguagesApplication.mInstance.getOddsType()
     }
 
 

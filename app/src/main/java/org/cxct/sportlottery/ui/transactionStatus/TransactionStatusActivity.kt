@@ -22,7 +22,6 @@ import org.cxct.sportlottery.network.service.order_settlement.Status
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
-import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
@@ -156,6 +155,11 @@ class TransactionStatusActivity :
                     R.id.navigation_transaction_status -> {
                         true
                     }
+                    R.id.navigation_my -> {
+                        viewModel.navMy()
+                        finish()
+                        false
+                    }
                     else -> false
                 }
             }
@@ -167,20 +171,12 @@ class TransactionStatusActivity :
     override fun showBetListPage() {
         betListFragment =
             BetListFragment.newInstance(object : BetListFragment.BetResultListener {
-                override fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>) {
-                    supportFragmentManager.beginTransaction()
-                        .setCustomAnimations(
-                            R.anim.push_right_to_left_enter,
-                            R.anim.pop_bottom_to_top_exit,
-                            R.anim.push_right_to_left_enter,
-                            R.anim.pop_bottom_to_top_exit
-                        )
-                        .replace(
-                            R.id.fl_bet_list,
-                            BetReceiptFragment.newInstance(betResultData, betParlayList)
-                        )
-                        .addToBackStack(BetReceiptFragment::class.java.simpleName)
-                        .commit()
+                override fun onBetResult(
+                    betResultData: Receipt?,
+                    betParlayList: List<ParlayOdd>,
+                    isMultiBet: Boolean
+                ) {
+                    showBetReceiptDialog(betResultData, betParlayList, isMultiBet, R.id.fl_bet_list)
                 }
 
             })
@@ -267,6 +263,10 @@ class TransactionStatusActivity :
 
         viewModel.loading.observe(this) {
             if (it) loading() else hideLoading()
+        }
+
+        viewModel.navPublicityPage.observe(this) {
+            GamePublicityActivity.reStart(this)
         }
     }
 

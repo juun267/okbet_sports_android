@@ -485,10 +485,10 @@ object SocketUpdateUtil {
                     updateMatchOdds(oddsDetailListData, matchOddsChangeEvent)
                 }
             }
-            //因UI需求 特優賠率移到第一項
-            find { it.gameType == PlayCate.EPS.value }?.also { oddsDetailListData ->
-                add(0, removeAt(indexOf(oddsDetailListData)))
-            }
+            //因UI需求 特優賠率移到第一項 需求先隱藏特優賠率
+//            find { it.gameType == PlayCate.EPS.value }?.also { oddsDetailListData ->
+//                add(0, removeAt(indexOf(oddsDetailListData)))
+//            }
             setupPinList(playCate)
         }
 

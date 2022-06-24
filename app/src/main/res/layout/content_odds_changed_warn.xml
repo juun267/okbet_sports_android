@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_cant_parlay_warn"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_191919_FCFCFC"
+    android:orientation="vertical"
+    tools:ignore="SpUsage">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/margin_24"
+        android:paddingStart="@dimen/margin_24"
+        android:paddingTop="8dp"
+        android:paddingBottom="2dp"
+        android:text="@string/bet_info_odd_content_changed"
+        android:textColor="@color/color_E44438_e44438"
+        android:textSize="@dimen/textSize12sp" />
+
+</LinearLayout>

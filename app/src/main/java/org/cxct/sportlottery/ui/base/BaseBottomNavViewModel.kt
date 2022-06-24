@@ -10,6 +10,7 @@ import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
 import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusActivity
 import org.cxct.sportlottery.util.Event
 
@@ -47,7 +48,7 @@ abstract class BaseBottomNavViewModel(
     private val _navPublicityPage = MutableLiveData<Event<Boolean>>()
 
     fun navMainPage(thirdGameCategory: ThirdGameCategory) {
-        _thirdGameCategory.postValue(
+        /*_thirdGameCategory.postValue(
             Event(
                 if (sConfigData?.thirdOpen != FLAG_OPEN) {
                     _navPublicityPage.postValue(Event(true))
@@ -56,7 +57,8 @@ abstract class BaseBottomNavViewModel(
                     thirdGameCategory
                 }
             )
-        )
+        )*/
+        _navPublicityPage.postValue(Event(true))
     }
 
     fun navGame() {
@@ -88,6 +90,15 @@ abstract class BaseBottomNavViewModel(
         }
 
         setIntentClassLiveData(TransactionStatusActivity::class.java)
+    }
+
+    fun navMy() {
+        if (isLogin.value != true) {
+            mNotifyLogin.postValue(true)
+            return
+        }
+
+        setIntentClassLiveData(ProfileCenterActivity::class.java)
     }
 
     fun navShoppingCart() {

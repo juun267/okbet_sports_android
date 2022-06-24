@@ -88,7 +88,6 @@ class GameViewModel(
     myFavoriteRepository: MyFavoriteRepository,
     private val sportMenuRepository: SportMenuRepository,
     private val thirdGameRepository: ThirdGameRepository,
-    private val withdrawRepository: WithdrawRepository,
 ) : BaseBottomNavViewModel(
     androidContext,
     userInfoRepository,
@@ -213,26 +212,9 @@ class GameViewModel(
 
     val playCate: LiveData<Event<String?>>
         get() = _playCate
+
     val searchResult: LiveData<Event<List<SearchResult>?>>
         get() = _searchResult
-
-
-    val withdrawSystemOperation =
-        withdrawRepository.withdrawSystemOperation
-    val rechargeSystemOperation =
-        withdrawRepository.rechargeSystemOperation
-    val needToUpdateWithdrawPassword =
-        withdrawRepository.needToUpdateWithdrawPassword //提款頁面是否需要更新提款密碼 true: 需要, false: 不需要
-    val settingNeedToUpdateWithdrawPassword =
-        withdrawRepository.settingNeedToUpdateWithdrawPassword //提款設置頁面是否需要更新提款密碼 true: 需要, false: 不需要
-    val settingNeedToCompleteProfileInfo =
-        withdrawRepository.settingNeedToCompleteProfileInfo //提款設置頁面是否需要完善個人資料 true: 需要, false: 不需要
-    val needToCompleteProfileInfo =
-        withdrawRepository.needToCompleteProfileInfo //提款頁面是否需要完善個人資料 true: 需要, false: 不需要
-    val needToBindBankCard =
-        withdrawRepository.needToBindBankCard //提款頁面是否需要新增銀行卡 -1 : 不需要新增, else : 以value作為string id 顯示彈窗提示
-    val needToSendTwoFactor =
-        withdrawRepository.showSecurityDialog //判斷是不是要進行手機驗證 true: 需要, false: 不需要
 
     val showBetUpperLimit = betInfoRepository.showBetUpperLimit
 
@@ -349,24 +331,6 @@ class GameViewModel(
     val publicityRecommend: LiveData<Event<RecommendResult>>
         get() = _publicityRecommend
 
-    //發送簡訊碼之後60s無法再發送
-    val twoFactorResult: LiveData<BaseSecurityCodeResult?>
-        get() = _twoFactorResult
-    private val _twoFactorResult = MutableLiveData<BaseSecurityCodeResult?>()
-
-    //錯誤提示
-    val errorMessageDialog: LiveData<String?>
-        get() = _errorMessageDialog
-    private val _errorMessageDialog = MutableLiveData<String?>()
-
-    //認證成功
-    val twoFactorSuccess: LiveData<Boolean?>
-        get() = _twoFactorSuccess
-    private val _twoFactorSuccess = MutableLiveData<Boolean?>()
-
-    //需要完善個人資訊(缺電話號碼) needPhoneNumber
-    val showPhoneNumberMessageDialog = withdrawRepository.hasPhoneNumber
-
     var sportQueryData: SportQueryData? = null
     var specialMenuData: SportQueryData? = null
     var allSearchData: List<SearchResponse.Row>? = null
@@ -449,7 +413,7 @@ class GameViewModel(
         _oddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
         getSportMenu(matchType, onlyRefreshSportMenu = false)
-        getAllPlayCategory(matchType,refreshTabBar = true)
+        getAllPlayCategory(matchType, refreshTabBar = true)
         filterLeague(listOf())
     }
 
@@ -519,9 +483,9 @@ class GameViewModel(
 
     fun getSportSearch(key: String) {
         if (key.isNotEmpty()) {
-        //[Martin] 小弟愚鈍 搜尋無法一次Filter所有資料(待強人捕)
-        // 所以下面的做法總共分三次去Filter資料 然後再合併
-        // 1.篩選球種 2.篩選聯賽 3.篩選比賽
+            //[Martin] 小弟愚鈍 搜尋無法一次Filter所有資料(待強人捕)
+            // 所以下面的做法總共分三次去Filter資料 然後再合併
+            // 1.篩選球種 2.篩選聯賽 3.篩選比賽
             var finalResult: MutableList<SearchResult> = arrayListOf()
             //1.篩選球種
             var searchResult = allSearchData?.filter { row ->
@@ -550,7 +514,7 @@ class GameViewModel(
             leagueMatchSearchResult?.forEachIndexed { index, league ->
                 var searchResultLeagueList: MutableList<SearchResult.SearchResultLeague> =
                     arrayListOf()
-                league.forEach {leagueMatch ->
+                league.forEach { leagueMatch ->
                     var searchResultLeague = SearchResult.SearchResultLeague(leagueMatch.leagueName)
                     searchResultLeagueList.add(searchResultLeague)
                 }
@@ -674,7 +638,7 @@ class GameViewModel(
         }
     }
 
-    fun getAllPlayCategory(matchType: MatchType, refreshTabBar:Boolean = false) {
+    fun getAllPlayCategory(matchType: MatchType, refreshTabBar: Boolean = false) {
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.sportService.getQuery(
@@ -836,8 +800,8 @@ class GameViewModel(
             //add coming soon
             val comingSoonList = mutableListOf<SportMenu>()
             comingSoonList.addAll(list)
-            comingSoonList.add(SportMenu(gameType = GameType.BB_COMING_SOON,"", "", 0))
-            comingSoonList.add(SportMenu(gameType = GameType.ES_COMING_SOON,"", "", 0))
+            comingSoonList.add(SportMenu(gameType = GameType.BB_COMING_SOON, "", "", 0))
+            comingSoonList.add(SportMenu(gameType = GameType.ES_COMING_SOON, "", "", 0))
             _sportMenuList.postValue(Event(comingSoonList))
         }
     }
@@ -1252,7 +1216,7 @@ class GameViewModel(
         isIncrement: Boolean = false
     ) {
 
-        if(getMatchCount(matchType) < 1){
+        if (getMatchCount(matchType) < 1) {
             _isNoEvents.postValue(true)
             return
         }
@@ -1471,14 +1435,22 @@ class GameViewModel(
         }
     }
 
-    fun getOutrightOddsList(gameType: String) {
+    fun getOutrightOddsList(gameType: String, outrightLeagueId: String? = null) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.outrightService.getOutrightOddsList(
-                    OutrightOddsListRequest(
-                        gameType,
-                        matchType = MatchType.OUTRIGHT.postValue
-                    )
+                    if (outrightLeagueId.isNullOrEmpty()) {
+                        OutrightOddsListRequest(
+                            gameType,
+                            matchType = MatchType.OUTRIGHT.postValue
+                        )
+                    } else {
+                        OutrightOddsListRequest(
+                            gameType,
+                            matchType = MatchType.OUTRIGHT.postValue,
+                            leagueIdList = listOf(outrightLeagueId)
+                        )
+                    }
                 )
             }
 
@@ -1601,45 +1573,6 @@ class GameViewModel(
                     _outrightMatchList.value = Event(outrightList)
                 }
             }
-        }
-    }
-
-    fun getOutrightOddsList(gameType: GameType, leagueId: String) {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.outrightService.getOutrightOddsList(
-                    OutrightOddsListRequest(
-                        gameType.key,
-                        matchType = MatchType.OUTRIGHT.postValue,
-                        leagueIdList = listOf(leagueId)
-                    )
-                )
-            }
-
-            result?.outrightOddsListData?.leagueOdds?.forEach { leagueOdd ->
-                leagueOdd.matchOdds?.forEach { matchOdd ->
-                    matchOdd?.oddsMap?.values?.forEach { oddList ->
-                        oddList?.updateOddSelectState()
-                    }
-
-                    matchOdd?.setupOddDiscount()
-                    matchOdd?.setupPlayCate()
-                    //20220613 冠軍的排序字串切割方式不同, 跟進iOS此處無重新排序
-//                    matchOdd?.sortOdds()
-
-                    matchOdd?.startDate = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, DMY_FORMAT)
-                    matchOdd?.startTime = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, HM_FORMAT)
-                }
-            }
-
-            val matchOdd =
-                result?.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()
-            matchOdd?.let {
-                matchOdd.playCateMappingList = playCateMappingList
-                matchOdd.updateOddStatus()
-            }
-
-            _outrightOddsListResult.postValue(Event(result))
         }
     }
 
@@ -2253,12 +2186,12 @@ class GameViewModel(
                     result.oddsDetailData?.matchOdd?.setupOddDiscount()
                     result.oddsDetailData?.matchOdd?.updateOddStatus()
 
-                    //因UI需求 特優賠率移到第一項
-                    list.find { it.gameType == PlayCate.EPS.value }.apply {
-                        if (this != null) {
-                            list.add(0, list.removeAt(list.indexOf(this)))
-                        }
-                    }
+                    //因UI需求 特優賠率移到第一項 需求先隱藏特優賠率
+//                    list.find { it.gameType == PlayCate.EPS.value }.apply {
+//                        if (this != null) {
+//                            list.add(0, list.removeAt(list.indexOf(this)))
+//                        }
+//                    }
 
                     list.forEach {
                         it.originPosition = list.indexOf(it)
@@ -2285,7 +2218,8 @@ class GameViewModel(
                     val animationHeight = (LiveUtil.getAnimationHeightFromWidth(screenWidth)).px
                     val languageParams = LanguageManager.getLanguageString(MultiLanguagesApplication.appContext)
 
-                    val trackerUrl = "${Constants.getBaseUrl()}animation/?eventId=${eventId}&width=${screenWidth.pxToDp}&height=${animationHeight}&lang=${languageParams}&mode=widget"
+                    val trackerUrl =
+                        "${sConfigData?.sportAnimation}/animation/?eventId=${eventId}&width=${screenWidth.pxToDp}&height=${animationHeight}&lang=${languageParams}&mode=widget"
                     //測試用eventId=4385309, 4477265
 //                    val trackerUrl = "${Constants.getBaseUrl()}animation/?eventId=4477265&width=${screenWidth.px}&height=${animationHeight}&lang=${languageParams}&mode=widget"
 
@@ -2312,7 +2246,7 @@ class GameViewModel(
         this.teamNameList = teamNameList
     }
 
-    private fun setItemMap(oddList: MutableList<Odd?>, teamName: String?): HashMap<String, List<Odd?>>{
+    private fun setItemMap(oddList: MutableList<Odd?>, teamName: String?): HashMap<String, List<Odd?>> {
         //建立球員列表(一個球員三個賠率)
         var map: HashMap<String, List<Odd?>> = HashMap()
 
@@ -2624,10 +2558,10 @@ class GameViewModel(
             //即將開賽
             setupMatchTypeSelectState(MatchType.AT_START, menuData.atStart)
 
-            //特優賠率
-            menuData.menu.eps?.let { epsSport ->
-                setupMatchTypeSelectState(MatchType.EPS, epsSport)
-            }
+            //特優賠率 需求先隱藏特優賠率
+//            menuData.menu.eps?.let { epsSport ->
+//                setupMatchTypeSelectState(MatchType.EPS, epsSport)
+//            }
         }
         _sportMenuResult.postValue(this)
     }
@@ -2910,42 +2844,6 @@ class GameViewModel(
         _oddsDetailResult.postValue(null)
     }
 
-    //提款功能是否啟用
-    fun checkWithdrawSystem() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                withdrawRepository.checkWithdrawSystem()
-            }
-        }
-    }
-
-    //充值功能是否啟用
-    fun checkRechargeSystem() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                withdrawRepository.checkRechargeSystem()
-            }
-        }
-    }
-
-    /**
-     * 判斷個人資訊是否完整, 若不完整需要前往個人資訊頁面完善資料.
-     * complete true: 個人資訊有缺漏, false: 個人資訊完整
-     */
-    fun checkProfileInfoComplete() {
-        viewModelScope.launch {
-            withdrawRepository.checkProfileInfoComplete()
-        }
-    }
-
-    fun checkBankCardPermissions() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                withdrawRepository.checkBankCardPermissions()
-            }
-        }
-    }
-
     fun setFastBetOpened(isOpen: Boolean) {
         betInfoRepository.setFastBetOpened(isOpen)
     }
@@ -2960,31 +2858,6 @@ class GameViewModel(
 
     fun resetErrorDialogMsg() {
         _showErrorDialogMsg.value = ""
-    }
-
-    //發送簡訊驗證碼
-    fun sendTwoFactor() {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.withdrawService.sendTwoFactor()
-            }
-            _twoFactorResult.postValue(result)
-        }
-    }
-
-    //双重验证校验
-    fun validateTwoFactor(validateTwoFactorRequest: ValidateTwoFactorRequest) {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                OneBoSportApi.withdrawService.validateTwoFactor(validateTwoFactorRequest)
-            }?.let { result ->
-                if (result.success) {
-                    _twoFactorSuccess.value = true
-                    withdrawRepository.sendTwoFactor()
-                } else
-                    _errorMessageDialog.value = result.msg
-            }
-        }
     }
 
     fun updateBetAmount(input: String) {

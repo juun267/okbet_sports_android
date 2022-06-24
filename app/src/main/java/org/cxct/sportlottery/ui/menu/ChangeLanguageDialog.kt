@@ -51,9 +51,9 @@ class ChangeLanguageDialog(private val clearBetListListener: ClearBetListListene
     private fun selectLanguage(select: LanguageManager.Language) {
         activity?.run {
             LanguageManager.saveSelectLanguage(this, select)
-            if (sConfigData?.thirdOpen == FLAG_OPEN)
-                MainActivity.reStart(this)
-            else
+//            if (sConfigData?.thirdOpen == FLAG_OPEN)
+//                MainActivity.reStart(this)
+//            else
                 GamePublicityActivity.reStart(this)
         }
     }

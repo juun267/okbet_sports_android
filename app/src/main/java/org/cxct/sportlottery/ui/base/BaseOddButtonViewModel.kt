@@ -49,8 +49,8 @@ abstract class BaseOddButtonViewModel(
     loginRepository: LoginRepository,
     userInfoRepository: UserInfoRepository,
     betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
-) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+    infoCenterRepository: InfoCenterRepository,
+) : BaseWithdrawViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     @Deprecated("之後API都會給翻譯")
     protected val playCateMappingList by lazy {
@@ -122,18 +122,6 @@ abstract class BaseOddButtonViewModel(
     fun saveOddsType(oddsType: OddsType) {
         MultiLanguagesApplication.mInstance.sOddsType = oddsType.code
         MultiLanguagesApplication.mInstance.mOddsType.postValue(oddsType)
-    }
-
-    fun getOddsType() {
-        MultiLanguagesApplication.mInstance.mOddsType.postValue(
-            when (MultiLanguagesApplication.mInstance.sOddsType) {
-                OddsType.EU.code -> OddsType.EU
-                OddsType.HK.code -> OddsType.HK
-                OddsType.MYS.code -> OddsType.MYS
-                OddsType.IDN.code -> OddsType.IDN
-                else -> OddsType.EU
-            }
-        )
     }
 
     fun updateMatchBetList(
@@ -349,12 +337,14 @@ abstract class BaseOddButtonViewModel(
 
     /**
      * 新的投注單沒有單一下注, 一次下注一整單, 下注完後不管成功失敗皆清除所有投注單內容
-     * @date 20210730
+     * 依照 tabPosition 區分單注or串關 (0:單注, 1:串關)
+     * @date 20220607
      */
     fun addBetList(
         normalBetList: List<BetInfoListData>,
         parlayBetList: List<ParlayOdd>,
-        oddsType: OddsType
+        oddsType: OddsType,
+        tabPosition: Int
     ) {
         //調整盤口
         var currentOddsTypes = oddsType
@@ -364,11 +354,12 @@ abstract class BaseOddButtonViewModel(
             if (it.matchOdd.isOnlyEUType || it.matchType == MatchType.OUTRIGHT || it.matchType == MatchType.OTHER_OUTRIGHT) {
                 currentOddsTypes = OddsType.EU
             }
+            val betAmount = if (tabPosition == 0) it.betAmount else 0.0
             matchList.add(
                 Odd(
                     it.matchOdd.oddsId,
                     getOdds(it.matchOdd, currentOddsTypes),
-                    it.betAmount,
+                    betAmount,
                     currentOddsTypes.code
                 )
             )
@@ -383,7 +374,8 @@ abstract class BaseOddButtonViewModel(
         val parlayList: MutableList<Stake> = mutableListOf()
         parlayBetList.forEach {
             if (it.betAmount > 0) {
-                parlayList.add(Stake(TextUtil.replaceCByParlay(androidContext, it.parlayType), it.betAmount))
+                val betAmount = if (tabPosition == 1) it.betAmount else 0.0
+                parlayList.add(Stake(TextUtil.replaceCByParlay(androidContext, it.parlayType), betAmount))
             }
         }
 

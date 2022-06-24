@@ -47,7 +47,6 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.bet.list.*
-import org.cxct.sportlottery.ui.bet.list.receipt.BetInfoCarReceiptDialog
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
@@ -127,10 +126,10 @@ class SwitchLanguageFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         if(SPUtil.getInstance(context).getSelectLanguage() != select.key){
             activity?.run {
                 LanguageManager.saveSelectLanguage(this, select)
-                if (sConfigData?.thirdOpen == FLAG_OPEN)
-                    MainActivity.reStart(this)
-                else
-                    GamePublicityActivity.reStart(this)
+//                if (sConfigData?.thirdOpen == FLAG_OPEN)
+//                    MainActivity.reStart(this)
+//                else
+                GamePublicityActivity.reStart(this)
             }
         }
     }

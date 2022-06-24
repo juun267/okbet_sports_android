@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="language_setting">Ngôn ngữ cài đặt</string>
+    <string name="language_setting">Ngôn ngữ</string>
     <string name="loading">đang tải</string>
     <string name="connect_first">vui lòng kết nối mạng</string>
     <string name="error_url_fail">chuyển đổi địa chỉ bị lỗi</string>
@@ -612,6 +612,7 @@
     <string name="bet_receipt_bet_quota">Số tiền đặt cược : </string>
     <string name="bet_info_list_win_quota">Số tiền có thể thắng : </string>
     <string name="bet_list_win_quota">Số tiền có thể thắng:</string>
+    <string name="bet_receipt_win_quota">Số tiền có thể thắng:</string>
     <string name="bet_info_list_add_more">Thêm nhiều lựa chọn</string>
     <string name="bet_info_list_bet">Cá cược</string>
     <string name="bet_info_list_odds_change">Chấp nhận các thay đổi và đặt cược</string>
@@ -629,11 +630,11 @@
     <string name="bet_info_list_clean">Xóa bằng một cú nhấp chuột</string>
     <string name="bet_info_bet_balance_insufficient">Số dư không đủ</string>
     <string name="bet_info_different_game_type">không cùng loại bóng không thể tiến hành cược xiên</string>
-    <string name="bet_info_input_quota">Nhập số tiền</string>
+    <string name="bet_info_input_quota">Vui lòng nhập số tiền</string>
     <string name="bet_info_check_maximum_limit">Xem giới hạn tối đa số tiền</string>
     <string name="bet_info_bet_quota">Số tiền đặt cược</string>
     <string name="bet_info_win_quota">Số tiền có thể thắng</string>
-    <string name="bet_info_accept_odds_change">Chấp nhận các thay đổi và đặt cược</string>
+    <string name="bet_info_accept_odds_change">Chấp nhận thay đối</string>
     <string name="bet_info_add_to_bet_info">Thêm vào đơn ca cược</string>
     <string name="bet_info_odd_content_changed">Tỷ lệ cược của một hoặc nhiều lựa chọn, điểm chấp hoặc điểm số đã được thay đổi</string>
     <string name="bet_info_odd_content_changed2">Tỷ lệ cược đã thay đổi, %s thành %s</string>
@@ -641,7 +642,9 @@
     <string name="bet_list_delete_all">Xóa tất cả</string>
     <string name="bet_list_single_warn">(Có thể sử dụng cùng số tiền đặt cược để thực hiện tất cả các lựa chọn riêng lẻ)</string>
     <string name="bet_list_single">Đơn cược</string>
-    <string name="bet_list_view_more_options">Xem tất cả các tùy chọn</string>
+    <string name="bet_list_single_type">Cược đơn</string>
+    <string name="bet_list_parlay_type">Cược xâu</string>
+    <string name="bet_list_view_more_options">Nhiều lựa chọn hơn</string>
     <string name="bet_info_odd_content_close">Một hoặc nhiều tùy chọn của cá cược đã bị đóng</string>
     <string name="bet_info_remove_closed">Xóa các tùy chọn đã đóng</string>
     <string name="parlay_rule_nc1">%1$s chuỗi 1 là một cược đơn bao gồm%1$s tùy chọn \ nTất cả các tùy chọn phải thắng để được hoàn lại tiền \ nKhi có nhiều tùy chọn sự kiện hơn,%1$s chuỗi 1 có thể được kết hợp thành nhiều chuỗi kết nối, ví dụ:%2$s đối sánh có thể được hoán vị và kết hợp để tạo thành%2$s%1$s chuỗi 1</string>
@@ -743,7 +746,7 @@
     <string name="bottom_nav_game">Sự kiện</string>
     <string name="bottom_nav_promotion">Khuyến mãi</string>
     <string name="bottom_nav_chat">trò truyện</string>
-    <string name="bottom_nav_my_account">của tôi</string>
+    <string name="bottom_nav_my_account">Của tôi</string>
     <string name="sport">Thể thao</string>
     <string name="live">Live</string>
     <string name="lottery_description">Có hơn trăm cách chơi xổ số để bạn trúng thưởng! Chúng tôi cung cấp cho người chơi nhiều nội dung trò chơi phong phú khác nhau, \ n cam kết tạo ra một môi trường trò chơi giải trí chất lượng cao, mang lại kết quả công bằng và mở thưởng công khai minh bạch nhất</string>
@@ -1179,4 +1182,16 @@
     <!--region 大廳賠率按鈕-->
     <string name="none">None</string>
     <!--endregion-->
+    <string name="timezone_change">Múi giờ</string>
+    <string name="timezone">Múi giờ</string>
+    <!--region 注單模塊調整-->
+    <string name="bet_info_bet_lock_hint">Kèo chấp đã đóng</string>
+    <string name="bet_info_no_parlay_hint">Trận đấu không hỗ trợ đá xiên.</string>
+    <string name="function">Chức năng thường dùng</string>
+    <string name="sport_relative">Liên quan thể thao</string>
+    <string name="setting">Cài đặt hệ thống</string>
+    <string name="service">Phục vụ</string>
+    <string name="timezone_list_no_record">Không có kết quả nào</string>
+    <!--endregion-->
+
 </resources>

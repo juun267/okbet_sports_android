@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_card"
+    android:layout_width="@dimen/margin_84"
+    android:layout_height="88dp"
+    android:background="@color/color_141414_FCFCFC"
+    tools:context=".ui.game.home.HomeGameCard"
+    tools:ignore="SpUsage">
+
+    <ImageView
+        android:id="@+id/sport_type_img"
+        android:layout_width="@dimen/margin_40"
+        android:layout_height="@dimen/margin_40"
+        android:layout_marginTop="21dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_home_football"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:padding="@dimen/margin_4"
+        android:background="@drawable/selector_sport_type_item_bg"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/sport_type_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:text="@string/basketball"
+        android:textColor="@color/color_BBBBBB_333333"
+        android:textSize="@dimen/textSize14sp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sport_type_img" />
+
+    <TextView
+        android:id="@+id/sport_count_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="6dp"
+        android:maxLines="1"
+        android:textColor="@color/color_909090_666666"
+        android:textSize="@dimen/textSize12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="13125367" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="1dp"
+        android:layout_height="25dp"
+        android:background="@color/color_303030_dddddd"
+        app:layout_constraintBottom_toBottomOf="@id/sport_type_img"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/sport_type_img" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

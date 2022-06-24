@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_141414_F3F4F5"
+    android:orientation="vertical"
+    android:clickable="true"
+    android:focusable="true"
+    tools:context=".ui.menu.ChangeLanguageDialog"
+    tools:ignore="SpUsage,RtlSymmetry">
+
+
+    <include layout="@layout/view_base_tool_bar_no_drawer"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_34"
+        android:gravity="center_vertical"
+        android:background="@drawable/bg_white_radius_18"
+        android:layout_marginHorizontal="@dimen/margin_12"
+        android:layout_marginVertical="@dimen/margin_10"
+        android:paddingHorizontal="@dimen/margin_10">
+       <ImageView
+           android:layout_width="wrap_content"
+           android:layout_height="18dp"
+           android:adjustViewBounds="true"
+           android:src="@drawable/ic_search1"/>
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/margin_10"
+            android:background="@null"
+            android:singleLine="true"
+            android:textColor="@color/color_939393_333333"
+            android:textColorHint="@color/color_7F7F7F_999999"
+            android:textSize="12sp"
+            android:hint="请输入地区"/>
+    </LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_timezone"
+            tools:itemCount="6"/>
+        <include
+            android:id="@+id/lin_empty"
+            layout="@layout/view_no_timezone"
+            android:visibility="gone"/>
+    </FrameLayout>
+
+</LinearLayout>

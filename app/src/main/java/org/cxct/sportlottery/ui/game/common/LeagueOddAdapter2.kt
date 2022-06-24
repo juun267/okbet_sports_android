@@ -38,7 +38,6 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
 
     var data = listOf<MatchOdd>()
     var oddsType: OddsType = OddsType.EU
-
     fun setData(data: List<MatchOdd> = listOf(), oddsType: OddsType = OddsType.EU) {
         this.data = data
         this.oddsType = oddsType
@@ -54,13 +53,10 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
         }
 
     var leagueOddListener: LeagueOddListener? = null
-
     var leagueOdd: LeagueOdd? = null
-
     var playSelectedCodeSelectionType: Int? = null
     var playSelectedCode: String? = null
     var isNeedRecreateViews = true
-
     private val oddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
             override fun refreshOddButton(odd: Odd) {
@@ -280,17 +276,18 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             setStatusTextColor(item)
             itemView.league_odd_match_play_count.text = item.matchInfo?.playCateNum.toString()
             itemView.league_odd_match_favorite.isSelected = item.matchInfo?.isFavorite ?: false
-            itemView.league_odd_match_price_boost.isVisible = item.matchInfo?.eps == 1
+//            itemView.league_odd_match_price_boost.isVisible = item.matchInfo?.eps == 1
             itemView.league_neutral.apply {
                 isSelected = item.matchInfo?.neutral == 1
                 isVisible = item.matchInfo?.neutral == 1
             }
+//            滚球动画 直播 显示控制
             //itemView.space2.isVisible = (item.matchInfo?.eps == 1 || item.matchInfo?.liveVideo == 1)
             itemView.iv_play.isVisible =
                 item.matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(item.matchInfo?.startTime))
             itemView.iv_animation.isVisible =
                 TimeUtil.isTimeInPlay(item.matchInfo?.startTime) && !(item.matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
-                    ?.getGameDetailAnimationNeedShow() == true
+                    ?.getGameDetailAnimationNeedShow() == true && item.matchInfo?.liveVideo == 0
         }
 
         private fun setupMatchInfo(
@@ -353,7 +350,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 )
             }
 
-            itemView.league_odd_match_price_boost.isVisible = item.matchInfo?.eps == 1
+//            itemView.league_odd_match_price_boost.isVisible = item.matchInfo?.eps == 1
             //itemView.space2.isVisible = (item.matchInfo?.eps == 1 || item.matchInfo?.liveVideo == 1)
             with(itemView.iv_play) {
                 isVisible = item.matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(item.matchInfo?.startTime))
@@ -370,8 +367,8 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             with(itemView.iv_animation) {
                 isVisible =
                     TimeUtil.isTimeInPlay(item.matchInfo?.startTime) && !(item.matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
-                        ?.getGameDetailAnimationNeedShow() == true
-
+                        ?.getGameDetailAnimationNeedShow() == true && item.matchInfo?.liveVideo == 0
+                item.matchInfo?.gameType?.let { setLiveImg(it) }
                 setOnClickListener {
                     leagueOddListener?.onClickAnimationIconListener(
                         item.matchInfo?.id,
@@ -382,6 +379,26 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 }
             }
 
+        }
+
+        private fun ImageView.setLiveImg( gameType: String) {
+            when (gameType) {
+                GameType.FT.key -> setImageResource(R.drawable.ic_live_soccer_small)
+                GameType.BK.key -> setImageResource(R.drawable.ic_live_basketball_small)
+                GameType.TN.key -> setImageResource(R.drawable.ic_live_tennis_small)
+                GameType.VB.key -> setImageResource(R.drawable.ic_live_volleyball_small)
+                GameType.BM.key -> setImageResource(R.drawable.ic_live_badminton_small)
+                GameType.TT.key -> setImageResource(R.drawable.ic_live_pingpong_small)
+                GameType.IH.key -> setImageResource(R.drawable.ic_live_icehockey_small)
+                GameType.BX.key -> setImageResource(R.drawable.ic_live_boxing_small)
+                GameType.CB.key -> setImageResource(R.drawable.ic_live_billiards_small)
+                GameType.CK.key -> setImageResource(R.drawable.ic_live_cricket_small)
+                GameType.BB.key -> setImageResource(R.drawable.ic_live_baseball_small)
+                GameType.RB.key -> setImageResource(R.drawable.ic_live_rugby_small)
+                GameType.AFT.key -> setImageResource(R.drawable.ic_live_football_small)
+                GameType.MR.key -> setImageResource(R.drawable.ic_live_racing_small)
+                GameType.GF.key -> setImageResource(R.drawable.ic_live_golf_small)
+            }
         }
 
         private fun setupMatchScore(item: MatchOdd, matchType: MatchType) {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="language_setting">语系设定</string>
+    <string name="language_setting">语言</string>
     <string name="loading">加载中</string>
     <string name="connect_first">请先连上网路</string>
     <string name="error_url_fail">跳转地址错误</string>
@@ -366,7 +366,7 @@
     <string name="lose_half">输半</string>
     <string name="draw">和</string>
     <string name="canceled">已取消</string>
-    <string name="odds_change">賠率已改變</string>
+    <string name="odds_change">赔率已改变</string>
     <string name="pending">待成立 %1$s 秒</string>
     <string name="bet_canceled">下注失败</string>
     <string name="confirmed">已确认</string>
@@ -612,6 +612,7 @@
     <string name="bet_receipt_bet_quota">投注金额：</string>
     <string name="bet_info_list_win_quota">可赢金额：</string>
     <string name="bet_list_win_quota">可赢金额：</string>
+    <string name="bet_receipt_win_quota">可赢金额：</string>
     <string name="bet_info_list_add_more">更多选择</string>
     <string name="bet_info_list_bet">投注</string>
     <string name="bet_info_list_odds_change">接受变更并投注</string>
@@ -620,6 +621,7 @@
     <string name="bet_info_list_bigger_than_max_limit">投注额大于下注限额</string>
     <string name="bet_info_list_less_than_minimum_limit">投注额小于下注限额</string>
     <string name="bet_info_list">注单</string>
+
     <string name="bet_info_parlay_list">复式连串过关投注</string>
     <string name="bet_info_parlay_win_quota">可赢金额：</string>
     <string name="bet_info_add_bet_success">投注成功</string>
@@ -633,7 +635,7 @@
     <string name="bet_info_check_maximum_limit">查看最高下注</string>
     <string name="bet_info_bet_quota">投注额</string>
     <string name="bet_info_win_quota">可赢额</string>
-    <string name="bet_info_accept_odds_change">接受更改并投注</string>
+    <string name="bet_info_accept_odds_change">接受变更</string>
     <string name="bet_info_add_to_bet_info">加入投注单</string>
     <string name="bet_info_odd_content_changed">一个或多个选项的赔率，让球数或比分已更改</string>
     <string name="bet_info_odd_content_changed2">赔率已变更，从 %s 至 %s 。</string>
@@ -641,7 +643,9 @@
     <string name="bet_list_delete_all">全删除</string>
     <string name="bet_list_single_warn">可用相同的投注额填充所有单项选择</string>
     <string name="bet_list_single">单注</string>
-    <string name="bet_list_view_more_options">查看所有多个选项</string>
+    <string name="bet_list_single_type">单项投注</string>
+    <string name="bet_list_parlay_type">串关投注</string>
+    <string name="bet_list_view_more_options">更多投注选项</string>
     <string name="bet_list_cant_parlay_warn">提醒若同一赛事, 不同球种, 冠军等投注项目不可进行串关</string>
     <string name="bet_info_odd_content_close">所选投注的一个或多个选项已关闭</string>
     <string name="bet_info_remove_closed">移除已关闭的选项</string>
@@ -1141,8 +1145,19 @@
 
     <string name="esports">电子竞技</string>
     <string name="coming_soon">即将推出</string>
+    <string name="timezone_change">时区切换</string>
+    <string name="timezone">时区</string>
 
     <!--region 大廳賠率按鈕-->
     <string name="none">无</string>
+    <!--endregion-->
+    <!--region 注單模塊調整-->
+    <string name="bet_info_bet_lock_hint">注单盘口已关闭</string>
+    <string name="bet_info_no_parlay_hint">赛事暂无支持串关</string>
+    <string name="function">常用功能</string>
+    <string name="sport_relative">体育相关</string>
+    <string name="setting">系统设定</string>
+    <string name="service">服务</string>
+    <string name="timezone_list_no_record">搜寻结果为空</string>
     <!--endregion-->
 </resources>

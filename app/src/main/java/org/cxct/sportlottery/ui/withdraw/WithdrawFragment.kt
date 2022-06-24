@@ -343,7 +343,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             }
         })
         //Tab 顯示判斷
-        viewModel.withdrawSystemOperation.observe(this.viewLifecycleOwner, Observer { list ->
+        viewModel.withdrawTabIsShow.observe(this.viewLifecycleOwner, Observer { list ->
 
             if (list.isNullOrEmpty() || list.size == 1) {
                 tab_layout.visibility = View.GONE

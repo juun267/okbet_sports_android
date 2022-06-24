@@ -88,10 +88,10 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
         })
         viewModel.validResult.observe(this, Observer {
             if (it.success) {
-                if (sConfigData?.thirdOpen == FLAG_OPEN)
-                    MainActivity.reStart(this)
-                else
-                    GamePublicityActivity.reStart(this)
+//                if (sConfigData?.thirdOpen == FLAG_OPEN)
+//                    MainActivity.reStart(this)
+//                else
+                GamePublicityActivity.reStart(this)
             } else {
                 binding.etVerificationCode.setError(
                     getString(R.string.login_phone_verify_error),
@@ -105,10 +105,10 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
 
     override fun onBackPressed() {
         viewModel.doLogoutCleanUser {
-            if (sConfigData?.thirdOpen == FLAG_OPEN)
-                MainActivity.reStart(this)
-            else
-                GamePublicityActivity.reStart(this)
+//            if (sConfigData?.thirdOpen == FLAG_OPEN)
+//                MainActivity.reStart(this)
+//            else
+            GamePublicityActivity.reStart(this)
         }
     }
 

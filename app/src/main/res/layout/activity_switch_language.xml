@@ -5,39 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:ignore="SpUsage">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/margin_48"
-        android:background="@drawable/bg_title"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        app:layout_scrollFlags="scroll|enterAlways"
-        tools:ignore="SpUsage,RtlSymmetry">
-
-        <ImageView
-            android:id="@+id/ivLogo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_14"
-            android:layout_marginTop="@dimen/margin_4"
-            android:layout_marginBottom="@dimen/margin_4"
-            android:adjustViewBounds="true"
-            android:contentDescription="@null"
-            android:scaleType="fitStart"
-            android:src="@drawable/ic_logo" />
-
-        <ImageView
-            android:id="@+id/iv_language"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="4dp"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp"
-            android:src="@drawable/ic_flag_en"
-            android:visibility="gone" />
-
-    </LinearLayout>
+    <include layout="@layout/view_base_tool_bar_no_drawer"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,34 +13,6 @@
         android:background="@color/color_141414_F3F4F5"
         android:gravity="top"
         android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_48"
-            android:background="@color/color_191919_EEEFF0"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="@dimen/margin_12">
-
-            <ImageView
-                android:id="@+id/ivBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/margin_8"
-                android:src="@drawable/ic_icon_back_grey" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/text_chose_language"
-                android:layout_marginStart="2dp"
-                android:textColor="@color/color_BBBBBB_333333" />
-
-            <ImageView
-                android:layout_width="@dimen/margin_16"
-                android:layout_height="@dimen/margin_16"
-                android:layout_marginStart="@dimen/margin_10"
-                android:src="@drawable/ic_icon_flag" />
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/llLanguageList"

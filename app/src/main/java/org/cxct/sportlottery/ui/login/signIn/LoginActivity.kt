@@ -253,10 +253,10 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 startActivity(Intent(this@LoginActivity, PhoneVerifyActivity::class.java))
             } else {
                 this.run {
-                    if (sConfigData?.thirdOpen == FLAG_OPEN)
-                        MainActivity.reStart(this)
-                    else
-                        GamePublicityActivity.reStart(this)
+//                    if (sConfigData?.thirdOpen == FLAG_OPEN)
+//                        MainActivity.reStart(this)
+//                    else
+                    GamePublicityActivity.reStart(this)
 //                        finish()
                 }
             }

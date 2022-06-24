@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.databinding.FragmentPublicityBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.FavoriteType
@@ -30,6 +31,7 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
 import org.cxct.sportlottery.util.SocketUpdateUtil
+import org.cxct.sportlottery.util.addScrollListenerForBottomNavBar
 
 /**
  * @app_destination 宣傳頁
@@ -47,9 +49,9 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
             GamePublicityAdapter.PublicityAdapterListener(
                 onLogoClickListener = {
                     removeBetListFragment()
-                    if (sConfigData?.thirdOpen == FLAG_OPEN) {
-                        MainActivity.reStart(activity ?: requireActivity())
-                    }
+//                    if (sConfigData?.thirdOpen == FLAG_OPEN) {
+//                        MainActivity.reStart(activity ?: requireActivity())
+//                    }
                 },
                 onLanguageBlockClickListener = {
                     goSwitchLanguagePage()
@@ -181,6 +183,11 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         with(binding.rvPublicity) {
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = mPublicityAdapter
+            addScrollListenerForBottomNavBar(
+                onScrollDown = {
+                    MultiLanguagesApplication.mInstance.setIsScrollDown(it)
+                }
+            )
         }
     }
 

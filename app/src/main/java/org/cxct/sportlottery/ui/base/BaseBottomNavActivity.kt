@@ -1,10 +1,18 @@
 package org.cxct.sportlottery.ui.base
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
+import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
+import org.cxct.sportlottery.ui.bet.list.receipt.BetInfoCarReceiptDialog
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
 import kotlin.reflect.KClass
@@ -102,5 +110,65 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
             }
         }
 
+    }
+
+    protected fun showBetReceiptDialog(
+        betResultData: Receipt?,
+        betParlayList: List<ParlayOdd>,
+        isMultiBet: Boolean,
+        containerId: Int,
+    ) {
+        if (isMultiBet) {
+            supportFragmentManager.beginTransaction()
+                .setCustomAnimations(
+                    R.anim.push_right_to_left_enter,
+                    R.anim.pop_bottom_to_top_exit,
+                    R.anim.push_right_to_left_enter,
+                    R.anim.pop_bottom_to_top_exit
+                )
+                .replace(
+                    containerId,
+                    BetReceiptFragment.newInstance(betResultData, betParlayList)
+                )
+                .addToBackStack(BetReceiptFragment::class.java.simpleName)
+                .commit()
+        } else {
+            BetInfoCarReceiptDialog(betResultData).show(
+                supportFragmentManager,
+                BetInfoCarReceiptDialog::class.java.simpleName
+            )
+        }
+    }
+
+    private var isViewHide = false
+    fun setBottomNavBarVisibility(targetView: View, isHide: Boolean, duration: Long = 200) {
+        if (isHide == isViewHide) return
+
+        targetView.apply {
+            val bottomNavBarHeight = resources.getDimension(R.dimen.bottom_nav_bar_height)
+            if (isHide) {
+                isViewHide = true
+                translationY = 0f
+                animate()
+                    .translationY(bottomNavBarHeight)
+                    .setDuration(duration)
+                    .setListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator?, isReverse: Boolean) {
+                            translationY = bottomNavBarHeight
+                        }
+                    })
+            } else {
+                isViewHide = false
+                translationY = bottomNavBarHeight
+                animate()
+                    .translationY(0f)
+                    .setDuration(duration)
+                    .setListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator?, isReverse: Boolean) {
+                            translationY = 0f
+                        }
+                    })
+            }
+        }
     }
 }

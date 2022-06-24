@@ -53,31 +53,37 @@
                     android:layout_height="0dp"
                     android:scaleType="centerCrop"
                     app:layout_constraintBottom_toBottomOf="@id/ll_favorite_game_type_title"
-                    app:layout_constraintTop_toTopOf="@id/favorite_game_type_list"
+                    app:layout_constraintTop_toTopOf="@id/ll_sport_type"
                     tools:ignore="ContentDescription"
                     tools:src="@drawable/soccer108" />
+
+                <LinearLayout
+                    android:id="@+id/ll_sport_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="88dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:background="@color/color_191919_FCFCFC"
+                    android:gravity="center"
+                    app:layout_constraintTop_toBottomOf="@id/favorite_toolbar"
+                    tools:ignore="MissingConstraints">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/favorite_game_type_list"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginBottom="2dp"
-                    android:padding="10dp"
                     android:overScrollMode="never"
                     android:nestedScrollingEnabled="false"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/favorite_toolbar"
                     tools:itemCount="1"
-                    tools:listitem="@layout/itemview_sport_type_v5" />
-
+                    tools:listitem="@layout/itemview_sport_type_v6" />
+                </LinearLayout>
                 <LinearLayout
                     android:id="@+id/ll_favorite_game_type_title"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:gravity="center"
-                    app:layout_constraintTop_toBottomOf="@id/favorite_game_type_list">
+                    app:layout_constraintTop_toBottomOf="@id/ll_sport_type">
 
                     <TextView
                         android:id="@+id/favorite_game_type"
