@@ -1163,5 +1163,9 @@
 
     <!--region 大廳賠率按鈕-->
     <string name="none">None</string>
+    <string name="red_envelope_congratulations">Congratulations</string>
+    <string name="pls_check_amount">Please check the amount in account</string>
+    <string name="redenvelope_fail">Unfortunately</string>
+    <string name="redenvelope_fail_desp">Unfortunately, you didn\'t get the red envelope</string>
     <!--endregion-->
 </resources>

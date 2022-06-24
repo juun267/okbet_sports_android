@@ -1158,5 +1158,9 @@
     <string name="setting">系统设定</string>
     <string name="service">服务</string>
     <string name="timezone_list_no_record">搜寻结果为空</string>
+    <string name="red_envelope_congratulations">恭喜您抢到</string>
+    <string name="pls_check_amount">请至您的帐户内查询入帐金额</string>
+    <string name="redenvelope_fail">很遗憾</string>
+    <string name="redenvelope_fail_desp">很可惜没抢到红包</string>
     <!--endregion-->
 </resources>

@@ -1159,6 +1159,10 @@
     <string name="setting">Settings</string>
     <string name="service">Service</string>
     <string name="timezone_list_no_record">No result found</string>
+    <string name="red_envelope_congratulations">Congratulations</string>
+    <string name="pls_check_amount">Please check the amount in account</string>
+    <string name="redenvelope_fail">Unfortunately</string>
+    <string name="redenvelope_fail_desp">Unfortunately, you didn\'t get the red envelope</string>
     <!--endregion-->
 
 </resources>

@@ -1191,6 +1191,10 @@
     <string name="setting">Cài đặt hệ thống</string>
     <string name="service">Phục vụ</string>
     <string name="timezone_list_no_record">Không có kết quả nào</string>
+    <string name="red_envelope_congratulations">Chúc mừng</string>
+    <string name="pls_check_amount">Mời tra cứu số dư trong tài khoản</string>
+    <string name="redenvelope_fail">Thật không may</string>
+    <string name="redenvelope_fail_desp">Rất tiếc không giật được lì xì</string>
     <!--endregion-->
 
 </resources>
