@@ -61,7 +61,7 @@ abstract class BaseOddButtonViewModel(
         json.fromJson<List<PlayCateMapItem>>() ?: listOf()
     }
 
-    val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo!!.asLiveData()
+    val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo
 
     val showBetInfoSingle = betInfoRepository.showBetInfoSingle
 
