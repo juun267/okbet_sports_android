@@ -151,10 +151,6 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
                     R.id.navigation_game -> {
                         true
                     }
-                    R.id.item_bet_list -> {
-                        viewModel.navShoppingCart()
-                        false
-                    }
                     R.id.navigation_account_history -> {
                         viewModel.navAccountHistory()
                         finish()

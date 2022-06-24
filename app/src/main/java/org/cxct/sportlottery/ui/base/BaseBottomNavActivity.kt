@@ -13,6 +13,7 @@ import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
 import org.cxct.sportlottery.ui.bet.list.receipt.BetInfoCarReceiptDialog
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
 import kotlin.reflect.KClass
@@ -62,8 +63,8 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
 
         viewModel.intentClass.observe(this) {
             it.getContentIfNotHandled()?.let { clazz ->
-                if (clazz == GameActivity::class.java) {
-                    GameActivity.reStart(this)
+                if (clazz == GamePublicityActivity::class.java) {
+                    GamePublicityActivity.reStart(this)
                 } else {
                     startActivity(Intent(this, clazz))
                 }

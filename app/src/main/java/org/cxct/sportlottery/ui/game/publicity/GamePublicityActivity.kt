@@ -69,7 +69,6 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         initViews()
         initBaseFun()
         initObservers()
-        setLetterSpace()
         setupDataSourceChange()
 
         //進入宣傳頁，優先跳出這個視窗(不論有沒有登入，每次都要跳)
@@ -83,22 +82,15 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         initDestination()
     }
 
-    private fun setLetterSpace() {
-        if (LanguageManager.getSelectLanguage(this) == LanguageManager.Language.ZH) {
-            binding.tvRegister.letterSpacing = 0.6f
-            binding.tvLogin.letterSpacing = 0.6f
-        }
-    }
-
     private fun initDestination() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             MultiLanguagesApplication.mInstance.initBottomNavBar()
             when (destination.id) {
                 R.id.publicityFragment -> {
-                    binding.gameToolbar.toolBar.visibility = View.GONE
-                    setupNoticeButton(binding.publicityToolbar.ivNotice)
-                }
-                else -> {
+//                    binding.gameToolbar.toolBar.visibility = View.GONE
+//                    setupNoticeButton(binding.publicityToolbar.ivNotice)
+//                }
+//                else -> {
                     binding.gameToolbar.toolBar.visibility = View.VISIBLE
                     setupNoticeButton(binding.gameToolbar.ivNotice)
                 }
@@ -109,7 +101,6 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     private fun initViews() {
         initToolBar()
         initServiceButton()
-        initRegionViewBtn()
         initOnClickListener()
     }
 
@@ -119,18 +110,11 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     }
 
     override fun initToolBar() {
-        //region publicityToolbar
-        with(binding) {
-            publicityToolbar.ivLanguage.setImageResource(LanguageManager.getLanguageFlag(this@GamePublicityActivity))
-            publicityToolbar.tvLanguage.text = LanguageManager.getLanguageStringResource(this@GamePublicityActivity)
-        }
-        //endregion
     }
 
     override fun updateNoticeButton(noticeCount: Int) {
         val updatedNoticeResource = if (noticeCount > 0) R.drawable.icon_bell_with_red_dot else R.drawable.icon_bell
         with(binding) {
-            publicityToolbar.ivNotice.setImageResource(updatedNoticeResource)
             gameToolbar.ivNotice.setImageResource(updatedNoticeResource)
         }
     }
@@ -139,24 +123,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         binding.gameBottomNavigation.btnFloatingService.setView(this)
     }
 
-    private fun initRegionViewBtn() {
-        //region view bottom
-        binding.tvRegister.letterSpacing = 0.0892957143f
-        binding.tvLogin.letterSpacing = 0.0892957143f
-
-        binding.tvRegister.setVisibilityByCreditSystem()
-    }
-
     private fun initOnClickListener() {
-        //region view bottom
-        binding.tvRegister.setOnClickListener(this)
-        binding.tvLogin.setOnClickListener(this)
-        //endregion
-        //region publicity tool bar
-        binding.publicityToolbar.ivLogo.setOnClickListener(this)
-        binding.publicityToolbar.blockLanguage.setOnClickListener(this)
-        binding.publicityToolbar.ivMenu.setOnClickListener(this)
-        //endregion
         //region game tool bar
         binding.gameToolbar.ivLogo.setOnClickListener(this)
         binding.gameToolbar.btnLogin.setOnClickListener(this)
@@ -179,7 +146,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         viewModel.showBetUpperLimit.observe(this) {
             if (it.getContentIfNotHandled() == true)
                 snackBarBetUpperLimitNotify.apply {
-                    setAnchorView(R.id.viewBottom)
+                    anchorView = game_Bottom_Navigation
                     show()
                 }
         }
@@ -289,13 +256,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         avoidFastDoubleClick()
         with(binding) {
             when (v) {
-                tvRegister, gameToolbar.btnRegister -> {
-                    goRegisterPage()
-                }
-                tvLogin, gameToolbar.btnLogin -> {
-                    goLoginPage()
-                }
-                publicityToolbar.ivLogo, gameToolbar.ivLogo -> {
+                gameToolbar.ivLogo -> {
                     if (navController.currentDestination?.id != R.id.publicityFragment) {
                         navController.navigateUp()
                     } else {
@@ -304,10 +265,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                     }
                     removeBetListFragment()
                 }
-                publicityToolbar.blockLanguage -> {
-                    goSwitchLanguagePage()
-                }
-                publicityToolbar.ivMenu, gameToolbar.ivMenu -> {
+                gameToolbar.ivMenu -> {
                     if (drawerLayout.isDrawerOpen(viewNavRight.navRight)) drawerLayout.closeDrawers()
                     else {
                         drawerLayout.openDrawer(viewNavRight.navRight)
@@ -372,51 +330,39 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         cl_bet_list_bar.setOnClickListener {
             showBetListPage()
         }
-        binding.gameBottomNavigation.sportBottomNavigation.clearSelectedStatus()
-        binding.gameBottomNavigation.sportBottomNavigation.setNavigationItemClickListener {
-            when (it) {
-                R.id.navigation_sport -> {
-                    viewModel.navGame()
-                    false
+        binding.gameBottomNavigation.sportBottomNavigation.apply {
+            setNavigationItemClickListener {
+                when (it) {
+                    R.id.navigation_home -> {
+                        true
+                    }
+                    R.id.navigation_sport -> {
+                        viewModel.navGame()
+                        false
+                    }
+                    R.id.navigation_account_history -> {
+                        viewModel.navAccountHistory()
+                        false
+                    }
+                    R.id.navigation_transaction_status -> {
+                        viewModel.navTranStatus()
+                        false
+                    }
+                    R.id.navigation_my -> {
+                        viewModel.navMy()
+                        false
+                    }
+                    else -> false
                 }
-                R.id.navigation_game -> {
-                    viewModel.navMyFavorite()
-                    false
-                }
-                R.id.item_bet_list -> {
-                    viewModel.navShoppingCart()
-                    false
-                }
-                R.id.navigation_account_history -> {
-                    viewModel.navAccountHistory()
-                    false
-                }
-                R.id.navigation_transaction_status -> {
-                    viewModel.navTranStatus()
-                    false
-                }
-                R.id.navigation_my -> {
-                    viewModel.navMy()
-                    false
-                }
-                else -> false
             }
+
+            setSelected(R.id.navigation_home)
         }
     }
 
     override fun updateUiWithLogin(isLogin: Boolean) {
         with(binding) {
             if (isLogin) {
-                viewBottom.visibility = View.GONE
-                game_Bottom_Navigation.visibility = View.VISIBLE
-
-                //region publicity tool bar
-                publicityToolbar.ivNotice.visibility = View.VISIBLE
-                publicityToolbar.ivMenu.visibility = View.VISIBLE
-
-                publicityToolbar.blockLanguage.visibility = View.GONE
-                //endregion
-
                 //region game tool bar
                 with(gameToolbar) {
                     ivNotice.visibility = View.VISIBLE
@@ -428,16 +374,6 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                 }
                 //endregion
             } else {
-                viewBottom.visibility = View.VISIBLE
-                game_Bottom_Navigation.visibility = View.GONE
-
-                //region publicity tool bar
-                publicityToolbar.ivNotice.visibility = View.GONE
-                publicityToolbar.ivMenu.visibility = View.GONE
-
-                publicityToolbar.blockLanguage.visibility = View.VISIBLE
-                //endregion
-
                 //region game tool bar
                 with(gameToolbar) {
                     ivNotice.visibility = View.GONE
@@ -465,7 +401,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
 
     override fun showLoginNotify() {
         snackBarLoginNotify.apply {
-            setAnchorView(binding.viewBottom.id)
+            anchorView = game_Bottom_Navigation
             show()
         }
     }

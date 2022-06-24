@@ -1,28 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingVertical="@dimen/margin_10"
+    android:orientation="vertical"
     tools:ignore="UseCompoundDrawables, SpUsage">
 
 
-    <com.youth.banner.Banner
-        android:id="@+id/banner"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:banner_loop_time="3000"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="375:310"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_14"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp">
+
+        <com.youth.banner.Banner
+            android:id="@+id/banner"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            app:banner_loop_time="3000"
+            app:layout_constraintDimensionRatio="375:310" />
+
+    </androidx.cardview.widget.CardView>
 
     <include
         android:id="@+id/publicityToolbar"
         layout="@layout/view_toolbar_publicity"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tool_bar_height"
+        android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -32,6 +40,7 @@
         android:background="@color/color_B3000000"
         android:minHeight="71dp"
         android:paddingTop="4dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/banner"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -121,5 +130,5 @@
 
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
 

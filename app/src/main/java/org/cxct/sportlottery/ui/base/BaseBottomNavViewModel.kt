@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
@@ -59,6 +60,10 @@ abstract class BaseBottomNavViewModel(
             )
         )*/
         _navPublicityPage.postValue(Event(true))
+    }
+
+    fun navHome() {
+        setIntentClassLiveData(GamePublicityActivity::class.java)
     }
 
     fun navGame() {
