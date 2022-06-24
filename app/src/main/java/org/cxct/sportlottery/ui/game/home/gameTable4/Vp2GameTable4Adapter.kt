@@ -456,8 +456,11 @@ class Vp2GameTable4Adapter(
                                 tv_point.visibility = View.GONE
 
 
-                                league_odd_match_bb_status.apply {
-                                    text = data?.statusName18n ?: ""
+                                data?.statusName18n?.let {
+                                    league_odd_match_bb_status.apply {
+                                        text = data?.statusName18n ?: ""
+                                        isVisible = true
+                                    }
                                 }
 
                                 league_odd_match_halfStatus.apply {
