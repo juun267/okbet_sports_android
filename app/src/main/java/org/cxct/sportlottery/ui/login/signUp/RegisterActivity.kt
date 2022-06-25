@@ -312,8 +312,23 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun setupRegisterIdentity() {
-        binding.etIdentity.visibility =
-            if (sConfigData?.enableIdentityNumber == FLAG_OPEN) View.VISIBLE else View.GONE
+        with(binding) {
+            etIdentity.visibility =
+                if (sConfigData?.enableIdentityNumber == FLAG_OPEN) View.VISIBLE else View.GONE
+
+            etIdentity.endIconImageButton.setOnClickListener {
+                if (etIdentity.endIconResourceId == R.drawable.ic_eye_open) {
+                    eetIdentity.transformationMethod =
+                        PasswordTransformationMethod.getInstance()
+                    etIdentity.setEndIcon(R.drawable.ic_eye_close)
+                } else {
+                    etIdentity.setEndIcon(R.drawable.ic_eye_open)
+                    eetIdentity.transformationMethod =
+                        HideReturnsTransformationMethod.getInstance()
+                }
+                eetIdentity.setSelection(eetIdentity.text.toString().length)
+            }
+        }
     }
 
     private fun setupSalarySource() {

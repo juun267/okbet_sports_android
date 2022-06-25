@@ -248,6 +248,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                app:endIcon="@drawable/ic_eye_close"
                 app:hintText="@string/hint_register_identity"
                 app:iconSignifier="@drawable/ic_id_card"
                 app:isResponsiveIconColor="false"
@@ -262,7 +263,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
-                    android:inputType="text"
+                    android:inputType="textPassword"
                     android:maxLines="1"
                     android:textColor="@color/color_FFFFFF_DE000000"
                     android:textSize="@dimen/textSize14sp" />
