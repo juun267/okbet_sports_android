@@ -7,9 +7,12 @@ import androidx.core.text.HtmlCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.OneBoSportApi.bettingStationService
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.network.index.sendSms.SmsRequest
@@ -18,6 +21,7 @@ import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.util.FileUtil
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MD5Util
@@ -85,6 +89,9 @@ class RegisterViewModel(
     val loginForGuestResult: LiveData<LoginResult>
         get() = _loginForGuestResult
 
+    val bettingStationList: LiveData<List<StatusSheetData>>
+        get() = _bettingStationList
+
 
     private val cbAgreeAllChecked: LiveData<Boolean?>
         get() = _cbAgreeAllChecked
@@ -120,6 +127,8 @@ class RegisterViewModel(
     private val _loginForGuestResult = MutableLiveData<LoginResult>()
 
     private val _cbAgreeAllChecked = MutableLiveData<Boolean?>()
+
+    private val _bettingStationList = MutableLiveData<List<StatusSheetData>>()
 
     @Deprecated("沒在用")
     fun getAgreementContent(context: Context): Spanned {
@@ -688,6 +697,23 @@ class RegisterViewModel(
                 // TODO 20220108 更新UserInfo by Hewie
                 userInfoRepository.getUserInfo()
                 _registerResult.postValue(result)
+            }
+        }
+    }
+
+    fun bettingStationQuery() {
+        viewModelScope.launch(Dispatchers.IO) {
+            doNetwork(androidContext) {
+                bettingStationService.bettingStationsQuery()
+            }?.let { result ->
+                val bettingStationSheetList = mutableListOf<StatusSheetData>()
+                result.bettingStationList.map { bettingStation ->
+                    bettingStationSheetList.add(StatusSheetData(bettingStation.id.toString(), bettingStation.name))
+                }
+
+                withContext(Dispatchers.Main) {
+                    _bettingStationList.value = bettingStationSheetList
+                }
             }
         }
     }

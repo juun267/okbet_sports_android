@@ -314,8 +314,17 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun setupBettingShop() {
-        binding.etBettingShop.visibility =
-            if (sConfigData?.enableBettingStation == FLAG_OPEN) View.VISIBLE else View.GONE
+        with(binding) {
+            val bettingStationVisibility = sConfigData?.enableBettingStation == FLAG_OPEN
+
+            if (bettingStationVisibility) {
+                etBettingShop.visibility = View.VISIBLE
+                //查詢投注站列表
+                viewModel.bettingStationQuery()
+            } else {
+                etBettingShop.visibility = View.GONE
+            }
+        }
     }
 
     private fun setupValidCode() {
@@ -578,6 +587,20 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     it.first,
                     false
                 )
+            }
+        }
+
+        viewModel.bettingStationList.observe(this) { bettingStationList ->
+            with(binding) {
+                //設置投注站清單選項
+                bettingShopSpinner.setSpinnerView(eetBettingShop, etBettingShop, bettingStationList) {
+                    eetBettingShop.setText(it?.showName)
+                }
+
+                //預設第一項
+                eetBettingShop.setText(bettingStationList.firstOrNull()?.showName)
+                //預設後會變為選中狀態, 需清除focus
+                etBettingShop.hasFocus = false
             }
         }
 
