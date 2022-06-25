@@ -30,6 +30,7 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
@@ -289,8 +290,27 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun setupSalarySource() {
-        binding.etSalary.visibility =
-            if (sConfigData?.enableSalarySource == FLAG_OPEN) View.VISIBLE else View.GONE
+        with(binding) {
+            //顯示隱藏該選項
+            etSalary.visibility =
+                if (sConfigData?.enableSalarySource == FLAG_OPEN) View.VISIBLE else View.GONE
+
+            //根據config配置薪資來源選項
+            val salarySourceList = mutableListOf<StatusSheetData>()
+            sConfigData?.salarySource?.map { salarySource ->
+                salarySourceList.add(StatusSheetData(salarySource.id.toString(), salarySource.name))
+            }
+
+            //預設顯示第一項
+            eetSalary.setText(salarySourceList.firstOrNull()?.showName)
+            //設置預設文字後會變成選中狀態, 需清除focus
+            etSalary.hasFocus = false
+
+            //配置點擊展開選項選單
+            salarySpinner.setSpinnerView(eetSalary, etSalary, salarySourceList) {
+                eetSalary.setText(it?.showName)
+            }
+        }
     }
 
     private fun setupBettingShop() {
