@@ -99,6 +99,10 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         setupWhatsApp()
         setupTelegram()
         setupSecurityPb()
+        setupBirthday()
+        setupRegisterIdentity()
+        setupSalarySource()
+        setupBettingShop()
         setupValidCode()
         setupSmsValidCode()
         setupAgreement()
@@ -272,6 +276,26 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     private fun setupSecurityPb() {
         binding.etSecurityPb.visibility =
             if (sConfigData?.enableSafeQuestion == FLAG_OPEN) View.VISIBLE else View.GONE
+    }
+
+    private fun setupBirthday() {
+        binding.etBirth.visibility =
+            if (sConfigData?.enableBirthday == FLAG_OPEN) View.VISIBLE else View.GONE
+    }
+
+    private fun setupRegisterIdentity() {
+        binding.etIdentity.visibility =
+            if (sConfigData?.enableIdentityNumber == FLAG_OPEN) View.VISIBLE else View.GONE
+    }
+
+    private fun setupSalarySource() {
+        binding.etSalary.visibility =
+            if (sConfigData?.enableSalarySource == FLAG_OPEN) View.VISIBLE else View.GONE
+    }
+
+    private fun setupBettingShop() {
+        binding.etBettingShop.visibility =
+            if (sConfigData?.enableBettingStation == FLAG_OPEN) View.VISIBLE else View.GONE
     }
 
     private fun setupValidCode() {
