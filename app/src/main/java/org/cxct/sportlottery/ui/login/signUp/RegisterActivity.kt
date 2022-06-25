@@ -54,6 +54,10 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
     private var birthdayTimePickerView: TimePickerView? = null
 
+    private var birthdayTimeStamp: Long? = null
+    private var salarySourceSelectedData: StatusSheetData? = null
+    private var bettingShopSelectedData: StatusSheetData? = null
+
     override fun onClick(v: View?) {
         when (v) {
             binding.ivReturn -> {
@@ -302,6 +306,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             }
 
             birthdayTimePickerView = createTimePicker { date ->
+                birthdayTimeStamp = date.time
                 eetBirth.setText(TimeUtil.stampToRegisterBirthdayFormat(date))
             }
         }
@@ -340,9 +345,11 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             }
 
             //預設顯示第一項
+            salarySourceSelectedData = salarySourceList.firstOrNull()
             eetSalary.setText(salarySourceList.firstOrNull()?.showName)
             //設置預設文字後會變成選中狀態, 需清除focus
             etSalary.hasFocus = false
+            viewModel.checkSalary(eetSalary.text.toString())
 
             //配置點擊展開選項選單
             etSalary.post {
@@ -531,7 +538,11 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     eetVerificationCode.text.toString(),
                     cbAgreeAll.isChecked,
                     deviceSn,
-                    deviceId
+                    deviceId,
+                    birth = birthdayTimeStamp?.toString(),
+                    identity = eetIdentity.text.toString(),
+                    salarySource = salarySourceSelectedData?.code,
+                    bettingShop = bettingShopSelectedData?.code
                 )
             }
         }
@@ -680,9 +691,11 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     })
 
                 //預設第一項
+                bettingShopSelectedData = bettingStationList.firstOrNull()
                 eetBettingShop.setText(bettingStationList.firstOrNull()?.showName)
                 //預設後會變為選中狀態, 需清除focus
                 etBettingShop.hasFocus = false
+                viewModel.checkBettingShop(eetBettingShop.text.toString())
             }
         }
 

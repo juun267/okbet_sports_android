@@ -459,6 +459,10 @@ class RegisterViewModel(
         smsCode: String,
         validCode: String,
         cbAgreeAllChecked: Boolean,
+        birth: String?,
+        identity: String?,
+        salarySource: String?,
+        bettingShop: String?
     ): Boolean {
         if (sConfigData?.enableInviteCode == FLAG_OPEN)
             checkInviteCode(inviteCode)
@@ -499,6 +503,14 @@ class RegisterViewModel(
             checkSecurityCode(smsCode)
         if (sConfigData?.enableRegValidCode == FLAG_OPEN)
             checkValidCode(validCode)
+        if (sConfigData?.enableBirthday == FLAG_OPEN)
+            checkBirth(birth)
+        if (sConfigData?.enableIdentityNumber == FLAG_OPEN)
+            checkIdentity(identity)
+        if (sConfigData?.enableSalarySource == FLAG_OPEN)
+            checkSalary(salarySource)
+        if (sConfigData?.enableBettingStation == FLAG_OPEN)
+            checkBettingShop(bettingShop)
 
         checkCbAgreeAll(cbAgreeAllChecked)
 
@@ -549,6 +561,14 @@ class RegisterViewModel(
         if (sConfigData?.enableSmsValidCode == FLAG_OPEN && checkInputPair(securityCodeMsg))
             return false
         if (sConfigData?.enableRegValidCode == FLAG_OPEN && checkInputPair(validCodeMsg))
+            return false
+        if (sConfigData?.enableBirthday == FLAG_OPEN && checkInputPair(birthMsg))
+            return false
+        if (sConfigData?.enableIdentityNumber == FLAG_OPEN && checkInputPair(identityMsg))
+            return false
+        if (sConfigData?.enableSalarySource == FLAG_OPEN && checkInputPair(salaryMsg))
+            return false
+        if (sConfigData?.enableBettingStation == FLAG_OPEN && checkInputPair(bettingShopMsg))
             return false
 
         if (cbAgreeAllChecked.value != true)
@@ -612,7 +632,11 @@ class RegisterViewModel(
         validCode: String,
         cbAgreeAllChecked: Boolean,
         deviceSn: String,
-        deviceId: String
+        deviceId: String,
+        birth: String?,
+        identity: String?,
+        salarySource: String?,
+        bettingShop: String?
     ) {
         if (checkAllInput(
                 inviteCode,
@@ -637,6 +661,10 @@ class RegisterViewModel(
                 smsCode,
                 validCode,
                 cbAgreeAllChecked,
+                birth,
+                identity,
+                salarySource,
+                bettingShop
             )) {
             register(
                 createRegisterRequest(
@@ -661,7 +689,11 @@ class RegisterViewModel(
                     smsCode,
                     validCode,
                     deviceSn,
-                    deviceId
+                    deviceId,
+                    birth,
+                    identity,
+                    salarySource,
+                    bettingShop
                 )
             )
         }
@@ -689,7 +721,11 @@ class RegisterViewModel(
         smsCode: String,
         validCode: String,
         deviceSn: String,
-        deviceId: String
+        deviceId: String,
+        birth: String?,
+        identity: String?,
+        salarySource: String?,
+        bettingShop: String?
     ): RegisterRequest {
         return RegisterRequest(
             userName = userName,
@@ -733,6 +769,14 @@ class RegisterViewModel(
                 this.validCodeIdentity = validCodeResult.value?.validCodeData?.identity
                 this.validCode = validCode
             }
+            if (sConfigData?.enableBirthday == FLAG_OPEN)
+                this.birthday = birth
+            if (sConfigData?.enableIdentityNumber == FLAG_OPEN)
+                this.identityNumber = identity
+            if (sConfigData?.enableSalarySource == FLAG_OPEN)
+                this.salarySource = salarySource
+            if (sConfigData?.enableBettingStation == FLAG_OPEN)
+                this.bettingStationId = bettingShop
         }
     }
 
