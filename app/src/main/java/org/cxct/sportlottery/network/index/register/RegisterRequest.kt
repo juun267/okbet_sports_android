@@ -24,5 +24,9 @@ data class RegisterRequest(
     var city: String? = null,
     var zipCode: String? = null,
     var safeQuestion: String? = null,
-    var loginEnvInfo:String? = null
+    var loginEnvInfo:String? = null,
+    var birthday: String? = null,
+    var identityNumber: String? = null,
+    var bettingStationId: String? = null,
+    var salarySource: String? = null,
 )
