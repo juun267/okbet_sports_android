@@ -481,14 +481,14 @@ fun View.setSpinnerView(editText: EditText, textFieldBoxes: TextFieldBoxes, spin
         true
     }
 
-    if (spinnerList.size > 0) {
+    if (spinnerList.isNotEmpty()) {
         val first = spinnerList[0]
         first.isChecked = true
         selectItem = first
     }
     spinnerAdapter = StatusSpinnerAdapter(spinnerList.toMutableList())
     mListPop = ListPopupWindow(context)
-    mListPop.width = ScreenUtils.getScreenWidth(context) / 2
+    mListPop.width = textFieldBoxes.width
     mListPop.height = FrameLayout.LayoutParams.WRAP_CONTENT
     mListPop.setBackgroundDrawable(
         ContextCompat.getDrawable(
@@ -497,7 +497,7 @@ fun View.setSpinnerView(editText: EditText, textFieldBoxes: TextFieldBoxes, spin
         )
     )
     mListPop.setAdapter(spinnerAdapter)
-    mListPop.anchorView = this //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
+    mListPop.anchorView = textFieldBoxes //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
     mListPop.isModal = true //设置是否是模式
     mListPop.setOnItemClickListener { _, _, position, _ ->
         //隱藏EditText的光標

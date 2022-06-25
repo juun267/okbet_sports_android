@@ -307,8 +307,10 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             etSalary.hasFocus = false
 
             //配置點擊展開選項選單
-            salarySpinner.setSpinnerView(eetSalary, etSalary, salarySourceList) {
-                eetSalary.setText(it?.showName)
+            etSalary.post {
+                salarySpinner.setSpinnerView(eetSalary, etSalary, salarySourceList) {
+                    eetSalary.setText(it?.showName)
+                }
             }
         }
     }
