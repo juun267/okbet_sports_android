@@ -1169,4 +1169,6 @@
     <!--region 大廳賠率按鈕-->
     <string name="none">None</string>
     <!--endregion-->
+
+    <string name="hint_default_birth">yyyy / mm / dd</string>
 </resources>

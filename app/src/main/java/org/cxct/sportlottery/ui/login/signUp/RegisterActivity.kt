@@ -13,12 +13,19 @@ import android.text.method.LinkMovementMethod
 import android.text.method.PasswordTransformationMethod
 import android.text.style.ClickableSpan
 import android.util.Log
+import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import cn.jpush.android.api.JPushInterface
+import com.bigkoo.pickerview.builder.TimePickerBuilder
+import com.bigkoo.pickerview.listener.OnTimeSelectListener
+import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityRegisterBinding
@@ -48,6 +55,8 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
     private var mSmsTimer: Timer? = null
     private lateinit var binding: ActivityRegisterBinding
+
+    private var birthdayTimePickerView: TimePickerView? = null
 
     override fun onClick(v: View?) {
         when (v) {
@@ -282,6 +291,24 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     private fun setupBirthday() {
         binding.etBirth.visibility =
             if (sConfigData?.enableBirthday == FLAG_OPEN) View.VISIBLE else View.GONE
+
+        with(binding) {
+            birthPicker.setOnClickListener {
+                //設置TextFieldBoxes為選中狀態
+                etBirth.hasFocus = true
+                //隱藏光標
+                eetBirth.isCursorVisible = false
+                //隱藏鍵盤
+                val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+
+                birthdayTimePickerView?.show()
+            }
+
+            birthdayTimePickerView = createTimePicker { date ->
+                eetBirth.setText(TimeUtil.stampToRegisterBirthdayFormat(date))
+            }
+        }
     }
 
     private fun setupRegisterIdentity() {
@@ -770,4 +797,50 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
 
+    private fun createTimePicker(timeSelectedListener: (time: Date) -> Unit): TimePickerView {
+        val yesterday = Calendar.getInstance()
+        yesterday.add(Calendar.DAY_OF_MONTH, -30)
+        val tomorrow = Calendar.getInstance()
+        tomorrow.add(Calendar.DAY_OF_MONTH, +30)
+        val dateTimePicker: TimePickerView = TimePickerBuilder(this
+        ) { date, _ ->
+            try {
+                timeSelectedListener(date)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+            .setLabel("", "", "", "", "", "")
+            .setDate(Calendar.getInstance())
+            .setTimeSelectChangeListener { }
+            .setType(booleanArrayOf(true, true, true, false, false, false))
+            .setTitleText(resources.getString(R.string.title_recharge_time))
+            .setCancelText(" ")
+            .setSubmitText(getString(R.string.picker_submit))
+            .setTitleColor(ContextCompat.getColor(this, R.color.color_CCCCCC_000000))
+            .setTitleBgColor(ContextCompat.getColor(this, R.color.color_2B2B2B_e2e2e2))
+            .setBgColor(ContextCompat.getColor(this, R.color.color_191919_FCFCFC))
+            .setSubmitColor(ContextCompat.getColor(this, R.color.color_7F7F7F_999999))
+            .setCancelColor(ContextCompat.getColor(this, R.color.color_7F7F7F_999999))
+            .isDialog(true)
+            .build() as TimePickerView
+
+        val params = FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            Gravity.BOTTOM
+        )
+
+        params.leftMargin = 0
+        params.rightMargin = 0
+        dateTimePicker.dialogContainerLayout.layoutParams = params
+        val dialogWindow = dateTimePicker.dialog.window
+        if (dialogWindow != null) {
+            dialogWindow.setWindowAnimations(com.bigkoo.pickerview.R.style.picker_view_slide_anim)
+            dialogWindow.setGravity(Gravity.BOTTOM)
+            dialogWindow.setDimAmount(0.1f)
+        }
+
+        return dateTimePicker
+    }
 }
