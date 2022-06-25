@@ -131,6 +131,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     eetLoginPassword.transformationMethod =
                         HideReturnsTransformationMethod.getInstance()
                 }
+                etLoginPassword.hasFocus = true
                 eetLoginPassword.setSelection(eetLoginPassword.text.toString().length)
             }
             etConfirmPassword.endIconImageButton.setOnClickListener {
@@ -143,6 +144,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     eetConfirmPassword.transformationMethod =
                         HideReturnsTransformationMethod.getInstance()
                 }
+                etConfirmPassword.hasFocus = true
                 eetConfirmPassword.setSelection(eetConfirmPassword.text.toString().length)
             }
             etWithdrawalPwd.endIconImageButton.setOnClickListener {
@@ -155,6 +157,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     eetWithdrawalPwd.transformationMethod =
                         HideReturnsTransformationMethod.getInstance()
                 }
+                etWithdrawalPwd.hasFocus = true
                 eetWithdrawalPwd.setSelection(eetWithdrawalPwd.text.toString().length)
             }
             btnRegister.setTitleLetterSpacing()
@@ -327,6 +330,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     eetIdentity.transformationMethod =
                         HideReturnsTransformationMethod.getInstance()
                 }
+                etIdentity.hasFocus = true
                 eetIdentity.setSelection(eetIdentity.text.toString().length)
             }
         }
