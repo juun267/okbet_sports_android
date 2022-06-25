@@ -346,9 +346,22 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
             //配置點擊展開選項選單
             etSalary.post {
-                salarySpinner.setSpinnerView(eetSalary, etSalary, salarySourceList) {
-                    eetSalary.setText(it?.showName)
-                }
+                salarySpinner.setSpinnerView(
+                    eetSalary,
+                    etSalary,
+                    salarySourceList,
+                    touchListener = {
+                        //旋轉箭頭
+                        etSalary.endIconImageButton.rotation = 180F
+                    },
+                    itemSelectedListener = {
+                        salarySourceSelectedData = it
+                        eetSalary.setText(it?.showName)
+                    },
+                    popupWindowDismissListener = {
+                        //旋轉箭頭
+                        etSalary.endIconImageButton.rotation = 0F
+                    })
             }
         }
     }
@@ -649,9 +662,22 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         viewModel.bettingStationList.observe(this) { bettingStationList ->
             with(binding) {
                 //設置投注站清單選項
-                bettingShopSpinner.setSpinnerView(eetBettingShop, etBettingShop, bettingStationList) {
-                    eetBettingShop.setText(it?.showName)
-                }
+                bettingShopSpinner.setSpinnerView(
+                    eetBettingShop,
+                    etBettingShop,
+                    bettingStationList,
+                    touchListener = {
+                        //旋轉箭頭
+                        etBettingShop.endIconImageButton.rotation = 180F
+                    },
+                    itemSelectedListener = {
+                        bettingShopSelectedData = it
+                        eetBettingShop.setText(it?.showName)
+                    },
+                    popupWindowDismissListener = {
+                        //旋轉箭頭
+                        etBettingShop.endIconImageButton.rotation = 0F
+                    })
 
                 //預設第一項
                 eetBettingShop.setText(bettingStationList.firstOrNull()?.showName)

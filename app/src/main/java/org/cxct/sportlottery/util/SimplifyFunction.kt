@@ -455,7 +455,14 @@ fun WebView.setWebViewCommonBackgroundColor(){
  * @see org.cxct.sportlottery.ui.component.StatusSpinnerView
  */
 @SuppressLint("ClickableViewAccessibility")
-fun View.setSpinnerView(editText: EditText, textFieldBoxes: TextFieldBoxes, spinnerList: List<StatusSheetData>, itemSelectedListener: (data: StatusSheetData?) -> Unit) {
+fun View.setSpinnerView(
+    editText: EditText,
+    textFieldBoxes: TextFieldBoxes,
+    spinnerList: List<StatusSheetData>,
+    touchListener: () -> Unit,
+    itemSelectedListener: (data: StatusSheetData?) -> Unit,
+    popupWindowDismissListener: () -> Unit
+) {
     var spinnerAdapter: StatusSpinnerAdapter? = null
 
     var selectItem: StatusSheetData? = null
@@ -475,6 +482,7 @@ fun View.setSpinnerView(editText: EditText, textFieldBoxes: TextFieldBoxes, spin
             //隱藏鍵盤
             val inputMethodManager = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+            touchListener()
         }
         true
     }
@@ -505,5 +513,9 @@ fun View.setSpinnerView(editText: EditText, textFieldBoxes: TextFieldBoxes, spin
         selectItem?.isChecked = true
         spinnerList.find { it != selectItem && it.isChecked }?.isChecked = false
         itemSelectedListener.invoke(selectItem)
+    }
+    //PopupWindow關閉時
+    mListPop.setOnDismissListener {
+        popupWindowDismissListener()
     }
 }
