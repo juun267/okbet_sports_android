@@ -105,6 +105,11 @@
     <string name="security_pb">Security question</string>
     <string name="hint_security_pb">(Please enter the favorite country)</string>
     <string name="real_name">Full name</string>
+    <string name="income_source">Source of income</string>
+    <string name="betting_shop">Betting Shop</string>
+    <string name="register_identity">ID</string>
+    <string name="hint_register_identity">Please enter ID Number</string>
+    <string name="birth_date">Birth Date</string>
     <string name="hint_real_name">(match the bank account name)</string>
     <string name="verification_code">Verification code</string>
     <string name="verification_code_by_sms">SMS verify code</string>

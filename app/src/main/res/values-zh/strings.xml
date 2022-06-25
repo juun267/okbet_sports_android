@@ -105,6 +105,11 @@
     <string name="security_pb">安全问题</string>
     <string name="hint_security_pb">(请输入最爱的国家)</string>
     <string name="real_name">真实姓名</string>
+    <string name="income_source">薪资来源</string>
+    <string name="betting_shop">匹配投注站</string>
+    <string name="register_identity">身分证号</string>
+    <string name="hint_register_identity">請輸入身分证号</string>
+    <string name="birth_date">生日</string>
     <string name="hint_real_name">(姓名须与银行户口一致)</string>
     <string name="verification_code">验证码</string>
     <string name="verification_code_by_sms">短信验证码</string>
