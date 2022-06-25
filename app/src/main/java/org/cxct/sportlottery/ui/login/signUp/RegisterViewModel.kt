@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.login.signUp
 
 import android.content.Context
 import android.text.Spanned
-import android.util.Log
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -63,6 +62,14 @@ class RegisterViewModel(
         get() = _cityMsg
     val addressMsg: LiveData<Pair<String?, Boolean>>
         get() = _addressMsg
+    val salaryMsg: LiveData<Pair<String?, Boolean>>
+        get() = _salaryMsg
+    val birthMsg: LiveData<Pair<String?, Boolean>>
+        get() = _birthMsg
+    val identityMsg: LiveData<Pair<String?, Boolean>>
+        get() = _identityMsg
+    val bettingShopMsg: LiveData<Pair<String?, Boolean>>
+        get() = _bettingShopMsg
     val weChatMsg: LiveData<Pair<String?, Boolean>>
         get() = _weChatMsg
     val zaloMsg: LiveData<Pair<String?, Boolean>>
@@ -111,6 +118,10 @@ class RegisterViewModel(
     private val _provinceMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _cityMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _addressMsg = MutableLiveData<Pair<String?, Boolean>>()
+    private val _salaryMsg = MutableLiveData<Pair<String?, Boolean>>()
+    private val _birthMsg = MutableLiveData<Pair<String?, Boolean>>()
+    private val _identityMsg = MutableLiveData<Pair<String?, Boolean>>()
+    private val _bettingShopMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _weChatMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _zaloMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _facebookMsg = MutableLiveData<Pair<String?, Boolean>>()
@@ -385,6 +396,42 @@ class RegisterViewModel(
 
     fun checkCbAgreeAll(checked: Boolean?) {
         _cbAgreeAllChecked.value = checked
+        focusChangeCheckAllInputComplete()
+    }
+
+    fun checkBirth(birth: String?) {
+        val msg = when {
+            birth.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
+            else -> null
+        }
+        _birthMsg.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete()
+    }
+
+    fun checkIdentity(identity: String?) {
+        val msg = when {
+            identity.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
+            else -> null
+        }
+        _identityMsg.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete()
+    }
+
+    fun checkSalary(salary: String?) {
+        val msg = when {
+            salary.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
+            else -> null
+        }
+        _salaryMsg.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete()
+    }
+
+    fun checkBettingShop(bettingShop: String?) {
+        val msg = when {
+            bettingShop.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
+            else -> null
+        }
+        _bettingShopMsg.value = Pair(msg, msg == null)
         focusChangeCheckAllInputComplete()
     }
 

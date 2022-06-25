@@ -24,7 +24,6 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import cn.jpush.android.api.JPushInterface
 import com.bigkoo.pickerview.builder.TimePickerBuilder
-import com.bigkoo.pickerview.listener.OnTimeSelectListener
 import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
 import org.cxct.sportlottery.R
@@ -42,9 +41,6 @@ import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.BitmapUtil
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.ToastUtil
 import java.util.*
 
 /**
@@ -299,7 +295,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 //隱藏光標
                 eetBirth.isCursorVisible = false
                 //隱藏鍵盤
-                val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                 inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
 
                 birthdayTimePickerView?.show()
@@ -424,6 +420,18 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             }
             eetFullName.apply {
                 checkRegisterListener { viewModel.checkFullName(it) }
+            }
+            eetBirth.apply {
+                checkRegisterListener { viewModel.checkBirth(it) }
+            }
+            eetIdentity.apply {
+                checkRegisterListener { viewModel.checkIdentity(it) }
+            }
+            eetSalary.apply {
+                checkRegisterListener { viewModel.checkSalary(it) }
+            }
+            eetBettingShop.apply {
+                checkRegisterListener { viewModel.checkBettingShop(it) }
             }
             eetWithdrawalPwd.apply {
                 checkRegisterListener { viewModel.checkFundPwd(it) }
@@ -614,6 +622,10 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             provinceMsg.observe(this@RegisterActivity) { binding.etProvince.setError(it.first, false) }
             cityMsg.observe(this@RegisterActivity) { binding.etCity.setError(it.first, false) }
             addressMsg.observe(this@RegisterActivity) { binding.etAddress.setError(it.first, false) }
+            salaryMsg.observe(this@RegisterActivity) { binding.etSalary.setError(it.first, false) }
+            birthMsg.observe(this@RegisterActivity) { binding.etBirth.setError(it.first, false) }
+            identityMsg.observe(this@RegisterActivity) { binding.etIdentity.setError(it.first, false) }
+            bettingShopMsg.observe(this@RegisterActivity) { binding.etBettingShop.setError(it.first, false) }
             weChatMsg.observe(this@RegisterActivity) { binding.etWeChat.setError(it.first, false) }
             zaloMsg.observe(this@RegisterActivity) { binding.etZalo.setError(it.first, false) }
             facebookMsg.observe(this@RegisterActivity) { binding.etFacebook.setError(it.first, false) }
