@@ -864,12 +864,14 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         this.setText(spannableString, TextView.BufferType.SPANNABLE)
     }
 
-
+    /**
+     * 創建生日用日期選擇器
+     * 日期範圍: ~今天
+     * 日期格式: 年月日
+     */
     private fun createTimePicker(timeSelectedListener: (time: Date) -> Unit): TimePickerView {
-        val yesterday = Calendar.getInstance()
-        yesterday.add(Calendar.DAY_OF_MONTH, -30)
-        val tomorrow = Calendar.getInstance()
-        tomorrow.add(Calendar.DAY_OF_MONTH, +30)
+        val today = Calendar.getInstance() //用來限制生日的結束日期 (今天)
+
         val dateTimePicker: TimePickerView = TimePickerBuilder(this
         ) { date, _ ->
             try {
@@ -879,6 +881,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             }
         }
             .setLabel("", "", "", "", "", "")
+            .setRangDate(null, today)
             .setDate(Calendar.getInstance())
             .setTimeSelectChangeListener { }
             .setType(booleanArrayOf(true, true, true, false, false, false))
