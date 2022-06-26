@@ -54,7 +54,6 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
     private var birthdayTimePickerView: TimePickerView? = null
 
-    private var birthdayTimeStamp: Long? = null
     private var salarySourceSelectedData: StatusSheetData? = null
     private var bettingShopSelectedData: StatusSheetData? = null
 
@@ -309,7 +308,6 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             }
 
             birthdayTimePickerView = createTimePicker { date ->
-                birthdayTimeStamp = date.time
                 eetBirth.setText(TimeUtil.stampToRegisterBirthdayFormat(date))
             }
         }
@@ -543,7 +541,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     cbAgreeAll.isChecked,
                     deviceSn,
                     deviceId,
-                    birth = birthdayTimeStamp?.toString(),
+                    birth = eetBirth.text.toString().replace(" ",""), //傳給後端的不需要有空白間隔
                     identity = eetIdentity.text.toString(),
                     salarySource = salarySourceSelectedData?.code,
                     bettingShop = bettingShopSelectedData?.code
