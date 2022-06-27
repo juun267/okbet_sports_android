@@ -105,11 +105,12 @@
     <string name="security_pb">Security question</string>
     <string name="hint_security_pb">(Please enter the favorite country)</string>
     <string name="real_name">Full name</string>
-    <string name="income_source">Source of income</string>
-    <string name="betting_shop">Betting Shop</string>
-    <string name="register_identity">ID</string>
-    <string name="hint_register_identity">(Please enter ID Number)</string>
+    <string name="income_source">Source Of Income</string>
+    <string name="betting_shop">Outlet</string>
+    <string name="register_identity">Valid ID</string>
+    <string name="hint_register_identity">(Please enter Valid ID)</string>
     <string name="birth_date">Birth Date</string>
+    <string name="hint_birth_date">(YYYY/MM/DD)</string>
     <string name="hint_real_name">(match the bank account name)</string>
     <string name="verification_code">Verification code</string>
     <string name="verification_code_by_sms">SMS verify code</string>
@@ -1169,6 +1170,4 @@
     <!--region 大廳賠率按鈕-->
     <string name="none">None</string>
     <!--endregion-->
-
-    <string name="hint_default_birth">yyyy / mm / dd</string>
 </resources>

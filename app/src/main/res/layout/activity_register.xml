@@ -213,7 +213,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                app:hintText="@string/hint_default_birth"
+                app:hintText="@string/hint_birth_date"
                 app:iconSignifier="@drawable/ic_birthday"
                 app:isResponsiveIconColor="false"
                 app:labelText="@string/birth_date"
