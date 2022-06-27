@@ -108,7 +108,7 @@
     <string name="betting_shop">Betting Shop</string>
     <string name="register_identity">ID</string>
     <string name="hint_register_identity">(Please enter ID Number)</string>
-    <string name="birth_date">Birth Date</string>
+    <string name="birth_date">Ngày sinh nhật</string>
     <string name="hint_real_name">(Họ tên phải đồng nhất với tài khoản ngân hàng)</string>
     <string name="verification_code">Mã xác nhận</string>
     <string name="verification_code_by_sms">Mã xác nhận SMS</string>
