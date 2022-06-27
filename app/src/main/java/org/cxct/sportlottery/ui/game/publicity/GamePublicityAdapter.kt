@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -26,6 +27,8 @@ import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.game.Page
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.setVisibilityByCreditSystem
 import timber.log.Timber
 
 
@@ -37,13 +40,15 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         PublicityTitleImageData::class to 1,
         //跑馬燈
         PublicityAnnouncementData::class to 2,
+        //用戶資訊
+        PublicityUserInfoData::class to 3,
         //熱門推薦..更多
-        PublicitySubTitleImageData::class to 3,
+        PublicitySubTitleImageData::class to 4,
 
-        PreloadItem::class to 4,
+        PreloadItem::class to 5,
         //足球, 滾球, 數量, 聯賽名, 國旗, 賽事內容
-        Recommend::class to 5,
-        BottomNavigationItem::class to 6
+        Recommend::class to 6,
+        BottomNavigationItem::class to 7
     )
 
     var oddsType: OddsType = OddsType.EU
@@ -75,6 +80,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
     enum class ItemType {
         PUBLICITY_TITLE,
         PUBLICITY_ANNOUNCEMENT,
+        PUBLICITY_USER_INFO,
         PUBLICITY_SUB_TITLE,
         PRELOAD,
         RECOMMEND,
@@ -116,6 +122,11 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
     fun addAnnouncement() {
         removeData(PublicityAnnouncementData())
         addDataWithSort(PublicityAnnouncementData())
+    }
+
+    fun addUserInfo() {
+        removeData(PublicityUserInfoData())
+        addDataWithSort(PublicityUserInfoData())
     }
 
     fun addSubTitle() {
@@ -166,6 +177,15 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             this.titleList = titleList
         })
     }
+
+    fun updateUserInfoData(userId: String, userMoney: Double) {
+        Timber.e("updateUserInfoData")
+        removeData(PublicityUserInfoData())
+        addDataWithSort(PublicityUserInfoData().apply {
+            this.userId = userId
+            this.userMoney = userMoney
+        })
+    }
     //endregion
 
     override fun getItemViewType(position: Int): Int {
@@ -175,6 +195,9 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             }
             is PublicityAnnouncementData -> {
                 ItemType.PUBLICITY_ANNOUNCEMENT.ordinal
+            }
+            is PublicityUserInfoData -> {
+                ItemType.PUBLICITY_USER_INFO.ordinal
             }
             is PublicitySubTitleImageData -> {
                 ItemType.PUBLICITY_SUB_TITLE.ordinal
@@ -208,6 +231,15 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             ItemType.PUBLICITY_ANNOUNCEMENT.ordinal -> {
                 PublicityAnnouncementViewHolder(
                     PublicityAnnouncementViewBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
+            }
+            ItemType.PUBLICITY_USER_INFO.ordinal -> {
+                PublicityUserInfoViewHolder(
+                    PublicityUserInfoViewBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
@@ -281,6 +313,11 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             }
             is PublicityAnnouncementViewHolder -> {
                 if (data is PublicityAnnouncementData) {
+                    holder.bind(data)
+                }
+            }
+            is PublicityUserInfoViewHolder -> {
+                if (data is PublicityUserInfoData) {
                     holder.bind(data)
                 }
             }
@@ -440,6 +477,45 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         }
     }
 
+    inner class PublicityUserInfoViewHolder(val binding: PublicityUserInfoViewBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(data: PublicityUserInfoData) {
+            with(binding) {
+                if (isLogin) {
+                    llUserData.visibility = View.VISIBLE
+                    llLoginSignup.visibility = View.GONE
+                } else {
+                    llUserData.visibility = View.GONE
+                    llLoginSignup.visibility = View.VISIBLE
+                }
+
+                tvUserId.text = data.userId
+                val userBalanceText = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(data.userMoney)}"
+                tvUserBalance.text = userBalanceText
+
+                btnLogin.setOnClickListener {
+                    publicityAdapterListener.onGoLoginListener()
+                }
+                btnRegister.setOnClickListener {
+                    publicityAdapterListener.onGoRegisterListener()
+                }
+                btnDeposit.apply {
+                    setVisibilityByCreditSystem()
+                    setOnClickListener {
+                        publicityAdapterListener.onGoDepositListener()
+                    }
+                }
+                btnWithdraw.apply {
+                    setVisibilityByCreditSystem()
+                    setOnClickListener {
+                        publicityAdapterListener.onGoWithdrawListener()
+                    }
+                }
+            }
+        }
+    }
+
     inner class PublicitySubTitleViewHolder(val binding: PublicitySubTitleViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind() {
@@ -531,6 +607,10 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         private val onItemClickListener: () -> Unit,
         private val onGoHomePageListener: () -> Unit,
         private val onGoNewsPageListener: () -> Unit,
+        private val onGoLoginListener: () -> Unit,
+        private val onGoRegisterListener: () -> Unit,
+        private val onGoDepositListener: () -> Unit,
+        private val onGoWithdrawListener: () -> Unit,
         private val onClickBetListener: (gameType: String, matchType: MatchType, matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?, playCateMenuCode: String?) -> Unit,
         private val onClickFavoriteListener: (matchId: String?) -> Unit,
         private val onClickStatisticsListener: (matchId: String) -> Unit,
@@ -545,6 +625,10 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         fun onItemClickListener() = onItemClickListener.invoke()
         fun onGoHomePageListener() = onGoHomePageListener.invoke()
         fun onGoNewsPageListener() = onGoNewsPageListener.invoke()
+        fun onGoLoginListener() = onGoLoginListener.invoke()
+        fun onGoRegisterListener() = onGoRegisterListener.invoke()
+        fun onGoDepositListener() = onGoDepositListener.invoke()
+        fun onGoWithdrawListener() = onGoWithdrawListener.invoke()
         fun onClickBetListener(
             gameType: String,
             matchType: MatchType,

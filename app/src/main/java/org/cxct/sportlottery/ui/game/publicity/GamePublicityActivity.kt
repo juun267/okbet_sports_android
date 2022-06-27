@@ -389,9 +389,9 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                     ivNotice.visibility = View.GONE
                     ivMenu.visibility = View.GONE
 
-                    btnLogin.visibility = View.VISIBLE
-                    btnRegister.visibility = View.VISIBLE
-                    toolbarDivider.visibility = View.VISIBLE
+                    btnLogin.visibility = View.GONE
+                    btnRegister.visibility = View.GONE
+                    toolbarDivider.visibility = View.GONE
                 }
                 //endregion
             }

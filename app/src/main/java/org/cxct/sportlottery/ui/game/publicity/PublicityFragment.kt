@@ -26,6 +26,7 @@ import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.addScrollListenerForBottomNavBar
@@ -69,6 +70,20 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 },
                 onGoNewsPageListener = {
                     clickNews()
+                },
+                onGoLoginListener = {
+                    goLoginPage()
+                },
+                onGoRegisterListener = {
+                    goRegisterPage()
+                },
+                onGoDepositListener = {
+                    avoidFastDoubleClick()
+                    viewModel.checkRechargeSystem()
+                },
+                onGoWithdrawListener = {
+                    avoidFastDoubleClick()
+                    viewModel.checkWithdrawSystem()
                 },
                 onClickBetListener = { gameType, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
                     if(mIsEnabled){
@@ -203,6 +218,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         with(mPublicityAdapter) {
             addTitle()
             addAnnouncement()
+            addUserInfo()
             addSubTitle()
             addPreload()
         }
@@ -221,11 +237,19 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
             mPublicityAdapter.hasNotice = it.isNotEmpty()
         })
 
-        viewModel.userInfo.observe(viewLifecycleOwner, { userInfo ->
+        viewModel.userInfo.observe(viewLifecycleOwner) { userInfo ->
             val newDiscount = userInfo?.discount ?: 1.0F
             viewModel.publicityUpdateDiscount(mPublicityAdapter.discount, newDiscount)
             mPublicityAdapter.discount = newDiscount
-        })
+            viewModel.getMoney()
+        }
+
+        viewModel.userMoney.observe(viewLifecycleOwner) {
+            mPublicityAdapter.updateUserInfoData(
+                viewModel.userInfo.value?.userName.orEmpty(),
+                viewModel.userMoney.value ?: 0.0
+            )
+        }
 
         viewModel.oddsType.observe(viewLifecycleOwner, {
             it?.let { oddsType ->
@@ -302,7 +326,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 messageListResult.rows?.forEach { data ->
                     if (data.type.toInt() == 1) titleList.add(data.title + " - " + data.message)
                 }
-                Timber.e("titleList: $titleList")
                 mPublicityAdapter.updateAnnouncementData(titleList)
             }
         }
@@ -478,6 +501,18 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
 
     private fun goLoginPage() {
         startActivity(Intent(context, LoginActivity::class.java))
+    }
+
+    private fun goRegisterPage() {
+        startActivity(Intent(context, RegisterActivity::class.java))
+    }
+
+    private fun goDepositPage() {
+        startActivity(Intent(context, RegisterActivity::class.java))
+    }
+
+    private fun goWithdrawPage() {
+        startActivity(Intent(context, RegisterActivity::class.java))
     }
 
     private fun goGamePage() {
