@@ -14,22 +14,32 @@ import com.github.jokar.multilanguages.library.MultiLanguage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.dialog_change_appearance.view.*
+import kotlinx.coroutines.*
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.manager.NetworkStatusManager
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
+import org.cxct.sportlottery.ui.dialog.AgeVerifyDialog
+import org.cxct.sportlottery.ui.favorite.MyFavoriteViewModel
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.ui.finance.FinanceViewModel
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.game.quick.TestViewModel
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterViewModel
 import org.cxct.sportlottery.ui.main.MainViewModel
+import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.maintenance.MaintenanceViewModel
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechViewModel
+import org.cxct.sportlottery.ui.news.NewsViewModel
+import org.cxct.sportlottery.ui.permission.GooglePermissionViewModel
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordViewModel
+import org.cxct.sportlottery.ui.profileCenter.creditrecord.CreditRecordViewModel
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoViewModel
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordViewModel
@@ -37,11 +47,6 @@ import org.cxct.sportlottery.ui.profileCenter.profile.ProfileModel
 import org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordViewModel
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.ui.results.SettlementViewModel
-import org.cxct.sportlottery.repository.HostRepository
-import org.cxct.sportlottery.service.ServiceBroadcastReceiver
-import org.cxct.sportlottery.ui.favorite.MyFavoriteViewModel
-import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryViewModel
-import org.cxct.sportlottery.ui.profileCenter.creditrecord.CreditRecordViewModel
 import org.cxct.sportlottery.ui.selflimit.SelfLimitViewModel
 import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.ui.statistics.StatisticsViewModel
@@ -49,6 +54,7 @@ import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusViewModel
 import org.cxct.sportlottery.ui.vip.VipViewModel
 import org.cxct.sportlottery.ui.withdraw.WithdrawViewModel
 import org.cxct.sportlottery.util.AppManager
+import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LanguageManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -56,14 +62,6 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import timber.log.Timber
 import timber.log.Timber.DebugTree
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import org.cxct.sportlottery.ui.dialog.AgeVerifyDialog
-import org.cxct.sportlottery.ui.game.quick.TestViewModel
-import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.ui.news.NewsViewModel
-import org.cxct.sportlottery.ui.permission.GooglePermissionViewModel
-import org.cxct.sportlottery.util.Event
 import java.util.*
 
 /**
@@ -74,8 +72,9 @@ class MultiLanguagesApplication : Application() {
     private val sharedPref: SharedPreferences by lazy {
         getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
-    private var _userInfo = MutableStateFlow<UserInfo?>(null)
-    val userInfo = _userInfo.asStateFlow()
+    private val _userInfo = MutableLiveData<UserInfo?>()
+    val userInfo: LiveData<UserInfo?>
+        get() =_userInfo
     private var isNewsShowed = false
     private var isGameDetailAnimationNeedShow = false
     private var isAgeVerifyNeedShow = true
@@ -173,6 +172,7 @@ class MultiLanguagesApplication : Application() {
         mInstance = this
         AppManager.init(this)
         myPref = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        getOddsType()
 
         MultiLanguage.init { context ->
             //返回自己本地保存选择的语言设置
@@ -238,8 +238,9 @@ class MultiLanguagesApplication : Application() {
                 .apply()
     }
 
+    @DelicateCoroutinesApi
     fun saveUserInfo(userInfoData: UserInfo?) {
-        _userInfo.value = userInfoData
+        GlobalScope.launch(Dispatchers.Main) { _userInfo.value = userInfoData }
     }
 
     fun userInfo(): UserInfo? {
@@ -279,6 +280,18 @@ class MultiLanguagesApplication : Application() {
     //重新顯示bottomNavBar
     fun initBottomNavBar() {
         setIsScrollDown(false)
+    }
+
+    fun getOddsType() {
+        mInstance.mOddsType.postValue(
+            when (mInstance.sOddsType) {
+                OddsType.EU.code -> OddsType.EU
+                OddsType.HK.code -> OddsType.HK
+                OddsType.MYS.code -> OddsType.MYS
+                OddsType.IDN.code -> OddsType.IDN
+                else -> OddsType.HK
+            }
+        )
     }
 
     companion object {

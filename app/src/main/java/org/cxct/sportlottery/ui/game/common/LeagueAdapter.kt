@@ -114,10 +114,12 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         set(value) {
             if (field == value) return
 
-            data.forEach { leagueOdd ->
+            data.forEachIndexed { index, leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
                     matchOdd.oddsMap?.updateOddsDiscount(field, value)
                 }
+
+                updateLeague(index, leagueOdd)
             }
 
             field = value
@@ -151,7 +153,12 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
             return BaseItemType.PRELOAD_ITEM.type
         }
         return when {
-            data.isEmpty() -> BaseItemType.NO_DATA.type
+            data.isEmpty() -> {
+                when(position){
+                    0 -> BaseItemType.NO_DATA.type
+                    else -> BaseItemType.BOTTOM_NAVIGATION.type
+                }
+            }
             data.size == position -> BaseItemType.BOTTOM_NAVIGATION.type
             else -> ItemType.ITEM.ordinal
         }
@@ -248,7 +255,7 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
     }
 
     override fun getItemCount(): Int = if (data.isEmpty()) {
-        1
+        2
     } else {
         data.size + 1
     }

@@ -366,7 +366,7 @@
     <string name="lose_half">输半</string>
     <string name="draw">和</string>
     <string name="canceled">已取消</string>
-    <string name="odds_change">賠率已改變</string>
+    <string name="odds_change">赔率已改变</string>
     <string name="pending">待成立 %1$s 秒</string>
     <string name="bet_canceled">下注失败</string>
     <string name="confirmed">已确认</string>

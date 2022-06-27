@@ -201,6 +201,10 @@ class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
     private fun initObserve() {
+        viewModel.userInfo.observe(this.viewLifecycleOwner) { userInfo ->
+            oddsDetailListAdapter?.discount = userInfo?.discount ?: 1.0F
+        }
+
         viewModel.oddsDetailResult.observe(this.viewLifecycleOwner) {
             it?.getContentIfNotHandled()?.let { result ->
                 when (result.success) {

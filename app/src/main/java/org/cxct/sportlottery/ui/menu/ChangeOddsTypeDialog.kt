@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.menu
 
 import android.os.Bundle
 import android.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogChangeOddTypeBinding
 import org.cxct.sportlottery.ui.base.BaseBottomSheetFragment
@@ -60,7 +61,7 @@ class ChangeOddsTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewMode
 
 
     private fun getOddsType(){
-        viewModel.getOddsType()
+        MultiLanguagesApplication.mInstance.getOddsType()
     }
 
 

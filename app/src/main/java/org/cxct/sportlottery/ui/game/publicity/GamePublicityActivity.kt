@@ -473,7 +473,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     override fun showMyFavoriteNotify(myFavoriteNotifyType: Int) {
         setSnackBarMyFavoriteNotify(myFavoriteNotifyType)
         snackBarMyFavoriteNotify?.apply {
-            setAnchorView(binding.viewBottom.id)
+            anchorView = game_Bottom_Navigation
             show()
         }
     }
