@@ -885,7 +885,6 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             .setDate(Calendar.getInstance())
             .setTimeSelectChangeListener { }
             .setType(booleanArrayOf(true, true, true, false, false, false))
-            .setTitleText(resources.getString(R.string.title_recharge_time))
             .setCancelText(" ")
             .setSubmitText(getString(R.string.picker_submit))
             .setTitleColor(ContextCompat.getColor(this, R.color.color_CCCCCC_000000))
