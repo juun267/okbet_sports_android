@@ -78,6 +78,9 @@
     <color name="color_5d5d5d_888888">@color/color_5d5d5d</color>
     <color name="color_bbbbbb_ffffff">@color/color_BBBBBB</color>
     <color name="color_BBBBBB_060F20">@color/color_BBBBBB</color>
+    <color name="color_2b2b2b_ffffff">@color/color_2B2B2B</color>
+    <color name="color_1f1f1f_f7f8fa">@color/color_1F1F1F</color>
+    <color name="color_3d3d3d_dddddd">@color/color_3d3d3d</color>
 
 
     <color name="color_FFFFFF_DE000000">@color/color_FFFFFF</color>

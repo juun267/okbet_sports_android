@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.view_message.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.databinding.FragmentPublicityBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -28,6 +29,7 @@ import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.addScrollListenerForBottomNavBar
+import timber.log.Timber
 
 /**
  * @app_destination 宣傳頁
@@ -64,6 +66,9 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 },
                 onGoHomePageListener = {
                     goGamePage()
+                },
+                onGoNewsPageListener = {
+                    clickNews()
                 },
                 onClickBetListener = { gameType, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
                     if(mIsEnabled){
@@ -170,6 +175,12 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         }
     }
 
+    private fun clickNews() {
+        when (activity) {
+            is GamePublicityActivity -> (activity as GamePublicityActivity).fragmentClickNews()
+        }
+    }
+
     private fun goSwitchLanguagePage() {
         when (activity) {
             is GamePublicityActivity -> (activity as GamePublicityActivity).goSwitchLanguagePage()
@@ -191,6 +202,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     private fun initTitle() {
         with(mPublicityAdapter) {
             addTitle()
+            addAnnouncement()
             addSubTitle()
             addPreload()
         }
@@ -282,6 +294,17 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
 
         viewModel.sportMenuFilterList.observe(viewLifecycleOwner){
             queryData()
+        }
+
+        viewModel.messageListResult.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { messageListResult ->
+                val titleList: MutableList<String> = mutableListOf()
+                messageListResult.rows?.forEach { data ->
+                    if (data.type.toInt() == 1) titleList.add(data.title + " - " + data.message)
+                }
+                Timber.e("titleList: $titleList")
+                mPublicityAdapter.updateAnnouncementData(titleList)
+            }
         }
     }
 

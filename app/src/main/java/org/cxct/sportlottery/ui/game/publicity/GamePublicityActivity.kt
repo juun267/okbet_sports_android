@@ -33,6 +33,7 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.util.*
 import org.parceler.Parcels
 
@@ -162,6 +163,8 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                 }
             }
         }
+
+        viewModel.getAnnouncement()
     }
 
     override fun onBackPressed() {
@@ -291,6 +294,13 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         startActivity(
             Intent(this, InfoCenterActivity::class.java)
                 .putExtra(InfoCenterActivity.KEY_READ_PAGE, InfoCenterActivity.YET_READ)
+        )
+    }
+
+    fun fragmentClickNews() {
+        onCloseMenu()
+        startActivity(
+            Intent(this, NewsActivity::class.java)
         )
     }
 

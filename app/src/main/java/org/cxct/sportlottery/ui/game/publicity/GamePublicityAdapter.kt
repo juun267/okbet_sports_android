@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -21,9 +22,11 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.game.Page
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
+import timber.log.Timber
 
 
 class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapterListener) :
@@ -32,13 +35,15 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
     private val sortMap = mapOf<Any, Int>(
         //標題圖片
         PublicityTitleImageData::class to 1,
+        //跑馬燈
+        PublicityAnnouncementData::class to 2,
         //熱門推薦..更多
-        PublicitySubTitleImageData::class to 2,
+        PublicitySubTitleImageData::class to 3,
 
-        PreloadItem::class to 3,
+        PreloadItem::class to 4,
         //足球, 滾球, 數量, 聯賽名, 國旗, 賽事內容
-        Recommend::class to 4,
-        BottomNavigationItem::class to 5
+        Recommend::class to 5,
+        BottomNavigationItem::class to 6
     )
 
     var oddsType: OddsType = OddsType.EU
@@ -69,6 +74,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
 
     enum class ItemType {
         PUBLICITY_TITLE,
+        PUBLICITY_ANNOUNCEMENT,
         PUBLICITY_SUB_TITLE,
         PRELOAD,
         RECOMMEND,
@@ -84,6 +90,15 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         var reloadConfig: Boolean = false
     }
 
+    class PublicityAnnouncementData {
+        var titleList: MutableList<String> = mutableListOf()
+    }
+
+    class PublicityUserInfoData {
+        var userId: String = ""
+        var userMoney: Double = 0.0
+    }
+
     class PublicitySubTitleImageData
     class PreloadItem
     class BottomNavigationItem
@@ -96,6 +111,11 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
     fun addTitle() {
         removeData(PublicityTitleImageData())
         addDataWithSort(PublicityTitleImageData())
+    }
+
+    fun addAnnouncement() {
+        removeData(PublicityAnnouncementData())
+        addDataWithSort(PublicityAnnouncementData())
     }
 
     fun addSubTitle() {
@@ -139,12 +159,22 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         mDataList.forEachIndexed { index, item -> if (item is Recommend) recommendIndexList.add(index) }
         notifyItemChanged(recommendIndexList[position], payload)
     }
+
+    fun updateAnnouncementData(titleList: MutableList<String>) {
+        removeData(PublicityAnnouncementData())
+        addDataWithSort(PublicityAnnouncementData().apply {
+            this.titleList = titleList
+        })
+    }
     //endregion
 
     override fun getItemViewType(position: Int): Int {
         return when (mDataList[position]) {
             is PublicityTitleImageData -> {
                 ItemType.PUBLICITY_TITLE.ordinal
+            }
+            is PublicityAnnouncementData -> {
+                ItemType.PUBLICITY_ANNOUNCEMENT.ordinal
             }
             is PublicitySubTitleImageData -> {
                 ItemType.PUBLICITY_SUB_TITLE.ordinal
@@ -169,6 +199,15 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             ItemType.PUBLICITY_TITLE.ordinal -> {
                 PublicityTitleViewHolder(
                     PublicityTitleViewBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
+            }
+            ItemType.PUBLICITY_ANNOUNCEMENT.ordinal -> {
+                PublicityAnnouncementViewHolder(
+                    PublicityAnnouncementViewBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
@@ -238,6 +277,11 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             is PublicityRecommendViewHolder -> {
                 if (data is Recommend) {
                     holder.bind(data, oddsType) { notifyItemChanged(position, data) }
+                }
+            }
+            is PublicityAnnouncementViewHolder -> {
+                if (data is PublicityAnnouncementData) {
+                    holder.bind(data)
                 }
             }
             is PublicityTitleViewHolder -> {
@@ -372,12 +416,35 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         }
     }
 
+    inner class PublicityAnnouncementViewHolder(val binding: PublicityAnnouncementViewBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        private var marqueeAdapter = MarqueeAdapter()
+
+        fun bind(data: PublicityAnnouncementData) {
+            with(binding) {
+                root.setOnClickListener {
+                    publicityAdapterListener.onGoNewsPageListener()
+                }
+                rvMarquee.apply {
+                    layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                    adapter = marqueeAdapter
+                }
+
+                marqueeAdapter.setData(data.titleList)
+                if (data.titleList.size > 0) {
+                    rvMarquee.startAuto(false) //啟動跑馬燈
+                } else {
+                    rvMarquee.stopAuto(true) //停止跑馬燈
+                }
+            }
+        }
+    }
+
     inner class PublicitySubTitleViewHolder(val binding: PublicitySubTitleViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind() {
             with(binding) {
                 tvMore.setGoHomePageListener()
-                ivMore.setGoHomePageListener()
             }
         }
 
@@ -463,6 +530,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         private val onMenuClickListener: () -> Unit,
         private val onItemClickListener: () -> Unit,
         private val onGoHomePageListener: () -> Unit,
+        private val onGoNewsPageListener: () -> Unit,
         private val onClickBetListener: (gameType: String, matchType: MatchType, matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?, playCateMenuCode: String?) -> Unit,
         private val onClickFavoriteListener: (matchId: String?) -> Unit,
         private val onClickStatisticsListener: (matchId: String) -> Unit,
@@ -476,6 +544,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         fun onMenuClickListener() = onMenuClickListener.invoke()
         fun onItemClickListener() = onItemClickListener.invoke()
         fun onGoHomePageListener() = onGoHomePageListener.invoke()
+        fun onGoNewsPageListener() = onGoNewsPageListener.invoke()
         fun onClickBetListener(
             gameType: String,
             matchType: MatchType,
