@@ -1706,6 +1706,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     matchType = args.matchType,
                     leagueIdList = leagueChangeEvent.leagueIdList,
                 )
+                viewModel.getSportMenu(args.matchType, onlyRefreshSportMenu = true)
             }
         }
     }
