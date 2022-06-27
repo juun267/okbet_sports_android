@@ -107,7 +107,7 @@
     <string name="income_source">Source of income</string>
     <string name="betting_shop">Betting Shop</string>
     <string name="register_identity">ID</string>
-    <string name="hint_register_identity">Please enter ID Number</string>
+    <string name="hint_register_identity">(Please enter ID Number)</string>
     <string name="birth_date">Birth Date</string>
     <string name="hint_real_name">(Họ tên phải đồng nhất với tài khoản ngân hàng)</string>
     <string name="verification_code">Mã xác nhận</string>
