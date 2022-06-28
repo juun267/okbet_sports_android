@@ -409,7 +409,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             eetIdentityType.setText(identityTypeList.firstOrNull()?.showName)
             //設置預設文字後會變成選中狀態, 需清除focus
             etIdentityType.hasFocus = false
-            viewModel.checkSalary(eetIdentityType.text.toString())
+            viewModel.checkIdentityType(eetIdentityType.text.toString())
 
             //配置點擊展開選項選單
             etIdentityType.post {
