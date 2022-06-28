@@ -1188,7 +1188,7 @@
         \n5.I understand that should my provided information has been found incorrect, OkBet has the right to impose a penalty on my account subject to its Terms and Conditions.
     </string>
     <string name="dialog_age_verify_hint">I agree to the OkBet</string>
-    <string name="dialog_age_verify_hint_link">&#160;Terms and Conditions</string>
+    <string name="dialog_age_verify_hint_link">&#160;Terms &amp; Conditions</string>
     <string name="dialog_age_verify_confirm">I AM OVER 21 YEARS OLD</string>
     <string name="dialog_age_verify_exit">EXIT</string>
     <!--endregion-->
