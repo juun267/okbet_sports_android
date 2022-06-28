@@ -49,7 +49,11 @@ data class MatchInfo(
     @Json(name = "source")
     val source: Int?,
     @Json(name = "parlay")
-    val parlay: Int? //parlay (是否可以参加过关，0：否，1：是)
+    val parlay: Int?, //parlay (是否可以参加过关，0：否，1：是)
+    @Json(name = "homeIcon")
+    val homeIcon: String? = null,
+    @Json(name = "awayIcon")
+    val awayIcon: String? = null
 
     ) : Parcelable, MatchInfo {
     //Live

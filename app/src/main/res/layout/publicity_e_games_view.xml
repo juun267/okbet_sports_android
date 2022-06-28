@@ -4,8 +4,7 @@
     android:id="@+id/ivTitle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp"
+    android:layout_marginTop="6dp"
     android:gravity="center_vertical"
     android:orientation="vertical"
     tools:ignore="SpUsage, ContentDescription">
@@ -30,5 +29,14 @@
         android:layout_marginTop="-8dp"
         android:layout_marginEnd="-3dp"
         android:background="@drawable/ic_e_games" />
+
+    <View
+        android:id="@+id/betListBarPaddingView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bet_list_bar_height"/>
+    <View
+        android:id="@+id/BottomNavBarPaddingView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_nav_bar_height"/>
 
 </LinearLayout>

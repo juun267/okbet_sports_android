@@ -13,18 +13,25 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
+import kotlinx.android.synthetic.main.home_recommend_item.view.*
+import kotlinx.android.synthetic.main.home_recommend_vp.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.*
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.game.Page
+import org.cxct.sportlottery.ui.game.widget.OddsButton
+import org.cxct.sportlottery.ui.game.widget.OddsButtonPublicity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TextUtil
@@ -112,6 +119,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
     class PublicityEGamesData {
         var thirdDictValues: ThirdDictValues? = null
     }
+
     class PreloadItem
     class BottomNavigationItem
     // endregion
@@ -156,10 +164,10 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         addDataWithSort(PublicityEGamesData())
     }
 
-    fun addBottomView() {
-        removeData(BottomNavigationItem())
-        addDataWithSort(BottomNavigationItem())
-    }
+//    fun addBottomView() {
+//        removeData(BottomNavigationItem())
+//        addDataWithSort(BottomNavigationItem())
+//    }
     //endregion
 
     //region update Function
@@ -284,13 +292,22 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                     )
                 )
             }
+//            ItemType.RECOMMEND.ordinal -> {
+//                PublicityRecommendViewHolder(
+//                    ItemPublicityRecommendBinding.inflate(
+//                        LayoutInflater.from(parent.context),
+//                        parent,
+//                        false
+//                    ), publicityAdapterListener
+//                )
+//            }
             ItemType.RECOMMEND.ordinal -> {
-                PublicityRecommendViewHolder(
-                    ItemPublicityRecommendBinding.inflate(
+                PublicityNewRecommendViewHolder(
+                    PublicityRecommendViewBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
-                    ), publicityAdapterListener
+                    )
                 )
             }
             ItemType.E_GAMES.ordinal -> {
@@ -315,14 +332,21 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
         if (payloads.isNullOrEmpty()) {
             onBindViewHolder(holder, position)
         } else {
             payloads.forEachIndexed { _, payload ->
                 when (payload) {
+//                    is Recommend -> {
+//                        (holder as PublicityRecommendViewHolder).update(payload, oddsType) { notifyItemChanged(position, payload) }
+//                    }
                     is Recommend -> {
-                        (holder as PublicityRecommendViewHolder).update(payload, oddsType) { notifyItemChanged(position, payload) }
+                        (holder as PublicityNewRecommendViewHolder).update(payload, oddsType)
                     }
                     is PublicityTitleImageData -> {
                         (holder as PublicityTitleViewHolder).updateToolbar(payload)
@@ -335,9 +359,14 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val data = mDataList[position]
         when (holder) {
-            is PublicityRecommendViewHolder -> {
+//            is PublicityRecommendViewHolder -> {
+//                if (data is Recommend) {
+//                    holder.bind(data, oddsType) { notifyItemChanged(position, data) }
+//                }
+//            }
+            is PublicityNewRecommendViewHolder -> {
                 if (data is Recommend) {
-                    holder.bind(data, oddsType) { notifyItemChanged(position, data) }
+                    holder.bind(data, oddsType)
                 }
             }
             is PublicityAnnouncementViewHolder -> {
@@ -410,8 +439,13 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                     //endregion
 
                     //region Language block
-                    ivLanguage.setImageResource(LanguageManager.getLanguageFlag(MultiLanguagesApplication.appContext))
-                    tvLanguage.text = LanguageManager.getLanguageStringResource(MultiLanguagesApplication.appContext)
+                    ivLanguage.setImageResource(
+                        LanguageManager.getLanguageFlag(
+                            MultiLanguagesApplication.appContext
+                        )
+                    )
+                    tvLanguage.text =
+                        LanguageManager.getLanguageStringResource(MultiLanguagesApplication.appContext)
                     //endregion
 
                     //region Click event
@@ -497,7 +531,8 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                     publicityAdapterListener.onGoNewsPageListener()
                 }
                 rvMarquee.apply {
-                    layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                    layoutManager =
+                        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                     adapter = marqueeAdapter
                 }
 
@@ -525,7 +560,8 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                 }
 
                 tvUserId.text = data.userId
-                val userBalanceText = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(data.userMoney)}"
+                val userBalanceText =
+                    "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(data.userMoney)}"
                 tvUserBalance.text = userBalanceText
 
                 btnLogin.setOnClickListener {
@@ -563,6 +599,110 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         }
     }
 
+    inner class PublicityNewRecommendViewHolder(val binding: PublicityRecommendViewBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        private val mRequestOptions = RequestOptions()
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .dontTransform()
+
+        private var oddList = listOf<Odd?>()
+
+        fun bind(data: Recommend, oddsType: OddsType) {
+            with(binding) {
+                tvHomeName.text = data.homeName
+                tvAwayName.text = data.awayName
+
+                tvHomeScore.text = (data.matchInfo?.homeTotalScore ?: 0).toString()
+                tvAwayScore.text = (data.matchInfo?.awayTotalScore ?: 0).toString()
+
+                tvGamePlayCateCodeName.text = data.playCateNameMap?.get(PlayCate.SINGLE.value)
+                    ?.get(LanguageManager.getSelectLanguage(binding.root.context).key)
+
+                Glide.with(binding.root.context)
+                    .load(data.matchInfo?.homeIcon)
+                    .apply(mRequestOptions)
+                    .fallback(R.drawable.bg_recommend_game_default)
+                    .error(R.drawable.bg_recommend_game_default)
+                    .into(ivHomeIcon)
+
+                Glide.with(binding.root.context)
+                    .load(data.matchInfo?.awayIcon)
+                    .apply(mRequestOptions)
+                    .fallback(R.drawable.bg_recommend_game_default)
+                    .error(R.drawable.bg_recommend_game_default)
+                    .into(ivAwayIcon)
+
+                val matchOddList = transferMatchOddList(data)
+                Timber.e("matchOddList: $matchOddList")
+            }
+        }
+
+        fun update(data: Recommend, oddsType: OddsType) {
+            val matchOddList = transferMatchOddList(data)
+            Timber.e("matchOddList2: $matchOddList")
+            var oddList = listOf<Odd?>()
+            data.oddsMap?.forEach { (key, value) ->
+                if (key == PlayCate.SINGLE.value) {
+                    oddList = value.orEmpty()
+                }
+            }
+//            Timber.e("oddList: $oddList")
+            with(binding) {
+                if (oddList.isNotEmpty()) {
+                    oddBtnHome.visibility = View.VISIBLE
+                    setupOddsButton(oddBtnHome, oddList[0])
+                } else {
+                    oddBtnHome.visibility = View.GONE
+                }
+
+                if (oddList.size > 1) {
+                    oddBtnAway.visibility = View.VISIBLE
+                    setupOddsButton(oddBtnAway, oddList[1])
+                } else {
+                    oddBtnAway.visibility = View.GONE
+                }
+
+                if (oddList.size > 2) {
+                    oddBtnDraw.visibility = View.VISIBLE
+                    setupOddsButton(oddBtnDraw, oddList[2])
+                } else {
+                    oddBtnDraw.visibility = View.GONE
+                }
+            }
+        }
+
+//        private fun setupOddsButton(oddsButton: OddsButtonPublicity, odd: Odd?, matchOdd: MatchOdd, recommend: Recommend) {
+        private fun setupOddsButton(oddsButton: OddsButtonPublicity, odd: Odd?) {
+
+            oddsButton.apply {
+                setupOdd(odd, oddsType)
+                odd?.let {
+                    this.isSelected = it.isSelected ?: false
+
+//                    setOnClickListener {
+//                        onClickOddListener?.onClickBet(matchOdd.apply {
+//                            this.matchInfo?.gameType = recommend.gameType
+//                        }, odd, recommend.playCateCode, matchOdd.playCateName , recommend.betPlayCateNameMap)
+//                    }
+                }
+            }
+        }
+
+        private fun transferMatchOddList(recommend: Recommend): MutableList<MatchOdd> {
+            with(recommend) {
+                return mutableListOf(
+                    MatchOdd(
+                        matchInfo = matchInfo,
+                        oddsMap = oddsMap,
+                        playCateNameMap = playCateNameMap,
+                        betPlayCateNameMap = betPlayCateNameMap,
+                        oddsSort = oddsSort
+                    )
+                )
+            }
+        }
+    }
+
     inner class PublicityEGamesViewHolder(val binding: PublicityEGamesViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -575,7 +715,8 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         }
     }
 
-    inner class PreloadViewHolder(val binding: ViewLoadingBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class PreloadViewHolder(val binding: ViewLoadingBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     inner class BottomNavigationViewHolder(val binding: HomeBottomNavigationBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -594,7 +735,8 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         }
     }
 
-    inner class UndefinedViewHolder(itemView: View) : BaseItemListenerViewHolder(itemView, publicityAdapterListener)
+    inner class UndefinedViewHolder(itemView: View) :
+        BaseItemListenerViewHolder(itemView, publicityAdapterListener)
     // endregion
 
     //region Data Getter
@@ -676,7 +818,9 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         fun onGoRegisterListener() = onGoRegisterListener.invoke()
         fun onGoDepositListener() = onGoDepositListener.invoke()
         fun onGoWithdrawListener() = onGoWithdrawListener.invoke()
-        fun onGoThirdGamesListener(thirdDictValues: ThirdDictValues?) = onGoThirdGamesListener.invoke(thirdDictValues)
+        fun onGoThirdGamesListener(thirdDictValues: ThirdDictValues?) =
+            onGoThirdGamesListener.invoke(thirdDictValues)
+
         fun onClickBetListener(
             gameType: String,
             matchType: MatchType,
@@ -706,14 +850,20 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             matchInfoList: List<MatchInfo>
         ) =
             onClickPlayTypeListener.invoke(gameType, matchType, matchId, matchInfoList)
-        fun onClickLiveIconListener(gameType: String,
-                                    matchType: MatchType?,
-                                    matchId: String?,
-                                    matchInfoList: List<MatchInfo>) = onClickLiveIconListener.invoke(gameType, matchType, matchId, matchInfoList)
-        fun onClickAnimationIconListener(gameType: String,
-                                    matchType: MatchType?,
-                                    matchId: String?,
-                                    matchInfoList: List<MatchInfo>) = onClickAnimationIconListener.invoke(gameType, matchType, matchId, matchInfoList)
+
+        fun onClickLiveIconListener(
+            gameType: String,
+            matchType: MatchType?,
+            matchId: String?,
+            matchInfoList: List<MatchInfo>
+        ) = onClickLiveIconListener.invoke(gameType, matchType, matchId, matchInfoList)
+
+        fun onClickAnimationIconListener(
+            gameType: String,
+            matchType: MatchType?,
+            matchId: String?,
+            matchInfoList: List<MatchInfo>
+        ) = onClickAnimationIconListener.invoke(gameType, matchType, matchId, matchInfoList)
     }
 }
 

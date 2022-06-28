@@ -140,7 +140,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         initOnClickListener()
         initRecommendView()
         initTitle()
-        initBottomView()
         initObservers()
         initSocketObservers()
     }
@@ -233,10 +232,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         }
     }
 
-    private fun initBottomView() {
-        mPublicityAdapter.addBottomView()
-    }
-
     private fun initObservers() {
         viewModel.isLogin.observe(viewLifecycleOwner, { isLogin ->
             mPublicityAdapter.isLogin = isLogin
@@ -266,18 +261,25 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
             }
         })
 
-        viewModel.publicityRecommend.observe(viewLifecycleOwner, { event ->
+        viewModel.publicityRecommend.observe(viewLifecycleOwner) { event ->
             event?.getContentIfNotHandled()?.let { result ->
                 hideLoading()
                 isNewestDataFromApi = true
-                mRecommendList = result.recommendList
+                val recommendList = arrayListOf<Recommend>()
+                if (result.recommendList.isNotEmpty())
+                    recommendList.add(result.recommendList.first()) //只取第一筆
+//                result.recommendList.forEach { //取全部
+//                    recommendList.add(it)
+//                }
+                mRecommendList = recommendList
                 mPublicityAdapter.removeData(GamePublicityAdapter.PreloadItem())
-                mPublicityAdapter.addRecommend(result.recommendList)
+                mPublicityAdapter.addRecommend(recommendList)
+                Timber.e("addRecommend")
                 //先解除全部賽事訂閱
                 unSubscribeChannelHallAll()
                 subscribeQueryData(result.recommendList)
             }
-        })
+        }
 
         viewModel.betInfoList.observe(viewLifecycleOwner) { event ->
             event?.peekContent()?.let { betList ->
@@ -429,6 +431,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                         if (SocketUpdateUtil.updateMatchOdds(context, recommend, oddsChangeEvent)) {
                             updateBetInfo(recommend, oddsChangeEvent)
                             updateRecommendList(index, recommend)
+                            Timber.e("updateRecommendList")
                         }
 
                         if (isNewestDataFromApi)
