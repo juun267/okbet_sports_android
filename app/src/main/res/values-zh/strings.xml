@@ -1190,7 +1190,7 @@
         \n4.我不是菲律宾任何学校、学院或大学的学生。
         \n5.我明白，如果我提供的信息被发现不正确，OkBet 有权根据其条款和条件对我的帐户进行处罚最终权利。</string>
     <string name="dialog_age_verify_hint">我接受并同意OkBet</string>
-    <string name="dialog_age_verify_hint_link">条款与规则</string>
+    <string name="dialog_age_verify_hint_link">规则与条款</string>
     <string name="dialog_age_verify_confirm">我已年满21岁</string>
     <string name="dialog_age_verify_exit">离开</string>
     <!--endregion-->
