@@ -56,6 +56,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
     private var salarySourceSelectedData: StatusSheetData? = null
     private var bettingShopSelectedData: StatusSheetData? = null
+    private var identityTypeSelectedData: StatusSheetData? = null //當前證件類型選中
 
     override fun onClick(v: View?) {
         when (v) {
@@ -111,6 +112,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         setupBirthday()
         setupRegisterIdentity()
         setupSalarySource()
+        setupIdentityType()
         setupBettingShop()
         setupValidCode()
         setupSmsValidCode()
@@ -375,6 +377,47 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         }
     }
 
+    private fun setupIdentityType() {
+        with(binding) {
+            //顯示隱藏該選項
+            etIdentityType.visibility =
+                if (sConfigData?.enableIdentityNumber == FLAG_OPEN) View.VISIBLE else View.GONE
+
+            //根據config配置薪資來源選項
+            val identityTypeList = mutableListOf<StatusSheetData>()
+            sConfigData?.identityTypeList?.map { identityType ->
+                identityTypeList.add(StatusSheetData(identityType.id.toString(), identityType.name))
+            }
+
+            //預設顯示第一項
+            identityTypeSelectedData = identityTypeList.firstOrNull()
+            eetIdentityType.setText(identityTypeList.firstOrNull()?.showName)
+            //設置預設文字後會變成選中狀態, 需清除focus
+            etIdentityType.hasFocus = false
+            viewModel.checkSalary(eetIdentityType.text.toString())
+
+            //配置點擊展開選項選單
+            etIdentityType.post {
+                identityTypeSpinner.setSpinnerView(
+                    eetIdentityType,
+                    etIdentityType,
+                    identityTypeList,
+                    touchListener = {
+                        //旋轉箭頭
+                        etIdentityType.endIconImageButton.rotation = 180F
+                    },
+                    itemSelectedListener = {
+                        identityTypeSelectedData = it
+                        eetIdentityType.setText(it?.showName)
+                    },
+                    popupWindowDismissListener = {
+                        //旋轉箭頭
+                        etIdentityType.endIconImageButton.rotation = 0F
+                    })
+            }
+        }
+    }
+
     private fun setupBettingShop() {
         with(binding) {
             val bettingStationVisibility = sConfigData?.enableBettingStation == FLAG_OPEN
@@ -452,6 +495,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             eetSalary.apply {
                 checkRegisterListener { viewModel.checkSalary(it) }
             }
+            eetIdentityType.checkRegisterListener { viewModel.checkIdentityType(it) }
             eetBettingShop.apply {
                 checkRegisterListener { viewModel.checkBettingShop(it) }
             }
@@ -651,6 +695,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             salaryMsg.observe(this@RegisterActivity) { binding.etSalary.setError(it.first, false) }
             birthMsg.observe(this@RegisterActivity) { binding.etBirth.setError(it.first, false) }
             identityMsg.observe(this@RegisterActivity) { binding.etIdentity.setError(it.first, false) }
+            identityTypeMsg.observe(this@RegisterActivity) { binding.etIdentityType.setError(it.first, false) }
             bettingShopMsg.observe(this@RegisterActivity) { binding.etBettingShop.setError(it.first, false) }
             weChatMsg.observe(this@RegisterActivity) { binding.etWeChat.setError(it.first, false) }
             zaloMsg.observe(this@RegisterActivity) { binding.etZalo.setError(it.first, false) }

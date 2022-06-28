@@ -68,6 +68,8 @@ class RegisterViewModel(
         get() = _birthMsg
     val identityMsg: LiveData<Pair<String?, Boolean>>
         get() = _identityMsg
+    val identityTypeMsg: LiveData<Pair<String?, Boolean>>
+        get() = _identityTypeMsg
     val bettingShopMsg: LiveData<Pair<String?, Boolean>>
         get() = _bettingShopMsg
     val weChatMsg: LiveData<Pair<String?, Boolean>>
@@ -121,6 +123,7 @@ class RegisterViewModel(
     private val _salaryMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _birthMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _identityMsg = MutableLiveData<Pair<String?, Boolean>>()
+    private val _identityTypeMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _bettingShopMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _weChatMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _zaloMsg = MutableLiveData<Pair<String?, Boolean>>()
@@ -417,6 +420,15 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
+    fun checkIdentityType(identityType: String?) {
+        val msg = when {
+            identityType.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
+            else -> null
+        }
+        _identityMsg.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete()
+    }
+
     fun checkSalary(salary: String?) {
         val msg = when {
             salary.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
@@ -565,6 +577,8 @@ class RegisterViewModel(
         if (sConfigData?.enableBirthday == FLAG_OPEN && checkInputPair(birthMsg))
             return false
         if (sConfigData?.enableIdentityNumber == FLAG_OPEN && checkInputPair(identityMsg))
+            return false
+        if (sConfigData?.enableIdentityNumber == FLAG_OPEN && checkInputPair(identityTypeMsg))
             return false
         if (sConfigData?.enableSalarySource == FLAG_OPEN && checkInputPair(salaryMsg))
             return false

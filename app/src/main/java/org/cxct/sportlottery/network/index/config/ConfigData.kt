@@ -105,7 +105,8 @@ data class ConfigData(
     val enableSalarySource: String?, //是否开启SalarySource(1：开启，0：关闭)
     val enableIdentityNumber: String?, //是否开启IdentityNumber(1：开启，0：关闭)
     val enableBettingStation: String?, //是否开启BettingStation(1：开启，0：关闭)
-    var salarySource: List<SalarySource>?
+    var salarySource: List<SalarySource>?, //薪资来源列表
+    var identityTypeList: List<IdentityType>? //身分证件列表
 ) {
     var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter
     var hasGetTwoFactorResult: Boolean? = false //判斷是不是已經成功發送過簡訊認證碼 (關掉彈窗要重新設置為false)

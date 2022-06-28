@@ -106,6 +106,7 @@
     <string name="hint_security_pb">(Please enter the favorite country)</string>
     <string name="real_name">Full name</string>
     <string name="income_source">Source Of Income</string>
+    <string name="identity_type">Identity Type</string>
     <string name="betting_shop">Outlet</string>
     <string name="register_identity">Valid ID</string>
     <string name="hint_register_identity">(Please enter Valid ID)</string>

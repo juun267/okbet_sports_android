@@ -271,6 +271,42 @@
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
 
             <org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
+                android:id="@+id/etIdentityType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                app:endIcon="@drawable/ic_arrow_gray"
+                app:iconSignifier="@drawable/ic_id_card"
+                app:isResponsiveIconColor="false"
+                app:labelText="@string/identity_type"
+                app:labelTextStyle="normal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etIdentity"
+                app:primaryColor="@color/color_AFAFB1">
+
+                <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
+                    android:id="@+id/eetIdentityType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textColor="@color/color_FFFFFF_DE000000"
+                    android:textSize="@dimen/textSize14sp" />
+
+
+            </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
+
+            <View
+                android:id="@+id/identityTypeSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintBottom_toBottomOf="@id/etIdentityType"
+                app:layout_constraintTop_toTopOf="@id/etIdentityType" />
+
+            <org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
                 android:id="@+id/etSalary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -281,7 +317,7 @@
                 app:labelText="@string/income_source"
                 app:labelTextStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etIdentity"
+                app:layout_constraintTop_toBottomOf="@+id/etIdentityType"
                 app:primaryColor="@color/color_AFAFB1">
 
                 <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
