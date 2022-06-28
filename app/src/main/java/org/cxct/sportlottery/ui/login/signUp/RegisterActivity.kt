@@ -947,7 +947,9 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
      * 日期格式: 年月日
      */
     private fun createTimePicker(timeSelectedListener: (time: Date) -> Unit): TimePickerView {
-        val today = Calendar.getInstance() //用來限制生日的結束日期 (今天)
+        //用來限制生日的結束日期(滿21歲)
+        val limit21YearsOld = Calendar.getInstance()
+        limit21YearsOld.add(Calendar.YEAR, -21)
 
         val dateTimePicker: TimePickerView = TimePickerBuilder(this
         ) { date, _ ->
@@ -958,7 +960,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             }
         }
             .setLabel("", "", "", "", "", "")
-            .setRangDate(null, today)
+            .setRangDate(null, limit21YearsOld)
             .setDate(Calendar.getInstance())
             .setTimeSelectChangeListener { }
             .setType(booleanArrayOf(true, true, true, false, false, false))
