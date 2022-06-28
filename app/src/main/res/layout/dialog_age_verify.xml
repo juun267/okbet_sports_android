@@ -91,7 +91,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/dialog_age_verify_hint_link"
-                        android:textColor="@color/color_5d5d5d_888888"
+                        android:textColor="@color/color_317FFF_0760D4"
                         android:textSize="@dimen/textSize12sp" />
 
                 </LinearLayout>
