@@ -146,24 +146,6 @@
                         android:src="@drawable/ic_pagcor_21" />
                 </LinearLayout>
 
-                <WebView
-                    android:id="@+id/wv_statement"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/iv_close"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:padding="16dp"
-                    android:visibility="gone"
-                    android:src="@drawable/ic_close_menu_v4"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
