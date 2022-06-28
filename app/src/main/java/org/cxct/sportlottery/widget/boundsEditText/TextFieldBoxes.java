@@ -1005,6 +1005,8 @@ public class TextFieldBoxes extends FrameLayout {
 
         if (errorText == null && hasFocus) {
             activate(true);
+            this.helperLabel.setText(null);
+            updateBottomViewVisibility();
         }
     }
 
