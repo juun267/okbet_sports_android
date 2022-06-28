@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -22,6 +21,7 @@ import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
+import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.game.Page
@@ -48,7 +48,9 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         PreloadItem::class to 5,
         //足球, 滾球, 數量, 聯賽名, 國旗, 賽事內容
         Recommend::class to 6,
-        BottomNavigationItem::class to 7
+        //E-Games
+        PublicityEGamesData::class to 7,
+        BottomNavigationItem::class to 8
     )
 
     var oddsType: OddsType = OddsType.EU
@@ -84,6 +86,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         PUBLICITY_SUB_TITLE,
         PRELOAD,
         RECOMMEND,
+        E_GAMES,
         BOTTOM_NAVIGATION,
         NONE
     }
@@ -106,6 +109,9 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
     }
 
     class PublicitySubTitleImageData
+    class PublicityEGamesData {
+        var thirdDictValues: ThirdDictValues? = null
+    }
     class PreloadItem
     class BottomNavigationItem
     // endregion
@@ -145,6 +151,11 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         recommendList.forEach { addDataWithSort(it) }
     }
 
+    fun addEGames() {
+        removeData(PublicityEGamesData())
+        addDataWithSort(PublicityEGamesData())
+    }
+
     fun addBottomView() {
         removeData(BottomNavigationItem())
         addDataWithSort(BottomNavigationItem())
@@ -179,11 +190,17 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
     }
 
     fun updateUserInfoData(userId: String, userMoney: Double) {
-        Timber.e("updateUserInfoData")
         removeData(PublicityUserInfoData())
         addDataWithSort(PublicityUserInfoData().apply {
             this.userId = userId
             this.userMoney = userMoney
+        })
+    }
+
+    fun updateEGamesData(thirdDictValues: ThirdDictValues?) {
+        removeData(PublicityEGamesData())
+        addDataWithSort(PublicityEGamesData().apply {
+            this.thirdDictValues = thirdDictValues
         })
     }
     //endregion
@@ -207,6 +224,9 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             }
             is Recommend -> {
                 ItemType.RECOMMEND.ordinal
+            }
+            is PublicityEGamesData -> {
+                ItemType.E_GAMES.ordinal
             }
             is BottomNavigationItem -> {
                 ItemType.BOTTOM_NAVIGATION.ordinal
@@ -273,6 +293,15 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                     ), publicityAdapterListener
                 )
             }
+            ItemType.E_GAMES.ordinal -> {
+                PublicityEGamesViewHolder(
+                    PublicityEGamesViewBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
+            }
             ItemType.BOTTOM_NAVIGATION.ordinal -> {
                 BottomNavigationViewHolder(
                     HomeBottomNavigationBinding.inflate(
@@ -328,6 +357,11 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             }
             is PublicitySubTitleViewHolder -> {
                 holder.bind()
+            }
+            is PublicityEGamesViewHolder -> {
+                if (data is PublicityEGamesData) {
+                    holder.bind(data)
+                }
             }
             is BottomNavigationViewHolder -> {
                 holder.bind()
@@ -529,6 +563,18 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         }
     }
 
+    inner class PublicityEGamesViewHolder(val binding: PublicityEGamesViewBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(data: PublicityEGamesData) {
+            with(binding) {
+                root.setOnClickListener {
+                    publicityAdapterListener.onGoThirdGamesListener(data.thirdDictValues)
+                }
+            }
+        }
+    }
+
     inner class PreloadViewHolder(val binding: ViewLoadingBinding) : RecyclerView.ViewHolder(binding.root)
 
     inner class BottomNavigationViewHolder(val binding: HomeBottomNavigationBinding) :
@@ -611,6 +657,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         private val onGoRegisterListener: () -> Unit,
         private val onGoDepositListener: () -> Unit,
         private val onGoWithdrawListener: () -> Unit,
+        private val onGoThirdGamesListener: (thirdDictValues: ThirdDictValues?) -> Unit,
         private val onClickBetListener: (gameType: String, matchType: MatchType, matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?, playCateMenuCode: String?) -> Unit,
         private val onClickFavoriteListener: (matchId: String?) -> Unit,
         private val onClickStatisticsListener: (matchId: String) -> Unit,
@@ -629,6 +676,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         fun onGoRegisterListener() = onGoRegisterListener.invoke()
         fun onGoDepositListener() = onGoDepositListener.invoke()
         fun onGoWithdrawListener() = onGoWithdrawListener.invoke()
+        fun onGoThirdGamesListener(thirdDictValues: ThirdDictValues?) = onGoThirdGamesListener.invoke(thirdDictValues)
         fun onClickBetListener(
             gameType: String,
             matchType: MatchType,

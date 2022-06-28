@@ -1165,4 +1165,6 @@
     <!--region 大廳賠率按鈕-->
     <string name="none">None</string>
     <!--endregion-->
+
+    <string name="e_games">E-Games</string>
 </resources>

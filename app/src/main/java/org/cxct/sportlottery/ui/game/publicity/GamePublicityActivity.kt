@@ -163,8 +163,6 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                 }
             }
         }
-
-        viewModel.getAnnouncement()
     }
 
     override fun onBackPressed() {

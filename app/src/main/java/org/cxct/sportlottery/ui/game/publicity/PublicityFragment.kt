@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.view_message.*
 import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentPublicityBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.FavoriteType
@@ -27,7 +27,11 @@ import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
+import org.cxct.sportlottery.ui.main.entity.GameItemData
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
+import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.addScrollListenerForBottomNavBar
 import timber.log.Timber
@@ -84,6 +88,10 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 onGoWithdrawListener = {
                     avoidFastDoubleClick()
                     viewModel.checkWithdrawSystem()
+                },
+                onGoThirdGamesListener = {
+                    avoidFastDoubleClick()
+                    viewModel.requestEnterThirdGame(it)
                 },
                 onClickBetListener = { gameType, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
                     if(mIsEnabled){
@@ -220,6 +228,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
             addAnnouncement()
             addUserInfo()
             addSubTitle()
+            addEGames()
             addPreload()
         }
     }
@@ -328,6 +337,26 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 }
                 mPublicityAdapter.updateAnnouncementData(titleList)
             }
+        }
+
+        //第三方遊戲清單
+        viewModel.gameCateDataList.observe(viewLifecycleOwner) {
+            val cateData = it?.find { gameCateData ->
+                gameCateData.categoryThird == ThirdGameCategory.QP //棋牌
+            }
+            val gameList = mutableListOf<GameItemData>()
+            cateData?.tabDataList?.forEach { gameTabData ->
+                gameTabData.gameList.run { gameList.addAll(this) }
+            }
+            val gameItemData = gameList.find { gameItemData ->
+                gameItemData.thirdGameData != null
+            }
+            mPublicityAdapter.updateEGamesData(gameItemData?.thirdGameData)
+        }
+
+        viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {
+            if (isVisible)
+                enterThirdGame(it)
         }
     }
 
@@ -496,7 +525,9 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     }
 
     private fun queryData() {
+        viewModel.getAnnouncement()
         viewModel.getRecommend()
+        viewModel.getThirdGame()
     }
 
     private fun goLoginPage() {
@@ -625,5 +656,19 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
 
     private fun subscribeChannelHall(recommend: Recommend) {
         subscribeChannelHall(recommend.gameType, recommend.id)
+    }
+
+    private fun enterThirdGame(result: EnterThirdGameResult) {
+        hideLoading()
+        when (result.resultType) {
+            EnterThirdGameResult.ResultType.SUCCESS -> context?.run { JumpUtil.toThirdGameWeb(this, result.url ?: "") }
+            EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
+            EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.startActivity(Intent(context, RegisterActivity::class.java))
+            EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
+            EnterThirdGameResult.ResultType.NONE -> {
+            }
+        }
+        if (result.resultType != EnterThirdGameResult.ResultType.NONE)
+            viewModel.clearThirdGame()
     }
 }
