@@ -248,7 +248,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                app:endIcon="@drawable/ic_camera"
                 app:hintText="@string/hint_register_identity"
                 app:iconSignifier="@drawable/ic_id_card"
                 app:isResponsiveIconColor="false"
@@ -263,12 +262,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
-                    android:inputType="textPassword"
+                    android:inputType="text"
                     android:maxLines="1"
                     android:textColor="@color/color_FFFFFF_DE000000"
                     android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/end_button"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:minWidth="@dimen/end_icon_min_width"
+                android:minHeight="@dimen/end_icon_min_height"
+                android:visibility="visible"
+                android:layout_marginTop="13dp"
+                android:src="@drawable/ic_camera"
+                android:layout_marginEnd="15dp"
+                app:layout_constraintEnd_toEndOf="@+id/etIdentity"
+                app:layout_constraintTop_toTopOf="@+id/etIdentity"/>
 
             <org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
                 android:id="@+id/etIdentityType"

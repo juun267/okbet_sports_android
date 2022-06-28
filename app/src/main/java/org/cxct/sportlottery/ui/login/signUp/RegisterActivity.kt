@@ -59,6 +59,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     private var identityTypeSelectedData: StatusSheetData? = null //當前證件類型選中
 
     private var credentialsFragment: RegisterCredentialsFragment? = null
+    private var isUploaded = false
 
     override fun onClick(v: View?) {
         when (v) {
@@ -341,12 +342,16 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             etIdentity.visibility =
                 if (sConfigData?.enableIdentityNumber == FLAG_OPEN) View.VISIBLE else View.GONE
 
-            etIdentity.setEndIcon(R.drawable.ic_camera)
+//            etIdentity.setEndIcon(R.drawable.ic_camera)
 
-            etIdentity.endIconImageButton.setOnClickListener {
-                when (etIdentity.endIconResourceId) {
-                    R.drawable.ic_camera -> openCredentialsPage()
-                }
+//            etIdentity.endIconImageButton.setOnClickListener {
+//                when (etIdentity.endIconResourceId) {
+//                    R.drawable.ic_camera -> openCredentialsPage()
+//                }
+//            }
+
+            endButton.setOnClickListener {
+                if (!isUploaded) openCredentialsPage()
             }
         }
     }
@@ -766,11 +771,15 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         //第二張照片是否上傳成功
         viewModel.photoUrlResult.observe(this) {
             if (it != null) {
-                binding.etIdentity.setEndIcon(R.drawable.ic_upload_done)
+//                binding.etIdentity.setEndIcon(R.drawable.ic_upload_done)
+                binding.endButton.setImageResource(R.drawable.ic_upload_done)
                 viewModel.checkIdentity(binding.eetIdentity.text.toString(), true)
+                isUploaded = true
             } else {
-                binding.etIdentity.setEndIcon(R.drawable.ic_camera)
+//                binding.etIdentity.setEndIcon(R.drawable.ic_camera)
+                binding.endButton.setImageResource(R.drawable.ic_camera)
                 viewModel.checkIdentity(binding.eetIdentity.text.toString(), false)
+                isUploaded = false
             }
         }
     }
@@ -778,7 +787,8 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     /**
      * 檢查是否已經成功上傳照片
      */
-    private fun checkPhotoUploaded(): Boolean = binding.etIdentity.endIconResourceId == R.drawable.ic_upload_done
+//    private fun checkPhotoUploaded(): Boolean = binding.etIdentity.endIconResourceId == R.drawable.ic_upload_done
+    private fun checkPhotoUploaded(): Boolean = isUploaded
 
     //當所有值都有填，按下enter時，自動點擊註冊鈕
     private fun setEditTextIme(registerEnable: Boolean) {
