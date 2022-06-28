@@ -23,7 +23,7 @@
     <string name="level_six">VIP6</string>
 
     <!--bet record-->
-    <string name="at_symbol">\u0040%s</string>
+    <string name="at_symbol">\u0040%1$s</string>
     <string name="nothing">--</string>
     <string name="draw_or_cancel">0.000</string>
 
@@ -47,10 +47,10 @@
     <string name="time_up">00:00</string>
 
     <!--date time concat-->
-    <string name="concat_date_time">%s %s</string>
+    <string name="concat_date_time">%1$s %1$s</string>
 
     <!--svg format-->
-    <string name="svg_format">&lt;svg xmlns=\u0027http://www.w3.org/2000/svg\u0027 xmlns:xlink=\u0027http://www.w3.org/1999/xlink\u0027 width=\u0027%d\u0027 height=\u0027%d\u0027 viewBox=\u00270 0 %d %d\u0027 &gt;%s&lt;/svg&gt;</string>
+    <string name="svg_format">&lt;svg xmlns=\u0027http://www.w3.org/2000/svg\u0027 xmlns:xlink=\u0027http://www.w3.org/1999/xlink\u0027 width=\u0027%d\u0027 height=\u0027%d\u0027 viewBox=\u00270 0 %d %d\u0027 &gt;%1$s&lt;/svg&gt;</string>
 
     <string name="dash_no_trans">-</string>
     <string name="splash_no_trans">/</string>
