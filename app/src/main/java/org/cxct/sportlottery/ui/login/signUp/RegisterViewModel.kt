@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.login.signUp
 
+import android.app.Application
 import android.content.Context
 import android.text.Spanned
 import androidx.core.text.HtmlCompat
@@ -18,21 +19,25 @@ import org.cxct.sportlottery.network.index.sendSms.SmsRequest
 import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
+import org.cxct.sportlottery.network.uploadImg.UploadImgResult
+import org.cxct.sportlottery.network.uploadImg.UploadVerifyDocRequest
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.util.FileUtil
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.VerifyConstUtil
+import java.io.File
 
 class RegisterViewModel(
-    private val androidContext: Context,
+    androidContext: Application,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-    protected val userInfoRepository: UserInfoRepository
-) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+    userInfoRepository: UserInfoRepository,
+    favoriteRepository: MyFavoriteRepository
+) : BaseSocketViewModel(androidContext, userInfoRepository, loginRepository, betInfoRepository, infoCenterRepository, favoriteRepository) {
     val registerResult: LiveData<LoginResult>
         get() = _registerResult
     val inviteCodeMsg: LiveData<String?>
@@ -143,6 +148,16 @@ class RegisterViewModel(
     private val _cbAgreeAllChecked = MutableLiveData<Boolean?>()
 
     private val _bettingStationList = MutableLiveData<List<StatusSheetData>>()
+
+    //region 證件照片
+    val docUrlResult: LiveData<UploadImgResult?>
+        get() = _docUrlResult
+    private val _docUrlResult = MutableLiveData<UploadImgResult?>()
+
+    val photoUrlResult: LiveData<UploadImgResult?>
+        get() = _photoUrlResult
+    private val _photoUrlResult = MutableLiveData<UploadImgResult?>()
+    //endregion
 
     @Deprecated("沒在用")
     fun getAgreementContent(context: Context): Spanned {
@@ -831,4 +846,76 @@ class RegisterViewModel(
             }
         }
     }
+
+    //region 證件照片
+    fun uploadVerifyPhoto(docFile: File, photoFile: File) {
+        viewModelScope.launch {
+            val docResponse = doNetwork(androidContext) {
+                OneBoSportApi.uploadImgService.uploadImg(
+                    UploadVerifyDocRequest(
+                        userInfo.value?.userId.toString(),
+                        docFile
+                    ).toPars()
+                )
+            }
+            when {
+                docResponse == null -> _docUrlResult.postValue(
+                    UploadImgResult(
+                        -1,
+                        androidContext.getString(R.string.unknown_error),
+                        false,
+                        null
+                    )
+
+                )
+                //上傳第一張照片成功
+                docResponse.success -> {
+                    _docUrlResult.postValue(docResponse)
+
+                    val photoResponse = doNetwork(androidContext) {
+                        OneBoSportApi.uploadImgService.uploadImg(
+                            UploadVerifyDocRequest(
+                                userInfo.value?.userId.toString(),
+                                photoFile
+                            ).toPars()
+                        )
+                    }
+                    when {
+                        photoResponse == null -> _photoUrlResult.postValue(
+                            UploadImgResult(
+                                -1,
+                                androidContext.getString(R.string.unknown_error),
+                                false,
+                                null
+                            )
+                        )
+                        //上傳第二張照片成功
+                        photoResponse.success -> {
+                            _photoUrlResult.postValue(photoResponse)
+                        }
+                        else -> {
+                            val error =
+                                UploadImgResult(photoResponse.code, photoResponse.msg, photoResponse.success, null)
+                            _photoUrlResult.postValue(error)
+                        }
+                    }
+                }
+                else -> {
+                    val error = UploadImgResult(
+                        docResponse.code, docResponse.msg, docResponse.success, null
+                    )
+                    _docUrlResult.postValue(error)
+                }
+            }
+        }
+    }
+
+    /**
+     * 清除照片上傳狀態
+     */
+    fun resetCredentialsStatus() {
+        _docUrlResult.value = null
+        _photoUrlResult.value = null
+    }
+    //endregion
 }
