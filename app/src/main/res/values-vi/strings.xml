@@ -1202,4 +1202,9 @@
     <string name="timezone_list_no_record">Không có kết quả nào</string>
     <!--endregion-->
 
+    <string name="verification_status">Verification Status</string>
+    <string name="register_identity_photo_front">Upload Valid ID of the front</string>
+    <string name="register_identity_photo_hint_front">Click to add an image of the front of Valid ID.</string>
+    <string name="register_identity_photo_back">Upload Valid ID of the back</string>
+    <string name="register_identity_photo_hint_back">Click to add an image of the back of  Valid ID.</string>
 </resources>
