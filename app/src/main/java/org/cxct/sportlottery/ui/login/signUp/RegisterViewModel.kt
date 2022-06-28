@@ -28,6 +28,7 @@ import org.cxct.sportlottery.util.FileUtil
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.VerifyConstUtil
+import timber.log.Timber
 import java.io.File
 
 class RegisterViewModel(
@@ -426,9 +427,10 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkIdentity(identity: String?) {
+    fun checkIdentity(identity: String?, photoUploaded: Boolean) {
         val msg = when {
             identity.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
+            !photoUploaded -> androidContext.getString(R.string.error_identity_photo)
             else -> null
         }
         _identityMsg.value = Pair(msg, msg == null)
@@ -488,6 +490,7 @@ class RegisterViewModel(
         cbAgreeAllChecked: Boolean,
         birth: String?,
         identity: String?,
+        identityUploaded: Boolean,
         identityType: String?,
         salarySource: String?,
         bettingShop: String?
@@ -534,7 +537,7 @@ class RegisterViewModel(
         if (sConfigData?.enableBirthday == FLAG_OPEN)
             checkBirth(birth)
         if (sConfigData?.enableIdentityNumber == FLAG_OPEN)
-            checkIdentity(identity)
+            checkIdentity(identity, identityUploaded)
         if (sConfigData?.enableIdentityNumber == FLAG_OPEN)
             checkIdentityType(identityType)
         if (sConfigData?.enableSalarySource == FLAG_OPEN)
@@ -667,6 +670,7 @@ class RegisterViewModel(
         deviceId: String,
         birth: String?,
         identity: String?,
+        identityUploaded: Boolean,
         identityType: String?,
         salarySource: String?,
         bettingShop: String?
@@ -696,6 +700,7 @@ class RegisterViewModel(
                 cbAgreeAllChecked,
                 birth,
                 identity,
+                identityUploaded,
                 identityType,
                 salarySource,
                 bettingShop
@@ -726,6 +731,8 @@ class RegisterViewModel(
                     deviceId,
                     birth,
                     identity,
+                    docUrlResult.value?.imgData?.path,
+                    photoUrlResult.value?.imgData?.path,
                     identityType,
                     salarySource,
                     bettingShop
@@ -759,6 +766,8 @@ class RegisterViewModel(
         deviceId: String,
         birth: String?,
         identity: String?,
+        verifyPhoto1: String?,
+        verifyPhoto2: String?,
         identityType: String?,
         salarySource: String?,
         bettingShop: String?
@@ -807,10 +816,12 @@ class RegisterViewModel(
             }
             if (sConfigData?.enableBirthday == FLAG_OPEN)
                 this.birthday = birth
-            if (sConfigData?.enableIdentityNumber == FLAG_OPEN)
+            if (sConfigData?.enableIdentityNumber == FLAG_OPEN) {
                 this.identityNumber = identity
-            if (sConfigData?.enableIdentityNumber == FLAG_OPEN)
+                this.verifyPhoto1 = verifyPhoto1
+                this.verifyPhoto2 = verifyPhoto2
                 this.identityType = identityType
+            }
             if (sConfigData?.enableSalarySource == FLAG_OPEN)
                 this.salarySource = salarySource
             if (sConfigData?.enableBettingStation == FLAG_OPEN)
@@ -853,7 +864,7 @@ class RegisterViewModel(
             val docResponse = doNetwork(androidContext) {
                 OneBoSportApi.uploadImgService.uploadImg(
                     UploadVerifyDocRequest(
-                        userInfo.value?.userId.toString(),
+                        "9999",
                         docFile
                     ).toPars()
                 )
@@ -875,7 +886,7 @@ class RegisterViewModel(
                     val photoResponse = doNetwork(androidContext) {
                         OneBoSportApi.uploadImgService.uploadImg(
                             UploadVerifyDocRequest(
-                                userInfo.value?.userId.toString(),
+                                "9999",
                                 photoFile
                             ).toPars()
                         )

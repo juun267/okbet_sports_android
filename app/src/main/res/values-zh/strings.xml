@@ -15,6 +15,7 @@
     <string name="error_input_empty_new">此栏位为必填栏位</string>
     <string name="error_incompatible_format">您输入的字元不符</string>
     <string name="error_wx_incompatible_format">微信ID格式错误</string>
+    <string name="error_identity_photo">未上传证件照</string>
     <string name="congratulation_win">恭喜您 注单尾码:%1$s 中奖:%2$s</string>
     <string name="warning_cancel">提醒您 注单尾码:%s 已被取消</string>
     <string name="prompt">提示</string>

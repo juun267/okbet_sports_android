@@ -505,7 +505,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 checkRegisterListener { viewModel.checkBirth(it) }
             }
             eetIdentity.apply {
-                checkRegisterListener { viewModel.checkIdentity(it) }
+                checkRegisterListener { viewModel.checkIdentity(it, checkPhotoUploaded()) }
             }
             eetSalary.apply {
                 checkRegisterListener { viewModel.checkSalary(it) }
@@ -602,6 +602,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     deviceId,
                     birth = eetBirth.text.toString().replace(" ",""), //傳給後端的不需要有空白間隔
                     identity = eetIdentity.text.toString(),
+                    identityUploaded = checkPhotoUploaded(),
                     identityType = identityTypeSelectedData?.code,
                     salarySource = salarySourceSelectedData?.code,
                     bettingShop = bettingShopSelectedData?.code
@@ -764,15 +765,20 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
         //第二張照片是否上傳成功
         viewModel.photoUrlResult.observe(this) {
-            binding.etIdentity.setEndIcon(
-                if (it != null) {
-                    R.drawable.ic_upload_done
-                } else {
-                    R.drawable.ic_camera
-                }
-            )
+            if (it != null) {
+                binding.etIdentity.setEndIcon(R.drawable.ic_upload_done)
+                viewModel.checkIdentity(binding.eetIdentity.text.toString(), true)
+            } else {
+                binding.etIdentity.setEndIcon(R.drawable.ic_camera)
+                viewModel.checkIdentity(binding.eetIdentity.text.toString(), false)
+            }
         }
     }
+
+    /**
+     * 檢查是否已經成功上傳照片
+     */
+    private fun checkPhotoUploaded(): Boolean = binding.etIdentity.endIconResourceId == R.drawable.ic_upload_done
 
     //當所有值都有填，按下enter時，自動點擊註冊鈕
     private fun setEditTextIme(registerEnable: Boolean) {

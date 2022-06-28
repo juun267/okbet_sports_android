@@ -15,6 +15,7 @@
     <string name="error_input_empty_new">Trường này là bắt buộc.</string>
     <string name="error_incompatible_format">Các ký tự bạn đã nhập không phù hợp</string>
     <string name="error_wx_incompatible_format">lỗi định dạng Wechat ID không hợp lệ</string>
+    <string name="error_identity_photo">Valid ID not uploaded</string>
     <string name="congratulation_win">Xin chúc mừng bạn, đơn cược số đuô: %1$s Chiến thắng: %2$s</string>
     <string name="warning_cancel">Vui lòng chú ý đơn cược số đuôi: %s đã bị hủy</string>
     <string name="prompt">Nhắc nhở</string>

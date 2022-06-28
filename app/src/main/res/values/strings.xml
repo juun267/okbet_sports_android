@@ -15,6 +15,7 @@
     <string name="error_input_empty_new">This field is required.</string>
     <string name="error_incompatible_format">The name that you entered is not valid</string>
     <string name="error_wx_incompatible_format">Wechat ID formatted incorrectly</string>
+    <string name="error_identity_photo">Valid ID not uploaded</string>
     <string name="congratulation_win">Congratulations，betting slip suffix code:%1$s Winning :%2$s</string>
     <string name="warning_cancel">Remind you betting slip suffix code:%s has been canceled</string>
     <string name="prompt">Tips</string>
