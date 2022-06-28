@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.network.money
 
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.Constants.RED_ENVELOPE_PRIZE
 import org.cxct.sportlottery.network.Constants.USER_BILL_LIST
 import org.cxct.sportlottery.network.Constants.USER_RECHARGE_LIST
 import org.cxct.sportlottery.network.money.config.MoneyRechCfgResult
@@ -30,5 +31,13 @@ interface MoneyService {
     suspend fun getBillList(
         @Body request: SportBillListRequest
     ): Response<SportBillResult>
+
+    @GET(Constants.RED_ENVELOPE_CHECK)
+    suspend fun getRainInfo(): Response<RedEnvelopeInfo>
+
+    @GET(RED_ENVELOPE_PRIZE)
+    suspend fun getRedEnvelopePrize(
+        @Path("redEnpId") userId: Int? = null,
+    ): Response<RedEnvelopePrize>
 
 }

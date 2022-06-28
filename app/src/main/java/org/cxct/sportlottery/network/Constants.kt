@@ -11,7 +11,8 @@ import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 
 object Constants {
-    val SERVER_URL_LIST = listOf("aoweifaaaii.com", "abweifoooyy.com", "abweouiiiuu.com", "acweifyyyff.com")
+    val SERVER_URL_LIST =
+        listOf("aoweifaaaii.com", "abweifoooyy.com", "abweouiiiuu.com", "acweifyyyff.com")
     var currentServerUrl: String? = null  //當前選擇的的 server url (後續 CheckAppUpdate API 會用到)
     private var mBaseUrl = ""
     private var mSocketUrl = ""
@@ -65,12 +66,15 @@ object Constants {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/?platform="+context.getString(
-                    R.string.app_name)
-                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/?platform="+context.getString(
-                    R.string.app_name)
-                else -> getBaseUrl()+"sports-rule/#/us/?platform="+context.getString(
-                    R.string.app_name)
+                LanguageManager.Language.ZH -> getBaseUrl() + "sports-rule/#/?platform=" + context.getString(
+                    R.string.app_name
+                )
+                LanguageManager.Language.VI -> getBaseUrl() + "sports-rule/#/vi/?platform=" + context.getString(
+                    R.string.app_name
+                )
+                else -> getBaseUrl() + "sports-rule/#/us/?platform=" + context.getString(
+                    R.string.app_name
+                )
             }
 
         } catch (e: UnsupportedEncodingException) {
@@ -84,12 +88,15 @@ object Constants {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/about-us?platform="+context.getString(
-                    R.string.app_name)
-                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/about-us?platform="+context.getString(
-                    R.string.app_name)
-                else -> getBaseUrl()+"sports-rule/#/us/about-us?platform="+context.getString(
-                    R.string.app_name)
+                LanguageManager.Language.ZH -> getBaseUrl() + "sports-rule/#/about-us?platform=" + context.getString(
+                    R.string.app_name
+                )
+                LanguageManager.Language.VI -> getBaseUrl() + "sports-rule/#/vi/about-us?platform=" + context.getString(
+                    R.string.app_name
+                )
+                else -> getBaseUrl() + "sports-rule/#/us/about-us?platform=" + context.getString(
+                    R.string.app_name
+                )
             }
 
         } catch (e: UnsupportedEncodingException) {
@@ -103,12 +110,15 @@ object Constants {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/responsibility?platform="+context.getString(
-                    R.string.app_name)
-                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/responsibility?platform="+context.getString(
-                    R.string.app_name)
-                else -> getBaseUrl()+"sports-rule/#/us/responsibility?platform="+context.getString(
-                    R.string.app_name)
+                LanguageManager.Language.ZH -> getBaseUrl() + "sports-rule/#/responsibility?platform=" + context.getString(
+                    R.string.app_name
+                )
+                LanguageManager.Language.VI -> getBaseUrl() + "sports-rule/#/vi/responsibility?platform=" + context.getString(
+                    R.string.app_name
+                )
+                else -> getBaseUrl() + "sports-rule/#/us/responsibility?platform=" + context.getString(
+                    R.string.app_name
+                )
             }
 
         } catch (e: UnsupportedEncodingException) {
@@ -137,12 +147,15 @@ object Constants {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/privacy-policy?platform="+context.getString(
-                    R.string.app_name)
-                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/privacy-policy?platform="+context.getString(
-                    R.string.app_name)
-                else -> getBaseUrl()+"sports-rule/#/us/privacy-policy?platform="+context.getString(
-                        R.string.app_name)
+                LanguageManager.Language.ZH -> getBaseUrl() + "sports-rule/#/privacy-policy?platform=" + context.getString(
+                    R.string.app_name
+                )
+                LanguageManager.Language.VI -> getBaseUrl() + "sports-rule/#/vi/privacy-policy?platform=" + context.getString(
+                    R.string.app_name
+                )
+                else -> getBaseUrl() + "sports-rule/#/us/privacy-policy?platform=" + context.getString(
+                    R.string.app_name
+                )
             }
 
         } catch (e: UnsupportedEncodingException) {
@@ -156,12 +169,15 @@ object Constants {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/terms-conditions?platform="+context.getString(
-                    R.string.app_name)
-                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/terms-conditions?platform="+context.getString(
-                    R.string.app_name)
-                else -> getBaseUrl()+"sports-rule/#/us/terms-conditions?platform="+context.getString(
-                    R.string.app_name)
+                LanguageManager.Language.ZH -> getBaseUrl() + "sports-rule/#/terms-conditions?platform=" + context.getString(
+                    R.string.app_name
+                )
+                LanguageManager.Language.VI -> getBaseUrl() + "sports-rule/#/vi/terms-conditions?platform=" + context.getString(
+                    R.string.app_name
+                )
+                else -> getBaseUrl() + "sports-rule/#/us/terms-conditions?platform=" + context.getString(
+                    R.string.app_name
+                )
             }
 
         } catch (e: UnsupportedEncodingException) {
@@ -175,12 +191,15 @@ object Constants {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/faq?platform="+context.getString(
-                    R.string.app_name)
-                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/faq?platform="+context.getString(
-                    R.string.app_name)
-                else -> getBaseUrl()+"sports-rule/#/us/faq?platform="+context.getString(
-                    R.string.app_name)
+                LanguageManager.Language.ZH -> getBaseUrl() + "sports-rule/#/faq?platform=" + context.getString(
+                    R.string.app_name
+                )
+                LanguageManager.Language.VI -> getBaseUrl() + "sports-rule/#/vi/faq?platform=" + context.getString(
+                    R.string.app_name
+                )
+                else -> getBaseUrl() + "sports-rule/#/us/faq?platform=" + context.getString(
+                    R.string.app_name
+                )
             }
 
         } catch (e: UnsupportedEncodingException) {
@@ -194,12 +213,15 @@ object Constants {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/contact-us?platform="+context.getString(
-                    R.string.app_name) + "&service=" + URLEncoder.encode(sConfigData?.customerServiceUrl ?: "", "utf-8")
-                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/contact-us?platform="+context.getString(
-                    R.string.app_name) + "&service=" + URLEncoder.encode(sConfigData?.customerServiceUrl ?: "", "utf-8")
-                else -> getBaseUrl()+"sports-rule/#/us/contact-us?platform="+context.getString(
-                    R.string.app_name) + "&service=" + URLEncoder.encode(sConfigData?.customerServiceUrl ?: "", "utf-8")
+                LanguageManager.Language.ZH -> getBaseUrl() + "sports-rule/#/contact-us?platform=" + context.getString(
+                    R.string.app_name
+                ) + "&service=" + URLEncoder.encode(sConfigData?.customerServiceUrl ?: "", "utf-8")
+                LanguageManager.Language.VI -> getBaseUrl() + "sports-rule/#/vi/contact-us?platform=" + context.getString(
+                    R.string.app_name
+                ) + "&service=" + URLEncoder.encode(sConfigData?.customerServiceUrl ?: "", "utf-8")
+                else -> getBaseUrl() + "sports-rule/#/us/contact-us?platform=" + context.getString(
+                    R.string.app_name
+                ) + "&service=" + URLEncoder.encode(sConfigData?.customerServiceUrl ?: "", "utf-8")
             }
 
         } catch (e: UnsupportedEncodingException) {
@@ -207,12 +229,13 @@ object Constants {
             null
         }
     }
+
     //web页面增加夜间模式参数
-    fun appendMode(url:String?):String?{
-        if (url.isNullOrEmpty()||url.contains("mode=")){
+    fun appendMode(url: String?): String? {
+        if (url.isNullOrEmpty() || url.contains("mode=")) {
             return url
         }
-        return url+(if(url.contains("?")) "&" else "?")+"mode="+(if(MultiLanguagesApplication.isNightMode) "night" else "day") + "&from=android"
+        return url + (if (url.contains("?")) "&" else "?") + "mode=" + (if (MultiLanguagesApplication.isNightMode) "night" else "day") + "&from=android"
     }
 
     //獲取檢查APP是否有更新版本的URL //輪詢 SERVER_URL_LIST 成功的那組 serverUrl 用來 download .apk
@@ -282,7 +305,6 @@ object Constants {
     const val SPORT_MENU_FILTER = "/api/front/sport/menu/list"
 
 
-
     const val MYFAVORITE_QUERY = "/api/front/myFavorite/query"
     const val MYFAVORITE_MATCH_QUERY = "/api/front/myFavorite/match/query"
     const val MYFAVORITE_SAVE = "/api/front/myFavorite/save"
@@ -333,7 +355,8 @@ object Constants {
     const val UPLOAD_VERIFY_PHOTO = "/api/front/user/uploadVerifyPhoto" //上傳實名制文件
 
     //簡訊碼驗證
-    const val GET_TWO_FACTOR_STATUS = "/api/front/user/getTwoFactorValidateStatus" //取得双重验证状态(success: true 验证成功, false 需重新验证手机)
+    const val GET_TWO_FACTOR_STATUS =
+        "/api/front/user/getTwoFactorValidateStatus" //取得双重验证状态(success: true 验证成功, false 需重新验证手机)
     const val SEND_TWO_FACTOR = "/api/front/index/sendTwoFactor" //发送双重验证讯息
     const val VALIDATE_TWO_FACTOR = "/api/front/index/validateTwoFactor" //双重验证校验
 
@@ -367,8 +390,10 @@ object Constants {
     const val QUERY_SECOND_ORDERS = "/api/front/thirdapi/querySecondOrders"
 
     const val MATCH_CATEGORY_RECOMMEND = "/api/front/matchCategory/recommend/query" //查询推薦賽事
-    const val MATCH_CATEGORY_SPECIAL_MATCH = "/api/front/matchCategory/special/match/query" //查詢主頁精選賽事
-    const val MATCH_CATEGORY_SPECIAL_MENU = "/api/front/matchCategory/special/menu/query" //查詢主頁精選賽事菜单
+    const val MATCH_CATEGORY_SPECIAL_MATCH =
+        "/api/front/matchCategory/special/match/query" //查詢主頁精選賽事
+    const val MATCH_CATEGORY_SPECIAL_MENU =
+        "/api/front/matchCategory/special/menu/query" //查詢主頁精選賽事菜单
     const val MATCH_CATEGORY_QUERY = "/api/front/matchCategory/query" //(新)查询参赛表
 
     //credential
@@ -385,4 +410,10 @@ object Constants {
 
     //news
     const val MESSAGE_LIST = "/api/front/message/list"
+
+    const val RED_ENVELOPE_CHECK = "/api/front/redenp/rain/info"    //10s一次
+
+    const val RED_ENVELOPE_PRIZE = "/api/front/redenp/rain/grab/{redEnpId}"
+
+
 }

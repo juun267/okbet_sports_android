@@ -1,40 +1,164 @@
 package org.cxct.sportlottery.ui.dialog
 
+import android.animation.Animator
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.content.Context
+import android.content.DialogInterface
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.InsetDrawable
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
+import android.view.*
+import android.view.animation.AnimationUtils
+import android.view.animation.Interpolator
+import android.view.animation.LinearInterpolator
+import android.widget.ImageView
+import android.widget.RelativeLayout
 import androidx.fragment.app.DialogFragment
-import kotlinx.android.synthetic.main.dialog_self_limit_froze_important.*
+import kotlinx.android.synthetic.main.fragment_red_envelope_receive.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import java.lang.ref.WeakReference
+import java.util.*
 
-class RedEnvelopeReceiveDialog (private var isBet: Boolean): DialogFragment() {
+class RedEnvelopeReceiveDialog(context: Context) : DialogFragment() {
+    private val mHandler = MyHandler(WeakReference(this))
+    var bitmap = listOf(
+        BitmapFactory.decodeResource(context.resources, R.drawable.packet_one),
+        BitmapFactory.decodeResource(context.resources, R.drawable.packet_two),
+        BitmapFactory.decodeResource(context.resources, R.drawable.packet_three),
+        BitmapFactory.decodeResource(context.resources, R.drawable.luck_packet),
+    )
+    private val BARRAGE_GAP_MIN_DURATION: Long = 1000 //两个弹幕的最小间隔时间
+    private val BARRAGE_GAP_MAX_DURATION: Long = 3000 //两个弹幕的最大间隔时间
+
+    var bitmap1: Bitmap? = null
+    var image: ImageView? = null
+    var mRandom = Random()
+    private var layoutParams1: RelativeLayout.LayoutParams? = null
+    private var p: Point? = null
+    private var randomX = 0
+    private var randomY: Int = 0
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? = inflater.inflate(R.layout.fragment_red_envelope_receive, container, false)
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        //  dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
         initView()
+
     }
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
     private fun initView() {
-        btn_close.setOnClickListener{
-            dismiss()
+        //获取屏幕宽p.x 获取屏幕高p.y
+        p = Point()
+        activity?.windowManager?.defaultDisplay?.getSize(p);
+
+        dialog?.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+        dialog?.window?.setBackgroundDrawable(
+            InsetDrawable(
+                ColorDrawable(Color.TRANSPARENT),
+                26.dp
+            )
+        )
+
+        setContentView()
+    }
+
+    fun setCanceledOnTouchOutside(boolean: Boolean) {
+        dialog?.setCanceledOnTouchOutside(boolean)
+    }
+
+
+    private fun setContentView() {
+        val duration: Int =
+            ((BARRAGE_GAP_MAX_DURATION - BARRAGE_GAP_MIN_DURATION) * Math.random()).toInt()
+        mHandler.sendEmptyMessageDelayed(0, duration.toLong())
+        val operatingAnim = AnimationUtils.loadAnimation(
+            activity, R.anim.red_envelope_rotate
+        )
+        val lin = LinearInterpolator()
+        operatingAnim.interpolator = lin
+        iv_radiance.startAnimation(operatingAnim)
+    }
+
+
+    inner class MyHandler(val wDialogFragment: WeakReference<DialogFragment>) : Handler(Looper.getMainLooper()) {
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            wDialogFragment.get()?.run {
+                for (i in 0..2) {
+                    bitmap1 = bitmap[mRandom.nextInt(bitmap.size)]
+                    image = ImageView(activity)
+                    image!!.setImageBitmap(bitmap1)
+                    layoutParams1 = RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.WRAP_CONTENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT
+                    )
+                    randomX = if (i == 0) {
+                        Random().nextInt((p!!.x * 0.15).toInt())
+                    } else {
+                        Random().nextInt((p!!.x * 0.1).toInt()) + (p!!.x * (0.15 + 0.25 * i)).toInt()
+                    }
+
+                    randomY =
+                        (Random().nextInt((p!!.y * (0.2 + 0.05 * i)).toInt()) + image!!.height * 1.3).toInt()
+                    layoutParams1!!.setMargins(randomX, -randomY, 0, 0)
+                    relative_layout.addView(image, layoutParams1)
+                    startAnimation(image, 0f)
+                    image!!.setOnClickListener {
+                        iv_radiance.clearAnimation()
+                    }
+                    image = null
+                }
+
+                val duration: Int =
+                    ((BARRAGE_GAP_MAX_DURATION - BARRAGE_GAP_MIN_DURATION) * Math.random()).toInt()
+                sendEmptyMessageDelayed(0, duration.toLong())
+            }
         }
 
-        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        dialog?.window?.setBackgroundDrawable(InsetDrawable(ColorDrawable(Color.TRANSPARENT), 26.dp))
+        fun startAnimation(imageView: View?, Y: Float) {
+            val yAnimator: ObjectAnimator =
+                ObjectAnimator.ofFloat(imageView, "translationY", Y, (p!!.y + 300) * 1.2f)
+            val YInterpolator: Interpolator = LinearInterpolator()
+            yAnimator.interpolator = YInterpolator
+            val animatorSet = AnimatorSet()
+            animatorSet.play(yAnimator)
+            animatorSet.duration = (mRandom.nextInt(3000) + 4000).toLong()
+            animatorSet.start()
+            animatorSet.addListener(object : Animator.AnimatorListener {
+                override fun onAnimationStart(animation: Animator) {}
+                override fun onAnimationEnd(animation: Animator) {}
+                override fun onAnimationCancel(animation: Animator) {}
+                override fun onAnimationRepeat(animation: Animator) {}
+            })
+        }
     }
 
-    fun setCanceledOnTouchOutside(boolean: Boolean){
-        dialog?.setCanceledOnTouchOutside(boolean)
+    override fun onDestroy() {
+        super.onDestroy()
+        image = null
+        mHandler.removeMessages(0)
+
     }
 }

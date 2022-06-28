@@ -40,6 +40,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
+import org.cxct.sportlottery.ui.dialog.RedEnvelopeReceiveDialog
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
@@ -128,6 +129,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             gameViewModel = this@HomeFragment.viewModel
             lifecycleOwner = this@HomeFragment
         }
+//        showDialog();
         return homeBinding.root
     }
 
@@ -1383,5 +1385,10 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             oddMap.key == playCateCode?.split(",")?.get(0) ?: "HDP"
         }
     }
-
+    private fun showDialog() {
+        val dialog = activity?.let { RedEnvelopeReceiveDialog(it) }
+        activity?.supportFragmentManager?.let {
+            dialog?.show(it, null)
+        }
+    }
 }
