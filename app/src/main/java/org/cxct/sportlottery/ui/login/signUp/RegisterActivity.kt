@@ -58,6 +58,8 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     private var bettingShopSelectedData: StatusSheetData? = null
     private var identityTypeSelectedData: StatusSheetData? = null //當前證件類型選中
 
+    private var credentialsFragment: RegisterCredentialsFragment? = null
+
     override fun onClick(v: View?) {
         when (v) {
             binding.ivReturn -> {
@@ -214,6 +216,25 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         stopSmeTimer()
     }
 
+    /**
+     * 開啟上傳證件照片頁面
+     */
+    private fun openCredentialsPage() {
+        //進入前先清除照片上傳狀態
+        viewModel.resetCredentialsStatus()
+        binding.flCredentials.visibility = View.VISIBLE
+        val transaction = supportFragmentManager.beginTransaction()
+        credentialsFragment = RegisterCredentialsFragment.newInstance()
+
+        credentialsFragment?.let { fragment ->
+            transaction
+                .add(binding.flCredentials.id, fragment, RegisterCredentialsFragment::class.java.simpleName)
+                .addToBackStack(RegisterCredentialsFragment::class.java.simpleName)
+                .commit()
+        }
+        hideSoftKeyboard(this)
+    }
+
     private fun setupBackButton() {
         binding.btnBack.setOnClickListener { finish() }
     }
@@ -320,18 +341,12 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             etIdentity.visibility =
                 if (sConfigData?.enableIdentityNumber == FLAG_OPEN) View.VISIBLE else View.GONE
 
+            etIdentity.setEndIcon(R.drawable.ic_camera)
+
             etIdentity.endIconImageButton.setOnClickListener {
-                if (etIdentity.endIconResourceId == R.drawable.ic_eye_open) {
-                    eetIdentity.transformationMethod =
-                        PasswordTransformationMethod.getInstance()
-                    etIdentity.setEndIcon(R.drawable.ic_eye_close)
-                } else {
-                    etIdentity.setEndIcon(R.drawable.ic_eye_open)
-                    eetIdentity.transformationMethod =
-                        HideReturnsTransformationMethod.getInstance()
+                when (etIdentity.endIconResourceId) {
+                    R.drawable.ic_camera -> openCredentialsPage()
                 }
-                etIdentity.hasFocus = true
-                eetIdentity.setSelection(eetIdentity.text.toString().length)
             }
         }
     }
@@ -747,6 +762,16 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             }
         }
 
+        //第二張照片是否上傳成功
+        viewModel.photoUrlResult.observe(this) {
+            binding.etIdentity.setEndIcon(
+                if (it != null) {
+                    R.drawable.ic_upload_done
+                } else {
+                    R.drawable.ic_camera
+                }
+            )
+        }
     }
 
     //當所有值都有填，按下enter時，自動點擊註冊鈕

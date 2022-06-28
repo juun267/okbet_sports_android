@@ -248,14 +248,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                app:endIcon="@drawable/ic_eye_close"
+                app:endIcon="@drawable/ic_camera"
                 app:hintText="@string/hint_register_identity"
                 app:iconSignifier="@drawable/ic_id_card"
                 app:isResponsiveIconColor="false"
                 app:labelText="@string/register_identity"
                 app:labelTextStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etBirth"
+                app:layout_constraintTop_toBottomOf="@+id/etIdentityType"
                 app:primaryColor="@color/color_AFAFB1">
 
                 <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
@@ -276,12 +276,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 app:endIcon="@drawable/ic_arrow_gray"
-                app:iconSignifier="@drawable/ic_id_card"
+                app:iconSignifier="@drawable/ic_id_type"
                 app:isResponsiveIconColor="false"
                 app:labelText="@string/identity_type"
                 app:labelTextStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etIdentity"
+                app:layout_constraintTop_toBottomOf="@+id/etBettingShop"
                 app:primaryColor="@color/color_AFAFB1">
 
                 <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
@@ -317,7 +317,7 @@
                 app:labelText="@string/income_source"
                 app:labelTextStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etIdentityType"
+                app:layout_constraintTop_toBottomOf="@+id/etBirth"
                 app:primaryColor="@color/color_AFAFB1">
 
                 <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
@@ -391,7 +391,7 @@
                 app:labelText="@string/withdrawal_pwd"
                 app:labelTextStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etBettingShop">
+                app:layout_constraintTop_toBottomOf="@+id/etIdentity">
 
                 <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
                     android:id="@+id/eet_withdrawal_pwd"
@@ -1117,5 +1117,13 @@
 
 
     </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/fl_credentials"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

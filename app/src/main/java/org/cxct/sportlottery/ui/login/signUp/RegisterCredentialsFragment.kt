@@ -24,17 +24,13 @@ import java.io.FileNotFoundException
 class RegisterCredentialsFragment : BaseSocketFragment<RegisterViewModel>(RegisterViewModel::class) {
     companion object {
 
-        fun newInstance(fromRegister: Boolean = false): RegisterCredentialsFragment {
-            return RegisterCredentialsFragment().apply {
-                isFromRegister = fromRegister
-            }
+        fun newInstance(): RegisterCredentialsFragment {
+            return RegisterCredentialsFragment()
         }
     }
 
     private var docFile: File? = null
     private var photoFile: File? = null
-
-    private var isFromRegister = false
 
     private val mSelectDocMediaListener = object : OnResultCallbackListener<LocalMedia> {
         override fun onResult(result: MutableList<LocalMedia>?) {
