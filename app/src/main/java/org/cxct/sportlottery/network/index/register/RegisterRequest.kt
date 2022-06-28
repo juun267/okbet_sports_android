@@ -27,6 +27,7 @@ data class RegisterRequest(
     var loginEnvInfo:String? = null,
     var birthday: String? = null,
     var identityNumber: String? = null,
+    var identityType: String? = null,
     var bettingStationId: String? = null,
     var salarySource: String? = null,
 )

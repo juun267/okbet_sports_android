@@ -587,6 +587,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     deviceId,
                     birth = eetBirth.text.toString().replace(" ",""), //傳給後端的不需要有空白間隔
                     identity = eetIdentity.text.toString(),
+                    identityType = identityTypeSelectedData?.code,
                     salarySource = salarySourceSelectedData?.code,
                     bettingShop = bettingShopSelectedData?.code
                 )

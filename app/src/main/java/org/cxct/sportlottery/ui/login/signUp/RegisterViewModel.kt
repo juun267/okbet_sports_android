@@ -425,7 +425,7 @@ class RegisterViewModel(
             identityType.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
             else -> null
         }
-        _identityMsg.value = Pair(msg, msg == null)
+        _identityTypeMsg.value = Pair(msg, msg == null)
         focusChangeCheckAllInputComplete()
     }
 
@@ -473,6 +473,7 @@ class RegisterViewModel(
         cbAgreeAllChecked: Boolean,
         birth: String?,
         identity: String?,
+        identityType: String?,
         salarySource: String?,
         bettingShop: String?
     ): Boolean {
@@ -519,6 +520,8 @@ class RegisterViewModel(
             checkBirth(birth)
         if (sConfigData?.enableIdentityNumber == FLAG_OPEN)
             checkIdentity(identity)
+        if (sConfigData?.enableIdentityNumber == FLAG_OPEN)
+            checkIdentityType(identityType)
         if (sConfigData?.enableSalarySource == FLAG_OPEN)
             checkSalary(salarySource)
         if (sConfigData?.enableBettingStation == FLAG_OPEN)
@@ -649,6 +652,7 @@ class RegisterViewModel(
         deviceId: String,
         birth: String?,
         identity: String?,
+        identityType: String?,
         salarySource: String?,
         bettingShop: String?
     ) {
@@ -677,6 +681,7 @@ class RegisterViewModel(
                 cbAgreeAllChecked,
                 birth,
                 identity,
+                identityType,
                 salarySource,
                 bettingShop
             )) {
@@ -706,6 +711,7 @@ class RegisterViewModel(
                     deviceId,
                     birth,
                     identity,
+                    identityType,
                     salarySource,
                     bettingShop
                 )
@@ -738,6 +744,7 @@ class RegisterViewModel(
         deviceId: String,
         birth: String?,
         identity: String?,
+        identityType: String?,
         salarySource: String?,
         bettingShop: String?
     ): RegisterRequest {
@@ -787,6 +794,8 @@ class RegisterViewModel(
                 this.birthday = birth
             if (sConfigData?.enableIdentityNumber == FLAG_OPEN)
                 this.identityNumber = identity
+            if (sConfigData?.enableIdentityNumber == FLAG_OPEN)
+                this.identityType = identityType
             if (sConfigData?.enableSalarySource == FLAG_OPEN)
                 this.salarySource = salarySource
             if (sConfigData?.enableBettingStation == FLAG_OPEN)
