@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.ui.login.signUp
 
+import android.graphics.Typeface
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -126,7 +128,7 @@ class RegisterCredentialsFragment : BaseSocketFragment<RegisterViewModel>(Regist
 
     private fun initToolbar() {
         tv_toolbar_title.setTitleLetterSpacing()
-        tv_toolbar_title.text = getString(R.string.select_id_type)
+        tv_toolbar_title.text = getString(R.string.verification_status)
         btn_toolbar_back.setOnClickListener {
             activity?.onBackPressed()
         }
@@ -199,9 +201,12 @@ class RegisterCredentialsFragment : BaseSocketFragment<RegisterViewModel>(Regist
         activity?.let { activityNotNull ->
             view_identity_doc.apply {
                 imgUploaded(false)
-                tv_upload_title.text = getString(R.string.upload_title)
+                tv_upload_title.text = getString(R.string.register_identity_photo_front)
+                tv_upload_title.setTypeface(tv_upload_title.typeface, Typeface.BOLD)
+                tv_upload_title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13F)
+                iv_upload.setImageResource(R.drawable.ic_upload_front)
                 tv_upload_tips.visibility = View.GONE
-                tv_upload.text = getString(R.string.upload_content)
+                tv_upload.text = getString(R.string.register_identity_photo_hint_front)
                 uploadListener = UploadImageView.UploadListener {
                     PicSelectorDialog(
                         activityNotNull,
@@ -213,9 +218,12 @@ class RegisterCredentialsFragment : BaseSocketFragment<RegisterViewModel>(Regist
 
             view_identity_photo.apply {
                 imgUploaded(false)
-                tv_upload_title.text = getString(R.string.upload_photo_title)
+                tv_upload_title.text = getString(R.string.register_identity_photo_back)
+                tv_upload_title.setTypeface(tv_upload_title.typeface, Typeface.BOLD)
+                tv_upload_title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13F)
+                iv_upload.setImageResource(R.drawable.ic_upload_back)
                 tv_upload_tips.visibility = View.GONE
-                tv_upload.text = getString(R.string.upload_photo_content)
+                tv_upload.text = getString(R.string.register_identity_photo_hint_back)
                 uploadListener = UploadImageView.UploadListener {
                     PicSelectorDialog(
                         activityNotNull,
