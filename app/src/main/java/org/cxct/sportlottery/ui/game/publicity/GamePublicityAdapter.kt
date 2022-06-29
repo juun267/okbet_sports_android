@@ -624,8 +624,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                 tvHomeName.text = data.homeName
                 tvAwayName.text = data.awayName
 
-                tvHomeScore.text = (data.matchInfo?.homeTotalScore ?: 0).toString()
-                tvAwayScore.text = (data.matchInfo?.awayTotalScore ?: 0).toString()
+                updateMatchScore(data)
 
                 tvGamePlayCateCodeName.text = data.playCateNameMap?.get(PlayCate.SINGLE.value)
                     ?.get(LanguageManager.getSelectLanguage(binding.root.context).key)
@@ -665,6 +664,9 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             val playCateName = data.playCateNameMap?.get(oddPlayCateCode)?.get(LanguageManager.getSelectLanguage(binding.root.context).key) ?: ""
 //            Timber.e("oddList: $oddList")
             with(binding) {
+                //更新賽事比分
+                updateMatchScore(data)
+
                 //region 主隊賠率項
                 if (oddList.isNotEmpty()) {
                     val homeOdd = oddList[0]
@@ -750,6 +752,11 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                     }
                 }
             }
+        }
+
+        private fun PublicityRecommendViewBinding.updateMatchScore(data: Recommend) {
+            tvHomeScore.text = (data.matchInfo?.homeScore ?: 0).toString()
+            tvAwayScore.text = (data.matchInfo?.awayScore ?: 0).toString()
         }
 
 //        private fun setupOddsButton(oddsButton: OddsButtonPublicity, odd: Odd?, matchOdd: MatchOdd, recommend: Recommend) {
