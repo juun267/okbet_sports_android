@@ -7,17 +7,14 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.common.BaseSecurityCodeResult
 import org.cxct.sportlottery.network.credential.CredentialCompleteRequest
 import org.cxct.sportlottery.network.credential.CredentialCompleteResult
 import org.cxct.sportlottery.network.credential.CredentialInitialRequest
 import org.cxct.sportlottery.network.credential.CredentialResult
 import org.cxct.sportlottery.network.uploadImg.*
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
-import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
-import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.Event
 import java.io.File
 

@@ -794,6 +794,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
+
     fun notifyUpdateTime(matchClockCO: MatchClockCO?) {
         matchClockCO?.let { matchClock ->
             mDataList.forEach{

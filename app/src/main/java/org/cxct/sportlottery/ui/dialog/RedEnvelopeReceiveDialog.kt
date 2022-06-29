@@ -24,17 +24,24 @@ import android.widget.RelativeLayout
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.fragment_red_envelope_receive.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.money.RedEnveLopeModel
+import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import java.lang.ref.WeakReference
 import java.util.*
 
-class RedEnvelopeReceiveDialog(context: Context) : DialogFragment() {
+class RedEnvelopeReceiveDialog(
+    context: Context?,
+    redenpId: Int,
+    redenpStartTime: String,
+    redenpEndTime: String
+) : BaseDialog<RedEnveLopeModel>(RedEnveLopeModel::class) {
     private val mHandler = MyHandler(WeakReference(this))
     var bitmap = listOf(
-        BitmapFactory.decodeResource(context.resources, R.drawable.packet_one),
-        BitmapFactory.decodeResource(context.resources, R.drawable.packet_two),
-        BitmapFactory.decodeResource(context.resources, R.drawable.packet_three),
-        BitmapFactory.decodeResource(context.resources, R.drawable.luck_packet),
+        BitmapFactory.decodeResource(context?.resources , R.drawable.packet_one),
+        BitmapFactory.decodeResource(context?.resources , R.drawable.packet_two),
+        BitmapFactory.decodeResource(context?.resources, R.drawable.packet_three),
+        BitmapFactory.decodeResource(context?.resources, R.drawable.luck_packet),
     )
     private val BARRAGE_GAP_MIN_DURATION: Long = 1000 //两个弹幕的最小间隔时间
     private val BARRAGE_GAP_MAX_DURATION: Long = 3000 //两个弹幕的最大间隔时间
@@ -46,6 +53,7 @@ class RedEnvelopeReceiveDialog(context: Context) : DialogFragment() {
     private var p: Point? = null
     private var randomX = 0
     private var randomY: Int = 0
+    private var redEnvelope: RedEnvelopeSuccessDialog? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -65,6 +73,7 @@ class RedEnvelopeReceiveDialog(context: Context) : DialogFragment() {
         super.onCreate(savedInstanceState)
 
     }
+
     private fun initView() {
         //获取屏幕宽p.x 获取屏幕高p.y
         p = Point()
@@ -80,6 +89,8 @@ class RedEnvelopeReceiveDialog(context: Context) : DialogFragment() {
                 26.dp
             )
         )
+        redEnvelope = RedEnvelopeSuccessDialog.newInstance(1.0);
+
 
         setContentView()
     }
@@ -102,7 +113,8 @@ class RedEnvelopeReceiveDialog(context: Context) : DialogFragment() {
     }
 
 
-    inner class MyHandler(val wDialogFragment: WeakReference<DialogFragment>) : Handler(Looper.getMainLooper()) {
+    inner class MyHandler(val wDialogFragment: WeakReference<DialogFragment>) :
+        Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             wDialogFragment.get()?.run {
@@ -126,6 +138,8 @@ class RedEnvelopeReceiveDialog(context: Context) : DialogFragment() {
                     relative_layout.addView(image, layoutParams1)
                     startAnimation(image, 0f)
                     image!!.setOnClickListener {
+                        activity?.supportFragmentManager?.let { redEnvelope?.show(it, null) }
+                        dismiss()
                         iv_radiance.clearAnimation()
                     }
                     image = null
@@ -159,6 +173,5 @@ class RedEnvelopeReceiveDialog(context: Context) : DialogFragment() {
         super.onDestroy()
         image = null
         mHandler.removeMessages(0)
-
     }
 }

@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.login.signUp
 
 import android.content.Context
 import android.text.Spanned
-import android.util.Log
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

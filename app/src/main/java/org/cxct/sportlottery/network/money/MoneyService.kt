@@ -33,11 +33,11 @@ interface MoneyService {
     ): Response<SportBillResult>
 
     @GET(Constants.RED_ENVELOPE_CHECK)
-    suspend fun getRainInfo(): Response<RedEnvelopeInfo>
+    suspend fun getRainInfo(): Response<RedEnvelopeResult>
 
     @GET(RED_ENVELOPE_PRIZE)
     suspend fun getRedEnvelopePrize(
-        @Path("redEnpId") userId: Int? = null,
+        @Path("redEnpId") redEnpId: Int? = null,
     ): Response<RedEnvelopePrize>
 
 }

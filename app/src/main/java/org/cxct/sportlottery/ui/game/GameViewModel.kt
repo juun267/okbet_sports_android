@@ -33,6 +33,7 @@ import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
 import org.cxct.sportlottery.network.matchLiveInfo.MatchLiveUrlRequest
 import org.cxct.sportlottery.network.matchLiveInfo.Response
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.money.RedEnvelopeResult
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
@@ -275,6 +276,11 @@ class GameViewModel(
     val highlightMatchResult: LiveData<Event<MatchCategoryResult>>
         get() = _highlightMatchResult
 
+
+    private val _rainResult = MutableLiveData<RedEnvelopeResult>()
+      val rainResult: LiveData<RedEnvelopeResult>
+        get() = _rainResult
+
     private val _betInfoResult = MutableLiveData<Event<BetInfoResult?>>()
     val betInfoResult: LiveData<Event<BetInfoResult?>>
         get() = _betInfoResult
@@ -437,6 +443,18 @@ class GameViewModel(
         } else {
             curMatchType.value?.let {
                 getGameHallList(matchType = it, isReloadDate = true, isReloadPlayCate = true)
+            }
+        }
+    }
+
+
+
+    fun getRain() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.moneyService.getRainInfo()
+            }?.let { result ->
+                _rainResult.postValue(result)
             }
         }
     }

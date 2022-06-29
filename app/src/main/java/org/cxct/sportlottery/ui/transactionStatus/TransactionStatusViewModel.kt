@@ -8,11 +8,9 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
-import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
-import org.cxct.sportlottery.ui.game.BetRecordType
 import org.cxct.sportlottery.ui.menu.OddsType
 
 

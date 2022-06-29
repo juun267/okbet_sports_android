@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.maintenance
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -10,7 +9,6 @@ import org.cxct.sportlottery.network.index.IndexService
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 
 

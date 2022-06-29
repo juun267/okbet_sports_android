@@ -42,4 +42,6 @@ class RedEnvelopeSuccessDialog : BaseDialog<BaseViewModel>(BaseViewModel::class)
             dismiss()
         }
     }
+
+
 }

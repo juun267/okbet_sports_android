@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.withdraw
 
-import android.annotation.SuppressLint
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -27,8 +26,6 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.*
 import java.math.RoundingMode
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.min
 
