@@ -13,32 +13,27 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
-import kotlinx.android.synthetic.main.home_recommend_item.view.*
-import kotlinx.android.synthetic.main.home_recommend_vp.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.*
+import org.cxct.sportlottery.network.common.GameStatus
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.game.Page
 import org.cxct.sportlottery.ui.game.common.OddStatePublicityViewHolder
-import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
-import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.game.widget.OddsButtonPublicity
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.setVisibilityByCreditSystem
+import org.cxct.sportlottery.util.*
 import timber.log.Timber
 
 
@@ -610,7 +605,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
 
     inner class PublicityNewRecommendViewHolder(val binding: PublicityRecommendViewBinding,
                                                 override val oddStateChangeListener: OddStateChangeListener = mOddStateRefreshListener) :
-        OddStatePublicityViewHolder(binding.root) {
+        ViewHolderUtils.TimerViewHolderTimer(binding.root) {
         private val mRequestOptions = RequestOptions()
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .dontTransform()
@@ -645,6 +640,13 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
 
                 val matchOddList = transferMatchOddList(data)
                 Timber.e("matchOddList: $matchOddList")
+                val gameType = data.gameType
+                val matchType = data.matchType
+                setupMatchTimeAndStatus(
+                    item = data,
+                    isTimerEnable = (gameType == GameType.FT.key || gameType == GameType.BK.key || gameType == GameType.RB.key || gameType == GameType.AFT.key || matchType == MatchType.PARLAY || matchType == MatchType.AT_START || matchType == MatchType.MY_EVENT),
+                    isTimerPause = data.matchInfo?.stopped == TimeCounting.STOP.value
+                )
             }
         }
 
@@ -723,6 +725,16 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                     oddBtnDraw.visibility = View.GONE
                 }
                 //endregion
+
+                //region 比賽狀態(狀態、時間)
+                val gameType = data.gameType
+                val matchType = data.matchType
+                setupMatchTimeAndStatus(
+                    item = data,
+                    isTimerEnable = (gameType == GameType.FT.key || gameType == GameType.BK.key || gameType == GameType.RB.key || gameType == GameType.AFT.key || matchType == MatchType.PARLAY || matchType == MatchType.AT_START || matchType == MatchType.MY_EVENT),
+                    isTimerPause = data.matchInfo?.stopped == TimeCounting.STOP.value
+                )
+                //endregion
             }
         }
 
@@ -757,6 +769,142 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         private fun PublicityRecommendViewBinding.updateMatchScore(data: Recommend) {
             tvHomeScore.text = (data.matchInfo?.homeScore ?: 0).toString()
             tvAwayScore.text = (data.matchInfo?.awayScore ?: 0).toString()
+        }
+
+        private fun setupMatchTimeAndStatus(
+            item: Recommend,
+            isTimerEnable: Boolean,
+            isTimerPause: Boolean
+        ) {
+            setupMatchTime(item, isTimerEnable, isTimerPause)
+            setStatusText(item)
+            setTextViewStatus(item)
+        }
+
+        /**
+         * 賽事時間
+         */
+        private fun setupMatchTime(
+            item: Recommend,
+            isTimerEnable: Boolean,
+            isTimerPause: Boolean
+        ) {
+
+            /* TODO 依目前開發方式優化，將狀態和時間保存回 viewModel 於下次刷新頁面前 api 取得資料時先行代入相關 data 內，
+                此處倒數計時前須先設置時間及狀態，可解決控件短暫空白。(賽事狀態已於 BaseFavoriteViewModel #1 處調整過)*/
+
+            when {
+                TimeUtil.isTimeInPlay(item.matchInfo?.startTime) -> {
+                    binding.ivLiveIcon.visibility = View.VISIBLE
+                    val socketValue = item.matchInfo?.socketMatchStatus
+
+                    if (needCountStatus(socketValue)) {
+                        binding.tvGamePlayTime.visibility = View.VISIBLE
+                        listener = object : TimerListener {
+                            override fun onTimerUpdate(timeMillis: Long) {
+                                if (timeMillis > 1000) {
+                                    binding.tvGamePlayTime.text =
+                                        TimeUtil.longToMmSs(timeMillis)
+                                } else {
+                                    binding.tvGamePlayTime.text =
+                                        binding.root.context.getString(R.string.time_up)
+                                }
+                                item.matchInfo?.leagueTime = (timeMillis / 1000).toInt()
+                            }
+                        }
+
+                        updateTimer(
+                            isTimerEnable,
+                            isTimerPause,
+                            item.matchInfo?.leagueTime ?: 0,
+                            (item.matchInfo?.gameType == GameType.BK.key ||
+                                    item.matchInfo?.gameType == GameType.RB.key ||
+                                    item.matchInfo?.gameType == GameType.AFT.key)
+                        )
+
+                    } else {
+                        binding.tvGamePlayTime.visibility = View.GONE
+                    }
+                }
+
+                TimeUtil.isTimeAtStart(item.matchInfo?.startTime) -> {
+                    binding.ivLiveIcon.visibility = View.VISIBLE
+                    listener = object : TimerListener {
+                        override fun onTimerUpdate(timeMillis: Long) {
+                            if (timeMillis > 1000) {
+                                val min = TimeUtil.longToMinute(timeMillis)
+                                binding.tvGamePlayTime.text = String.format(
+                                    itemView.context.resources.getString(R.string.at_start_remain_minute),
+                                    min
+                                )
+                            } else {
+                                //等待Socket更新
+                                binding.tvGamePlayTime.text = String.format(
+                                    itemView.context.resources.getString(R.string.at_start_remain_minute),
+                                    0
+                                )
+                            }
+                            item.matchInfo?.remainTime = timeMillis
+                            binding.ivLiveIcon.visibility = View.VISIBLE
+                        }
+                    }
+
+                    item.matchInfo?.remainTime?.let { remainTime ->
+                        updateTimer(
+                            true,
+                            isTimerPause,
+                            (remainTime / 1000).toInt(),
+                            true
+                        )
+                    }
+                }
+                else -> {
+                    binding.tvGamePlayTime.text = TimeUtil.timeFormat(item.matchInfo?.startTime, "HH:mm")
+                    binding.ivLiveIcon.visibility = View.GONE
+                }
+            }
+        }
+
+        private fun setStatusText(item: Recommend) {
+            binding.tvGameStatus.text = when {
+                (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)
+                        && item.matchInfo?.status == GameStatus.POSTPONED.code
+                        && (item.matchInfo?.gameType == GameType.FT.name || item.matchInfo?.gameType == GameType.BK.name || item.matchInfo?.gameType == GameType.TN.name)) -> {
+                    itemView.context.getString(R.string.game_postponed)
+                }
+                TimeUtil.isTimeInPlay(item.matchInfo?.startTime) -> {
+                    if (item.matchInfo?.statusName18n != null) {
+                        item.matchInfo?.statusName18n
+                    } else {
+                        ""
+                    }
+                }
+                else -> {
+                    if (TimeUtil.isTimeToday(item.matchInfo?.startTime))
+                        itemView.context.getString((R.string.home_tab_today))
+                    else
+                        item.matchInfo?.startDateDisplay
+                }
+            }
+        }
+
+        private fun setTextViewStatus(item: Recommend) {
+            when {
+                (TimeUtil.isTimeInPlay(item.matchInfo?.startTime) && item.matchInfo?.status == GameStatus.POSTPONED.code && (item.matchInfo?.gameType == GameType.FT.name || item.matchInfo?.gameType == GameType.BK.name || item.matchInfo?.gameType == GameType.TN.name)) -> {
+                    binding.tvGameSpt.visibility = View.GONE
+                    binding.tvGamePlayTime.visibility = View.GONE
+                }
+
+                TimeUtil.isTimeInPlay(item.matchInfo?.startTime) -> {
+                    if (item.matchInfo?.statusName18n != null) {
+                        binding.tvGameStatus.visibility = View.VISIBLE
+                    } else {
+                    }
+                }
+                TimeUtil.isTimeAtStart(item.matchInfo?.startTime) -> {
+                    binding.tvGameStatus.visibility = View.GONE
+                }
+            }
         }
 
 //        private fun setupOddsButton(oddsButton: OddsButtonPublicity, odd: Odd?, matchOdd: MatchOdd, recommend: Recommend) {
