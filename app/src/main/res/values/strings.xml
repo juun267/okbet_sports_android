@@ -748,9 +748,9 @@
     <string name="third_game_ogplus">OG+live</string>
     <string name="third_game_cr">Crown E-sports</string>
     <string name="out_account_">Transfer out of account:</string>
-    <string name="in_account_">Transfer into the account</string>
-    <string name="transfer_amount">Transfer amount</string>
-    <string name="transfer_state">Transfer status</string>
+    <string name="in_account_">Transfer into the account：</string>
+    <string name="transfer_amount">Transfer amount：</string>
+    <string name="transfer_state">Transfer status：</string>
     <string name="remark">Remark：</string>
     <string name="transfer_info">Transfer information</string>
     <string name="sorry_website_is_now_maintenance">The website is under maintenance</string>
