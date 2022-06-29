@@ -22,6 +22,10 @@ object ThirdGameRepository {
     val gameCateDataList: LiveData<List<GameCateData>>
         get() = _homeCatePageDataList
 
+    private val mThirdGameData = MutableLiveData<ThirdGameData?>()
+    val thirdGameData: LiveData<ThirdGameData?>
+        get() = mThirdGameData
+
     suspend fun getThirdGame(): Response<ThirdGamesResult> {
         val response = OneBoSportApi.thirdGameService.getThirdGames()
         if (response.isSuccessful) {
@@ -29,6 +33,7 @@ object ThirdGameRepository {
                 if (result.success) {
                     val homeCatePageList = createHomeGameList(result.t)
                     _homeCatePageDataList.postValue(homeCatePageList)
+                    mThirdGameData.value = result.t
                 } else {
                     Timber.e("獲取第三方遊戲配置失敗")
                 }
