@@ -174,21 +174,21 @@
                 app:layout_constraintTop_toBottomOf="@+id/cl_game">
 
                 <org.cxct.sportlottery.ui.game.widget.OddsButtonPublicity
-                    android:id="@+id/odd_btn_home"
+                    android:id="@+id/odd_btn_1"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
                     android:layout_marginHorizontal="@dimen/margin_6"
                     android:layout_weight="1" />
 
                 <org.cxct.sportlottery.ui.game.widget.OddsButtonPublicity
-                    android:id="@+id/odd_btn_draw"
+                    android:id="@+id/odd_btn_2"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
                     android:layout_marginHorizontal="@dimen/margin_6"
                     android:layout_weight="1" />
 
                 <org.cxct.sportlottery.ui.game.widget.OddsButtonPublicity
-                    android:id="@+id/odd_btn_away"
+                    android:id="@+id/odd_btn_3"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
                     android:layout_marginHorizontal="@dimen/margin_6"

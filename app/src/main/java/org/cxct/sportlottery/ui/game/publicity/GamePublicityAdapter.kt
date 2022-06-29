@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -13,6 +14,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
+import kotlinx.android.synthetic.main.button_odd_detail_publicity.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.*
@@ -685,60 +687,64 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                     setupMatchScore(data, matchType)
                 }
 
-                //region 主隊賠率項
+                //region 第1個按鈕
                 if (oddList.isNotEmpty()) {
-                    val homeOdd = oddList[0]
-                    with(oddBtnHome) {
+                    val odd1 = oddList[0]
+                    with(oddBtn1) {
                         visibility = View.VISIBLE
-                        setupOddsButton(this, homeOdd)
+                        setupOddsButton(this, odd1)
+                        setupOddName4Home("1", oddPlayCateCode)
                         setButtonBetClick(
                             data = data,
-                            odd = homeOdd,
+                            odd = odd1,
                             playCateCode = oddPlayCateCode,
                             playCateName = playCateName,
                             publicityAdapterListener = publicityAdapterListener
                         )
                     }
                 } else {
-                    oddBtnHome.visibility = View.GONE
+                    oddBtn1.visibility = View.GONE
                 }
                 //endregion
 
-                //region 客隊賠率項
+                //region 第2個按鈕
                 if (oddList.size > 1) {
-                    val awayOdd = oddList[1]
-                    with(oddBtnAway) {
+                    val odd2 = oddList[1]
+                    with(oddBtn2) {
                         visibility = View.VISIBLE
-                        setupOddsButton(this, awayOdd)
+                        setupOddsButton(this, odd2)
+                        if (oddList.size > 2) setupOddName4Home("X", oddPlayCateCode)
+                        else setupOddName4Home("2", oddPlayCateCode)
                         setButtonBetClick(
                             data = data,
-                            odd = awayOdd,
+                            odd = odd2,
                             playCateCode = oddPlayCateCode,
                             playCateName = playCateName,
                             publicityAdapterListener = publicityAdapterListener
                         )
                     }
                 } else {
-                    oddBtnAway.visibility = View.GONE
+                    oddBtn2.visibility = View.GONE
                 }
                 //endregion
 
-                //region 平局賠率項
+                //region 第3個按鈕
                 if (oddList.size > 2) {
-                    val drawOdd = oddList[2]
-                    with(oddBtnDraw) {
+                    val odd3 = oddList[2]
+                    with(oddBtn3) {
                         visibility = View.VISIBLE
-                        setupOddsButton(this, drawOdd)
+                        setupOddsButton(this, odd3)
+                        setupOddName4Home("2", oddPlayCateCode)
                         setButtonBetClick(
                             data = data,
-                            odd = drawOdd,
+                            odd = odd3,
                             playCateCode = oddPlayCateCode,
                             playCateName = playCateName,
                             publicityAdapterListener = publicityAdapterListener
                         )
                     }
                 } else {
-                    oddBtnDraw.visibility = View.GONE
+                    oddBtn3.visibility = View.GONE
                 }
                 //endregion
 
@@ -1081,7 +1087,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         private fun setupOddsButton(oddsButton: OddsButtonPublicity, odd: Odd?) {
 
             oddsButton.apply {
-                setupOdd(odd, oddsType)
+                setupOdd(odd, oddsType, "disable")
                 setupOddState(oddsButton, odd)
                 odd?.let {
                     this.isSelected = it.isSelected ?: false

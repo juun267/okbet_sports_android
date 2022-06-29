@@ -25,6 +25,7 @@ import org.cxct.sportlottery.util.LocalUtils.getString
 import org.cxct.sportlottery.util.QuickListManager
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
+import timber.log.Timber
 
 
 /**
