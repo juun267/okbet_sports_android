@@ -113,6 +113,39 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="1 X 2" />
 
+                <ImageView
+                    android:id="@+id/ivLiveIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/ic_icon_clock"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tvGameStatus"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvGameStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_BCBCBC_666666"
+                    android:textSize="@dimen/textSize12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tvGameSpt"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="2ND" />
+
+                <TextView
+                    android:id="@+id/tvGameSpt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:textColor="@color/color_BCBCBC_666666"
+                    android:textSize="@dimen/textSize12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tv_game_play_time"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="/5" />
+
                 <TextView
                     android:id="@+id/tv_game_play_time"
                     android:layout_width="wrap_content"
@@ -120,13 +153,12 @@
                     android:layout_marginStart="@dimen/margin_13"
                     android:layout_marginTop="@dimen/margin_1"
                     android:layout_marginEnd="@dimen/margin_11"
-                    android:drawableStart="@drawable/ic_icon_clock"
                     android:drawablePadding="4dp"
                     android:textColor="@color/color_BCBCBC_666666"
                     android:textSize="@dimen/textSize12sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="2ND 09:15" />
+                    tools:text="09:15" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
