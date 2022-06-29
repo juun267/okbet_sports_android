@@ -618,6 +618,8 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                 tvHomeName.text = data.homeName
                 tvAwayName.text = data.awayName
 
+                //設置賽事Bar
+                setupGameScoreBar(data)
                 data.matchType?.let { matchType ->
                     //配置比分及比賽制度
                     setupMatchScore(data, matchType)
@@ -662,6 +664,9 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                     matchInfoList = matchInfoList
                 )
             }
+
+            //設置賽事Bar
+            setupGameScoreBar(data)
 
             //玩法Code
             var oddPlayCateCode = ""
@@ -784,14 +789,29 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         }
 
         //region 賽事比分Method
-//        private fun PublicityRecommendViewBinding.updateMatchScore(data: Recommend) {
-//            tvHomeScore.text = (data.matchInfo?.homeScore ?: 0).toString()
-//            tvAwayScore.text = (data.matchInfo?.awayScore ?: 0).toString()
-//        }
         private val isScoreTextVisible = { item: Recommend ->
             when (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)) {
                 true -> View.VISIBLE
                 else -> View.GONE
+            }
+        }
+
+        /**
+         * 設置賽事Bar
+         * 滾球: 顯示比分, 非滾球: 顯示聯賽名稱
+         */
+        private fun setupGameScoreBar(item: Recommend) {
+            if (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)) {
+                with(binding) {
+                    clVsBar.visibility = View.VISIBLE
+                    clNoVsBar.visibility = View.GONE
+                }
+            } else {
+                with(binding) {
+                    clVsBar.visibility = View.GONE
+                    clNoVsBar.visibility = View.VISIBLE
+                    tvLeagueName.text = item.leagueName
+                }
             }
         }
 
