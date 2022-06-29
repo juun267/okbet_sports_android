@@ -667,7 +667,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             var oddPlayCateCode = ""
             var oddList = listOf<Odd?>()
 
-            val sortOddsMap = data.oddsMap?.sortOdds(data.oddsSort)
+            val sortOddsMap = data.oddsMap?.sortOdds(data.oddsSort)?.filterPlayCateSpanned(data.gameType)
             sortOddsMap?.iterator()?.next()?.key?.let {
                 oddPlayCateCode = it
             }
@@ -1277,6 +1277,28 @@ private fun Map<String, List<Odd?>?>.sortOdds(oddsSort: String?): Map<String, Li
         oddsIndex
     }.thenBy { it })
     return if (oddsSort.isNullOrEmpty()) this else oddsMap
+}
+
+private fun Map<String, List<Odd?>?>.filterPlayCateSpanned(gameType: String): Map<String, List<Odd?>?> {
+    return this.mapValues { map ->
+        val playCateNum =
+            when { //根據IOS給的規則判斷顯示數量
+                map.value?.size ?: 0 < 3 -> 2
+
+                (gameType == GameType.TT.key || gameType == GameType.BM.key) && map.key.contains(PlayCate.SINGLE.value) -> 2 //乒乓球獨贏特殊判斷 羽球獨贏特殊判斷
+
+                map.key.contains(PlayCate.HDP.value) || (map.key.contains(PlayCate.OU.value) && !map.key.contains(PlayCate.SINGLE_OU.value)) || map.key.contains(
+                    PlayCate.CORNER_OU.value
+                ) -> 2
+
+                map.key.contains(PlayCate.SINGLE.value) || map.key.contains(PlayCate.NGOAL.value) || map.key.contains(PlayCate.NGOAL_OT.value) -> 3
+
+                else -> 3
+            }
+        map.value?.filterIndexed { index, _ ->
+            index < playCateNum
+        }
+    }
 }
 
 abstract class BaseItemListenerViewHolder(
