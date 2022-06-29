@@ -662,12 +662,15 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             //玩法Code
             var oddPlayCateCode = ""
             var oddList = listOf<Odd?>()
-            data.oddsMap?.forEach { (key, value) ->
-                if (key == PlayCate.SINGLE.value) {
-                    oddPlayCateCode = key
-                    oddList = value.orEmpty()
-                }
+
+            val sortOddsMap = data.oddsMap?.sortOdds(data.oddsSort)
+            sortOddsMap?.iterator()?.next()?.key?.let {
+                oddPlayCateCode = it
             }
+            sortOddsMap?.iterator()?.next()?.value?.let {
+                oddList = it
+            }
+
             //玩法名稱
             val playCateName = data.playCateNameMap?.get(oddPlayCateCode)?.get(LanguageManager.getSelectLanguage(binding.root.context).key) ?: ""
             binding.tvGamePlayCateCodeName.text = playCateName
@@ -1102,6 +1105,17 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             matchInfoList: List<MatchInfo>
         ) = onClickAnimationIconListener.invoke(gameType, matchType, matchId, matchInfoList)
     }
+}
+
+private fun Map<String, List<Odd?>?>.sortOdds(oddsSort: String?): Map<String, List<Odd?>?> {
+    val oddsMap: MutableMap<String, List<Odd?>?>
+    val sortOrder = oddsSort?.split(",")
+    val filterOdds = this.filter { sortOrder?.contains(it.key.split(":")[0]) == true }
+    oddsMap = filterOdds.toSortedMap(compareBy<String> {
+        val oddsIndex = sortOrder?.indexOf(it.split(":")[0])
+        oddsIndex
+    }.thenBy { it })
+    return if (oddsSort.isNullOrEmpty()) this else oddsMap
 }
 
 abstract class BaseItemListenerViewHolder(
