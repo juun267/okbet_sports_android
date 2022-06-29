@@ -92,7 +92,6 @@ class GameViewModel(
     infoCenterRepository: InfoCenterRepository,
     myFavoriteRepository: MyFavoriteRepository,
     private val sportMenuRepository: SportMenuRepository,
-    private val thirdGameRepository: ThirdGameRepository,
 ) : BaseBottomNavViewModel(
     androidContext,
     userInfoRepository,
@@ -122,7 +121,7 @@ class GameViewModel(
     val parlayList: LiveData<MutableList<ParlayOdd>>
         get() = betInfoRepository.parlayList
 
-    val gameCateDataList by lazy { thirdGameRepository.gameCateDataList }
+    val gameCateDataList by lazy { ThirdGameRepository.gameCateDataList }
 
     val messageListResult: LiveData<Event<MessageListResult?>>
         get() = _messageListResult
@@ -3043,7 +3042,7 @@ class GameViewModel(
     fun getThirdGame() {
         viewModelScope.launch {
             doNetwork(androidContext) {
-                thirdGameRepository.getThirdGame()
+                ThirdGameRepository.getThirdGame()
             }
         }
     }

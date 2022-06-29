@@ -36,8 +36,7 @@ class MainViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-    favoriteRepository: MyFavoriteRepository,
-    private val thirdGameRepository: ThirdGameRepository,
+    favoriteRepository: MyFavoriteRepository
 ) : BaseSocketViewModel(
     androidContext,
     userInfoRepository,
@@ -67,8 +66,8 @@ class MainViewModel(
     val popImageList: LiveData<List<ImageData>?>
         get() = _popImageList
 
-    val gameCateDataList by lazy { thirdGameRepository.gameCateDataList }
-    val goToThirdGamePage by lazy { thirdGameRepository.goToThirdGamePage }
+    val gameCateDataList by lazy { ThirdGameRepository.gameCateDataList }
+    val goToThirdGamePage by lazy { ThirdGameRepository.goToThirdGamePage }
 
     private val _enterThirdGameResult = MutableLiveData<EnterThirdGameResult>()
     val enterThirdGameResult: LiveData<EnterThirdGameResult>
@@ -105,7 +104,7 @@ class MainViewModel(
     fun getThirdGame() {
         viewModelScope.launch {
             doNetwork(androidContext) {
-                thirdGameRepository.getThirdGame()
+                ThirdGameRepository.getThirdGame()
             }
         }
     }
@@ -117,7 +116,7 @@ class MainViewModel(
     }
 
     fun createSingleThirdGame(gameCategory: GameCategory, gameFirm: GameFirmValues): GameItemData {
-        return thirdGameRepository.createSingleThirdGame(gameCategory, gameFirm)
+        return ThirdGameRepository.createSingleThirdGame(gameCategory, gameFirm)
     }
 
     fun requestEnterThirdGame(gameData: ThirdDictValues?) {

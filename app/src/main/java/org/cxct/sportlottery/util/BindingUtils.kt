@@ -15,6 +15,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.common.GameMatchStatus
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.repository.ThirdGameRepository
 import org.cxct.sportlottery.util.TimeUtil.MD_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.MD_HMS_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
@@ -327,12 +328,10 @@ val gameNameMap: Map<String?, Int> = mapOf(
 
 @BindingAdapter("platName")
 fun TextView.setPlatName(platCode: String?) {
-
-    platCode?.let {
-        text = if (gameNameMap[it] != null) {
-            gameNameMap[it]?.let { it1 -> context.getString(it1) }
-        } else {
-            platCode
+    platCode?.let { code ->
+        text = when (code) {
+            "CG" -> LocalUtils.getString(R.string.plat_money)
+            else -> ThirdGameRepository.thirdGameData.value?.gameFirmMap?.get(code)?.firmShowName ?: platCode
         }
     }
 }
