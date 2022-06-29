@@ -10,6 +10,11 @@ object LocalUtils {
         return localizedContext.resources.getString(resId)
     }
 
+    fun getStringArray(resId:Int): Array<String>{
+        val localizedContext = getLocalizedContext()
+        return localizedContext.resources.getStringArray(resId)
+    }
+
     fun getLocalizedContext(): Context {
         val context = MultiLanguagesApplication.appContext
         val locale = LanguageManager.getSetLanguageLocale(context)
