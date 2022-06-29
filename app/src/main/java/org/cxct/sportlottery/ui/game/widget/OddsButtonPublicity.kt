@@ -81,7 +81,7 @@ class OddsButtonPublicity @JvmOverloads constructor(
         hideItem = typedArray.getBoolean(R.styleable.OddsButton_ob_hide_item_flag, false)
         mBackground =
             typedArray.getDrawable(R.styleable.OddsButton_ob_background)
-                ?: context.theme.getDrawable(R.drawable.selector_button_radius_4_odds)
+                ?: context.theme.getDrawable(R.drawable.selector_button_radius_4_odds_publicity)
         try {
             inflate(context, R.layout.button_odd_detail_publicity, this).apply {
                 button_odd_detail.background = mBackground
@@ -346,8 +346,8 @@ class OddsButtonPublicity @JvmOverloads constructor(
                     ContextCompat.getDrawable(
                         context,
                         if (mFillet) {
-                            if (MultiLanguagesApplication.isNightMode) R.drawable.selector_button_radius_4_odds_dark
-                            else R.drawable.selector_button_radius_4_odds
+                            if (MultiLanguagesApplication.isNightMode) R.drawable.selector_button_radius_4_odds_publicity_dark
+                            else R.drawable.selector_button_radius_4_odds_publicity
                         } else R.drawable.selector_button_radius_0_odds
                     )
 
@@ -375,7 +375,7 @@ class OddsButtonPublicity @JvmOverloads constructor(
                 ContextCompat.getColorStateList(
                     context,
                     if (MultiLanguagesApplication.isNightMode) R.color.selector_button_odd_bottom_text_dark
-                    else R.color.selector_button_odd_bottom_text
+                    else R.color.selector_button_odd_bottom_text_publicity
                 )
             )
         }

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_14"
         android:layout_marginVertical="@dimen/margin_10"
-        app:cardCornerRadius="@dimen/margin_4"
+        app:cardCornerRadius="@dimen/margin_5"
         app:cardElevation="@dimen/margin_3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -26,8 +26,8 @@
                 android:id="@+id/cl_sports_background"
                 android:layout_width="match_parent"
                 android:layout_height="156dp"
-                android:background="@drawable/bg_board_game_soccer"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:background="@drawable/bg_board_game_soccer" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -168,6 +168,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="@dimen/margin_4"
+        android:layout_marginTop="6dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -176,7 +177,6 @@
             android:id="@+id/iv_vs_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
             android:background="@drawable/img_vs_bar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

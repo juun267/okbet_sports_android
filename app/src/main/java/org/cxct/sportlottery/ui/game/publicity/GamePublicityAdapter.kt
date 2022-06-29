@@ -619,7 +619,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
 
         fun bind(data: Recommend, oddsType: OddsType) {
             with(binding) {
-                clSportsBackground.setImageResource(GameType.getGameTypeBackground(data.gameType))
+                clSportsBackground.setBackgroundResource(GameType.getGameTypeBackground(data.gameType))
 
                 tvHomeName.text = data.homeName
                 tvAwayName.text = data.awayName

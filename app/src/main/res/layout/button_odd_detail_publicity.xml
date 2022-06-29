@@ -4,7 +4,7 @@
     android:id="@+id/button_odd_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/selector_button_radius_4_odds"
+    android:background="@drawable/selector_button_radius_4_odds_publicity"
     tools:ignore="SpUsage,ContentDescription">
 
 
@@ -31,7 +31,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:maxLines="1"
-                android:textColor="@color/selector_button_odd_top_text2"
+                android:textColor="@color/selector_button_odd_top_text_publicity"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="1"
                 tools:textColor="@color/color_7F7F7F_999999" />
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:gravity="center"
-                android:textColor="@color/selector_button_odd_bottom_text"
+                android:textColor="@color/selector_button_odd_bottom_text_publicity"
                 android:textSize="@dimen/textSize15sp"
                 android:textStyle="bold"
                 tools:text="1.067"

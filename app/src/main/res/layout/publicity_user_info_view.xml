@@ -109,7 +109,9 @@
             android:layout_weight="1"
             android:drawableTop="@drawable/ic_icon_deposit"
             android:gravity="center"
-            android:text="@string/recharge" />
+            android:text="@string/recharge"
+            android:textColor="@color/color_b4b4b4_848b9f"
+            android:textSize="@dimen/textSize12sp" />
 
         <TextView
             android:id="@+id/btn_withdraw"
@@ -118,7 +120,9 @@
             android:layout_weight="1"
             android:drawableTop="@drawable/ic_icon_withdraw"
             android:gravity="center"
-            android:text="@string/withdraw" />
+            android:text="@string/withdraw"
+            android:textColor="@color/color_b4b4b4_848b9f"
+            android:textSize="@dimen/textSize12sp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
