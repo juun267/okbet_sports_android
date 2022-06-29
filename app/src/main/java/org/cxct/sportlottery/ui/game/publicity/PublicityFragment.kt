@@ -268,8 +268,14 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 isNewestDataFromApi = true
                 mRecommendList = recommendList
                 mPublicityAdapter.removeData(GamePublicityAdapter.PreloadItem())
-                mPublicityAdapter.addRecommend(recommendList)
-                Timber.e("addRecommend")
+                if (mPublicityAdapter.getRecommendData().size == 0) {
+                    mPublicityAdapter.addRecommend(recommendList)
+                    Timber.e("addRecommend")
+                } else {
+                    recommendList.forEachIndexed { index, recommend ->
+                        mPublicityAdapter.updateRecommendData(index, recommend)
+                    }
+                }
                 //先解除全部賽事訂閱
                 unSubscribeChannelHallAll()
                 subscribeQueryData(recommendList)

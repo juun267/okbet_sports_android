@@ -17,7 +17,7 @@
         tools:ignore="SpUsage">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="@drawable/divider_horizontal_4dp"
             android:orientation="horizontal"
@@ -31,6 +31,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:maxLines="1"
+                android:layout_marginEnd="2dp"
                 android:textColor="@color/selector_button_odd_top_text_publicity"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="1"
@@ -38,26 +39,27 @@
 
             <TextView
                 android:id="@+id/tv_spread"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:maxLines="1"
                 android:textColor="@color/selector_button_odd_top_text"
                 android:textSize="@dimen/textSize14sp"
-                tools:text=""
+                tools:text="-0/0.5"
                 tools:textColor="@color/color_F75452_b73a20" />
 
             <TextView
                 android:id="@+id/tv_odds"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
+                android:layout_marginStart="2dp"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:textColor="@color/selector_button_odd_bottom_text_publicity"
                 android:textSize="@dimen/textSize15sp"
                 android:textStyle="bold"
-                tools:text="1.067"
-                android:includeFontPadding="false" />
+                tools:text="1.067" />
 
         </LinearLayout>
 
