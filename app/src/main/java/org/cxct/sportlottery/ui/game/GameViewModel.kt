@@ -2935,7 +2935,9 @@ class GameViewModel(
     fun publicityUpdateDiscount(oldDiscount: Float, newDiscount: Float) {
         viewModelScope.launch(Dispatchers.IO) {
             publicityRecommend.value?.peekContent()?.let { recommendResult ->
-                recommendResult.recommendList.forEach { recommend ->
+                val iterator = recommendResult.recommendList.iterator()
+                while(iterator.hasNext()) {
+                    val recommend = iterator.next()
                     recommend.oddsMap?.updateOddsDiscount(oldDiscount, newDiscount)
                 }
 
