@@ -200,9 +200,10 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clVsBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:elevation="@dimen/margin_4"
+        android:elevation="3dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -212,7 +213,7 @@
             android:id="@+id/iv_vs_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/img_vs_bar"
+            android:src="@drawable/img_vs_bar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -263,6 +264,46 @@
                 android:textSize="@dimen/textSize12sp"
                 tools:text="18" />
         </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clNoVsBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:elevation="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_no_vs_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_no_vs_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvLeagueName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="6dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textColor="@color/color_BCBCBC_666666"
+            android:textSize="12dp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_no_vs_bar"
+            app:layout_constraintEnd_toEndOf="@id/iv_no_vs_bar"
+            app:layout_constraintStart_toStartOf="@id/iv_no_vs_bar"
+            app:layout_constraintTop_toTopOf="@id/iv_no_vs_bar"
+            tools:text="Mogolia,1st Leag Mogolia,1st Leag" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
