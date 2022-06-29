@@ -347,7 +347,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
 //                        (holder as PublicityRecommendViewHolder).update(payload, oddsType) { notifyItemChanged(position, payload) }
 //                    }
                     is Recommend -> {
-                        (holder as PublicityNewRecommendViewHolder).update(payload, oddsType)
+                        (holder as PublicityNewRecommendViewHolder).update(payload, oddsType, publicityAdapterListener)
                     }
                     is PublicityTitleImageData -> {
                         (holder as PublicityTitleViewHolder).updateToolbar(payload)
@@ -640,36 +640,105 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             }
         }
 
-        fun update(data: Recommend, oddsType: OddsType) {
+        fun update(data: Recommend, oddsType: OddsType, publicityAdapterListener: PublicityAdapterListener) {
             val matchOddList = transferMatchOddList(data)
             Timber.e("matchOddList2: $matchOddList")
+            //玩法Code
+            var oddPlayCateCode = ""
             var oddList = listOf<Odd?>()
             data.oddsMap?.forEach { (key, value) ->
                 if (key == PlayCate.SINGLE.value) {
+                    oddPlayCateCode = key
                     oddList = value.orEmpty()
                 }
             }
+            //玩法名稱
+            val playCateName = data.playCateNameMap?.get(oddPlayCateCode)?.get(LanguageManager.getSelectLanguage(binding.root.context).key) ?: ""
 //            Timber.e("oddList: $oddList")
             with(binding) {
+                //region 主隊賠率項
                 if (oddList.isNotEmpty()) {
-                    oddBtnHome.visibility = View.VISIBLE
-                    setupOddsButton(oddBtnHome, oddList[0])
+                    val homeOdd = oddList[0]
+                    with(oddBtnHome) {
+                        visibility = View.VISIBLE
+                        setupOddsButton(this, homeOdd)
+                        setButtonBetClick(
+                            data = data,
+                            odd = homeOdd,
+                            playCateCode = oddPlayCateCode,
+                            playCateName = playCateName,
+                            publicityAdapterListener = publicityAdapterListener
+                        )
+                    }
                 } else {
                     oddBtnHome.visibility = View.GONE
                 }
+                //endregion
 
+                //region 客隊賠率項
                 if (oddList.size > 1) {
-                    oddBtnAway.visibility = View.VISIBLE
-                    setupOddsButton(oddBtnAway, oddList[1])
+                    val awayOdd = oddList[1]
+                    with(oddBtnAway) {
+                        visibility = View.VISIBLE
+                        setupOddsButton(this, awayOdd)
+                        setButtonBetClick(
+                            data = data,
+                            odd = awayOdd,
+                            playCateCode = oddPlayCateCode,
+                            playCateName = playCateName,
+                            publicityAdapterListener = publicityAdapterListener
+                        )
+                    }
                 } else {
                     oddBtnAway.visibility = View.GONE
                 }
+                //endregion
 
+                //region 平局賠率項
                 if (oddList.size > 2) {
-                    oddBtnDraw.visibility = View.VISIBLE
-                    setupOddsButton(oddBtnDraw, oddList[2])
+                    val drawOdd = oddList[2]
+                    with(oddBtnDraw) {
+                        visibility = View.VISIBLE
+                        setupOddsButton(this, drawOdd)
+                        setButtonBetClick(
+                            data = data,
+                            odd = drawOdd,
+                            playCateCode = oddPlayCateCode,
+                            playCateName = playCateName,
+                            publicityAdapterListener = publicityAdapterListener
+                        )
+                    }
                 } else {
                     oddBtnDraw.visibility = View.GONE
+                }
+                //endregion
+            }
+        }
+
+        /**
+         * 配置投注按鈕Callback
+         */
+        private fun OddsButtonPublicity.setButtonBetClick(
+            data: Recommend,
+            odd: Odd?,
+            playCateCode: String,
+            playCateName: String,
+            publicityAdapterListener: PublicityAdapterListener
+        ) {
+            setOnClickListener {
+                data.matchType?.let { matchType ->
+                    odd?.let { odd ->
+                        publicityAdapterListener.onClickBetListener(
+                            gameType = data.gameType,
+                            matchType = matchType,
+                            matchInfo = data.matchInfo,
+                            odd = odd,
+                            playCateCode = playCateCode,
+                            playCateName = playCateName,
+                            betPlayCateNameMap = data.betPlayCateNameMap,
+                            playCateMenuCode = data.menuList.firstOrNull()?.code
+                        )
+                    }
                 }
             }
         }
