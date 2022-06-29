@@ -667,7 +667,8 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             var oddPlayCateCode = ""
             var oddList = listOf<Odd?>()
 
-            val sortOddsMap = data.oddsMap?.sortOdds(data.oddsSort)?.filterPlayCateSpanned(data.gameType)
+            var sortOddsMap = data.oddsMap?.sortOdds(data.oddsSort)?.filterPlayCateSpanned(data.gameType)
+            sortOddsMap?.filter { it.value?.size ?: 0 > 1 }
             sortOddsMap?.iterator()?.next()?.key?.let {
                 oddPlayCateCode = it
             }
