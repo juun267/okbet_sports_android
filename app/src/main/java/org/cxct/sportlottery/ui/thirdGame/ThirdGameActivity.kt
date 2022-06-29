@@ -4,7 +4,10 @@ import android.content.Intent
 import kotlinx.android.synthetic.main.activity_third_game.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
+import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.TestFlag
+import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
@@ -17,6 +20,8 @@ import org.cxct.sportlottery.util.ToastUtil
 open class ThirdGameActivity : WebActivity() {
 
     private var mUserInfo: UserInfo? = null
+
+    private var customSecurityDialog: CustomSecurityDialog? = null
 
     override fun init() {
         setContentView(R.layout.activity_third_game)
@@ -147,5 +152,42 @@ open class ThirdGameActivity : WebActivity() {
                 }
             }
         })
+
+        viewModel.needToSendTwoFactor.observe(this) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                        customSecurityDialog = CustomSecurityDialog(this).apply {
+                            getSecurityCodeClickListener {
+                                this.showSmeTimer300()
+                                viewModel.sendTwoFactor()
+                            }
+                            positiveClickListener = CustomSecurityDialog.PositiveClickListener { number ->
+                                viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
+                            }
+                        }
+                        customSecurityDialog?.show(supportFragmentManager, null)
+
+                }
+            }
+        }
+
+        //確認收到簡訊驗證碼
+        viewModel.twoFactorResult.observe(this) {
+            //傳送驗證碼成功後才能解鎖提交按鈕
+            customSecurityDialog?.setPositiveBtnClickable(it?.success ?: false)
+            sConfigData?.hasGetTwoFactorResult = true
+        }
+
+        //簡訊驗證成功
+        viewModel.twoFactorSuccess.observe(this) {
+            if (it == true)
+                customSecurityDialog?.dismiss()
+        }
+
+        viewModel.intoWithdraw.observe(this) {
+            it.getContentIfNotHandled()?.let {
+                startActivity(Intent(this, WithdrawActivity::class.java))
+            }
+        }
     }
 }
