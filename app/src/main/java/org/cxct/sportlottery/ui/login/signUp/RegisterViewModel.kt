@@ -1,34 +1,41 @@
 package org.cxct.sportlottery.ui.login.signUp
 
+import android.app.Application
 import android.content.Context
 import android.text.Spanned
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.OneBoSportApi.bettingStationService
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.network.index.sendSms.SmsRequest
 import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
+import org.cxct.sportlottery.network.uploadImg.UploadImgResult
+import org.cxct.sportlottery.network.uploadImg.UploadVerifyDocRequest
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseViewModel
-import org.cxct.sportlottery.util.FileUtil
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.MD5Util
-import org.cxct.sportlottery.util.VerifyConstUtil
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.util.*
+import timber.log.Timber
+import java.io.File
 
 class RegisterViewModel(
-    private val androidContext: Context,
+    androidContext: Application,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-    protected val userInfoRepository: UserInfoRepository
-) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+    userInfoRepository: UserInfoRepository,
+    favoriteRepository: MyFavoriteRepository
+) : BaseSocketViewModel(androidContext, userInfoRepository, loginRepository, betInfoRepository, infoCenterRepository, favoriteRepository) {
     val registerResult: LiveData<LoginResult>
         get() = _registerResult
     val inviteCodeMsg: LiveData<String?>
@@ -58,6 +65,16 @@ class RegisterViewModel(
         get() = _cityMsg
     val addressMsg: LiveData<Pair<String?, Boolean>>
         get() = _addressMsg
+    val salaryMsg: LiveData<Pair<String?, Boolean>>
+        get() = _salaryMsg
+    val birthMsg: LiveData<Pair<String?, Boolean>>
+        get() = _birthMsg
+    val identityMsg: LiveData<Pair<String?, Boolean>>
+        get() = _identityMsg
+    val identityTypeMsg: LiveData<Pair<String?, Boolean>>
+        get() = _identityTypeMsg
+    val bettingShopMsg: LiveData<Pair<String?, Boolean>>
+        get() = _bettingShopMsg
     val weChatMsg: LiveData<Pair<String?, Boolean>>
         get() = _weChatMsg
     val zaloMsg: LiveData<Pair<String?, Boolean>>
@@ -84,6 +101,9 @@ class RegisterViewModel(
     val loginForGuestResult: LiveData<LoginResult>
         get() = _loginForGuestResult
 
+    val bettingStationList: LiveData<List<StatusSheetData>>
+        get() = _bettingStationList
+
 
     private val cbAgreeAllChecked: LiveData<Boolean?>
         get() = _cbAgreeAllChecked
@@ -103,6 +123,11 @@ class RegisterViewModel(
     private val _provinceMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _cityMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _addressMsg = MutableLiveData<Pair<String?, Boolean>>()
+    private val _salaryMsg = MutableLiveData<Pair<String?, Boolean>>()
+    private val _birthMsg = MutableLiveData<Pair<String?, Boolean>>()
+    private val _identityMsg = MutableLiveData<Pair<String?, Boolean>>()
+    private val _identityTypeMsg = MutableLiveData<Pair<String?, Boolean>>()
+    private val _bettingShopMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _weChatMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _zaloMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _facebookMsg = MutableLiveData<Pair<String?, Boolean>>()
@@ -119,6 +144,18 @@ class RegisterViewModel(
     private val _loginForGuestResult = MutableLiveData<LoginResult>()
 
     private val _cbAgreeAllChecked = MutableLiveData<Boolean?>()
+
+    private val _bettingStationList = MutableLiveData<List<StatusSheetData>>()
+
+    //region 證件照片
+    val docUrlResult: LiveData<UploadImgResult?>
+        get() = _docUrlResult
+    private val _docUrlResult = MutableLiveData<UploadImgResult?>()
+
+    val photoUrlResult: LiveData<UploadImgResult?>
+        get() = _photoUrlResult
+    private val _photoUrlResult = MutableLiveData<UploadImgResult?>()
+    //endregion
 
     @Deprecated("沒在用")
     fun getAgreementContent(context: Context): Spanned {
@@ -145,9 +182,9 @@ class RegisterViewModel(
                 if (sConfigData?.enableInviteCode != FLAG_OPEN)
                     null
                 else
-                    androidContext.getString(R.string.error_input_empty)
+                    LocalUtils.getString(R.string.error_input_empty)
             }
-            !VerifyConstUtil.verifyInviteCode(inviteCode) -> androidContext.getString(R.string.error_recommend_code)
+            !VerifyConstUtil.verifyInviteCode(inviteCode) -> LocalUtils.getString(R.string.error_recommend_code)
             else -> null
         }
         focusChangeCheckAllInputComplete()
@@ -155,12 +192,12 @@ class RegisterViewModel(
 
     fun checkMemberAccount(account: String?, isExistAccount: Boolean) {
         val msg = when {
-            account.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
-            isExistAccount -> androidContext.getString(R.string.error_register_id_exist)
+            account.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            isExistAccount -> LocalUtils.getString(R.string.error_register_id_exist)
             !VerifyConstUtil.verifyCombinationAccount(account) -> {
-                androidContext.getString(R.string.error_member_account)
+                LocalUtils.getString(R.string.error_member_account)
             }
-            !VerifyConstUtil.verifyAccount(account) -> androidContext.getString(R.string.error_member_account)
+            !VerifyConstUtil.verifyAccount(account) -> LocalUtils.getString(R.string.error_member_account)
             else -> null
         }
         _memberAccountMsg.value = Pair(msg, msg == null)
@@ -169,10 +206,10 @@ class RegisterViewModel(
 
     fun checkLoginPassword(password: String?) {
         val msg = when {
-            password.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyPwdFormat(password) -> androidContext.getString(R.string.error_register_password)
-            password.length !in 6..20 -> androidContext.getString(R.string.error_register_password)
-            !VerifyConstUtil.verifyPwd(password) -> androidContext.getString(R.string.error_register_password)
+            password.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyPwdFormat(password) -> LocalUtils.getString(R.string.error_register_password)
+            password.length !in 6..20 -> LocalUtils.getString(R.string.error_register_password)
+            !VerifyConstUtil.verifyPwd(password) -> LocalUtils.getString(R.string.error_register_password)
             else -> null
         }
         _loginPasswordMsg.value = Pair(msg, msg == null)
@@ -181,8 +218,8 @@ class RegisterViewModel(
 
     fun checkConfirmPassword(password: String?, confirmPassword: String?) {
         val msg = when {
-            password.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
-            password != confirmPassword -> androidContext.getString(R.string.error_confirm_password)
+            password.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            password != confirmPassword -> LocalUtils.getString(R.string.error_confirm_password)
             else -> null
         }
         _confirmPasswordMsg.value = Pair(msg, msg == null)
@@ -191,8 +228,8 @@ class RegisterViewModel(
 
     fun checkFullName(fullName: String?) {
         val msg = when {
-            fullName.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyFullName(fullName) -> androidContext.getString(R.string.error_input_has_blank)
+            fullName.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyFullName(fullName) -> LocalUtils.getString(R.string.error_input_has_blank)
             else -> null
         }
         _fullNameMsg.value = Pair(msg, msg == null)
@@ -201,8 +238,8 @@ class RegisterViewModel(
 
     fun checkFundPwd(fundPwd: String?) {
         val msg = when {
-            fundPwd.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyPayPwd(fundPwd) -> androidContext.getString(R.string.error_withdrawal_pwd)
+            fundPwd.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyPayPwd(fundPwd) -> LocalUtils.getString(R.string.error_withdrawal_pwd)
             else -> null
         }
         _fundPwdMsg.value = Pair(msg, msg == null)
@@ -211,8 +248,8 @@ class RegisterViewModel(
 
     fun checkQQ(qq: String?) {
         val msg = when {
-            qq.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyQQ(qq) -> androidContext.getString(R.string.error_qq_number)
+            qq.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyQQ(qq) -> LocalUtils.getString(R.string.error_qq_number)
             else -> null
         }
         _qqMsg.value = Pair(msg, msg == null)
@@ -221,7 +258,7 @@ class RegisterViewModel(
 
     fun checkPhone(phone: String?) {
         val msg = when {
-            phone.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
+            phone.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
             else -> null
         }
         _phoneMsg.value = Pair(msg, msg == null)
@@ -230,8 +267,8 @@ class RegisterViewModel(
 
     fun checkEmail(email: String?) {
         val msg = when {
-            email.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyMail(email) -> androidContext.getString(R.string.error_e_mail)
+            email.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyMail(email) -> LocalUtils.getString(R.string.error_e_mail)
             else -> null
         }
         _emailMsg.value = Pair(msg, msg == null)
@@ -240,7 +277,7 @@ class RegisterViewModel(
 
     fun checkPostal(postalCode: String?) {
         val msg = when {
-            postalCode.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
+            postalCode.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
             else -> null
         }
         _postalMsg.value = Pair(msg, msg == null)
@@ -249,7 +286,7 @@ class RegisterViewModel(
 
     fun checkProvince(province: String?) {
         val msg = when {
-            province.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
+            province.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
             else -> null
         }
         _provinceMsg.value = Pair(msg, msg == null)
@@ -258,7 +295,7 @@ class RegisterViewModel(
 
     fun checkCity(city: String?) {
         val msg = when {
-            city.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
+            city.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
             else -> null
         }
         _cityMsg.value = Pair(msg, msg == null)
@@ -267,7 +304,7 @@ class RegisterViewModel(
 
     fun checkAddress(address: String?) {
         val msg = when {
-            address.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
+            address.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
             else -> null
         }
         _addressMsg.value = Pair(msg, msg == null)
@@ -276,7 +313,7 @@ class RegisterViewModel(
 
     fun checkWeChat(weChat: String?) {
         val msg = when {
-            weChat.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
+            weChat.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
             else -> null
         }
         _weChatMsg.value = Pair(msg, msg == null)
@@ -285,8 +322,8 @@ class RegisterViewModel(
 
     fun checkZalo(zalo: String?) {
         val msg = when {
-            zalo.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyZalo(zalo) -> androidContext.getString(R.string.error_zalo)
+            zalo.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyZalo(zalo) -> LocalUtils.getString(R.string.error_zalo)
             else -> null
         }
         _zaloMsg.value = Pair(msg, msg == null)
@@ -295,8 +332,8 @@ class RegisterViewModel(
 
     fun checkFacebook(facebook: String?) {
         val msg = when {
-            facebook.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyFacebook(facebook) -> androidContext.getString(R.string.error_facebook)
+            facebook.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyFacebook(facebook) -> LocalUtils.getString(R.string.error_facebook)
             else -> null
         }
         _facebookMsg.value = Pair(msg, msg == null)
@@ -305,8 +342,8 @@ class RegisterViewModel(
 
     fun checkWhatsApp(whatsApp: String?) {
         val msg = when {
-            whatsApp.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyWhatsApp(whatsApp) -> androidContext.getString(R.string.error_whats_app)
+            whatsApp.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyWhatsApp(whatsApp) -> LocalUtils.getString(R.string.error_whats_app)
             else -> null
         }
         _whatsAppMsg.value = Pair(msg, msg == null)
@@ -315,8 +352,8 @@ class RegisterViewModel(
 
     fun checkTelegram(telegram: String?) {
         val msg = when {
-            telegram.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyTelegram(telegram) -> androidContext.getString(R.string.error_telegram)
+            telegram.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyTelegram(telegram) -> LocalUtils.getString(R.string.error_telegram)
             else -> null
         }
         _telegramMsg.value = Pair(msg, msg == null)
@@ -325,7 +362,7 @@ class RegisterViewModel(
 
     fun checkSecurityPb(securityPb: String?) {
         val msg = when {
-            securityPb.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
+            securityPb.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
             else -> null
         }
         _securityPbMsg.value = Pair(msg, msg == null)
@@ -334,8 +371,8 @@ class RegisterViewModel(
 
     fun checkSecurityCode(securityCode: String?) {
         val msg = when {
-            securityCode.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifySecurityCode(securityCode) -> androidContext.getString(R.string.error_verification_code_by_sms)
+            securityCode.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifySecurityCode(securityCode) -> LocalUtils.getString(R.string.error_verification_code_by_sms)
             else -> null
         }
         _securityCodeMsg.value = Pair(msg, msg == null)
@@ -344,8 +381,8 @@ class RegisterViewModel(
 
     fun checkValidCode(validCode: String?) {
         val msg = when {
-            validCode.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyValidCode(validCode) -> androidContext.getString(R.string.error_verification_code)
+            validCode.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyValidCode(validCode) -> LocalUtils.getString(R.string.error_verification_code)
             else -> null
         }
         _validCodeMsg.value = Pair(msg, msg == null)
@@ -378,6 +415,52 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
+    fun checkBirth(birth: String?) {
+        val msg = when {
+            birth.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            else -> null
+        }
+        _birthMsg.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete()
+    }
+
+    fun checkIdentity(identity: String?, photoUploaded: Boolean) {
+        val msg = when {
+            identity.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            !photoUploaded -> LocalUtils.getString(R.string.error_identity_photo)
+            else -> null
+        }
+        _identityMsg.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete()
+    }
+
+    fun checkIdentityType(identityType: String?) {
+        val msg = when {
+            identityType.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            else -> null
+        }
+        _identityTypeMsg.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete()
+    }
+
+    fun checkSalary(salary: String?) {
+        val msg = when {
+            salary.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            else -> null
+        }
+        _salaryMsg.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete()
+    }
+
+    fun checkBettingShop(bettingShop: String?) {
+        val msg = when {
+            bettingShop.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            else -> null
+        }
+        _bettingShopMsg.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete()
+    }
+
     //檢查是否所有欄位都填寫完畢
     fun checkAllInput(
         inviteCode: String,
@@ -402,6 +485,12 @@ class RegisterViewModel(
         smsCode: String,
         validCode: String,
         cbAgreeAllChecked: Boolean,
+        birth: String?,
+        identity: String?,
+        identityUploaded: Boolean,
+        identityType: String?,
+        salarySource: String?,
+        bettingShop: String?
     ): Boolean {
         if (sConfigData?.enableInviteCode == FLAG_OPEN)
             checkInviteCode(inviteCode)
@@ -442,6 +531,16 @@ class RegisterViewModel(
             checkSecurityCode(smsCode)
         if (sConfigData?.enableRegValidCode == FLAG_OPEN)
             checkValidCode(validCode)
+        if (sConfigData?.enableBirthday == FLAG_OPEN)
+            checkBirth(birth)
+        if (sConfigData?.enableIdentityNumber == FLAG_OPEN)
+            checkIdentity(identity, identityUploaded)
+        if (sConfigData?.enableIdentityNumber == FLAG_OPEN)
+            checkIdentityType(identityType)
+        if (sConfigData?.enableSalarySource == FLAG_OPEN)
+            checkSalary(salarySource)
+        if (sConfigData?.enableBettingStation == FLAG_OPEN)
+            checkBettingShop(bettingShop)
 
         checkCbAgreeAll(cbAgreeAllChecked)
 
@@ -493,6 +592,16 @@ class RegisterViewModel(
             return false
         if (sConfigData?.enableRegValidCode == FLAG_OPEN && checkInputPair(validCodeMsg))
             return false
+        if (sConfigData?.enableBirthday == FLAG_OPEN && checkInputPair(birthMsg))
+            return false
+        if (sConfigData?.enableIdentityNumber == FLAG_OPEN && checkInputPair(identityMsg))
+            return false
+        if (sConfigData?.enableIdentityNumber == FLAG_OPEN && checkInputPair(identityTypeMsg))
+            return false
+        if (sConfigData?.enableSalarySource == FLAG_OPEN && checkInputPair(salaryMsg))
+            return false
+        if (sConfigData?.enableBettingStation == FLAG_OPEN && checkInputPair(bettingShopMsg))
+            return false
 
         if (cbAgreeAllChecked.value != true)
             return false
@@ -516,7 +625,7 @@ class RegisterViewModel(
 
     fun checkAccountExist(account: String) {
         //舊 檢查中字樣 (不過會有消不掉的疑慮 h5沒有此)
-//        val msg = androidContext.getString(R.string.desc_register_checking_account)
+//        val msg = LocalUtils.getString(R.string.desc_register_checking_account)
 //        _memberAccountMsg.value = Pair(msg, false)
         viewModelScope.launch {
             doNetwork(androidContext) {
@@ -555,7 +664,13 @@ class RegisterViewModel(
         validCode: String,
         cbAgreeAllChecked: Boolean,
         deviceSn: String,
-        deviceId: String
+        deviceId: String,
+        birth: String?,
+        identity: String?,
+        identityUploaded: Boolean,
+        identityType: String?,
+        salarySource: String?,
+        bettingShop: String?
     ) {
         if (checkAllInput(
                 inviteCode,
@@ -580,6 +695,12 @@ class RegisterViewModel(
                 smsCode,
                 validCode,
                 cbAgreeAllChecked,
+                birth,
+                identity,
+                identityUploaded,
+                identityType,
+                salarySource,
+                bettingShop
             )) {
             register(
                 createRegisterRequest(
@@ -604,7 +725,14 @@ class RegisterViewModel(
                     smsCode,
                     validCode,
                     deviceSn,
-                    deviceId
+                    deviceId,
+                    birth,
+                    identity,
+                    docUrlResult.value?.imgData?.path,
+                    photoUrlResult.value?.imgData?.path,
+                    identityType,
+                    salarySource,
+                    bettingShop
                 )
             )
         }
@@ -632,7 +760,14 @@ class RegisterViewModel(
         smsCode: String,
         validCode: String,
         deviceSn: String,
-        deviceId: String
+        deviceId: String,
+        birth: String?,
+        identity: String?,
+        verifyPhoto1: String?,
+        verifyPhoto2: String?,
+        identityType: String?,
+        salarySource: String?,
+        bettingShop: String?
     ): RegisterRequest {
         return RegisterRequest(
             userName = userName,
@@ -676,6 +811,18 @@ class RegisterViewModel(
                 this.validCodeIdentity = validCodeResult.value?.validCodeData?.identity
                 this.validCode = validCode
             }
+            if (sConfigData?.enableBirthday == FLAG_OPEN)
+                this.birthday = birth
+            if (sConfigData?.enableIdentityNumber == FLAG_OPEN) {
+                this.identityNumber = identity
+                this.verifyPhoto1 = verifyPhoto1
+                this.verifyPhoto2 = verifyPhoto2
+                this.identityType = identityType
+            }
+            if (sConfigData?.enableSalarySource == FLAG_OPEN)
+                this.salarySource = salarySource
+            if (sConfigData?.enableBettingStation == FLAG_OPEN)
+                this.bettingStationId = bettingShop
         }
     }
 
@@ -690,4 +837,93 @@ class RegisterViewModel(
             }
         }
     }
+
+    fun bettingStationQuery() {
+        viewModelScope.launch(Dispatchers.IO) {
+            doNetwork(androidContext) {
+                bettingStationService.bettingStationsQuery()
+            }?.let { result ->
+                val bettingStationSheetList = mutableListOf<StatusSheetData>()
+                result.bettingStationList.map { bettingStation ->
+                    bettingStationSheetList.add(StatusSheetData(bettingStation.id.toString(), bettingStation.name))
+                }
+
+                withContext(Dispatchers.Main) {
+                    _bettingStationList.value = bettingStationSheetList
+                }
+            }
+        }
+    }
+
+    //region 證件照片
+    fun uploadVerifyPhoto(docFile: File, photoFile: File) {
+        viewModelScope.launch {
+            val docResponse = doNetwork(androidContext) {
+                OneBoSportApi.uploadImgService.uploadImg(
+                    UploadVerifyDocRequest(
+                        "9999",
+                        docFile
+                    ).toPars()
+                )
+            }
+            when {
+                docResponse == null -> _docUrlResult.postValue(
+                    UploadImgResult(
+                        -1,
+                        LocalUtils.getString(R.string.unknown_error),
+                        false,
+                        null
+                    )
+
+                )
+                //上傳第一張照片成功
+                docResponse.success -> {
+                    _docUrlResult.postValue(docResponse)
+
+                    val photoResponse = doNetwork(androidContext) {
+                        OneBoSportApi.uploadImgService.uploadImg(
+                            UploadVerifyDocRequest(
+                                "9999",
+                                photoFile
+                            ).toPars()
+                        )
+                    }
+                    when {
+                        photoResponse == null -> _photoUrlResult.postValue(
+                            UploadImgResult(
+                                -1,
+                                LocalUtils.getString(R.string.unknown_error),
+                                false,
+                                null
+                            )
+                        )
+                        //上傳第二張照片成功
+                        photoResponse.success -> {
+                            _photoUrlResult.postValue(photoResponse)
+                        }
+                        else -> {
+                            val error =
+                                UploadImgResult(photoResponse.code, photoResponse.msg, photoResponse.success, null)
+                            _photoUrlResult.postValue(error)
+                        }
+                    }
+                }
+                else -> {
+                    val error = UploadImgResult(
+                        docResponse.code, docResponse.msg, docResponse.success, null
+                    )
+                    _docUrlResult.postValue(error)
+                }
+            }
+        }
+    }
+
+    /**
+     * 清除照片上傳狀態
+     */
+    fun resetCredentialsStatus() {
+        _docUrlResult.value = null
+        _photoUrlResult.value = null
+    }
+    //endregion
 }

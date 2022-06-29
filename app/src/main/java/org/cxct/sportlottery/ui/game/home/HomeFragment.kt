@@ -462,6 +462,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             }
         }
 
+        //TODO review 看是不是直接改成和點擊標題同行為
         mHomeListAdapter.onRecommendClickMoreListener = object : OnClickMoreListener {
             override fun onClickMore(oddsKey: String, matchOdd: MatchOdd) {
                 val action =
@@ -1341,14 +1342,15 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         )
     }
 
-    private fun navGameOutright(gameTypeCode: String?, matchId: String?) {
+    private fun navGameOutright(gameTypeCode: String?, outrightLeagueId: String?) {
         val gameType = GameType.getGameType(gameTypeCode)
 
-        if (gameType != null && matchId != null) {
+        if (gameType != null && outrightLeagueId != null) {
             val action =
-                HomeFragmentDirections.actionHomeFragmentToGameOutrightFragment(
-                    gameType,
-                    matchId
+                HomeFragmentDirections.actionHomeFragmentToGameFragment(
+                    MatchType.OUTRIGHT,
+                    gameTypeCode,
+                    outrightLeagueId
                 )
 
             findNavController().navigate(action)

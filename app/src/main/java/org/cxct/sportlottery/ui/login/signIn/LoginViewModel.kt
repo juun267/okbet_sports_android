@@ -119,7 +119,7 @@ class LoginViewModel(
 
     suspend fun getUserPhone():String?{
         return withContext(Dispatchers.IO) {
-            userInfoRepository.userInfo?.firstOrNull()?.phone.toString()
+            userInfoRepository.userInfo?.value?.phone.toString()
         }
     }
 

@@ -2,8 +2,6 @@ package org.cxct.sportlottery.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.firstOrNull
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
@@ -28,8 +26,8 @@ object WithdrawRepository {
 
     private val userInfoRepository = UserInfoRepository
 
-    private val userInfoFlow: Flow<UserInfo?>?
-        get() = MultiLanguagesApplication.getInstance()?.userInfo
+    private val userInfoFlow: LiveData<UserInfo?>
+        get() = MultiLanguagesApplication.mInstance.userInfo
 
     private var mWithdrawSystemOperation = MutableLiveData<Event<Boolean>>()
     val withdrawSystemOperation: LiveData<Event<Boolean>>
@@ -135,7 +133,7 @@ object WithdrawRepository {
     private suspend fun checkNeedUpdatePassWord(): Boolean {
         if (userInfoFlow == null)
             userInfoRepository.getUserInfo()
-        return userInfoFlow?.firstOrNull()?.updatePayPw == 1
+        return userInfoFlow?.value?.updatePayPw == 1
     }
 
     //提款判斷權限
@@ -201,7 +199,7 @@ object WithdrawRepository {
      * @return true: 有, false: 沒有
      */
     private suspend fun checkUserHavePhoneNumber(): Boolean {
-        return userInfoRepository.userInfo?.firstOrNull()?.phone?.isNotEmpty() ?: false
+        return userInfoRepository.userInfo?.value?.phone?.isNotEmpty() ?: false
     }
 
     //提款設置判斷權限, 判斷需不需要更新提現密碼 -> 個人資料是否完善
@@ -257,7 +255,7 @@ object WithdrawRepository {
 
     //true:資料不完整 false：完整
     private suspend fun verifyProfileInfoComplete(): Boolean {
-        val userInfo = userInfoFlow?.firstOrNull()
+        val userInfo = userInfoFlow?.value
         var complete = false
         sConfigData?.apply {
             if (enableWithdrawFullName == FLAG_OPEN && userInfo?.fullName.isNullOrBlank() ||

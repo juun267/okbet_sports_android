@@ -136,7 +136,7 @@ class ModifyProfileInfoViewModel(
 
     private suspend fun updateUserInfoDao(modifyType: ModifyType, inputContent: String) {
         userInfoRepository.apply {
-            val userId = userInfo!!.firstOrNull()?.userId ?: -1
+            val userId = userInfo?.value?.userId ?: -1
             when (modifyType) {
                 ModifyType.RealName -> updateFullName(userId, inputContent)
                 ModifyType.QQNumber -> updateQQ(userId, inputContent)
@@ -163,7 +163,7 @@ class ModifyProfileInfoViewModel(
             }
 
             if (result?.success == true) {
-                val userId = userInfoRepository.userInfo!!.firstOrNull()?.userId ?: -1
+                val userId = userInfoRepository.userInfo?.value?.userId ?: -1
                 userInfoRepository.updateNickname(userId, nickname)
                 userInfoRepository.updateSetted(userId, FLAG_NICKNAME_IS_SET)
             }

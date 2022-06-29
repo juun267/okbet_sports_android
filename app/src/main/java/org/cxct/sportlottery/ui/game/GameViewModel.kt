@@ -74,6 +74,7 @@ import org.cxct.sportlottery.util.DisplayUtil.pxToDp
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
+import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 import org.cxct.sportlottery.util.TimeUtil.DMY_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
@@ -819,7 +820,8 @@ class GameViewModel(
             val comingSoonList = mutableListOf<SportMenu>()
             comingSoonList.addAll(list)
             comingSoonList.add(SportMenu(gameType = GameType.BB_COMING_SOON, "", "", 0))
-            comingSoonList.add(SportMenu(gameType = GameType.ES_COMING_SOON, "", "", 0))
+            //OkBet 正式＆測試環境皆不使用
+//            comingSoonList.add(SportMenu(gameType = GameType.ES_COMING_SOON, "", "", 0))
             _sportMenuList.postValue(Event(comingSoonList))
         }
     }
@@ -1453,14 +1455,22 @@ class GameViewModel(
         }
     }
 
-    fun getOutrightOddsList(gameType: String) {
+    fun getOutrightOddsList(gameType: String, outrightLeagueId: String? = null) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.outrightService.getOutrightOddsList(
-                    OutrightOddsListRequest(
-                        gameType,
-                        matchType = MatchType.OUTRIGHT.postValue
-                    )
+                    if (outrightLeagueId.isNullOrEmpty()) {
+                        OutrightOddsListRequest(
+                            gameType,
+                            matchType = MatchType.OUTRIGHT.postValue
+                        )
+                    } else {
+                        OutrightOddsListRequest(
+                            gameType,
+                            matchType = MatchType.OUTRIGHT.postValue,
+                            leagueIdList = listOf(outrightLeagueId)
+                        )
+                    }
                 )
             }
 
@@ -1583,45 +1593,6 @@ class GameViewModel(
                     _outrightMatchList.value = Event(outrightList)
                 }
             }
-        }
-    }
-
-    fun getOutrightOddsList(gameType: GameType, leagueId: String) {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.outrightService.getOutrightOddsList(
-                    OutrightOddsListRequest(
-                        gameType.key,
-                        matchType = MatchType.OUTRIGHT.postValue,
-                        leagueIdList = listOf(leagueId)
-                    )
-                )
-            }
-
-            result?.outrightOddsListData?.leagueOdds?.forEach { leagueOdd ->
-                leagueOdd.matchOdds?.forEach { matchOdd ->
-                    matchOdd?.oddsMap?.values?.forEach { oddList ->
-                        oddList?.updateOddSelectState()
-                    }
-
-                    matchOdd?.setupOddDiscount()
-                    matchOdd?.setupPlayCate()
-                    //20220613 冠軍的排序字串切割方式不同, 跟進iOS此處無重新排序
-//                    matchOdd?.sortOdds()
-
-                    matchOdd?.startDate = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, DMY_FORMAT)
-                    matchOdd?.startTime = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, HM_FORMAT)
-                }
-            }
-
-            val matchOdd =
-                result?.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()
-            matchOdd?.let {
-                matchOdd.playCateMappingList = playCateMappingList
-                matchOdd.updateOddStatus()
-            }
-
-            _outrightOddsListResult.postValue(Event(result))
         }
     }
 
@@ -2936,6 +2907,7 @@ class GameViewModel(
                 if (result.success) {
                     result.result.recommendList.forEach { recommend ->
                         with(recommend) {
+                            setupOddsSort()
                             setupMatchType()
                             setupMatchTime()
                             setupPlayCateNum()
@@ -2965,6 +2937,23 @@ class GameViewModel(
 
         if (needUpdatePublicityRecommend) {
             getRecommend()
+        }
+    }
+
+    /**
+     * 更新宣傳頁賠率折扣
+     */
+    fun publicityUpdateDiscount(oldDiscount: Float, newDiscount: Float) {
+        viewModelScope.launch(Dispatchers.IO) {
+            publicityRecommend.value?.peekContent()?.let { recommendResult ->
+                recommendResult.recommendList.forEach { recommend ->
+                    recommend.oddsMap?.updateOddsDiscount(oldDiscount, newDiscount)
+                }
+
+                withContext(Dispatchers.Main) {
+                    _publicityRecommend.value = Event(recommendResult)
+                }
+            }
         }
     }
 
@@ -3018,6 +3007,19 @@ class GameViewModel(
      */
     private fun Recommend.setupLeagueName() {
         matchInfo?.leagueName = leagueName
+    }
+
+    /**
+     * 設置大廳獲取的玩法排序、玩法名稱
+     */
+    private fun Recommend.setupOddsSort() {
+        val nowGameType = gameType
+        val playCateMenuCode = menuList.firstOrNull()?.code
+        val oddsSortFilter = PlayCateMenuFilterUtils.filterOddsSort(nowGameType, playCateMenuCode)
+        val playCateNameMapFilter = PlayCateMenuFilterUtils.filterPlayCateNameMap(nowGameType, playCateMenuCode)
+
+        oddsSort = oddsSortFilter
+        playCateNameMap = playCateNameMapFilter
     }
     //endregion
 

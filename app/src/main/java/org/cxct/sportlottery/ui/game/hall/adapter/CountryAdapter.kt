@@ -59,7 +59,12 @@ class CountryAdapter : BaseGameAdapter() {
             return BaseItemType.PRELOAD_ITEM.type
         }
         return when {
-            data.isEmpty() -> BaseItemType.NO_DATA.type
+            data.isEmpty() -> {
+                when(position){
+                    0 -> BaseItemType.NO_DATA.type
+                    else -> BaseItemType.BOTTOM_NAVIGATION.type
+                }
+            }
             position == itemPinPosition -> ItemType.ITEM_PIN.ordinal
             position == data.size + 1 -> BaseItemType.BOTTOM_NAVIGATION.type
             else -> ItemType.ITEM.ordinal
@@ -101,7 +106,7 @@ class CountryAdapter : BaseGameAdapter() {
     }
 
     override fun getItemCount(): Int = if (data.isEmpty()) {
-        1
+        2
     } else {
         data.size + 2
     }

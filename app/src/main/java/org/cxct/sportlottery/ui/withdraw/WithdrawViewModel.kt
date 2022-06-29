@@ -305,7 +305,7 @@ class WithdrawViewModel(
             viewModelScope.launch {
                 loading()
                 doNetwork(androidContext) {
-                    val userId = userInfoRepository.userInfo!!.firstOrNull()?.userId.toString()
+                    val userId = userInfoRepository.userInfo?.value?.userId.toString()
                     OneBoSportApi.bankService.bankAdd(
                         createBankAddRequest(
                             bankName,
