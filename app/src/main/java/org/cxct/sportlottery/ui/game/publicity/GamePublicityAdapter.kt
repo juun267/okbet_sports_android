@@ -613,8 +613,6 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .dontTransform()
 
-        private var oddList = listOf<Odd?>()
-
         fun bind(data: Recommend, oddsType: OddsType) {
             with(binding) {
                 clSportsBackground.setBackgroundResource(GameType.getGameTypeBackground(data.gameType))
@@ -664,7 +662,6 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                         matchInfoList = matchInfoList
                     )
                 }
-                update(data)
             }
         }
 
@@ -675,6 +672,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             //玩法Code
             var oddPlayCateCode = ""
 
+            var oddList = listOf<Odd?>()
             var sortOddsMap = data.oddsMap?.sortOdds(data.oddsSort)?.filterPlayCateSpanned(data.gameType)
             sortOddsMap?.filter { it.value?.size ?: 0 > 1 }
             sortOddsMap?.iterator()?.next()?.key?.let {
