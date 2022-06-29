@@ -20,6 +20,8 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
+import org.cxct.sportlottery.repository.FLAG_OPEN
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
@@ -227,7 +229,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
             addAnnouncement()
             addUserInfo()
             addSubTitle()
-            addEGames()
             addPreload()
         }
     }
@@ -353,7 +354,9 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
             val gameItemData = gameList.find { gameItemData ->
                 gameItemData.thirdGameData != null
             }
-            mPublicityAdapter.updateEGamesData(gameItemData?.thirdGameData)
+            if (sConfigData?.thirdOpen == FLAG_OPEN) {
+                mPublicityAdapter.updateEGamesData(gameItemData?.thirdGameData)
+            }
         }
 
         viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {

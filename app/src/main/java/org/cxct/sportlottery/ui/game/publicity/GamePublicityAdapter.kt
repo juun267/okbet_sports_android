@@ -163,10 +163,10 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         recommendList.forEach { addDataWithSort(it) }
     }
 
-    fun addEGames() {
-        removeData(PublicityEGamesData())
-        addDataWithSort(PublicityEGamesData())
-    }
+//    fun addEGames() {
+//        removeData(PublicityEGamesData())
+//        addDataWithSort(PublicityEGamesData())
+//    }
 
 //    fun addBottomView() {
 //        removeData(BottomNavigationItem())
