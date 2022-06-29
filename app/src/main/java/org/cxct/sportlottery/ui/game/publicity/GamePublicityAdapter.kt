@@ -649,24 +649,23 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                     isTimerEnable = (gameType == GameType.FT.key || gameType == GameType.BK.key || gameType == GameType.RB.key || gameType == GameType.AFT.key || matchType == MatchType.PARLAY || matchType == MatchType.AT_START || matchType == MatchType.MY_EVENT),
                     isTimerPause = data.matchInfo?.stopped == TimeCounting.STOP.value
                 )
+
+                val matchOddList = transferMatchOddList(data)
+                val matchInfoList = matchOddList.mapNotNull {
+                    it.matchInfo
+                }
+                binding.root.setOnClickListener {
+                    publicityAdapterListener.onClickPlayTypeListener(
+                        gameType = data.gameType,
+                        matchType = data.matchType,
+                        matchId = data.matchInfo?.id,
+                        matchInfoList = matchInfoList
+                    )
+                }
             }
         }
 
         fun update(data: Recommend, oddsType: OddsType, publicityAdapterListener: PublicityAdapterListener) {
-            val matchOddList = transferMatchOddList(data)
-//            Timber.e("matchOddList: $matchOddList")
-            val matchInfoList = matchOddList.mapNotNull {
-                it.matchInfo
-            }
-            binding.root.setOnClickListener {
-                publicityAdapterListener.onClickPlayTypeListener(
-                    gameType = data.gameType,
-                    matchType = data.matchType,
-                    matchId = data.matchInfo?.id,
-                    matchInfoList = matchInfoList
-                )
-            }
-
             //設置賽事Bar
             setupGameScoreBar(data)
 

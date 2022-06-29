@@ -332,8 +332,8 @@ class GameViewModel(
     val sportMenuFilterList: LiveData<Event<MutableMap<String?, MutableMap<String?, SportMenuFilter>?>?>>
         get() = _sportMenuFilterList
 
-    private val _publicityRecommend = MutableLiveData<Event<RecommendResult>>()
-    val publicityRecommend: LiveData<Event<RecommendResult>>
+    private val _publicityRecommend = MutableLiveData<Event<List<Recommend>>>()
+    val publicityRecommend: LiveData<Event<List<Recommend>>>
         get() = _publicityRecommend
 
     private val _enterThirdGameResult = MutableLiveData<EnterThirdGameResult>()
@@ -2903,8 +2903,11 @@ class GameViewModel(
                             setupLeagueName()
                         }
                     }
+                    val recommendList = arrayListOf<Recommend>()
+                    if (result.result.recommendList.isNotEmpty())
+                        recommendList.add(result.result.recommendList.first()) //只取第一筆
 
-                    _publicityRecommend.postValue(Event(result.result))
+                    _publicityRecommend.postValue(Event(recommendList))
 
                     notifyFavorite(FavoriteType.MATCH)
                 }
@@ -2914,7 +2917,7 @@ class GameViewModel(
 
     fun publicityLeagueChange(leagueChangeEvent: LeagueChangeEvent) {
         var needUpdatePublicityRecommend = false
-        publicityRecommend.value?.peekContent()?.recommendList?.forEach { recommend ->
+        publicityRecommend.value?.peekContent()?.forEach { recommend ->
             if (leagueChangeEvent.leagueIdList?.contains(recommend.leagueId) == true) {
                 needUpdatePublicityRecommend = true
             }
@@ -2934,15 +2937,15 @@ class GameViewModel(
      */
     fun publicityUpdateDiscount(oldDiscount: Float, newDiscount: Float) {
         viewModelScope.launch(Dispatchers.IO) {
-            publicityRecommend.value?.peekContent()?.let { recommendResult ->
-                val iterator = recommendResult.recommendList.iterator()
+            publicityRecommend.value?.peekContent()?.let { recommendList ->
+                val iterator = recommendList.iterator()
                 while(iterator.hasNext()) {
                     val recommend = iterator.next()
                     recommend.oddsMap?.updateOddsDiscount(oldDiscount, newDiscount)
                 }
 
                 withContext(Dispatchers.Main) {
-                    _publicityRecommend.value = Event(recommendResult)
+                    _publicityRecommend.value = Event(recommendList)
                 }
             }
         }

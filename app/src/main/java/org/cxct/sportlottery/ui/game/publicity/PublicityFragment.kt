@@ -263,22 +263,16 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         })
 
         viewModel.publicityRecommend.observe(viewLifecycleOwner) { event ->
-            event?.getContentIfNotHandled()?.let { result ->
+            event?.getContentIfNotHandled()?.let { recommendList ->
                 hideLoading()
                 isNewestDataFromApi = true
-                val recommendList = arrayListOf<Recommend>()
-                if (result.recommendList.isNotEmpty())
-                    recommendList.add(result.recommendList.first()) //只取第一筆
-//                result.recommendList.forEach { //取全部
-//                    recommendList.add(it)
-//                }
                 mRecommendList = recommendList
                 mPublicityAdapter.removeData(GamePublicityAdapter.PreloadItem())
                 mPublicityAdapter.addRecommend(recommendList)
                 Timber.e("addRecommend")
                 //先解除全部賽事訂閱
                 unSubscribeChannelHallAll()
-                subscribeQueryData(result.recommendList)
+                subscribeQueryData(recommendList)
             }
         }
 
