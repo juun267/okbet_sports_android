@@ -31,6 +31,8 @@ import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.game.Page
+import org.cxct.sportlottery.ui.game.common.OddStatePublicityViewHolder
+import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.game.widget.OddsButtonPublicity
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -81,6 +83,12 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             field = value
             notifyToolbar()
         }
+
+    private val mOddStateRefreshListener by lazy {
+        object : OddStatePublicityViewHolder.OddStateChangeListener {
+            override fun refreshOddButton(odd: Odd) { }
+        }
+    }
 
     /**
      * 僅用來記錄當前適配的折扣率
@@ -600,8 +608,9 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         }
     }
 
-    inner class PublicityNewRecommendViewHolder(val binding: PublicityRecommendViewBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class PublicityNewRecommendViewHolder(val binding: PublicityRecommendViewBinding,
+                                                override val oddStateChangeListener: OddStateChangeListener = mOddStateRefreshListener) :
+        OddStatePublicityViewHolder(binding.root) {
         private val mRequestOptions = RequestOptions()
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .dontTransform()
@@ -748,6 +757,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
 
             oddsButton.apply {
                 setupOdd(odd, oddsType)
+                setupOddState(oddsButton, odd)
                 odd?.let {
                     this.isSelected = it.isSelected ?: false
 
