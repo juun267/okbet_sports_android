@@ -128,24 +128,13 @@
                     android:id="@+id/tvGameStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/color_BCBCBC_666666"
-                    android:textSize="@dimen/textSize12sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/tvGameSpt"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="2ND" />
-
-                <TextView
-                    android:id="@+id/tvGameSpt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
                     android:textColor="@color/color_BCBCBC_666666"
                     android:textSize="@dimen/textSize12sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/tv_game_play_time"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="/5" />
+                    tools:text="2ND" />
 
                 <TextView
                     android:id="@+id/tv_game_play_time"
@@ -153,13 +142,25 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_13"
                     android:layout_marginTop="@dimen/margin_1"
-                    android:layout_marginEnd="@dimen/margin_11"
+                    android:layout_marginEnd="4dp"
                     android:drawablePadding="4dp"
                     android:textColor="@color/color_BCBCBC_666666"
                     android:textSize="@dimen/textSize12sp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tvGameSpt"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="09:15" />
+
+                <TextView
+                    android:id="@+id/tvGameSpt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_11"
+                    android:textColor="@color/color_BCBCBC_666666"
+                    android:textSize="@dimen/textSize12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="/5" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -217,6 +218,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
+            android:id="@+id/ivVS"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_8"

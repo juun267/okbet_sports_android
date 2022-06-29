@@ -618,7 +618,11 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                 tvHomeName.text = data.homeName
                 tvAwayName.text = data.awayName
 
-                updateMatchScore(data)
+                data.matchType?.let { matchType ->
+                    //配置比分及比賽制度
+                    setupMatchScore(data, matchType)
+                }
+
 
                 Glide.with(binding.root.context)
                     .load(data.matchInfo?.homeIcon)
@@ -673,8 +677,10 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             binding.tvGamePlayCateCodeName.text = playCateName
 //            Timber.e("oddList: $oddList")
             with(binding) {
-                //更新賽事比分
-                updateMatchScore(data)
+                //配置賽事比分及機制
+                data.matchType?.let { matchType ->
+                    setupMatchScore(data, matchType)
+                }
 
                 //region 主隊賠率項
                 if (oddList.isNotEmpty()) {
@@ -773,11 +779,165 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             }
         }
 
-        private fun PublicityRecommendViewBinding.updateMatchScore(data: Recommend) {
-            tvHomeScore.text = (data.matchInfo?.homeScore ?: 0).toString()
-            tvAwayScore.text = (data.matchInfo?.awayScore ?: 0).toString()
+        //region 賽事比分Method
+//        private fun PublicityRecommendViewBinding.updateMatchScore(data: Recommend) {
+//            tvHomeScore.text = (data.matchInfo?.homeScore ?: 0).toString()
+//            tvAwayScore.text = (data.matchInfo?.awayScore ?: 0).toString()
+//        }
+        private val isScoreTextVisible = { item: Recommend ->
+            when (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)) {
+                true -> View.VISIBLE
+                else -> View.GONE
+            }
         }
 
+        /**
+         * 配置比分及比賽制度
+         */
+        private fun setupMatchScore(item: Recommend, matchType: MatchType) {
+            //TODO review 棒球賽事狀態版型
+            /*itemView.apply {
+                when {
+                    matchType != MatchType.IN_PLAY -> {
+                        linear_layout.isVisible = true
+                        content_baseball_status.isVisible = false
+                    }
+                    else -> {
+                        when (item.matchInfo?.gameType) {
+                            GameType.BB.key -> {
+                                linear_layout.isVisible = false
+                                content_baseball_status.isVisible = true
+                            }
+                            else -> {
+                                linear_layout.isVisible = true
+                                content_baseball_status.isVisible = false
+                            }
+                        }
+
+                    }
+                }
+            }*/
+            when (item.matchInfo?.gameType) {
+                GameType.VB.key -> setVbScoreText(item)
+                GameType.TN.key -> setTnScoreText(item)
+                GameType.FT.key -> setFtScoreText(item)
+                GameType.BK.key -> setBkScoreText(item)
+                GameType.TT.key -> setVbScoreText(item)
+                GameType.BM.key -> setBmScoreText(item)
+                GameType.BB.key -> setBbScoreText() //TODO 20220629 本週上版沒有棒球,棒球晚點處理 setBbScoreText(item)
+                else -> setBkScoreText(item)
+            }
+        }
+
+        /**
+         * 設置排球類型比分及比賽制度
+         */
+        private fun setVbScoreText(item: Recommend) {
+            binding.apply {
+                setAllScoreTextAtBottom(item)
+                setSptText(item)
+            }
+        }
+
+        /**
+         * 設置網球類型比分及比賽制度
+         */
+        private fun setTnScoreText(item: Recommend) {
+            binding.apply {
+                setAllScoreTextAtBottom(item)
+                setSptText(item)
+
+            }
+        }
+
+        /**
+         * 設置足球類型比分及比賽制度
+         */
+        private fun setFtScoreText(item: Recommend) {
+            binding.setScoreText(item)
+        }
+
+        /**
+         * 設置籃球類型比分及比賽制度
+         */
+        private fun setBkScoreText(item: Recommend) {
+            binding.setScoreText(item)
+        }
+
+        /**
+         * 設置羽球類型比分及比賽制度
+         */
+        private fun setBmScoreText(item: Recommend) {
+            binding.apply {
+                setAllScoreTextAtBottom(item)
+                setSptText(item)
+            }
+        }
+
+        /**
+         * 設置羽球類型比分及比賽制度
+         */
+        private fun setBbScoreText() {
+
+        }
+
+        /**
+         * 設置盤類型比分
+         */
+        private fun PublicityRecommendViewBinding.setAllScoreTextAtBottom(item: Recommend) {
+            val itemVisibility = isScoreTextVisible(item)
+            with(tvHomeScore) {
+                visibility = itemVisibility
+                text = (item.matchInfo?.homeTotalScore ?: 0).toString()
+            }
+
+            with(tvAwayScore) {
+                visibility = itemVisibility
+                text = (item.matchInfo?.awayTotalScore ?: 0).toString()
+            }
+        }
+
+        /**
+         * 設置局類型比分
+         */
+        private fun PublicityRecommendViewBinding.setScoreText(item: Recommend) {
+            val itemVisibility = isScoreTextVisible(item)
+            with(tvHomeScore) {
+                visibility = itemVisibility
+                text = (item.matchInfo?.homeScore ?: 0).toString()
+            }
+            with(tvAwayScore) {
+                visibility = itemVisibility
+                text = (item.matchInfo?.awayScore ?: 0).toString()
+            }
+        }
+
+        //賽制(5盤3勝 or /int)
+        @SuppressLint("SetTextI18n")
+        private fun PublicityRecommendViewBinding.setSptText(item: Recommend) {
+            item.matchInfo?.spt?.let { spt ->
+                when {
+                    TimeUtil.isTimeInPlay(item.matchInfo?.startTime) -> { //除0以外顯示
+                        tvGameSpt.visibility = View.GONE
+                    }
+                    else -> {
+                        if (spt == 3 || spt == 5) {//除3、5以外不顯示
+                            tvGameSpt.visibility = View.VISIBLE
+                            tvGameSpt.text = when (spt) {
+                                3 -> itemView.context.getString(R.string.spt_number_3_2)
+                                5 -> itemView.context.getString(R.string.spt_number_5_3)
+                                else -> ""
+                            }
+                        } else {
+                            tvGameSpt.visibility = View.GONE
+                        }
+                    }
+                }
+            }
+        }
+        //endregion
+
+        //region 賽事時間狀態Method
         private fun setupMatchTimeAndStatus(
             item: Recommend,
             isTimerEnable: Boolean,
@@ -913,6 +1073,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                 }
             }
         }
+        //endregion
 
         private fun setupOddsButton(oddsButton: OddsButtonPublicity, odd: Odd?) {
 
