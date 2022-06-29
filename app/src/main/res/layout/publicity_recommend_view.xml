@@ -32,6 +32,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:paddingBottom="@dimen/margin_8"
                 app:layout_constraintBottom_toTopOf="@+id/cl_game"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -44,8 +45,9 @@
 
                     <ImageView
                         android:id="@+id/iv_home_icon"
-                        android:layout_width="55dp"
-                        android:layout_height="55dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="43dp"
+                        android:layout_marginBottom="@dimen/margin_2"
                         android:adjustViewBounds="true" />
 
                     <TextView
@@ -53,7 +55,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/margin_10"
-                        android:layout_marginBottom="@dimen/margin_8"
                         android:ellipsize="end"
                         android:gravity="center"
                         android:maxLines="1"
@@ -75,8 +76,9 @@
 
                     <ImageView
                         android:id="@+id/iv_away_icon"
-                        android:layout_width="55dp"
-                        android:layout_height="55dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="43dp"
+                        android:layout_marginBottom="@dimen/margin_2"
                         android:adjustViewBounds="true" />
 
                     <TextView
@@ -84,7 +86,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/margin_10"
-                        android:layout_marginBottom="@dimen/margin_8"
                         android:ellipsize="end"
                         android:gravity="center"
                         android:maxLines="1"
@@ -167,6 +168,7 @@
                 android:layout_height="0dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/margin_6"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cl_game">
 
@@ -174,21 +176,21 @@
                     android:id="@+id/odd_btn_home"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
-                    android:layout_margin="8dp"
+                    android:layout_marginHorizontal="@dimen/margin_6"
                     android:layout_weight="1" />
 
                 <org.cxct.sportlottery.ui.game.widget.OddsButtonPublicity
                     android:id="@+id/odd_btn_draw"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
-                    android:layout_margin="8dp"
+                    android:layout_marginHorizontal="@dimen/margin_6"
                     android:layout_weight="1" />
 
                 <org.cxct.sportlottery.ui.game.widget.OddsButtonPublicity
                     android:id="@+id/odd_btn_away"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
-                    android:layout_margin="8dp"
+                    android:layout_marginHorizontal="@dimen/margin_6"
                     android:layout_weight="1" />
 
             </LinearLayout>
@@ -217,7 +219,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="@dimen/margin_8"
             android:src="@drawable/img_vs_mark"
             app:layout_constraintEnd_toEndOf="@+id/iv_vs_bar"
             app:layout_constraintStart_toStartOf="@+id/iv_vs_bar"
@@ -227,6 +229,8 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:orientation="horizontal"
+            android:layout_marginTop="@dimen/margin_4"
+            android:paddingHorizontal="@dimen/margin_6"
             app:layout_constraintBottom_toBottomOf="@+id/iv_vs_bar"
             app:layout_constraintEnd_toEndOf="@+id/iv_vs_bar"
             app:layout_constraintStart_toStartOf="@+id/iv_vs_bar"
@@ -236,7 +240,6 @@
                 android:id="@+id/tv_home_score"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginTop="3dp"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:textColor="@color/color_BCBCBC_666666"
@@ -252,7 +255,6 @@
                 android:id="@+id/tv_away_score"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginTop="3dp"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:textColor="@color/color_BCBCBC_666666"
