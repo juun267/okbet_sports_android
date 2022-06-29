@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.home_recommend_vp.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.*
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.SelectionType
@@ -609,6 +610,8 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
 
         fun bind(data: Recommend, oddsType: OddsType) {
             with(binding) {
+                clSportsBackground.setImageResource(GameType.getGameTypeBackground(data.gameType))
+
                 tvHomeName.text = data.homeName
                 tvAwayName.text = data.awayName
 

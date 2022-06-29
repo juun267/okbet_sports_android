@@ -155,7 +155,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 TN.key -> R.drawable.img_tennis_white
                 VB.key -> R.drawable.img_volleyball_white
                 BM.key -> R.drawable.img_badminton_white
-                TT.key -> R.drawable.img_tennis_white
+                TT.key -> R.drawable.img_pingpong_white
                 IH.key -> R.drawable.img_ice_hockey_white
                 BX.key -> R.drawable.img_boxing_white
                 CB.key -> R.drawable.img_snooker_white
@@ -193,6 +193,29 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 OTHER -> R.drawable.ic_game_champ
                 BB_COMING_SOON -> R.drawable.selector_sport_type_item_img_bb_v5
                 ES_COMING_SOON -> R.drawable.selector_sport_type_item_img_es_v5
+            }
+        }
+
+        fun getGameTypeBackground(gameType: String): Int {
+            return when (gameType) {
+                FT.key -> R.drawable.bg_board_game_soccer
+                BK.key -> R.drawable.bg_board_game_basketball
+                TN.key -> R.drawable.bg_board_game_tennis
+                VB.key -> R.drawable.bg_board_game_volleyball
+                TT.key -> R.drawable.bg_board_game_pingpong
+                BM.key -> R.drawable.bg_board_game_badminton
+                AFT.key -> R.drawable.bg_board_game_amfootball
+                BB.key -> R.drawable.bg_board_game_baseball
+                BX.key -> R.drawable.bg_board_game_boxing
+                CK.key -> R.drawable.bg_board_game_cricket
+                FB.key -> R.drawable.bg_board_game_finance
+                GF.key -> R.drawable.bg_board_game_golf
+                IH.key -> R.drawable.bg_board_game_ice_hockey
+                MR.key -> R.drawable.bg_board_game_racing
+                RB.key -> R.drawable.bg_board_game_rugby
+                CB.key -> R.drawable.bg_board_game_snooker
+                OTHER.key -> R.drawable.bg_board_game_other
+                else -> R.drawable.bg_board_game_other
             }
         }
     }
