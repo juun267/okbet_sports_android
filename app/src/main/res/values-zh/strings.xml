@@ -15,6 +15,7 @@
     <string name="error_input_empty_new">此栏位为必填栏位</string>
     <string name="error_incompatible_format">您输入的字元不符</string>
     <string name="error_wx_incompatible_format">微信ID格式错误</string>
+    <string name="error_identity_photo">未上传证件照</string>
     <string name="congratulation_win">恭喜您 注单尾码:%1$s 中奖:%2$s</string>
     <string name="warning_cancel">提醒您 注单尾码:%s 已被取消</string>
     <string name="prompt">提示</string>
@@ -105,6 +106,13 @@
     <string name="security_pb">安全问题</string>
     <string name="hint_security_pb">(请输入最爱的国家)</string>
     <string name="real_name">真实姓名</string>
+    <string name="income_source">薪资来源</string>
+    <string name="identity_type">证件类型</string>
+    <string name="betting_shop">匹配投注站</string>
+    <string name="register_identity">身分证号</string>
+    <string name="hint_register_identity">(请输入身分证号)</string>
+    <string name="birth_date">生日</string>
+    <string name="hint_birth_date">(YYYY/MM/DD)</string>
     <string name="hint_real_name">(姓名须与银行户口一致)</string>
     <string name="verification_code">验证码</string>
     <string name="verification_code_by_sms">短信验证码</string>
@@ -1118,12 +1126,12 @@
     <string name="news_detail">详细</string>
     <!--endregion 最新消息-->
 
-<!--region 宣傳頁-->
+    <!--region 宣傳頁-->
     <string name="hot_recommend">热门推荐</string>
     <string name="recommend_match">月均10,000\n滚球赛事</string>
     <string name="recommend_best_odd">最佳赔率\n最优服务</string>
     <string name="recommend_safe">安全, 简单\n快速处理</string>
-<!--endregion-->
+    <!--endregion-->
 
     <!--region 我的賽事-->
     <string name="my_favorite_empty_title">我的赛事</string>
@@ -1136,8 +1144,55 @@
     <string name="error_input_has_blank">输入错误，仅限输入英文，请勿输入连续空格。</string>
 
     <!--region 確認年齡彈窗-->
-    <string name="dialog_age_verify_statement">OKBet 致力于为所有客户提供安全、舒适的游戏体验。\n\n对于绝大多数人来说，游戏是一项令人愉快的休闲活动。但是，我们意识到有时候游戏对某些客户来说不再有趣。\n\n我们强烈建议您在继续之前花一些时间阅读我们的博彩责任和声明。并且，严禁 21 岁及以下的用户使用。\n\n我们的责任是帮助我们的客户安全、负责任地赌博，降低伤害风险，并帮助需要治疗的人得到治疗。\n\n如果您或您的家人遇到游戏问题，请随时联系 keepitfun@pagcor.ph。</string>
-    <string name="dialog_age_verify_hint">请确认您已年满21岁，才能进入本网站</string>
+    <string name="dialog_age_verify_statement">
+        OkBet 致力于为所有客户提供安全、舒适的游戏体验。
+        \n\n对于绝大多数人来说，游戏是一项令人愉快的休闲活动。但是，我们意识到有时候游戏对某些客户来说不再有趣。
+        \n\n我们强烈建议您在继续之前花一些时间阅读我们的博彩责任和声明。并且，严禁 21 岁及以下的用户使用。
+        \n\n我们的责任是帮助我们的客户安全、负责任地赌博，降低伤害风险，并帮助需要治疗的人得到治疗。
+        \n\n如果您或您的家人遇到游戏问题，请随时联系 keepitfun@pagcor.ph。
+        \n\n博彩
+        \n\n博彩是指涉及投注、赔率和奖品的活动。虽然它被认为是一种娱乐形式，但如果过度沉迷，可能会对玩家、他的家人和社区产生负面影响。
+        \n\n不允许参与博彩人群
+        \n• 21 岁以下的人；任何学校、学院或大学的学生
+        \n• 政府官员及其直系亲属（配偶、子女和父母）
+        \n• 菲律宾武装部队 (AFP) 和菲律宾国家警察 (PNP) 的成员及其直系亲属（配偶、子女和父母）
+        \n\n博彩责任提示
+        \n\n了解游戏
+        \n在您了解游戏的玩法和获胜几率之前，请不要进行投注。
+        \n随时向工作人员询问游戏规则和机会。
+        \n\n规划性娱乐\n除了博彩以外还有其他消遣可以像赌博一样轻松或愉快。
+        \n去赌场只是众多休闲活动之一。
+        \n\n设定时间和金钱限制
+        \n计划好你的博彩娱乐日程，确定起立和离开的时间。为什么不设置闹钟提醒您？
+        \n您也可以安排人在一两个小时后接您。
+        \n\n自我意识
+        \n以放松的状态和清晰的思路开始您的游戏。
+        \n不要鲁莽。在玩游戏时，在压力下或情绪激动的时候做出的快速决定可能是有害的。
+        \n\n保持健康的社会心态
+        \n不要把游戏看得太认真。对与你一起玩的人更加开放和友好，让游戏变得更加有趣和令人兴奋。
+        \n\n如果您觉得您或您的家人有赌博问题，您可以通过以下方式联系我们的客户支持：（客户服务电子邮件/电话）。
+        \n此外，OkBet 已与支持设施合作，以解决与赌博问题相关的问题。您可以直接联系以下帮助中心：
+        \n\nLife Change Recovery Center
+        \nDr. Randy Misael S. Dellosa
+        \n105 Scout Rallos Street, Kamuning
+        \nBrgy. Sacred Heart, Quezon City
+        \nTelephone numbers: (02) 415-7964 / 415-6529
+        \nWebsite: www.lifechangerecoverycenter.com
+        \n\nBridges of Hope Drugs and Alcohol Rehabilitation Foundation, Inc. Headquarters:
+        \n364 Aguirre Avenue, Phase 3, BF Homes, Parañaque City, Metro Manila
+        \nTel. No. (02) 622-0193
+        \nNew Manila Branch:
+        \n12 Orestes Lane, Mariposa Street
+        \nTel. No. (02) 502-0600; (0917) 856-0623
+        \nEmail: help@bridgesofhope.ph
+        \n\n我同意 OkBet 条款和条件以及以下声明：
+        \n1.我允许OkBet根据隐私政策向我发送更新和促销信息
+        \n2.我已年满 21 岁并已阅读并同意 OkBet 的条款和条件
+        \n3.我不是与菲律宾政府或其任何机构的运作直接相关的政府官员和/或雇员。
+        \n4.我不是菲律宾任何学校、学院或大学的学生。
+        \n5.我明白，如果我提供的信息被发现不正确，OkBet 有权根据其条款和条件对我的帐户进行处罚最终权利。</string>
+    <string name="dialog_age_verify_hint">我接受并同意OkBet</string>
+    <string name="dialog_age_verify_hint_link">规则与条款</string>
     <string name="dialog_age_verify_confirm">我已年满21岁</string>
     <string name="dialog_age_verify_exit">离开</string>
     <!--endregion-->
@@ -1159,4 +1214,10 @@
     <string name="service">服务</string>
     <string name="timezone_list_no_record">搜寻结果为空</string>
     <!--endregion-->
+
+    <string name="verification_status">身份证验证</string>
+    <string name="register_identity_photo_front">上传身分证正面</string>
+    <string name="register_identity_photo_hint_front">请点击上传身分证正面照</string>
+    <string name="register_identity_photo_back">上传身分证背面</string>
+    <string name="register_identity_photo_hint_back">请点击上传身分证背面照</string>
 </resources>

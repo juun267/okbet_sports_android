@@ -10,5 +10,6 @@ data class BetAddRequest(
     val loginSrc: Long,
     val deviceId: String,
     override val userId: Int? = null,
-    override val platformId: Int? = null
+    override val platformId: Int? = null,
+    val channelType: Int
 ) : IdParams
