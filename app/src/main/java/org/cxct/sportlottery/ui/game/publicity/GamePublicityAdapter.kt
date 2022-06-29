@@ -13,15 +13,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
-import kotlinx.android.synthetic.main.home_recommend_item.view.*
-import kotlinx.android.synthetic.main.home_recommend_vp.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.*
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
@@ -32,8 +29,6 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.game.Page
 import org.cxct.sportlottery.ui.game.common.OddStatePublicityViewHolder
-import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
-import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.game.widget.OddsButtonPublicity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
@@ -608,14 +603,13 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         }
     }
 
-    inner class PublicityNewRecommendViewHolder(val binding: PublicityRecommendViewBinding,
-                                                override val oddStateChangeListener: OddStateChangeListener = mOddStateRefreshListener) :
-        OddStatePublicityViewHolder(binding.root) {
+    inner class PublicityNewRecommendViewHolder(
+        val binding: PublicityRecommendViewBinding,
+        override val oddStateChangeListener: OddStateChangeListener = mOddStateRefreshListener
+    ) : OddStatePublicityViewHolder(binding.root) {
         private val mRequestOptions = RequestOptions()
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .dontTransform()
-
-        private var oddList = listOf<Odd?>()
 
         fun bind(data: Recommend, oddsType: OddsType) {
             with(binding) {
@@ -626,9 +620,6 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
 
                 tvHomeScore.text = (data.matchInfo?.homeTotalScore ?: 0).toString()
                 tvAwayScore.text = (data.matchInfo?.awayTotalScore ?: 0).toString()
-
-                tvGamePlayCateCodeName.text = data.playCateNameMap?.get(PlayCate.SINGLE.value)
-                    ?.get(LanguageManager.getSelectLanguage(binding.root.context).key)
 
                 Glide.with(binding.root.context)
                     .load(data.matchInfo?.homeIcon)
@@ -643,15 +634,24 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                     .fallback(R.drawable.bg_recommend_game_default)
                     .error(R.drawable.bg_recommend_game_default)
                     .into(ivAwayIcon)
-
-                val matchOddList = transferMatchOddList(data)
-                Timber.e("matchOddList: $matchOddList")
             }
         }
 
         fun update(data: Recommend, oddsType: OddsType, publicityAdapterListener: PublicityAdapterListener) {
             val matchOddList = transferMatchOddList(data)
-            Timber.e("matchOddList2: $matchOddList")
+//            Timber.e("matchOddList: $matchOddList")
+            val matchInfoList = matchOddList.mapNotNull {
+                it.matchInfo
+            }
+            binding.root.setOnClickListener {
+                publicityAdapterListener.onClickPlayTypeListener(
+                    gameType = data.gameType,
+                    matchType = data.matchType,
+                    matchId = data.matchInfo?.id,
+                    matchInfoList = matchInfoList
+                )
+            }
+
             //玩法Code
             var oddPlayCateCode = ""
             var oddList = listOf<Odd?>()
@@ -663,6 +663,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             }
             //玩法名稱
             val playCateName = data.playCateNameMap?.get(oddPlayCateCode)?.get(LanguageManager.getSelectLanguage(binding.root.context).key) ?: ""
+            binding.tvGamePlayCateCodeName.text = playCateName
 //            Timber.e("oddList: $oddList")
             with(binding) {
                 //region 主隊賠率項
@@ -752,7 +753,6 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             }
         }
 
-//        private fun setupOddsButton(oddsButton: OddsButtonPublicity, odd: Odd?, matchOdd: MatchOdd, recommend: Recommend) {
         private fun setupOddsButton(oddsButton: OddsButtonPublicity, odd: Odd?) {
 
             oddsButton.apply {
@@ -760,12 +760,6 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                 setupOddState(oddsButton, odd)
                 odd?.let {
                     this.isSelected = it.isSelected ?: false
-
-//                    setOnClickListener {
-//                        onClickOddListener?.onClickBet(matchOdd.apply {
-//                            this.matchInfo?.gameType = recommend.gameType
-//                        }, odd, recommend.playCateCode, matchOdd.playCateName , recommend.betPlayCateNameMap)
-//                    }
                 }
             }
         }
