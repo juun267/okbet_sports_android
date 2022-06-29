@@ -12,10 +12,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_my_favorite.*
 import kotlinx.android.synthetic.main.fragment_my_favorite.appbar_layout
 import kotlinx.android.synthetic.main.fragment_my_favorite.view.*
+import kotlinx.android.synthetic.main.include_my_favorite_empty.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -28,6 +28,7 @@ import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
+import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
@@ -48,7 +49,7 @@ import timber.log.Timber
  * @app_destination 我的賽事
  */
 @SuppressLint("LogNotTimber")
-class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteViewModel::class) {
+class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyFavoriteViewModel::class) {
 
     private var isReloadPlayCate: Boolean? = null //是否重新加載玩法篩選Layout
 
@@ -268,12 +269,17 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         view.appbar_layout.addOffsetListenerForBottomNavBar {
             MultiLanguagesApplication.mInstance.setIsScrollDown(it)
         }
+
+        view.scroll_view.addScrollListenerForBottomNavBar {
+            MultiLanguagesApplication.mInstance.setIsScrollDown(it)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObserver()
         initSocketObserver()
+        initBottomNavigation()
     }
 
     private fun initSocketObserver() {

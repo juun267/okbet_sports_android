@@ -62,6 +62,11 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             notifyToolbar()
         }
 
+    /**
+     * 僅用來記錄當前適配的折扣率
+     */
+    var discount: Float = 1.0F
+
     enum class ItemType {
         PUBLICITY_TITLE,
         PUBLICITY_SUB_TITLE,

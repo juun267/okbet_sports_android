@@ -61,7 +61,7 @@ abstract class BaseOddButtonViewModel(
         json.fromJson<List<PlayCateMapItem>>() ?: listOf()
     }
 
-    val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo!!.asLiveData()
+    val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo
 
     val showBetInfoSingle = betInfoRepository.showBetInfoSingle
 
@@ -122,18 +122,6 @@ abstract class BaseOddButtonViewModel(
     fun saveOddsType(oddsType: OddsType) {
         MultiLanguagesApplication.mInstance.sOddsType = oddsType.code
         MultiLanguagesApplication.mInstance.mOddsType.postValue(oddsType)
-    }
-
-    fun getOddsType() {
-        MultiLanguagesApplication.mInstance.mOddsType.postValue(
-            when (MultiLanguagesApplication.mInstance.sOddsType) {
-                OddsType.EU.code -> OddsType.EU
-                OddsType.HK.code -> OddsType.HK
-                OddsType.MYS.code -> OddsType.MYS
-                OddsType.IDN.code -> OddsType.IDN
-                else -> OddsType.EU
-            }
-        )
     }
 
     fun updateMatchBetList(
@@ -400,7 +388,8 @@ abstract class BaseOddButtonViewModel(
                         parlayList,
                         1,
                         2,
-                        deviceId
+                        deviceId,
+                        channelType = 0 //先寫死固定帶0
                     )
                 )
             }
@@ -439,7 +428,8 @@ abstract class BaseOddButtonViewModel(
             listOf(Stake(parlayType ?: "", stake)),
             1,
             2,
-            deviceId
+            deviceId,
+            channelType = 0, //先寫死固定帶0
         )
 
         viewModelScope.launch {
