@@ -12,7 +12,7 @@ import org.cxct.sportlottery.util.Event
 import retrofit2.Response
 import timber.log.Timber
 
-class ThirdGameRepository {
+object ThirdGameRepository {
 
     private val _goToThirdGamePage = MutableLiveData<Event<ThirdGameCategory?>>()
     val goToThirdGamePage: LiveData<Event<ThirdGameCategory?>>
