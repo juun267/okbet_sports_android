@@ -33,8 +33,8 @@ import java.util.*
 class RedEnvelopeReceiveDialog(
     context: Context?,
     redenpId: Int,
-    redenpStartTime: String,
-    redenpEndTime: String
+    redenpStartTime: String?,
+    redenpEndTime: String?
 ) : BaseDialog<RedEnveLopeModel>(RedEnveLopeModel::class) {
     private val mHandler = MyHandler(WeakReference(this))
     var bitmap = listOf(

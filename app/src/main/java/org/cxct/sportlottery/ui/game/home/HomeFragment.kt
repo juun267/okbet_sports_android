@@ -101,7 +101,9 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     private var mSubscribeAtStartGameID: MutableList<String> = mutableListOf()
     private var mSubscribeRecommendGameID: MutableList<String> = mutableListOf()
     private var mSubscribeHighlightGameID: MutableList<String> = mutableListOf()
-    private var redEnvelopeInfo: RedEnvelopeInfo? = null
+    private var redenpId: Int = 0
+    private var redenpStartTime: String? = null
+    private var redenpEndTime: String? = null
     private var count = 0
     private val mOnClickOddListener = object : OnClickOddListener {
         override fun onClickBet(
@@ -171,7 +173,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                         }
                     }
                     count++
-                    if (count % 10 == 0) {
+                    if (count % 10 == 0 && viewModel.getLoginBoolean()) {
                         if (logRedEnvelopeReceiveDialog.dialog?.isShowing != true) {
                             getRain()
                             count = 0
@@ -945,8 +947,15 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         }
 
         viewModel.rainResult.observe(viewLifecycleOwner) {
-            redEnvelopeInfo = it.redEnvelopeInfo
+            var redEnvelopeInfo = it.redEnvelopeInfo
             if (redEnvelopeInfo != null) {
+                redenpId = redEnvelopeInfo.redenpId
+                redenpStartTime =
+                    TimeUtil.timeFormat(redEnvelopeInfo.redenpStartTime, TimeUtil.YMD_HMS_FORMAT)
+                redenpEndTime =
+                    TimeUtil.timeFormat(redEnvelopeInfo.redenpEndTime, TimeUtil.YMD_HMS_FORMAT)
+                var serverTime =
+                    TimeUtil.timeFormat(redEnvelopeInfo.serverTime, TimeUtil.YMD_HMS_FORMAT)
                 logRedEnvelopeReceiveDialog.show(
                     parentFragmentManager,
                     RedEnvelopeReceiveDialog::class.java.simpleName
@@ -1472,7 +1481,12 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     }
 
     private val logRedEnvelopeReceiveDialog by lazy {
-        RedEnvelopeReceiveDialog(context, 0, "", "")
+        RedEnvelopeReceiveDialog(
+            context,
+            redenpId,
+            redenpStartTime,
+            redenpEndTime
+        )
     }
 
 }
