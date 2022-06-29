@@ -735,10 +735,10 @@
     <string name="third_game_ogplus">OG+Casino</string>
     <string name="third_game_cr">Crown Sports</string>
     <string name="out_account_">chuyển ra tài khoản</string>
-    <string name="in_account_">Chuyển vào tài khoản</string>
-    <string name="transfer_amount">số tiền chuyển đổi</string>
-    <string name="transfer_state">Trạng thái chuyển đổi</string>
-    <string name="remark">ghi chú</string>
+    <string name="in_account_">Chuyển vào tài khoản：</string>
+    <string name="transfer_amount">số tiền chuyển đổi：</string>
+    <string name="transfer_state">Trạng thái chuyển đổi：</string>
+    <string name="remark">ghi chú：</string>
     <string name="transfer_info">chuyển đổi thông tin</string>
     <string name="sorry_website_is_now_maintenance">Trang web hiện đang được bảo trì</string>
     <string name="if_there_is_any_question_please_consult">Nếu bạn có bất kỳ câu hỏi nào, xin vui lòng đi đến tư vấn%1$s</string>
