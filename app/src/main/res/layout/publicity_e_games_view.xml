@@ -27,13 +27,15 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_14"
         android:layout_marginVertical="@dimen/margin_10"
+        app:cardBackgroundColor="@color/transparent"
         app:cardCornerRadius="@dimen/margin_4"
         app:cardElevation="@dimen/margin_3">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_e_games" />
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_e_games" />
 
     </androidx.cardview.widget.CardView>
 
