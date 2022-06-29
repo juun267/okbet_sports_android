@@ -311,17 +311,14 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     }
                     R.id.navigation_account_history -> {
                         viewModel.navAccountHistory()
-                        finish()
                         false
                     }
                     R.id.navigation_transaction_status -> {
                         viewModel.navTranStatus()
-                        finish()
                         false
                     }
                     R.id.navigation_my -> {
                         viewModel.navMy()
-                        finish()
                         false
                     }
                     else -> false
