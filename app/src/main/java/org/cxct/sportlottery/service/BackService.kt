@@ -292,11 +292,11 @@ class BackService : Service() {
                 mOriginalSubscribedMap.containsValue(it) -> {
                     mOriginalSubscribedMap.remove(url)
                 }
-                mFastBetSubscribed == url -> {
+                //20220629現在不使用快捷注單了將此判斷隱藏待review籌夠
+                /*mFastBetSubscribed == url -> {
                     //do nothing
-                }
+                }*/
                 else -> {
-                    Timber.i("<<< unsubscribe channel: $url")
                     mCompositeDisposable?.remove(it)
                     mSubscribedMap.remove(url)
                 }

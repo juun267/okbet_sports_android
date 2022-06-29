@@ -338,7 +338,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun dismiss() {
-        fastBetPageUnSubscribeEvent()
+//        fastBetPageUnSubscribeEvent()
         activity?.onBackPressed()
         OddSpannableString.clearHandler()
     }
@@ -518,13 +518,13 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 if (list.isNotEmpty()) {
                     betInfoListData = list.getOrNull(0)
                     if (list.size > 1) {
-                        fastBetPageUnSubscribeEvent()
+//                        fastBetPageUnSubscribeEvent()
                         dismiss()
                     } else {
                         if (betInfoListData?.subscribeChannelType == ChannelType.HALL) {
-                            fastBetPageSubscribeHallEvent(betInfoListData?.matchOdd?.gameType, betInfoListData?.matchOdd?.matchId)
+//                            fastBetPageSubscribeHallEvent(betInfoListData?.matchOdd?.gameType, betInfoListData?.matchOdd?.matchId)
                         } else {
-                            fastBetPageSubscribeEvent(betInfoListData?.matchOdd?.matchId)
+//                            fastBetPageSubscribeEvent(betInfoListData?.matchOdd?.matchId)
                         }
                     }
                     matchOdd?.let { matchOdd ->
