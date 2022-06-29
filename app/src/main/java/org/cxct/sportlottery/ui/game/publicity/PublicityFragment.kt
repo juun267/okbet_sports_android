@@ -251,7 +251,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
 
         viewModel.userMoney.observe(viewLifecycleOwner) {
             mPublicityAdapter.updateUserInfoData(
-                viewModel.userInfo.value?.userName.orEmpty(),
+                viewModel.userInfo.value?.nickName.orEmpty(),
                 viewModel.userMoney.value ?: 0.0
             )
         }
