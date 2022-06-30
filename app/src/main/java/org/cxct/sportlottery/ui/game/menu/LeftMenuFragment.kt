@@ -39,6 +39,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
+import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.menu.ChangeAppearanceDialog
@@ -115,6 +116,9 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
                             resources.getString(R.string.btm_navigation_affiliate)
                         )
                     }
+                }, onClickMyFavoriteListener = {
+                    closeMenuFragment()
+                    startActivity(Intent(activity, MyFavoriteActivity::class.java))
                 }),
             LeftMenuItemNewAdapter.ItemSelectedListener(
                 { sportType -> //點擊
@@ -514,18 +518,19 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
                         )
                     )
                 }
-                GameType.ES_COMING_SOON -> {
-                    unselectedList.add(
-                        MenuItemData(
-                            R.drawable.img_esports,
-                            getString(R.string.esports),
-                            GameType.ES_COMING_SOON.key,
-                            0,
-                            -1,
-                            false
-                        )
-                    )
-                }
+                //OkBet 正式＆測試環境皆不使用
+//                GameType.ES_COMING_SOON -> {
+//                    unselectedList.add(
+//                        MenuItemData(
+//                            R.drawable.img_esports,
+//                            getString(R.string.esports),
+//                            GameType.ES_COMING_SOON.key,
+//                            0,
+//                            -1,
+//                            false
+//                        )
+//                    )
+//                }
                 //coming soon end
                 else -> {
                 }

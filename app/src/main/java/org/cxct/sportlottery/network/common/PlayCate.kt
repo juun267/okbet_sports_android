@@ -283,6 +283,7 @@ enum class PlayCate(val value: String) {
     WM_SEG3("WM-SEG3"),
     WM_SEG4("WM-SEG4"),
     WM3_SD_OT("WM3-SD-OT"),
+    WM_1ST("WM-1ST"),
     GTD("GTD"),
     MOV("MOV"),
     MOV_UFC("MOV-UFC"),
@@ -683,6 +684,7 @@ enum class PlayCate(val value: String) {
                 WM_SEG4.value -> WM_SEG4
                 WM3_SD_OT.value -> WM3_SD_OT
                 WM3_SD_OT.value -> WM3_SD_OT
+                WM_1ST.value -> WM_1ST//净胜球数 - 前X局
                 GTD.value -> GTD
                 MOV.value -> MOV
                 MOV_UFC.value -> MOV_UFC

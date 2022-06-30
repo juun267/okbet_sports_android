@@ -185,6 +185,19 @@
                 tools:text="5"
                 tools:visibility="visible" />
 
+            <ImageView
+                android:id="@+id/ic_attack_h"
+                android:layout_width="2dp"
+                android:layout_height="14dp"
+                android:layout_marginStart="@dimen/margin_4"
+                android:src="@drawable/ic_baseball_attack"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_home_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_home_name"
+                app:layout_constraintVertical_bias="0.5"
+                tools:visibility="visible" />
+
             <TextView
                 android:id="@+id/tv_away_card"
                 android:layout_width="wrap_content"
@@ -202,6 +215,18 @@
                 tools:text="5"
                 tools:visibility="visible" />
 
+            <ImageView
+                android:id="@+id/ic_attack_c"
+                android:layout_width="2dp"
+                android:layout_height="14dp"
+                android:layout_marginStart="@dimen/margin_4"
+                android:src="@drawable/ic_baseball_attack"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_away_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_away_name"
+                app:layout_constraintVertical_bias="0.5"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/tv_away_score"
@@ -302,12 +327,85 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/ll_status_bb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_away_name"
+                app:layout_constraintEnd_toStartOf="@id/space"
+                app:layout_constraintStart_toEndOf="@+id/tv_home_point_live"
+                app:layout_constraintTop_toTopOf="@+id/tv_home_name"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/league_odd_match_bb_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/home_card_text_color"
+                    android:textSize="@dimen/textSize12sp"
+                    android:visibility="gone"
+                    tools:text="10"
+                    tools:visibility="visible"  />
+
+                <ImageView
+                    android:id="@+id/league_odd_match_halfStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="4dp"
+                    android:src="@drawable/ic_bb_first_half"
+                    android:visibility="gone"
+                    tools:ignore="ContentDescription"
+                    tools:visibility="visible" />
+
+            </LinearLayout>
+
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.78" />
+
+            <ImageView
+                android:id="@+id/league_odd_match_basebag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="6dp"
+                android:src="@drawable/ic_bb_base_bag_0_0_0"
+                android:visibility="gone"
+                android:layout_marginBottom="10dp"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_away_name"
+                tools:ignore="ContentDescription"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/txvOut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/home_card_text_color"
+                android:textSize="@dimen/textSize12sp"
+                android:layout_marginBottom="10dp"
+                android:visibility="gone"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@+id/league_odd_match_basebag"
+                app:layout_constraintTop_toBottomOf="@+id/tv_away_name"
+                tools:text="@string/game_out"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/tv_status_left"
@@ -322,7 +420,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline"
                 app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/txvOut"
                 app:layout_constraintTop_toBottomOf="@+id/tv_away_name"
                 tools:text="第一節14-15 第二節15-14"
                 tools:visibility="visible" />

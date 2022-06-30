@@ -59,6 +59,8 @@ import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.network.sport.query.SearchRequest
 import org.cxct.sportlottery.network.sport.query.SportQueryData
 import org.cxct.sportlottery.network.sport.query.SportQueryRequest
+import org.cxct.sportlottery.network.third_game.ThirdLoginResult
+import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.network.today.MatchCategoryQueryRequest
 import org.cxct.sportlottery.network.today.MatchCategoryQueryResult
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
@@ -66,6 +68,7 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.data.SpecialEntrance
+import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.px
@@ -77,6 +80,7 @@ import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 import org.cxct.sportlottery.util.TimeUtil.DMY_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -88,7 +92,6 @@ class GameViewModel(
     infoCenterRepository: InfoCenterRepository,
     myFavoriteRepository: MyFavoriteRepository,
     private val sportMenuRepository: SportMenuRepository,
-    private val thirdGameRepository: ThirdGameRepository,
 ) : BaseBottomNavViewModel(
     androidContext,
     userInfoRepository,
@@ -118,7 +121,7 @@ class GameViewModel(
     val parlayList: LiveData<MutableList<ParlayOdd>>
         get() = betInfoRepository.parlayList
 
-    val gameCateDataList by lazy { thirdGameRepository.gameCateDataList }
+    val gameCateDataList by lazy { ThirdGameRepository.gameCateDataList }
 
     val messageListResult: LiveData<Event<MessageListResult?>>
         get() = _messageListResult
@@ -328,9 +331,13 @@ class GameViewModel(
     val sportMenuFilterList: LiveData<Event<MutableMap<String?, MutableMap<String?, SportMenuFilter>?>?>>
         get() = _sportMenuFilterList
 
-    private val _publicityRecommend = MutableLiveData<Event<RecommendResult>>()
-    val publicityRecommend: LiveData<Event<RecommendResult>>
+    private val _publicityRecommend = MutableLiveData<Event<List<Recommend>>>()
+    val publicityRecommend: LiveData<Event<List<Recommend>>>
         get() = _publicityRecommend
+
+    private val _enterThirdGameResult = MutableLiveData<EnterThirdGameResult>()
+    val enterThirdGameResult: LiveData<EnterThirdGameResult>
+        get() = _enterThirdGameResult
 
     var sportQueryData: SportQueryData? = null
     var specialMenuData: SportQueryData? = null
@@ -802,7 +809,8 @@ class GameViewModel(
             val comingSoonList = mutableListOf<SportMenu>()
             comingSoonList.addAll(list)
             comingSoonList.add(SportMenu(gameType = GameType.BB_COMING_SOON, "", "", 0))
-            comingSoonList.add(SportMenu(gameType = GameType.ES_COMING_SOON, "", "", 0))
+            //OkBet 正式＆測試環境皆不使用
+//            comingSoonList.add(SportMenu(gameType = GameType.ES_COMING_SOON, "", "", 0))
             _sportMenuList.postValue(Event(comingSoonList))
         }
     }
@@ -2893,10 +2901,14 @@ class GameViewModel(
                             setupMatchTime()
                             setupPlayCateNum()
                             setupLeagueName()
+                            setupSocketMatchStatus()
                         }
                     }
+                    val recommendList = arrayListOf<Recommend>()
+                    if (result.result.recommendList.isNotEmpty())
+                        recommendList.add(result.result.recommendList.first()) //只取第一筆
 
-                    _publicityRecommend.postValue(Event(result.result))
+                    _publicityRecommend.postValue(Event(recommendList))
 
                     notifyFavorite(FavoriteType.MATCH)
                 }
@@ -2906,7 +2918,7 @@ class GameViewModel(
 
     fun publicityLeagueChange(leagueChangeEvent: LeagueChangeEvent) {
         var needUpdatePublicityRecommend = false
-        publicityRecommend.value?.peekContent()?.recommendList?.forEach { recommend ->
+        publicityRecommend.value?.peekContent()?.forEach { recommend ->
             if (leagueChangeEvent.leagueIdList?.contains(recommend.leagueId) == true) {
                 needUpdatePublicityRecommend = true
             }
@@ -2925,14 +2937,17 @@ class GameViewModel(
      * 更新宣傳頁賠率折扣
      */
     fun publicityUpdateDiscount(oldDiscount: Float, newDiscount: Float) {
+        if (oldDiscount == newDiscount) return
         viewModelScope.launch(Dispatchers.IO) {
-            publicityRecommend.value?.peekContent()?.let { recommendResult ->
-                recommendResult.recommendList.forEach { recommend ->
+            publicityRecommend.value?.peekContent()?.let { recommendList ->
+                val iterator = recommendList.iterator()
+                while (iterator.hasNext()) {
+                    val recommend = iterator.next()
                     recommend.oddsMap?.updateOddsDiscount(oldDiscount, newDiscount)
                 }
 
                 withContext(Dispatchers.Main) {
-                    _publicityRecommend.value = Event(recommendResult)
+                    _publicityRecommend.value = Event(recommendList)
                 }
             }
         }
@@ -2991,6 +3006,19 @@ class GameViewModel(
     }
 
     /**
+     * 賽事狀態
+     */
+    private fun Recommend.setupSocketMatchStatus() {
+        matchInfo?.let {
+            /* 將賽事狀態(先前socket回傳取得)放入當前取得的賽事 */
+            val status = _publicityRecommend.value?.peekContent()?.find { recommend ->
+                recommend.leagueId == leagueId
+            }?.matchInfo?.socketMatchStatus
+            matchInfo?.socketMatchStatus = status
+        }
+    }
+
+    /**
      * 設置大廳獲取的玩法排序、玩法名稱
      */
     private fun Recommend.setupOddsSort() {
@@ -3025,5 +3053,94 @@ class GameViewModel(
         }
     }
     //endregion
+
+    //region 第三方遊戲
+    fun getThirdGame() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                ThirdGameRepository.getThirdGame()
+            }
+        }
+    }
+
+    private suspend fun thirdGameLogin(gameData: ThirdDictValues): ThirdLoginResult? {
+        return doNetwork(androidContext) {
+            OneBoSportApi.thirdGameService.thirdLogin(gameData.firmType, gameData.gameCode)
+        }
+    }
+
+    private suspend fun autoTransfer(gameData: ThirdDictValues) {
+        val result = doNetwork(androidContext) {
+            OneBoSportApi.thirdGameService.autoTransfer(gameData.firmType)
+        }
+
+        if (result?.success == true)
+            getMoney() //金額有變動，通知刷新
+    }
+
+    fun requestEnterThirdGame(gameData: ThirdDictValues?) {
+//        Timber.e("gameData: $gameData")
+        when {
+            gameData == null -> {
+                _enterThirdGameResult.postValue(
+                    EnterThirdGameResult(
+                        resultType = EnterThirdGameResult.ResultType.FAIL,
+                        url = null,
+                        errorMsg = androidContext.getString(R.string.error_url_fail)
+                    )
+                )
+            }
+            loginRepository.isLogin.value != true -> {
+                _enterThirdGameResult.postValue(
+                    EnterThirdGameResult(
+                        resultType = EnterThirdGameResult.ResultType.NEED_REGISTER,
+                        url = null,
+                        errorMsg = null
+                    )
+                )
+            }
+            else -> {
+                viewModelScope.launch {
+                    val thirdLoginResult = thirdGameLogin(gameData)
+
+                    //若自動轉換功能開啟，要先把錢都轉過去在進入遊戲
+                    if (sConfigData?.thirdTransferOpen == FLAG_OPEN)
+                        autoTransfer(gameData)
+
+                    //20210526 result == null，代表 webAPI 處理跑出 exception，exception 處理統一在 BaseActivity 實作，這邊 result = null 直接略過
+                    thirdLoginResult?.let {
+                        if (it.success) {
+                            _enterThirdGameResult.postValue(
+                                EnterThirdGameResult(
+                                    resultType = EnterThirdGameResult.ResultType.SUCCESS,
+                                    url = thirdLoginResult.msg
+                                )
+                            )
+                        } else {
+                            _enterThirdGameResult.postValue(
+                                EnterThirdGameResult(
+                                    resultType = EnterThirdGameResult.ResultType.FAIL,
+                                    url = null,
+                                    errorMsg = thirdLoginResult?.msg
+                                )
+                            )
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+
+    //20200302 記錄問題：新增一個 NONE type，來清除狀態，避免 fragment 畫面重啟馬上就會觸發 observe，重複開啟第三方遊戲
+    fun clearThirdGame() {
+        _enterThirdGameResult.postValue(
+            EnterThirdGameResult(
+                resultType = EnterThirdGameResult.ResultType.NONE,
+                url = null,
+                errorMsg = null
+            )
+        )
+    }
     //endregion
 }

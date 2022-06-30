@@ -742,6 +742,10 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                     GameType.CK -> {
                         setupFrontScore(event)
                     }
+                    GameType.BB -> {
+                        setupFrontScore(event)
+                        setupStatusBB(event)
+                    }
                     // Todo: 仍有其他球種待處理
                     // 20220412 根據h5顯示的版面進行同步, MR, GF, FB, OTHER 無法模擬野佔無賽事可參考
                     // MR, GF, FB, OTHER
@@ -762,6 +766,10 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
             GameType.TN, GameType.VB, GameType.TT, GameType.BM -> {
                 showBackTimeBlock(false)
                 setupStatusTnVb(event, true)
+            }
+            GameType.BB -> {
+                setupFrontScore(event)
+                setupStatusBB(event)
             }
             // Todo: 仍有其他球種待處理
             // 20220412 根據h5顯示的版面進行同步, MR, GF, FB, OTHER 無法模擬野佔無賽事可參考
@@ -828,6 +836,55 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
         tv_status_left.text = statusBuilder
     }
+
+    private fun setupStatusBB(event: MatchStatusChangeEvent) {
+        tv_status_left.visibility = View.GONE
+        tv_spt.visibility = View.GONE
+        tv_status_right.visibility = View.GONE
+        ll_time.visibility = View.GONE
+
+        ll_status_bb.visibility = View.VISIBLE
+        txvOut.visibility = View.VISIBLE
+        league_odd_match_basebag.visibility = View.VISIBLE
+
+    if (event.matchStatusCO?.attack.equals("H")) {
+        ic_attack_h.visibility = View.VISIBLE
+        ic_attack_c.visibility = View.INVISIBLE
+    } else {
+        ic_attack_h.visibility = View.INVISIBLE
+        ic_attack_c.visibility = View.VISIBLE
+    }
+
+    league_odd_match_bb_status.apply {
+        text = event.matchStatusCO?.statusNameI18n?.get(getSelectLanguage(context).key) ?: ""
+        isVisible = true
+    }
+    league_odd_match_halfStatus.apply {
+        setImageResource(if(event.matchStatusCO?.halfStatus == 0) R.drawable.ic_bb_first_half else R.drawable.ic_bb_second_half)
+        isVisible = true
+    }
+    league_odd_match_basebag.apply {
+        setImageResource(
+            when {
+                event.matchStatusCO?.firstBaseBag == 0 && event.matchStatusCO.secBaseBag == 0 && event.matchStatusCO.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_0_0_0
+                event.matchStatusCO?.firstBaseBag == 0 && event.matchStatusCO.secBaseBag == 1 && event.matchStatusCO.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_0_1_0
+                event.matchStatusCO?.firstBaseBag == 0 && event.matchStatusCO.secBaseBag == 0 && event.matchStatusCO.thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_0_0_1
+                event.matchStatusCO?.firstBaseBag == 1 && event.matchStatusCO.secBaseBag == 1 && event.matchStatusCO.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_1_1_0
+                event.matchStatusCO?.firstBaseBag == 1 && event.matchStatusCO.secBaseBag == 0 && event.matchStatusCO.thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_1_0_1
+                event.matchStatusCO?.firstBaseBag == 0 && event.matchStatusCO.secBaseBag == 1 && event.matchStatusCO.thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_0_1_1
+                event.matchStatusCO?.firstBaseBag == 1 && event.matchStatusCO.secBaseBag == 1 && event.matchStatusCO.thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_1_1_1
+                else -> R.drawable.ic_bb_base_bag_0_0_0
+            }
+        )
+        isVisible = true
+    }
+
+    txvOut.apply {
+        text = this.context.getString(R.string.game_out, event.matchStatusCO?.outNumber ?: "")
+        isVisible = true
+    }
+
+}
 
     private fun setupStatusTnVb(event: MatchStatusChangeEvent, showScore: Boolean = true) {
 

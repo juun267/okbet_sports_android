@@ -63,8 +63,8 @@ object MatchOddUtil {
     }
 
     fun MutableMap<String, MutableList<Odd?>?>.updateOddsDiscount(discount: Float, newDiscount: Float) {
-        this.forEach { (_, value) ->
-            value?.forEach { odd ->
+        this.toMap().forEach { (_, value) ->
+            value?.toList()?.forEach { odd ->
                 odd?.updateDiscount(discount, newDiscount)
             }
         }

@@ -287,44 +287,45 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         cl_bet_list_bar.setOnClickListener {
             showBetListPage()
         }
-        sport_bottom_navigation.setNavigationItemClickListener {
-            when (it) {
-                R.id.navigation_sport -> {
-                    if (tabLayout.selectedTabPosition != getMatchTypeTabPosition(MatchType.MAIN)) {
-                        getMatchTypeTabPosition(MatchType.MAIN)?.let { mainMatchTypePosition ->
-                            //賽事類別Tab不在主頁時, 切換至主頁
-                            tabLayout.selectTab(tabLayout.getTabAt(mainMatchTypePosition))
-                        }
-                    } else {
-                        if (mNavController.currentDestination?.id != R.id.homeFragment) {
-                            //若當前不在HomeFragment, 切換至HomeFragment
-                            selectTab(getMatchTypeTabPosition(MatchType.MAIN))
-                        }
+        sport_bottom_navigation.apply {
+            setNavigationItemClickListener {
+                when (it) {
+                    R.id.navigation_home -> {
+                        viewModel.navHome()
+                        finish()
+                        false
                     }
-                    true
+                    R.id.navigation_sport -> {
+                        if (tabLayout.selectedTabPosition != getMatchTypeTabPosition(MatchType.MAIN)) {
+                            getMatchTypeTabPosition(MatchType.MAIN)?.let { mainMatchTypePosition ->
+                                //賽事類別Tab不在主頁時, 切換至主頁
+                                tabLayout.selectTab(tabLayout.getTabAt(mainMatchTypePosition))
+                            }
+                        } else {
+                            if (mNavController.currentDestination?.id != R.id.homeFragment) {
+                                //若當前不在HomeFragment, 切換至HomeFragment
+                                selectTab(getMatchTypeTabPosition(MatchType.MAIN))
+                            }
+                        }
+                        true
+                    }
+                    R.id.navigation_account_history -> {
+                        viewModel.navAccountHistory()
+                        false
+                    }
+                    R.id.navigation_transaction_status -> {
+                        viewModel.navTranStatus()
+                        false
+                    }
+                    R.id.navigation_my -> {
+                        viewModel.navMy()
+                        false
+                    }
+                    else -> false
                 }
-                R.id.navigation_game -> {
-                    viewModel.navMyFavorite()
-                    false
-                }
-                R.id.item_bet_list -> {
-                    viewModel.navShoppingCart()
-                    false
-                }
-                R.id.navigation_account_history -> {
-                    viewModel.navAccountHistory()
-                    false
-                }
-                R.id.navigation_transaction_status -> {
-                    viewModel.navTranStatus()
-                    false
-                }
-                R.id.navigation_my -> {
-                    viewModel.navMy()
-                    false
-                }
-                else -> false
             }
+
+            setSelected(R.id.navigation_sport)
         }
     }
 

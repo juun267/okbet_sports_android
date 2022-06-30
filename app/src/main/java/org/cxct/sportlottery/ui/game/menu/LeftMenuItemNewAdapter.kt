@@ -220,6 +220,9 @@ class LeftMenuItemNewAdapter(
                 ct_premium_odds.setOnClickListener {
                     headerSelectedListener.premiumOddsSelected()
                 }
+                ll_my_favorite.setOnClickListener {
+                    headerSelectedListener.onClickMyFavoriteListener()
+                }
                 rv_left_special.layoutManager =
                     LinearLayoutManager(context, RecyclerView.VERTICAL, false)
                 rv_left_special.isNestedScrollingEnabled = false
@@ -317,7 +320,8 @@ class LeftMenuItemNewAdapter(
         private val promotionSelectedListener: () -> Unit,
         private val inPlaySelectedListener: () -> Unit,
         private val premiumOddsSelectedListener: () -> Unit,
-        private val affiliateSelectedListener: () -> Unit
+        private val affiliateSelectedListener: () -> Unit,
+        private val onClickMyFavoriteListener: () -> Unit
     ) {
         fun backMainPageSelected() = backMainPageSelectedListener()
         fun rechargeSelected() = rechargeSelectedListener()
@@ -327,6 +331,7 @@ class LeftMenuItemNewAdapter(
         fun inPlaySelected() = inPlaySelectedListener()
         fun premiumOddsSelected() = premiumOddsSelectedListener()
         fun affiliateSelected() = affiliateSelectedListener()
+        fun onClickMyFavoriteListener() = onClickMyFavoriteListener.invoke()
     }
 
     class ItemSelectedListener(

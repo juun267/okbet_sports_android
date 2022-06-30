@@ -102,6 +102,31 @@ object SocketUpdateUtil {
                         matchOdd.matchInfo?.awayCards = matchStatusCO.awayCards
                         isNeedRefresh = true
                     }
+
+                    if (gameType == GameType.BB.key && matchStatusCO.attack != null && matchStatusCO.attack != matchOdd.matchInfo?.attack) {
+                        matchOdd.matchInfo?.attack = matchStatusCO.attack
+                        isNeedRefresh = true
+                    }
+                    if (gameType == GameType.BB.key && matchStatusCO.halfStatus != null && matchStatusCO.halfStatus != matchOdd.matchInfo?.halfStatus) {
+                        matchOdd.matchInfo?.halfStatus = matchStatusCO.halfStatus
+                        isNeedRefresh = true
+                    }
+                    if (gameType == GameType.BB.key && matchStatusCO.firstBaseBag != null && matchStatusCO.firstBaseBag != matchOdd.matchInfo?.firstBaseBag) {
+                        matchOdd.matchInfo?.firstBaseBag = matchStatusCO.firstBaseBag
+                        isNeedRefresh = true
+                    }
+                    if (gameType == GameType.BB.key && matchStatusCO.secBaseBag != null && matchStatusCO.secBaseBag != matchOdd.matchInfo?.secBaseBag) {
+                        matchOdd.matchInfo?.secBaseBag = matchStatusCO.secBaseBag
+                        isNeedRefresh = true
+                    }
+                    if (gameType == GameType.BB.key && matchStatusCO.thirdBaseBag != null && matchStatusCO.thirdBaseBag != matchOdd.matchInfo?.thirdBaseBag) {
+                        matchOdd.matchInfo?.thirdBaseBag = matchStatusCO.thirdBaseBag
+                        isNeedRefresh = true
+                    }
+                    if (gameType == GameType.BB.key && matchStatusCO.outNumber != null && matchStatusCO.outNumber != matchOdd.matchInfo?.outNumber) {
+                        matchOdd.matchInfo?.outNumber = matchStatusCO.outNumber
+                        isNeedRefresh = true
+                    }
                 }
             }
             //matchStatusChange status = 100時，賽事結束

@@ -462,6 +462,10 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
             updateUI(it)
         }
 
+        viewModel.navPublicityPage.observe(this) {
+            GamePublicityActivity.reStart(this)
+        }
+
         viewModel.lockMoney.observe(this) {
             if (it?.toInt()!! > 0) {
                 ivNotice.visibility = View.VISIBLE
@@ -720,7 +724,7 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
         val thirdOpen = sConfigData?.thirdOpen == FLAG_OPEN
         btn_account_transfer.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
         btn_other_bet_record.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
-        btn_member_level.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
+        btn_member_level.visibility = View.GONE //if (!thirdOpen) View.GONE else View.VISIBLE
         bottom_nav_view.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
     }
 
@@ -766,13 +770,14 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
         sport_bottom_navigation.apply {
             setNavigationItemClickListener {
                 when (it) {
-                    R.id.navigation_sport -> {
-                        viewModel.navGame()
+                    R.id.navigation_home -> {
+                        viewModel.navHome()
                         finish()
                         false
                     }
-                    R.id.navigation_game -> {
-                        viewModel.navMyFavorite()
+                    R.id.navigation_sport -> {
+                        viewModel.navGame()
+                        finish()
                         false
                     }
                     R.id.navigation_account_history -> {

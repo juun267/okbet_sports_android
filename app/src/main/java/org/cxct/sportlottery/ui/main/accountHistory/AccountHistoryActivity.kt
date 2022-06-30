@@ -61,18 +61,14 @@ class AccountHistoryActivity :
         sport_bottom_navigation.apply {
             setNavigationItemClickListener {
                 when (it) {
+                    R.id.navigation_home -> {
+                        viewModel.navHome()
+                        finish()
+                        false
+                    }
                     R.id.navigation_sport -> {
                         viewModel.navGame()
                         finish()
-                        false
-                    }
-                    R.id.navigation_game -> {
-                        viewModel.navMyFavorite()
-                        finish()
-                        false
-                    }
-                    R.id.item_bet_list -> {
-                        viewModel.navShoppingCart()
                         false
                     }
                     R.id.navigation_account_history -> {

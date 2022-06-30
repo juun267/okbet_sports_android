@@ -75,6 +75,37 @@
 
 
     <LinearLayout
+        android:id="@+id/ll_my_favorite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        tools:visibility="visible">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/ic_star_v4"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/txv_price"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:drawablePadding="10dp"
+            android:gravity="start|center_vertical"
+            android:minHeight="48dp"
+            android:paddingHorizontal="10dp"
+            android:text="@string/my_favorite"
+            android:textColor="@color/color_BBBBBB_333333"
+            android:textSize="@dimen/textSize14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/ct_premium_odds"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

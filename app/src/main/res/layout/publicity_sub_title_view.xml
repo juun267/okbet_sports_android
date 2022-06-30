@@ -4,17 +4,16 @@
     android:id="@+id/ivTitle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="20dp"
-    android:layout_marginBottom="10dp"
+    android:layout_marginTop="@dimen/margin_4"
     android:gravity="center"
     android:orientation="horizontal"
     tools:ignore="SpUsage, ContentDescription">
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="16dp"
-        android:layout_marginStart="14dp"
-        android:src="@drawable/ic_hot" />
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_16"
+        android:src="@drawable/ic_hot_ball" />
 
     <TextView
         android:layout_width="0dp"
@@ -35,15 +34,8 @@
         android:text="@string/more"
         android:textAllCaps="true"
         android:textColor="@color/color_909090_666666"
+        android:drawableEnd="@drawable/ic_right_arrow_gray"
+        android:paddingEnd="14dp"
         android:textSize="@dimen/textSize12sp" />
 
-    <ImageView
-        android:id="@+id/ivMore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingStart="4dp"
-        android:paddingTop="6dp"
-        android:paddingEnd="14dp"
-        android:paddingBottom="6dp"
-        android:src="@drawable/ic_arrow_right_a3a3a3_666666" />
 </LinearLayout>

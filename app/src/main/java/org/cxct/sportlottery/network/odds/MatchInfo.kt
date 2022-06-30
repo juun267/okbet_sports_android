@@ -49,7 +49,11 @@ data class MatchInfo(
     @Json(name = "source")
     val source: Int?,
     @Json(name = "parlay")
-    val parlay: Int? //parlay (是否可以参加过关，0：否，1：是)
+    val parlay: Int?, //parlay (是否可以参加过关，0：否，1：是)
+    @Json(name = "homeIcon")
+    val homeIcon: String? = null,
+    @Json(name = "awayIcon")
+    val awayIcon: String? = null
 
     ) : Parcelable, MatchInfo {
     //Live
@@ -85,6 +89,14 @@ data class MatchInfo(
     override var awayCards: Int? = null
     override var homeCornerKicks: Int? = null
     override var awayCornerKicks: Int? = null
+
+    //BB
+    override var attack: String? = null
+    override var halfStatus: Int? = null
+    override var firstBaseBag: Int? = null
+    override var secBaseBag: Int? = null
+    override var thirdBaseBag: Int? = null
+    override var outNumber:Int? = null
 
     //999
     var scoreStatus:Int? = 0

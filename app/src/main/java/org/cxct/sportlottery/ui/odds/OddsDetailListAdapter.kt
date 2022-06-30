@@ -299,6 +299,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     PlayCate.EPS.ordinal
                     -> LayoutType.EPS.layout
 
+                    PlayCate.WM.ordinal, PlayCate.WM_1ST.ordinal
+                    -> LayoutType.ONE_LIST.layout
+
                     else -> LayoutType.ONE_LIST.layout
                 }
             }
@@ -334,8 +337,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 when (viewType) {
                     PlayCate.SINGLE_ND.ordinal,
                     PlayCate.HDP.ordinal, PlayCate.HDP_1ST.ordinal, PlayCate.HDP_2ST.ordinal,
-                    PlayCate.OU.ordinal, PlayCate.OU_1ST.ordinal, PlayCate.OU_2ST.ordinal,
-                    PlayCate.WM.ordinal
+                    PlayCate.OU.ordinal, PlayCate.OU_1ST.ordinal, PlayCate.OU_2ST.ordinal
                     -> LayoutType.SINGLE_2_ITEM.layout
 
                     PlayCate.SINGLE.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.SINGLE_2ST.ordinal
@@ -343,6 +345,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
                     PlayCate.EPS.ordinal
                     -> LayoutType.EPS.layout
+
+                    PlayCate.WM.ordinal
+                    -> LayoutType.ONE_LIST.layout
 
                     else -> LayoutType.ONE_LIST.layout
                 }
@@ -819,6 +824,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         PlayCate.EPS.ordinal
                         -> forEPS(oddsDetail)
 
+                        PlayCate.WM.ordinal, PlayCate.WM_1ST.ordinal
+                        -> oneList(oddsDetail)
+
                         else -> oneList(oddsDetail)
                     }
                 }
@@ -857,12 +865,14 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         PlayCate.OU.ordinal, PlayCate.OU_1ST.ordinal, PlayCate.OU_2ST.ordinal
                         -> forSingle(oddsDetail, 2)
 
-                        PlayCate.SINGLE.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.SINGLE_2ST.ordinal,
-                        PlayCate.WM.ordinal
+                        PlayCate.SINGLE.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.SINGLE_2ST.ordinal
                         -> forSingle(oddsDetail, 3)
 
                         PlayCate.EPS.ordinal
                         -> forEPS(oddsDetail)
+
+                        PlayCate.WM.ordinal
+                        -> oneList(oddsDetail)
 
                         else -> oneList(oddsDetail)
                     }
