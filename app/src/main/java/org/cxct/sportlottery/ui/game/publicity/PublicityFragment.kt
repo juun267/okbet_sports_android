@@ -94,7 +94,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 onGoDepositListener = {
                     avoidFastDoubleClick()
                     if (viewModel.isLogin.value != true) {
-                        showLoginNotify()
+                        goLoginPage()
                     } else {
                         viewModel.checkRechargeSystem()
                     }
@@ -102,14 +102,18 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 onGoWithdrawListener = {
                     avoidFastDoubleClick()
                     if (viewModel.isLogin.value != true) {
-                        showLoginNotify()
+                        goLoginPage()
                     } else {
                         viewModel.checkWithdrawSystem()
                     }
                 },
                 onGoThirdGamesListener = {
                     avoidFastDoubleClick()
-                    viewModel.requestEnterThirdGame(it)
+                    if (viewModel.isLogin.value != true) {
+                        showLoginNotify()
+                    } else {
+                        viewModel.requestEnterThirdGame(it)
+                    }
                 },
                 onClickBetListener = { gameType, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
                     if(mIsEnabled){
