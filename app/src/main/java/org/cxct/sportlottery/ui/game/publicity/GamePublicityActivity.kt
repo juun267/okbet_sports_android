@@ -285,8 +285,10 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                     }
                 }
                 gameToolbar.llLanguage -> {
-                    Timber.e("llLanguage")
                     goSwitchLanguagePage()
+                }
+                gameToolbar.btnLogin -> {
+                    goLoginPage()
                 }
             }
         }
@@ -404,9 +406,14 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                     ivMenu.visibility = View.GONE
                     llLanguage.visibility = View.VISIBLE
 
-                    btnLogin.visibility = View.GONE
+                    if (isCreditSystem()) {
+                        btnLogin.visibility = View.VISIBLE
+                        toolbarDivider.visibility = View.VISIBLE
+                    } else {
+                        btnLogin.visibility = View.GONE
+                        toolbarDivider.visibility = View.GONE
+                    }
                     btnRegister.visibility = View.GONE
-                    toolbarDivider.visibility = View.GONE
                 }
                 //endregion
             }

@@ -43,6 +43,7 @@ import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.addScrollListenerForBottomNavBar
+import org.cxct.sportlottery.util.isCreditSystem
 import timber.log.Timber
 
 /**
@@ -253,7 +254,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         with(mPublicityAdapter) {
             addTitle()
             addAnnouncement()
-            addUserInfo()
+            if (!isCreditSystem()) addUserInfo() //非信用盤才顯示
             addSubTitle()
             addPreload()
         }
@@ -276,10 +277,12 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         }
 
         viewModel.userMoney.observe(viewLifecycleOwner) {
-            mPublicityAdapter.updateUserInfoData(
-                viewModel.userInfo.value?.nickName.orEmpty(),
-                viewModel.userMoney.value ?: 0.0
-            )
+            if (!isCreditSystem()) { //非信用盤才顯示
+                mPublicityAdapter.updateUserInfoData(
+                    viewModel.userInfo.value?.nickName.orEmpty(),
+                    viewModel.userMoney.value ?: 0.0
+                )
+            }
         }
 
         viewModel.oddsType.observe(viewLifecycleOwner, {

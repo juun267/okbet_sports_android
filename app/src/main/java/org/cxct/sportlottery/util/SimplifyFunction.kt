@@ -357,7 +357,7 @@ fun TextView.setTeamNames(countCheck: Int, homeName: String?, awayName: String?)
  * 依 config -> creditSystem 參數顯示
  */
 fun View.setVisibilityByCreditSystem() {
-    visibility = if (sConfigData?.creditSystem == FLAG_CREDIT_OPEN) View.GONE else View.VISIBLE
+    visibility = if (isCreditSystem()) View.GONE else View.VISIBLE
 }
 
 /**
@@ -366,6 +366,7 @@ fun View.setVisibilityByCreditSystem() {
  */
 fun isCreditSystem(): Boolean {
     return sConfigData?.creditSystem == FLAG_CREDIT_OPEN
+//    return true // for test
 }
 
 /**
