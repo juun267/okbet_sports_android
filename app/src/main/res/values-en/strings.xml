@@ -870,6 +870,7 @@
     <string name="bet_fail_btn">Bet unsuccessful</string>
     <string name="credit_record_deactivate">Credit function disabled</string>
     <string name="game_postponed">Game postponed</string>
+    <string name="game_out">Outs:%s</string>
     <string name="money_recharge_hint1">Please transfer success before you submit deposit information.</string>
     <string name="money_recharge_hint2">Please refresh the page every time into the, get the latest payment account, avoid into your overdue account, into the wrong not compensation.</string>
     <string name="no_setting">No set</string>

@@ -86,6 +86,14 @@ data class MatchInfo(
     override var homeCornerKicks: Int? = null
     override var awayCornerKicks: Int? = null
 
+    //BB
+    override var attack: String? = null
+    override var halfStatus: Int? = null
+    override var firstBaseBag: Int? = null
+    override var secBaseBag: Int? = null
+    override var thirdBaseBag: Int? = null
+    override var outNumber:Int? = null
+
     //999
     var scoreStatus:Int? = 0
 
