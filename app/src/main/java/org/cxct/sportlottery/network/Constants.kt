@@ -385,4 +385,7 @@ object Constants {
 
     //news
     const val MESSAGE_LIST = "/api/front/message/list"
+
+    //bettingStation
+    const val BETTING_STATION_QUERY = "/api/front/bettingStation/query"
 }

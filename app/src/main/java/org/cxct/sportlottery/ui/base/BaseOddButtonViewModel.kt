@@ -388,7 +388,8 @@ abstract class BaseOddButtonViewModel(
                         parlayList,
                         1,
                         2,
-                        deviceId
+                        deviceId,
+                        channelType = 0 //先寫死固定帶0
                     )
                 )
             }
@@ -427,7 +428,8 @@ abstract class BaseOddButtonViewModel(
             listOf(Stake(parlayType ?: "", stake)),
             1,
             2,
-            deviceId
+            deviceId,
+            channelType = 0, //先寫死固定帶0
         )
 
         viewModelScope.launch {

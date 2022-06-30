@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network
 import org.cxct.sportlottery.network.appUpdate.AppUpdateService
 import org.cxct.sportlottery.network.bank.BankService
 import org.cxct.sportlottery.network.bet.BetService
+import org.cxct.sportlottery.network.bettingStation.BettingStationService
 import org.cxct.sportlottery.network.credential.CredentialService
 import org.cxct.sportlottery.network.feedback.FeedbackService
 import org.cxct.sportlottery.network.host.HostService
@@ -183,5 +184,10 @@ object OneBoSportApi {
         get() = RequestManager.instance
             .retrofit
             .create(NewsService::class.java)
+
+    val bettingStationService: BettingStationService
+        get() = RequestManager.instance
+            .retrofit
+            .create(BettingStationService::class.java)
 
 }

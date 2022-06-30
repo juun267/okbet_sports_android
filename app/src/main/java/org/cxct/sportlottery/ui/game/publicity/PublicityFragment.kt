@@ -20,10 +20,12 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
+import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
+import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
@@ -32,7 +34,12 @@ import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameItemData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
+import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
+import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
+import org.cxct.sportlottery.ui.withdraw.BankActivity
+import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.addScrollListenerForBottomNavBar
@@ -46,6 +53,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     private var _binding: FragmentPublicityBinding? = null
 
     private val binding get() = _binding!!
+    private var customSecurityDialog: CustomSecurityDialog? = null
 
     private var isNewestDataFromApi = false
     private var mRecommendList: List<Recommend> = listOf()
@@ -85,11 +93,19 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 },
                 onGoDepositListener = {
                     avoidFastDoubleClick()
-                    viewModel.checkRechargeSystem()
+                    if (viewModel.isLogin.value != true) {
+                        showLoginNotify()
+                    } else {
+                        viewModel.checkRechargeSystem()
+                    }
                 },
                 onGoWithdrawListener = {
                     avoidFastDoubleClick()
-                    viewModel.checkWithdrawSystem()
+                    if (viewModel.isLogin.value != true) {
+                        showLoginNotify()
+                    } else {
+                        viewModel.checkWithdrawSystem()
+                    }
                 },
                 onGoThirdGamesListener = {
                     avoidFastDoubleClick()
@@ -208,6 +224,12 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     private fun goSwitchLanguagePage() {
         when (activity) {
             is GamePublicityActivity -> (activity as GamePublicityActivity).goSwitchLanguagePage()
+        }
+    }
+
+    private fun showLoginNotify() {
+        when (activity) {
+            is GamePublicityActivity -> (activity as GamePublicityActivity).showLoginNotify()
         }
     }
 
@@ -362,6 +384,162 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {
             if (isVisible)
                 enterThirdGame(it)
+        }
+
+        //充值提現頁面相關
+        viewModel.withdrawSystemOperation.observe(viewLifecycleOwner) {
+            val operation = it.getContentIfNotHandled()
+            if (operation == false) {
+                showPromptDialog(
+                    getString(R.string.prompt),
+                    getString(R.string.message_withdraw_maintain)
+                ) {}
+            }
+        }
+
+        viewModel.rechargeSystemOperation.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    startActivity(Intent(context, MoneyRechargeActivity::class.java))
+                } else {
+                    showPromptDialog(
+                        getString(R.string.prompt),
+                        getString(R.string.message_recharge_maintain)
+                    ) {}
+                }
+            }
+        }
+
+        viewModel.needToUpdateWithdrawPassword.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    showPromptDialog(
+                        getString(R.string.withdraw_setting),
+                        getString(R.string.please_setting_withdraw_password),
+                        getString(R.string.go_to_setting),
+                        true
+                    ) {
+                        startActivity(Intent(context, SettingPasswordActivity::class.java).apply {
+                            putExtra(
+                                SettingPasswordActivity.PWD_PAGE,
+                                SettingPasswordActivity.PwdPage.BANK_PWD
+                            )
+                        })
+                    }
+                } else {
+                    viewModel.checkProfileInfoComplete()
+                }
+            }
+        }
+
+        viewModel.needToCompleteProfileInfo.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    showPromptDialog(
+                        getString(R.string.withdraw_setting),
+                        getString(R.string.please_complete_profile_info),
+                        getString(R.string.go_to_setting),
+                        true
+                    ) {
+                        startActivity(Intent(context, ProfileActivity::class.java))
+                    }
+                } else {
+                    viewModel.checkBankCardPermissions()
+                }
+            }
+        }
+
+        viewModel.needToBindBankCard.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { messageId ->
+                if (messageId != -1) {
+                    showPromptDialog(
+                        getString(R.string.withdraw_setting),
+                        getString(messageId),
+                        getString(R.string.go_to_setting),
+                        true
+                    ) {
+                        startActivity(Intent(context, BankActivity::class.java))
+                    }
+                } else {
+                    startActivity(Intent(context, WithdrawActivity::class.java))
+                }
+            }
+        }
+
+        viewModel.settingNeedToUpdateWithdrawPassword.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    showPromptDialog(
+                        getString(R.string.withdraw_setting),
+                        getString(R.string.please_setting_withdraw_password),
+                        getString(R.string.go_to_setting),
+                        true
+                    ) {
+                        startActivity(Intent(context, SettingPasswordActivity::class.java).apply {
+                            putExtra(
+                                SettingPasswordActivity.PWD_PAGE,
+                                SettingPasswordActivity.PwdPage.BANK_PWD
+                            )
+                        })
+                    }
+                } else if (!b) {
+                    startActivity(Intent(context, BankActivity::class.java))
+                }
+            }
+        }
+
+        viewModel.settingNeedToCompleteProfileInfo.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    showPromptDialog(
+                        getString(R.string.withdraw_setting),
+                        getString(R.string.please_complete_profile_info),
+                        getString(R.string.go_to_setting),
+                        true
+                    ) {
+                        startActivity(Intent(context, ProfileActivity::class.java))
+                    }
+                } else if (!b) {
+                    startActivity(Intent(context, BankActivity::class.java))
+                }
+            }
+        }
+
+        viewModel.needToSendTwoFactor.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    customSecurityDialog = CustomSecurityDialog(requireContext()).apply {
+                        getSecurityCodeClickListener {
+                            this.showSmeTimer300()
+                            viewModel.sendTwoFactor()
+                        }
+                        positiveClickListener = CustomSecurityDialog.PositiveClickListener { number ->
+                            viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
+                        }
+                    }
+                    customSecurityDialog?.show(childFragmentManager, null)
+
+                }
+            }
+        }
+
+        //確認收到簡訊驗證碼
+        viewModel.twoFactorResult.observe(viewLifecycleOwner) {
+            //傳送驗證碼成功後才能解鎖提交按鈕
+            customSecurityDialog?.setPositiveBtnClickable(it?.success ?: false)
+            sConfigData?.hasGetTwoFactorResult = true
+        }
+
+        //簡訊驗證成功
+        viewModel.twoFactorSuccess.observe(viewLifecycleOwner) {
+            if (it == true)
+                customSecurityDialog?.dismiss()
+        }
+
+        viewModel.intoWithdraw.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let {
+                startActivity(Intent(context, WithdrawActivity::class.java))
+            }
         }
     }
 
