@@ -1706,6 +1706,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     matchType = args.matchType,
                     leagueIdList = leagueChangeEvent.leagueIdList,
                 )
+                viewModel.getSportMenu(args.matchType, onlyRefreshSportMenu = true)
             }
         }
     }
@@ -1848,7 +1849,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         comingSoonList.addAll(gameTypeList)
         if (viewModel.getMatchCount(args.matchType) > 0) {
             comingSoonList.add(Item(code = GameType.BB_COMING_SOON.key, "", -1, null, 99))
-            comingSoonList.add(Item(code = GameType.ES_COMING_SOON.key, "", -1, null, 100))
+            //OkBet 正式＆測試環境皆不使用
+//            comingSoonList.add(Item(code = GameType.ES_COMING_SOON.key, "", -1, null, 100))
         }
         gameTypeAdapter.dataSport = comingSoonList
 
