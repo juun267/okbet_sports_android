@@ -2911,6 +2911,8 @@ class GameViewModel(
                     _publicityRecommend.postValue(Event(recommendList))
 
                     notifyFavorite(FavoriteType.MATCH)
+                } else {
+                    _publicityRecommend.postValue(Event(emptyList()))
                 }
             }
         }

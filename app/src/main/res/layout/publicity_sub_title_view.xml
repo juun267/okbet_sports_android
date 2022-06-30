@@ -4,7 +4,8 @@
     android:id="@+id/ivTitle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/margin_4"
+    android:paddingTop="@dimen/margin_7"
+    android:paddingBottom="@dimen/margin_3"
     android:gravity="center"
     android:orientation="horizontal"
     tools:ignore="SpUsage, ContentDescription">

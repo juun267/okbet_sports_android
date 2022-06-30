@@ -287,10 +287,17 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         viewModel.publicityRecommend.observe(viewLifecycleOwner) { event ->
             event?.getContentIfNotHandled()?.let { recommendList ->
                 hideLoading()
+                if (recommendList.isEmpty()) {
+                    mPublicityAdapter.removeData(GamePublicityAdapter.PublicitySubTitleImageData())
+                    mPublicityAdapter.removeData(recommendList)
+                    mPublicityAdapter.removeData(GamePublicityAdapter.PreloadItem())
+                    return@observe
+                }
                 isNewestDataFromApi = true
                 mRecommendList = recommendList
                 mPublicityAdapter.removeData(GamePublicityAdapter.PreloadItem())
                 if (mPublicityAdapter.getRecommendData().size == 0) {
+                    mPublicityAdapter.addSubTitle()
                     mPublicityAdapter.addRecommend(recommendList)
                     Timber.e("addRecommend")
                 } else {
