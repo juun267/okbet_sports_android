@@ -26,9 +26,11 @@ class MotionFloatingMenu @JvmOverloads constructor(context: Context, attrs: Attr
         super.onAttachedToWindow()
 
         //使用盤開啟狀態隱藏，充值提現按鈕
-        motion_layout.getConstraintSet(R.id.start).getConstraint(motion_cash_save.id).propertySet.mVisibilityMode = 1; // 1 - ignore or 0 - normal
+        motion_layout.getConstraintSet(R.id.start).getConstraint(motion_cash_save.id).propertySet.mVisibilityMode = 1 // 1 - ignore or 0 - normal
+        motion_layout.getConstraintSet(R.id.open).getConstraint(motion_cash_save.id).propertySet.mVisibilityMode = 1 // 1 - ignore or 0 - normal
         motion_cash_save.setVisibilityByCreditSystem()
-        motion_layout.getConstraintSet(R.id.start).getConstraint(motion_cash_get.id).propertySet.mVisibilityMode = 1; // 1 - ignore or 0 - normal
+        motion_layout.getConstraintSet(R.id.start).getConstraint(motion_cash_get.id).propertySet.mVisibilityMode = 1 // 1 - ignore or 0 - normal
+        motion_layout.getConstraintSet(R.id.open).getConstraint(motion_cash_get.id).propertySet.mVisibilityMode = 1 // 1 - ignore or 0 - normal
         motion_cash_get.setVisibilityByCreditSystem()
 
         motion_back_home.setOnClickListener {
