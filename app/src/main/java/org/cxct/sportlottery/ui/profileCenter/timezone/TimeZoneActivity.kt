@@ -74,22 +74,31 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                 java.util.TimeZone.setDefault(zone)
             MultiLanguagesApplication.timeZone=zone
         })
-        val curTimeZone=java.util.TimeZone.getDefault()
-        val displayName=curTimeZone.getDisplayName(false,java.util.TimeZone.SHORT)
-        val id=curTimeZone.id
-        items=Gson().fromJson<List<TimeZone>>(
+
+        items=Gson().fromJson(
             String(assets.open("timezone.json").readBytes()),
             object :TypeToken<List<TimeZone>>(){}.type
-        ).apply {
-            forEach {
-                if (displayName.contains(it.name.replace(" ",""))&&id.split("/").contains(it.city_en)){
-                    it.isSelected=true
-            }
-        }
-        }
+        )
+        initSelect()
         adapter.setItems(items)
         rv_list.adapter=adapter
     }
+    fun initSelect(){
+        val curTimeZone=java.util.TimeZone.getDefault()
+        val displayName=curTimeZone.getDisplayName(false,java.util.TimeZone.SHORT)
+        val id=curTimeZone.id
+        var selecItem=items.find {
+             displayName.contains(it.name.replace(" ",""))&&id.split("/").contains(it.city_en)
+        }
+        selecItem?.let {
+            it.isSelected=true
+            var mutableList=items.toMutableList()
+            mutableList.remove(selecItem)
+            mutableList.add(0,selecItem)
+            items=mutableList.toList()
+        }
+    }
+
     fun filter(key:String){
         if (key.isNullOrBlank()){
             adapter.setItems(items)
