@@ -730,8 +730,8 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
 
     private fun updateCreditAccountUI() {
         lin_wallet_operation.setVisibilityByCreditSystem()
-        if (!(sConfigData?.selfRestraintVerified == "0" || sConfigData?.selfRestraintVerified == null)) btn_self_limit.setVisibilityByCreditSystem()
     }
+
     override fun clickMenuEvent() {
         if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
         else {
