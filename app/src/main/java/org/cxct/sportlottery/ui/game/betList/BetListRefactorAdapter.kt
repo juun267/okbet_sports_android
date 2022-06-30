@@ -144,16 +144,14 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     false
                 )
             )
-            //(舊版，目前未使用) ParlayFirst, BatchSingleViewHolder
-            /*
-            ViewType.ParlayFirst.ordinal -> BatchSingleViewHolder(
-                layoutInflater.inflate(
-                    R.layout.content_bet_list_batch_control,
-                    parent,
-                    false
-                )
-            )
-            */
+            //目前未使用 ParlayFirst, BatchSingleViewHolder
+//            ViewType.ParlayFirst.ordinal -> BatchSingleViewHolder(
+//                layoutInflater.inflate(
+//                    R.layout.content_bet_list_batch_control,
+//                    parent,
+//                    false
+//                )
+//            )
             ViewType.Warn.ordinal -> CantParlayWarnViewHolder(
                 layoutInflater.inflate(
                     R.layout.content_cant_parlay_warn,
@@ -215,8 +213,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     )
                 }
             }
-            //(舊版，目前未使用)
-            /*
             is BatchSingleViewHolder -> {
                 holder.bind(
                     parlayList?.getOrNull(position - (betList?.size ?: 0)),
@@ -244,7 +240,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     adapterBetType
                 )
             }
-            */
             is BatchParlayConnectViewHolder -> {
                 holder.bind(
                     ////region 20220607 投注單版面調整
@@ -1098,8 +1093,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         }
     }
 
-    //(舊版，目前未使用) 填充所有單注、串關第一項、展開更多
-    /*
+    //填充所有單注、串關第一項、展開更多
     class BatchSingleViewHolder(itemView: View) : BatchParlayViewHolder(itemView) {
         private var mUserMoney: Double = 0.0
         fun bind(
@@ -1575,9 +1569,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             }
         }
     }
-    */
 
-    //串關
+    //串關(除第一項)
     class BatchParlayConnectViewHolder(itemView: View) : BatchParlayViewHolder(itemView) {
         fun bind(
             itemData: ParlayOdd?,
@@ -1612,7 +1605,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         }
     }
 
-    //多投單注
+    //單注移置展開更多裡面
     class BatchSingleInMoreOptionViewHolder(itemView: View) : BatchParlayViewHolder(itemView) {
         private var mUserMoney: Double = 0.0
         private var mUserLogin: Boolean = false
