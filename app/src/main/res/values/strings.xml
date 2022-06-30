@@ -755,7 +755,7 @@
     <string name="third_game_cgcp">CX lottery</string>
     <string name="third_game_ogplus">OG+live</string>
     <string name="third_game_cr">Crown E-sports</string>
-    <string name="out_account_">Transfer out of account:</string>
+    <string name="out_account_">Transfer out of account：</string>
     <string name="in_account_">Transfer into the account：</string>
     <string name="transfer_amount">Transfer amount：</string>
     <string name="transfer_state">Transfer status：</string>

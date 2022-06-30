@@ -742,7 +742,7 @@
     <string name="third_game_cgcp">Xổ số Chuangxin</string>
     <string name="third_game_ogplus">OG+Casino</string>
     <string name="third_game_cr">Crown Sports</string>
-    <string name="out_account_">chuyển ra tài khoản</string>
+    <string name="out_account_">Chuyển ra tài khoản：</string>
     <string name="in_account_">Chuyển vào tài khoản：</string>
     <string name="transfer_amount">số tiền chuyển đổi：</string>
     <string name="transfer_state">Trạng thái chuyển đổi：</string>
