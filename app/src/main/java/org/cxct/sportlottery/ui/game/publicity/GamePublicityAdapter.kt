@@ -679,13 +679,13 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                 oddPlayCateCode = it
             }
             sortOddsMap?.iterator()?.next()?.value?.let {
-                if (it.isNotEmpty()) oddList = it
+                oddList = it
             }
 
             //玩法名稱
             val playCateName = data.playCateNameMap?.get(oddPlayCateCode)?.get(LanguageManager.getSelectLanguage(binding.root.context).key) ?: ""
             binding.tvGamePlayCateCodeName.text = playCateName
-//            Timber.e("oddList: $oddList")
+            Timber.e("oddList: $oddList")
             with(binding) {
                 //配置賽事比分及機制
                 data.matchType?.let { matchType ->
@@ -698,7 +698,6 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                     with(oddBtn1) {
                         visibility = View.VISIBLE
                         setupOddsButton(this, odd1)
-                        setupOddName4Home("1", oddPlayCateCode)
                         setButtonBetClick(
                             data = data,
                             odd = odd1,
@@ -718,8 +717,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                     with(oddBtn2) {
                         visibility = View.VISIBLE
                         setupOddsButton(this, odd2)
-                        if (oddList.size > 2) setupOddName4Home("X", oddPlayCateCode)
-                        else setupOddName4Home("2", oddPlayCateCode)
+                        if (oddList.size > 2) setupOdd(odd2, oddsType)
                         setButtonBetClick(
                             data = data,
                             odd = odd2,
@@ -739,7 +737,6 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                     with(oddBtn3) {
                         visibility = View.VISIBLE
                         setupOddsButton(this, odd3)
-                        setupOddName4Home("2", oddPlayCateCode)
                         setButtonBetClick(
                             data = data,
                             odd = odd3,
