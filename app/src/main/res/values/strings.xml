@@ -1219,6 +1219,7 @@
     <!--endregion-->
 
     <string name="e_games">E-Games</string>
+    <string name="e_games_slogan">Brand new experience</string>
     <string name="verification_status">Verification Status</string>
     <string name="register_identity_photo_front">Upload Valid ID of the front</string>
     <string name="register_identity_photo_hint_front">Click to add an image of the front of Valid ID.</string>
