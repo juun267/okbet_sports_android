@@ -26,10 +26,18 @@ import java.io.FileNotFoundException
 class RegisterCredentialsFragment : BaseSocketFragment<RegisterViewModel>(RegisterViewModel::class) {
     companion object {
 
-        fun newInstance(): RegisterCredentialsFragment {
-            return RegisterCredentialsFragment()
+        fun newInstance(registerCredentialsListener: RegisterCredentialsListener): RegisterCredentialsFragment {
+            return RegisterCredentialsFragment().apply {
+                this.registerCredentialsListener = registerCredentialsListener
+            }
         }
     }
+
+    class RegisterCredentialsListener(private val onCloseFragment: () -> Unit) {
+        fun onCloseFragment() = onCloseFragment.invoke()
+    }
+
+    private var registerCredentialsListener: RegisterCredentialsListener? = null
 
     private var docFile: File? = null
     private var photoFile: File? = null
@@ -143,16 +151,16 @@ class RegisterCredentialsFragment : BaseSocketFragment<RegisterViewModel>(Regist
     }
 
     private fun initObserve() {
-        viewModel.docUrlResult.observe(viewLifecycleOwner, {
+        viewModel.docUrlResult.observe(viewLifecycleOwner) {
             it?.let { result ->
                 if (!result.success) {
                     hideLoading()
                     showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
                 }
             }
-        })
+        }
 
-        viewModel.photoUrlResult.observe(viewLifecycleOwner, {
+        viewModel.photoUrlResult.observe(viewLifecycleOwner) {
             it?.let { result ->
                 hideLoading()
                 if (!result.success)
@@ -163,11 +171,11 @@ class RegisterCredentialsFragment : BaseSocketFragment<RegisterViewModel>(Regist
                         message = getString(R.string.upload_success),
                         success = true
                     ) {
-                        activity?.onBackPressed()
+                        registerCredentialsListener?.onCloseFragment()
                     }
                 }
             }
-        })
+        }
     }
 
     private fun setupButton() {

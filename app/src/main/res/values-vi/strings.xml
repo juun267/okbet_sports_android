@@ -106,7 +106,7 @@
     <string name="hint_security_pb">(Vui lòng nhập quốc gia yêu thích)</string>
     <string name="real_name">Họ tên thật</string>
     <string name="income_source">Source Of Income</string>
-    <string name="identity_type">Identity Type</string>
+    <string name="identity_type">Valid ID Type</string>
     <string name="betting_shop">Outlet</string>
     <string name="register_identity">Valid ID</string>
     <string name="hint_register_identity">(Please enter Valid ID)</string>
