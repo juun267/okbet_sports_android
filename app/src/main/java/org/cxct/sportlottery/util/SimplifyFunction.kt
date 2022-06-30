@@ -468,23 +468,25 @@ fun View.setSpinnerView(
     var selectItem: StatusSheetData? = null
     var mListPop = ListPopupWindow(context)
 
-    setOnTouchListener { view, event ->
-        if (event.action == MotionEvent.ACTION_UP) {
-            if (mListPop.isShowing) {
-                mListPop.dismiss()
-            } else {
-                mListPop.show()
-            }
+    setOnClickListener {
+        //隱藏鍵盤
+        val inputMethodManager = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
+
+        if (mListPop.isShowing) {
+            mListPop.dismiss()
+        } else {
+            mListPop.show()
+        }
+
+        if (!editText.isFocused) {
             //設置TextFieldBoxes為選中狀態
             textFieldBoxes.hasFocus = true
-            //隱藏光標
-            editText.isCursorVisible = false
-            //隱藏鍵盤
-            val inputMethodManager = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-            touchListener()
         }
-        true
+        //隱藏光標
+        editText.isCursorVisible = false
+
+        touchListener()
     }
 
     if (spinnerList.isNotEmpty()) {
@@ -516,6 +518,8 @@ fun View.setSpinnerView(
     }
     //PopupWindow關閉時
     mListPop.setOnDismissListener {
+        textFieldBoxes.hasFocus = false
+        editText.clearFocus()
         popupWindowDismissListener()
     }
 }

@@ -334,6 +334,18 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             birthdayTimePickerView = createTimePicker { date ->
                 eetBirth.setText(TimeUtil.stampToRegisterBirthdayFormat(date))
             }
+
+            eetBirth.post {
+                //TODO 可重構獲取focus直接展開不必蓋一個View
+                /**
+                 * 若Birth取得focus的話點擊birthdayTimePickerView
+                 */
+                eetBirth.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+                    if (hasFocus) {
+                        birthPicker.performClick()
+                    }
+                }
+            }
         }
     }
 
@@ -394,6 +406,18 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                         etSalary.endIconImageButton.rotation = 0F
                     })
             }
+
+            eetSalary.post {
+                //TODO 可重構 不需要蓋一層View
+                /**
+                 * 若Salary取得focus的話點擊salarySpinner
+                 */
+                eetSalary.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+                    if (hasFocus) {
+                        salarySpinner.performClick()
+                    }
+                }
+            }
         }
     }
 
@@ -434,6 +458,18 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                         //旋轉箭頭
                         etIdentityType.endIconImageButton.rotation = 0F
                     })
+            }
+
+            eetIdentityType.post {
+                //TODO 可重構 不需要蓋一層View
+                /**
+                 * 若IdentityType取得focus的話點擊identityTypeSpinner
+                 */
+                eetIdentityType.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+                    if (hasFocus) {
+                        identityTypeSpinner.performClick()
+                    }
+                }
             }
         }
     }
@@ -765,6 +801,20 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 //預設後會變為選中狀態, 需清除focus
                 etBettingShop.hasFocus = false
                 viewModel.checkBettingShop(eetBettingShop.text.toString())
+
+
+
+                eetBettingShop.post {
+                    //TODO 可重構 不需要蓋一層View
+                    /**
+                     * 若BettingShop取得focus的話點擊bettingShopSpinner
+                     */
+                    eetBettingShop.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+                        if (hasFocus) {
+                            bettingShopSpinner.performClick()
+                        }
+                    }
+                }
             }
         }
 
