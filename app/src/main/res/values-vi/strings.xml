@@ -730,7 +730,7 @@
     <string name="transfer_money">số tiền chuyển đổi</string>
     <string name="transfer_money_minimum">hạn mức 1.000 trở lên</string>
     <string name="confirm_transform">xác nhận chuyển đổi</string>
-    <string name="plat_money">Số dư ở sàn</string>
+    <string name="plat_money">Số dư kênh</string>
     <string name="money">Số tiền</string>
     <string name="transfer_platform">Kênh chuyển đổi</string>
     <string name="transfer_money_succeed">Số tiền chuyển đổi thành công</string>
