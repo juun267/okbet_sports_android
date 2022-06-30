@@ -487,6 +487,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         et_clickable.isVisible = true
                         //提示文字Container
                         ll_single_tips.isVisible = true
+                        ll_balance_tips.isVisible = true
                     }
                     else -> {
                         cl_to_win.isVisible = false
@@ -494,6 +495,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         et_clickable.isVisible = false
                         //提示文字Container
                         ll_single_tips.isVisible = false
+                        ll_balance_tips.isVisible = false
                     }
                 }
                 setupBetAmountInput(
@@ -1006,7 +1008,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         View.GONE
                     }
                 }
-                tvBalanceInsufficientMessage.visibility = if (betAmount != 0.0 && betAmount > mUserMoney) {
+                tvBalanceInsufficientMessage.visibility = if (mUserLogin && betAmount != 0.0 && betAmount > mUserMoney) {
                     balanceError = true
                     View.VISIBLE
                 } else {
@@ -1959,7 +1961,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 itemData.parlayOdds?.min?.let { min ->
                     amountError = betAmount != 0.0 && betAmount < min
                 }
-                val balanceError = betAmount != 0.0 && betAmount > mUserMoney
+                val balanceError = mUserLogin && betAmount != 0.0 && betAmount > mUserMoney
                 itemData.amountError = if (balanceError) true else amountError
             }
         }
