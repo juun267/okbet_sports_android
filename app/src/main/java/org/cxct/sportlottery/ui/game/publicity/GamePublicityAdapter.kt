@@ -577,7 +577,6 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                     publicityAdapterListener.onGoRegisterListener()
                 }
                 btnDeposit.apply {
-                    setVisibilityByCreditSystem()
                     setOnClickListener {
                         publicityAdapterListener.onGoDepositListener()
                     }
@@ -588,6 +587,11 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                         publicityAdapterListener.onGoWithdrawListener()
                     }
                 }
+
+                // 使用盤開啟狀態要隱藏
+                llSignup.setVisibilityByCreditSystem()
+                lineCenter.setVisibilityByCreditSystem()
+                llDepositWithdraw.setVisibilityByCreditSystem()
             }
         }
     }
