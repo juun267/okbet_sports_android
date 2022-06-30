@@ -710,6 +710,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                     with(oddBtn1) {
                         visibility = View.VISIBLE
                         setupOddsButton(this, odd1)
+                        setupOdd4hall(oddPlayCateCode, odd1, oddList, oddsType)
                         setButtonBetClick(
                             data = data,
                             odd = odd1,
@@ -729,7 +730,8 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                     with(oddBtn2) {
                         visibility = View.VISIBLE
                         setupOddsButton(this, odd2)
-                        if (oddList.size > 2) setupOdd(odd2, oddsType)
+                        setupOdd4hall(oddPlayCateCode, odd2, oddList, oddsType)
+                        if (oddList.size > 2)  setupOdd4hall(oddPlayCateCode, odd2, oddList, oddsType, true)
                         setButtonBetClick(
                             data = data,
                             odd = odd2,
@@ -749,6 +751,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                     with(oddBtn3) {
                         visibility = View.VISIBLE
                         setupOddsButton(this, odd3)
+                        setupOdd4hall(oddPlayCateCode, odd3, oddList, oddsType)
                         setButtonBetClick(
                             data = data,
                             odd = odd3,
@@ -1116,7 +1119,6 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
         private fun setupOddsButton(oddsButton: OddsButtonPublicity, odd: Odd?) {
 
             oddsButton.apply {
-                setupOdd(odd, oddsType, "disable")
                 setupOddState(oddsButton, odd)
                 odd?.let {
                     this.isSelected = it.isSelected ?: false
