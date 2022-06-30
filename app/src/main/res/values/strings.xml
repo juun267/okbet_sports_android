@@ -15,8 +15,9 @@
     <string name="error_input_empty_new">This field is required.</string>
     <string name="error_incompatible_format">The name that you entered is not valid</string>
     <string name="error_wx_incompatible_format">Wechat ID formatted incorrectly</string>
+    <string name="error_identity_photo">Valid ID not uploaded</string>
     <string name="congratulation_win">Congratulations，betting slip suffix code:%1$s Winning :%2$s</string>
-    <string name="warning_cancel">Remind you betting slip suffix code:%s has been canceled</string>
+    <string name="warning_cancel">Remind you betting slip suffix code:%1$s has been canceled</string>
     <string name="prompt">Tips</string>
     <string name="btn_confirm">Confirm</string>
     <string name="btn_determine">Confirm</string>
@@ -27,7 +28,7 @@
     <string name="error_config_title">Bad line</string>
     <string name="error_config">The line is not good, please feedback problems with customer service</string>
     <string name="find_new_version">Discover new version</string>
-    <string name="version_name">Version %s</string>
+    <string name="version_name">Version %1$s</string>
     <string name="btn_pass">Skip</string>
     <string name="login_account">Account</string>
     <string name="please_input_account">(your username)</string>
@@ -54,7 +55,7 @@
     <string name="register_privacy">Send me updates and promotions in accordance with the</string>
     <string name="register_privacy_policy">&#160;Privacy Policy</string>
     <string name="register_privacy_policy_promotions"></string>
-    <string name="register_over_21">I am over 21 years of age and have read and agree to the %s’s&#160;</string>
+    <string name="register_over_21">I am over 21 years of age and have read and agree to the %1$s’s&#160;</string>
     <string name="register_rules">&#160;Terms &amp; Conditions</string>
     <string name="register_rules_2nd_half"></string>
     <string name="register_not_ph_official">I am not a government official and/or employee directly connected with the operation of the Philippine government or any of its agencies.</string>
@@ -63,7 +64,7 @@
     <string name="register_rule_agree_all">I agree to all terms and conditions of the above.</string>
     <string name="register_success">Register successfully</string>
     <string name="register_watch_first">Explore the game</string>
-    <string name="register_jump">The page will be jumping to %s 5 sec later.</string>
+    <string name="register_jump">The page will be jumping to %1$s 5 sec later.</string>
     <string name="register_recharge_now">Deposit now</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="hint_confirm_password">(Confirm Password)</string>
@@ -105,6 +106,13 @@
     <string name="security_pb">Security question</string>
     <string name="hint_security_pb">(Please enter the favorite country)</string>
     <string name="real_name">Full name</string>
+    <string name="income_source">Source Of Income</string>
+    <string name="identity_type">Identity Type</string>
+    <string name="betting_shop">Outlet</string>
+    <string name="register_identity">Valid ID</string>
+    <string name="hint_register_identity">(Please enter Valid ID)</string>
+    <string name="birth_date">Birth Date</string>
+    <string name="hint_birth_date">(YYYY/MM/DD)</string>
     <string name="hint_real_name">(match the bank account name)</string>
     <string name="verification_code">Verification code</string>
     <string name="verification_code_by_sms">SMS verify code</string>
@@ -216,9 +224,9 @@
     <string name="member_level">Member level</string>
     <string name="game_settlement">Result</string>
     <string name="version_update">Update Version</string>
-    <string name="odds_type">Handicap-%s</string>
+    <string name="odds_type">Handicap-%1$s</string>
     <string name="sign_out">Logout</string>
-    <string name="label_version">Version Ver %s</string>
+    <string name="label_version">Version Ver %1$s</string>
     <string name="now_level">Current level</string>
     <string name="growth_requirement">The account to level up need：</string>
     <string name="no_value">Nope</string>
@@ -231,8 +239,8 @@
     <string name="daily_bet_range">Daily valid code interval valued</string>
     <string name="title_rebates_rate">Rebate %</string>
     <string name="daily_rebates">Maximum rebate amount in one day</string>
-    <string name="hint_recharge_growth">Top-up %s %d lulfilling %d to level up</string>
-    <string name="hint_bet_growth">Bet %s %d lulfilling %d to level up</string>
+    <string name="hint_recharge_growth">Top-up %1$s %d lulfilling %d to level up</string>
+    <string name="hint_bet_growth">Bet %1$s %d lulfilling %d to level up</string>
     <string name="contact_us">Contact us</string>
     <string name="game_rule">Game Rules</string>
     <string name="news">News</string>
@@ -390,13 +398,13 @@
     <string name="game_match">Match：</string>
     <string name="play_type">Betting method</string>
     <string name="game_odds">Odds</string>
-    <string name="match_names">(Home) %s vs %s (Away)</string>
-    <string name="match_names_2">Home %s vs %s Away</string>
-    <string name="match_names_3">Home %s V.S %s Away</string>
+    <string name="match_names">(Home) %1$s vs %1$s (Away)</string>
+    <string name="match_names_2">Home %1$s vs %1$s Away</string>
+    <string name="match_names_3">Home %1$s V.S %1$s Away</string>
     <string name="bet_item">Betting items -</string>
     <string name="match_type_row_in_play">IN-PLAY</string>
     <string name="match_type_row_at_start">SOON</string>
-    <string name="at_start_remain_minute">%s Minute</string>
+    <string name="at_start_remain_minute">%1$s Minute</string>
     <string name="match_type_row_btn_bs">Concede goals &amp; over/under</string>
     <string name="game_filter_row_search_hint">Please enter league name</string>
     <string name="game_filter_row_search_hint_league">Please enter team name</string>
@@ -494,7 +502,7 @@
     <string name="txv_online_pay">Online Deposit</string>
     <string name="txv_crypto_pay">Virtual currency transfer</string>
     <string name="error_recharge_amount">Incorrect format or value of top-up amount</string>
-    <string name="error_first_recharge_amount">The first deposit amount cannot be less than %s</string>
+    <string name="error_first_recharge_amount">The first deposit amount cannot be less than %1$s</string>
     <string name="error_recharge_account">Incorrect number or value of top-up amount</string>
     <string name="error_bank_id">There is an error in the format of the bank account number</string>
     <string name="error_hashcode">Block chain trading ID format error</string>
@@ -627,7 +635,7 @@
     <string name="bet_info_list_add_more">More selection</string>
     <string name="bet_info_list_bet">Place bet</string>
     <string name="bet_info_list_odds_change">Accept changes &#038; bets</string>
-    <string name="bet_info_list_hint">Limit：%s</string>
+    <string name="bet_info_list_hint">Limit：%1$s</string>
     <string name="bet_info_list_bigger_than_zero">The bet amount must be greater than zero</string>
     <string name="bet_info_list_bigger_than_max_limit">The amount of betting exceeds the betting limit</string>
     <string name="bet_info_list_less_than_minimum_limit">The amount of betting is below the betting limit</string>
@@ -635,8 +643,8 @@
     <string name="bet_info_parlay_list">Double series pass betting</string>
     <string name="bet_info_parlay_win_quota">Winning amount:</string>
     <string name="bet_info_add_bet_success">Successful betting</string>
-    <string name="bet_info_current_money">Balance:%s</string>
-    <string name="bet_info_in_play_score">%s (%2$s-%3$s)</string>
+    <string name="bet_info_current_money">Balance:%1$s</string>
+    <string name="bet_info_in_play_score">%1$s (%2$s-%3$s)</string>
     <string name="bet_info_system_close_incompatible_item">Game play you selected can not apply to game play of parlay rules, will automatically be cancelled by system\',</string>
     <string name="bet_info_list_clean">Clear all</string>
     <string name="bet_info_bet_balance_insufficient">not enough balance</string>
@@ -648,7 +656,7 @@
     <string name="bet_info_accept_odds_change">Accept changes</string>
     <string name="bet_info_add_to_bet_info">Add to bet slip</string>
     <string name="bet_info_odd_content_changed">One or more options for odds, concede. Points or score has changed</string>
-    <string name="bet_info_odd_content_changed2">The odds have changed, %s to %s </string>
+    <string name="bet_info_odd_content_changed2">The odds have changed, %1$s to %1$s </string>
 
     <string name="bet_info_all_bet">Total Bets</string>
     <string name="bet_list_delete_all">Delete all</string>
@@ -719,7 +727,7 @@
     <string name="feedback_tabName_problem">Suggestions</string>
     <string name="feedback_tabName_record">Feedback history</string>
     <string name="feedback_description">If you have a good suggestion for the game or platform or find a Bug to submit, the official customer service will reply within 48 hours. We will timely fix bugs or refer to your feedback to continuously optimize our products and services. (If there are many people who give feedback on the same suggestion or Bug, the bonus will be given to the first person who gives feedback. Remember to give feedback as soon as you find any problem.)</string>
-    <string name="feedback_description_money">If the suggestion is adopted or the Bug is verified, the maximum reward is %s 3000(or other equivalent currency).</string>
+    <string name="feedback_description_money">If the suggestion is adopted or the Bug is verified, the maximum reward is %1$s 3000(or other equivalent currency).</string>
     <string name="feedback_submit_succeed">Feedback submitted successfully</string>
     <string name="all_status">All Status</string>
     <string name="feedback_last_reply_time">Time</string>
@@ -828,7 +836,7 @@
     <string name="credit_bet_remark">Remark</string>
     <string name="credit_record_remain">Countdown to leave settlement</string>
     <string name="credit_record_quota">Settlement amount</string>
-    <string name="credit_record_day">%s Date</string>
+    <string name="credit_record_day">%1$s Date</string>
     <string name="credit_record_status_unsettle">The settlement date has not yet been reached</string>
     <string name="parlay_rule_nc1_ex">When there are more options, %1$s string 1 can be combined into a double sequence, for example, %2$s matches can be combined into %2$s matches %1$s string 1</string>
     <string name="game_play_type">Game category</string>
@@ -995,8 +1003,8 @@
     <string name="text_bet_not_success2">waiting</string>
     <string name="text_bet_not_success3">&#160;Your bet slip is processing, please check &#160;</string>
     <string name="text_bet_not_success4">Record.</string>
-    <string name="text_security_money">Security deposit: %s</string>
-    <string name="text_security_money2">%s days left</string>
+    <string name="text_security_money">Security deposit: %1$s</string>
+    <string name="text_security_money2">%1$s days left</string>
     <string name="customer_service_title">Customer</string>
 
     <!--自我禁制-->
@@ -1050,7 +1058,7 @@
     <string name="btm_navigation_hint">%1$s is a Registered Trade Mark, Brand and Business Name Owned by Ekxinum Inc. Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR).</string>
     <string name="btm_navigation_copyright">Copyright © 2022 %1$s ALL RIGHTS RESERVED</string>
     <string name="e_address">Address</string>
-    <string name="brackets">(%s)</string>
+    <string name="brackets">(%1$s)</string>
     <string name="online_paypal">Paypal</string>
     <string name="bank_list_e_wallet">eWallet</string>
     <string name="hint_e_address">(Please enter a contact address)</string>
@@ -1139,8 +1147,52 @@
     <string name="error_input_has_blank">Incorrect input. Use english only, don\'t enter the continuous space.</string>
 
     <!--region 確認年齡彈窗-->
-    <string name="dialog_age_verify_statement">OKBet is committed to providing a safe, comfortable gaming experience for all our customers.\n\nFor the vast majority of people, gaming is an enjoyable leisure activity. However, we recognize that there are times when gaming ceases being fun for some customers.\n\nWe strongly encourage you to take some time to read our RESPONSIBLE GAMING infographic and statement before you proceed. Users aged 21 and below are strictly not allowed.\n\nOur responsibility is to help our customers gamble safely and responsibly, reduce the risk of harm, and help people who need treatment get it.\n\nDon\'t hesitate to contact keepitfun@pagcor.ph if you or your family member is having gaming issues.</string>
-    <string name="dialog_age_verify_hint">Please verify that you are 21 years of ages or older to enter this site</string>
+    <string name="dialog_age_verify_statement">
+        OkBet is committed to providing a safe, comfortable gaming experience for all our customers.
+        \n\nFor the vast majority of people, gaming is an enjoyable leisure activity. However, we recognize that there are times when gaming ceases being fun for some customers.
+        \n\nWe strongly encourage you to take some time to read our RESPONSIBLE GAMING infographic and statement before you proceed. Users aged 21 and below are strictly not allowed.
+        \n\nOur responsibility is to help our customers gamble safely and responsibly, reduce the risk of harm, and help people who need treatment get it.
+        \n\nDon\'t hesitate to contact keepitfun@pagcor.ph if you or your family member is having gaming issues.
+        \n\nWHAT IS GAMING
+        \nGaming refers to activities which involve wagering, odds and prizes. While it is considered a form of entertainment, gaming can have a negative impact on the player, his family and community when done inordinately.
+        \n\nWHO ARE NOT ALLOWED INSIDE THE GAMING PREMISES
+        \n• Persons under 21 years old; students of any school, college, or university
+        \n• Government officials and their immediate relatives (spouses, children, and parents)
+        \n• Members of the Armed Forces of the Philippines (AFP) and the Philippine National Police (PNP) and their immediate relatives (spouses, children, and parents)
+        \n\nTIPS ON RESPONSIBLE GAMING
+        \nKnow the games.
+        \nRefrain from wagering before you understand how a game is played and the odds of winning. Feel free to ask casino staff about game rules and chances.
+        \n\nPlan your activity.
+        \nThere are alternative pastimes that can be just as relaxing or as enjoyable as gambling. Going to the casino is just one among many leisure activities.
+        \n\nSet a time and money limit.
+        \nPlan your playing schedule with a definite time to stand up and leave. Why not set an alarm to remind you? You can also arrange for someone to pick you up after an hour or two.
+        \n\nBe conscious of yourself.
+        \nStart your play in a relaxed state and with a clear mind. Don\'t be rash. While playing, quick decisions made under stress or in moments of high emotion can be harmful.
+        \n\nKeep a healthy social mindset.
+        \nDon\'t take the games too seriously. Being more open and friendly to people you play with makes gaming more fun and exciting.
+        \n\nIf you feel that you or a family member has a gambling problem, you may contact our customer support at: (customer service e-mail/phone). Also, OkBet has tied up with support facilities to address concerns related to gambling problems. You may directly contact the following help centers:
+        \n\nLife Change Recovery Center
+        \nDr. Randy Misael S. Dellosa
+        \n105 Scout Rallos Street, Kamuning
+        \nBrgy. Sacred Heart, Quezon City
+        \nTelephone numbers: (02) 415-7964 / 415-6529
+        \nWebsite: www.lifechangerecoverycenter.com
+        \n\nBridges of Hope Drugs and Alcohol Rehabilitation Foundation, Inc. Headquarters:
+        \n364 Aguirre Avenue, Phase 3, BF Homes, Parañaque City, Metro Manila
+        \nTel. No. (02) 622-0193
+        \nNew Manila Branch:
+        \n12 Orestes Lane, Mariposa Street
+        \nTel. No. (02) 502-0600; (0917) 856-0623
+        \nEmail: help@bridgesofhope.ph
+        \n\nI agree to the OkBet Terms and Conditions and the states that:
+        \n1.I allow OkBet to send me updates and promotions in accordance with the Privacy Policy
+        \n2.I am over 21 years of age and have read and agree to the OkBet\'s Terms &amp; Conditions
+        \n3.I am not a government official and/or employee directly connected with the operation of the Philippine government or any of its agencies.
+        \n4.I am not a student of any school, college, or university in the Philippines.
+        \n5.I understand that should my provided information has been found incorrect, OkBet has the right to impose a penalty on my account subject to its Terms and Conditions.
+    </string>
+    <string name="dialog_age_verify_hint">I agree to the OkBet</string>
+    <string name="dialog_age_verify_hint_link">&#160;Terms &amp; Conditions</string>
     <string name="dialog_age_verify_confirm">I AM OVER 21 YEARS OLD</string>
     <string name="dialog_age_verify_exit">EXIT</string>
     <!--endregion-->
@@ -1167,4 +1219,9 @@
     <!--endregion-->
 
     <string name="e_games">E-Games</string>
+    <string name="verification_status">Verification Status</string>
+    <string name="register_identity_photo_front">Upload Valid ID of the front</string>
+    <string name="register_identity_photo_hint_front">Click to add an image of the front of Valid ID.</string>
+    <string name="register_identity_photo_back">Upload Valid ID of the back</string>
+    <string name="register_identity_photo_hint_back">Click to add an image of the back of  Valid ID.</string>
 </resources>

@@ -7,10 +7,11 @@ import android.graphics.Rect
 import android.text.SpannableString
 import android.text.Spanned
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.webkit.WebView
-import android.widget.ScrollView
-import android.widget.TextView
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,10 +28,13 @@ import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
+import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.component.StatusSpinnerAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.game.outright.OutrightLeagueOddAdapter
 import org.cxct.sportlottery.widget.FakeBoldSpan
+import org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
 import org.json.JSONArray
 
 /**
@@ -437,4 +441,81 @@ fun WebView.setWebViewCommonBackgroundColor(){
             }
         )
     )
+}
+
+/**
+ * 展開下拉選單
+ * ##點擊覆蓋一個View在註冊頁的TextFieldBoxes上避免觸發TextFieldBoxes的行為
+ * @param editText: 註冊頁中的ExtendedEditText
+ * @param textFieldBoxes: 註冊頁中的TextFieldBoxes
+ * @see org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
+ * @see org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
+ *
+ * 取自
+ * @see org.cxct.sportlottery.ui.component.StatusSpinnerView
+ */
+@SuppressLint("ClickableViewAccessibility")
+fun View.setSpinnerView(
+    editText: EditText,
+    textFieldBoxes: TextFieldBoxes,
+    spinnerList: List<StatusSheetData>,
+    touchListener: () -> Unit,
+    itemSelectedListener: (data: StatusSheetData?) -> Unit,
+    popupWindowDismissListener: () -> Unit
+) {
+    var spinnerAdapter: StatusSpinnerAdapter? = null
+
+    var selectItem: StatusSheetData? = null
+    var mListPop = ListPopupWindow(context)
+
+    setOnTouchListener { view, event ->
+        if (event.action == MotionEvent.ACTION_UP) {
+            if (mListPop.isShowing) {
+                mListPop.dismiss()
+            } else {
+                mListPop.show()
+            }
+            //設置TextFieldBoxes為選中狀態
+            textFieldBoxes.hasFocus = true
+            //隱藏光標
+            editText.isCursorVisible = false
+            //隱藏鍵盤
+            val inputMethodManager = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+            touchListener()
+        }
+        true
+    }
+
+    if (spinnerList.isNotEmpty()) {
+        val first = spinnerList[0]
+        first.isChecked = true
+        selectItem = first
+    }
+    spinnerAdapter = StatusSpinnerAdapter(spinnerList.toMutableList())
+    mListPop = ListPopupWindow(context)
+    mListPop.width = textFieldBoxes.width
+    mListPop.height = FrameLayout.LayoutParams.WRAP_CONTENT
+    mListPop.setBackgroundDrawable(
+        ContextCompat.getDrawable(
+            context,
+            R.drawable.bg_play_category_pop
+        )
+    )
+    mListPop.setAdapter(spinnerAdapter)
+    mListPop.anchorView = textFieldBoxes //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
+    mListPop.isModal = true //设置是否是模式
+    mListPop.setOnItemClickListener { _, _, position, _ ->
+        //隱藏EditText的光標
+        editText.isCursorVisible = false
+        mListPop.dismiss()
+        selectItem = spinnerList[position]
+        selectItem?.isChecked = true
+        spinnerList.find { it != selectItem && it.isChecked }?.isChecked = false
+        itemSelectedListener.invoke(selectItem)
+    }
+    //PopupWindow關閉時
+    mListPop.setOnDismissListener {
+        popupWindowDismissListener()
+    }
 }

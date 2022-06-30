@@ -809,7 +809,8 @@ class GameViewModel(
             val comingSoonList = mutableListOf<SportMenu>()
             comingSoonList.addAll(list)
             comingSoonList.add(SportMenu(gameType = GameType.BB_COMING_SOON, "", "", 0))
-            comingSoonList.add(SportMenu(gameType = GameType.ES_COMING_SOON, "", "", 0))
+            //OkBet 正式＆測試環境皆不使用
+//            comingSoonList.add(SportMenu(gameType = GameType.ES_COMING_SOON, "", "", 0))
             _sportMenuList.postValue(Event(comingSoonList))
         }
     }

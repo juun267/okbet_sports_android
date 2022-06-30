@@ -13,12 +13,18 @@ import android.text.method.LinkMovementMethod
 import android.text.method.PasswordTransformationMethod
 import android.text.style.ClickableSpan
 import android.util.Log
+import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import cn.jpush.android.api.JPushInterface
+import com.bigkoo.pickerview.builder.TimePickerBuilder
+import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityRegisterBinding
@@ -30,13 +36,11 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.BitmapUtil
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.ToastUtil
 import java.util.*
 
 /**
@@ -47,6 +51,15 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
     private var mSmsTimer: Timer? = null
     private lateinit var binding: ActivityRegisterBinding
+
+    private var birthdayTimePickerView: TimePickerView? = null
+
+    private var salarySourceSelectedData: StatusSheetData? = null
+    private var bettingShopSelectedData: StatusSheetData? = null
+    private var identityTypeSelectedData: StatusSheetData? = null //當前證件類型選中
+
+    private var credentialsFragment: RegisterCredentialsFragment? = null
+    private var isUploaded = false
 
     override fun onClick(v: View?) {
         when (v) {
@@ -99,6 +112,11 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         setupWhatsApp()
         setupTelegram()
         setupSecurityPb()
+        setupBirthday()
+        setupRegisterIdentity()
+        setupSalarySource()
+        setupIdentityType()
+        setupBettingShop()
         setupValidCode()
         setupSmsValidCode()
         setupAgreement()
@@ -117,6 +135,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     eetLoginPassword.transformationMethod =
                         HideReturnsTransformationMethod.getInstance()
                 }
+                etLoginPassword.hasFocus = true
                 eetLoginPassword.setSelection(eetLoginPassword.text.toString().length)
             }
             etConfirmPassword.endIconImageButton.setOnClickListener {
@@ -129,6 +148,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     eetConfirmPassword.transformationMethod =
                         HideReturnsTransformationMethod.getInstance()
                 }
+                etConfirmPassword.hasFocus = true
                 eetConfirmPassword.setSelection(eetConfirmPassword.text.toString().length)
             }
             etWithdrawalPwd.endIconImageButton.setOnClickListener {
@@ -141,6 +161,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     eetWithdrawalPwd.transformationMethod =
                         HideReturnsTransformationMethod.getInstance()
                 }
+                etWithdrawalPwd.hasFocus = true
                 eetWithdrawalPwd.setSelection(eetWithdrawalPwd.text.toString().length)
             }
             btnRegister.setTitleLetterSpacing()
@@ -194,6 +215,25 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     override fun onDestroy() {
         super.onDestroy()
         stopSmeTimer()
+    }
+
+    /**
+     * 開啟上傳證件照片頁面
+     */
+    private fun openCredentialsPage() {
+        //進入前先清除照片上傳狀態
+        viewModel.resetCredentialsStatus()
+        binding.flCredentials.visibility = View.VISIBLE
+        val transaction = supportFragmentManager.beginTransaction()
+        credentialsFragment = RegisterCredentialsFragment.newInstance()
+
+        credentialsFragment?.let { fragment ->
+            transaction
+                .add(binding.flCredentials.id, fragment, RegisterCredentialsFragment::class.java.simpleName)
+                .addToBackStack(RegisterCredentialsFragment::class.java.simpleName)
+                .commit()
+        }
+        hideSoftKeyboard(this)
     }
 
     private fun setupBackButton() {
@@ -274,6 +314,144 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             if (sConfigData?.enableSafeQuestion == FLAG_OPEN) View.VISIBLE else View.GONE
     }
 
+    private fun setupBirthday() {
+        binding.etBirth.visibility =
+            if (sConfigData?.enableBirthday == FLAG_OPEN) View.VISIBLE else View.GONE
+
+        with(binding) {
+            birthPicker.setOnClickListener {
+                //設置TextFieldBoxes為選中狀態
+                etBirth.hasFocus = true
+                //隱藏光標
+                eetBirth.isCursorVisible = false
+                //隱藏鍵盤
+                val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+
+                birthdayTimePickerView?.show()
+            }
+
+            birthdayTimePickerView = createTimePicker { date ->
+                eetBirth.setText(TimeUtil.stampToRegisterBirthdayFormat(date))
+            }
+        }
+    }
+
+    private fun setupRegisterIdentity() {
+        with(binding) {
+            etIdentity.visibility =
+                if (sConfigData?.enableIdentityNumber == FLAG_OPEN) View.VISIBLE else View.GONE
+
+//            etIdentity.setEndIcon(R.drawable.ic_camera)
+
+//            etIdentity.endIconImageButton.setOnClickListener {
+//                when (etIdentity.endIconResourceId) {
+//                    R.drawable.ic_camera -> openCredentialsPage()
+//                }
+//            }
+
+            endButton.setOnClickListener {
+                if (!isUploaded) openCredentialsPage()
+            }
+        }
+    }
+
+    private fun setupSalarySource() {
+        with(binding) {
+            //顯示隱藏該選項
+            etSalary.visibility =
+                if (sConfigData?.enableSalarySource == FLAG_OPEN) View.VISIBLE else View.GONE
+
+            //根據config配置薪資來源選項
+            val salarySourceList = mutableListOf<StatusSheetData>()
+            sConfigData?.salarySource?.map { salarySource ->
+                salarySourceList.add(StatusSheetData(salarySource.id.toString(), salarySource.name))
+            }
+
+            //預設顯示第一項
+            salarySourceSelectedData = salarySourceList.firstOrNull()
+            eetSalary.setText(salarySourceList.firstOrNull()?.showName)
+            //設置預設文字後會變成選中狀態, 需清除focus
+            etSalary.hasFocus = false
+            viewModel.checkSalary(eetSalary.text.toString())
+
+            //配置點擊展開選項選單
+            etSalary.post {
+                salarySpinner.setSpinnerView(
+                    eetSalary,
+                    etSalary,
+                    salarySourceList,
+                    touchListener = {
+                        //旋轉箭頭
+                        etSalary.endIconImageButton.rotation = 180F
+                    },
+                    itemSelectedListener = {
+                        salarySourceSelectedData = it
+                        eetSalary.setText(it?.showName)
+                    },
+                    popupWindowDismissListener = {
+                        //旋轉箭頭
+                        etSalary.endIconImageButton.rotation = 0F
+                    })
+            }
+        }
+    }
+
+    private fun setupIdentityType() {
+        with(binding) {
+            //顯示隱藏該選項
+            etIdentityType.visibility =
+                if (sConfigData?.enableIdentityNumber == FLAG_OPEN) View.VISIBLE else View.GONE
+
+            //根據config配置薪資來源選項
+            val identityTypeList = mutableListOf<StatusSheetData>()
+            sConfigData?.identityTypeList?.map { identityType ->
+                identityTypeList.add(StatusSheetData(identityType.id.toString(), identityType.name))
+            }
+
+            //預設顯示第一項
+            identityTypeSelectedData = identityTypeList.firstOrNull()
+            eetIdentityType.setText(identityTypeList.firstOrNull()?.showName)
+            //設置預設文字後會變成選中狀態, 需清除focus
+            etIdentityType.hasFocus = false
+            viewModel.checkIdentityType(eetIdentityType.text.toString())
+
+            //配置點擊展開選項選單
+            etIdentityType.post {
+                identityTypeSpinner.setSpinnerView(
+                    eetIdentityType,
+                    etIdentityType,
+                    identityTypeList,
+                    touchListener = {
+                        //旋轉箭頭
+                        etIdentityType.endIconImageButton.rotation = 180F
+                    },
+                    itemSelectedListener = {
+                        identityTypeSelectedData = it
+                        eetIdentityType.setText(it?.showName)
+                    },
+                    popupWindowDismissListener = {
+                        //旋轉箭頭
+                        etIdentityType.endIconImageButton.rotation = 0F
+                    })
+            }
+        }
+    }
+
+    private fun setupBettingShop() {
+        with(binding) {
+            val bettingStationVisibility = sConfigData?.enableBettingStation == FLAG_OPEN
+
+            if (bettingStationVisibility) {
+                etBettingShop.visibility = View.VISIBLE
+                //查詢投注站列表
+                viewModel.bettingStationQuery()
+            } else {
+                etBettingShop.visibility = View.GONE
+            }
+        }
+    }
+
     private fun setupValidCode() {
         if (sConfigData?.enableRegValidCode == FLAG_OPEN) {
             binding.blockValidCode.visibility = View.VISIBLE
@@ -327,6 +505,19 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             }
             eetFullName.apply {
                 checkRegisterListener { viewModel.checkFullName(it) }
+            }
+            eetBirth.apply {
+                checkRegisterListener { viewModel.checkBirth(it) }
+            }
+            eetIdentity.apply {
+                checkRegisterListener { viewModel.checkIdentity(it, checkPhotoUploaded()) }
+            }
+            eetSalary.apply {
+                checkRegisterListener { viewModel.checkSalary(it) }
+            }
+            eetIdentityType.checkRegisterListener { viewModel.checkIdentityType(it) }
+            eetBettingShop.apply {
+                checkRegisterListener { viewModel.checkBettingShop(it) }
             }
             eetWithdrawalPwd.apply {
                 checkRegisterListener { viewModel.checkFundPwd(it) }
@@ -413,7 +604,13 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     eetVerificationCode.text.toString(),
                     cbAgreeAll.isChecked,
                     deviceSn,
-                    deviceId
+                    deviceId,
+                    birth = eetBirth.text.toString().replace(" ",""), //傳給後端的不需要有空白間隔
+                    identity = eetIdentity.text.toString(),
+                    identityUploaded = checkPhotoUploaded(),
+                    identityType = identityTypeSelectedData?.code,
+                    salarySource = salarySourceSelectedData?.code,
+                    bettingShop = bettingShopSelectedData?.code
                 )
             }
         }
@@ -517,6 +714,11 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             provinceMsg.observe(this@RegisterActivity) { binding.etProvince.setError(it.first, false) }
             cityMsg.observe(this@RegisterActivity) { binding.etCity.setError(it.first, false) }
             addressMsg.observe(this@RegisterActivity) { binding.etAddress.setError(it.first, false) }
+            salaryMsg.observe(this@RegisterActivity) { binding.etSalary.setError(it.first, false) }
+            birthMsg.observe(this@RegisterActivity) { binding.etBirth.setError(it.first, false) }
+            identityMsg.observe(this@RegisterActivity) { binding.etIdentity.setError(it.first, false) }
+            identityTypeMsg.observe(this@RegisterActivity) { binding.etIdentityType.setError(it.first, false) }
+            bettingShopMsg.observe(this@RegisterActivity) { binding.etBettingShop.setError(it.first, false) }
             weChatMsg.observe(this@RegisterActivity) { binding.etWeChat.setError(it.first, false) }
             zaloMsg.observe(this@RegisterActivity) { binding.etZalo.setError(it.first, false) }
             facebookMsg.observe(this@RegisterActivity) { binding.etFacebook.setError(it.first, false) }
@@ -537,7 +739,56 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             }
         }
 
+        viewModel.bettingStationList.observe(this) { bettingStationList ->
+            with(binding) {
+                //設置投注站清單選項
+                bettingShopSpinner.setSpinnerView(
+                    eetBettingShop,
+                    etBettingShop,
+                    bettingStationList,
+                    touchListener = {
+                        //旋轉箭頭
+                        etBettingShop.endIconImageButton.rotation = 180F
+                    },
+                    itemSelectedListener = {
+                        bettingShopSelectedData = it
+                        eetBettingShop.setText(it?.showName)
+                    },
+                    popupWindowDismissListener = {
+                        //旋轉箭頭
+                        etBettingShop.endIconImageButton.rotation = 0F
+                    })
+
+                //預設第一項
+                bettingShopSelectedData = bettingStationList.firstOrNull()
+                eetBettingShop.setText(bettingStationList.firstOrNull()?.showName)
+                //預設後會變為選中狀態, 需清除focus
+                etBettingShop.hasFocus = false
+                viewModel.checkBettingShop(eetBettingShop.text.toString())
+            }
+        }
+
+        //第二張照片是否上傳成功
+        viewModel.photoUrlResult.observe(this) {
+            if (it != null) {
+//                binding.etIdentity.setEndIcon(R.drawable.ic_upload_done)
+                binding.endButton.setImageResource(R.drawable.ic_upload_done)
+                viewModel.checkIdentity(binding.eetIdentity.text.toString(), true)
+                isUploaded = true
+            } else {
+//                binding.etIdentity.setEndIcon(R.drawable.ic_camera)
+                binding.endButton.setImageResource(R.drawable.ic_camera)
+                viewModel.checkIdentity(binding.eetIdentity.text.toString(), false)
+                isUploaded = false
+            }
+        }
     }
+
+    /**
+     * 檢查是否已經成功上傳照片
+     */
+//    private fun checkPhotoUploaded(): Boolean = binding.etIdentity.endIconResourceId == R.drawable.ic_upload_done
+    private fun checkPhotoUploaded(): Boolean = isUploaded
 
     //當所有值都有填，按下enter時，自動點擊註冊鈕
     private fun setEditTextIme(registerEnable: Boolean) {
@@ -700,5 +951,55 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         this.setText(spannableString, TextView.BufferType.SPANNABLE)
     }
 
+    /**
+     * 創建生日用日期選擇器
+     * 日期範圍: ~今天
+     * 日期格式: 年月日
+     */
+    private fun createTimePicker(timeSelectedListener: (time: Date) -> Unit): TimePickerView {
+        //用來限制生日的結束日期(滿21歲)
+        val limit21YearsOld = Calendar.getInstance()
+        limit21YearsOld.add(Calendar.YEAR, -21)
 
+        val dateTimePicker: TimePickerView = TimePickerBuilder(this
+        ) { date, _ ->
+            try {
+                timeSelectedListener(date)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+            .setLabel("", "", "", "", "", "")
+            .setRangDate(null, limit21YearsOld)
+            .setDate(Calendar.getInstance())
+            .setTimeSelectChangeListener { }
+            .setType(booleanArrayOf(true, true, true, false, false, false))
+            .setCancelText(" ")
+            .setSubmitText(getString(R.string.picker_submit))
+            .setTitleColor(ContextCompat.getColor(this, R.color.color_CCCCCC_000000))
+            .setTitleBgColor(ContextCompat.getColor(this, R.color.color_2B2B2B_e2e2e2))
+            .setBgColor(ContextCompat.getColor(this, R.color.color_191919_FCFCFC))
+            .setSubmitColor(ContextCompat.getColor(this, R.color.color_7F7F7F_999999))
+            .setCancelColor(ContextCompat.getColor(this, R.color.color_7F7F7F_999999))
+            .isDialog(true)
+            .build() as TimePickerView
+
+        val params = FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            Gravity.BOTTOM
+        )
+
+        params.leftMargin = 0
+        params.rightMargin = 0
+        dateTimePicker.dialogContainerLayout.layoutParams = params
+        val dialogWindow = dateTimePicker.dialog.window
+        if (dialogWindow != null) {
+            dialogWindow.setWindowAnimations(com.bigkoo.pickerview.R.style.picker_view_slide_anim)
+            dialogWindow.setGravity(Gravity.BOTTOM)
+            dialogWindow.setDimAmount(0.1f)
+        }
+
+        return dateTimePicker
+    }
 }
