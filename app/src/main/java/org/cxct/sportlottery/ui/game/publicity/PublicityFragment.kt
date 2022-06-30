@@ -43,6 +43,7 @@ import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.addScrollListenerForBottomNavBar
+import org.cxct.sportlottery.util.isCreditSystem
 import timber.log.Timber
 
 /**
@@ -94,7 +95,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 onGoDepositListener = {
                     avoidFastDoubleClick()
                     if (viewModel.isLogin.value != true) {
-                        showLoginNotify()
+                        goLoginPage()
                     } else {
                         viewModel.checkRechargeSystem()
                     }
@@ -102,14 +103,18 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 onGoWithdrawListener = {
                     avoidFastDoubleClick()
                     if (viewModel.isLogin.value != true) {
-                        showLoginNotify()
+                        goLoginPage()
                     } else {
                         viewModel.checkWithdrawSystem()
                     }
                 },
                 onGoThirdGamesListener = {
                     avoidFastDoubleClick()
-                    viewModel.requestEnterThirdGame(it)
+                    if (viewModel.isLogin.value != true) {
+                        showLoginNotify()
+                    } else {
+                        viewModel.requestEnterThirdGame(it)
+                    }
                 },
                 onClickBetListener = { gameType, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
                     if(mIsEnabled){
@@ -249,7 +254,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         with(mPublicityAdapter) {
             addTitle()
             addAnnouncement()
-            addUserInfo()
+            if (!isCreditSystem()) addUserInfo() //非信用盤才顯示
             addSubTitle()
             addPreload()
         }
@@ -272,10 +277,12 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         }
 
         viewModel.userMoney.observe(viewLifecycleOwner) {
-            mPublicityAdapter.updateUserInfoData(
-                viewModel.userInfo.value?.nickName.orEmpty(),
-                viewModel.userMoney.value ?: 0.0
-            )
+            if (!isCreditSystem()) { //非信用盤才顯示
+                mPublicityAdapter.updateUserInfoData(
+                    viewModel.userInfo.value?.nickName.orEmpty(),
+                    viewModel.userMoney.value ?: 0.0
+                )
+            }
         }
 
         viewModel.oddsType.observe(viewLifecycleOwner, {
@@ -287,10 +294,17 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         viewModel.publicityRecommend.observe(viewLifecycleOwner) { event ->
             event?.getContentIfNotHandled()?.let { recommendList ->
                 hideLoading()
+                if (recommendList.isEmpty()) {
+                    mPublicityAdapter.removeData(GamePublicityAdapter.PublicitySubTitleImageData())
+                    mPublicityAdapter.removeData(recommendList)
+                    mPublicityAdapter.removeData(GamePublicityAdapter.PreloadItem())
+                    return@observe
+                }
                 isNewestDataFromApi = true
                 mRecommendList = recommendList
                 mPublicityAdapter.removeData(GamePublicityAdapter.PreloadItem())
                 if (mPublicityAdapter.getRecommendData().size == 0) {
+                    mPublicityAdapter.addSubTitle()
                     mPublicityAdapter.addRecommend(recommendList)
                     Timber.e("addRecommend")
                 } else {
@@ -848,7 +862,13 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     private fun enterThirdGame(result: EnterThirdGameResult) {
         hideLoading()
         when (result.resultType) {
-            EnterThirdGameResult.ResultType.SUCCESS -> context?.run { JumpUtil.toThirdGameWeb(this, result.url ?: "") }
+            EnterThirdGameResult.ResultType.SUCCESS -> context?.run {
+                JumpUtil.toThirdGameWeb(
+                    this,
+                    result.url ?: "",
+                    thirdGameCategoryCode = result.thirdGameCategoryCode
+                )
+            }
             EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
             EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.startActivity(Intent(context, RegisterActivity::class.java))
             EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}

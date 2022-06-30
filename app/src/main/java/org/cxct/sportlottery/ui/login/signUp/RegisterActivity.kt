@@ -225,7 +225,13 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         viewModel.resetCredentialsStatus()
         binding.flCredentials.visibility = View.VISIBLE
         val transaction = supportFragmentManager.beginTransaction()
-        credentialsFragment = RegisterCredentialsFragment.newInstance()
+        credentialsFragment = RegisterCredentialsFragment.newInstance(
+            registerCredentialsListener = RegisterCredentialsFragment.RegisterCredentialsListener(onCloseFragment = {
+                supportFragmentManager.popBackStack()
+                binding.flCredentials.visibility = View.GONE
+            })
+        )
+
 
         credentialsFragment?.let { fragment ->
             transaction
@@ -334,6 +340,18 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             birthdayTimePickerView = createTimePicker { date ->
                 eetBirth.setText(TimeUtil.stampToRegisterBirthdayFormat(date))
             }
+
+            eetBirth.post {
+                //TODO 可重構獲取focus直接展開不必蓋一個View
+                /**
+                 * 若Birth取得focus的話點擊birthdayTimePickerView
+                 */
+                eetBirth.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+                    if (hasFocus) {
+                        birthPicker.performClick()
+                    }
+                }
+            }
         }
     }
 
@@ -394,6 +412,18 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                         etSalary.endIconImageButton.rotation = 0F
                     })
             }
+
+            eetSalary.post {
+                //TODO 可重構 不需要蓋一層View
+                /**
+                 * 若Salary取得focus的話點擊salarySpinner
+                 */
+                eetSalary.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+                    if (hasFocus) {
+                        salarySpinner.performClick()
+                    }
+                }
+            }
         }
     }
 
@@ -434,6 +464,18 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                         //旋轉箭頭
                         etIdentityType.endIconImageButton.rotation = 0F
                     })
+            }
+
+            eetIdentityType.post {
+                //TODO 可重構 不需要蓋一層View
+                /**
+                 * 若IdentityType取得focus的話點擊identityTypeSpinner
+                 */
+                eetIdentityType.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+                    if (hasFocus) {
+                        identityTypeSpinner.performClick()
+                    }
+                }
             }
         }
     }
@@ -510,7 +552,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 checkRegisterListener { viewModel.checkBirth(it) }
             }
             eetIdentity.apply {
-                checkRegisterListener { viewModel.checkIdentity(it, checkPhotoUploaded()) }
+                checkRegisterListener { viewModel.checkIdentity(it) }
             }
             eetSalary.apply {
                 checkRegisterListener { viewModel.checkSalary(it) }
@@ -607,7 +649,6 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     deviceId,
                     birth = eetBirth.text.toString().replace(" ",""), //傳給後端的不需要有空白間隔
                     identity = eetIdentity.text.toString(),
-                    identityUploaded = checkPhotoUploaded(),
                     identityType = identityTypeSelectedData?.code,
                     salarySource = salarySourceSelectedData?.code,
                     bettingShop = bettingShopSelectedData?.code
@@ -765,6 +806,20 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 //預設後會變為選中狀態, 需清除focus
                 etBettingShop.hasFocus = false
                 viewModel.checkBettingShop(eetBettingShop.text.toString())
+
+
+
+                eetBettingShop.post {
+                    //TODO 可重構 不需要蓋一層View
+                    /**
+                     * 若BettingShop取得focus的話點擊bettingShopSpinner
+                     */
+                    eetBettingShop.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+                        if (hasFocus) {
+                            bettingShopSpinner.performClick()
+                        }
+                    }
+                }
             }
         }
 
@@ -773,22 +828,16 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             if (it != null) {
 //                binding.etIdentity.setEndIcon(R.drawable.ic_upload_done)
                 binding.endButton.setImageResource(R.drawable.ic_upload_done)
-                viewModel.checkIdentity(binding.eetIdentity.text.toString(), true)
+                viewModel.checkIdentity(binding.eetIdentity.text.toString())
                 isUploaded = true
             } else {
 //                binding.etIdentity.setEndIcon(R.drawable.ic_camera)
                 binding.endButton.setImageResource(R.drawable.ic_camera)
-                viewModel.checkIdentity(binding.eetIdentity.text.toString(), false)
+                viewModel.checkIdentity(binding.eetIdentity.text.toString())
                 isUploaded = false
             }
         }
     }
-
-    /**
-     * 檢查是否已經成功上傳照片
-     */
-//    private fun checkPhotoUploaded(): Boolean = binding.etIdentity.endIconResourceId == R.drawable.ic_upload_done
-    private fun checkPhotoUploaded(): Boolean = isUploaded
 
     //當所有值都有填，按下enter時，自動點擊註冊鈕
     private fun setEditTextIme(registerEnable: Boolean) {
@@ -1001,5 +1050,13 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         }
 
         return dateTimePicker
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+
+        if (supportFragmentManager.fragments.isEmpty()) {
+            binding.flCredentials.visibility = View.GONE
+        }
     }
 }

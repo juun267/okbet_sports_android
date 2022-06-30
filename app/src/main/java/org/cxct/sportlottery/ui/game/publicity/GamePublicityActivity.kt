@@ -36,6 +36,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.util.*
 import org.parceler.Parcels
+import timber.log.Timber
 
 class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class),
     View.OnClickListener {
@@ -111,6 +112,15 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     }
 
     override fun initToolBar() {
+        //region Language block
+        binding.gameToolbar.ivLanguageIcon.setImageResource(
+            LanguageManager.getLanguageFlag(
+                MultiLanguagesApplication.appContext
+            )
+        )
+        binding.gameToolbar.tvLanguageText.text =
+            LanguageManager.getLanguageStringResource(MultiLanguagesApplication.appContext)
+        //endregion
     }
 
     override fun updateNoticeButton(noticeCount: Int) {
@@ -130,6 +140,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         binding.gameToolbar.btnLogin.setOnClickListener(this)
         binding.gameToolbar.btnRegister.setOnClickListener(this)
         binding.gameToolbar.ivMenu.setOnClickListener(this)
+        binding.gameToolbar.llLanguage.setOnClickListener(this)
         //endregion
     }
 
@@ -273,6 +284,12 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                         viewModel.getMoney()
                     }
                 }
+                gameToolbar.llLanguage -> {
+                    goSwitchLanguagePage()
+                }
+                gameToolbar.btnLogin -> {
+                    goLoginPage()
+                }
             }
         }
     }
@@ -375,6 +392,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                 with(gameToolbar) {
                     ivNotice.visibility = View.VISIBLE
                     ivMenu.visibility = View.VISIBLE
+                    llLanguage.visibility = View.GONE
 
                     btnLogin.visibility = View.GONE
                     btnRegister.visibility = View.GONE
@@ -386,10 +404,16 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                 with(gameToolbar) {
                     ivNotice.visibility = View.GONE
                     ivMenu.visibility = View.GONE
+                    llLanguage.visibility = View.VISIBLE
 
-                    btnLogin.visibility = View.GONE
+                    if (isCreditSystem()) {
+                        btnLogin.visibility = View.VISIBLE
+                        toolbarDivider.visibility = View.VISIBLE
+                    } else {
+                        btnLogin.visibility = View.GONE
+                        toolbarDivider.visibility = View.GONE
+                    }
                     btnRegister.visibility = View.GONE
-                    toolbarDivider.visibility = View.GONE
                 }
                 //endregion
             }

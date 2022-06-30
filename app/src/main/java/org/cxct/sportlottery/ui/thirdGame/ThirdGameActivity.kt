@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.thirdGame
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import kotlinx.android.synthetic.main.activity_third_game.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
@@ -10,6 +11,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
@@ -23,13 +25,24 @@ open class ThirdGameActivity : WebActivity() {
 
     private var customSecurityDialog: CustomSecurityDialog? = null
 
+    private val mGameCategoryCode: String? by lazy { intent?.getStringExtra(GAME_CATEGORY_CODE) }
+
     override fun init() {
+        setupActivityOrientation()
         setContentView(R.layout.activity_third_game)
         setCookie()
         setupWebView(web_view)
         loadUrl(web_view)
         setupMenu()
         initObserve()
+    }
+
+    private fun setupActivityOrientation() {
+        when (mGameCategoryCode) {
+            ThirdGameCategory.QP.name -> {
+                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            }
+        }
     }
 
     private fun setupMenu() {

@@ -12,7 +12,7 @@
             android:translateX="40.000000"
             android:translateY="395.000000">
             <path
-                android:fillColor="#FAFAFA"
+                android:fillColor="@color/transparent"
                 android:fillType="evenOdd"
                 android:strokeColor="#D2D2D7"
                 android:strokeWidth="1"

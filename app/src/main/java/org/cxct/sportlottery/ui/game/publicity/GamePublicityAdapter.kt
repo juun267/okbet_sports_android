@@ -618,58 +618,29 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             .dontTransform()
 
         fun bind(data: Recommend, oddsType: OddsType) {
-            with(binding) {
-                clSportsBackground.setBackgroundResource(GameType.getGameTypeBackground(data.gameType))
+            //設置背景、隊伍名稱、點擊事件
+            setupGameInfo(data)
 
-                tvHomeName.text = data.homeName
-                tvAwayName.text = data.awayName
-
-                //設置賽事Bar
-                setupGameScoreBar(data)
-                data.matchType?.let { matchType ->
-                    //配置比分及比賽制度
-                    setupMatchScore(data, matchType)
-                }
-
-
-                Glide.with(binding.root.context)
-                    .load(data.matchInfo?.homeIcon)
-                    .apply(mRequestOptions)
-                    .fallback(R.drawable.bg_recommend_game_default)
-                    .error(R.drawable.bg_recommend_game_default)
-                    .into(ivHomeIcon)
-
-                Glide.with(binding.root.context)
-                    .load(data.matchInfo?.awayIcon)
-                    .apply(mRequestOptions)
-                    .fallback(R.drawable.bg_recommend_game_default)
-                    .error(R.drawable.bg_recommend_game_default)
-                    .into(ivAwayIcon)
-
-                val gameType = data.gameType
-                val matchType = data.matchType
-                setupMatchTimeAndStatus(
-                    item = data,
-                    isTimerEnable = (gameType == GameType.FT.key || gameType == GameType.BK.key || gameType == GameType.RB.key || gameType == GameType.AFT.key || matchType == MatchType.PARLAY || matchType == MatchType.AT_START || matchType == MatchType.MY_EVENT),
-                    isTimerPause = data.matchInfo?.stopped == TimeCounting.STOP.value
-                )
-
-                val matchOddList = transferMatchOddList(data)
-                val matchInfoList = matchOddList.mapNotNull {
-                    it.matchInfo
-                }
-                binding.root.setOnClickListener {
-                    publicityAdapterListener.onClickPlayTypeListener(
-                        gameType = data.gameType,
-                        matchType = data.matchType,
-                        matchId = data.matchInfo?.id,
-                        matchInfoList = matchInfoList
-                    )
-                }
+            //設置賽事Bar
+            setupGameScoreBar(data)
+            data.matchType?.let { matchType ->
+                //配置比分及比賽制度
+                setupMatchScore(data, matchType)
             }
+
+            val gameType = data.gameType
+            val matchType = data.matchType
+            setupMatchTimeAndStatus(
+                item = data,
+                isTimerEnable = (gameType == GameType.FT.key || gameType == GameType.BK.key || gameType == GameType.RB.key || gameType == GameType.AFT.key || matchType == MatchType.PARLAY || matchType == MatchType.AT_START || matchType == MatchType.MY_EVENT),
+                isTimerPause = data.matchInfo?.stopped == TimeCounting.STOP.value
+            )
         }
 
         fun update(data: Recommend) {
+            //設置背景、隊伍名稱、點擊事件
+            setupGameInfo(data)
+
             //設置賽事Bar
             setupGameScoreBar(data)
 
@@ -773,6 +744,52 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                     isTimerEnable = (gameType == GameType.FT.key || gameType == GameType.BK.key || gameType == GameType.RB.key || gameType == GameType.AFT.key || matchType == MatchType.PARLAY || matchType == MatchType.AT_START || matchType == MatchType.MY_EVENT),
                     isTimerPause = data.matchInfo?.stopped == TimeCounting.STOP.value
                 )
+                //endregion
+            }
+        }
+
+        /**
+         * 設置背景、隊伍名稱、點擊事件
+         */
+        private fun setupGameInfo(data: Recommend) {
+            with(binding) {
+                //球類背景
+                clSportsBackground.setBackgroundResource(GameType.getGameTypeBackground(data.gameType))
+
+                //region 隊伍名稱
+                tvHomeName.text = data.homeName
+                tvAwayName.text = data.awayName
+                //endregion
+
+                //region 隊伍圖示
+                Glide.with(binding.root.context)
+                    .load(data.matchInfo?.homeIcon)
+                    .apply(mRequestOptions)
+                    .fallback(R.drawable.bg_recommend_game_default)
+                    .error(R.drawable.bg_recommend_game_default)
+                    .into(ivHomeIcon)
+
+                Glide.with(binding.root.context)
+                    .load(data.matchInfo?.awayIcon)
+                    .apply(mRequestOptions)
+                    .fallback(R.drawable.bg_recommend_game_default)
+                    .error(R.drawable.bg_recommend_game_default)
+                    .into(ivAwayIcon)
+                //endregion
+
+                //region 點擊進入賽事詳情
+                val matchOddList = transferMatchOddList(data)
+                val matchInfoList = matchOddList.mapNotNull {
+                    it.matchInfo
+                }
+                root.setOnClickListener {
+                    publicityAdapterListener.onClickPlayTypeListener(
+                        gameType = data.gameType,
+                        matchType = data.matchType,
+                        matchId = data.matchInfo?.id,
+                        matchInfoList = matchInfoList
+                    )
+                }
                 //endregion
             }
         }

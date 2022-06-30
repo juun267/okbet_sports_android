@@ -106,7 +106,7 @@
     <string name="hint_security_pb">(Vui lòng nhập quốc gia yêu thích)</string>
     <string name="real_name">Họ tên thật</string>
     <string name="income_source">Source Of Income</string>
-    <string name="identity_type">Identity Type</string>
+    <string name="identity_type">Valid ID Type</string>
     <string name="betting_shop">Outlet</string>
     <string name="register_identity">Valid ID</string>
     <string name="hint_register_identity">(Please enter Valid ID)</string>
@@ -730,7 +730,7 @@
     <string name="transfer_money">số tiền chuyển đổi</string>
     <string name="transfer_money_minimum">hạn mức 1.000 trở lên</string>
     <string name="confirm_transform">xác nhận chuyển đổi</string>
-    <string name="plat_money">Số dư ở sàn</string>
+    <string name="plat_money">Số dư kênh</string>
     <string name="money">Số tiền</string>
     <string name="transfer_platform">Kênh chuyển đổi</string>
     <string name="transfer_money_succeed">Số tiền chuyển đổi thành công</string>
@@ -742,7 +742,7 @@
     <string name="third_game_cgcp">Xổ số Chuangxin</string>
     <string name="third_game_ogplus">OG+Casino</string>
     <string name="third_game_cr">Crown Sports</string>
-    <string name="out_account_">chuyển ra tài khoản</string>
+    <string name="out_account_">Chuyển ra tài khoản：</string>
     <string name="in_account_">Chuyển vào tài khoản：</string>
     <string name="transfer_amount">số tiền chuyển đổi：</string>
     <string name="transfer_state">Trạng thái chuyển đổi：</string>
@@ -1204,6 +1204,7 @@
     <!--endregion-->
 
     <string name="e_games">E-Games</string>
+    <string name="e_games_slogan">Brand new experience</string>
     <string name="verification_status">Verification Status</string>
     <string name="register_identity_photo_front">Upload Valid ID of the front</string>
     <string name="register_identity_photo_hint_front">Click to add an image of the front of Valid ID.</string>

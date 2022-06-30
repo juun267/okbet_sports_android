@@ -995,19 +995,19 @@ public class TextFieldBoxes extends FrameLayout {
             //activate(true);
             setHighlightColor(this.errorColor);
             this.helperLabel.setTextColor(this.errorColor);
-            if (errorText != null) {
-                this.helperLabel.setText(errorText);
-                updateBottomViewVisibility();
-            }
             if (giveFocus) setHasFocus(true);
             makeCursorBlink();
         }
 
+        this.helperLabel.setText(errorText);
+        updateBottomViewVisibility();
+
         if (errorText == null && hasFocus) {
             activate(true);
-            this.helperLabel.setText(null);
-            updateBottomViewVisibility();
+        } else if (errorText == null) {
+            deactivate();
         }
+
     }
 
     /**

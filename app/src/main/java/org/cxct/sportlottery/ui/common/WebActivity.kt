@@ -29,6 +29,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         const val KEY_TITLE = "key-title"
         const val KEY_TOOLBAR_VISIBILITY = "key-toolbar-visibility"
         const val KEY_BACK_EVENT = "key-back-event"
+        const val GAME_CATEGORY_CODE = "game-category-code"
     }
 
     private val mTitle: String by lazy { intent?.getStringExtra(KEY_TITLE) ?: "" }

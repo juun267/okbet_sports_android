@@ -40,12 +40,13 @@ object JumpUtil {
     }
 
     //跳轉第三方遊戲網頁
-    fun toThirdGameWeb(context: Context, href: String) {
+    fun toThirdGameWeb(context: Context, href: String, thirdGameCategoryCode: String? = null) {
         try {
             Timber.i("跳转到链接:$href")
             if (URLUtil.isValidUrl(href)) {
                 context.startActivity(
                     Intent(context, ThirdGameActivity::class.java).putExtra(WebActivity.KEY_URL, href)
+                        .putExtra(WebActivity.GAME_CATEGORY_CODE, thirdGameCategoryCode)
                 )
             } else {
                 throw Exception(href) //20191022 記錄問題：當網址無效時，代表他回傳的 url 是錯誤訊息

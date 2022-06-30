@@ -117,8 +117,7 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
                         )
                     }
                 }, onClickMyFavoriteListener = {
-                    closeMenuFragment()
-                    startActivity(Intent(activity, MyFavoriteActivity::class.java))
+                    viewModel.navFavoritePage(isFromLeftMenu = true)
                 }),
             LeftMenuItemNewAdapter.ItemSelectedListener(
                 { sportType -> //點擊
@@ -795,6 +794,13 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
         viewModel.intoWithdraw.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let {
                 startActivity(Intent(context, WithdrawActivity::class.java))
+            }
+        }
+
+        viewModel.intoFavoritePage.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let {
+                closeMenuFragment()
+                startActivity(Intent(context, MyFavoriteActivity::class.java))
             }
         }
     }

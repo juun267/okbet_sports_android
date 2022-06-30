@@ -61,6 +61,23 @@ abstract class BaseFavoriteViewModel(
 
     val favoriteOutrightList = myFavoriteRepository.favoriteOutrightList
 
+    val intoFavoritePage: LiveData<Event<Boolean>>
+        get() = _intoFavoritePage
+    private val _intoFavoritePage = MutableLiveData<Event<Boolean>> ()
+
+    fun navFavoritePage(isFromLeftMenu: Boolean = false) {
+        if (isLogin.value != true) {
+            if (isFromLeftMenu) {
+                _leftNotifyLogin.postValue(Event(true))
+            } else {
+                mNotifyLogin.postValue(true)
+            }
+            return
+        }
+
+        _intoFavoritePage.value = Event(true)
+    }
+
     fun getFavorite() {
         if (isLogin.value != true) {
             mNotifyLogin.postValue(true)
