@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import androidx.constraintlayout.motion.widget.MotionLayout
 import kotlinx.android.synthetic.main.menu_motion_floating.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.util.setVisibilityByCreditSystem
 
 /**
  * @author Hewie
@@ -23,6 +24,12 @@ class MotionFloatingMenu @JvmOverloads constructor(context: Context, attrs: Attr
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+
+        //使用盤開啟狀態隱藏，充值提現按鈕
+        motion_layout.getConstraintSet(R.id.start).getConstraint(motion_cash_save.id).propertySet.mVisibilityMode = 1; // 1 - ignore or 0 - normal
+        motion_cash_save.setVisibilityByCreditSystem()
+        motion_layout.getConstraintSet(R.id.start).getConstraint(motion_cash_get.id).propertySet.mVisibilityMode = 1; // 1 - ignore or 0 - normal
+        motion_cash_get.setVisibilityByCreditSystem()
 
         motion_back_home.setOnClickListener {
             mOnMenuListener?.onHome()
