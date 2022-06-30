@@ -994,16 +994,13 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             isTimerEnable: Boolean,
             isTimerPause: Boolean
         ) {
-
-            /* TODO 依目前開發方式優化，將狀態和時間保存回 viewModel 於下次刷新頁面前 api 取得資料時先行代入相關 data 內，
-                此處倒數計時前須先設置時間及狀態，可解決控件短暫空白。(賽事狀態已於 BaseFavoriteViewModel #1 處調整過)*/
-
             when {
                 TimeUtil.isTimeInPlay(item.matchInfo?.startTime) -> {
                     binding.ivLiveIcon.visibility = View.VISIBLE
                     val socketValue = item.matchInfo?.socketMatchStatus
 
                     if (needCountStatus(socketValue)) {
+                        binding.tvGamePlayTime.text = item.runningTime
                         binding.tvGamePlayTime.visibility = View.VISIBLE
                         listener = object : TimerListener {
                             override fun onTimerUpdate(timeMillis: Long) {
@@ -1015,6 +1012,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                                         binding.root.context.getString(R.string.time_up)
                                 }
                                 item.matchInfo?.leagueTime = (timeMillis / 1000).toInt()
+                                getRecommendData()[0].runningTime = binding.tvGamePlayTime.text.toString()
                             }
                         }
 
@@ -1034,6 +1032,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
 
                 TimeUtil.isTimeAtStart(item.matchInfo?.startTime) -> {
                     binding.ivLiveIcon.visibility = View.VISIBLE
+                    binding.tvGamePlayTime.text = item.runningTime
                     listener = object : TimerListener {
                         override fun onTimerUpdate(timeMillis: Long) {
                             if (timeMillis > 1000) {
@@ -1051,6 +1050,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                             }
                             item.matchInfo?.remainTime = timeMillis
                             binding.ivLiveIcon.visibility = View.VISIBLE
+                            getRecommendData()[0].runningTime = binding.tvGamePlayTime.text.toString()
                         }
                     }
 
