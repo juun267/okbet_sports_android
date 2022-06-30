@@ -37,7 +37,7 @@ interface MoneyService {
 
     @GET(RED_ENVELOPE_PRIZE)
     suspend fun getRedEnvelopePrize(
-        @Path("redEnpId") redEnpId: Int? = null,
-    ): Response<RedEnvelopePrize>
+        @Path("redEnpId") redEnpId: Int? ,
+    ): Response<RedEnvelopePrizeResult>
 
 }

@@ -173,12 +173,34 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                         }
                     }
                     count++
-                    if (count % 10 == 0 && viewModel.getLoginBoolean()) {
-                        if (logRedEnvelopeReceiveDialog.dialog?.isShowing != true) {
+                    if (logRedEnvelopeReceiveDialog.dialog?.isShowing != true) {
+                        if (count % 10 == 0 && viewModel.getLoginBoolean()) {
+
                             getRain()
                             count = 0
                         }
+
+                        if (TimeUtil.dateDiffDay(
+                                TimeUtil.nowTime(TimeUtil.YMD_HMS_FORMAT), redenpStartTime,
+                                TimeUtil.YMD_HMS_FORMAT
+                            ) <= 60
+                        ) {
+                            //60s 倒计时
+
+                            if (redenpStartTime.equals(TimeUtil.nowTime(TimeUtil.YMD_HMS_FORMAT))) {
+                                logRedEnvelopeReceiveDialog.show(
+                                    parentFragmentManager,
+                                    RedEnvelopeReceiveDialog::class.java.simpleName
+                                )
+                            }
+
+                        }
+
                     }
+                    if (redenpEndTime.equals(TimeUtil.nowTime(TimeUtil.YMD_HMS_FORMAT))) {
+                        logRedEnvelopeReceiveDialog.dismiss()
+                    }
+
                 }
 
 
@@ -949,19 +971,33 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         viewModel.rainResult.observe(viewLifecycleOwner) {
             var redEnvelopeInfo = it.redEnvelopeInfo
             if (redEnvelopeInfo != null) {
-                redenpId = redEnvelopeInfo.redenpId
-                redenpStartTime =
-                    TimeUtil.timeFormat(redEnvelopeInfo.redenpStartTime, TimeUtil.YMD_HMS_FORMAT)
-                redenpEndTime =
-                    TimeUtil.timeFormat(redEnvelopeInfo.redenpEndTime, TimeUtil.YMD_HMS_FORMAT)
                 var serverTime =
                     TimeUtil.timeFormat(redEnvelopeInfo.serverTime, TimeUtil.YMD_HMS_FORMAT)
-                logRedEnvelopeReceiveDialog.show(
-                    parentFragmentManager,
-                    RedEnvelopeReceiveDialog::class.java.simpleName
-                )
-            }
 
+                var difference = TimeUtil.dateDiffDay(
+                    serverTime,
+                    TimeUtil.nowTime(TimeUtil.YMD_HMS_FORMAT),
+                    TimeUtil.YMD_HMS_FORMAT
+                )
+
+                redenpId = redEnvelopeInfo.redenpId
+                if (logRedEnvelopeReceiveDialog.redenpId == 0) {
+                    logRedEnvelopeReceiveDialog.redenpId = redEnvelopeInfo.redenpId
+                }
+                redenpStartTime = TimeUtil.getPreTime(
+                    TimeUtil.timeFormat(
+                        (redEnvelopeInfo.redenpStartTime),
+                        TimeUtil.YMD_HMS_FORMAT
+                    ), difference, TimeUtil.YMD_HMS_FORMAT
+                )
+                redenpEndTime = TimeUtil.getPreTime(
+                    TimeUtil.timeFormat(
+                        (redEnvelopeInfo.redenpEndTime),
+                        TimeUtil.YMD_HMS_FORMAT
+                    ), difference, TimeUtil.YMD_HMS_FORMAT
+                )
+
+            }
         }
 
 
@@ -1483,9 +1519,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     private val logRedEnvelopeReceiveDialog by lazy {
         RedEnvelopeReceiveDialog(
             context,
-            redenpId,
-            redenpStartTime,
-            redenpEndTime
+            redenpId
         )
     }
 

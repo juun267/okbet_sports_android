@@ -16,16 +16,18 @@ class RedEnvelopeSuccessDialog : BaseDialog<BaseViewModel>(BaseViewModel::class)
     init {
         setStyle(R.style.CustomDialogStyle)
     }
+
     companion object {
         const val AMOUNT = "amount"
 
         @JvmStatic
-        fun newInstance(amount: Double) = RedEnvelopeSuccessDialog().apply {
+        fun newInstance(amount: String?) = RedEnvelopeSuccessDialog().apply {
             arguments = Bundle().apply {
-                putDouble(AMOUNT, amount)
+                putString(AMOUNT, amount)
             }
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,8 +38,8 @@ class RedEnvelopeSuccessDialog : BaseDialog<BaseViewModel>(BaseViewModel::class)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val amount=arguments?.getDouble(AMOUNT)?:0
-        tv_amount.text= BuildConfig.SYSTEM_CURREMCY_SIGN+" "+TextUtil.formatMoney(amount)
+        val amount = arguments?.getString(AMOUNT) ?: "0"
+        tv_amount.text = BuildConfig.SYSTEM_CURREMCY_SIGN + " " + amount
         iv_close.setOnClickListener {
             dismiss()
         }

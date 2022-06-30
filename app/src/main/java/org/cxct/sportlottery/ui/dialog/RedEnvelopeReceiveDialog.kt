@@ -4,7 +4,6 @@ import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
-import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -15,6 +14,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.util.Log
 import android.view.*
 import android.view.animation.AnimationUtils
 import android.view.animation.Interpolator
@@ -27,19 +27,18 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.RedEnveLopeModel
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.TimeUtil
 import java.lang.ref.WeakReference
 import java.util.*
 
 class RedEnvelopeReceiveDialog(
     context: Context?,
-    redenpId: Int,
-    redenpStartTime: String?,
-    redenpEndTime: String?
+    var redenpId: Int?,
 ) : BaseDialog<RedEnveLopeModel>(RedEnveLopeModel::class) {
     private val mHandler = MyHandler(WeakReference(this))
     var bitmap = listOf(
-        BitmapFactory.decodeResource(context?.resources , R.drawable.packet_one),
-        BitmapFactory.decodeResource(context?.resources , R.drawable.packet_two),
+        BitmapFactory.decodeResource(context?.resources, R.drawable.packet_one),
+        BitmapFactory.decodeResource(context?.resources, R.drawable.packet_two),
         BitmapFactory.decodeResource(context?.resources, R.drawable.packet_three),
         BitmapFactory.decodeResource(context?.resources, R.drawable.luck_packet),
     )
@@ -53,7 +52,6 @@ class RedEnvelopeReceiveDialog(
     private var p: Point? = null
     private var randomX = 0
     private var randomY: Int = 0
-    private var redEnvelope: RedEnvelopeSuccessDialog? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -63,14 +61,35 @@ class RedEnvelopeReceiveDialog(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //  dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
         initView()
-
+        initObserve()
     }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+    }
+
+    private fun initObserve() {
+        viewModel.redEnvelopePrizeResult.observe(viewLifecycleOwner) {
+            if (it.success) {
+                var redEnvelopePrize = it.redEnvelopePrize
+                activity?.supportFragmentManager?.let {
+                    RedEnvelopeSuccessDialog.newInstance(
+                        redEnvelopePrize?.grabMoney
+                    ).show(it, null)
+                }
+            } else {
+                activity?.supportFragmentManager?.let {
+                    RedEnvelopeFailDialog.newInstance().show(it, null)
+                }
+            }
+
+            dismiss()
+            iv_radiance.clearAnimation()
+        }
 
     }
 
@@ -89,11 +108,11 @@ class RedEnvelopeReceiveDialog(
                 26.dp
             )
         )
-        redEnvelope = RedEnvelopeSuccessDialog.newInstance(1.0);
-
-
         setContentView()
+
+
     }
+
 
     fun setCanceledOnTouchOutside(boolean: Boolean) {
         dialog?.setCanceledOnTouchOutside(boolean)
@@ -138,9 +157,7 @@ class RedEnvelopeReceiveDialog(
                     relative_layout.addView(image, layoutParams1)
                     startAnimation(image, 0f)
                     image!!.setOnClickListener {
-                        activity?.supportFragmentManager?.let { redEnvelope?.show(it, null) }
-                        dismiss()
-                        iv_radiance.clearAnimation()
+                        viewModel.getRedEnvelopePrize(redenpId)
                     }
                     image = null
                 }
@@ -174,4 +191,5 @@ class RedEnvelopeReceiveDialog(
         image = null
         mHandler.removeMessages(0)
     }
+
 }

@@ -18,6 +18,7 @@ import kotlinx.coroutines.*
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.manager.NetworkStatusManager
 import org.cxct.sportlottery.network.manager.RequestManager
+import org.cxct.sportlottery.network.money.RedEnveLopeModel
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.dialog.AgeVerifyDialog
@@ -127,6 +128,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { GooglePermissionViewModel(get(), get(), get()) }
         viewModel { TestViewModel(get(), get(), get(), get()) }
         viewModel { NewsViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { RedEnveLopeModel(get(), get(), get(), get(), get(), get()) }
     }
 
     private val repoModule = module {

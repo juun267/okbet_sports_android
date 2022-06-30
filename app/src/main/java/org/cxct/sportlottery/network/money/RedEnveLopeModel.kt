@@ -25,16 +25,16 @@ class RedEnveLopeModel(
     infoCenterRepository,
     favoriteRepository
 ) {
-    val rainResult: LiveData<RedEnvelopeResult>
-        get() = _rainResult
-    private val _rainResult = MutableLiveData<RedEnvelopeResult>()
+    private val _redEnvelopePrizeResult = MutableLiveData<RedEnvelopePrizeResult>()
+    val redEnvelopePrizeResult: LiveData<RedEnvelopePrizeResult>
+        get() = _redEnvelopePrizeResult
 
-    fun getRain() {
+    fun getRedEnvelopePrize(redEnpId: Int?) {
         viewModelScope.launch {
             doNetwork(androidContext) {
-                OneBoSportApi.moneyService.getRainInfo()
+                OneBoSportApi.moneyService.getRedEnvelopePrize(redEnpId)
             }?.let { result ->
-                _rainResult.postValue(result)
+                _redEnvelopePrizeResult.postValue(result)
             }
         }
     }
