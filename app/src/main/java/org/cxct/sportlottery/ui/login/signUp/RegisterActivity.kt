@@ -1052,4 +1052,12 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
         return dateTimePicker
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+
+        if (supportFragmentManager.fragments.isEmpty()) {
+            binding.flCredentials.visibility = View.GONE
+        }
+    }
 }
