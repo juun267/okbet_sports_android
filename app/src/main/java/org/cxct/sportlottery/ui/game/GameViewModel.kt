@@ -3115,7 +3115,8 @@ class GameViewModel(
                             _enterThirdGameResult.postValue(
                                 EnterThirdGameResult(
                                     resultType = EnterThirdGameResult.ResultType.SUCCESS,
-                                    url = thirdLoginResult.msg
+                                    url = thirdLoginResult.msg,
+                                    thirdGameCategoryCode = gameData.gameCategory
                                 )
                             )
                         } else {

@@ -862,7 +862,13 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     private fun enterThirdGame(result: EnterThirdGameResult) {
         hideLoading()
         when (result.resultType) {
-            EnterThirdGameResult.ResultType.SUCCESS -> context?.run { JumpUtil.toThirdGameWeb(this, result.url ?: "") }
+            EnterThirdGameResult.ResultType.SUCCESS -> context?.run {
+                JumpUtil.toThirdGameWeb(
+                    this,
+                    result.url ?: "",
+                    thirdGameCategoryCode = result.thirdGameCategoryCode
+                )
+            }
             EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
             EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.startActivity(Intent(context, RegisterActivity::class.java))
             EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
