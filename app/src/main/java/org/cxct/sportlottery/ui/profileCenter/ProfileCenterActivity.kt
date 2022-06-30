@@ -462,6 +462,10 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
             updateUI(it)
         }
 
+        viewModel.navPublicityPage.observe(this) {
+            GamePublicityActivity.reStart(this)
+        }
+
         viewModel.lockMoney.observe(this) {
             if (it?.toInt()!! > 0) {
                 ivNotice.visibility = View.VISIBLE
