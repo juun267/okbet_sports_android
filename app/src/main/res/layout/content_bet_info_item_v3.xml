@@ -227,29 +227,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="120dp"
                         android:layout_marginHorizontal="24dp"
+                        android:layout_marginBottom="8dp"
                         android:paddingTop="10dp"
                         android:visibility="gone"
-                        app:layout_constraintBottom_toTopOf="@+id/ll_balance_tips"
+                        app:layout_constraintBottom_toTopOf="@+id/bottomPaddingView"
                         tools:visibility="visible" />
-
-                    <LinearLayout
-                        android:id="@+id/ll_balance_tips"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toTopOf="@id/bottomPaddingView">
-
-                        <TextView
-                            android:id="@+id/tvBalanceInsufficientMessage"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/margin_24"
-                            android:paddingTop="@dimen/margin_6"
-                            android:text="@string/bet_info_bet_balance_insufficient"
-                            android:textColor="@color/color_E44438_e44438"
-                            android:textSize="@dimen/textSize13sp"
-                            android:visibility="gone"
-                            tools:visibility="visible" />
-                    </LinearLayout>
 
                     <View
                         android:id="@+id/bottomPaddingView"
@@ -292,14 +274,14 @@
                             android:id="@+id/tvErrorMessage"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="24dp"
                             android:paddingTop="6dp"
-                            android:text="@string/bet_info_list_minimum_limit_amount"
+                            android:layout_marginHorizontal="24dp"
                             android:textColor="@color/color_E44438_e44438"
                             android:textSize="@dimen/textSize13sp"
                             android:visibility="gone"
                             app:layout_constraintBottom_toTopOf="@id/tv_odd_content_changed"
                             app:layout_constraintStart_toStartOf="@id/et_bet"
+                            tools:text="@string/bet_info_list_minimum_limit_amount"
                             tools:visibility="visible" />
 
                         <TextView
