@@ -295,6 +295,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                     Timber.e("addRecommend")
                 } else {
                     recommendList.forEachIndexed { index, recommend ->
+                        recommend.runningTime = mPublicityAdapter.getRecommendData()[0].runningTime
                         mPublicityAdapter.updateRecommendData(index, recommend)
                     }
                 }
@@ -351,7 +352,9 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         }
 
         viewModel.sportMenuFilterList.observe(viewLifecycleOwner){
-            queryData()
+            it.getContentIfNotHandled()?.let {
+                queryData()
+            }
         }
 
         viewModel.messageListResult.observe(viewLifecycleOwner) {

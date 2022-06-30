@@ -71,4 +71,6 @@ data class Recommend(
     override var playCateMappingList: List<PlayCateMapItem>? = null
 
     var unfold: Int = FoldState.UNFOLD.code
+
+    var runningTime: String = ""
 }

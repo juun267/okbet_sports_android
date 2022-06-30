@@ -2901,6 +2901,7 @@ class GameViewModel(
                             setupMatchTime()
                             setupPlayCateNum()
                             setupLeagueName()
+                            setupSocketMatchStatus()
                         }
                     }
                     val recommendList = arrayListOf<Recommend>()
@@ -2936,10 +2937,11 @@ class GameViewModel(
      * 更新宣傳頁賠率折扣
      */
     fun publicityUpdateDiscount(oldDiscount: Float, newDiscount: Float) {
+        if (oldDiscount == newDiscount) return
         viewModelScope.launch(Dispatchers.IO) {
             publicityRecommend.value?.peekContent()?.let { recommendList ->
                 val iterator = recommendList.iterator()
-                while(iterator.hasNext()) {
+                while (iterator.hasNext()) {
                     val recommend = iterator.next()
                     recommend.oddsMap?.updateOddsDiscount(oldDiscount, newDiscount)
                 }
@@ -3001,6 +3003,19 @@ class GameViewModel(
      */
     private fun Recommend.setupLeagueName() {
         matchInfo?.leagueName = leagueName
+    }
+
+    /**
+     * 賽事狀態
+     */
+    private fun Recommend.setupSocketMatchStatus() {
+        matchInfo?.let {
+            /* 將賽事狀態(先前socket回傳取得)放入當前取得的賽事 */
+            val status = _publicityRecommend.value?.peekContent()?.find { recommend ->
+                recommend.leagueId == leagueId
+            }?.matchInfo?.socketMatchStatus
+            matchInfo?.socketMatchStatus = status
+        }
     }
 
     /**
