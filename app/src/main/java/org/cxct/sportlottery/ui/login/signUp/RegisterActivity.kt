@@ -225,7 +225,13 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         viewModel.resetCredentialsStatus()
         binding.flCredentials.visibility = View.VISIBLE
         val transaction = supportFragmentManager.beginTransaction()
-        credentialsFragment = RegisterCredentialsFragment.newInstance()
+        credentialsFragment = RegisterCredentialsFragment.newInstance(
+            registerCredentialsListener = RegisterCredentialsFragment.RegisterCredentialsListener(onCloseFragment = {
+                supportFragmentManager.popBackStack()
+                binding.flCredentials.visibility = View.GONE
+            })
+        )
+
 
         credentialsFragment?.let { fragment ->
             transaction
@@ -546,7 +552,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 checkRegisterListener { viewModel.checkBirth(it) }
             }
             eetIdentity.apply {
-                checkRegisterListener { viewModel.checkIdentity(it, checkPhotoUploaded()) }
+                checkRegisterListener { viewModel.checkIdentity(it) }
             }
             eetSalary.apply {
                 checkRegisterListener { viewModel.checkSalary(it) }
@@ -643,7 +649,6 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     deviceId,
                     birth = eetBirth.text.toString().replace(" ",""), //傳給後端的不需要有空白間隔
                     identity = eetIdentity.text.toString(),
-                    identityUploaded = checkPhotoUploaded(),
                     identityType = identityTypeSelectedData?.code,
                     salarySource = salarySourceSelectedData?.code,
                     bettingShop = bettingShopSelectedData?.code
@@ -823,22 +828,16 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             if (it != null) {
 //                binding.etIdentity.setEndIcon(R.drawable.ic_upload_done)
                 binding.endButton.setImageResource(R.drawable.ic_upload_done)
-                viewModel.checkIdentity(binding.eetIdentity.text.toString(), true)
+                viewModel.checkIdentity(binding.eetIdentity.text.toString())
                 isUploaded = true
             } else {
 //                binding.etIdentity.setEndIcon(R.drawable.ic_camera)
                 binding.endButton.setImageResource(R.drawable.ic_camera)
-                viewModel.checkIdentity(binding.eetIdentity.text.toString(), false)
+                viewModel.checkIdentity(binding.eetIdentity.text.toString())
                 isUploaded = false
             }
         }
     }
-
-    /**
-     * 檢查是否已經成功上傳照片
-     */
-//    private fun checkPhotoUploaded(): Boolean = binding.etIdentity.endIconResourceId == R.drawable.ic_upload_done
-    private fun checkPhotoUploaded(): Boolean = isUploaded
 
     //當所有值都有填，按下enter時，自動點擊註冊鈕
     private fun setEditTextIme(registerEnable: Boolean) {

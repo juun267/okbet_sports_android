@@ -424,10 +424,10 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete()
     }
 
-    fun checkIdentity(identity: String?, photoUploaded: Boolean) {
+    fun checkIdentity(identity: String?) {
         val msg = when {
             identity.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
-            !photoUploaded -> LocalUtils.getString(R.string.error_identity_photo)
+            photoUrlResult.value == null -> LocalUtils.getString(R.string.error_identity_photo)
             else -> null
         }
         _identityMsg.value = Pair(msg, msg == null)
@@ -487,7 +487,6 @@ class RegisterViewModel(
         cbAgreeAllChecked: Boolean,
         birth: String?,
         identity: String?,
-        identityUploaded: Boolean,
         identityType: String?,
         salarySource: String?,
         bettingShop: String?
@@ -534,7 +533,7 @@ class RegisterViewModel(
         if (sConfigData?.enableBirthday == FLAG_OPEN)
             checkBirth(birth)
         if (sConfigData?.enableIdentityNumber == FLAG_OPEN)
-            checkIdentity(identity, identityUploaded)
+            checkIdentity(identity)
         if (sConfigData?.enableIdentityNumber == FLAG_OPEN)
             checkIdentityType(identityType)
         if (sConfigData?.enableSalarySource == FLAG_OPEN)
@@ -667,7 +666,6 @@ class RegisterViewModel(
         deviceId: String,
         birth: String?,
         identity: String?,
-        identityUploaded: Boolean,
         identityType: String?,
         salarySource: String?,
         bettingShop: String?
@@ -697,7 +695,6 @@ class RegisterViewModel(
                 cbAgreeAllChecked,
                 birth,
                 identity,
-                identityUploaded,
                 identityType,
                 salarySource,
                 bettingShop
