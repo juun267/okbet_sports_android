@@ -673,14 +673,22 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             var oddPlayCateCode = ""
 
             var oddList = listOf<Odd?>()
-            var sortOddsMap = data.oddsMap?.sortOdds(data.oddsSort)?.filterPlayCateSpanned(data.gameType)
-            sortOddsMap?.filter { it.value?.size ?: 0 > 1 }
-            sortOddsMap?.iterator()?.next()?.key?.let {
-                oddPlayCateCode = it
+
+            val oddsMap = mutableMapOf<String, List<Odd?>?>()
+            data.oddsMap?.forEach {
+                oddsMap[it.key] = it.value
             }
-            sortOddsMap?.iterator()?.next()?.value?.let {
-                if (it.isNotEmpty()) oddList = it
-            }
+            val sortOddsMap = oddsMap.filterValues { it?.size ?: 0 > 0 }.sortOdds(data.oddsSort)
+                .filterPlayCateSpanned(data.gameType)
+            if (sortOddsMap.isNotEmpty()) {
+                sortOddsMap.iterator().next().key.let {
+                    oddPlayCateCode = it
+                }
+                sortOddsMap.iterator().next().value?.let {
+                    oddList = it
+                }
+            } else
+                return
 
             //玩法名稱
             val playCateName = data.playCateNameMap?.get(oddPlayCateCode)?.get(LanguageManager.getSelectLanguage(binding.root.context).key) ?: ""
