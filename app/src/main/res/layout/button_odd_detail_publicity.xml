@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingHorizontal="10dp"
+        android:paddingHorizontal="5dp"
         tools:ignore="SpUsage">
 
         <LinearLayout
@@ -30,7 +30,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:maxLines="1"
-                android:paddingHorizontal="2dp"
+                android:paddingHorizontal="1dp"
                 android:textColor="@color/selector_button_odd_top_text_publicity"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="1"
@@ -43,7 +43,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:maxLines="1"
-                android:paddingHorizontal="2dp"
+                android:paddingHorizontal="1dp"
                 android:textColor="@color/selector_button_odd_top_text"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="-0/0.5"
@@ -55,7 +55,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:paddingHorizontal="2dp"
+                android:paddingHorizontal="1dp"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:textColor="@color/selector_button_odd_bottom_text_publicity"
                 android:textSize="@dimen/textSize14sp"
                 android:textStyle="bold"
