@@ -255,7 +255,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
             addTitle()
             addAnnouncement()
             if (!isCreditSystem()) addUserInfo() //非信用盤才顯示
-            addSubTitle()
+            addSubTitle() //熱門推薦bar需常駐
             addPreload()
         }
     }
@@ -295,7 +295,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
             event?.getContentIfNotHandled()?.let { recommendList ->
                 hideLoading()
                 if (recommendList.isEmpty()) {
-                    mPublicityAdapter.removeData(GamePublicityAdapter.PublicitySubTitleImageData())
                     mPublicityAdapter.removeData(recommendList)
                     mPublicityAdapter.removeData(GamePublicityAdapter.PreloadItem())
                     return@observe
@@ -304,7 +303,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 mRecommendList = recommendList
                 mPublicityAdapter.removeData(GamePublicityAdapter.PreloadItem())
                 if (mPublicityAdapter.getRecommendData().size == 0) {
-                    mPublicityAdapter.addSubTitle()
                     mPublicityAdapter.addRecommend(recommendList)
                     Timber.e("addRecommend")
                 } else {
