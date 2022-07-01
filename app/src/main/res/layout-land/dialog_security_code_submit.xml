@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    app:cardCornerRadius="8dp"
+    tools:context="ui.common.CustomSecurityDialog">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_191919_FCFCFC"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_191919_FCFCFC"
+            android:gravity="center"
+            android:minHeight="44dp"
+            android:text="@string/dialog_security_title"
+            android:textColor="@color/color_CCCCCC_000000"
+            android:textSize="@dimen/textSize16sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_191919_EEEFF0" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dialog_security_hint"
+                android:textColor="@color/color_AEAEAE_404040"
+                android:textSize="@dimen/textSize12sp" />
+
+        </LinearLayout>
+
+        <org.cxct.sportlottery.ui.common.SecurityCodeStyleEditText
+            android:id="@+id/securityCodeStyleEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="18dp"
+            android:gravity="center"
+            app:scErrorText="@string/dialog_security_error"
+            app:scHintText="@string/hint_security_code"
+            app:scIcon="@drawable/ic_login_verify"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="14dp"
+            android:background="@color/color_191919_EEEFF0" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/btn_negative"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/bottom_sheet_close"
+                android:textAllCaps="true"
+                android:textColor="@color/color_317FFF_0760D4"
+                android:textSize="@dimen/textSize14sp" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/color_191919_EEEFF0" />
+
+            <TextView
+                android:id="@+id/btn_positive"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/submit"
+                android:textAllCaps="true"
+                android:textColor="@color/color_cccccc_e2e2e2"
+                android:textSize="@dimen/textSize14sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
