@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:gravity="center"
-            android:maxLines="1"
+            android:maxLines="2"
             android:text="@string/bet_time2"
             android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize12sp"  />
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:maxLines="1"
+            android:maxLines="2"
             android:text="@string/bet_number"
             android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize12sp"  />
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:gravity="center"
-            android:maxLines="1"
+            android:maxLines="2"
             android:text="@string/bet_money"
             android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize12sp"  />
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
             android:gravity="center"
-            android:maxLines="1"
+            android:maxLines="2"
             android:text="@string/profit_and_loss"
             android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize12sp"  />
