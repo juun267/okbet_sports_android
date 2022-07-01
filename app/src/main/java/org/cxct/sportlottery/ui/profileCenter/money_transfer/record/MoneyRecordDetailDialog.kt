@@ -8,11 +8,8 @@ import kotlinx.android.synthetic.main.dialog_money_transfer_record_detail.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.third_game.query_transfers.Row
 import org.cxct.sportlottery.ui.base.BaseDialog
-import org.cxct.sportlottery.util.setDateTime
-import org.cxct.sportlottery.util.setMoneyFormat
-import org.cxct.sportlottery.util.setPlatName
-import org.cxct.sportlottery.util.setRecordStatus
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
+import org.cxct.sportlottery.util.*
 
 class MoneyRecordDetailDialog : BaseDialog<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
     init {
@@ -39,6 +36,7 @@ class MoneyRecordDetailDialog : BaseDialog<MoneyTransferViewModel>(MoneyTransfer
             tv_in_account.setPlatName(firmTypeIn)
             tv_money.setMoneyFormat(money)
             tv_state.setRecordStatus(status)
+            tv_state.setRecordStatusColor(status)
             tv_remark.text = remark
         }
 
