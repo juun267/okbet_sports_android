@@ -173,6 +173,8 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
         tv_currency_type.text = sConfigData?.systemCurrencySign
         //信用盤打開，隱藏提款設置
         btn_withdrawal_setting.setVisibilityByCreditSystem()
+        //優惠活動
+        btn_promotion.setVisibilityByCreditSystem()
     }
 
     override fun onResume() {
