@@ -70,6 +70,7 @@ class StatusSpinnerView @JvmOverloads constructor(
             val first = dataList[0]
             first.isChecked = true
             selectItem = first
+            setSelectCode(first.code)
         }
         spinnerAdapter = StatusSpinnerAdapter(dataList)
         mListPop = ListPopupWindow(context)
@@ -106,6 +107,10 @@ class StatusSpinnerView @JvmOverloads constructor(
         spinnerAdapter?.notifyDataSetChanged()
         if (dataList.size > 8) {
             mListPop.height = ScreenUtils.getScreenHeight(context) / 2
+        }
+
+        dataList.firstOrNull()?.let { defaultData ->
+            setSelectCode(defaultData.code)
         }
     }
 
