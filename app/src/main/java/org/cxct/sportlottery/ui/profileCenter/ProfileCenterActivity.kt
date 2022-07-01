@@ -26,10 +26,7 @@ import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
-import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
-import org.cxct.sportlottery.repository.FLAG_OPEN
-import org.cxct.sportlottery.repository.TestFlag
-import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
@@ -174,6 +171,8 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
     }
     private fun initView() {
         tv_currency_type.text = sConfigData?.systemCurrencySign
+        //信用盤打開，隱藏提款設置
+        btn_withdrawal_setting.setVisibilityByCreditSystem()
     }
 
     override fun onResume() {
