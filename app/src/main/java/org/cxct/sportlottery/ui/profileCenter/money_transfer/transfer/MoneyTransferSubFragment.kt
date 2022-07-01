@@ -47,6 +47,9 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.OUT_PLAT, gameDataArg.gameData.showName)
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.IN_PLAT, getString(R.string.plat_money))
         btn_transfer.setTitleLetterSpacing()
+        et_transfer_money.afterTextChanged {
+            et_transfer_money.setError("")
+        }
     }
 
     private fun initOnclick() {
@@ -63,6 +66,23 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
             viewModel.getMoney()
         }
         btn_transfer.setOnClickListener {
+            et_transfer_money.clearFocus()
+            val transferMoneyText = et_transfer_money.getText()
+            if (transferMoneyText.isEmpty()) {
+                et_transfer_money.setError(getString(R.string.error_input_empty))
+                return@setOnClickListener
+            }
+            if (transferMoneyText == "0") {
+                et_transfer_money.setError(getString(R.string.error_input_amount))
+                return@setOnClickListener
+            }
+            if (transferMoneyText.toDouble() > (viewModel.userMoney.value ?: 0.0)) {
+                showErrorPromptDialog(
+                    getString(R.string.prompt),
+                    getString(R.string.bet_info_bet_balance_insufficient)
+                ) {}
+                return@setOnClickListener
+            }
             viewModel.transfer(isPlatReversed, out_account.selectedTag, in_account.selectedTag, et_transfer_money.getText().toLongOrNull())
         }
 

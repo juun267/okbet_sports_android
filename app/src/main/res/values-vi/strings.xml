@@ -11,6 +11,7 @@
     <string name="message_network_no_connect">vui lòng kiểm tra kết nối mạng rồi thử lại</string>
     <string name="message_network_timeout">kết nối mạng vượt quá thời gian, vui lòng thử lại</string>
     <string name="error">Nhắc nhở</string>
+    <string name="error_input_amount">Số tiền bạn đã nhập sai hoặc giá trị không hợp lệ</string>
     <string name="error_input_empty">không thể để trống</string>
     <string name="error_input_empty_new">Trường này là bắt buộc.</string>
     <string name="error_incompatible_format">Các ký tự bạn đã nhập không phù hợp</string>
