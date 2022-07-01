@@ -837,7 +837,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         receiver.matchStatusChange.observe(viewLifecycleOwner) {
             it?.let {
                 if (it.matchStatusCO?.status == StatusType.END_GAME.code) {
-                    betListRefactorAdapter?.betList?.firstOrNull()?.amountError = true
                     betListRefactorAdapter?.betList?.let { betInfoList ->
                         betInfoList.forEachIndexed { index, betInfoListData ->
                             if (SocketUpdateUtil.updateOddStatus(betInfoListData, it)) {
@@ -849,7 +848,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 }
             }
         }
-
 
         receiver.matchOddsLock.observe(this.viewLifecycleOwner) {
             it?.let { matchOddsLockEvent ->
