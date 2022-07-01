@@ -40,6 +40,7 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
+import org.cxct.sportlottery.network.matchresult.list.MatchStatus
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
@@ -51,6 +52,7 @@ import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
+import org.cxct.sportlottery.ui.results.StatusType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.*
 
@@ -832,6 +834,20 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initSocketObserver() {
+        receiver.matchStatusChange.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it.matchStatusCO?.status == StatusType.END_GAME.code) {
+                    betListRefactorAdapter?.betList?.let { betInfoList ->
+                        betInfoList.forEachIndexed { index, betInfoListData ->
+                            if (SocketUpdateUtil.updateOddStatus(betInfoListData, it)) {
+                                betListRefactorAdapter?.notifyItemChanged(index)
+                                checkAllAmountCanBet()
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         receiver.matchOddsLock.observe(this.viewLifecycleOwner) {
             it?.let { matchOddsLockEvent ->
