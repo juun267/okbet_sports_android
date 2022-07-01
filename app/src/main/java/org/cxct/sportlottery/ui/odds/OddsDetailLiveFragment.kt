@@ -847,13 +847,13 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         txvOut.visibility = View.VISIBLE
         league_odd_match_basebag.visibility = View.VISIBLE
 
-    if (event.matchStatusCO?.attack.equals("H")) {
-        ic_attack_h.visibility = View.VISIBLE
-        ic_attack_c.visibility = View.INVISIBLE
-    } else {
-        ic_attack_h.visibility = View.INVISIBLE
-        ic_attack_c.visibility = View.VISIBLE
-    }
+        if (event.matchStatusCO?.attack.equals("H")) {
+            ic_attack_h.visibility = View.VISIBLE
+            ic_attack_c.visibility = View.INVISIBLE
+        } else {
+            ic_attack_h.visibility = View.INVISIBLE
+            ic_attack_c.visibility = View.VISIBLE
+        }
 
     league_odd_match_bb_status.apply {
         text = event.matchStatusCO?.statusNameI18n?.get(getSelectLanguage(context).key) ?: ""
@@ -880,12 +880,12 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         isVisible = true
     }
 
-    txvOut.apply {
-        text = this.context.getString(R.string.game_out, event.matchStatusCO?.outNumber ?: "")
-        isVisible = true
-    }
+        txvOut.apply {
+            text = this.context.getString(R.string.game_out, event.matchStatusCO?.outNumber ?: "")
+            isVisible = true
+        }
 
-}
+    }
 
     private fun setupStatusTnVb(event: MatchStatusChangeEvent, showScore: Boolean = true) {
 
