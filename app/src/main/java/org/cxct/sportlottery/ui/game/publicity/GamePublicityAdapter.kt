@@ -765,15 +765,15 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
                 Glide.with(binding.root.context)
                     .load(data.matchInfo?.homeIcon)
                     .apply(mRequestOptions)
-                    .fallback(R.drawable.bg_recommend_game_default)
-                    .error(R.drawable.bg_recommend_game_default)
+                    .fallback(R.color.transparent)
+                    .error(R.color.transparent)
                     .into(ivHomeIcon)
 
                 Glide.with(binding.root.context)
                     .load(data.matchInfo?.awayIcon)
                     .apply(mRequestOptions)
-                    .fallback(R.drawable.bg_recommend_game_default)
-                    .error(R.drawable.bg_recommend_game_default)
+                    .fallback(R.color.transparent)
+                    .error(R.color.transparent)
                     .into(ivAwayIcon)
                 //endregion
 
