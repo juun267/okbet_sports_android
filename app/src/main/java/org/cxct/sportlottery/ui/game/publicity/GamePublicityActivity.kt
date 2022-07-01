@@ -174,6 +174,11 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
                 }
             }
         }
+        MultiLanguagesApplication.mInstance.mThirdGamesCashSystem.observe(this) {
+            it?.getContentIfNotHandled()?.let { isCashSave ->
+                if (isCashSave) viewModel.checkRechargeSystem() else viewModel.checkWithdrawSystem()
+            }
+        }
     }
 
     override fun onBackPressed() {

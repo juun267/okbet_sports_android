@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.thirdGame
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import kotlinx.android.synthetic.main.activity_third_game.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
@@ -17,6 +18,7 @@ import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActi
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
+import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.ToastUtil
 
 open class ThirdGameActivity : WebActivity() {
@@ -26,6 +28,8 @@ open class ThirdGameActivity : WebActivity() {
     private var customSecurityDialog: CustomSecurityDialog? = null
 
     private val mGameCategoryCode: String? by lazy { intent?.getStringExtra(GAME_CATEGORY_CODE) }
+
+    private var isCashSave = false
 
     override fun init() {
         setupActivityOrientation()
@@ -53,14 +57,18 @@ open class ThirdGameActivity : WebActivity() {
 
             override fun onCashSave() {
                 if (checkLogin()) {
-                    viewModel.checkRechargeSystem()
+                    MultiLanguagesApplication.mInstance.mThirdGamesCashSystem.value = Event(true)
+                    finish()
+//                    viewModel.checkRechargeSystem()
                 }
             }
 
             override fun onCashGet() {
                 if (checkLogin()) {
                     avoidFastDoubleClick()
-                    viewModel.checkWithdrawSystem()
+                    MultiLanguagesApplication.mInstance.mThirdGamesCashSystem.value = Event(false)
+                    finish()
+//                    viewModel.checkWithdrawSystem()
                 }
             }
         })
