@@ -157,6 +157,10 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         binding.gameToolbar.btnLogin.setOnClickListener(this)
         binding.gameToolbar.btnRegister.setOnClickListener(this)
         binding.gameToolbar.ivMenu.setOnClickListener(this)
+
+        binding.gameBottomNavigation.clBetListBar.setOnClickListener {
+            showBetListPage()
+        }
         //endregion
 
     }
