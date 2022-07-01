@@ -24,6 +24,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
 
     private val gameDataArg: MoneyTransferSubFragmentArgs by navArgs()
     private var isPlatReversed = false
+    private var gameMoney = 0.0 //第三方遊戲餘額
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewModel.setToolbarName(getString(R.string.transfer_info))
@@ -43,6 +44,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         moveAnim(isPlatReversed)
         out_account.selectedText = getString(R.string.plat_money)
         in_account.selectedText = gameDataArg.gameData.showName
+        gameMoney = gameDataArg.gameData.money ?: 0.0
         layout_balance.tv_currency_type.text = sConfigData?.systemCurrencySign
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.OUT_PLAT, gameDataArg.gameData.showName)
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.IN_PLAT, getString(R.string.plat_money))
@@ -76,7 +78,8 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
                 et_transfer_money.setError(getString(R.string.error_input_amount))
                 return@setOnClickListener
             }
-            if (transferMoneyText.toDouble() > (viewModel.userMoney.value ?: 0.0)) {
+            val outAccountBalance = if (isPlatReversed) gameMoney else (viewModel.userMoney.value ?: 0.0)
+            if (transferMoneyText.toDouble() > outAccountBalance) {
                 showErrorPromptDialog(
                     getString(R.string.prompt),
                     getString(R.string.bet_info_bet_balance_insufficient)
