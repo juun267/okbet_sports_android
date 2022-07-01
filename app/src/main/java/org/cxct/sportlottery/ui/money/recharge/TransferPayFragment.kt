@@ -296,23 +296,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             .setBgColor(ContextCompat.getColor(cv_recharge_time.context, R.color.color_191919_FCFCFC))
             .setSubmitColor(ContextCompat.getColor(cv_recharge_time.context, R.color.color_7F7F7F_999999))
             .setCancelColor(ContextCompat.getColor(cv_recharge_time.context, R.color.color_7F7F7F_999999))
-            .isDialog(true)
+            .isDialog(false)
             .build() as TimePickerView
-
-        val params = FrameLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            Gravity.BOTTOM)
-
-        params.leftMargin = 0
-        params.rightMargin = 0
-        dateTimePicker.dialogContainerLayout.layoutParams = params
-        val dialogWindow = dateTimePicker.dialog.window
-        if (dialogWindow != null) {
-            dialogWindow.setWindowAnimations(com.bigkoo.pickerview.R.style.picker_view_slide_anim)
-            dialogWindow.setGravity(Gravity.BOTTOM)
-            dialogWindow.setDimAmount(0.1f)
-        }
     }
 
     //依據選擇的支付渠道，刷新UI

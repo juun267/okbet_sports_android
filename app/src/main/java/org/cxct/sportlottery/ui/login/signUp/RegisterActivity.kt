@@ -1030,25 +1030,8 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             .setBgColor(ContextCompat.getColor(this, R.color.color_191919_FCFCFC))
             .setSubmitColor(ContextCompat.getColor(this, R.color.color_7F7F7F_999999))
             .setCancelColor(ContextCompat.getColor(this, R.color.color_7F7F7F_999999))
-            .isDialog(true)
+            .isDialog(false)
             .build() as TimePickerView
-
-        val params = FrameLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            Gravity.BOTTOM
-        )
-
-        params.leftMargin = 0
-        params.rightMargin = 0
-        dateTimePicker.dialogContainerLayout.layoutParams = params
-        val dialogWindow = dateTimePicker.dialog.window
-        if (dialogWindow != null) {
-            dialogWindow.setWindowAnimations(com.bigkoo.pickerview.R.style.picker_view_slide_anim)
-            dialogWindow.setGravity(Gravity.BOTTOM)
-            dialogWindow.setDimAmount(0.1f)
-        }
-
         return dateTimePicker
     }
 
