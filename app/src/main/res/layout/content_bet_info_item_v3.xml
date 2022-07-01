@@ -225,7 +225,7 @@
                     <org.cxct.sportlottery.util.KeyboardView
                         android:id="@+id/layoutKeyBoard"
                         android:layout_width="match_parent"
-                        android:layout_height="120dp"
+                        android:layout_height="108dp"
                         android:layout_marginHorizontal="24dp"
                         android:layout_marginBottom="8dp"
                         android:paddingTop="10dp"

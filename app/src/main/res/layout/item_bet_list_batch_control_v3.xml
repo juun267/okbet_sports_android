@@ -56,7 +56,6 @@
                 android:orientation="vertical"
                 android:paddingEnd="@dimen/margin_24"
                 android:paddingTop="@dimen/margin_10"
-                android:paddingBottom="@dimen/margin_18"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -168,7 +167,8 @@
             <org.cxct.sportlottery.util.KeyboardView
                 android:id="@+id/layoutKeyBoard"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_height="108dp"
+                android:paddingTop="10dp"
                 android:layout_marginHorizontal="24dp"
                 android:layout_marginBottom="8dp"
                 android:visibility="gone"
